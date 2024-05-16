@@ -17,7 +17,7 @@ async def test_create_resource(
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
     user = await login()
     payload = {
-        "title": "A test resource",
+        "title": [{"locale": "*", "translation": "A test resource"}],
         "description": [
             {
                 "locale": "*",
@@ -36,7 +36,7 @@ async def test_create_resource(
     )
     assert resp.status_code == 201, status_fail_msg(201, resp)
     assert "id" in resp.json()
-    assert resp.json()["title"] == "A test resource"
+    assert resp.json()["title"][0]["translation"] == "A test resource"
     assert (
         resp.json()["description"][0]["translation"]
         == "This is a string with some space chars"
@@ -59,7 +59,7 @@ async def test_create_too_many_resources(
         resp = await test_client.post(
             "/resources",
             json={
-                "title": f"A test resource {i}",
+                "title": [{"locale": "*", "translation": f"A test resource {i}"}],
                 "textId": text_id,
                 "level": 0,
                 "resourceType": "plainText",
@@ -85,7 +85,7 @@ async def test_create_resource_w_invalid_level(
     resp = await test_client.post(
         "/resources",
         json={
-            "title": "A test resource",
+            "title": [{"locale": "*", "translation": "A test resource"}],
             "description": [
                 {
                     "locale": "*",
@@ -113,7 +113,7 @@ async def test_create_resource_w_wrong_text_id(
     await login()
 
     payload = {
-        "title": "A test resource",
+        "title": [{"locale": "*", "translation": "A test resource"}],
         "textId": wrong_id,
         "level": 0,
         "resourceType": "plainText",
@@ -138,7 +138,7 @@ async def test_create_resource_with_forged_owner_id(
 
     # create new resource with made up owner ID
     payload = {
-        "title": "Foo Bar Baz",
+        "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
@@ -224,7 +224,7 @@ async def test_update_resource(
 
     # create new resource (because only owner can update(write))
     payload = {
-        "title": "Foo Bar Baz",
+        "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
@@ -242,7 +242,10 @@ async def test_update_resource(
     assert resource_data.get("public") is False
 
     # update resource
-    updates = {"title": "This Title Changed", "resourceType": "plainText"}
+    updates = {
+        "title": [{"locale": "*", "translation": "This Title Changed"}],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -254,7 +257,10 @@ async def test_update_resource(
     assert resp.json()["title"] == updates["title"]
 
     # update resource w/ wrong ID
-    updates = {"title": "This Title Changed", "resourceType": "plainText"}
+    updates = {
+        "title": [{"locale": "*", "translation": "This Title Changed"}],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{wrong_id}",
         json=updates,
@@ -454,7 +460,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
 
     # create new resource (because only owner can update(write))
     payload = {
-        "title": "Foo Bar Baz",
+        "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",

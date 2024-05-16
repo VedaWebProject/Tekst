@@ -2,14 +2,17 @@ import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useAuthStore, useStateStore } from '@/stores';
-import { hashCode } from '@/utils';
+import { hashCode, pickTranslation } from '@/utils';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();
   const auth = useAuthStore();
 
-  const resources = ref<AnyResourceRead[]>([]);
-  const dataHash = computed(() => hashCode(resources.value));
+  const resourcesAll = ref<AnyResourceRead[]>([]);
+  const resourcesOfText = computed(() =>
+    resourcesAll.value.filter((r) => r.textId === state.text?.id)
+  );
+  const dataHash = computed(() => hashCode(resourcesAll.value));
   const error = ref(false);
 
   const loading = ref(false);
@@ -21,24 +24,18 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   async function load() {
-    if (loading.value || !state.text) {
+    if (loading.value) {
       return;
     }
     loading.value = true;
     error.value = false;
 
-    const { data, error: err } = await GET('/resources', {
-      params: {
-        query: {
-          txt: state.text.id,
-        },
-      },
-    });
+    const { data, error: err } = await GET('/resources'); // fetch ALL resources
 
     if (!err) {
-      resources.value = sortResources(
+      resourcesAll.value = sortResources(
         data.map((r) => {
-          const existingResource = resources.value.find((re) => re.id === r.id);
+          const existingResource = resourcesAll.value.find((re) => re.id === r.id);
           return {
             ...r,
             active: !!existingResource?.active || !!r.config?.common?.defaultActive,
@@ -54,9 +51,9 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function replace(resource: AnyResourceRead) {
-    if (resources.value.find((re) => re.id === resource.id)) {
-      resources.value = sortResources(
-        resources.value.map((r) =>
+    if (resourcesAll.value.find((re) => re.id === resource.id)) {
+      resourcesAll.value = sortResources(
+        resourcesAll.value.map((r) =>
           r.id === resource.id ? { ...resource, active: r.active, contents: r.contents } : r
         )
       );
@@ -67,15 +64,15 @@ export const useResourcesStore = defineStore('resources', () => {
 
   function add(resource: AnyResourceRead) {
     resource.active = resource.config?.common?.defaultActive;
-    resources.value = sortResources(resources.value.concat([resource]));
+    resourcesAll.value = sortResources(resourcesAll.value.concat([resource]));
   }
 
   function remove(resourceId: string) {
-    resources.value = resources.value.filter((r) => r.id !== resourceId);
+    resourcesAll.value = resourcesAll.value.filter((r) => r.id !== resourceId);
   }
 
   async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
-    const res = resources.value.find((r) => r.id === resourceId);
+    const res = resourcesAll.value.find((r) => r.id === resourceId);
     if (!res) return;
     const cov = res?.coverage;
     if (cov) return cov;
@@ -89,13 +86,13 @@ export const useResourcesStore = defineStore('resources', () => {
 
   function resetCoverage(resourceId?: string) {
     if (!resourceId) return;
-    const res = resources.value.find((l) => l.id === resourceId);
+    const res = resourcesAll.value.find((l) => l.id === resourceId);
     if (!res) return;
     res.coverage = undefined;
   }
 
   function setResourcesActiveState(resourceIds: string[], active: boolean) {
-    resources.value = resources.value.map((r) => {
+    resourcesAll.value = resourcesAll.value.map((r) => {
       if (resourceIds.includes(r.id)) {
         return {
           ...r,
@@ -116,7 +113,8 @@ export const useResourcesStore = defineStore('resources', () => {
   );
 
   return {
-    data: resources,
+    all: resourcesAll,
+    ofText: resourcesOfText,
     dataHash,
     error,
     loading,

@@ -28,19 +28,15 @@ class SearchResults(ModelBase):
     index_creation_time: datetime
 
     @classmethod
-    def __transform_highlights(cls, hit: dict[str, Any]) -> dict[str, list[str]]:
+    def __transform_highlights(cls, hit: dict[str, Any]) -> dict[str, set[str]]:
         if not hit.get("highlight"):
             return {}
         highlights = {}
         for k, v in hit["highlight"].items():
-            try:
-                res_id = k.split(".")[1]
-                hl_key = hit["_source"]["resources"][res_id]["resource_title"]
-                if hl_key not in highlights:
-                    highlights[hl_key] = set()
-                highlights[hl_key].update(v)
-            except Exception:
-                highlights[k] = v
+            hl_res_id = k.split(".")[1]
+            if hl_res_id not in highlights:
+                highlights[hl_res_id] = set()
+            highlights[hl_res_id].update(v)
         return highlights
 
     @classmethod

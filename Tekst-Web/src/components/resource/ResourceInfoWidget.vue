@@ -22,6 +22,7 @@ import {
   MetadataIcon,
   ResourceIcon,
 } from '@/icons';
+import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -31,6 +32,7 @@ const auth = useAuthStore();
 const state = useStateStore();
 const resources = useResourcesStore();
 
+const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 const showCoverageDetailsModal = ref(false);
 const showInfoModal = ref(false);
 const coverage = ref<ResourceCoverage>();
@@ -52,7 +54,7 @@ watch(showInfoModal, async (after) => {
     @click="showInfoModal = true"
   />
 
-  <generic-modal v-model:show="showInfoModal" :title="resource.title" :icon="ResourceIcon">
+  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="ResourceIcon">
     <user-display
       v-if="auth.loggedIn && !!resource.owner"
       :user="resource.owner"

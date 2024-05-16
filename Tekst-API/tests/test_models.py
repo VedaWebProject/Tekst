@@ -69,7 +69,7 @@ def test_resource_description_validator():
     from tekst.resources.plain_text import PlainTextResource
 
     resource = PlainTextResource(
-        title="foo",
+        title=[{"locale": "*", "translation": "foo"}],
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
         resource_type="plainText",
@@ -80,7 +80,7 @@ def test_resource_description_validator():
     assert resource.description[0]["translation"] == "foo bar baz test"
     # desc = None
     resource = PlainTextResource(
-        title="foo",
+        title=[{"locale": "*", "translation": "foo"}],
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
         resource_type="plainText",

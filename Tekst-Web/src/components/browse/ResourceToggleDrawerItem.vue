@@ -5,7 +5,7 @@ import { $t } from '@/i18n';
 import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
-
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 
 const props = defineProps<{
@@ -27,7 +27,9 @@ const infoTooltip = computed(() =>
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <n-flex align="baseline">
-        <div class="item-title text-color-accent">{{ resource.title }}</div>
+        <div class="item-title text-color-accent">
+          <translation-display v-if="resource.title" :value="resource.title" />
+        </div>
         <div class="item-title-extra">
           ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[resource.level] }})
         </div>

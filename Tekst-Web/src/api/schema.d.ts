@@ -255,8 +255,8 @@ export interface paths {
     post: operations['unpublishResource'];
   };
   '/resources/{id}/template': {
-    /** Get resource template */
-    get: operations['getResourceTemplate'];
+    /** Download resource template */
+    get: operations['downloadResourceTemplate'];
   };
   '/resources/{id}/import': {
     /** Import resource contents */
@@ -582,7 +582,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -698,7 +698,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -790,7 +790,7 @@ export interface components {
     /** AudioResourceUpdate */
     AudioResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -1447,7 +1447,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -1563,7 +1563,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -1655,7 +1655,7 @@ export interface components {
     /** ExternalReferencesResourceUpdate */
     ExternalReferencesResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2010,7 +2010,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2126,7 +2126,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2218,7 +2218,7 @@ export interface components {
     /** ImagesResourceUpdate */
     ImagesResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2607,7 +2607,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2732,7 +2732,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -2833,7 +2833,7 @@ export interface components {
     /** PlainTextResourceUpdate */
     PlainTextResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -3357,6 +3357,12 @@ export interface components {
         | components['schemas']['RichTextSearchQuery']
         | components['schemas']['TextAnnotationSearchQuery'];
     };
+    /** ResourceTitleTranslation */
+    ResourceTitleTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
+    };
     /** RichTextContentCreate */
     RichTextContentCreate: {
       /**
@@ -3501,7 +3507,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -3617,7 +3623,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -3709,7 +3715,7 @@ export interface components {
     /** RichTextResourceUpdate */
     RichTextResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -4084,7 +4090,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -4205,7 +4211,7 @@ export interface components {
        * Title
        * @description Title of this resource
        */
-      title: string;
+      title: components['schemas']['ResourceTitleTranslation'][];
       /**
        * Description
        * @description Short, concise description of this resource
@@ -4302,7 +4308,7 @@ export interface components {
     /** TextAnnotationResourceUpdate */
     TextAnnotationResourceUpdate: {
       /** Title */
-      title?: string | null;
+      title?: components['schemas']['ResourceTitleTranslation'][] | null;
       /**
        * Description
        * @description Short, concise description of this resource
@@ -6781,8 +6787,8 @@ export interface operations {
       };
     };
   };
-  /** Get resource template */
-  getResourceTemplate: {
+  /** Download resource template */
+  downloadResourceTemplate: {
     parameters: {
       path: {
         id: string;

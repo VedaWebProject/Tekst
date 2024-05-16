@@ -21,8 +21,9 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { useStateStore } from '@/stores';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import router from '@/router';
-
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { CoverageIcon, TopIcon, BottomIcon } from '@/icons';
+import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -42,7 +43,7 @@ const coverageListItems = computed(() =>
       ? `${state.textLevelLabels[props.resource.level - 1]}: ${
           coverageDetails.value?.parentLabels[i]
         }`
-      : props.resource.title,
+      : pickTranslation(props.resource.title, state.locale),
     extra: `${locations.filter((n) => n.covered).length}/${locations.length}`,
     locations: locations,
   }))
@@ -104,7 +105,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
   >
     <template #header>
       <icon-heading level="2" :icon="CoverageIcon" style="margin: 0" ellipsis>
-        {{ resource.title }}:
+        <translation-display v-if="resource.title" :value="resource.title" />:
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </icon-heading>
     </template>

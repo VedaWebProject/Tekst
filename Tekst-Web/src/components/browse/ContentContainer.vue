@@ -10,6 +10,7 @@ import contentComponents from '@/components/content/mappings';
 import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
 import { NoContentIcon, ExpandIcon, CompressIcon, PublicOffIcon } from '@/icons';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 
 const props = defineProps<{
   loading?: boolean;
@@ -69,7 +70,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           class="content-header-title"
           :class="{ reduced: browse.reducedView, b: browse.reducedView }"
         >
-          {{ resource.title }}
+          <translation-display v-if="resource.title" :value="resource.title" />
           <n-icon
             v-if="!resource.public"
             :component="PublicOffIcon"

@@ -1,10 +1,8 @@
 [
   {
-    "_id": {
-      "$oid": "654b825533ee5737b297f8f3"
-    },
+    "_id": { "$oid": "654b825533ee5737b297f8f3" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "Warnung (Anschütz)",
+    "title": [{ "locale": "*", "translation": "Warnung (Anschütz)" }],
     "description": [
       {
         "locale": "deDE",
@@ -15,9 +13,7 @@
         "translation": "The original German-language text from 1824"
       }
     ],
-    "text_id": {
-      "$oid": "654b825533ee5737b297f8e3"
-    },
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 2,
     "resource_type": "plainText",
     "original_id": null,
@@ -28,22 +24,10 @@
     "proposed": false,
     "citation": "Anschütz, Ernst. Warnung. 1824.",
     "meta": [
-      {
-        "key": "author",
-        "value": "Ernst Anschütz"
-      },
-      {
-        "key": "year",
-        "value": "1824"
-      },
-      {
-        "key": "Original Title",
-        "value": "Warnung"
-      },
-      {
-        "key": "language",
-        "value": "DE"
-      }
+      { "key": "author", "value": "Ernst Anschütz" },
+      { "key": "year", "value": "1824" },
+      { "key": "Original Title", "value": "Warnung" },
+      { "key": "language", "value": "DE" }
     ],
     "comment": [
       {
@@ -75,20 +59,23 @@
     }
   },
   {
-    "_id": {
-      "$oid": "654ba3a6ec7833e469dde77a"
-    },
+    "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "Japanese Version",
+    "title": [
+      { "locale": "*", "translation": "Japanese Version" },
+      { "locale": "deDE", "translation": "Japanische Version" }
+    ],
     "description": [
       {
         "locale": "enUS",
         "translation": "The original text in Japanese language"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Der Originaltext in japanischer Sprache"
       }
     ],
-    "text_id": {
-      "$oid": "654ba1f3ec7833e469dde765"
-    },
+    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plainText",
     "original_id": null,
@@ -99,18 +86,9 @@
     "proposed": false,
     "citation": "Bashō, Matsuo (1686)",
     "meta": [
-      {
-        "key": "author",
-        "value": "Matsuo Bashō"
-      },
-      {
-        "key": "year",
-        "value": "1686"
-      },
-      {
-        "key": "language",
-        "value": "JA"
-      }
+      { "key": "author", "value": "Matsuo Bashō" },
+      { "key": "year", "value": "1686" },
+      { "key": "language", "value": "JA" }
     ],
     "comment": [],
     "config": {
@@ -133,15 +111,14 @@
     }
   },
   {
-    "_id": {
-      "$oid": "654ba525ec7833e469dde77e"
-    },
+    "_id": { "$oid": "654ba525ec7833e469dde77e" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "English Translation",
+    "title": [
+      { "locale": "enUS", "translation": "English Translation" },
+      { "locale": "deDE", "translation": "Englische Übersetzung" }
+    ],
     "description": [],
-    "text_id": {
-      "$oid": "654ba1f3ec7833e469dde765"
-    },
+    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plainText",
     "original_id": null,
@@ -152,14 +129,8 @@
     "proposed": false,
     "citation": null,
     "meta": [
-      {
-        "key": "author",
-        "value": "Robert Hass"
-      },
-      {
-        "key": "language",
-        "value": "EN"
-      }
+      { "key": "author", "value": "Robert Hass" },
+      { "key": "language", "value": "EN" }
     ],
     "comment": [],
     "config": {
@@ -182,15 +153,11 @@
     }
   },
   {
-    "_id": {
-      "$oid": "654ba678ec7833e469dde782"
-    },
+    "_id": { "$oid": "654ba678ec7833e469dde782" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": "Romanic Transliteration",
+    "title": [{ "locale": "*", "translation": "Transliteration" }],
     "description": [],
-    "text_id": {
-      "$oid": "654ba1f3ec7833e469dde765"
-    },
+    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plainText",
     "original_id": null,
@@ -200,12 +167,7 @@
     "public": true,
     "proposed": false,
     "citation": null,
-    "meta": [
-      {
-        "key": "language",
-        "value": "Hepburn romanization"
-      }
-    ],
+    "meta": [{ "key": "language", "value": "Hepburn romanization" }],
     "comment": [],
     "config": {
       "common": {
@@ -227,11 +189,12 @@
     }
   },
   {
-    "_id": {
-      "$oid": "6641ce24affa6cb96bc85a55"
-    },
+    "_id": { "$oid": "6641ce24affa6cb96bc85a55" },
     "_class_id": "ResourceBaseDocument.ImagesResourceDocument",
-    "title": "General Related Images",
+    "title": [
+      { "locale": "enUS", "translation": "Relevant Images" },
+      { "locale": "deDE", "translation": "Relevante Bilder" }
+    ],
     "description": [
       {
         "locale": "enUS",
@@ -242,9 +205,7 @@
         "translation": "Bilder zu dem Lied und seinem historischen Kontext"
       }
     ],
-    "text_id": {
-      "$oid": "654b825533ee5737b297f8e3"
-    },
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "images",
     "original_id": null,
@@ -263,31 +224,24 @@
         "defaultActive": true,
         "showOnParentLevel": false
       },
-      "general": {
-        "defaultCollapsed": true,
-        "font": null
-      }
+      "general": { "defaultCollapsed": true, "font": null }
     }
   },
   {
-    "_id": {
-      "$oid": "6641d2bfaffa6cb96bc85a58"
-    },
+    "_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
     "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
-    "title": "Musical Resources",
+    "title": [
+      { "locale": "enUS", "translation": "Musical Resources" },
+      { "locale": "deDE", "translation": "Musikalische Ressourcen" }
+    ],
     "description": [
-      {
-        "locale": "enUS",
-        "translation": "Links to various musical resources"
-      },
+      { "locale": "enUS", "translation": "Links to various musical resources" },
       {
         "locale": "deDE",
         "translation": "Links zu verschiedenen musikalischen Ressourcen"
       }
     ],
-    "text_id": {
-      "$oid": "654b825533ee5737b297f8e3"
-    },
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "externalReferences",
     "original_id": null,
@@ -306,31 +260,27 @@
         "defaultActive": true,
         "showOnParentLevel": false
       },
-      "general": {
-        "defaultCollapsed": false,
-        "font": null
-      }
+      "general": { "defaultCollapsed": false, "font": null }
     }
   },
   {
-    "_id": {
-      "$oid": "6641d510affa6cb96bc85a5b"
-    },
+    "_id": { "$oid": "6641d510affa6cb96bc85a5b" },
     "_class_id": "ResourceBaseDocument.AudioResourceDocument",
-    "title": "Performances",
+    "title": [
+      { "locale": "enUS", "translation": "Performances" },
+      { "locale": "deDE", "translation": "Aufführungen" }
+    ],
     "description": [
       {
         "locale": "enUS",
-        "translation": "Audio recordings of performances of the song"
+        "translation": "Various audio recordings of performances of the song"
       },
       {
         "locale": "deDE",
-        "translation": "Audioaufnahmen von Aufführungen des Liedes"
+        "translation": "Verschiedene Audioaufnahmen von Aufführungen des Liedes"
       }
     ],
-    "text_id": {
-      "$oid": "654b825533ee5737b297f8e3"
-    },
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "audio",
     "original_id": null,
@@ -349,10 +299,7 @@
         "defaultActive": true,
         "showOnParentLevel": false
       },
-      "general": {
-        "defaultCollapsed": false,
-        "font": null
-      }
+      "general": { "defaultCollapsed": false, "font": null }
     }
   }
 ]

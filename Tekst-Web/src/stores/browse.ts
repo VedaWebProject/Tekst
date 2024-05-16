@@ -59,7 +59,7 @@ export const useBrowseStore = defineStore('browse', () => {
       });
       if (!error && locationData.locationPath?.length) {
         locationPath.value = locationData.locationPath;
-        resources.data.forEach((r: AnyResourceRead) => {
+        resources.ofText.forEach((r: AnyResourceRead) => {
           const content =
             locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.id) ||
             locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.originalId);
@@ -113,7 +113,7 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       state.text?.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.data.filter(
+        resources: resources.ofText.filter(
           (r) => r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)
         ),
       })) || [];
@@ -123,7 +123,7 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        resources: resources.data.filter(
+        resources: resources.ofText.filter(
           (r) =>
             !categorized.find((c) => c.category.key === r.config?.common?.category) &&
             (showNonPublicResources.value || r.public)

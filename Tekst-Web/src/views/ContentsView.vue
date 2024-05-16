@@ -53,7 +53,7 @@ import {
   SkipPreviousIcon,
   SkipNextIcon,
 } from '@/icons';
-import { renderIcon } from '@/utils';
+import { pickTranslation, renderIcon } from '@/utils';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 
@@ -68,8 +68,9 @@ const dialog = useDialog();
 const showJumpToModal = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
+const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 const originalResourceTitle = computed(
-  () => resources.data.find((r) => r.id === resource.value?.originalId)?.title
+  () => resources.ofText.find((r) => r.id === resource.value?.originalId)?.title
 );
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const locationPath = ref<LocationRead[]>();
@@ -82,13 +83,18 @@ const { changed, reset, getChanges } = useModelChanges(contentModel);
 
 const compareResourceId = ref<string>();
 const compareResource = computed<AnyResourceRead | undefined>(() =>
-  resources.data.find((r) => r.id === compareResourceId.value)
+  resources.ofText.find((r) => r.id === compareResourceId.value)
+);
+const compareResourceTitle = computed(() =>
+  $t('contents.forComparison', {
+    title: pickTranslation(compareResource.value?.title, state.locale),
+  })
 );
 const compareResourceOptions = computed(() =>
-  resources.data
+  resources.ofText
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
     .map((r) => ({
-      label: r.title,
+      label: pickTranslation(r.title, state.locale),
       key: r.id,
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
@@ -166,7 +172,7 @@ async function loadLocationData() {
 
 // watch for position change and resources data updates
 watch(
-  [position, () => resources.data],
+  [position, () => resources.ofText],
   async ([newPosition, newResources]) => {
     if (!newResources.length || newPosition == null) {
       return;
@@ -347,7 +353,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
   </router-link>
 
   <icon-heading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
-    {{ resource?.title }}
+    {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
   </icon-heading>
 
@@ -435,7 +441,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         v-if="compareResource"
         closable
         type="default"
-        :title="$t('contents.forComparison', { title: compareResource.title })"
+        :title="compareResourceTitle"
         style="margin-bottom: var(--layout-gap)"
         @after-leave="compareResourceId = undefined"
       >

@@ -45,6 +45,7 @@ from tekst.resources import (
     get_resource_template_readme,
     resource_types_mgr,
 )
+from tekst.utils import pick_translation
 from tekst.utils.html import sanitize_dict_html
 
 
@@ -193,9 +194,14 @@ async def create_resource_version(
         ).count()
         + 2
     )
-    version_title = (
-        resource_doc.title[0 : 64 - len(version_title_suffix)] + version_title_suffix
-    )
+    version_title = [
+        {
+            "locale": tt.get("locale", "*"),
+            "translation": tt.get("translation", "")[0 : 64 - len(version_title_suffix)]
+            + version_title_suffix,
+        }
+        for tt in resource_doc.title
+    ]
 
     # create version
     version_doc = (
@@ -496,7 +502,7 @@ async def propose_resource(
     await notifications.broadcast_user_notification(
         notifications.TemplateIdentifier.USRMSG_RESOURCE_PROPOSED,
         username=user.name if "name" in user.public_fields else user.username,
-        resource_title=resource_doc.title,
+        resource_title=pick_translation(resource_doc.title),
     )
     return await preprocess_resource_read(resource_doc, user)
 
@@ -569,7 +575,7 @@ async def publish_resource(
     # notify users about the new publication
     await notifications.broadcast_user_notification(
         notifications.TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED,
-        resource_title=resource_doc.title,
+        resource_title=pick_translation(resource_doc.title),
     )
     return await preprocess_resource_read(resource_doc, user)
 
@@ -612,7 +618,7 @@ async def unpublish_resource(
         ]
     ),
 )
-async def get_resource_template(
+async def download_resource_template(
     user: UserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> FileResponse:

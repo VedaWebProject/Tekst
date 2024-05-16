@@ -18,6 +18,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 
 import { SettingsIcon, ArrowBackIcon, ResourceIcon } from '@/icons';
+import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();
 const route = useRoute();
@@ -27,6 +28,7 @@ const auth = useAuthStore();
 const resources = useResourcesStore();
 
 const resource = ref<AnyResourceRead>();
+const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 const getInitialModel = () => _cloneDeep(resource.value);
 
 const formRef = ref<FormInst | null>(null);
@@ -45,7 +47,7 @@ watch(
 
 // watch route for resource ID and react to resource data updates
 watch(
-  [() => route.params.id, () => resources.data],
+  [() => route.params.id, () => resources.ofText],
   ([newId, newResources]) => {
     if (!newId || !newResources.length) return;
     resource.value = newResources.find((l) => l.id === newId);
@@ -70,7 +72,9 @@ async function handleSaveClick() {
         body: getChanges(['resourceType']) as AnyResourceUpdate,
       });
       if (!error) {
-        message.success($t('resources.settings.msgSaved', { title: data.title }));
+        message.success(
+          $t('resources.settings.msgSaved', { title: pickTranslation(data.title, state.locale) })
+        );
         resources.replace(data);
       }
       loadingSave.value = false;
@@ -102,7 +106,7 @@ async function handleSaveClick() {
   </router-link>
 
   <icon-heading v-if="resource" level="2" :icon="ResourceIcon">
-    {{ resource?.title }}
+    {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
   </icon-heading>
 
