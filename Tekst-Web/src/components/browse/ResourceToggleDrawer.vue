@@ -16,7 +16,7 @@ const resources = useResourcesStore();
 const theme = useThemeStore();
 
 const showNonPublicResourcesToggle = computed(
-  () => !!resources.data.filter((r) => !r.public).length
+  () => !!resources.ofText.filter((r) => !r.public).length
 );
 const categoryActivationState = computed(() =>
   browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))

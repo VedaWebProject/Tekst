@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SearchHit } from '@/api';
+import type { SearchHit, TextRead } from '@/api';
 import { BookIcon } from '@/icons';
 import Color from 'color';
 import { NListItem, NTag, NIcon } from 'naive-ui';
@@ -10,15 +10,16 @@ const props = defineProps<{
   id: SearchHit['id'];
   label: SearchHit['label'];
   fullLabel: SearchHit['fullLabel'];
-  textTitle: string;
-  textSlug: string;
-  textColor: string;
+  textTitle: TextRead['title'];
+  textSlug: TextRead['slug'];
+  textColor: TextRead['accentColor'];
   level: SearchHit['level'];
   levelLabel: string;
   position: SearchHit['position'];
   scorePercent?: number;
-  highlight?: Record<string, string[]>;
+  highlight?: SearchHit['highlight'];
   smallScreen?: boolean;
+  resourceTitles: { [id: string]: string };
 }>();
 export type SearchResultProps = typeof props;
 
@@ -38,7 +39,9 @@ const linkTargetRoute = computed(() => ({
 }));
 const highlightsProcessed = computed<Record<string, string>>(() => {
   if (!props.highlight) return {};
-  return Object.fromEntries(Object.entries(props.highlight).map(([k, v]) => [k, v.join(' ... ')]));
+  return Object.fromEntries(
+    Object.entries(props.highlight).map(([k, v]) => [props.resourceTitles[k], v.join(' ... ')])
+  );
 });
 </script>
 
@@ -62,11 +65,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
             </n-tag>
           </div>
         </div>
-        <div
-          v-if="label !== fullLabel"
-          class="sr-location text-small translucent ellipsis"
-          :title="fullLabel"
-        >
+        <div class="sr-location text-small translucent ellipsis" :title="fullLabel">
           <n-icon :component="BookIcon" />
           {{ fullLabel }}
         </div>

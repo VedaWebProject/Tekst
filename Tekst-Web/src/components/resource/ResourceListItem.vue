@@ -33,7 +33,7 @@ import {
   DownloadIcon,
   UploadIcon,
 } from '@/icons';
-import { renderIcon } from '@/utils';
+import { pickTranslation, renderIcon } from '@/utils';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -59,6 +59,8 @@ const state = useStateStore();
 
 const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.targetResource.ownerId);
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.currentUser?.isSuperuser);
+
+const resourceTitle = computed(() => pickTranslation(props.targetResource.title, state.locale));
 
 const actionOptions = computed(() => [
   ...(props.targetResource.writable
@@ -196,7 +198,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
     <n-thing content-style="margin-top: 8px">
       <template #header>
         <span class="b">
-          {{ targetResource.title }}
+          {{ resourceTitle }}
         </span>
       </template>
       <template #header-extra>

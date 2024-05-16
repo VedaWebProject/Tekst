@@ -171,16 +171,6 @@ async def _populate_index(index_name: str) -> None:
     bulk_index_body = []
     errors = False
 
-    # get all resources and map them from their ID
-    # so we can easily access their title later
-    resources = {
-        res.id: res
-        for res in await ResourceBaseDocument.find_all(
-            with_children=True,
-            lazy_parse=True,
-        ).to_list()
-    }
-
     for text in await TextDocument.find_all(lazy_parse=True).to_list():
         log.debug(f"Indexing resources for text '{text.title}'...")
         start_time = process_time()
@@ -223,10 +213,6 @@ async def _populate_index(index_name: str) -> None:
                 content_index_doc = resource_types_mgr.get(
                     content.resource_type
                 ).index_doc_data(content)
-                # add resource title to index document
-                content_index_doc["resource_title"] = resources[
-                    content.resource_id
-                ].title
                 # add resource content document to location index document
                 location_index_doc["resources"][str(content.resource_id)] = (
                     content_index_doc

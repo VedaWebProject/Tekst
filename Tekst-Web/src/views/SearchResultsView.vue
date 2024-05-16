@@ -7,17 +7,18 @@ import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
-import { useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { utcToLocalTime } from '@/utils';
+import { pickTranslation, utcToLocalTime } from '@/utils';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
+const resources = useResourcesStore();
 const search = useSearchStore();
 const route = useRoute();
 const router = useRouter();
@@ -40,8 +41,11 @@ const sortingPreset = ref<SortingPreset>();
 const loading = ref(false);
 const searchError = ref(false);
 const resultsData = ref<SearchResults>();
-const results = computed<SearchResultProps[]>(
-  () =>
+const results = computed<SearchResultProps[]>(() => {
+  const resourceTitles = Object.fromEntries(
+    resources.all.map((r) => [r.id, pickTranslation(r.title, state.locale)])
+  );
+  return (
     resultsData.value?.hits.map((r) => {
       const text = pfData.value?.texts.find((t) => t.id === r.textId);
       return {
@@ -60,9 +64,11 @@ const results = computed<SearchResultProps[]>(
             : undefined,
         highlight: r.highlight,
         smallScreen: state.smallScreen,
+        resourceTitles,
       };
     }) || []
-);
+  );
+});
 
 async function execSearch(resetPage?: boolean) {
   if (!searchReq.value) return;

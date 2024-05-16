@@ -61,11 +61,18 @@
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": [{ "locale": "*", "translation": "Japanese Version" }],
+    "title": [
+      { "locale": "*", "translation": "Japanese Version" },
+      { "locale": "deDE", "translation": "Japanische Version" }
+    ],
     "description": [
       {
         "locale": "enUS",
         "translation": "The original text in Japanese language"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Der Originaltext in japanischer Sprache"
       }
     ],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
@@ -148,7 +155,7 @@
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": [{ "locale": "*", "translation": "Romanic Transliteration" }],
+    "title": [{ "locale": "*", "translation": "Transliteration" }],
     "description": [],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
@@ -184,7 +191,10 @@
   {
     "_id": { "$oid": "6641ce24affa6cb96bc85a55" },
     "_class_id": "ResourceBaseDocument.ImagesResourceDocument",
-    "title": [{ "locale": "*", "translation": "General Related Images" }],
+    "title": [
+      { "locale": "enUS", "translation": "Relevant Images" },
+      { "locale": "deDE", "translation": "Relevante Bilder" }
+    ],
     "description": [
       {
         "locale": "enUS",
@@ -220,7 +230,10 @@
   {
     "_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
     "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
-    "title": [{ "locale": "*", "translation": "Musical Resources" }],
+    "title": [
+      { "locale": "enUS", "translation": "Musical Resources" },
+      { "locale": "deDE", "translation": "Musikalische Ressourcen" }
+    ],
     "description": [
       { "locale": "enUS", "translation": "Links to various musical resources" },
       {
@@ -253,15 +266,18 @@
   {
     "_id": { "$oid": "6641d510affa6cb96bc85a5b" },
     "_class_id": "ResourceBaseDocument.AudioResourceDocument",
-    "title": [{ "locale": "*", "translation": "Performances" }],
+    "title": [
+      { "locale": "enUS", "translation": "Performances" },
+      { "locale": "deDE", "translation": "Aufführungen" }
+    ],
     "description": [
       {
         "locale": "enUS",
-        "translation": "Audio recordings of performances of the song"
+        "translation": "Various audio recordings of performances of the song"
       },
       {
         "locale": "deDE",
-        "translation": "Audioaufnahmen von Aufführungen des Liedes"
+        "translation": "Verschiedene Audioaufnahmen von Aufführungen des Liedes"
       }
     ],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },

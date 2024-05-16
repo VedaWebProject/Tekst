@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import { NIcon } from 'naive-ui';
-import { useResourcesStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
 
 import { VersionIcon } from '@/icons';
+import { pickTranslation } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -17,8 +18,13 @@ const props = withDefaults(
   }
 );
 
+const state = useStateStore();
+
 const resources = useResourcesStore();
-const originalTitle = resources.data.find((r) => r.id == props.resource.originalId)?.title;
+const originalTitle = pickTranslation(
+  resources.ofText.find((r) => r.id == props.resource.originalId)?.title,
+  state.locale
+);
 </script>
 
 <template>

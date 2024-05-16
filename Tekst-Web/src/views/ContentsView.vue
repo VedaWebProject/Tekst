@@ -70,7 +70,7 @@ const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 const originalResourceTitle = computed(
-  () => resources.data.find((r) => r.id === resource.value?.originalId)?.title
+  () => resources.ofText.find((r) => r.id === resource.value?.originalId)?.title
 );
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const locationPath = ref<LocationRead[]>();
@@ -83,7 +83,7 @@ const { changed, reset, getChanges } = useModelChanges(contentModel);
 
 const compareResourceId = ref<string>();
 const compareResource = computed<AnyResourceRead | undefined>(() =>
-  resources.data.find((r) => r.id === compareResourceId.value)
+  resources.ofText.find((r) => r.id === compareResourceId.value)
 );
 const compareResourceTitle = computed(() =>
   $t('contents.forComparison', {
@@ -91,7 +91,7 @@ const compareResourceTitle = computed(() =>
   })
 );
 const compareResourceOptions = computed(() =>
-  resources.data
+  resources.ofText
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
     .map((r) => ({
       label: pickTranslation(r.title, state.locale),
@@ -172,7 +172,7 @@ async function loadLocationData() {
 
 // watch for position change and resources data updates
 watch(
-  [position, () => resources.data],
+  [position, () => resources.ofText],
   async ([newPosition, newResources]) => {
     if (!newResources.length || newPosition == null) {
       return;

@@ -47,7 +47,7 @@ const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
 const resourceOptions = computed(() =>
-  resources.data.map((r) => ({
+  resources.ofText.map((r) => ({
     label: `${pickTranslation(r.title, state.locale)} (${$t('resources.types.' + r.resourceType + '.label')})`,
     value: r.id,
     resourceType: r.resourceType,
@@ -60,16 +60,16 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
     formModel.value.queries[resQueryIndex] = {
       cmn: { res: resId, opt: true },
       rts: { type: resType },
-      resource: resources.data.find((r) => r.id === resId),
+      resource: resources.ofText.find((r) => r.id === resId),
     };
   }
 }
 
 function getNewSearchItem(): AdvancedSearchFormModelItem {
   return {
-    cmn: { res: resources.data[0].id, opt: true },
-    rts: { type: resources.data[0].resourceType },
-    resource: resources.data[0],
+    cmn: { res: resources.ofText[0].id, opt: true },
+    rts: { type: resources.ofText[0].resourceType },
+    resource: resources.ofText[0],
   };
 }
 
@@ -112,10 +112,10 @@ function initQueries() {
   if (search.lastReq?.type === 'advanced') {
     formModel.value.queries = search.lastReq.q.map((q) => ({
       ...q,
-      resource: resources.data.find((r) => r.id === q.cmn.res),
+      resource: resources.ofText.find((r) => r.id === q.cmn.res),
     }));
   } else {
-    formModel.value.queries = resources.data.length ? [getNewSearchItem()] : [];
+    formModel.value.queries = resources.ofText.length ? [getNewSearchItem()] : [];
   }
 }
 
@@ -124,7 +124,7 @@ function renderResourceOptionLabel(option: SelectMixedOption) {
 }
 
 watch(
-  () => resources.dataHash,
+  () => resources.ofTextHash,
   () => {
     initQueries();
   },
@@ -147,7 +147,7 @@ watch(
   </n-collapse>
 
   <n-form
-    v-if="!!resources.data.length"
+    v-if="!!resources.ofText.length"
     ref="formRef"
     :model="formModel"
     label-placement="top"
@@ -232,7 +232,7 @@ watch(
     :icon="NoContentIcon"
   />
 
-  <button-shelf v-if="!!resources.data.length" top-gap>
+  <button-shelf v-if="!!resources.ofText.length" top-gap>
     <n-button type="primary" :disabled="!formModel.queries.length" @click="handleSearch">
       {{ $t('search.searchAction') }}
     </n-button>

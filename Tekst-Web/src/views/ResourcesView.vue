@@ -95,7 +95,7 @@ function filterData(resourcesData: AnyResourceRead[]) {
   });
 }
 
-const filteredData = computed(() => filterData(resources.data));
+const filteredData = computed(() => filterData(resources.ofText));
 const paginatedData = computed(() => {
   const start = (pagination.value.page - 1) * pagination.value.pageSize;
   const end = start + pagination.value.pageSize;
@@ -356,7 +356,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <help-button-widget help-key="resourcesView" />
   </icon-heading>
 
-  <template v-if="resources.data && !resources.error && !loading">
+  <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filters -->
     <n-collapse
       style="margin-bottom: var(--layout-gap)"
@@ -395,7 +395,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
         {{
           $t('resources.msgFoundCount', {
             count: filteredData.length,
-            total: resources.data.length,
+            total: resources.ofText.length,
           })
         }}
       </div>
