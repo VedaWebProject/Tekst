@@ -114,7 +114,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 .browse-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
   gap: 12px;
