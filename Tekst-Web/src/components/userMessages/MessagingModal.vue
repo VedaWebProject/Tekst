@@ -25,7 +25,7 @@ const { pause: stopMessagesPolling, resume: startMessagesPolling } = useInterval
     messages.value = await userMessages.loadMessages();
   },
   10 * 1000, // 10 seconds
-  { immediate: false, immediateCallback: true }
+  { immediate: false, immediateCallback: false }
 );
 
 async function handleSendMessage() {
@@ -43,9 +43,11 @@ async function handleSendMessage() {
   messageInputRef.value?.focus();
 }
 
-function handleModalEnter() {
+async function handleModalEnter() {
   messageInputRef.value?.focus();
   startMessagesPolling();
+  messages.value = await userMessages.loadMessages();
+  await scrollDownMessageContainer(300);
 }
 
 function handleModalLeave() {
