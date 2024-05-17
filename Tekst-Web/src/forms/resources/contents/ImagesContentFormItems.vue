@@ -24,7 +24,7 @@ function handleUpdate(field: string, value: any) {
 
 async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
-  if (!(await checkUrl(url))) {
+  if (url && !(await checkUrl(url))) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
     input.classList.add('invalid-url');
   } else {
