@@ -77,6 +77,19 @@ export const useStateStore = defineStore('state', () => {
     return effectiveLocale;
   }
 
+  // text ID – text props mapping
+  const textsProps = computed(() =>
+    Object.fromEntries(
+      pfData.value?.texts.map((t) => [
+        t.id,
+        {
+          title: t.title,
+          accentColor: t.accentColor,
+        },
+      ]) || []
+    )
+  );
+
   // current text
 
   const text = ref<TextRead>();
@@ -189,6 +202,7 @@ export const useStateStore = defineStore('state', () => {
     availableLocales,
     translationLocaleOptions,
     text,
+    textsProps,
     fallbackText,
     textLevelLabels,
     getTextLevelLabel,

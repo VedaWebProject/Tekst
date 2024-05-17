@@ -50,9 +50,6 @@ const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
 const resourceOptions = computed(() => {
-  const textsData = Object.fromEntries(
-    pfData.value?.texts.map((t) => [t.id, { title: t.title, color: t.accentColor }]) || []
-  );
   const textIds = [
     ...(state.text?.id ? [state.text?.id] : []),
     ...[...new Set(resources.all.map((r) => r.textId))].filter((tId) => tId !== state.text?.id),
@@ -65,12 +62,11 @@ const resourceOptions = computed(() => {
         {
           class: 'text-tiny b',
           style: {
-            color: textsData[tId].color,
-            filter: theme.darkMode ? 'brightness(2)' : undefined,
+            color: theme.generateAccentColorVariants(state.textsProps[tId].accentColor).base,
             padding: '8px',
           },
         },
-        textsData[tId].title
+        state.textsProps[tId].title
       ),
     key: tId,
     children: resources.all
@@ -94,8 +90,8 @@ const resourceOptions = computed(() => {
         label: `${pickTranslation(r.title, state.locale)} – ${$t('resources.types.' + r.resourceType + '.label')}`,
         value: r.id,
         resourceType: r.resourceType,
-        textColor: textsData[tId].color,
-        textTitle: textsData[tId].title,
+        textColor: state.textsProps[tId].accentColor,
+        textTitle: state.textsProps[tId].title,
       })),
   }));
 });
@@ -217,8 +213,14 @@ watch(
               :value="query.cmn.res"
               :options="resourceOptions"
               :consistent-menu-width="false"
-              :menu-props="{ id: 'search-resource-select-menu' }"
+              :menu-props="{ class: 'search-resource-select-menu' }"
+              size="large"
               style="font-weight: var(--font-weight-bold)"
+              :style="{
+                color: theme.generateAccentColorVariants(
+                  state.textsProps[query.resource?.textId]?.accentColor
+                ).base,
+              }"
               @update:value="
                 (v, o: SelectMixedOption) =>
                   handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
@@ -310,12 +312,15 @@ watch(
 .search-item-action-button-wrapper {
   border-radius: 3px;
 }
+.search-resource-select :deep(.n-base-selection .n-base-selection-label .n-base-selection-input) {
+  color: inherit;
+}
 </style>
 
 <style>
-#search-resource-select-menu.n-base-select-menu
+.search-resource-select-menu.n-base-select-menu
   .n-base-select-option.n-base-select-option--selected,
-#search-resource-select-menu.n-base-select-menu
+.search-resource-select-menu.n-base-select-menu
   .n-base-select-option.n-base-select-option--selected
   .n-base-select-option__check {
   color: unset;
