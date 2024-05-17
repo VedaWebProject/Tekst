@@ -157,6 +157,7 @@ browse:
     tipNextLocation: Next location on this level
     tipReducedView: Toggle reduced reading view
     tipOpenResourceList: Select resources to display
+    tipNotOnDefaultLevel: You are not on this text's default level!
   bookmarks:
     bookmarks: Bookmarks
     lblCreate: Create new bookmark for this location

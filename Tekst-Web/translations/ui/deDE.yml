@@ -161,6 +161,7 @@ browse:
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
     tipOpenResourceList: Anzuzeigende Ressourcen wählen
+    tipNotOnDefaultLevel: Sie befinden sich nicht auf der Standard-Ebene dieses Textes!
   bookmarks:
     bookmarks: Lesezeichen
     lblCreate: Neues Lesezeichen für diese Fundstelle erstellen

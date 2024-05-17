@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore, useBrowseStore } from '@/stores';
-import { NButton, NIcon } from 'naive-ui';
+import { NBadge, NButton, NIcon } from 'naive-ui';
 import type { LocationRead } from '@/api';
 import router from '@/router';
 import { useMagicKeys, whenever } from '@vueuse/core';
@@ -93,17 +93,22 @@ whenever(ArrowLeft, () => {
       </n-button>
     </router-link>
 
-    <n-button
-      type="primary"
-      :title="$t('browse.toolbar.tipSelectLocation')"
-      :focusable="false"
-      :size="buttonSize"
-      @click="showLocationSelectModal = true"
-    >
-      <template #icon>
-        <n-icon :component="BookIcon" />
-      </template>
-    </n-button>
+    <n-badge value="!" color="var(--accent-color-pastel)" :show="!browse.isOnDefaultLevel">
+      <n-button
+        type="primary"
+        :title="
+          $t('browse.toolbar.tipSelectLocation') +
+          (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
+        "
+        :focusable="false"
+        :size="buttonSize"
+        @click="showLocationSelectModal = true"
+      >
+        <template #icon>
+          <n-icon :component="BookIcon" />
+        </template>
+      </n-button>
+    </n-badge>
 
     <bookmarks-widget v-if="auth.loggedIn" :size="buttonSize" />
 

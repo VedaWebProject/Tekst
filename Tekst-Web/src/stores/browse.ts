@@ -30,6 +30,7 @@ export const useBrowseStore = defineStore('browse', () => {
     () => locationPath.value[locationPath.value.length - 1]
   );
   const level = computed(() => locationPathHead.value?.level ?? state.text?.defaultLevel ?? 0);
+  const isOnDefaultLevel = computed(() => level.value === state.text?.defaultLevel);
   const position = computed(() => locationPathHead.value?.position ?? 0);
 
   // update browse location path
@@ -145,6 +146,7 @@ export const useBrowseStore = defineStore('browse', () => {
     locationPath,
     locationPathHead,
     level,
+    isOnDefaultLevel,
     position,
     loadLocationData,
     resetBrowseLocation,
