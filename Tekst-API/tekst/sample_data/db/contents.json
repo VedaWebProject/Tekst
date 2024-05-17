@@ -262,5 +262,271 @@
         "caption": "Glockenspiel (Florian Schachner), https://creativecommons.org/licenses/by-sa/4.0/"
       }
     ]
+  },
+  {
+    "_id": { "$oid": "664717c6ba9e65342c8e4943" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": null,
+    "notes": null,
+    "text": "Fox, you stole the goose,"
+  },
+  {
+    "_id": { "$oid": "664717cdba9e65342c8e4945" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Give it back! :|"
+  },
+  {
+    "_id": { "$oid": "664717d4ba9e65342c8e4947" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Otherwise the hunter will get it,"
+  },
+  {
+    "_id": { "$oid": "664717dbba9e65342c8e4949" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "comment": null,
+    "notes": null,
+    "text": "with the rifle. :|"
+  },
+  {
+    "_id": { "$oid": "664717e2ba9e65342c8e494b" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "comment": null,
+    "notes": null,
+    "text": "His big, long shotgun"
+  },
+  {
+    "_id": { "$oid": "664717e9ba9e65342c8e494d" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "comment": null,
+    "notes": null,
+    "text": "|: shoots the buckshot at you, :|"
+  },
+  {
+    "_id": { "$oid": "664717f0ba9e65342c8e494f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "comment": null,
+    "notes": null,
+    "text": "|: so that the ink will stain you red"
+  },
+  {
+    "_id": { "$oid": "664717f6ba9e65342c8e4951" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "comment": null,
+    "notes": null,
+    "text": "and then you are dead. :|"
+  },
+  {
+    "_id": { "$oid": "664717fdba9e65342c8e4953" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "comment": null,
+    "notes": null,
+    "text": "Dear little vixen, take it from me,"
+  },
+  {
+    "_id": { "$oid": "66471804ba9e65342c8e4955" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Don't be a thief; :|"
+  },
+  {
+    "_id": { "$oid": "6647180bba9e65342c8e4957" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "comment": null,
+    "notes": null,
+    "text": "|: You don't need roast goose,"
+  },
+  {
+    "_id": { "$oid": "66471812ba9e65342c8e4959" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "comment": null,
+    "notes": null,
+    "text": "make do with the mouse. :|"
+  },
+  {
+    "_id": { "$oid": "66471b7fba9e65342c8e4963" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": null,
+    "notes": null,
+    "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "66471b86ba9e65342c8e4965" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": null,
+    "notes": null,
+    "text": "|: gib sie wieder her! :|"
+  },
+  {
+    "_id": { "$oid": "66471b8dba9e65342c8e4967" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
+    "notes": null,
+    "text": "|: Sonst wird dich der Jäger holen,"
+  },
+  {
+    "_id": { "$oid": "66471b96ba9e65342c8e496a" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "comment": null,
+    "notes": null,
+    "text": "mit dem Schießgewehr. :|"
+  },
+  {
+    "_id": { "$oid": "66471bdbba9e65342c8e496f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "comment": null,
+    "notes": null,
+    "text": "Seine große, lange Flinte"
+  },
+  {
+    "_id": { "$oid": "66471be2ba9e65342c8e4971" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "comment": null,
+    "notes": null,
+    "text": "|: schießt auf dich den Schrot, :|"
+  },
+  {
+    "_id": { "$oid": "66471beaba9e65342c8e4974" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "comment": null,
+    "notes": null,
+    "text": "|: dass dich färbt die rote Tinte"
+  },
+  {
+    "_id": { "$oid": "66471bf0ba9e65342c8e4976" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "comment": null,
+    "notes": null,
+    "text": "und dann bist du tot. :|"
+  },
+  {
+    "_id": { "$oid": "66471bf6ba9e65342c8e4978" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "comment": null,
+    "notes": null,
+    "text": "Liebes Füchslein, lass dir raten,"
+  },
+  {
+    "_id": { "$oid": "66471bfcba9e65342c8e497a" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "comment": null,
+    "notes": null,
+    "text": "|: sei doch nur kein Dieb; :|"
+  },
+  {
+    "_id": { "$oid": "66471c02ba9e65342c8e497c" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "comment": null,
+    "notes": null,
+    "text": "|: nimm, du brauchst nicht Gänsebraten,"
+  },
+  {
+    "_id": { "$oid": "66471c0dba9e65342c8e497f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "comment": null,
+    "notes": null,
+    "text": "mit der Maus vorlieb. :|"
+  },
+  {
+    "_id": { "$oid": "66471ef0ba9e65342c8e49a0" },
+    "_class_id": "ContentBaseDocument.ExternalReferencesContentDocument",
+    "resource_id": { "$oid": "66471de0ba9e65342c8e4995" },
+    "resource_type": "externalReferences",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "links": [
+      {
+        "url": "https://diglib.hab.de/drucke/un-17-1b/start.htm?image=00048",
+        "title": "Digitalisat \"Musikalisches Schulgesangbuch\"",
+        "description": "Ernst Anschütz: Musikalisches Schulgesangbuch. Heft 1. Reclam, Leipzig 1824, S. 38 – Herzog August Bibliothek"
+      },
+      {
+        "url": "https://web.archive.org/web/20070926234000/http://www.murnau-stiftung.de/de/suchergebnis.asp?ID=4501",
+        "title": "Fuchs, du hast die Gans gestohlen (Kurzspielfilm)",
+        "description": "Kurzfilm, Alfred Stöger, 1936 – Filmarchiv der Friedrich-Wilhelm-Murnau-Stiftung"
+      },
+      {
+        "url": "https://de.wikipedia.org/wiki/G%C3%A4nsedieb_(Spiel)#Spielablauf",
+        "title": "Gänsedieb",
+        "description": "Altes Kinderspiel, das auf der Melodie des selben Volksliedes beruht – Wikipedia"
+      }
+    ]
   }
 ]

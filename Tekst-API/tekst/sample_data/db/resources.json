@@ -42,7 +42,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 80,
+        "sortOrder": 100,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -296,6 +296,180 @@
       "common": {
         "category": "multimedia",
         "sortOrder": 110,
+        "defaultActive": true,
+        "showOnParentLevel": false
+      },
+      "general": { "defaultCollapsed": false, "font": null }
+    }
+  },
+  {
+    "_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "English translation" },
+      { "locale": "deDE", "translation": "Englische Übersetzung" }
+    ],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "A translation of the original text in English language"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Eine Übersetzung des Originaltextes in englischer Sprache"
+      }
+    ],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 2,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [
+      { "key": "year", "value": "2024" },
+      { "key": "language", "value": "EN" }
+    ],
+    "comment": [
+      {
+        "locale": "enUS",
+        "translation": "This translation was generated automatically and revised manually. This translation includes repetition markers."
+      },
+      {
+        "locale": "deDE",
+        "translation": "Diese Übersetzung wurde maschinell erzeugt und manuell überarbeitet. Diese Übersetzung enthält Wiederholungszeichen."
+      }
+    ],
+    "config": {
+      "common": {
+        "category": "translations",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": true
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
+      },
+      "deeplLinks": {
+        "enabled": true,
+        "sourceLanguage": "EN",
+        "languages": [
+          "DE",
+          "BG",
+          "CS",
+          "DA",
+          "EL",
+          "EN",
+          "ES",
+          "ET",
+          "FI",
+          "FR",
+          "HU",
+          "ID",
+          "IT",
+          "JA",
+          "LT",
+          "LV",
+          "NL",
+          "PL",
+          "PT",
+          "RO",
+          "RU",
+          "SK",
+          "SL",
+          "SV",
+          "TR",
+          "UK",
+          "ZH"
+        ]
+      }
+    }
+  },
+  {
+    "_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [
+      { "locale": "*", "translation": "Fuchs, du hast die Gans gestohlen" }
+    ],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "The commonly known version of the children's song"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Die allgemein bekannte Version des Kinderliedes"
+      }
+    ],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 2,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [
+      {
+        "locale": "enUS",
+        "translation": "The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks."
+      },
+      {
+        "locale": "deDE",
+        "translation": "Die allgemein gebräuchliche Version des Textes mit einer Abwandlung des dritten Verses gegenüger der Originalversion. Diese Version enthält Wiederholungszeichen."
+      }
+    ],
+    "config": {
+      "common": {
+        "category": "versions",
+        "sortOrder": 90,
+        "defaultActive": true,
+        "showOnParentLevel": true
+      },
+      "general": {
+        "defaultCollapsed": false,
+        "reducedViewOneline": true,
+        "font": null
+      },
+      "deeplLinks": {
+        "enabled": true,
+        "sourceLanguage": "DE",
+        "languages": ["EN", "DE", "DA", "ES", "FI", "IT", "PL", "UK"]
+      }
+    }
+  },
+  {
+    "_id": { "$oid": "66471de0ba9e65342c8e4995" },
+    "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Various External Resources" },
+      { "locale": "deDE", "translation": "Verschiedene Externe Ressourcen" }
+    ],
+    "description": [],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 0,
+    "resource_type": "externalReferences",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "links",
+        "sortOrder": 150,
         "defaultActive": true,
         "showOnParentLevel": false
       },
