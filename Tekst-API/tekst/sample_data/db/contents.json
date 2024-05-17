@@ -201,13 +201,19 @@
         "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
         "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/253px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
-        "caption": "Ernst Anschütz: Musikalisches\nSchulgesangbuch, Heft 1, Leipzig 1824, S. 38"
+        "caption": "Ernst Anschütz: Musikalisches Schulgesangbuch, Heft 1, Leipzig 1824, S. 38"
       },
       {
         "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
         "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/206px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
         "sourceUrl": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
         "caption": "Jugendmarke mit Zuschlag, 1958, Kinderlieder, Fuchs du hast die Gans gestohlen"
+      },
+      {
+        "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
+        "thumbUrl": "",
+        "sourceUrl": "https://www.metmuseum.org/art/collection/search/888603",
+        "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
       }
     ]
   },
