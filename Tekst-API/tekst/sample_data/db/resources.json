@@ -475,5 +475,54 @@
       },
       "general": { "defaultCollapsed": false, "font": null }
     }
+  },
+  {
+    "_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "_class_id": "ResourceBaseDocument.TextAnnotationResourceDocument",
+    "title": [{ "locale": "*", "translation": "Named Entities" }],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "Annotation of Named Entities in the common version of the song"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Annotation von Named Entities in der allgemein bekannten Version des Liedes"
+      }
+    ],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 2,
+    "resource_type": "textAnnotation",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [
+      {
+        "locale": "enUS",
+        "translation": "Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\"."
+      },
+      {
+        "locale": "deDE",
+        "translation": "Annotierte Entitäten sind \"Fox\" (Fuchs), \"Goose\" (Gans) \"Hunter\" (Jäger) und \"Mouse\" (Maus)."
+      }
+    ],
+    "config": {
+      "common": {
+        "category": "annotations",
+        "sortOrder": 100,
+        "defaultActive": true,
+        "showOnParentLevel": true
+      },
+      "general": { "defaultCollapsed": false, "font": null },
+      "displayTemplate": "{{_k:Entity_c:v_s:c}}"
+    },
+    "aggregations": [
+      { "key": "Entity", "values": ["Fox", "Goose", "Hunter", "Mouse"] }
+    ]
   }
 ]

@@ -42,6 +42,13 @@
         ]
       },
       {
+        "key": "annotations",
+        "translations": [
+          { "locale": "enUS", "translation": "Annotations" },
+          { "locale": "deDE", "translation": "Annotationen" }
+        ]
+      },
+      {
         "key": "multimedia",
         "translations": [{ "locale": "*", "translation": "Multimedia" }]
       },
