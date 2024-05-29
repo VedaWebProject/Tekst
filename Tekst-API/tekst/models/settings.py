@@ -172,6 +172,14 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Show category heading for the only category with resources",
         ),
     ] = False
+    prioritize_browse_level_resources: Annotated[
+        bool,
+        Field(
+            description=(
+                "Display resources of current browse level before others in browse view"
+            ),
+        ),
+    ] = True
     always_show_text_info: Annotated[
         bool,
         Field(

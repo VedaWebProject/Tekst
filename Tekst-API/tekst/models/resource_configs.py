@@ -23,9 +23,9 @@ class CommonResourceConfig(ModelBase):
         Field(
             description="Sort order for displaying this resource among others",
             ge=0,
-            le=999999,
+            le=1000,
         ),
-    ] = 100
+    ] = 10
     default_active: Annotated[
         bool,
         Field(

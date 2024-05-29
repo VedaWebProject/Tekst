@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useAuthStore, useStateStore } from '@/stores';
-import { hashCode, pickTranslation } from '@/utils';
+import { hashCode } from '@/utils';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();

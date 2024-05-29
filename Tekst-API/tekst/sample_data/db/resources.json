@@ -42,7 +42,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -94,7 +94,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -136,7 +136,7 @@
     "config": {
       "common": {
         "category": "translations",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -172,7 +172,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -220,7 +220,7 @@
     "config": {
       "common": {
         "category": "multimedia",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": false
       },
@@ -256,7 +256,7 @@
     "config": {
       "common": {
         "category": "links",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": false
       },
@@ -295,7 +295,7 @@
     "config": {
       "common": {
         "category": "multimedia",
-        "sortOrder": 110,
+        "sortOrder": 11,
         "defaultActive": true,
         "showOnParentLevel": false
       },
@@ -346,7 +346,7 @@
     "config": {
       "common": {
         "category": "translations",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -430,7 +430,7 @@
     "config": {
       "common": {
         "category": "versions",
-        "sortOrder": 90,
+        "sortOrder": 9,
         "defaultActive": true,
         "showOnParentLevel": true
       },
@@ -469,7 +469,7 @@
     "config": {
       "common": {
         "category": "links",
-        "sortOrder": 150,
+        "sortOrder": 15,
         "defaultActive": true,
         "showOnParentLevel": false
       },
@@ -514,7 +514,7 @@
     "config": {
       "common": {
         "category": "annotations",
-        "sortOrder": 100,
+        "sortOrder": 10,
         "defaultActive": true,
         "showOnParentLevel": true
       },

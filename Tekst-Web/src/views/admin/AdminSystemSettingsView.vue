@@ -221,11 +221,6 @@ function resetForm() {
             v-model="formModel.showTekstFooterHint"
             :label="$t('models.platformSettings.showTekstFooterHint')"
           />
-        </n-flex>
-      </n-form-item>
-
-      <n-form-item :show-label="false">
-        <n-flex vertical>
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
           <labelled-switch
             v-model="formModel.showResourceCategoryHeadings"
@@ -235,6 +230,11 @@ function resetForm() {
           <labelled-switch
             v-model="formModel.alwaysShowResourceCategoryHeadings"
             :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
+          />
+          <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
+          <labelled-switch
+            v-model="formModel.prioritizeBrowseLevelResources"
+            :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
           />
         </n-flex>
       </n-form-item>

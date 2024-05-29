@@ -570,7 +570,7 @@ export interface components {
     AudioResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -669,7 +669,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -786,7 +786,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -872,7 +872,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -1167,7 +1167,7 @@ export interface components {
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
-       * @default 100
+       * @default 10
        */
       sortOrder?: number;
       /**
@@ -1442,7 +1442,7 @@ export interface components {
     ExternalReferencesResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -1541,7 +1541,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -1658,7 +1658,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -1744,7 +1744,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -2012,7 +2012,7 @@ export interface components {
     ImagesResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -2111,7 +2111,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -2228,7 +2228,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -2314,7 +2314,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -2604,7 +2604,7 @@ export interface components {
     PlainTextResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -2715,7 +2715,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
@@ -2841,7 +2841,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
@@ -2936,7 +2936,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
@@ -3128,6 +3128,12 @@ export interface components {
        */
       alwaysShowResourceCategoryHeadings?: boolean;
       /**
+       * Prioritizebrowselevelresources
+       * @description Display resources of current browse level before others in browse view
+       * @default true
+       */
+      prioritizeBrowseLevelResources?: boolean;
+      /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
        * @default true
@@ -3225,6 +3231,12 @@ export interface components {
        * @default false
        */
       alwaysShowResourceCategoryHeadings?: boolean;
+      /**
+       * Prioritizebrowselevelresources
+       * @description Display resources of current browse level before others in browse view
+       * @default true
+       */
+      prioritizeBrowseLevelResources?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
@@ -3524,7 +3536,7 @@ export interface components {
     RichTextResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -3623,7 +3635,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -3740,7 +3752,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -3826,7 +3838,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": true
@@ -4109,7 +4121,7 @@ export interface components {
     TextAnnotationResourceConfig: {
       /**
        * @default {
-       *   "sortOrder": 100,
+       *   "sortOrder": 10,
        *   "defaultActive": true,
        *   "showOnParentLevel": false
        * }
@@ -4213,7 +4225,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -4335,7 +4347,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false
@@ -4426,7 +4438,7 @@ export interface components {
        *   "common": {
        *     "defaultActive": true,
        *     "showOnParentLevel": false,
-       *     "sortOrder": 100
+       *     "sortOrder": 10
        *   },
        *   "general": {
        *     "defaultCollapsed": false

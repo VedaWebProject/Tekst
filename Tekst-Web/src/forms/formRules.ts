@@ -253,8 +253,8 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
     },
     {
       validator: (rule: FormItemRule, value: number) =>
-        Number.isInteger(value) && value >= 0 && value <= 999999,
-      message: '0-999999',
+        Number.isInteger(value) && value >= 0 && value <= 1000,
+      message: '0-1000',
       trigger: 'blur',
     },
   ],

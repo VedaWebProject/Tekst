@@ -6,10 +6,12 @@ import type { AnyResourceRead, AnyContentRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { pickTranslation } from '@/utils';
 import { $t } from '@/i18n';
+import { usePlatformData } from '@/composables/platformData';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
+  const { pfData } = usePlatformData();
   const resources = useResourcesStore();
   const route = useRoute();
   const router = useRouter();
@@ -107,6 +109,16 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* RESOURCES AND CONTENTS */
 
+  const compareResourceOrder = (a: AnyResourceRead, b: AnyResourceRead) => {
+    const sortOrderA = a.config?.common?.sortOrder ?? 0;
+    const sortOrderB = b.config?.common?.sortOrder ?? 0;
+    const modA =
+      pfData.value?.settings.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
+    const modB =
+      pfData.value?.settings.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
+    return sortOrderA + modA - (sortOrderB + modB);
+  };
+
   const resourcesCategorized = computed<
     { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
   >(() => {
@@ -114,9 +126,12 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       state.text?.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.ofText.filter(
-          (r) => r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)
-        ),
+        resources: resources.ofText
+          .filter(
+            (r) =>
+              r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)
+          )
+          .sort(compareResourceOrder),
       })) || [];
     const uncategorized = [
       {

@@ -317,6 +317,7 @@ models:
     oskModeFont: Tastatur-Schriftart
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien in der Leseansicht
     alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
+    prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene in der Lese-Ansicht vor anderen auf (innerhalb ihrer Kategorien)
     customFonts: Zusätzliche, individuelle Schriftarten
     resourceFontName: Name
   segment:
