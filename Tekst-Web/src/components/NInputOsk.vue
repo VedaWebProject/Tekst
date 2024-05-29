@@ -23,6 +23,8 @@ const props = defineProps<{
   font?: string;
 }>();
 
+defineExpose({ focus: focusTargetInput, select: selectTargetInput });
+
 const model = defineModel<string | null>();
 
 const { pfData } = usePlatformData();
@@ -138,7 +140,6 @@ function handleOskModeChange(oskModeKey: string) {
 }
 
 watch(capsLock, () => (shift.value = false));
-defineExpose({ focus: focusTargetInput, select: selectTargetInput });
 </script>
 
 <template>

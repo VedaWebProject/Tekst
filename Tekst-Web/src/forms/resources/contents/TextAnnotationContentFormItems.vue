@@ -6,12 +6,14 @@ import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { KeyboardReturnIcon } from '@/icons';
+import { ref } from 'vue';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;
 }>();
 
 const model = defineModel<TextAnnotationContentCreate>({ required: true });
+const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof NInputOsk> }>({});
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -32,6 +34,13 @@ function getAnnotationValueOptions(key?: string) {
       ?.values?.map((v) => ({ label: v, value: v })) || []
   );
 }
+
+function handleInsertToken(index: number) {
+  setTimeout(() => {
+    tokenInputRefs.value[index]?.focus();
+  }, 100);
+  return { token: undefined, annotations: [] };
+}
 </script>
 
 <template>
@@ -41,7 +50,7 @@ function getAnnotationValueOptions(key?: string) {
       :value="model.tokens"
       :min="1"
       :max="1024"
-      @create="() => ({ token: undefined, annotations: [] })"
+      @create="handleInsertToken"
       @update:value="(value) => handleUpdate('tokens', value)"
     >
       <template #default="{ value: tokenItem, index: tokenItemIndex }">
@@ -73,6 +82,9 @@ function getAnnotationValueOptions(key?: string) {
               style="flex-grow: 2"
             >
               <n-input-osk
+                :ref="
+                  (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof NInputOsk>)
+                "
                 v-model="tokenItem.token"
                 :font="resource.config?.general?.font || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
