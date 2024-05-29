@@ -18,6 +18,7 @@ import { useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
+import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 
 import {
   MoreIcon,
@@ -203,6 +204,8 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
       </template>
       <template #header-extra>
         <n-flex>
+          <resource-export-widget :resource="targetResource" />
+          <resource-info-widget :resource="targetResource" />
           <n-dropdown
             :options="actionOptions"
             :size="state.dropdownSize"
@@ -216,7 +219,6 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               </template>
             </n-button>
           </n-dropdown>
-          <resource-info-widget :resource="targetResource" />
         </n-flex>
       </template>
 
