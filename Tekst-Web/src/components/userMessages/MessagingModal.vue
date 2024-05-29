@@ -2,7 +2,7 @@
 import { $t } from '@/i18n';
 import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
 import { ref } from 'vue';
-import { NSpin, NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
+import { NFlex, NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
@@ -20,12 +20,16 @@ const messageInput = ref<string>();
 const messageInputRef = ref<InputInst>();
 const loadingSend = ref(false);
 
-const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
+const {
+  pause: stopMessagesPolling,
+  resume: startMessagesPolling,
+  isActive: messagesPollingIsActive,
+} = useIntervalFn(
   async () => {
     messages.value = await userMessages.loadMessages();
   },
   10 * 1000, // 10 seconds
-  { immediate: false, immediateCallback: false }
+  { immediate: false, immediateCallback: true }
 );
 
 async function handleSendMessage() {
@@ -46,7 +50,6 @@ async function handleSendMessage() {
 async function handleModalEnter() {
   messageInputRef.value?.focus();
   startMessagesPolling();
-  messages.value = await userMessages.loadMessages();
   await scrollDownMessageContainer(300);
 }
 
@@ -89,10 +92,7 @@ whenever(ctrlEnter, () => {
     </template>
 
     <template #default>
-      <div
-        v-if="!!messages?.length"
-        style="display: flex; flex-direction: column; gap: var(--layout-gap)"
-      >
+      <n-flex v-if="!!messages?.length" vertical size="large">
         <div
           v-for="msg in messages"
           :key="msg.id"
@@ -104,10 +104,7 @@ whenever(ctrlEnter, () => {
           style="white-space: pre-wrap"
         >
           {{ msg.content }}
-          <div
-            style="display: flex; align-items: center; gap: var(--content-gap)"
-            class="message-meta"
-          >
+          <n-flex align="center" class="message-meta">
             <n-time v-if="msg.time" :time="utcToLocalTime(msg.time)" type="datetime" />
             <n-icon
               v-if="msg.sender === auth.user?.id"
@@ -115,21 +112,13 @@ whenever(ctrlEnter, () => {
               :title="$t(msg.read ? 'account.messages.read' : 'account.messages.unread')"
               :color="msg.read ? 'var(--col-success)' : 'inherit'"
             />
-          </div>
+          </n-flex>
         </div>
-      </div>
-      <n-spin v-else-if="userMessages.loading" class="centered-spinner" />
+      </n-flex>
     </template>
 
     <template #footer>
-      <div
-        style="
-          display: flex;
-          gap: var(--layout-gap);
-          align-items: end;
-          padding-top: var(--layout-gap);
-        "
-      >
+      <n-flex style="margin-top: var(--layout-gap)" :wrap="false">
         <n-input
           ref="messageInputRef"
           v-model:value="messageInput"
@@ -156,6 +145,14 @@ whenever(ctrlEnter, () => {
             <n-icon :component="SendIcon" />
           </template>
         </n-button>
+      </n-flex>
+      <div class="messaging-status text-tiny translucent">
+        <template v-if="userMessages.loading || !messagesPollingIsActive">
+          {{ $t('general.loading') }}
+        </template>
+        <template v-else>
+          {{ $t('account.messages.msgCount', { count: messages?.length || 0 }) }}
+        </template>
       </div>
     </template>
   </generic-modal>
@@ -188,5 +185,10 @@ whenever(ctrlEnter, () => {
   right: 16px;
   font-size: var(--font-size-tiny);
   opacity: 0.75;
+}
+
+#messaging-modal .messaging-status {
+  margin-top: var(--content-gap);
+  text-align: center;
 }
 </style>

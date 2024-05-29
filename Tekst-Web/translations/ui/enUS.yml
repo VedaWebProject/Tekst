@@ -558,6 +558,7 @@ account:
     heading: Messages
     message: Message
     headingThreads: Conversations
+    msgCount: There are no messages in this conversation | There is one message in this conversation | There are {count} messages in this conversation
     msgUnreadCount: 'You have no unread messages | You have one unread message | You have {count} unread messages'
     createSuccess: Message sent
     deleteThread: Delete this message thread
