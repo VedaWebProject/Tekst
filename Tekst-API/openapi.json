@@ -2200,7 +2200,11 @@
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
-                  "const": "system"
+                  "enum": [
+                    "system"
+                  ],
+                  "const": "system",
+                  "type": "string"
                 }
               ],
               "title": "Id"
@@ -6639,11 +6643,19 @@
   "components": {
     "schemas": {
       "AdminNotificationTrigger": {
+        "type": "string",
+        "enum": [
+          "userAwaitsActivation"
+        ],
         "const": "userAwaitsActivation"
       },
       "AdvancedSearchRequestBody": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "advanced"
+            ],
             "const": "advanced",
             "title": "Type",
             "description": "Search type"
@@ -6730,6 +6742,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -6799,6 +6815,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -6871,6 +6891,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7040,6 +7064,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7257,6 +7285,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7436,6 +7468,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7560,6 +7596,10 @@
       "AudioSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "audio"
+            ],
             "const": "audio",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -8402,6 +8442,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -8471,6 +8515,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -8543,6 +8591,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -8707,6 +8759,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -8924,6 +8980,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9103,6 +9163,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9227,6 +9291,10 @@
       "ExternalReferencesSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "externalReferences"
+            ],
             "const": "externalReferences",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -9506,6 +9574,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -9575,6 +9647,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -9647,6 +9723,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -9774,6 +9854,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -9991,6 +10075,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10170,6 +10258,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10294,6 +10386,10 @@
       "ImagesSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "images"
+            ],
             "const": "images",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -10695,6 +10791,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -10761,6 +10861,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -10830,6 +10934,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -10970,6 +11078,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11196,6 +11308,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11384,6 +11500,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11517,6 +11637,10 @@
       "PlainTextSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "plainText"
+            ],
             "const": "plainText",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -12070,6 +12194,10 @@
       "QuickSearchRequestBody": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "quick"
+            ],
             "const": "quick",
             "title": "Type",
             "description": "Search type"
@@ -12376,6 +12504,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -12451,6 +12583,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -12529,6 +12665,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -12662,6 +12802,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -12879,6 +13023,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13058,6 +13206,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13182,6 +13334,10 @@
       "RichTextSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "richText"
+            ],
             "const": "richText",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -13482,6 +13638,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -13550,6 +13710,10 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -13621,6 +13785,10 @@
             "title": "Resourceid"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -13813,6 +13981,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14045,6 +14217,10 @@
             "description": "Text level this resource belongs to"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14239,6 +14415,10 @@
             "title": "Level"
           },
           "resourceType": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14378,6 +14558,10 @@
       "TextAnnotationSearchQuery": {
         "properties": {
           "type": {
+            "type": "string",
+            "enum": [
+              "textAnnotation"
+            ],
             "const": "textAnnotation",
             "title": "Type",
             "description": "Type of the resource to search in"

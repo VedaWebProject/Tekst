@@ -400,7 +400,10 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /** @constant */
+    /**
+     * @constant
+     * @enum {string}
+     */
     AdminNotificationTrigger: 'userAwaitsActivation';
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
@@ -408,6 +411,7 @@ export interface components {
        * Type
        * @description Search type
        * @constant
+       * @enum {string}
        */
       type: 'advanced';
       /**
@@ -452,6 +456,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /**
@@ -492,6 +497,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /**
@@ -524,6 +530,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /** Locationid */
@@ -603,6 +610,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /**
@@ -719,6 +727,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /**
@@ -804,6 +813,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'audio';
       /**
@@ -877,6 +887,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'audio';
       /**
@@ -1317,6 +1328,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /**
@@ -1357,6 +1369,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /**
@@ -1389,6 +1402,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /** Locationid */
@@ -1468,6 +1482,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /**
@@ -1584,6 +1599,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /**
@@ -1669,6 +1685,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'externalReferences';
       /**
@@ -1742,6 +1759,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'externalReferences';
       /**
@@ -1898,6 +1916,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /**
@@ -1938,6 +1957,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /**
@@ -1970,6 +1990,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /** Locationid */
@@ -2031,6 +2052,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /**
@@ -2147,6 +2169,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /**
@@ -2232,6 +2255,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'images';
       /**
@@ -2305,6 +2329,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'images';
       /**
@@ -2483,6 +2508,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /**
@@ -2523,6 +2549,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /**
@@ -2555,6 +2582,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /** Locationid */
@@ -2628,6 +2656,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /**
@@ -2753,6 +2782,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /**
@@ -2847,6 +2877,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'plainText';
       /**
@@ -2929,6 +2960,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'plainText';
       /**
@@ -3251,6 +3283,7 @@ export interface components {
        * Type
        * @description Search type
        * @constant
+       * @enum {string}
        */
       type: 'quick';
       /**
@@ -3374,6 +3407,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /**
@@ -3421,6 +3455,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /**
@@ -3460,6 +3495,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /** Locationid */
@@ -3528,6 +3564,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /**
@@ -3644,6 +3681,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /**
@@ -3729,6 +3767,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'richText';
       /**
@@ -3802,6 +3841,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'richText';
       /**
@@ -3947,6 +3987,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /**
@@ -3987,6 +4028,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /**
@@ -4019,6 +4061,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /** Locationid */
@@ -4111,6 +4154,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /**
@@ -4232,6 +4276,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /**
@@ -4322,6 +4367,7 @@ export interface components {
       /**
        * Resourcetype
        * @constant
+       * @enum {string}
        */
       resourceType: 'textAnnotation';
       /**
@@ -4400,6 +4446,7 @@ export interface components {
        * Type
        * @description Type of the resource to search in
        * @constant
+       * @enum {string}
        */
       type: 'textAnnotation';
       /**
