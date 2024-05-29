@@ -268,6 +268,10 @@ class ResourceTypeABC(ABC):
                 exclude_unset=True,
             )
         )
+        res["title"] = {
+            title_trans["locale"]: title_trans["translation"]
+            for title_trans in res["title"]
+        }
         res["description"] = {
             desc_trans["locale"]: desc_trans["translation"]
             for desc_trans in res["description"]
