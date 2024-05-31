@@ -1,0 +1,44 @@
+name: tekst-db
+help: Tekst Database Backup and Restore Utility
+version: 0.1.0
+
+flags:
+
+  - long: --container-name
+    short: -c
+    help: DB Docker container name (if using Docker)
+    arg: container
+
+  - long: --file
+    short: -f
+    help: File to write/read DB backup to/from
+    arg: path
+    default: /tmp/tekst-db.backup
+
+  - long: --mongodb-uri
+    short: -m
+    help: MongoDB URI (from inside the container if using Docker)
+    arg: uri
+    default: mongodb://127.0.0.1:27017
+
+commands:
+
+- name: backup
+  help: Create DB backup
+  examples:
+  - tekst-db backup
+  - tekst-db -c tekst-db backup
+  - tekst-db -c tekst-mongo -f /home/user/tekst-something.backup backup
+  - tekst-db -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin backup
+
+- name: restore
+  help: Restore DB backup
+  flags:
+  - long: --delete
+    short: -d
+    help: Delete backup file after successful restore
+  examples:
+  - tekst-db restore
+  - tekst-db -c tekst-db restore
+  - tekst-db -c tekst-mongo -f /home/user/tekst-something.backup restore
+  - tekst-db -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin restore
