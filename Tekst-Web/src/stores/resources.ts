@@ -105,7 +105,7 @@ export const useResourcesStore = defineStore('resources', () => {
 
   // watch for events that trigger a reload of resources data
   watch(
-    [() => auth.loggedIn, () => state.text],
+    () => auth.loggedIn,
     () => {
       load();
     },
