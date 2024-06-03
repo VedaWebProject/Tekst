@@ -1,4 +1,6 @@
-load_common_args
+container=${args[--container-name]}
+file=${args[--file]}
+uri=${args[--mongodb-uri]}
 
 if [[ $container ]]; then
     docker exec -i $container /usr/bin/mongodump --uri $uri --gzip --archive > $file
