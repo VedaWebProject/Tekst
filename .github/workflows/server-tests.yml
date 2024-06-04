@@ -58,5 +58,3 @@ jobs:
       run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL_SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
     - name: Coveralls
       uses: coverallsapp/github-action@v2
-      with:
-        file: ./coverage.lcov
