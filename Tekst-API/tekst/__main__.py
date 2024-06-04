@@ -23,7 +23,7 @@ def setup():
 
 @click.command()
 def index():
-    print(asyncio.run(util_create_index()))
+    asyncio.run(util_create_index())
 
 
 @click.command()

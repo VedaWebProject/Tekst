@@ -171,7 +171,7 @@ async def util_create_index():
     setup_logging()
     init_resource_types_mgr()
     await db.init_odm()
-    return await task_create_index()
+    await task_create_index()
 
 
 async def _populate_index(index_name: str) -> None:
