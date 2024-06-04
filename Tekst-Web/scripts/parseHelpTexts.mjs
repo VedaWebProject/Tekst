@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import DOMPurify from 'isomorphic-dompurify';
 import path from 'path';
-import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, existsSync } from 'fs';
 
 const HELP_DIR = path.normalize('translations/help/');
 const OUT_DIR = path.normalize('src/assets/help/');
@@ -20,12 +20,14 @@ for (const d of readdirSync(OUT_DIR, { withFileTypes: true }).filter(
   rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
   //   console.log(`  🗸 ${d.name}/*`);
 }
-console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
-for (const d of readdirSync(DOCS_PATH, { withFileTypes: true }).filter(
-  (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
-)) {
-  rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
-  //   console.log(`  🗸 ${d.name}/*`);
+if (existsSync(DOCS_PATH)) {
+  console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
+  for (const d of readdirSync(DOCS_PATH, { withFileTypes: true }).filter(
+    (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
+  )) {
+    rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
+    //   console.log(`  🗸 ${d.name}/*`);
+  }
 }
 
 // parse current markdown help texts
@@ -40,7 +42,7 @@ for (const localeDir of localeDirs) {
   for (const mdFile of mdFiles) {
     const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
     // copy file to documentation folder
-    if (localeDir.name === 'enUS') {
+    if (localeDir.name === 'enUS' && existsSync(DOCS_PATH)) {
       copyFileSync(sourceFilePath, path.join(DOCS_PATH, mdFile.name));
     }
     const data = readFileSync(sourceFilePath, 'utf8');
