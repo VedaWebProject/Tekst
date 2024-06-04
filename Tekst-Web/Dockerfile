@@ -2,7 +2,7 @@
 # BUILDER
 # =======
 
-FROM node:18.15-alpine AS builder
+FROM node:20.14.0-alpine3.20 AS builder
 
 ARG WEB_PATH
 ARG SERVER_URL
@@ -19,7 +19,7 @@ RUN npm install && npm run build-only --base=$WEB_PATH
 # PROD CLIENT IMAGE
 # =================
 
-FROM caddy:2.6-alpine AS prod
+FROM caddy:2.8-alpine AS prod
 
 ARG API_PATH
 ENV TEKST_API_PATH=$API_PATH

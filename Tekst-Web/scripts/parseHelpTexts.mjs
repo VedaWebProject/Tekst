@@ -2,46 +2,43 @@ import { marked } from 'marked';
 import DOMPurify from 'isomorphic-dompurify';
 import path from 'path';
 import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync } from 'fs';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const HELP_DIR = path.normalize(`${__dirname}/../translations/help/`);
-const OUT_DIR = path.normalize(`${__dirname}/../src/assets/help/`);
-const DOCS_PATH = path.normalize(`${__dirname}/../../docs/generated/help/`);
+const HELP_DIR = path.normalize('translations/help/');
+const OUT_DIR = path.normalize('src/assets/help/');
+const DOCS_PATH = path.normalize('../docs/generated/help/');
 const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
 );
 
-const localeImports = []; // fot imports in index file
+const localeImports = []; // imports in index file
 
 // delete old target files
 console.log(`🗑 Deleting old help text translations in ${OUT_DIR} ...`);
 for (const d of readdirSync(OUT_DIR, { withFileTypes: true }).filter(
   (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
 )) {
-  rmSync(path.join(d.path, d.name), { recursive: true, force: true });
+  rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
   //   console.log(`  🗸 ${d.name}/*`);
 }
 console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
 for (const d of readdirSync(DOCS_PATH, { withFileTypes: true }).filter(
   (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
 )) {
-  rmSync(path.join(d.path, d.name), { recursive: true, force: true });
+  rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
   //   console.log(`  🗸 ${d.name}/*`);
 }
 
 // parse current markdown help texts
 console.log(`🗘 Processing help text translations in ${HELP_DIR} ...`);
 for (const localeDir of localeDirs) {
-  const sourceDirPath = path.join(localeDir.path, localeDir.name);
+  const sourceDirPath = path.join(localeDir.parentPath, localeDir.name);
   const mdFiles = readdirSync(sourceDirPath, { withFileTypes: true }).filter(
     (entry) => entry.isFile() && entry.name.endsWith('.md')
   );
   const helpTranslations = {};
 
   for (const mdFile of mdFiles) {
-    const sourceFilePath = path.join(mdFile.path, mdFile.name);
+    const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
     // copy file to documentation folder
     if (localeDir.name === 'enUS') {
       copyFileSync(sourceFilePath, path.join(DOCS_PATH, mdFile.name));

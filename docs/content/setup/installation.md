@@ -1,6 +1,5 @@
 # Installation
 
-
 ## General requirements
 
 The follwing requirements apply to either deployment strategy. Each deployment strategy then comes with its own respective additional requirements.
@@ -9,11 +8,9 @@ The follwing requirements apply to either deployment strategy. Each deployment s
 - A webserver configured to handle traffic between the outside world and Tekst **via HTTPS** (!)
 - Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](../index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
-
 ## Initial configuration
 
-The following values can be configured in an `.env` file to match your deployment environment and needed features. Use the below list for guidance. The configuration defaults to values for a full-featured, Docker-based production environment served at `/` (root path). There *are* things you *have to* configure for them to work, though. By default, the application will later be available locally on port `8087` at `127.0.0.1`.
-
+The following values can be configured in an `.env` file to match your deployment environment and needed features. Use the below list for guidance. The configuration defaults to values for a full-featured, Docker-based production environment served at `/` (root path). There _are_ things you _have to_ configure for them to work, though. By default, the application will later be available locally on port `8087` at `127.0.0.1`.
 
 ## Deploy via Docker (recommended)
 
@@ -27,6 +24,7 @@ The instructions below will help you deploy a stack consisting of everything Tek
 - Elasticsearch
 
 ### Requirements
+
 - [Git](https://git-scm.com/)
 - [Docker](https://docs.docker.com/engine/install)
 - Docker Compose (If you're on Linux, the [docker-compose-plugin](https://docs.docker.com/compose/install/linux/) for Docker is recommended. Otherwise there's [Compose](https://docs.docker.com/compose/install/other/) standalone, for which the commands below have to be run as `docker-compose ...` instead of `docker compose ...`)
@@ -69,18 +67,18 @@ The default location for these files (on your host system) is the `./secrets` fo
 
 For each of the following secrets, create the respective secret files in your secrets folder and edit them to contain nothing but the secret value in question. The file names must exactly match the ones listed below.
 
-| Secret | File name |
-| --- | --- |
-| Initial admin account email | `security_init_admin_email.txt` |
+| Secret                         | File name                          |
+| ------------------------------ | ---------------------------------- |
+| Initial admin account email    | `security_init_admin_email.txt`    |
 | Initial admin account password | `security_init_admin_password.txt` |
-| Database username | `db_user.txt` |
-| Database password | `db_password.txt` |
+| Database username              | `db_user.txt`                      |
+| Database password              | `db_password.txt`                  |
 
 !!! info
 
     Please note that the initial admin password must contain at least 8 characters, including at least one lower-case letter, one upper-case letter and one digit!
 
-Now you should now somehow protect these files from unauthorized access. You *could* delete them after running the stack (see next sections), but that would mean you'd have to *create them from scratch each time you have to restart the stack* (or your server, for that matter). So a more practical approach is to secure these files via your operating system's file system permissions.
+You should now somehow protect these files from unauthorized access. You _could_ delete them after running the stack (see next sections), but that would mean you'd have to _create them from scratch each time you have to restart the stack_ (or your server, for that matter). So a more practical approach is to secure these files via your operating system's file system permissions.
 
 Change ownership of the secrets files to `root` (assuming you are running this command from the parent directory of a `secrets` folder with the secret files you created):
 
@@ -131,8 +129,8 @@ docker compose up -d
     ```
 
 !!! note
-    Read the [Docker Compose documentation](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
 
+    Read the [Docker Compose documentation](https://docs.docker.com/engine/reference/commandline/compose/) to learn how to stop, start, reset (...) the application stack using Docker Compose.
 
 ## Deploy directly on host system ("bare-metal")
 

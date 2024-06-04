@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "api-schema": "node scripts/schemaTransform.mjs; eslint ./src/api/schema.d.ts --fix",
+    "api-schema": "node scripts/schemaTransform.mjs; eslint src/api/schema.d.ts --fix",
     "help-texts": "node scripts/parseHelpTexts.mjs; eslint src/assets/help/index.ts --fix",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
