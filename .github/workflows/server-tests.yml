@@ -55,7 +55,7 @@ jobs:
       uses: andymckay/cancel-action@0.2
     - name: Run tests
       if: always()
-      run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL_SMTP_STARTTLS=false poetry run coverage run -m pytest && coverage lcov
+      run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL_SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
