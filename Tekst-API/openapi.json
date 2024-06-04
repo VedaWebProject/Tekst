@@ -10436,6 +10436,30 @@
         ],
         "title": "IndexInfoResponse"
       },
+      "LineLabellingConfig": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "Enable/disable line labelling",
+            "default": false
+          },
+          "labellingType": {
+            "type": "string",
+            "enum": [
+              "numbersZeroBased",
+              "numbersOneBased",
+              "lettersLowercase",
+              "lettersUppercase"
+            ],
+            "title": "Labellingtype",
+            "description": "Line labelling type",
+            "default": "numbersOneBased"
+          }
+        },
+        "type": "object",
+        "title": "LineLabellingConfig"
+      },
       "LocaleKey": {
         "type": "string",
         "enum": [
@@ -11024,6 +11048,17 @@
               "reducedViewOneline": false
             }
           },
+          "lineLabelling": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LineLabellingConfig"
+              }
+            ],
+            "default": {
+              "enabled": false,
+              "labellingType": "numbersOneBased"
+            }
+          },
           "deeplLinks": {
             "allOf": [
               {
@@ -11194,6 +11229,10 @@
               "general": {
                 "defaultCollapsed": false,
                 "reducedViewOneline": false
+              },
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
               },
               "deeplLinks": {
                 "enabled": false,
@@ -11425,6 +11464,10 @@
                 "defaultCollapsed": false,
                 "reducedViewOneline": false
               },
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
+              },
               "deeplLinks": {
                 "enabled": false,
                 "languages": [
@@ -11616,6 +11659,10 @@
               "general": {
                 "defaultCollapsed": false,
                 "reducedViewOneline": false
+              },
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
               },
               "deeplLinks": {
                 "enabled": false,

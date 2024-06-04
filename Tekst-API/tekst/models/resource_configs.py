@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated
 
 from pydantic import Field, StringConstraints
 
@@ -69,36 +69,3 @@ FontConfigType = Annotated[
         description="Name of the font to use for this resource.",
     ),
 ]
-
-
-class DeepLLinksConfig(ModelBase):
-    """
-    Resource configuration model for DeepL translation links.
-    The corresponding field MUST be named `deepl_links`!
-    """
-
-    _DEEPL_LANGUAGES: tuple = (
-        "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
-        "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",
-        "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH",
-    )  # fmt: skip
-
-    enabled: Annotated[
-        bool,
-        Field(
-            description="Enable/disable quick translation links to DeepL",
-        ),
-    ] = False
-    source_language: Annotated[
-        Literal[_DEEPL_LANGUAGES] | None,
-        Field(
-            description="Source language",
-        ),
-    ] = _DEEPL_LANGUAGES[0]
-    languages: Annotated[
-        list[Literal[_DEEPL_LANGUAGES]],
-        Field(
-            description="Target languages to display links for",
-            max_length=32,
-        ),
-    ] = ["EN", "DE"]

@@ -275,6 +275,7 @@ export type TextAnnotationResourceConfig = components['schemas']['TextAnnotation
 
 export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
 export type AnyResourceConfig = AnyResourceRead['config'];
+export type LineLabellingConfig = components['schemas']['LineLabellingConfig'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
 
 // search

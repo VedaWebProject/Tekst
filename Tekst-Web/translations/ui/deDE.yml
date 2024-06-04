@@ -426,6 +426,13 @@ resources:
         heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache
         targetLanguages: Zielsprachen
+      lineLabelling:
+        heading: Zeilenbeschriftung
+        labellingType: Typ
+        numbersZeroBased: Zahlen (0-basiert)
+        numbersOneBased: Zahlen (1-basiert)
+        lettersLowercase: Buchstaben (klein)
+        lettersUppercase: Buchstaben (groß)
   types:
     common:
       label: Erweiterter Inhalt

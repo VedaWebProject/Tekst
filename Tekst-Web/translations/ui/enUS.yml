@@ -415,6 +415,13 @@ resources:
         heading: DeepL Translation Links
         sourceLanguage: Source language
         targetLanguages: Target languages
+      lineLabelling:
+        heading: Line Labelling
+        labellingType: Type
+        numbersZeroBased: Numbers (0-based)
+        numbersOneBased: Numbers (1-based)
+        lettersLowercase: Letters (lowercase)
+        lettersUppercase: Letters (uppercase)
   types:
     common:
       label: Extended Content

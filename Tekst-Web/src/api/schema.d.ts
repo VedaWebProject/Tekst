@@ -2352,6 +2352,26 @@ export interface components {
        */
       lastIndexed: string;
     };
+    /** LineLabellingConfig */
+    LineLabellingConfig: {
+      /**
+       * Enabled
+       * @description Enable/disable line labelling
+       * @default false
+       */
+      enabled?: boolean;
+      /**
+       * Labellingtype
+       * @description Line labelling type
+       * @default numbersOneBased
+       * @enum {string}
+       */
+      labellingType?:
+        | 'numbersZeroBased'
+        | 'numbersOneBased'
+        | 'lettersLowercase'
+        | 'lettersUppercase';
+    };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
     /** LocationCreate */
@@ -2620,6 +2640,13 @@ export interface components {
       /**
        * @default {
        *   "enabled": false,
+       *   "labellingType": "numbersOneBased"
+       * }
+       */
+      lineLabelling?: components['schemas']['LineLabellingConfig'];
+      /**
+       * @default {
+       *   "enabled": false,
        *   "sourceLanguage": "BG",
        *   "languages": [
        *     "EN",
@@ -2720,6 +2747,10 @@ export interface components {
        *   "general": {
        *     "defaultCollapsed": false,
        *     "reducedViewOneline": false
+       *   },
+       *   "lineLabelling": {
+       *     "enabled": false,
+       *     "labellingType": "numbersOneBased"
        *   },
        *   "deeplLinks": {
        *     "enabled": false,
@@ -2847,6 +2878,10 @@ export interface components {
        *     "defaultCollapsed": false,
        *     "reducedViewOneline": false
        *   },
+       *   "lineLabelling": {
+       *     "enabled": false,
+       *     "labellingType": "numbersOneBased"
+       *   },
        *   "deeplLinks": {
        *     "enabled": false,
        *     "languages": [
@@ -2941,6 +2976,10 @@ export interface components {
        *   "general": {
        *     "defaultCollapsed": false,
        *     "reducedViewOneline": false
+       *   },
+       *   "lineLabelling": {
+       *     "enabled": false,
+       *     "labellingType": "numbersOneBased"
        *   },
        *   "deeplLinks": {
        *     "enabled": false,

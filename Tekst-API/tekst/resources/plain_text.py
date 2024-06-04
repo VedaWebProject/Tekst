@@ -13,7 +13,6 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DeepLLinksConfig,
     DefaultCollapsedConfigType,
     FontConfigType,
     ReducedViewOnelineConfigType,
@@ -133,6 +132,59 @@ class PlainText(ResourceTypeABC):
                 )
 
 
+class LineLabellingConfig(ModelBase):
+    enabled: Annotated[
+        bool,
+        Field(
+            description="Enable/disable line labelling",
+        ),
+    ] = False
+    labelling_type: Annotated[
+        Literal[
+            "numbersZeroBased",
+            "numbersOneBased",
+            "lettersLowercase",
+            "lettersUppercase",
+        ],
+        Field(
+            description="Line labelling type",
+        ),
+    ] = "numbersOneBased"
+
+
+class DeepLLinksConfig(ModelBase):
+    """
+    Resource configuration model for DeepL translation links.
+    The corresponding field MUST be named `deepl_links`!
+    """
+
+    _DEEPL_LANGUAGES: tuple = (
+        "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
+        "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",
+        "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH",
+    )  # fmt: skip
+
+    enabled: Annotated[
+        bool,
+        Field(
+            description="Enable/disable quick translation links to DeepL",
+        ),
+    ] = False
+    source_language: Annotated[
+        Literal[_DEEPL_LANGUAGES] | None,
+        Field(
+            description="Source language",
+        ),
+    ] = _DEEPL_LANGUAGES[0]
+    languages: Annotated[
+        list[Literal[_DEEPL_LANGUAGES]],
+        Field(
+            description="Target languages to display links for",
+            max_length=32,
+        ),
+    ] = ["EN", "DE"]
+
+
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
     reduced_view_oneline: ReducedViewOnelineConfigType = False
@@ -141,6 +193,7 @@ class GeneralPlainTextResourceConfig(ModelBase):
 
 class PlainTextResourceConfig(ResourceConfigBase):
     general: GeneralPlainTextResourceConfig = GeneralPlainTextResourceConfig()
+    line_labelling: LineLabellingConfig = LineLabellingConfig()
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 
