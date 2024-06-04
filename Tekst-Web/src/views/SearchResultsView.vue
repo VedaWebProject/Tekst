@@ -14,7 +14,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { pickTranslation, utcToLocalTime } from '@/utils';
+import { isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -153,10 +153,10 @@ function turnPage(direction: 'previous' | 'next') {
 
 // react to keyboard for in-/decreasing page number
 whenever(ArrowRight, () => {
-  turnPage('next');
+  !isOverlayOpen() && turnPage('next');
 });
 whenever(ArrowLeft, () => {
-  turnPage('previous');
+  !isOverlayOpen() && turnPage('previous');
 });
 
 onBeforeMount(() => processQuery());

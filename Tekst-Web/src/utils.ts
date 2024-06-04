@@ -63,3 +63,7 @@ export async function checkUrl(url?: string): Promise<boolean> {
     return false;
   }
 }
+
+export function isOverlayOpen() {
+  return document.querySelectorAll('.n-modal-body-wrapper, .n-image-preview-overlay').length > 0;
+}
