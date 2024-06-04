@@ -1,0 +1,69 @@
+name: tekst-util
+help: Tekst Maintenance Utility Script
+version: 0.1.0
+
+commands:
+
+- name: backup
+  help: Create DB backup (MongoDB service must be running)
+  flags:
+  - long: --container-name
+    short: -c
+    help: MongoDB service DB Docker container name (if using Docker)
+    arg: container
+  - long: --file
+    short: -f
+    help: File to write/read DB backup to/from
+    arg: path
+    default: /tmp/tekst-db.backup
+  - long: --mongodb-uri
+    short: -m
+    help: MongoDB URI (from inside the container if using Docker)
+    arg: uri
+    default: mongodb://127.0.0.1:27017
+  examples:
+  - tekst-db backup
+  - tekst-db backup -c tekst-db
+  - tekst-db backup -c tekst-mongo -f /home/user/tekst-something.backup
+  - tekst-db backup -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+
+- name: restore
+  help: Restore DB backup (MongoDB service must be running)
+  flags:
+  - long: --container-name
+    short: -c
+    help: MongoDB service Docker container name (if using Docker)
+    arg: container
+  - long: --file
+    short: -f
+    help: File to write/read DB backup to/from
+    arg: path
+    default: /tmp/tekst-db.backup
+  - long: --mongodb-uri
+    short: -m
+    help: MongoDB URI (from inside the container if using Docker)
+    arg: uri
+    default: mongodb://127.0.0.1:27017
+  - long: --delete
+    short: -d
+    help: Delete backup file after successful restore
+  examples:
+  - tekst-db restore
+  - tekst-db restore -c tekst-db
+  - tekst-db restore -c tekst-mongo -f /home/user/tekst-something.backup
+  - tekst-db restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+
+- name: index
+  help: Create/update search index (MongoDB and ES services must be running)
+  flags:
+  - long: --container-name
+    short: -c
+    help: Tekst-API Docker container name (if using Docker)
+    arg: container
+  - long: --dev
+    short: -d
+    help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
+  examples:
+  - tekst-db index
+  - tekst-db index -d
+  - tekst-db index --dev

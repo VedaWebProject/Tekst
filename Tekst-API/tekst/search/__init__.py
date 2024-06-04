@@ -9,9 +9,9 @@ from beanie import PydanticObjectId
 from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
-from tekst import tasks
+from tekst import db, tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logging import log, setup_logging
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -24,7 +24,11 @@ from tekst.models.search import (
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead
-from tekst.resources import AnyResourceSearchQuery, resource_types_mgr
+from tekst.resources import (
+    AnyResourceSearchQuery,
+    init_resource_types_mgr,
+    resource_types_mgr,
+)
 from tekst.search.templates import (
     IDX_ALIAS,
     IDX_NAME_PATTERN,
@@ -44,8 +48,6 @@ _es_client: Elasticsearch | None = None
 
 async def init_es_client(
     es_uri: str | None = None,
-    *,
-    overwrite_existing_index: bool = False,
 ) -> Elasticsearch:
     global _es_client
     if _es_client is None:
@@ -63,7 +65,6 @@ async def init_es_client(
         else:
             raise RuntimeError("Timed out waiting for Elasticsearch service!")
         await _setup_index_template()
-        await create_index(overwrite_existing_index=overwrite_existing_index)
     return _es_client
 
 
@@ -96,7 +97,7 @@ async def _setup_index_template() -> None:
     )
 
 
-async def _create_index(overwrite_existing_index: bool = True) -> dict[str, Any]:
+async def task_create_index(overwrite_existing_index: bool = True) -> dict[str, Any]:
     # prepare
     start_time = process_time()
     new_index_name = IDX_NAME_PREFIX + uuid4().hex
@@ -104,6 +105,7 @@ async def _create_index(overwrite_existing_index: bool = True) -> dict[str, Any]
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
     existing_indices = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
+
     if existing_indices:
         if overwrite_existing_index:
             log.debug("The new index will overwrite the existing one...")
@@ -156,13 +158,20 @@ async def create_index(
     log.info("Creating search index ...")
     # create index task
     return await tasks.create_task(
-        _create_index,
+        task_create_index,
         tasks.TaskType.INDEX_CREATE_UPDATE,
         user_id=user.id if user else None,
         task_kwargs={
             "overwrite_existing_index": overwrite_existing_index,
         },
     )
+
+
+async def util_create_index():
+    setup_logging()
+    init_resource_types_mgr()
+    await db.init_odm()
+    await task_create_index()
 
 
 async def _populate_index(index_name: str) -> None:

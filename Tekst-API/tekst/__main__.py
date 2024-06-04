@@ -4,6 +4,7 @@ import click
 
 from tekst.config import TekstConfig, get_config
 from tekst.openapi import generate_openapi_schema
+from tekst.search import util_create_index
 from tekst.setup import app_setup
 
 
@@ -18,6 +19,11 @@ _cfg: TekstConfig = get_config()
 @click.command()
 def setup():
     asyncio.run(app_setup())
+
+
+@click.command()
+def index():
+    asyncio.run(util_create_index())
 
 
 @click.command()
@@ -121,6 +127,7 @@ def cli():
 
 # add individual commands to CLI app
 cli.add_command(setup)
+cli.add_command(index)
 cli.add_command(schema)
 cli.add_command(dev)
 
