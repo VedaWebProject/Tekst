@@ -7,7 +7,7 @@
 	redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
 
 	handle_path {$TEKST_API_PATH:/api}/* {
-		reverse_proxy http://server:8000
+		reverse_proxy http://api:8000
 	}
 
 	handle_path /static/* {

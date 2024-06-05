@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
 
-  tekst-web:
+  web:
     build:
       context: ./Tekst-Web
       target: prod
@@ -23,7 +23,7 @@ services:
     networks:
       - api
 
-  tekst-api:
+  api:
     build:
       context: ./Tekst-API
       target: prod
@@ -36,7 +36,7 @@ services:
     env_file: .env
     networks:
       - api
-      - db
+      - mongo
       - es
     secrets:
       - tekst_security_init_admin_email
@@ -55,7 +55,7 @@ services:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
     networks:
-      - db
+      - mongo
     secrets:
       - tekst_db_user
       - tekst_db_password
@@ -94,7 +94,7 @@ volumes:
 
 networks:
   api:
-  db:
+  mongo:
   es:
 
 secrets:
