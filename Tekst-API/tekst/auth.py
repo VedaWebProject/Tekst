@@ -419,15 +419,14 @@ async def create_initial_superuser(force: bool = False):
     ):  # pragma: no cover
         log.warning("No initial admin account configured, skipping creation.")
         return
-    # create inital admin account
-    if await UserDocument.find_one(
-        UserDocument.email == _cfg.security_init_admin_email
-    ).exists():  # pragma: no cover
+    # check if user collection contains users, abort if so
+    if await UserDocument.find_one().exists():  # pragma: no cover
         log.warning(
-            f"Initial admin account for {_cfg.security_init_admin_email}"
-            " already exists. Skipping creation."
+            "User collection already contains users. "
+            f"Skipping creation of inital admin {_cfg.security_init_admin_email}."
         )
         return
+    # create inital admin account
     log.info("Creating initial admin account...")
     user = UserCreate(
         email=_cfg.security_init_admin_email,
