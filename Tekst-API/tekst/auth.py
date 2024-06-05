@@ -412,19 +412,19 @@ async def _create_user(user: UserCreate) -> UserRead:
 async def create_initial_superuser(force: bool = False):
     if _cfg.dev_mode and not force:
         return
-    # check if initial admin account is properly configured
     log.info("Creating initial superuser account...")
-    if (
-        not _cfg.security_init_admin_email or not _cfg.security_init_admin_password
-    ):  # pragma: no cover
-        log.warning("No initial admin account configured, skipping creation.")
-        return
     # check if user collection contains users, abort if so
     if await UserDocument.find_one().exists():  # pragma: no cover
         log.warning(
             "User collection already contains users. "
             f"Skipping creation of inital admin {_cfg.security_init_admin_email}."
         )
+        return
+    # check if initial admin account is properly configured
+    if (
+        not _cfg.security_init_admin_email or not _cfg.security_init_admin_password
+    ):  # pragma: no cover
+        log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
     user = UserCreate(
