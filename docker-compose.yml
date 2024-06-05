@@ -2,18 +2,15 @@ version: "3.9"
 
 services:
 
-  client:
+  tekst-web:
     build:
       context: ./Tekst-Web
       target: prod
-      platforms:
-        - "linux/amd64"
-      tags:
-        - "tekst-web:custom"
       args:
         WEB_PATH: ${TEKST_WEB_PATH}
         SERVER_URL: ${TEKST_SERVER_URL}
         API_PATH: ${TEKST_API_PATH}
+    image: "tekst-web:custom"
     environment:
       TEKST_SERVER_URL: ${TEKST_SERVER_URL}
       TEKST_API_PATH: ${TEKST_API_PATH}
@@ -26,14 +23,11 @@ services:
     networks:
       - api
 
-  server:
+  tekst-api:
     build:
       context: ./Tekst-API
       target: prod
-      platforms:
-        - "linux/amd64"
-      tags:
-        - "tekst-api:custom"
+    image: "tekst-api:custom"
     restart: always
     init: true
     depends_on:
@@ -70,10 +64,7 @@ services:
   es:
     build:
       context: ./Tekst-API/deploy/elasticsearch
-      tags:
-        - "elasticsearch:tekst"
-      platforms:
-        - "linux/amd64"
+    image: "elasticsearch:tekst"
     deploy:
       resources:
         limits:

@@ -45,10 +45,7 @@ services:
   es:
     build:
       context: ../deployment/elasticsearch
-      tags:
-        - "elasticsearch:tekst"
-      platforms:
-        - "linux/amd64"
+    image: "elasticsearch:tekst"
     deploy:
       resources:
         limits:
