@@ -16,7 +16,7 @@ from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
-from tekst.models.email import TemplateIdentifier
+from tekst.models.notifications import TemplateIdentifier
 from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyStringToNone
 
 

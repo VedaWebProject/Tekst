@@ -154,7 +154,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_register(
         self, user: UserDocument, request: Request | None = None
     ):
-        if not _cfg.security_users_active_by_default:
+        if not _cfg.security_users_active_by_default and not user.is_active:
             await broadcast_admin_notification(
                 TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION,
                 username=user.username,
