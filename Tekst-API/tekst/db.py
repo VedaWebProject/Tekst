@@ -40,6 +40,7 @@ def get_db(
 
 
 async def init_odm(db: Database = get_db()) -> None:
+    log.info("Initializing ODM...")
     # collect basic document models
     models = [
         TextDocument,

@@ -47,28 +47,27 @@ _es_client: Elasticsearch | None = None
 
 
 async def init_es_client(
-    es_uri: str | None = None,
+    es_uri: str = _cfg.es_uri,
 ) -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(es_uri or _cfg.es_uri)
+        _es_client = Elasticsearch(es_uri)
         for i in range(_cfg.es_init_timeout_s):
             if _es_client.ping():
                 break
             if i % 10 == 0:
                 log.debug(
-                    "Waiting for Elasticsearch service "
+                    f"Waiting for Elasticsearch service at {es_uri} "
                     f"({i}/{_cfg.es_init_timeout_s} seconds)..."
                 )
             await asyncio.sleep(1)
         else:
             raise RuntimeError("Timed out waiting for Elasticsearch service!")
-        await _setup_index_template()
     return _es_client
 
 
-async def _get_es_client(es_uri: str | None = None) -> Elasticsearch:
+async def _get_es_client(es_uri: str = _cfg.es_uri) -> Elasticsearch:
     return await init_es_client(es_uri)
 
 
@@ -79,7 +78,8 @@ def close() -> None:
         _es_client = None
 
 
-async def _setup_index_template() -> None:
+async def setup_elasticsearch() -> None:
+    """This is called by the setup routine"""
     client: Elasticsearch = await _get_es_client()
     log.debug(
         f'Setting up index template "{IDX_TEMPLATE_NAME}" '

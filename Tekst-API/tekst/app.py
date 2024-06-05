@@ -30,8 +30,6 @@ async def startup_routine(app: FastAPI) -> None:
         await db.init_odm()
     if not _cfg.dev_mode or _cfg.dev_use_es:
         await search.init_es_client()
-        if _cfg.dev_mode:
-            await search.create_index()
 
     settings = await get_settings() if _cfg.dev_use_db else PlatformSettings()
     customize_openapi(app=app, settings=settings)
