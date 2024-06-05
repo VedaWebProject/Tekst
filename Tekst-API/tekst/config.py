@@ -238,7 +238,7 @@ class TekstConfig(BaseSettings):
     def es_uri(self) -> str:
         return "{protocol}://{host}:{port}".format(
             protocol=self.es_protocol,
-            host=quote(str(self.db_host).encode("utf8"), safe=""),
+            host=quote(str(self.es_host).encode("utf8"), safe=""),
             port=str(self.es_port),
         )
 
