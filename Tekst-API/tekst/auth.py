@@ -427,7 +427,6 @@ async def create_initial_superuser(force: bool = False):
         )
         return
     # create inital admin account
-    log.info("Creating initial admin account...")
     user = UserCreate(
         email=_cfg.security_init_admin_email,
         password=_cfg.security_init_admin_password,
