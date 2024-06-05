@@ -36,10 +36,22 @@ services:
       - mongo
       - es
     secrets:
-      - tekst_security_init_admin_email
-      - tekst_security_init_admin_password
-      - tekst_db_user
-      - tekst_db_password
+      - source: tekst_security_init_admin_email
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
+      - source: tekst_security_init_admin_password
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
+      - source: tekst_db_user
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
+      - source: tekst_db_password
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
 
   mongo:
     image: mongo:7

@@ -100,8 +100,8 @@ HEALTHCHECK \
     --start-period=30s \
     CMD curl http://localhost:8000 || exit 1
 
-RUN groupadd -g 1337 tekst && \
-    useradd -m -u 1337 -g tekst tekst
+RUN groupadd -g 1000 tekst && \
+    useradd -m -u 1000 -g tekst tekst
 
 # copy WSGI config
 COPY ./deployment/gunicorn/gunicorn_conf.py ./
