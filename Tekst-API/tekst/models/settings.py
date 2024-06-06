@@ -83,13 +83,13 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(
             description="Name of the platform",
         ),
-    ] = _cfg.info_platform_name
+    ] = _cfg.info.platform_name
     info_subtitle: Annotated[
         Translations[PlatformDescriptionTranslation],
         Field(
             description="Short description of the platform, in multiple languages",
         ),
-    ] = [{"locale": "*", "translation": _cfg.info_subtitle}]
+    ] = [{"locale": "*", "translation": _cfg.info.subtitle}]
     info_terms: Annotated[
         CustomHttpUrl | None,
         StringConstraints(
@@ -98,7 +98,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(
             description="URL to page with terms and conditions for API usage",
         ),
-    ] = _cfg.info_terms
+    ] = _cfg.info.terms
     info_contact_name: Annotated[
         str | None,
         StringConstraints(
@@ -109,7 +109,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(
             description="Platform contact name",
         ),
-    ] = _cfg.info_contact_name
+    ] = _cfg.info.contact_name
     info_contact_email: Annotated[
         EmailStr | None,
         StringConstraints(
@@ -118,7 +118,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         val.CleanupOneline,
         val.EmptyStringToNone,
         Field(description="Platform contact email"),
-    ] = _cfg.info_contact_email
+    ] = _cfg.info.contact_email
     info_contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(
@@ -129,7 +129,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(
             description="URL to page with contact info",
         ),
-    ] = _cfg.info_contact_url
+    ] = _cfg.info.contact_url
 
     # OPTIONS
     default_text_id: Annotated[

@@ -25,7 +25,7 @@ def _init_db_client(db_uri: str | None = None) -> DatabaseClient:
     global _db_client
     if _db_client is None:
         log.info("Initializing database client...")
-        _db_client = DatabaseClient(db_uri or get_config().db_uri)
+        _db_client = DatabaseClient(db_uri or get_config().db.uri)
     return _db_client
 
 
@@ -36,7 +36,7 @@ def get_db_client(db_uri: str | None = None) -> DatabaseClient:
 def get_db(
     db_client: Database = get_db_client(), cfg: TekstConfig = get_config()
 ) -> Database:
-    return db_client[cfg.db_name]
+    return db_client[cfg.db.name]
 
 
 async def init_odm(db: Database = get_db()) -> None:

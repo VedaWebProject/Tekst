@@ -25,20 +25,20 @@ def customize_openapi(app: FastAPI, settings: PlatformSettings):
 def generate_schema(app: FastAPI, settings: PlatformSettings):
     schema = get_openapi(
         title=settings.info_platform_name,
-        version=_cfg.tekst_info["version"],
+        version=_cfg.info.tekst["version"],
         description=pick_translation(settings.info_subtitle),
         routes=app.routes,
         servers=[{"url": urljoin(str(_cfg.server_url), str(_cfg.api_path))}],
         terms_of_service=settings.info_terms,
-        tags=get_tags_metadata(documentation_url=_cfg.tekst_info["documentation"]),
+        tags=get_tags_metadata(documentation_url=_cfg.info.tekst["documentation"]),
         contact={
             "name": settings.info_contact_name,
             "url": settings.info_contact_url,
             "email": settings.info_contact_email,
         },
         license_info={
-            "name": _cfg.tekst_info["license"],
-            "url": _cfg.tekst_info["license_url"],
+            "name": _cfg.info.tekst["license"],
+            "url": _cfg.info.tekst["license_url"],
         },
         separate_input_output_schemas=False,
     )

@@ -95,7 +95,7 @@ async def test_login(
         data=payload,
     )
     assert resp.status_code == 204, status_fail_msg(204, resp)
-    assert resp.cookies.get(config.security_auth_cookie_name)
+    assert resp.cookies.get(config.security.auth_cookie_name)
 
 
 @pytest.mark.anyio

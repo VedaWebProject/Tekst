@@ -4,11 +4,11 @@ from tekst.config import TekstConfig, get_config
 _cfg: TekstConfig = get_config()
 
 IDX_NAME_CORE = "locations"
-IDX_NAME_PREFIX = f"{_cfg.es_prefix}_{IDX_NAME_CORE}_"
+IDX_NAME_PREFIX = f"{_cfg.es.prefix}_{IDX_NAME_CORE}_"
 IDX_NAME_PATTERN = f"{IDX_NAME_PREFIX}*"
 IDX_NAME_PATTERN_ANY = f"*_{IDX_NAME_CORE}_*"
-IDX_ALIAS = f"{_cfg.es_prefix}_{IDX_NAME_CORE}"
-IDX_TEMPLATE_NAME = f"{_cfg.es_prefix}_{IDX_NAME_CORE}_template"
+IDX_ALIAS = f"{_cfg.es.prefix}_{IDX_NAME_CORE}"
+IDX_TEMPLATE_NAME = f"{_cfg.es.prefix}_{IDX_NAME_CORE}_template"
 IDX_TEMPLATE_NAME_PATTERN = f"*_{IDX_NAME_CORE}_template"
 
 

@@ -64,9 +64,9 @@ class AccessToken(BeanieBaseAccessToken, Document):
 
 
 _cookie_transport = CookieTransport(
-    cookie_name=_cfg.security_auth_cookie_name,
-    cookie_max_age=_cfg.security_auth_cookie_lifetime or None,
-    cookie_domain=_cfg.security_auth_cookie_domain or None,
+    cookie_name=_cfg.security.auth_cookie_name,
+    cookie_max_age=_cfg.security.auth_cookie_lifetime or None,
+    cookie_domain=_cfg.security.auth_cookie_domain or None,
     cookie_path=_cfg.api_path or "/",
     cookie_secure=not _cfg.dev_mode,
     cookie_httponly=True,
@@ -100,14 +100,14 @@ def _get_database_strategy(
     access_token_db: AccessTokenDatabase[AccessToken] = Depends(get_access_token_db),
 ) -> DatabaseStrategy:
     return DatabaseStrategy(
-        access_token_db, lifetime_seconds=_cfg.security_access_token_lifetime
+        access_token_db, lifetime_seconds=_cfg.security.access_token_lifetime
     )
 
 
 def _get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
-        secret=_cfg.security_secret,
-        lifetime_seconds=_cfg.security_auth_jwt_lifetime,
+        secret=_cfg.security.secret,
+        lifetime_seconds=_cfg.security.auth_jwt_lifetime,
         token_audience="tekst:jwt",
     )
 
@@ -128,9 +128,9 @@ _auth_backend_jwt = AuthenticationBackend(
 async def _get_enabled_backends() -> list[AuthenticationBackend]:
     """Returns the enabled backends following custom logic"""
     enabled_backends = []
-    if _cfg.security_enable_cookie_auth:
+    if _cfg.security.enable_cookie_auth:
         enabled_backends.append(_auth_backend_cookie)
-    if _cfg.security_enable_jwt_auth:
+    if _cfg.security.enable_jwt_auth:
         enabled_backends.append(_auth_backend_jwt)
     return enabled_backends
 
@@ -144,17 +144,17 @@ def _validate_required_password_chars(password: str):
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectId]):
-    reset_password_token_secret = _cfg.security_secret
-    verification_token_secret = _cfg.security_secret
-    reset_password_token_lifetime_seconds = _cfg.security_reset_pw_token_lifetime
-    verification_token_lifetime_seconds = _cfg.security_verification_token_lifetime
+    reset_password_token_secret = _cfg.security.secret
+    verification_token_secret = _cfg.security.secret
+    reset_password_token_lifetime_seconds = _cfg.security.reset_pw_token_lifetime
+    verification_token_lifetime_seconds = _cfg.security.verification_token_lifetime
     reset_password_token_audience = "tekst:reset"
     verification_token_audience = "tekst:verify"
 
     async def on_after_register(
         self, user: UserDocument, request: Request | None = None
     ):
-        if not _cfg.security_users_active_by_default and not user.is_active:
+        if not _cfg.security.users_active_by_default and not user.is_active:
             await broadcast_admin_notification(
                 TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION,
                 username=user.username,
@@ -200,7 +200,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             TemplateIdentifier.EMAIL_VERIFY,
             token=token,
             token_lifetime_hours=int(
-                _cfg.security_verification_token_lifetime / 60 / 60
+                _cfg.security.verification_token_lifetime / 60 / 60
             ),
         )
 
@@ -216,7 +216,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             user,
             TemplateIdentifier.EMAIL_PASSWORD_FORGOT,
             token=token,
-            token_lifetime_hours=int(_cfg.security_reset_pw_token_lifetime / 60 / 60),
+            token_lifetime_hours=int(_cfg.security.reset_pw_token_lifetime / 60 / 60),
         )
 
     async def on_after_reset_password(
@@ -323,21 +323,21 @@ _fastapi_users = FastAPIUsers[UserDocument, PydanticObjectId](
 
 def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     # cookie auth
-    if _cfg.security_enable_cookie_auth:
+    if _cfg.security.enable_cookie_auth:
         app.include_router(
             _fastapi_users.get_auth_router(
                 _auth_backend_cookie,
-                requires_verification=not _cfg.security_closed_mode,
+                requires_verification=not _cfg.security.closed_mode,
             ),
             prefix="/auth/cookie",
             tags=["auth"],
         )
     # jwt auth
-    if _cfg.security_enable_jwt_auth:
+    if _cfg.security.enable_jwt_auth:
         app.include_router(
             _fastapi_users.get_auth_router(
                 _auth_backend_jwt,
-                requires_verification=not _cfg.security_closed_mode,
+                requires_verification=not _cfg.security.closed_mode,
             ),
             prefix="/auth/jwt",
             tags=["auth"],
@@ -348,11 +348,11 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
         prefix="/auth",
         tags=["auth"],
         dependencies=[Depends(get_current_superuser)]
-        if _cfg.security_closed_mode
+        if _cfg.security.closed_mode
         else [],
     )
     # verify
-    if not _cfg.security_closed_mode:
+    if not _cfg.security.closed_mode:
         app.include_router(
             _fastapi_users.get_verify_router(UserRead),
             prefix="/auth",
@@ -369,7 +369,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
         _fastapi_users.get_users_router(
             UserRead,
             UserUpdate,
-            requires_verification=not _cfg.security_closed_mode,
+            requires_verification=not _cfg.security.closed_mode,
         ),
         prefix="/users",
         tags=["users"],
@@ -386,12 +386,12 @@ def _current_user(**kwargs) -> callable:
 
 
 # auth dependencies for API routes
-get_current_user = _current_user(verified=not _cfg.security_closed_mode, active=True)
+get_current_user = _current_user(verified=not _cfg.security.closed_mode, active=True)
 get_current_superuser = _current_user(
-    verified=not _cfg.security_closed_mode, active=True, superuser=True
+    verified=not _cfg.security.closed_mode, active=True, superuser=True
 )
 get_current_optional_user = _current_user(
-    verified=not _cfg.security_closed_mode, active=True, optional=True
+    verified=not _cfg.security.closed_mode, active=True, optional=True
 )
 UserDep = Annotated[UserRead, Depends(get_current_user)]
 SuperuserDep = Annotated[UserRead, Depends(get_current_superuser)]
@@ -417,19 +417,19 @@ async def create_initial_superuser(force: bool = False):
     if await UserDocument.find_one().exists():  # pragma: no cover
         log.warning(
             "User collection already contains users. "
-            f"Skipping creation of inital admin {_cfg.security_init_admin_email}."
+            f"Skipping creation of inital admin {_cfg.security.init_admin_email}."
         )
         return
     # check if initial admin account is properly configured
     if (
-        not _cfg.security_init_admin_email or not _cfg.security_init_admin_password
+        not _cfg.security.init_admin_email or not _cfg.security.init_admin_password
     ):  # pragma: no cover
         log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
     user = UserCreate(
-        email=_cfg.security_init_admin_email,
-        password=_cfg.security_init_admin_password,
+        email=_cfg.security.init_admin_email,
+        password=_cfg.security.init_admin_password,
         username="admin",
         name="Admin Admin",
         affiliation="Admin",
@@ -439,6 +439,6 @@ async def create_initial_superuser(force: bool = False):
     user.is_superuser = True
     await _create_user(user)
     log.warning(
-        f"Created initial admin account for email {_cfg.security_init_admin_email}. "
+        f"Created initial admin account for email {_cfg.security.init_admin_email}. "
         "PLEASE CHANGE THIS ACCOUNT'S EMAIL AND PASSWORD IMMEDIATELY!"
     )

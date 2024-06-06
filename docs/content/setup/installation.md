@@ -110,7 +110,7 @@ docker compose build api web
 
 !!! note
 
-    Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again (`docker compose build web`), as these values are statically replaced in the code during the build process!
+    Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again (`docker compose build web --no-cache`), as these values are statically replaced in the code during the build process!
 
 #### Running Tekst 🚀
 

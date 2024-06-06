@@ -20,7 +20,7 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
-from tekst.models.common import CustomHttpUrl
+from tekst.models.common import CustomHttpUrl, ModelBase
 from tekst.utils import validators as val
 
 
@@ -67,6 +67,187 @@ def _select_env_files() -> list[str]:
     return env_files
 
 
+class DevelopmentModeConfig(ModelBase):
+    """
+    Development mode config sub section model
+    (these values are all used exclusively internally)
+    """
+
+    use_xsrf_protection: bool = False
+    use_db: bool = True
+    use_es: bool = True
+
+
+class MongoDBConfig(ModelBase):
+    """Database config sub section model"""
+
+    protocol: str = "mongodb"
+    host: str = "127.0.0.1"
+    port: int = 27017
+    user: str | None = None
+    password: str | None = None
+    name: str = "tekst"
+
+    @field_validator("name")
+    @classmethod
+    def validate_db_name(cls, v: Any) -> str:
+        if not isinstance(v, str):
+            v = str(v)
+        if not re.match(r"^[a-zA-Z0-9_]+$", v):
+            raise ValueError(f"Invalid database name: {v} (only [a-zA-Z0-9_] allowed)")
+        return v
+
+    @field_validator("host", "password", mode="before")
+    @classmethod
+    def url_quote(cls, v) -> str:
+        if v is None:
+            return v
+        return quote(str(v).encode("utf8"), safe="")
+
+    @computed_field
+    @property
+    def uri(self) -> str:
+        creds = f"{self.user}:{self.password}@" if self.user and self.password else ""
+        return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
+
+
+class ElasticsearchConfig(ModelBase):
+    """Elasticsearch config sub section model"""
+
+    protocol: str = "http"
+    host: str = "127.0.0.1"
+    port: int = 9200
+    prefix: str = "tekst"
+    init_timeout_s: int = 120
+
+    @field_validator("host", mode="before")
+    @classmethod
+    def url_quote(cls, v) -> str:
+        if v is None:
+            return v
+        return quote(str(v).encode("utf8"), safe="")
+
+    @computed_field
+    @property
+    def uri(self) -> str:
+        return f"{self.protocol}://{self.host}:{str(self.port)}"
+
+
+class SecurityConfig(ModelBase):
+    """Security config sub section model"""
+
+    secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
+    closed_mode: bool = False
+    users_active_by_default: bool = False
+
+    enable_cookie_auth: bool = True
+    auth_cookie_name: str = "tekstuserauth"
+    auth_cookie_domain: str | None = None
+    auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
+    access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
+
+    enable_jwt_auth: bool = True
+    auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 86400
+
+    reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600  # 1h
+    verification_token_lifetime: Annotated[int, Field(ge=600)] = 86400  # 24h
+
+    init_admin_email: str | None = None
+    init_admin_password: str | None = None
+
+
+class EMailConfig(ModelBase):
+    """Email-related things config sub section model"""
+
+    smtp_server: str | None = "127.0.0.1"
+    smtp_port: int | None = 25
+    smtp_user: str | None = None
+    smtp_password: str | None = None
+    smtp_starttls: bool = True
+    from_address: str = "noreply@example-tekst-instance.org"
+
+
+class DocConfig(ModelBase):
+    """Documentation config sub section model"""
+
+    openapi_url: str = "/openapi.json"
+    swaggerui_url: str = "/docs"
+    redoc_url: str = "/redoc"
+
+
+class InfoConfig(ModelBase):
+    """
+    General information config sub section model
+    (these values are used as defaults in the platform settings)
+    """
+
+    platform_name: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+        ),
+    ] = "Tekst"
+    subtitle: Annotated[
+        str | None,
+        StringConstraints(max_length=128),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = "An online text research platform"
+    terms: Annotated[
+        CustomHttpUrl | None,
+        StringConstraints(max_length=512),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
+    contact_name: Annotated[
+        str | None,
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = "Tekst Administrator"
+    contact_email: Annotated[
+        EmailStr | None,
+        StringConstraints(max_length=64),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = "noreply@tekst-contact-email-not-set.com"
+    contact_url: Annotated[
+        CustomHttpUrl | None,
+        StringConstraints(max_length=512),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
+
+    @computed_field
+    @property
+    def tekst(self) -> dict[str, str]:
+        return dict(name="Tekst", **package_metadata)
+
+
+class CORSConfig(ModelBase):
+    """CORS config sub section model"""
+
+    allow_origins: str | list[str] = ["*"]
+    allow_credentials: bool = True
+    allow_methods: str | list[str] = ["*"]
+    allow_headers: str | list[str] = ["*"]
+
+    @field_validator("allow_origins", "allow_methods", "allow_headers", mode="after")
+    @classmethod
+    def split_cors(cls, v):
+        if isinstance(v, str):
+            return [e.strip() for e in v.split(",")]
+        return v
+
+
+class MiscConfig(ModelBase):
+    """Misc config sub section model"""
+
+    usrmsg_force_delete_after_days: int = 365
+    max_resources_per_user: int = 10
+
+
 class TekstConfig(BaseSettings):
     """Platform config model"""
 
@@ -74,121 +255,36 @@ class TekstConfig(BaseSettings):
         env_file=_select_env_files(),
         env_file_encoding="utf-8",
         env_prefix="TEKST_",
+        env_nested_delimiter="__",
         case_sensitive=False,
-        secrets_dir="/run/secrets" if not _DEV_MODE else None,
         protected_namespaces=("model_",),
     )
 
-    # basics
     server_url: CustomHttpUrl = "http://127.0.0.1:8000"
     web_path: str = "/"
     api_path: str = "/api"
 
+    dev_mode: bool = False
     log_level: str = "warning"
+
     settings_cache_ttl: int = 60
     temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
 
-    # development
-    dev_mode: bool = False
-    dev_use_xsrf_protection: bool = False
-    dev_use_db: bool = True  # used internally for app init in different environments
-    dev_use_es: bool = True  # used internally for app init in different environments
+    # config sub sections
+    dev: DevelopmentModeConfig = DevelopmentModeConfig()  # dev mode-related config
+    db: MongoDBConfig = MongoDBConfig()  # MongoDB-related config
+    es: ElasticsearchConfig = ElasticsearchConfig()  # Elasticsearch-related config
+    security: SecurityConfig = SecurityConfig()  # security-related config
+    email: EMailConfig = EMailConfig()  # Email-related config
+    doc: DocConfig = DocConfig()  # live-documentation-related config (OpenAPI, Redoc)
+    info: InfoConfig = InfoConfig()  # general platform information config
+    cors: CORSConfig = CORSConfig()  # CORS-related config
+    misc: MiscConfig = MiscConfig()  # misc config
 
-    # db-related config (MongoDB)
-    db_protocol: str = "mongodb"
-    db_host: str = "127.0.0.1"
-    db_port: int = 27017
-    db_user: str | None = None
-    db_password: str | None = None
-    db_name: str = "tekst"
-
-    # Elasticsearch-related config
-    es_protocol: str = "http"
-    es_host: str = "127.0.0.1"
-    es_port: int = 9200
-    es_prefix: str = "tekst"
-    es_init_timeout_s: int = 120
-
-    # CORS
-    cors_allow_origins: str | list[str] = ["*"]
-    cors_allow_credentials: bool = True
-    cors_allow_methods: str | list[str] = ["*"]
-    cors_allow_headers: str | list[str] = ["*"]
-
-    # Email-related config
-    email_smtp_server: str | None = "127.0.0.1"
-    email_smtp_port: int | None = 25
-    email_smtp_user: str | None = None
-    email_smtp_password: str | None = None
-    email_smtp_starttls: bool = True
-    email_from_address: str = "noreply@example-tekst-instance.org"
-
-    # user messages config
-    msg_force_delete_after_days: int = 365
-
-    # security-related config
-    security_secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
-    security_closed_mode: bool = False
-    security_users_active_by_default: bool = False
-
-    security_enable_cookie_auth: bool = True
-    security_auth_cookie_name: str = "tekstuserauth"
-    security_auth_cookie_domain: str | None = None
-    security_auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
-    security_access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
-
-    security_enable_jwt_auth: bool = True
-    security_auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 43200
-
-    security_reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600  # 1h
-    security_verification_token_lifetime: Annotated[int, Field(ge=600)] = 86400  # 24h
-
-    security_init_admin_email: str | None = None
-    security_init_admin_password: str | None = None
-
-    # limits
-    limits_max_resources_per_user: int = 10
-
-    # documentation-related config (OpenAPI, Redoc)
-    doc_openapi_url: str = "/openapi.json"
-    doc_swaggerui_url: str = "/docs"
-    doc_redoc_url: str = "/redoc"
-
-    # general platform information config
-    # (these are used as defaults in the platform settings)
-    info_platform_name: Annotated[
-        str, StringConstraints(min_length=1, max_length=32)
-    ] = "Tekst"
-    info_subtitle: Annotated[
-        str | None,
-        StringConstraints(max_length=128),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = "An online text research platform"
-    info_terms: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(max_length=512),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = None
-    info_contact_name: Annotated[
-        str | None,
-        StringConstraints(max_length=64),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = "Tekst Administrator"
-    info_contact_email: Annotated[
-        EmailStr | None,
-        StringConstraints(max_length=64),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = "noreply@tekst-contact-email-not-set.com"
-    info_contact_url: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(max_length=512),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = None
+    @field_validator("log_level", mode="after")
+    @classmethod
+    def uppercase_log_lvl(cls, v: str) -> str:
+        return v.upper()
 
     @field_validator("temp_files_dir", mode="before")
     @classmethod
@@ -204,78 +300,6 @@ class TekstConfig(BaseSettings):
             print(e)
             raise ValueError(f"Temporary directoy is not writable: {path}") from e
         return path
-
-    @field_validator("db_name")
-    @classmethod
-    def validate_db_name(cls, v: Any) -> str:
-        if not isinstance(v, str):
-            v = str(v)
-        if not re.match(r"^[a-zA-Z0-9_]+$", v):
-            raise ValueError(f"Invalid database name: {v} (only [a-zA-Z0-9_] allowed)")
-        return v
-
-    @computed_field
-    @property
-    def tekst_info(self) -> dict[str, str]:
-        info_data = {"name": "Tekst"}
-        info_data.update(package_metadata)
-        return info_data
-
-    @computed_field
-    @property
-    def db_uri(self) -> str:
-        db_password = quote(str(self.db_password).encode("utf8"), safe="")
-        creds = f"{self.db_user}:{db_password}@" if self.db_user and db_password else ""
-        return "{protocol}://{creds}{host}:{port}".format(
-            protocol=self.db_protocol,
-            creds=creds,
-            host=quote(str(self.db_host).encode("utf8"), safe=""),
-            port=str(self.db_port),
-        )
-
-    @computed_field
-    @property
-    def es_uri(self) -> str:
-        return "{protocol}://{host}:{port}".format(
-            protocol=self.es_protocol,
-            host=quote(str(self.es_host).encode("utf8"), safe=""),
-            port=str(self.es_port),
-        )
-
-    @field_validator(
-        "cors_allow_origins", "cors_allow_methods", "cors_allow_headers", mode="after"
-    )
-    @classmethod
-    def split_cors(cls, v):
-        if isinstance(v, str):
-            return [e.strip() for e in v.split(",")]
-        return v
-
-    @field_validator("log_level", mode="after")
-    @classmethod
-    def uppercase_log_lvl(cls, v: str) -> str:
-        return v.upper()
-
-    def model_dump(
-        self,
-        *,
-        include_keys_prefix: str = None,
-        strip_include_keys_prefix: bool = False,
-        **kwargs,
-    ):
-        if include_keys_prefix is None:
-            return super().model_dump(**kwargs)
-        if "include" in kwargs:
-            raise AttributeError(
-                "kwargs 'include_keys_prefix' and 'include' are exclusive"
-            )
-        includes_keys = {
-            f for f in self.model_fields if f.startswith(include_keys_prefix)
-        }
-        return {
-            k.removeprefix(include_keys_prefix if strip_include_keys_prefix else ""): v
-            for k, v in super().model_dump(include=includes_keys, **kwargs).items()
-        }
 
 
 @cache

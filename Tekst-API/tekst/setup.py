@@ -15,7 +15,7 @@ async def app_setup():
     await db.init_odm()
     await insert_sample_data()
     await create_initial_superuser()  # happens only when not in DEV mode
-    if not cfg.dev_mode or cfg.dev_use_es:
+    if not cfg.dev_mode or cfg.dev.use_es:
         await setup_elasticsearch()
         await task_create_index()
     log.info("Finished Tekst pre-launch app setup.")

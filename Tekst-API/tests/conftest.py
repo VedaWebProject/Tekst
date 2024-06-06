@@ -83,7 +83,7 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
 @pytest.fixture(scope="session")
 async def get_db_client_override(config) -> DatabaseClient:
     """Dependency override for the database client dependency"""
-    db_client: DatabaseClient = DatabaseClient(config.db_uri)
+    db_client: DatabaseClient = DatabaseClient(config.db.uri)
     yield db_client
     # close db connection
     db_client.close()
@@ -96,7 +96,7 @@ async def test_app(config, get_db_client_override):
     async with LifespanManager(app):
         yield app
     # cleanup data
-    await get_db_client_override.drop_database(config.db_name)
+    await get_db_client_override.drop_database(config.db.name)
 
 
 @pytest.fixture
@@ -127,7 +127,7 @@ async def run_before_and_after_each_test_case(get_db_client_override, config):
         "contents",
         "users",
     ):
-        await get_db_client_override[config.db_name][collection].delete_many({})
+        await get_db_client_override[config.db.name][collection].delete_many({})
     ### run test case
     yield  # test case running now
     ### after test cae
@@ -198,7 +198,7 @@ async def register_test_user(get_fake_user) -> Callable:
 async def logout(config, test_client: AsyncClient) -> Callable:
     async def _logout() -> None:
         await test_client.post("/auth/cookie/logout")
-        test_client.cookies.delete(name=config.security_auth_cookie_name)
+        test_client.cookies.delete(name=config.security.auth_cookie_name)
 
     return _logout
 
@@ -217,7 +217,7 @@ async def login(config, test_client, logout, register_test_user) -> Callable:
             raise Exception(
                 f"Failed to login (got status {resp.status_code}: {resp.text})"
             )
-        if not resp.cookies.get(config.security_auth_cookie_name):
+        if not resp.cookies.get(config.security.auth_cookie_name):
             raise Exception("No cookies retrieved after login")
         return user
 

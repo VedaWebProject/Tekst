@@ -51,32 +51,32 @@ def _get_notification_templates(
 def _send_email(*, to: str, subject: str, txt: str, html: str):
     log.debug(
         f"Sending mail to {to} via "
-        f"{_cfg.email_smtp_server}:{_cfg.email_smtp_port}..."
+        f"{_cfg.email.smtp_server}:{_cfg.email.smtp_port}..."
     )
     msg = MIMEMultipart("alternative")
-    msg["From"] = _cfg.email_from_address
+    msg["From"] = _cfg.email.from_address
     msg["To"] = to
     msg["Subject"] = subject
     msg.attach(MIMEText(txt, "plain"))
     msg.attach(MIMEText(html, "html"))
 
     try:
-        with smtplib.SMTP(_cfg.email_smtp_server, _cfg.email_smtp_port) as smtp:
-            if _cfg.email_smtp_starttls:
+        with smtplib.SMTP(_cfg.email.smtp_server, _cfg.email.smtp_port) as smtp:
+            if _cfg.email.smtp_starttls:
                 log.debug("Initiating StartTLS handshake...")
                 smtp.starttls()
             else:  # pragma: no cover
                 log.debug(
                     "Skipping StartTLS handshake, using unencrypted connection..."
                 )
-            smtp.login(_cfg.email_smtp_user, _cfg.email_smtp_password)
+            smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
     except Exception as e:  # pragma: no cover
         log.error(
             f"Error sending email via "
-            f"{_cfg.email_smtp_server}:{_cfg.email_smtp_port} "
-            f"(StartTLS: {_cfg.email_smtp_starttls})"
+            f"{_cfg.email.smtp_server}:{_cfg.email.smtp_port} "
+            f"(StartTLS: {_cfg.email.smtp_starttls})"
         )
         log.error(e)
 
@@ -92,10 +92,11 @@ async def send_notification(
         msg_parts[key] = (
             templates[key]
             .format(
-                web_url=urljoin(str(_cfg.server_url), _cfg.web_path).strip("/"),
-                **_cfg.model_dump(
-                    include_keys_prefix="info_", strip_include_keys_prefix=True
-                ),
+                web_url=urljoin(
+                    str(_cfg.server_url),
+                    _cfg.web_path,
+                ).strip("/"),
+                **_cfg.info.model_dump(exclude={"tekst"}),
                 **{f"to_user_{k}": v for k, v in to_user.model_dump().items()},
                 **kwargs,
             )

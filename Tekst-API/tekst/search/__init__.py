@@ -47,19 +47,19 @@ _es_client: Elasticsearch | None = None
 
 
 async def init_es_client(
-    es_uri: str = _cfg.es_uri,
+    es_uri: str = _cfg.es.uri,
 ) -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
         _es_client = Elasticsearch(es_uri)
-        for i in range(_cfg.es_init_timeout_s):
+        for i in range(_cfg.es.init_timeout_s):
             if _es_client.ping():
                 break
             if i % 10 == 0:
                 log.debug(
                     f"Waiting for Elasticsearch service at {es_uri} "
-                    f"({i}/{_cfg.es_init_timeout_s} seconds)..."
+                    f"({i}/{_cfg.es.init_timeout_s} seconds)..."
                 )
             await asyncio.sleep(1)
         else:
@@ -67,7 +67,7 @@ async def init_es_client(
     return _es_client
 
 
-async def _get_es_client(es_uri: str = _cfg.es_uri) -> Elasticsearch:
+async def _get_es_client(es_uri: str = _cfg.es.uri) -> Elasticsearch:
     return await init_es_client(es_uri)
 
 

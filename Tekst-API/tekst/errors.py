@@ -81,7 +81,7 @@ E_409_RESOURCES_LIMIT_REACHED = error_instance(
     key="resourcesLimitReached",
     msg="Resources limit reached for this user",
     values={
-        "limit": _cfg.limits_max_resources_per_user,
+        "limit": _cfg.misc.max_resources_per_user,
     },
 )
 

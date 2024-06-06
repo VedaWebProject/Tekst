@@ -119,7 +119,7 @@ async def create_resource(
     if (
         not user.is_superuser
         and await ResourceBaseDocument.user_resource_count(user.id)
-        >= cfg.limits_max_resources_per_user
+        >= cfg.misc.max_resources_per_user
     ):
         raise errors.E_409_RESOURCES_LIMIT_REACHED
 
@@ -169,7 +169,7 @@ async def create_resource_version(
     if (
         not user.is_superuser
         and await ResourceBaseDocument.user_resource_count(user.id)
-        >= cfg.limits_max_resources_per_user
+        >= cfg.misc.max_resources_per_user
     ):
         raise errors.E_409_RESOURCES_LIMIT_REACHED
 
@@ -441,7 +441,7 @@ async def transfer_resource(
     if (
         not target_user.is_superuser
         and await ResourceBaseDocument.user_resource_count(target_user_id)
-        >= cfg.limits_max_resources_per_user
+        >= cfg.misc.max_resources_per_user
     ):
         raise errors.E_409_RESOURCES_LIMIT_REACHED  # pragma: no cover (a paint to test)
 

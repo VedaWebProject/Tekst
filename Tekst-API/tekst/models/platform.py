@@ -12,11 +12,11 @@ _cfg: TekstConfig = get_config()
 
 
 class PlatformSecurityInfo(ModelBase):
-    closed_mode: bool = _cfg.security_closed_mode
-    users_active_by_default: bool = _cfg.security_users_active_by_default
-    enable_cookie_auth: bool = _cfg.security_enable_cookie_auth
-    enable_jwt_auth: bool = _cfg.security_enable_jwt_auth
-    auth_cookie_lifetime: int = _cfg.security_auth_cookie_lifetime
+    closed_mode: bool = _cfg.security.closed_mode
+    users_active_by_default: bool = _cfg.security.users_active_by_default
+    enable_cookie_auth: bool = _cfg.security.enable_cookie_auth
+    enable_jwt_auth: bool = _cfg.security.enable_jwt_auth
+    auth_cookie_lifetime: int = _cfg.security.auth_cookie_lifetime
 
 
 class PlatformData(ModelBase):
@@ -28,7 +28,7 @@ class PlatformData(ModelBase):
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
     settings_cache_ttl: int = _cfg.settings_cache_ttl
-    tekst: dict[str, str] = camelize(_cfg.tekst_info)
+    tekst: dict[str, str] = camelize(_cfg.info.tekst)
 
 
 class TextStats(ModelBase):

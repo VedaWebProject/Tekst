@@ -106,7 +106,7 @@ async def get_thread_messages(
     await UserMessageDocument.find(
         LT(
             UserMessageDocument.time,
-            datetime.utcnow() - timedelta(days=cfg.msg_force_delete_after_days),
+            datetime.utcnow() - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
         ),
     ).delete()
 

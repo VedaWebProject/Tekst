@@ -5,15 +5,15 @@ services:
       context: ./Tekst-Web
       target: prod
       args:
-        WEB_PATH: ${TEKST_WEB_PATH}
-        SERVER_URL: ${TEKST_SERVER_URL}
-        API_PATH: ${TEKST_API_PATH}
+        WEB_PATH: ${TEKST_WEB_PATH:?TEKST_WEB_PATH not set in .env}
+        SERVER_URL: ${TEKST_SERVER_URL:?TEKST_SERVER_URL not set in .env}
+        API_PATH: ${TEKST_API_PATH:?TEKST_API_PATH not set in .env}
     image: "tekst-web:custom"
     environment:
-      TEKST_SERVER_URL: ${TEKST_SERVER_URL}
-      TEKST_API_PATH: ${TEKST_API_PATH}
+      TEKST_SERVER_URL: ${TEKST_SERVER_URL:?TEKST_SERVER_URL not set in .env}
+      TEKST_API_PATH: ${TEKST_API_PATH:?TEKST_API_PATH not set in .env}
     volumes:
-      - ${TEKST_WEB_STATIC_FILES}:/var/www/tekst/static/:ro
+      - ${TEKST_WEB_STATIC_DIR:?TEKST_WEB_STATIC_DIR not set in .env}:/var/www/tekst/static/:ro
     restart: always
     ports:
       - "127.0.0.1:8087:80"
@@ -35,38 +35,18 @@ services:
       - api
       - mongo
       - es
-    secrets:
-      - source: tekst_security_init_admin_email
-        uid: "1000"
-        gid: "1000"
-        mode: 0440
-      - source: tekst_security_init_admin_password
-        uid: "1000"
-        gid: "1000"
-        mode: 0440
-      - source: tekst_db_user
-        uid: "1000"
-        gid: "1000"
-        mode: 0440
-      - source: tekst_db_password
-        uid: "1000"
-        gid: "1000"
-        mode: 0440
 
   mongo:
     image: mongo:7
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/tekst_db_user
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/tekst_db_password
+      MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${TEKST_DB__PASSWORD}
     volumes:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
     networks:
       - mongo
-    secrets:
-      - tekst_db_user
-      - tekst_db_password
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   es:
@@ -103,13 +83,3 @@ networks:
   api:
   mongo:
   es:
-
-secrets:
-  tekst_security_init_admin_email:
-    file: ./secrets/security_init_admin_email.txt
-  tekst_security_init_admin_password:
-    file: ./secrets/security_init_admin_password.txt
-  tekst_db_user:
-    file: ./secrets/db_user.txt
-  tekst_db_password:
-    file: ./secrets/db_password.txt
