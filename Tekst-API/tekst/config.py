@@ -146,7 +146,7 @@ class SecurityConfig(ModelBase):
     auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
     access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
 
-    enable_jwt_auth: bool = True
+    enable_jwt_auth: bool = False
     auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 86400
 
     reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600  # 1h
