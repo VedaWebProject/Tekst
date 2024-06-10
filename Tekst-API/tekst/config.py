@@ -194,7 +194,7 @@ class InfoConfig(ModelBase):
         val.CleanupOneline,
         val.EmptyStringToNone,
     ] = "An online text research platform"
-    terms: Annotated[
+    terms_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
         val.CleanupOneline,
@@ -205,13 +205,13 @@ class InfoConfig(ModelBase):
         StringConstraints(max_length=64),
         val.CleanupOneline,
         val.EmptyStringToNone,
-    ] = "Tekst Administrator"
+    ] = None
     contact_email: Annotated[
         EmailStr | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
         val.EmptyStringToNone,
-    ] = "noreply@tekst-contact-email-not-set.com"
+    ] = None
     contact_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),

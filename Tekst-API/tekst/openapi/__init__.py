@@ -29,7 +29,7 @@ def generate_schema(app: FastAPI, settings: PlatformSettings):
         description=pick_translation(settings.info_subtitle),
         routes=app.routes,
         servers=[{"url": urljoin(str(_cfg.server_url), str(_cfg.api_path))}],
-        terms_of_service=_cfg.info.terms,
+        terms_of_service=_cfg.info.terms_url,
         tags=get_tags_metadata(documentation_url=_cfg.info.tekst["documentation"]),
         contact={
             "name": _cfg.info.contact_name,

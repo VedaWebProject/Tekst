@@ -52,6 +52,10 @@ The following table lists all the configuration values that can be set as enviro
 | `TEKST_DOC__REDOC_URL` | URL sub path (under `TEKST_API_PATH`) to Redoc API docs (String – default: `/redoc`) |
 | `TEKST_INFO__PLATFORM_NAME` | Initial platform name; **this can be changed by admins via the system settings UI** (String – default: `Tekst`) |
 | `TEKST_INFO__SUBTITLE` | Initial platform subtitle; **this can be changed by admins via the system settings UI** (String – default: `An online text research platform`) |
+| `TEKST_INFO__TERMS_URL` | URL to API usage terms (String – default: _none_) |
+| `TEKST_INFO__CONTACT_NAME` | API contact name (String – default: _none_) |
+| `TEKST_INFO__CONTACT_EMAIL` | API contact email (String – default: _none_) |
+| `TEKST_INFO__CONTACT_URL` | API contact URL (String – default: _none_) |
 | `TEKST_CORS__ALLOW_ORIGINS` | CORS allow origins; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
 | `TEKST_CORS__ALLOW_CREDENTIALS` | CORS allow credentials; only set this if you don't have a web server / reverse proxy that already handles it! (Boolean – default: `true`) |
 | `TEKST_CORS__ALLOW_METHODS` | CORS allow methods; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
