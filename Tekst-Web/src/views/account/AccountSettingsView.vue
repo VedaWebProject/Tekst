@@ -494,7 +494,7 @@ async function checkUrlInput(input: HTMLInputElement) {
     >
       <n-flex vertical>
         <labelled-switch
-          :value="true"
+          :model-value="true"
           disabled
           :focusable="false"
           :label="$t('models.user.username')"
