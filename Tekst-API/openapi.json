@@ -6060,105 +6060,6 @@
         ]
       }
     },
-    "/auth/jwt/login": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Login",
-        "operationId": "auth:jwt.login",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth_jwt_login_auth_jwt_login_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BearerResponse"
-                },
-                "example": {
-                  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOTIyMWZmYzktNjQwZi00MzcyLTg2ZDMtY2U2NDJjYmE1NjAzIiwiYXVkIjoiZmFzdGFwaS11c2VyczphdXRoIiwiZXhwIjoxNTcxNTA0MTkzfQ.M10bjOe45I5Ncu_uXvOmVV8QxnL-nZfcH96U90JaocI",
-                  "token_type": "bearer"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "LOGIN_BAD_CREDENTIALS": {
-                    "summary": "Bad credentials or the user is inactive.",
-                    "value": {
-                      "detail": "LOGIN_BAD_CREDENTIALS"
-                    }
-                  },
-                  "LOGIN_USER_NOT_VERIFIED": {
-                    "summary": "The user is not verified.",
-                    "value": {
-                      "detail": "LOGIN_USER_NOT_VERIFIED"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/jwt/logout": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Logout",
-        "operationId": "auth:jwt.logout",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/auth/register": {
       "post": {
         "tags": [
@@ -7617,24 +7518,6 @@
         ],
         "title": "AudioSearchQuery"
       },
-      "BearerResponse": {
-        "properties": {
-          "access_token": {
-            "type": "string",
-            "title": "Access Token"
-          },
-          "token_type": {
-            "type": "string",
-            "title": "Token Type"
-          }
-        },
-        "type": "object",
-        "required": [
-          "access_token",
-          "token_type"
-        ],
-        "title": "BearerResponse"
-      },
       "Body_auth_cookie_login_auth_cookie_login_post": {
         "properties": {
           "grant_type": {
@@ -7691,63 +7574,6 @@
           "password"
         ],
         "title": "Body_auth_cookie_login_auth_cookie_login_post"
-      },
-      "Body_auth_jwt_login_auth_jwt_login_post": {
-        "properties": {
-          "grant_type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "password"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Grant Type"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "scope": {
-            "type": "string",
-            "title": "Scope",
-            "default": ""
-          },
-          "client_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Id"
-          },
-          "client_secret": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Secret"
-          }
-        },
-        "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
-        "title": "Body_auth_jwt_login_auth_jwt_login_post"
       },
       "Body_import_resource_contents_resources__id__import_post": {
         "properties": {
@@ -11727,7 +11553,7 @@
               "closedMode": false,
               "usersActiveByDefault": false,
               "enableCookieAuth": true,
-              "enableJwtAuth": true,
+              "enableJwtAuth": false,
               "authCookieLifetime": 10800
             }
           },
@@ -11835,7 +11661,7 @@
           "enableJwtAuth": {
             "type": "boolean",
             "title": "Enablejwtauth",
-            "default": true
+            "default": false
           },
           "authCookieLifetime": {
             "type": "integer",
