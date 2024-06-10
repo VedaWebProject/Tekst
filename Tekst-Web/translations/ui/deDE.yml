@@ -239,7 +239,7 @@ models:
     password: Passwort
     name: Name
     affiliation: Zugehörigkeit
-    avatarUrl: Avatar-Grafik-URL
+    avatarUrl: Avatar-Grafik-URL (max. 200px Breite/Höhe empfohlen!)
     bio: Biographie
     isActive: aktiv
     isInactive: inaktiv
