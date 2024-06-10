@@ -28,8 +28,12 @@ services:
     restart: always
     init: true
     depends_on:
-      - mongo
-      - es
+      mongo:
+        condition: service_healthy
+        restart: true
+      es:
+        condition: service_healthy
+        restart: true
     env_file: .env
     networks:
       - api
@@ -48,6 +52,13 @@ services:
     networks:
       - mongo
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
+    healthcheck:
+      test: echo "db.getMongo()" | mongosh --norc --quiet --host=localhost:27017
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+      start_interval: 5s
 
   es:
     build:
@@ -73,6 +84,13 @@ services:
       - es_data:/usr/share/elasticsearch/data
     networks:
       - es
+    healthcheck:
+      test: curl -f http://localhost:9200
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 3m
+      start_interval: 5s
 
 volumes:
   mongo_configdb:
