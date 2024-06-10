@@ -8,9 +8,9 @@ The follwing requirements apply to either deployment strategy. Each deployment s
 - A webserver configured to handle traffic between the outside world and Tekst **via HTTPS** (!)
 - Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](../index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
-## Initial configuration
+## Configuration
 
-The following values can be configured in an `.env` file to match your deployment environment and needed features. Use the below list for guidance. The configuration defaults to values for a full-featured, Docker-based production environment served at `/` (root path). There _are_ things you _have to_ configure for them to work, though. By default, the application will later be available locally on port `8087` at `127.0.0.1`.
+Tekst can be configured via an `.env` file to match your deployment environment and feature requirements. See `Tekst-API/.env.template` for a `.env` file template. Use the list on the [Configuration](configuration.md) page for guidance. The configuration defaults to sensible values wherever possible. There _are_ things you **have to configure** for Tekst to work, though.
 
 ## Deploy via Docker (recommended)
 
@@ -31,7 +31,7 @@ The instructions below will help you deploy a stack consisting of everything Tek
 
 ### Instructions
 
-All example commands assume using a shell on a Unix-like operating system with Docker and Docker Compose installed.
+All example commands assume you're using a shell on a Unix-like operating system with Docker and Docker Compose installed.
 
 #### Cloning the repository
 
@@ -43,60 +43,33 @@ git clone https://github.com/VedaWebProject/Tekst.git && cd Tekst
 
 #### Configuring Tekst's deployment
 
-Copy the `.env.docker` file and name the copy `.env`:
+Copy the `.env.docker` template file and name the copy `.env`:
 
 ```sh
 cp .env.docker .env
 ```
 
-See [Configuration](#initial-configuration) for details on initially configuring Tekst via the `.env` file.
+The template has some values preset for working with a deployment based on the project's `docker-compose.yml` file. See the [Configuration](configuration.md) page for details on configuring Tekst via a `.env` file.
 
-#### Passing secrets to Tekst and its services
+#### Securing sensitive configuration values
 
-!!! danger "Attention!"
-
-    Please follow this part very carefully and **pick [secure passwords](https://www.security.org/how-secure-is-my-password/)**!
-
-You need one initial administrator account to manage your Tekst platform and activate further accounts. Also, the access credentials to some of the services need to be configured. In a Docker-based deployment, this is done via "secret files" that will be made available to the respective processes inside their containers.
-
-The default location for these files (on your host system) is the `./secrets` folder inside the Tekst project directory. For now, this folder is empty, as the repository you just cloned ignores everything inside it (except a README file) for security reasons.
-
-!!! info
-
-    If you want to change the location of the secrets files, you'll have to adjust their paths in the `docker-compose.yaml` in the `secrets` section!
-
-For each of the following secrets, create the respective secret files in your secrets folder and edit them to contain nothing but the secret value in question. The file names must exactly match the ones listed below.
-
-| Secret                         | File name                          |
-| ------------------------------ | ---------------------------------- |
-| Initial admin account email    | `security_init_admin_email.txt`    |
-| Initial admin account password | `security_init_admin_password.txt` |
-| Database username              | `db_user.txt`                      |
-| Database password              | `db_password.txt`                  |
-
-!!! info
-
-    Please note that the initial admin password must contain at least 8 characters, including at least one lower-case letter, one upper-case letter and one digit!
-
-You should now somehow protect these files from unauthorized access. You _could_ delete them after running the stack (see next sections), but that would mean you'd have to _create them from scratch each time you have to restart the stack_ (or your server, for that matter). So a more practical approach is to secure these files via your operating system's file system permissions.
-
-Change ownership of the secrets files to `root` (assuming you are running this command from the parent directory of a `secrets` folder with the secret files you created):
+You `.env` file will contain some sensitive data, like the secret used for token generation or DB credentials. To better secure these values, let `root` own the `.env` file:
 
 ```sh
-sudo chown root:root secrets/*
+sudo chown root:root .env
 ```
 
-Restrict all read/write acces to the owner of the files:
+... and restrict all read/write acces to the owner/group of the file:
 
 ```sh
-sudo chmod u=rw,go= secrets/*
+sudo chmod ug=rw,o= .env
 ```
 
-(or `sudo chmod 600 secrets/*` if you're into numbers)
+(or `sudo chmod 660 .env` if you're into numbers)
 
-!!! danger "Very important!"
+!!! warning "Very important!"
 
-    After you finish deploying Tekst by following these instructions, please log into the initial admin account and **change its password immediately**. Also, you should delete the two secrets files containing the initial admin's credentials **in any case**, or Tekst will (try to) recreate the inital admin account on each restart!
+    After you finish deploying Tekst by following these instructions, please log into the initial admin account and **change its password immediately**.
 
 #### Building the Tekst images
 
@@ -110,7 +83,7 @@ docker compose build api web
 
 !!! note
 
-    Whenever you decide to change one of `TEKST_WEB_PATH`, `TEKST_SERVER_URL` or `TEKST_API_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again (`docker compose build web --no-cache`), as these values are statically replaced in the code during the build process!
+    Whenever you decide to change one of `TEKST_SERVER_URL`, `TEKST_API_PATH` or `TEKST_WEB_PATH` in your `.env` file, you'll have to build the image for **Tekst-Web** (client) again (using `docker compose build web --no-cache`), as these values are statically replaced in the client's code during the build process!
 
 #### Running Tekst 🚀
 
@@ -122,11 +95,7 @@ docker compose up -d
 
 !!! tip
 
-    The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call this from the same directory (the one containing the `docker-compose.yml`):
-
-    ```sh
-    docker compose logs
-    ```
+    The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call `docker compose logs` from the same directory (the one containing the `docker-compose.yml`). If you only want to see the log output of one of the services, just append the service's name from the `docker-compose.yml` to the command, e.g. `docker compose logs api`.
 
 !!! note
 
@@ -135,10 +104,6 @@ docker compose up -d
 ## Deploy directly on host system ("bare-metal")
 
 Please be aware that taking this approach is considerably more difficult and requires much more manual maintenance than deploying via Docker. The expertise needed to install and configure all these services will surely also suffice for extrapolating from the Docker-based setup a bit. For a big part, the process depends on the environment you want to deploy in.
-
-!!! note "About secrets/credentials"
-
-    One thing to note for a bare-metal deployment is that without Docker, the values passed as secrets can also be directly set in the environment file and will be read and used by Tekst. That is, you don't *have to* use secret files. It may still be a good idea to use them, but you'll have to give the respective processes reading rights for those files while restricting access for anyone else.
 
 ### Requirements
 
@@ -155,10 +120,11 @@ You will also need:
 The following steps are just a rough outline of the deployment process:
 
 1. Install and configure the needed services
-2. Copy `Tekst-Web/.env` to `Tekst-Web/.env.production`
-3. Configure the client (Tekst-Web) via the `Tekst-Web/.env.production` file
-4. Build the client: `npm run build-only`
-5. Make your webserver serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 3
-6. Copy `Tekst-API/.env` to `Tekst-API/.env.prod`
-7. Configure the server (Tekst-API) via `Tekst-API/.env.prod`
-8. Run the server (Tekst-API) via the WSGI you have installed, using ASGI workers
+2. Configure Tekst following [this section](#configuration).
+3. Copy `Tekst-Web/.env` to `Tekst-Web/.env.production`
+4. Configure the client (Tekst-Web) via the `Tekst-Web/.env.production` file
+5. Build the client: `npm run build-only`
+6. Make your webserver serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 3
+7. Copy `Tekst-API/.env` to `Tekst-API/.env.prod`
+8. Configure the server (Tekst-API) via `Tekst-API/.env.prod`
+9. Run the server (Tekst-API) via the WSGI you have installed, using ASGI workers
