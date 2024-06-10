@@ -1,5 +1,11 @@
 # Configuration
 
+The following table lists all the configuration values that can be set as environment variables (e.g. via a `.env` file).
+
+!!! note
+
+    Only `TEKST_INFO__PLATFORM_NAME` and `TEKST_INFO__SUBTITLE` are merely used as initial values and can be changed later using the system settings UI of the running application as an administrator. All other configuration values can _only be set via this configuration_ and require an application restart or even rebuild when changed, depending on their scope.
+
 | Variable | Description |
 | --- | --- |
 | `TEKST_SERVER_URL` | Full public URL of the server running the application (without sub path, port only if other than 80/443); **if using the project's** `docker-compose.yml`**, this has to be set even if the value matches the default!** (String – default: `http://127.0.0.1:8000`) |
@@ -46,10 +52,6 @@
 | `TEKST_DOC__REDOC_URL` | URL sub path (under `TEKST_API_PATH`) to Redoc API docs (String – default: `/redoc`) |
 | `TEKST_INFO__PLATFORM_NAME` | Initial platform name; **this can be changed by admins via the system settings UI** (String – default: `Tekst`) |
 | `TEKST_INFO__SUBTITLE` | Initial platform subtitle; **this can be changed by admins via the system settings UI** (String – default: `An online text research platform`) |
-| `TEKST_INFO__TERMS` | URL to API usage terms (String – default: _none_) |
-| `TEKST_INFO__CONTACT_NAME` | API contact name (String – default: `Tekst Administrator`) |
-| `TEKST_INFO__CONTACT_EMAIL` | API contact email (String – default: `noreply@tekst-contact-email-not-set.com`) |
-| `TEKST_INFO__CONTACT_URL` | API contact URL (String – default: _none_) |
 | `TEKST_CORS__ALLOW_ORIGINS` | CORS allow origins; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
 | `TEKST_CORS__ALLOW_CREDENTIALS` | CORS allow credentials; only set this if you don't have a web server / reverse proxy that already handles it! (Boolean – default: `true`) |
 | `TEKST_CORS__ALLOW_METHODS` | CORS allow methods; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |

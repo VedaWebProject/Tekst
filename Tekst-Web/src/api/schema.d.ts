@@ -358,14 +358,6 @@ export interface paths {
     /** Logout */
     post: operations['auth:cookie.logout'];
   };
-  '/auth/jwt/login': {
-    /** Login */
-    post: operations['auth:jwt.login'];
-  };
-  '/auth/jwt/logout': {
-    /** Logout */
-    post: operations['auth:jwt.logout'];
-  };
   '/auth/register': {
     /** Register */
     post: operations['register:register'];
@@ -896,33 +888,8 @@ export interface components {
        */
       caption?: string;
     };
-    /** BearerResponse */
-    BearerResponse: {
-      /** Access Token */
-      access_token: string;
-      /** Token Type */
-      token_type: string;
-    };
     /** Body_auth_cookie_login_auth_cookie_login_post */
     Body_auth_cookie_login_auth_cookie_login_post: {
-      /** Grant Type */
-      grant_type?: string | null;
-      /** Username */
-      username: string;
-      /** Password */
-      password: string;
-      /**
-       * Scope
-       * @default
-       */
-      scope?: string;
-      /** Client Id */
-      client_id?: string | null;
-      /** Client Secret */
-      client_secret?: string | null;
-    };
-    /** Body_auth_jwt_login_auth_jwt_login_post */
-    Body_auth_jwt_login_auth_jwt_login_post: {
       /** Grant Type */
       grant_type?: string | null;
       /** Username */
@@ -3021,7 +2988,7 @@ export interface components {
        *   "closedMode": false,
        *   "usersActiveByDefault": false,
        *   "enableCookieAuth": true,
-       *   "enableJwtAuth": true,
+       *   "enableJwtAuth": false,
        *   "authCookieLifetime": 10800
        * }
        */
@@ -3082,7 +3049,7 @@ export interface components {
       enableCookieAuth?: boolean;
       /**
        * Enablejwtauth
-       * @default true
+       * @default false
        */
       enableJwtAuth?: boolean;
       /**
@@ -3115,28 +3082,6 @@ export interface components {
        * ]
        */
       infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
-      /**
-       * Infoterms
-       * @description URL to page with terms and conditions for API usage
-       */
-      infoTerms?: string | null;
-      /**
-       * Infocontactname
-       * @description Platform contact name
-       * @default Tekst Administrator
-       */
-      infoContactName?: string | null;
-      /**
-       * Infocontactemail
-       * @description Platform contact email
-       * @default noreply@tekst-contact-email-not-set.com
-       */
-      infoContactEmail?: string | null;
-      /**
-       * Infocontacturl
-       * @description URL to page with contact info
-       */
-      infoContactUrl?: string | null;
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -3219,28 +3164,6 @@ export interface components {
        * ]
        */
       infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
-      /**
-       * Infoterms
-       * @description URL to page with terms and conditions for API usage
-       */
-      infoTerms?: string | null;
-      /**
-       * Infocontactname
-       * @description Platform contact name
-       * @default Tekst Administrator
-       */
-      infoContactName?: string | null;
-      /**
-       * Infocontactemail
-       * @description Platform contact email
-       * @default noreply@tekst-contact-email-not-set.com
-       */
-      infoContactEmail?: string | null;
-      /**
-       * Infocontacturl
-       * @description URL to page with contact info
-       */
-      infoContactUrl?: string | null;
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -7706,49 +7629,6 @@ export interface operations {
       /** @description No Content */
       204: {
         content: never;
-      };
-      /** @description Missing token or inactive user. */
-      401: {
-        content: never;
-      };
-    };
-  };
-  /** Login */
-  'auth:jwt.login': {
-    requestBody: {
-      content: {
-        'application/x-www-form-urlencoded': components['schemas']['Body_auth_jwt_login_auth_jwt_login_post'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['BearerResponse'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Logout */
-  'auth:jwt.logout': {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
       };
       /** @description Missing token or inactive user. */
       401: {

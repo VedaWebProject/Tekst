@@ -1,11 +1,10 @@
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import EmailStr, Field, StringConstraints
+from pydantic import Field, StringConstraints
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
-    CustomHttpUrl,
     DocumentBase,
     LocaleKey,
     ModelBase,
@@ -90,46 +89,6 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Short description of the platform, in multiple languages",
         ),
     ] = [{"locale": "*", "translation": _cfg.info.subtitle}]
-    info_terms: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(
-            max_length=512,
-        ),
-        Field(
-            description="URL to page with terms and conditions for API usage",
-        ),
-    ] = _cfg.info.terms
-    info_contact_name: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=64,
-        ),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-        Field(
-            description="Platform contact name",
-        ),
-    ] = _cfg.info.contact_name
-    info_contact_email: Annotated[
-        EmailStr | None,
-        StringConstraints(
-            max_length=64,
-        ),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-        Field(description="Platform contact email"),
-    ] = _cfg.info.contact_email
-    info_contact_url: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(
-            max_length=512,
-        ),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-        Field(
-            description="URL to page with contact info",
-        ),
-    ] = _cfg.info.contact_url
 
     # OPTIONS
     default_text_id: Annotated[

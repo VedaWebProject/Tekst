@@ -169,10 +169,6 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     minMaxCharsRule(1, 32, 'blur'),
   ],
   infoSubtitleTranslation: [minMaxCharsRule(1, 128, 'blur')],
-  infoTerms: [minMaxCharsRule(0, 512, 'blur')],
-  infoContactName: [minMaxCharsRule(0, 64, 'blur')],
-  infoContactEmail: [minMaxCharsRule(0, 64, 'blur')],
-  infoContactUrl: [minMaxCharsRule(0, 512, 'blur')],
   availableLocales: [
     {
       validator: (rule: FormItemRule, value: string[]) =>

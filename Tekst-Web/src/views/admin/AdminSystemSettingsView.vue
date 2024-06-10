@@ -130,42 +130,6 @@ function resetForm() {
         :translation-form-label="$t('models.platformSettings.infoSubtitle')"
         :translation-form-rule="platformSettingsFormRules.infoSubtitleTranslation"
       />
-      <!-- TERMS URL -->
-      <n-form-item path="infoTerms" :label="$t('models.platformSettings.infoTerms')">
-        <n-input
-          v-model:value="formModel.infoTerms"
-          type="text"
-          :placeholder="$t('models.platformSettings.infoTerms')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- CONTACT NAME -->
-      <n-form-item path="infoContactName" :label="$t('models.platformSettings.infoContactName')">
-        <n-input
-          v-model:value="formModel.infoContactName"
-          type="text"
-          :placeholder="$t('models.platformSettings.infoContactName')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- CONTACT EMAIL -->
-      <n-form-item path="infoContactEmail" :label="$t('models.platformSettings.infoContactEmail')">
-        <n-input
-          v-model:value="formModel.infoContactEmail"
-          type="text"
-          :placeholder="$t('models.platformSettings.infoContactEmail')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-      <!-- CONTACT URL -->
-      <n-form-item path="infoContactUrl" :label="$t('models.platformSettings.infoContactUrl')">
-        <n-input
-          v-model:value="formModel.infoContactUrl"
-          type="text"
-          :placeholder="$t('models.platformSettings.infoContactUrl')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
 
       <n-divider />
       <h3>{{ $t('admin.system.platformSettings.headingOptions') }}</h3>

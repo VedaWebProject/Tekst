@@ -11702,65 +11702,6 @@
               }
             ]
           },
-          "infoTerms": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512,
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infoterms",
-            "description": "URL to page with terms and conditions for API usage"
-          },
-          "infoContactName": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontactname",
-            "description": "Platform contact name",
-            "default": "Tekst Administrator"
-          },
-          "infoContactEmail": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64,
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontactemail",
-            "description": "Platform contact email",
-            "default": "noreply@tekst-contact-email-not-set.com"
-          },
-          "infoContactUrl": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512,
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontacturl",
-            "description": "URL to page with contact info"
-          },
           "defaultTextId": {
             "anyOf": [
               {
@@ -11881,65 +11822,6 @@
                 "translation": "An online text research platform"
               }
             ]
-          },
-          "infoTerms": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512,
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infoterms",
-            "description": "URL to page with terms and conditions for API usage"
-          },
-          "infoContactName": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontactname",
-            "description": "Platform contact name",
-            "default": "Tekst Administrator"
-          },
-          "infoContactEmail": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64,
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontactemail",
-            "description": "Platform contact email",
-            "default": "noreply@tekst-contact-email-not-set.com"
-          },
-          "infoContactUrl": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 512,
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Infocontacturl",
-            "description": "URL to page with contact info"
           },
           "defaultTextId": {
             "anyOf": [
