@@ -1,6 +1,2 @@
 /.env
 .vscode/
-
-# prepared example secrets directory
-/secrets/*
-!/secrets/README.md
