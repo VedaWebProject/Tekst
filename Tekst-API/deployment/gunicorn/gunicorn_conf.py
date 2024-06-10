@@ -1,4 +1,5 @@
 import multiprocessing
+import os
 
 
 bind = "0.0.0.0:8000"
@@ -7,4 +8,4 @@ worker_class = "uvicorn.workers.UvicornWorker"
 worker_tmp_dir = "/dev/shm"
 preload_app = True
 timeout = 240  # this has to be quite long as the workers also generate export data etc.
-loglevel = "info"  # will be overridden by app config
+loglevel = os.environ.get("TEKST_LOG_LEVEL", "INFO").upper()
