@@ -93,6 +93,8 @@ Run the complete application stack via
 docker compose up -d
 ```
 
+The container interfacing the host system and the application stack is now available locally at `127.0.0.1:8087`. If you wanted to change this port, you'd have to do so in the `docker-compose.yml`.
+
 !!! tip
 
     The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call `docker compose logs` from the same directory (the one containing the `docker-compose.yml`). If you only want to see the log output of one of the services, just append the service's name from the `docker-compose.yml` to the command, e.g. `docker compose logs api`.
