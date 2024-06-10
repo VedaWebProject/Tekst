@@ -65,6 +65,8 @@ tasks:
     cmds:
       - defer: { task: dev-stack-down }
       - task: dev-stack-up
+      - task: wait-for-mongodb
+      - task: wait-for-elasticsearch
       - task: run-dev
 
   schema:
