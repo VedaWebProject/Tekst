@@ -261,8 +261,8 @@ class TekstConfig(BaseSettings):
     )
 
     server_url: CustomHttpUrl = "http://127.0.0.1:8000"
-    web_path: str = "/"
     api_path: str = "/api"
+    web_path: str = "/"
 
     dev_mode: bool = False
     log_level: str = "warning"
