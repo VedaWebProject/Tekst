@@ -51,7 +51,7 @@ services:
       - mongo_db:/data/db
     networks:
       - mongo
-    command: mongod --setParameter diagnosticDataCollectionEnabled=false
+    command: ["mongod", "--quiet", "--setParameter", "diagnosticDataCollectionEnabled=false"]
     healthcheck:
       test: echo "db.getMongo()" | mongosh --norc --quiet --host=localhost:27017
       interval: 1m30s
@@ -67,6 +67,7 @@ services:
     environment:
       discovery.type: single-node
       xpack.security.enabled: false
+      logger.level: WARN
     deploy:
       resources:
         limits:
