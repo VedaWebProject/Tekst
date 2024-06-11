@@ -14,7 +14,7 @@ from humps import decamelize
 
 from tekst import tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.message import UserMessageDocument
 from tekst.models.notifications import TemplateIdentifier
 from tekst.models.user import (

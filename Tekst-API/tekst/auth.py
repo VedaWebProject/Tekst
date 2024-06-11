@@ -43,7 +43,7 @@ from fastapi_users_db_beanie.access_token import (
 from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument

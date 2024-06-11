@@ -1,6 +1,3 @@
-import os
-
-from tekst import logging
 from tekst.auth import _validate_required_password_chars
 
 
@@ -16,11 +13,3 @@ def test_password_chars_regex():
     assert _validate_required_password_chars("poiPOI098")
     assert _validate_required_password_chars("123foobAr")
     assert _validate_required_password_chars("1-2.3?f*o+obAr")
-
-
-def test_logging_setup_without_errors():
-    logging.setup_logging()
-    logging.log.info("foo bar")
-    os.environ["SERVER_SOFTWARE"] = "gunicorn"
-    logging.setup_logging()
-    logging.log.info("foo bar")

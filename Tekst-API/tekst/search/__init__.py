@@ -11,7 +11,7 @@ from elasticsearch import Elasticsearch
 
 from tekst import db, tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log, setup_logging
+from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -63,6 +63,7 @@ async def init_es_client(
                 )
             await asyncio.sleep(1)
         else:
+            log.critical(f"Could not connect to Elasticsearch at {es_uri}!")
             raise RuntimeError("Timed out waiting for Elasticsearch service!")
     return _es_client
 
@@ -168,7 +169,6 @@ async def create_index(
 
 
 async def util_create_index():
-    setup_logging()
     init_resource_types_mgr()
     await db.init_odm()
     await task_create_index()

@@ -3,10 +3,7 @@
   "info": {
     "title": "Tekst-Dev",
     "description": "An online text research platform",
-    "contact": {
-      "name": "Tekst Administrator",
-      "email": "noreply@tekst-contact-email-not-set.com"
-    },
+    "contact": {},
     "license": {
       "name": "AGPL-3.0-or-later",
       "url": "https://www.gnu.org/licenses/agpl-3.0.txt"

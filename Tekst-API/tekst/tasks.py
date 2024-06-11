@@ -13,7 +13,7 @@ from pydantic import Field, StringConstraints
 
 from tekst import errors
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
 

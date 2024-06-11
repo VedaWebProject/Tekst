@@ -14,8 +14,6 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
-    HttpUrl,
-    PlainSerializer,
     StringConstraints,
     conlist,
     create_model,
@@ -60,16 +58,6 @@ LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
 TranslationLocaleKey = TypeAliasType(
     "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
 )
-
-# Pydantic HttpUrl with string serialization
-CustomHttpUrl = Annotated[
-    HttpUrl,
-    PlainSerializer(
-        lambda url: str(url),
-        return_type=str,
-        when_used="always",
-    ),
-]
 
 
 # translations

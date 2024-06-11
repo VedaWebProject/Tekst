@@ -5,7 +5,7 @@ from bson import json_util
 
 from tekst import db
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logs import log
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data

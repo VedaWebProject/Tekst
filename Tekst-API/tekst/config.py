@@ -9,10 +9,15 @@ from urllib.parse import quote
 from uuid import uuid4
 
 from fastapi import Depends
+from humps import camelize
 from pydantic import (
+    BaseModel,
+    ConfigDict,
     DirectoryPath,
     EmailStr,
     Field,
+    HttpUrl,
+    PlainSerializer,
     StringConstraints,
     computed_field,
     field_validator,
@@ -20,11 +25,30 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
-from tekst.models.common import CustomHttpUrl, ModelBase
 from tekst.utils import validators as val
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
+
+
+# Pydantic HttpUrl with added string serialization
+CustomHttpUrl = Annotated[
+    HttpUrl,
+    PlainSerializer(
+        lambda url: str(url),
+        return_type=str,
+    ),
+]
+
+
+class ConfigSubSection(BaseModel):
+    """Base class for config sub sections"""
+
+    model_config = ConfigDict(
+        alias_generator=camelize,
+        populate_by_name=True,
+        from_attributes=True,
+    )
 
 
 def _select_env_files() -> list[str]:
@@ -67,7 +91,7 @@ def _select_env_files() -> list[str]:
     return env_files
 
 
-class DevelopmentModeConfig(ModelBase):
+class DevelopmentModeConfig(ConfigSubSection):
     """
     Development mode config sub section model
     (these values are all used exclusively internally)
@@ -78,7 +102,7 @@ class DevelopmentModeConfig(ModelBase):
     use_es: bool = True
 
 
-class MongoDBConfig(ModelBase):
+class MongoDBConfig(ConfigSubSection):
     """Database config sub section model"""
 
     protocol: str = "mongodb"
@@ -111,7 +135,7 @@ class MongoDBConfig(ModelBase):
         return f"{self.protocol}://{creds}{self.host}:{str(self.port)}"
 
 
-class ElasticsearchConfig(ModelBase):
+class ElasticsearchConfig(ConfigSubSection):
     """Elasticsearch config sub section model"""
 
     protocol: str = "http"
@@ -133,7 +157,7 @@ class ElasticsearchConfig(ModelBase):
         return f"{self.protocol}://{self.host}:{str(self.port)}"
 
 
-class SecurityConfig(ModelBase):
+class SecurityConfig(ConfigSubSection):
     """Security config sub section model"""
 
     secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
@@ -156,7 +180,7 @@ class SecurityConfig(ModelBase):
     init_admin_password: str | None = None
 
 
-class EMailConfig(ModelBase):
+class EMailConfig(ConfigSubSection):
     """Email-related things config sub section model"""
 
     smtp_server: str | None = "127.0.0.1"
@@ -167,7 +191,7 @@ class EMailConfig(ModelBase):
     from_address: str = "noreply@example-tekst-instance.org"
 
 
-class DocConfig(ModelBase):
+class DocConfig(ConfigSubSection):
     """Documentation config sub section model"""
 
     openapi_url: str = "/openapi.json"
@@ -175,7 +199,7 @@ class DocConfig(ModelBase):
     redoc_url: str = "/redoc"
 
 
-class InfoConfig(ModelBase):
+class InfoConfig(ConfigSubSection):
     """
     General information config sub section model
     (these values are used as defaults in the platform settings)
@@ -225,7 +249,7 @@ class InfoConfig(ModelBase):
         return dict(name="Tekst", **package_metadata)
 
 
-class CORSConfig(ModelBase):
+class CORSConfig(ConfigSubSection):
     """CORS config sub section model"""
 
     allow_origins: str | list[str] = ["*"]
@@ -241,7 +265,7 @@ class CORSConfig(ModelBase):
         return v
 
 
-class MiscConfig(ModelBase):
+class MiscConfig(ConfigSubSection):
     """Misc config sub section model"""
 
     usrmsg_force_delete_after_days: int = 365

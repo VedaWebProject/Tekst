@@ -6,7 +6,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.common import ModelBase, PydanticObjectId
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import ResourceBase, ResourceExportFormat

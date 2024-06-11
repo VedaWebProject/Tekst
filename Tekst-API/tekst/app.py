@@ -11,7 +11,7 @@ from starlette_csrf import CSRFMiddleware
 from tekst import db, search
 from tekst.config import TekstConfig, get_config
 from tekst.errors import TekstHTTPException
-from tekst.logging import log, setup_logging
+from tekst.logs import log
 from tekst.models.settings import PlatformSettings
 from tekst.openapi import customize_openapi
 from tekst.resources import init_resource_types_mgr
@@ -20,7 +20,6 @@ from tekst.settings import get_settings
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
-setup_logging()  # set up logging to match prod/dev requirements
 
 
 async def startup_routine(app: FastAPI) -> None:

@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute, APIRouter
 
 from tekst.auth import setup_auth_routes
-from tekst.logging import log
+from tekst.logs import log
 
 
 def _get_routers() -> Iterator[APIRouter]:

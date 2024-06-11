@@ -15,7 +15,7 @@ from fastapi import Body
 from humps import camelize
 from pydantic import Field, StringConstraints
 
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.common import ModelBase, PydanticObjectId, ReadBase
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
@@ -408,7 +408,7 @@ def init_resource_types_mgr() -> None:
     global resource_types_mgr
     if resource_types_mgr is not None:
         return resource_types_mgr
-    log.info("Initializing resource types...")
+    log.info("Registering resource types...")
     # init manager
     manager = ResourceTypesManager()
     # get internal resource type module names
@@ -433,7 +433,9 @@ def init_resource_types_mgr() -> None:
                 resource_type_class.content_model().read_model()
                 resource_type_class.content_model().update_model()
                 # register resource type instance with resource type manager
-                log.info(f"Registering resource type: {resource_type_class.get_name()}")
+                log.debug(
+                    f"Registering resource type: {resource_type_class.get_name()}"
+                )
                 manager.register(resource_type_class, resource_type_class.get_key())
     resource_types_mgr = manager
 

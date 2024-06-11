@@ -4,7 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
 from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
-from tekst.logging import log
+from tekst.logs import log
 from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
@@ -24,8 +24,13 @@ _db_client: DatabaseClient = None
 def _init_db_client(db_uri: str | None = None) -> DatabaseClient:
     global _db_client
     if _db_client is None:
-        log.info("Initializing database client...")
-        _db_client = DatabaseClient(db_uri or get_config().db.uri)
+        log.debug("Initializing database client...")
+        db_uri = db_uri or get_config().db.uri
+        try:
+            _db_client = DatabaseClient(db_uri)
+        except Exception as e:
+            log.critical(f"Could not connect to database at {db_uri}: {e}")
+            raise RuntimeError(f"Could not initialize database client: {e}")
     return _db_client
 
 
@@ -40,7 +45,7 @@ def get_db(
 
 
 async def init_odm(db: Database = get_db()) -> None:
-    log.info("Initializing ODM...")
+    log.debug("Initializing ODM...")
     # collect basic document models
     models = [
         TextDocument,
