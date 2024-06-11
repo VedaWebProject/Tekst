@@ -71,7 +71,7 @@ const actionOptions = computed(() => [
         : [
             {
               label: $t('admin.users.userItemActions.setActive'),
-              key: 'setVerified',
+              key: 'setActive',
               icon: renderIcon(CheckCircleIcon, 'var(--col-success'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('activateClick', props.targetUser, true),
