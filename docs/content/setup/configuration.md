@@ -4,7 +4,7 @@ The following table lists all the configuration values that can be set as enviro
 
 !!! note
 
-    Only `TEKST_INFO__PLATFORM_NAME` and `TEKST_INFO__SUBTITLE` are merely used as initial values and can be changed later using the system settings UI of the running application as an administrator. All other configuration values can _only be set via this configuration_ and require an application restart or even rebuild when changed, depending on their scope.
+    `TEKST_INFO__PLATFORM_NAME` and `TEKST_INFO__SUBTITLE` are merely used as initial values and can be changed later by administrators using the system settings UI of the running application. All other configuration values can _only be set via this configuration_ and require an application restart to take effect.
 
 | Variable | Description |
 | --- | --- |
