@@ -8,6 +8,7 @@ FROM python:3.10-slim-bullseye AS base
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -90,8 +91,8 @@ RUN rm -rf dist deps
 
 # install uvicorn ASGI workers and gunicorn WSGI server
 RUN python3 -m pip install \
-        "uvicorn[standard]>=0.18,<1.0" \
-        "gunicorn>=20.1,<21.0"
+        "uvicorn[standard]==0.30.0" \
+        "gunicorn==22.0.0"
 
 HEALTHCHECK \
     --interval=2m \
@@ -103,7 +104,6 @@ HEALTHCHECK \
 RUN groupadd -g 1000 tekst && \
     useradd -m -u 1000 -g tekst tekst
 
-# copy WSGI config
 COPY ./deployment/gunicorn/gunicorn_conf.py ./
 COPY ./deployment/entrypoint.sh /
 
@@ -112,6 +112,3 @@ USER tekst
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-# additional arguments are appended to gunicorn command call
-# CMD []
