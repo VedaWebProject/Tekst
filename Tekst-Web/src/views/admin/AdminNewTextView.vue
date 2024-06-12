@@ -30,7 +30,7 @@ const initialModel = (): NewTextModel => ({
 const router = useRouter();
 const { message } = useMessages();
 const state = useStateStore();
-const { pfData, patchPfData } = usePlatformData();
+const { loadPlatformData } = usePlatformData();
 const model = ref<Record<string, any>>(initialModel());
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
@@ -59,9 +59,7 @@ async function handleSave() {
           body: model.value as TextCreate,
         });
         if (!error) {
-          patchPfData({
-            texts: [...(pfData.value?.texts || []), createdText],
-          });
+          await loadPlatformData();
           state.text = createdText || state.text;
           router.push({ name: 'adminTextsSettings', params: { text: createdText.slug } });
           message.success($t('admin.newText.msgSaveSuccess', { title: createdText.title }));

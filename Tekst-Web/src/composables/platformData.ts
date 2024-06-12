@@ -1,7 +1,6 @@
 import { computed, ref } from 'vue';
 import { GET } from '@/api';
 import type { ClientSegmentRead, PlatformData } from '@/api';
-import _mergeWith from 'lodash.mergewith';
 
 const pfData = ref<PlatformData>();
 const loadedInfoSegments = ref<ClientSegmentRead[]>([]);
@@ -69,14 +68,5 @@ export function usePlatformData() {
     }
   }
 
-  function patchPfData(updates: Record<string, any>) {
-    _mergeWith(pfData.value, updates, (_, srcValue) => {
-      if (Array.isArray(srcValue)) {
-        return srcValue;
-      }
-    });
-    _cleanLoadedInfoSegments();
-  }
-
-  return { pfData, loadPlatformData, getSegment, patchPfData, systemHome };
+  return { pfData, loadPlatformData, getSegment, systemHome };
 }

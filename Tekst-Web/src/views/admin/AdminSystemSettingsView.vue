@@ -28,7 +28,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const state = useStateStore();
-const { pfData, patchPfData } = usePlatformData();
+const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
 const getFormModel = (): PlatformSettingsUpdate => _cloneDeep(pfData.value?.settings || {});
@@ -57,13 +57,11 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
-      const { data, error } = await PATCH('/platform/settings', {
+      const { error } = await PATCH('/platform/settings', {
         body: getChanges(),
       });
       if (!error) {
-        patchPfData({
-          settings: data,
-        });
+        await loadPlatformData();
         // If the current locale is invalid after updating the settings,
         // this call will fix it!
         await state.setLocale(state.locale);
