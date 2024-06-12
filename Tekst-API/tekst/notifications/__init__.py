@@ -69,7 +69,9 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
                 log.debug(
                     "Skipping StartTLS handshake, using unencrypted connection..."
                 )
-            smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
+            if _cfg.email.smtp_user and _cfg.email.smtp_password:
+                log.debug("Logging in to SMTP server...")
+                smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
     except Exception as e:  # pragma: no cover
