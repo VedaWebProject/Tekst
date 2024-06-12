@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!storageData) return;
     try {
       user.value = JSON.parse(storageData) as UserRead;
-      loadUserData();
+      _loadUserData();
     } catch {
       logout();
     }
@@ -110,13 +110,12 @@ export const useAuthStore = defineStore('auth', () => {
     loginModalState.value = {};
   }
 
-  async function loadUserData() {
+  async function _loadUserData() {
     // load core user data
     const { data, error } = await GET('/users/me', {});
     if (!error) {
       user.value = data;
       localStorage.setItem('user', JSON.stringify(user.value));
-      userMessages.startThreadsPolling();
       return user.value;
     } else {
       logout();
@@ -135,9 +134,9 @@ export const useAuthStore = defineStore('auth', () => {
       // init session
       _setCookieExpiry();
       _startSessionCheck();
-      const userData = await loadUserData();
+      const userData = await _loadUserData();
       if (!userData) return;
-      await loadPlatformData(); // load platform data
+      await loadPlatformData();
       // process user locale
       if (!userData.locale) {
         updateUser({ locale: state.locale }); // no need to wait
@@ -149,9 +148,7 @@ export const useAuthStore = defineStore('auth', () => {
           })
         );
       }
-      // initialize user messages polling
       userMessages.startThreadsPolling();
-      // login complete!
       message.success($t('general.welcome', { name: userData.name }));
       closeLoginModal();
       return true;
