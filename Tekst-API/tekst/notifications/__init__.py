@@ -21,6 +21,7 @@ from tekst.models.user import (
     UserDocument,
     UserRead,
 )
+from tekst.settings import get_settings
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -90,6 +91,10 @@ async def send_notification(
 ):
     templates = _get_notification_templates(template_id, to_user.locale or "enUS")
     msg_parts = dict()
+    settings = await get_settings()
+    msg_attrs_platform = _cfg.info.model_dump(exclude={"tekst"})
+    msg_attrs_platform.update({"platform_name": settings.info_platform_name})
+    msg_attrs_to_user = {f"to_user_{k}": v for k, v in to_user.model_dump().items()}
     for key in templates:
         msg_parts[key] = (
             templates[key]
@@ -98,8 +103,8 @@ async def send_notification(
                     str(_cfg.server_url),
                     _cfg.web_path,
                 ).strip("/"),
-                **_cfg.info.model_dump(exclude={"tekst"}),
-                **{f"to_user_{k}": v for k, v in to_user.model_dump().items()},
+                **msg_attrs_platform,
+                **msg_attrs_to_user,
                 **kwargs,
             )
             .strip()
