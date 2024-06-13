@@ -1,0 +1,43 @@
+name: Generate Lines of Code Badge
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Tekst-API/**'
+      - 'Tekst-Web/**'
+      - 'Tekst-Util/**'
+  workflow_dispatch:
+
+jobs:
+  loc:
+    runs-on: ubuntu-latest
+    name: Generate Lines of Code Badge
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Launch the local action
+        uses: ./
+        id: badge
+        with:
+          debug: false
+          directory: ./
+          badge: ./output/badge.svg
+          patterns: '*.py|*.js|*.ts|*.vue|*.sh|*.cjs|*.mjs'
+          ignore: 'schema.d.ts'
+
+      - name: Print the output
+        run: |
+          echo "Scanned: ${{ steps.badge.outputs.counted_files }}";
+          echo "Line Count: ${{ steps.badge.outputs.total_lines }}";
+
+      - name: Deploy to repo-assets branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./badges
+          publish_branch: repo-assets
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
