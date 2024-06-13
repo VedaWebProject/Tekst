@@ -114,6 +114,7 @@ export const useThemeStore = defineStore('theme', () => {
   return {
     darkMode,
     toggleThemeMode,
+    browserDarkThemePreferred,
     theme,
     overrides,
     mainBgColor,

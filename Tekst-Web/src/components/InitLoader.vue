@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useLogo } from '@/composables/logo';
 import { useStateStore } from '@/stores';
 import { useLoadingBar } from 'naive-ui';
 import { computed, onBeforeMount } from 'vue';
@@ -24,6 +25,7 @@ const props = withDefaults(
   }
 );
 
+const { pageLogo } = useLogo();
 const state = useStateStore();
 const loadingBar = useLoadingBar();
 const router = useRouter();
@@ -51,6 +53,7 @@ onBeforeMount(() => {
   <transition name="fade">
     <div v-if="props.show" class="global-loader-container">
       <div class="global-loader" :style="dynamicStyle">
+        <img class="global-loader-logo" :src="pageLogo" />
         <div
           class="global-loader-text"
           :style="{ visibility: state.initLoadingProgress < 1 ? 'visible' : 'hidden' }"
@@ -80,6 +83,12 @@ onBeforeMount(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.global-loader-logo {
+  height: 4rem;
+  width: auto;
+  margin-bottom: var(--layout-gap);
 }
 
 .global-loader-text {

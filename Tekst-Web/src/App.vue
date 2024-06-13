@@ -20,6 +20,8 @@ import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
 import TasksWidget from '@/components/TasksWidget.vue';
+import { useLogo } from '@/composables/logo';
+import { useFavicon } from '@vueuse/core';
 
 const state = useStateStore();
 const theme = useThemeStore();
@@ -28,6 +30,10 @@ const { initialized, error } = useInitializeApp();
 // i18n
 const nUiLangLocale = computed(() => getLocaleProfile(state.locale)?.nUiLangLocale);
 const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLocale);
+
+// favicon
+const { favicon } = useLogo();
+useFavicon(favicon, { rel: 'icon' });
 </script>
 
 <template>

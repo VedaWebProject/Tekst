@@ -6,21 +6,18 @@ import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
-import { useAuthStore, useBrowseStore, useStateStore, useThemeStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { useRoute, RouterLink } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
 import DrawerMenu from './DrawerMenu.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import logo from '@/assets/logo.png';
-import logoDarkmode from '@/assets/logo-darkmode.png';
 import { HamburgerMenuIcon } from '@/icons';
-import { STATIC_PATH } from '@/common';
+import { useLogo } from '@/composables/logo';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
-const theme = useThemeStore();
 const state = useStateStore();
 const browse = useBrowseStore();
 const route = useRoute();
@@ -31,17 +28,7 @@ const showUserActionsButton = computed(
   () => pfData.value?.security?.closedMode === false || auth.loggedIn
 );
 
-const customLogoError = ref(false);
-const logoPath = computed(() =>
-  customLogoError.value
-    ? theme.darkMode
-      ? logoDarkmode
-      : logo
-    : theme.darkMode
-      ? `${STATIC_PATH}/logo-darkmode.png`
-      : `${STATIC_PATH}/logo.png`
-);
-
+const { pageLogo } = useLogo();
 const titleLinkTo = computed(() => {
   if (systemHome.value) {
     return '/';
@@ -69,7 +56,7 @@ watch(
     class="navbar"
     :class="state.smallScreen && 'navbar-smallscreen'"
   >
-    <img class="navbar-logo" alt="" :src="logoPath" @error="customLogoError = true" />
+    <img class="navbar-logo" alt="" :src="pageLogo" />
     <div class="navbar-title">
       <router-link :to="titleLinkTo">
         <div class="text-gigantic">{{ pfData?.settings.infoPlatformName }}</div>
