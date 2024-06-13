@@ -69,8 +69,11 @@ const showJumpToModal = ref(false);
 const formRef = ref<FormInst | null>(null);
 const resource = ref<AnyResourceRead>();
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
-const originalResourceTitle = computed(
-  () => resources.ofText.find((r) => r.id === resource.value?.originalId)?.title
+const originalResourceTitle = computed(() =>
+  pickTranslation(
+    resources.ofText.find((r) => r.id === resource.value?.originalId)?.title,
+    state.locale
+  )
 );
 const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
 const locationPath = ref<LocationRead[]>();

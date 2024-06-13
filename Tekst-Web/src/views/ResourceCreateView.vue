@@ -23,6 +23,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 import { ResourceIcon, ArrowBackIcon, WarningIcon } from '@/icons';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
+import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();
 const router = useRouter();
@@ -91,7 +92,9 @@ async function handleSaveClick() {
         body: model.value,
       });
       if (!error) {
-        message.success($t('resources.create.msgSaved', { title: data.title }));
+        message.success(
+          $t('resources.create.msgSaved', { title: pickTranslation(data.title, state.locale) })
+        );
         resources.add(data);
         router.push({ name: 'resources', params: { text: state.text?.slug } });
       }

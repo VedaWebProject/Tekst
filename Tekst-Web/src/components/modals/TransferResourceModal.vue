@@ -17,13 +17,15 @@ import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
-
+import { pickTranslation } from '@/utils';
 import { UserIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{ resource?: AnyResourceRead; loading?: boolean }>();
 const emit = defineEmits(['submit']);
 const show = defineModel<boolean>('show');
 
+const state = useStateStore();
 const { message } = useMessages();
 
 const initialUserSearchQuery = (): PublicUserSearchFilters => ({
@@ -32,6 +34,7 @@ const initialUserSearchQuery = (): PublicUserSearchFilters => ({
   emptyOk: false,
 });
 
+const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 const formModel = ref<{ userId: string | undefined }>({ userId: undefined });
 const formRef = ref<FormInst | null>(null);
 const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());
@@ -86,7 +89,7 @@ async function handleOkClick() {
       {{ $t('resources.warnTransfer') }}
     </n-alert>
     <div style="margin-bottom: var(--layout-gap)">
-      {{ resource?.title }} – {{ $t('resources.transferAction') }}:
+      {{ resourceTitle }} – {{ $t('resources.transferAction') }}:
     </div>
     <n-form
       ref="formRef"
