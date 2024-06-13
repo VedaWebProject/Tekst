@@ -77,7 +77,7 @@ async function registerUser() {
         message.warning($t('account.settings.msgVerifyEmailWarning'));
       }
     }
-    switchToLogin();
+    router.push({ name: 'home' });
   }
   loading.value = false;
 }
@@ -108,7 +108,7 @@ function switchToLogin() {
 onMounted(() => {
   if (
     (auth.loggedIn && !auth.user?.isSuperuser) ||
-    (pfData.value?.security?.closedMode && !auth.loggedIn)
+    (!auth.loggedIn && pfData.value?.security?.closedMode)
   ) {
     router.push({ name: 'home' });
   }
