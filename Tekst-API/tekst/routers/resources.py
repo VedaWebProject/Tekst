@@ -669,9 +669,15 @@ async def download_resource_template(
     tempfile.write(json.dumps(template, indent=2, sort_keys=True))
     tempfile.flush()
 
-    # prepare headers
-    filename = f"{text_doc.slug}_{resource_doc.id}_template.json"
-    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+    # prepare headers ... according to
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+    # the filename should be quoted, but then Safari decides to download the file
+    # with a quoted filename :(
+    headers = {
+        "Content-Disposition": (
+            f"attachment; filename={text_doc.slug}_{resource_doc.id}_template.json"
+        )
+    }
 
     log.debug(f"Serving resource template as temporary file {tempfile.name}")
     return FileResponse(
@@ -1064,7 +1070,11 @@ async def download_resource_export(
     filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
         task.result
     )
-    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+    # prepare headers ... according to
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+    # the filename should be quoted, but then Safari decides to download the file
+    # with a quoted filename :(
+    headers = {"Content-Disposition": f"attachment; filename={filename}"}
 
     return FileResponse(
         path=cfg.temp_files_dir / tempfile_name,

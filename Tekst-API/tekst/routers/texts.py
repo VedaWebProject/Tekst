@@ -124,9 +124,15 @@ async def download_structure_template(
         structure_def.model_dump_json(indent=2, by_alias=True, exclude_none=True)
     )
     tempfile.flush()
-    # prepare headers
-    filename = f"{text.slug}_structure_template.json"
-    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+    # prepare headers ... according to
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+    # the filename should be quoted, but then Safari decides to download the file
+    # with a quoted filename :(
+    headers = {
+        "Content-Disposition": (
+            f"attachment; filename={text.slug}_structure_template.json"
+        )
+    }
     # return structure template file
     log.debug(f"Serving resource template as temporary file {tempfile.name}")
     return FileResponse(
