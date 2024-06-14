@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NButton, NSpin, NInput, NIcon } from 'naive-ui';
+import { NSpin, NInput, NIcon } from 'naive-ui';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useHelp } from '@/composables/help';
 import { computed, onMounted, ref } from 'vue';
@@ -73,23 +73,16 @@ watch(
   </div>
 
   <div class="content-block">
-    <ul
-      v-if="helpTextsFiltered"
-      style="
-        display: flex;
-        flex-direction: column;
-        list-style-type: circle;
-        margin: var(--content-gap) 0;
-      "
-    >
+    <ul v-if="helpTextsFiltered" style="list-style-type: circle">
       <li
         v-for="[textKey, text] of helpTextsFiltered"
         :key="textKey"
         :title="text.title || textKey"
+        style="margin-bottom: 0.4rem"
       >
-        <n-button text @click="(e) => handleClick(e, textKey)">
+        <span class="help-topic" @click="(e) => handleClick(e, textKey)">
           {{ text.title || textKey }}
-        </n-button>
+        </span>
       </li>
     </ul>
     <n-spin v-else-if="loading" class="centered-spinner" />
@@ -111,4 +104,13 @@ watch(
   </generic-modal>
 </template>
 
-<style scoped></style>
+<style scoped>
+.help-topic {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.help-topic:hover {
+  color: var(--accent-color);
+}
+</style>
