@@ -573,7 +573,7 @@ account:
     message: Nachricht
     headingThreads: Unterhaltungen
     msgCount: Diese Unterhaltung enthält keine Nachrichten | Diese Unterhaltung enthält eine Nachricht | Diese Unterhaltung enthält {count} Nachrichten
-    msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesenen Nachricht | Sie haben {count} ungelesenen Nachrichten'
+    msgUnreadCount: 'Sie haben keine ungelesenen Nachrichten | Sie haben eine ungelesene Nachricht | Sie haben {count} ungelesene Nachrichten'
     createSuccess: Nachricht gesendet
     deleteThread: Diese Unterhaltung löschen
     deleteThreadSuccess: Unterhaltung gelöscht
