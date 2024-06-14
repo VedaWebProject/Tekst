@@ -104,10 +104,10 @@ function resetPagination() {
             custom
           >
             <n-list-item @click="navigate">
-              <div style="display: flex; align-items: center; gap: var(--content-gap)">
+              <n-flex :wrap="false">
                 <user-avatar :avatar-url="user.avatarUrl || undefined" :size="64" />
                 <user-thing-header :user="user" />
-              </div>
+              </n-flex>
             </n-list-item>
           </router-link>
         </n-list>

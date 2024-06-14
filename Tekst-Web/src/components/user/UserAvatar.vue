@@ -16,10 +16,15 @@ defineProps<{
     round
     :src="avatarUrl || undefined"
     :render-fallback="() => h(NIcon, { component: fallbackIcon || UserIcon })"
-    style="justify-content: center; align-items: center; background-color: #eee"
     :size="size"
     object-fit="cover"
     color="var(--accent-color-fade4)"
+    :style="{
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'var(--main-bg-color)',
+      flexShrink: 0,
+    }"
   >
     <n-icon v-if="!avatarUrl" :component="fallbackIcon || UserIcon" :size="size" />
   </n-avatar>
