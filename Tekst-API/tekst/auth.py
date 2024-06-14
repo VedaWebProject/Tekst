@@ -190,7 +190,12 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         request: Request | None = None,
         response: Response | None = None,
     ):
-        pass  # nothing to do here ATM
+        if not user.seen:
+            if user.seen is None:
+                user.seen = False
+            else:
+                user.seen = True
+            await user.replace()
 
     async def on_after_request_verify(
         self, user: UserDocument, token: str, request: Request | None = None

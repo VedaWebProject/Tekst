@@ -1,5 +1,4 @@
 general:
-  welcome: Welcome, {name}!
   general: General
   status: Status
   tipThemeToggleLight: Switch to light mode
@@ -520,8 +519,6 @@ account:
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
   switchToRegister: Register New User
-  localeUpdated: Your account language has been changed to {locale}.
-  localeApplied: The language has been changed to {locale} according to your account settings.
   verify:
     success: Your email address has been successfully verified! You can now log into your account.
   forgotPassword:
@@ -575,6 +572,10 @@ account:
     btnSend: Send
     msgNoMessages: You haven't sent or received any messages.
     btnSendMessageToUser: Send message to {'@'}{username}
+  welcome: Welcome, {name}!
+  welcomeFirstTime: |
+    Welcome, {name}! You are here for the first time – a good time to visit your
+    account settings to complete your profile and personal settings!
 
 community:
   heading: Community

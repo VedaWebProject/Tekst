@@ -14892,6 +14892,11 @@
             "default": [
               "userAwaitsActivation"
             ]
+          },
+          "seen": {
+            "type": "boolean",
+            "title": "Seen",
+            "default": false
           }
         },
         "type": "object",
@@ -15207,6 +15212,11 @@
               "userAwaitsActivation"
             ]
           },
+          "seen": {
+            "type": "boolean",
+            "title": "Seen",
+            "default": false
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -15470,6 +15480,11 @@
             "default": [
               "userAwaitsActivation"
             ]
+          },
+          "seen": {
+            "type": "boolean",
+            "title": "Seen",
+            "default": false
           }
         },
         "type": "object",

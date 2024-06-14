@@ -9,7 +9,6 @@ import type { TextRead, TranslationLocaleKey } from '@/api';
 import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
-import { useMessages } from '@/composables/messages';
 import type { LocaleKey } from '@/api';
 import { pickTranslation } from '@/utils';
 
@@ -19,7 +18,6 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
   const auth = useAuthStore();
   const windowSize = useWindowSize();
-  const { message } = useMessages();
 
   // locale
 
@@ -69,7 +67,6 @@ export const useStateStore = defineStore('state', () => {
     if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {
       try {
         await auth.updateUser({ locale: effectiveLocale.key });
-        message.info($t('account.localeUpdated', { locale: effectiveLocale.displayFull }));
       } catch {
         // do sweet FA
       }

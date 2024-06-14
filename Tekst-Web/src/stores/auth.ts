@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import type { UserRead, UserUpdate } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { GET, PATCH, POST, optionsPresets } from '@/api/index';
-import { $t, getLocaleProfile } from '@/i18n';
+import { $t } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
@@ -142,14 +142,14 @@ export const useAuthStore = defineStore('auth', () => {
         updateUser({ locale: state.locale }); // no need to wait
       } else if (userData.locale !== state.locale) {
         await state.setLocale(userData.locale, false);
-        message.info(
-          $t('account.localeApplied', {
-            locale: getLocaleProfile(userData.locale)?.displayFull,
-          })
-        );
       }
       userMessages.startThreadsPolling();
-      message.success($t('general.welcome', { name: userData.name }));
+      // welcome
+      if (userData.seen) {
+        message.success($t('account.welcome', { name: userData.name }), undefined, 3);
+      } else {
+        message.success($t('account.welcomeFirstTime', { name: userData.name }), undefined, 30);
+      }
       closeLoginModal();
       return true;
     } else {

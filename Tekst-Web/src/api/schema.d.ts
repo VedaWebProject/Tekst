@@ -4726,6 +4726,11 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
+      /**
+       * Seen
+       * @default false
+       */
+      seen?: boolean;
     };
     /** UserMessageCreate */
     UserMessageCreate: {
@@ -4873,6 +4878,11 @@ export interface components {
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
       /**
+       * Seen
+       * @default false
+       */
+      seen?: boolean;
+      /**
        * Createdat
        * Format: date-time
        */
@@ -4944,6 +4954,11 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
+      /**
+       * Seen
+       * @default false
+       */
+      seen?: boolean;
     };
     /** UsersSearchResult */
     UsersSearchResult: {

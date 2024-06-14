@@ -1,5 +1,4 @@
 general:
-  welcome: Willkommen, {name}!
   general: Allgemein
   status: Status
   tipThemeToggleLight: Zu hellem Farbschema wechseln
@@ -531,8 +530,6 @@ account:
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   switchToRegister: Neues Konto registrieren
-  localeUpdated: Die Sprache für Ihren Account wurde zu {locale} geändert.
-  localeApplied: Die Sprache wurde entsprechend Ihrer Account-Einstellungen zu {locale} geändert.
   verify:
     success: Ihre E-Mail-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.
   forgotPassword:
@@ -586,6 +583,11 @@ account:
     btnSend: Senden
     msgNoMessages: Sie haben keine Nachrichten gesendet oder erhalten.
     btnSendMessageToUser: Nachricht an {'@'}{username} senden
+  welcome: Willkommen, {name}!
+  welcomeFirstTime: |
+    Willkommen, {name}! Sie sind zum ersten mal hier – ein guter Zeitpunkt, um Ihre
+    Konto-Einstellungen zu besuchen, Ihr Profil zu vervollständigen und persönliche
+    Einstellungen vorzunehmen!
 
 community:
   heading: Gemeinschaft

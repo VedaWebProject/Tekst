@@ -137,6 +137,7 @@ class User(ModelBase, ModelFactoryMixin):
     admin_notification_triggers: AdminNotificationTriggers = list(
         get_args(AdminNotificationTrigger.__value__)
     )
+    seen: bool | None = None
 
 
 class UserDocument(User, BeanieBaseUser, Document):
