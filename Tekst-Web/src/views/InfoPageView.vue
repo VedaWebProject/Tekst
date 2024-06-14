@@ -37,6 +37,6 @@ watchEffect(async () => {
       {{ page.title }}
     </icon-heading>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="content-block content-block-main" v-html="page.html"></div>
+    <div class="content-block" v-html="page.html"></div>
   </template>
 </template>
