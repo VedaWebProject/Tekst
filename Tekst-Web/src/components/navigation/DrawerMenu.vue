@@ -36,10 +36,18 @@ const allMenuOptions = computed(() => [
     type: 'group',
     key: 'general-group',
     label: $t('general.platform'),
-    children: mainMenuOptions.value
-      .concat(mainMenuOptions.value.find((o) => o.key === 'info')?.children || [])
-      .filter((o) => o.key !== 'info'),
+    children: mainMenuOptions.value.filter((o) => o.key !== 'info'),
   },
+  ...(mainMenuOptions.value.find((o) => o.key === 'info')?.children?.length
+    ? [
+        {
+          type: 'group',
+          key: 'info-group',
+          label: mainMenuOptions.value.find((o) => o.key === 'info')?.label,
+          children: mainMenuOptions.value.find((o) => o.key === 'info')?.children,
+        },
+      ]
+    : []),
   ...(auth.loggedIn
     ? [
         {
@@ -69,13 +77,13 @@ const allMenuOptions = computed(() => [
       <template #header>
         <n-flex justify="center">
           <quick-search-widget />
-          <theme-mode-switcher />
+          <theme-mode-switcher @click="show = false" />
           <locale-switcher />
-          <help-nav-button />
+          <help-nav-button @click="show = false" />
           <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
         </n-flex>
       </template>
-      <navigation-menu mode="vertical" :options="allMenuOptions" />
+      <navigation-menu mode="vertical" :options="allMenuOptions" @select="() => (show = false)" />
     </n-drawer-content>
   </n-drawer>
 </template>

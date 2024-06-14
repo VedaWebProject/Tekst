@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { NFlex, NButton, NIcon } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
@@ -7,7 +7,7 @@ import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
-import { useRoute, RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
@@ -20,7 +20,6 @@ const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
 const browse = useBrowseStore();
-const route = useRoute();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
 const menuOpen = ref(false);
@@ -40,13 +39,6 @@ const titleLinkTo = computed(() => {
     };
   }
 });
-
-watch(
-  () => route.name,
-  () => {
-    menuOpen.value = false;
-  }
-);
 </script>
 
 <template>

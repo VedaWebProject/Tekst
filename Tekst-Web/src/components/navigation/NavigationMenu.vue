@@ -18,6 +18,7 @@ const props = withDefaults(
     center: false,
   }
 );
+const emit = defineEmits(['select']);
 
 const state = useStateStore();
 
@@ -47,6 +48,7 @@ const menuStyle = computed(() => ({
       :mode="mode"
       :value="$route.name?.toString()"
       :style="menuStyle"
+      @select="() => emit('select')"
     />
   </div>
 </template>
