@@ -48,9 +48,9 @@ const browse = useBrowseStore();
       :resource="resource"
     />
     <content-comment-widget :resource="resource" />
-    <resource-info-widget :resource="resource" />
     <resource-export-widget :resource="resource" />
     <content-edit-widget :resource="resource" />
+    <resource-info-widget :resource="resource" />
     <resource-deactivate-widget :resource="resource" />
   </div>
 </template>
