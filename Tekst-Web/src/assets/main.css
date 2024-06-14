@@ -149,6 +149,10 @@ code {
   box-shadow: var(--block-box-shadow);
 }
 
+.content-block-main {
+  padding: 2rem;
+}
+
 .accent-color-bg {
   background-color: var(--accent-color);
   color: #fff;
