@@ -193,6 +193,18 @@ async function handleDelete() {
         />
       </n-form-item>
 
+      <n-form-item :show-label="false">
+        <n-flex vertical>
+          <!-- LABELLED LOCATION -->
+          <labelled-switch
+            v-model="model.labeledLocation"
+            :label="$t('models.text.labeledLocation')"
+          />
+          <!-- ACTIVE -->
+          <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+        </n-flex>
+      </n-form-item>
+
       <!-- ACCENT COLOR -->
       <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
         <n-color-picker
@@ -210,18 +222,6 @@ async function handleDelete() {
             '#88447F',
           ]"
         />
-      </n-form-item>
-
-      <n-form-item :label="$t('general.flags')">
-        <n-flex vertical>
-          <!-- LABELLED LOCATION -->
-          <labelled-switch
-            v-model="model.labeledLocation"
-            :label="$t('models.text.labeledLocation')"
-          />
-          <!-- ACTIVE -->
-          <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
-        </n-flex>
       </n-form-item>
 
       <!-- RESOURCE CATEGORIES-->

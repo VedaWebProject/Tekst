@@ -27,7 +27,6 @@ general:
   important: Important
   filters: Filters
   selected: selected
-  flags: Flags
   language: Language
   platform: Platform
   not: not
@@ -257,13 +256,13 @@ models:
     levelLabel: Label
     defaultLevel: Default level
     locDelim: Location delimiter
-    labeledLocation: Labelled location
+    labeledLocation: Include level in location labels
     accentColor: Accent color
     resourceCategories: Resource Categories
     resourceCategoryKey: Key
     resourceCategoryTranslation: Label
-    isActive: Active, publicly listed
-    isInactive: Inactive, not publicly listed
+    isActive: Publicly listed
+    isInactive: Not publicly listed
     formRulesFeedback:
       slugChars: 'Allowed characters: a-z and 0-9'
       defaultLevelRange: 0 or greater

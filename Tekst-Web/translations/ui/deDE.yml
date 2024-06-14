@@ -28,7 +28,6 @@ general:
   important: Wichtig
   filters: Filter
   selected: ausgewählt
-  flags: Merkmale
   language: Sprache
   platform: Plattform
   not: nicht
@@ -260,13 +259,13 @@ models:
     levelLabel: Bezeichnung
     defaultLevel: Standardebene
     locDelim: Fundstellentrennzeichen
-    labeledLocation: Beschriftete Fundstelle
+    labeledLocation: Ebene in Bezeichnung der Fundstellen einschließen
     accentColor: Akzentfarbe
     resourceCategories: Ressourcen-Kategorien
     resourceCategoryKey: Schlüssel
     resourceCategoryTranslation: Beschriftung
-    isActive: Aktiv, öffentlich gelistet
-    isInactive: Inaktiv, nicht öffentlich gelistet
+    isActive: Öffentlich gelistet
+    isInactive: Nicht öffentlich gelistet
     formRulesFeedback:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
