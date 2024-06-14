@@ -234,7 +234,7 @@ models:
     password: Password
     name: Name
     affiliation: Affiliation
-    avatarUrl: Avatar Image URL (max. 200px width/height recommended!)
+    avatarUrl: Avatar Image URL (64-512 pixels width/height recommended!)
     bio: Biography
     isActive: active
     isInactive: inactive
