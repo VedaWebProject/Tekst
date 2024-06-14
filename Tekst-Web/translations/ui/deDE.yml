@@ -181,6 +181,8 @@ browse:
     widgets:
       contentComment:
         title: Kommentar
+      contentEdit:
+        title: Inhalt bearbeiten
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
       infoWidget:

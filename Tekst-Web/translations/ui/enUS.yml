@@ -177,6 +177,8 @@ browse:
     widgets:
       contentComment:
         title: Comment
+      contentEdit:
+        title: Edit content
       deepLTranslate:
         title: Open DeepL translation
       infoWidget:
