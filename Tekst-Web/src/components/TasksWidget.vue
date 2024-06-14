@@ -52,8 +52,8 @@ function handleTaskClick(id: string) {
     id="tasks-widget"
     type="primary"
     menu-trigger="click"
-    :right="state.backtopVisible ? 100 : 42"
-    :bottom="42"
+    :right="42"
+    :bottom="state.backtopVisible ? 100 : 42"
   >
     <n-badge :value="tasks.length" :offset="[6, -8]">
       <n-icon :component="HourglassIcon" />
