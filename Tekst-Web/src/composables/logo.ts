@@ -11,15 +11,18 @@ const customLogoAvailable = ref(false);
 const customLogoDarkmodeAvailable = ref(false);
 
 (async () => {
-  customLogoAvailable.value = await useFetch(customLogo).error.value;
-  customLogoDarkmodeAvailable.value = await useFetch(customLogoDarkmode).error.value;
+  customLogoAvailable.value = !(await useFetch(customLogo).error.value);
+  customLogoDarkmodeAvailable.value = !(await useFetch(customLogoDarkmode).error.value);
+  console.log(customLogoAvailable.value, customLogoDarkmodeAvailable.value);
 })();
 
 export function useLogo() {
   const theme = useThemeStore();
   const darkPreferred = usePreferredDark();
-  const logoLight = computed(() => (!customLogoAvailable.value ? logo : customLogo));
-  const logoDark = computed(() => (!customLogoAvailable.value ? logoDarkmode : customLogoDarkmode));
+  const logoLight = computed(() => (customLogoAvailable.value ? customLogo : logo));
+  const logoDark = computed(() =>
+    customLogoDarkmodeAvailable.value ? customLogoDarkmode : logoDarkmode
+  );
   const pageLogo = computed(() => (theme.darkMode ? logoDark.value : logoLight.value));
   const favicon = computed(() => (darkPreferred.value ? logoDark.value : logoLight.value));
   return { pageLogo, favicon };
