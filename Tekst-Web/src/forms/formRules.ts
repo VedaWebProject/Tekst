@@ -293,7 +293,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
         () => $t('resources.types.textAnnotation.contentFields.annotationValue'),
         'blur'
       ),
-      minMaxCharsRule(1, 64, 'blur'),
+      minMaxCharsRule(1, 256, 'blur'),
     ],
   },
   audio: {

@@ -355,7 +355,7 @@ class TextAnnotationEntry(ModelBase):
         BeforeValidator(lambda v: str(v) if v is not None else None),
         StringConstraints(
             min_length=1,
-            max_length=64,
+            max_length=256,
             strip_whitespace=True,
         ),
     ]
