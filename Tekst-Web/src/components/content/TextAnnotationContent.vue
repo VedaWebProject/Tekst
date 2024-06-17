@@ -206,7 +206,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
         <template v-for="(annotation, index) in tokenDetailsData?.annotations" :key="index">
           <tr v-if="annotation.key !== 'comment'">
             <td>{{ annotation.key }}</td>
-            <td>{{ annotation.value }}</td>
+            <td class="content-font">{{ annotation.value }}</td>
           </tr>
         </template>
       </tbody>
