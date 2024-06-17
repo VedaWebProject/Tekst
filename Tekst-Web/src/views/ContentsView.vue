@@ -243,11 +243,9 @@ async function handleSaveClick() {
           message.success($t('contents.msgSaved'));
         }
       }
-      loadingSave.value = false;
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));
-      loadingSave.value = false;
     })
     .finally(() => {
       loadingSave.value = false;
