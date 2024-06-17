@@ -551,7 +551,10 @@
       },
       {
         "token": "du",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [
+          { "key": "Entity", "value": "Fox" },
+          { "key": "comment", "value": "This is a comment." }
+        ],
         "lb": false
       },
       { "token": "hast", "annotations": [], "lb": false },
