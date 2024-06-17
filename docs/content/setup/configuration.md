@@ -8,9 +8,9 @@ The following table lists all the configuration values that can be set as enviro
 
 | Variable | Description |
 | --- | --- |
-| `TEKST_SERVER_URL` | Full public URL of the server running the application (without sub path, port only if other than 80/443); **if using the project's** `docker-compose.yml`**, this has to be set even if the value matches the default!** (String – default: `http://127.0.0.1:8000`) |
-| `TEKST_API_PATH` | Public sub path of the API; **if using the project's** `docker-compose.yml`**, this has to be set even if the value matches the default!** (String – default: `/api`) |
-| `TEKST_WEB_PATH` | Public sub path of the web client; **if using the project's** `docker-compose.yml`**, this has to be set even if the value matches the default!** (String – default: `/`) |
+| `TEKST_SERVER_URL` | Full public URL of the server running the application (without sub path, port only if other than 80/443); **if using the project's** `compose.yml`**, this has to be set even if the value matches the default!** (String – default: `http://127.0.0.1:8000`) |
+| `TEKST_API_PATH` | Public sub path of the API; **if using the project's** `compose.yml`**, this has to be set even if the value matches the default!** (String – default: `/api`) |
+| `TEKST_WEB_PATH` | Public sub path of the web client; **if using the project's** `compose.yml`**, this has to be set even if the value matches the default!** (String – default: `/`) |
 | `TEKST_WEB_STATIC_DIR` | Local path to static web files directory (String – default: `/var/www/tekst/static/`) |
 | `TEKST_DEV_MODE` | Development mode – only use for development! (Boolean – default: `false`) |
 | `TEKST_LOG_LEVEL` | API log level (`DEBUG` | `INFO` | `WARNING` | `ERROR` | `CRITICAL` – default: `WARNING`) |

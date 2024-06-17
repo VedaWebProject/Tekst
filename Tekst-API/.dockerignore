@@ -7,5 +7,5 @@ htmlcov/
 .vscode/
 
 Dockerfile
-docker-compose.yml
+compose.yml
 .coverage

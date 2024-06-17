@@ -49,7 +49,7 @@ Copy the `.env.docker` template file and name the copy `.env`:
 cp .env.docker .env
 ```
 
-The template has some values preset for working with a deployment based on the project's `docker-compose.yml` file. See the [Configuration](configuration.md) page for details on configuring Tekst via a `.env` file.
+The template has some values preset for working with a deployment based on the project's `compose.yml` file. See the [Configuration](configuration.md) page for details on configuring Tekst via a `.env` file.
 
 #### Securing sensitive configuration values
 
@@ -93,11 +93,11 @@ Run the complete application stack via
 docker compose up -d
 ```
 
-The container interfacing the host system and the application stack is now available locally at `127.0.0.1:8087`. If you wanted to change this port, you'd have to do so in the `docker-compose.yml`.
+The container interfacing the host system and the application stack is now available locally at `127.0.0.1:8087`. If you wanted to change this port, you'd have to do so in the `compose.yml`.
 
 !!! tip
 
-    The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call `docker compose logs` from the same directory (the one containing the `docker-compose.yml`). If you only want to see the log output of one of the services, just append the service's name from the `docker-compose.yml` to the command, e.g. `docker compose logs api`.
+    The above command will detach the process of running the stack from your terminal and run it in the background (which is usually what you'd want in production). This is what the `-d` flag does. For checking the log output of the running stack, call `docker compose logs` from the same directory (the one containing the `compose.yml`). If you only want to see the log output of one of the services, just append the service's name from the `compose.yml` to the command, e.g. `docker compose logs api`.
 
 !!! note
 

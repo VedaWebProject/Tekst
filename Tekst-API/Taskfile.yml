@@ -107,28 +107,28 @@ tasks:
     desc: Run dev services stack
     cmds:
       - task: gen-smtp-ssl-cert
-      - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev up --detach
+      - docker compose -f dev/compose.yml --profile dev -p tekst-dev up --detach
 
   dev-stack-down:
     desc: Stop dev stack and clean up all resources
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile dev -p tekst-dev down --volumes
+      - docker compose -f dev/compose.yml --profile dev -p tekst-dev down --volumes
 
   dev-stack-build:
     desc: Build updated container images in the app stack
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile dev --profile test build
+      - docker compose -f dev/compose.yml --profile dev --profile test build
 
   test-stack-up:
     desc: Run test services stack
     cmds:
       - task: gen-smtp-ssl-cert
-      - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing up --detach
+      - docker compose -f dev/compose.yml --profile test -p tekst-testing up --detach
 
   test-stack-down:
     desc: Stop test stack and clean up all resources
     cmds:
-      - docker compose -f dev/docker-compose.yml --profile test -p tekst-testing down --volumes
+      - docker compose -f dev/compose.yml --profile test -p tekst-testing down --volumes
 
   print-dev-uris:
     internal: true
