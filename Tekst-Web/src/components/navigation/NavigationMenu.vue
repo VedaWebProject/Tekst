@@ -48,7 +48,7 @@ const menuStyle = computed(() => ({
       :mode="mode"
       :value="$route.name?.toString()"
       :style="menuStyle"
-      @select="() => emit('select')"
+      @update:value="() => emit('select')"
     />
   </div>
 </template>
