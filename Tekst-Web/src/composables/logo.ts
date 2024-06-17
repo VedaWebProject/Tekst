@@ -11,9 +11,8 @@ const customLogoAvailable = ref(false);
 const customLogoDarkmodeAvailable = ref(false);
 
 (async () => {
-  customLogoAvailable.value = !(await useFetch(customLogo).error.value);
-  customLogoDarkmodeAvailable.value = !(await useFetch(customLogoDarkmode).error.value);
-  console.log(customLogoAvailable.value, customLogoDarkmodeAvailable.value);
+  customLogoAvailable.value = !(await useFetch(customLogo)).error.value;
+  customLogoDarkmodeAvailable.value = !(await useFetch(customLogoDarkmode)).error.value;
 })();
 
 export function useLogo() {
