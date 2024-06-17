@@ -10,10 +10,11 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 
 import { BookIcon } from '@/icons';
+import { watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    initialLocationPath: LocationRead[];
+    currentLocationPath: LocationRead[];
     showLevelSelect?: boolean;
   }>(),
   {
@@ -21,10 +22,17 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(['submit']);
 const show = defineModel<boolean>('show');
+const emit = defineEmits(['submit']);
 
-const locationPath = ref<LocationRead[]>(props.initialLocationPath);
+const locationPath = ref<LocationRead[]>(props.currentLocationPath);
+
+watch(
+  () => props.currentLocationPath,
+  (newLocationPath) => {
+    locationPath.value = newLocationPath;
+  }
+);
 
 function submit() {
   emit('submit', locationPath.value);

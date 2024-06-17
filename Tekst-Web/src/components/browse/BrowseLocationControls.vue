@@ -124,7 +124,7 @@ whenever(ArrowLeft, () => {
 
   <location-select-modal
     v-model:show="showLocationSelectModal"
-    :initial-location-path="browse.locationPath"
+    :current-location-path="browse.locationPath"
     @submit="handleLocationSelect"
   />
 </template>
