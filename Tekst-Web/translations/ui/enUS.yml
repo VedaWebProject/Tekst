@@ -1,6 +1,7 @@
 general:
   general: General
   status: Status
+  comment: Comment
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
   yesAction: 'Yes'
@@ -175,8 +176,6 @@ browse:
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   contents:
     widgets:
-      contentComment:
-        title: Comment
       contentEdit:
         title: Edit content
       deepLTranslate:
@@ -280,7 +279,6 @@ models:
     public: public
     proposed: proposed for publication
     citation: Citation
-    comment: Comment
     share: Share access
     sharedRead: Share read access
     sharedWrite: Share write access
@@ -453,6 +451,8 @@ resources:
         annotationValue: Value
       config:
         displayTemplate: Display Template
+      browse:
+        allAnnotations: All annotations
     audio:
       label: Audio
       parenthesis: audio playback

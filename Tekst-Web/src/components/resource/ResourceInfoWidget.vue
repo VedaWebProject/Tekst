@@ -141,7 +141,7 @@ watch(showInfoModal, async (after) => {
 
     <template v-if="resource.comment?.length">
       <icon-heading level="3" :icon="CommentIcon">
-        {{ $t('models.resource.comment') }}
+        {{ $t('general.comment') }}
       </icon-heading>
       <div class="resource-comment">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">

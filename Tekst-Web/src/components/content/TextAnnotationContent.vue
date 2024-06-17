@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
 import type { CSSProperties } from 'vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { MetadataIcon } from '@/icons';
+import { NTable, NAlert } from 'naive-ui';
+import GenericModal from '@/components/generic/GenericModal.vue';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -34,6 +37,12 @@ const props = withDefaults(
   {
     reduced: false,
   }
+);
+
+const showDetailsModal = ref(false);
+const tokenDetailsData = ref<TextAnnotationContentRead['tokens'][number]>();
+const tokenDetailsComment = computed(
+  () => tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value
 );
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
@@ -78,7 +87,9 @@ const contents = computed(() =>
     tokens: c.tokens.map((t) => ({
       token: t.token,
       lb: t.lb,
-      annotations: applyAnnotationDisplayTemplate(t.annotations),
+      annotations: t.annotations,
+      annotationsDisplay: applyAnnotationDisplayTemplate(t.annotations),
+      comment: t.annotations?.find((a) => a.key === 'comment')?.value,
     })),
   }))
 );
@@ -139,30 +150,75 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 <template>
   <div v-for="content in contents" :key="content.id" class="content-container" :class="{ reduced }">
     <template v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex">
-      <div class="token-container">
+      <div
+        class="token-container"
+        :class="{
+          'token-with-annos': !!token.annotations?.length,
+          'token-with-comment': !!token.annotations?.find((a) => a.key === 'comment'),
+        }"
+        :title="token.comment || undefined"
+        @click="
+          tokenDetailsData = token;
+          showDetailsModal = true;
+        "
+      >
         <div class="token b i" :style="fontStyle">
           {{ token.token }}
         </div>
         <div class="annotations">
           <span
-            v-for="(annotation, index) in token.annotations"
+            v-for="(annotationDisplay, index) in token.annotationsDisplay"
             :key="index"
-            :style="getAnnotationStyle(annotation.format)"
+            :style="getAnnotationStyle(annotationDisplay.format)"
           >
-            {{ annotation.display }}
+            {{ annotationDisplay.display }}
           </span>
         </div>
       </div>
       <hr v-if="token.lb" class="token-lb" />
     </template>
   </div>
+
+  <generic-modal
+    v-model:show="showDetailsModal"
+    :title="$t('resources.types.textAnnotation.browse.allAnnotations')"
+    :icon="MetadataIcon"
+    heading-level="3"
+    @after-leave="() => (tokenDetailsData = undefined)"
+  >
+    <n-alert
+      v-if="tokenDetailsComment"
+      type="default"
+      :show-icon="false"
+      :title="$t('general.comment')"
+      style="margin-bottom: var(--layout-gap)"
+    >
+      {{ tokenDetailsComment }}
+    </n-alert>
+    <n-table :bordered="false" :bottom-bordered="false" size="small">
+      <thead>
+        <tr>
+          <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
+          <th>{{ $t('resources.types.textAnnotation.contentFields.annotationValue') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-for="(annotation, index) in tokenDetailsData?.annotations" :key="index">
+          <tr v-if="annotation.key !== 'comment'">
+            <td>{{ annotation.key }}</td>
+            <td>{{ annotation.value }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </n-table>
+  </generic-modal>
 </template>
 
 <style scoped>
 .content-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0px;
 }
 
 .content-container:not(:last-child) {
@@ -176,11 +232,26 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 .token-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   border-left: 1px solid var(--main-bg-color);
-  padding-left: 8px;
+  padding: 0 8px;
+}
+
+.token-container.token-with-annos {
+  cursor: pointer;
+  transition: 0.2s;
+  background: linear-gradient(135deg, var(--main-bg-color) 6px, transparent 0);
+}
+
+.token-container.token-with-annos:hover {
+  background-color: var(--accent-color-fade5);
+}
+
+.token-container.token-with-comment {
+  background: linear-gradient(135deg, var(--accent-color-fade3) 6px, transparent 0);
 }
 
 .reduced .token-container {

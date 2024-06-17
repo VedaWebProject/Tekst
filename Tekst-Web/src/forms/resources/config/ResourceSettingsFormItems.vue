@@ -193,8 +193,8 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     parent-form-path-prefix="comment"
     multiline
     :max-translation-length="2000"
-    :main-form-label="$t('models.resource.comment')"
-    :translation-form-label="$t('models.resource.comment')"
+    :main-form-label="$t('general.comment')"
+    :translation-form-label="$t('general.comment')"
     :translation-form-rule="resourceSettingsFormRules.commentTranslation"
     @update:model-value="(v) => handleUpdate('comment', v)"
   />

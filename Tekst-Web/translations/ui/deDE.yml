@@ -1,6 +1,7 @@
 general:
   general: Allgemein
   status: Status
+  comment: Kommentar
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   yesAction: 'Ja'
@@ -179,8 +180,6 @@ browse:
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
   contents:
     widgets:
-      contentComment:
-        title: Kommentar
       contentEdit:
         title: Inhalt bearbeiten
       deepLTranslate:
@@ -283,7 +282,6 @@ models:
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
-    comment: Kommentar
     share: Zugriff teilen
     sharedRead: Lesezugriff teilen
     sharedWrite: Schreibzugriff teilen
@@ -464,6 +462,8 @@ resources:
         annotationValue: Wert
       config:
         displayTemplate: Darstellungsvorlage
+      browse:
+        allAnnotations: Alle Annotationen
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

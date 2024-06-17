@@ -17,7 +17,7 @@ const showModal = ref(false);
 <template>
   <content-container-header-widget
     v-if="!!resource.contents?.[0]?.comment"
-    :title="$t('browse.contents.widgets.contentComment.title')"
+    :title="$t('general.comment')"
     :icon-component="CommentIcon"
     @click="showModal = true"
   />
@@ -25,7 +25,7 @@ const showModal = ref(false);
   <generic-modal
     v-model:show="showModal"
     width="wide"
-    :title="$t('browse.contents.widgets.contentComment.title')"
+    :title="$t('general.comment')"
     :icon="CommentIcon"
   >
     <p v-if="resource.contents?.[0]?.comment" style="white-space: pre-wrap">
