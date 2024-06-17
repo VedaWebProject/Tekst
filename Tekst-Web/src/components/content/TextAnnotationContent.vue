@@ -243,7 +243,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 .token-container.token-with-annos {
   cursor: pointer;
   transition: 0.2s;
-  background: linear-gradient(135deg, var(--main-bg-color) 6px, transparent 0);
+  background: linear-gradient(135deg, var(--main-bg-color) 5px, transparent 0);
 }
 
 .token-container.token-with-annos:hover {
@@ -251,7 +251,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 .token-container.token-with-comment {
-  background: linear-gradient(135deg, var(--accent-color-fade3) 6px, transparent 0);
+  background: linear-gradient(135deg, var(--accent-color-fade3) 5px, transparent 0);
 }
 
 .reduced .token-container {
