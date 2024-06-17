@@ -56,7 +56,7 @@ const fontStyle = {
       class="plain-text-content"
       :title="content.comment || undefined"
     >
-      <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline">
+      <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
         <div
           v-if="resource.config?.lineLabelling?.enabled && line.label != null"
           class="text-color-accent ui-font text-small"
