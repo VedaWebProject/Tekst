@@ -14,5 +14,6 @@ class TemplateIdentifier(Enum):
     EMAIL_SUPERUSER_SET = "superuserSet"
     EMAIL_SUPERUSER_UNSET = "superuserUnset"
     EMAIL_MESSAGE_RECEIVED = "messageReceived"
+    EMAIL_NEW_CORRECTION = "newCorrection"
     USRMSG_RESOURCE_PROPOSED = "resourceProposed"
     USRMSG_RESOURCE_PUBLISHED = "resourcePublished"

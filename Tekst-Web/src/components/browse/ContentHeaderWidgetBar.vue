@@ -9,6 +9,7 @@ import type { AnyResourceRead } from '@/api';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
+import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
 
 withDefaults(
   defineProps<{
@@ -48,8 +49,9 @@ const browse = useBrowseStore();
       :resource="resource"
     />
     <content-comment-widget :resource="resource" />
-    <resource-export-widget :resource="resource" />
     <content-edit-widget :resource="resource" />
+    <correction-note-widget :resource="resource" />
+    <resource-export-widget :resource="resource" />
     <resource-info-widget :resource="resource" />
     <resource-deactivate-widget :resource="resource" />
   </div>

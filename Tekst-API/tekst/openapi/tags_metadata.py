@@ -36,6 +36,14 @@ def get_tags_metadata(documentation_url: str) -> list[dict[str, Any]]:
             },
         },
         {
+            "name": "corrections",
+            "description": "Correction notes from user to users",
+            "externalDocs": {
+                "description": "View full documentation",
+                "url": documentation_url,
+            },
+        },
+        {
             "name": "search",
             "description": "Search operations and search index maintenance",
             "externalDocs": {

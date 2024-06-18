@@ -1282,6 +1282,132 @@
         }
       }
     },
+    "/corrections": {
+      "post": {
+        "tags": [
+          "corrections"
+        ],
+        "summary": "Create correction",
+        "description": "Creates a correction note referring to a specific content",
+        "operationId": "createCorrection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorrectionRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/corrections/{resourceId}": {
+      "get": {
+        "tags": [
+          "corrections"
+        ],
+        "summary": "Get corrections",
+        "description": "Returns a list of all corrections for a specific resource",
+        "operationId": "getCorrections",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Resourceid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CorrectionRead"
+                  },
+                  "title": "Response Get Corrections Corrections  Resourceid  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/locations": {
       "post": {
         "tags": [
@@ -6539,9 +6665,9 @@
       "AdminNotificationTrigger": {
         "type": "string",
         "enum": [
-          "userAwaitsActivation"
-        ],
-        "const": "userAwaitsActivation"
+          "userAwaitsActivation",
+          "newCorrection"
+        ]
       },
       "AdvancedSearchRequestBody": {
         "properties": {
@@ -8062,6 +8188,71 @@
           "res"
         ],
         "title": "CommonResourceSearchQueryData"
+      },
+      "CorrectionCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "ID of the resource this correction refers to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position",
+            "description": "Position of the content this correction refers to"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Note",
+            "description": "Content of the correction note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "position",
+          "note"
+        ],
+        "title": "CorrectionCreate"
+      },
+      "CorrectionRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "title": "Resourceid",
+            "description": "ID of the resource this correction refers to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position",
+            "description": "Position of the content this correction refers to"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Note",
+            "description": "Content of the correction note"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "position",
+          "note"
+        ],
+        "title": "CorrectionRead"
       },
       "DeepLLinksConfig": {
         "properties": {
@@ -14868,11 +15059,12 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 4,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
+              "newCorrection",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -14882,11 +15074,12 @@
               "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 1,
+            "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "default": [
-              "userAwaitsActivation"
+              "userAwaitsActivation",
+              "newCorrection"
             ]
           },
           "seen": {
@@ -15099,6 +15292,7 @@
         "type": "string",
         "enum": [
           "messageReceived",
+          "newCorrection",
           "resourceProposed",
           "resourcePublished"
         ]
@@ -15193,11 +15387,12 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 4,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
+              "newCorrection",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -15207,11 +15402,12 @@
               "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 1,
+            "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "default": [
-              "userAwaitsActivation"
+              "userAwaitsActivation",
+              "newCorrection"
             ]
           },
           "seen": {
@@ -15468,11 +15664,12 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 3,
+            "maxItems": 4,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
+              "newCorrection",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -15482,11 +15679,12 @@
               "$ref": "#/components/schemas/AdminNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 1,
+            "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "default": [
-              "userAwaitsActivation"
+              "userAwaitsActivation",
+              "newCorrection"
             ]
           },
           "seen": {
@@ -15604,6 +15802,14 @@
     {
       "name": "contents",
       "description": "Contents of resources",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "corrections",
+      "description": "Correction notes from user to users",
       "externalDocs": {
         "description": "View full documentation",
         "url": "https://vedawebproject.github.io/Tekst"

@@ -24,6 +24,7 @@ const ResourcesView = () => import('@/views/ResourcesView.vue');
 const ResourceSettingsView = () => import('@/views/ResourceSettingsView.vue');
 const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
+const CorrectionsView = () => import('@/views/CorrectionsView.vue');
 const CommunityView = () => import('@/views/CommunityView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
@@ -177,6 +178,15 @@ const router = createRouter({
       path: '/text/:text?/resources/:id/contents/:pos',
       name: 'resourceContents',
       component: ContentsView,
+      meta: {
+        isTextSpecific: true,
+        restricted: 'user',
+      },
+    },
+    {
+      path: '/text/:text?/resources/:id/corrections',
+      name: 'resourceCorrections',
+      component: CorrectionsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',

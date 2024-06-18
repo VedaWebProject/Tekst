@@ -182,6 +182,11 @@ browse:
     widgets:
       contentEdit:
         title: Inhalt bearbeiten
+      correctionNote:
+        title: Korrekturnotiz zu dieser Fundstelle senden
+        heading: Korrekturnotiz senden
+        info: Die Person, die für diese Ressource verantwortlich ist, wird über ihre Korrekturnotiz benachrichtigt!
+        msgSuccess: Korrekturnotiz gesendet
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
       infoWidget:
@@ -346,6 +351,7 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
   contentsAction: Inhalte
@@ -557,10 +563,12 @@ account:
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
       messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte (per Email)
+      newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren
       userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet (per Email)
+      newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde
       msgSaveSuccess: Einstellungen zu Benutzer-Email-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.

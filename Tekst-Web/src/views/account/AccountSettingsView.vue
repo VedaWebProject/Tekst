@@ -50,10 +50,12 @@ const initialUserNotificationTriggersModel = () => ({
   resourceProposed: !!auth.user?.userNotificationTriggers?.includes('resourceProposed'),
   resourcePublished: !!auth.user?.userNotificationTriggers?.includes('resourcePublished'),
   messageReceived: !!auth.user?.userNotificationTriggers?.includes('messageReceived'),
+  newCorrection: !!auth.user?.userNotificationTriggers?.includes('newCorrection'),
 });
 
 const initialAdminNotificationTriggersModel = () => ({
   userAwaitsActivation: !!auth.user?.adminNotificationTriggers?.includes('userAwaitsActivation'),
+  newCorrection: !!auth.user?.adminNotificationTriggers?.includes('newCorrection'),
 });
 
 const initialPublicFieldsModel = () => ({

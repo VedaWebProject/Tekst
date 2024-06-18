@@ -1,0 +1,12 @@
+Dear {to_user_name},
+
+{from_user_name} created a new correction note on "{resource_title}":
+
+-----------------------------
+{correction_note}
+-----------------------------
+
+Visit this URL to read and manage all correction notes on "{resource_title}":
+{web_url}/text/{text_slug}/resources/{resource_id}/corrections
+
+See you on {platform_name}!

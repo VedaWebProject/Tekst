@@ -16,8 +16,9 @@ from tekst.models.message import (
     UserMessageRead,
     UserMessageThread,
 )
+from tekst.models.notifications import TemplateIdentifier
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
-from tekst.notifications import TemplateIdentifier, send_notification
+from tekst.notifications import send_notification
 from tekst.settings import get_settings
 
 

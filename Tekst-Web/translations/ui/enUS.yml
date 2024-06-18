@@ -178,6 +178,11 @@ browse:
     widgets:
       contentEdit:
         title: Edit content
+      correctionNote:
+        title: Send correction note for this location
+        heading: Send correction note
+        info: The person responsible for this resource will be notified of your correction note!
+        msgSuccess: Sent correction note
       deepLTranslate:
         title: Open DeepL translation
       infoWidget:
@@ -342,6 +347,7 @@ resources:
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  correctionNotesAction: Show correction notes
   transferAction: Transfer to user
   settingsAction: Settings
   contentsAction: Contents
@@ -546,10 +552,12 @@ account:
       resourceProposed: someone proposes a resource for publication (via platform message)
       resourcePublished: a resource is published (via platform message)
       messageReceived: I receive a message from another user (via email)
+      newCorrection: a new correction note on one of my resources has been created
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators
       userAwaitsActivation: a user is waiting for account activation (via email)
+      newCorrection: a new correction note on a public resource has been created
       msgSaveSuccess: Administrator notifications settings saved.
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.

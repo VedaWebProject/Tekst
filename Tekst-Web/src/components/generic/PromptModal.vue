@@ -13,6 +13,7 @@ import { ref } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
+import NInputOsk from '@/components/NInputOsk.vue';
 
 export interface PromptModalProps {
   actionKey?: string;
@@ -20,6 +21,8 @@ export interface PromptModalProps {
   inputLabel?: string;
   title?: string;
   multiline?: boolean;
+  osk?: boolean;
+  font?: string;
   placeholder?: string;
   rows?: number;
   disableOkWhenNoValue?: boolean;
@@ -32,6 +35,8 @@ const props = withDefaults(defineProps<PromptModalProps>(), {
   inputLabel: undefined,
   title: undefined,
   multiline: false,
+  osk: false,
+  font: undefined,
   placeholder: '',
   rows: undefined,
   disableOkWhenNoValue: false,
@@ -102,12 +107,24 @@ function handleInputReturn(e: KeyboardEvent) {
         :rule="liveProps.validationRules"
       >
         <n-input
+          v-if="!liveProps.osk"
           ref="inputRef"
           v-model:value="formModel.inputString"
           :type="liveProps.multiline ? 'textarea' : 'text'"
           :rows="liveProps.rows"
           :default-value="liveProps.initialValue"
           :placeholder="liveProps.placeholder"
+          @keydown.enter="handleInputReturn"
+        />
+        <n-input-osk
+          v-else
+          ref="inputRef"
+          v-model:value="formModel.inputString"
+          :type="liveProps.multiline ? 'textarea' : 'text'"
+          :rows="liveProps.rows"
+          :default-value="liveProps.initialValue"
+          :placeholder="liveProps.placeholder"
+          :font="liveProps.font"
           @keydown.enter="handleInputReturn"
         />
       </n-form-item>
