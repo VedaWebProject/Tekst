@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const state = useStateStore();
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 import { computed } from 'vue';
 import { useUsersSearch } from '@/composables/fetchers';
 import { NListItem, NInput, NIcon, NFlex, NSpin, NPagination, NList } from 'naive-ui';
@@ -17,9 +15,11 @@ import UserAvatar from '@/components/user/UserAvatar.vue';
 import { RouterLink } from 'vue-router';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
 
+const state = useStateStore();
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+
 const defaultPage = 1;
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
-const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
 
 const initialFilters = (): PublicUserSearchFilters => ({
   q: '',
@@ -44,13 +44,12 @@ function resetPagination() {
 
   <define-template>
     <!-- Pagination -->
-    <n-flex v-if="!!total" justify="end">
+    <n-flex v-if="!!total" justify="end" class="pagination-container">
       <n-pagination
         v-model:page="filters.pg"
         v-model:page-size="filters.pgs"
         :default-page-size="10"
         :page-slot="paginationSlots"
-        :size="paginationSize"
         :disabled="loading"
         :item-count="total"
         :page-sizes="[10, 25, 50]"
@@ -127,4 +126,11 @@ function resetPagination() {
   />
 </template>
 
-<style scoped></style>
+<style scoped>
+.pagination-container:first-child {
+  margin-bottom: var(--layout-gap);
+}
+.pagination-container:last-child {
+  margin-top: var(--layout-gap);
+}
+</style>

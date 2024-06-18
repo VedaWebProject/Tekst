@@ -32,11 +32,11 @@ import { useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import { saveDownload } from '@/api';
-
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { useTasks } from '@/composables/tasks';
 import { pickTranslation } from '@/utils';
+import { createReusableTemplate } from '@vueuse/core';
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -45,6 +45,7 @@ const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
 const { addTask, startTasksPolling } = useTasks();
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
@@ -355,6 +356,20 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <help-button-widget help-key="resourcesView" />
   </icon-heading>
 
+  <define-template>
+    <!-- Pagination -->
+    <n-flex justify="end" class="pagination-container">
+      <n-pagination
+        v-model:page-size="pagination.pageSize"
+        v-model:page="pagination.page"
+        :page-sizes="[10, 20, 50, 100]"
+        :default-page-size="10"
+        :item-count="filteredData.length"
+        show-size-picker
+      />
+    </n-flex>
+  </define-template>
+
   <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filters -->
     <n-collapse
@@ -410,6 +425,8 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     <!-- Resources List -->
     <div class="content-block">
       <template v-if="paginatedData.length > 0">
+        <!-- Pagination -->
+        <reuse-template />
         <n-list style="background-color: transparent">
           <resource-list-item
             v-for="item in paginatedData"
@@ -431,16 +448,7 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
           />
         </n-list>
         <!-- Pagination -->
-        <div style="display: flex; justify-content: flex-end; padding-top: 12px">
-          <n-pagination
-            v-model:page-size="pagination.pageSize"
-            v-model:page="pagination.page"
-            :page-sizes="[10, 20, 50, 100]"
-            :default-page-size="10"
-            :item-count="filteredData.length"
-            show-size-picker
-          />
-        </div>
+        <reuse-template />
       </template>
       <template v-else>
         {{ $t('search.nothingFound') }}
@@ -475,5 +483,12 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
   flex-wrap: nowrap;
   align-items: flex-end;
   max-width: 100%;
+}
+
+.pagination-container:first-child {
+  margin-bottom: var(--layout-gap);
+}
+.pagination-container:last-child {
+  margin-top: var(--layout-gap);
 }
 </style>

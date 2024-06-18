@@ -34,7 +34,6 @@ const paginationDefaults = () => ({
 });
 const pagination = ref(paginationDefaults());
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
-const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
 const paginationExtrasSize = computed(() => (state.smallScreen ? 'small' : undefined));
 const sortingPreset = ref<SortingPreset>();
 
@@ -174,7 +173,6 @@ onBeforeMount(() => processQuery());
         :page-slot="paginationSlots"
         :item-count="resultsData.totalHits"
         :disabled="loading"
-        :size="paginationSize"
         show-size-picker
         @update:page="() => execSearch()"
         @update:page-size="() => execSearch(true)"

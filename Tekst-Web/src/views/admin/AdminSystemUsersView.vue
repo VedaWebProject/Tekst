@@ -38,7 +38,6 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 const defaultPage = 1;
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
-const paginationSize = computed(() => (state.smallScreen ? undefined : 'large'));
 
 const initialFilters = (): UserSearchFilters => ({
   q: '',
@@ -187,7 +186,6 @@ onMounted(() => {
         v-model:page-size="filters.pgs"
         :default-page-size="10"
         :page-slot="paginationSlots"
-        :size="paginationSize"
         :disabled="loading"
         :item-count="total"
         :page-sizes="[10, 25, 50]"
