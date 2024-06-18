@@ -245,7 +245,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
 
 .token-container.token-with-annos {
   cursor: pointer;
-  transition: 0.2s;
+  transition: background-color 0.2s;
   background: linear-gradient(135deg, var(--main-bg-color) 5px, transparent 0);
 }
 
