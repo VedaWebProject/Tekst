@@ -145,6 +145,12 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
     fontFamily: fmtFlags.font ? fontStyle.fontFamily : undefined,
   };
 }
+
+function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
+  if (!token.annotations?.length) return;
+  tokenDetailsData.value = token;
+  showDetailsModal.value = true;
+}
 </script>
 
 <template>
@@ -157,10 +163,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
           'token-with-comment': !!token.annotations?.find((a) => a.key === 'comment'),
         }"
         :title="token.comment || undefined"
-        @click="
-          tokenDetailsData = token;
-          showDetailsModal = true;
-        "
+        @click="handleTokenClick(token)"
       >
         <div class="token b i" :style="fontStyle">
           {{ token.token }}
