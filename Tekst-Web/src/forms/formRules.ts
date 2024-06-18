@@ -164,11 +164,11 @@ export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
-  infoPlatformName: [
-    requiredRule(() => $t('models.platformSettings.infoPlatformName'), 'blur'),
+  platformName: [
+    requiredRule(() => $t('models.platformSettings.platformName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
-  infoSubtitleTranslation: [minMaxCharsRule(1, 128, 'blur')],
+  platformSubtitleTranslation: [minMaxCharsRule(1, 128, 'blur')],
   availableLocales: [
     {
       validator: (rule: FormItemRule, value: string[]) =>

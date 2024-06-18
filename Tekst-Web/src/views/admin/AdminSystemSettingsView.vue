@@ -111,22 +111,22 @@ function resetForm() {
       <h3>{{ $t('admin.system.platformSettings.headingInfo') }}</h3>
 
       <!-- PLATFORM TITLE -->
-      <n-form-item path="infoPlatformName" :label="$t('models.platformSettings.infoPlatformName')">
+      <n-form-item path="platformName" :label="$t('models.platformSettings.platformName')">
         <n-input
-          v-model:value="formModel.infoPlatformName"
+          v-model:value="formModel.platformName"
           type="text"
-          :placeholder="$t('models.platformSettings.infoPlatformName')"
+          :placeholder="$t('models.platformSettings.platformName')"
           @keydown.enter.prevent
         />
       </n-form-item>
       <!-- PLATFORM DESCRIPTION -->
       <translation-form-item
-        v-model="formModel.infoSubtitle"
-        parent-form-path-prefix="infoSubtitle"
+        v-model="formModel.platformSubtitle"
+        parent-form-path-prefix="platformSubtitle"
         :loading="loading"
-        :main-form-label="$t('models.platformSettings.infoSubtitle')"
-        :translation-form-label="$t('models.platformSettings.infoSubtitle')"
-        :translation-form-rule="platformSettingsFormRules.infoSubtitleTranslation"
+        :main-form-label="$t('models.platformSettings.platformSubtitle')"
+        :translation-form-label="$t('models.platformSettings.platformSubtitle')"
+        :translation-form-rule="platformSettingsFormRules.platformSubtitleTranslation"
       />
 
       <n-divider />

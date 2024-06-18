@@ -23,23 +23,28 @@ def customize_openapi(app: FastAPI, settings: PlatformSettings):
 
 
 def generate_schema(app: FastAPI, settings: PlatformSettings):
+    api_url = urljoin(str(_cfg.server_url), str(_cfg.api_path))
     schema = get_openapi(
-        title=settings.info_platform_name,
-        version=_cfg.info.tekst["version"],
-        description=pick_translation(settings.info_subtitle),
+        title=settings.platform_name,
+        version=_cfg.tekst["version"],
+        summary=_cfg.api_doc.summary or pick_translation(settings.platform_subtitle),
+        description=_cfg.api_doc.description,
         routes=app.routes,
-        servers=[{"url": urljoin(str(_cfg.server_url), str(_cfg.api_path))}],
-        terms_of_service=_cfg.info.terms_url,
-        tags=get_tags_metadata(documentation_url=_cfg.info.tekst["documentation"]),
+        servers=[{"url": api_url}],
+        terms_of_service=_cfg.api_doc.terms_url,
+        tags=get_tags_metadata(documentation_url=_cfg.tekst["documentation"]),
         contact={
-            "name": _cfg.info.contact_name,
-            "url": _cfg.info.contact_url,
-            "email": _cfg.info.contact_email,
+            "name": _cfg.api_doc.contact_name,
+            "url": _cfg.api_doc.contact_url,
+            "email": _cfg.api_doc.contact_email,
         },
         license_info={
-            "name": _cfg.info.tekst["license"],
-            "url": _cfg.info.tekst["license_url"],
-        },
+            "name": _cfg.api_doc.license_name,
+            "identifier": _cfg.api_doc.license_id,
+            "url": _cfg.api_doc.license_url,
+        }
+        if _cfg.api_doc.license_name
+        else None,
         separate_input_output_schemas=False,
     )
     return process_openapi_schema(schema=schema)

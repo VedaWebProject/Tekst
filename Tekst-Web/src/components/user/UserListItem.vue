@@ -49,7 +49,7 @@ const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.cur
 const emailLink = computed(
   () =>
     `mailto:${props.targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
-      platform: pfData.value?.settings.infoPlatformName,
+      platform: pfData.value?.settings.platformName,
     })}`
 );
 

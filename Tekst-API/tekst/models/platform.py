@@ -28,7 +28,7 @@ class PlatformData(ModelBase):
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
     settings_cache_ttl: int = _cfg.settings_cache_ttl
-    tekst: dict[str, str] = camelize(_cfg.info.tekst)
+    tekst: dict[str, str] = camelize(_cfg.tekst)
 
 
 class TextStats(ModelBase):

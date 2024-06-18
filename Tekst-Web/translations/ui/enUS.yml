@@ -295,8 +295,8 @@ models:
     key: Metadata key
     value: Metadata value
   platformSettings:
-    infoPlatformName: Platform Name
-    infoSubtitle: Platform Subtitle
+    platformName: Platform Name
+    platformSubtitle: Platform Subtitle
     infoTerms: API Terms and Conditions (URL)
     infoContactName: Contact Name
     infoContactEmail: Contact Email

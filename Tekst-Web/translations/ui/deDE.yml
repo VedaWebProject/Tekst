@@ -298,8 +298,8 @@ models:
     key: Metadatum-Schlüssel
     value: Metadatum-Wert
   platformSettings:
-    infoPlatformName: Name der Plattform
-    infoSubtitle: Untertitel der Plattform
+    platformName: Name der Plattform
+    platformSubtitle: Untertitel der Plattform
     infoTerms: API Nutzungsbedingungen (URL)
     infoContactName: Name Kontaktperson
     infoContactEmail: E-Mail Kontaktperson

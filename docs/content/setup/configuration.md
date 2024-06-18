@@ -4,7 +4,11 @@ The following table lists all the configuration values that can be set as enviro
 
 !!! note
 
-    `TEKST_INFO__PLATFORM_NAME` and `TEKST_INFO__SUBTITLE` are merely used as initial values and can be changed later by administrators using the system settings UI of the running application. All other configuration values can _only be set via this configuration_ and require an application restart to take effect.
+    These configuration values can _only be set via this configuration_ and require an application restart to take effect.
+
+
+## Core Config
+Basic configuration, URL, paths, ...
 
 | Variable | Description |
 | --- | --- |
@@ -16,17 +20,38 @@ The following table lists all the configuration values that can be set as enviro
 | `TEKST_LOG_LEVEL` | API log level (`DEBUG` | `INFO` | `WARNING` | `ERROR` | `CRITICAL` – default: `WARNING`) |
 | `TEKST_SETTINGS_CACHE_TTL` | Time-To-Live for the API settings cache (in seconds) (Integer – default: `60`) |
 | `TEKST_TEMP_FILES_DIR` | Absolute path to local temporary directory to use (String – default: `/tmp/tekst_tmp`) |
+
+
+## Database (MongoDB)
+Configuration for the MongoDB connection
+
+| Variable | Description |
+| --- | --- |
 | `TEKST_DB__PROTOCOL` | MongoDB protocol (String – default: `mongodb`) |
 | `TEKST_DB__HOST` | MongoDB host (String – default: `127.0.0.1`) |
 | `TEKST_DB__PORT` | MongoDB port (Integer – default: `27017`) |
 | `TEKST_DB__USER` | MongoDB user (String – default: _none_) |
 | `TEKST_DB__PASSWORD` | MongoDB password (String – default: _none_) |
 | `TEKST_DB__NAME` | MongoDB database name (String – default: `tekst`) |
+
+
+## Search Server (Elasticsearch)
+Configuration for the connection to the Elasticsearch server
+
+| Variable | Description |
+| --- | --- |
 | `TEKST_ES__PROTOCOL` | Elasticsearch protocol (String – default: `http`) |
 | `TEKST_ES__HOST` | Elasticsearch host (String – default: `127.0.0.1`) |
 | `TEKST_ES__PORT` | Elasticsearch port (Integer – default: `9200`) |
 | `TEKST_ES__PREFIX` | Elasticsearch prefix (for index, templates, etc.) (String – default: `tekst`) |
 | `TEKST_ES__INIT_TIMEOUT_S` | Timeout for waiting for Elasticsearch service to be available on startup (Integer – default: `120`) |
+
+
+## Security
+All the configuration related to app-level security
+
+| Variable | Description |
+| --- | --- |
 | `TEKST_SECURITY__SECRET` | Secret to use for token generation (String – default: `must_change_this`) |
 | `TEKST_SECURITY__CLOSED_MODE` | Whether to allow public registrations (Boolean – default: `false`) |
 | `TEKST_SECURITY__USERS_ACTIVE_BY_DEFAULT` | Whether new user accounts are active by default (otherwise have to be activated by admins) (Boolean – default: `false`) |
@@ -41,24 +66,51 @@ The following table lists all the configuration values that can be set as enviro
 | `TEKST_SECURITY__VERIFICATION_TOKEN_LIFETIME` | Lifetime of account verification tokens (Integer – default: `86400`) |
 | `TEKST_SECURITY__INIT_ADMIN_EMAIL` | Email address of initial admin account (String – default: _none_) |
 | `TEKST_SECURITY__INIT_ADMIN_PASSWORD` | Password of initial admin account (String – default: _none_) |
+
+
+## Email
+Configuration for the SMTP connection and sender address of outgoing emails
+
+| Variable | Description |
+| --- | --- |
 | `TEKST_EMAIL__SMTP_SERVER` | SMTP server address (String – default: `127.0.0.1`) |
 | `TEKST_EMAIL__SMTP_PORT` | SMTP server port (Integer – default: `25`) |
 | `TEKST_EMAIL__SMTP_USER` | SMTP user (String – default: _none_) |
 | `TEKST_EMAIL__SMTP_PASSWORD` | SMTP password (String – default: _none_) |
 | `TEKST_EMAIL__SMTP_STARTTLS` | Whether to use StartTLS for SMTP connection (Boolean – default: `true`) |
 | `TEKST_EMAIL__FROM_ADDRESS` | From-address used for outgoing emails (String – default: `noreply@example-tekst-instance.org`) |
-| `TEKST_DOC__OPENAPI_URL` | URL sub path (under `TEKST_API_PATH`) to public `openapi.json` API schema (if not set, disables SwaggerUI and Redoc) (String – default: `/openapi.json`) |
-| `TEKST_DOC__SWAGGERUI_URL` | URL sub path (under `TEKST_API_PATH`) to SwaggerUI interactive API docs (String – default: `/docs`) |
-| `TEKST_DOC__REDOC_URL` | URL sub path (under `TEKST_API_PATH`) to Redoc API docs (String – default: `/redoc`) |
-| `TEKST_INFO__PLATFORM_NAME` | Initial platform name; **this can be changed by admins via the system settings UI** (String – default: `Tekst`) |
-| `TEKST_INFO__SUBTITLE` | Initial platform subtitle; **this can be changed by admins via the system settings UI** (String – default: `An online text research platform`) |
-| `TEKST_INFO__TERMS_URL` | URL to API usage terms (String – default: _none_) |
-| `TEKST_INFO__CONTACT_NAME` | API contact name (String – default: _none_) |
-| `TEKST_INFO__CONTACT_EMAIL` | API contact email (String – default: _none_) |
-| `TEKST_INFO__CONTACT_URL` | API contact URL (String – default: _none_) |
-| `TEKST_CORS__ALLOW_ORIGINS` | CORS allow origins; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
-| `TEKST_CORS__ALLOW_CREDENTIALS` | CORS allow credentials; only set this if you don't have a web server / reverse proxy that already handles it! (Boolean – default: `true`) |
-| `TEKST_CORS__ALLOW_METHODS` | CORS allow methods; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
-| `TEKST_CORS__ALLOW_HEADERS` | CORS allow headers; only set this if you don't have a web server / reverse proxy that already handles it! (Comma-separated list as string – default: `*`) |
+
+
+## Documentation
+Configuration for the OpenAPI schema URL and API documentation via SwaggerUI and/or Redoc
+
+| Variable | Description |
+| --- | --- |
+| `TEKST_API__OPENAPI_URL` | URL sub path (under `TEKST_API_PATH`) to public `openapi.json` API schema (if not set, disables SwaggerUI and Redoc) (String – default: `/openapi.json`) |
+| `TEKST_API__SWAGGERUI_URL` | URL sub path (under `TEKST_API_PATH`) to SwaggerUI interactive API docs; empty value disables SwaggerUI (String – default: `/docs`) |
+| `TEKST_API__REDOC_URL` | URL sub path (under `TEKST_API_PATH`) to Redoc API docs; empty value disables Redoc (String – default: `/redoc`) |
+| `TEKST_API__TITLE` | Platform API title (String – default: `Tekst`) |
+| `TEKST_API__SUMMARY` | Platform API summary (String – default: _none_) |
+| `TEKST_API__DESCRIPTION` | Platform API description (String – default: _none_) |
+| `TEKST_API__TERMS_URL` | URL to API usage terms (String – default: _none_) |
+| `TEKST_API__CONTACT_NAME` | API contact name (String – default: _none_) |
+| `TEKST_API__CONTACT_EMAIL` | API contact email (String – default: _none_) |
+| `TEKST_API__CONTACT_URL` | API contact URL (String – default: _none_) |
+| `TEKST_API__LICENSE_NAME` | API license name; if not set, no license info will be integrated in API docs (String – default: _none_) |
+| `TEKST_API__LICENSE_ID` | API license ID (canonical short form of name) (String – default: _none_) |
+| `TEKST_API__LICENSE_URL` | API license URL (String – default: _none_) |
+
+
+| Variable | Description |
+| --- | --- |
+| `TEKST_CORS__ENABLE` | Enable CORS header control; only enable this if you don't have a web server / reverse proxy that already handles it! (Boolean – default: `false`) |
+| `TEKST_CORS__ALLOW_ORIGINS` | CORS allow origins (Comma-separated list as string – default: `*`) |
+| `TEKST_CORS__ALLOW_CREDENTIALS` | CORS allow credentials (Boolean – default: `true`) |
+| `TEKST_CORS__ALLOW_METHODS` | CORS allow methods (Comma-separated list as string – default: `*`) |
+| `TEKST_CORS__ALLOW_HEADERS` | CORS allow headers (Comma-separated list as string – default: `*`) |
+
+
+| Variable | Description |
+| --- | --- |
 | `TEKST_MISC__USRMSG_FORCE_DELETE_AFTER_DAYS` | Delete old user messages after n days (Integer – default: `365`) |
 | `TEKST_MISC__MAX_RESOURCES_PER_USER` | Maximum number of resources/versions that one user is allowed to own (Integer – default: `10`) |

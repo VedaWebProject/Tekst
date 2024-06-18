@@ -38,14 +38,14 @@ async def startup_routine(app: FastAPI) -> None:
 
     # Hello World!
     log.info(
-        f"{settings.info_platform_name} ({_cfg.info.tekst['name']} "
-        f"Server v{_cfg.info.tekst['version']}) "
+        f"{settings.platform_name} ({_cfg.tekst['name']} "
+        f"Server v{_cfg.tekst['version']}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
 
 
 async def shutdown_routine(app: FastAPI) -> None:
-    log.info(f"{_cfg.info.tekst['name']} cleaning up and shutting down...")
+    log.info(f"{_cfg.tekst['name']} cleaning up and shutting down...")
     if not _cfg.dev_mode or _cfg.dev.use_db:
         db.close()
     if not _cfg.dev_mode or _cfg.dev.use_es:
@@ -62,9 +62,9 @@ async def lifespan(app: FastAPI):
 # create FastAPI app instance
 app = FastAPI(
     root_path=_cfg.api_path,
-    openapi_url=_cfg.doc.openapi_url,
-    docs_url=_cfg.doc.swaggerui_url,
-    redoc_url=_cfg.doc.redoc_url,
+    openapi_url=_cfg.api_doc.openapi_url,
+    docs_url=_cfg.api_doc.swaggerui_url,
+    redoc_url=_cfg.api_doc.redoc_url,
     lifespan=lifespan,
     separate_input_output_schemas=False,
 )
@@ -86,13 +86,14 @@ if not _cfg.dev_mode or _cfg.dev.use_xsrf_protection:  # pragma: no cover
     )
 
 # add and configure CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_cfg.cors.allow_origins,
-    allow_credentials=_cfg.cors.allow_credentials,
-    allow_methods=_cfg.cors.allow_methods,
-    allow_headers=_cfg.cors.allow_headers,
-)
+if _cfg.cors.enable:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cfg.cors.allow_origins,
+        allow_credentials=_cfg.cors.allow_credentials,
+        allow_methods=_cfg.cors.allow_methods,
+        allow_headers=_cfg.cors.allow_headers,
+    )
 
 
 @app.exception_handler(StarletteHTTPException)

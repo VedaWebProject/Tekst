@@ -179,7 +179,7 @@ export const useStateStore = defineStore('state', () => {
           ...variables,
         })
       : undefined;
-    const pfName = pfData.value?.settings.infoPlatformName;
+    const pfName = pfData.value?.settings.platformName;
     document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 

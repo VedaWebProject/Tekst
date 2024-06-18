@@ -175,7 +175,7 @@ async def get_threads(
 
     # group messages as threads by contact
     threads = dict()
-    platform_name = (await get_settings()).info_platform_name
+    platform_name = (await get_settings()).platform_name
     for msg_doc in messages:
         msg = UserMessageRead.model_from(msg_doc)
         contact_id = msg.sender if msg.sender != user.id else msg.recipient

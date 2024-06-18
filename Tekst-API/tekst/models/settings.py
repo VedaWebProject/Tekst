@@ -72,7 +72,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
 
     # INFO
 
-    info_platform_name: Annotated[
+    platform_name: Annotated[
         str,
         StringConstraints(
             min_length=1,
@@ -82,13 +82,18 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
         Field(
             description="Name of the platform",
         ),
-    ] = _cfg.info.platform_name
-    info_subtitle: Annotated[
+    ] = _cfg.api_doc.title or "Tekst"
+    platform_subtitle: Annotated[
         Translations[PlatformDescriptionTranslation],
         Field(
             description="Short description of the platform, in multiple languages",
         ),
-    ] = [{"locale": "*", "translation": _cfg.info.subtitle}]
+    ] = [
+        {
+            "locale": "*",
+            "translation": _cfg.api_doc.summary or "An online text research platform",
+        }
+    ]
 
     # OPTIONS
     default_text_id: Annotated[

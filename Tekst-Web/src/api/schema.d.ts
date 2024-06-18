@@ -3066,13 +3066,13 @@ export interface components {
        */
       id: string;
       /**
-       * Infoplatformname
+       * Platformname
        * @description Name of the platform
        * @default Tekst-Dev
        */
-      infoPlatformName?: string;
+      platformName?: string;
       /**
-       * Infosubtitle
+       * Platformsubtitle
        * @description Short description of the platform, in multiple languages
        * @default [
        *   {
@@ -3081,7 +3081,7 @@ export interface components {
        *   }
        * ]
        */
-      infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
+      platformSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -3148,13 +3148,13 @@ export interface components {
     /** PlatformSettingsUpdate */
     PlatformSettingsUpdate: {
       /**
-       * Infoplatformname
+       * Platformname
        * @description Name of the platform
        * @default Tekst-Dev
        */
-      infoPlatformName?: string;
+      platformName?: string;
       /**
-       * Infosubtitle
+       * Platformsubtitle
        * @description Short description of the platform, in multiple languages
        * @default [
        *   {
@@ -3163,7 +3163,7 @@ export interface components {
        *   }
        * ]
        */
-      infoSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
+      platformSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -4726,11 +4726,8 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
-      /**
-       * Seen
-       * @default false
-       */
-      seen?: boolean;
+      /** Seen */
+      seen?: boolean | null;
     };
     /** UserMessageCreate */
     UserMessageCreate: {
@@ -4877,11 +4874,8 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
-      /**
-       * Seen
-       * @default false
-       */
-      seen?: boolean;
+      /** Seen */
+      seen?: boolean | null;
       /**
        * Createdat
        * Format: date-time
@@ -4954,11 +4948,8 @@ export interface components {
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
-      /**
-       * Seen
-       * @default false
-       */
-      seen?: boolean;
+      /** Seen */
+      seen?: boolean | null;
     };
     /** UsersSearchResult */
     UsersSearchResult: {

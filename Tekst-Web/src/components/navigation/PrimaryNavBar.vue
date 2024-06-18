@@ -51,10 +51,10 @@ const titleLinkTo = computed(() => {
     <img class="navbar-logo" alt="" :src="pageLogo" />
     <div class="navbar-title">
       <router-link :to="titleLinkTo">
-        <div class="text-gigantic">{{ pfData?.settings.infoPlatformName }}</div>
+        <div class="text-gigantic">{{ pfData?.settings.platformName }}</div>
       </router-link>
-      <div v-if="pfData?.settings.infoSubtitle?.length" class="translucent text-tiny">
-        <translation-display :value="pfData?.settings.infoSubtitle" />
+      <div v-if="pfData?.settings.platformSubtitle?.length" class="translucent text-tiny">
+        <translation-display :value="pfData?.settings.platformSubtitle" />
       </div>
     </div>
 

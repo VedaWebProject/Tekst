@@ -191,33 +191,36 @@ class EMailConfig(ConfigSubSection):
     from_address: str = "noreply@example-tekst-instance.org"
 
 
-class DocConfig(ConfigSubSection):
+class ApiDocConfig(ConfigSubSection):
     """Documentation config sub section model"""
 
     openapi_url: str = "/openapi.json"
     swaggerui_url: str = "/docs"
     redoc_url: str = "/redoc"
 
-
-class InfoConfig(ConfigSubSection):
-    """
-    General information config sub section model
-    (these values are used as defaults in the platform settings)
-    """
-
-    platform_name: Annotated[
+    title: Annotated[
         str,
         StringConstraints(
             min_length=1,
             max_length=32,
         ),
+        val.CleanupOneline,
     ] = "Tekst"
-    subtitle: Annotated[
+    summary: Annotated[
         str | None,
-        StringConstraints(max_length=128),
+        StringConstraints(
+            max_length=256,
+        ),
         val.CleanupOneline,
         val.EmptyStringToNone,
-    ] = "An online text research platform"
+    ] = None
+    description: Annotated[
+        str | None,
+        StringConstraints(
+            max_length=4096,
+        ),
+        val.CleanupMultiline,
+    ] = None
     terms_url: Annotated[
         CustomHttpUrl | None,
         StringConstraints(max_length=512),
@@ -242,16 +245,36 @@ class InfoConfig(ConfigSubSection):
         val.CleanupOneline,
         val.EmptyStringToNone,
     ] = None
-
-    @computed_field
-    @property
-    def tekst(self) -> dict[str, str]:
-        return dict(name="Tekst", **package_metadata)
+    license_name: Annotated[
+        str | None,
+        StringConstraints(
+            max_length=32,
+        ),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
+    license_id: Annotated[
+        str | None,
+        StringConstraints(
+            max_length=32,
+        ),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
+    license_url: Annotated[
+        CustomHttpUrl | None,
+        StringConstraints(
+            max_length=512,
+        ),
+        val.CleanupOneline,
+        val.EmptyStringToNone,
+    ] = None
 
 
 class CORSConfig(ConfigSubSection):
     """CORS config sub section model"""
 
+    enable: bool = False
     allow_origins: str | list[str] = ["*"]
     allow_credentials: bool = True
     allow_methods: str | list[str] = ["*"]
@@ -300,8 +323,7 @@ class TekstConfig(BaseSettings):
     es: ElasticsearchConfig = ElasticsearchConfig()  # Elasticsearch-related config
     security: SecurityConfig = SecurityConfig()  # security-related config
     email: EMailConfig = EMailConfig()  # Email-related config
-    doc: DocConfig = DocConfig()  # live-documentation-related config (OpenAPI, Redoc)
-    info: InfoConfig = InfoConfig()  # general platform information config
+    api_doc: ApiDocConfig = ApiDocConfig()  # API documentation-related config
     cors: CORSConfig = CORSConfig()  # CORS-related config
     misc: MiscConfig = MiscConfig()  # misc config
 
@@ -324,6 +346,11 @@ class TekstConfig(BaseSettings):
             print(e)
             raise ValueError(f"Temporary directoy is not writable: {path}") from e
         return path
+
+    @computed_field
+    @property
+    def tekst(self) -> dict[str, str]:
+        return dict(name="Tekst", **package_metadata)
 
 
 @cache

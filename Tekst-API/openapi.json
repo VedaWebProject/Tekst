@@ -2,12 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tekst-Dev",
-    "description": "An online text research platform",
+    "summary": "An online text research platform",
     "contact": {},
-    "license": {
-      "name": "AGPL-3.0-or-later",
-      "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
-    },
     "version": "0.0.1"
   },
   "servers": [
@@ -11676,21 +11672,21 @@
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "infoPlatformName": {
+          "platformName": {
             "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "title": "Infoplatformname",
+            "title": "Platformname",
             "description": "Name of the platform",
             "default": "Tekst-Dev"
           },
-          "infoSubtitle": {
+          "platformSubtitle": {
             "items": {
               "$ref": "#/components/schemas/PlatformDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Infosubtitle",
+            "title": "Platformsubtitle",
             "description": "Short description of the platform, in multiple languages",
             "default": [
               {
@@ -11797,21 +11793,21 @@
       },
       "PlatformSettingsUpdate": {
         "properties": {
-          "infoPlatformName": {
+          "platformName": {
             "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "title": "Infoplatformname",
+            "title": "Platformname",
             "description": "Name of the platform",
             "default": "Tekst-Dev"
           },
-          "infoSubtitle": {
+          "platformSubtitle": {
             "items": {
               "$ref": "#/components/schemas/PlatformDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Infosubtitle",
+            "title": "Platformsubtitle",
             "description": "Short description of the platform, in multiple languages",
             "default": [
               {
@@ -13627,7 +13623,7 @@
           },
           "value": {
             "type": "string",
-            "maxLength": 64,
+            "maxLength": 256,
             "minLength": 1,
             "title": "Value",
             "description": "Value of the annotation"
@@ -14894,9 +14890,15 @@
             ]
           },
           "seen": {
-            "type": "boolean",
-            "title": "Seen",
-            "default": false
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seen"
           }
         },
         "type": "object",
@@ -15213,9 +15215,15 @@
             ]
           },
           "seen": {
-            "type": "boolean",
-            "title": "Seen",
-            "default": false
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seen"
           },
           "createdAt": {
             "type": "string",
@@ -15482,9 +15490,15 @@
             ]
           },
           "seen": {
-            "type": "boolean",
-            "title": "Seen",
-            "default": false
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seen"
           }
         },
         "type": "object",

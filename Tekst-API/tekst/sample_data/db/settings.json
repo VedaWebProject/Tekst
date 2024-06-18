@@ -3,8 +3,8 @@
     "_id": {
       "$oid": "66223dee5d0407ae401d7422"
     },
-    "info_platform_name": "Tekst-Dev",
-    "info_subtitle": [
+    "platform_name": "Tekst-Dev",
+    "platform_subtitle": [
       {
         "locale": "enUS",
         "translation": "An online text research platform"
@@ -14,10 +14,6 @@
         "translation": "Eine Forschungsplattform für Texte"
       }
     ],
-    "info_terms": null,
-    "info_contact_name": "Tekst Administrator",
-    "info_contact_email": "noreply@tekst-contact-email-not-set.com",
-    "info_contact_url": null,
     "default_text_id": {
       "$oid": "654ba1f3ec7833e469dde765"
     },
