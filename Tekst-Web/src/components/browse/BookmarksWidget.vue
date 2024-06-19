@@ -150,6 +150,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     multiline
     action-key="createBookmark"
     :title="$t('browse.bookmarks.commentModalTitle')"
+    :icon="BookmarksIcon"
     :input-label="$t('browse.bookmarks.commentModalInputLabel')"
     :rows="3"
     :validation-rules="bookmarkFormRules.comment"

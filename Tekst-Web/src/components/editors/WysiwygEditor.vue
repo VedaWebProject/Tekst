@@ -213,6 +213,7 @@ function handleAddLinkClick() {
     actionKey: 'addLink',
     initialValue: editor.value?.getAttributes('link').href,
     title: $t('wysiwyg.linkPrompt.title'),
+    icon: LinkIcon,
     inputLabel: $t('wysiwyg.linkPrompt.inputLabel'),
     validationRules: wysiwygEditorFormRules.linkUrl,
   });
@@ -222,6 +223,7 @@ async function handleAddImageClick() {
   promptModalRef.value.open({
     actionKey: 'addImage',
     title: $t('wysiwyg.imagePrompt.title'),
+    icon: ImageIcon,
     inputLabel: $t('wysiwyg.imagePrompt.inputLabel'),
     disableOkWhenNoValue: true,
     validationRules: wysiwygEditorFormRules.imageUrl,

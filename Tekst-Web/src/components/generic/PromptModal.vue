@@ -9,7 +9,7 @@ import {
   type FormItemInst,
 } from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
-import { ref } from 'vue';
+import { ref, type Component } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
@@ -18,6 +18,8 @@ import NInputOsk from '@/components/NInputOsk.vue';
 export interface PromptModalProps {
   actionKey?: string;
   initialValue?: string;
+  msg?: string;
+  icon?: Component;
   inputLabel?: string;
   title?: string;
   multiline?: boolean;
@@ -32,6 +34,8 @@ export interface PromptModalProps {
 const props = withDefaults(defineProps<PromptModalProps>(), {
   actionKey: undefined,
   initialValue: undefined,
+  msg: undefined,
+  icon: undefined,
   inputLabel: undefined,
   title: undefined,
   multiline: false,
@@ -90,6 +94,7 @@ function handleInputReturn(e: KeyboardEvent) {
   <generic-modal
     v-model:show="show"
     :title="liveProps.title"
+    :icon="liveProps.icon"
     @after-leave="
       () => {
         close();
@@ -98,6 +103,7 @@ function handleInputReturn(e: KeyboardEvent) {
     "
     @after-enter="inputRef?.select()"
   >
+    <p v-if="liveProps.msg">{{ liveProps.msg }}</p>
     <n-form :model="formModel">
       <n-form-item
         ref="formItemRef"
