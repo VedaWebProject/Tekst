@@ -131,6 +131,7 @@ routes:
     login: Anmeldung
     register: '@:register.heading'
     resources: Ressourcen zu "{text}"
+    resourcesCorrections: Korrekturnotizen
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
     community: Gemeinschaft
@@ -185,7 +186,11 @@ browse:
       correctionNote:
         title: Korrekturnotiz zu dieser Fundstelle senden
         heading: Korrekturnotiz senden
-        info: Die Person, die für diese Ressource verantwortlich ist, wird über ihre Korrekturnotiz benachrichtigt!
+        info: |
+          Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
+          Hier können Sie eine Korrektrnotiz verfassen. Die Person,
+          die für diese Ressource verantwortlich ist, wird darüber benachrichtigt!
+        lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
@@ -345,6 +350,7 @@ resources:
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
+  msgCorrections: Es liegen Korrekturnotizen zu anderen Texten zur Prüfung für Sie vor.
   ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.resource.public'
@@ -498,6 +504,10 @@ resources:
       searchFields:
         text: Titel / Beschreibung
 
+corrections:
+  heading: Korrekturnotizen für "{title}"
+  msgDeleted: Korrekturnotiz wurde gelöscht
+
 contents:
   heading: Ressourcen-Inhalte bearbeiten
   lblBtnCompare: Vergleichen
@@ -563,12 +573,12 @@ account:
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
       messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte (per Email)
-      newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde
+      newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren
       userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet (per Email)
-      newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde
+      newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Benutzer-Email-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.

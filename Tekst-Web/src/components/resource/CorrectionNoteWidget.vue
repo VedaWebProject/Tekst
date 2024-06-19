@@ -2,11 +2,12 @@
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { computed, ref } from 'vue';
 import { POST, type AnyResourceRead, type CorrectionCreate } from '@/api';
-import { useAuthStore, useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { CorrectionNoteIcon } from '@/icons';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
+import { correctionFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -14,6 +15,7 @@ const props = defineProps<{
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
+const resources = useResourcesStore();
 const { message } = useMessages();
 
 const show = computed(() => !!auth.user);
@@ -26,13 +28,23 @@ function handleClick() {
 async function handleModalSubmit(note: string) {
   const correction: CorrectionCreate = {
     resourceId: props.resource.id,
+    userId: auth.user?.id || '',
     position: browse.position,
     note,
   };
-  const { error } = await POST('/corrections', {
+  const { data, error } = await POST('/corrections', {
     body: correction,
   });
   if (!error) {
+    if (
+      auth.user &&
+      (auth.user.id == props.resource.ownerId || (auth.user.isSuperuser && props.resource.public))
+    ) {
+      const res = resources.ofText.find((r) => r.id == props.resource.id);
+      if (!res) return;
+      res.corrections ??= [];
+      res.corrections.push(data);
+    }
     message.success($t('browse.contents.widgets.correctionNote.msgSuccess'));
   }
 }
@@ -50,12 +62,13 @@ async function handleModalSubmit(note: string) {
     ref="promptModalRef"
     multiline
     osk
-    :font="resource.config?.general?.font || undefined"
-    action-key="createBookmark"
     :title="$t('browse.contents.widgets.correctionNote.heading')"
-    :input-label="$t('browse.contents.widgets.correctionNote.info')"
+    :icon="CorrectionNoteIcon"
+    :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"
+    :msg="$t('browse.contents.widgets.correctionNote.info')"
+    :font="resource.config?.general?.font || undefined"
     :rows="3"
-    :validation-rules="undefined"
+    :validation-rules="correctionFormRules.note"
     @submit="(_, v) => handleModalSubmit(v)"
   />
 </template>

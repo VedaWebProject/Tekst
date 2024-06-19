@@ -92,13 +92,15 @@ async def preprocess_resource_read(
             resource.shared_write_users = await UserDocument.find(
                 In(UserDocument.id, resource.shared_write)
             ).to_list()
-    # inclde corrections if user is owner of the resource
-    if (not resource.public and for_user.id == resource.owner_id) or (
-        resource.public and for_user.is_superuser
+    # include corrections count if user is owner of the resource
+    # or, if resource is public, user is superuser
+    if for_user and (
+        (not resource.public and for_user.id == resource.owner_id)
+        or (resource.public and for_user.is_superuser)
     ):
         resource.corrections = await CorrectionDocument.find(
             CorrectionDocument.resource_id == resource.id
-        ).to_list()
+        ).count()
     return resource
 
 

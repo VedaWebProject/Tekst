@@ -128,6 +128,7 @@ routes:
     register: '@:register.heading'
     resources: Resources on "{text}"
     resourceSettings: '@:resources.settings.heading'
+    resourcesCorrections: Correction notes
     user: Profile of {username}
     community: Community
     accountProfile: '@:account.profileHeading'
@@ -181,7 +182,11 @@ browse:
       correctionNote:
         title: Send correction note for this location
         heading: Send correction note
-        info: The person responsible for this resource will be notified of your correction note!
+        info: |
+          Do you have a short comment or correction to this content?
+          You can write a correction note here. The person
+          responsible for this resource will be notified!
+        lblNote: Correction note
         msgSuccess: Sent correction note
       deepLTranslate:
         title: Open DeepL translation
@@ -341,6 +346,7 @@ resources:
     As an administrator, you are able to modify resources owned by other users.
     This doesn't mean it is a good idea to do so. Please make sure that whatever you
     do happens in agreement with the owner of this resource!
+  msgCorrections: Correction notes on other texts are available for you to review.
   ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.resource.public'
@@ -487,6 +493,10 @@ resources:
       searchFields:
         text: Title / Description
 
+corrections:
+  heading: Correction Notes for "{title}"
+  msgDeleted: Correction note has been deleted
+
 contents:
   heading: Edit Resource Content
   lblBtnCompare: Compare
@@ -552,12 +562,12 @@ account:
       resourceProposed: someone proposes a resource for publication (via platform message)
       resourcePublished: a resource is published (via platform message)
       messageReceived: I receive a message from another user (via email)
-      newCorrection: a new correction note on one of my resources has been created
+      newCorrection: a new correction note on one of my resources has been created (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators
       userAwaitsActivation: a user is waiting for account activation (via email)
-      newCorrection: a new correction note on a public resource has been created
+      newCorrection: a new correction note on a public resource has been created (via email)
       msgSaveSuccess: Administrator notifications settings saved.
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.

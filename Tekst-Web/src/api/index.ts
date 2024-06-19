@@ -202,7 +202,7 @@ export type ResourceType =
 type ResourceReadExtras = {
   active?: boolean;
   coverage?: ResourceCoverage;
-  corrections?: CorrectionRead[];
+  corrections?: number;
 };
 
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];

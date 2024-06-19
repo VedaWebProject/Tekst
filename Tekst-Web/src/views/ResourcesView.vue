@@ -19,7 +19,7 @@ import {
   GET,
   withSelectedFile,
 } from '@/api';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -348,6 +348,18 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     filters.value = initialFilters();
   }
 }
+
+onMounted(() => {
+  // inform user in case there are corrections for resources of another text
+  if (
+    resources.all
+      .filter((r) => r.textId !== state.text?.id)
+      .map((r) => r.corrections?.length || 0)
+      .reduce((a, b) => a + b, 0) > 0
+  ) {
+    message.info($t('resources.msgCorrections'));
+  }
+});
 </script>
 
 <template>

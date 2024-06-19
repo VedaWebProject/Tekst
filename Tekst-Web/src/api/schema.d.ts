@@ -113,6 +113,13 @@ export interface paths {
      */
     get: operations['getCorrections'];
   };
+  '/corrections/{id}': {
+    /**
+     * Delete correction
+     * @description Deletes a specific correction note
+     */
+    delete: operations['deleteCorrection'];
+  };
   '/locations': {
     /** Find locations */
     get: operations['findLocations'];
@@ -1191,6 +1198,12 @@ export interface components {
        */
       resourceId: string;
       /**
+       * Userid
+       * @description ID of the user who created the correction note
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      userId: string;
+      /**
        * Position
        * @description Position of the content this correction refers to
        */
@@ -1200,6 +1213,13 @@ export interface components {
        * @description Content of the correction note
        */
       note: string;
+      /**
+       * Date
+       * Format: date-time
+       * @description Date when the correction was created
+       * @default 2024-06-19T09:29:11.288746
+       */
+      date?: string;
     };
     /** CorrectionRead */
     CorrectionRead: {
@@ -1215,6 +1235,12 @@ export interface components {
        */
       resourceId: string;
       /**
+       * Userid
+       * @description ID of the user who created the correction note
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      userId: string;
+      /**
        * Position
        * @description Position of the content this correction refers to
        */
@@ -1224,6 +1250,13 @@ export interface components {
        * @description Content of the correction note
        */
       note: string;
+      /**
+       * Date
+       * Format: date-time
+       * @description Date when the correction was created
+       * @default 2024-06-19T09:29:11.288746
+       */
+      date?: string;
       [key: string]: unknown;
     };
     /**
@@ -5626,6 +5659,41 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['CorrectionRead'][];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete correction
+   * @description Deletes a specific correction note
+   */
+  deleteCorrection: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */

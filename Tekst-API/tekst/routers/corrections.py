@@ -53,6 +53,8 @@ async def create_correction(
         LocationDocument.position == correction.position,
     ).exists():
         raise errors.E_404_CONTENT_NOT_FOUND
+    # force user ID of correction to match reqesting user
+    correction.user_id = user.id
     # notify the resource's owner (or admins if it's public) of the new correction
     msg_specific_attrs = {
         "from_user_name": user.name if "name" in user.public_fields else user.username,
@@ -100,7 +102,7 @@ async def get_corrections(
     """Returns a list of all corrections for a specific resource"""
     # check if the requested resource is owned by this user
     resource_doc = await ResourceBaseDocument.get(
-        ResourceBaseDocument.id == resource_id,
+        resource_id,
         with_children=True,
     )
     if not resource_doc or (user.id != resource_doc.owner_id and not user.is_superuser):
@@ -109,3 +111,28 @@ async def get_corrections(
     return await CorrectionDocument.find(
         CorrectionDocument.resource_id == resource_id,
     ).to_list()
+
+
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses([errors.E_404_NOT_FOUND, errors.E_403_FORBIDDEN]),
+)
+async def delete_correction(
+    correction_id: Annotated[PydanticObjectId, Path(alias="id")],
+    user: UserDep,
+) -> None:
+    """Deletes a specific correction note"""
+    # get correction
+    correction_doc = await CorrectionDocument.get(correction_id)
+    if not correction_doc:
+        raise errors.E_404_NOT_FOUND
+    # check if the requested resource is owned by this user
+    resource_doc = await ResourceBaseDocument.get(
+        correction_doc.resource_id,
+        with_children=True,
+    )
+    if not resource_doc or (user.id != resource_doc.owner_id and not user.is_superuser):
+        raise errors.E_403_FORBIDDEN
+    # delete correction
+    await correction_doc.delete()

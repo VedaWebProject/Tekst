@@ -1408,6 +1408,71 @@
         }
       }
     },
+    "/corrections/{id}": {
+      "delete": {
+        "tags": [
+          "corrections"
+        ],
+        "summary": "Delete correction",
+        "description": "Deletes a specific correction note",
+        "operationId": "deleteCorrection",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/locations": {
       "post": {
         "tags": [
@@ -8197,6 +8262,12 @@
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "ID of the user who created the correction note",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "position": {
             "type": "integer",
             "title": "Position",
@@ -8208,11 +8279,19 @@
             "minLength": 1,
             "title": "Note",
             "description": "Content of the correction note"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date",
+            "description": "Date when the correction was created",
+            "default": "2024-06-19T09:29:11.288746"
           }
         },
         "type": "object",
         "required": [
           "resourceId",
+          "userId",
           "position",
           "note"
         ],
@@ -8231,6 +8310,12 @@
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "ID of the user who created the correction note",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "position": {
             "type": "integer",
             "title": "Position",
@@ -8242,6 +8327,13 @@
             "minLength": 1,
             "title": "Note",
             "description": "Content of the correction note"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date",
+            "description": "Date when the correction was created",
+            "default": "2024-06-19T09:29:11.288746"
           }
         },
         "additionalProperties": true,
@@ -8249,6 +8341,7 @@
         "required": [
           "id",
           "resourceId",
+          "userId",
           "position",
           "note"
         ],

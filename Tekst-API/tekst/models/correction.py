@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from pydantic import Field, StringConstraints
@@ -18,6 +19,12 @@ class Correction(ModelBase, ModelFactoryMixin):
             description="ID of the resource this correction refers to",
         ),
     ]
+    user_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the user who created the correction note",
+        ),
+    ]
     position: Annotated[
         int,
         Field(
@@ -36,6 +43,12 @@ class Correction(ModelBase, ModelFactoryMixin):
         ),
         val.CleanupMultiline,
     ]
+    date: Annotated[
+        datetime,
+        Field(
+            description="Date when the correction was created",
+        ),
+    ] = datetime.utcnow()
 
 
 class CorrectionDocument(Correction, DocumentBase):

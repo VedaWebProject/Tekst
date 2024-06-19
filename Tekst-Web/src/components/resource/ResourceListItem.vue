@@ -15,7 +15,7 @@ import { computed } from 'vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { useStateStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
@@ -62,6 +62,7 @@ const emit = defineEmits([
 
 const state = useStateStore();
 const router = useRouter();
+const resources = useResourcesStore();
 
 const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.targetResource.ownerId);
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.currentUser?.isSuperuser);
@@ -217,8 +218,9 @@ function handleCorrectionsClick() {
       <template #header-extra>
         <n-flex>
           <n-badge
-            v-if="!!targetResource.corrections?.length"
-            :value="targetResource.corrections?.length"
+            v-if="!!resources.correctionsCount[targetResource.id]"
+            :value="resources.correctionsCount[targetResource.id]"
+            :max="100"
           >
             <content-container-header-widget
               :title="$t('resources.correctionNotesAction')"

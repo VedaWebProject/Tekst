@@ -15,7 +15,7 @@ const auth = useAuthStore();
 const state = useStateStore();
 const userMessages = useUserMessagesStore();
 
-const username = computed(() => {
+const usernameOrId = computed(() => {
   if (route.name) {
     if (route.name === 'user' && route.params.username) {
       return String(route.params.username);
@@ -25,7 +25,7 @@ const username = computed(() => {
   }
   return '';
 });
-const { user, error } = useProfile(username);
+const { user, error } = useProfile(usernameOrId);
 
 function handleSendUserMessage() {
   if (!user.value || !auth.loggedIn) return;
@@ -41,7 +41,7 @@ function handleSendUserMessage() {
 }
 
 watch(
-  () => username.value,
+  () => usernameOrId.value,
   (newUsername) => {
     state.setPageTitle(route, { username: newUsername });
   },
@@ -93,6 +93,6 @@ watch(
 
   <div v-else class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>
-    {{ $t('account.profileNotFound', { username }) }}
+    {{ $t('account.profileNotFound', { usernameOrId }) }}
   </div>
 </template>

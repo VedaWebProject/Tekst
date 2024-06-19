@@ -130,6 +130,10 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
   label: [requiredRule(() => $t('models.location.label'), 'blur'), minMaxCharsRule(1, 256, 'blur')],
 };
 
+export const correctionFormRules: Record<string, FormItemRule[]> = {
+  note: [requiredRule(() => $t('models.location.label'), 'blur'), minMaxCharsRule(1, 256, 'blur')],
+};
+
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [minMaxCharsRule(0, 32, 'blur')],
   key: [requiredRule(() => $t('models.segment.key'), 'blur')],

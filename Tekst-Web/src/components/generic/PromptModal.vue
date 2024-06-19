@@ -2,6 +2,7 @@
 import {
   NButton,
   NInput,
+  NAlert,
   NFormItem,
   type InputInst,
   type FormItemRule,
@@ -103,7 +104,9 @@ function handleInputReturn(e: KeyboardEvent) {
     "
     @after-enter="inputRef?.select()"
   >
-    <p v-if="liveProps.msg">{{ liveProps.msg }}</p>
+    <n-alert v-if="liveProps.msg" :show-icon="false" style="margin-bottom: var(--layout-gap)">
+      <span class="text-medium">{{ liveProps.msg }}</span>
+    </n-alert>
     <n-form :model="formModel">
       <n-form-item
         ref="formItemRef"
