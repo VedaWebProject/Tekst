@@ -42,8 +42,8 @@ async function handleModalSubmit(note: string) {
     ) {
       const res = resources.ofText.find((r) => r.id == props.resource.id);
       if (!res) return;
-      res.corrections ??= [];
-      res.corrections.push(data);
+      resources.corrections[props.resource.id] ??= [];
+      resources.corrections[props.resource.id].push(data);
     }
     message.success($t('browse.contents.widgets.correctionNote.msgSuccess'));
   }
