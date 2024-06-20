@@ -1,7 +1,7 @@
 [
   {
     "_id": { "$oid": "65c5fe0b691066aabd498236" },
-    "email": "inactive@test.com",
+    "email": "inactive@tekst.dev",
     "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$01Q6hvaoSh5Eb95bH/yhMA$/JajttLvD4V+iSWF7pEO5j0+9ygb+TUjo+sG4gcEdrU",
     "is_active": false,
     "is_superuser": false,
@@ -25,7 +25,7 @@
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498237" },
-    "email": "unverified@test.com",
+    "email": "unverified@tekst.dev",
     "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$ZTV5euXVw8R16qMbCFbJ1A$8jVUgewY9AuknO2lWLfZzkl9dE3wn3/Kp3Ft5ccox+M",
     "is_active": true,
     "is_superuser": false,
@@ -49,7 +49,7 @@
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498238" },
-    "email": "user@test.com",
+    "email": "user@tekst.dev",
     "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$eMAYBl0Pdc4I5iW7U4P9pw$W0YMu4EGJriJeYk1IMZ5Nzesr4gi60srmNYUwRVt9qE",
     "is_active": true,
     "is_superuser": false,
@@ -73,7 +73,7 @@
   },
   {
     "_id": { "$oid": "65c5fe0c691066aabd498239" },
-    "email": "superuser@test.com",
+    "email": "superuser@tekst.dev",
     "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$4Xc7TPGlz2GY8BMsHW9CUA$ahxtdaldT74kp2dIT2BL92oktatSm8f76wOolg6+nqM",
     "is_active": true,
     "is_superuser": true,

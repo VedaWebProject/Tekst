@@ -12,7 +12,7 @@ async def test_sending_email():
         UserRead(
             id="645b469846c001259ec09d63",
             username="testuser",
-            email="testuser@test.com",
+            email="testuser@tekst.dev",
             name="Foo Bar",
             affiliation="Baz",
             is_active=True,
