@@ -32,18 +32,17 @@ async function handleModalSubmit(note: string) {
     position: browse.position,
     note,
   };
-  const { data, error } = await POST('/corrections', {
+  const { error } = await POST('/corrections', {
     body: correction,
   });
   if (!error) {
     if (
       auth.user &&
-      (auth.user.id == props.resource.ownerId || (auth.user.isSuperuser && props.resource.public))
+      (auth.user.id === props.resource.ownerId || (auth.user.isSuperuser && props.resource.public))
     ) {
       const res = resources.ofText.find((r) => r.id == props.resource.id);
       if (!res) return;
-      resources.corrections[props.resource.id] ??= [];
-      resources.corrections[props.resource.id].push(data);
+      res.corrections = res.corrections ? res.corrections++ : 1;
     }
     message.success($t('browse.contents.widgets.correctionNote.msgSuccess'));
   }
