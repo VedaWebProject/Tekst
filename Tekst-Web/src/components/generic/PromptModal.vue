@@ -15,6 +15,7 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import NInputOsk from '@/components/NInputOsk.vue';
+import { shallowRef } from 'vue';
 
 export interface PromptModalProps {
   actionKey?: string;
@@ -47,7 +48,7 @@ const props = withDefaults(defineProps<PromptModalProps>(), {
   disableOkWhenNoValue: false,
   validationRules: undefined,
 });
-const liveProps = ref<PromptModalProps>(props);
+const liveProps = shallowRef<PromptModalProps>(props);
 const emit = defineEmits(['submit', 'afterLeave']);
 defineExpose({ open });
 
