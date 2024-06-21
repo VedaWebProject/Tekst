@@ -128,6 +128,7 @@ routes:
     register: '@:register.heading'
     resources: Resources on "{text}"
     resourceSettings: '@:resources.settings.heading'
+    resourcesCorrections: Correction notes
     user: Profile of {username}
     community: Community
     accountProfile: '@:account.profileHeading'
@@ -178,6 +179,15 @@ browse:
     widgets:
       contentEdit:
         title: Edit content
+      correctionNote:
+        title: Send correction note for this location
+        heading: Send correction note
+        info: |
+          Do you have a short comment or correction to this content?
+          You can write a correction note here. The person
+          responsible for this resource will be notified!
+        lblNote: Correction note
+        msgSuccess: Sent correction note
       deepLTranslate:
         title: Open DeepL translation
       infoWidget:
@@ -336,12 +346,14 @@ resources:
     As an administrator, you are able to modify resources owned by other users.
     This doesn't mean it is a good idea to do so. Please make sure that whatever you
     do happens in agreement with the owner of this resource!
+  msgCorrections: Correction notes on other texts are available for you to review.
   ownedByMe: by me
   ownedByOthers: by others
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  correctionNotesAction: Show correction notes
   transferAction: Transfer to user
   settingsAction: Settings
   contentsAction: Contents
@@ -384,7 +396,7 @@ resources:
   msgDeleted: The resource "{title}" has been deleted.
   msgCreatedVersion: A new version of the resource "{title}" has been created.
   phSearchUsers: Search for users...
-  backToOverview: Back to "Resources"
+  backToOverview: Go to resources overview
   create:
     heading: New Resource on "{text}"
     headingTypeAndLevel: Resource Type and Level
@@ -481,6 +493,10 @@ resources:
       searchFields:
         text: Title / Description
 
+corrections:
+  heading: Correction Notes for "{title}"
+  msgDeleted: Correction note has been deleted
+
 contents:
   heading: Edit Resource Content
   lblBtnCompare: Compare
@@ -498,6 +514,7 @@ contents:
   msgImportInfo: The import will be processed in the background. This might take a while.
   msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
+  correctionNotes: Correction Notes
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |
     This version of "{originalResourceTitle}" has no own content for this location.
@@ -546,10 +563,12 @@ account:
       resourceProposed: someone proposes a resource for publication (via platform message)
       resourcePublished: a resource is published (via platform message)
       messageReceived: I receive a message from another user (via email)
+      newCorrection: a new correction note on one of my resources has been created (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators
       userAwaitsActivation: a user is waiting for account activation (via email)
+      newCorrection: a new correction note on a public resource has been created (via email)
       msgSaveSuccess: Administrator notifications settings saved.
     msgEmailSaveSuccess: '@:models.user.email saved.'
     msgEmailChangeWarning: Make sure you entered a valid email address you have access to! If you proceed, you will be logged out and have to verify your changed email address before you can log in again.

@@ -1,25 +1,33 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NFlex, NButton, NIcon } from 'naive-ui';
+import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import {
+  useAuthStore,
+  useBrowseStore,
+  useResourcesStore,
+  useStateStore,
+  useUserMessagesStore,
+} from '@/stores';
 import { RouterLink } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from './navMenuOptions';
 import DrawerMenu from './DrawerMenu.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { HamburgerMenuIcon } from '@/icons';
+import { CorrectionNoteIcon, HamburgerMenuIcon, MessageIcon } from '@/icons';
 import { useLogo } from '@/composables/logo';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
 const browse = useBrowseStore();
+const userMessages = useUserMessagesStore();
+const resources = useResourcesStore();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
 const menuOpen = ref(false);
@@ -58,19 +66,30 @@ const titleLinkTo = computed(() => {
       </div>
     </div>
 
-    <n-button
+    <n-badge
       v-if="state.smallScreen"
-      quaternary
-      circle
-      size="large"
-      :focusable="false"
-      :keyboard="false"
-      @click="() => (menuOpen = !menuOpen)"
+      :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
+      :offset="[-8, 6]"
     >
-      <template #icon>
-        <n-icon size="32" :component="HamburgerMenuIcon" />
+      <template #value>
+        <n-flex :wrap="false" size="small">
+          <n-icon v-if="!!resources.correctionsCountTotal" :component="CorrectionNoteIcon" />
+          <n-icon v-if="!!userMessages.unreadCount" :component="MessageIcon" />
+        </n-flex>
       </template>
-    </n-button>
+      <n-button
+        quaternary
+        circle
+        size="large"
+        :focusable="false"
+        :keyboard="false"
+        @click="() => (menuOpen = !menuOpen)"
+      >
+        <template #icon>
+          <n-icon size="32" :component="HamburgerMenuIcon" />
+        </template>
+      </n-button>
+    </n-badge>
   </n-flex>
 
   <n-flex v-if="!state.smallScreen" class="navbar-menu">

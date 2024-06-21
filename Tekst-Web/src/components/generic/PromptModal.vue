@@ -2,6 +2,7 @@
 import {
   NButton,
   NInput,
+  NAlert,
   NFormItem,
   type InputInst,
   type FormItemRule,
@@ -9,17 +10,23 @@ import {
   type FormItemInst,
 } from 'naive-ui';
 import ButtonShelf from './ButtonShelf.vue';
-import { ref } from 'vue';
+import { ref, type Component } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
+import NInputOsk from '@/components/NInputOsk.vue';
+import { shallowRef } from 'vue';
 
 export interface PromptModalProps {
   actionKey?: string;
   initialValue?: string;
+  msg?: string;
+  icon?: Component;
   inputLabel?: string;
   title?: string;
   multiline?: boolean;
+  osk?: boolean;
+  font?: string;
   placeholder?: string;
   rows?: number;
   disableOkWhenNoValue?: boolean;
@@ -29,15 +36,19 @@ export interface PromptModalProps {
 const props = withDefaults(defineProps<PromptModalProps>(), {
   actionKey: undefined,
   initialValue: undefined,
+  msg: undefined,
+  icon: undefined,
   inputLabel: undefined,
   title: undefined,
   multiline: false,
+  osk: false,
+  font: undefined,
   placeholder: '',
   rows: undefined,
   disableOkWhenNoValue: false,
   validationRules: undefined,
 });
-const liveProps = ref<PromptModalProps>(props);
+const liveProps = shallowRef<PromptModalProps>(props);
 const emit = defineEmits(['submit', 'afterLeave']);
 defineExpose({ open });
 
@@ -85,6 +96,7 @@ function handleInputReturn(e: KeyboardEvent) {
   <generic-modal
     v-model:show="show"
     :title="liveProps.title"
+    :icon="liveProps.icon"
     @after-leave="
       () => {
         close();
@@ -93,6 +105,9 @@ function handleInputReturn(e: KeyboardEvent) {
     "
     @after-enter="inputRef?.select()"
   >
+    <n-alert v-if="liveProps.msg" :show-icon="false" style="margin-bottom: var(--layout-gap)">
+      <span class="text-medium">{{ liveProps.msg }}</span>
+    </n-alert>
     <n-form :model="formModel">
       <n-form-item
         ref="formItemRef"
@@ -102,12 +117,24 @@ function handleInputReturn(e: KeyboardEvent) {
         :rule="liveProps.validationRules"
       >
         <n-input
+          v-if="!liveProps.osk"
           ref="inputRef"
           v-model:value="formModel.inputString"
           :type="liveProps.multiline ? 'textarea' : 'text'"
           :rows="liveProps.rows"
           :default-value="liveProps.initialValue"
           :placeholder="liveProps.placeholder"
+          @keydown.enter="handleInputReturn"
+        />
+        <n-input-osk
+          v-else
+          ref="inputRef"
+          v-model:value="formModel.inputString"
+          :type="liveProps.multiline ? 'textarea' : 'text'"
+          :rows="liveProps.rows"
+          :default-value="liveProps.initialValue"
+          :placeholder="liveProps.placeholder"
+          :font="liveProps.font"
           @keydown.enter="handleInputReturn"
         />
       </n-form-item>

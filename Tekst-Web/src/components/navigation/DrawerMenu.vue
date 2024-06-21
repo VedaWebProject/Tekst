@@ -14,6 +14,7 @@ import {
 } from '@/components/navigation/navMenuOptions';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
+import { usePlatformData } from '@/composables/platformData';
 
 withDefaults(
   defineProps<{
@@ -27,6 +28,8 @@ withDefaults(
 const show = defineModel<boolean>('show');
 
 const auth = useAuthStore();
+const { pfData } = usePlatformData();
+
 const { menuOptions: mainMenuOptions } = useMainMenuOptions();
 const { menuOptions: accountMenuOptions } = useAccountMenuOptions();
 const { menuOptions: adminMenuOptions } = useAdminMenuOptions();
@@ -35,7 +38,7 @@ const allMenuOptions = computed(() => [
   {
     type: 'group',
     key: 'general-group',
-    label: $t('general.platform'),
+    label: pfData.value?.settings.platformName || $t('general.platform'),
     children: mainMenuOptions.value.filter((o) => o.key !== 'info'),
   },
   ...(mainMenuOptions.value.find((o) => o.key === 'info')?.children?.length

@@ -2,7 +2,13 @@ import { NBadge, type MenuOption } from 'naive-ui';
 import { h, computed } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import { $t } from '@/i18n';
-import { useAuthStore, useBrowseStore, useStateStore, useUserMessagesStore } from '@/stores';
+import {
+  useAuthStore,
+  useBrowseStore,
+  useResourcesStore,
+  useStateStore,
+  useUserMessagesStore,
+} from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import type { ClientSegmentHead } from '@/api';
 import { pickTranslation, renderIcon } from '@/utils';
@@ -49,6 +55,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const state = useStateStore();
   const auth = useAuthStore();
   const browse = useBrowseStore();
+  const resources = useResourcesStore();
 
   const infoPagesOptions = computed(() => {
     const pages: ClientSegmentHead[] = [];
@@ -94,12 +101,23 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     ...(state.smallScreen && auth.loggedIn
       ? [
           {
-            label: renderLink(() => $t('resources.heading'), {
-              name: 'resources',
-              params: {
-                text: state.text?.slug || '',
-              },
-            }),
+            label: renderLink(
+              () =>
+                h('div', null, [
+                  $t('resources.heading'),
+                  h(
+                    NBadge,
+                    { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
+                    undefined
+                  ),
+                ]),
+              {
+                name: 'resources',
+                params: {
+                  text: state.text?.slug || '',
+                },
+              }
+            ),
             key: 'resources',
             icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
           },

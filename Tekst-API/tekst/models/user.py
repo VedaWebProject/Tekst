@@ -41,6 +41,7 @@ UserNotificationTrigger = TypeAliasType(
     "UserNotificationTrigger",
     Literal[
         TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
+        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
         TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
         TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
     ],
@@ -55,7 +56,10 @@ UserNotificationTriggers = Annotated[
 
 AdminNotificationTrigger = TypeAliasType(
     "AdminNotificationTrigger",
-    Literal[TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value],
+    Literal[
+        TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
+        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+    ],
 )
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],

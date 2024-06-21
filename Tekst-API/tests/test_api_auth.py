@@ -70,7 +70,7 @@ async def test_register_email_exists(
 ):
     payload = get_fake_user()
 
-    payload["email"] = "first@test.com"
+    payload["email"] = "first@tekst.dev"
     payload["username"] = "first"
     resp = await test_client.post("/auth/register", json=payload)
     assert resp.status_code == 201, status_fail_msg(201, resp)

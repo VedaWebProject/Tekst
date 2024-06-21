@@ -6,6 +6,10 @@ import {
   NFlex,
   NForm,
   NButton,
+  NCollapseItem,
+  NCollapse,
+  NList,
+  NBadge,
   type FormInst,
   useDialog,
 } from 'naive-ui';
@@ -38,6 +42,7 @@ import { dialogProps } from '@/common';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import contentComponents from '@/components/content/mappings';
 import LocationLabel from '@/components/LocationLabel.vue';
+import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
 
 import {
   EditNoteIcon,
@@ -114,6 +119,12 @@ const loadingSave = ref(false);
 const loadingData = ref(false);
 const loading = computed(
   () => resources.loading || loadingDelete.value || loadingSave.value || loadingData.value
+);
+
+const corrections = computed(
+  () =>
+    resources.corrections[resource.value?.id || '']?.filter((c) => c.position === position.value) ||
+    []
 );
 
 // go to resource overview if text changes
@@ -489,6 +500,25 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
           </n-button>
         </button-shelf>
       </n-alert>
+
+      <n-collapse v-if="resource && !!corrections.length" style="margin-bottom: var(--layout-gap)">
+        <n-collapse-item name="corrections">
+          <template #header>
+            <n-badge value="!" :offset="[10, 4]">
+              <div>{{ $t('contents.correctionNotes') }}</div>
+            </n-badge>
+          </template>
+          <n-list style="background-color: transparent">
+            <correction-list-item
+              v-for="correction in corrections"
+              :key="correction.id"
+              :resource="resource"
+              :correction="correction"
+              :clickable="false"
+            />
+          </n-list>
+        </n-collapse-item>
+      </n-collapse>
 
       <template v-if="contentModel">
         <n-form

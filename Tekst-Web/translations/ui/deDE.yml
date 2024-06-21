@@ -131,6 +131,7 @@ routes:
     login: Anmeldung
     register: '@:register.heading'
     resources: Ressourcen zu "{text}"
+    resourcesCorrections: Korrekturnotizen
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
     community: Gemeinschaft
@@ -182,6 +183,15 @@ browse:
     widgets:
       contentEdit:
         title: Inhalt bearbeiten
+      correctionNote:
+        title: Korrekturnotiz zu dieser Fundstelle senden
+        heading: Korrekturnotiz senden
+        info: |
+          Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
+          Hier können Sie eine Korrektrnotiz verfassen. Die Person,
+          die für diese Ressource verantwortlich ist, wird darüber benachrichtigt!
+        lblNote: Korrekturnotiz
+        msgSuccess: Korrekturnotiz gesendet
       deepLTranslate:
         title: DeepL-Übersetzung öffnen
       infoWidget:
@@ -340,12 +350,14 @@ resources:
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
+  msgCorrections: Es liegen Korrekturnotizen zu anderen Texten zur Prüfung für Sie vor.
   ownedByMe: von mir
   ownedByOthers: von anderen
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
+  correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
   settingsAction: Einstellungen
   contentsAction: Inhalte
@@ -395,7 +407,7 @@ resources:
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   msgCreatedVersion: Eine neue Version der Ressource "{title}" wurde erstellt.
   phSearchUsers: Benutzer suchen...
-  backToOverview: Zurück zu "Ressourcen"
+  backToOverview: Gehe zur Ressourcen-Übersicht
   create:
     heading: Neue Ressource zu "{text}"
     headingTypeAndLevel: Ressourcen-Typ und Ebene
@@ -492,6 +504,10 @@ resources:
       searchFields:
         text: Titel / Beschreibung
 
+corrections:
+  heading: Korrekturnotizen für "{title}"
+  msgDeleted: Korrekturnotiz wurde gelöscht
+
 contents:
   heading: Ressourcen-Inhalte bearbeiten
   lblBtnCompare: Vergleichen
@@ -509,6 +525,7 @@ contents:
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. Dies kann eine Weile dauern.
   msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
+  correctionNotes: Korrekturnotizen
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.
@@ -557,10 +574,12 @@ account:
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
       messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte (per Email)
+      newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren
       userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet (per Email)
+      newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Benutzer-Email-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.

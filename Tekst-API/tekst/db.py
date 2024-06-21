@@ -7,6 +7,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.logs import log
 from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
+from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -52,6 +53,7 @@ async def init_odm(db: Database = get_db()) -> None:
         LocationDocument,
         ResourceBaseDocument,
         ContentBaseDocument,
+        CorrectionDocument,
         PlatformSettingsDocument,
         ClientSegmentDocument,
         UserDocument,

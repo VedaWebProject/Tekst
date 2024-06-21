@@ -2,7 +2,7 @@
 import { type BookmarkRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NThing, NIcon, NButton, NList, NListItem } from 'naive-ui';
+import { NThing, NIcon, NButton, NList, NListItem, NFlex } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PromptModal from '@/components/generic/PromptModal.vue';
@@ -119,7 +119,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
             <location-label :location-labels="bookmark.locationLabels" />
           </template>
           <template #header-extra>
-            <div style="height: 100%; display: flex; align-items: center">
+            <n-flex align="center" style="height: 100%">
               <n-button
                 secondary
                 size="small"
@@ -133,7 +133,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
                   <n-icon :component="DeleteIcon" />
                 </template>
               </n-button>
-            </div>
+            </n-flex>
           </template>
           <template v-if="bookmark.comment" #description>
             <div style="white-space: pre-wrap">
@@ -150,6 +150,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     multiline
     action-key="createBookmark"
     :title="$t('browse.bookmarks.commentModalTitle')"
+    :icon="BookmarksIcon"
     :input-label="$t('browse.bookmarks.commentModalInputLabel')"
     :rows="3"
     :validation-rules="bookmarkFormRules.comment"

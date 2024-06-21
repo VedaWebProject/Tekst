@@ -19,7 +19,7 @@ import {
   GET,
   withSelectedFile,
 } from '@/api';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -100,7 +100,9 @@ const filteredData = computed(() => filterData(resources.ofText));
 const paginatedData = computed(() => {
   const start = (pagination.value.page - 1) * pagination.value.pageSize;
   const end = start + pagination.value.pageSize;
-  return filteredData.value.slice(start, end);
+  return filteredData.value
+    .slice(start, end)
+    .sort((a, b) => (b.corrections || 0) - (a.corrections || 0));
 });
 
 async function handleTransferClick(resource: AnyResourceRead) {
@@ -348,6 +350,16 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
     filters.value = initialFilters();
   }
 }
+
+onMounted(() => {
+  // inform user in case there are corrections for resources of another text
+  if (
+    !resources.ofText.some((r) => !!r.corrections) &&
+    resources.all.filter((r) => r.textId !== state.text?.id).some((r) => !!r.corrections)
+  ) {
+    message.info($t('resources.msgCorrections'));
+  }
+});
 </script>
 
 <template>

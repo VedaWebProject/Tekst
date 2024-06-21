@@ -148,6 +148,11 @@ export type ResourceExportFormat = NonNullable<
 export type BookmarkRead = components['schemas']['BookmarkRead'];
 export type BookmarkCreate = components['schemas']['BookmarkCreate'];
 
+// correction
+
+export type CorrectionRead = components['schemas']['CorrectionRead'];
+export type CorrectionCreate = components['schemas']['CorrectionCreate'];
+
 // user
 
 export type UserCreate = components['schemas']['UserCreate'];
@@ -197,6 +202,7 @@ export type ResourceType =
 type ResourceReadExtras = {
   active?: boolean;
   coverage?: ResourceCoverage;
+  corrections?: number;
 };
 
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];

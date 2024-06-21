@@ -110,8 +110,10 @@ import WarningOutlined from '@vicons/material/WarningOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
 import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
 import PauseFilled from '@vicons/material/PauseFilled';
+import PanToolAltOutlined from '@vicons/material/PanToolAltOutlined';
 
 export {
+  PanToolAltOutlined as CorrectionNoteIcon,
   PauseFilled as PauseIcon,
   PlayArrowFilled as PlayIcon,
   WarningOutlined as WarningIcon,

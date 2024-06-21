@@ -1,10 +1,25 @@
 <script setup lang="ts">
 import { ref, computed, h } from 'vue';
-import { useAuthStore, useStateStore, useThemeStore, useUserMessagesStore } from '@/stores';
+import {
+  useAuthStore,
+  useResourcesStore,
+  useStateStore,
+  useThemeStore,
+  useUserMessagesStore,
+} from '@/stores';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
-import { NBadge, NButton, NIcon, NDropdown } from 'naive-ui';
+import { NBadge, NButton, NIcon, NDropdown, NFlex } from 'naive-ui';
 import { $t } from '@/i18n';
-import { LogInIcon, LogOutIcon, UserIcon, AdminIcon, CommunityIcon, ResourceIcon } from '@/icons';
+import {
+  LogInIcon,
+  LogOutIcon,
+  UserIcon,
+  AdminIcon,
+  CommunityIcon,
+  ResourceIcon,
+  MessageIcon,
+  CorrectionNoteIcon,
+} from '@/icons';
 import { renderIcon } from '@/utils';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 
@@ -12,6 +27,7 @@ const auth = useAuthStore();
 const userMessages = useUserMessagesStore();
 const state = useStateStore();
 const theme = useThemeStore();
+const resources = useResourcesStore();
 
 const tooltip = computed(() =>
   auth.loggedIn
@@ -37,12 +53,23 @@ const userOptions = computed(() => [
     icon: renderIcon(UserIcon),
   },
   {
-    label: renderLink(() => $t('resources.heading'), {
-      name: 'resources',
-      params: {
-        text: state.text?.slug || '',
-      },
-    }),
+    label: renderLink(
+      () =>
+        h('div', null, [
+          $t('resources.heading'),
+          h(
+            NBadge,
+            { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
+            undefined
+          ),
+        ]),
+      {
+        name: 'resources',
+        params: {
+          text: state.text?.slug || '',
+        },
+      }
+    ),
     key: 'resources',
     icon: renderIcon(ResourceIcon),
   },
@@ -108,7 +135,16 @@ function handleUserOptionSelect(key: string) {
     trigger="click"
     @select="handleUserOptionSelect"
   >
-    <n-badge :value="userMessages.unreadCount">
+    <n-badge
+      :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
+      :offset="[-8, 2]"
+    >
+      <template #value>
+        <n-flex :wrap="false" size="small">
+          <n-icon v-if="!!resources.correctionsCountTotal" :component="CorrectionNoteIcon" />
+          <n-icon v-if="!!userMessages.unreadCount" :component="MessageIcon" />
+        </n-flex>
+      </template>
       <user-avatar
         v-if="auth.user?.avatarUrl"
         :avatar-url="auth.user.avatarUrl"

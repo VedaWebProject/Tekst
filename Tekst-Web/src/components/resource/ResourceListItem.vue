@@ -8,17 +8,19 @@ import {
   NListItem,
   NThing,
   NButton,
+  NBadge,
   type DropdownOption,
 } from 'naive-ui';
 import { computed } from 'vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { useStateStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { $t } from '@/i18n';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 
 import {
   MoreIcon,
@@ -33,8 +35,10 @@ import {
   VersionIcon,
   DownloadIcon,
   UploadIcon,
+  CorrectionNoteIcon,
 } from '@/icons';
 import { pickTranslation, renderIcon } from '@/utils';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
@@ -57,6 +61,8 @@ const emit = defineEmits([
 ]);
 
 const state = useStateStore();
+const router = useRouter();
+const resources = useResourcesStore();
 
 const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.targetResource.ownerId);
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.currentUser?.isSuperuser);
@@ -192,6 +198,13 @@ const actionOptions = computed(() => [
 function handleActionSelect(o: DropdownOption & { action?: () => void }) {
   o.action?.();
 }
+
+function handleCorrectionsClick() {
+  router.push({
+    name: 'resourceCorrections',
+    params: { text: state.text?.slug, id: props.targetResource.id },
+  });
+}
 </script>
 
 <template>
@@ -204,6 +217,17 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
       </template>
       <template #header-extra>
         <n-flex>
+          <n-badge
+            v-if="!!resources.correctionsCount[targetResource.id]"
+            :value="resources.correctionsCount[targetResource.id]"
+            :max="100"
+          >
+            <content-container-header-widget
+              :title="$t('resources.correctionNotesAction')"
+              :icon-component="CorrectionNoteIcon"
+              @click="handleCorrectionsClick()"
+            />
+          </n-badge>
           <resource-export-widget :resource="targetResource" />
           <resource-info-widget :resource="targetResource" />
           <n-dropdown

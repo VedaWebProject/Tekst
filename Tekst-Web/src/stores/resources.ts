@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
+import { type CorrectionRead, GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useAuthStore, useStateStore } from '@/stores';
 import { hashCode } from '@/utils';
 
@@ -11,6 +11,13 @@ export const useResourcesStore = defineStore('resources', () => {
   const resourcesAll = ref<AnyResourceRead[]>([]);
   const resourcesOfText = computed(() =>
     resourcesAll.value.filter((r) => r.textId === state.text?.id)
+  );
+  const corrections = ref<Record<string, CorrectionRead[]>>({});
+  const correctionsCount = computed<Record<string, number>>(() =>
+    Object.fromEntries(resourcesAll.value.map((r) => [r.id, r.corrections || 0]))
+  );
+  const correctionsCountTotal = computed(() =>
+    Object.values(correctionsCount.value).reduce((a, b) => a + b, 0)
   );
   const dataHash = computed(() => hashCode(resourcesAll.value));
   const error = ref(false);
@@ -47,7 +54,19 @@ export const useResourcesStore = defineStore('resources', () => {
     } else {
       error.value = true;
     }
+    corrections.value = {};
     loading.value = false;
+  }
+
+  async function loadCorrections(resourceId: string) {
+    const { data, error } = await GET('/corrections/{resourceId}', {
+      params: { path: { resourceId } },
+    });
+    if (!error) {
+      corrections.value[resourceId] = data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+    } else {
+      corrections.value[resourceId] = [];
+    }
   }
 
   function replace(resource: AnyResourceRead) {
@@ -115,6 +134,10 @@ export const useResourcesStore = defineStore('resources', () => {
   return {
     all: resourcesAll,
     ofText: resourcesOfText,
+    correctionsCount,
+    correctionsCountTotal,
+    corrections,
+    loadCorrections,
     dataHash,
     error,
     loading,

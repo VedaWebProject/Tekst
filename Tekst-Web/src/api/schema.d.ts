@@ -99,6 +99,27 @@ export interface paths {
     /** Update content */
     patch: operations['updateContent'];
   };
+  '/corrections': {
+    /**
+     * Create correction
+     * @description Creates a correction note referring to a specific content
+     */
+    post: operations['createCorrection'];
+  };
+  '/corrections/{resourceId}': {
+    /**
+     * Get corrections
+     * @description Returns a list of all corrections for a specific resource
+     */
+    get: operations['getCorrections'];
+  };
+  '/corrections/{id}': {
+    /**
+     * Delete correction
+     * @description Deletes a specific correction note
+     */
+    delete: operations['deleteCorrection'];
+  };
   '/locations': {
     /** Find locations */
     get: operations['findLocations'];
@@ -392,11 +413,8 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /**
-     * @constant
-     * @enum {string}
-     */
-    AdminNotificationTrigger: 'userAwaitsActivation';
+    /** @enum {string} */
+    AdminNotificationTrigger: 'userAwaitsActivation' | 'newCorrection';
     /** AdvancedSearchRequestBody */
     AdvancedSearchRequestBody: {
       /**
@@ -1170,6 +1188,67 @@ export interface components {
        * @default
        */
       cmt?: string;
+    };
+    /** CorrectionCreate */
+    CorrectionCreate: {
+      /**
+       * Resourceid
+       * @description ID of the resource this correction refers to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Position
+       * @description Position of the content this correction refers to
+       */
+      position: number;
+      /**
+       * Note
+       * @description Content of the correction note
+       */
+      note: string;
+    };
+    /** CorrectionRead */
+    CorrectionRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description ID of the resource this correction refers to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * Userid
+       * @description ID of the user who created the correction note
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      userId: string;
+      /**
+       * Position
+       * @description Position of the content this correction refers to
+       */
+      position: number;
+      /**
+       * Note
+       * @description Content of the correction note
+       */
+      note: string;
+      /**
+       * Date
+       * Format: date-time
+       * @description Date when the correction was created
+       */
+      date: string;
+      /**
+       * Locationlabels
+       * @description Text location labels from root to target location
+       */
+      locationLabels: string[];
+      [key: string]: unknown;
     };
     /**
      * DeepLLinksConfig
@@ -4713,6 +4792,7 @@ export interface components {
        * @description Events that trigger notifications for this user
        * @default [
        *   "messageReceived",
+       *   "newCorrection",
        *   "resourceProposed",
        *   "resourcePublished"
        * ]
@@ -4722,7 +4802,8 @@ export interface components {
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
-       *   "userAwaitsActivation"
+       *   "userAwaitsActivation",
+       *   "newCorrection"
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
@@ -4821,7 +4902,11 @@ export interface components {
       unread: number;
     };
     /** @enum {string} */
-    UserNotificationTrigger: 'messageReceived' | 'resourceProposed' | 'resourcePublished';
+    UserNotificationTrigger:
+      | 'messageReceived'
+      | 'newCorrection'
+      | 'resourceProposed'
+      | 'resourcePublished';
     /**
      * UserRead
      * @description A user registered in the system
@@ -4861,6 +4946,7 @@ export interface components {
        * @description Events that trigger notifications for this user
        * @default [
        *   "messageReceived",
+       *   "newCorrection",
        *   "resourceProposed",
        *   "resourcePublished"
        * ]
@@ -4870,7 +4956,8 @@ export interface components {
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
-       *   "userAwaitsActivation"
+       *   "userAwaitsActivation",
+       *   "newCorrection"
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
@@ -4935,6 +5022,7 @@ export interface components {
        * @description Events that trigger notifications for this user
        * @default [
        *   "messageReceived",
+       *   "newCorrection",
        *   "resourceProposed",
        *   "resourcePublished"
        * ]
@@ -4944,7 +5032,8 @@ export interface components {
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
-       *   "userAwaitsActivation"
+       *   "userAwaitsActivation",
+       *   "newCorrection"
        * ]
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
@@ -5494,6 +5583,103 @@ export interface operations {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Create correction
+   * @description Creates a correction note referring to a specific content
+   */
+  createCorrection: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CorrectionCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        content: {
+          'application/json': components['schemas']['CorrectionRead'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Get corrections
+   * @description Returns a list of all corrections for a specific resource
+   */
+  getCorrections: {
+    parameters: {
+      path: {
+        resourceId: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['CorrectionRead'][];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /**
+   * Delete correction
+   * @description Deletes a specific correction note
+   */
+  deleteCorrection: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: {
+        content: never;
       };
       /** @description Forbidden */
       403: {

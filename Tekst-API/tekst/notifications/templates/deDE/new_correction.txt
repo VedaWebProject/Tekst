@@ -1,0 +1,12 @@
+Hallo, {to_user_name}!
+
+{from_user_name} hat eine neue Korrekturnotiz zur Ressource "{resource_title}" erstellt:
+
+-----------------------------
+{correction_note}
+-----------------------------
+
+Klicken Sie auf folgenden Link, um alle Korrekturnotizen zu "{resource_title}" einzusehen und zu verwalten:
+{web_url}/text/{text_slug}/resources/{resource_id}/corrections
+
+Bis bald auf {platform_name}!

@@ -89,6 +89,8 @@ async def send_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ):
+    if not to_user or not template_id:  # pragma: no cover
+        raise ValueError("Missing user or template ID.")
     templates = _get_notification_templates(template_id, to_user.locale or "enUS")
     msg_parts = dict()
     settings = await get_settings()
