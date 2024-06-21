@@ -48,7 +48,40 @@ class Correction(ModelBase, ModelFactoryMixin):
         Field(
             description="Date when the correction was created",
         ),
-    ] = datetime.utcnow()
+    ]
+    location_labels: Annotated[
+        list[str],
+        Field(
+            description="Text location labels from root to target location",
+        ),
+    ]
+
+
+class CorrectionCreate(ModelBase):
+    resource_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the resource this correction refers to",
+        ),
+    ]
+    position: Annotated[
+        int,
+        Field(
+            description="Position of the content this correction refers to",
+        ),
+    ]
+    note: Annotated[
+        str,
+        Field(
+            description="Content of the correction note",
+        ),
+        StringConstraints(
+            min_length=1,
+            max_length=1000,
+            strip_whitespace=True,
+        ),
+        val.CleanupMultiline,
+    ]
 
 
 class CorrectionDocument(Correction, DocumentBase):
@@ -60,4 +93,3 @@ class CorrectionDocument(Correction, DocumentBase):
 
 
 CorrectionRead = Correction.read_model()
-CorrectionCreate = Correction.create_model()

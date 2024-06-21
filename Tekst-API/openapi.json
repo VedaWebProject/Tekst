@@ -8262,12 +8262,6 @@
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "userId": {
-            "type": "string",
-            "title": "Userid",
-            "description": "ID of the user who created the correction note",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
           "position": {
             "type": "integer",
             "title": "Position",
@@ -8279,19 +8273,11 @@
             "minLength": 1,
             "title": "Note",
             "description": "Content of the correction note"
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Date",
-            "description": "Date when the correction was created",
-            "default": "2024-06-19T09:29:11.288746"
           }
         },
         "type": "object",
         "required": [
           "resourceId",
-          "userId",
           "position",
           "note"
         ],
@@ -8332,8 +8318,15 @@
             "type": "string",
             "format": "date-time",
             "title": "Date",
-            "description": "Date when the correction was created",
-            "default": "2024-06-19T09:29:11.288746"
+            "description": "Date when the correction was created"
+          },
+          "locationLabels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Locationlabels",
+            "description": "Text location labels from root to target location"
           }
         },
         "additionalProperties": true,
@@ -8343,7 +8336,9 @@
           "resourceId",
           "userId",
           "position",
-          "note"
+          "note",
+          "date",
+          "locationLabels"
         ],
         "title": "CorrectionRead"
       },

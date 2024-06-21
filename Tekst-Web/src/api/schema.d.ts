@@ -1198,12 +1198,6 @@ export interface components {
        */
       resourceId: string;
       /**
-       * Userid
-       * @description ID of the user who created the correction note
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      userId: string;
-      /**
        * Position
        * @description Position of the content this correction refers to
        */
@@ -1213,13 +1207,6 @@ export interface components {
        * @description Content of the correction note
        */
       note: string;
-      /**
-       * Date
-       * Format: date-time
-       * @description Date when the correction was created
-       * @default 2024-06-19T09:29:11.288746
-       */
-      date?: string;
     };
     /** CorrectionRead */
     CorrectionRead: {
@@ -1254,9 +1241,13 @@ export interface components {
        * Date
        * Format: date-time
        * @description Date when the correction was created
-       * @default 2024-06-19T09:29:11.288746
        */
-      date?: string;
+      date: string;
+      /**
+       * Locationlabels
+       * @description Text location labels from root to target location
+       */
+      locationLabels: string[];
       [key: string]: unknown;
     };
     /**

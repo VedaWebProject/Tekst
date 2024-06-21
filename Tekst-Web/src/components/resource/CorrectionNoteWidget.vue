@@ -28,7 +28,6 @@ function handleClick() {
 async function handleModalSubmit(note: string) {
   const correction: CorrectionCreate = {
     resourceId: props.resource.id,
-    userId: auth.user?.id || '',
     position: browse.position,
     note,
   };
@@ -40,9 +39,12 @@ async function handleModalSubmit(note: string) {
       auth.user &&
       (auth.user.id === props.resource.ownerId || (auth.user.isSuperuser && props.resource.public))
     ) {
-      const res = resources.ofText.find((r) => r.id == props.resource.id);
+      const res = resources.all.find((r) => r.id === props.resource.id);
       if (!res) return;
-      res.corrections = res.corrections ? res.corrections++ : 1;
+      resources.all = [
+        ...resources.all.filter((r) => r.id !== props.resource.id),
+        { ...res, corrections: res.corrections ? res.corrections + 1 : 1 },
+      ];
     }
     message.success($t('browse.contents.widgets.correctionNote.msgSuccess'));
   }

@@ -407,7 +407,7 @@ resources:
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   msgCreatedVersion: Eine neue Version der Ressource "{title}" wurde erstellt.
   phSearchUsers: Benutzer suchen...
-  backToOverview: Zurück zu "Ressourcen"
+  backToOverview: Gehe zur Ressourcen-Übersicht
   create:
     heading: Neue Ressource zu "{text}"
     headingTypeAndLevel: Ressourcen-Typ und Ebene
@@ -525,6 +525,7 @@ contents:
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. Dies kann eine Weile dauern.
   msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
+  correctionNotes: Korrekturnotizen
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.

@@ -100,7 +100,9 @@ const filteredData = computed(() => filterData(resources.ofText));
 const paginatedData = computed(() => {
   const start = (pagination.value.page - 1) * pagination.value.pageSize;
   const end = start + pagination.value.pageSize;
-  return filteredData.value.slice(start, end);
+  return filteredData.value
+    .slice(start, end)
+    .sort((a, b) => (b.corrections || 0) - (a.corrections || 0));
 });
 
 async function handleTransferClick(resource: AnyResourceRead) {
@@ -352,10 +354,8 @@ function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }
 onMounted(() => {
   // inform user in case there are corrections for resources of another text
   if (
-    resources.all
-      .filter((r) => r.textId !== state.text?.id)
-      .map((r) => r.corrections?.length || 0)
-      .reduce((a, b) => a + b, 0) > 0
+    !resources.ofText.some((r) => !!r.corrections) &&
+    resources.all.filter((r) => r.textId !== state.text?.id).some((r) => !!r.corrections)
   ) {
     message.info($t('resources.msgCorrections'));
   }

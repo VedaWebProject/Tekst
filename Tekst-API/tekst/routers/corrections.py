@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -38,6 +39,7 @@ async def create_correction(
     user: UserDep,
 ) -> CorrectionDocument:
     """Creates a correction note referring to a specific content"""
+
     # check if the resource this content belongs to is readable by user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == correction.resource_id,
@@ -46,15 +48,24 @@ async def create_correction(
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    # check if the given position is valid
-    if not await LocationDocument.find_one(
+
+    # get location, check if it is valid
+    location_doc = await LocationDocument.find_one(
         LocationDocument.text_id == resource_doc.text_id,
         LocationDocument.level == resource_doc.level,
         LocationDocument.position == correction.position,
-    ).exists():
+    )
+    if not location_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
-    # force user ID of correction to match reqesting user
-    correction.user_id = user.id
+
+    # construct full label
+    location_labels = [location_doc.label]
+    parent_location_id = location_doc.parent_id
+    while parent_location_id:
+        parent_location = await LocationDocument.get(parent_location_id)
+        location_labels.insert(0, parent_location.label)
+        parent_location_id = parent_location.parent_id
+
     # notify the resource's owner (or admins if it's public) of the new correction
     msg_specific_attrs = {
         "from_user_name": user.name if "name" in user.public_fields else user.username,
@@ -81,8 +92,16 @@ async def create_correction(
             TemplateIdentifier.EMAIL_NEW_CORRECTION,
             **msg_specific_attrs,
         )
-    # create correction note
-    return await CorrectionDocument.model_from(correction).create()
+
+    # create correction
+    return await CorrectionDocument(
+        resource_id=correction.resource_id,
+        user_id=user.id,
+        position=correction.position,
+        note=correction.note,
+        date=datetime.utcnow(),
+        location_labels=location_labels,
+    ).create()
 
 
 @router.get(

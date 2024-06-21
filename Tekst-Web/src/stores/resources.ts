@@ -59,14 +59,11 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   async function loadCorrections(resourceId: string) {
-    if (corrections.value[resourceId]?.length) {
-      return;
-    }
     const { data, error } = await GET('/corrections/{resourceId}', {
       params: { path: { resourceId } },
     });
     if (!error) {
-      corrections.value[resourceId] = data;
+      corrections.value[resourceId] = data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
     } else {
       corrections.value[resourceId] = [];
     }
