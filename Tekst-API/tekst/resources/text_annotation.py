@@ -187,11 +187,14 @@ class TextAnnotation(ResourceTypeABC):
                     # query for the specific key/value combination
                     annotation_queries.append(
                         {
-                            "term": {
-                                (
-                                    f"resources.{str(query.common.resource_id)}"
-                                    f".tokens.annotations.{anno.key}"
-                                ): anno.value
+                            "simple_query_string": {
+                                "fields": [
+                                    (
+                                        f"resources.{str(query.common.resource_id)}"
+                                        f".tokens.annotations.{anno.key}"
+                                    )
+                                ],
+                                "query": anno.value,
                             }
                         }
                     )
