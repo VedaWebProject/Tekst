@@ -427,6 +427,8 @@ async def search_advanced(
     if not es_query.get("bool"):
         es_query = {"match_none": {}}
 
+    log.debug(f"Running ES query: {es_query}")
+
     # perform the search
     return SearchResults.from_es_results(
         results=client.search(

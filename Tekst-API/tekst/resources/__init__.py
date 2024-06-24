@@ -180,7 +180,7 @@ class ResourceTypeABC(ABC):
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{query.common.resource_id}.comment{strict_suffix}"
+                            f"resources.{str(query.common.resource_id)}.comment{strict_suffix}"
                         ],
                         "query": query.common.comment,
                     }

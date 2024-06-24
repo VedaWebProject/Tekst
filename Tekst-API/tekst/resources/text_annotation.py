@@ -132,14 +132,22 @@ class TextAnnotation(ResourceTypeABC):
         strict_suffix = ".strict" if strict else ""
 
         if (
-            not query.resource_type_specific.token
+            not query.resource_type_specific.token.strip("* ")
             and not query.resource_type_specific.annotations
         ):
             # handle empty/match-all query (query for existing target resource field)
             es_queries.append(
                 {
-                    "exists": {
-                        "field": f"resources.{query.common.resource_id}",
+                    "nested": {
+                        "path": f"resources.{str(query.common.resource_id)}.tokens",
+                        "query": {
+                            "exists": {
+                                "field": (
+                                    f"resources.{str(query.common.resource_id)}"
+                                    ".tokens.token"
+                                ),
+                            }
+                        },
                     }
                 }
             )
@@ -149,7 +157,7 @@ class TextAnnotation(ResourceTypeABC):
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{query.common.resource_id}"
+                            f"resources.{str(query.common.resource_id)}"
                             f".tokens.token{strict_suffix}"
                         ],
                         "query": query.resource_type_specific.token,
@@ -168,7 +176,7 @@ class TextAnnotation(ResourceTypeABC):
                         {
                             "exists": {
                                 "field": (
-                                    f"resources.{query.common.resource_id}"
+                                    f"resources.{str(query.common.resource_id)}"
                                     f".tokens.annotations.{anno.key}"
                                 ),
                             }
@@ -181,7 +189,7 @@ class TextAnnotation(ResourceTypeABC):
                         {
                             "term": {
                                 (
-                                    f"resources.{query.common.resource_id}"
+                                    f"resources.{str(query.common.resource_id)}"
                                     f".tokens.annotations.{anno.key}"
                                 ): anno.value
                             }
@@ -192,7 +200,7 @@ class TextAnnotation(ResourceTypeABC):
             es_queries.append(
                 {
                     "nested": {
-                        "path": f"resources.{query.common.resource_id}.tokens",
+                        "path": f"resources.{str(query.common.resource_id)}.tokens",
                         "query": {
                             "bool": {
                                 "must": [

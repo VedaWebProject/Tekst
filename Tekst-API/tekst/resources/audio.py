@@ -74,7 +74,7 @@ class Audio(ResourceTypeABC):
             es_queries.append(
                 {
                     "exists": {
-                        "field": f"resources.{query.common.resource_id}",
+                        "field": f"resources.{str(query.common.resource_id)}",
                     }
                 }
             )
@@ -84,7 +84,7 @@ class Audio(ResourceTypeABC):
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{query.common.resource_id}.caption{strict_suffix}"
+                            f"resources.{str(query.common.resource_id)}.caption{strict_suffix}"
                         ],
                         "query": query.resource_type_specific.caption,
                     }

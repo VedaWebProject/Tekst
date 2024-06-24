@@ -63,12 +63,12 @@ class RichText(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
 
-        if not query.resource_type_specific.html.strip("*"):
+        if not query.resource_type_specific.html.strip("* "):
             # handle empty/match-all query (query for existing target field)
             es_queries.append(
                 {
                     "exists": {
-                        "field": f"resources.{query.common.resource_id}",
+                        "field": f"resources.{str(query.common.resource_id)}",
                     }
                 }
             )
@@ -79,7 +79,7 @@ class RichText(ResourceTypeABC):
                     "simple_query_string": {
                         "fields": [
                             (
-                                f"resources.{query.common.resource_id}"
+                                f"resources.{str(query.common.resource_id)}"
                                 f".html{strict_suffix}"
                             )
                         ],

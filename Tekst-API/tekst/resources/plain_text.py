@@ -65,12 +65,12 @@ class PlainText(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
 
-        if not query.resource_type_specific.text.strip("*"):
+        if not query.resource_type_specific.text.strip("* "):
             # handle empty/match-all query (query for existing target field)
             es_queries.append(
                 {
                     "exists": {
-                        "field": f"resources.{query.common.resource_id}",
+                        "field": f"resources.{str(query.common.resource_id)}",
                     }
                 }
             )
@@ -80,7 +80,7 @@ class PlainText(ResourceTypeABC):
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{query.common.resource_id}.text{strict_suffix}"
+                            f"resources.{str(query.common.resource_id)}.text{strict_suffix}"
                         ],
                         "query": query.resource_type_specific.text,
                     }
