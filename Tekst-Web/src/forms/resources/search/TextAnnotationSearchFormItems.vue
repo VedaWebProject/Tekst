@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TextAnnotationResourceRead, TextAnnotationSearchQuery } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -12,6 +12,10 @@ const props = defineProps<{
 }>();
 
 const model = defineModel<TextAnnotationSearchQuery>({ required: true });
+
+const annoValueStyle = {
+  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+};
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -41,8 +45,12 @@ function getAnnotationValueOptions(key: string): { label: string; value: string 
     ...values,
     ...(props.resource.aggregations
       ?.find((agg) => agg.key === key)
-      ?.values?.map((v) => ({ label: v, value: v })) || []),
+      ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
   ];
+}
+
+function getAnnoValueSelectStyle(value?: string) {
+  return !value || value === '__missing__' ? undefined : annoValueStyle;
 }
 </script>
 
@@ -108,17 +116,13 @@ function getAnnotationValueOptions(key: string): { label: string; value: string 
             :rule="searchFormRules.textAnnotation.annotationValue"
           >
             <n-select
-              v-if="!!resource.aggregations?.find((agg) => agg.key === annotationItem.k)?.values"
               v-model:value="annotationItem.v"
               tag
               filterable
               clearable
+              :disabled="!annotationItem.k"
+              :style="getAnnoValueSelectStyle(annotationItem.v)"
               :options="getAnnotationValueOptions(annotationItem.k)"
-              :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
-            />
-            <n-input
-              v-else
-              v-model:value="annotationItem.v"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
           </n-form-item>
