@@ -462,7 +462,8 @@ resources:
         annotationKey: Annotation
         annotationValue: Value
       searchFields:
-        anyAnnoValue: '(any value)'
+        any: '[any]'
+        missing: '[missing]'
       config:
         displayTemplate: Display Template
       browse:

@@ -130,6 +130,7 @@ class TextAnnotation(ResourceTypeABC):
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
+        res_id = str(query.common.resource_id)
 
         if (
             not query.resource_type_specific.token.strip("* ")
@@ -139,13 +140,10 @@ class TextAnnotation(ResourceTypeABC):
             es_queries.append(
                 {
                     "nested": {
-                        "path": f"resources.{str(query.common.resource_id)}.tokens",
+                        "path": f"resources.{res_id}.tokens",
                         "query": {
                             "exists": {
-                                "field": (
-                                    f"resources.{str(query.common.resource_id)}"
-                                    ".tokens.token"
-                                ),
+                                "field": f"resources.{res_id}.tokens.token",
                             }
                         },
                     }
@@ -156,10 +154,7 @@ class TextAnnotation(ResourceTypeABC):
             token_query = (
                 {
                     "simple_query_string": {
-                        "fields": [
-                            f"resources.{str(query.common.resource_id)}"
-                            f".tokens.token{strict_suffix}"
-                        ],
+                        "fields": [f"resources.{res_id}.tokens.token{strict_suffix}"],
                         "query": query.resource_type_specific.token,
                     }
                 }
@@ -167,32 +162,45 @@ class TextAnnotation(ResourceTypeABC):
                 else None
             )
             # construct annotation queries
-            annotation_queries = []
+            anno_queries = []
             for anno in query.resource_type_specific.annotations:
                 if not anno.value:
                     # if only key is set (and no value),
                     # query for the existence of the key
-                    annotation_queries.append(
+                    anno_queries.append(
                         {
                             "exists": {
                                 "field": (
-                                    f"resources.{str(query.common.resource_id)}"
-                                    f".tokens.annotations.{anno.key}"
+                                    f"resources.{res_id}.tokens.annotations.{anno.key}"
                                 ),
+                            }
+                        }
+                    )
+                elif anno.value == "__missing__":
+                    # if value is set to "__missing__", we're looking for tokens
+                    # that specifically DON'T have an annotation with the given key
+                    anno_queries.append(
+                        {
+                            "bool": {
+                                "must_not": {
+                                    "exists": {
+                                        "field": (
+                                            f"resources.{res_id}"
+                                            f".tokens.annotations.{anno.key}"
+                                        ),
+                                    }
+                                }
                             }
                         }
                     )
                 else:
                     # if both key and value are set,
                     # query for the specific key/value combination
-                    annotation_queries.append(
+                    anno_queries.append(
                         {
                             "simple_query_string": {
                                 "fields": [
-                                    (
-                                        f"resources.{str(query.common.resource_id)}"
-                                        f".tokens.annotations.{anno.key}"
-                                    )
+                                    f"resources.{res_id}.tokens.annotations.{anno.key}"
                                 ],
                                 "query": anno.value,
                             }
@@ -203,12 +211,12 @@ class TextAnnotation(ResourceTypeABC):
             es_queries.append(
                 {
                     "nested": {
-                        "path": f"resources.{str(query.common.resource_id)}.tokens",
+                        "path": f"resources.{res_id}.tokens",
                         "query": {
                             "bool": {
                                 "must": [
                                     *([token_query] if token_query else []),
-                                    *annotation_queries,
+                                    *anno_queries,
                                 ],
                             },
                         },

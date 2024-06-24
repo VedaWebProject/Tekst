@@ -30,7 +30,11 @@ function getAnnotationKeyOptions() {
 
 function getAnnotationValueOptions(key: string): { label: string; value: string }[] {
   const values = [
-    { label: $t('resources.types.textAnnotation.searchFields.anyAnnoValue'), value: '' },
+    { label: $t('resources.types.textAnnotation.searchFields.any'), value: '' },
+    {
+      label: $t('resources.types.textAnnotation.searchFields.missing'),
+      value: '__missing__',
+    },
   ];
   if (!key) return values;
   return [

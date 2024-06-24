@@ -473,7 +473,8 @@ resources:
         annotationKey: Annotation
         annotationValue: Wert
       searchFields:
-        anyAnnoValue: (beliebiger Wert)
+        any: '[beliebig]'
+        missing: '[fehlt]'
       config:
         displayTemplate: Darstellungsvorlage
       browse:
