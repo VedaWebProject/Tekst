@@ -461,6 +461,8 @@ resources:
         annotations: Annotations
         annotationKey: Annotation
         annotationValue: Value
+      searchFields:
+        anyAnnoValue: '(any value)'
       config:
         displayTemplate: Display Template
       browse:

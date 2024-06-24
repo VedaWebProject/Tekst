@@ -4,6 +4,7 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;
@@ -27,13 +28,17 @@ function getAnnotationKeyOptions() {
   );
 }
 
-function getAnnotationValueOptions(key: string) {
-  if (!key) return [];
-  return (
-    props.resource.aggregations
+function getAnnotationValueOptions(key: string): { label: string; value: string }[] {
+  const values = [
+    { label: $t('resources.types.textAnnotation.searchFields.anyAnnoValue'), value: '' },
+  ];
+  if (!key) return values;
+  return [
+    ...values,
+    ...(props.resource.aggregations
       ?.find((agg) => agg.key === key)
-      ?.values?.map((v) => ({ label: v, value: v })) || []
-  );
+      ?.values?.map((v) => ({ label: v, value: v })) || []),
+  ];
 }
 </script>
 
@@ -88,12 +93,7 @@ function getAnnotationValueOptions(key: string) {
               clearable
               :options="getAnnotationKeyOptions()"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationKey')"
-              @update:value="
-                (v) =>
-                  (annotationItem.v =
-                    resource.aggregations?.find((agg) => agg.key === annotationItem.k)
-                      ?.values?.[0] || undefined)
-              "
+              @update:value="() => (annotationItem.v = '')"
             />
           </n-form-item>
           <n-form-item
@@ -106,6 +106,7 @@ function getAnnotationValueOptions(key: string) {
             <n-select
               v-if="!!resource.aggregations?.find((agg) => agg.key === annotationItem.k)?.values"
               v-model:value="annotationItem.v"
+              tag
               filterable
               clearable
               :options="getAnnotationValueOptions(annotationItem.k)"

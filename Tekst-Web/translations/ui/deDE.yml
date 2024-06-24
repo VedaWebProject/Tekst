@@ -472,6 +472,8 @@ resources:
         annotations: Annotationen
         annotationKey: Annotation
         annotationValue: Wert
+      searchFields:
+        anyAnnoValue: (beliebiger Wert)
       config:
         displayTemplate: Darstellungsvorlage
       browse:
