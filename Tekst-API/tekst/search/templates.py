@@ -48,7 +48,7 @@ IDX_TEMPLATE = {
         "dynamic_templates": [
             {
                 "annotations": {
-                    "path_match": "*.annotations.*",
+                    "path_match": "*.tokens.annotations.*",
                     "mapping": {
                         "type": "keyword",
                         "normalizer": "no_diacritics_normalizer",
