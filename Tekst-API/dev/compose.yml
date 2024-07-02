@@ -24,24 +24,6 @@ services:
       - test
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
-  mongo-express:
-    image: mongo-express:1
-    restart: always
-    init: true
-    depends_on:
-      - mongo
-    ports:
-      - 127.0.0.1:8081:8081
-    environment:
-      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
-      ME_CONFIG_BASICAUTH: false
-      ME_CONFIG_BASICAUTH_USERNAME: ""
-      ME_CONFIG_BASICAUTH_PASSWORD: ""
-    networks:
-      - devstack
-    profiles:
-      - dev
-
   es:
     build:
       context: ../deployment/elasticsearch
@@ -70,8 +52,26 @@ services:
     profiles:
       - dev
 
+  mongo-express:
+    image: mongo-express:1
+    restart: always
+    init: true
+    depends_on:
+      - mongo
+    ports:
+      - 127.0.0.1:8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_BASICAUTH_USERNAME: ""
+      ME_CONFIG_BASICAUTH_PASSWORD: ""
+    networks:
+      - devstack
+    profiles:
+      - dev
+
   mailpit:
-    image: axllent/mailpit:v1.18
+    image: axllent/mailpit:v1.19
     restart: always
     init: true
     volumes:
