@@ -24,6 +24,11 @@ tasks:
     cmds:
       - npm install
 
+  check-updates:
+    desc: Check for updates
+    cmds:
+      - npx npm-check-updates
+
   update:
     desc: Update dependencies
     cmds:
