@@ -15,17 +15,17 @@ commands:
     short: -f
     help: File to write/read DB backup to/from
     arg: path
-    default: /tmp/tekst-db.backup
+    default: /tmp/tekst-util.backup
   - long: --mongodb-uri
     short: -m
     help: MongoDB URI (from inside the container if using Docker)
     arg: uri
     default: mongodb://127.0.0.1:27017
   examples:
-  - tekst-db backup
-  - tekst-db backup -c tekst-db
-  - tekst-db backup -c tekst-mongo -f /home/user/tekst-something.backup
-  - tekst-db backup -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+  - tekst-util backup
+  - tekst-util backup -c tekst-util
+  - tekst-util backup -c tekst-mongo -f /home/user/tekst-something.backup
+  - tekst-util backup -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
 
 - name: restore
   help: Restore DB backup (MongoDB service must be running)
@@ -38,7 +38,7 @@ commands:
     short: -f
     help: File to write/read DB backup to/from
     arg: path
-    default: /tmp/tekst-db.backup
+    default: /tmp/tekst-util.backup
   - long: --mongodb-uri
     short: -m
     help: MongoDB URI (from inside the container if using Docker)
@@ -48,10 +48,10 @@ commands:
     short: -d
     help: Delete backup file after successful restore
   examples:
-  - tekst-db restore
-  - tekst-db restore -c tekst-db
-  - tekst-db restore -c tekst-mongo -f /home/user/tekst-something.backup
-  - tekst-db restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+  - tekst-util restore
+  - tekst-util restore -c tekst-util
+  - tekst-util restore -c tekst-mongo -f /home/user/tekst-something.backup
+  - tekst-util restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
 
 - name: index
   help: Create/update search index (MongoDB and ES services must be running)
@@ -64,6 +64,6 @@ commands:
     short: -d
     help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
   examples:
-  - tekst-db index
-  - tekst-db index -d
-  - tekst-db index --dev
+  - tekst-util index
+  - tekst-util index -d
+  - tekst-util index --dev
