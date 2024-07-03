@@ -5,7 +5,7 @@ import { $t } from '@/i18n';
 import { CorrectionNoteIcon, DeleteIcon, UserIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import { NListItem, NThing, NIcon, NButton, NFlex, NTime } from 'naive-ui';
+import { NListItem, NThing, NIcon, NButton, NFlex, NTime, NAlert } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LocationLabel from '@/components/LocationLabel.vue';
@@ -15,6 +15,7 @@ const props = withDefaults(
     resource: AnyResourceRead;
     correction: CorrectionRead;
     clickable?: boolean;
+    indent?: boolean;
   }>(),
   {
     clickable: true,
@@ -66,7 +67,10 @@ function gotoUserProfile(e: UIEvent, userId: string) {
 </script>
 
 <template>
-  <n-list-item @click="handleCorrectionClick(correction)">
+  <n-list-item
+    :style="{ 'padding-left': indent ? 'var(--layout-gap)' : undefined }"
+    @click="handleCorrectionClick(correction)"
+  >
     <n-thing
       :content-indented="!state.smallScreen"
       description-style="font-size: var(--font-size-tiny)"
@@ -109,12 +113,22 @@ function gotoUserProfile(e: UIEvent, userId: string) {
         </n-flex>
       </template>
       <template #description>
-        <n-time class="translucent" :time="utcToLocalTime(correction.date)" type="datetime" />
+        <n-time
+          class="translucent text-tiny"
+          :time="utcToLocalTime(correction.date)"
+          type="datetime"
+        />
       </template>
       <template #default>
-        <div style="white-space: pre-wrap">
+        <n-alert
+          :show-icon="false"
+          :style="{
+            'white-space': 'pre-wrap',
+            'font-family': resource.config?.general?.font || 'Tekst Content Font',
+          }"
+        >
           {{ correction.note }}
-        </div>
+        </n-alert>
       </template>
     </n-thing>
   </n-list-item>

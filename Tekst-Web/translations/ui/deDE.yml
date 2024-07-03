@@ -188,7 +188,7 @@ browse:
         heading: Korrekturnotiz senden
         info: |
           Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
-          Hier können Sie eine Korrektrnotiz verfassen. Die Person,
+          Hier können Sie eine Korrekturnotiz verfassen. Die Person,
           die für diese Ressource verantwortlich ist, wird darüber benachrichtigt!
         lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
@@ -528,7 +528,6 @@ contents:
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. Dies kann eine Weile dauern.
   msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
-  correctionNotes: Korrekturnotizen
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
   msgNoOwnContentBody: |
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.
@@ -536,6 +535,12 @@ contents:
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
   msgContentNoReducedView: Dieser Inhalt kann in der reduzierten Leseansicht nicht angezeigt werden.
   warnUrlInvalid: 'Die eingegebene URL scheint ungültig zu sein: {url}'
+  corrections:
+    notes: Korrekturnotizen
+    otherTitle: Weitere Fundstellen
+    otherMsg: – | Es gibt eine Korrekturnotiz für weitere Fundstellen | Es gibt {count} Korrekturnotizen für weitere Fundstellen
+    otherGotoPrev: Gehe zur nächsten vorhergehenden Fundstelle mit Korrekturnotizen
+    otherGotoNext: Gehe zur nächsten nachfolgenden Fundstelle mit Korrekturnotizen
 
 account:
   account: Konto

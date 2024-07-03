@@ -43,7 +43,7 @@ import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import contentComponents from '@/components/content/mappings';
 import LocationLabel from '@/components/LocationLabel.vue';
 import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
-
+import OtherCorrectionsListItem from '@/components/resource/OtherCorrectionsListItem.vue';
 import {
   EditNoteIcon,
   ArrowBackIcon,
@@ -57,6 +57,7 @@ import {
   MoveDownIcon,
   SkipPreviousIcon,
   SkipNextIcon,
+  CorrectionNoteIcon,
 } from '@/icons';
 import { pickTranslation, renderIcon } from '@/utils';
 
@@ -121,10 +122,27 @@ const loading = computed(
   () => resources.loading || loadingDelete.value || loadingSave.value || loadingData.value
 );
 
-const corrections = computed(
+const corrections = computed(() => resources.corrections[resource.value?.id || ''] || []);
+const prevCorrection = computed(
   () =>
-    resources.corrections[resource.value?.id || '']?.filter((c) => c.position === position.value) ||
-    []
+    corrections.value
+      .filter((c) => c.position < position.value)
+      .sort((a, b) => a.position - b.position)
+      .reverse()[0]
+);
+const nextCorrection = computed(
+  () =>
+    corrections.value
+      .filter((c) => c.position > position.value)
+      .sort((a, b) => a.position - b.position)[0]
+);
+
+const locCorrections = computed(
+  () => corrections.value.filter((c) => c.position === position.value) || []
+);
+
+const otherCorrectionsCount = computed(
+  () => corrections.value.length - locCorrections.value.length
 );
 
 // go to resource overview if text changes
@@ -317,10 +335,17 @@ function navigateContents(step: number) {
   });
 }
 
-function handleJumpToSubmit(locationPath: LocationRead[]) {
+function gotoLocation(locationPath?: LocationRead[], pos?: number) {
+  if (!locationPath && pos == null) {
+    console.error('Invalid location path or position', locationPath, pos);
+    return;
+  }
   router.push({
     name: 'resourceContents',
-    params: { ...route.params, pos: locationPath[locationPath.length - 1].position },
+    params: {
+      ...route.params,
+      pos: locationPath ? locationPath[locationPath.length - 1].position : pos,
+    },
   });
 }
 
@@ -501,20 +526,39 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         </button-shelf>
       </n-alert>
 
-      <n-collapse v-if="resource && !!corrections.length" style="margin-bottom: var(--layout-gap)">
+      <n-collapse
+        v-if="resource && !!corrections.length"
+        style="margin-bottom: var(--layout-gap)"
+        class="corrections"
+      >
         <n-collapse-item name="corrections">
           <template #header>
-            <n-badge value="!" :offset="[10, 4]">
-              <div>{{ $t('contents.correctionNotes') }}</div>
+            <n-badge :offset="[15, 4]">
+              <template #value>
+                <n-icon :component="CorrectionNoteIcon" />
+              </template>
+              <div>{{ $t('contents.corrections.notes') }}</div>
             </n-badge>
           </template>
           <n-list style="background-color: transparent">
             <correction-list-item
-              v-for="correction in corrections"
+              v-for="correction in locCorrections"
               :key="correction.id"
               :resource="resource"
               :correction="correction"
               :clickable="false"
+              indent
+            />
+            <other-corrections-list-item
+              v-if="otherCorrectionsCount"
+              :other-count="otherCorrectionsCount"
+              :loading="loading"
+              :small-screen="state.smallScreen"
+              :prev-disabled="!prevCorrection"
+              :next-disabled="!nextCorrection"
+              indent
+              @prev-click="() => gotoLocation(undefined, prevCorrection.position)"
+              @next-click="() => gotoLocation(undefined, nextCorrection.position)"
             />
           </n-list>
         </n-collapse-item>
@@ -589,6 +633,12 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     v-model:show="showJumpToModal"
     :current-location-path="locationPath"
     :show-level-select="false"
-    @submit="handleJumpToSubmit"
+    @submit="gotoLocation"
   />
 </template>
+
+<style scoped>
+:deep(.corrections > .n-collapse-item .n-collapse-item__content-inner) {
+  padding-top: 0;
+}
+</style>
