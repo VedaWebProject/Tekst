@@ -4,6 +4,8 @@ This Bash script simplifies performing common maintenance tasks (backup/restore 
 
 ## Usage
 
+> ‼ **IMPORTANT:** The script assumes it's located inside `/<path-to-Tekst-repo>/Tekst-Util/`, so **do not move it anywhere else!**!
+
 Run `./tekst-util --help` for an overview of the commands, flags and arguments. Each command has its own help that can be accessed via `./tekst-util <command> --help`.
 
 ## Development

@@ -7,6 +7,7 @@ dev=${args[--dev]}
 if [[ $container ]]; then
     docker exec -e TEKST_DEV_MODE=$dev -i $container $run_python -m tekst index
 else
-    cd Tekst-API
+    cd_to_script_parent_dir
+    cd ../Tekst-API
     TEKST_DEV_MODE=$dev $run_python -m tekst index
 fi
