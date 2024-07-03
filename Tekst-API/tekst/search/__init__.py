@@ -258,7 +258,7 @@ async def _populate_index(index_name: str) -> None:
         if errors:
             log.error(f"There were errors populating index for '{text.title}'.")
         else:
-            log.debug(
+            log.info(
                 f"Finished indexing resources for text '{text.title}' in "
                 f"{(process_time() - start_time):.2f} seconds."
             )
