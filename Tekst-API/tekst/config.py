@@ -327,6 +327,11 @@ class TekstConfig(BaseSettings):
     cors: CORSConfig = CORSConfig()  # CORS-related config
     misc: MiscConfig = MiscConfig()  # misc config
 
+    @field_validator("dev_mode", mode="before")
+    @classmethod
+    def parse_dev_mode(cls, v: Any) -> bool:
+        return False if str(v).lower() == "false" else bool(v)
+
     @field_validator("log_level", mode="after")
     @classmethod
     def uppercase_log_lvl(cls, v: str) -> str:
