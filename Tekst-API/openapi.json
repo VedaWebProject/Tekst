@@ -12293,21 +12293,21 @@
             "description": "Default operator",
             "default": "OR"
           },
-          "texts": {
+          "txt": {
             "anyOf": [
               {
                 "items": {
                   "type": "string",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
-                "type": "array",
-                "description": "IDs of texts to search in"
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Texts"
+            "title": "Txt",
+            "description": "IDs of texts to search in"
           }
         },
         "type": "object",

@@ -3373,8 +3373,11 @@ export interface components {
        * @enum {string}
        */
       op?: 'AND' | 'OR';
-      /** Texts */
-      texts?: string[] | null;
+      /**
+       * Txt
+       * @description IDs of texts to search in
+       */
+      txt?: string[] | null;
     };
     /** ResourceCategory */
     ResourceCategory: {

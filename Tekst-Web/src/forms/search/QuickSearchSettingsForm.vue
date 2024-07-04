@@ -17,7 +17,7 @@ const textOptions = computed(() =>
     <!-- TEXTS -->
     <n-form-item path="defaultOperator" :label="$t('search.settings.quick.texts')">
       <n-select
-        v-model:value="search.settingsQuick.texts"
+        v-model:value="search.settingsQuick.txt"
         :options="textOptions"
         :placeholder="$t('search.settings.quick.textsPlaceholder')"
         clearable

@@ -129,16 +129,13 @@ class QuickSearchSettings(ModelBase):
             description="Default operator",
         ),
     ] = "OR"
-    texts: (
-        Annotated[
-            list[PydanticObjectId],
-            Field(
-                alias="txt",
-                description="IDs of texts to search in",
-            ),
-        ]
-        | None
-    ) = None
+    texts: Annotated[
+        list[PydanticObjectId] | None,
+        Field(
+            alias="txt",
+            description="IDs of texts to search in",
+        ),
+    ] = None
 
     @field_validator(
         "default_operator",
