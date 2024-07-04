@@ -44,7 +44,6 @@ const modalStyle = computed<CSSProperties>(() => ({
     embedded
     display-directive="if"
     preset="card"
-    header-style="padding-bottom: var(--layout-gap);"
     :bordered="false"
     :style="modalStyle"
   >

@@ -477,8 +477,6 @@ resources:
         missing: '[fehlt]'
       config:
         displayTemplate: Darstellungsvorlage
-      browse:
-        allAnnotations: Alle Annotationen
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

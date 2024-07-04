@@ -184,9 +184,13 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
 
   <generic-modal
     v-model:show="showDetailsModal"
-    :title="$t('resources.types.textAnnotation.browse.allAnnotations')"
+    :title="tokenDetailsData?.token"
     :icon="MetadataIcon"
     heading-level="3"
+    :header-style="{
+      'font-family': resource.config?.general?.font || 'Tekst Content Font',
+      'font-style': 'italic',
+    }"
     @after-leave="() => (tokenDetailsData = undefined)"
   >
     <n-alert

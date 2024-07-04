@@ -466,8 +466,6 @@ resources:
         missing: '[missing]'
       config:
         displayTemplate: Display Template
-      browse:
-        allAnnotations: All annotations
     audio:
       label: Audio
       parenthesis: audio playback
