@@ -345,3 +345,8 @@ res_exp_fmt_info = {
         "mimetype": "text/html",
     },
 }
+
+
+class ResourceImportData(ModelBase):
+    resource_id: PydanticObjectId
+    contents: list[dict] = []

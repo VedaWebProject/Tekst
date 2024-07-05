@@ -4,6 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from pydantic import (
+    ConfigDict,
     Field,
     PlainSerializer,
     StringConstraints,
@@ -271,3 +272,20 @@ class MoveLocationRequestBody(ModelBase):
             alias="parentId",
         ),
     ]
+
+
+class LocationDefinition(ModelBase):
+    label: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=256,
+            strip_whitespace=True,
+        ),
+    ]
+    locations: list["LocationDefinition"] | None = None
+
+
+class TextStructureImportData(ModelBase):
+    model_config = ConfigDict(extra="allow")
+    locations: list[LocationDefinition] = []

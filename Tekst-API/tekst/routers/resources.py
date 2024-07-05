@@ -29,11 +29,11 @@ from tekst.config import ConfigDep, TekstConfig
 from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
-from tekst.models.exchange import ResourceImportData
 from tekst.models.location import LocationDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceImportData,
     res_exp_fmt_info,
 )
 from tekst.models.text import TextDocument

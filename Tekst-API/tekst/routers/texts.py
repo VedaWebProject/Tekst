@@ -21,14 +21,15 @@ from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.logs import log
 from tekst.models.common import Translations
 from tekst.models.content import ContentBaseDocument
-from tekst.models.exchange import LocationDefinition, TextStructureImportData
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
+    LocationDefinition,
     TextCreate,
     TextDocument,
     TextLevelTranslation,
     TextRead,
+    TextStructureImportData,
     TextUpdate,
 )
 from tekst.settings import get_settings

@@ -6,8 +6,8 @@ from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
+from tekst.models.browse import LocationData
 from tekst.models.content import ContentBaseDocument
-from tekst.models.exchange import LocationData
 from tekst.models.location import (
     LocationDocument,
     LocationRead,
