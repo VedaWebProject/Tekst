@@ -19,5 +19,5 @@ router = APIRouter(
 )
 async def root_redirect(cfg: ConfigDep):
     return cfg.api_path + (
-        cfg.api_doc.redoc_url or cfg.api_doc.swaggerui_url or "/platform"
+        cfg.api_doc.swaggerui_url or cfg.api_doc.redoc_url or "/platform"
     )
