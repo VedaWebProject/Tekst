@@ -93,7 +93,15 @@ def get_tags_metadata(documentation_url: str) -> list[dict[str, Any]]:
         },
         {
             "name": "auth",
-            "description": "Rregistration, authentication and security",
+            "description": "Registration, authentication and security",
+            "externalDocs": {
+                "description": "View full documentation",
+                "url": documentation_url,
+            },
+        },
+        {
+            "name": "status",
+            "description": "The status of the API and its services",
             "externalDocs": {
                 "description": "View full documentation",
                 "url": documentation_url,

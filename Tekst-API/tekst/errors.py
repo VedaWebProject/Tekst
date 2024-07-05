@@ -262,6 +262,12 @@ E_500_INTERNAL_SERVER_ERROR = error_instance(
     msg="An internal server error occurred. How embarrassing :(",
 )
 
+E_503_SERVICE_UNAVAILABLE = error_instance(
+    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+    key="serviceUnavailable",
+    msg="The API is currently unavailable or some services are not ready.",
+)
+
 E_409_CONTENT_CONFLICT = error_instance(
     status_code=status.HTTP_409_CONFLICT,
     key="contentConflict",

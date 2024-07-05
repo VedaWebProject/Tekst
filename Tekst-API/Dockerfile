@@ -99,7 +99,7 @@ HEALTHCHECK \
     --timeout=5s \
     --retries=3 \
     --start-period=30s \
-    CMD curl http://localhost:8000 || exit 1
+    CMD curl http://localhost:8000/status || exit 1
 
 RUN groupadd -g 1000 tekst && \
     useradd -m -u 1000 -g tekst tekst

@@ -1,3 +1,5 @@
+from typing import Any
+
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
@@ -37,6 +39,11 @@ def _init_db_client(db_uri: str | None = None) -> DatabaseClient:
 
 def get_db_client(db_uri: str | None = None) -> DatabaseClient:
     return _init_db_client(db_uri)
+
+
+async def get_db_status() -> dict[str, Any] | None:
+    global _db_client
+    return await _db_client.server_info() if _db_client else None
 
 
 def get_db(

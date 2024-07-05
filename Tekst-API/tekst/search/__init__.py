@@ -72,6 +72,11 @@ async def _get_es_client(es_uri: str = _cfg.es.uri) -> Elasticsearch:
     return await init_es_client(es_uri)
 
 
+def get_es_status() -> dict[str, Any] | None:
+    global _es_client
+    return _es_client.info() if _es_client else None
+
+
 def close() -> None:
     global _es_client
     if _es_client is not None:

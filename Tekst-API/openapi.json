@@ -4902,6 +4902,38 @@
         ]
       }
     },
+    "/status": {
+      "get": {
+        "tags": [
+          "status"
+        ],
+        "summary": "Api status",
+        "operationId": "apiStatus",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Api Status Status Get"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/texts": {
       "get": {
         "tags": [
@@ -15953,7 +15985,15 @@
     },
     {
       "name": "auth",
-      "description": "Rregistration, authentication and security",
+      "description": "Registration, authentication and security",
+      "externalDocs": {
+        "description": "View full documentation",
+        "url": "https://vedawebproject.github.io/Tekst"
+      }
+    },
+    {
+      "name": "status",
+      "description": "The status of the API and its services",
       "externalDocs": {
         "description": "View full documentation",
         "url": "https://vedawebproject.github.io/Tekst"
