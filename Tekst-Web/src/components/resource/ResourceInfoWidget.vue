@@ -36,8 +36,10 @@ const resourceTitle = computed(() => pickTranslation(props.resource.title, state
 const showCoverageDetailsModal = ref(false);
 const showInfoModal = ref(false);
 const coverage = ref<ResourceCoverage>();
-const coveragePercent = computed(
-  () => Math.round((coverage.value ? coverage.value.covered / coverage.value.total : 0) * 1000) / 10
+const coveragePercent = computed(() =>
+  parseFloat(
+    (coverage.value ? (coverage.value.covered / coverage.value.total) * 100 : 0).toFixed(2)
+  )
 );
 
 watch(showInfoModal, async (after) => {
