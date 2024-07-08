@@ -124,13 +124,12 @@ function handleTaskClick(id: string) {
   background-color: #aaaaaa40;
 }
 
-#tasks-widget .task-item.task-item-running:hover {
-  background-color: var(--base-color);
-  cursor: wait;
-}
-
 #tasks-widget .task-item.task-item-running {
   font-style: italic;
+}
+
+#tasks-widget .task-item.task-item-running:hover {
+  cursor: wait;
 }
 
 #tasks-widget .task-item > .task-item-icon {
