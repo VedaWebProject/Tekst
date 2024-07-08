@@ -155,6 +155,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 }
 .content-container.empty > .content-header {
   margin-bottom: 0;
+  opacity: 0.6;
 }
 .content-header {
   margin-bottom: 0.5rem;
