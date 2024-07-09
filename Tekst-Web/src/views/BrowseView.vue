@@ -11,6 +11,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { NButton, NFlex } from 'naive-ui';
 
 import { NoContentIcon, HourglassIcon, BookIcon, ErrorIcon } from '@/icons';
 
@@ -19,19 +20,24 @@ const route = useRoute();
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
 
-const activeResourcesCategorized = computed(() =>
-  browse.resourcesCategorized
-    .map((c) => ({
-      ...c,
-      resources: c.resources.filter(
-        (r) =>
-          r.active &&
-          (r.level <= browse.level ||
-            (r.config?.common?.showOnParentLevel && r.level == browse.level + 1))
-      ),
-    }))
-    .filter((c) => c.resources.length)
+const catHiddenResCount = computed<Record<string, number>>(() =>
+  Object.fromEntries(
+    browse.resourcesCategorized.map((c) => [
+      c.category.key,
+      c.resources.length - c.resources.filter((r) => r.active).length,
+    ])
+  )
 );
+
+function handleShowAllClick(categoryKey?: string) {
+  if (!categoryKey) return;
+  browse.setResourcesActiveState(
+    browse.resourcesCategorized
+      .find((c) => c.category.key === categoryKey)
+      ?.resources.map((r) => r.id) || [],
+    true
+  );
+}
 
 // load fresh location data everytime the browse location changes in the URL
 watch(
@@ -63,21 +69,40 @@ onMounted(() => {
   <browse-toolbar v-if="browse.locationPath.length" />
 
   <div
-    v-if="activeResourcesCategorized.length"
+    v-if="browse.resourcesCategorized.length"
     class="content-container-container"
     :class="browse.reducedView ? 'reduced' : ''"
   >
-    <template v-for="category in activeResourcesCategorized" :key="category.key">
-      <h2
+    <template v-for="category in browse.resourcesCategorized" :key="category.key">
+      <n-flex
         v-if="
           pfData?.settings.showResourceCategoryHeadings &&
-          (activeResourcesCategorized.length > 1 ||
-            pfData?.settings.alwaysShowResourceCategoryHeadings) &&
+          !!category.resources.length &&
           !browse.reducedView
         "
+        align="baseline"
+        style="margin-bottom: var(--content-gap)"
       >
-        {{ category.category.translation }}
-      </h2>
+        <h2
+          :class="{
+            translucent:
+              catHiddenResCount[category.category.key || ''] === category.resources.length,
+          }"
+          style="margin-bottom: 0"
+        >
+          {{ category.category.translation }}
+        </h2>
+        <n-button
+          v-if="!!catHiddenResCount[category.category.key || '']"
+          text
+          :focusable="false"
+          size="tiny"
+          class="translucent"
+          @click="() => handleShowAllClick(category.category.key)"
+        >
+          {{ $t('browse.showAllResources') }}
+        </n-button>
+      </n-flex>
       <content-container
         v-for="resource in category.resources"
         :key="resource.id"

@@ -156,7 +156,7 @@ browse:
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
     tipReducedView: Toggle reduced reading view
-    tipOpenResourceList: Select resources to display
+    tipOpenResourceList: Select resources to show
     tipNotOnDefaultLevel: You are not on this text's default level!
   bookmarks:
     bookmarks: Bookmarks
@@ -175,6 +175,7 @@ browse:
   locationResourceNoData: No data for this location
   textNoLocations: This text's setup seems incomplete. There are no locations defined.
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
+  showAllResources: show all
   contents:
     widgets:
       contentEdit:
@@ -197,7 +198,6 @@ browse:
         coverageStatement: '{present} of {total} locations on level "{level}"'
       deactivateWidget:
         title: Hide this resource
-        message: The resource "{resourceTitle}" has been hidden. You can activate it again using the resource selection tool to the right side of the toolbar.
       siblingsWidget:
         title: Open merged view with all data of the parent location
       exportWidget:
@@ -321,7 +321,6 @@ models:
     oskModeName: Name
     oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show category headings in browse view
-    alwaysShowResourceCategoryHeadings: Show category headings even for the only category with resources
     prioritizeBrowseLevelResources: Place resources of current browse level before others in browse view (inside their category)
     customFonts: Additional custom fonts
     resourceFontName: Name

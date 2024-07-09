@@ -188,11 +188,6 @@ function resetForm() {
             v-model="formModel.showResourceCategoryHeadings"
             :label="$t('models.platformSettings.showResourceCategoryHeadings')"
           />
-          <!-- ALWAYS SHOW RESOURCE CATEGORY HEADINGS -->
-          <labelled-switch
-            v-model="formModel.alwaysShowResourceCategoryHeadings"
-            :label="$t('models.platformSettings.alwaysShowResourceCategoryHeadings')"
-          />
           <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
           <labelled-switch
             v-model="formModel.prioritizeBrowseLevelResources"

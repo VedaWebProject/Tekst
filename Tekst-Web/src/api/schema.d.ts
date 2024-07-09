@@ -303,6 +303,10 @@ export interface paths {
     /** Get search index info */
     get: operations['getSearchIndexInfo'];
   };
+  '/status': {
+    /** Api status */
+    get: operations['apiStatus'];
+  };
   '/texts': {
     /**
      * Get all texts
@@ -3185,12 +3189,6 @@ export interface components {
        */
       showResourceCategoryHeadings?: boolean;
       /**
-       * Alwaysshowresourcecategoryheadings
-       * @description Show category heading for the only category with resources
-       * @default false
-       */
-      alwaysShowResourceCategoryHeadings?: boolean;
-      /**
        * Prioritizebrowselevelresources
        * @description Display resources of current browse level before others in browse view
        * @default true
@@ -3266,12 +3264,6 @@ export interface components {
        * @default true
        */
       showResourceCategoryHeadings?: boolean;
-      /**
-       * Alwaysshowresourcecategoryheadings
-       * @description Show category heading for the only category with resources
-       * @default false
-       */
-      alwaysShowResourceCategoryHeadings?: boolean;
       /**
        * Prioritizebrowselevelresources
        * @description Display resources of current browse level before others in browse view
@@ -7200,6 +7192,23 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /** Api status */
+  apiStatus: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
         };

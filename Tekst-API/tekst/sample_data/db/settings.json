@@ -20,7 +20,6 @@
     "nav_info_entry": [],
     "custom_fonts": [],
     "show_resource_category_headings": true,
-    "always_show_resource_category_headings": false,
     "always_show_text_info": true,
     "show_tekst_footer_hint": true,
     "available_locales": ["deDE", "enUS"],

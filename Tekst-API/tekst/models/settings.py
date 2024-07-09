@@ -130,12 +130,6 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Show resource category headings in browse view",
         ),
     ] = True
-    always_show_resource_category_headings: Annotated[
-        bool,
-        Field(
-            description="Show category heading for the only category with resources",
-        ),
-    ] = False
     prioritize_browse_level_resources: Annotated[
         bool,
         Field(

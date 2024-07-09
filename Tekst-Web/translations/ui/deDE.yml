@@ -160,7 +160,7 @@ browse:
     tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
     tipNextLocation: Nächste Fundstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
-    tipOpenResourceList: Anzuzeigende Ressourcen wählen
+    tipOpenResourceList: Anzuzeigende Ressourcen auswählen
     tipNotOnDefaultLevel: Sie befinden sich nicht auf der Standard-Ebene dieses Textes!
   bookmarks:
     bookmarks: Lesezeichen
@@ -179,6 +179,7 @@ browse:
   locationResourceNoData: Keine Daten für diese Fundstelle
   textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Fundstellen definiert.
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
+  showAllResources: alle anzeigen
   contents:
     widgets:
       contentEdit:
@@ -201,7 +202,6 @@ browse:
         coverageStatement: '{present} von {total} Fundstellen auf Ebene "{level}"'
       deactivateWidget:
         title: Diese Ressource ausblenden
-        message: Die Ressource "{resourceTitle}" wurde ausgeblendet. Sie können sie wieder aktivieren, indem Sie die Ressourcen-Auswahl rechts in der Toolbar benutzen.
       siblingsWidget:
         title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
       exportWidget:
@@ -324,7 +324,6 @@ models:
     oskModeName: Name
     oskModeFont: Tastatur-Schriftart
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien in der Leseansicht
-    alwaysShowResourceCategoryHeadings: Zeige Überschrift auch für die einzige Kategorie mit Ressourcen
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene in der Lese-Ansicht vor anderen auf (innerhalb ihrer Kategorien)
     customFonts: Zusätzliche, individuelle Schriftarten
     resourceFontName: Name
