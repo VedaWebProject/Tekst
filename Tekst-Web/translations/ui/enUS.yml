@@ -313,7 +313,8 @@ models:
     infoContactUrl: Contact URL
     defaultText: Default Text
     availableLocales: Available Languages
-    navInfoEntry: Custom label for info entry in main navigation
+    navBrowseEntry: Custom label for "Browse" in main navigation
+    navInfoEntry: Custom label for "Info" in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
     oskModes: On-screen keyboard modes

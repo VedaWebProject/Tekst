@@ -29,7 +29,7 @@ class PlatformDescriptionTranslation(TranslationBase):
     ]
 
 
-class PlatformNavInfoEntryTranslation(TranslationBase):
+class MainNavEntryTranslation(TranslationBase):
     translation: Annotated[
         str,
         StringConstraints(
@@ -102,8 +102,14 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Default text to load in UI",
         ),
     ] = None
+    nav_browse_entry: Annotated[
+        Translations[MainNavEntryTranslation],
+        Field(
+            description="Custom label for main navigation browse entry",
+        ),
+    ] = []
     nav_info_entry: Annotated[
-        Translations[PlatformNavInfoEntryTranslation],
+        Translations[MainNavEntryTranslation],
         Field(
             description="Custom label for main navigation info entry",
         ),

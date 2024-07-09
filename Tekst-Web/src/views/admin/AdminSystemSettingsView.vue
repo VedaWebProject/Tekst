@@ -160,6 +160,16 @@ function resetForm() {
         />
       </n-form-item>
 
+      <!-- TRANSLATE MAIN NAV BROWSE ENTRY -->
+      <translation-form-item
+        v-model="formModel.navBrowseEntry"
+        parent-form-path-prefix="navBrowseEntry"
+        :loading="loading"
+        :main-form-label="$t('models.platformSettings.navBrowseEntry')"
+        :translation-form-label="$t('models.platformSettings.navBrowseEntry')"
+        :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+      />
+
       <!-- TRANSLATE MAIN NAV INFO ENTRY -->
       <translation-form-item
         v-model="formModel.navInfoEntry"
@@ -167,7 +177,7 @@ function resetForm() {
         :loading="loading"
         :main-form-label="$t('models.platformSettings.navInfoEntry')"
         :translation-form-label="$t('models.platformSettings.navInfoEntry')"
-        :translation-form-rule="platformSettingsFormRules.navInfoEntryTranslation"
+        :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
       />
 
       <!-- DISPLAY OPTIONS -->

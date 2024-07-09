@@ -82,11 +82,15 @@ export function useMainMenuOptions(showIcons: boolean = true) {
 
   const menuOptions = computed<MenuOption[]>(() => [
     {
-      label: renderLink(() => $t('nav.browse'), {
-        name: 'browse',
-        params: { text: state.text?.slug },
-        query: { lvl: browse.level, pos: browse.position },
-      }),
+      label: renderLink(
+        () =>
+          pickTranslation(pfData.value?.settings.navBrowseEntry, state.locale) || $t('nav.browse'),
+        {
+          name: 'browse',
+          params: { text: state.text?.slug },
+          query: { lvl: browse.level, pos: browse.position },
+        }
+      ),
       key: 'browse',
       icon: (showIcons && renderIcon(BookIcon)) || undefined,
     },

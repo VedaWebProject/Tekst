@@ -316,7 +316,8 @@ models:
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
     availableLocales: Verfügbare Sprachen
-    navInfoEntry: Eigene Beschriftung für Info-Eintrag in Hauptnavigation
+    navBrowseEntry: Eigene Beschriftung für "Lesen" in Hauptnavigation
+    navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showTekstFooterHint: Zeige einen kleinen Hinweis auf die Tekst-Software in der Fußzeile (Danke!)
     oskModes: Bildschirmtastatur-Modi

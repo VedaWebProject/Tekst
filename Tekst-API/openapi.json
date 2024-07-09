@@ -10816,6 +10816,25 @@
         "type": "object",
         "title": "LocationUpdate"
       },
+      "MainNavEntryTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "MainNavEntryTranslation"
+      },
       "MaybePrivateUserField": {
         "type": "string",
         "enum": [
@@ -11926,25 +11945,6 @@
         ],
         "title": "PlatformDescriptionTranslation"
       },
-      "PlatformNavInfoEntryTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "PlatformNavInfoEntryTranslation"
-      },
       "PlatformSecurityInfo": {
         "properties": {
           "closedMode": {
@@ -12019,9 +12019,19 @@
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
           },
+          "navBrowseEntry": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navbrowseentry",
+            "description": "Custom label for main navigation browse entry",
+            "default": []
+          },
           "navInfoEntry": {
             "items": {
-              "$ref": "#/components/schemas/PlatformNavInfoEntryTranslation"
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
             },
             "type": "array",
             "maxItems": 3,
@@ -12134,9 +12144,19 @@
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
           },
+          "navBrowseEntry": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navbrowseentry",
+            "description": "Custom label for main navigation browse entry",
+            "default": []
+          },
           "navInfoEntry": {
             "items": {
-              "$ref": "#/components/schemas/PlatformNavInfoEntryTranslation"
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
             },
             "type": "array",
             "maxItems": 3,

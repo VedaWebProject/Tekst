@@ -2524,6 +2524,12 @@ export interface components {
       /** Label */
       label?: string | null;
     };
+    /** MainNavEntryTranslation */
+    MainNavEntryTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
+    };
     /** @enum {string} */
     MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
     MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
@@ -3107,12 +3113,6 @@ export interface components {
       /** Translation */
       translation: string;
     };
-    /** PlatformNavInfoEntryTranslation */
-    PlatformNavInfoEntryTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
-      translation: string;
-    };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {
       /**
@@ -3171,11 +3171,17 @@ export interface components {
        */
       defaultTextId?: string | null;
       /**
+       * Navbrowseentry
+       * @description Custom label for main navigation browse entry
+       * @default []
+       */
+      navBrowseEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /**
        * Navinfoentry
        * @description Custom label for main navigation info entry
        * @default []
        */
-      navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
+      navInfoEntry?: components['schemas']['MainNavEntryTranslation'][];
       /**
        * Customfonts
        * @description CSS font family names for use in resources
@@ -3247,11 +3253,17 @@ export interface components {
        */
       defaultTextId?: string | null;
       /**
+       * Navbrowseentry
+       * @description Custom label for main navigation browse entry
+       * @default []
+       */
+      navBrowseEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /**
        * Navinfoentry
        * @description Custom label for main navigation info entry
        * @default []
        */
-      navInfoEntry?: components['schemas']['PlatformNavInfoEntryTranslation'][];
+      navInfoEntry?: components['schemas']['MainNavEntryTranslation'][];
       /**
        * Customfonts
        * @description CSS font family names for use in resources
