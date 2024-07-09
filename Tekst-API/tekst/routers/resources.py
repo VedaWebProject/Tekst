@@ -93,10 +93,10 @@ async def preprocess_resource_read(
                 In(UserDocument.id, resource.shared_write)
             ).to_list()
     # include corrections count if user is owner of the resource
-    # or, if resource is public, user is superuser
+    # or, if resource has no owner, user is superuser
     if for_user and (
-        (not resource.public and for_user.id == resource.owner_id)
-        or (resource.public and for_user.is_superuser)
+        (resource.owner_id and for_user.id == resource.owner_id)
+        or (not resource.owner_id and for_user.is_superuser)
     ):
         resource.corrections = await CorrectionDocument.find(
             CorrectionDocument.resource_id == resource.id
@@ -399,6 +399,10 @@ async def delete_resource(
     await ContentBaseDocument.find(
         ContentBaseDocument.resource_id == resource_id,
         with_children=True,
+    ).delete()
+    # delete correction notes belonging to the resource
+    await CorrectionDocument.find(
+        CorrectionDocument.resource_id == resource_id,
     ).delete()
     # delete resource itself
     await ResourceBaseDocument.find_one(
