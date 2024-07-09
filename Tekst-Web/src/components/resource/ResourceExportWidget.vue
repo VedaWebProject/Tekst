@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { NAlert, NCollapse, NCollapseItem, NButton, NFormItem, NSelect } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { GET, type AnyResourceRead, type LocationRead, type ResourceExportFormat } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { DownloadIcon } from '@/icons';
@@ -13,26 +13,31 @@ import { useMessages } from '@/composables/messages';
 import { getFullLocationLabel, pickTranslation } from '@/utils';
 import { useTasks } from '@/composables/tasks';
 
-const allFormatOptions: { label: string; value: ResourceExportFormat }[] = [
+const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: any }[] = [
   {
     label: 'JSON',
     value: 'json',
+    restricted: false,
   },
   {
     label: 'Tekst-JSON',
     value: 'tekst-json',
+    restricted: true,
   },
   {
     label: 'HTML',
     value: 'html',
+    restricted: false,
   },
   {
     label: 'CSV',
     value: 'csv',
+    restricted: false,
   },
   {
     label: 'Plain text',
     value: 'txt',
+    restricted: false,
   },
 ];
 
@@ -50,6 +55,7 @@ const props = defineProps<{
 }>();
 
 const state = useStateStore();
+const auth = useAuthStore();
 const browse = useBrowseStore();
 const { addTask, startTasksPolling } = useTasks();
 const { message } = useMessages();
@@ -60,8 +66,10 @@ const resourceTitle = ref('');
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() =>
-  allFormatOptions.filter((o) =>
-    supportedExportFormats[props.resource.resourceType].includes(o.value)
+  allFormatOptions.filter(
+    (o) =>
+      supportedExportFormats[props.resource.resourceType].includes(o.value) &&
+      (!o.restricted || auth.loggedIn)
   )
 );
 const formatInfoTitle = computed(
