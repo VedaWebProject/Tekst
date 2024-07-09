@@ -12,6 +12,8 @@ import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { useSearchStore, useStateStore } from '@/stores';
 
+const emit = defineEmits(['submit', 'switchToAdvancedSearch']);
+
 const state = useStateStore();
 const search = useSearchStore();
 const router = useRouter();
@@ -36,6 +38,7 @@ function handleSearch(e: UIEvent) {
       }),
     },
   });
+  emit('submit');
 }
 
 function gotoAdvancedSearch() {
@@ -44,6 +47,7 @@ function gotoAdvancedSearch() {
     name: 'search',
     params: { text: state.text?.slug },
   });
+  emit('switchToAdvancedSearch');
 }
 </script>
 

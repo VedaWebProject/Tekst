@@ -79,10 +79,13 @@ const allMenuOptions = computed(() => [
     <n-drawer-content closable>
       <template #header>
         <n-flex justify="center">
-          <quick-search-widget />
-          <theme-mode-switcher @click="show = false" />
+          <quick-search-widget
+            @submit="() => (show = false)"
+            @switch-to-advanced-search="() => (show = false)"
+          />
+          <theme-mode-switcher @click="() => (show = false)" />
           <locale-switcher />
-          <help-nav-button @click="show = false" />
+          <help-nav-button @click="() => (show = false)" />
           <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
         </n-flex>
       </template>
