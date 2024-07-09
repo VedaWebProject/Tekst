@@ -107,14 +107,14 @@ tasks:
     done: successful
     failed: failed
   types:
-    index_create_update: Re-create search index
+    indices_create_update: Re-create search indices
     resource_import: Import resource data
     resource_export: Generate resource export data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
     contents_changed_hook: Update resource after changed contents
   results:
-    index_create_update: Search index created in {took} seconds.
+    indices_create_update: Search indices created in {took} seconds.
     resource_import: Created {created} contents, updated {updated} contents, encountered {errors} errors.
 
 routes:
@@ -738,15 +738,15 @@ admin:
       formLabelDisplay: Display
     maintenance:
       heading: Maintenance
-      index:
-        heading: Search Index
+      indices:
+        heading: Search Indices
         documents: Documents
         size: Size
         searches: Searches
         lastIndexed: Time of last indexing
         actionCreate: Reindex
-        actionCreateStarted: The search index will be updated in the background. This might take a while.
-        actionCreateSuccess: Search index has been updated
+        actionCreateStarted: The search indices will be updated in the background. This might take a while.
+        actionCreateSuccess: Search indices have been updated
       tasks:
         noTasks: No active background tasks
         type: Type

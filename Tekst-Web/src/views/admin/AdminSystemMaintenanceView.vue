@@ -10,12 +10,16 @@ import { useMessages } from '@/composables/messages';
 import { onBeforeMount, ref } from 'vue';
 import { useTasks } from '@/composables/tasks';
 import { utcToLocalTime } from '@/utils';
+import { usePlatformData } from '@/composables/platformData';
+import { useThemeStore } from '@/stores';
 
+const { pfData } = usePlatformData();
+const theme = useThemeStore();
 const { message } = useMessages();
 const { addTask, startTasksPolling } = useTasks();
 
 const allTasks = ref<TaskRead[]>([]);
-const indexInfo = ref<IndexInfoResponse>();
+const indicesInfo = ref<IndexInfoResponse>();
 const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
@@ -29,7 +33,7 @@ async function createIndex() {
   const { data, error } = await GET('/search/index/create');
   if (!error) {
     addTask(data);
-    message.info($t('admin.system.maintenance.index.actionCreateStarted'));
+    message.info($t('admin.system.maintenance.indices.actionCreateStarted'));
     startTasksPolling();
   }
 }
@@ -78,7 +82,7 @@ async function updateAllTasksData() {
 async function loadIndexInfo() {
   const { data, error } = await GET('/search/index/info');
   if (!error) {
-    indexInfo.value = data;
+    indicesInfo.value = data;
   }
 }
 
@@ -96,7 +100,7 @@ onBeforeMount(() => {
 
   <div class="content-block">
     <!-- SEARCH INDEX -->
-    <h3>{{ $t('admin.system.maintenance.index.heading') }}</h3>
+    <h3>{{ $t('admin.system.maintenance.indices.heading') }}</h3>
 
     <n-flex style="margin: var(--layout-gap) 0">
       <n-button secondary @click="loadIndexInfo">
@@ -109,28 +113,41 @@ onBeforeMount(() => {
         <template #icon>
           <n-icon :component="UpdateIcon" />
         </template>
-        {{ $t('admin.system.maintenance.index.actionCreate') }}
+        {{ $t('admin.system.maintenance.indices.actionCreate') }}
       </n-button>
     </n-flex>
 
-    <template v-if="indexInfo">
-      <n-table size="small" style="table-layout: fixed">
+    <p v-if="indicesInfo && !!indicesInfo.length">
+      {{ $t(`admin.system.maintenance.indices.lastIndexed`) }}:
+      <n-time :time="utcToLocalTime(indicesInfo[0].lastIndexed)" type="datetime" />
+    </p>
+
+    <n-table size="small" style="table-layout: fixed" :bordered="false" :bottom-bordered="false">
+      <template v-for="(indexInfo, i) in indicesInfo" :key="i">
+        <thead>
+          <tr>
+            <th
+              colspan="2"
+              :style="{
+                backgroundColor: theme.generateAccentColorVariants(
+                  pfData?.texts.find((t) => t.id === indexInfo.textId)?.accentColor
+                ).fade4,
+              }"
+            >
+              {{ pfData?.texts.find((t) => t.id === indexInfo.textId)?.title }}
+            </th>
+          </tr>
+        </thead>
         <template v-for="(value, key) in indexInfo" :key="key">
-          <tr v-if="!['lastIndexed'].includes(key)">
+          <tr v-if="!['lastIndexed', 'textId'].includes(key)">
             <th>
-              {{ $t(`admin.system.maintenance.index.${key}`) }}
+              {{ $t(`admin.system.maintenance.indices.${key}`) }}
             </th>
             <td>{{ value }}</td>
           </tr>
         </template>
-        <tr>
-          <th>{{ $t(`admin.system.maintenance.index.lastIndexed`) }}</th>
-          <td>
-            <n-time :time="utcToLocalTime(indexInfo.lastIndexed)" type="datetime" />
-          </td>
-        </tr>
-      </n-table>
-    </template>
+      </template>
+    </n-table>
 
     <!-- SYSTEM BACKGROUND TASKS -->
     <h3>{{ $t('tasks.title') }}</h3>

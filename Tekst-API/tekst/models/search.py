@@ -217,7 +217,8 @@ class AdvancedSearchRequestBody(ModelBase):
     ] = AdvancedSearchSettings()
 
 
-class IndexInfoResponse(ModelBase):
+class IndexInfo(ModelBase):
+    text_id: PydanticObjectId
     documents: int
     size: str
     searches: int

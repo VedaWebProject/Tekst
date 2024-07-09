@@ -4866,7 +4866,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndexInfoResponse"
+                  "items": {
+                    "$ref": "#/components/schemas/IndexInfo"
+                  },
+                  "type": "array",
+                  "title": "Response Get Search Index Info Search Index Info Get"
                 }
               }
             }
@@ -10537,8 +10541,13 @@
         ],
         "title": "ImagesSearchQuery"
       },
-      "IndexInfoResponse": {
+      "IndexInfo": {
         "properties": {
+          "textId": {
+            "type": "string",
+            "title": "Textid",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
           "documents": {
             "type": "integer",
             "title": "Documents"
@@ -10559,12 +10568,13 @@
         },
         "type": "object",
         "required": [
+          "textId",
           "documents",
           "size",
           "searches",
           "lastIndexed"
         ],
-        "title": "IndexInfoResponse"
+        "title": "IndexInfo"
       },
       "LineLabellingConfig": {
         "properties": {
@@ -13687,7 +13697,7 @@
       "TaskType": {
         "type": "string",
         "enum": [
-          "index_create_update",
+          "indices_create_update",
           "resource_import",
           "resource_export",
           "broadcast_user_ntfc",

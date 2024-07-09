@@ -111,14 +111,14 @@ tasks:
     done: erfolgreich
     failed: fehlgeschlagen
   types:
-    index_create_update: Suchindex neu erzeugen
+    indices_create_update: Suchindizes neu erzeugen
     resource_import: Ressourcen-Inhalte importieren
     resource_export: Ressourcen-Export erstellen
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     contents_changed_hook: Ressource nach Änderung von Inhalten aktualisieren
   results:
-    index_create_update: Suchindex erzeugt in {took} Sekunden.
+    indices_create_update: Suchindizes erzeugt in {took} Sekunden.
     resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert, {errors} Fehler.'
 
 routes:
@@ -765,15 +765,15 @@ admin:
       formLabelDisplay: Darstellung
     maintenance:
       heading: Wartung
-      index:
-        heading: Suchindex
+      indices:
+        heading: Suchindizes
         documents: Dokumente
         size: Größe
         searches: Suchen
         lastIndexed: Zeitpunkt der letzten Indexierung
         actionCreate: Neuindexierung
-        actionCreateStarted: Der Suchindex wird im Hintergrund aktualisiert. Dies kann einen Moment dauern.
-        actionCreateSuccess: Suchindex wurde aktualisiert
+        actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. Dies kann einen Moment dauern.
+        actionCreateSuccess: Suchindizes wurden aktualisiert
       tasks:
         noTasks: Keine aktiven @:tasks.title
         type: Typ

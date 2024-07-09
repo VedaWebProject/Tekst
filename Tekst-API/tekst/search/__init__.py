@@ -18,7 +18,7 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
     AdvancedSearchSettings,
     GeneralSearchSettings,
-    IndexInfoResponse,
+    IndexInfo,
     QuickSearchSettings,
     SearchResults,
 )
@@ -103,10 +103,8 @@ async def setup_elasticsearch() -> None:
     )
 
 
-async def task_create_index(overwrite_existing_index: bool = True) -> dict[str, Any]:
-    # prepare
+async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str, Any]:
     start_time = process_time()
-    new_index_name = IDX_NAME_PREFIX + uuid4().hex
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
@@ -119,30 +117,35 @@ async def task_create_index(overwrite_existing_index: bool = True) -> dict[str, 
             log.warning("An index already exists. Aborting index creation.")
             return
 
-    # create index (index template will be applied!)
-    client.indices.create(
-        index=new_index_name,
-        aliases={IDX_ALIAS: {}},
-    )
+    for text in await TextDocument.find_all().to_list():
+        # create indices (index template will be applied!)
+        new_index_name = IDX_NAME_PREFIX + f"{str(uuid4().hex)}_{text.slug}"
+        client.indices.create(
+            index=new_index_name,
+            aliases={IDX_ALIAS: {}},
+        )
 
-    # extend index mappings adding one extra field for each existing resource
-    extra_properties = {}
-    for res in await ResourceBaseDocument.find_all(
-        with_children=True,
-        lazy_parse=True,
-    ).to_list():
-        extra_properties[str(res.id)] = {
-            "properties": resource_types_mgr.get(res.resource_type).index_doc_props(),
-        }
-    resp = client.indices.put_mapping(
-        index=new_index_name,
-        body={"properties": {"resources": {"properties": extra_properties}}},
-    )
-    if not resp or not resp.get("acknowledged"):
-        raise RuntimeError("Failed to extend index mappings!")
+        # extend index mappings adding one extra field for each existing resource
+        extra_properties = {}
+        for res in await ResourceBaseDocument.find(
+            ResourceBaseDocument.text_id == text.id,
+            with_children=True,
+            lazy_parse=True,
+        ).to_list():
+            extra_properties[str(res.id)] = {
+                "properties": resource_types_mgr.get(
+                    res.resource_type
+                ).index_doc_props(),
+            }
+        resp = client.indices.put_mapping(
+            index=new_index_name,
+            body={"properties": {"resources": {"properties": extra_properties}}},
+        )
+        if not resp or not resp.get("acknowledged"):
+            raise RuntimeError("Failed to extend index mappings!")
 
-    # populate newly created index
-    await _populate_index(new_index_name)
+        # populate newly created index
+        await _populate_index(new_index_name, text)
 
     # delete all other/old indices matching the used index naming pattern
     if existing_indices:
@@ -156,7 +159,7 @@ async def task_create_index(overwrite_existing_index: bool = True) -> dict[str, 
     }
 
 
-async def create_index(
+async def create_indices(
     *,
     user: UserRead | None = None,
     overwrite_existing_index: bool = True,
@@ -164,8 +167,8 @@ async def create_index(
     log.info("Creating search index ...")
     # create index task
     return await tasks.create_task(
-        task_create_index,
-        tasks.TaskType.INDEX_CREATE_UPDATE,
+        task_create_indices,
+        tasks.TaskType.INDICES_CREATE_UPDATE,
         user_id=user.id if user else None,
         task_kwargs={
             "overwrite_existing_index": overwrite_existing_index,
@@ -173,101 +176,102 @@ async def create_index(
     )
 
 
-async def util_create_index():
+async def util_create_indices():
     init_resource_types_mgr()
     await db.init_odm()
-    await task_create_index()
+    await task_create_indices()
 
 
-async def _populate_index(index_name: str) -> None:
+async def _populate_index(index_name: str, text: TextDocument) -> None:
+    if text is None:
+        raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
     bulk_index_max_size = 1000
     bulk_index_body = []
     errors = False
 
-    for text in await TextDocument.find_all(lazy_parse=True).to_list():
-        log.debug(f"Indexing resources for text '{text.title}'...")
-        start_time = process_time()
-        # Initialize stack with all level 0 locations (sorted) of the current text.
-        # Each item on the stack is a tuple containing (1) the location labels from the
-        # root level up to the current location and (2) the location itself.
-        stack = [
-            ([location.label], location)
-            for location in await LocationDocument.find(
-                LocationDocument.text_id == text.id,
-                LocationDocument.level == 0,
+    log.debug(f"Indexing resources for text '{text.title}'...")
+    start_time = process_time()
+    # Initialize stack with all level 0 locations (sorted) of the current text.
+    # Each item on the stack is a tuple containing (1) the location labels from the
+    # root level up to the current location and (2) the location itself.
+    stack = [
+        ([location.label], location)
+        for location in await LocationDocument.find(
+            LocationDocument.text_id == text.id,
+            LocationDocument.level == 0,
+        )
+        .sort(+LocationDocument.position)
+        .to_list()
+    ]
+
+    # abort if initial stack is empty
+    if not stack:
+        return
+
+    while stack:
+        labels, location = stack.pop(0)
+        full_label = text.loc_delim.join(labels)
+
+        # create index document for this location
+        location_index_doc = {
+            "label": location.label,
+            "full_label": full_label,
+            "text_id": str(location.text_id),
+            "level": location.level,
+            "position": location.position,
+            "resources": {},
+        }
+
+        # add data for each content for this location
+        for content in await ContentBaseDocument.find(
+            Eq(ContentBaseDocument.location_id, location.id),
+            with_children=True,
+        ).to_list():
+            content_index_doc = resource_types_mgr.get(
+                content.resource_type
+            ).index_doc_data(content)
+            # add resource content document to location index document
+            location_index_doc["resources"][str(content.resource_id)] = (
+                content_index_doc
             )
-            .sort(+LocationDocument.position)
-            .to_list()
-        ]
 
-        # abort if stack is empty
-        if not stack:
-            continue
+        # add index document to bulk index request body
+        bulk_index_body.append(
+            {"index": {"_index": index_name, "_id": str(location.id)}}
+        )
+        bulk_index_body.append(location_index_doc)
 
-        while stack:
-            labels, location = stack.pop(0)
-            full_label = text.loc_delim.join(labels)
+        # check bulk request body size, fire bulk request if necessary
+        if len(bulk_index_body) / 2 >= bulk_index_max_size:
+            errors |= not _bulk_index(client, bulk_index_body)
+            bulk_index_body = []
 
-            # create index document for this location
-            location_index_doc = {
-                "label": location.label,
-                "full_label": full_label,
-                "text_id": str(location.text_id),
-                "level": location.level,
-                "position": location.position,
-                "resources": {},
-            }
-
-            # add data for each content for this location
-            for content in await ContentBaseDocument.find(
-                Eq(ContentBaseDocument.location_id, location.id),
-                with_children=True,
-            ).to_list():
-                content_index_doc = resource_types_mgr.get(
-                    content.resource_type
-                ).index_doc_data(content)
-                # add resource content document to location index document
-                location_index_doc["resources"][str(content.resource_id)] = (
-                    content_index_doc
+        # add all child locations to the stack
+        stack.extend(
+            [
+                (labels + [child.label], child)
+                for child in await LocationDocument.find(
+                    LocationDocument.parent_id == location.id,
                 )
+                .sort(+LocationDocument.position)
+                .to_list()
+            ]
+        )
 
-            # add index document to bulk index request body
-            bulk_index_body.append(
-                {"index": {"_index": index_name, "_id": str(location.id)}}
-            )
-            bulk_index_body.append(location_index_doc)
+    # index the remaining documents
+    errors |= not _bulk_index(client, bulk_index_body)
+    bulk_index_body = []
 
-            # check bulk request body size, fire bulk request if necessary
-            if len(bulk_index_body) / 2 >= bulk_index_max_size:
-                errors |= not _bulk_index(client, bulk_index_body)
-                bulk_index_body = []
-
-            # add all child locations to the stack
-            stack.extend(
-                [
-                    (labels + [child.label], child)
-                    for child in await LocationDocument.find(
-                        LocationDocument.parent_id == location.id,
-                    )
-                    .sort(+LocationDocument.position)
-                    .to_list()
-                ]
-            )
-
-        # index the remaining documents
-        errors |= not _bulk_index(client, bulk_index_body)
-        bulk_index_body = []
-
-        # log the results (very superficially)
-        if errors:
-            log.error(f"There were errors populating index for '{text.title}'.")
-        else:
-            log.info(
-                f"Finished indexing resources for text '{text.title}' in "
-                f"{(process_time() - start_time):.2f} seconds."
-            )
-        errors = False
+    # log the results (very superficially)
+    if errors:
+        log.error(f"There were errors populating index for '{text.title}'.")
+    else:
+        log.info(
+            f"Finished indexing resources for text '{text.title}' in "
+            f"{(process_time() - start_time):.2f} seconds."
+        )
+    errors = False
 
 
 def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
@@ -288,16 +292,24 @@ def _get_index_creation_time() -> datetime:
         return datetime.now()
 
 
-async def get_index_info():
+async def get_indices_info() -> list[IndexInfo]:
     client: Elasticsearch = await _get_es_client()
-    info = client.indices.stats(index=IDX_ALIAS, human=True).body
-    index_info = list(info["indices"].values())[0]["total"]
-    return IndexInfoResponse(
-        documents=index_info["docs"]["count"],
-        size=index_info["store"]["size"],
-        searches=index_info["search"]["query_total"],
-        last_indexed=_get_index_creation_time(),
-    )
+    info_resp = client.indices.stats(index=IDX_ALIAS, human=True).body
+    text_slugs_ids_map = {
+        txt.slug: txt.id for txt in await TextDocument.find_all().to_list()
+    }
+    info_data = {name: data["total"] for name, data in info_resp["indices"].items()}
+    creation_time = _get_index_creation_time()
+    return [
+        IndexInfo(
+            text_id=text_slugs_ids_map[idx_name.split("_")[-1]],
+            documents=idx_info["docs"]["count"],
+            size=idx_info["store"]["size"],
+            searches=idx_info["search"]["query_total"],
+            last_indexed=creation_time,
+        )
+        for idx_name, idx_info in info_data.items()
+    ]
 
 
 async def _get_target_resource_ids(
@@ -307,7 +319,7 @@ async def _get_target_resource_ids(
     resource_types: list[str] | None = None,
 ) -> list[str]:
     """
-    Returns a contrained list of IDs for the target resources for a search request,
+    Returns a constrained list of IDs for the target resources for a search request,
     based on the requesting user's permissions, target texts and resource types.
     """
     return [

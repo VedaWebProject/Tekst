@@ -6,7 +6,7 @@ from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.models.search import (
     AdvancedSearchRequestBody,
-    IndexInfoResponse,
+    IndexInfo,
     QuickSearchRequestBody,
     SearchResults,
 )
@@ -71,12 +71,12 @@ async def perform_search(
     ),
 )
 async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
-    return await search.create_index(user=su)
+    return await search.create_indices(user=su)
 
 
 @router.get(
     "/index/info",
-    response_model=IndexInfoResponse,
+    response_model=list[IndexInfo],
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -85,5 +85,5 @@ async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
         ]
     ),
 )
-async def get_search_index_info(su: SuperuserDep) -> IndexInfoResponse:
-    return await search.get_index_info()
+async def get_search_index_info(su: SuperuserDep) -> list[IndexInfo]:
+    return await search.get_indices_info()

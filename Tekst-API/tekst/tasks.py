@@ -19,7 +19,7 @@ from tekst.models.user import UserRead
 
 
 class TaskType(Enum):
-    INDEX_CREATE_UPDATE = "index_create_update"
+    INDICES_CREATE_UPDATE = "indices_create_update"
     RESOURCE_IMPORT = "resource_import"
     RESOURCE_EXPORT = "resource_export"
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
@@ -28,7 +28,7 @@ class TaskType(Enum):
 
 
 _task_type_props = {
-    TaskType.INDEX_CREATE_UPDATE: {"locking": True},
+    TaskType.INDICES_CREATE_UPDATE: {"locking": True},
     TaskType.RESOURCE_IMPORT: {"locking": True},
     TaskType.RESOURCE_EXPORT: {"locking": False},
     TaskType.BROADCAST_USER_NTFC: {"locking": False},

@@ -2388,8 +2388,13 @@ export interface components {
        */
       caption?: string;
     };
-    /** IndexInfoResponse */
-    IndexInfoResponse: {
+    /** IndexInfo */
+    IndexInfo: {
+      /**
+       * Textid
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
       /** Documents */
       documents: number;
       /** Size */
@@ -4026,7 +4031,7 @@ export interface components {
      * @enum {string}
      */
     TaskType:
-      | 'index_create_update'
+      | 'indices_create_update'
       | 'resource_import'
       | 'resource_export'
       | 'broadcast_user_ntfc'
@@ -7193,7 +7198,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['IndexInfoResponse'];
+          'application/json': components['schemas']['IndexInfo'][];
         };
       };
       /** @description Unauthorized */

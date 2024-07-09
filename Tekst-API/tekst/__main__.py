@@ -4,7 +4,7 @@ import click
 
 from tekst.config import TekstConfig, get_config
 from tekst.openapi import generate_openapi_schema
-from tekst.search import util_create_index
+from tekst.search import util_create_indices
 from tekst.setup import app_setup
 
 
@@ -23,7 +23,7 @@ def setup():
 
 @click.command()
 def index():
-    asyncio.run(util_create_index())
+    asyncio.run(util_create_indices())
 
 
 @click.command()
