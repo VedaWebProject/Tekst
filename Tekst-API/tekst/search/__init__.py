@@ -125,12 +125,12 @@ async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str
             aliases={IDX_ALIAS: {}},
         )
 
-        # extend index mappings adding one extra field for each existing resource
+        # extend index mappings adding one extra field for each target resource
         extra_properties = {}
         for res in await ResourceBaseDocument.find(
             ResourceBaseDocument.text_id == text.id,
+            Eq(ResourceBaseDocument.public, True),
             with_children=True,
-            lazy_parse=True,
         ).to_list():
             extra_properties[str(res.id)] = {
                 "properties": resource_types_mgr.get(
@@ -189,6 +189,14 @@ async def _populate_index(index_name: str, text: TextDocument) -> None:
     bulk_index_max_size = 1000
     bulk_index_body = []
     errors = False
+    target_resource_ids = [
+        str(res.id)
+        for res in await ResourceBaseDocument.find(
+            ResourceBaseDocument.text_id == text.id,
+            Eq(ResourceBaseDocument.public, True),
+            with_children=True,
+        ).to_list()
+    ]
 
     log.debug(f"Indexing resources for text '{text.title}'...")
     start_time = process_time()
@@ -226,6 +234,7 @@ async def _populate_index(index_name: str, text: TextDocument) -> None:
         # add data for each content for this location
         for content in await ContentBaseDocument.find(
             Eq(ContentBaseDocument.location_id, location.id),
+            In(ContentBaseDocument.resource_id, target_resource_ids),
             with_children=True,
         ).to_list():
             # add resource content document to location index document
@@ -323,6 +332,7 @@ async def _get_target_resource_ids(
             In(ResourceBaseDocument.resource_type, resource_types)
             if resource_types
             else {},
+            Eq(ResourceBaseDocument.public, True),
             await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         ).to_list()
