@@ -140,7 +140,7 @@ onBeforeMount(() => {
         </thead>
         <template v-for="(value, key) in indexInfo" :key="key">
           <tr v-if="!['lastIndexed', 'textId'].includes(key)">
-            <th>
+            <th style="font-weight: var(--font-weight-normal)">
               {{ $t(`admin.system.maintenance.indices.${key}`) }}
             </th>
             <td>{{ value }}</td>
