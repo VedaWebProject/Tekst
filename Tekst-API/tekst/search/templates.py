@@ -60,7 +60,7 @@ IDX_TEMPLATE = {
     },
 }
 
-_GENERAL_SOURCE_INCLUDES = [
+QUERY_SOURCE_INCLUDES = [
     "text_id",
     "level",
     "position",
@@ -81,7 +81,3 @@ SORTING_PRESETS = {
         "_score",
     ],
 }
-
-
-def get_source_includes(fields: list[str] = []) -> list[str]:
-    return _GENERAL_SOURCE_INCLUDES + fields
