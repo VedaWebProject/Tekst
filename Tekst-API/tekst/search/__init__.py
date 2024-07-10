@@ -355,7 +355,7 @@ async def search_quick(
             "audio",
             "images",
             "externalReferences",
-        ],  # constrain target resource types
+        ],  # constrain target resource types for quick search
     )
 
     # compose a list of target index fields based on the resources to search:
@@ -366,26 +366,15 @@ async def search_quick(
 
     # compose the query
     es_query = {
-        "bool": {
-            "must": [
-                {
-                    "terms": {
-                        "text_id": [str(text_id) for text_id in settings_quick.texts],
-                    }
-                }
-                if settings_quick.texts
-                else None,
-                {
-                    "simple_query_string": {
-                        "query": query_string or "*",  # fall back to '*' if empty
-                        "fields": fields,
-                        "default_operator": settings_quick.default_operator,
-                        "analyze_wildcard": True,
-                    }
-                },
-            ],
+        "simple_query_string": {
+            "query": query_string or "*",  # fall back to '*' if empty
+            "fields": fields,
+            "default_operator": settings_quick.default_operator,
+            "analyze_wildcard": True,
         }
     }
+
+    log.debug(f"Running ES query: {es_query}")
 
     # perform the search
     return SearchResults.from_es_results(
