@@ -189,6 +189,7 @@ onMounted(() => {
         :disabled="loading"
         :item-count="total"
         :page-sizes="[10, 25, 50]"
+        size="medium"
         show-size-picker
       />
     </n-flex>

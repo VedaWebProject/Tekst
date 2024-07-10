@@ -34,7 +34,6 @@ const paginationDefaults = () => ({
 });
 const pagination = ref(paginationDefaults());
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
-const paginationExtrasSize = computed(() => (state.smallScreen ? 'small' : undefined));
 const sortingPreset = ref<SortingPreset>();
 
 const loading = ref(false);
@@ -174,13 +173,14 @@ onBeforeMount(() => processQuery());
         :item-count="resultsData.totalHits"
         :disabled="loading"
         show-size-picker
+        size="medium"
         @update:page="() => execSearch()"
         @update:page-size="() => execSearch(true)"
       >
         <template #suffix>
           <search-results-sort-widget
             v-model="sortingPreset"
-            :size="paginationExtrasSize"
+            size="small"
             :disabled="loading"
             @update:model-value="handleSortingChange"
           />
