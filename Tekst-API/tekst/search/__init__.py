@@ -37,8 +37,8 @@ from tekst.search.templates import (
     IDX_TEMPLATE,
     IDX_TEMPLATE_NAME,
     IDX_TEMPLATE_NAME_PATTERN,
+    QUERY_SOURCE_INCLUDES,
     SORTING_PRESETS,
-    get_source_includes,
 )
 
 
@@ -119,7 +119,7 @@ async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str
 
     for text in await TextDocument.find_all().to_list():
         # create indices (index template will be applied!)
-        new_index_name = IDX_NAME_PREFIX + f"{str(uuid4().hex)}_{text.slug}"
+        new_index_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
         client.indices.create(
             index=new_index_name,
             aliases={IDX_ALIAS: {}},
@@ -228,12 +228,9 @@ async def _populate_index(index_name: str, text: TextDocument) -> None:
             Eq(ContentBaseDocument.location_id, location.id),
             with_children=True,
         ).to_list():
-            content_index_doc = resource_types_mgr.get(
-                content.resource_type
-            ).index_doc_data(content)
             # add resource content document to location index document
             location_index_doc["resources"][str(content.resource_id)] = (
-                content_index_doc
+                resource_types_mgr.get(content.resource_type).index_doc_data(content)
             )
 
         # add index document to bulk index request body
@@ -295,14 +292,11 @@ def _get_index_creation_time() -> datetime:
 async def get_indices_info() -> list[IndexInfo]:
     client: Elasticsearch = await _get_es_client()
     info_resp = client.indices.stats(index=IDX_ALIAS, human=True).body
-    text_slugs_ids_map = {
-        txt.slug: txt.id for txt in await TextDocument.find_all().to_list()
-    }
     info_data = {name: data["total"] for name, data in info_resp["indices"].items()}
     creation_time = _get_index_creation_time()
     return [
         IndexInfo(
-            text_id=text_slugs_ids_map[idx_name.split("_")[-1]],
+            text_id=idx_name.split("_")[-2],
             documents=idx_info["docs"]["count"],
             size=idx_info["store"]["size"],
             searches=idx_info["search"]["query_total"],
@@ -351,7 +345,7 @@ async def search_quick(
             "audio",
             "images",
             "externalReferences",
-        ],  # constrain target resource types
+        ],  # constrain target resource types for quick search
     )
 
     # compose a list of target index fields based on the resources to search:
@@ -359,32 +353,18 @@ async def search_quick(
     fields = [
         f"resources.{res_id}{field_pattern_suffix}" for res_id in target_resource_ids
     ]
-    source_includes = [
-        f"resources.{res_id}.resource_title" for res_id in target_resource_ids
-    ]
 
     # compose the query
     es_query = {
-        "bool": {
-            "must": [
-                {
-                    "terms": {
-                        "text_id": [str(text_id) for text_id in settings_quick.texts],
-                    }
-                }
-                if settings_quick.texts
-                else None,
-                {
-                    "simple_query_string": {
-                        "query": query_string or "*",  # fall back to '*' if empty
-                        "fields": fields,
-                        "default_operator": settings_quick.default_operator,
-                        "analyze_wildcard": True,
-                    }
-                },
-            ],
+        "simple_query_string": {
+            "query": query_string or "*",  # fall back to '*' if empty
+            "fields": fields,
+            "default_operator": settings_quick.default_operator,
+            "analyze_wildcard": True,
         }
     }
+
+    log.debug(f"Running ES query: {es_query}")
 
     # perform the search
     return SearchResults.from_es_results(
@@ -398,7 +378,7 @@ async def search_quick(
             size=settings_general.pagination.es_size(),
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
-            source={"includes": get_source_includes(source_includes)},
+            source={"includes": QUERY_SOURCE_INCLUDES},
         ),
         index_creation_time=_get_index_creation_time(),
     )
@@ -416,9 +396,7 @@ async def search_advanced(
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
-    source_includes = [
-        f"resources.{res_id}.resource_title" for res_id in target_resource_ids
-    ]
+
     for q in queries:
         if str(q.common.resource_id) in target_resource_ids:
             resource_es_queries = resource_types_mgr.get(
@@ -458,7 +436,7 @@ async def search_advanced(
             size=settings_general.pagination.es_size(),
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
-            source={"includes": get_source_includes(source_includes)},
+            source={"includes": QUERY_SOURCE_INCLUDES},
         ),
         index_creation_time=_get_index_creation_time(),
     )

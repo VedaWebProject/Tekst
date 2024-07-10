@@ -69,7 +69,7 @@ class Audio(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
 
-        if not query.resource_type_specific.caption.strip("*"):
+        if not query.resource_type_specific.caption.strip("* "):
             # handle empty/match-all query (query for existing target field)
             es_queries.append(
                 {

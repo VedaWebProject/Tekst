@@ -356,7 +356,10 @@ class ResourceTypeABC(ABC):
     @classmethod
     @abstractmethod
     def rtype_es_queries(
-        cls, *, query: "ResourceSearchQuery", strict: bool = False
+        cls,
+        *,
+        query: "ResourceSearchQuery",
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         """
         Constructs an Elasticsearch search query for each field
