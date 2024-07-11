@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
@@ -173,6 +174,7 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="OSK modes available for use in platform client",
         ),
     ] = []
+    indices_created_at: datetime | None = None
 
 
 class PlatformSettingsDocument(PlatformSettings, DocumentBase):

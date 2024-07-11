@@ -3,12 +3,18 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import NotIn
 from fastapi import APIRouter, Header, Path, status
+from humps import camelize
 
 from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep
 from tekst.models.location import LocationDocument
-from tekst.models.platform import PlatformData, PlatformStats, TextStats
+from tekst.models.platform import (
+    PlatformData,
+    PlatformSecurityInfo,
+    PlatformStats,
+    TextStats,
+)
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import (
     ClientSegmentCreate,
@@ -49,6 +55,8 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
     return PlatformData(
         texts=await get_all_texts(ou),
         settings=await get_settings(),
+        settings_cache_ttl=cfg.settings_cache_ttl,
+        security=PlatformSecurityInfo(),
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
         ).to_list(),
@@ -57,6 +65,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
         )
         .project(ClientSegmentHead)
         .to_list(),
+        tekst=camelize(cfg.tekst),
     )
 
 

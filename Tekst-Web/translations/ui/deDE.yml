@@ -770,7 +770,8 @@ admin:
         documents: Dokumente
         size: Größe
         searches: Suchen
-        lastIndexed: Zeitpunkt der letzten Indexierung
+        fields: Felder
+        createdAt: Zeitpunkt
         actionCreate: Neuindexierung
         actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. Dies kann einen Moment dauern.
         actionCreateSuccess: Suchindizes wurden aktualisiert

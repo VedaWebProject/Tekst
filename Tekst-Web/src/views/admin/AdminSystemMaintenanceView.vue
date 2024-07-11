@@ -117,11 +117,6 @@ onBeforeMount(() => {
       </n-button>
     </n-flex>
 
-    <p v-if="indicesInfo && !!indicesInfo.length">
-      {{ $t(`admin.system.maintenance.indices.lastIndexed`) }}:
-      <n-time :time="utcToLocalTime(indicesInfo[0].lastIndexed)" type="datetime" />
-    </p>
-
     <n-table size="small" style="table-layout: fixed" :bordered="false" :bottom-bordered="false">
       <template v-for="(indexInfo, i) in indicesInfo" :key="i">
         <thead>
@@ -139,13 +134,21 @@ onBeforeMount(() => {
           </tr>
         </thead>
         <template v-for="(value, key) in indexInfo" :key="key">
-          <tr v-if="!['lastIndexed', 'textId'].includes(key)">
+          <tr v-if="!['createdAt', 'textId'].includes(key)">
             <th style="font-weight: var(--font-weight-normal)">
               {{ $t(`admin.system.maintenance.indices.${key}`) }}
             </th>
             <td>{{ value }}</td>
           </tr>
         </template>
+        <tr>
+          <th style="font-weight: var(--font-weight-normal)">
+            {{ $t(`admin.system.maintenance.indices.createdAt`) }}
+          </th>
+          <td>
+            <n-time :time="utcToLocalTime(indexInfo.createdAt)" type="datetime" />
+          </td>
+        </tr>
       </template>
     </n-table>
 

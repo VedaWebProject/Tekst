@@ -212,9 +212,9 @@ onBeforeMount(() => processQuery());
           })
         }}
       </div>
-      <div>
+      <div v-if="pfData?.settings.indicesCreatedAt">
         {{ $t('search.results.indexCreationTime') }}:
-        <n-time :time="utcToLocalTime(resultsData.indexCreationTime)" type="datetime" />
+        <n-time :time="utcToLocalTime(pfData.settings.indicesCreatedAt)" type="datetime" />
       </div>
     </template>
     <template v-else-if="loading">

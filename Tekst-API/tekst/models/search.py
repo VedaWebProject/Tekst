@@ -25,7 +25,6 @@ class SearchResults(ModelBase):
     total_hits: int
     total_hits_relation: Literal["eq", "gte"]
     max_score: float | None
-    index_creation_time: datetime
 
     @classmethod
     def __transform_highlights(cls, hit: dict[str, Any]) -> dict[str, set[str]]:
@@ -40,9 +39,7 @@ class SearchResults(ModelBase):
         return highlights
 
     @classmethod
-    def from_es_results(
-        cls, results: dict[str, Any], index_creation_time: datetime
-    ) -> "SearchResults":
+    def from_es_results(cls, results: dict[str, Any]) -> "SearchResults":
         return cls(
             hits=[
                 SearchHit(
@@ -61,7 +58,6 @@ class SearchResults(ModelBase):
             total_hits=results["hits"]["total"]["value"],
             total_hits_relation=results["hits"]["total"]["relation"],
             max_score=results["hits"]["max_score"],
-            index_creation_time=index_creation_time,
         )
 
 
@@ -222,4 +218,5 @@ class IndexInfo(ModelBase):
     documents: int
     size: str
     searches: int
-    last_indexed: datetime
+    fields: int
+    created_at: datetime

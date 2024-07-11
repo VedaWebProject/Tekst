@@ -743,7 +743,8 @@ admin:
         documents: Documents
         size: Size
         searches: Searches
-        lastIndexed: Time of last indexing
+        fields: Fields
+        createdAt: Time
         actionCreate: Reindex
         actionCreateStarted: The search indices will be updated in the background. This might take a while.
         actionCreateSuccess: Search indices have been updated

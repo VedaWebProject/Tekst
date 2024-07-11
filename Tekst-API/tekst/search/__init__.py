@@ -40,6 +40,7 @@ from tekst.search.templates import (
     QUERY_SOURCE_INCLUDES,
     SORTING_PRESETS,
 )
+from tekst.settings import update_settings
 
 
 _cfg: TekstConfig = get_config()
@@ -84,8 +85,8 @@ def close() -> None:
         _es_client = None
 
 
-async def setup_elasticsearch() -> None:
-    """This is called by the setup routine"""
+async def _setup_index_templates() -> None:
+    """This is called by the setup routine and when re-indexing"""
     client: Elasticsearch = await _get_es_client()
     log.debug(
         f'Setting up index template "{IDX_TEMPLATE_NAME}" '
@@ -105,6 +106,7 @@ async def setup_elasticsearch() -> None:
 
 async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str, Any]:
     start_time = process_time()
+    await _setup_index_templates()
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
@@ -153,6 +155,9 @@ async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str
 
     # perform initial bogus search (to initialize index stats)
     client.search(index=IDX_ALIAS, query={"match_all": {}})
+
+    # update last indexing time
+    await update_settings(indices_created_at=datetime.utcnow())
 
     return {
         "took": f"{round(process_time() - start_time, 2)}",
@@ -285,34 +290,63 @@ def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
     return bool(resp) and not resp.get("errors", False)
 
 
-def _get_index_creation_time() -> datetime:
+async def _get_index_creation_time(index: str = IDX_ALIAS) -> datetime:
     """Returns the creation date of the index as a UTC datetime."""
-    client: Elasticsearch = _es_client
-    idx_settings = client.indices.get_settings(
-        index=IDX_ALIAS, name="index.creation_date", flat_settings=True
-    )
+    client: Elasticsearch = await _get_es_client()
     try:
-        ts = int(list(idx_settings.body.values())[0]["settings"]["index.creation_date"])
+        ts = int(
+            client.indices.get_settings(
+                index=index, name="index.creation_date", flat_settings=True
+            ).body.values()[0]["settings"]["index.creation_date"]
+        )
         return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
     except Exception:
         return datetime.now()
 
 
+async def _get_mapped_fields_count(index: str) -> int:
+    client: Elasticsearch = await _get_es_client()
+    return len(
+        [
+            field_name
+            for field_name in client.field_caps(
+                index=index,
+                fields="*",
+                human=True,
+                include_empty_fields=True,
+            )["fields"]
+            if field_name.startswith("resources.")
+        ]
+    )
+
+
+async def _get_index_stats(index: str) -> dict[str, Any]:
+    client: Elasticsearch = await _get_es_client()
+    data = client.indices.stats(
+        index=IDX_ALIAS,
+        human=True,
+    ).body["indices"][index]["total"]
+    return {
+        "documents": data["docs"]["count"],
+        "size": data["store"]["size"],
+        "searches": data["search"]["query_total"],
+    }
+
+
 async def get_indices_info() -> list[IndexInfo]:
     client: Elasticsearch = await _get_es_client()
-    info_resp = client.indices.stats(index=IDX_ALIAS, human=True).body
-    info_data = {name: data["total"] for name, data in info_resp["indices"].items()}
-    creation_time = _get_index_creation_time()
-    return [
-        IndexInfo(
-            text_id=idx_name.split("_")[-2],
-            documents=idx_info["docs"]["count"],
-            size=idx_info["store"]["size"],
-            searches=idx_info["search"]["query_total"],
-            last_indexed=creation_time,
-        )
-        for idx_name, idx_info in info_data.items()
-    ]
+    try:
+        data = {idx_name: {} for idx_name in client.indices.get_alias(index=IDX_ALIAS)}
+        # collect data from various endpoints
+        for idx_name in data:
+            data[idx_name].update(await _get_index_stats(idx_name))
+            data[idx_name]["fields"] = await _get_mapped_fields_count(idx_name)
+            data[idx_name]["created_at"] = await _get_index_creation_time(idx_name)
+            data[idx_name]["text_id"] = idx_name.split("_")[-2]
+
+        return [IndexInfo(**data[idx_name]) for idx_name in data]
+    except Exception:
+        return []
 
 
 async def _get_target_resource_ids(
@@ -390,7 +424,6 @@ async def search_quick(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": QUERY_SOURCE_INCLUDES},
         ),
-        index_creation_time=_get_index_creation_time(),
     )
 
 
@@ -448,5 +481,4 @@ async def search_advanced(
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": QUERY_SOURCE_INCLUDES},
         ),
-        index_creation_time=_get_index_creation_time(),
     )

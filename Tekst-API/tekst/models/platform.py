@@ -1,5 +1,4 @@
 from beanie import PydanticObjectId
-from humps import camelize
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import ModelBase
@@ -24,11 +23,11 @@ class PlatformData(ModelBase):
 
     texts: list[TextRead]
     settings: PlatformSettingsRead
-    security: PlatformSecurityInfo = PlatformSecurityInfo()
+    security: PlatformSecurityInfo
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
-    settings_cache_ttl: int = _cfg.settings_cache_ttl
-    tekst: dict[str, str] = camelize(_cfg.tekst)
+    settings_cache_ttl: int
+    tekst: dict[str, str]
 
 
 class TextStats(ModelBase):

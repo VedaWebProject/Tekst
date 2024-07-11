@@ -10560,10 +10560,14 @@
             "type": "integer",
             "title": "Searches"
           },
-          "lastIndexed": {
+          "fields": {
+            "type": "integer",
+            "title": "Fields"
+          },
+          "createdAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Lastindexed"
+            "title": "Createdat"
           }
         },
         "type": "object",
@@ -10572,7 +10576,8 @@
           "documents",
           "size",
           "searches",
-          "lastIndexed"
+          "fields",
+          "createdAt"
         ],
         "title": "IndexInfo"
       },
@@ -11877,18 +11882,7 @@
             "$ref": "#/components/schemas/PlatformSettingsRead"
           },
           "security": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlatformSecurityInfo"
-              }
-            ],
-            "default": {
-              "closedMode": false,
-              "usersActiveByDefault": false,
-              "enableCookieAuth": true,
-              "enableJwtAuth": false,
-              "authCookieLifetime": 10800
-            }
+            "$ref": "#/components/schemas/PlatformSecurityInfo"
           },
           "systemSegments": {
             "items": {
@@ -11906,32 +11900,25 @@
           },
           "settingsCacheTtl": {
             "type": "integer",
-            "title": "Settingscachettl",
-            "default": 60
+            "title": "Settingscachettl"
           },
           "tekst": {
             "additionalProperties": {
               "type": "string"
             },
             "type": "object",
-            "title": "Tekst",
-            "default": {
-              "name": "Tekst",
-              "version": "0.0.1",
-              "description": "An online text research platform",
-              "license": "AGPL-3.0-or-later",
-              "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
-              "website": "https://github.com/VedaWebProject/Tekst",
-              "documentation": "https://vedawebproject.github.io/Tekst"
-            }
+            "title": "Tekst"
           }
         },
         "type": "object",
         "required": [
           "texts",
           "settings",
+          "security",
           "systemSegments",
-          "infoSegments"
+          "infoSegments",
+          "settingsCacheTtl",
+          "tekst"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"
@@ -12107,6 +12094,18 @@
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
             "default": []
+          },
+          "indicesCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicescreatedat"
           }
         },
         "additionalProperties": true,
@@ -12232,6 +12231,18 @@
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
             "default": []
+          },
+          "indicesCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicescreatedat"
           }
         },
         "type": "object",
@@ -13542,11 +13553,6 @@
               }
             ],
             "title": "Maxscore"
-          },
-          "indexCreationTime": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Indexcreationtime"
           }
         },
         "type": "object",
@@ -13555,8 +13561,7 @@
           "took",
           "totalHits",
           "totalHitsRelation",
-          "maxScore",
-          "indexCreationTime"
+          "maxScore"
         ],
         "title": "SearchResults"
       },

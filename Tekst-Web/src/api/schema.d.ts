@@ -2401,11 +2401,13 @@ export interface components {
       size: string;
       /** Searches */
       searches: number;
+      /** Fields */
+      fields: number;
       /**
-       * Lastindexed
+       * Createdat
        * Format: date-time
        */
-      lastIndexed: string;
+      createdAt: string;
     };
     /** LineLabellingConfig */
     LineLabellingConfig: {
@@ -3077,38 +3079,15 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextRead'][];
       settings: components['schemas']['PlatformSettingsRead'];
-      /**
-       * @default {
-       *   "closedMode": false,
-       *   "usersActiveByDefault": false,
-       *   "enableCookieAuth": true,
-       *   "enableJwtAuth": false,
-       *   "authCookieLifetime": 10800
-       * }
-       */
-      security?: components['schemas']['PlatformSecurityInfo'];
+      security: components['schemas']['PlatformSecurityInfo'];
       /** Systemsegments */
       systemSegments: components['schemas']['ClientSegmentRead'][];
       /** Infosegments */
       infoSegments: components['schemas']['ClientSegmentHead'][];
-      /**
-       * Settingscachettl
-       * @default 60
-       */
-      settingsCacheTtl?: number;
-      /**
-       * Tekst
-       * @default {
-       *   "name": "Tekst",
-       *   "version": "0.0.1",
-       *   "description": "An online text research platform",
-       *   "license": "AGPL-3.0-or-later",
-       *   "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.txt",
-       *   "website": "https://github.com/VedaWebProject/Tekst",
-       *   "documentation": "https://vedawebproject.github.io/Tekst"
-       * }
-       */
-      tekst?: {
+      /** Settingscachettl */
+      settingsCacheTtl: number;
+      /** Tekst */
+      tekst: {
         [key: string]: string;
       };
     };
@@ -3231,6 +3210,8 @@ export interface components {
        * @default []
        */
       oskModes?: components['schemas']['OskMode'][];
+      /** Indicescreatedat */
+      indicesCreatedAt?: string | null;
       [key: string]: unknown;
     };
     /** PlatformSettingsUpdate */
@@ -3313,6 +3294,8 @@ export interface components {
        * @default []
        */
       oskModes?: components['schemas']['OskMode'][];
+      /** Indicescreatedat */
+      indicesCreatedAt?: string | null;
     };
     /**
      * PlatformStats
@@ -3960,11 +3943,6 @@ export interface components {
       totalHitsRelation: 'eq' | 'gte';
       /** Maxscore */
       maxScore: number | null;
-      /**
-       * Indexcreationtime
-       * Format: date-time
-       */
-      indexCreationTime: string;
     };
     /** @enum {string} */
     SortingPreset: 'relevance' | 'text_level_position' | 'text_level_relevance';
