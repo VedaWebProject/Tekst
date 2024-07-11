@@ -190,7 +190,7 @@ async def _populate_index(index_name: str, text: TextDocument) -> None:
     bulk_index_body = []
     errors = False
     target_resource_ids = [
-        str(res.id)
+        res.id
         for res in await ResourceBaseDocument.find(
             ResourceBaseDocument.text_id == text.id,
             Eq(ResourceBaseDocument.public, True),
