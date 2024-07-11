@@ -56,7 +56,7 @@ init:
   systemSegments: Füge Seitensegmente ein...
   customFonts: Lade individuelle Schriftarten-Definitionen...
   ready: Fertig.
-  error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht erreichbar zu sein.
+  error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht bereit oder nicht erreichbar zu sein.
 
 errors:
   error: Fehler
@@ -771,7 +771,7 @@ admin:
         size: Größe
         searches: Suchen
         fields: Felder
-        createdAt: Zeitpunkt
+        createdAt: Erzeugt
         actionCreate: Neuindexierung
         actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. Dies kann einen Moment dauern.
         actionCreateSuccess: Suchindizes wurden aktualisiert

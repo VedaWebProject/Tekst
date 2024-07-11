@@ -53,7 +53,7 @@ init:
   systemSegments: Inserting system site segments...
   customFonts: Loading custom font definitions...
   ready: Ready.
-  error: There were errors initializing the application. It seems like the server is unreachable.
+  error: There were errors initializing the application. It seems like the server is not ready or unreachable.
 
 errors:
   error: Error
@@ -744,7 +744,7 @@ admin:
         size: Size
         searches: Searches
         fields: Fields
-        createdAt: Time
+        createdAt: Created
         actionCreate: Reindex
         actionCreateStarted: The search indices will be updated in the background. This might take a while.
         actionCreateSuccess: Search indices have been updated
