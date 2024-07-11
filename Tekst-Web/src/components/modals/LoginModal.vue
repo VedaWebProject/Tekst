@@ -9,19 +9,23 @@ import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-
 import { LogInIcon } from '@/icons';
+
+interface LoginCredentialsModel {
+  email: string | null;
+  password: string | null;
+}
 
 const auth = useAuthStore();
 const { message } = useMessages();
 const router = useRouter();
 
-const initialFormModel = () => ({
+const initialFormModel: () => LoginCredentialsModel = () => ({
   email: null,
   password: null,
 });
 
-const formModel = ref<Record<string, string | null>>(initialFormModel());
+const formModel = ref<LoginCredentialsModel>(initialFormModel());
 const formRef = ref<FormInst | null>(null);
 const emailInputRef = ref<InputInst | null>(null);
 
