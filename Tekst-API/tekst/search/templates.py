@@ -15,7 +15,11 @@ IDX_TEMPLATE_NAME_PATTERN = f"*_{IDX_NAME_CORE}_template"
 IDX_TEMPLATE = {
     "aliases": {IDX_ALIAS: {}},
     "settings": {
-        "index": {"number_of_shards": 1, "number_of_replicas": 0},
+        "index": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
+            "mapping": {"total_fields": {"limit": 2000}},
+        },
         "analysis": {
             "analyzer": {
                 "standard_no_diacritics": {
