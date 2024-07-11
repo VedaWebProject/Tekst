@@ -290,33 +290,27 @@ def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
     return bool(resp) and not resp.get("errors", False)
 
 
-async def _get_index_creation_time(index: str = IDX_ALIAS) -> datetime:
+async def _get_index_creation_time(index: str) -> datetime:
     """Returns the creation date of the index as a UTC datetime."""
     client: Elasticsearch = await _get_es_client()
-    try:
-        ts = int(
-            client.indices.get_settings(
-                index=index, name="index.creation_date", flat_settings=True
-            ).body.values()[0]["settings"]["index.creation_date"]
-        )
-        return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
-    except Exception:
-        return datetime.now()
+    ts = int(
+        client.indices.get_settings(
+            index=index, name="index.creation_date", flat_settings=True
+        ).body[index]["settings"]["index.creation_date"]
+    )
+    return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
 
 
 async def _get_mapped_fields_count(index: str) -> int:
     client: Elasticsearch = await _get_es_client()
     return len(
-        [
-            field_name
-            for field_name in client.field_caps(
-                index=index,
-                fields="*",
-                human=True,
-                include_empty_fields=True,
-            )["fields"]
-            if field_name.startswith("resources.")
-        ]
+        client.field_caps(
+            index=index,
+            fields="*",
+            human=True,
+            include_empty_fields=True,
+            include_unmapped=False,
+        )["fields"]
     )
 
 
@@ -346,6 +340,7 @@ async def get_indices_info() -> list[IndexInfo]:
 
         return [IndexInfo(**data[idx_name]) for idx_name in data]
     except Exception:
+        log.error("Error getting/processing indices info.")
         return []
 
 
