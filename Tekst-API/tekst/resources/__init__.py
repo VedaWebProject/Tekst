@@ -100,16 +100,6 @@ class ResourceSearchQuery(ModelBase):
         ),
     ]
 
-    def get_set_fields(self) -> set[str]:
-        set_fields = self.common.model_fields_set.union(
-            self.resource_type_specific.model_fields_set
-        )
-        return {
-            field
-            for field in set_fields
-            if field not in ["resource_id", "resource_type"]
-        }
-
 
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
@@ -173,9 +163,8 @@ class ResourceTypeABC(ABC):
         strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
-        set_fields = query.get_set_fields()
         strict_suffix = ".strict" if strict else ""
-        if "comment" in set_fields:
+        if query.common.comment.strip("* "):
             es_queries.append(
                 {
                     "simple_query_string": {
