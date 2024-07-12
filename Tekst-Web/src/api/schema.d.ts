@@ -3191,6 +3191,18 @@ export interface components {
        */
       alwaysShowTextInfo?: boolean;
       /**
+       * Showlogoonloadingscreen
+       * @description Show logo on loading screen
+       * @default true
+       */
+      showLogoOnLoadingScreen?: boolean;
+      /**
+       * Showlogoinheader
+       * @description Show logo in page header
+       * @default true
+       */
+      showLogoInHeader?: boolean;
+      /**
        * Showtekstfooterhint
        * @description Show a small hint to the Tekst software in the footer
        * @default true
@@ -3274,6 +3286,18 @@ export interface components {
        * @default true
        */
       alwaysShowTextInfo?: boolean;
+      /**
+       * Showlogoonloadingscreen
+       * @description Show logo on loading screen
+       * @default true
+       */
+      showLogoOnLoadingScreen?: boolean;
+      /**
+       * Showlogoinheader
+       * @description Show logo in page header
+       * @default true
+       */
+      showLogoInHeader?: boolean;
       /**
        * Showtekstfooterhint
        * @description Show a small hint to the Tekst software in the footer

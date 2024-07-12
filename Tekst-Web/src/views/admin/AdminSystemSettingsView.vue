@@ -188,6 +188,16 @@ function resetForm() {
             v-model="formModel.alwaysShowTextInfo"
             :label="$t('models.platformSettings.alwaysShowTextInfo')"
           />
+          <!-- SHOW LOGO ON LOADING SCREEN -->
+          <labelled-switch
+            v-model="formModel.showLogoOnLoadingScreen"
+            :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
+          />
+          <!-- SHOW LOGO IN HEADER -->
+          <labelled-switch
+            v-model="formModel.showLogoInHeader"
+            :label="$t('models.platformSettings.showLogoInHeader')"
+          />
           <!-- SHOW TEKST FOOTER HINT -->
           <labelled-switch
             v-model="formModel.showTekstFooterHint"

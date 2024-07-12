@@ -51,7 +51,6 @@ i18n:
   invalidLanguage: Ungültig
 
 init:
-  platformData: …
   workingText: Lege Arbeitstext fest...
   systemSegments: Füge Seitensegmente ein...
   customFonts: Lade individuelle Schriftarten-Definitionen...
@@ -319,7 +318,9 @@ models:
     navBrowseEntry: Eigene Beschriftung für "Lesen" in Hauptnavigation
     navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
-    showTekstFooterHint: Zeige einen kleinen Hinweis auf die Tekst-Software in der Fußzeile (Danke!)
+    showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
+    showLogoInHeader: Zeige Logo in Kopfzeile
+    showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke!)
     oskModes: Bildschirmtastatur-Modi
     oskModeKey: Schlüssel
     oskModeName: Name

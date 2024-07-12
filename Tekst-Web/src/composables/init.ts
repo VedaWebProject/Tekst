@@ -35,7 +35,7 @@ export function useInitializeApp() {
     },
     // load platform data from server
     {
-      info: () => $t('init.platformData'),
+      info: () => '',
       action: async (success: boolean) => {
         try {
           await loadPlatformData();
@@ -113,7 +113,7 @@ export function useInitializeApp() {
     initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
       state.initLoadingMsg = step.info();
       state.initLoadingProgress = i / initSteps.length;
-      await new Promise((resolve) => setTimeout(resolve, 200)); // dev: delay each step
+      await new Promise((resolve) => setTimeout(resolve, 300)); // misdemeanor
       return step.action(success);
     })
   );

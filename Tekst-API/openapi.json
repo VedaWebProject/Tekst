@@ -12066,6 +12066,18 @@
             "description": "Always show text info and selector in header, even on non-text-specific pages",
             "default": true
           },
+          "showLogoOnLoadingScreen": {
+            "type": "boolean",
+            "title": "Showlogoonloadingscreen",
+            "description": "Show logo on loading screen",
+            "default": true
+          },
+          "showLogoInHeader": {
+            "type": "boolean",
+            "title": "Showlogoinheader",
+            "description": "Show logo in page header",
+            "default": true
+          },
           "showTekstFooterHint": {
             "type": "boolean",
             "title": "Showtekstfooterhint",
@@ -12201,6 +12213,18 @@
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
             "description": "Always show text info and selector in header, even on non-text-specific pages",
+            "default": true
+          },
+          "showLogoOnLoadingScreen": {
+            "type": "boolean",
+            "title": "Showlogoonloadingscreen",
+            "description": "Show logo on loading screen",
+            "default": true
+          },
+          "showLogoInHeader": {
+            "type": "boolean",
+            "title": "Showlogoinheader",
+            "description": "Show logo in page header",
             "default": true
           },
           "showTekstFooterHint": {

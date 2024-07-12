@@ -154,6 +154,18 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             ),
         ),
     ] = True
+    show_logo_on_loading_screen: Annotated[
+        bool,
+        Field(
+            description="Show logo on loading screen",
+        ),
+    ] = True
+    show_logo_in_header: Annotated[
+        bool,
+        Field(
+            description="Show logo in page header",
+        ),
+    ] = True
     show_tekst_footer_hint: Annotated[
         bool,
         Field(

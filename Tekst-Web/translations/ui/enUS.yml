@@ -48,7 +48,6 @@ i18n:
   invalidLanguage: Invalid
 
 init:
-  platformData: …
   workingText: Setting up working text...
   systemSegments: Inserting system site segments...
   customFonts: Loading custom font definitions...
@@ -316,7 +315,9 @@ models:
     navBrowseEntry: Custom label for "Browse" in main navigation
     navInfoEntry: Custom label for "Info" in main navigation
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
-    showTekstFooterHint: Show a small hint to the Tekst software in the footer (Thank you!)
+    showLogoOnLoadingScreen: Show logo on loading screen
+    showLogoInHeader: Show logo in page header
+    showTekstFooterHint: Show small hint to Tekst software in footer (Thank you!)
     oskModes: On-screen keyboard modes
     oskModeKey: Key
     oskModeName: Name

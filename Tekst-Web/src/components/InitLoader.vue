@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useLogo } from '@/composables/logo';
+import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { useLoadingBar } from 'naive-ui';
 import { computed, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+import { NProgress, NFlex } from 'naive-ui';
 
 const props = withDefaults(
   defineProps<{
     show: boolean;
     text?: string;
     darkMode?: boolean;
+    progress?: number;
     /**
      * Transition duration expressed as a
      * [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) string,
@@ -21,12 +24,15 @@ const props = withDefaults(
     show: true,
     text: 'loading...',
     darkMode: false,
+    progress: 0,
     transition: '500ms',
   }
 );
 
 const { pageLogo } = useLogo();
 const state = useStateStore();
+const { pfData } = usePlatformData();
+
 const loadingBar = useLoadingBar();
 const router = useRouter();
 
@@ -51,16 +57,38 @@ onBeforeMount(() => {
 
 <template>
   <transition name="fade">
-    <div v-if="props.show" class="global-loader-container">
-      <div class="global-loader" :style="dynamicStyle">
-        <img class="global-loader-logo" :src="pageLogo" />
-        <div
-          class="global-loader-text"
-          :style="{ visibility: state.initLoadingProgress < 1 ? 'visible' : 'hidden' }"
-        >
-          {{ props.text }}
+    <div v-if="show" class="global-loader-container">
+      <n-flex
+        vertical
+        align="center"
+        justify="center"
+        size="large"
+        class="global-loader"
+        :style="dynamicStyle"
+      >
+        <img
+          class="global-loader-logo"
+          :src="pageLogo"
+          :style="{
+            opacity: pageLogo && pfData?.settings.showLogoOnLoadingScreen ? 1 : 0,
+          }"
+        />
+        <div class="text-huge">{{ pfData?.settings.platformName }}</div>
+        <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
+          {{ text }}
         </div>
-      </div>
+        <n-progress
+          type="line"
+          :percentage="progress * 100"
+          :height="2"
+          :show-indicator="false"
+          :border-radius="0"
+          size="large"
+          color="var(--text-color)"
+          rail-color="transparent"
+          style="opacity: 0.5"
+        />
+      </n-flex>
     </div>
   </transition>
 </template>
@@ -79,16 +107,12 @@ onBeforeMount(() => {
 .global-loader {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .global-loader-logo {
   height: 4rem;
   width: auto;
-  margin-bottom: var(--layout-gap);
+  transition: opacity 0.2s;
 }
 
 .global-loader-text {
@@ -96,7 +120,7 @@ onBeforeMount(() => {
   height: 2em;
   width: 100%;
   text-align: center;
-  transition: 0.5s;
+  transition: opacity 0.2s;
 }
 
 .fade-leave-active {

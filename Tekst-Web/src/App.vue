@@ -65,6 +65,7 @@ useFavicon(favicon, { rel: 'icon' });
 
           <init-loader
             :show="state.initLoading"
+            :progress="state.initLoadingProgress"
             transition="0.2s"
             :text="state.initLoadingMsg"
             :dark-mode="theme.darkMode"

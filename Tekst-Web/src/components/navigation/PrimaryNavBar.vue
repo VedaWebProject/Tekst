@@ -56,7 +56,12 @@ const titleLinkTo = computed(() => {
     class="navbar"
     :class="state.smallScreen && 'navbar-smallscreen'"
   >
-    <img class="navbar-logo" alt="" :src="pageLogo" />
+    <img
+      v-if="pageLogo && pfData?.settings.showLogoInHeader"
+      class="navbar-logo"
+      alt=""
+      :src="pageLogo"
+    />
     <div class="navbar-title">
       <router-link :to="titleLinkTo">
         <div class="text-gigantic">{{ pfData?.settings.platformName }}</div>

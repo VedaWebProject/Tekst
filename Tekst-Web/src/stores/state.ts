@@ -135,7 +135,7 @@ export const useStateStore = defineStore('state', () => {
 
   // init loading state
 
-  const initLoading = ref(false);
+  const initLoading = ref(true);
   const initLoadingMsg = ref('');
   const initLoadingProgress = ref(0);
   const startInitLoading = () => {
@@ -146,7 +146,7 @@ export const useStateStore = defineStore('state', () => {
     await new Promise((resolve) => setTimeout(resolve, delayMs));
     initLoading.value = false;
     await new Promise((resolve) => setTimeout(resolve, resetLoadingDataDelayMs));
-    initLoadingMsg.value = '...';
+    initLoadingMsg.value = '';
     initLoadingProgress.value = 0;
   };
 
