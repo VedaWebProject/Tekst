@@ -83,7 +83,7 @@ onBeforeMount(() => {
           size="large"
           color="var(--text-color)"
           rail-color="transparent"
-          style="opacity: 0.5"
+          style="opacity: 0.25"
         />
         <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
           {{ text }}
