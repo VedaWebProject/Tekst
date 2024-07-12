@@ -44,9 +44,6 @@ IDX_TEMPLATE = {
     "mappings": {
         "dynamic": False,
         "properties": {
-            "text_id": {"type": "keyword"},
-            "level": {"type": "short"},
-            "position": {"type": "integer"},
             "resources": {"type": "object"},
         },
         "dynamic_templates": [
