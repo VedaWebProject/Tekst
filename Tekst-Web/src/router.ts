@@ -329,6 +329,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach((to) => {
   useStateStore().setPageTitle(to);
+  window.scrollTo(0, 0);
 });
 
 export default router;
