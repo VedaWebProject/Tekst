@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { useStateStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
@@ -16,6 +16,8 @@ interface InitStep {
 export function useInitializeApp() {
   // resources
   const state = useStateStore();
+  const resources = useResourcesStore();
+  resources.load();
   const { message } = useMessages();
   const { pfData, loadPlatformData, getSegment } = usePlatformData();
   const route = useRoute();
@@ -42,7 +44,20 @@ export function useInitializeApp() {
           await state.setLocale(localStorage.getItem('locale') || undefined);
           return success;
         } catch (e) {
-          message.warning($t('errors.platformData'));
+          message.error($t('errors.loadData'));
+          return false;
+        }
+      },
+    },
+    // load platform data from server
+    {
+      info: () => $t('init.loadResources'),
+      action: async (success: boolean) => {
+        try {
+          await resources.load();
+          return success;
+        } catch (e) {
+          message.error($t('errors.loadData'));
           return false;
         }
       },
@@ -113,7 +128,7 @@ export function useInitializeApp() {
     initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
       state.initLoadingMsg = step.info();
       state.initLoadingProgress = i / initSteps.length;
-      await new Promise((resolve) => setTimeout(resolve, 300)); // misdemeanor
+      await new Promise((resolve) => setTimeout(resolve, 200)); // misdemeanor
       return step.action(success);
     })
   );

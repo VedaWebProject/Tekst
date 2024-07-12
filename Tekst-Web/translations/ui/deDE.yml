@@ -51,6 +51,7 @@ i18n:
   invalidLanguage: Ungültig
 
 init:
+  loadResources: Lade Ressourcen-Daten...
   workingText: Lege Arbeitstext fest...
   systemSegments: Füge Seitensegmente ein...
   customFonts: Lade individuelle Schriftarten-Definitionen...
@@ -59,7 +60,7 @@ init:
 
 errors:
   error: Fehler
-  platformData: Plattform-Daten konnten nicht geladen werden.
+  loadData: Fehler beim Laden der Daten vom Server
   audioLoadError: 'Fehler beim Laden der Audiodatei: {url}'
   notFound: Diese Ressource konnte nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.

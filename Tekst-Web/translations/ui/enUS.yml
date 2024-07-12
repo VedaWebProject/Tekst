@@ -48,6 +48,7 @@ i18n:
   invalidLanguage: Invalid
 
 init:
+  loadResources: Loading resources data...
   workingText: Setting up working text...
   systemSegments: Inserting system site segments...
   customFonts: Loading custom font definitions...
@@ -56,7 +57,7 @@ init:
 
 errors:
   error: Error
-  platformData: Could not load platform data.
+  loadData: Error loading data from the server
   audioLoadError: 'Error loading audio file: {url}'
   notFound: This resource could not be found.
   unexpected: An unexpected error occurred. This should not happen.

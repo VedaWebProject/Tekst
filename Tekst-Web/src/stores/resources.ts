@@ -127,8 +127,7 @@ export const useResourcesStore = defineStore('resources', () => {
     () => auth.loggedIn,
     () => {
       load();
-    },
-    { immediate: true }
+    }
   );
 
   return {
