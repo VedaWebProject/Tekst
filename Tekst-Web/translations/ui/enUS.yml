@@ -734,8 +734,7 @@ admin:
       heading: Settings
       headingInfo: Platform Information
       headingOptions: Options
-      msgSaved: |
-        Platform settings saved. Please note that it may take up to {cacheTTL} seconds for the changes to take effect on subsequent page loads.
+      msgSaved: Platform settings saved.
       defaultTextPlaceholder: Automatic
       formLabelDisplay: Display
     maintenance:

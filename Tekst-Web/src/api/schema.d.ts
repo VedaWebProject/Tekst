@@ -3084,8 +3084,6 @@ export interface components {
       systemSegments: components['schemas']['ClientSegmentRead'][];
       /** Infosegments */
       infoSegments: components['schemas']['ClientSegmentHead'][];
-      /** Settingscachettl */
-      settingsCacheTtl: number;
       /** Tekst */
       tekst: {
         [key: string]: string;

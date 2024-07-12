@@ -18,7 +18,6 @@ Basic configuration, URL, paths, ...
 | `TEKST_WEB_STATIC_DIR` | Local path to static web files directory (String – default: `/var/www/tekst/static/`) |
 | `TEKST_DEV_MODE` | Development mode – only use for development! (Boolean – default: `false`) |
 | `TEKST_LOG_LEVEL` | API log level (`DEBUG` | `INFO` | `WARNING` | `ERROR` | `CRITICAL` – default: `WARNING`) |
-| `TEKST_SETTINGS_CACHE_TTL` | Time-To-Live for the API settings cache (in seconds) (Integer – default: `60`) |
 | `TEKST_TEMP_FILES_DIR` | Absolute path to local temporary directory to use (String – default: `/tmp/tekst_tmp`) |
 
 

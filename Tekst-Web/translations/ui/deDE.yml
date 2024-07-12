@@ -759,10 +759,7 @@ admin:
       heading: Einstellungen
       headingInfo: Plattform-Informationen
       headingOptions: Optionen
-      msgSaved: |
-        Plattform-Einstellungen gespeichert.
-        Bitte beachten Sie, dass es bis zu {cacheTTL} Sekunden dauern kann,
-        bis die Änderungen sich auf spätere Anfragen auswirken.
+      msgSaved: Plattform-Einstellungen gespeichert.
       defaultTextPlaceholder: Automatisch
       formLabelDisplay: Darstellung
     maintenance:

@@ -314,7 +314,6 @@ class TekstConfig(BaseSettings):
     dev_mode: bool = False
     log_level: str = "warning"
 
-    settings_cache_ttl: int = 60
     temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
 
     # config sub sections

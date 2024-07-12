@@ -55,7 +55,6 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
     return PlatformData(
         texts=await get_all_texts(ou),
         settings=await get_settings(),
-        settings_cache_ttl=cfg.settings_cache_ttl,
         security=PlatformSecurityInfo(),
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712

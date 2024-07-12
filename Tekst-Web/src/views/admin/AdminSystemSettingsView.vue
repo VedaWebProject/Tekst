@@ -65,13 +65,7 @@ async function handleSaveClick() {
         // If the current locale is invalid after updating the settings,
         // this call will fix it!
         await state.setLocale(state.locale);
-        message.success(
-          $t('admin.system.platformSettings.msgSaved', {
-            cacheTTL: pfData.value?.settingsCacheTtl,
-          }),
-          undefined,
-          10
-        );
+        message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);
       } else {
         resetForm();
       }

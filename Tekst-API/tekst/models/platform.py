@@ -26,7 +26,6 @@ class PlatformData(ModelBase):
     security: PlatformSecurityInfo
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
-    settings_cache_ttl: int
     tekst: dict[str, str]
 
 
