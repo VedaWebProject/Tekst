@@ -3088,6 +3088,8 @@ export interface components {
       tekst: {
         [key: string]: string;
       };
+      /** Maxfieldmappings */
+      maxFieldMappings: number;
     };
     /** PlatformDescriptionTranslation */
     PlatformDescriptionTranslation: {

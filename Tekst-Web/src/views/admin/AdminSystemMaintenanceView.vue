@@ -86,6 +86,17 @@ async function loadIndexInfo() {
   }
 }
 
+function getFieldMappingsStatus(fields: number) {
+  const maxFieldMappings = pfData.value?.maxFieldMappings || 0;
+  if (fields > maxFieldMappings * 0.9) {
+    return 'over';
+  } else if (fields > maxFieldMappings * 0.75) {
+    return 'near';
+  } else {
+    return 'ok';
+  }
+}
+
 onBeforeMount(() => {
   loadIndexInfo();
   updateAllTasksData();
@@ -134,13 +145,21 @@ onBeforeMount(() => {
           </tr>
         </thead>
         <template v-for="(value, key) in indexInfo" :key="key">
-          <tr v-if="!['createdAt', 'textId'].includes(key)">
+          <tr v-if="!['createdAt', 'textId', 'fields'].includes(key)">
             <th style="font-weight: var(--font-weight-normal)">
               {{ $t(`admin.system.maintenance.indices.${key}`) }}
             </th>
             <td>{{ value }}</td>
           </tr>
         </template>
+        <tr>
+          <th style="font-weight: var(--font-weight-normal)">
+            {{ $t(`admin.system.maintenance.indices.fields`) }}
+          </th>
+          <td :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
+            {{ indexInfo.fields }} / {{ pfData?.maxFieldMappings || '???' }}
+          </td>
+        </tr>
         <tr>
           <th style="font-weight: var(--font-weight-normal)">
             {{ $t(`admin.system.maintenance.indices.createdAt`) }}
@@ -271,5 +290,15 @@ onBeforeMount(() => {
 
 .content-block :deep(.n-table td.nowrap) {
   white-space: nowrap;
+}
+
+.max-fields-warn-near {
+  color: var(--col-warning);
+  font-weight: var(--font-weight-bold);
+}
+
+.max-fields-warn-over {
+  color: var(--col-error);
+  font-weight: var(--font-weight-bold);
 }
 </style>

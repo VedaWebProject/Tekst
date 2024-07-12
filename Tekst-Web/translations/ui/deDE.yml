@@ -758,7 +758,7 @@ admin:
     platformSettings:
       heading: Einstellungen
       headingInfo: Plattform-Informationen
-      headingOptions: Optionen
+      headingConfig: Allgemeine Konfiguration
       msgSaved: Plattform-Einstellungen gespeichert.
       defaultTextPlaceholder: Automatisch
       formLabelDisplay: Darstellung

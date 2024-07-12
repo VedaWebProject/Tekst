@@ -733,7 +733,7 @@ admin:
     platformSettings:
       heading: Settings
       headingInfo: Platform Information
-      headingOptions: Options
+      headingConfig: General Configuration
       msgSaved: Platform settings saved.
       defaultTextPlaceholder: Automatic
       formLabelDisplay: Display

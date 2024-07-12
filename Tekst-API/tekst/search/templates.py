@@ -18,7 +18,12 @@ IDX_TEMPLATE = {
         "index": {
             "number_of_shards": 1,
             "number_of_replicas": 0,
-            "mapping": {"total_fields": {"limit": 2000}},
+            "mapping": {
+                "total_fields": {
+                    "limit": _cfg.es.max_field_mappings,
+                    "ignore_dynamic_beyond_limit": True,
+                }
+            },
         },
         "analysis": {
             "analyzer": {

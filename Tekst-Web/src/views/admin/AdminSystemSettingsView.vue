@@ -124,7 +124,7 @@ function resetForm() {
       />
 
       <n-divider />
-      <h3>{{ $t('admin.system.platformSettings.headingOptions') }}</h3>
+      <h3>{{ $t('admin.system.platformSettings.headingConfig') }}</h3>
 
       <!-- DEFAULT TEXT -->
       <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">

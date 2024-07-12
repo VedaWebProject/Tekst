@@ -11904,6 +11904,10 @@
             },
             "type": "object",
             "title": "Tekst"
+          },
+          "maxFieldMappings": {
+            "type": "integer",
+            "title": "Maxfieldmappings"
           }
         },
         "type": "object",
@@ -11913,7 +11917,8 @@
           "security",
           "systemSegments",
           "infoSegments",
-          "tekst"
+          "tekst",
+          "maxFieldMappings"
         ],
         "title": "PlatformData",
         "description": "Platform data used by the web client"

@@ -143,6 +143,7 @@ class ElasticsearchConfig(ConfigSubSection):
     port: int = 9200
     prefix: str = "tekst"
     init_timeout_s: int = 120
+    max_field_mappings: int = 1000
 
     @field_validator("host", mode="before")
     @classmethod

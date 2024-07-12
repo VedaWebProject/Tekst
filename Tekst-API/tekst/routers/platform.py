@@ -65,6 +65,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
         .project(ClientSegmentHead)
         .to_list(),
         tekst=camelize(cfg.tekst),
+        max_field_mappings=cfg.es.max_field_mappings,
     )
 
 
