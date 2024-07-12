@@ -74,9 +74,6 @@ onBeforeMount(() => {
           }"
         />
         <div class="text-huge">{{ pfData?.settings.platformName }}</div>
-        <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
-          {{ text }}
-        </div>
         <n-progress
           type="line"
           :percentage="progress * 100"
@@ -88,6 +85,9 @@ onBeforeMount(() => {
           rail-color="transparent"
           style="opacity: 0.5"
         />
+        <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
+          {{ text }}
+        </div>
       </n-flex>
     </div>
   </transition>
