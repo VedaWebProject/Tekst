@@ -62,18 +62,18 @@ onBeforeMount(() => {
           }"
         />
         <div class="text-huge">{{ pfData?.settings.platformName }}</div>
+        <n-progress
+          type="line"
+          :percentage="progress * 100"
+          :height="2"
+          :show-indicator="false"
+          :border-radius="0"
+          size="large"
+          color="var(--text-color)"
+          rail-color="transparent"
+          style="opacity: 0.3"
+        />
       </n-flex>
-      <n-progress
-        type="line"
-        :percentage="progress * 100"
-        :height="2"
-        :show-indicator="false"
-        :border-radius="0"
-        size="large"
-        color="var(--text-color)"
-        rail-color="transparent"
-        style="opacity: 0.3"
-      />
       <n-flex
         vertical
         align="center"
@@ -104,7 +104,6 @@ onBeforeMount(() => {
 .global-loader-top {
   width: 100%;
   height: 50%;
-  padding-bottom: var(--layout-gap);
   background-color: var(--content-bg-color);
 }
 
