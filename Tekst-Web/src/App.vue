@@ -99,7 +99,7 @@ main {
   width: auto;
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-gap);
+  padding: var(--layout-gap) var(--content-gap);
 }
 </style>
 
