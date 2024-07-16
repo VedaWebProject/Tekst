@@ -3,7 +3,7 @@ import { useLogo } from '@/composables/logo';
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { useLoadingBar } from 'naive-ui';
-import { computed, onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { NProgress, NFlex } from 'naive-ui';
 
@@ -36,11 +36,6 @@ const { pfData } = usePlatformData();
 const loadingBar = useLoadingBar();
 const router = useRouter();
 
-const dynamicStyle = computed(() => ({
-  color: props.darkMode ? '#fff' : '#444',
-  backgroundColor: props.darkMode ? '#232323' : '#fff',
-}));
-
 // hook in loading bar
 onBeforeMount(() => {
   router.beforeEach(() => {
@@ -58,14 +53,7 @@ onBeforeMount(() => {
 <template>
   <transition name="fade">
     <div v-if="show" class="global-loader-container">
-      <n-flex
-        vertical
-        align="center"
-        justify="center"
-        size="large"
-        class="global-loader"
-        :style="dynamicStyle"
-      >
+      <n-flex vertical align="center" justify="flex-end" size="large" class="global-loader-top">
         <img
           class="global-loader-logo"
           :src="pageLogo"
@@ -74,17 +62,25 @@ onBeforeMount(() => {
           }"
         />
         <div class="text-huge">{{ pfData?.settings.platformName }}</div>
-        <n-progress
-          type="line"
-          :percentage="progress * 100"
-          :height="2"
-          :show-indicator="false"
-          :border-radius="0"
-          size="large"
-          color="var(--text-color)"
-          rail-color="transparent"
-          style="opacity: 0.25"
-        />
+      </n-flex>
+      <n-progress
+        type="line"
+        :percentage="progress * 100"
+        :height="2"
+        :show-indicator="false"
+        :border-radius="0"
+        size="large"
+        color="var(--text-color)"
+        rail-color="transparent"
+        style="opacity: 0.3"
+      />
+      <n-flex
+        vertical
+        align="center"
+        justify="flex-start"
+        size="large"
+        class="global-loader-bottom"
+      >
         <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
           {{ text }}
         </div>
@@ -95,7 +91,6 @@ onBeforeMount(() => {
 
 <style scoped>
 .global-loader-container {
-  background-color: #fff;
   position: fixed;
   top: 0;
   left: 0;
@@ -103,10 +98,21 @@ onBeforeMount(() => {
   bottom: 0;
   z-index: 3;
   overflow: hidden;
+  background-color: var(--base-color);
 }
-.global-loader {
+
+.global-loader-top {
   width: 100%;
-  height: 100%;
+  height: 50%;
+  padding-bottom: var(--layout-gap);
+  background-color: var(--content-bg-color);
+}
+
+.global-loader-bottom {
+  width: 100%;
+  height: 50%;
+  padding-top: var(--layout-gap);
+  background-color: var(--main-bg-color);
 }
 
 .global-loader-logo {
