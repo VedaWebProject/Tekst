@@ -20,6 +20,7 @@ const { addTask, startTasksPolling } = useTasks();
 
 const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
+const indicesInfoLoading = ref(false);
 const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
@@ -80,10 +81,12 @@ async function updateAllTasksData() {
 }
 
 async function loadIndexInfo() {
+  indicesInfoLoading.value = true;
   const { data, error } = await GET('/search/index/info');
   if (!error) {
     indicesInfo.value = data;
   }
+  indicesInfoLoading.value = false;
 }
 
 function getFieldMappingsStatus(fields: number) {
@@ -114,13 +117,18 @@ onBeforeMount(() => {
     <h3>{{ $t('admin.system.maintenance.indices.heading') }}</h3>
 
     <n-flex style="margin: var(--layout-gap) 0">
-      <n-button secondary @click="loadIndexInfo">
+      <n-button
+        secondary
+        :disabled="indicesInfoLoading"
+        :loading="indicesInfoLoading"
+        @click="loadIndexInfo"
+      >
         <template #icon>
           <n-icon :component="RefreshIcon" />
         </template>
         {{ $t('general.refreshAction') }}
       </n-button>
-      <n-button secondary @click="createIndex">
+      <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
         <template #icon>
           <n-icon :component="UpdateIcon" />
         </template>
