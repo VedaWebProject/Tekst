@@ -14,6 +14,7 @@ const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const state = useStateStore();
@@ -74,6 +75,7 @@ function renderOption(option: DropdownOption) {
     <content-container-header-widget
       :title="$t('browse.contents.widgets.deepLTranslate.title')"
       :icon-component="TranslateIcon"
+      :small="small"
     />
   </n-dropdown>
 </template>

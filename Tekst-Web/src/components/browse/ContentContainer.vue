@@ -82,7 +82,12 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           {{ headerExtraText }}
         </div>
       </div>
-      <content-header-widget-bar :resource="resource" :style="headerWidgetsVisibilityStyle" />
+      <content-header-widget-bar
+        :resource="resource"
+        :style="headerWidgetsVisibilityStyle"
+        :small-screen="state.smallScreen"
+        :reduced="browse.reducedView"
+      />
     </div>
 
     <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">

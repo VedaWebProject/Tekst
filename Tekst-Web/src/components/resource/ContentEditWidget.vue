@@ -8,6 +8,7 @@ import { EditIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const auth = useAuthStore();
@@ -39,6 +40,7 @@ function handleClick() {
     v-if="show"
     :title="$t('browse.contents.widgets.contentEdit.title')"
     :icon-component="EditIcon"
+    :small="small"
     @click="handleClick"
   />
 </template>

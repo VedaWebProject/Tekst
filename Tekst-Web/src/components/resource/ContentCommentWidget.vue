@@ -9,6 +9,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const showModal = ref(false);
@@ -19,6 +20,7 @@ const showModal = ref(false);
     v-if="!!resource.contents?.[0]?.comment"
     :title="$t('general.comment')"
     :icon-component="CommentIcon"
+    :small="small"
     @click="showModal = true"
   />
 

@@ -26,6 +26,7 @@ import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const auth = useAuthStore();
@@ -53,6 +54,7 @@ watch(showInfoModal, async (after) => {
   <content-container-header-widget
     :title="$t('browse.contents.widgets.infoWidget.title')"
     :icon-component="InfoIcon"
+    :small="small"
     @click="showInfoModal = true"
   />
 

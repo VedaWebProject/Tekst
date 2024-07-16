@@ -8,6 +8,7 @@ import { ClearIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const browse = useBrowseStore();
@@ -21,6 +22,7 @@ function handleClick() {
   <content-container-header-widget
     :title="$t('browse.contents.widgets.deactivateWidget.title')"
     :icon-component="ClearIcon"
+    :small="small"
     @click="handleClick"
   />
 </template>

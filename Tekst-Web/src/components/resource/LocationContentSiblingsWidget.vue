@@ -16,6 +16,7 @@ import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const state = useStateStore();
@@ -57,6 +58,7 @@ async function handleClick() {
     "
     :title="$t('browse.contents.widgets.siblingsWidget.title')"
     :icon-component="MergeIcon"
+    :small="small"
     @click="handleClick"
   />
 

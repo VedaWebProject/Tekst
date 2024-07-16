@@ -11,6 +11,7 @@ import { correctionFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const auth = useAuthStore();
@@ -56,6 +57,7 @@ async function handleModalSubmit(note: string) {
     v-if="show"
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon-component="CorrectionNoteIcon"
+    :small="small"
     @click="handleClick"
   />
 

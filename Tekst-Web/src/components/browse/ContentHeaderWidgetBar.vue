@@ -9,16 +9,21 @@ import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
+import { computed } from 'vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     resource: AnyResourceRead;
     style?: StyleValue;
+    smallScreen?: boolean;
+    reduced?: boolean;
   }>(),
   {
     style: undefined,
   }
 );
+
+const small = computed(() => props.reduced || props.smallScreen);
 </script>
 
 <template>
@@ -32,19 +37,20 @@ withDefaults(
         <component
           :is="contentWidgets[configSectionKey]"
           v-if="configSectionKey in contentWidgets"
-          :resource="resource"
           :widget-config="configSection"
+          :resource="resource"
+          :small="small"
         />
       </template>
     </template>
     <!-- generic content widgets -->
-    <location-content-siblings-widget :resource="resource" />
-    <content-comment-widget :resource="resource" />
-    <content-edit-widget :resource="resource" />
-    <correction-note-widget :resource="resource" />
-    <resource-export-widget :resource="resource" />
-    <resource-info-widget :resource="resource" />
-    <resource-deactivate-widget :resource="resource" />
+    <location-content-siblings-widget :resource="resource" :small="small" />
+    <content-comment-widget :resource="resource" :small="small" />
+    <content-edit-widget :resource="resource" :small="small" />
+    <correction-note-widget :resource="resource" :small="small" />
+    <resource-export-widget :resource="resource" :small="small" />
+    <resource-info-widget :resource="resource" :small="small" />
+    <resource-deactivate-widget :resource="resource" :small="small" />
   </div>
 </template>
 

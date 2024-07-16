@@ -52,6 +52,7 @@ const supportedExportFormats: Record<AnyResourceRead['resourceType'], ResourceEx
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  small?: boolean;
 }>();
 
 const state = useStateStore();
@@ -178,6 +179,7 @@ function handleWidgetClick() {
   <content-container-header-widget
     :title="$t('browse.contents.widgets.exportWidget.title')"
     :icon-component="DownloadIcon"
+    :small="small"
     @click="handleWidgetClick"
   />
 
