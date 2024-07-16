@@ -4,7 +4,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.logs import log
 from tekst.resources import init_resource_types_mgr
 from tekst.sample_data import insert_sample_data
-from tekst.search import task_create_indices
+from tekst.search import create_indices_task
 
 
 async def app_setup():
@@ -15,5 +15,5 @@ async def app_setup():
     await insert_sample_data()
     await create_initial_superuser()  # happens only when not in DEV mode
     if not cfg.dev_mode or cfg.dev.use_es:
-        await task_create_indices()
+        await create_indices_task()
     log.info("Finished Tekst pre-launch app setup.")

@@ -104,7 +104,9 @@ async def _setup_index_templates() -> None:
     )
 
 
-async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str, Any]:
+async def create_indices_task(
+    overwrite_existing_indices: bool = True,
+) -> dict[str, Any]:
     start_time = process_time()
     await _setup_index_templates()
 
@@ -113,7 +115,7 @@ async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str
     existing_indices = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
 
     if existing_indices:
-        if overwrite_existing_index:
+        if overwrite_existing_indices:
             log.debug("The new index will overwrite the existing one...")
         else:
             log.warning("An index already exists. Aborting index creation.")
@@ -167,27 +169,30 @@ async def task_create_indices(overwrite_existing_index: bool = True) -> dict[str
 async def create_indices(
     *,
     user: UserRead | None = None,
-    overwrite_existing_index: bool = True,
+    overwrite_existing_indices: bool = True,
 ) -> tasks.TaskDocument:
     log.info("Creating search index ...")
     # create index task
     return await tasks.create_task(
-        task_create_indices,
+        create_indices_task,
         tasks.TaskType.INDICES_CREATE_UPDATE,
         user_id=user.id if user else None,
         task_kwargs={
-            "overwrite_existing_index": overwrite_existing_index,
+            "overwrite_existing_index": overwrite_existing_indices,
         },
     )
 
 
-async def util_create_indices():
+async def util_create_indices() -> None:
     init_resource_types_mgr()
     await db.init_odm()
-    await task_create_indices()
+    await create_indices_task()
 
 
-async def _populate_index(index_name: str, text: TextDocument) -> None:
+async def _populate_index(
+    index_name: str,
+    text: TextDocument,
+) -> None:
     if text is None:
         raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
@@ -285,7 +290,10 @@ async def _populate_index(index_name: str, text: TextDocument) -> None:
     errors = False
 
 
-def _bulk_index(client: Elasticsearch, reqest_body: dict[str, Any]) -> bool:
+def _bulk_index(
+    client: Elasticsearch,
+    reqest_body: dict[str, Any],
+) -> bool:
     resp = client.bulk(body=reqest_body)
     return bool(resp) and not resp.get("errors", False)
 
