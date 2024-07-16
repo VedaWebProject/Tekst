@@ -91,9 +91,9 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     <n-list hoverable clickable style="background-color: transparent">
       <n-list-item
         :class="{ disabled: loading || maxCountReached }"
-        @click="!loading && handleCreateBookmarkClick()"
+        @click="!loading && !maxCountReached && handleCreateBookmarkClick()"
       >
-        <n-thing :content-indented="!state.smallScreen">
+        <n-thing content-indented>
           <template #avatar>
             <n-icon :component="AddIcon" size="large" />
           </template>
@@ -112,7 +112,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
           :content-indented="!state.smallScreen"
           description-style="font-size: var(--font-size-tiny)"
         >
-          <template #avatar>
+          <template v-if="!state.smallScreen" #avatar>
             <n-icon :component="BookIcon" size="large" />
           </template>
           <template #header>
