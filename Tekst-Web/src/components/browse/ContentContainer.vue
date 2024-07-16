@@ -70,7 +70,9 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
           class="content-header-title"
           :class="{ reduced: browse.reducedView, b: browse.reducedView }"
         >
-          <translation-display v-if="resource.title" :value="resource.title" />
+          <span>
+            <translation-display v-if="resource.title" :value="resource.title" />
+          </span>
           <n-icon
             v-if="!resource.public"
             :component="PublicOffIcon"
@@ -191,6 +193,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.content-header-title > span {
+  white-space: wrap;
 }
 
 .content-header-title.reduced {
