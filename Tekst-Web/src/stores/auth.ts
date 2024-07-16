@@ -7,7 +7,7 @@ import { $t } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
-import { useStateStore, useUserMessagesStore } from '@/stores';
+import { useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -24,6 +24,7 @@ const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
+  const resources = useResourcesStore();
   const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const state = useStateStore();
@@ -35,17 +36,6 @@ export const useAuthStore = defineStore('auth', () => {
   const sessionExpiryTsSec = ref(
     Number(localStorage.getItem('sessionExpiryS')) || Number.MAX_SAFE_INTEGER
   );
-
-  (() => {
-    const storageData = localStorage.getItem('user');
-    if (!storageData) return;
-    try {
-      user.value = JSON.parse(storageData) as UserRead;
-      _loadUserData();
-    } catch {
-      logout();
-    }
-  })();
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
@@ -110,7 +100,7 @@ export const useAuthStore = defineStore('auth', () => {
     loginModalState.value = {};
   }
 
-  async function _loadUserData() {
+  async function loadUserData() {
     // load core user data
     const { data, error } = await GET('/users/me', {});
     if (!error) {
@@ -134,9 +124,10 @@ export const useAuthStore = defineStore('auth', () => {
       // init session
       _setCookieExpiry();
       _startSessionCheck();
-      const userData = await _loadUserData();
+      const userData = await loadUserData();
       if (!userData) return;
       await loadPlatformData();
+      await resources.load();
       // process user locale
       if (!userData.locale) {
         updateUser({ locale: state.locale }); // no need to wait
@@ -174,6 +165,7 @@ export const useAuthStore = defineStore('auth', () => {
         pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
         pfData.value?.texts[0];
     }
+    await resources.load();
   }
 
   async function updateUser(userUpdate: UserUpdate) {
@@ -201,6 +193,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     loggedIn,
+    loadUserData,
     showLoginModal,
     closeLoginModal,
     loginModalState,

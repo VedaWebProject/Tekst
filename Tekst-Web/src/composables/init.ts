@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { $t } from '@/i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { useResourcesStore, useStateStore } from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
@@ -16,8 +16,8 @@ interface InitStep {
 export function useInitializeApp() {
   // resources
   const state = useStateStore();
+  const auth = useAuthStore();
   const resources = useResourcesStore();
-  resources.load();
   const { message } = useMessages();
   const { pfData, loadPlatformData, getSegment } = usePlatformData();
   const route = useRoute();
@@ -27,18 +27,11 @@ export function useInitializeApp() {
   const error = computed(() => result.map((r) => r.data).includes(false));
 
   const initSteps: InitStep[] = [
-    // set global loading state, start process
-    {
-      info: () => '',
-      action: async () => {
-        state.startInitLoading();
-        return true;
-      },
-    },
-    // load platform data from server
+    // set global loading state, load platform data from server
     {
       info: () => '',
       action: async (success: boolean) => {
+        state.startInitLoading();
         try {
           await loadPlatformData();
           await state.setLocale(localStorage.getItem('locale') || undefined);
@@ -49,7 +42,15 @@ export function useInitializeApp() {
         }
       },
     },
-    // load platform data from server
+    // load existing session
+    {
+      info: () => $t('init.loadSessionData'),
+      action: async (success: boolean) => {
+        await auth.loadUserData();
+        return success;
+      },
+    },
+    // load resources data from server
     {
       info: () => $t('init.loadResources'),
       action: async (success: boolean) => {
@@ -129,7 +130,7 @@ export function useInitializeApp() {
       state.initLoadingMsg = step.info();
       state.initLoadingProgress = i / initSteps.length;
       await new Promise((resolve) => setTimeout(resolve, 200)); // misdemeanor
-      return step.action(success);
+      return await step.action(success);
     })
   );
 

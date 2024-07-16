@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { type CorrectionRead, GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
-import { useAuthStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { hashCode } from '@/utils';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();
-  const auth = useAuthStore();
 
   const resourcesAll = ref<AnyResourceRead[]>([]);
   const resourcesOfText = computed(() =>
@@ -121,14 +120,6 @@ export const useResourcesStore = defineStore('resources', () => {
       return r;
     });
   }
-
-  // watch for events that trigger a reload of resources data
-  watch(
-    () => auth.loggedIn,
-    () => {
-      load();
-    }
-  );
 
   return {
     all: resourcesAll,
