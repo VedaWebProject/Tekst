@@ -830,7 +830,8 @@ search:
   results:
     heading: Suchergebnisse
     searching: Suche...
-    results: '{count} Ergebnisse in {ms} Millisekunden'
+    count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
+    took: in {ms} Millisekunden
     indexCreationTime: Letztes update der Suchdaten
     relevance: Relevanz
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?

@@ -205,9 +205,14 @@ onBeforeMount(() => processQuery());
   >
     <template v-if="resultsData">
       <div>
+        {{ resultsData.totalHitsRelation === 'eq' ? '' : '≥' }}
         {{
-          $t('search.results.results', {
-            count: (resultsData.totalHitsRelation === 'eq' ? '' : '≥') + resultsData.totalHits,
+          $t('search.results.count', {
+            count: resultsData.totalHits,
+          })
+        }}
+        {{
+          $t('search.results.took', {
             ms: resultsData.took,
           })
         }}

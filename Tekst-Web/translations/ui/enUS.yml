@@ -805,7 +805,8 @@ search:
   results:
     heading: Search Results
     searching: Searching...
-    results: '{count} results in {ms} milliseconds'
+    count: No results | One result | {count} results
+    took: in {ms} milliseconds
     indexCreationTime: Last update of search data
     relevance: Relevance
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
