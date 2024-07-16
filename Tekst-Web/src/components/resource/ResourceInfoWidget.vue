@@ -89,7 +89,7 @@ watch(showInfoModal, async (after) => {
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
-      <div class="content-font">
+      <div>
         {{ resource.citation }}
       </div>
       <n-divider />
