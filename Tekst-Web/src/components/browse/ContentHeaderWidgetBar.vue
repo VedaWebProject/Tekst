@@ -4,7 +4,6 @@ import contentWidgets from '@/components/resource/mappings';
 import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
-import { useBrowseStore } from '@/stores';
 import type { AnyResourceRead } from '@/api';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
@@ -20,8 +19,6 @@ withDefaults(
     style: undefined,
   }
 );
-
-const browse = useBrowseStore();
 </script>
 
 <template>
@@ -41,13 +38,7 @@ const browse = useBrowseStore();
       </template>
     </template>
     <!-- generic content widgets -->
-    <location-content-siblings-widget
-      v-if="
-        resource.config?.common?.showOnParentLevel &&
-        (browse.level == resource.level || browse.level == resource.level - 1)
-      "
-      :resource="resource"
-    />
+    <location-content-siblings-widget :resource="resource" />
     <content-comment-widget :resource="resource" />
     <content-edit-widget :resource="resource" />
     <correction-note-widget :resource="resource" />

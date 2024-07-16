@@ -51,6 +51,10 @@ async function handleClick() {
 
 <template>
   <content-container-header-widget
+    v-if="
+      resource.config?.common?.showOnParentLevel &&
+      (browse.level == resource.level || browse.level == resource.level - 1)
+    "
     :title="$t('browse.contents.widgets.siblingsWidget.title')"
     :icon-component="MergeIcon"
     @click="handleClick"
