@@ -59,7 +59,6 @@ init:
 errors:
   error: Error
   loadData: Error loading data from the server
-  audioLoadError: 'Error loading audio file: {url}'
   notFound: This resource could not be found.
   unexpected: An unexpected error occurred. This should not happen.
   conflict: There is a conflict with already existing data.

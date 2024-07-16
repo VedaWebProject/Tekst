@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useMessages } from '@/composables/messages';
-import { $t } from '@/i18n';
 import { PlayIcon, PauseIcon, ErrorIcon, DownloadIcon, LinkIcon } from '@/icons';
 import { useMediaControls } from '@vueuse/core';
 import { NSlider, NFlex, NButton, NIcon } from 'naive-ui';
@@ -18,8 +16,6 @@ const props = defineProps<{
 }>();
 defineExpose({ play, pause });
 const emit = defineEmits(['play', 'ended']);
-
-const { message } = useMessages();
 
 const audioRef = ref<HTMLAudioElement>();
 const error = ref(false);
@@ -69,7 +65,6 @@ onMounted(() => {
   onSourceError(() => {
     playing.value = false;
     error.value = true;
-    message.error($t('errors.audioLoadError', { url: props.src }));
   });
 });
 </script>
