@@ -306,6 +306,10 @@ router.beforeEach(async (to, from, next) => {
   // enforce route restrictions
   if (to.meta?.restricted) {
     const auth = useAuthStore();
+    const state = useStateStore();
+    while (!state.init.initialized) {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
     const l = auth.loggedIn; // a user is logged in

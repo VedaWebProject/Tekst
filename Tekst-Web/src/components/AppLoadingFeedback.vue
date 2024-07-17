@@ -1,37 +1,15 @@
 <script setup lang="ts">
 import { useLogo } from '@/composables/logo';
 import { usePlatformData } from '@/composables/platformData';
-import { useStateStore } from '@/stores';
 import { useLoadingBar } from 'naive-ui';
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { NProgress, NFlex } from 'naive-ui';
+import { useStateStore } from '@/stores';
 
-const props = withDefaults(
-  defineProps<{
-    show: boolean;
-    text?: string;
-    darkMode?: boolean;
-    progress?: number;
-    /**
-     * Transition duration expressed as a
-     * [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) string,
-     * e.g. 0.5s or 500ms - default: 0.2s
-     */
-    transition?: string;
-  }>(),
-  {
-    show: true,
-    text: 'loading...',
-    darkMode: false,
-    progress: 0,
-    transition: '500ms',
-  }
-);
-
-const { pageLogo } = useLogo();
 const state = useStateStore();
 const { pfData } = usePlatformData();
+const { pageLogo } = useLogo();
 
 const loadingBar = useLoadingBar();
 const router = useRouter();
@@ -39,7 +17,7 @@ const router = useRouter();
 // hook in loading bar
 onBeforeMount(() => {
   router.beforeEach(() => {
-    !state.initLoading && loadingBar.start();
+    !state.init.loading && loadingBar.start();
   });
   router.afterEach(() => {
     loadingBar.finish();
@@ -52,7 +30,7 @@ onBeforeMount(() => {
 
 <template>
   <transition name="fade">
-    <div v-if="show" class="global-loader-container">
+    <div v-if="!state.init.initialized" class="global-loader-container">
       <n-flex vertical align="center" justify="flex-end" size="large" class="global-loader-top">
         <img
           class="global-loader-logo"
@@ -64,7 +42,7 @@ onBeforeMount(() => {
         <div class="text-huge">{{ pfData?.settings.platformName }}</div>
         <n-progress
           type="line"
-          :percentage="progress * 100"
+          :percentage="state.init.progress * 100"
           :height="2"
           :show-indicator="false"
           :border-radius="0"
@@ -81,8 +59,8 @@ onBeforeMount(() => {
         size="large"
         class="global-loader-bottom"
       >
-        <div class="global-loader-text" :style="{ opacity: text ? 1 : 0 }">
-          {{ text }}
+        <div class="global-loader-text" :style="{ opacity: state.init.stepMsg ? 1 : 0 }">
+          {{ state.init.stepMsg }}
         </div>
       </n-flex>
     </div>
@@ -129,7 +107,7 @@ onBeforeMount(() => {
 }
 
 .fade-leave-active {
-  transition: opacity v-bind('props.transition') ease;
+  transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,

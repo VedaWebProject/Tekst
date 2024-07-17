@@ -12,12 +12,29 @@ import { useAuthStore } from './auth';
 import type { LocaleKey } from '@/api';
 import { pickTranslation } from '@/utils';
 
+interface AppInitState {
+  progress: number;
+  stepMsg: string;
+  loading: boolean;
+  initialized: boolean;
+  error: boolean;
+}
+
 export const useStateStore = defineStore('state', () => {
   // define resources
   const { pfData } = usePlatformData();
   const route = useRoute();
   const auth = useAuthStore();
   const windowSize = useWindowSize();
+
+  // app init
+  const init = ref<AppInitState>({
+    progress: 0,
+    stepMsg: '',
+    loading: true,
+    initialized: false,
+    error: false,
+  });
 
   // locale
 
@@ -133,23 +150,6 @@ export const useStateStore = defineStore('state', () => {
     () => text.value?.levels.map((l) => pickTranslation(l, locale.value)) || []
   );
 
-  // init loading state
-
-  const initLoading = ref(true);
-  const initLoadingMsg = ref('');
-  const initLoadingProgress = ref(0);
-  const startInitLoading = () => {
-    initLoading.value = true;
-  };
-
-  const finishInitLoading = async (delayMs: number = 0, resetLoadingDataDelayMs: number = 0) => {
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
-    initLoading.value = false;
-    await new Promise((resolve) => setTimeout(resolve, resetLoadingDataDelayMs));
-    initLoadingMsg.value = '';
-    initLoadingProgress.value = 0;
-  };
-
   // responsiveness
 
   const smallScreen = computed(() => windowSize.width.value < 900);
@@ -184,11 +184,7 @@ export const useStateStore = defineStore('state', () => {
   }
 
   return {
-    initLoading,
-    startInitLoading,
-    finishInitLoading,
-    initLoadingMsg,
-    initLoadingProgress,
+    init,
     smallScreen,
     dropdownSize,
     isTouchDevice,

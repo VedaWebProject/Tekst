@@ -113,9 +113,10 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
         v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
         circle
         :color="themeVars.bodyColor"
-        :style="{ color: themeVars.textColor1 }"
+        :style="{ color: 'var(--text-color)' }"
         :focusable="false"
         class="content-collapse-btn"
+        size="small"
         @click="contentCollapsed = !contentCollapsed"
       >
         <template #icon>

@@ -37,6 +37,14 @@ export const useAuthStore = defineStore('auth', () => {
     Number(localStorage.getItem('sessionExpiryS')) || Number.MAX_SAFE_INTEGER
   );
 
+  async function loadExistingSession() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      user.value = JSON.parse(userData) as UserRead;
+      await _loadUserData();
+    }
+  }
+
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
       Date.now() / 1000 +
@@ -100,7 +108,7 @@ export const useAuthStore = defineStore('auth', () => {
     loginModalState.value = {};
   }
 
-  async function loadUserData() {
+  async function _loadUserData() {
     // load core user data
     const { data, error } = await GET('/users/me', {});
     if (!error) {
@@ -124,7 +132,7 @@ export const useAuthStore = defineStore('auth', () => {
       // init session
       _setCookieExpiry();
       _startSessionCheck();
-      const userData = await loadUserData();
+      const userData = await _loadUserData();
       if (!userData) return;
       await loadPlatformData();
       await resources.load();
@@ -193,7 +201,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     loggedIn,
-    loadUserData,
+    loadExistingSession,
     showLoginModal,
     closeLoginModal,
     loginModalState,

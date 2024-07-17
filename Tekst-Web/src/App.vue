@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import InitLoader from '@/components/InitLoader.vue';
+import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import { computed } from 'vue';
 import { getLocaleProfile } from '@/i18n';
@@ -25,7 +25,8 @@ import { useFavicon } from '@vueuse/core';
 
 const state = useStateStore();
 const theme = useThemeStore();
-const { initialized, error } = useInitializeApp();
+
+useInitializeApp();
 
 // i18n
 const nUiLangLocale = computed(() => getLocaleProfile(state.locale)?.nUiLangLocale);
@@ -47,13 +48,13 @@ useFavicon(favicon, { rel: 'icon' });
       <n-dialog-provider>
         <div id="app-container">
           <huge-labelled-icon
-            v-if="initialized && error"
+            v-if="state.init.initialized && state.init.error"
             :message="$t('init.error')"
-            :loading="!error && !initialized"
+            :loading="!state.init.error && !state.init.initialized"
             :icon="ErrorIcon"
           />
 
-          <template v-else-if="initialized">
+          <template v-else-if="state.init.initialized">
             <page-header />
             <main>
               <div id="main-content">
@@ -63,13 +64,7 @@ useFavicon(favicon, { rel: 'icon' });
             <page-footer />
           </template>
 
-          <init-loader
-            :show="state.initLoading"
-            :progress="state.initLoadingProgress"
-            transition="0.2s"
-            :text="state.initLoadingMsg"
-            :dark-mode="theme.darkMode"
-          />
+          <app-loading-feedback />
           <global-messenger />
           <tasks-widget />
         </div>
