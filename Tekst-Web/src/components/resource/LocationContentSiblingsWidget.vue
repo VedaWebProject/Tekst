@@ -16,8 +16,10 @@ import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -30,6 +32,7 @@ const resourceTitle = computed(() => pickTranslation(props.resource.title, state
 
 async function handleClick() {
   showModal.value = true;
+  emit('done');
   loading.value = true;
 
   const { data: contentsData, error } = await GET('/browse/content-siblings', {
@@ -58,7 +61,7 @@ async function handleClick() {
     "
     :title="$t('browse.contents.widgets.siblingsWidget.title')"
     :icon-component="MergeIcon"
-    :small="small"
+    :full="full"
     @click="handleClick"
   />
 

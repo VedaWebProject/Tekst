@@ -183,10 +183,9 @@ browse:
   contents:
     widgets:
       contentEdit:
-        title: Inhalt bearbeiten
+        title: Bearbeiten
       correctionNote:
-        title: Korrekturnotiz zu dieser Fundstelle senden
-        heading: Korrekturnotiz senden
+        title: Korrektur vorschlagen
         info: |
           Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
           Hier können Sie eine Korrekturnotiz verfassen. Die Person,
@@ -194,16 +193,16 @@ browse:
         lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
       deepLTranslate:
-        title: DeepL-Übersetzung öffnen
+        title: Übersetzen
       infoWidget:
-        title: Informationen zu dieser Ressource anzeigen
+        title: Informationen
         citeAs: Zitieren als
         coverage: Abdeckung
         coverageStatement: '{present} von {total} Fundstellen auf Ebene "{level}"'
       deactivateWidget:
-        title: Diese Ressource ausblenden
+        title: Ausblenden
       siblingsWidget:
-        title: Zusammengeführte Ansicht mit allen Daten der übergeordneten Fundstelle öffnen
+        title: Inhalt übergeordneter Fundstelle
       exportWidget:
         title: Export
         format: Format

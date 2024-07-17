@@ -2,25 +2,35 @@
 import type { Component } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
 
-const props = defineProps<{
+defineProps<{
   iconComponent: Component;
   title: string;
   disabled?: boolean;
-  small?: boolean;
+  full?: boolean;
 }>();
 </script>
 
 <template>
   <n-button
     quaternary
-    circle
+    :block="full"
+    :circle="!full"
     :focusable="false"
-    :title="title"
+    :title="!full ? title : undefined"
     :disabled="disabled"
-    :size="small ? 'small' : undefined"
+    :class="{ 'block-left-align': full }"
   >
     <template #icon>
-      <n-icon size="22px" :component="props.iconComponent" />
+      <n-icon :component="iconComponent" />
+    </template>
+    <template v-if="full" #default>
+      {{ title }}
     </template>
   </n-button>
 </template>
+
+<style scoped>
+.block-left-align {
+  justify-content: flex-start;
+}
+</style>

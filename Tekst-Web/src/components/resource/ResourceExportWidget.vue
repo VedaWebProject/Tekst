@@ -52,8 +52,10 @@ const supportedExportFormats: Record<AnyResourceRead['resourceType'], ResourceEx
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const state = useStateStore();
 const auth = useAuthStore();
@@ -172,14 +174,15 @@ function handleModalLeave() {
 function handleWidgetClick() {
   resourceTitle.value = pickTranslation(props.resource.title, state.locale);
   showExportModal.value = true;
+  emit('done');
 }
 </script>
 
 <template>
   <content-container-header-widget
+    :full="full"
     :title="$t('browse.contents.widgets.exportWidget.title')"
     :icon-component="DownloadIcon"
-    :small="small"
     @click="handleWidgetClick"
   />
 

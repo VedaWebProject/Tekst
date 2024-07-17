@@ -9,8 +9,10 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const showModal = ref(false);
 </script>
@@ -18,10 +20,15 @@ const showModal = ref(false);
 <template>
   <content-container-header-widget
     v-if="!!resource.contents?.[0]?.comment"
+    :full="full"
     :title="$t('general.comment')"
     :icon-component="CommentIcon"
-    :small="small"
-    @click="showModal = true"
+    @click="
+      () => {
+        showModal = true;
+        emit('done');
+      }
+    "
   />
 
   <generic-modal

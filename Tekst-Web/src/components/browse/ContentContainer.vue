@@ -7,7 +7,6 @@ import { $t } from '@/i18n';
 import { useElementHover } from '@vueuse/core';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
 import contentComponents from '@/components/content/mappings';
-import type { CSSProperties } from 'vue';
 import type { AnyResourceRead } from '@/api';
 import { NoContentIcon, ExpandIcon, CompressIcon, PublicOffIcon } from '@/icons';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
@@ -49,10 +48,9 @@ const headerExtraText = computed(() => {
 const contentContainerTitle = computed(() =>
   !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
 );
-const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
-  opacity:
-    isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2,
-}));
+const headerWidgetsOpacity = computed<number>(() =>
+  isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
+);
 </script>
 
 <template>
@@ -86,9 +84,8 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
       </div>
       <content-header-widget-bar
         :resource="resource"
-        :style="headerWidgetsVisibilityStyle"
+        :opacity="headerWidgetsOpacity"
         :small-screen="state.smallScreen"
-        :reduced="browse.reducedView"
       />
     </div>
 
@@ -135,7 +132,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
   font-size: var(--font-size);
 }
 .content-container.reduced {
-  padding-top: 0.3rem;
+  padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   margin: 0;
   box-shadow: none;
@@ -168,8 +165,8 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 .content-header {
   margin-bottom: 0.5rem;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-wrap: nowrap;
   column-gap: 12px;
   row-gap: 0px;
 }
@@ -180,7 +177,7 @@ const headerWidgetsVisibilityStyle = computed<CSSProperties>(() => ({
 .content-header-title-container {
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-grow: 2;
   column-gap: 12px;
 }

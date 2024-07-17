@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import type { AnyResourceRead, DeepLLinksConfig } from '@/api';
-import { computed, h } from 'vue';
-import type { VNodeChild } from 'vue';
+import { computed } from 'vue';
 import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
@@ -14,8 +13,10 @@ const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 const props = defineProps<{
   widgetConfig: DeepLLinksConfig;
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const state = useStateStore();
 
@@ -36,6 +37,7 @@ const options = computed(() =>
   props.widgetConfig?.languages?.map((l) => ({
     label: l,
     key: l,
+    url: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
   }))
 );
 
@@ -47,17 +49,9 @@ const show = computed(
     contentsTextEncoded
 );
 
-function renderOption(option: DropdownOption) {
-  return h(
-    'a',
-    {
-      href: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${option.key}/${contentsTextEncoded.value}`,
-      target: '_blank',
-    },
-    {
-      default: () => option.label as VNodeChild,
-    }
-  );
+function handleOptionSelect(_: string, option: DropdownOption) {
+  emit('done');
+  window.open(option.url as string, '_blank', 'noopener noreferrer');
 }
 </script>
 
@@ -69,13 +63,13 @@ function renderOption(option: DropdownOption) {
     to="#app-container"
     placement="bottom-start"
     :size="state.dropdownSize"
-    :render-label="renderOption"
     show-arrow
+    @select="handleOptionSelect"
   >
     <content-container-header-widget
+      :full="full"
       :title="$t('browse.contents.widgets.deepLTranslate.title')"
       :icon-component="TranslateIcon"
-      :small="small"
     />
   </n-dropdown>
 </template>

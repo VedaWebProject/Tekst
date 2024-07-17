@@ -8,21 +8,24 @@ import { ClearIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const browse = useBrowseStore();
 
 function handleClick() {
   browse.setResourcesActiveState([props.resource.id], false);
+  emit('done');
 }
 </script>
 
 <template>
   <content-container-header-widget
+    :full="full"
     :title="$t('browse.contents.widgets.deactivateWidget.title')"
     :icon-component="ClearIcon"
-    :small="small"
     @click="handleClick"
   />
 </template>

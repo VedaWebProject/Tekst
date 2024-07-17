@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { POST, type AnyResourceRead, type CorrectionCreate } from '@/api';
 import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { CorrectionNoteIcon } from '@/icons';
@@ -11,19 +11,21 @@ import { correctionFormRules } from '@/forms/formRules';
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
 const resources = useResourcesStore();
 const { message } = useMessages();
 
-const show = computed(() => !!auth.user);
 const promptModalRef = ref();
 
 function handleClick() {
   promptModalRef.value.open();
+  emit('done');
 }
 
 async function handleModalSubmit(note: string) {
@@ -54,10 +56,10 @@ async function handleModalSubmit(note: string) {
 
 <template>
   <content-container-header-widget
-    v-if="show"
+    v-if="auth.loggedIn"
+    :full="full"
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon-component="CorrectionNoteIcon"
-    :small="small"
     @click="handleClick"
   />
 
@@ -65,7 +67,7 @@ async function handleModalSubmit(note: string) {
     ref="promptModalRef"
     multiline
     osk
-    :title="$t('browse.contents.widgets.correctionNote.heading')"
+    :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon="CorrectionNoteIcon"
     :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"
     :msg="$t('browse.contents.widgets.correctionNote.info')"

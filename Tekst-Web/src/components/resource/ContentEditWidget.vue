@@ -8,8 +8,10 @@ import { EditIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -32,15 +34,16 @@ function handleClick() {
       pos: browse.position,
     },
   });
+  emit('done');
 }
 </script>
 
 <template>
   <content-container-header-widget
     v-if="show"
+    :full="full"
     :title="$t('browse.contents.widgets.contentEdit.title')"
     :icon-component="EditIcon"
-    :small="small"
     @click="handleClick"
   />
 </template>

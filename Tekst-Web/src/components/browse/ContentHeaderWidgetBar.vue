@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { StyleValue } from 'vue';
 import contentWidgets from '@/components/resource/mappings';
 import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
@@ -9,25 +8,39 @@ import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { MoreIcon } from '@/icons';
+import { NButton, NIcon } from 'naive-ui';
+import { pickTranslation } from '@/utils';
+import { useStateStore } from '@/stores';
+import GenericModal from '@/components/generic/GenericModal.vue';
 
 const props = withDefaults(
   defineProps<{
     resource: AnyResourceRead;
-    style?: StyleValue;
+    opacity?: number;
     smallScreen?: boolean;
-    reduced?: boolean;
   }>(),
   {
-    style: undefined,
+    opacity: 1,
   }
 );
 
-const small = computed(() => props.reduced || props.smallScreen);
+const state = useStateStore();
+
+const showWidgetsModal = ref(false);
+const closeModal = () => (showWidgetsModal.value = false);
+const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
+
+function handleSmallScreenWidgetsTriggered(e: UIEvent) {
+  e.preventDefault();
+  e.stopPropagation();
+  showWidgetsModal.value = !showWidgetsModal.value;
+}
 </script>
 
 <template>
-  <div class="content-header-widgets" :style="style">
+  <div v-if="!smallScreen" class="content-header-widgets" :style="{ opacity }">
     <!-- resource-type-specific widgets -->
     <template v-if="resource.contents?.length">
       <template
@@ -39,27 +52,83 @@ const small = computed(() => props.reduced || props.smallScreen);
           v-if="configSectionKey in contentWidgets"
           :widget-config="configSection"
           :resource="resource"
-          :small="small"
         />
       </template>
     </template>
     <!-- generic content widgets -->
-    <location-content-siblings-widget :resource="resource" :small="small" />
-    <content-comment-widget :resource="resource" :small="small" />
-    <content-edit-widget :resource="resource" :small="small" />
-    <correction-note-widget :resource="resource" :small="small" />
-    <resource-export-widget :resource="resource" :small="small" />
-    <resource-info-widget :resource="resource" :small="small" />
-    <resource-deactivate-widget :resource="resource" :small="small" />
+    <location-content-siblings-widget :resource="resource" />
+    <content-comment-widget :resource="resource" />
+    <content-edit-widget :resource="resource" />
+    <correction-note-widget :resource="resource" />
+    <resource-export-widget :resource="resource" />
+    <resource-info-widget :resource="resource" />
+    <resource-deactivate-widget :resource="resource" />
   </div>
+
+  <n-button
+    v-else
+    quaternary
+    circle
+    :focusable="false"
+    :style="{ opacity }"
+    @click="handleSmallScreenWidgetsTriggered"
+  >
+    <template #icon>
+      <n-icon :component="MoreIcon" />
+    </template>
+  </n-button>
+
+  <generic-modal
+    v-if="smallScreen"
+    v-model:show="showWidgetsModal"
+    display-directive="show"
+    width="narrow"
+    :title="resourceTitle"
+    :icon="MoreIcon"
+    heading-level="3"
+  >
+    <div class="content-header-widgets small-screen-widgets">
+      <!-- resource-type-specific widgets -->
+      <template v-if="resource.contents?.length">
+        <template
+          v-for="(configSection, configSectionKey) in resource.config"
+          :key="configSectionKey"
+        >
+          <component
+            :is="contentWidgets[configSectionKey]"
+            v-if="configSectionKey in contentWidgets"
+            :widget-config="configSection"
+            :resource="resource"
+            full
+            @done="closeModal"
+          />
+        </template>
+      </template>
+      <!-- generic content widgets -->
+      <location-content-siblings-widget :resource="resource" full @done="closeModal" />
+      <content-comment-widget :resource="resource" full @done="closeModal" />
+      <content-edit-widget :resource="resource" full @done="closeModal" />
+      <correction-note-widget :resource="resource" full @done="closeModal" />
+      <resource-export-widget :resource="resource" full @done="closeModal" />
+      <resource-info-widget :resource="resource" full @done="closeModal" />
+      <resource-deactivate-widget :resource="resource" full @done="closeModal" />
+    </div>
+  </generic-modal>
 </template>
 
 <style scoped>
 .content-header-widgets {
   display: flex;
+  justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
   gap: 8px;
   transition: opacity 0.2s ease;
+}
+
+.small-screen-widgets {
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 16px;
 }
 </style>

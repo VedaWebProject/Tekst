@@ -179,10 +179,9 @@ browse:
   contents:
     widgets:
       contentEdit:
-        title: Edit content
+        title: Edit
       correctionNote:
-        title: Send correction note for this location
-        heading: Send correction note
+        title: Suggest correction
         info: |
           Do you have a short comment or correction to this content?
           You can write a correction note here. The person
@@ -190,16 +189,16 @@ browse:
         lblNote: Correction note
         msgSuccess: Sent correction note
       deepLTranslate:
-        title: Open DeepL translation
+        title: Translate
       infoWidget:
-        title: Show information on this resource
+        title: Information
         citeAs: Cite as
         coverage: Coverage
         coverageStatement: '{present} of {total} locations on level "{level}"'
       deactivateWidget:
-        title: Hide this resource
+        title: Hide
       siblingsWidget:
-        title: Open merged view with all data of the parent location
+        title: Parent location's content
       exportWidget:
         title: Export
         format: Format

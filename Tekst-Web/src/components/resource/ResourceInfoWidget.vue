@@ -14,20 +14,15 @@ import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
 
-import {
-  InfoIcon,
-  CommentIcon,
-  FormatQuoteIcon,
-  CoverageIcon,
-  MetadataIcon,
-  ResourceIcon,
-} from '@/icons';
+import { InfoIcon, CommentIcon, FormatQuoteIcon, CoverageIcon, MetadataIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  small?: boolean;
+  full?: boolean;
 }>();
+
+const emit = defineEmits(['done']);
 
 const auth = useAuthStore();
 const state = useStateStore();
@@ -52,13 +47,18 @@ watch(showInfoModal, async (after) => {
 
 <template>
   <content-container-header-widget
+    :full="full"
     :title="$t('browse.contents.widgets.infoWidget.title')"
     :icon-component="InfoIcon"
-    :small="small"
-    @click="showInfoModal = true"
+    @click="
+      () => {
+        showInfoModal = true;
+        emit('done');
+      }
+    "
   />
 
-  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="ResourceIcon">
+  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="InfoIcon">
     <user-display
       v-if="auth.loggedIn && !!resource.owner"
       :user="resource.owner"
