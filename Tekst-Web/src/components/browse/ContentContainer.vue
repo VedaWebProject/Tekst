@@ -89,18 +89,16 @@ const headerWidgetsOpacity = computed<number>(() =>
       />
     </div>
 
-    <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">
-      <!-- content-specific component (that displays the actual content data) -->
-      <component
-        :is="contentComponents[resource.resourceType]"
-        :resource="resource"
-        :reduced="browse.reducedView"
-      />
-    </div>
-
-    <transition>
-      <n-spin v-show="loading" class="content-loader" />
-    </transition>
+    <n-spin :show="loading" :delay="200" size="small">
+      <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">
+        <!-- content-specific component (that displays the actual content data) -->
+        <component
+          :is="contentComponents[resource.resourceType]"
+          :resource="resource"
+          :reduced="browse.reducedView"
+        />
+      </div>
+    </n-spin>
 
     <div
       v-if="resource.config?.general?.defaultCollapsed != null"
@@ -232,25 +230,5 @@ const headerWidgetsOpacity = computed<number>(() =>
 
 .content-collapse-btn:hover {
   color: var(--accent-color) !important;
-}
-
-.content-loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--content-bg-color);
-  border-radius: var(--border-radius);
-}
-
-.content-loader.v-enter-active,
-.content-loader.v-leave-active {
-  transition: opacity 0.1s ease;
-}
-
-.content-loader.v-enter-from,
-.content-loader.v-leave-to {
-  opacity: 0;
 }
 </style>
