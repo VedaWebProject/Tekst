@@ -8,7 +8,7 @@ import UserDisplay from '@/components/user/UserDisplay.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { useIntervalFn, useMagicKeys, whenever } from '@vueuse/core';
 import type { UserMessageRead } from '@/api';
-import { utcToLocalTime } from '@/utils';
+import { utcToLocalTime, delay } from '@/utils';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();
@@ -60,7 +60,7 @@ function handleModalLeave() {
 }
 
 async function scrollDownMessageContainer(delayMs: number = 0) {
-  await new Promise((resolve) => setTimeout(resolve, delayMs));
+  await delay(delayMs);
   const messageContainerElm = document.getElementsByClassName('messages-scroll-container')[0];
   if (messageContainerElm) {
     messageContainerElm.scroll({ top: messageContainerElm.scrollHeight, behavior: 'smooth' });

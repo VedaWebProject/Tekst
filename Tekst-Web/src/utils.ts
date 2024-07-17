@@ -67,3 +67,7 @@ export async function checkUrl(url?: string): Promise<boolean> {
 export function isOverlayOpen() {
   return document.querySelectorAll('.n-modal-body-wrapper, .n-image-preview-overlay').length > 0;
 }
+
+export async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

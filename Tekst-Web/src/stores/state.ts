@@ -17,6 +17,7 @@ interface AppInitState {
   stepMsg: string;
   loading: boolean;
   initialized: boolean;
+  authChecked: boolean;
   error: boolean;
 }
 
@@ -33,6 +34,7 @@ export const useStateStore = defineStore('state', () => {
     stepMsg: '',
     loading: true,
     initialized: false,
+    authChecked: false,
     error: false,
   });
 

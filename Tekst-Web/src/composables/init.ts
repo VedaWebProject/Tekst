@@ -5,8 +5,10 @@ import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { STATIC_PATH } from '@/common';
+import { delay } from '@/utils';
 
 interface InitStep {
+  key: string;
   info: () => string;
   action: (success: boolean) => Promise<boolean>;
 }
@@ -23,7 +25,9 @@ export function useInitializeApp() {
 
   const initSteps: InitStep[] = [
     // set global loading state, load platform data from server
+    // (this is done first so we know the locales we can use)
     {
+      key: 'pfData',
       info: () => '',
       action: async (success: boolean = true) => {
         startInit();
@@ -37,16 +41,19 @@ export function useInitializeApp() {
         }
       },
     },
-    // load existing session
+    // load existing session, if any
     {
+      key: 'checkAuth',
       info: () => $t('init.loadSessionData'),
       action: async (success: boolean = true) => {
         await auth.loadExistingSession();
+        state.init.authChecked = true;
         return success;
       },
     },
     // load resources data from server
     {
+      key: 'resources',
       info: () => $t('init.loadResources'),
       action: async (success: boolean = true) => {
         try {
@@ -60,6 +67,7 @@ export function useInitializeApp() {
     },
     // set up initial working text
     {
+      key: 'workingText',
       info: () => $t('init.workingText'),
       action: async (success: boolean = true) => {
         state.text =
@@ -83,6 +91,7 @@ export function useInitializeApp() {
     },
     // apply special system segments
     {
+      key: 'systemSegments',
       info: () => $t('init.systemSegments'),
       action: async (success: boolean = true) => {
         // HTML body end
@@ -96,6 +105,7 @@ export function useInitializeApp() {
     },
     // load custom fontface definitions
     {
+      key: 'customFonts',
       info: () => $t('init.customFonts'),
       action: async (success: boolean = true) => {
         try {
@@ -110,6 +120,7 @@ export function useInitializeApp() {
     },
     // finish global loading, end process
     {
+      key: 'ready',
       info: () => $t('init.ready'),
       action: async (success: boolean = true) => {
         state.init.initialized = true;
@@ -125,9 +136,9 @@ export function useInitializeApp() {
   }
 
   async function finishInit(delayMs: number = 0, resetLoadingDataDelayMs: number = 0) {
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    await delay(delayMs);
     state.init.loading = false;
-    await new Promise((resolve) => setTimeout(resolve, resetLoadingDataDelayMs));
+    await delay(resetLoadingDataDelayMs);
     state.init.stepMsg = '';
     state.init.progress = 0;
   }
@@ -137,7 +148,7 @@ export function useInitializeApp() {
       state.init.stepMsg = step.info();
       state.init.progress = i / initSteps.length;
       state.init.error = state.init.error || success === false;
-      await new Promise((resolve) => setTimeout(resolve, 200)); // misdemeanor
+      await delay(200); // misdemeanor
       return await step.action(success);
     })
   );

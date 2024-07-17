@@ -4,6 +4,7 @@ import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
 import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
 import { WEB_PATH } from '@/common';
+import { delay } from './utils';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -307,8 +308,8 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta?.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
-    while (!state.init.initialized) {
-      await new Promise((resolve) => setTimeout(resolve, 50));
+    while (!state.init.authChecked) {
+      await delay(50);
     }
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
