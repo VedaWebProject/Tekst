@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NInput, NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
@@ -14,6 +14,10 @@ const props = defineProps<{
 
 const model = defineModel<TextAnnotationContentCreate>({ required: true });
 const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof NInputOsk> }>({});
+
+const annoValueStyle = {
+  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+};
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -31,7 +35,7 @@ function getAnnotationValueOptions(key?: string) {
   return (
     props.resource.aggregations
       ?.find((agg) => agg.key === key)
-      ?.values?.map((v) => ({ label: v, value: v })) || []
+      ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []
   );
 }
 
@@ -148,11 +152,8 @@ function handleInsertToken(index: number) {
                     ignore-path-change
                   >
                     <n-select
-                      v-if="
-                        !!resource.aggregations?.find((agg) => agg.key === annotationItem.key)
-                          ?.values
-                      "
                       v-model:value="annotationItem.value"
+                      multiple
                       filterable
                       tag
                       clearable
@@ -161,14 +162,7 @@ function handleInsertToken(index: number) {
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationValue')
                       "
-                    />
-                    <n-input
-                      v-else
-                      v-model:value="annotationItem.value"
-                      :disabled="!annotationItem.key"
-                      :placeholder="
-                        $t('resources.types.textAnnotation.contentFields.annotationValue')
-                      "
+                      :style="annoValueStyle"
                     />
                   </n-form-item>
                 </div>

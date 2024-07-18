@@ -2,7 +2,10 @@ import type { FormItemRule } from 'naive-ui';
 import { $t, localeProfiles } from '@/i18n';
 import { resourceTypes } from '@/api';
 
-function requiredRule(inputLabel: () => string, trigger?: FormItemRule['trigger']): FormItemRule {
+function requiredStringRule(
+  inputLabel: () => string,
+  trigger?: FormItemRule['trigger']
+): FormItemRule {
   return {
     required: true,
     message: () =>
@@ -27,12 +30,12 @@ function minMaxCharsRule(
 }
 
 export const translationFormRules: Record<string, FormItemRule[]> = {
-  locale: [requiredRule(() => $t('models.locale.modelLabel'), 'blur')],
+  locale: [requiredStringRule(() => $t('models.locale.modelLabel'), 'blur')],
 };
 
 export const accountFormRules: Record<string, FormItemRule[]> = {
   email: [
-    requiredRule(() => $t('models.user.email'), 'input'),
+    requiredStringRule(() => $t('models.user.email'), 'input'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^.+@.+\.\w+$/.test(value),
       message: () => $t('models.user.formRulesFeedback.emailInvalid'),
@@ -40,7 +43,7 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   username: [
-    requiredRule(() => $t('models.user.username'), 'blur'),
+    requiredStringRule(() => $t('models.user.username'), 'blur'),
     minMaxCharsRule(4, 16, 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
@@ -49,7 +52,7 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   password: [
-    requiredRule(() => $t('models.user.password'), 'blur'),
+    requiredStringRule(() => $t('models.user.password'), 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && value.length >= 8,
       message: () => $t('forms.rulesFeedback.minChars', { min: 8 }),
@@ -69,26 +72,29 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  name: [requiredRule(() => $t('models.user.name'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
+  name: [requiredStringRule(() => $t('models.user.name'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
   affiliation: [
-    requiredRule(() => $t('models.user.affiliation'), 'blur'),
+    requiredStringRule(() => $t('models.user.affiliation'), 'blur'),
     minMaxCharsRule(1, 180, 'blur'),
   ],
   avatarUrl: [minMaxCharsRule(0, 1024, 'blur')],
   bio: [minMaxCharsRule(0, 2000, 'blur')],
-  loginEmail: [requiredRule(() => $t('models.user.email'), 'input')],
-  loginPassword: [requiredRule(() => $t('models.user.password'), 'input')],
+  loginEmail: [requiredStringRule(() => $t('models.user.email'), 'input')],
+  loginPassword: [requiredStringRule(() => $t('models.user.password'), 'input')],
 };
 
 export const textFormRules: Record<string, FormItemRule[]> = {
-  title: [requiredRule(() => $t('models.text.title'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
+  title: [
+    requiredStringRule(() => $t('models.text.title'), 'blur'),
+    minMaxCharsRule(1, 64, 'blur'),
+  ],
   subtitleTranslation: [
-    requiredRule(() => $t('models.text.subtitle'), 'blur'),
+    requiredStringRule(() => $t('models.text.subtitle'), 'blur'),
     minMaxCharsRule(1, 128, 'blur'),
   ],
-  subtitleLocale: [requiredRule(() => $t('general.language'), 'blur')],
+  subtitleLocale: [requiredStringRule(() => $t('general.language'), 'blur')],
   slug: [
-    requiredRule(() => $t('models.text.slug'), 'blur'),
+    requiredStringRule(() => $t('models.text.slug'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^[a-z0-9]+$/.test(value),
@@ -105,7 +111,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   levelTranslation: [
-    requiredRule(() => $t('models.text.level'), 'blur'),
+    requiredStringRule(() => $t('models.text.level'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
   defaultLevel: [
@@ -115,31 +121,40 @@ export const textFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  locDelim: [requiredRule(() => $t('models.text.locDelim'), 'blur'), minMaxCharsRule(1, 3, 'blur')],
+  locDelim: [
+    requiredStringRule(() => $t('models.text.locDelim'), 'blur'),
+    minMaxCharsRule(1, 3, 'blur'),
+  ],
   resourceCategoryKey: [
-    requiredRule(() => $t('models.text.resourceCategoryKey'), 'blur'),
+    requiredStringRule(() => $t('models.text.resourceCategoryKey'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
   ],
   resourceCategoryTranslation: [
-    requiredRule(() => $t('models.text.resourceCategoryTranslation'), 'blur'),
+    requiredStringRule(() => $t('models.text.resourceCategoryTranslation'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
 };
 
 export const locationFormRules: Record<string, FormItemRule[]> = {
-  label: [requiredRule(() => $t('models.location.label'), 'blur'), minMaxCharsRule(1, 256, 'blur')],
+  label: [
+    requiredStringRule(() => $t('models.location.label'), 'blur'),
+    minMaxCharsRule(1, 256, 'blur'),
+  ],
 };
 
 export const correctionFormRules: Record<string, FormItemRule[]> = {
-  note: [requiredRule(() => $t('models.location.label'), 'blur'), minMaxCharsRule(1, 256, 'blur')],
+  note: [
+    requiredStringRule(() => $t('models.location.label'), 'blur'),
+    minMaxCharsRule(1, 256, 'blur'),
+  ],
 };
 
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [minMaxCharsRule(0, 32, 'blur')],
-  key: [requiredRule(() => $t('models.segment.key'), 'blur')],
-  locale: [requiredRule(() => $t('models.segment.locale'), 'blur')],
+  key: [requiredStringRule(() => $t('models.segment.key'), 'blur')],
+  locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
   html: [
-    requiredRule(() => $t('models.segment.html'), 'blur'),
+    requiredStringRule(() => $t('models.segment.html'), 'blur'),
     minMaxCharsRule(1, 1048576, 'blur'),
   ],
 };
@@ -147,7 +162,7 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
 export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [minMaxCharsRule(0, 32, 'blur')],
   key: [
-    requiredRule(() => $t('models.segment.key'), 'blur'),
+    requiredStringRule(() => $t('models.segment.key'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]+$/.test(value),
@@ -160,16 +175,16 @@ export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  locale: [requiredRule(() => $t('models.segment.locale'), 'blur')],
+  locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
   html: [
-    requiredRule(() => $t('models.segment.html'), 'blur'),
+    requiredStringRule(() => $t('models.segment.html'), 'blur'),
     minMaxCharsRule(1, 1048576, 'blur'),
   ],
 };
 
 export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   platformName: [
-    requiredRule(() => $t('models.platformSettings.platformName'), 'blur'),
+    requiredStringRule(() => $t('models.platformSettings.platformName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
   platformSubtitleTranslation: [minMaxCharsRule(1, 128, 'blur')],
@@ -186,37 +201,43 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
   navEntryTranslation: [minMaxCharsRule(1, 42, 'blur')],
   oskModeKey: [
-    requiredRule(() => $t('models.platformSettings.oskModeKey'), 'blur'),
+    requiredStringRule(() => $t('models.platformSettings.oskModeKey'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
   oskModeName: [
-    requiredRule(() => $t('models.platformSettings.oskModeName'), 'blur'),
+    requiredStringRule(() => $t('models.platformSettings.oskModeName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
   resourceFontName: [
-    requiredRule(() => $t('models.platformSettings.resourceFontName'), 'blur'),
+    requiredStringRule(() => $t('models.platformSettings.resourceFontName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
 };
 
 export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   titleTranslation: [
-    requiredRule(() => $t('models.resource.title'), 'blur'),
+    requiredStringRule(() => $t('models.resource.title'), 'blur'),
     minMaxCharsRule(1, 64, 'blur'),
   ],
   descriptionTranslation: [
-    requiredRule(() => $t('models.resource.description'), 'blur'),
+    requiredStringRule(() => $t('models.resource.description'), 'blur'),
     minMaxCharsRule(1, 512, 'blur'),
   ],
   citation: [minMaxCharsRule(0, 1000, 'blur')],
   commentTranslation: [
-    requiredRule(() => $t('general.comment'), 'blur'),
+    requiredStringRule(() => $t('general.comment'), 'blur'),
     minMaxCharsRule(1, 2000, 'blur'),
   ],
-  metaKey: [requiredRule(() => $t('models.meta.key'), 'blur'), minMaxCharsRule(1, 16, 'blur')],
-  metaValue: [requiredRule(() => $t('models.meta.value'), 'blur'), minMaxCharsRule(1, 128, 'blur')],
+  metaKey: [
+    requiredStringRule(() => $t('models.meta.key'), 'blur'),
+    minMaxCharsRule(1, 16, 'blur'),
+  ],
+  metaValue: [
+    requiredStringRule(() => $t('models.meta.value'), 'blur'),
+    minMaxCharsRule(1, 128, 'blur'),
+  ],
   resourceType: [
-    requiredRule(() => $t('models.resource.resourceType'), 'blur'),
+    requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && resourceTypes.includes(value),
       message: () =>
@@ -273,36 +294,62 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
   },
   plainText: {
     text: [
-      requiredRule(() => $t('resources.types.plainText.contentFields.text'), 'blur'),
+      requiredStringRule(() => $t('resources.types.plainText.contentFields.text'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },
   richText: {
     html: [
-      requiredRule(() => $t('resources.types.richText.contentFields.html'), 'blur'),
+      requiredStringRule(() => $t('resources.types.richText.contentFields.html'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
   },
   textAnnotation: {
     token: [
-      requiredRule(() => $t('resources.types.textAnnotation.contentFields.token'), 'blur'),
+      requiredStringRule(() => $t('resources.types.textAnnotation.contentFields.token'), 'blur'),
       minMaxCharsRule(1, 4096, 'blur'),
     ],
     annotationKey: [
-      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      requiredStringRule(
+        () => $t('resources.types.textAnnotation.contentFields.annotationKey'),
+        'blur'
+      ),
       minMaxCharsRule(1, 32, 'blur'),
     ],
     annotationValue: [
-      requiredRule(
-        () => $t('resources.types.textAnnotation.contentFields.annotationValue'),
-        'blur'
-      ),
-      minMaxCharsRule(1, 256, 'blur'),
+      {
+        required: true,
+        type: 'array',
+        message: () =>
+          $t('forms.rulesFeedback.isRequired', {
+            x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
+          }),
+        trigger: 'blur',
+      },
+      {
+        validator: (rule: FormItemRule, value: any) => Array.isArray(value),
+        message: () =>
+          $t('forms.rulesFeedback.isRequired', {
+            x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
+          }),
+        trigger: 'change',
+      },
+      {
+        validator: (rule: FormItemRule, value: any[]) => value.length >= 1 && value.length <= 64,
+        message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
+        trigger: 'change',
+      },
+      {
+        validator: (rule: FormItemRule, value: any[]) =>
+          value.every((item) => item.length >= 1 && item.length <= 256),
+        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
+        trigger: 'change',
+      },
     ],
   },
   audio: {
     url: [
-      requiredRule(() => $t('resources.types.audio.contentFields.url'), 'blur'),
+      requiredStringRule(() => $t('resources.types.audio.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
     optionalUrl: [minMaxCharsRule(0, 2083, 'blur')],
@@ -310,7 +357,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
   },
   images: {
     url: [
-      requiredRule(() => $t('resources.types.images.contentFields.url'), 'blur'),
+      requiredStringRule(() => $t('resources.types.images.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
     optionalUrl: [minMaxCharsRule(0, 2083, 'blur')],
@@ -318,11 +365,14 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
   },
   externalReferences: {
     url: [
-      requiredRule(() => $t('resources.types.externalReferences.contentFields.url'), 'blur'),
+      requiredStringRule(() => $t('resources.types.externalReferences.contentFields.url'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
     ],
     title: [
-      requiredRule(() => $t('resources.types.externalReferences.contentFields.title'), 'blur'),
+      requiredStringRule(
+        () => $t('resources.types.externalReferences.contentFields.title'),
+        'blur'
+      ),
       minMaxCharsRule(1, 128, 'blur'),
     ],
     description: [minMaxCharsRule(0, 4096, 'blur')],
@@ -342,7 +392,10 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
     token: [minMaxCharsRule(0, 512, 'blur')],
     annotationKey: [
-      requiredRule(() => $t('resources.types.textAnnotation.contentFields.annotationKey'), 'blur'),
+      requiredStringRule(
+        () => $t('resources.types.textAnnotation.contentFields.annotationKey'),
+        'blur'
+      ),
       minMaxCharsRule(1, 32, 'blur'),
     ],
     annotationValue: [minMaxCharsRule(0, 64, 'blur')],

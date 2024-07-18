@@ -5,6 +5,7 @@ from time import process_time
 from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
+from typing_extensions import TypeAliasType
 
 from tekst.logs import log
 from tekst.models.common import ModelBase, PydanticObjectId
@@ -60,32 +61,55 @@ class TextAnnotation(ResourceTypeABC):
                     {"$project": {"anno": "$tokens.annotations"}},
                     {"$unwind": {"path": "$anno"}},
                     {"$unwind": {"path": "$anno"}},
+                    # create one document for each annotation key,
+                    # collecting all values arrays and the key occurrence count
                     {
                         "$group": {
                             "_id": "$anno.key",
-                            "collected": {"$push": "$anno.value"},  # collected values
-                            "values": {"$addToSet": "$anno.value"},  # distinct values
-                            "count": {"$sum": 1},  # key occurrence count
+                            "values": {"$push": "$anno.value"},  # distinct values
+                            "keyOcc": {"$sum": 1},  # key occurrence count
                         }
                     },
-                    {"$sort": {"count": -1}},  # sort by key occurrence count
+                    # sort by key occurrence
+                    {"$sort": {"keyOcc": -1}},
+                    # flatten the values array
+                    {
+                        "$set": {
+                            "values": {
+                                "$reduce": {
+                                    "input": "$values",
+                                    "initialValue": [],
+                                    "in": {"$concatArrays": ["$$this", "$$value"]},
+                                }
+                            },
+                        }
+                    },
+                    # reduce values items array to distict values
+                    {
+                        "$set": {
+                            "distinct": {
+                                "$setUnion": "$allValues",
+                            }
+                        }
+                    },
+                    # project into target document format
                     {
                         "$project": {
                             "_id": 0,
                             "key": "$_id",
-                            "values": {
+                            "distinct": {
                                 "$cond": {  # exclude if count of distict values > 100
+                                    "if": {"$gt": [{"$size": "$distinct"}, 100]},
+                                    "then": "$$REMOVE",
+                                    "else": "$distinct",
+                                }
+                            },
+                            "values": {
+                                "$cond": {  # exclude if count of values > 100
                                     "if": {"$gt": [{"$size": "$values"}, 100]},
                                     "then": "$$REMOVE",
                                     "else": "$values",
-                                }
-                            },
-                            "collected": {
-                                "$cond": {  # exclude if count of distict values > 100
-                                    "if": {"$gt": [{"$size": "$values"}, 100]},
-                                    "then": "$$REMOVE",
-                                    "else": "$collected",
-                                }
+                                },
                             },
                         },
                     },
@@ -94,16 +118,20 @@ class TextAnnotation(ResourceTypeABC):
             .to_list()
         )
 
-        # sort annotation values ("values") by occurrence count (from "collected")
-        # (couldn't manage to do that in DB aggregations)
+        ###########################################################
+        ##### THERE IS AN ERROR IN THE ABOVE AGGREGATION!!! #######
+        ###########################################################
+
+        # sort distinct annotation values ("distinct") by
+        # occurrence count (from "values")
         for anno in anno_aggs:
-            if "values" in anno:
-                anno["values"].sort(
+            if "distinct" in anno:
+                anno["distinct"].sort(
                     reverse=True,
-                    key=lambda v: anno.get("collected", []).count(v),
+                    key=lambda v: anno.get("values", []).count(v),
                 )
-            if "collected" in anno:
-                del anno["collected"]
+            if "values" in anno:
+                del anno["values"]
 
         # update aggregations in DB
         resource_doc.aggregations = anno_aggs
@@ -353,6 +381,35 @@ class TextAnnotationResource(ResourceBase):
     ] = None
 
 
+TextAnnotationValue = TypeAliasType(
+    "TextAnnotationValue",
+    Annotated[
+        str,
+        Field(
+            description="Value of an annotation",
+        ),
+        BeforeValidator(lambda v: str(v) if v is not None else None),
+        StringConstraints(
+            min_length=1,
+            max_length=256,
+            strip_whitespace=True,
+        ),
+    ],
+)
+
+TextAnnotationValues = TypeAliasType(
+    "TextAnnotationValues",
+    Annotated[
+        list[TextAnnotationValue],
+        Field(
+            description="List of values of an annotation",
+            min_length=1,
+            max_length=64,
+        ),
+    ],
+)
+
+
 class TextAnnotationEntry(ModelBase):
     key: Annotated[
         str,
@@ -367,15 +424,9 @@ class TextAnnotationEntry(ModelBase):
         ),
     ]
     value: Annotated[
-        str,
+        TextAnnotationValues,
         Field(
-            description="Value of the annotation",
-        ),
-        BeforeValidator(lambda v: str(v) if v is not None else None),
-        StringConstraints(
-            min_length=1,
-            max_length=256,
-            strip_whitespace=True,
+            description="Value(s) of the annotation",
         ),
     ]
 
