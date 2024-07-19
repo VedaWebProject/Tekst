@@ -144,7 +144,7 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
 
 export const correctionFormRules: Record<string, FormItemRule[]> = {
   note: [
-    requiredStringRule(() => $t('models.location.label'), 'blur'),
+    requiredStringRule(() => $t('browse.contents.widgets.correctionNote.lblNote'), 'blur'),
     minMaxCharsRule(1, 256, 'blur'),
   ],
 };
