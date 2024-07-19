@@ -520,9 +520,6 @@
       },
       "general": { "defaultCollapsed": false, "font": null },
       "displayTemplate": "{{_k:Entity_c:v_s:c}}"
-    },
-    "aggregations": [
-      { "key": "Entity", "values": ["Fox", "Goose", "Hunter", "Mouse"] }
-    ]
+    }
   }
 ]

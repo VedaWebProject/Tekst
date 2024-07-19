@@ -46,13 +46,18 @@ def get_resource_template_readme() -> dict[str, str]:
     }
 
 
-async def call_contents_changed_hooks(text_id: PydanticObjectId) -> None:
-    for resource in await ResourceBaseDocument.find(
-        ResourceBaseDocument.text_id == text_id, with_children=True
-    ).to_list():
-        await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
-            resource.id
-        )
+async def call_contents_changed_hooks(text_id: PydanticObjectId | None = None) -> None:
+    if not text_id:  # pragma: no cover
+        text_ids = [txt.id for txt in await TextDocument.find().to_list()]
+    else:
+        text_ids = [text_id]
+    for tid in text_ids:
+        for resource in await ResourceBaseDocument.find(
+            ResourceBaseDocument.text_id == tid, with_children=True
+        ).to_list():
+            await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
+                resource.id
+            )
 
 
 class CommonResourceSearchQueryData(ModelBase):
