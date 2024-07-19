@@ -88,7 +88,7 @@ class TextAnnotation(ResourceTypeABC):
                     {
                         "$set": {
                             "distinct": {
-                                "$setUnion": "$allValues",
+                                "$setUnion": "$values",
                             }
                         }
                     },
@@ -118,20 +118,16 @@ class TextAnnotation(ResourceTypeABC):
             .to_list()
         )
 
-        ###########################################################
-        ##### THERE IS AN ERROR IN THE ABOVE AGGREGATION!!! #######
-        ###########################################################
-
         # sort distinct annotation values ("distinct") by
-        # occurrence count (from "values")
+        # occurrence count (from "values") and prepare data structure for model update
         for anno in anno_aggs:
-            if "distinct" in anno:
-                anno["distinct"].sort(
-                    reverse=True,
-                    key=lambda v: anno.get("values", []).count(v),
-                )
-            if "values" in anno:
-                del anno["values"]
+            anno["distinct"] = anno.get("distinct", [])
+            anno["values"] = sorted(
+                anno["distinct"],
+                key=lambda v: anno.get("values", []).count(v),
+                reverse=True,
+            )
+            del anno["distinct"]
 
         # update aggregations in DB
         resource_doc.aggregations = anno_aggs
