@@ -41,8 +41,8 @@ const props = withDefaults(
 
 const showDetailsModal = ref(false);
 const tokenDetailsData = ref<TextAnnotationContentRead['tokens'][number]>();
-const tokenDetailsComment = computed(
-  () => tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value
+const tokenDetailsComment = computed(() =>
+  tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value.join(' ')
 );
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
@@ -126,7 +126,7 @@ function applyAnnotationDisplayTemplate(
     const content =
       item.template.content
         ?.replace(/k/g, item.data?.key || '')
-        .replace(/v/g, item.data?.value || '') || '';
+        .replace(/v/g, item.data?.value.join('/') || '') || '';
     const prefix = i > 0 ? item.template.prefix || '' : '';
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
@@ -162,7 +162,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
           'token-with-annos': !!token.annotations?.length,
           'token-with-comment': !!token.annotations?.find((a) => a.key === 'comment'),
         }"
-        :title="token.comment || undefined"
+        :title="token.comment?.join(' ') || undefined"
         @click="handleTokenClick(token)"
       >
         <div class="token b i" :style="fontStyle">
@@ -213,7 +213,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
         <template v-for="(annotation, index) in tokenDetailsData?.annotations" :key="index">
           <tr v-if="annotation.key !== 'comment'">
             <td>{{ annotation.key }}</td>
-            <td class="content-font">{{ annotation.value }}</td>
+            <td class="content-font">{{ annotation.value.join('/') }}</td>
           </tr>
         </template>
       </tbody>
