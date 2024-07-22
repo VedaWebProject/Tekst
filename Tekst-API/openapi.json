@@ -14752,7 +14752,8 @@
         },
         "type": "array",
         "maxItems": 64,
-        "minItems": 1
+        "minItems": 1,
+        "description": "List of values of an annotation"
       },
       "TextCreate": {
         "properties": {
