@@ -402,6 +402,7 @@ TextAnnotationValues = TypeAliasType(
             min_length=1,
             max_length=64,
         ),
+        BeforeValidator(lambda v: [v] if isinstance(v, str) else v),
     ],
 )
 
