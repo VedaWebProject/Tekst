@@ -4153,11 +4153,8 @@ export interface components {
        * @description Key of the annotation
        */
       key: string;
-      /**
-       * Value
-       * @description Value of the annotation
-       */
-      value: string;
+      /** @description Value(s) of the annotation */
+      value: components['schemas']['TextAnnotationValues'];
     };
     /** TextAnnotationQueryEntry */
     TextAnnotationQueryEntry: {
@@ -4548,6 +4545,9 @@ export interface components {
        */
       lb?: boolean;
     };
+    /** @description Value of an annotation */
+    TextAnnotationValue: string;
+    TextAnnotationValues: components['schemas']['TextAnnotationValue'][];
     /** TextCreate */
     TextCreate: {
       /**

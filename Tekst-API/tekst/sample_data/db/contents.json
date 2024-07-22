@@ -546,14 +546,14 @@
     "tokens": [
       {
         "token": "Fuchs",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       {
         "token": "du",
         "annotations": [
-          { "key": "Entity", "value": "Fox" },
-          { "key": "comment", "value": "This is a comment." }
+          { "key": "Entity", "value": ["Fox"] },
+          { "key": "comment", "value": ["This is a comment."] }
         ],
         "lb": false
       },
@@ -561,7 +561,7 @@
       { "token": "die", "annotations": [], "lb": false },
       {
         "token": "Gans",
-        "annotations": [{ "key": "Entity", "value": "Goose" }],
+        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
         "lb": false
       },
       { "token": "gestohlen", "annotations": [], "lb": false }
@@ -579,7 +579,7 @@
       { "token": "gib", "annotations": [], "lb": false },
       {
         "token": "sie",
-        "annotations": [{ "key": "Entity", "value": "Goose" }],
+        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
         "lb": false
       },
       { "token": "wieder", "annotations": [], "lb": false },
@@ -599,13 +599,13 @@
       { "token": "wird", "annotations": [], "lb": false },
       {
         "token": "dich",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "der", "annotations": [], "lb": false },
       {
         "token": "Jäger",
-        "annotations": [{ "key": "Entity", "value": "Hunter" }],
+        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
         "lb": false
       },
       { "token": "holen", "annotations": [], "lb": false }
@@ -636,7 +636,7 @@
     "tokens": [
       {
         "token": "Seine",
-        "annotations": [{ "key": "Entity", "value": "Hunter" }],
+        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
         "lb": false
       },
       { "token": "große", "annotations": [], "lb": false },
@@ -657,7 +657,7 @@
       { "token": "auf", "annotations": [], "lb": false },
       {
         "token": "dich",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "den", "annotations": [], "lb": false },
@@ -676,7 +676,7 @@
       { "token": "dass", "annotations": [], "lb": false },
       {
         "token": "dich",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "färbt", "annotations": [], "lb": false },
@@ -699,7 +699,7 @@
       { "token": "bist", "annotations": [], "lb": false },
       {
         "token": "du",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "tot", "annotations": [], "lb": false }
@@ -717,7 +717,7 @@
       { "token": "Liebes", "annotations": [], "lb": false },
       {
         "token": "Füchslein",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "lass", "annotations": [], "lb": false },
@@ -753,7 +753,7 @@
       { "token": "nimm", "annotations": [], "lb": false },
       {
         "token": "du",
-        "annotations": [{ "key": "Entity", "value": "Fox" }],
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
         "lb": false
       },
       { "token": "brauchst", "annotations": [], "lb": false },
@@ -774,7 +774,7 @@
       { "token": "der", "annotations": [], "lb": false },
       {
         "token": "Maus",
-        "annotations": [{ "key": "Entity", "value": "Mouse" }],
+        "annotations": [{ "key": "Entity", "value": ["Mouse"] }],
         "lb": false
       },
       { "token": "vorlieb", "annotations": [], "lb": false }

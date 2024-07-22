@@ -178,7 +178,7 @@ async def create_indices(
         tasks.TaskType.INDICES_CREATE_UPDATE,
         user_id=user.id if user else None,
         task_kwargs={
-            "overwrite_existing_index": overwrite_existing_indices,
+            "overwrite_existing_indices": overwrite_existing_indices,
         },
     )
 

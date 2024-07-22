@@ -13980,11 +13980,12 @@
             "description": "Key of the annotation"
           },
           "value": {
-            "type": "string",
-            "maxLength": 256,
-            "minLength": 1,
-            "title": "Value",
-            "description": "Value of the annotation"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextAnnotationValues"
+              }
+            ],
+            "description": "Value(s) of the annotation"
           }
         },
         "type": "object",
@@ -14738,6 +14739,20 @@
           "token"
         ],
         "title": "TextAnnotationToken"
+      },
+      "TextAnnotationValue": {
+        "type": "string",
+        "maxLength": 256,
+        "minLength": 1,
+        "description": "Value of an annotation"
+      },
+      "TextAnnotationValues": {
+        "items": {
+          "$ref": "#/components/schemas/TextAnnotationValue"
+        },
+        "type": "array",
+        "maxItems": 64,
+        "minItems": 1
       },
       "TextCreate": {
         "properties": {

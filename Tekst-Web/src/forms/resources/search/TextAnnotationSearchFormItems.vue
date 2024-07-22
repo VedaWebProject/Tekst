@@ -25,11 +25,7 @@ function handleUpdate(field: string, value: any) {
 }
 
 function getAnnotationKeyOptions() {
-  return (
-    props.resource.aggregations
-      ?.filter((agg) => !model.value.anno?.find((ann) => ann.k === agg.key))
-      .map((agg) => ({ label: agg.key, value: agg.key })) || []
-  );
+  return props.resource.aggregations?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
 }
 
 function getAnnotationValueOptions(key: string): { label: string; value: string }[] {
