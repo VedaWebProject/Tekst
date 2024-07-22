@@ -43,8 +43,7 @@ class ExternalReferences(ResourceTypeABC):
             "text": {
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
-                "fields": {"strict": {"type": "text", "index_prefixes": {}}},
-                "index_prefixes": {},
+                "fields": {"strict": {"type": "text"}},
             },
         }
 

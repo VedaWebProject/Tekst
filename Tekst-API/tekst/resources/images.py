@@ -46,10 +46,8 @@ class Images(ResourceTypeABC):
                 "fields": {
                     "strict": {
                         "type": "text",
-                        "index_prefixes": {},
                     }
                 },
-                "index_prefixes": {},
             },
         }
 

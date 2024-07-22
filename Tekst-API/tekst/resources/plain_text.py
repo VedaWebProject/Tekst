@@ -47,10 +47,8 @@ class PlainText(ResourceTypeABC):
                 "fields": {
                     "strict": {
                         "type": "text",
-                        "index_prefixes": {},
                     }
                 },
-                "index_prefixes": {},
             },
         }
 
