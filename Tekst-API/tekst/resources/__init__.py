@@ -145,7 +145,8 @@ class ResourceTypeABC(ABC):
             comment={
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
-                "fields": {"strict": {"type": "text"}},
+                "fields": {"strict": {"type": "text", "index_prefixes": {}}},
+                "index_prefixes": {},
             },
             **cls.rtype_index_doc_props(),
         )
