@@ -63,6 +63,8 @@ services:
   es:
     build:
       context: ./Tekst-API/deployment/elasticsearch
+      ulimits:
+        nofile: 65535
     image: "elasticsearch:tekst"
     environment:
       discovery.type: single-node
