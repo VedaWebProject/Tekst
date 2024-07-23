@@ -43,7 +43,7 @@ Configuration for the connection to the Elasticsearch server
 | `TEKST_ES__HOST` | Elasticsearch host (String – default: `127.0.0.1`) |
 | `TEKST_ES__PORT` | Elasticsearch port (Integer – default: `9200`) |
 | `TEKST_ES__PREFIX` | Elasticsearch prefix (for index, templates, etc.) (String – default: `tekst`) |
-| `TEKST_ES__INIT_TIMEOUT_S` | Timeout for waiting for Elasticsearch service to be available on startup (Integer – default: `120`) |
+| `TEKST_ES__INIT_TIMEOUT_S` | Timeout for waiting for Elasticsearch service to be available on startup (Integer – default: `240`) |
 | `TEKST_ES__MAX_FIELD_MAPPINGS` | Max. number of field mappings per search index – given there is enough memory, this can be increased in case there are e.g. annotation resources with many distinct annotation keys (these are dynamically mapped fields). The admin maintenance UI shows a warning if an index is about to hit this value. Any field mapping surpassing this value will be ignored and won't be searchable. (Integer – default: `1000`) |
 
 

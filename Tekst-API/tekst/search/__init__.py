@@ -46,30 +46,37 @@ _cfg: TekstConfig = get_config()
 _es_client: Elasticsearch | None = None
 
 
-async def init_es_client(
-    es_uri: str = _cfg.es.uri,
-) -> Elasticsearch:
+async def _wait_for_es() -> bool:
+    global _es_client
+    if _es_client is not None:
+        for i in range(_cfg.es.init_timeout_s):
+            if _es_client.ping():
+                return True
+            if i % 10 == 0:
+                log.debug(
+                    f"Waiting for Elasticsearch service at {_cfg.es.uri} "
+                    f"({i}/{_cfg.es.init_timeout_s} seconds)..."
+                )
+                await asyncio.sleep(1)
+        else:
+            log.critical(f"Could not connect to Elasticsearch at {_cfg.es.uri}!")
+            return False
+    else:
+        await init_es_client()
+
+
+async def init_es_client() -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(es_uri)
-        for i in range(_cfg.es.init_timeout_s):
-            if _es_client.ping():
-                break
-            if i % 10 == 0:
-                log.debug(
-                    f"Waiting for Elasticsearch service at {es_uri} "
-                    f"({i}/{_cfg.es.init_timeout_s} seconds)..."
-                )
-            await asyncio.sleep(1)
-        else:
-            log.critical(f"Could not connect to Elasticsearch at {es_uri}!")
-            raise RuntimeError("Timed out waiting for Elasticsearch service!")
+        _es_client = Elasticsearch(_cfg.es.uri)
+        if not await _wait_for_es():
+            raise RuntimeError("Waiting for Elasticsearch client exceeded timeout!")
     return _es_client
 
 
-async def _get_es_client(es_uri: str = _cfg.es.uri) -> Elasticsearch:
-    return await init_es_client(es_uri)
+async def _get_es_client() -> Elasticsearch:
+    return await init_es_client()
 
 
 def get_es_status() -> dict[str, Any] | None:
@@ -107,6 +114,7 @@ async def create_indices_task(
     overwrite_existing_indices: bool = True,
 ) -> dict[str, float]:
     op_id = log_op_start("Create search indices", level="INFO")
+    await _wait_for_es()
     await _setup_index_templates()
 
     # get existing search indices

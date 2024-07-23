@@ -142,7 +142,7 @@ class ElasticsearchConfig(ConfigSubSection):
     host: str = "127.0.0.1"
     port: int = 9200
     prefix: str = "tekst"
-    init_timeout_s: int = 120
+    init_timeout_s: int = 240
     max_field_mappings: int = 1000
 
     @field_validator("host", mode="before")

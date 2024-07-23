@@ -134,7 +134,7 @@ class TextAnnotation(ResourceTypeABC):
         cls,
         resource_id: PydanticObjectId,
     ) -> None:
-        op_id = log_op_start(f"Update aggregations for resource {resource_id}")
+        op_id = log_op_start(f"Generate aggregations for resource {resource_id}")
         try:
             await cls._update_aggregations(resource_id)
         except Exception as e:
