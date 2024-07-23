@@ -27,8 +27,6 @@ services:
   es:
     build:
       context: ../deployment/elasticsearch
-      ulimits:
-        nofile: 65535
     image: "elasticsearch:tekst"
     deploy:
       resources:
