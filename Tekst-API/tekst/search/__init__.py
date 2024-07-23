@@ -10,7 +10,7 @@ from elasticsearch import Elasticsearch
 
 from tekst import db, tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logs import log, log_op_start, log_op_end
+from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
