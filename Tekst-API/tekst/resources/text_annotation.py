@@ -273,7 +273,8 @@ class TextAnnotation(ResourceTypeABC):
                 {
                     "token": token.token or "",
                     "annotations": {
-                        anno.key: anno.value for anno in token.annotations or []
+                        anno.key: anno.value[0] if len(anno.value) == 1 else anno.value
+                        for anno in token.annotations
                     },
                 }
                 for token in content.tokens
