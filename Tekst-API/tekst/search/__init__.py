@@ -10,7 +10,7 @@ from elasticsearch import Elasticsearch
 
 from tekst import db, tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logs import log, log_timed_op
+from tekst.logs import log, log_op_start, log_op_end
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -106,7 +106,7 @@ async def _setup_index_templates() -> None:
 async def create_indices_task(
     overwrite_existing_indices: bool = True,
 ) -> dict[str, float]:
-    op_id = log_timed_op("Create search indices")
+    op_id = log_op_start("Create search indices", level="INFO")
     await _setup_index_templates()
 
     # get existing search indices
@@ -148,12 +148,12 @@ async def create_indices_task(
             raise RuntimeError("Failed to extend index mappings!")
 
         # populate newly created index
-        populate_op_id = log_timed_op(f"Index resources for text '{text.title}'")
+        populate_op_id = log_op_start(f"Index resources for text '{text.title}'")
         try:
             await _populate_index(new_index_name, text)
         except Exception as e:
-            log_timed_op(populate_op_id, failed_msg=str(e))
-        log_timed_op(populate_op_id)
+            log_op_end(populate_op_id, failed=True, failed_msg=str(e))
+        log_op_end(populate_op_id)
 
     # delete all other/old indices matching the used index naming pattern
     if existing_indices:
@@ -166,7 +166,7 @@ async def create_indices_task(
     await update_settings(indices_created_at=datetime.utcnow())
 
     return {
-        "took": round(log_timed_op(op_id), 2),
+        "took": round(log_op_end(op_id), 2),
     }
 
 

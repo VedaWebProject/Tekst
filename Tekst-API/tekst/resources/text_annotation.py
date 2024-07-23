@@ -6,7 +6,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
 
-from tekst.logs import log_timed_op
+from tekst.logs import log_op_start, log_op_end
 from tekst.models.common import ModelBase, PydanticObjectId
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import ResourceBase, ResourceExportFormat
@@ -134,12 +134,13 @@ class TextAnnotation(ResourceTypeABC):
         cls,
         resource_id: PydanticObjectId,
     ) -> None:
-        op_id = log_timed_op(f"Update aggregations for resource {resource_id}")
+        op_id = log_op_start(f"Update aggregations for resource {resource_id}")
         try:
             await cls._update_aggregations(resource_id)
         except Exception as e:
-            log_timed_op(op_id, failed_msg=str(e))
-        log_timed_op(op_id)
+            log_op_end(op_id, failed=True)
+            raise e
+        log_op_end(op_id)
 
     @classmethod
     def rtype_es_queries(
