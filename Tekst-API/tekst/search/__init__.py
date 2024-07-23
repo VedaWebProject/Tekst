@@ -49,13 +49,13 @@ _es_client: Elasticsearch | None = None
 async def _wait_for_es() -> bool:
     global _es_client
     if _es_client is not None:
-        for i in range(_cfg.es.init_timeout_s):
+        for i in range(_cfg.es.timeout_init_s):
             if _es_client.ping():
                 return True
             if i % 10 == 0:
                 log.debug(
                     f"Waiting for Elasticsearch service at {_cfg.es.uri} "
-                    f"({i}/{_cfg.es.init_timeout_s} seconds)..."
+                    f"({i}/{_cfg.es.timeout_init_s} seconds)..."
                 )
                 await asyncio.sleep(1)
         else:
@@ -69,7 +69,7 @@ async def init_es_client() -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(_cfg.es.uri)
+        _es_client = Elasticsearch(_cfg.es.uri, timeout=_cfg.es.timeout_general_s)
         if not await _wait_for_es():
             raise RuntimeError("Waiting for Elasticsearch client exceeded timeout!")
     return _es_client
@@ -168,7 +168,11 @@ async def create_indices_task(
         client.indices.delete(index=existing_indices)
 
     # perform initial bogus search (to initialize index stats)
-    client.search(index=IDX_ALIAS, query={"match_all": {}})
+    client.search(
+        index=IDX_ALIAS,
+        query={"match_all": {}},
+        timeout=_cfg.es.timeout_search_s,
+    )
 
     # update last indexing time
     await update_settings(indices_created_at=datetime.utcnow())
@@ -430,6 +434,7 @@ async def search_quick(
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": QUERY_SOURCE_INCLUDES},
+            timeout=_cfg.es.timeout_search_s,
         ),
     )
 
@@ -487,5 +492,6 @@ async def search_advanced(
             track_scores=True,
             sort=SORTING_PRESETS.get(settings_general.sorting_preset),
             source={"includes": QUERY_SOURCE_INCLUDES},
+            timeout=_cfg.es.timeout_search_s,
         ),
     )

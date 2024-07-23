@@ -142,7 +142,9 @@ class ElasticsearchConfig(ConfigSubSection):
     host: str = "127.0.0.1"
     port: int = 9200
     prefix: str = "tekst"
-    init_timeout_s: int = 240
+    timeout_init_s: int = 240
+    timeout_general_s: int = 30
+    timeout_search_s: str = "30s"
     max_field_mappings: int = 1000
 
     @field_validator("host", mode="before")
@@ -151,6 +153,13 @@ class ElasticsearchConfig(ConfigSubSection):
         if v is None:
             return v
         return quote(str(v).encode("utf8"), safe="")
+
+    @field_validator("timeout_search_s", mode="before")
+    @classmethod
+    def timeout_int_to_time_value(cls, v) -> str:
+        if isinstance(v, int):
+            return f"{v}s"
+        return v
 
     @computed_field
     @property
