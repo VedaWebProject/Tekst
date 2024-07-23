@@ -1,7 +1,6 @@
 import asyncio
 
 from datetime import datetime, timezone
-from time import process_time
 from typing import Any
 from uuid import uuid4
 
@@ -11,7 +10,7 @@ from elasticsearch import Elasticsearch
 
 from tekst import db, tasks
 from tekst.config import TekstConfig, get_config
-from tekst.logs import log
+from tekst.logs import log, log_timed_op
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -106,8 +105,8 @@ async def _setup_index_templates() -> None:
 
 async def create_indices_task(
     overwrite_existing_indices: bool = True,
-) -> dict[str, Any]:
-    start_time = process_time()
+) -> dict[str, float]:
+    op_id = log_timed_op("Create search indices")
     await _setup_index_templates()
 
     # get existing search indices
@@ -149,7 +148,12 @@ async def create_indices_task(
             raise RuntimeError("Failed to extend index mappings!")
 
         # populate newly created index
-        await _populate_index(new_index_name, text)
+        populate_op_id = log_timed_op(f"Index resources for text '{text.title}'")
+        try:
+            await _populate_index(new_index_name, text)
+        except Exception as e:
+            log_timed_op(populate_op_id, failed_msg=str(e))
+        log_timed_op(populate_op_id)
 
     # delete all other/old indices matching the used index naming pattern
     if existing_indices:
@@ -162,7 +166,7 @@ async def create_indices_task(
     await update_settings(indices_created_at=datetime.utcnow())
 
     return {
-        "took": f"{round(process_time() - start_time, 2)}",
+        "took": round(log_timed_op(op_id), 2),
     }
 
 
@@ -171,7 +175,7 @@ async def create_indices(
     user: UserRead | None = None,
     overwrite_existing_indices: bool = True,
 ) -> tasks.TaskDocument:
-    log.info("Creating search index ...")
+    log.info("Creating search indices ...")
     # create index task
     return await tasks.create_task(
         create_indices_task,
@@ -208,8 +212,6 @@ async def _populate_index(
         ).to_list()
     ]
 
-    log.debug(f"Indexing resources for text '{text.title}'...")
-    start_time = process_time()
     # Initialize stack with all level 0 locations (sorted) of the current text.
     # Each item on the stack is a tuple containing (1) the location labels from the
     # root level up to the current location and (2) the location itself.
@@ -279,15 +281,8 @@ async def _populate_index(
     errors |= not _bulk_index(client, bulk_index_body)
     bulk_index_body = []
 
-    # log the results (very superficially)
     if errors:
-        log.error(f"There were errors populating index for '{text.title}'.")
-    else:
-        log.info(
-            f"Finished indexing resources for text '{text.title}' in "
-            f"{(process_time() - start_time):.2f} seconds."
-        )
-    errors = False
+        raise RuntimeError(f"Failed to index some documents for text '{text.title}'.")
 
 
 def _bulk_index(

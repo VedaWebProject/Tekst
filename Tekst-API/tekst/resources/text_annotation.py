@@ -1,13 +1,12 @@
 import csv
 
 from pathlib import Path
-from time import process_time
 from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
 
-from tekst.logs import log
+from tekst.logs import log_timed_op
 from tekst.models.common import ModelBase, PydanticObjectId
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import ResourceBase, ResourceExportFormat
@@ -41,9 +40,6 @@ class TextAnnotation(ResourceTypeABC):
         cls,
         resource_id: PydanticObjectId,
     ) -> None:
-        log.debug(f"Updating aggregations for resource {resource_id}...")
-        start_time = process_time()
-
         # get resource document
         rs_doc_model = cls.resource_model().document_model()
         resource_doc = await rs_doc_model.get(resource_id)
@@ -133,17 +129,17 @@ class TextAnnotation(ResourceTypeABC):
         resource_doc.aggregations = anno_aggs
         await resource_doc.replace()
 
-        log.debug(
-            f"Finished updating aggregations for resource {resource_id} "
-            f"in {(process_time() - start_time):.2f} seconds...."
-        )
-
     @classmethod
     async def contents_changed_hook(
         cls,
         resource_id: PydanticObjectId,
     ) -> None:
-        await cls._update_aggregations(resource_id)
+        op_id = log_timed_op(f"Update aggregations for resource {resource_id}")
+        try:
+            await cls._update_aggregations(resource_id)
+        except Exception as e:
+            log_timed_op(op_id, failed_msg=str(e))
+        log_timed_op(op_id)
 
     @classmethod
     def rtype_es_queries(

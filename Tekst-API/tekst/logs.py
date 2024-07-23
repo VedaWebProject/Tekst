@@ -1,6 +1,9 @@
 import logging
 
 from logging import config
+from time import perf_counter, process_time
+from typing import Literal
+from uuid import uuid4
 
 from tekst.config import TekstConfig, get_config
 
@@ -83,3 +86,51 @@ LOGGING_CONFIG = {
 
 config.dictConfig(LOGGING_CONFIG)
 log = logging.getLogger("tekst")
+
+
+# label, start_t, level_code, use_process_time
+_timed_ops: dict[str, tuple[str, float, int, bool]] = dict()
+
+
+def log_timed_op(
+    op_label_or_id: str,
+    *,
+    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "DEBUG",
+    use_process_time: bool = True,
+    failed_msg: str | None = None,
+    failed_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "ERROR",
+) -> str | float:
+    """
+    Creates a log message about a currently running operation including the process
+    time (or total elapsed time). When starting the timer, `op_label_or_id` must contain
+    an informative label for use in the log message describing the operation.
+    This function then returns an operation ID (str) that can be used to stop and log
+    the timed log message calling this very function again with the operation ID as
+    `op_label_or_id` (measured time is returned as float).
+    """
+    global _timed_ops
+    if not op_label_or_id:
+        raise ValueError("`op_label_or_id` must not be None or empty.")
+    op_entry = _timed_ops.pop(op_label_or_id, None)
+    if op_entry is None:
+        if level not in ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"):
+            level_code = logging.getLevelName("ERROR")
+        else:
+            level_code = logging.getLevelName(level)
+        op_id = str(uuid4())
+        start_t = process_time() if use_process_time else perf_counter()
+        _timed_ops[op_id] = (op_label_or_id, start_t, level_code, use_process_time)
+        log.log(level_code, f"Started: {op_label_or_id} ...")
+        return op_id
+    else:
+        label, start_t, level_code, use_proc_t = op_entry
+        dur = (process_time() if use_proc_t else perf_counter()) - start_t
+        if failed_msg is None:
+            log.log(level_code, f"Finished: {label} [took: {dur:.2f}s]")
+        else:
+            if failed_level not in ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"):
+                level_code = logging.getLevelName("ERROR")
+            else:
+                level_code = logging.getLevelName(failed_level)
+            log.log(level_code, f"Failed: {label} [{failed_msg}]")
+        return dur
