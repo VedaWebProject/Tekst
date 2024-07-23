@@ -208,7 +208,7 @@ async def _populate_index(
     if text is None:
         raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
-    bulk_index_max_size = 1000
+    bulk_index_max_size = 500
     bulk_index_body = []
     errors = False
     target_resource_ids = [
@@ -298,6 +298,7 @@ def _bulk_index(
     reqest_body: dict[str, Any],
 ) -> bool:
     resp = client.bulk(body=reqest_body)
+    log.debug(f"Bulk index response took: {resp.get('took', '???')}ms")
     return bool(resp) and not resp.get("errors", False)
 
 
