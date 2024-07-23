@@ -4547,6 +4547,7 @@ export interface components {
     };
     /** @description Value of an annotation */
     TextAnnotationValue: string;
+    /** @description List of values of an annotation */
     TextAnnotationValues: components['schemas']['TextAnnotationValue'][];
     /** TextCreate */
     TextCreate: {
