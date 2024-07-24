@@ -57,73 +57,82 @@ class TextAnnotation(ResourceTypeABC):
                     {"$project": {"anno": "$tokens.annotations"}},
                     {"$unwind": {"path": "$anno"}},
                     {"$unwind": {"path": "$anno"}},
+                    {"$unwind": {"path": "$anno.value"}},
                     # create one document for each annotation key,
-                    # collecting all values arrays and the key occurrence count
+                    # collecting all values and the key occurrence count
                     {
                         "$group": {
                             "_id": "$anno.key",
-                            "values": {"$push": "$anno.value"},  # distinct values
-                            "keyOcc": {"$sum": 1},  # key occurrence count
+                            "values": {"$push": "$anno.value"},
+                            "keyOcc": {"$sum": 1},
                         }
                     },
-                    # sort by key occurrence
-                    {"$sort": {"keyOcc": -1}},
-                    # flatten the values array
+                    # count per-key value occurrences on "values" field
                     {
                         "$set": {
                             "values": {
-                                "$reduce": {
-                                    "input": "$values",
-                                    "initialValue": [],
-                                    "in": {"$concatArrays": ["$$this", "$$value"]},
+                                "$map": {
+                                    "input": {"$setUnion": "$values"},
+                                    "as": "v",
+                                    "in": {
+                                        "value": "$$v",
+                                        "count": {
+                                            "$size": {
+                                                "$filter": {
+                                                    "input": "$values",
+                                                    "cond": {"$eq": ["$$this", "$$v"]},
+                                                }
+                                            }
+                                        },
+                                    },
                                 }
-                            },
-                        }
-                    },
-                    # reduce values items array to distict values
-                    {
-                        "$set": {
-                            "distinct": {
-                                "$setUnion": "$values",
                             }
                         }
                     },
-                    # project into target document format
+                    # sort values array by count
+                    {
+                        "$set": {
+                            "values": {
+                                "$sortArray": {
+                                    "input": "$values",
+                                    "sortBy": {"count": -1},
+                                }
+                            }
+                        }
+                    },
+                    # sort docs by key occurrence
+                    {"$sort": {"keyOcc": -1}},
+                    # remove values array if it contains more than 100 items
+                    {
+                        "$set": {
+                            "values": {
+                                "$cond": {
+                                    "if": {"$gt": [{"$size": "$values"}, 100]},
+                                    "then": "$$REMOVE",
+                                    "else": "$values",
+                                }
+                            }
+                        }
+                    },
+                    # project to final doc format,
+                    # with values array only containing the values
                     {
                         "$project": {
                             "_id": 0,
                             "key": "$_id",
-                            "distinct": {
-                                "$cond": {  # exclude if count of distict values > 100
-                                    "if": {"$gt": [{"$size": "$distinct"}, 100]},
-                                    "then": "$$REMOVE",
-                                    "else": "$distinct",
+                            "values": {
+                                "$map": {
+                                    "input": "$values",
+                                    "as": "v",
+                                    "in": "$$v.value",
                                 }
                             },
-                            "values": {
-                                "$cond": {  # exclude if count of values > 100
-                                    "if": {"$gt": [{"$size": "$values"}, 100]},
-                                    "then": "$$REMOVE",
-                                    "else": "$values",
-                                },
-                            },
-                        },
+                        }
                     },
                 ]
             )
             .to_list()
         )
-
-        # sort distinct annotation values ("distinct") by
-        # occurrence count (from "values") and prepare data structure for model update
-        for anno in anno_aggs:
-            anno["distinct"] = anno.get("distinct", [])
-            anno["values"] = sorted(
-                anno["distinct"],
-                key=lambda v: anno.get("values", []).count(v),
-                reverse=True,
-            )
-            del anno["distinct"]
 
         # update aggregations in DB
         resource_doc.aggregations = anno_aggs
@@ -275,7 +284,9 @@ class TextAnnotation(ResourceTypeABC):
                     "annotations": {
                         anno.key: anno.value[0] if len(anno.value) == 1 else anno.value
                         for anno in token.annotations
-                    },
+                    }
+                    if token.annotations
+                    else None,
                 }
                 for token in content.tokens
             ],
