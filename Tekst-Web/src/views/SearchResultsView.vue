@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { NothingFoundIcon, SearchResultsIcon } from '@/icons';
+import { ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NFlex, NList, NTime, NSpin, NPagination } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
@@ -236,6 +236,11 @@ onBeforeMount(() => processQuery());
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
+    <huge-labelled-icon
+      v-else-if="searchError"
+      :icon="ErrorIcon"
+      :message="$t('errors.unexpected')"
+    />
     <huge-labelled-icon v-else :icon="NothingFoundIcon" :message="$t('search.nothingFound')" />
     <reuse-template />
   </div>
