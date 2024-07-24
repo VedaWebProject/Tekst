@@ -11,8 +11,10 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useResourcesStore } from './resources';
+import { useStateStore } from './state';
 
 export const useSearchStore = defineStore('search', () => {
+  const state = useStateStore();
   const router = useRouter();
   const { message } = useMessages();
   const resources = useResourcesStore();
@@ -58,6 +60,17 @@ export const useSearchStore = defineStore('search', () => {
     () => {
       lastReq.value = undefined;
     }
+  );
+
+  // set quick search settings text selection to current text on working text change
+  watch(
+    () => state.text?.id,
+    (after) => {
+      if (after) {
+        settingsQuick.value.txt = [after];
+      }
+    },
+    { immediate: true }
   );
 
   return {
