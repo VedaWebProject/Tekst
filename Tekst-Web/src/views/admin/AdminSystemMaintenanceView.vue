@@ -137,7 +137,7 @@ onBeforeMount(() => {
     </n-flex>
 
     <n-table size="small" style="table-layout: fixed" :bordered="false" :bottom-bordered="false">
-      <template v-for="(indexInfo, i) in indicesInfo" :key="i">
+      <template v-for="(indexInfo, i) in indicesInfo" :key="`${i}_${indexInfo.textId}`">
         <thead>
           <tr>
             <th
@@ -148,7 +148,7 @@ onBeforeMount(() => {
                 ).fade4,
               }"
             >
-              {{ pfData?.texts.find((t) => t.id === indexInfo.textId)?.title }}
+              {{ pfData?.texts.find((t) => t.id === indexInfo.textId)?.title || '???' }}
             </th>
           </tr>
         </thead>
