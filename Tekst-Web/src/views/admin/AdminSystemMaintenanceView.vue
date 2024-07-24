@@ -12,6 +12,7 @@ import { useTasks } from '@/composables/tasks';
 import { utcToLocalTime } from '@/utils';
 import { usePlatformData } from '@/composables/platformData';
 import { useThemeStore } from '@/stores';
+import { RouterLink } from 'vue-router';
 
 const { pfData } = usePlatformData();
 const theme = useThemeStore();
@@ -21,6 +22,7 @@ const { addTask, startTasksPolling } = useTasks();
 const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
 const indicesInfoLoading = ref(false);
+const resourceMaintenanceLoading = ref(false);
 const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
@@ -31,12 +33,25 @@ const statusColors: Record<string, string> = {
 };
 
 async function createIndex() {
+  indicesInfoLoading.value = true;
   const { data, error } = await GET('/search/index/create');
   if (!error) {
     addTask(data);
     message.info($t('admin.system.maintenance.indices.actionCreateStarted'));
     startTasksPolling();
   }
+  indicesInfoLoading.value = false;
+}
+
+async function triggerResourceMaintenance() {
+  resourceMaintenanceLoading.value = true;
+  const { data, error } = await GET('/resources/maintenance');
+  if (!error) {
+    addTask(data);
+    message.info($t('admin.system.maintenance.resourceMaintenance.actionStarted'));
+    startTasksPolling();
+  }
+  resourceMaintenanceLoading.value = false;
 }
 
 async function deleteTask(id: string) {
@@ -113,7 +128,7 @@ onBeforeMount(() => {
   </icon-heading>
 
   <div class="content-block">
-    <!-- SEARCH INDEX -->
+    <!-- SEARCH INDICES -->
     <h3>{{ $t('admin.system.maintenance.indices.heading') }}</h3>
 
     <n-flex style="margin: var(--layout-gap) 0">
@@ -178,6 +193,23 @@ onBeforeMount(() => {
         </tr>
       </template>
     </n-table>
+
+    <!-- RESOURCE MAINTENANCE -->
+    <h3>{{ $t('admin.system.maintenance.resourceMaintenance.heading') }}</h3>
+
+    <n-flex style="margin: var(--layout-gap) 0">
+      <n-button
+        secondary
+        :disabled="resourceMaintenanceLoading"
+        :loading="resourceMaintenanceLoading"
+        @click="triggerResourceMaintenance"
+      >
+        <template #icon>
+          <n-icon :component="MaintenanceIcon" />
+        </template>
+        {{ $t('general.runAction') }}
+      </n-button>
+    </n-flex>
 
     <!-- SYSTEM BACKGROUND TASKS -->
     <h3>{{ $t('tasks.title') }}</h3>
@@ -260,7 +292,15 @@ onBeforeMount(() => {
               }}
             </td>
             <td class="nowrap">
-              {{ task.userId ? $t('models.user.modelLabel') : $t('general.system') }}
+              <router-link
+                v-if="task.userId"
+                :to="{ name: 'user', params: { username: task.userId } }"
+              >
+                {{ $t('models.user.modelLabel') }}
+              </router-link>
+              <span v-else>
+                {{ $t('general.system') }}
+              </span>
             </td>
             <td class="nowrap">
               <n-button

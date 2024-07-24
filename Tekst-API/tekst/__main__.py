@@ -2,9 +2,11 @@ import asyncio
 
 import click
 
+from tekst import db
 from tekst.config import TekstConfig, get_config
 from tekst.openapi import generate_openapi_schema
-from tekst.search import util_create_indices
+from tekst.resources import call_resource_maintenance_hooks, init_resource_types_mgr
+from tekst.search import create_indices_task
 from tekst.setup import app_setup
 
 
@@ -16,6 +18,18 @@ Command line interface to some utilities of Tekst-API
 _cfg: TekstConfig = get_config()
 
 
+async def _create_indices() -> None:
+    init_resource_types_mgr()
+    await db.init_odm()
+    await create_indices_task()
+
+
+async def _run_resource_maintenance() -> None:
+    init_resource_types_mgr()
+    await db.init_odm()
+    await call_resource_maintenance_hooks()
+
+
 @click.command()
 def setup():
     asyncio.run(app_setup())
@@ -23,7 +37,12 @@ def setup():
 
 @click.command()
 def index():
-    asyncio.run(util_create_indices())
+    asyncio.run(_create_indices())
+
+
+@click.command()
+def maintenance():
+    asyncio.run(_run_resource_maintenance())
 
 
 @click.command()
@@ -128,6 +147,7 @@ def cli():
 # add individual commands to CLI app
 cli.add_command(setup)
 cli.add_command(index)
+cli.add_command(maintenance)
 cli.add_command(schema)
 cli.add_command(dev)
 

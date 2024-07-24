@@ -43,6 +43,7 @@ from tekst.resources import (
     AnyResourceRead,
     AnyResourceReadBody,
     AnyResourceUpdateBody,
+    call_resource_maintenance_hooks,
     get_resource_template_readme,
     resource_types_mgr,
 )
@@ -108,6 +109,27 @@ router = APIRouter(
     prefix="/resources",
     tags=["resources"],
 )
+
+
+@router.get(
+    "/maintenance",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=tasks.TaskRead,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def trigger_resources_maintenance(
+    su: SuperuserDep,
+) -> tasks.TaskDocument:
+    return await tasks.create_task(
+        call_resource_maintenance_hooks,
+        tasks.TaskType.RESOURCE_MAINTENANCE_HOOK,
+        user_id=su.id,
+    )
 
 
 @router.post(
@@ -833,11 +855,6 @@ async def _import_resource_contents_task(
         errors_count += len(contents["creates"]) - created_count
     else:
         created_count = 0
-
-    # call content's resource's hook for updated content
-    await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
-        resource_id
-    )
 
     return {
         "created": created_count,

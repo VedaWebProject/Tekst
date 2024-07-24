@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
+from time import perf_counter
 from typing import Annotated, Any, Union
 
 import jsonref
@@ -46,7 +47,10 @@ def get_resource_template_readme() -> dict[str, str]:
     }
 
 
-async def call_contents_changed_hooks(text_id: PydanticObjectId | None = None) -> None:
+async def call_resource_maintenance_hooks(
+    text_id: PydanticObjectId | None = None,
+) -> dict[str, float]:
+    start_time = perf_counter()
     if not text_id:  # pragma: no cover
         text_ids = [txt.id for txt in await TextDocument.find().to_list()]
     else:
@@ -55,9 +59,13 @@ async def call_contents_changed_hooks(text_id: PydanticObjectId | None = None) -
         for resource in await ResourceBaseDocument.find(
             ResourceBaseDocument.text_id == tid, with_children=True
         ).to_list():
-            await resource_types_mgr.get(resource.resource_type).contents_changed_hook(
-                resource.id
-            )
+            await resource_types_mgr.get(
+                resource.resource_type
+            ).resource_maintenance_hook(resource.id)
+
+    return {
+        "took": round(perf_counter() - start_time, 2),
+    }
 
 
 class CommonResourceSearchQueryData(ModelBase):
@@ -306,9 +314,9 @@ class ResourceTypeABC(ABC):
             )
 
     @classmethod
-    async def contents_changed_hook(cls, resource_id: PydanticObjectId) -> None:
+    async def resource_maintenance_hook(cls, resource_id: PydanticObjectId) -> None:
         """
-        Will be called whenever the contents of the resource with the given ID changes.
+        Will be called whenever the central resource maintenance procedures are run.
         This may be overridden by concrete resource implementations to run arbitrary
         maintenance procedures. Otherwise it is juust a no-op.
         """

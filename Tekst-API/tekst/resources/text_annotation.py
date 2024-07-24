@@ -139,7 +139,7 @@ class TextAnnotation(ResourceTypeABC):
         await resource_doc.replace()
 
     @classmethod
-    async def contents_changed_hook(
+    async def resource_maintenance_hook(
         cls,
         resource_id: PydanticObjectId,
     ) -> None:

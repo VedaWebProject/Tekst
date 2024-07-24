@@ -21,6 +21,7 @@ general:
   moveDownAction: Move down
   refreshAction: Refresh
   exportAction: Export
+  runAction: Run
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
@@ -42,6 +43,7 @@ general:
     help texts on this topic. You can find the help texts for any page by clicking the
     little '?' icon next to the heading of each page. Are you sure you want to proceed?
   tekstFooterHint: This website is based on
+  takeAWhile: This might take a while.
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -112,9 +114,10 @@ tasks:
     resource_export: Generate resource export data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
-    contents_changed_hook: Update resource after changed contents
+    resource_maintenance_hook: Automatic maintenance of resource data
   results:
     indices_create_update: Search indices created in {took} seconds.
+    resource_maintenance_hook: Maintenance took {took} seconds.
     resource_import: Created {created} contents, updated {updated} contents, encountered {errors} errors.
 
 routes:
@@ -513,7 +516,7 @@ contents:
   btnAddContent: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
-  msgImportInfo: The import will be processed in the background. This might take a while.
+  msgImportInfo: The import will be processed in the background. @:general.takeAWhile
   msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
@@ -746,8 +749,11 @@ admin:
         fields: Fields
         createdAt: Created
         actionCreate: Reindex
-        actionCreateStarted: The search indices will be updated in the background. This might take a while.
+        actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
         actionCreateSuccess: Search indices have been updated
+      resourceMaintenance:
+        heading: Resource Data Maintenance
+        actionStarted: The automatic resource data maintenance is performed in the background. @:general.takeAWhile
       tasks:
         noTasks: No active background tasks
         type: Type

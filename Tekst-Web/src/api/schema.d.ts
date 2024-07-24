@@ -231,6 +231,10 @@ export interface paths {
     /** Delete task */
     delete: operations['deleteTask'];
   };
+  '/resources/maintenance': {
+    /** Trigger resources maintenance */
+    get: operations['triggerResourcesMaintenance'];
+  };
   '/resources': {
     /**
      * Find resources
@@ -4038,7 +4042,7 @@ export interface components {
       | 'resource_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
-      | 'contents_changed_hook';
+      | 'resource_maintenance_hook';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -6508,6 +6512,29 @@ export interface operations {
       422: {
         content: {
           'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Trigger resources maintenance */
+  triggerResourcesMaintenance: {
+    responses: {
+      /** @description Successful Response */
+      202: {
+        content: {
+          'application/json': components['schemas']['TaskRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };

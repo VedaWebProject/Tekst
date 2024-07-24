@@ -8,7 +8,7 @@ from beanie import PydanticObjectId
 from beanie.operators import Eq, In
 from elasticsearch import Elasticsearch
 
-from tekst import db, tasks
+from tekst import tasks
 from tekst.config import TekstConfig, get_config
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.content import ContentBaseDocument
@@ -25,7 +25,6 @@ from tekst.models.text import TextDocument
 from tekst.models.user import UserRead
 from tekst.resources import (
     AnyResourceSearchQuery,
-    init_resource_types_mgr,
     resource_types_mgr,
 )
 from tekst.search.templates import (
@@ -197,12 +196,6 @@ async def create_indices(
             "overwrite_existing_indices": overwrite_existing_indices,
         },
     )
-
-
-async def util_create_indices() -> None:
-    init_resource_types_mgr()
-    await db.init_odm()
-    await create_indices_task()
 
 
 async def _populate_index(

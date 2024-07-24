@@ -4,7 +4,7 @@ from beanie import PydanticObjectId
 from beanie.operators import Eq, In, Not
 from fastapi import APIRouter, Path, Query, status
 
-from tekst import errors, tasks
+from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -57,17 +57,6 @@ async def create_content(
 
     # if the content has a "html" field, sanitize it
     content = sanitize_model_html(content)
-
-    # create background task that calls the
-    # content's resource's hook for updated content
-    await tasks.create_task(
-        resource_types_mgr.get(content.resource_type).contents_changed_hook,
-        tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        target_id=content.resource_id,
-        task_kwargs={
-            "resource_id": content.resource_id,
-        },
-    )
 
     # create the content document and return it
     return (
@@ -145,17 +134,6 @@ async def update_content(
     # if the updated content has a "html" field, sanitize it
     updates = sanitize_model_html(updates)
 
-    # create background task that calls the
-    # content's resource's hook for updated content
-    await tasks.create_task(
-        resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
-        tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        target_id=content_doc.resource_id,
-        task_kwargs={
-            "resource_id": content_doc.resource_id,
-        },
-    )
-
     # apply updates, return the updated document
     return await content_doc.apply_updates(
         updates, exclude={"id", "resource_id", "location_id", "resource_type"}
@@ -185,17 +163,6 @@ async def delete_content(
         with_children=True,
     ).exists():
         raise errors.E_403_FORBIDDEN
-
-    # create background task that calls the
-    # content's resource's hook for updated content
-    await tasks.create_task(
-        resource_types_mgr.get(content_doc.resource_type).contents_changed_hook,
-        tasks.TaskType.CONTENTS_CHANGED_HOOK,
-        target_id=content_doc.resource_id,
-        task_kwargs={
-            "resource_id": content_doc.resource_id,
-        },
-    )
 
     # all fine, delete content
     await content_doc.delete()

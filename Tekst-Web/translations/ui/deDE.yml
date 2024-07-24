@@ -21,7 +21,7 @@ general:
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
   exportAction: Export
-  quickSearch: Schnellsuche
+  runAction: Ausführen
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
   warning: Warnung
@@ -45,6 +45,7 @@ general:
     neben der Überschrift der jeweiligen Seite klicken.
     Sind Sie sicher, dass Sie fortfahren möchten?
   tekstFooterHint: Diese Website basiert auf
+  takeAWhile: Dies kann einen Moment dauern.
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen
@@ -116,9 +117,10 @@ tasks:
     resource_export: Ressourcen-Export erstellen
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
-    contents_changed_hook: Ressource nach Änderung von Inhalten aktualisieren
+    resource_maintenance_hook: Automatische Wartung von Ressourcen-Daten
   results:
     indices_create_update: Suchindizes erzeugt in {took} Sekunden.
+    resource_maintenance_hook: Die Wartung hat {took} Sekunden gedauert.
     resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert, {errors} Fehler.'
 
 routes:
@@ -524,7 +526,7 @@ contents:
   btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
-  msgImportInfo: Der Import wird im Hintergrund verarbeitet. Dies kann eine Weile dauern.
+  msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:general.takeAWhile
   msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
@@ -771,8 +773,11 @@ admin:
         fields: Felder
         createdAt: Erzeugt
         actionCreate: Neuindexierung
-        actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. Dies kann einen Moment dauern.
+        actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
         actionCreateSuccess: Suchindizes wurden aktualisiert
+      resourceMaintenance:
+        heading: Wartung von Ressourcen-Daten
+        actionStarted: Die automatische Wartung von Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
       tasks:
         noTasks: Keine aktiven @:tasks.title
         type: Typ

@@ -24,7 +24,7 @@ class TaskType(Enum):
     RESOURCE_EXPORT = "resource_export"
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
-    CONTENTS_CHANGED_HOOK = "contents_changed_hook"
+    RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook"
 
 
 _task_type_props = {
@@ -33,7 +33,7 @@ _task_type_props = {
     TaskType.RESOURCE_EXPORT: {"locking": False},
     TaskType.BROADCAST_USER_NTFC: {"locking": False},
     TaskType.BROADCAST_ADMIN_NTFC: {"locking": False},
-    TaskType.CONTENTS_CHANGED_HOOK: {"locking": False},
+    TaskType.RESOURCE_MAINTENANCE_HOOK: {"locking": True},
 }
 
 

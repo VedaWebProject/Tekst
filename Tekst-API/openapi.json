@@ -3159,6 +3159,55 @@
         }
       }
     },
+    "/resources/maintenance": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Trigger resources maintenance",
+        "operationId": "triggerResourcesMaintenance",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/resources": {
       "post": {
         "tags": [
@@ -13731,7 +13780,7 @@
           "resource_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
-          "contents_changed_hook"
+          "resource_maintenance_hook"
         ],
         "title": "TaskType"
       },

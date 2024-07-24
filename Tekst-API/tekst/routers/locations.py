@@ -5,7 +5,7 @@ from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, Path, Query, status
 from pydantic import Field
 
-from tekst import errors, tasks
+from tekst import errors
 from tekst.auth import SuperuserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
@@ -19,7 +19,6 @@ from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
 )
-from tekst.resources import call_contents_changed_hooks
 
 
 router = APIRouter(
@@ -374,14 +373,6 @@ async def delete_location(
             await LocationDocument.find(In(LocationDocument.id, target_ids)).delete()
         ).deleted_count
         to_delete.pop(0)
-
-    # call each potentially affected resource's hook for updated content
-    if contents_deleted > 0:
-        await tasks.create_task(
-            call_contents_changed_hooks,
-            tasks.TaskType.CONTENTS_CHANGED_HOOK,
-            task_kwargs={"text_id": text_id},
-        )
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)
 
