@@ -42,7 +42,7 @@ const props = withDefaults(
 const showDetailsModal = ref(false);
 const tokenDetailsData = ref<TextAnnotationContentRead['tokens'][number]>();
 const tokenDetailsComment = computed(() =>
-  tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value.join(' ')
+  tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value.join('\n')
 );
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
@@ -200,7 +200,9 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
       :title="$t('general.comment')"
       style="margin-bottom: var(--layout-gap)"
     >
-      {{ tokenDetailsComment }}
+      <div style="white-space: pre-line">
+        {{ tokenDetailsComment }}
+      </div>
     </n-alert>
     <n-table :bordered="false" :bottom-bordered="false" size="small">
       <thead>
