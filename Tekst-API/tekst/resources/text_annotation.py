@@ -89,6 +89,18 @@ class TextAnnotation(ResourceTypeABC):
                             }
                         }
                     },
+                    # remove values array if it contains more than 100 items
+                    {
+                        "$set": {
+                            "values": {
+                                "$cond": {
+                                    "if": {"$gt": [{"$size": "$values"}, 100]},
+                                    "then": "$$REMOVE",
+                                    "else": "$values",
+                                }
+                            }
+                        }
+                    },
                     # sort values array by count
                     {
                         "$set": {
@@ -102,18 +114,6 @@ class TextAnnotation(ResourceTypeABC):
                     },
                     # sort docs by key occurrence
                     {"$sort": {"keyOcc": -1}},
-                    # remove values array if it contains more than 100 items
-                    {
-                        "$set": {
-                            "values": {
-                                "$cond": {
-                                    "if": {"$gt": [{"$size": "$values"}, 100]},
-                                    "then": "$$REMOVE",
-                                    "else": "$values",
-                                }
-                            }
-                        }
-                    },
                     # project to final doc format,
                     # with values array only containing the values
                     {
