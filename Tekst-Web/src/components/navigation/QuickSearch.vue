@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCollapse, NCollapseItem, NButton, NIcon, type InputInst } from 'naive-ui';
+import { NButton, NIcon, type InputInst } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -21,7 +21,6 @@ const router = useRouter();
 const showModal = ref(false);
 const searchInput = ref<string>('');
 const inputRef = ref<InputInst>();
-const settingsExpanded = ref<string[]>([]);
 
 function handleSearch(e: UIEvent) {
   e.preventDefault();
@@ -68,7 +67,7 @@ function gotoAdvancedSearch() {
 
   <generic-modal v-model:show="showModal" @after-enter="inputRef?.select()">
     <template #header>
-      <icon-heading level="1" :icon="SearchIcon" style="margin: 0">
+      <icon-heading level="2" :icon="SearchIcon" style="margin: 0">
         {{ $t('search.quickSearch.heading') }}
         <help-button-widget help-key="quickSearch" />
       </icon-heading>
@@ -81,7 +80,6 @@ function gotoAdvancedSearch() {
       placeholder="..."
       size="large"
       :max-length="512"
-      style="margin-bottom: var(--layout-gap)"
       @keydown.enter="handleSearch"
     >
       <template #prefix>
@@ -89,14 +87,10 @@ function gotoAdvancedSearch() {
       </template>
     </n-input-osk>
 
-    <n-collapse v-model:expanded-names="settingsExpanded">
-      <n-collapse-item :title="$t('search.settings.heading')" name="settings">
-        <div class="gray-box">
-          <quick-search-settings-form />
-          <general-search-settings-form />
-        </div>
-      </n-collapse-item>
-    </n-collapse>
+    <div class="gray-box">
+      <quick-search-settings-form />
+      <general-search-settings-form />
+    </div>
 
     <button-shelf top-gap>
       <template #start>

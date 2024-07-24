@@ -15,7 +15,11 @@ const textOptions = computed(() =>
 <template>
   <n-form :model="search.settingsQuick">
     <!-- TEXTS -->
-    <n-form-item path="defaultOperator" :label="$t('search.settings.quick.texts')">
+    <n-form-item
+      v-if="(pfData?.texts.length || 0) > 1"
+      path="defaultOperator"
+      :label="$t('search.settings.quick.texts')"
+    >
       <n-select
         v-model:value="search.settingsQuick.txt"
         :options="textOptions"
