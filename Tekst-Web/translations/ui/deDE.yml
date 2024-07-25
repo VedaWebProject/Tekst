@@ -79,7 +79,7 @@ errors:
   verifyUserBadToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
   verifyUserAlreadyVerified: Diese E-Mail-Adresse ist bereits verifiziert.
   resourcesLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
-  bookmarkExists: Sie haben bereits ein Lesezeichen für diese Fundstelle angelegt.
+  bookmarkExists: Sie haben bereits ein Lesezeichen für diese Belegstelle angelegt.
   uploadInvalidMimeTypeNotJson: Ungültiger Dateityp. Nur JSON-Dateien sind erlaubt.
   uploadInvalidJson: Die hochgeladene JSON-Datei ist ungültig.
   importIdMismatch: Eine ID in den Importdaten stimmt nicht mit der entsprechenden ID in der Anfrage überein.
@@ -143,7 +143,7 @@ routes:
     adminSystemUsers: '@:admin.heading - Benutzer'
     adminTextsSettings: '@:admin.heading - {text}: Allgemein'
     adminTextsLevels: '@:admin.heading - {text}: Ebenen'
-    adminTextsLocations: '@:admin.heading - {text}: Fundstellen'
+    adminTextsLocations: '@:admin.heading - {text}: Belegstellen'
     adminNewText: '@:admin.heading - Neuer Text'
     adminSystemSegments: '@:admin.heading - Segmente'
     adminSystemInfoPages: '@:admin.heading - Info-Seiten'
@@ -154,19 +154,19 @@ routes:
 
 browse:
   location:
-    modalHeading: Fundstelle
+    modalHeading: Belegstelle
     level: Ebene
-    submitBtn: Gehe zu Fundstelle
+    submitBtn: Gehe zu Belegstelle
   toolbar:
-    tipSelectLocation: Fundstelle auswählen
-    tipPreviousLocation: Vorherige Fundstelle auf dieser Ebene
-    tipNextLocation: Nächste Fundstelle auf dieser Ebene
+    tipSelectLocation: Belegstelle auswählen
+    tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene
+    tipNextLocation: Nächste Belegstelle auf dieser Ebene
     tipReducedView: Reduzierte Leseansicht umschalten
     tipOpenResourceList: Anzuzeigende Ressourcen auswählen
     tipNotOnDefaultLevel: Sie befinden sich nicht auf der Standard-Ebene dieses Textes!
   bookmarks:
     bookmarks: Lesezeichen
-    lblCreate: Neues Lesezeichen für diese Fundstelle erstellen
+    lblCreate: Neues Lesezeichen für diese Belegstelle erstellen
     commentModalTitle: Persönlicher Kommentar
     commentModalInputLabel: Kommentar (optional)
     createSuccess: Lesezeichen erstellt
@@ -178,9 +178,9 @@ browse:
     activateCategory: Zeige alle Ressourcen dieser Kategorie
     deactivateCategory: Verstecke alle Ressourcen dieser Kategorie
   uncategorized: Unkategorisiert
-  locationResourceNoData: Keine Daten für diese Fundstelle
-  textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Fundstellen definiert.
-  locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Fundstelle. Wählen Sie eine andere Fundstelle oder aktivieren Sie mehr Ressourcen.
+  locationResourceNoData: Keine Daten für diese Belegstelle
+  textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Belegstellen definiert.
+  locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Belegstelle. Wählen Sie eine andere Belegstelle oder aktivieren Sie mehr Ressourcen.
   showAllResources: alle anzeigen
   contents:
     widgets:
@@ -200,18 +200,18 @@ browse:
         title: Informationen
         citeAs: Zitieren als
         coverage: Abdeckung
-        coverageStatement: '{present} von {total} Fundstellen auf Ebene "{level}"'
+        coverageStatement: '{present} von {total} Belegstellen auf Ebene "{level}"'
       deactivateWidget:
         title: Ausblenden
       siblingsWidget:
-        title: Inhalt übergeordneter Fundstelle
+        title: Inhalt übergeordneter Belegstelle
       exportWidget:
         title: Export
         format: Format
         from: Von
         to: Bis
-        rangeError: Der ausgewählte Fundstellenbereich ist ungültig!
-        fullLocationRange: Alle Fundstellen auswählen
+        rangeError: Der ausgewählte Belegstellenbereich ist ungültig!
+        fullLocationRange: Alle Belegstellen auswählen
         msgExportStarted: Der Export wird im Hintergrund vorbereitet und wird heruntergeladen, sobalt er fertig ist.
         info:
           json: Umfassende Exportdaten als JSON - ein Format, das gut zur Weiterverarbeitung geeignet ist
@@ -270,8 +270,8 @@ models:
     level: Ebene | Ebenen
     levelLabel: Bezeichnung
     defaultLevel: Standardebene
-    locDelim: Fundstellentrennzeichen
-    labeledLocation: Ebene in Bezeichnung der Fundstellen einschließen
+    locDelim: Belegstellentrennzeichen
+    labeledLocation: Ebene in Bezeichnung der Belegstellen einschließen
     accentColor: Akzentfarbe
     resourceCategories: Ressourcen-Kategorien
     resourceCategoryKey: Schlüssel
@@ -282,7 +282,7 @@ models:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
   location:
-    modelLabel: Fundstelle | Fundstellen
+    modelLabel: Belegstelle | Belegstellen
     label: Bezeichnung
   resource:
     modelLabel: Ressource | Ressourcen
@@ -398,7 +398,7 @@ resources:
     Dies kann nicht rückgängig gemacht werden.
   infoCreateVersion: |
     Sie sind dabei, eine neue Version der Ressource "{title}" zu erstellen.
-    Diese neue Version wird für Fundstellen, für die sie keine eigenen Inhalte enthält,
+    Diese neue Version wird für Belegstellen, für die sie keine eigenen Inhalte enthält,
     die Inhalte der Originalversion anzeigen. Sie enthält zunächst keine eigenen Inhalte.
     Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalversion angelegt haben,
     können Sie dem Besitzer vorschlagen, diese oder Teile davon zu übernehmen.
@@ -524,26 +524,26 @@ contents:
   tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt in dieser Version springen
   tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt in dieser Version springen
   forComparison: 'Zum Vergleich: "{title}"'
-  noContent: Für diese Fundstelle liegen keine Inhalte vor.
+  noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
-  msgSaved: Der Inhalt für diese Fundstelle wurde gespeichert.
-  msgDeleted: Der Inhalt für diese Fundstelle wurde gelöscht.
+  msgSaved: Der Inhalt für diese Belegstelle wurde gespeichert.
+  msgDeleted: Der Inhalt für diese Belegstelle wurde gelöscht.
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:general.takeAWhile
-  msgNoNearest: Es gibt keine weiteren Fundstellen mit Inhalt in dieser Richtung.
-  confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Fundstelle löschen möchten?
-  msgNoOwnContentTitle: Kein eigner Inhalt für diese Fundstelle!
+  msgNoNearest: Es gibt keine weiteren Belegstellen mit Inhalt in dieser Richtung.
+  confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle löschen möchten?
+  msgNoOwnContentTitle: Kein eigner Inhalt für diese Belegstelle!
   msgNoOwnContentBody: |
-    Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Fundstelle.
+    Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Belegstelle.
     Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
   msgContentNoReducedView: Dieser Inhalt kann in der reduzierten Leseansicht nicht angezeigt werden.
   warnUrlInvalid: 'Die eingegebene URL scheint ungültig zu sein: {url}'
   corrections:
     notes: Korrekturnotizen
-    otherTitle: Weitere Fundstellen
-    otherMsg: – | Es gibt eine Korrekturnotiz für weitere Fundstellen | Es gibt {count} Korrekturnotizen für weitere Fundstellen
-    otherGotoPrev: Gehe zur nächsten vorhergehenden Fundstelle mit Korrekturnotizen
-    otherGotoNext: Gehe zur nächsten nachfolgenden Fundstelle mit Korrekturnotizen
+    otherTitle: Weitere Belegstellen
+    otherMsg: – | Es gibt eine Korrekturnotiz für weitere Belegstellen | Es gibt {count} Korrekturnotizen für weitere Belegstellen
+    otherGotoPrev: Gehe zur nächsten vorhergehenden Belegstelle mit Korrekturnotizen
+    otherGotoNext: Gehe zur nächsten nachfolgenden Belegstelle mit Korrekturnotizen
 
 account:
   account: Konto
@@ -685,7 +685,7 @@ admin:
         gravierenden Auswirkungen auf das Datenmodell des Textes.
         Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
         bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Fundstellen des Textes
+        anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
         an Ihre Bedürfnisse anpassen müssen.
         Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
         Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
@@ -696,7 +696,7 @@ admin:
         Ebene - egal, welcher Benutzer diese erstellt hat!
         Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
         zu verbinden, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Fundstellen des Textes
+        anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
         an Ihre Bedürfnisse anpassen müssen.
         Bitte vergewissern Sie sich, dass Sie wissen,
         was Sie tun und machen Sie ein Backup Ihrer Datenbank,
@@ -705,45 +705,45 @@ admin:
         Sind Sie sich sicher, dass Sie die
         Textebene "{levelLabel}" löschen möchten?
     locations:
-      heading: Fundstellen
+      heading: Belegstellen
       add:
-        heading: Fundstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
-        tooltip: Fundstelle hinzufügen
-        msgSuccess: Fundstelle "{label}" zu "{parentLabel}" hinzugefügt
+        heading: Belegstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
+        tooltip: Belegstelle hinzufügen
+        msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
       lblBtnAddLocationFirstLevel: Hinzufügen
-      tipBtnAddLocationFirstLevel: Fundstelle auf oberster Ebene hinzufügen
+      tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
       lblBtnDownloadTemplate: Vorlage
       tipBtnDownloadTemplate: Strukturdefinitions-Vorlage herunterladen
       lblBtnUploadStructure: Importieren
       tipBtnUploadStructure: Strukturdefinition hochladen (nur bei leerer Struktur!)
       infoNoLocations: |
-        Dieser Text hat noch keine Fundstellen.
-        Fügen Sie den Strukturebenen des Textes Fundstellen hinzu,
+        Dieser Text hat noch keine Belegstellen.
+        Fügen Sie den Strukturebenen des Textes Belegstellen hinzu,
         indem Sie die untenstehenden Werkzeuge verwenden,
         oder laden Sie eine Strukturvorlage herunter,
         die Sie programmatisch mit Ihren Daten füllen können,
         und importieren Sie diese dann hier.
       warnGeneral: |
-        Das Neuordnen oder Löschen von Fundstellen hat gravierende Auswirkungen auf das
+        Das Neuordnen oder Löschen von Belegstellen hat gravierende Auswirkungen auf das
         Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
         Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
       warnDeleteLocation: |
-        Wenn Sie diese Fundstelle löschen, werden alle Daten, die mit ihr und allen
-        untergeordneten Fundstelle verbunden sind, ebenfalls gelöscht.
+        Wenn Sie diese Belegstelle löschen, werden alle Daten, die mit ihr und allen
+        untergeordneten Belegstelle verbunden sind, ebenfalls gelöscht.
         Dies kann potenziell alle Ressourcen betreffen – auch jene,
         die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
-        der Fundstelle auf ihrer Strukturebene erreichen können, sollten sie das stattdessen tun,
+        der Belegstelle auf ihrer Strukturebene erreichen können, sollten sie das stattdessen tun,
         da auf diese Weise keine Daten gelöscht werden.
         Dies kann nicht rückgängig gemacht werden.
-        Sind Sie sich wirklich sicher, dass Sie die ausgewählte Fundstelle löschen wollen?
-      tipDeleteLocation: Fundstelle "{location}" löschen
-      infoDeletedLocation: Fundstelle "{location}" gelöscht (insgesamt {locations} Fundstellen und {contents} Inhalte)
-      infoMovedLocation: Fundstelle "{location}" auf position {position} von Ebene "{level}" verschoben
-      errorLocationLeftLevel: Fundstellen können nur innerhalb der gleichen Ebene verschoben werden!
+        Sind Sie sich wirklich sicher, dass Sie die ausgewählte Belegstelle löschen wollen?
+      tipDeleteLocation: Belegstelle "{location}" löschen
+      infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
+      infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben
+      errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
       rename:
-        heading: Fundstelle umbenennen
-        msgSuccess: Fundstelle "{oldName}" umbenannt zu "{newName}"
+        heading: Belegstelle umbenennen
+        msgSuccess: Belegstelle "{oldName}" umbenannt zu "{newName}"
       upload:
         msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
   newText:
