@@ -3165,6 +3165,12 @@ export interface components {
        */
       navBrowseEntry?: components['schemas']['MainNavEntryTranslation'][];
       /**
+       * Navsearchentry
+       * @description Custom label for main navigation search entry
+       * @default []
+       */
+      navSearchEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /**
        * Navinfoentry
        * @description Custom label for main navigation info entry
        * @default []
@@ -3260,6 +3266,12 @@ export interface components {
        * @default []
        */
       navBrowseEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /**
+       * Navsearchentry
+       * @description Custom label for main navigation search entry
+       * @default []
+       */
+      navSearchEntry?: components['schemas']['MainNavEntryTranslation'][];
       /**
        * Navinfoentry
        * @description Custom label for main navigation info entry

@@ -318,6 +318,7 @@ models:
     defaultText: Standard-Text
     availableLocales: Verfügbare Sprachen
     navBrowseEntry: Eigene Beschriftung für "Lesen" in Hauptnavigation
+    navSearchEntry: Eigene Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm

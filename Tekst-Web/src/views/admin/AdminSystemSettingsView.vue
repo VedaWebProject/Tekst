@@ -164,6 +164,16 @@ function resetForm() {
         :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
       />
 
+      <!-- TRANSLATE MAIN NAV SEARCH ENTRY -->
+      <translation-form-item
+        v-model="formModel.navSearchEntry"
+        parent-form-path-prefix="navSearchEntry"
+        :loading="loading"
+        :main-form-label="$t('models.platformSettings.navSearchEntry')"
+        :translation-form-label="$t('models.platformSettings.navSearchEntry')"
+        :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+      />
+
       <!-- TRANSLATE MAIN NAV INFO ENTRY -->
       <translation-form-item
         v-model="formModel.navInfoEntry"

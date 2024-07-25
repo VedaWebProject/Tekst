@@ -109,6 +109,12 @@ class PlatformSettings(ModelBase, ModelFactoryMixin):
             description="Custom label for main navigation browse entry",
         ),
     ] = []
+    nav_search_entry: Annotated[
+        Translations[MainNavEntryTranslation],
+        Field(
+            description="Custom label for main navigation search entry",
+        ),
+    ] = []
     nav_info_entry: Annotated[
         Translations[MainNavEntryTranslation],
         Field(

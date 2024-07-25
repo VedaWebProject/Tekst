@@ -95,10 +95,14 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       icon: (showIcons && renderIcon(BookIcon)) || undefined,
     },
     {
-      label: renderLink(() => $t('nav.search'), {
-        name: 'search',
-        params: { text: state.text?.slug },
-      }),
+      label: renderLink(
+        () =>
+          pickTranslation(pfData.value?.settings.navSearchEntry, state.locale) || $t('nav.search'),
+        {
+          name: 'search',
+          params: { text: state.text?.slug },
+        }
+      ),
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },

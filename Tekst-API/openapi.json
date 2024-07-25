@@ -12075,6 +12075,16 @@
             "description": "Custom label for main navigation browse entry",
             "default": []
           },
+          "navSearchEntry": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navsearchentry",
+            "description": "Custom label for main navigation search entry",
+            "default": []
+          },
           "navInfoEntry": {
             "items": {
               "$ref": "#/components/schemas/MainNavEntryTranslation"
@@ -12222,6 +12232,16 @@
             "maxItems": 3,
             "title": "Navbrowseentry",
             "description": "Custom label for main navigation browse entry",
+            "default": []
+          },
+          "navSearchEntry": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Navsearchentry",
+            "description": "Custom label for main navigation search entry",
             "default": []
           },
           "navInfoEntry": {
