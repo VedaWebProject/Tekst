@@ -15,21 +15,21 @@ Tekst is a collaborative, web-based research platform for aligning, displaying, 
 
 ### Philological research projects
 
-The main intent for the development of Tekst was to create a technical basis for the online research platform [VedaWeb](https://vedaweb.uni-koeln.de/), where numerous resources on multiple Old Indic Sanskrit texts can be browsed, compared and searched. These include text versions, translations, annotations and references to external sources, which are all aligned to the structure of their respective reference texts.
+The original intent for the development of Tekst was to create the technical basis for the online research platform [VedaWeb](https://vedaweb.uni-koeln.de/), where numerous resources on multiple Old Indic Sanskrit texts can be browsed, compared and searched. These include text versions, translations, annotations and references to external sources, which are all aligned to the structure of their respective reference texts.
 
-Therefore, the most obvious use case are comparable research projects that either want to publish and showcase their research data, simply curate a set of established resources on certain reference texts, or even encourage the research community to participate and contribute to a central platform dedicated to provide relevant resources.
+Therefore, the main use case for Tekst are comparable research projects that either want to publish and showcase their research data, simply curate a set of established resources on certain reference texts, or even encourage the research community to participate and contribute to a central platform dedicated to provide relevant resources.
 
 ### Alternative use cases
 
-The above being said, nothing is stopping you from using Tekst in different contexts. As long as
+The above being said, nothing is stopping you from using Tekst in different contexts. Tekst might be a viable option for you as long as
 
-1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years) with one or more [structure levels](introduction/concepts.md#texts-and-structure)
-2. the types of [resources](introduction/concepts.md#resources) Tekst offers match the data you want to work with
+1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years)
+2. the types of [resources](introduction/concepts.md#resources) Tekst offers are sufficiently able to represent the data you want to work with
 
-..., Tekst might be a viable option. In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#using-docker-recommended).
+In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#using-docker-recommended).
 
 !!! info "Please note"
-    Despite the alternative use cases mentioned, "texts" are used exemplary throughout this documentation and in the internal user interface of Tekst, as this is the main use case for this software.
+    Despite the alternative use cases mentioned, "texts" are used exemplary throughout this documentation and in the internal user interface of Tekst, as this is still the main use case.
 
 
 ## Features
@@ -46,6 +46,7 @@ This list is far from exhaustive, but includes some features that might be decis
     - Content fonts
     - On-screen keyboard character sets
 - Extensively typed and documented server API (via [OpenAPI](https://spec.openapis.org/oas/v3.0.2) specification) and built-in interactive API documentation (via [Swagger UI](https://github.com/swagger-api/swagger-ui) and/or [ReDoc](https://github.com/Redocly/redoc)), all thanks to [FastAPI](https://github.com/tiangolo/fastapi)
+- ...
 
 
 ## Caveats
