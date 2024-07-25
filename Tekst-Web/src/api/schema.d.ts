@@ -4206,6 +4206,12 @@ export interface components {
        * @description Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)
        */
       displayTemplate?: string | null;
+      /**
+       * Multivaluedelimiter
+       * @description String used to delimit multiple values for an annotation
+       * @default /
+       */
+      multiValueDelimiter?: string;
     };
     /** TextAnnotationResourceCreate */
     TextAnnotationResourceCreate: {
@@ -4297,7 +4303,8 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "multiValueDelimiter": "/"
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -4419,7 +4426,8 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "multiValueDelimiter": "/"
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
@@ -4510,7 +4518,8 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false
-       *   }
+       *   },
+       *   "multiValueDelimiter": "/"
        * }
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];

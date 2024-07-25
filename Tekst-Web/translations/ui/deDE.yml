@@ -481,6 +481,7 @@ resources:
         missing: '[fehlt]'
       config:
         displayTemplate: Darstellungsvorlage
+        multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

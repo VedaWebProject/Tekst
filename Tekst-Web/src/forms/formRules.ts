@@ -284,6 +284,7 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
     displayTemplate: [minMaxCharsRule(0, 2048, 'blur')],
+    multiValueDelimiter: [minMaxCharsRule(1, 3, 'blur')],
   },
 };
 

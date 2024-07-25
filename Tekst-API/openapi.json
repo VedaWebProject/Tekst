@@ -14129,6 +14129,14 @@
             ],
             "title": "Displaytemplate",
             "description": "Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)"
+          },
+          "multiValueDelimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Multivaluedelimiter",
+            "description": "String used to delimit multiple values for an annotation",
+            "default": "/"
           }
         },
         "type": "object",
@@ -14284,7 +14292,8 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "multiValueDelimiter": "/"
             }
           },
           "aggregations": {
@@ -14520,7 +14529,8 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "multiValueDelimiter": "/"
             }
           },
           "aggregations": {
@@ -14718,7 +14728,8 @@
               },
               "general": {
                 "defaultCollapsed": false
-              }
+              },
+              "multiValueDelimiter": "/"
             }
           },
           "aggregations": {

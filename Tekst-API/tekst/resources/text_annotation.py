@@ -335,7 +335,10 @@ class TextAnnotation(ResourceTypeABC):
                         anno.key: anno.value for anno in token.annotations or []
                     }
                     csv_annos = [
-                        token_annos.get(anno_key, "") for anno_key in anno_keys
+                        resource.config.multi_value_delimiter.join(
+                            token_annos.get(anno_key, [])
+                        )
+                        for anno_key in anno_keys
                     ]
                     csv_writer.writerow(
                         [
@@ -368,6 +371,13 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
         val.CleanupMultiline,
         val.EmptyStringToNone,
     ] = None
+    multi_value_delimiter: Annotated[
+        str,
+        Field(
+            description="String used to delimit multiple values for an annotation",
+        ),
+        StringConstraints(min_length=1, max_length=3, strip_whitespace=True),
+    ] = "/"
 
 
 class AnnotationAggregationGroup(ModelBase):

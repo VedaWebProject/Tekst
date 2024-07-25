@@ -470,7 +470,8 @@ resources:
         any: '[any]'
         missing: '[missing]'
       config:
-        displayTemplate: Display Template
+        displayTemplate: Display template
+        multiValueDelimiter: Delimiter for multiple annotation values
     audio:
       label: Audio
       parenthesis: audio playback

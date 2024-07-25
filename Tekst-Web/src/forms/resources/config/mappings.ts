@@ -5,6 +5,7 @@ import ReducedViewOnelineFormItems from '@/forms/resources/config/ReducedViewOne
 import DefaultCollapsedFormItems from '@/forms/resources/config/DefaultCollapsedFormItems.vue';
 import ResourceFontFormItems from '@/forms/resources/config/ResourceFontFormItems.vue';
 import DisplayTemplateConfigFormItems from '@/forms/resources/config/DisplayTemplateConfigFormItems.vue';
+import MultiValueDelimiterConfigFormItems from './MultiValueDelimiterConfigFormItems.vue';
 
 export const generalConfigFormItems: Record<string, Component> = {
   defaultCollapsed: DefaultCollapsedFormItems,
@@ -16,4 +17,5 @@ export const specialConfigFormItems: Record<string, Component> = {
   lineLabelling: LineLabellingConfigFormItems,
   deeplLinks: DeepLLinksConfigFormItems,
   displayTemplate: DisplayTemplateConfigFormItems,
+  multiValueDelimiter: MultiValueDelimiterConfigFormItems,
 };

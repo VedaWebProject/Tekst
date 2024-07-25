@@ -44,7 +44,7 @@ function handleUpdate(field: string, value: any) {
 </script>
 
 <template>
-  <h5>
+  <h5 style="margin-top: 0">
     {{ $t('resources.settings.config.deeplLinks.heading') }}
   </h5>
 

@@ -20,7 +20,6 @@ const options = computed(() =>
   <n-form-item
     v-if="options.length"
     :label="$t('resources.settings.config.general.font')"
-    :show-feedback="false"
     style="margin-top: var(--layout-gap)"
   >
     <n-select v-model:value="model" clearable :options="options" />

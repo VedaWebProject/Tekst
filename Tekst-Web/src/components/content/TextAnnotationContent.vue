@@ -126,7 +126,10 @@ function applyAnnotationDisplayTemplate(
     const content =
       item.template.content
         ?.replace(/k/g, item.data?.key || '')
-        .replace(/v/g, item.data?.value.join('/') || '') || '';
+        .replace(
+          /v/g,
+          item.data?.value.join(props.resource.config?.multiValueDelimiter || '/') || ''
+        ) || '';
     const prefix = i > 0 ? item.template.prefix || '' : '';
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
@@ -215,7 +218,9 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
         <template v-for="(annotation, index) in tokenDetailsData?.annotations" :key="index">
           <tr v-if="annotation.key !== 'comment'">
             <td>{{ annotation.key }}</td>
-            <td class="content-font">{{ annotation.value.join('/') }}</td>
+            <td class="content-font">
+              {{ annotation.value.join(resource.config?.multiValueDelimiter || '/') }}
+            </td>
           </tr>
         </template>
       </tbody>
