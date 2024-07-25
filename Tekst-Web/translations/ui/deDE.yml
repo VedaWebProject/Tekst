@@ -87,7 +87,7 @@ errors:
   importInvalidContentData: Einige Inhalte in den Importdaten entsprechen nicht dem erforderlichen Schema.
   segmentKeyLocaleConflict: Ein Segment mit der gleichen Kombination aus Schlüssel und Sprache existiert bereits.
   textSameTitleOrSlug: Ein Text mit diesem Titel oder Identifikator existiert bereits.
-  locked: Es läuft bereits ein aktiver Hintergrundprozess für diese operation.
+  locked: Es läuft bereits ein aktiver Hintergrundprozess für diese Operation.
   exportNotFound: Der angefragte Export konnte nicht gefunden werden.
 
 nav:
