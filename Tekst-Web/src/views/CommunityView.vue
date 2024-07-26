@@ -48,6 +48,7 @@ function resetPagination() {
       <n-pagination
         v-model:page="filters.pg"
         v-model:page-size="filters.pgs"
+        :simple="state.smallScreen"
         :default-page-size="10"
         :page-slot="paginationSlots"
         :disabled="loading"

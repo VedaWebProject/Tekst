@@ -168,6 +168,7 @@ onBeforeMount(() => processQuery());
         v-if="resultsData?.hits.length"
         v-model:page="pagination.page"
         v-model:page-size="pagination.pageSize"
+        :simple="state.smallScreen"
         :page-sizes="[10, 25, 50]"
         :default-page-size="10"
         :page-slot="paginationSlots"

@@ -378,6 +378,7 @@ onMounted(() => {
       <n-pagination
         v-model:page-size="pagination.pageSize"
         v-model:page="pagination.page"
+        :simple="state.smallScreen"
         :page-sizes="[10, 20, 50, 100]"
         :default-page-size="10"
         :item-count="filteredData.length"
