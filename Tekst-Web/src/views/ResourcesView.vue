@@ -66,6 +66,8 @@ const initialFilters = () => ({
   notProposed: true,
   ownedByMe: true,
   ownedByOthers: true,
+  hasCorrections: true,
+  hasNoCorrections: true,
 });
 
 const filters = ref(initialFilters());
@@ -91,7 +93,9 @@ function filterData(resourcesData: AnyResourceRead[]) {
       ((filters.value.proposed && r.proposed) || (filters.value.notProposed && !r.proposed)) &&
       ((filters.value.public && r.public) || (filters.value.notPublic && !r.public)) &&
       ((filters.value.ownedByMe && r.ownerId === auth.user?.id) ||
-        (filters.value.ownedByOthers && r.ownerId !== auth.user?.id))
+        (filters.value.ownedByOthers && r.ownerId !== auth.user?.id)) &&
+      ((filters.value.hasCorrections && r.corrections) ||
+        (filters.value.hasNoCorrections && !r.corrections))
     );
   });
 }
@@ -407,6 +411,14 @@ onMounted(() => {
           <labelled-switch v-model="filters.notProposed" :label="$t('resources.notProposed')" />
           <labelled-switch v-model="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
           <labelled-switch v-model="filters.ownedByOthers" :label="$t('resources.ownedByOthers')" />
+          <labelled-switch
+            v-model="filters.hasCorrections"
+            :label="$t('resources.hasCorrections')"
+          />
+          <labelled-switch
+            v-model="filters.hasNoCorrections"
+            :label="$t('resources.hasNoCorrections')"
+          />
           <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>

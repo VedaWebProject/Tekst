@@ -356,6 +356,8 @@ resources:
   msgCorrections: Correction notes on other texts are available for you to review.
   ownedByMe: by me
   ownedByOthers: by others
+  hasCorrections: has correction notes
+  hasNoCorrections: has no correction notes
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'

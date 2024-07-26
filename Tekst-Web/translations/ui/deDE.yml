@@ -359,6 +359,8 @@ resources:
   msgCorrections: Es liegen Korrekturnotizen zu anderen Texten zur Prüfung für Sie vor.
   ownedByMe: von mir
   ownedByOthers: von anderen
+  hasCorrections: hat Korrekturnotizen
+  hasNoCorrections: hat keine Korrekturnotizen
   public: '@:models.resource.public'
   notPublic: '@:general.not @:models.resource.public'
   proposed: '@:models.resource.proposed'
