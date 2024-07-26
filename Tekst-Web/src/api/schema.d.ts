@@ -1868,22 +1868,23 @@ export interface components {
     /** GeneralPlainTextResourceConfig */
     GeneralPlainTextResourceConfig: {
       /**
+       * Font
+       * @description Name of the font to use for this resource.
+       */
+      font?: string | null;
+      /**
        * Defaultcollapsed
        * @description Whether contents of this resource should be collapsed by default
        * @default false
        */
       defaultCollapsed?: boolean;
       /**
-       * Reducedviewoneline
-       * @description Show contents as single line of text when in reduced view
-       * @default false
+       * @default {
+       *   "singleLine": false,
+       *   "singleLineDelimiter": " "
+       * }
        */
-      reducedViewOneline?: boolean;
-      /**
-       * Font
-       * @description Name of the font to use for this resource.
-       */
-      font?: string | null;
+      reducedView?: components['schemas']['ReducedViewConfig'];
     };
     /** GeneralRichTextResourceConfig */
     GeneralRichTextResourceConfig: {
@@ -2700,7 +2701,10 @@ export interface components {
       /**
        * @default {
        *   "defaultCollapsed": false,
-       *   "reducedViewOneline": false
+       *   "reducedView": {
+       *     "singleLine": false,
+       *     "singleLineDelimiter": " "
+       *   }
        * }
        */
       general?: components['schemas']['GeneralPlainTextResourceConfig'];
@@ -2813,7 +2817,10 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
-       *     "reducedViewOneline": false
+       *     "reducedView": {
+       *       "singleLine": false,
+       *       "singleLineDelimiter": " "
+       *     }
        *   },
        *   "lineLabelling": {
        *     "enabled": false,
@@ -2943,7 +2950,10 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
-       *     "reducedViewOneline": false
+       *     "reducedView": {
+       *       "singleLine": false,
+       *       "singleLineDelimiter": " "
+       *     }
        *   },
        *   "lineLabelling": {
        *     "enabled": false,
@@ -3042,7 +3052,10 @@ export interface components {
        *   },
        *   "general": {
        *     "defaultCollapsed": false,
-       *     "reducedViewOneline": false
+       *     "reducedView": {
+       *       "singleLine": false,
+       *       "singleLineDelimiter": " "
+       *     }
        *   },
        *   "lineLabelling": {
        *     "enabled": false,
@@ -3410,6 +3423,19 @@ export interface components {
        * @description IDs of texts to search in
        */
       txt?: string[] | null;
+    };
+    /** ReducedViewConfig */
+    ReducedViewConfig: {
+      /**
+       * Singleline
+       * @description Show contents as single line of text when in reduced view
+       */
+      singleLine: boolean;
+      /**
+       * Singlelinedelimiter
+       * @description Delimiter used for single-line display in reduced reading mode
+       */
+      singleLineDelimiter: string;
     };
     /** ResourceCategory */
     ResourceCategory: {

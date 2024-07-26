@@ -6,7 +6,7 @@ const model = defineModel<boolean>();
 </script>
 
 <template>
-  <n-form-item :show-label="false" :show-feedback="false">
+  <n-form-item :show-label="false">
     <labelled-switch
       v-model="model"
       :label="$t('resources.settings.config.general.defaultCollapsed')"

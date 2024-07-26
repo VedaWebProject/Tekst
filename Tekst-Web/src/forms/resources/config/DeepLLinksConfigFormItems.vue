@@ -68,10 +68,7 @@ function handleUpdate(field: string, value: any) {
   </n-form-item>
 
   <!-- TARGET LANGUAGES -->
-  <n-form-item
-    :label="$t('resources.settings.config.deeplLinks.targetLanguages')"
-    :show-feedback="false"
-  >
+  <n-form-item :label="$t('resources.settings.config.deeplLinks.targetLanguages')">
     <n-select
       :disabled="!model.enabled"
       multiple

@@ -17,11 +17,7 @@ const options = computed(() =>
 </script>
 
 <template>
-  <n-form-item
-    v-if="options.length"
-    :label="$t('resources.settings.config.general.font')"
-    style="margin-top: var(--layout-gap)"
-  >
+  <n-form-item v-if="options.length" :label="$t('resources.settings.config.general.font')">
     <n-select v-model:value="model" clearable :options="options" />
   </n-form-item>
 </template>

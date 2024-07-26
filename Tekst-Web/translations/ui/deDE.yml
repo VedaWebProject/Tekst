@@ -434,8 +434,11 @@ resources:
       general:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
-        reducedViewOneline: Inhalte in reduzierter Ansicht in einer einzigen Zeile darstellen
         font: Schriftart (nutzt Standard-Schriftart wenn nicht festgelegt)
+      reducedView:
+        heading: Reduzierte Leseansicht
+        singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen
+        singleLineDelimiter: Trennzeichen für einzeilige Anzeige in reduzierter Leseansicht
       deeplLinks:
         heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache
@@ -447,6 +450,8 @@ resources:
         numbersOneBased: Zahlen (1-basiert)
         lettersLowercase: Buchstaben (klein)
         lettersUppercase: Buchstaben (groß)
+      displayTemplate: Darstellungsvorlage
+      multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
   types:
     common:
       label: Erweiterter Inhalt
@@ -479,9 +484,6 @@ resources:
       searchFields:
         any: '[beliebig]'
         missing: '[fehlt]'
-      config:
-        displayTemplate: Darstellungsvorlage
-        multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

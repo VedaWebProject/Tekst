@@ -281,10 +281,23 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+export const reducedViewConfigFormRules: Record<string, FormItemRule[]> = {
+  singleLineDelimiter: [
+    requiredStringRule(
+      () => $t('resources.settings.config.reducedView.singleLineDelimiter'),
+      'blur'
+    ),
+    minMaxCharsRule(1, 3, 'blur'),
+  ],
+};
+
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
     displayTemplate: [minMaxCharsRule(0, 2048, 'blur')],
-    multiValueDelimiter: [minMaxCharsRule(1, 3, 'blur')],
+    multiValueDelimiter: [
+      requiredStringRule(() => $t('resources.settings.config.multiValueDelimiter'), 'blur'),
+      minMaxCharsRule(1, 3, 'blur'),
+    ],
   },
 };
 

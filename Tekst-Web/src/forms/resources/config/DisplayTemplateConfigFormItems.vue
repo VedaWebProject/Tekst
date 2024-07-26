@@ -11,7 +11,7 @@ const model = defineModel<TextAnnotationResourceConfig['displayTemplate']>();
 <template>
   <!-- DISPLAY TEMPLATE -->
   <icon-heading level="5" style="margin-top: 0">
-    {{ $t('resources.types.textAnnotation.config.displayTemplate') }}
+    {{ $t('resources.settings.config.displayTemplate') }}
     <help-button-widget help-key="textAnnotationDisplayTemplate" />
   </icon-heading>
   <n-form-item

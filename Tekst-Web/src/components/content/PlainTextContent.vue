@@ -31,8 +31,13 @@ const getLineLabel = (index: number, labellingType: LineLabellingConfig['labelli
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
-    lines: (props.reduced && props.resource.config?.general?.reducedViewOneline
-      ? [c.text.replace(/(\r\n|\r|\n)+/g, ' ')]
+    lines: (props.reduced && props.resource.config?.general?.reducedView?.singleLine
+      ? [
+          c.text.replace(
+            /(\r\n|\r|\n)+/g,
+            props.resource.config.general?.reducedView?.singleLineDelimiter || ' '
+          ),
+        ]
       : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
     ).map((l, i) => ({
       label: !props.reduced

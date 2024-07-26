@@ -56,13 +56,6 @@ DefaultCollapsedConfigType = Annotated[
     ),
 ]
 
-ReducedViewOnelineConfigType = Annotated[
-    bool,
-    Field(
-        description="Show contents as single line of text when in reduced view",
-    ),
-]
-
 FontConfigType = Annotated[
     str | None,
     Field(

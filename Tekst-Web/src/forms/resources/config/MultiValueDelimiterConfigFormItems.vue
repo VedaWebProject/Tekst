@@ -10,7 +10,7 @@ const model = defineModel<TextAnnotationResourceConfig['multiValueDelimiter']>()
 <template>
   <!-- MULTI VALUE DELIMITER -->
   <icon-heading level="5" style="margin-top: 0">
-    {{ $t('resources.types.textAnnotation.config.multiValueDelimiter') }}
+    {{ $t('resources.settings.config.multiValueDelimiter') }}
   </icon-heading>
   <n-form-item
     :show-label="false"

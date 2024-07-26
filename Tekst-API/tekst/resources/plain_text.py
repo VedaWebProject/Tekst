@@ -15,7 +15,6 @@ from tekst.models.resource import (
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     FontConfigType,
-    ReducedViewOnelineConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -136,6 +135,27 @@ class PlainText(ResourceTypeABC):
                 )
 
 
+class ReducedViewConfig(ModelBase):
+    single_line: Annotated[
+        bool,
+        Field(
+            description="Show contents as single line of text when in reduced view",
+        ),
+    ]
+    single_line_delimiter: Annotated[
+        str,
+        Field(
+            description=(
+                "Delimiter used for single-line display in reduced reading mode"
+            ),
+        ),
+        StringConstraints(
+            min_length=1,
+            max_length=3,
+        ),
+    ]
+
+
 class LineLabellingConfig(ModelBase):
     enabled: Annotated[
         bool,
@@ -191,8 +211,11 @@ class DeepLLinksConfig(ModelBase):
 
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedConfigType = False
-    reduced_view_oneline: ReducedViewOnelineConfigType = False
     font: FontConfigType = None
+    reduced_view: ReducedViewConfig = ReducedViewConfig(
+        single_line=False,
+        single_line_delimiter=" ",
+    )
 
 
 class PlainTextResourceConfig(ResourceConfigBase):

@@ -9570,18 +9570,6 @@
       },
       "GeneralPlainTextResourceConfig": {
         "properties": {
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
-          },
-          "reducedViewOneline": {
-            "type": "boolean",
-            "title": "Reducedviewoneline",
-            "description": "Show contents as single line of text when in reduced view",
-            "default": false
-          },
           "font": {
             "anyOf": [
               {
@@ -9593,6 +9581,23 @@
             ],
             "title": "Font",
             "description": "Name of the font to use for this resource."
+          },
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "reducedView": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReducedViewConfig"
+              }
+            ],
+            "default": {
+              "singleLine": false,
+              "singleLineDelimiter": " "
+            }
           }
         },
         "type": "object",
@@ -11258,7 +11263,10 @@
             ],
             "default": {
               "defaultCollapsed": false,
-              "reducedViewOneline": false
+              "reducedView": {
+                "singleLine": false,
+                "singleLineDelimiter": " "
+              }
             }
           },
           "lineLabelling": {
@@ -11441,7 +11449,10 @@
               },
               "general": {
                 "defaultCollapsed": false,
-                "reducedViewOneline": false
+                "reducedView": {
+                  "singleLine": false,
+                  "singleLineDelimiter": " "
+                }
               },
               "lineLabelling": {
                 "enabled": false,
@@ -11675,7 +11686,10 @@
               },
               "general": {
                 "defaultCollapsed": false,
-                "reducedViewOneline": false
+                "reducedView": {
+                  "singleLine": false,
+                  "singleLineDelimiter": " "
+                }
               },
               "lineLabelling": {
                 "enabled": false,
@@ -11871,7 +11885,10 @@
               },
               "general": {
                 "defaultCollapsed": false,
-                "reducedViewOneline": false
+                "reducedView": {
+                  "singleLine": false,
+                  "singleLineDelimiter": " "
+                }
               },
               "lineLabelling": {
                 "enabled": false,
@@ -12466,6 +12483,28 @@
         },
         "type": "object",
         "title": "QuickSearchSettings"
+      },
+      "ReducedViewConfig": {
+        "properties": {
+          "singleLine": {
+            "type": "boolean",
+            "title": "Singleline",
+            "description": "Show contents as single line of text when in reduced view"
+          },
+          "singleLineDelimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Singlelinedelimiter",
+            "description": "Delimiter used for single-line display in reduced reading mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "singleLine",
+          "singleLineDelimiter"
+        ],
+        "title": "ReducedViewConfig"
       },
       "ResourceCategory": {
         "properties": {

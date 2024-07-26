@@ -30,7 +30,7 @@ const model = defineModel<string | number | boolean>();
 </script>
 
 <template>
-  <n-flex align="center" :wrap="false">
+  <n-flex align="center" :wrap="false" class="labelled-switch-container">
     <n-switch
       v-model:value="model"
       :round="round"
