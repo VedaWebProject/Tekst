@@ -186,6 +186,8 @@ browse:
     widgets:
       contentEdit:
         title: Bearbeiten
+      resourceSettings:
+        title: Einstellungen
       correctionNote:
         title: Korrektur vorschlagen
         info: |

@@ -6,6 +6,7 @@ import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWi
 import type { AnyResourceRead } from '@/api';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
+import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
 import { computed, ref } from 'vue';
@@ -58,9 +59,10 @@ function handleSmallScreenWidgetsTriggered(e: UIEvent) {
     <!-- generic content widgets -->
     <location-content-siblings-widget :resource="resource" />
     <content-comment-widget :resource="resource" />
-    <content-edit-widget :resource="resource" />
     <correction-note-widget :resource="resource" />
     <resource-export-widget :resource="resource" />
+    <content-edit-widget :resource="resource" />
+    <resource-settings-widget :resource="resource" />
     <resource-info-widget :resource="resource" />
     <resource-deactivate-widget :resource="resource" />
   </div>
@@ -106,10 +108,11 @@ function handleSmallScreenWidgetsTriggered(e: UIEvent) {
       </template>
       <!-- generic content widgets -->
       <location-content-siblings-widget :resource="resource" full @done="closeModal" />
-      <content-comment-widget :resource="resource" full @done="closeModal" />
-      <content-edit-widget :resource="resource" full @done="closeModal" />
       <correction-note-widget :resource="resource" full @done="closeModal" />
       <resource-export-widget :resource="resource" full @done="closeModal" />
+      <content-comment-widget :resource="resource" full @done="closeModal" />
+      <content-edit-widget :resource="resource" full @done="closeModal" />
+      <resource-settings-widget :resource="resource" full @done="closeModal" />
       <resource-info-widget :resource="resource" full @done="closeModal" />
       <resource-deactivate-widget :resource="resource" full @done="closeModal" />
     </div>

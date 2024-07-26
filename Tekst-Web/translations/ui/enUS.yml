@@ -183,6 +183,8 @@ browse:
     widgets:
       contentEdit:
         title: Edit
+      resourceSettings:
+        title: Settings
       correctionNote:
         title: Suggest correction
         info: |

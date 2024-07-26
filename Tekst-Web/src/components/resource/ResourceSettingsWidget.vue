@@ -2,9 +2,9 @@
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { computed } from 'vue';
 import type { AnyResourceRead } from '@/api';
-import { useAuthStore, useBrowseStore } from '@/stores';
+import { useAuthStore } from '@/stores';
 import { useRouter } from 'vue-router';
-import { EditIcon } from '@/icons';
+import { SettingsIcon } from '@/icons';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -15,11 +15,9 @@ const emit = defineEmits(['done']);
 
 const auth = useAuthStore();
 const router = useRouter();
-const browse = useBrowseStore();
 
 const show = computed(
   () =>
-    !!props.resource.contents?.length &&
     auth.user &&
     ((props.resource.ownerId && auth.user.id === props.resource.ownerId) ||
       props.resource.sharedWrite?.includes(auth.user.id) ||
@@ -28,11 +26,10 @@ const show = computed(
 
 function handleClick() {
   router.push({
-    name: 'resourceContents',
+    name: 'resourceSettings',
     params: {
       text: router.currentRoute.value.params.text,
       id: props.resource.id,
-      pos: browse.position,
     },
   });
   emit('done');
@@ -43,8 +40,8 @@ function handleClick() {
   <content-container-header-widget
     v-if="show"
     :full="full"
-    :title="$t('browse.contents.widgets.contentEdit.title')"
-    :icon-component="EditIcon"
+    :title="$t('browse.contents.widgets.resourceSettings.title')"
+    :icon-component="SettingsIcon"
     @click="handleClick"
   />
 </template>
