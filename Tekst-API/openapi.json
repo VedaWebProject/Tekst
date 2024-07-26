@@ -1576,7 +1576,14 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Structure level to find locations for",
               "title": "Lvl"
             },
@@ -1587,7 +1594,14 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Position value of locations to find",
               "title": "Pos"
             },
@@ -1598,8 +1612,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "ID of parent location to find children of",
               "title": "Parent"
             },
@@ -1642,6 +1663,78 @@
               }
             },
             "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/by-alias": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Find locations by alias",
+        "operationId": "findLocationsByAlias",
+        "parameters": [
+          {
+            "name": "txt",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "description": "ID of text to find locations for",
+              "title": "Txt"
+            },
+            "description": "ID of text to find locations for"
+          },
+          {
+            "name": "alias",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Alias of location(s) to find",
+              "title": "Alias"
+            },
+            "description": "Alias of location(s) to find"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Return at most <limit> locations",
+              "default": 5,
+              "title": "Limit"
+            },
+            "description": "Return at most <limit> locations"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationRead"
+                  },
+                  "title": "Response Find Locations By Alias Locations By Alias Get"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -9570,6 +9663,12 @@
       },
       "GeneralPlainTextResourceConfig": {
         "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
           "font": {
             "anyOf": [
               {
@@ -9581,12 +9680,6 @@
             ],
             "title": "Font",
             "description": "Name of the font to use for this resource."
-          },
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
           },
           "reducedView": {
             "allOf": [
@@ -10706,6 +10799,15 @@
             "minLength": 1,
             "title": "Label",
             "description": "Label for identifying this text location in level context"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases",
+            "description": "List of aliases for this location",
+            "default": []
           }
         },
         "type": "object",
@@ -10803,6 +10905,15 @@
             "minLength": 1,
             "title": "Label",
             "description": "Label for identifying this text location in level context"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases",
+            "description": "List of aliases for this location",
+            "default": []
           }
         },
         "additionalProperties": true,
@@ -10880,6 +10991,15 @@
               }
             ],
             "title": "Label"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases",
+            "description": "List of aliases for this location",
+            "default": []
           }
         },
         "type": "object",

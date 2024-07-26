@@ -5,7 +5,7 @@ import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
-import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
+import QuickSearchWidget from '@/components/search/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import {
   useAccountMenuOptions,
@@ -79,10 +79,7 @@ const allMenuOptions = computed(() => [
     <n-drawer-content closable>
       <template #header>
         <n-flex justify="center">
-          <quick-search-widget
-            @submit="() => (show = false)"
-            @switch-to-advanced-search="() => (show = false)"
-          />
+          <quick-search-widget @submit="() => (show = false)" />
           <theme-mode-switcher @click="() => (show = false)" />
           <locale-switcher />
           <help-nav-button @click="() => (show = false)" />

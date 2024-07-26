@@ -130,6 +130,10 @@ export interface paths {
      */
     post: operations['createLocation'];
   };
+  '/locations/by-alias': {
+    /** Find locations by alias */
+    get: operations['findLocationsByAlias'];
+  };
   '/locations/first-last-paths': {
     /** Get first and last locations paths */
     get: operations['getFirstAndLastLocationsPaths'];
@@ -1868,16 +1872,16 @@ export interface components {
     /** GeneralPlainTextResourceConfig */
     GeneralPlainTextResourceConfig: {
       /**
-       * Font
-       * @description Name of the font to use for this resource.
-       */
-      font?: string | null;
-      /**
        * Defaultcollapsed
        * @description Whether contents of this resource should be collapsed by default
        * @default false
        */
       defaultCollapsed?: boolean;
+      /**
+       * Font
+       * @description Name of the font to use for this resource.
+       */
+      font?: string | null;
       /**
        * @default {
        *   "singleLine": false,
@@ -2464,6 +2468,12 @@ export interface components {
        * @description Label for identifying this text location in level context
        */
       label: string;
+      /**
+       * Aliases
+       * @description List of aliases for this location
+       * @default []
+       */
+      aliases?: string[];
     };
     /** LocationData */
     LocationData: {
@@ -2518,6 +2528,12 @@ export interface components {
        * @description Label for identifying this text location in level context
        */
       label: string;
+      /**
+       * Aliases
+       * @description List of aliases for this location
+       * @default []
+       */
+      aliases?: string[];
       [key: string]: unknown;
     };
     /** LocationUpdate */
@@ -2535,6 +2551,12 @@ export interface components {
       position?: number | null;
       /** Label */
       label?: string | null;
+      /**
+       * Aliases
+       * @description List of aliases for this location
+       * @default []
+       */
+      aliases?: string[];
     };
     /** MainNavEntryTranslation */
     MainNavEntryTranslation: {
@@ -5774,11 +5796,11 @@ export interface operations {
         /** @description ID of text to find locations for */
         txt: string;
         /** @description Structure level to find locations for */
-        lvl?: number;
+        lvl?: number | null;
         /** @description Position value of locations to find */
-        pos?: number;
+        pos?: number | null;
         /** @description ID of parent location to find children of */
-        parent?: string;
+        parent?: string | null;
         /** @description Return at most <limit> locations */
         limit?: number;
       };
@@ -5838,6 +5860,33 @@ export interface operations {
       403: {
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Find locations by alias */
+  findLocationsByAlias: {
+    parameters: {
+      query: {
+        /** @description ID of text to find locations for */
+        txt: string;
+        /** @description Alias of location(s) to find */
+        alias: string;
+        /** @description Return at most <limit> locations */
+        limit?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationRead'][];
         };
       };
       /** @description Validation Error */

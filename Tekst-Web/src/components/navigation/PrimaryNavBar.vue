@@ -4,7 +4,7 @@ import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
-import QuickSearchWidget from '@/components/navigation/QuickSearch.vue';
+import QuickSearchWidget from '@/components/search/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import {
   useAuthStore,

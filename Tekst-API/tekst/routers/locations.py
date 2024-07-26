@@ -129,20 +129,37 @@ async def create_location(su: SuperuserDep, location: LocationCreate) -> Locatio
 async def find_locations(
     text_id: Annotated[
         PydanticObjectId,
-        Query(alias="txt", description="ID of text to find locations for"),
+        Query(
+            alias="txt",
+            description="ID of text to find locations for",
+        ),
     ],
     level: Annotated[
-        int, Query(alias="lvl", description="Structure level to find locations for")
+        int | None,
+        Query(
+            alias="lvl",
+            description="Structure level to find locations for",
+        ),
     ] = None,
     position: Annotated[
-        int, Query(alias="pos", description="Position value of locations to find")
+        int | None,
+        Query(
+            alias="pos",
+            description="Position value of locations to find",
+        ),
     ] = None,
     parent_id: Annotated[
-        PydanticObjectId,
-        Query(alias="parent", description="ID of parent location to find children of"),
+        PydanticObjectId | None,
+        Query(
+            alias="parent",
+            description="ID of parent location to find children of",
+        ),
     ] = None,
     limit: Annotated[
-        int, Query(description="Return at most <limit> locations")
+        int,
+        Query(
+            description="Return at most <limit> locations",
+        ),
     ] = 16384,
 ) -> list[LocationDocument]:
     if level is None and parent_id is None:
@@ -160,6 +177,42 @@ async def find_locations(
         example["parent_id"] = parent_id
 
     return await LocationDocument.find(example).limit(limit).to_list()
+
+
+@router.get(
+    "/by-alias",
+    response_model=list[LocationRead],
+    status_code=status.HTTP_200_OK,
+)
+async def find_locations_by_alias(
+    text_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="txt",
+            description="ID of text to find locations for",
+        ),
+    ],
+    alias: Annotated[
+        str,
+        Query(
+            description="Alias of location(s) to find",
+        ),
+    ],
+    limit: Annotated[
+        int,
+        Query(
+            description="Return at most <limit> locations",
+        ),
+    ] = 5,
+) -> list[LocationDocument]:
+    return (
+        await LocationDocument.find(
+            LocationDocument.text_id == text_id,
+            LocationDocument.alias == alias,
+        )
+        .limit(min(limit, 10))
+        .to_list()
+    )
 
 
 @router.get(
