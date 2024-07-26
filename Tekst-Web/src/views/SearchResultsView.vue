@@ -93,6 +93,7 @@ async function execSearch(resetPage?: boolean) {
   } else {
     searchError.value = true;
   }
+  window.scrollTo(0, 0);
   loading.value = false;
 }
 
