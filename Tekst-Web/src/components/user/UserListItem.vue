@@ -201,6 +201,9 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         </n-flex>
       </template>
       <template #description>
+        <span class="translucent"> @{{ targetUser.username }} </span>
+      </template>
+      <template #default>
         <div class="text-small">
           {{ targetUser.affiliation }}
           –
@@ -215,7 +218,6 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           <n-time :time="utcToLocalTime(targetUser.createdAt)" type="datetime" />
         </div>
       </template>
-      <template #footer> </template>
     </n-thing>
   </n-list-item>
 </template>
