@@ -201,14 +201,14 @@ async def find_locations_by_alias(
     limit: Annotated[
         int,
         Query(
-            description="Return at most <limit> locations",
+            description="Return at most <limit> locations (maximum returned is 10)",
         ),
-    ] = 5,
+    ] = 10,
 ) -> list[LocationDocument]:
     return (
         await LocationDocument.find(
             LocationDocument.text_id == text_id,
-            LocationDocument.alias == alias,
+            LocationDocument.aliases == alias,
         )
         .limit(min(limit, 10))
         .to_list()

@@ -153,6 +153,7 @@ function handleUserOptionSelect(key: string) {
       />
       <n-button
         v-else
+        type="primary"
         circle
         size="large"
         :title="tooltip"
@@ -168,7 +169,7 @@ function handleUserOptionSelect(key: string) {
 
   <n-button
     v-else
-    secondary
+    type="primary"
     circle
     size="large"
     :title="tooltip"

@@ -156,7 +156,7 @@ browse:
   location:
     modalHeading: Belegstelle
     level: Ebene
-    submitBtn: Gehe zu Belegstelle
+    goTo: Gehe zu Belegstelle
   toolbar:
     tipSelectLocation: Belegstelle auswählen
     tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene
@@ -824,7 +824,7 @@ search:
   heading: Suche
   searchAction: Suchen
   quickSearch:
-    heading: Schnellsuche
+    title: Schnelle Suche
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.

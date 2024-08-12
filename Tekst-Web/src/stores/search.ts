@@ -12,9 +12,11 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useResourcesStore } from './resources';
 import { useStateStore } from './state';
+import { usePlatformData } from '@/composables/platformData';
 
 export const useSearchStore = defineStore('search', () => {
   const state = useStateStore();
+  const { pfData } = usePlatformData();
   const router = useRouter();
   const { message } = useMessages();
   const resources = useResourcesStore();
@@ -62,13 +64,11 @@ export const useSearchStore = defineStore('search', () => {
     }
   );
 
-  // set quick search settings text selection to current text on working text change
+  // set quick search settings text selection to all texts on working text change
   watch(
     () => state.text?.id,
-    (after) => {
-      if (after) {
-        settingsQuick.value.txt = [after];
-      }
+    () => {
+      settingsQuick.value.txt = pfData.value?.texts.map((t) => t.id);
     },
     { immediate: true }
   );

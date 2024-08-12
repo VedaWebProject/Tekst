@@ -5878,7 +5878,7 @@ export interface operations {
         txt: string;
         /** @description Alias of location(s) to find */
         alias: string;
-        /** @description Return at most <limit> locations */
+        /** @description Return at most <limit> locations (maximum returned is 10) */
         limit?: number;
       };
     };

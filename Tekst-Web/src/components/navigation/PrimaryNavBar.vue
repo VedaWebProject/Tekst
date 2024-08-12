@@ -4,7 +4,7 @@ import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
-import QuickSearchWidget from '@/components/search/QuickSearch.vue';
+import QuickSearch from '@/components/search/QuickSearch.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import {
   useAuthStore,
@@ -71,8 +71,15 @@ const titleLinkTo = computed(() => {
       </div>
     </div>
 
+    <n-flex v-if="!state.smallScreen" justify="end" style="flex-grow: 2; align-self: stretch">
+      <theme-mode-switcher />
+      <locale-switcher />
+      <help-nav-button />
+      <user-actions-button v-if="showUserActionsButton" />
+    </n-flex>
+
     <n-badge
-      v-if="state.smallScreen"
+      v-else
       :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
       :offset="[-8, 6]"
     >
@@ -97,15 +104,9 @@ const titleLinkTo = computed(() => {
     </n-badge>
   </n-flex>
 
-  <n-flex v-if="!state.smallScreen" class="navbar-menu">
+  <n-flex v-if="!state.smallScreen" justify="space-between" :wrap="false" class="navbar-menu">
     <navigation-menu :options="mainMenuOptions" />
-    <n-flex justify="end" style="flex-grow: 2">
-      <quick-search-widget />
-      <theme-mode-switcher />
-      <locale-switcher />
-      <help-nav-button />
-      <user-actions-button v-if="showUserActionsButton" />
-    </n-flex>
+    <quick-search />
   </n-flex>
 
   <drawer-menu

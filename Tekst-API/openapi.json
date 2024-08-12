@@ -1714,11 +1714,11 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "description": "Return at most <limit> locations",
-              "default": 5,
+              "description": "Return at most <limit> locations (maximum returned is 10)",
+              "default": 10,
               "title": "Limit"
             },
-            "description": "Return at most <limit> locations"
+            "description": "Return at most <limit> locations (maximum returned is 10)"
           }
         ],
         "responses": {

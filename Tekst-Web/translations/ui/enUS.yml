@@ -153,7 +153,7 @@ browse:
   location:
     modalHeading: Location
     level: Level
-    submitBtn: Go to location
+    goTo: Go to location
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level
@@ -800,7 +800,7 @@ search:
   heading: Search
   searchAction: Search
   quickSearch:
-    heading: Quick Search
+    title: Quick Search
     gotoAdvancedSearch: Go to Advanced Search
   advancedSearch:
     msgNoResources: There are no resources associated with this text to search in.
