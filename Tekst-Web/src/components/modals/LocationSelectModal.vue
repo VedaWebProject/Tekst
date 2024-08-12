@@ -53,7 +53,7 @@ function submit() {
 
     <button-shelf top-gap>
       <n-button type="primary" :disabled="!locationPath.length" @click="submit">
-        {{ $t('browse.location.submitBtn') }}
+        {{ $t('browse.location.goTo') }}
       </n-button>
     </button-shelf>
   </generic-modal>

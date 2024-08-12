@@ -54,6 +54,12 @@ class Location(ModelBase, ModelFactoryMixin):
             description="Label for identifying this text location in level context",
         ),
     ]
+    aliases: Annotated[
+        list[str],
+        Field(
+            description="List of aliases for this location",
+        ),
+    ] = []
 
 
 class LocationDocument(Location, DocumentBase):
@@ -64,6 +70,7 @@ class LocationDocument(Location, DocumentBase):
             "parent_id",
             "level",
             "position",
+            "aliases",
         ]
 
 
