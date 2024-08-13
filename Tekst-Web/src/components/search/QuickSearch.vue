@@ -93,7 +93,6 @@ async function handleSearch(e: UIEvent) {
   }
 
   loading.value = false;
-  emit('submit', searchInput.value);
   quickSearchInputRef.value?.select();
 }
 
@@ -104,6 +103,7 @@ function handleSelect(value: string, option: SelectOption) {
       params: { text: state.text?.slug || '' },
       query: { lvl: option.level as number, pos: option.position as number },
     });
+    emit('submit', searchInput.value);
   } else if (option.type === 'search') {
     quickSearch(value);
   }
@@ -123,6 +123,7 @@ function quickSearch(q: string) {
       }),
     },
   });
+  emit('submit', searchInput.value);
 }
 </script>
 
