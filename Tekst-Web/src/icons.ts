@@ -66,7 +66,7 @@ import ExpandOutlined from '@vicons/material/ExpandOutlined';
 import CompressOutlined from '@vicons/material/CompressOutlined';
 import LayersFilled from '@vicons/material/LayersFilled';
 import SearchOutlined from '@vicons/material/SearchOutlined';
-import SettingsFilled from '@vicons/material/SettingsFilled';
+import SettingsOutlined from '@vicons/material/SettingsOutlined';
 import ShortTextOutlined from '@vicons/material/ShortTextOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import SkipNextFilled from '@vicons/material/SkipNextFilled';
@@ -209,7 +209,7 @@ export {
   CompressOutlined as CompressIcon,
   LayersFilled as ResourceIcon,
   SearchOutlined as SearchIcon,
-  SettingsFilled as SettingsIcon,
+  SettingsOutlined as SettingsIcon,
   ShortTextOutlined as ShortTextIcon,
   PersonAddFilled as UserPromoteIcon,
   PersonRemoveFilled as UserDowngradeIcon,
