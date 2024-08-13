@@ -51,11 +51,14 @@ const contentContainerTitle = computed(() =>
 const headerWidgetsOpacity = computed<number>(() =>
   isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
 );
+const show = computed(
+  () => props.resource.active && (props.resource.contents?.length || !browse.reducedView)
+);
 </script>
 
 <template>
   <div
-    v-if="resource.active && (resource.contents?.length || !browse.reducedView)"
+    v-if="show"
     ref="contentContainerRef"
     class="content-block content-container"
     :class="{ reduced: browse.reducedView, empty: !resource.contents?.length }"
