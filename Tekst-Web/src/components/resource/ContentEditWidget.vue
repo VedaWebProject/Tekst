@@ -19,7 +19,6 @@ const browse = useBrowseStore();
 
 const show = computed(
   () =>
-    !!props.resource.contents?.length &&
     auth.user &&
     ((props.resource.ownerId && auth.user.id === props.resource.ownerId) ||
       props.resource.sharedWrite?.includes(auth.user.id) ||
