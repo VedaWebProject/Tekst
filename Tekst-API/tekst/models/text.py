@@ -284,6 +284,7 @@ class LocationDefinition(ModelBase):
         ),
     ]
     locations: list["LocationDefinition"] | None = None
+    aliases: list[str] | None = None
 
 
 class TextStructureImportData(ModelBase):

@@ -104,10 +104,14 @@ async def download_structure_template(
     curr_location_def: LocationDefinition | None = None
     dummy_location = LocationDefinition(
         label="Label for the first location on level '{}' (required!)",
+        aliases=["{} 1"],
     )
     for n in range(len(text.levels)):
         location = deepcopy(dummy_location)
         location.label = location.label.format(text.levels[n][0]["translation"])
+        location.aliases[0] = location.aliases[0].format(
+            text.levels[n][0]["translation"]
+        )
         if curr_location_def is None:
             structure_def.locations.append(location)
         else:
