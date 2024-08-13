@@ -205,6 +205,7 @@ browse:
         title: Hide
       siblingsWidget:
         title: Parent location's content
+        noSiblings: There are no contents for subordinate locations.
       exportWidget:
         title: Export
         format: Format

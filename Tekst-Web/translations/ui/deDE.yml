@@ -208,6 +208,7 @@ browse:
         title: Ausblenden
       siblingsWidget:
         title: Inhalt übergeordneter Belegstelle
+        noSiblings: Es existieren keine Inhalte für untergeordnete Belegstellen.
       exportWidget:
         title: Export
         format: Format

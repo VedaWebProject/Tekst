@@ -85,7 +85,9 @@ async function handleClick() {
       />
     </div>
 
-    <span v-else>{{ $t('errors.unexpected') }}</span>
+    <span v-else class="translucent">
+      {{ $t('browse.contents.widgets.siblingsWidget.noSiblings') }}
+    </span>
 
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showModal = false)">
