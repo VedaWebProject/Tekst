@@ -59,7 +59,7 @@ onBeforeMount(() => {
         size="large"
         class="global-loader-bottom"
       >
-        <div class="global-loader-text" :style="{ opacity: state.init.stepMsg ? 1 : 0 }">
+        <div class="global-loader-text text-tiny" :style="{ opacity: state.init.stepMsg ? 1 : 0 }">
           {{ state.init.stepMsg }}
         </div>
       </n-flex>
@@ -99,7 +99,6 @@ onBeforeMount(() => {
 }
 
 .global-loader-text {
-  font-size: var(--font-size-small);
   height: 2em;
   width: 100%;
   text-align: center;
