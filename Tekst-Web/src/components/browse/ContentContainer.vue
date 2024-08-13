@@ -163,7 +163,7 @@ const headerWidgetsOpacity = computed<number>(() =>
 .content-header {
   margin-bottom: 0.5rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
   column-gap: 12px;
   row-gap: 0px;
