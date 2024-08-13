@@ -12,7 +12,7 @@ import {
   NDrawerContent,
   type InputInst,
 } from 'naive-ui';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, useSlots } from 'vue';
 import ButtonShelf from './generic/ButtonShelf.vue';
 import { useOskLayout } from '@/composables/fetchers';
 import type { CSSProperties } from 'vue';
@@ -29,6 +29,7 @@ const model = defineModel<string | null>();
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
+const slots = useSlots();
 
 const showOsk = ref(false);
 const oskInput = ref<string>('');
@@ -153,9 +154,15 @@ watch(capsLock, () => (shift.value = false));
       <template #prefix>
         <slot name="prefix"></slot>
       </template>
-      <template v-if="!!pfData?.settings.oskModes?.length" #suffix>
+      <template v-if="slots['suffix'] || !!pfData?.settings.oskModes?.length" #suffix>
         <n-flex :wrap="false">
-          <n-button text :title="$t('osk.inputBtnTip')" :focusable="false" @click="handleOpen">
+          <n-button
+            v-if="!!pfData?.settings.oskModes?.length"
+            text
+            :title="$t('osk.inputBtnTip')"
+            :focusable="false"
+            @click="handleOpen"
+          >
             <template #icon>
               <n-icon :component="KeyboardIcon" />
             </template>
