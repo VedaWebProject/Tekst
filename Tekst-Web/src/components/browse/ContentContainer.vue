@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NSpin, NIcon, NButton, useThemeVars } from 'naive-ui';
+import { NFlex, NSpin, NIcon, NButton, useThemeVars } from 'naive-ui';
 import { ref, watch } from 'vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { computed } from 'vue';
@@ -10,6 +10,7 @@ import contentComponents from '@/components/content/mappings';
 import type { AnyResourceRead } from '@/api';
 import { NoContentIcon, ExpandIcon, CompressIcon, PublicOffIcon } from '@/icons';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import { MergeIcon } from '@/icons';
 
 const props = defineProps<{
   loading?: boolean;
@@ -51,8 +52,11 @@ const contentContainerTitle = computed(() =>
 const headerWidgetsOpacity = computed<number>(() =>
   isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
 );
-const show = computed(
-  () => props.resource.active && (props.resource.contents?.length || !browse.reducedView)
+const hasContent = computed(() => props.resource.contents?.length);
+const show = computed(() => props.resource.active && (hasContent.value || !browse.reducedView));
+const fromChildLevel = computed(
+  () =>
+    props.resource.level - 1 === browse.level && props.resource.config?.common?.showOnParentLevel
 );
 </script>
 
@@ -61,11 +65,11 @@ const show = computed(
     v-if="show"
     ref="contentContainerRef"
     class="content-block content-container"
-    :class="{ reduced: browse.reducedView, empty: !resource.contents?.length }"
+    :class="{ reduced: browse.reducedView, empty: !hasContent && !fromChildLevel }"
     :title="contentContainerTitle"
   >
     <div class="content-header" :class="browse.reducedView ? 'reduced' : ''">
-      <n-icon v-if="!resource.contents?.length" :component="NoContentIcon" />
+      <n-icon v-if="!hasContent && !fromChildLevel" :component="NoContentIcon" />
       <div class="content-header-title-container">
         <div
           class="content-header-title"
@@ -93,7 +97,7 @@ const show = computed(
     </div>
 
     <n-spin :show="loading" :delay="200" size="small">
-      <div v-if="resource.contents?.length" :class="{ 'content-collapsed': contentCollapsed }">
+      <div v-if="hasContent" :class="{ 'content-collapsed': contentCollapsed }">
         <!-- content-specific component (that displays the actual content data) -->
         <component
           :is="contentComponents[resource.resourceType]"
@@ -101,6 +105,14 @@ const show = computed(
           :reduced="browse.reducedView"
         />
       </div>
+      <n-flex v-else-if="fromChildLevel" align="center" size="small" class="translucent text-tiny">
+        {{
+          $t('browse.contents.showCombinedContents', {
+            level: state.textLevelLabels[resource.level],
+          })
+        }}
+        <n-icon :component="MergeIcon" />
+      </n-flex>
     </n-spin>
 
     <div

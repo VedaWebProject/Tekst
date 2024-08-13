@@ -183,6 +183,7 @@ browse:
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Belegstelle. Wählen Sie eine andere Belegstelle oder aktivieren Sie mehr Ressourcen.
   showAllResources: alle anzeigen
   contents:
+    showCombinedContents: Um kombinierte Inhalte von Ebene "{level}" anzuzeigen, klicken Sie auf
     widgets:
       contentEdit:
         title: Bearbeiten

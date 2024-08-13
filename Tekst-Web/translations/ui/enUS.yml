@@ -180,6 +180,7 @@ browse:
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   showAllResources: show all
   contents:
+    showCombinedContents: To show combined contents from level "{level}", click on
     widgets:
       contentEdit:
         title: Edit
