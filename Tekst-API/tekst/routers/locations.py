@@ -205,14 +205,34 @@ async def find_locations_by_alias(
         ),
     ] = 10,
 ) -> list[LocationDocument]:
-    return (
-        await LocationDocument.find(
+    """
+    Finds locations by text ID and their alias. A full combined label including
+    parent location's labels is added to each returned location object.
+    """
+    # find locations and transform them into LocationRead instances
+    locations = [
+        LocationRead.model_from(loc)
+        for loc in await LocationDocument.find(
             LocationDocument.text_id == text_id,
             LocationDocument.aliases == alias,
         )
         .limit(min(limit, 10))
         .to_list()
-    )
+    ]
+
+    # get text instance
+    text = await TextDocument.get(text_id)
+
+    # add the full combined label to each location
+    for location in locations:
+        full_label = location.label
+        parent = await LocationDocument.get(location.parent_id)
+        while parent:
+            full_label = f"{parent.label}{text.loc_delim}{full_label}"
+            parent = await LocationDocument.get(parent.parent_id)
+        location.full = full_label
+
+    return locations
 
 
 @router.get(

@@ -29,7 +29,9 @@ const loading = ref(false);
 
 const locationRenameInputRef = ref<InputInst | null>(null);
 
-async function handleSubmit() {
+async function handleSubmit(e: UIEvent) {
+  e.preventDefault();
+  e.stopPropagation();
   loading.value = true;
   locationFormRef.value
     ?.validate(async (validationErrors) => {

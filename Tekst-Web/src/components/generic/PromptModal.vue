@@ -84,9 +84,9 @@ function handleSubmit() {
 }
 
 function handleInputReturn(e: KeyboardEvent) {
+  e.preventDefault();
+  e.stopPropagation();
   if (!liveProps.value.multiline) {
-    e.preventDefault();
-    e.stopPropagation();
     handleSubmit();
   }
 }

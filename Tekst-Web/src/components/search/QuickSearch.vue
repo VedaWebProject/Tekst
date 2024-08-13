@@ -27,7 +27,9 @@ const quickSearchInputRef = ref<InputInst | null>(null);
 
 const locationSelectOptions = ref<SelectOption[]>([]);
 
-async function handleSearch() {
+async function handleSearch(e: UIEvent) {
+  e.preventDefault();
+  e.stopPropagation();
   loading.value = true;
   const matchesToShow = 10;
 
@@ -55,7 +57,7 @@ async function handleSearch() {
           children: [
             ...data.map((l) => ({
               type: 'location',
-              label: l.label,
+              label: l.label + (l.full ? ` (${l.full})` : ''),
               value: l.id,
               level: l.level,
               position: l.position,
