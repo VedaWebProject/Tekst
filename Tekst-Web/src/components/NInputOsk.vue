@@ -144,149 +144,153 @@ watch(capsLock, () => (shift.value = false));
 </script>
 
 <template>
-  <div>
-    <n-input
-      ref="targetInputRef"
-      v-bind="$attrs"
-      v-model:value="model"
-      :input-props="{ style: fontStyle }"
-    >
-      <template #prefix>
-        <slot name="prefix"></slot>
-      </template>
-      <template v-if="slots['suffix'] || !!pfData?.settings.oskModes?.length" #suffix>
-        <n-flex :wrap="false">
-          <n-button
-            v-if="!!pfData?.settings.oskModes?.length"
-            text
-            :title="$t('osk.inputBtnTip')"
-            :focusable="false"
-            @click="handleOpen"
+  <n-input
+    ref="targetInputRef"
+    v-bind="$attrs"
+    v-model:value="model"
+    :input-props="{ style: fontStyle }"
+  >
+    <template #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template v-if="slots['suffix'] || !!pfData?.settings.oskModes?.length" #suffix>
+      <n-flex :wrap="false">
+        <n-button
+          v-if="!!pfData?.settings.oskModes?.length"
+          text
+          :title="$t('osk.inputBtnTip')"
+          :focusable="false"
+          @click="handleOpen"
+        >
+          <template #icon>
+            <n-icon :component="KeyboardIcon" />
+          </template>
+          <!--
+          It's very ugly, but moving the OSK drawer into the button's default slot
+          was the only way to make (a) the component work as a drop-in for n-input and
+          (b) make the drawer show up at all
+          (which doesn't work when it's inside the n-input tag).
+          -->
+          <n-drawer
+            v-model:show="showOsk"
+            placement="bottom"
+            :auto-focus="true"
+            :height="680"
+            style="max-height: 90%"
+            to="#app-container"
           >
-            <template #icon>
-              <n-icon :component="KeyboardIcon" />
-            </template>
-          </n-button>
-          <slot name="suffix"></slot>
-        </n-flex>
-      </template>
-    </n-input>
+            <n-drawer-content>
+              <template #header>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap-reverse">
+                  <n-input
+                    ref="oskInputRef"
+                    v-model:value="oskInput"
+                    :placeholder="$t('osk.inputPlaceholder')"
+                    style="flex-grow: 4; width: 200px"
+                    :input-props="{ style: fontStyle }"
+                    @keydown.enter="handleSubmit"
+                  />
+                  <n-select
+                    v-model:value="oskModeKey"
+                    :options="oskModeOptions"
+                    style="flex-grow: 1; width: 200px"
+                    :consistent-menu-width="false"
+                    @update:value="handleOskModeChange"
+                  />
+                </div>
+              </template>
 
-    <n-drawer
-      v-model:show="showOsk"
-      placement="bottom"
-      :auto-focus="true"
-      :height="680"
-      style="max-height: 90%"
-    >
-      <n-drawer-content>
-        <template #header>
-          <div style="display: flex; gap: 12px; flex-wrap: wrap-reverse">
-            <n-input
-              ref="oskInputRef"
-              v-model:value="oskInput"
-              :placeholder="$t('osk.inputPlaceholder')"
-              style="flex-grow: 4; width: 200px"
-              :input-props="{ style: fontStyle }"
-              @keydown.enter="handleSubmit"
-            />
-            <n-select
-              v-model:value="oskModeKey"
-              :options="oskModeOptions"
-              style="flex-grow: 1; width: 200px"
-              :consistent-menu-width="false"
-              @update:value="handleOskModeChange"
-            />
-          </div>
-        </template>
-
-        <n-flex align="center" justify="center" style="min-height: 100%">
-          <n-flex v-if="oskLayout" vertical justify="center" align="center" :size="18">
-            <n-flex
-              v-for="(line, lineIndex) in oskLayout"
-              :key="lineIndex"
-              justify="center"
-              align="center"
-              size="large"
-            >
-              <n-flex
-                v-for="(group, groupIndex) in line"
-                :key="groupIndex"
-                justify="center"
-                align="center"
-                size="small"
-              >
-                <template v-for="(key, keyIndex) in group">
-                  <n-button
-                    v-if="!!key.char"
-                    :key="keyIndex"
-                    :focusable="false"
-                    secondary
-                    :size="state.smallScreen ? undefined : 'large'"
-                    :style="fontStyle"
-                    @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
+              <n-flex align="center" justify="center" style="min-height: 100%">
+                <n-flex v-if="oskLayout" vertical justify="center" align="center" :size="18">
+                  <n-flex
+                    v-for="(line, lineIndex) in oskLayout"
+                    :key="lineIndex"
+                    justify="center"
+                    align="center"
+                    size="large"
                   >
-                    {{ shiftActive && key.shift ? key.shift : key.char }}
-                  </n-button>
-                </template>
+                    <n-flex
+                      v-for="(group, groupIndex) in line"
+                      :key="groupIndex"
+                      justify="center"
+                      align="center"
+                      size="small"
+                    >
+                      <template v-for="(key, keyIndex) in group">
+                        <n-button
+                          v-if="!!key.char"
+                          :key="keyIndex"
+                          :focusable="false"
+                          secondary
+                          :size="state.smallScreen ? undefined : 'large'"
+                          :style="fontStyle"
+                          @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
+                        >
+                          {{ shiftActive && key.shift ? key.shift : key.char }}
+                        </n-button>
+                      </template>
+                    </n-flex>
+                  </n-flex>
+
+                  <!-- SHIFT / CAPSLOCK -->
+                  <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
+                    <n-button
+                      type="primary"
+                      size="large"
+                      :secondary="!capsLock"
+                      :focusable="false"
+                      @click="capsLock = !capsLock"
+                    >
+                      <template #icon>
+                        <n-icon :component="CapsLockIcon" />
+                      </template>
+                    </n-button>
+                    <n-button
+                      type="primary"
+                      size="large"
+                      :secondary="!shift"
+                      :focusable="false"
+                      :disabled="capsLock"
+                      @click="shift = !shift"
+                    >
+                      <template #icon>
+                        <n-icon :component="ShiftIcon" />
+                      </template>
+                    </n-button>
+                  </n-flex>
+                </n-flex>
+
+                <n-spin v-else-if="loading" class="content-loader" />
+
+                <div v-else-if="error">
+                  {{
+                    $t('osk.msgErrorLoading', {
+                      layout: oskMode?.name || 'unknown',
+                    })
+                  }}
+                </div>
               </n-flex>
-            </n-flex>
 
-            <!-- SHIFT / CAPSLOCK -->
-            <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
-              <n-button
-                type="primary"
-                size="large"
-                :secondary="!capsLock"
-                :focusable="false"
-                @click="capsLock = !capsLock"
-              >
-                <template #icon>
-                  <n-icon :component="CapsLockIcon" />
-                </template>
-              </n-button>
-              <n-button
-                type="primary"
-                size="large"
-                :secondary="!shift"
-                :focusable="false"
-                :disabled="capsLock"
-                @click="shift = !shift"
-              >
-                <template #icon>
-                  <n-icon :component="ShiftIcon" />
-                </template>
-              </n-button>
-            </n-flex>
-          </n-flex>
-
-          <n-spin v-else-if="loading" class="content-loader" />
-
-          <div v-else-if="error">
-            {{
-              $t('osk.msgErrorLoading', {
-                layout: oskMode?.name || 'unknown',
-              })
-            }}
-          </div>
-        </n-flex>
-
-        <template #footer>
-          <button-shelf>
-            <n-button secondary :focusable="false" @click="showOsk = false">
-              {{ $t('general.cancelAction') }}
-            </n-button>
-            <n-button
-              type="primary"
-              :focusable="false"
-              :disabled="loading || error"
-              @click="handleSubmit"
-            >
-              {{ $t('general.insertAction') }}
-            </n-button>
-          </button-shelf>
-        </template>
-      </n-drawer-content>
-    </n-drawer>
-  </div>
+              <template #footer>
+                <button-shelf>
+                  <n-button secondary :focusable="false" @click="showOsk = false">
+                    {{ $t('general.cancelAction') }}
+                  </n-button>
+                  <n-button
+                    type="primary"
+                    :focusable="false"
+                    :disabled="loading || error"
+                    @click="handleSubmit"
+                  >
+                    {{ $t('general.insertAction') }}
+                  </n-button>
+                </button-shelf>
+              </template>
+            </n-drawer-content>
+          </n-drawer>
+        </n-button>
+        <slot name="suffix"></slot>
+      </n-flex>
+    </template>
+  </n-input>
 </template>
