@@ -11,6 +11,7 @@ import {
   NDialogProvider,
   NGlobalStyle,
   NBackTop,
+  NFlex,
 } from 'naive-ui';
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
@@ -47,12 +48,18 @@ useFavicon(favicon, { rel: 'icon' });
     <n-loading-bar-provider>
       <n-dialog-provider>
         <div id="app-container">
-          <huge-labelled-icon
+          <n-flex
             v-if="state.init.initialized && state.init.error"
-            :message="$t('init.error')"
-            :loading="!state.init.error && !state.init.initialized"
-            :icon="ErrorIcon"
-          />
+            justify="center"
+            align="center"
+            style="height: 100vh"
+          >
+            <huge-labelled-icon
+              :message="$t('init.error')"
+              :loading="!state.init.error && !state.init.initialized"
+              :icon="ErrorIcon"
+            />
+          </n-flex>
 
           <template v-else-if="state.init.initialized">
             <page-header />

@@ -13,8 +13,8 @@ const props = defineProps<{
 
 <template>
   <div class="huge-labelled-icon">
-    <n-icon :size="128" :component="props.loading ? HourglassIcon : props.icon" />
-    <div class="text-huge">
+    <n-icon :size="96" :component="props.loading ? HourglassIcon : props.icon" />
+    <div>
       {{ !props.loading && props.message }}
     </div>
   </div>
@@ -28,7 +28,6 @@ const props = defineProps<{
   padding: 3rem 0;
   text-align: center;
   opacity: 0.5;
-  font-size: var(--font-size-huge);
 }
 
 .huge-labelled-icon > * {
