@@ -83,8 +83,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const menuOptions = computed<MenuOption[]>(() => [
     {
       label: renderLink(
-        () =>
-          pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
+        () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
         {
           name: 'browse',
           params: { text: state.text?.slug },
@@ -96,8 +95,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     },
     {
       label: renderLink(
-        () =>
-          pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search'),
+        () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search'),
         {
           name: 'search',
           params: { text: state.text?.slug },

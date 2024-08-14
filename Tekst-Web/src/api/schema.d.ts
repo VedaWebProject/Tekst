@@ -347,6 +347,8 @@ export interface paths {
   '/texts/{id}/level/{index}': {
     /** Insert level */
     post: operations['insertLevel'];
+  };
+  '/texts/{id}/level/{lvl}': {
     /** Delete level */
     delete: operations['deleteLevel'];
   };
@@ -7663,8 +7665,8 @@ export interface operations {
     parameters: {
       path: {
         id: string;
-        /** @description Index to insert the level at */
-        index: number;
+        /** @description Level to delete */
+        lvl: number;
       };
     };
     responses: {

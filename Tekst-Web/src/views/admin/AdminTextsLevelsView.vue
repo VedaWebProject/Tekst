@@ -78,8 +78,8 @@ function handleDeleteClick(level: number) {
     ...dialogProps,
     onPositiveClick: async () => {
       loading.value = true;
-      const { data, error } = await DELETE('/texts/{id}/level/{index}', {
-        params: { path: { id: state.text?.id || '', index: level } },
+      const { data, error } = await DELETE('/texts/{id}/level/{lvl}', {
+        params: { path: { id: state.text?.id || '', lvl: level } },
       });
       if (!error) {
         state.text = data;

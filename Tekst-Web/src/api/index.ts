@@ -183,8 +183,8 @@ export type LocationData = components['schemas']['LocationData'];
 
 export type PlatformStats = components['schemas']['PlatformStats'];
 export type PlatformData = components['schemas']['PlatformData'];
-export type PlatformSettingsRead = components['schemas']['PlatformSettingsRead'];
-export type PlatformSettingsUpdate = components['schemas']['PlatformSettingsUpdate'];
+export type PlatformSettingsRead = components['schemas']['PlatformStateRead'];
+export type PlatformSettingsUpdate = components['schemas']['PlatformStateUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
 export type ResourceCoverageDetails = components['schemas']['ResourceCoverageDetails'];
 

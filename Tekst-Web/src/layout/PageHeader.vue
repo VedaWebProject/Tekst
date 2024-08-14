@@ -17,10 +17,7 @@ const themeVars = useThemeVars();
   <header>
     <primary-nav-bar />
     <div class="accent-color-bg" style="min-height: 12px" :style="{ color: themeVars.baseColor }">
-      <div
-        v-if="route.meta.isTextSpecific || pfData?.state.alwaysShowTextInfo"
-        id="current-text"
-      >
+      <div v-if="route.meta.isTextSpecific || pfData?.state.alwaysShowTextInfo" id="current-text">
         <text-select />
         <span
           v-if="!state.smallScreen && state.text?.subtitle?.length"
