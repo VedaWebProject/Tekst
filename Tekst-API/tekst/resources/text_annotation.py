@@ -6,8 +6,8 @@ from typing import Annotated, Any, Literal
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
 
-from tekst.logs import log_op_end, log_op_start
-from tekst.models.common import ModelBase, PydanticObjectId
+from tekst.logs import log, log_op_end, log_op_start
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
@@ -34,122 +34,6 @@ class TextAnnotation(ResourceTypeABC):
     @classmethod
     def search_query_model(cls) -> type["TextAnnotationSearchQuery"]:
         return TextAnnotationSearchQuery
-
-    @classmethod
-    async def _update_aggregations(
-        cls,
-        resource_id: PydanticObjectId,
-    ) -> None:
-        # get resource document
-        rs_doc_model = cls.resource_model().document_model()
-        resource_doc = await rs_doc_model.get(resource_id)
-        if not resource_doc:
-            return
-
-        # group annotations
-        anno_aggs = (
-            await ContentBaseDocument.find(
-                ContentBaseDocument.resource_id == resource_id,
-                with_children=True,
-            )
-            .aggregate(
-                [
-                    {"$project": {"anno": "$tokens.annotations"}},
-                    {"$unwind": {"path": "$anno"}},
-                    {"$unwind": {"path": "$anno"}},
-                    {"$unwind": {"path": "$anno.value"}},
-                    # create one document for each annotation key,
-                    # collecting all values and the key occurrence count
-                    {
-                        "$group": {
-                            "_id": "$anno.key",
-                            "values": {"$push": "$anno.value"},
-                            "keyOcc": {"$sum": 1},
-                        }
-                    },
-                    # count per-key value occurrences on "values" field
-                    {
-                        "$set": {
-                            "values": {
-                                "$map": {
-                                    "input": {"$setUnion": "$values"},
-                                    "as": "v",
-                                    "in": {
-                                        "value": "$$v",
-                                        "count": {
-                                            "$size": {
-                                                "$filter": {
-                                                    "input": "$values",
-                                                    "cond": {"$eq": ["$$this", "$$v"]},
-                                                }
-                                            }
-                                        },
-                                    },
-                                }
-                            }
-                        }
-                    },
-                    # remove values array if it contains more than 100 items
-                    {
-                        "$set": {
-                            "values": {
-                                "$cond": {
-                                    "if": {"$gt": [{"$size": "$values"}, 100]},
-                                    "then": "$$REMOVE",
-                                    "else": "$values",
-                                }
-                            }
-                        }
-                    },
-                    # sort values array by count
-                    {
-                        "$set": {
-                            "values": {
-                                "$sortArray": {
-                                    "input": "$values",
-                                    "sortBy": {"count": -1},
-                                }
-                            }
-                        }
-                    },
-                    # sort docs by key occurrence
-                    {"$sort": {"keyOcc": -1}},
-                    # project to final doc format,
-                    # with values array only containing the values
-                    {
-                        "$project": {
-                            "_id": 0,
-                            "key": "$_id",
-                            "values": {
-                                "$map": {
-                                    "input": "$values",
-                                    "as": "v",
-                                    "in": "$$v.value",
-                                }
-                            },
-                        }
-                    },
-                ]
-            )
-            .to_list()
-        )
-
-        # update aggregations in DB
-        resource_doc.aggregations = anno_aggs
-        await resource_doc.replace()
-
-    @classmethod
-    async def resource_maintenance_hook(
-        cls,
-        resource_id: PydanticObjectId,
-    ) -> None:
-        op_id = log_op_start(f"Generate aggregations for resource {resource_id}")
-        try:
-            await cls._update_aggregations(resource_id)
-        except Exception as e:
-            log_op_end(op_id, failed=True)
-            raise e
-        log_op_end(op_id)
 
     @classmethod
     def rtype_es_queries(
@@ -394,6 +278,134 @@ class TextAnnotationResource(ResourceBase):
             description="Aggregated groups for this resource's annotations",
         ),
     ] = None
+    aggregations_ood: Annotated[
+        bool,
+        Field(
+            description="Whether the aggregations are out-of-date",
+        ),
+    ] = True
+
+    async def _update_aggregations(self) -> None:
+        # get resource document
+        rs_doc_model = self.document_model()
+        res = await rs_doc_model.get(self.id)
+
+        if not res:
+            log.error(f"Resource {self.id} not found")
+
+        if res.aggregations_ood is not None and not res.aggregations_ood:
+            log.debug(f"Resource {self.id} aggregations are up-to-date. Skipping.")
+            return
+
+        # group annotations
+        anno_aggs = (
+            await ContentBaseDocument.find(
+                ContentBaseDocument.resource_id == self.id,
+                with_children=True,
+            )
+            .aggregate(
+                [
+                    {"$project": {"anno": "$tokens.annotations"}},
+                    {"$unwind": {"path": "$anno"}},
+                    {"$unwind": {"path": "$anno"}},
+                    {"$unwind": {"path": "$anno.value"}},
+                    # create one document for each annotation key,
+                    # collecting all values and the key occurrence count
+                    {
+                        "$group": {
+                            "_id": "$anno.key",
+                            "values": {"$push": "$anno.value"},
+                            "keyOcc": {"$sum": 1},
+                        }
+                    },
+                    # count per-key value occurrences on "values" field
+                    {
+                        "$set": {
+                            "values": {
+                                "$map": {
+                                    "input": {"$setUnion": "$values"},
+                                    "as": "v",
+                                    "in": {
+                                        "value": "$$v",
+                                        "count": {
+                                            "$size": {
+                                                "$filter": {
+                                                    "input": "$values",
+                                                    "cond": {"$eq": ["$$this", "$$v"]},
+                                                }
+                                            }
+                                        },
+                                    },
+                                }
+                            }
+                        }
+                    },
+                    # remove values array if it contains more than 100 items
+                    {
+                        "$set": {
+                            "values": {
+                                "$cond": {
+                                    "if": {"$gt": [{"$size": "$values"}, 100]},
+                                    "then": "$$REMOVE",
+                                    "else": "$values",
+                                }
+                            }
+                        }
+                    },
+                    # sort values array by count
+                    {
+                        "$set": {
+                            "values": {
+                                "$sortArray": {
+                                    "input": "$values",
+                                    "sortBy": {"count": -1},
+                                }
+                            }
+                        }
+                    },
+                    # sort docs by key occurrence
+                    {"$sort": {"keyOcc": -1}},
+                    # project to final doc format,
+                    # with values array only containing the values
+                    {
+                        "$project": {
+                            "_id": 0,
+                            "key": "$_id",
+                            "values": {
+                                "$map": {
+                                    "input": "$values",
+                                    "as": "v",
+                                    "in": "$$v.value",
+                                }
+                            },
+                        }
+                    },
+                ]
+            )
+            .to_list()
+        )
+
+        # update aggregations in DB
+        res.aggregations = anno_aggs
+        res.aggregations_ood = False
+        await res.replace()
+
+    async def contents_changed_hook(self) -> None:
+        # get resource document
+        doc_model = self.document_model()
+        resource_doc = await doc_model.get(self.id)
+        # mark aggregations as out-of-date
+        resource_doc.aggregations_ood = True
+        await resource_doc.replace()
+
+    async def resource_maintenance_hook(self) -> None:
+        op_id = log_op_start(f"Generate aggregations for resource {self.id}")
+        try:
+            await self._update_aggregations()
+        except Exception as e:
+            log_op_end(op_id, failed=True)
+            raise e
+        log_op_end(op_id)
 
 
 TextAnnotationValue = TypeAliasType(

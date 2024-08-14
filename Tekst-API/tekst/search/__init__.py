@@ -1,6 +1,6 @@
 import asyncio
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any
 from uuid import uuid4
 
@@ -38,7 +38,7 @@ from tekst.search.templates import (
     QUERY_SOURCE_INCLUDES,
     SORTING_PRESETS,
 )
-from tekst.settings import update_settings
+from tekst.state import update_state
 
 
 _cfg: TekstConfig = get_config()
@@ -109,29 +109,48 @@ async def _setup_index_templates() -> None:
     )
 
 
-async def create_indices_task(
-    overwrite_existing_indices: bool = True,
-) -> dict[str, float]:
+async def create_indices_task(force: bool = False) -> dict[str, float]:
     op_id = log_op_start("Create search indices", level="INFO")
     await _wait_for_es()
     await _setup_index_templates()
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
-    existing_indices = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
-
-    if existing_indices:
-        if overwrite_existing_indices:
-            log.debug("The new index will overwrite the existing one...")
-        else:
-            log.warning("An index already exists. Aborting index creation.")
-            return
+    old_idxs = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
+    utd_idxs = []  # list of indices that are still up to date
 
     for text in await TextDocument.find_all().to_list():
-        # create indices (index template will be applied!)
-        new_index_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
+        # get name sof existing indices for this text
+        old_txt_idxs = [
+            idx
+            for idx in client.indices.get(
+                index=f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_*"
+            )
+        ]
+
+        # check if indexing is necessary and if not, remember the index that's still
+        # in use for this text, then continue with the next text
+        if old_txt_idxs and (
+            text.contents_changed_at is None
+            or (
+                text.index_created_at is not None
+                and text.contents_changed_at < text.index_created_at
+            )
+        ):
+            # indexing is NOT necessary
+            if force:
+                log.debug(f"Indexing will be forced for text '{text.title}'.")
+            else:
+                log.debug(f"Indexing is not necessary for text '{text.title}'.")
+                utd_idxs.extend(old_txt_idxs)
+                continue
+
+        # generate new index name
+        new_idx_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
+
+        # create index (index template will be applied!)
         client.indices.create(
-            index=new_index_name,
+            index=new_idx_name,
             aliases={IDX_ALIAS: {}},
         )
 
@@ -148,7 +167,7 @@ async def create_indices_task(
                 ).index_doc_props(),
             }
         resp = client.indices.put_mapping(
-            index=new_index_name,
+            index=new_idx_name,
             body={"properties": {"resources": {"properties": extra_properties}}},
         )
         if not resp or not resp.get("acknowledged"):
@@ -157,24 +176,28 @@ async def create_indices_task(
         # populate newly created index
         populate_op_id = log_op_start(f"Index resources for text '{text.title}'")
         try:
-            await _populate_index(new_index_name, text)
+            await _populate_index(new_idx_name, text)
         except Exception as e:
             log_op_end(populate_op_id, failed=True, failed_msg=str(e))
+
+        utd_idxs.append(new_idx_name)  # mark created index as "up to date"
+        await text.index_updated_hook(new_idx_name)  # update indexing time for text
         log_op_end(populate_op_id)
 
-    # delete all other/old indices matching the used index naming pattern
-    if existing_indices:
-        client.indices.delete(index=existing_indices)
+    # delete indices that are no longer in use
+    to_delete = [idx for idx in old_idxs if idx not in utd_idxs]
+    if to_delete:
+        client.indices.delete(index=[idx for idx in old_idxs if idx not in utd_idxs])
 
-    # perform initial bogus search (to initialize index stats)
+    # perform initial bogus search on all existing indices (to initialize index stats)
     client.search(
         index=IDX_ALIAS,
         query={"match_all": {}},
         timeout=_cfg.es.timeout_search_s,
     )
 
-    # update last indexing time
-    await update_settings(indices_created_at=datetime.utcnow())
+    # update last global indexing time
+    await update_state(indices_updated_at=datetime.utcnow())
 
     return {
         "took": round(log_op_end(op_id), 2),
@@ -184,7 +207,7 @@ async def create_indices_task(
 async def create_indices(
     *,
     user: UserRead | None = None,
-    overwrite_existing_indices: bool = True,
+    force: bool = False,
 ) -> tasks.TaskDocument:
     log.info("Creating search indices ...")
     # create index task
@@ -193,7 +216,7 @@ async def create_indices(
         tasks.TaskType.INDICES_CREATE_UPDATE,
         user_id=user.id if user else None,
         task_kwargs={
-            "overwrite_existing_indices": overwrite_existing_indices,
+            "force": force,
         },
     )
 
@@ -299,17 +322,6 @@ def _bulk_index(
     return bool(resp) and not resp.get("errors", False)
 
 
-async def _get_index_creation_time(index: str) -> datetime:
-    """Returns the creation date of the index as a UTC datetime."""
-    client: Elasticsearch = await _get_es_client()
-    ts = int(
-        client.indices.get_settings(
-            index=index, name="index.creation_date", flat_settings=True
-        ).body[index]["settings"]["index.creation_date"]
-    )
-    return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
-
-
 async def _get_mapped_fields_count(index: str) -> int:
     client: Elasticsearch = await _get_es_client()
     return len(
@@ -337,16 +349,17 @@ async def _get_index_stats(index: str) -> dict[str, Any]:
 
 
 async def get_indices_info() -> list[IndexInfo]:
-    client: Elasticsearch = await _get_es_client()
+    texts = await TextDocument.all().to_list()
+    data = dict()
     try:
-        data = {idx_name: {} for idx_name in client.indices.get_alias(index=IDX_ALIAS)}
-        # collect data from various endpoints
-        for idx_name in data:
-            data[idx_name].update(await _get_index_stats(idx_name))
-            data[idx_name]["fields"] = await _get_mapped_fields_count(idx_name)
-            data[idx_name]["created_at"] = await _get_index_creation_time(idx_name)
-            data[idx_name]["text_id"] = idx_name.split("_")[-2]
-
+        for txt in texts:
+            # dict(text_id=str(txt.id), created_at=txt.index_created_at)
+            data[txt.index_name] = {
+                "text_id": str(txt.id),
+                "created_at": txt.index_created_at,
+                "fields": await _get_mapped_fields_count(txt.index_name),
+                **await _get_index_stats(txt.index_name),
+            }
         return [IndexInfo(**data[idx_name]) for idx_name in data]
     except Exception:
         log.error("Error getting/processing indices info.")

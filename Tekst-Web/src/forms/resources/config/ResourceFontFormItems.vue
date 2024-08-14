@@ -7,12 +7,10 @@ const { pfData } = usePlatformData();
 const model = defineModel<string>();
 
 const options = computed(() =>
-  [...(pfData.value?.settings.customFonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map(
-    (f) => ({
-      label: f,
-      value: f,
-    })
-  )
+  [...(pfData.value?.state.customFonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
+    label: f,
+    value: f,
+  }))
 );
 </script>
 

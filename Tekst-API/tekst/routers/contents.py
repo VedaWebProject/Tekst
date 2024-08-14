@@ -8,6 +8,7 @@ from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
+from tekst.models.text import TextDocument
 from tekst.resources import (
     AnyContentCreateBody,
     AnyContentDocument,
@@ -41,11 +42,12 @@ async def create_content(
     user: UserDep,
 ) -> AnyContentDocument:
     # check if the resource this content belongs to is writable by user
-    if not await ResourceBaseDocument.find_one(
+    resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
-    ).exists():
+    )
+    if not resource:
         raise errors.E_403_FORBIDDEN
     # check for duplicates
     if await ContentBaseDocument.find_one(
@@ -57,6 +59,10 @@ async def create_content(
 
     # if the content has a "html" field, sanitize it
     content = sanitize_model_html(content)
+
+    # call the resource's and text's hooks for changed contents
+    await resource.contents_changed_hook()
+    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
 
     # create the content document and return it
     return (
@@ -124,15 +130,20 @@ async def update_content(
     if updates.resource_type != content_doc.resource_type:
         raise errors.E_400_CONTENT_TYPE_MISMATCH
     # check if the resource this content belongs to is writable by user
-    if not await ResourceBaseDocument.find_one(
+    resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
-    ).exists():
+    )
+    if not resource:
         raise errors.E_403_FORBIDDEN
 
     # if the updated content has a "html" field, sanitize it
     updates = sanitize_model_html(updates)
+
+    # call the resource's and text's hooks for changed contents
+    await resource.contents_changed_hook()
+    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
 
     # apply updates, return the updated document
     return await content_doc.apply_updates(
@@ -157,12 +168,17 @@ async def delete_content(
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
-    if not await ResourceBaseDocument.find_one(
+    resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
-    ).exists():
+    )
+    if not resource:
         raise errors.E_403_FORBIDDEN
+
+    # call the resource's and text's hooks for changed contents
+    await resource.contents_changed_hook()
+    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
 
     # all fine, delete content
     await content_doc.delete()

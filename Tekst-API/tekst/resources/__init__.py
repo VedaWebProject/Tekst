@@ -12,6 +12,7 @@ from typing import Annotated, Any, Union
 
 import jsonref
 
+from beanie.operators import In
 from fastapi import Body
 from humps import camelize
 from pydantic import Field, StringConstraints
@@ -51,17 +52,16 @@ async def call_resource_maintenance_hooks(
     text_id: PydanticObjectId | None = None,
 ) -> dict[str, float]:
     start_time = perf_counter()
-    if not text_id:  # pragma: no cover
-        text_ids = [txt.id for txt in await TextDocument.find().to_list()]
-    else:
-        text_ids = [text_id]
-    for tid in text_ids:
-        for resource in await ResourceBaseDocument.find(
-            ResourceBaseDocument.text_id == tid, with_children=True
-        ).to_list():
-            await resource_types_mgr.get(
-                resource.resource_type
-            ).resource_maintenance_hook(resource.id)
+    for resource in await ResourceBaseDocument.find(
+        In(
+            ResourceBaseDocument.text_id,
+            [txt.id for txt in await TextDocument.all().to_list()]
+            if not text_id
+            else [text_id],
+        ),
+        with_children=True,
+    ).to_list():
+        await resource.resource_maintenance_hook()
 
     return {
         "took": round(perf_counter() - start_time, 2),
@@ -312,14 +312,6 @@ class ResourceTypeABC(ABC):
                 fp=fp,
                 ensure_ascii=False,
             )
-
-    @classmethod
-    async def resource_maintenance_hook(cls, resource_id: PydanticObjectId) -> None:
-        """
-        Will be called whenever the central resource maintenance procedures are run.
-        This may be overridden by concrete resource implementations to run arbitrary
-        maintenance procedures. Otherwise it is juust a no-op.
-        """
 
     @classmethod
     @abstractmethod

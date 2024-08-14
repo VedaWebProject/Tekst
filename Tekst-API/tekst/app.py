@@ -12,11 +12,11 @@ from tekst import db, search
 from tekst.config import TekstConfig, get_config
 from tekst.errors import TekstHTTPException
 from tekst.logs import log
-from tekst.models.settings import PlatformSettings
+from tekst.models.platform import PlatformState
 from tekst.openapi import customize_openapi
 from tekst.resources import init_resource_types_mgr
 from tekst.routers import setup_routes
-from tekst.settings import get_settings
+from tekst.state import get_state
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -30,7 +30,7 @@ async def startup_routine(app: FastAPI) -> None:
     if not _cfg.dev_mode or _cfg.dev.use_es:
         await search.init_es_client()
 
-    settings = await get_settings() if _cfg.dev.use_db else PlatformSettings()
+    settings = await get_state() if _cfg.dev.use_db else PlatformState()
     customize_openapi(app=app, settings=settings)
 
     if not _cfg.email.smtp_server:

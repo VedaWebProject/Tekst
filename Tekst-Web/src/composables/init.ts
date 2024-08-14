@@ -73,7 +73,7 @@ export function useInitializeApp() {
         state.text =
           pfData.value?.texts.find((t) => t.slug === route.params.text) ||
           pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-          pfData.value?.texts.find((t) => t.id == pfData.value?.settings.defaultTextId) ||
+          pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
           pfData.value?.texts[0];
 
         if (route.meta.isTextSpecific) {

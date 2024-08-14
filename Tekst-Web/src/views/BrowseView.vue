@@ -76,7 +76,7 @@ onMounted(() => {
     <template v-for="category in browse.resourcesCategorized" :key="category.key">
       <n-flex
         v-if="
-          pfData?.settings.showResourceCategoryHeadings &&
+          pfData?.state.showResourceCategoryHeadings &&
           !!category.resources.length &&
           !browse.reducedView
         "

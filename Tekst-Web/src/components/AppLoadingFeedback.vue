@@ -36,10 +36,10 @@ onBeforeMount(() => {
           class="global-loader-logo"
           :src="pageLogo"
           :style="{
-            opacity: pageLogo && pfData?.settings.showLogoOnLoadingScreen ? 1 : 0,
+            opacity: pageLogo && pfData?.state.showLogoOnLoadingScreen ? 1 : 0,
           }"
         />
-        <div class="text-huge">{{ pfData?.settings.platformName }}</div>
+        <div class="text-huge">{{ pfData?.state.platformName }}</div>
         <n-progress
           type="line"
           :percentage="state.init.progress * 100"

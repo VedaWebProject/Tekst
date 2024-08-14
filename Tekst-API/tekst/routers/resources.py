@@ -400,7 +400,13 @@ async def get_resource(
     ),
 )
 async def delete_resource(
-    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(
+            alias="id",
+        ),
+    ],
 ) -> None:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
@@ -411,21 +417,28 @@ async def delete_resource(
         raise errors.E_400_RESOURCE_PUBLIC_DELETE
     if resource_doc.proposed:
         raise errors.E_400_RESOURCE_PROPOSED_DELETE
+
     # all fine
     # turn versions of this resource into original resources
     await ResourceBaseDocument.find(
         ResourceBaseDocument.original_id == resource_id,
         with_children=True,
     ).set({ResourceBaseDocument.original_id: None})
+
     # delete contents belonging to the resource
     await ContentBaseDocument.find(
         ContentBaseDocument.resource_id == resource_id,
         with_children=True,
     ).delete()
+
     # delete correction notes belonging to the resource
     await CorrectionDocument.find(
         CorrectionDocument.resource_id == resource_id,
     ).delete()
+
+    # call the resource's text's hook for changed content
+    await (await TextDocument.get(resource_doc.text_id)).contents_changed_hook()
+
     # delete resource itself
     await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,

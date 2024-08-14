@@ -198,6 +198,20 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         }
         return {k for k, v in restrictions.items() if v}
 
+    async def contents_changed_hook(self) -> None:
+        """
+        Will be called whenever contents of a given resource are changed.
+        This may be overridden by concrete resource implementations to do whatever
+        is necessary to react to content changes. Otherwise it is just a no-op.
+        """
+
+    async def resource_maintenance_hook(self) -> None:
+        """
+        Will be called whenever the central resource maintenance procedures are run.
+        This may be overridden by concrete resource implementations to run arbitrary
+        maintenance procedures. Otherwise it is just a no-op.
+        """
+
 
 # generate document and update models for this base model,
 # as those have to be used as bases for inheriting model's document/update models

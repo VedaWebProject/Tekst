@@ -39,11 +39,11 @@ const targetInputRef = ref<InputInst | null>(null);
 const oskInputRef = ref<InputInst | null>(null);
 
 const oskModeOptions = computed(
-  () => pfData.value?.settings.oskModes?.map((m) => ({ label: m.name, value: m.key })) || []
+  () => pfData.value?.state.oskModes?.map((m) => ({ label: m.name, value: m.key })) || []
 );
 const oskModeKey = ref<string>();
 const oskMode = computed(() =>
-  pfData.value?.settings.oskModes?.find((m) => m.key === oskModeKey.value)
+  pfData.value?.state.oskModes?.find((m) => m.key === oskModeKey.value)
 );
 const { oskLayout, loading, error } = useOskLayout(oskModeKey);
 
@@ -91,7 +91,7 @@ function captureTargetSelectionRange() {
 
 function handleOpen() {
   captureTargetSelectionRange();
-  oskModeKey.value = localStorage.getItem('oskMode') || pfData.value?.settings.oskModes?.[0]?.key;
+  oskModeKey.value = localStorage.getItem('oskMode') || pfData.value?.state.oskModes?.[0]?.key;
   oskInput.value = '';
   shift.value = false;
   capsLock.value = false;
@@ -153,10 +153,10 @@ watch(capsLock, () => (shift.value = false));
     <template #prefix>
       <slot name="prefix"></slot>
     </template>
-    <template v-if="slots['suffix'] || !!pfData?.settings.oskModes?.length" #suffix>
+    <template v-if="slots['suffix'] || !!pfData?.state.oskModes?.length" #suffix>
       <n-flex :wrap="false">
         <n-button
-          v-if="!!pfData?.settings.oskModes?.length"
+          v-if="!!pfData?.state.oskModes?.length"
           text
           :title="$t('osk.inputBtnTip')"
           :focusable="false"

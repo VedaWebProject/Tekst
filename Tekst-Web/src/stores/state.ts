@@ -52,7 +52,7 @@ export const useStateStore = defineStore('state', () => {
   });
 
   const availableLocales = computed(() =>
-    localeProfiles.filter((lp) => !!pfData.value?.settings.availableLocales?.includes(lp.key))
+    localeProfiles.filter((lp) => !!pfData.value?.state.availableLocales?.includes(lp.key))
   );
 
   const translationLocaleOptions = computed<
@@ -78,7 +78,7 @@ export const useStateStore = defineStore('state', () => {
     l: string = locale.value,
     updateUserLocale: boolean = true
   ): Promise<LocaleProfile> {
-    const availableLocaleKeys = pfData.value?.settings.availableLocales;
+    const availableLocaleKeys = pfData.value?.state.availableLocales;
     const effectiveLocale = setI18nLocale(
       availableLocaleKeys?.find((al) => al === l) || availableLocaleKeys?.[0] || 'enUS'
     );
@@ -116,7 +116,7 @@ export const useStateStore = defineStore('state', () => {
         // use text from route OR default text
         text.value =
           pfData.value?.texts.find((t) => t.slug === after) ||
-          pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId);
+          pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId);
       }
     }
   );
@@ -135,7 +135,7 @@ export const useStateStore = defineStore('state', () => {
     () =>
       text.value ||
       pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-      pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
+      pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId) ||
       pfData.value?.texts[0]
   );
 
@@ -181,7 +181,7 @@ export const useStateStore = defineStore('state', () => {
           ...variables,
         })
       : undefined;
-    const pfName = pfData.value?.settings.platformName;
+    const pfName = pfData.value?.state.platformName;
     document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 

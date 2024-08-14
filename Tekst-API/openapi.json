@@ -1683,6 +1683,7 @@
           "locations"
         ],
         "summary": "Find locations by alias",
+        "description": "Finds locations by text ID and their alias. A full combined label including\nparent location's labels is added to each returned location object.",
         "operationId": "findLocationsByAlias",
         "parameters": [
           {
@@ -2576,7 +2577,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PlatformSettingsUpdate"
+                "$ref": "#/components/schemas/PlatformStateUpdate"
               }
             }
           },
@@ -2588,7 +2589,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlatformSettingsRead"
+                  "$ref": "#/components/schemas/PlatformStateRead"
                 }
               }
             }
@@ -5522,7 +5523,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/texts/{id}/level/{lvl}": {
       "delete": {
         "tags": [
           "texts"
@@ -5549,17 +5552,17 @@
             }
           },
           {
-            "name": "index",
+            "name": "lvl",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "minimum": 0,
               "exclusiveMaximum": 32,
-              "description": "Index to insert the level at",
-              "title": "Index"
+              "description": "Level to delete",
+              "title": "Lvl"
             },
-            "description": "Index to insert the level at"
+            "description": "Level to delete"
           }
         ],
         "responses": {
@@ -12064,8 +12067,8 @@
             "type": "array",
             "title": "Texts"
           },
-          "settings": {
-            "$ref": "#/components/schemas/PlatformSettingsRead"
+          "state": {
+            "$ref": "#/components/schemas/PlatformStateRead"
           },
           "security": {
             "$ref": "#/components/schemas/PlatformSecurityInfo"
@@ -12099,7 +12102,7 @@
         "type": "object",
         "required": [
           "texts",
-          "settings",
+          "state",
           "security",
           "systemSegments",
           "infoSegments",
@@ -12159,7 +12162,7 @@
         "type": "object",
         "title": "PlatformSecurityInfo"
       },
-      "PlatformSettingsRead": {
+      "PlatformStateRead": {
         "properties": {
           "id": {
             "type": "string",
@@ -12303,7 +12306,7 @@
             "description": "OSK modes available for use in platform client",
             "default": []
           },
-          "indicesCreatedAt": {
+          "indicesUpdatedAt": {
             "anyOf": [
               {
                 "type": "string",
@@ -12313,7 +12316,8 @@
                 "type": "null"
               }
             ],
-            "title": "Indicescreatedat"
+            "title": "Indicesupdatedat",
+            "description": "Time when indices were created"
           }
         },
         "additionalProperties": true,
@@ -12321,9 +12325,9 @@
         "required": [
           "id"
         ],
-        "title": "PlatformSettingsRead"
+        "title": "PlatformStateRead"
       },
-      "PlatformSettingsUpdate": {
+      "PlatformStateUpdate": {
         "properties": {
           "platformName": {
             "type": "string",
@@ -12462,7 +12466,7 @@
             "description": "OSK modes available for use in platform client",
             "default": []
           },
-          "indicesCreatedAt": {
+          "indicesUpdatedAt": {
             "anyOf": [
               {
                 "type": "string",
@@ -12472,11 +12476,12 @@
                 "type": "null"
               }
             ],
-            "title": "Indicescreatedat"
+            "title": "Indicesupdatedat",
+            "description": "Time when indices were created"
           }
         },
         "type": "object",
-        "title": "PlatformSettingsUpdate"
+        "title": "PlatformStateUpdate"
       },
       "PlatformStats": {
         "properties": {
@@ -14469,6 +14474,12 @@
             ],
             "title": "Aggregations",
             "description": "Aggregated groups for this resource's annotations"
+          },
+          "aggregationsOod": {
+            "type": "boolean",
+            "title": "Aggregationsood",
+            "description": "Whether the aggregations are out-of-date",
+            "default": true
           }
         },
         "type": "object",
@@ -14706,6 +14717,12 @@
             ],
             "title": "Aggregations",
             "description": "Aggregated groups for this resource's annotations"
+          },
+          "aggregationsOod": {
+            "type": "boolean",
+            "title": "Aggregationsood",
+            "description": "Whether the aggregations are out-of-date",
+            "default": true
           }
         },
         "additionalProperties": true,
@@ -14905,6 +14922,12 @@
             ],
             "title": "Aggregations",
             "description": "Aggregated groups for this resource's annotations"
+          },
+          "aggregationsOod": {
+            "type": "boolean",
+            "title": "Aggregationsood",
+            "description": "Whether the aggregations are out-of-date",
+            "default": true
           }
         },
         "type": "object",
@@ -15078,6 +15101,44 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
+          },
+          "contentsChangedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentschangedat",
+            "description": "The last time contents of any resource on this text changed"
+          },
+          "indexName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexname",
+            "description": "The name of the search index for this text"
+          },
+          "indexCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexcreatedat",
+            "description": "The time the search index for this text was created/updated"
           }
         },
         "type": "object",
@@ -15196,6 +15257,44 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
+          },
+          "contentsChangedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentschangedat",
+            "description": "The last time contents of any resource on this text changed"
+          },
+          "indexName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexname",
+            "description": "The name of the search index for this text"
+          },
+          "indexCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexcreatedat",
+            "description": "The time the search index for this text was created/updated"
           }
         },
         "additionalProperties": true,
@@ -15362,6 +15461,44 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
+          },
+          "contentsChangedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentschangedat",
+            "description": "The last time contents of any resource on this text changed"
+          },
+          "indexName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexname",
+            "description": "The name of the search index for this text"
+          },
+          "indexCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexcreatedat",
+            "description": "The time the search index for this text was created/updated"
           }
         },
         "type": "object",

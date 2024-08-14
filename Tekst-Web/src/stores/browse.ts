@@ -113,9 +113,9 @@ export const useBrowseStore = defineStore('browse', () => {
     const sortOrderA = a.config?.common?.sortOrder ?? 0;
     const sortOrderB = b.config?.common?.sortOrder ?? 0;
     const modA =
-      pfData.value?.settings.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
+      pfData.value?.state.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
     const modB =
-      pfData.value?.settings.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
+      pfData.value?.state.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
     return sortOrderA + modA - (sortOrderB + modB);
   };
 

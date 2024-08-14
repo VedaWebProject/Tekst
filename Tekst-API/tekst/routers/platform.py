@@ -12,6 +12,9 @@ from tekst.models.location import LocationDocument
 from tekst.models.platform import (
     PlatformData,
     PlatformSecurityInfo,
+    PlatformStateDocument,
+    PlatformStateRead,
+    PlatformStateUpdate,
     PlatformStats,
     TextStats,
 )
@@ -23,16 +26,11 @@ from tekst.models.segment import (
     ClientSegmentRead,
     ClientSegmentUpdate,
 )
-from tekst.models.settings import (
-    PlatformSettingsDocument,
-    PlatformSettingsRead,
-    PlatformSettingsUpdate,
-)
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
 from tekst.routers.texts import get_all_texts
-from tekst.settings import get_settings
+from tekst.state import get_state, update_state
 
 
 router = APIRouter(
@@ -54,7 +52,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(ou),
-        settings=await get_settings(),
+        state=await get_state(),
         security=PlatformSecurityInfo(),
         system_segments=await ClientSegmentDocument.find(
             ClientSegmentDocument.is_system_segment == True  # noqa: E712
@@ -71,7 +69,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
 
 @router.patch(
     "/settings",
-    response_model=PlatformSettingsRead,
+    response_model=PlatformStateRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -82,8 +80,8 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
 )
 async def update_platform_settings(
     su: SuperuserDep,
-    updates: PlatformSettingsUpdate,
-) -> PlatformSettingsDocument:
+    updates: PlatformStateUpdate,
+) -> PlatformStateDocument:
     # reset user locales if the update reduces available locales
     if updates.available_locales and isinstance(updates.available_locales, list):
         await UserDocument.find(
@@ -96,8 +94,7 @@ async def update_platform_settings(
             }
         )
     # apply updates
-    settings_doc = await get_settings()
-    return await settings_doc.apply_updates(updates)
+    return await update_state(**updates.model_dump())
 
 
 @router.get(

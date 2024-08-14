@@ -23,7 +23,7 @@ const privacyPolicy = computed(
         {{ $t('admin.system.segments.systemKeys.systemPrivacyPolicy') }}
       </router-link>
     </div>
-    <div v-if="pfData?.settings.showTekstFooterHint" class="text-tiny">
+    <div v-if="pfData?.state.showTekstFooterHint" class="text-tiny">
       {{ $t('general.tekstFooterHint') }}
       <a
         href="http://github.com/VedaWebProject/Tekst"

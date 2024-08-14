@@ -131,7 +131,11 @@ export interface paths {
     post: operations['createLocation'];
   };
   '/locations/by-alias': {
-    /** Find locations by alias */
+    /**
+     * Find locations by alias
+     * @description Finds locations by text ID and their alias. A full combined label including
+     * parent location's labels is added to each returned location object.
+     */
     get: operations['findLocationsByAlias'];
   };
   '/locations/first-last-paths': {
@@ -3117,7 +3121,7 @@ export interface components {
     PlatformData: {
       /** Texts */
       texts: components['schemas']['TextRead'][];
-      settings: components['schemas']['PlatformSettingsRead'];
+      state: components['schemas']['PlatformStateRead'];
       security: components['schemas']['PlatformSecurityInfo'];
       /** Systemsegments */
       systemSegments: components['schemas']['ClientSegmentRead'][];
@@ -3164,8 +3168,8 @@ export interface components {
        */
       authCookieLifetime?: number;
     };
-    /** PlatformSettingsRead */
-    PlatformSettingsRead: {
+    /** PlatformStateRead */
+    PlatformStateRead: {
       /**
        * Id
        * @example 5eb7cf5a86d9755df3a6c593
@@ -3267,12 +3271,15 @@ export interface components {
        * @default []
        */
       oskModes?: components['schemas']['OskMode'][];
-      /** Indicescreatedat */
-      indicesCreatedAt?: string | null;
+      /**
+       * Indicesupdatedat
+       * @description Time when indices were created
+       */
+      indicesUpdatedAt?: string | null;
       [key: string]: unknown;
     };
-    /** PlatformSettingsUpdate */
-    PlatformSettingsUpdate: {
+    /** PlatformStateUpdate */
+    PlatformStateUpdate: {
       /**
        * Platformname
        * @description Name of the platform
@@ -3369,8 +3376,11 @@ export interface components {
        * @default []
        */
       oskModes?: components['schemas']['OskMode'][];
-      /** Indicescreatedat */
-      indicesCreatedAt?: string | null;
+      /**
+       * Indicesupdatedat
+       * @description Time when indices were created
+       */
+      indicesUpdatedAt?: string | null;
     };
     /**
      * PlatformStats
@@ -4361,6 +4371,12 @@ export interface components {
        * @description Aggregated groups for this resource's annotations
        */
       aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
+      /**
+       * Aggregationsood
+       * @description Whether the aggregations are out-of-date
+       * @default true
+       */
+      aggregationsOod?: boolean;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -4484,6 +4500,12 @@ export interface components {
        * @description Aggregated groups for this resource's annotations
        */
       aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
+      /**
+       * Aggregationsood
+       * @description Whether the aggregations are out-of-date
+       * @default true
+       */
+      aggregationsOod?: boolean;
       [key: string]: unknown;
     };
     /** TextAnnotationResourceUpdate */
@@ -4576,6 +4598,12 @@ export interface components {
        * @description Aggregated groups for this resource's annotations
        */
       aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
+      /**
+       * Aggregationsood
+       * @description Whether the aggregations are out-of-date
+       * @default true
+       */
+      aggregationsOod?: boolean;
     };
     /** TextAnnotationSearchQuery */
     TextAnnotationSearchQuery: {
@@ -4682,6 +4710,21 @@ export interface components {
        * @default []
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
+      /**
+       * Contentschangedat
+       * @description The last time contents of any resource on this text changed
+       */
+      contentsChangedAt?: string | null;
+      /**
+       * Indexname
+       * @description The name of the search index for this text
+       */
+      indexName?: string | null;
+      /**
+       * Indexcreatedat
+       * @description The time the search index for this text was created/updated
+       */
+      indexCreatedAt?: string | null;
     };
     /** TextLevelTranslation */
     TextLevelTranslation: {
@@ -4754,6 +4797,21 @@ export interface components {
        * @default []
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
+      /**
+       * Contentschangedat
+       * @description The last time contents of any resource on this text changed
+       */
+      contentsChangedAt?: string | null;
+      /**
+       * Indexname
+       * @description The name of the search index for this text
+       */
+      indexName?: string | null;
+      /**
+       * Indexcreatedat
+       * @description The time the search index for this text was created/updated
+       */
+      indexCreatedAt?: string | null;
       [key: string]: unknown;
     };
     /**
@@ -4832,6 +4890,21 @@ export interface components {
        * @default []
        */
       resourceCategories?: components['schemas']['ResourceCategory'][];
+      /**
+       * Contentschangedat
+       * @description The last time contents of any resource on this text changed
+       */
+      contentsChangedAt?: string | null;
+      /**
+       * Indexname
+       * @description The name of the search index for this text
+       */
+      indexName?: string | null;
+      /**
+       * Indexcreatedat
+       * @description The time the search index for this text was created/updated
+       */
+      indexCreatedAt?: string | null;
     };
     /** @enum {string} */
     TranslationLocaleKey: 'deDE' | 'enUS' | '*';
@@ -5870,7 +5943,11 @@ export interface operations {
       };
     };
   };
-  /** Find locations by alias */
+  /**
+   * Find locations by alias
+   * @description Finds locations by text ID and their alias. A full combined label including
+   * parent location's labels is added to each returned location object.
+   */
   findLocationsByAlias: {
     parameters: {
       query: {
@@ -6286,14 +6363,14 @@ export interface operations {
   updatePlatformSettings: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['PlatformSettingsUpdate'];
+        'application/json': components['schemas']['PlatformStateUpdate'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['PlatformSettingsRead'];
+          'application/json': components['schemas']['PlatformStateRead'];
         };
       };
       /** @description Unauthorized */

@@ -71,7 +71,7 @@ async def perform_search(
     ),
 )
 async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
-    return await search.create_indices(user=su)
+    return await search.create_indices(user=su, force=True)
 
 
 @router.get(

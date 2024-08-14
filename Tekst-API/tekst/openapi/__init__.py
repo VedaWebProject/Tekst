@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.settings import PlatformSettings
+from tekst.models.platform import PlatformState
 from tekst.openapi.tags_metadata import get_tags_metadata
 from tekst.utils import pick_translation
 
@@ -13,7 +13,7 @@ from tekst.utils import pick_translation
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
-def customize_openapi(app: FastAPI, settings: PlatformSettings):
+def customize_openapi(app: FastAPI, settings: PlatformState):
     def _custom_openapi():
         if not app.openapi_schema:
             app.openapi_schema = generate_schema(app, settings)
@@ -22,7 +22,7 @@ def customize_openapi(app: FastAPI, settings: PlatformSettings):
     app.openapi = _custom_openapi
 
 
-def generate_schema(app: FastAPI, settings: PlatformSettings):
+def generate_schema(app: FastAPI, settings: PlatformState):
     api_url = urljoin(str(_cfg.server_url), str(_cfg.api_path))
     schema = get_openapi(
         title=settings.platform_name,

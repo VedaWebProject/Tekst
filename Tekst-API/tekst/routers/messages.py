@@ -19,7 +19,7 @@ from tekst.models.message import (
 from tekst.models.notifications import TemplateIdentifier
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.notifications import send_notification
-from tekst.settings import get_settings
+from tekst.state import get_state
 
 
 router = APIRouter(
@@ -176,7 +176,7 @@ async def get_threads(
 
     # group messages as threads by contact
     threads = dict()
-    platform_name = (await get_settings()).platform_name
+    platform_name = (await get_state()).platform_name
     for msg_doc in messages:
         msg = UserMessageRead.model_from(msg_doc)
         contact_id = msg.sender if msg.sender != user.id else msg.recipient

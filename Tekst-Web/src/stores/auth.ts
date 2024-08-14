@@ -170,7 +170,7 @@ export const useAuthStore = defineStore('auth', () => {
     await loadPlatformData(); // reload platform data as some resources might not be accessible anymore
     if (!pfData.value?.texts.find((t) => t.id === state.text?.id)) {
       state.text =
-        pfData.value?.texts.find((t) => t.id === pfData.value?.settings.defaultTextId) ||
+        pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId) ||
         pfData.value?.texts[0];
     }
     await resources.load();

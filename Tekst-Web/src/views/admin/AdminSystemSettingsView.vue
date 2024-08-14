@@ -31,7 +31,7 @@ const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
-const getFormModel = (): PlatformSettingsUpdate => _cloneDeep(pfData.value?.settings || {});
+const getFormModel = (): PlatformSettingsUpdate => _cloneDeep(pfData.value?.state || {});
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -49,7 +49,7 @@ const localeOptions = computed(() =>
 );
 
 const oskFontOptions = computed(
-  () => pfData.value?.settings.customFonts?.map((f) => ({ label: f, value: f })) || []
+  () => pfData.value?.state.customFonts?.map((f) => ({ label: f, value: f })) || []
 );
 
 async function handleSaveClick() {

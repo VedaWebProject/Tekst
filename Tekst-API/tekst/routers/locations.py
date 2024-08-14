@@ -15,6 +15,7 @@ from tekst.models.location import (
     LocationRead,
     LocationUpdate,
 )
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
@@ -410,10 +411,12 @@ async def delete_location(
     if not location_doc:
         raise errors.E_404_LOCATION_NOT_FOUND
     text_id = location_doc.text_id
+
     # delete location and everything associated with it
     to_delete = [[location_doc]]
     contents_deleted = 0
     locations_deleted = 0
+
     while to_delete:
         target_locations = to_delete[0]
         if len(target_locations) == 0:
@@ -421,12 +424,14 @@ async def delete_location(
             continue
         target_level = target_locations[0].level
         target_ids = [n.id for n in target_locations]
+
         # delete associated contents
         contents_deleted += (
             await ContentBaseDocument.find(
                 In(ContentBaseDocument.location_id, target_ids), with_children=True
             ).delete()
         ).deleted_count
+
         # collect child locations to delete
         to_delete.append(
             await LocationDocument.find(
@@ -435,17 +440,29 @@ async def delete_location(
             .sort(-LocationDocument.position)
             .to_list()
         )
+
         # decrement position value of all following sibling locations on this level
         await LocationDocument.find(
             LocationDocument.text_id == text_id,
             LocationDocument.level == target_level,
             LocationDocument.position > target_locations[0].position,
         ).inc({LocationDocument.position: len(target_locations) * -1})
+
         # delete current target locations
         locations_deleted += (
             await LocationDocument.find(In(LocationDocument.id, target_ids)).delete()
         ).deleted_count
         to_delete.pop(0)
+
+    # call hooks for changed content for all resources of this locations text
+    for res in await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == text_id,
+        with_children=True,
+    ).to_list():
+        await res.contents_changed_hook()
+
+    # call hook for changed content of this location's text
+    await (await TextDocument.get(text_id)).contents_changed_hook()
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)
 

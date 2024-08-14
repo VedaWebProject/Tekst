@@ -21,7 +21,7 @@ from tekst.models.user import (
     UserDocument,
     UserRead,
 )
-from tekst.settings import get_settings
+from tekst.state import get_state
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -93,7 +93,7 @@ async def send_notification(
         raise ValueError("Missing user or template ID.")
     templates = _get_notification_templates(template_id, to_user.locale or "enUS")
     msg_parts = dict()
-    settings = await get_settings()
+    settings = await get_state()
     msg_attrs_platform = {"platform_name": settings.platform_name}
     msg_attrs_to_user = {f"to_user_{k}": v for k, v in to_user.model_dump().items()}
     for key in templates:

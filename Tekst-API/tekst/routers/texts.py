@@ -32,7 +32,7 @@ from tekst.models.text import (
     TextStructureImportData,
     TextUpdate,
 )
-from tekst.settings import get_settings
+from tekst.state import get_state
 from tekst.utils import get_temp_dir
 
 
@@ -340,7 +340,7 @@ async def insert_level(
 
 
 @router.delete(
-    "/{id}/level/{index}",
+    "/{id}/level/{lvl}",
     response_model=TextRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
@@ -354,10 +354,18 @@ async def insert_level(
 )
 async def delete_level(
     su: SuperuserDep,
-    text_id: Annotated[PydanticObjectId, Path(alias="id")],
-    index: Annotated[
+    text_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
+    level: Annotated[
         int,
-        Path(ge=0, lt=32, description="Index to insert the level at"),
+        Path(
+            ge=0,
+            lt=32,
+            description="Level to delete",
+            alias="lvl",
+        ),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)
@@ -366,29 +374,29 @@ async def delete_level(
         raise errors.E_404_TEXT_NOT_FOUND
 
     # index valid?
-    if index < 0 or index >= len(text_doc.levels):
+    if level < 0 or level >= len(text_doc.levels):
         raise errors.E_400_INVALID_LEVEL
 
     # make locations of higher level (if it exists)
     # parents of locations of lower level (if it exists)
-    if index == 0:
+    if level == 0:
         # the level to delete is the highest (lowest index) level, so all locations on
         # the next lower (higher index) level have no parent location anymore
         await LocationDocument.find(
             LocationDocument.text_id == text_id,
-            LocationDocument.level == index + 1,
+            LocationDocument.level == level + 1,
         ).update(Unset({LocationDocument.parent_id: None}))
-    elif index < len(text_doc.levels) - 1:
+    elif level < len(text_doc.levels) - 1:
         # the level to delete is neither the highest (lowest index) nor the
         # lowest (highest index), so need to connect the adjacent levels' locations
         target_level_locations = await LocationDocument.find(
             LocationDocument.text_id == text_id,
-            LocationDocument.level == index,
+            LocationDocument.level == level,
         ).to_list()
         for target_level_location in target_level_locations:
             target_children = await LocationDocument.find(
                 LocationDocument.text_id == text_id,
-                LocationDocument.level == index + 1,
+                LocationDocument.level == level + 1,
                 LocationDocument.parent_id == target_level_location.id,
             ).to_list()
             for target_child in target_children:
@@ -402,30 +410,30 @@ async def delete_level(
     # delete all existing resources with level == index
     await ResourceBaseDocument.find(
         ResourceBaseDocument.text_id == text_id,
-        ResourceBaseDocument.level == index,
+        ResourceBaseDocument.level == level,
         with_children=True,
     ).delete()
 
     # update all existing resources with level > index
     await ResourceBaseDocument.find(
         ResourceBaseDocument.text_id == text_id,
-        ResourceBaseDocument.level > index,
+        ResourceBaseDocument.level > level,
         with_children=True,
     ).inc({ResourceBaseDocument.level: -1})
 
     # delete all existing locations with level == index
     await LocationDocument.find(
-        LocationDocument.text_id == text_id, LocationDocument.level == index
+        LocationDocument.text_id == text_id, LocationDocument.level == level
     ).delete()
 
     # update all existing locations with level >= index
     await LocationDocument.find(
-        LocationDocument.text_id == text_id, LocationDocument.level >= index
+        LocationDocument.text_id == text_id, LocationDocument.level >= level
     ).inc({ResourceBaseDocument.level: -1})
 
     # update text itself
-    text_doc.levels.pop(index)
-    if text_doc.default_level >= index:
+    text_doc.levels.pop(level)
+    if text_doc.default_level >= level:
         levels_range = range(len(text_doc.levels))
         dl = text_doc.default_level
         # try (in this order): lower level, higher level, 0
@@ -437,6 +445,9 @@ async def delete_level(
             else 0
         )
     await text_doc.save()
+
+    # call the text's hook for changed contents
+    await text_doc.contents_changed_hook()
 
     return text_doc
 
@@ -455,34 +466,45 @@ async def delete_level(
 )
 async def delete_text(
     su: SuperuserDep,
-    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+    text_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> None:
     text = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND
     if await TextDocument.find_all().count() <= 1:
         raise errors.E_400_TEXT_DELETE_LAST_TEXT
+
     # get resources associated with target text
     resources = await ResourceBaseDocument.find(
-        ResourceBaseDocument.text_id == text_id, with_children=True
+        ResourceBaseDocument.text_id == text_id,
+        with_children=True,
     ).to_list()
+
     # delete contents of all resources associated with target text
     await ContentBaseDocument.find(
         In(ContentBaseDocument.resource_id, [resource.id for resource in resources]),
         with_children=True,
     ).delete_many()
+
     # delete resources associated with target text
     await ResourceBaseDocument.find(
-        ResourceBaseDocument.text_id == text_id, with_children=True
+        ResourceBaseDocument.text_id == text_id,
+        with_children=True,
     ).delete_many()
+
     # delete locations associated with target text
     await LocationDocument.find(
         LocationDocument.text_id == text_id,
     ).delete_many()
+
     # delete text itself
     await text.delete()
+
     # check if deleted text was default text, correct if necessary
-    pf_settings_doc = await get_settings()
+    pf_settings_doc = await get_state()
     if pf_settings_doc.default_text_id == text_id:
         pf_settings_doc.default_text_id = (await TextDocument.find_one()).id
         await pf_settings_doc.replace()

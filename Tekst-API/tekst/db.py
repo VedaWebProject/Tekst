@@ -12,9 +12,9 @@ from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
+from tekst.models.platform import PlatformStateDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import ClientSegmentDocument
-from tekst.models.settings import PlatformSettingsDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.resources import resource_types_mgr
@@ -61,7 +61,7 @@ async def init_odm(db: Database = get_db()) -> None:
         ResourceBaseDocument,
         ContentBaseDocument,
         CorrectionDocument,
-        PlatformSettingsDocument,
+        PlatformStateDocument,
         ClientSegmentDocument,
         UserDocument,
         UserMessageDocument,
