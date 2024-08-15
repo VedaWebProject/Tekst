@@ -70,6 +70,21 @@ services:
     profiles:
       - dev
 
+  elasticvue:
+    image: cars10/elasticvue
+    restart: always
+    init: true
+    depends_on:
+      - es
+    ports:
+      - 127.0.0.1:9280:8080
+    environment:
+      ELASTICVUE_CLUSTERS: '[{"name": "Tekst-DEV-ES", "uri": "http://127.0.0.1:9200"}]'
+    networks:
+      - devstack
+    profiles:
+      - dev
+
   mailpit:
     image: axllent/mailpit:v1.19
     restart: always
