@@ -120,7 +120,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
     utd_idxs = []  # list of indices that are still up to date
 
     for text in await TextDocument.find_all().to_list():
-        # get name sof existing indices for this text
+        # get names of existing indices for this text
         old_txt_idxs = [
             idx
             for idx in client.indices.get(
@@ -187,7 +187,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
     # delete indices that are no longer in use
     to_delete = [idx for idx in old_idxs if idx not in utd_idxs]
     if to_delete:
-        client.indices.delete(index=[idx for idx in old_idxs if idx not in utd_idxs])
+        client.indices.delete(index=to_delete)
 
     # perform initial bogus search on all existing indices (to initialize index stats)
     client.search(
