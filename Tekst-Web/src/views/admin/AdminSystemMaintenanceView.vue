@@ -188,7 +188,12 @@ onBeforeMount(() => {
             {{ $t(`admin.system.maintenance.indices.createdAt`) }}
           </th>
           <td>
-            <n-time :time="utcToLocalTime(indexInfo.createdAt)" type="datetime" />
+            <n-time
+              v-if="indexInfo.createdAt"
+              :time="utcToLocalTime(indexInfo.createdAt)"
+              type="datetime"
+            />
+            <span v-else>???</span>
           </td>
         </tr>
       </template>

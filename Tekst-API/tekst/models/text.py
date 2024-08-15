@@ -178,25 +178,18 @@ class Text(ModelBase, ModelFactoryMixin):
     ] = []
 
     contents_changed_at: Annotated[
-        datetime | None,
+        datetime,
         Field(
             description="The last time contents of any resource on this text changed",
         ),
-    ] = None
-
-    index_name: Annotated[
-        str | None,
-        Field(
-            description="The name of the search index for this text",
-        ),
-    ] = None
+    ] = datetime.utcnow()
 
     index_created_at: Annotated[
-        datetime | None,
+        datetime,
         Field(
             description="The time the search index for this text was created/updated",
         ),
-    ] = None
+    ] = datetime.utcfromtimestamp(0)
 
     @field_validator("subtitle", mode="after")
     @classmethod
@@ -275,9 +268,8 @@ class TextDocument(Text, DocumentBase):
         self.contents_changed_at = datetime.utcnow()
         await self.replace()
 
-    async def index_updated_hook(self, index_name: str):
+    async def index_updated_hook(self):
         """Updates the last index update time"""
-        self.index_name = index_name
         self.index_created_at = datetime.utcnow()
         await self.replace()
 

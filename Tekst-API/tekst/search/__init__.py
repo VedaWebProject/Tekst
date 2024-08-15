@@ -131,11 +131,8 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
         # check if indexing is necessary and if not, remember the index that's still
         # in use for this text, then continue with the next text
         if old_txt_idxs and (
-            text.contents_changed_at is None
-            or (
-                text.index_created_at is not None
-                and text.contents_changed_at < text.index_created_at
-            )
+            text.index_created_at is not None
+            and text.contents_changed_at < text.index_created_at
         ):
             # indexing is NOT necessary
             if force:
@@ -181,7 +178,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
             log_op_end(populate_op_id, failed=True, failed_msg=str(e))
 
         utd_idxs.append(new_idx_name)  # mark created index as "up to date"
-        await text.index_updated_hook(new_idx_name)  # update indexing time for text
+        await text.index_updated_hook()  # update indexing time for text
         log_op_end(populate_op_id)
 
     # delete indices that are no longer in use
@@ -349,18 +346,22 @@ async def _get_index_stats(index: str) -> dict[str, Any]:
 
 
 async def get_indices_info() -> list[IndexInfo]:
-    texts = await TextDocument.all().to_list()
-    data = dict()
+    client: Elasticsearch = await _get_es_client()
+    idx_names = client.indices.get_alias(index=IDX_ALIAS)
+    data = []
     try:
-        for txt in texts:
-            # dict(text_id=str(txt.id), created_at=txt.index_created_at)
-            data[txt.index_name] = {
-                "text_id": str(txt.id),
-                "created_at": txt.index_created_at,
-                "fields": await _get_mapped_fields_count(txt.index_name),
-                **await _get_index_stats(txt.index_name),
-            }
-        return [IndexInfo(**data[idx_name]) for idx_name in data]
+        for idx_name in idx_names:
+            text_id = idx_name.split("_")[-2]
+            text = await TextDocument.get(text_id)
+            data.append(
+                {
+                    "text_id": text_id if text else None,
+                    "created_at": text.index_created_at if text else None,
+                    "fields": await _get_mapped_fields_count(idx_name),
+                    **await _get_index_stats(idx_name),
+                }
+            )
+        return [IndexInfo(**idx_info) for idx_info in data]
     except Exception:
         log.error("Error getting/processing indices info.")
         return []

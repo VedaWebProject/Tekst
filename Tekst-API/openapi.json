@@ -10694,9 +10694,16 @@
       "IndexInfo": {
         "properties": {
           "textId": {
-            "type": "string",
-            "title": "Textid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textid"
           },
           "documents": {
             "type": "integer",
@@ -10715,8 +10722,15 @@
             "title": "Fields"
           },
           "createdAt": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Createdat"
           }
         },
@@ -15103,42 +15117,18 @@
             "default": []
           },
           "contentsChangedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed"
-          },
-          "indexName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Indexname",
-            "description": "The name of the search index for this text"
+            "description": "The last time contents of any resource on this text changed",
+            "default": "2024-08-15T10:07:47.739609"
           },
           "indexCreatedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated"
+            "description": "The time the search index for this text was created/updated",
+            "default": "1970-01-01T00:00:00"
           }
         },
         "type": "object",
@@ -15259,42 +15249,18 @@
             "default": []
           },
           "contentsChangedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed"
-          },
-          "indexName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Indexname",
-            "description": "The name of the search index for this text"
+            "description": "The last time contents of any resource on this text changed",
+            "default": "2024-08-15T10:07:47.739609"
           },
           "indexCreatedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated"
+            "description": "The time the search index for this text was created/updated",
+            "default": "1970-01-01T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -15463,42 +15429,18 @@
             "default": []
           },
           "contentsChangedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed"
-          },
-          "indexName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Indexname",
-            "description": "The name of the search index for this text"
+            "description": "The last time contents of any resource on this text changed",
+            "default": "2024-08-15T10:07:47.739609"
           },
           "indexCreatedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated"
+            "description": "The time the search index for this text was created/updated",
+            "default": "1970-01-01T00:00:00"
           }
         },
         "type": "object",

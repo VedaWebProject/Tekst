@@ -2405,11 +2405,8 @@ export interface components {
     };
     /** IndexInfo */
     IndexInfo: {
-      /**
-       * Textid
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** Textid */
+      textId: string | null;
       /** Documents */
       documents: number;
       /** Size */
@@ -2418,11 +2415,8 @@ export interface components {
       searches: number;
       /** Fields */
       fields: number;
-      /**
-       * Createdat
-       * Format: date-time
-       */
-      createdAt: string;
+      /** Createdat */
+      createdAt: string | null;
     };
     /** LineLabellingConfig */
     LineLabellingConfig: {
@@ -4714,19 +4708,18 @@ export interface components {
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Contentschangedat
+       * Format: date-time
        * @description The last time contents of any resource on this text changed
+       * @default 2024-08-15T10:07:47.739609
        */
-      contentsChangedAt?: string | null;
-      /**
-       * Indexname
-       * @description The name of the search index for this text
-       */
-      indexName?: string | null;
+      contentsChangedAt?: string;
       /**
        * Indexcreatedat
+       * Format: date-time
        * @description The time the search index for this text was created/updated
+       * @default 1970-01-01T00:00:00
        */
-      indexCreatedAt?: string | null;
+      indexCreatedAt?: string;
     };
     /** TextLevelTranslation */
     TextLevelTranslation: {
@@ -4801,19 +4794,18 @@ export interface components {
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Contentschangedat
+       * Format: date-time
        * @description The last time contents of any resource on this text changed
+       * @default 2024-08-15T10:07:47.739609
        */
-      contentsChangedAt?: string | null;
-      /**
-       * Indexname
-       * @description The name of the search index for this text
-       */
-      indexName?: string | null;
+      contentsChangedAt?: string;
       /**
        * Indexcreatedat
+       * Format: date-time
        * @description The time the search index for this text was created/updated
+       * @default 1970-01-01T00:00:00
        */
-      indexCreatedAt?: string | null;
+      indexCreatedAt?: string;
       [key: string]: unknown;
     };
     /**
@@ -4894,19 +4886,18 @@ export interface components {
       resourceCategories?: components['schemas']['ResourceCategory'][];
       /**
        * Contentschangedat
+       * Format: date-time
        * @description The last time contents of any resource on this text changed
+       * @default 2024-08-15T10:07:47.739609
        */
-      contentsChangedAt?: string | null;
-      /**
-       * Indexname
-       * @description The name of the search index for this text
-       */
-      indexName?: string | null;
+      contentsChangedAt?: string;
       /**
        * Indexcreatedat
+       * Format: date-time
        * @description The time the search index for this text was created/updated
+       * @default 1970-01-01T00:00:00
        */
-      indexCreatedAt?: string | null;
+      indexCreatedAt?: string;
     };
     /** @enum {string} */
     TranslationLocaleKey: 'deDE' | 'enUS' | '*';

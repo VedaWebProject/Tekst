@@ -214,9 +214,9 @@ class AdvancedSearchRequestBody(ModelBase):
 
 
 class IndexInfo(ModelBase):
-    text_id: PydanticObjectId
+    text_id: PydanticObjectId | None
     documents: int
     size: str
     searches: int
     fields: int
-    created_at: datetime
+    created_at: datetime | None
