@@ -433,7 +433,7 @@ resources:
         font: Font (will use platform default font if not set)
       reducedView:
         heading: Reduced Reading View
-        singelLine: Show contents as single line of text in reduced reading view
+        singleLine: Show contents as single line of text in reduced reading view
         singleLineDelimiter: Delimiter for single-line display in reduced reading view
       deeplLinks:
         heading: DeepL Translation Links

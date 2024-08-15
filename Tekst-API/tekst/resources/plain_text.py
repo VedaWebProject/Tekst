@@ -214,7 +214,7 @@ class GeneralPlainTextResourceConfig(ModelBase):
     font: FontConfigType = None
     reduced_view: ReducedViewConfig = ReducedViewConfig(
         single_line=False,
-        single_line_delimiter=" ",
+        single_line_delimiter=" / ",
     )
 
 
