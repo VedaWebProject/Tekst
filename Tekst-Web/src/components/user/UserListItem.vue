@@ -14,7 +14,6 @@ import {
 import { usePlatformData } from '@/composables/platformData';
 import { computed } from 'vue';
 import { $t } from '@/i18n';
-import { useStateStore } from '@/stores';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { RouterLink } from 'vue-router';
 import {
@@ -42,7 +41,6 @@ const emit = defineEmits([
   'deleteClick',
 ]);
 
-const state = useStateStore();
 const { pfData } = usePlatformData();
 
 const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.currentUser?.id);
@@ -187,7 +185,6 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         <n-flex>
           <n-dropdown
             :options="actionOptions"
-            :size="state.dropdownSize"
             to="#app-container"
             trigger="click"
             @select="(_, o) => handleActionSelect(o)"

@@ -2,7 +2,6 @@
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import type { AnyResourceRead, DeepLLinksConfig } from '@/api';
 import { computed } from 'vue';
-import { useStateStore } from '@/stores';
 import { NDropdown } from 'naive-ui';
 import type { DropdownOption } from 'naive-ui';
 
@@ -17,8 +16,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['done']);
-
-const state = useStateStore();
 
 const contentsTextEncoded = computed<string>(() => {
   const contentsText = props.resource.contents
@@ -62,7 +59,6 @@ function handleOptionSelect(_: string, option: DropdownOption) {
     :options="options"
     to="#app-container"
     placement="bottom-start"
-    :size="state.dropdownSize"
     show-arrow
     @select="handleOptionSelect"
   >

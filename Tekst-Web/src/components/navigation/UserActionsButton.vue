@@ -130,7 +130,6 @@ function handleUserOptionSelect(key: string) {
   <n-dropdown
     v-if="auth.loggedIn && !state.smallScreen"
     :options="userOptions"
-    :size="state.dropdownSize"
     to="#app-container"
     trigger="click"
     @select="handleUserOptionSelect"

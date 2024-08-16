@@ -40,7 +40,6 @@ const menuStyle = computed(() => ({
     <n-menu
       :options="options"
       :dropdown-props="{
-        size: state.dropdownSize,
         showArrow: false,
         trigger: 'hover',
         to: '#app-container',

@@ -155,7 +155,6 @@ export const useStateStore = defineStore('state', () => {
   // responsiveness
 
   const smallScreen = computed(() => windowSize.width.value < 900);
-  const dropdownSize = computed(() => (smallScreen.value ? 'huge' : undefined));
 
   // detect touch device
   const isTouchDevice = ref(true);
@@ -188,7 +187,6 @@ export const useStateStore = defineStore('state', () => {
   return {
     init,
     smallScreen,
-    dropdownSize,
     isTouchDevice,
     backtopVisible,
     setPageTitle,

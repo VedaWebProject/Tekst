@@ -32,7 +32,6 @@ function handleLanguageSelect(localeCode: LocaleKey) {
     trigger="click"
     to="#app-container"
     :options="options"
-    :size="state.dropdownSize"
     @select="handleLanguageSelect"
   >
     <n-button

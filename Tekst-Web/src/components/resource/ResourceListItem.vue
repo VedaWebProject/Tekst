@@ -232,7 +232,6 @@ function handleCorrectionsClick() {
           <resource-info-widget :resource="targetResource" />
           <n-dropdown
             :options="actionOptions"
-            :size="state.dropdownSize"
             to="#app-container"
             trigger="click"
             @select="(_, o) => handleActionSelect(o)"

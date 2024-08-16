@@ -67,7 +67,6 @@ function handleSelect(key: string) {
     :options="options"
     :disabled="disabled"
     placement="bottom-start"
-    :size="state.dropdownSize"
   >
     <n-button
       text
