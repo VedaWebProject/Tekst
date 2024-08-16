@@ -118,7 +118,38 @@ export const resourceTypes = [
   'images',
   'externalReferences',
 ];
+
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
+
+export const deepLLanguageCodes = [
+  'BG',
+  'CS',
+  'DA',
+  'DE',
+  'EL',
+  'EN',
+  'ES',
+  'ET',
+  'FI',
+  'FR',
+  'HU',
+  'ID',
+  'IT',
+  'JA',
+  'LT',
+  'LV',
+  'NL',
+  'PL',
+  'PT',
+  'RO',
+  'RU',
+  'SK',
+  'SL',
+  'SV',
+  'TR',
+  'UK',
+  'ZH',
+];
 
 // export components types for use throughout codebase
 

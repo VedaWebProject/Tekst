@@ -1,39 +1,11 @@
 <script setup lang="ts">
-import type { DeepLLinksConfig } from '@/api';
+import { deepLLanguageCodes, type DeepLLinksConfig } from '@/api';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { NFormItem, NSelect } from 'naive-ui';
 
 const model = defineModel<DeepLLinksConfig>({ required: true });
 
-const languageOptions = [
-  'BG',
-  'CS',
-  'DA',
-  'DE',
-  'EL',
-  'EN',
-  'ES',
-  'ET',
-  'FI',
-  'FR',
-  'HU',
-  'ID',
-  'IT',
-  'JA',
-  'LT',
-  'LV',
-  'NL',
-  'PL',
-  'PT',
-  'RO',
-  'RU',
-  'SK',
-  'SL',
-  'SV',
-  'TR',
-  'UK',
-  'ZH',
-].map((l) => ({ label: l, value: l }));
+const languageOptions = deepLLanguageCodes.map((l) => ({ label: l, value: l }));
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -64,17 +36,6 @@ function handleUpdate(field: string, value: any) {
       :value="model.sourceLanguage"
       :options="languageOptions"
       @update:value="(v) => handleUpdate('sourceLanguage', v)"
-    />
-  </n-form-item>
-
-  <!-- TARGET LANGUAGES -->
-  <n-form-item :label="$t('resources.settings.config.deeplLinks.targetLanguages')">
-    <n-select
-      :disabled="!model.enabled"
-      multiple
-      :value="model.languages"
-      :options="languageOptions"
-      @update:value="(v) => handleUpdate('languages', v)"
     />
   </n-form-item>
 </template>

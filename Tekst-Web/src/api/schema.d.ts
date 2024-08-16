@@ -1268,6 +1268,35 @@ export interface components {
       locationLabels: string[];
       [key: string]: unknown;
     };
+    /** @enum {string} */
+    DeepLLanguageCode:
+      | 'BG'
+      | 'CS'
+      | 'DA'
+      | 'DE'
+      | 'EL'
+      | 'EN'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FR'
+      | 'HU'
+      | 'ID'
+      | 'IT'
+      | 'JA'
+      | 'LT'
+      | 'LV'
+      | 'NL'
+      | 'PL'
+      | 'PT'
+      | 'RO'
+      | 'RU'
+      | 'SK'
+      | 'SL'
+      | 'SV'
+      | 'TR'
+      | 'UK'
+      | 'ZH';
     /**
      * DeepLLinksConfig
      * @description Resource configuration model for DeepL translation links.
@@ -1280,79 +1309,8 @@ export interface components {
        * @default false
        */
       enabled?: boolean;
-      /**
-       * Sourcelanguage
-       * @description Source language
-       * @default BG
-       */
-      sourceLanguage?:
-        | (
-            | 'BG'
-            | 'CS'
-            | 'DA'
-            | 'DE'
-            | 'EL'
-            | 'EN'
-            | 'ES'
-            | 'ET'
-            | 'FI'
-            | 'FR'
-            | 'HU'
-            | 'ID'
-            | 'IT'
-            | 'JA'
-            | 'LT'
-            | 'LV'
-            | 'NL'
-            | 'PL'
-            | 'PT'
-            | 'RO'
-            | 'RU'
-            | 'SK'
-            | 'SL'
-            | 'SV'
-            | 'TR'
-            | 'UK'
-            | 'ZH'
-          )
-        | null;
-      /**
-       * Languages
-       * @description Target languages to display links for
-       * @default [
-       *   "EN",
-       *   "DE"
-       * ]
-       */
-      languages?: (
-        | 'BG'
-        | 'CS'
-        | 'DA'
-        | 'DE'
-        | 'EL'
-        | 'EN'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FR'
-        | 'HU'
-        | 'ID'
-        | 'IT'
-        | 'JA'
-        | 'LT'
-        | 'LV'
-        | 'NL'
-        | 'PL'
-        | 'PT'
-        | 'RO'
-        | 'RU'
-        | 'SK'
-        | 'SL'
-        | 'SV'
-        | 'TR'
-        | 'UK'
-        | 'ZH'
-      )[];
+      /** @description Source language */
+      sourceLanguage?: components['schemas']['DeepLLanguageCode'] | null;
     };
     /** DeleteLocationResult */
     DeleteLocationResult: {
@@ -1891,7 +1849,7 @@ export interface components {
       /**
        * @default {
        *   "singleLine": false,
-       *   "singleLineDelimiter": " "
+       *   "singleLineDelimiter": " / "
        * }
        */
       reducedView?: components['schemas']['ReducedViewConfig'];
@@ -2725,7 +2683,7 @@ export interface components {
        *   "defaultCollapsed": false,
        *   "reducedView": {
        *     "singleLine": false,
-       *     "singleLineDelimiter": " "
+       *     "singleLineDelimiter": " / "
        *   }
        * }
        */
@@ -2739,12 +2697,7 @@ export interface components {
       lineLabelling?: components['schemas']['LineLabellingConfig'];
       /**
        * @default {
-       *   "enabled": false,
-       *   "sourceLanguage": "BG",
-       *   "languages": [
-       *     "EN",
-       *     "DE"
-       *   ]
+       *   "enabled": false
        * }
        */
       deeplLinks?: components['schemas']['DeepLLinksConfig'];
@@ -2841,7 +2794,7 @@ export interface components {
        *     "defaultCollapsed": false,
        *     "reducedView": {
        *       "singleLine": false,
-       *       "singleLineDelimiter": " "
+       *       "singleLineDelimiter": " / "
        *     }
        *   },
        *   "lineLabelling": {
@@ -2849,12 +2802,7 @@ export interface components {
        *     "labellingType": "numbersOneBased"
        *   },
        *   "deeplLinks": {
-       *     "enabled": false,
-       *     "languages": [
-       *       "EN",
-       *       "DE"
-       *     ],
-       *     "sourceLanguage": "BG"
+       *     "enabled": false
        *   }
        * }
        */
@@ -2974,7 +2922,7 @@ export interface components {
        *     "defaultCollapsed": false,
        *     "reducedView": {
        *       "singleLine": false,
-       *       "singleLineDelimiter": " "
+       *       "singleLineDelimiter": " / "
        *     }
        *   },
        *   "lineLabelling": {
@@ -2982,12 +2930,7 @@ export interface components {
        *     "labellingType": "numbersOneBased"
        *   },
        *   "deeplLinks": {
-       *     "enabled": false,
-       *     "languages": [
-       *       "EN",
-       *       "DE"
-       *     ],
-       *     "sourceLanguage": "BG"
+       *     "enabled": false
        *   }
        * }
        */
@@ -3076,7 +3019,7 @@ export interface components {
        *     "defaultCollapsed": false,
        *     "reducedView": {
        *       "singleLine": false,
-       *       "singleLineDelimiter": " "
+       *       "singleLineDelimiter": " / "
        *     }
        *   },
        *   "lineLabelling": {
@@ -3084,12 +3027,7 @@ export interface components {
        *     "labellingType": "numbersOneBased"
        *   },
        *   "deeplLinks": {
-       *     "enabled": false,
-       *     "languages": [
-       *       "EN",
-       *       "DE"
-       *     ],
-       *     "sourceLanguage": "BG"
+       *     "enabled": false
        *   }
        * }
        */
@@ -4710,7 +4648,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-15T10:07:47.739609
+       * @default 2024-08-16T12:31:33.367147
        */
       contentsChangedAt?: string;
       /**
@@ -4796,7 +4734,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-15T10:07:47.739609
+       * @default 2024-08-16T12:31:33.367147
        */
       contentsChangedAt?: string;
       /**
@@ -4888,7 +4826,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-15T10:07:47.739609
+       * @default 2024-08-16T12:31:33.367147
        */
       contentsChangedAt?: string;
       /**

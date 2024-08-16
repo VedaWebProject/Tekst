@@ -109,7 +109,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   /* width: 100vw; */
   left: 0px;
   box-shadow: var(--fixed-box-shadow);
-  z-index: 3;
+  z-index: 1801;
 }
 
 .browse-toolbar {

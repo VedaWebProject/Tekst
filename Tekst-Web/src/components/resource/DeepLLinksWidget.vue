@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import type { AnyResourceRead, DeepLLinksConfig } from '@/api';
+import { deepLLanguageCodes, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
 import { computed } from 'vue';
-import { NDropdown } from 'naive-ui';
-import type { DropdownOption } from 'naive-ui';
-
+import { NPopselect } from 'naive-ui';
 import { TranslateIcon } from '@/icons';
+import type { SelectBaseOption } from 'naive-ui/es/select/src/interface';
 
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
@@ -31,41 +30,41 @@ const contentsTextEncoded = computed<string>(() => {
 });
 
 const options = computed(() =>
-  props.widgetConfig?.languages?.map((l) => ({
+  deepLLanguageCodes.map((l) => ({
     label: l,
-    key: l,
+    value: l,
     url: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
   }))
 );
 
 const show = computed(
-  () =>
-    props.widgetConfig?.enabled &&
-    props.widgetConfig?.sourceLanguage &&
-    props.widgetConfig?.languages?.length &&
-    contentsTextEncoded
+  () => props.widgetConfig?.enabled && props.widgetConfig?.sourceLanguage && contentsTextEncoded
 );
 
-function handleOptionSelect(_: string, option: DropdownOption) {
-  emit('done');
+function handleOptionSelect(_: string, option: SelectBaseOption) {
   window.open(option.url as string, '_blank', 'noopener noreferrer');
+  emit('done');
 }
 </script>
 
 <template>
-  <n-dropdown
+  <n-popselect
     v-if="show"
     trigger="click"
     :options="options"
     to="#app-container"
     placement="bottom-start"
-    show-arrow
-    @select="handleOptionSelect"
+    :z-index="1800"
+    scrollable
+    @update:value="handleOptionSelect"
   >
+    <template #header>
+      {{ $t('browse.contents.widgets.deepLTranslate.listHeader') }}
+    </template>
     <content-container-header-widget
       :full="full"
       :title="$t('browse.contents.widgets.deepLTranslate.title')"
       :icon-component="TranslateIcon"
     />
-  </n-dropdown>
+  </n-popselect>
 </template>

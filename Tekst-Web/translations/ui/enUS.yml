@@ -195,7 +195,8 @@ browse:
         lblNote: Correction note
         msgSuccess: Sent correction note
       deepLTranslate:
-        title: Translate
+        title: Translate with DeepL
+        listHeader: DeepL translation into...
       infoWidget:
         title: Information
         citeAs: Cite as
@@ -438,7 +439,6 @@ resources:
       deeplLinks:
         heading: DeepL Translation Links
         sourceLanguage: Source language
-        targetLanguages: Target languages
       lineLabelling:
         heading: Line Labelling
         labellingType: Type

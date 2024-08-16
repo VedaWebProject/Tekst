@@ -8523,6 +8523,38 @@
         ],
         "title": "CorrectionRead"
       },
+      "DeepLLanguageCode": {
+        "type": "string",
+        "enum": [
+          "BG",
+          "CS",
+          "DA",
+          "DE",
+          "EL",
+          "EN",
+          "ES",
+          "ET",
+          "FI",
+          "FR",
+          "HU",
+          "ID",
+          "IT",
+          "JA",
+          "LT",
+          "LV",
+          "NL",
+          "PL",
+          "PT",
+          "RO",
+          "RU",
+          "SK",
+          "SL",
+          "SV",
+          "TR",
+          "UK",
+          "ZH"
+        ]
+      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -8534,86 +8566,13 @@
           "sourceLanguage": {
             "anyOf": [
               {
-                "type": "string",
-                "enum": [
-                  "BG",
-                  "CS",
-                  "DA",
-                  "DE",
-                  "EL",
-                  "EN",
-                  "ES",
-                  "ET",
-                  "FI",
-                  "FR",
-                  "HU",
-                  "ID",
-                  "IT",
-                  "JA",
-                  "LT",
-                  "LV",
-                  "NL",
-                  "PL",
-                  "PT",
-                  "RO",
-                  "RU",
-                  "SK",
-                  "SL",
-                  "SV",
-                  "TR",
-                  "UK",
-                  "ZH"
-                ]
+                "$ref": "#/components/schemas/DeepLLanguageCode"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Sourcelanguage",
-            "description": "Source language",
-            "default": "BG"
-          },
-          "languages": {
-            "items": {
-              "type": "string",
-              "enum": [
-                "BG",
-                "CS",
-                "DA",
-                "DE",
-                "EL",
-                "EN",
-                "ES",
-                "ET",
-                "FI",
-                "FR",
-                "HU",
-                "ID",
-                "IT",
-                "JA",
-                "LT",
-                "LV",
-                "NL",
-                "PL",
-                "PT",
-                "RO",
-                "RU",
-                "SK",
-                "SL",
-                "SV",
-                "TR",
-                "UK",
-                "ZH"
-              ]
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Languages",
-            "description": "Target languages to display links for",
-            "default": [
-              "EN",
-              "DE"
-            ]
+            "description": "Source language"
           }
         },
         "type": "object",
@@ -9692,7 +9651,7 @@
             ],
             "default": {
               "singleLine": false,
-              "singleLineDelimiter": " "
+              "singleLineDelimiter": " / "
             }
           }
         },
@@ -11402,7 +11361,7 @@
               "defaultCollapsed": false,
               "reducedView": {
                 "singleLine": false,
-                "singleLineDelimiter": " "
+                "singleLineDelimiter": " / "
               }
             }
           },
@@ -11424,12 +11383,7 @@
               }
             ],
             "default": {
-              "enabled": false,
-              "sourceLanguage": "BG",
-              "languages": [
-                "EN",
-                "DE"
-              ]
+              "enabled": false
             }
           }
         },
@@ -11588,7 +11542,7 @@
                 "defaultCollapsed": false,
                 "reducedView": {
                   "singleLine": false,
-                  "singleLineDelimiter": " "
+                  "singleLineDelimiter": " / "
                 }
               },
               "lineLabelling": {
@@ -11596,12 +11550,7 @@
                 "labellingType": "numbersOneBased"
               },
               "deeplLinks": {
-                "enabled": false,
-                "languages": [
-                  "EN",
-                  "DE"
-                ],
-                "sourceLanguage": "BG"
+                "enabled": false
               }
             }
           }
@@ -11825,7 +11774,7 @@
                 "defaultCollapsed": false,
                 "reducedView": {
                   "singleLine": false,
-                  "singleLineDelimiter": " "
+                  "singleLineDelimiter": " / "
                 }
               },
               "lineLabelling": {
@@ -11833,12 +11782,7 @@
                 "labellingType": "numbersOneBased"
               },
               "deeplLinks": {
-                "enabled": false,
-                "languages": [
-                  "EN",
-                  "DE"
-                ],
-                "sourceLanguage": "BG"
+                "enabled": false
               }
             }
           }
@@ -12024,7 +11968,7 @@
                 "defaultCollapsed": false,
                 "reducedView": {
                   "singleLine": false,
-                  "singleLineDelimiter": " "
+                  "singleLineDelimiter": " / "
                 }
               },
               "lineLabelling": {
@@ -12032,12 +11976,7 @@
                 "labellingType": "numbersOneBased"
               },
               "deeplLinks": {
-                "enabled": false,
-                "languages": [
-                  "EN",
-                  "DE"
-                ],
-                "sourceLanguage": "BG"
+                "enabled": false
               }
             }
           }
@@ -15121,7 +15060,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-15T10:07:47.739609"
+            "default": "2024-08-16T12:31:33.367147"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15253,7 +15192,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-15T10:07:47.739609"
+            "default": "2024-08-16T12:31:33.367147"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15433,7 +15372,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-15T10:07:47.739609"
+            "default": "2024-08-16T12:31:33.367147"
           },
           "indexCreatedAt": {
             "type": "string",

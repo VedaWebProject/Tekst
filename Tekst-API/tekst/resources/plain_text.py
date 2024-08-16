@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
+from typing_extensions import TypeAliasType
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
@@ -176,17 +177,45 @@ class LineLabellingConfig(ModelBase):
     ] = "numbersOneBased"
 
 
+DeepLLanguageCode = TypeAliasType(
+    "DeepLLanguageCode",
+    Literal[
+        "BG",
+        "CS",
+        "DA",
+        "DE",
+        "EL",
+        "EN",
+        "ES",
+        "ET",
+        "FI",
+        "FR",
+        "HU",
+        "ID",
+        "IT",
+        "JA",
+        "LT",
+        "LV",
+        "NL",
+        "PL",
+        "PT",
+        "RO",
+        "RU",
+        "SK",
+        "SL",
+        "SV",
+        "TR",
+        "UK",
+        "ZH",
+    ],
+)
+
+
 class DeepLLinksConfig(ModelBase):
     """
     Resource configuration model for DeepL translation links.
     The corresponding field MUST be named `deepl_links`!
     """
-
-    _DEEPL_LANGUAGES: tuple = (
-        "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI",
-        "FR", "HU", "ID", "IT", "JA", "LT", "LV", "NL", "PL",
-        "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH",
-    )  # fmt: skip
 
     enabled: Annotated[
         bool,
@@ -195,18 +224,11 @@ class DeepLLinksConfig(ModelBase):
         ),
     ] = False
     source_language: Annotated[
-        Literal[_DEEPL_LANGUAGES] | None,
+        DeepLLanguageCode | None,
         Field(
             description="Source language",
         ),
-    ] = _DEEPL_LANGUAGES[0]
-    languages: Annotated[
-        list[Literal[_DEEPL_LANGUAGES]],
-        Field(
-            description="Target languages to display links for",
-            max_length=32,
-        ),
-    ] = ["EN", "DE"]
+    ] = None
 
 
 class GeneralPlainTextResourceConfig(ModelBase):

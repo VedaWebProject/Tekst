@@ -198,7 +198,8 @@ browse:
         lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
       deepLTranslate:
-        title: Übersetzen
+        title: Übersetzen mit DeepL
+        listHeader: DeepL-Übersetzung nach...
       infoWidget:
         title: Informationen
         citeAs: Zitieren als
@@ -448,7 +449,6 @@ resources:
       deeplLinks:
         heading: DeepL-Übersetzungs-Links
         sourceLanguage: Quellsprache
-        targetLanguages: Zielsprachen
       lineLabelling:
         heading: Zeilenbeschriftung
         labellingType: Typ
