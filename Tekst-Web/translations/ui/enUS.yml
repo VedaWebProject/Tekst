@@ -194,9 +194,8 @@ browse:
           responsible for this resource will be notified!
         lblNote: Correction note
         msgSuccess: Sent correction note
-      deepLTranslate:
+      deeplTranslate:
         title: Translate with DeepL
-        listHeader: DeepL translation into...
       infoWidget:
         title: Information
         citeAs: Cite as

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { deepLLanguageCodes, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
+import { deeplLanguageCodes, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
 import { computed } from 'vue';
 import { NPopselect } from 'naive-ui';
 import { TranslateIcon } from '@/icons';
@@ -30,7 +30,7 @@ const contentsTextEncoded = computed<string>(() => {
 });
 
 const options = computed(() =>
-  deepLLanguageCodes.map((l) => ({
+  deeplLanguageCodes.map((l) => ({
     label: l,
     value: l,
     url: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
@@ -59,11 +59,13 @@ function handleOptionSelect(_: string, option: SelectBaseOption) {
     @update:value="handleOptionSelect"
   >
     <template #header>
-      {{ $t('browse.contents.widgets.deepLTranslate.listHeader') }}
+      <span class="b">
+        {{ $t('browse.contents.widgets.deeplTranslate.title') }}
+      </span>
     </template>
     <content-container-header-widget
       :full="full"
-      :title="$t('browse.contents.widgets.deepLTranslate.title')"
+      :title="$t('browse.contents.widgets.deeplTranslate.title')"
       :icon-component="TranslateIcon"
     />
   </n-popselect>

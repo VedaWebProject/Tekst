@@ -121,7 +121,7 @@ export const resourceTypes = [
 
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
 
-export const deepLLanguageCodes = [
+export const deeplLanguageCodes = [
   'BG',
   'CS',
   'DA',

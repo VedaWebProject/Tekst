@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { deepLLanguageCodes, type DeepLLinksConfig } from '@/api';
+import { deeplLanguageCodes, type DeepLLinksConfig } from '@/api';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { NFormItem, NSelect } from 'naive-ui';
 
 const model = defineModel<DeepLLinksConfig>({ required: true });
 
-const languageOptions = deepLLanguageCodes.map((l) => ({ label: l, value: l }));
+const languageOptions = deeplLanguageCodes.map((l) => ({ label: l, value: l }));
 
 function handleUpdate(field: string, value: any) {
   model.value = {

@@ -197,9 +197,8 @@ browse:
           die für diese Ressource verantwortlich ist, wird darüber benachrichtigt!
         lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
-      deepLTranslate:
+      deeplTranslate:
         title: Übersetzen mit DeepL
-        listHeader: DeepL-Übersetzung nach...
       infoWidget:
         title: Informationen
         citeAs: Zitieren als
