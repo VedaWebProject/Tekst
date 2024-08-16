@@ -11,6 +11,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection, ::-moz-selection {
+  color: var(--base-color);
+  background: var(--accent-color);
+}
+
 a,
 a:any-link {
   text-decoration: none;
@@ -153,6 +158,11 @@ code {
   background-color: var(--accent-color);
   color: #fff;
   transition: 0.3s;
+}
+
+.accent-color-bg ::selection, .accent-color-bg ::-moz-selection {
+  color: var(--accent-color);
+  background: var(--base-color);
 }
 
 .text-color-accent {
