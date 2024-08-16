@@ -2375,6 +2375,8 @@ export interface components {
       fields: number;
       /** Createdat */
       createdAt: string | null;
+      /** Uptodate */
+      upToDate: boolean;
     };
     /** LineLabellingConfig */
     LineLabellingConfig: {
@@ -4648,7 +4650,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T12:31:33.367147
+       * @default 2024-08-16T15:10:30.500337
        */
       contentsChangedAt?: string;
       /**
@@ -4734,7 +4736,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T12:31:33.367147
+       * @default 2024-08-16T15:10:30.500337
        */
       contentsChangedAt?: string;
       /**
@@ -4826,7 +4828,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T12:31:33.367147
+       * @default 2024-08-16T15:10:30.500337
        */
       contentsChangedAt?: string;
       /**

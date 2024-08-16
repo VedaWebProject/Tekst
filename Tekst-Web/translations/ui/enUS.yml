@@ -757,6 +757,8 @@ admin:
         searches: Searches
         fields: Fields
         createdAt: Created
+        utd: Up to date
+        ood: Out of date
         actionCreate: Reindex
         actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
         actionCreateSuccess: Search indices have been updated

@@ -220,3 +220,4 @@ class IndexInfo(ModelBase):
     searches: int
     fields: int
     created_at: datetime | None
+    up_to_date: bool

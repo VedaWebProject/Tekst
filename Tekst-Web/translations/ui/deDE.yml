@@ -781,6 +781,8 @@ admin:
         searches: Suchen
         fields: Felder
         createdAt: Erzeugt
+        utd: Aktuell
+        ood: Veraltet
         actionCreate: Neuindexierung
         actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
         actionCreateSuccess: Suchindizes wurden aktualisiert

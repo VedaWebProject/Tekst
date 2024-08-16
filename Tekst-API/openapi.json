@@ -10691,6 +10691,10 @@
               }
             ],
             "title": "Createdat"
+          },
+          "upToDate": {
+            "type": "boolean",
+            "title": "Uptodate"
           }
         },
         "type": "object",
@@ -10700,7 +10704,8 @@
           "size",
           "searches",
           "fields",
-          "createdAt"
+          "createdAt",
+          "upToDate"
         ],
         "title": "IndexInfo"
       },
@@ -15060,7 +15065,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T12:31:33.367147"
+            "default": "2024-08-16T15:10:30.500337"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15192,7 +15197,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T12:31:33.367147"
+            "default": "2024-08-16T15:10:30.500337"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15372,7 +15377,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T12:31:33.367147"
+            "default": "2024-08-16T15:10:30.500337"
           },
           "indexCreatedAt": {
             "type": "string",

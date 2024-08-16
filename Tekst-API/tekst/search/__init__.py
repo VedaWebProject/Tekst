@@ -358,6 +358,7 @@ async def get_indices_info() -> list[IndexInfo]:
                     "text_id": text_id if text else None,
                     "created_at": text.index_created_at if text else None,
                     "fields": await _get_mapped_fields_count(idx_name),
+                    "up_to_date": text.index_created_at > text.contents_changed_at,
                     **await _get_index_stats(idx_name),
                 }
             )

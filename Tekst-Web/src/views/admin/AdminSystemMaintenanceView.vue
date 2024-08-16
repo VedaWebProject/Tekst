@@ -168,7 +168,7 @@ onBeforeMount(() => {
           </tr>
         </thead>
         <template v-for="(value, key) in indexInfo" :key="key">
-          <tr v-if="!['createdAt', 'textId', 'fields'].includes(key)">
+          <tr v-if="!['createdAt', 'textId', 'fields', 'upToDate'].includes(key)">
             <th style="font-weight: var(--font-weight-normal)">
               {{ $t(`admin.system.maintenance.indices.${key}`) }}
             </th>
@@ -194,6 +194,18 @@ onBeforeMount(() => {
               type="datetime"
             />
             <span v-else>???</span>
+          </td>
+        </tr>
+        <tr>
+          <th style="font-weight: var(--font-weight-normal)">
+            {{ $t(`general.status`) }}
+          </th>
+          <td>
+            <span :class="{ 'index-ood': !indexInfo.upToDate, 'index-utd': indexInfo.upToDate }">{{
+              indexInfo.upToDate
+                ? $t('admin.system.maintenance.indices.utd')
+                : $t('admin.system.maintenance.indices.ood')
+            }}</span>
           </td>
         </tr>
       </template>
@@ -353,5 +365,14 @@ onBeforeMount(() => {
 .max-fields-warn-over {
   color: var(--col-error);
   font-weight: var(--font-weight-bold);
+}
+
+.index-ood {
+  color: var(--col-error);
+  font-weight: var(--font-weight-bold);
+}
+
+.index-utd {
+  color: var(--col-success);
 }
 </style>
