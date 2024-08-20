@@ -115,6 +115,7 @@ async function handleForgotPasswordClick() {
           <n-input
             v-model:value="formModel.password"
             type="password"
+            show-password-on="mousedown"
             :placeholder="$t('models.user.password')"
             :disabled="auth.loginModalState.loading"
             @keyup.enter="handleLoginClick"

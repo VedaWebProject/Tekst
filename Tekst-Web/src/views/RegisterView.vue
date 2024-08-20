@@ -154,6 +154,7 @@ onMounted(() => {
           <n-input
             v-model:value="formModel.password"
             type="password"
+            show-password-on="mousedown"
             :placeholder="$t('models.user.password')"
             @input="handlePasswordInput"
             @keydown.enter.prevent
@@ -169,6 +170,7 @@ onMounted(() => {
           <n-input
             v-model:value="formModel.passwordRepeat"
             type="password"
+            show-password-on="mousedown"
             :disabled="!formModel.password || loading"
             :placeholder="$t('register.repeatPassword')"
             @keydown.enter.prevent

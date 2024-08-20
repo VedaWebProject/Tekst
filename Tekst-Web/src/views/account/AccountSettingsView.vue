@@ -440,6 +440,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         <n-input
           v-model:value="passwordFormModel.password"
           type="password"
+          show-password-on="mousedown"
           :placeholder="$t('models.user.password')"
           @input="handlePasswordInput"
           @keydown.enter.prevent
@@ -455,6 +456,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         <n-input
           v-model:value="passwordFormModel.passwordRepeat"
           type="password"
+          show-password-on="mousedown"
           :disabled="!passwordFormModel.password || loading"
           :placeholder="$t('register.repeatPassword')"
           @keydown.enter.prevent
