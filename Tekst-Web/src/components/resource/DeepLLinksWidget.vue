@@ -52,7 +52,6 @@ function handleOptionSelect(_: string, option: SelectBaseOption) {
     v-if="show"
     trigger="click"
     :options="options"
-    to="#app-container"
     placement="bottom-start"
     :z-index="1800"
     scrollable
