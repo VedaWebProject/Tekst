@@ -20,12 +20,11 @@ import { shallowRef } from 'vue';
 export interface PromptModalProps {
   actionKey?: string;
   initialValue?: string;
+  type?: 'input' | 'input-osk' | 'textarea' | 'textarea-osk';
   msg?: string;
   icon?: Component;
   inputLabel?: string;
   title?: string;
-  multiline?: boolean;
-  osk?: boolean;
   font?: string;
   placeholder?: string;
   rows?: number;
@@ -36,12 +35,12 @@ export interface PromptModalProps {
 const props = withDefaults(defineProps<PromptModalProps>(), {
   actionKey: undefined,
   initialValue: undefined,
+  type: 'input',
   msg: undefined,
   icon: undefined,
   inputLabel: undefined,
   title: undefined,
   multiline: false,
-  osk: false,
   font: undefined,
   placeholder: '',
   rows: undefined,
@@ -57,16 +56,16 @@ const show = ref(false);
 const { message } = useMessages();
 const inputRef = ref<InputInst>();
 const formItemRef = ref<FormItemInst | null>(null);
-const formModel = ref<{ inputString: string | undefined }>({ inputString: undefined });
+const formModel = ref<{ input: string | undefined }>({ input: undefined });
 
 function open(propsOverrides: PromptModalProps) {
   liveProps.value = { ...props, ...propsOverrides };
-  formModel.value.inputString = liveProps.value.initialValue;
+  formModel.value.input = liveProps.value.initialValue;
   show.value = true;
 }
 
 function close() {
-  formModel.value.inputString = undefined;
+  formModel.value.input = undefined;
   liveProps.value = props;
   show.value = false;
 }
@@ -75,7 +74,7 @@ function handleSubmit() {
   formItemRef.value
     ?.validate()
     .then(() => {
-      emit('submit', liveProps.value.actionKey, formModel.value.inputString);
+      emit('submit', liveProps.value.actionKey, formModel.value.input);
       close();
     })
     .catch(() => {
@@ -86,7 +85,7 @@ function handleSubmit() {
 function handleInputReturn(e: KeyboardEvent) {
   e.preventDefault();
   e.stopPropagation();
-  if (!liveProps.value.multiline) {
+  if (liveProps.value.type === 'input' || liveProps.value.type === 'input-osk') {
     handleSubmit();
   }
 }
@@ -111,26 +110,26 @@ function handleInputReturn(e: KeyboardEvent) {
     <n-form :model="formModel">
       <n-form-item
         ref="formItemRef"
-        path="inputString"
+        path="input"
         :label="liveProps.inputLabel"
         :show-label="!!liveProps.inputLabel"
         :rule="liveProps.validationRules"
       >
         <n-input
-          v-if="!liveProps.osk"
+          v-if="liveProps.type === 'input' || liveProps.type === 'textarea'"
           ref="inputRef"
-          v-model:value="formModel.inputString"
-          :type="liveProps.multiline ? 'textarea' : 'text'"
+          v-model:value="formModel.input"
+          :type="liveProps.type === 'input' ? 'text' : 'textarea'"
           :rows="liveProps.rows"
           :default-value="liveProps.initialValue"
           :placeholder="liveProps.placeholder"
           @keydown.enter="handleInputReturn"
         />
         <n-input-osk
-          v-else
+          v-else-if="liveProps.type === 'input-osk' || liveProps.type === 'textarea-osk'"
           ref="inputRef"
-          v-model:value="formModel.inputString"
-          :type="liveProps.multiline ? 'textarea' : 'text'"
+          v-model:value="formModel.input"
+          :type="liveProps.type === 'input-osk' ? 'text' : 'textarea'"
           :rows="liveProps.rows"
           :default-value="liveProps.initialValue"
           :placeholder="liveProps.placeholder"
@@ -145,7 +144,7 @@ function handleInputReturn(e: KeyboardEvent) {
       </n-button>
       <n-button
         type="primary"
-        :disabled="liveProps.disableOkWhenNoValue && !formModel.inputString"
+        :disabled="liveProps.disableOkWhenNoValue && !formModel.input"
         @click="handleSubmit"
       >
         {{ $t('general.okAction') }}

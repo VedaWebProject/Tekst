@@ -2,6 +2,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from pydantic import (
+    BeforeValidator,
     Field,
     StringConstraints,
 )
@@ -11,6 +12,16 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
+
+
+LocationAlias = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=32,
+        strip_whitespace=True,
+    ),
+]
 
 
 class Location(ModelBase, ModelFactoryMixin):
@@ -55,11 +66,14 @@ class Location(ModelBase, ModelFactoryMixin):
         ),
     ]
     aliases: Annotated[
-        list[str],
+        list[LocationAlias] | None,
         Field(
             description="List of aliases for this location",
+            min_length=1,
+            max_length=16,
         ),
-    ] = []
+        BeforeValidator(lambda v: v or None),
+    ] = None
 
 
 class LocationDocument(Location, DocumentBase):
@@ -82,3 +96,46 @@ LocationUpdate = Location.update_model()
 class DeleteLocationResult(ModelBase):
     contents: int
     locations: int
+
+
+class LocationImport(ModelBase):
+    """Model for importing (creating/updating) location data"""
+
+    parent_id: Annotated[
+        PydanticObjectId | None,
+        Field(
+            description="ID of parent location",
+        ),
+    ] = None
+    level: Annotated[
+        int,
+        Field(
+            ge=0,
+            lt=32,
+            description="Index of structure level this location is on",
+        ),
+    ]
+    position: Annotated[
+        int,
+        Field(
+            ge=0,
+            description="Position among all text locations on this level",
+        ),
+    ]
+    label: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=256,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="Label for identifying this text location in level context",
+        ),
+    ]
+    aliases: Annotated[
+        list[str] | None,
+        Field(
+            description="List of aliases for this location",
+        ),
+    ] = None

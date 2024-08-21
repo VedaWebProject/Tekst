@@ -230,12 +230,12 @@ async function handleAddImageClick() {
   });
 }
 
-async function handlePromptModalSubmit(actionKey: string, value: string) {
+async function handlePromptModalSubmit(actionKey: string, input: string) {
   if (actionKey === 'addLink') {
     // empty
-    if (value) {
+    if (input) {
       // update link
-      editor.value?.chain().focus().extendMarkRange('link').setLink({ href: value }).run();
+      editor.value?.chain().focus().extendMarkRange('link').setLink({ href: input }).run();
     } else {
       if (editor.value?.isActive('link')) {
         editor.value?.chain().focus().unsetLink().run();
@@ -245,9 +245,9 @@ async function handlePromptModalSubmit(actionKey: string, value: string) {
     }
   } else if (actionKey === 'addImage') {
     // empty
-    if (!value) return;
+    if (!input) return;
     // update link
-    editor.value?.chain().focus().setImage({ src: value }).run();
+    editor.value?.chain().focus().setImage({ src: input }).run();
   }
 }
 

@@ -760,8 +760,12 @@ async def _import_resource_contents_task(
     # validate import file format
     try:
         import_data = ResourceImportData.model_validate_json(file_bytes)
-    except ValueError:
-        raise errors.E_400_UPLOAD_INVALID_JSON
+    except Exception as e:
+        http_err = errors.update_values(
+            exc=errors.E_422_UPLOAD_INVALID_DATA,
+            values={"errors": e.errors()},
+        )
+        raise http_err
 
     # check if resource_id matches the one in the import file
     if str(resource_id) != str(import_data.resource_id):

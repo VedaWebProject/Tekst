@@ -5220,7 +5220,7 @@
           "texts"
         ],
         "summary": "Download structure template",
-        "description": "Download the structure template for a text to help compose a structure\ndefinition that can later be uploaded to the server",
+        "description": "Download the structure template for a text to help compose a structure\ndefinition (or locations updates if there already is a structure)\nthat can later be uploaded to the server.",
         "operationId": "downloadStructureTemplate",
         "security": [
           {
@@ -5300,7 +5300,7 @@
           "texts"
         ],
         "summary": "Import text structure",
-        "description": "Upload the structure definition for a text to apply as a structure of locations",
+        "description": "Uploads the structure definition for a text to apply as a structure of locations",
         "operationId": "importTextStructure",
         "security": [
           {
@@ -5361,6 +5361,16 @@
             },
             "description": "Bad Request"
           },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
           "404": {
             "content": {
               "application/json": {
@@ -5390,16 +5400,104 @@
               }
             },
             "description": "Forbidden"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "texts"
+        ],
+        "summary": "Update text structure",
+        "description": "Uploads updated locations data.\nOnly existing locations (with a correct ID) will be updated.",
+        "operationId": "updateTextStructure",
+        "security": [
+          {
+            "APIKeyCookie": []
           },
-          "422": {
-            "description": "Validation Error",
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_text_structure_texts__id__structure_patch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/TekstErrorModel"
                 }
               }
-            }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
           }
         }
       }
@@ -8001,6 +8099,21 @@
           "password"
         ],
         "title": "Body_reset_reset_password_auth_reset_password_post"
+      },
+      "Body_update_text_structure_texts__id__structure_patch": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File",
+            "description": "JSON file containing the locations to update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_update_text_structure_texts__id__structure_patch"
       },
       "Body_verify_request_token_auth_request_verify_token_post": {
         "properties": {
@@ -10782,13 +10895,23 @@
             "description": "Label for identifying this text location in level context"
           },
           "aliases": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 16,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Aliases",
-            "description": "List of aliases for this location",
-            "default": []
+            "description": "List of aliases for this location"
           }
         },
         "type": "object",
@@ -10888,13 +11011,23 @@
             "description": "Label for identifying this text location in level context"
           },
           "aliases": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 16,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Aliases",
-            "description": "List of aliases for this location",
-            "default": []
+            "description": "List of aliases for this location"
           }
         },
         "additionalProperties": true,
@@ -10974,13 +11107,23 @@
             "title": "Label"
           },
           "aliases": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 16,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Aliases",
-            "description": "List of aliases for this location",
-            "default": []
+            "description": "List of aliases for this location"
           }
         },
         "type": "object",
@@ -15065,7 +15208,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T15:10:30.500337"
+            "default": "2024-08-21T07:20:59.655300"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15197,7 +15340,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T15:10:30.500337"
+            "default": "2024-08-21T07:20:59.655300"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15377,7 +15520,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-16T15:10:30.500337"
+            "default": "2024-08-21T07:20:59.655300"
           },
           "indexCreatedAt": {
             "type": "string",

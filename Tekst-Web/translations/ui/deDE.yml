@@ -288,6 +288,7 @@ models:
   location:
     modelLabel: Belegstelle | Belegstellen
     label: Bezeichnung
+    aliases: Aliase
   resource:
     modelLabel: Ressource | Ressourcen
     title: Titel
@@ -719,10 +720,12 @@ admin:
         msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
       lblBtnAddLocationFirstLevel: Hinzufügen
       tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
-      lblBtnDownloadTemplate: Vorlage
-      tipBtnDownloadTemplate: Strukturdefinitions-Vorlage herunterladen
-      lblBtnUploadStructure: Importieren
-      tipBtnUploadStructure: Strukturdefinition hochladen (nur bei leerer Struktur!)
+      lblBtnDownloadTemplate: Vorlage für Import-Daten
+      tipBtnDownloadTemplate: '@:admin.texts.locations.lblBtnDownloadTemplate herunterladen'
+      lblBtnUploadStructure: Neue Textstruktur importieren
+      tipBtnUploadStructure: Vorbereitete Daten für neue Textstruktur importieren
+      lblBtnUploadUpdates: Änderungen importieren
+      tipBtnUploadUpdates: Geänderte Beschriftungen und Aliase für Belegstellen importieren
       infoNoLocations: |
         Dieser Text hat noch keine Belegstellen.
         Fügen Sie den Strukturebenen des Textes Belegstellen hinzu,
@@ -748,11 +751,11 @@ admin:
       infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben
       errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
       checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
-      rename:
-        heading: Belegstelle umbenennen
-        msgSuccess: Belegstelle "{oldName}" umbenannt zu "{newName}"
-      upload:
-        msgSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
+      edit:
+        heading: Belegstelle bearbeiten
+        msgSuccess: Belegstelle "{label}" gespeichert
+      importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
+      updateSuccess: Geänderte Beschriftungen und Aliase für Belegstellen erfolgreich importiert
   newText:
     heading: Neuer Text
     headerInfoAlert: |

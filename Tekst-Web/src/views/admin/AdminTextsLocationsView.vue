@@ -3,6 +3,7 @@ import {
   NSpin,
   NButton,
   NIcon,
+  NFlex,
   NTree,
   NAlert,
   useDialog,
@@ -11,18 +12,19 @@ import {
   type TreeDragInfo,
 } from 'naive-ui';
 import { h, ref } from 'vue';
-import { DELETE, GET, POST, type LocationRead, withSelectedFile } from '@/api';
+import { DELETE, GET, POST, withSelectedFile, PATCH } from '@/api';
 import { useStateStore } from '@/stores';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { watch } from 'vue';
 import type { Component, Ref } from 'vue';
 import { dialogProps } from '@/common';
-import RenameLocationModal from '@/components/modals/RenameLocationModal.vue';
-import AddLocationModal from '@/components/modals/AddLocationModal.vue';
 import { computed } from 'vue';
 import { saveDownload } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import EditLocationModal, {
+  type EditLocationModalData,
+} from '@/components/modals/EditLocationModal.vue';
 
 import {
   AddIcon,
@@ -41,6 +43,7 @@ export interface LocationTreeOption extends TreeOption {
   level: number;
   position: number;
   parentKey: string | null | undefined;
+  aliases?: string[] | null;
 }
 
 const state = useStateStore();
@@ -50,9 +53,10 @@ const dialog = useDialog();
 const treeData = ref<LocationTreeOption[]>([]);
 const dragNode = ref<LocationTreeOption | null>(null);
 const showWarnings = ref(true);
+const editModalRef = ref<InstanceType<typeof EditLocationModal> | null>(null);
 
 const loadingAdd = ref(false);
-const loadingRename = ref(false);
+const loadingEdit = ref(false);
 const loadingDelete = ref(false);
 const loadingMove = ref(false);
 const loadingUpload = ref(false);
@@ -61,19 +65,13 @@ const loadingTemplate = ref(false);
 const loading = computed(
   () =>
     loadingAdd.value ||
-    loadingRename.value ||
+    loadingEdit.value ||
     loadingDelete.value ||
     loadingData.value ||
     loadingMove.value ||
     loadingUpload.value ||
     loadingTemplate.value
 );
-
-const showRenameModal = ref(false);
-const locationToRename = ref<LocationTreeOption | null>(null);
-
-const showAddModal = ref(false);
-const locationParentToAddTo = ref<LocationTreeOption | null>(null);
 
 async function loadTreeData(location?: TreeOption) {
   loadingData.value = true;
@@ -86,6 +84,7 @@ async function loadTreeData(location?: TreeOption) {
     const subTreeData: LocationTreeOption[] = data.map((child) => ({
       key: child.id,
       label: child.label,
+      aliases: child.aliases,
       isLeaf: child.level >= (state.text?.levels.length || Number.MAX_SAFE_INTEGER) - 1,
       level: child.level,
       position: child.position,
@@ -218,44 +217,63 @@ async function handleDeleteClick(location: LocationTreeOption) {
   });
 }
 
-function handleRenameClick(location: LocationTreeOption) {
-  locationToRename.value = location;
-  showRenameModal.value = true;
+function handleEditClick(location: LocationTreeOption) {
+  editModalRef.value?.open({
+    action: 'edit',
+    targetId: location.key?.toString(),
+    label: location.label,
+    aliases: location.aliases,
+  });
 }
 
-async function handleRenameResult(location: LocationRead | undefined) {
-  loadingRename.value = true;
-  if (location) {
-    message.success(
-      $t('admin.text.locations.rename.msgSuccess', {
-        oldName: locationToRename.value?.label,
-        newName: location.label,
-      })
-    );
+function handleAddClick(parent: LocationTreeOption | null = null) {
+  editModalRef.value?.open({
+    action: 'add',
+    targetId: parent?.key?.toString(),
+    label: undefined,
+    aliases: undefined,
+  });
+}
+
+async function handleAddEditSubmit(addEditData: EditLocationModalData) {
+  if (addEditData.action === 'add') {
+    loadingAdd.value = true;
+    const parentLocation = getTreeLocationByKey(addEditData.targetId);
+    const { data, error } = await POST('/locations', {
+      body: {
+        label: addEditData.label || '',
+        level: parentLocation ? parentLocation.level + 1 : 0,
+        position: Number.MAX_SAFE_INTEGER,
+        textId: state.text?.id || '',
+        parentId: parentLocation?.key?.toString(),
+      },
+    });
+    if (!error) {
+      message.success(
+        $t('admin.text.locations.add.msgSuccess', {
+          label: data.label,
+          parentLabel: parentLocation?.label || state.text?.title || '',
+        })
+      );
+    }
+    await loadTreeData(parentLocation);
+    loadingAdd.value = false;
+  } else if (addEditData.action === 'edit') {
+    loadingEdit.value = true;
+    const location = getTreeLocationByKey(addEditData.targetId);
+    const { data, error } = await PATCH('/locations/{id}', {
+      params: { path: { id: addEditData.targetId || '' } },
+      body: {
+        label: addEditData.label || '',
+        aliases: addEditData.aliases || undefined,
+      },
+    });
+    if (!error) {
+      message.success($t('admin.text.locations.edit.msgSuccess', { label: data.label }));
+    }
+    await loadTreeData(getTreeLocationByKey(location?.parentKey));
+    loadingEdit.value = false;
   }
-  await loadTreeData(getTreeLocationByKey(locationToRename.value?.parentKey));
-  locationToRename.value = null;
-  loadingRename.value = false;
-}
-
-function handleAddLocationClick(parent: LocationTreeOption | null = null) {
-  locationParentToAddTo.value = parent;
-  showAddModal.value = true;
-}
-
-async function handleAddResult(location: LocationRead | undefined) {
-  loadingAdd.value = true;
-  if (location) {
-    message.success(
-      $t('admin.text.locations.add.msgSuccess', {
-        label: location.label,
-        parentLabel: locationParentToAddTo.value?.label || state.text?.title || '',
-      })
-    );
-  }
-  await loadTreeData(getTreeLocationByKey(locationParentToAddTo.value?.key?.toString()));
-  locationParentToAddTo.value = null;
-  loadingAdd.value = false;
 }
 
 async function handleDownloadTemplateClick() {
@@ -288,7 +306,30 @@ async function handleImportClick() {
       },
     });
     if (!error) {
-      message.success($t('admin.text.locations.upload.msgSuccess'));
+      message.success($t('admin.text.locations.importSuccess'));
+    }
+    loadingUpload.value = false;
+    loadTreeData();
+  });
+}
+
+async function handleUpdateClick() {
+  withSelectedFile(async (file: File | null) => {
+    if (!file) return;
+    loadingUpload.value = true;
+    const { error } = await PATCH('/texts/{id}/structure', {
+      params: { path: { id: state.text?.id || '' } },
+      body: { file },
+      bodySerializer(body) {
+        const fd = new FormData();
+        for (const [k, v] of Object.entries(body)) {
+          fd.append(k, v);
+        }
+        return fd;
+      },
+    });
+    if (!error) {
+      message.success($t('admin.text.locations.updateSuccess'));
     }
     loadingUpload.value = false;
     loadTreeData();
@@ -307,13 +348,18 @@ function renderSwitcherIcon() {
 
 function renderLabel({ option }: { option: TreeOption }) {
   const levelLabel = state.textLevelLabels[option.level as number];
-  return h(
-    'div',
-    { style: 'padding: 4px' },
-    {
-      default: () => `${levelLabel}: ${option.label}`,
-    }
-  );
+  return h('div', { class: 'entry-label' }, [
+    h('span', `${levelLabel}: ${option.label}`),
+    (option.aliases as string[])?.map((a) =>
+      h(
+        'span',
+        {
+          class: 'entry-aliases translucent text-tiny',
+        },
+        a
+      )
+    ),
+  ]);
 }
 
 function renderSuffixButton(
@@ -341,14 +387,14 @@ function renderSuffixButton(
 
 function renderSuffix(info: { option: TreeOption; checked: boolean; selected: boolean }) {
   if (!info.selected) return null;
-  return h('div', { style: 'display: flex; gap: 4px; padding: 4px' }, [
+  return h('div', { class: 'entry-suffix' }, [
     renderSuffixButton(
       EditIcon,
       () => {
-        handleRenameClick(info.option as LocationTreeOption);
+        handleEditClick(info.option as LocationTreeOption);
       },
-      $t('admin.text.locations.rename.heading'),
-      loadingRename
+      $t('admin.text.locations.edit.heading'),
+      loadingEdit
     ),
     renderSuffixButton(
       DeleteIcon,
@@ -360,7 +406,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       ? null
       : renderSuffixButton(
           AddIcon,
-          () => handleAddLocationClick(info.option as LocationTreeOption),
+          () => handleAddClick(info.option as LocationTreeOption),
           $t('admin.text.locations.add.tooltip'),
           loadingAdd
         ),
@@ -390,14 +436,10 @@ watch(
     {{ $t('admin.text.locations.infoNoLocations') }}
   </n-alert>
 
-  <div
-    style="
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: var(--layout-gap);
-      margin-top: var(--layout-gap);
-    "
+  <n-flex
+    justify="space-between"
+    size="large"
+    style="gap: var(--layout-gap); margin-top: var(--layout-gap)"
   >
     <labelled-switch
       v-if="treeData.length"
@@ -405,12 +447,12 @@ watch(
       :label="$t('admin.text.locations.checkShowWarnings')"
     />
     <div style="flex-grow: 2"></div>
-    <div style="display: flex; gap: 0.5rem">
+    <n-flex>
       <n-button
         type="primary"
         :title="$t('admin.text.locations.tipBtnAddLocationFirstLevel')"
         :disabled="loading"
-        @click="handleAddLocationClick(null)"
+        @click="handleAddClick(null)"
       >
         <template #icon>
           <n-icon :component="AddIcon" />
@@ -430,9 +472,10 @@ watch(
         {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
       </n-button>
       <n-button
+        v-if="!treeData.length"
         secondary
         :title="$t('admin.text.locations.tipBtnUploadStructure')"
-        :disabled="!!treeData.length || loading"
+        :disabled="loading"
         @click="handleImportClick()"
       >
         <template #icon>
@@ -440,12 +483,26 @@ watch(
         </template>
         {{ $t('admin.text.locations.lblBtnUploadStructure') }}
       </n-button>
-    </div>
-  </div>
+      <n-button
+        v-else
+        secondary
+        :title="$t('admin.text.locations.tipBtnUploadUpdates')"
+        :disabled="loading"
+        @click="handleUpdateClick()"
+      >
+        <template #icon>
+          <n-icon :component="UploadIcon" />
+        </template>
+        {{ $t('admin.text.locations.lblBtnUploadUpdates') }}
+      </n-button>
+    </n-flex>
+  </n-flex>
 
   <div v-if="treeData.length" class="content-block" style="position: relative">
     <n-tree
+      id="locations-tree"
       block-line
+      show-line
       :draggable="!loading"
       :selectable="!loading"
       :data="treeData"
@@ -467,16 +524,27 @@ watch(
   </div>
 
   <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
-
-  <rename-location-modal
-    v-model:show="showRenameModal"
-    :location="locationToRename"
-    @submit="handleRenameResult"
-  />
-
-  <add-location-modal
-    v-model:show="showAddModal"
-    :parent="locationParentToAddTo"
-    @submit="handleAddResult"
-  />
+  <edit-location-modal ref="editModalRef" @submit="handleAddEditSubmit" />
 </template>
+
+<style scoped>
+:deep(.entry-suffix) {
+  display: flex;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+:deep(.entry-label) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px;
+  margin-right: var(--layout-gap);
+}
+
+:deep(.entry-aliases) {
+  padding: 0 4px;
+  background-color: var(--main-bg-color);
+  border-radius: var(--border-radius);
+}
+</style>

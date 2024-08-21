@@ -286,6 +286,7 @@ models:
   location:
     modelLabel: Location | Locations
     label: Label
+    aliases: Aliases
   resource:
     modelLabel: Resource | Resources
     title: Title
@@ -699,10 +700,12 @@ admin:
         msgSuccess: Added location "{label}" to "{parentLabel}"
       lblBtnAddLocationFirstLevel: Add
       tipBtnAddLocationFirstLevel: Add top-level location
-      lblBtnDownloadTemplate: Template
-      tipBtnDownloadTemplate: Download structure definition template
-      lblBtnUploadStructure: Import
-      tipBtnUploadStructure: Import structure definition (only if structure is empty!)
+      lblBtnDownloadTemplate: Template for import data
+      tipBtnDownloadTemplate: Download a template for import data
+      lblBtnUploadStructure: Import new text structure
+      tipBtnUploadStructure: Import prepared data for new text structure
+      lblBtnUploadUpdates: Import modifications
+      tipBtnUploadUpdates: Import modifications to location labels and aliases
       infoNoLocations: |
         This text does not have any locations, yet. Add locations to the text's
         structure levels using the interface below or download a structure template
@@ -724,11 +727,11 @@ admin:
       infoMovedLocation: Moved location "{location}" to position {position} on level "{level}"
       errorLocationLeftLevel: Text locations can only be moved on their original structure level!
       checkShowWarnings: Show warnings before performing destructive operations
-      rename:
-        heading: Rename Location
-        msgSuccess: Location "{oldName}" renamed to "{newName}"
-      upload:
-        msgSuccess: New text structure uploaded and processed successfully
+      edit:
+        heading: Edit Location
+        msgSuccess: Location "{label}" saved
+      importSuccess: New text structure uploaded and processed successfully
+      updateSuccess: Modified labels and aliases for locations imported successfully
   newText:
     heading: New Text
     headerInfoAlert: |

@@ -1,3 +1,5 @@
+import json
+
 from copy import deepcopy
 from tempfile import NamedTemporaryFile
 from typing import Annotated
@@ -93,41 +95,73 @@ async def download_structure_template(
 ) -> FileResponse:
     """
     Download the structure template for a text to help compose a structure
-    definition that can later be uploaded to the server
+    definition (or locations updates if there already is a structure)
+    that can later be uploaded to the server.
     """
     # find text
     text = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND
-    # create template for text
-    structure_def: TextStructureImportData = TextStructureImportData()
-    curr_location_def: LocationDefinition | None = None
-    dummy_location = LocationDefinition(
-        label="Label for the first location on level '{}' (required!)",
-        aliases=["{} 1"],
-    )
-    for n in range(len(text.levels)):
-        location = deepcopy(dummy_location)
-        location.label = location.label.format(text.levels[n][0]["translation"])
-        location.aliases[0] = location.aliases[0].format(
-            text.levels[n][0]["translation"]
+
+    # check if there is already a structure – if so, create a template for location
+    # updates; if not, create a template for an initial structure definition import
+    existing_locations = await LocationDocument.find(
+        LocationDocument.text_id == text_id
+    ).to_list()
+    if existing_locations:
+        # there are existing locations, so we construct a list of the data relevant for
+        # an update (ID, label, aliases and level/position for orientation)
+        locations_data = []
+        for loc in existing_locations:
+            loc_data = loc.model_dump(
+                include={
+                    "id",
+                    "label",
+                    "aliases",
+                    "level",
+                    "position",
+                }
+            )
+            # add empty array for aliases if none is present
+            loc_data["aliases"] = loc_data.get("aliases", None) or []
+            locations_data.append(loc_data)
+        # dump JSON for writing to temp file
+        json_str = json.dumps(locations_data, indent=2)
+    else:
+        # create template for text
+        structure_def: TextStructureImportData = TextStructureImportData()
+        curr_location_def: LocationDefinition | None = None
+        dummy_location = LocationDefinition(
+            label="Label for the first location on level '{}' (required!)",
+            aliases=["{} 1"],
         )
-        if curr_location_def is None:
-            structure_def.locations.append(location)
-        else:
-            curr_location_def.locations = []
-            curr_location_def.locations.append(location)
-        curr_location_def = location
-    # validate template
-    try:
-        TextStructureImportData.model_validate(structure_def)
-    except Exception:  # pragma: no cover
-        raise errors.E_500_INTERNAL_SERVER_ERROR
+        for n in range(len(text.levels)):
+            location = deepcopy(dummy_location)
+            location.label = location.label.format(text.levels[n][0]["translation"])
+            location.aliases[0] = location.aliases[0].format(
+                text.levels[n][0]["translation"]
+            )
+            if curr_location_def is None:
+                structure_def.locations.append(location)
+            else:
+                curr_location_def.locations = []
+                curr_location_def.locations.append(location)
+            curr_location_def = location
+        # validate template
+        try:
+            TextStructureImportData.model_validate(structure_def)
+        except Exception:  # pragma: no cover
+            raise errors.E_500_INTERNAL_SERVER_ERROR
+        # dump JSON for writing to temp file
+        json_str = structure_def.model_dump_json(
+            indent=2,
+            by_alias=True,
+            exclude_none=True,
+        )
+
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")
-    tempfile.write(
-        structure_def.model_dump_json(indent=2, by_alias=True, exclude_none=True)
-    )
+    tempfile.write(json_str)
     tempfile.flush()
     # prepare headers ... according to
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
@@ -156,6 +190,7 @@ async def download_structure_template(
             errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST,
             errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
             errors.E_400_UPLOAD_INVALID_JSON,
+            errors.E_422_UPLOAD_INVALID_DATA,
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
@@ -170,7 +205,7 @@ async def import_text_structure(
     ],
 ) -> None:
     """
-    Upload the structure definition for a text to apply as a structure of locations
+    Uploads the structure definition for a text to apply as a structure of locations
     """
     # test upload file MIME type
     if file.content_type.lower() != "application/json":
@@ -188,8 +223,14 @@ async def import_text_structure(
     # validate structure definition
     try:
         structure_def = TextStructureImportData.model_validate_json(await file.read())
-    except Exception:
+    except ValueError:
         raise errors.E_400_UPLOAD_INVALID_JSON
+    except Exception as e:
+        http_err = errors.update_values(
+            exc=errors.E_422_UPLOAD_INVALID_DATA,
+            values={"errors": e.errors()},
+        )
+        raise http_err
 
     # import locations depth-first
     locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
@@ -229,6 +270,84 @@ async def import_text_structure(
                 c["parent_id"] = inserted_ids[i]
             children += children_temp
         locations = children
+
+
+@router.patch(
+    "/{id}/structure",
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_400_UPLOAD_INVALID_JSON,
+            errors.E_404_TEXT_NOT_FOUND,
+            errors.E_400_IMPORT_ID_NON_EXISTENT,
+            errors.E_422_UPLOAD_INVALID_DATA,
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def update_text_structure(
+    su: SuperuserDep,
+    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+    file: Annotated[
+        UploadFile, File(description="JSON file containing the locations to update")
+    ],
+) -> None:
+    """
+    Uploads updated locations data.
+    Only existing locations (with a correct ID) will be updated.
+    """
+    # test upload file MIME type
+    if file.content_type.lower() != "application/json":
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
+
+    # find text
+    text = await TextDocument.get(text_id)
+    if not text:
+        raise errors.E_404_TEXT_NOT_FOUND
+
+    # validate JSON
+    try:
+        location_updates = json.loads(await file.read())
+        if not isinstance(location_updates, list):
+            http_err = errors.update_values(
+                exc=errors.E_422_UPLOAD_INVALID_DATA,
+                values={"errors": "Expected list of location updates"},
+            )
+            raise http_err
+    except Exception:
+        raise errors.E_400_UPLOAD_INVALID_JSON
+
+    # ensure all IDs exist before making changes
+    # (yes, this is expensive, but it happens rarely and it's important that we check
+    # this in advance so we can return an error before saving any data)
+    docs = []
+    for loc in location_updates:
+        try:
+            doc_id = PydanticObjectId(loc["id"])
+        except Exception:
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+        doc = await LocationDocument.get(doc_id)
+        if not doc:
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+        # modify label and aliases according to updates
+        try:
+            if "label" in loc:
+                doc.label = loc["label"]
+            if "aliases" in loc:
+                doc.aliases = loc["aliases"]
+            LocationDocument.model_validate(doc.model_dump())
+        except Exception as e:
+            http_err = errors.update_values(
+                exc=errors.E_422_UPLOAD_INVALID_DATA,
+                values={"errors": e.errors()},
+            )
+            raise http_err
+        docs.append(doc)
+
+    # save modified documents
+    await LocationDocument.replace_many(docs)
 
 
 @router.post(

@@ -89,6 +89,9 @@ class ModelBase(ModelTransformerMixin, BaseModel):
 class DocumentBase(ModelTransformerMixin, Document):
     """Base model for all Tekst ODM models"""
 
+    class Settings:
+        validate_on_save = True
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
 
@@ -114,9 +117,6 @@ class DocumentBase(ModelTransformerMixin, Document):
             if not exclude or field not in exclude:
                 setattr(self, field, getattr(updates_model, field))
         return await self.replace()
-
-    class Settings:
-        pass
 
 
 class ReadBase:

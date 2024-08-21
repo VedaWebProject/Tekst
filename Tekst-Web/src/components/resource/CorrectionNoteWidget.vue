@@ -65,8 +65,7 @@ async function handleModalSubmit(note: string) {
 
   <prompt-modal
     ref="promptModalRef"
-    multiline
-    osk
+    type="textarea-osk"
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon="CorrectionNoteIcon"
     :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"

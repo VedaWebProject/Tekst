@@ -333,16 +333,23 @@ export interface paths {
     /**
      * Download structure template
      * @description Download the structure template for a text to help compose a structure
-     * definition that can later be uploaded to the server
+     * definition (or locations updates if there already is a structure)
+     * that can later be uploaded to the server.
      */
     get: operations['downloadStructureTemplate'];
   };
   '/texts/{id}/structure': {
     /**
      * Import text structure
-     * @description Upload the structure definition for a text to apply as a structure of locations
+     * @description Uploads the structure definition for a text to apply as a structure of locations
      */
     post: operations['importTextStructure'];
+    /**
+     * Update text structure
+     * @description Uploads updated locations data.
+     * Only existing locations (with a correct ID) will be updated.
+     */
+    patch: operations['updateTextStructure'];
   };
   '/texts/{id}/level/{index}': {
     /** Insert level */
@@ -974,6 +981,15 @@ export interface components {
       token: string;
       /** Password */
       password: string;
+    };
+    /** Body_update_text_structure_texts__id__structure_patch */
+    Body_update_text_structure_texts__id__structure_patch: {
+      /**
+       * File
+       * Format: binary
+       * @description JSON file containing the locations to update
+       */
+      file: Blob;
     };
     /** Body_verify_request_token_auth_request_verify_token_post */
     Body_verify_request_token_auth_request_verify_token_post: {
@@ -2431,9 +2447,8 @@ export interface components {
       /**
        * Aliases
        * @description List of aliases for this location
-       * @default []
        */
-      aliases?: string[];
+      aliases?: string[] | null;
     };
     /** LocationData */
     LocationData: {
@@ -2491,9 +2506,8 @@ export interface components {
       /**
        * Aliases
        * @description List of aliases for this location
-       * @default []
        */
-      aliases?: string[];
+      aliases?: string[] | null;
       [key: string]: unknown;
     };
     /** LocationUpdate */
@@ -2514,9 +2528,8 @@ export interface components {
       /**
        * Aliases
        * @description List of aliases for this location
-       * @default []
        */
-      aliases?: string[];
+      aliases?: string[] | null;
     };
     /** MainNavEntryTranslation */
     MainNavEntryTranslation: {
@@ -4650,7 +4663,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T15:10:30.500337
+       * @default 2024-08-21T07:19:49.878888
        */
       contentsChangedAt?: string;
       /**
@@ -4736,7 +4749,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T15:10:30.500337
+       * @default 2024-08-21T07:19:49.878888
        */
       contentsChangedAt?: string;
       /**
@@ -4828,7 +4841,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-16T15:10:30.500337
+       * @default 2024-08-21T07:19:49.878888
        */
       contentsChangedAt?: string;
       /**
@@ -7437,7 +7450,8 @@ export interface operations {
   /**
    * Download structure template
    * @description Download the structure template for a text to help compose a structure
-   * definition that can later be uploaded to the server
+   * definition (or locations updates if there already is a structure)
+   * that can later be uploaded to the server.
    */
   downloadStructureTemplate: {
     parameters: {
@@ -7480,7 +7494,7 @@ export interface operations {
   };
   /**
    * Import text structure
-   * @description Upload the structure definition for a text to apply as a structure of locations
+   * @description Uploads the structure definition for a text to apply as a structure of locations
    */
   importTextStructure: {
     parameters: {
@@ -7530,10 +7544,65 @@ export interface operations {
           'application/json': components['schemas']['TekstErrorModel'];
         };
       };
-      /** @description Validation Error */
+      /** @description Unprocessable Entity */
       422: {
         content: {
-          'application/json': components['schemas']['HTTPValidationError'];
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  /**
+   * Update text structure
+   * @description Uploads updated locations data.
+   * Only existing locations (with a correct ID) will be updated.
+   */
+  updateTextStructure: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_update_text_structure_texts__id__structure_patch'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };

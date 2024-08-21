@@ -147,7 +147,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
 
   <prompt-modal
     ref="promptModalRef"
-    multiline
+    type="textarea"
     action-key="createBookmark"
     :title="$t('browse.bookmarks.commentModalTitle')"
     :icon="BookmarksIcon"

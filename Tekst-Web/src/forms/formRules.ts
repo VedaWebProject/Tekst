@@ -140,6 +140,14 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('models.location.label'), 'blur'),
     minMaxCharsRule(1, 256, 'blur'),
   ],
+  aliases: [
+    {
+      validator: (rule: FormItemRule, value: any) =>
+        value == null || (Array.isArray(value) && value.length <= 16),
+      message: () => $t('forms.rulesFeedback.minMaxItems', { min: 0, max: 16 }),
+      trigger: 'blur',
+    },
+  ],
 };
 
 export const correctionFormRules: Record<string, FormItemRule[]> = {

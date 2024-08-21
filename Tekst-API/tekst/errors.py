@@ -60,7 +60,10 @@ def error_instance(
     )
 
 
-def update_values(exc: TekstHTTPException, values: dict[str, Any]):
+def update_values(
+    exc: TekstHTTPException,
+    values: dict[str, Any],
+) -> TekstHTTPException:
     if "values" in exc.detail.detail:
         exc.detail.detail.values.update(values)
     else:
@@ -236,6 +239,12 @@ E_400_UPLOAD_INVALID_JSON = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="uploadInvalidJson",
     msg="Import data is not valid JSON",
+)
+
+E_422_UPLOAD_INVALID_DATA = error_instance(
+    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    key="uploadInvalidData",
+    msg="Import data does not match schema",
 )
 
 E_400_IMPORT_ID_MISMATCH = error_instance(
