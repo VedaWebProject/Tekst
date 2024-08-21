@@ -154,7 +154,7 @@ function resetForm() {
         />
       </n-form-item>
 
-      <!-- TRANSLATE MAIN NAV BROWSE ENTRY -->
+      <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
       <translation-form-item
         v-model="formModel.navBrowseEntry"
         parent-form-path-prefix="navBrowseEntry"
@@ -164,7 +164,7 @@ function resetForm() {
         :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
       />
 
-      <!-- TRANSLATE MAIN NAV SEARCH ENTRY -->
+      <!-- CUSTOM MAIN NAV SEARCH ENTRY -->
       <translation-form-item
         v-model="formModel.navSearchEntry"
         parent-form-path-prefix="navSearchEntry"
@@ -174,7 +174,7 @@ function resetForm() {
         :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
       />
 
-      <!-- TRANSLATE MAIN NAV INFO ENTRY -->
+      <!-- CUSTOM MAIN NAV INFO ENTRY -->
       <translation-form-item
         v-model="formModel.navInfoEntry"
         parent-form-path-prefix="navInfoEntry"
@@ -182,6 +182,17 @@ function resetForm() {
         :main-form-label="$t('models.platformSettings.navInfoEntry')"
         :translation-form-label="$t('models.platformSettings.navInfoEntry')"
         :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+      />
+
+      <!-- CUSTOM REGISTER FROM INTRO TEXT -->
+      <translation-form-item
+        v-model="formModel.registerIntroText"
+        parent-form-path-prefix="registerIntroText"
+        :loading="loading"
+        :main-form-label="$t('models.platformSettings.registerIntroText')"
+        :translation-form-label="$t('models.platformSettings.registerIntroText')"
+        :translation-form-rule="platformSettingsFormRules.registerIntroTextTranslation"
+        multiline
       />
 
       <!-- DISPLAY OPTIONS -->

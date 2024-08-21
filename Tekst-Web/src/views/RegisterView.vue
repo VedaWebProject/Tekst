@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { $t } from '@/i18n';
 import {
   type FormInst,
@@ -15,12 +15,14 @@ import type { UserCreate } from '@/api';
 import { POST } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { accountFormRules } from '@/forms/formRules';
 import router from '@/router';
 import { UserIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { pickTranslation } from '@/utils';
 
+const state = useStateStore();
 const auth = useAuthStore();
 const { message } = useMessages();
 const { pfData } = usePlatformData();
@@ -39,6 +41,10 @@ const formRef = ref<FormInst | null>(null);
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
+
+const introText = computed(() =>
+  pickTranslation(pfData.value?.state.registerIntroText, state.locale)
+);
 
 const passwordRepeatMatchRule = {
   validator: (rule: FormItemRule, value: string) =>
@@ -124,6 +130,11 @@ onMounted(() => {
       <icon-heading level="1" :icon="UserIcon">
         {{ $t('register.heading') }}
       </icon-heading>
+
+      <p v-if="introText" class="text-small" style="margin-bottom: var(--layout-gap)">
+        {{ introText }}
+      </p>
+
       <n-form
         ref="formRef"
         :model="formModel"

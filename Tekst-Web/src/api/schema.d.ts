@@ -3165,6 +3165,12 @@ export interface components {
        */
       navInfoEntry?: components['schemas']['MainNavEntryTranslation'][];
       /**
+       * Registerintrotext
+       * @description Intro text shown in registration form
+       * @default []
+       */
+      registerIntroText?: components['schemas']['RegisterIntroTextTranslation'][];
+      /**
        * Customfonts
        * @description CSS font family names for use in resources
        * @default []
@@ -3269,6 +3275,12 @@ export interface components {
        * @default []
        */
       navInfoEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /**
+       * Registerintrotext
+       * @description Intro text shown in registration form
+       * @default []
+       */
+      registerIntroText?: components['schemas']['RegisterIntroTextTranslation'][];
       /**
        * Customfonts
        * @description CSS font family names for use in resources
@@ -3417,6 +3429,12 @@ export interface components {
        * @description Delimiter used for single-line display in reduced reading mode
        */
       singleLineDelimiter: string;
+    };
+    /** RegisterIntroTextTranslation */
+    RegisterIntroTextTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
     };
     /** ResourceCategory */
     ResourceCategory: {
@@ -4663,7 +4681,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:19:49.878888
+       * @default 2024-08-21T07:42:41.017385
        */
       contentsChangedAt?: string;
       /**
@@ -4749,7 +4767,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:19:49.878888
+       * @default 2024-08-21T07:42:41.017385
        */
       contentsChangedAt?: string;
       /**
@@ -4841,7 +4859,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:19:49.878888
+       * @default 2024-08-21T07:42:41.017385
        */
       contentsChangedAt?: string;
       /**

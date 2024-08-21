@@ -323,6 +323,7 @@ models:
     navBrowseEntry: Custom label for "Browse" in main navigation
     navSearchEntry: Custom label for "Search" in main navigation
     navInfoEntry: Custom label for "Info" in main navigation
+    registerIntroText: Custom introduction text for register page
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header

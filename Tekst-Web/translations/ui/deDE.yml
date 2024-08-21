@@ -325,6 +325,7 @@ models:
     navBrowseEntry: Eigene Beschriftung für "Lesen" in Hauptnavigation
     navSearchEntry: Eigene Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
+    registerIntroText: Eigener Einführungstext für Registrierungsseite
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile

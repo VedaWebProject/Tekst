@@ -11136,7 +11136,7 @@
           },
           "translation": {
             "type": "string",
-            "maxLength": 16,
+            "maxLength": 42,
             "minLength": 1,
             "title": "Translation"
           }
@@ -12336,6 +12336,16 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
+          "registerIntroText": {
+            "items": {
+              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Registerintrotext",
+            "description": "Intro text shown in registration form",
+            "default": []
+          },
           "customFonts": {
             "items": {
               "type": "string",
@@ -12494,6 +12504,16 @@
             "maxItems": 3,
             "title": "Navinfoentry",
             "description": "Custom label for main navigation info entry",
+            "default": []
+          },
+          "registerIntroText": {
+            "items": {
+              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Registerintrotext",
+            "description": "Intro text shown in registration form",
             "default": []
           },
           "customFonts": {
@@ -12731,6 +12751,25 @@
           "singleLineDelimiter"
         ],
         "title": "ReducedViewConfig"
+      },
+      "RegisterIntroTextTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "RegisterIntroTextTranslation"
       },
       "ResourceCategory": {
         "properties": {
@@ -15208,7 +15247,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:20:59.655300"
+            "default": "2024-08-21T07:42:41.017385"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15340,7 +15379,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:20:59.655300"
+            "default": "2024-08-21T07:42:41.017385"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15520,7 +15559,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:20:59.655300"
+            "default": "2024-08-21T07:42:41.017385"
           },
           "indexCreatedAt": {
             "type": "string",

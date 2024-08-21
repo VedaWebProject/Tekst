@@ -208,6 +208,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   navEntryTranslation: [minMaxCharsRule(1, 42, 'blur')],
+  registerIntroTextTranslation: [minMaxCharsRule(1, 500, 'blur')],
   oskModeKey: [
     requiredStringRule(() => $t('models.platformSettings.oskModeKey'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),

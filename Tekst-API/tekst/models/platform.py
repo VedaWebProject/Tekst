@@ -37,7 +37,18 @@ class MainNavEntryTranslation(TranslationBase):
         str,
         StringConstraints(
             min_length=1,
-            max_length=16,
+            max_length=42,
+            strip_whitespace=True,
+        ),
+    ]
+
+
+class RegisterIntroTextTranslation(TranslationBase):
+    translation: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=500,
             strip_whitespace=True,
         ),
     ]
@@ -122,6 +133,13 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         Translations[MainNavEntryTranslation],
         Field(
             description="Custom label for main navigation info entry",
+        ),
+    ] = []
+
+    register_intro_text: Annotated[
+        Translations[RegisterIntroTextTranslation],
+        Field(
+            description="Intro text shown in registration form",
         ),
     ] = []
 
