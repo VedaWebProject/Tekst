@@ -161,7 +161,12 @@ async def find_users(
     return UsersSearchResult(
         users=(
             await UserDocument.find(*db_query)
-            .sort(+UserDocument.username)
+            .sort(
+                +UserDocument.is_active,
+                +UserDocument.is_verified,
+                -UserDocument.created_at,
+                +UserDocument.name,
+            )
             .skip(pgn.mongo_skip())
             .limit(pgn.mongo_limit())
             .to_list()
@@ -266,7 +271,7 @@ async def find_public_users(
     return PublicUsersSearchResult(
         users=(
             await UserDocument.find(*db_query)
-            .sort(+UserDocument.username)
+            .sort(+UserDocument.name)
             .skip(pgn.mongo_skip())
             .limit(pgn.mongo_limit())
             .to_list()
