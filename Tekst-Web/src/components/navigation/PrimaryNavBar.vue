@@ -104,16 +104,23 @@ const titleLinkTo = computed(() => {
     </n-badge>
   </n-flex>
 
-  <n-flex v-if="!state.smallScreen" justify="space-between" :wrap="false" class="navbar-menu">
+  <n-flex
+    v-if="!state.smallScreen"
+    justify="space-between"
+    align="center"
+    :wrap="false"
+    class="navbar-menu"
+  >
     <navigation-menu :options="mainMenuOptions" />
     <quick-search />
   </n-flex>
 
-  <drawer-menu
-    v-if="state.smallScreen"
-    v-model:show="menuOpen"
-    :show-user-actions-button="showUserActionsButton"
-  />
+  <template v-else>
+    <div class="navbar-menu">
+      <quick-search />
+    </div>
+    <drawer-menu v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
+  </template>
 </template>
 
 <style scoped>
