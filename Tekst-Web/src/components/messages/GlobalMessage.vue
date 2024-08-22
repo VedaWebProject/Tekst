@@ -30,12 +30,7 @@ const themeVars = useThemeVars();
         paddingRight: '36px',
       }"
     >
-      <div
-        :style="{
-          fontSize: 'var(--font-size-small)',
-          margin: '-5px 0', // a dirty, but effective hack
-        }"
-      >
+      <div class="text-small" style="margin: -5px 0">
         <slot></slot>
       </div>
     </n-alert>

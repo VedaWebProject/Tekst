@@ -120,7 +120,7 @@ async function handleSaveClick() {
         type="warning"
         closable
         :title="$t('resources.msgNotYourResourceTitle')"
-        style="margin-bottom: var(--content-gap)"
+        class="mb-md"
       >
         {{ $t('resources.msgNotYourResourceBody') }}
       </n-alert>

@@ -81,7 +81,7 @@ onMounted(() => {
           !browse.reducedView
         "
         align="baseline"
-        style="margin-bottom: var(--content-gap)"
+        class="mb-md"
       >
         <h2
           :class="{

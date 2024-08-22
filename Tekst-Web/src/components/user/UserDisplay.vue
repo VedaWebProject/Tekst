@@ -4,7 +4,7 @@ import type { UserReadPublic } from '@/api';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { AdminIcon } from '@/icons';
-import { NIcon } from 'naive-ui';
+import { NIcon, NFlex } from 'naive-ui';
 
 withDefaults(
   defineProps<{
@@ -30,10 +30,7 @@ const iconSizes = {
 </script>
 
 <template>
-  <div
-    style="display: flex; align-items: center; gap: 0.5rem"
-    :style="size ? `font-size: var(--font-size-${size})` : ''"
-  >
+  <n-flex align="center" :style="size ? `font-size: var(--font-size-${size})` : ''">
     <user-avatar
       v-if="showAvatar"
       :avatar-url="user?.avatarUrl || undefined"
@@ -53,5 +50,5 @@ const iconSizes = {
       />
     </template>
     <span v-else>–</span>
-  </div>
+  </n-flex>
 </template>

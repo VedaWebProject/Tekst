@@ -390,16 +390,13 @@ onMounted(() => {
 
   <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filters -->
-    <n-collapse
-      style="margin-bottom: var(--layout-gap)"
-      @item-header-click="handleFilterCollapseItemClick"
-    >
+    <n-collapse class="mb-lg" @item-header-click="handleFilterCollapseItemClick">
       <n-collapse-item :title="$t('general.filters')" name="filters">
         <n-flex vertical class="gray-box">
           <n-input
             v-model:value="filters.search"
             :placeholder="$t('search.searchAction')"
-            style="margin-bottom: var(--content-gap)"
+            class="mb-md"
             round
           >
             <template #prefix>
@@ -420,7 +417,7 @@ onMounted(() => {
             v-model="filters.hasNoCorrections"
             :label="$t('resources.hasNoCorrections')"
           />
-          <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
+          <n-button class="mt-md" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>
               <n-icon :component="UndoIcon" />
@@ -512,9 +509,9 @@ onMounted(() => {
 }
 
 .pagination-container:first-child {
-  margin-bottom: var(--layout-gap);
+  margin-bottom: var(--gap-lg);
 }
 .pagination-container:last-child {
-  margin-top: var(--layout-gap);
+  margin-top: var(--gap-lg);
 }
 </style>

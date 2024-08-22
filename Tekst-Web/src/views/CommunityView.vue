@@ -65,7 +65,7 @@ function resetPagination() {
     round
     clearable
     :placeholder="$t('search.searchAction')"
-    style="margin-bottom: var(--content-gap)"
+    class="mb-md"
     @update:value="resetPagination"
   >
     <template #prefix>
@@ -92,11 +92,7 @@ function resetPagination() {
       <template v-if="!!total">
         <!-- Pagination -->
         <reuse-template />
-        <n-list
-          style="background-color: transparent; margin: var(--layout-gap) 0"
-          hoverable
-          clickable
-        >
+        <n-list style="background-color: transparent; margin: var(--gap-lg) 0" hoverable clickable>
           <router-link
             v-for="user in users"
             :key="user.id"
@@ -130,9 +126,9 @@ function resetPagination() {
 
 <style scoped>
 .pagination-container:first-child {
-  margin-bottom: var(--layout-gap);
+  margin-bottom: var(--gap-lg);
 }
 .pagination-container:last-child {
-  margin-top: var(--layout-gap);
+  margin-top: var(--gap-lg);
 }
 </style>

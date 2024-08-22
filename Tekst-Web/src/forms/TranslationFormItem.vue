@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Translation, LocaleKey } from '@/api';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
-import { NFormItem, NSelect, NDynamicInput, NInput, type FormItemRule } from 'naive-ui';
+import { NFormItem, NSelect, NDynamicInput, NInput, NFlex, type FormItemRule } from 'naive-ui';
 import { computed } from 'vue';
 import { translationFormRules } from '@/forms/formRules';
 import { useStateStore } from '@/stores';
@@ -63,9 +63,7 @@ const localeOptions = computed(() =>
       "
     >
       <template #default="{ value: translationValue, index: translationIndex }">
-        <div
-          style="display: flex; align-items: flex-start; gap: 12px; flex-grow: 2; flex-wrap: wrap"
-        >
+        <n-flex align="flex-start" wrap style="flex-grow: 2">
           <!-- LOCALE -->
           <n-form-item
             v-if="model"
@@ -102,7 +100,7 @@ const localeOptions = computed(() =>
               :placeholder="translationFormLabel"
             />
           </n-form-item>
-        </div>
+        </n-flex>
       </template>
       <template #action="{ index: actionIndex, create, remove }">
         <dynamic-input-controls

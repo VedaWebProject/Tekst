@@ -182,7 +182,7 @@ watch(
 
   <n-collapse>
     <n-collapse-item :title="$t('search.settings.heading')" name="settings">
-      <div class="gray-box" style="margin-bottom: var(--layout-gap)">
+      <div class="gray-box mb-lg">
         <general-search-settings-form />
       </div>
     </n-collapse-item>
@@ -301,7 +301,7 @@ watch(
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  gap: var(--layout-gap);
+  gap: var(--gap-lg);
 }
 .search-item-action-buttons .action-button-insert:hover {
   color: var(--col-success) !important;

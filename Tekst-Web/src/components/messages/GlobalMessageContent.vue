@@ -4,13 +4,8 @@ import { NCollapse, NCollapseItem } from 'naive-ui';
 
 <template>
   <slot></slot>
-  <n-collapse v-if="$slots.details" style="margin-top: var(--content-gap)">
-    <n-collapse-item
-      :title="$t('general.details')"
-      name="details"
-      class="text-mini"
-      style="margin: 0"
-    >
+  <n-collapse v-if="$slots.details" class="mt-md">
+    <n-collapse-item :title="$t('general.details')" name="details" class="text-mini m-0">
       <pre
         style="
           font-family: monospace;

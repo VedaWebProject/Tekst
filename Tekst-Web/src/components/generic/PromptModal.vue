@@ -104,7 +104,7 @@ function handleInputReturn(e: KeyboardEvent) {
     "
     @after-enter="inputRef?.select()"
   >
-    <n-alert v-if="liveProps.msg" :show-icon="false" style="margin-bottom: var(--layout-gap)">
+    <n-alert v-if="liveProps.msg" :show-icon="false" class="mb-lg">
       <span class="text-medium">{{ liveProps.msg }}</span>
     </n-alert>
     <n-form :model="formModel">

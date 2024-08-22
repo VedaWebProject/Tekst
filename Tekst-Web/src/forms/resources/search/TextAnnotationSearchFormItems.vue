@@ -84,7 +84,7 @@ function getAnnoValueSelectStyle(value?: string) {
             display: flex;
             flex-wrap: wrap;
             flex-grow: 2;
-            gap: var(--content-gap);
+            gap: var(--gap-md);
             align-items: flex-start;
           "
         >

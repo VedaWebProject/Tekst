@@ -86,7 +86,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  padding: var(--content-gap);
+  padding: var(--gap-md);
 }
 .sr-link {
   color: inherit;
@@ -97,7 +97,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
 .sr-header {
   display: flex;
   align-items: center;
-  column-gap: var(--content-gap);
+  column-gap: var(--gap-md);
   row-gap: 0.25rem;
   flex-wrap: wrap;
 }

@@ -135,12 +135,4 @@ whenever(ArrowLeft, () => {
   justify-content: space-between;
   gap: 12px;
 }
-
-.location-select-item {
-  margin-bottom: 0.5rem;
-}
-
-.location-select-item.disabled {
-  opacity: 0.5;
-}
 </style>

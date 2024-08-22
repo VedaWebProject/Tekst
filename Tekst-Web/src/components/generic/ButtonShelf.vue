@@ -21,9 +21,9 @@ const containerStyle = computed<CSSProperties>(() => ({
   display: 'flex',
   justifyContent: 'space-between',
   flexWrap: props.wrap,
-  gap: 'var(--content-gap)',
-  marginTop: props.topGap ? 'var(--layout-gap)' : undefined,
-  marginBottom: props.bottomGap ? 'var(--layout-gap)' : undefined,
+  gap: 'var(--gap-md)',
+  marginTop: props.topGap ? 'var(--gap-lg)' : undefined,
+  marginBottom: props.bottomGap ? 'var(--gap-lg)' : undefined,
 }));
 </script>
 
@@ -44,6 +44,6 @@ const containerStyle = computed<CSSProperties>(() => ({
 <style scoped>
 .sub-group {
   display: flex;
-  gap: var(--content-gap);
+  gap: var(--gap-md);
 }
 </style>

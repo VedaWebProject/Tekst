@@ -24,8 +24,8 @@ const show = defineModel<boolean>('show', { default: false });
 
 const modalStyle = computed<CSSProperties>(() => ({
   maxWidth: '95%',
-  marginTop: 'var(--layout-gap)',
-  marginBottom: 'var(--layout-gap)',
+  marginTop: 'var(--gap-lg)',
+  marginBottom: 'var(--gap-lg)',
   width: {
     narrow: '480px',
     medium: '600px',
@@ -49,7 +49,7 @@ const modalStyle = computed<CSSProperties>(() => ({
   >
     <template #header>
       <slot name="header">
-        <icon-heading v-if="title" :level="headingLevel" :icon="icon" style="margin: 0">
+        <icon-heading v-if="title" :level="headingLevel" :icon="icon" class="m-0">
           {{ title }}
         </icon-heading>
       </slot>

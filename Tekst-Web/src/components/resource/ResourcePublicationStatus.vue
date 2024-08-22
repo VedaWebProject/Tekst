@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
-import { NIcon } from 'naive-ui';
+import { NIcon, NFlex } from 'naive-ui';
 
 import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 
@@ -18,10 +18,7 @@ withDefaults(
 </script>
 
 <template>
-  <div
-    class="resource-publication-status"
-    :style="size ? `font-size: var(--font-size-${size})` : ''"
-  >
+  <n-flex align="center" size="small" :style="size ? `font-size: var(--font-size-${size})` : ''">
     <template v-if="resource.public">
       <n-icon v-if="showIcon" :component="PublicIcon" />
       {{ $t('resources.public') }}
@@ -34,15 +31,5 @@ withDefaults(
       <n-icon v-if="showIcon" :component="PublicOffIcon" />
       {{ $t('resources.notPublic') }}
     </template>
-  </div>
+  </n-flex>
 </template>
-
-<style scoped>
-.resource-publication-status {
-  display: flex;
-  align-items: center;
-}
-.resource-publication-status > .n-icon {
-  margin-right: 0.25rem;
-}
-</style>

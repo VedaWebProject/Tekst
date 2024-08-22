@@ -68,7 +68,7 @@ const fromChildLevel = computed(
     :class="{ reduced: browse.reducedView, empty: !hasContent && !fromChildLevel }"
     :title="contentContainerTitle"
   >
-    <div class="content-header" :class="browse.reducedView ? 'reduced' : ''">
+    <div class="content-header mb-sm" :class="browse.reducedView ? 'reduced' : ''">
       <n-icon v-if="!hasContent && !fromChildLevel" :component="NoContentIcon" />
       <div class="content-header-title-container">
         <div
@@ -139,8 +139,8 @@ const fromChildLevel = computed(
 
 <style scoped>
 .content-container {
-  padding-top: var(--content-gap);
-  padding-bottom: var(--content-gap);
+  padding-top: var(--gap-md);
+  padding-bottom: var(--gap-md);
   position: relative;
   font-size: var(--font-size);
 }
@@ -154,12 +154,12 @@ const fromChildLevel = computed(
 .content-container.reduced:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
-  margin-top: var(--layout-gap);
+  margin-top: var(--gap-lg);
 }
 .content-container.reduced:last-child {
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
-  margin-bottom: var(--layout-gap);
+  margin-bottom: var(--gap-lg);
 }
 .content-container.reduced:not(:first-child) {
   border-top: 1px solid var(--main-bg-color);
@@ -169,14 +169,13 @@ const fromChildLevel = computed(
   background-color: var(--main-bg-color);
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;
-  padding: 12px var(--layout-gap);
+  padding: 12px var(--gap-lg);
 }
 .content-container.empty > .content-header {
   margin-bottom: 0;
   opacity: 0.6;
 }
 .content-header {
-  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
@@ -236,7 +235,7 @@ const fromChildLevel = computed(
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  gap: var(--layout-gap);
+  gap: var(--gap-lg);
 }
 
 .reduced > .content-collapse-btn-wrapper {

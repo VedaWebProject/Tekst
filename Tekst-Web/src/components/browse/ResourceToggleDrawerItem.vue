@@ -23,7 +23,7 @@ const infoTooltip = computed(() =>
 </script>
 
 <template>
-  <div class="item" :class="disabled && 'disabled'" :title="infoTooltip">
+  <n-flex align="center" class="item mb-sm" :class="disabled && 'disabled'" :title="infoTooltip">
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <n-flex align="baseline">
@@ -47,17 +47,10 @@ const infoTooltip = computed(() =>
       />
       <n-icon v-else :component="PublicOffIcon" :title="$t('resources.notPublic')" />
     </div>
-  </div>
+  </n-flex>
 </template>
 
 <style scoped>
-.item {
-  display: flex;
-  align-items: center;
-  gap: var(--layout-gap);
-  margin-bottom: var(--layout-gap);
-}
-
 .item > .item-main {
   min-width: 1px;
   flex-grow: 2;

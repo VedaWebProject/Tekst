@@ -454,7 +454,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         type="warning"
         closable
         :title="$t('resources.msgNotYourResourceTitle')"
-        style="margin-bottom: var(--content-gap)"
+        class="mb-md"
       >
         {{ $t('resources.msgNotYourResourceBody') }}
       </n-alert>
@@ -469,7 +469,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         type="info"
         closable
         :title="$t('contents.msgNoOwnContentTitle')"
-        style="margin-bottom: var(--content-gap)"
+        class="mb-md"
       >
         {{ $t('contents.msgNoOwnContentBody', { originalResourceTitle }) }}
       </n-alert>
@@ -479,7 +479,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         closable
         type="default"
         :title="compareResourceTitle"
-        style="margin-bottom: var(--layout-gap)"
+        class="mb-lg"
         @after-leave="compareResourceId = undefined"
       >
         <template #icon>
@@ -526,11 +526,7 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         </button-shelf>
       </n-alert>
 
-      <n-collapse
-        v-if="resource && !!corrections.length"
-        style="margin-bottom: var(--layout-gap)"
-        class="corrections"
-      >
+      <n-collapse v-if="resource && !!corrections.length" class="corrections mb-lg">
         <n-collapse-item name="corrections">
           <template #header>
             <n-badge :offset="[15, 4]">
@@ -612,11 +608,11 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
         </button-shelf>
       </template>
 
-      <n-flex v-else vertical align="center" style="margin-bottom: var(--layout-gap)">
+      <n-flex v-else vertical align="center" class="mb-lg">
         <huge-labelled-icon
           :message="$t('contents.noContent')"
           :icon="NoContentIcon"
-          style="padding: 0 0 var(--layout-gap) 0"
+          style="padding: 0 0 var(--gap-lg) 0"
         />
         <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
           <template #icon>

@@ -69,13 +69,13 @@ onBeforeUpdate(() => {
 
 <style scoped>
 .audio-content:not(:only-child) {
-  padding: var(--layout-gap) 0;
+  padding: var(--gap-lg) 0;
 }
 .audio-content {
   margin-top: inherit;
 }
 .audio-content:not(:first-child) {
-  padding-top: var(--layout-gap);
+  padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);
 }
 </style>

@@ -197,12 +197,7 @@ function handleWidgetClick() {
       <n-select v-model:value="format" :options="formatOptions" />
     </n-form-item>
 
-    <n-alert
-      type="info"
-      :title="formatInfoTitle"
-      :closable="false"
-      style="margin-bottom: var(--layout-gap)"
-    >
+    <n-alert type="info" :title="formatInfoTitle" :closable="false" class="mb-lg">
       <span class="text-small">{{ formatInfoText }}</span>
     </n-alert>
 
@@ -228,7 +223,7 @@ function handleWidgetClick() {
       type="error"
       :title="$t('general.error')"
       :closable="false"
-      style="margin-top: var(--layout-gap)"
+      class="mt-lg"
     >
       {{ $t('browse.contents.widgets.exportWidget.rangeError') }}
     </n-alert>

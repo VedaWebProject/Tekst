@@ -62,7 +62,7 @@ function handleInsertToken(index: number) {
           style="
             display: flex;
             align-items: flex-start;
-            gap: var(--content-gap);
+            gap: var(--gap-md);
             flex-grow: 2;
             flex-wrap: wrap;
           "
@@ -73,7 +73,7 @@ function handleInsertToken(index: number) {
               flex-basis: 250px;
               display: flex;
               align-items: flex-start;
-              gap: var(--content-gap);
+              gap: var(--gap-md);
               flex-wrap: nowrap;
             "
           >
@@ -122,7 +122,7 @@ function handleInsertToken(index: number) {
                     display: flex;
                     flex-wrap: nowrap;
                     flex-grow: 2;
-                    gap: var(--content-gap);
+                    gap: var(--gap-md);
                     align-items: flex-start;
                   "
                 >

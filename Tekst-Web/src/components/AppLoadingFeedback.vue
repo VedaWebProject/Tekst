@@ -88,7 +88,7 @@ onBeforeMount(() => {
 .global-loader-bottom {
   width: 100%;
   height: 50%;
-  padding-top: var(--layout-gap);
+  padding-top: var(--gap-lg);
   background-color: var(--main-bg-color);
 }
 

@@ -201,7 +201,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
       type="default"
       :show-icon="false"
       :title="$t('general.comment')"
-      style="margin-bottom: var(--layout-gap)"
+      class="mb-lg"
     >
       <div style="white-space: pre-line">
         {{ tokenDetailsComment }}
@@ -236,8 +236,8 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
 }
 
 .content-container:not(:last-child) {
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
+  padding-bottom: var(--gap-lg);
+  margin-bottom: var(--gap-lg);
   border-bottom: 1px solid var(--main-bg-color);
 }
 

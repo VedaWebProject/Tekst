@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { NButton, NBadge, NIcon, useThemeVars } from 'naive-ui';
+import { NButton, NBadge, NIcon, NFlex, useThemeVars } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -39,8 +39,14 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
-  <div ref="affixRef" class="browse-toolbar-container accent-color-bg">
-    <div v-show="!!state.text" class="browse-toolbar">
+  <div ref="affixRef" class="browse-toolbar-container accent-color-bg mb-lg">
+    <n-flex
+      v-show="!!state.text"
+      :wrap="false"
+      justify="space-around"
+      align="center"
+      class="browse-toolbar"
+    >
       <browse-location-controls :button-size="buttonSize" />
 
       <div class="browse-toolbar-middle">
@@ -83,7 +89,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
       </div>
-    </div>
+    </n-flex>
   </div>
 </template>
 
@@ -95,11 +101,10 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   box-shadow: var(--block-box-shadow);
   width: 100%;
   max-width: var(--max-app-width);
-  padding: 12px 0;
+  padding: var(--gap-sm) 0;
   border-radius: var(--border-radius);
   box-shadow: var(--block-box-shadow);
   transition: none;
-  margin-bottom: var(--layout-gap);
 }
 
 .browse-toolbar-container.affixed {
@@ -113,13 +118,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 }
 
 .browse-toolbar {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  align-items: center;
-  gap: 12px;
-  margin: 0 auto;
-  padding: 0 12px;
+  margin: 0 var(--gap-sm);
 }
 
 .browse-toolbar-middle {

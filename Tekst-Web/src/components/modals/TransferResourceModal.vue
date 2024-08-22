@@ -85,12 +85,10 @@ async function handleOkClick() {
     :icon="UserIcon"
     @update:show="(v) => (show = v)"
   >
-    <n-alert type="warning" :title="$t('general.warning')" style="margin-bottom: var(--layout-gap)">
+    <n-alert type="warning" :title="$t('general.warning')" class="mb-lg">
       {{ $t('resources.warnTransfer') }}
     </n-alert>
-    <div style="margin-bottom: var(--layout-gap)">
-      {{ resourceTitle }} – {{ $t('resources.transferAction') }}:
-    </div>
+    <div class="mb-lg">{{ resourceTitle }} – {{ $t('resources.transferAction') }}:</div>
     <n-form
       ref="formRef"
       :model="formModel"

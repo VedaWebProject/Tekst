@@ -8,13 +8,11 @@ defineProps<{
 
 <template>
   <span>
-    <span v-if="user.name" style="margin-right: 0.25rem">{{ user.name }}</span>
-    <span v-if="user.affiliation && user.name" style="margin-right: 0.25rem; font-size: 85%"
-      >({{ user.affiliation }})</span
-    >
+    <span v-if="user.name" class="mr-sm">{{ user.name }}</span>
+    <span v-if="user.affiliation && user.name" class="mr-sm text-small">
+      ({{ user.affiliation }})
+    </span>
     <span v-if="!user.name">@{{ user.username }}</span>
-    <span v-if="user.affiliation && !user.name" style="margin-left: 0.25rem"
-      >({{ user.affiliation }})</span
-    >
+    <span v-if="user.affiliation && !user.name" class="ml-sm"> ({{ user.affiliation }}) </span>
   </span>
 </template>

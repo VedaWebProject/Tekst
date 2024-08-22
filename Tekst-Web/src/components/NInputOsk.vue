@@ -181,7 +181,7 @@ watch(capsLock, () => (shift.value = false));
           >
             <n-drawer-content>
               <template #header>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap-reverse">
+                <n-flex style="flex-wrap: wrap-reverse">
                   <n-input
                     ref="oskInputRef"
                     v-model:value="oskInput"
@@ -197,7 +197,7 @@ watch(capsLock, () => (shift.value = false));
                     :consistent-menu-width="false"
                     @update:value="handleOskModeChange"
                   />
-                </div>
+                </n-flex>
               </template>
 
               <n-flex align="center" justify="center" style="min-height: 100%">

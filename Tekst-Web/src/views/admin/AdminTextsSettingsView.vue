@@ -234,7 +234,7 @@ async function handleDelete() {
           @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
         >
           <template #default="{ index }">
-            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%">
+            <n-flex align="flex-start" style="width: 100%">
               <n-form-item
                 ignore-path-change
                 :label="$t('models.text.resourceCategoryKey')"
@@ -258,7 +258,7 @@ async function handleDelete() {
                 :translation-form-label="$t('models.text.resourceCategoryTranslation')"
                 :translation-form-rule="textFormRules.resourceCategoryTranslation"
               />
-            </div>
+            </n-flex>
           </template>
           <template #action="{ index: indexAction, create, remove, move }">
             <dynamic-input-controls

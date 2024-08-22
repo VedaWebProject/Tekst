@@ -196,8 +196,8 @@ onMounted(() => {
       v-for="(levelLoc, index) in locationSelectModels"
       :key="`${index}_loc_select`"
       :label="state.textLevelLabels[index]"
-      class="location-select-item"
-      :class="levelLoc.disabled && 'disabled'"
+      class="location-select-item mb-sm"
+      :class="{ disabled: levelLoc.disabled }"
     >
       <n-select
         v-model:value="levelLoc.selected"
@@ -217,10 +217,6 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-}
-
-.location-select-item {
-  margin-bottom: 0.5rem;
 }
 
 .location-select-item.disabled {

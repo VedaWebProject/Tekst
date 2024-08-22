@@ -58,7 +58,7 @@ const fontStyle = {
     <div
       v-for="content in contents"
       :key="content.id"
-      class="plain-text-content"
+      class="plain-text-content mt-md"
       :title="content.comment || undefined"
     >
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
@@ -75,9 +75,6 @@ const fontStyle = {
 </template>
 
 <style scoped>
-.plain-text-content {
-  margin-top: var(--content-gap);
-}
 .plain-text-content:first-child {
   margin-top: inherit;
 }

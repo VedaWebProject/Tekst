@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
-import { NIcon } from 'naive-ui';
+import { NIcon, NFlex } from 'naive-ui';
 import { useResourcesStore, useStateStore } from '@/stores';
 
 import { VersionIcon } from '@/icons';
@@ -28,22 +28,14 @@ const originalTitle = pickTranslation(
 </script>
 
 <template>
-  <div
+  <n-flex
     v-if="resource.originalId"
-    class="resource-is-version-info"
+    align="center"
+    size="small"
     :style="size ? `font-size: var(--font-size-${size})` : ''"
   >
     <n-icon v-if="showIcon" :component="VersionIcon" />
     {{ $t('resources.versionOf', { title: originalTitle || $t('resources.unknownOriginal') }) }}
-  </div>
+  </n-flex>
 </template>
-
-<style scoped>
-.resource-is-version-info {
-  display: flex;
-  align-items: center;
-}
-.resource-is-version-info > .n-icon {
-  margin-right: 0.25rem;
-}
-</style>
+>

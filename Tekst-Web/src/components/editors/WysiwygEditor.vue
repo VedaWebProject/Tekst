@@ -419,7 +419,7 @@ onUnmounted(() => {
     <div
       style="
         margin: 0.5rem 0;
-        padding: 4px var(--content-gap);
+        padding: 4px var(--gap-md);
         border: 1px solid var(--text-color-fade);
         border-radius: var(--border-radius);
         max-height: 50vh;

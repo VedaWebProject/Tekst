@@ -39,7 +39,7 @@ const resourceTypes = computed(() => {
     <help-button-widget help-key="adminStatisticsView" />
   </icon-heading>
 
-  <div v-if="stats && !error" style="margin-top: 1rem">
+  <div v-if="stats && !error" class="mt-lg">
     <h2>{{ $t('admin.statistics.globalHeading') }}</h2>
     <div class="content-block">
       <div class="statistics-container">
@@ -69,11 +69,7 @@ const resourceTypes = computed(() => {
       </div>
 
       <h3>{{ $t('admin.statistics.resourceTypesHeading') }}</h3>
-      <div
-        v-for="(count, resourceType) in resourceTypes"
-        :key="resourceType"
-        style="margin: 12px 0"
-      >
+      <div v-for="(count, resourceType) in resourceTypes" :key="resourceType" class="my-sm">
         <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
         <n-progress
           type="line"
@@ -109,7 +105,7 @@ const resourceTypes = computed(() => {
 
         <h4>{{ $t('admin.statistics.resourceTypesHeading') }}</h4>
         <template v-for="(count, resourceType) in text.resourceTypes" :key="resourceType">
-          <div v-if="count" style="margin: 12px 0">
+          <div v-if="count" class="my-sm">
             <div>{{ $t(`resources.types.${resourceType}.label`) }}: {{ count }}</div>
             <n-progress
               type="line"
@@ -137,7 +133,7 @@ const resourceTypes = computed(() => {
 .statistics-container {
   display: flex;
   justify-content: flex-start;
-  gap: var(--layout-gap);
+  gap: var(--gap-lg);
   flex-wrap: wrap;
 }
 

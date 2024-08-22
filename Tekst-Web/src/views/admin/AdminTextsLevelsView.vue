@@ -225,7 +225,7 @@ async function handleModalSubmit() {
       closable
       :title="$t('general.warning')"
       type="warning"
-      style="margin-bottom: 1rem"
+      class="mb-lg"
     >
       {{ editModalWarning }}
     </n-alert>
@@ -268,7 +268,7 @@ async function handleModalSubmit() {
 }
 
 .level:not(:last-child) {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--gap-md);
 }
 
 .level-index {

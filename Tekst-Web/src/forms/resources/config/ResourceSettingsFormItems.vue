@@ -24,6 +24,7 @@ import {
   NFormItem,
   NTag,
   NInput,
+  NFlex,
   type SelectOption,
 } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -215,9 +216,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         @update:value="(v) => handleUpdate('meta', v)"
       >
         <template #default="{ index, value: metaEntryValue }">
-          <div
-            style="display: flex; align-items: flex-start; gap: 12px; flex-grow: 2; flex-wrap: wrap"
-          >
+          <n-flex align="flex-start" wrap style="flex-grow: 2">
             <n-form-item
               ignore-path-change
               :show-label="false"
@@ -248,7 +247,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
                 @keydown.enter.prevent
               />
             </n-form-item>
-          </div>
+          </n-flex>
         </template>
         <template #action="{ index: indexAction, create, remove, move }">
           <dynamic-input-controls
@@ -279,11 +278,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <template v-if="sharingAuthorized && model.sharedRead && model.sharedWrite">
     <n-divider />
     <h3>{{ $t('models.resource.share') }}</h3>
-    <div
-      v-if="public"
-      class="text-tiny"
-      style="color: var(--col-error); margin-bottom: var(--content-gap)"
-    >
+    <div v-if="public" class="text-tiny mb-md" style="color: var(--col-error)">
       {{ $t('resources.settings.onlyForUnpublished') }}
     </div>
     <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">

@@ -127,12 +127,12 @@ const titleLinkTo = computed(() => {
 .navbar {
   max-width: var(--max-app-width);
   margin: 0 auto;
-  padding: var(--layout-gap);
+  padding: var(--gap-lg);
   font-size: var(--font-size-small);
 }
 
 .navbar-smallscreen {
-  padding: var(--layout-gap);
+  padding: var(--gap-lg);
 }
 
 .navbar a:any-link {
@@ -157,8 +157,8 @@ const titleLinkTo = computed(() => {
 
 .navbar-menu {
   max-width: var(--max-app-width);
-  margin: 0 auto var(--content-gap) auto;
-  padding: 0 var(--layout-gap);
+  margin: 0 auto var(--gap-md) auto;
+  padding: 0 var(--gap-lg);
 }
 
 .navbar-menu-divider {

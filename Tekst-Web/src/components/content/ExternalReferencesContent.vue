@@ -27,7 +27,7 @@ const fontStyle: CSSProperties = {
       :vertical="!reduced"
       :wrap="false"
       class="ext-ref-content"
-      :style="!reduced ? { marginTop: 'var(--layout-gap)' } : undefined"
+      :class="{ 'mt-lg': !reduced }"
     >
       <n-flex v-for="(link, index) in content.links" :key="index" vertical size="small">
         <n-flex align="center" :wrap="false">
@@ -55,13 +55,13 @@ const fontStyle: CSSProperties = {
 
 <style scoped>
 .ext-ref-content:not(:only-child) {
-  padding: var(--layout-gap) 0;
+  padding: var(--gap-lg) 0;
 }
 .ext-ref-content {
   margin-top: inherit;
 }
 .ext-ref-content:not(:first-child) {
-  padding-top: var(--layout-gap);
+  padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);
 }
 .ext-ref-description {

@@ -5,6 +5,7 @@ import {
   NIcon,
   NFlex,
   NTree,
+  NTag,
   NAlert,
   useDialog,
   type TreeDropInfo,
@@ -25,6 +26,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import EditLocationModal, {
   type EditLocationModalData,
 } from '@/components/modals/EditLocationModal.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 
 import {
   AddIcon,
@@ -348,17 +350,9 @@ function renderSwitcherIcon() {
 
 function renderLabel({ option }: { option: TreeOption }) {
   const levelLabel = state.textLevelLabels[option.level as number];
-  return h('div', { class: 'entry-label' }, [
+  return h('div', { class: 'entry-label mr-lg' }, [
     h('span', `${levelLabel}: ${option.label}`),
-    (option.aliases as string[])?.map((a) =>
-      h(
-        'span',
-        {
-          class: 'entry-aliases translucent text-tiny',
-        },
-        a
-      )
-    ),
+    (option.aliases as string[])?.map((alias) => h(NTag, { size: 'small' }, alias)),
   ]);
 }
 
@@ -436,66 +430,63 @@ watch(
     {{ $t('admin.text.locations.infoNoLocations') }}
   </n-alert>
 
-  <n-flex
-    justify="space-between"
-    size="large"
-    style="gap: var(--layout-gap); margin-top: var(--layout-gap)"
-  >
+  <n-flex justify="space-between" size="large" class="mt-lg">
     <labelled-switch
       v-if="treeData.length"
       v-model="showWarnings"
       :label="$t('admin.text.locations.checkShowWarnings')"
     />
-    <div style="flex-grow: 2"></div>
-    <n-flex>
-      <n-button
-        type="primary"
-        :title="$t('admin.text.locations.tipBtnAddLocationFirstLevel')"
-        :disabled="loading"
-        @click="handleAddClick(null)"
-      >
-        <template #icon>
-          <n-icon :component="AddIcon" />
-        </template>
-        {{ $t('admin.text.locations.lblBtnAddLocationFirstLevel') }}
-      </n-button>
-      <n-button
-        secondary
-        :title="$t('admin.text.locations.tipBtnDownloadTemplate')"
-        :disabled="loading"
-        :loading="loadingTemplate"
-        @click="handleDownloadTemplateClick()"
-      >
-        <template #icon>
-          <n-icon :component="DownloadIcon" />
-        </template>
-        {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
-      </n-button>
-      <n-button
-        v-if="!treeData.length"
-        secondary
-        :title="$t('admin.text.locations.tipBtnUploadStructure')"
-        :disabled="loading"
-        @click="handleImportClick()"
-      >
-        <template #icon>
-          <n-icon :component="UploadIcon" />
-        </template>
-        {{ $t('admin.text.locations.lblBtnUploadStructure') }}
-      </n-button>
-      <n-button
-        v-else
-        secondary
-        :title="$t('admin.text.locations.tipBtnUploadUpdates')"
-        :disabled="loading"
-        @click="handleUpdateClick()"
-      >
-        <template #icon>
-          <n-icon :component="UploadIcon" />
-        </template>
-        {{ $t('admin.text.locations.lblBtnUploadUpdates') }}
-      </n-button>
-    </n-flex>
+    <button-shelf>
+      <template #start>
+        <n-button
+          type="primary"
+          :title="$t('admin.text.locations.tipBtnAddLocationFirstLevel')"
+          :disabled="loading"
+          @click="handleAddClick(null)"
+        >
+          <template #icon>
+            <n-icon :component="AddIcon" />
+          </template>
+          {{ $t('admin.text.locations.lblBtnAddLocationFirstLevel') }}
+        </n-button>
+        <n-button
+          secondary
+          :title="$t('admin.text.locations.tipBtnDownloadTemplate')"
+          :disabled="loading"
+          :loading="loadingTemplate"
+          @click="handleDownloadTemplateClick()"
+        >
+          <template #icon>
+            <n-icon :component="DownloadIcon" />
+          </template>
+          {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
+        </n-button>
+        <n-button
+          v-if="!treeData.length"
+          secondary
+          :title="$t('admin.text.locations.tipBtnUploadStructure')"
+          :disabled="loading"
+          @click="handleImportClick()"
+        >
+          <template #icon>
+            <n-icon :component="UploadIcon" />
+          </template>
+          {{ $t('admin.text.locations.lblBtnUploadStructure') }}
+        </n-button>
+        <n-button
+          v-else
+          secondary
+          :title="$t('admin.text.locations.tipBtnUploadUpdates')"
+          :disabled="loading"
+          @click="handleUpdateClick()"
+        >
+          <template #icon>
+            <n-icon :component="UploadIcon" />
+          </template>
+          {{ $t('admin.text.locations.lblBtnUploadUpdates') }}
+        </n-button>
+      </template>
+    </button-shelf>
   </n-flex>
 
   <div v-if="treeData.length" class="content-block" style="position: relative">
@@ -539,12 +530,5 @@ watch(
   align-items: center;
   gap: 12px;
   padding: 4px;
-  margin-right: var(--layout-gap);
-}
-
-:deep(.entry-aliases) {
-  padding: 0 4px;
-  background-color: var(--main-bg-color);
-  border-radius: var(--border-radius);
 }
 </style>

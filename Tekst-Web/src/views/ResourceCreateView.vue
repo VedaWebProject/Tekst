@@ -143,7 +143,7 @@ async function handleSaveClick() {
             <n-icon :component="WarningIcon" />
           </template>
           <template #header>
-            <div style="margin-bottom: var(--layout-gap)">
+            <div class="mb-lg">
               {{ $t('resources.create.warnImmutable') }}
             </div>
           </template>

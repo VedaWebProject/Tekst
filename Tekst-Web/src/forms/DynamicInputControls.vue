@@ -47,7 +47,7 @@ const btnProps = computed<ButtonProps>(() => ({
 
 <template>
   <div
-    class="di-ctrl"
+    class="di-ctrl ml-md"
     :class="{
       'di-ctrl-primary': !secondary,
       'di-ctrl-vertical': vertical,
@@ -108,7 +108,6 @@ const btnProps = computed<ButtonProps>(() => ({
   flex-wrap: nowrap;
   align-self: stretch;
   gap: 12px;
-  margin-left: var(--content-gap);
 }
 
 .di-ctrl.di-ctrl-top-offset {

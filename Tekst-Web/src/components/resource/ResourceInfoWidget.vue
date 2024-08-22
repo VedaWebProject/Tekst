@@ -63,7 +63,7 @@ watch(showInfoModal, async (after) => {
       v-if="auth.loggedIn && !!resource.owner"
       :user="resource.owner"
       size="tiny"
-      style="margin-bottom: var(--layout-gap)"
+      class="mb-lg"
     />
 
     <div v-if="auth.loggedIn" class="gray-box">
@@ -100,15 +100,7 @@ watch(showInfoModal, async (after) => {
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </icon-heading>
 
-      <div
-        style="
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          margin-bottom: 0.5rem;
-          gap: 12px;
-        "
-      >
+      <n-flex justify="flex-end" align="center" class="mb-sm">
         <span>
           {{
             $t('browse.contents.widgets.infoWidget.coverageStatement', {
@@ -130,7 +122,7 @@ watch(showInfoModal, async (after) => {
             {{ $t('general.details') }}
           </n-button>
         </template>
-      </div>
+      </n-flex>
       <n-progress
         type="line"
         :percentage="coveragePercent"

@@ -71,7 +71,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                 :title="image.sourceUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="source-link"
+                class="source-link ml-sm"
               >
                 <n-icon :component="LinkIcon" />
               </a>
@@ -85,13 +85,13 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 
 <style scoped>
 .images-content:not(:only-child) {
-  padding: var(--layout-gap) 0;
+  padding: var(--gap-lg) 0;
 }
 .images-content {
   margin-top: inherit;
 }
 .images-content:not(:first-child) {
-  padding-top: var(--layout-gap);
+  padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);
 }
 .image-container {
@@ -109,6 +109,5 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 .caption > .source-link {
   display: inline-block;
   vertical-align: -4px;
-  margin-left: 8px;
 }
 </style>

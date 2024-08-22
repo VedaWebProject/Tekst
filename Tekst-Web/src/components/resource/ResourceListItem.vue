@@ -250,7 +250,7 @@ function handleCorrectionsClick() {
           v-if="targetResource.owner"
           :user="targetResource.owner"
           size="tiny"
-          style="margin-bottom: var(--layout-gap)"
+          class="mb-lg"
         />
         <n-flex vertical>
           <resource-publication-status :resource="targetResource" size="tiny" />

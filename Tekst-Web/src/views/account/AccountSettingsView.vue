@@ -353,7 +353,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           :avatar-url="userDataFormModel.avatarUrl || undefined"
           :size="32"
           :fallback-icon="NoImageIcon"
-          style="margin-left: var(--content-gap)"
+          class="ml-md"
         />
       </n-form-item>
       <!-- BIO -->

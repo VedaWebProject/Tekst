@@ -10,6 +10,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NFlex,
   type FormInst,
   useDialog,
   type InputInst,
@@ -228,7 +229,7 @@ async function handleDeleteClick() {
     <help-button-widget help-key="adminSystemInfoPagesView" />
   </icon-heading>
 
-  <div style="display: flex; gap: var(--layout-gap)">
+  <n-flex :wrap="false">
     <n-select
       v-model:value="selectedSegmentId"
       filterable
@@ -248,7 +249,7 @@ async function handleDeleteClick() {
         <n-icon :component="AddIcon" />
       </template>
     </n-button>
-  </div>
+  </n-flex>
 
   <template v-if="segmentModel">
     <div class="content-block">

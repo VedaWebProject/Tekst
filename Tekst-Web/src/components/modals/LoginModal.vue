@@ -83,7 +83,7 @@ async function handleForgotPasswordClick() {
     @after-enter="emailInputRef?.focus()"
   >
     <div class="form-container">
-      <div v-show="auth.loginModalState.message" class="login-message">
+      <div v-show="auth.loginModalState.message" class="login-message mb-lg">
         {{ auth.loginModalState.message }}
       </div>
       <n-form
@@ -128,8 +128,7 @@ async function handleForgotPasswordClick() {
           text
           :focusable="false"
           :disabled="auth.loginModalState.loading"
-          class="text-tiny"
-          style="margin-bottom: var(--layout-gap)"
+          class="text-tiny mb-lg"
           @click="handleForgotPasswordClick"
         >
           {{ $t('account.forgotPassword.forgotPassword') }}
@@ -158,7 +157,6 @@ async function handleForgotPasswordClick() {
 
 <style scoped>
 .login-message {
-  margin-bottom: 1.5rem;
   text-align: center;
 }
 </style>

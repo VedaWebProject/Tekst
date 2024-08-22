@@ -118,7 +118,7 @@ whenever(ctrlEnter, () => {
     </template>
 
     <template #footer>
-      <n-flex style="margin-top: var(--layout-gap)" :wrap="false">
+      <n-flex class="mt-lg" :wrap="false">
         <n-input
           ref="messageInputRef"
           v-model:value="messageInput"
@@ -146,7 +146,7 @@ whenever(ctrlEnter, () => {
           </template>
         </n-button>
       </n-flex>
-      <div class="messaging-status text-tiny translucent">
+      <div class="messaging-status text-tiny translucent mt-md">
         <template v-if="userMessages.loading || !messagesPollingIsActive">
           {{ $t('general.loading') }}
         </template>
@@ -188,7 +188,6 @@ whenever(ctrlEnter, () => {
 }
 
 #messaging-modal .messaging-status {
-  margin-top: var(--content-gap);
   text-align: center;
 }
 </style>

@@ -17,7 +17,7 @@ const emit = defineEmits(['prevClick', 'nextClick']);
 <template>
   <n-list-item
     v-if="!!otherCount"
-    :style="{ 'padding-left': indent ? 'var(--layout-gap)' : undefined }"
+    :style="{ 'padding-left': indent ? 'var(--gap-lg)' : undefined }"
   >
     <n-thing :content-indented="!smallScreen" description-style="font-size: var(--font-size-tiny)">
       <template #avatar>

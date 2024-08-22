@@ -68,7 +68,7 @@ function gotoUserProfile(e: UIEvent, userId: string) {
 
 <template>
   <n-list-item
-    :style="{ 'padding-left': indent ? 'var(--layout-gap)' : undefined }"
+    :style="{ 'padding-left': indent ? 'var(--gap-lg)' : undefined }"
     @click="handleCorrectionClick(correction)"
   >
     <n-thing

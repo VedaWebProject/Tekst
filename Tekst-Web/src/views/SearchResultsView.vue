@@ -200,7 +200,7 @@ onBeforeMount(() => processQuery());
       display: flex;
       justify-content: space-between;
       align-items: center;
-      column-gap: var(--layout-gap);
+      column-gap: var(--gap-lg);
       flex-wrap: wrap;
     "
     class="text-small translucent"
@@ -250,9 +250,9 @@ onBeforeMount(() => processQuery());
 
 <style scoped>
 .pagination-container:first-child {
-  margin-bottom: var(--layout-gap);
+  margin-bottom: var(--gap-lg);
 }
 .pagination-container:last-child {
-  margin-top: var(--layout-gap);
+  margin-top: var(--gap-lg);
 }
 </style>

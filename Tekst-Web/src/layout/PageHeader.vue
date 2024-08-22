@@ -39,7 +39,7 @@ const themeVars = useThemeVars();
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--layout-gap);
+  padding: 0 var(--gap-lg);
   max-width: var(--max-app-width);
   margin: 0 auto;
   font-size: var(--font-size-large);

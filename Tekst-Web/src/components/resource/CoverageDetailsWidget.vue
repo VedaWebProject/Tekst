@@ -4,6 +4,7 @@ import {
   NIcon,
   NEllipsis,
   NSpin,
+  NFlex,
   NButton,
   NVirtualList,
   type VirtualListInst,
@@ -104,7 +105,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
     @after-leave="handleLeave"
   >
     <template #header>
-      <icon-heading level="2" :icon="CoverageIcon" style="margin: 0" ellipsis>
+      <icon-heading level="2" :icon="CoverageIcon" class="m-0" ellipsis>
         <translation-display v-if="resource.title" :value="resource.title" />:
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </icon-heading>
@@ -117,7 +118,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
     <n-spin v-else-if="loading" :description="$t('general.loading')" class="centered-spinner" />
 
     <template v-else-if="coverageListItems?.length">
-      <div style="display: flex; justify-content: space-between">
+      <n-flex justify="space-between" :wrap="false" class="mb-lg">
         <template v-if="coverageBasic">
           <n-ellipsis>
             {{
@@ -129,7 +130,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
             }}
           </n-ellipsis>
         </template>
-        <button-shelf bottom-gap wrap="nowrap" group-wrap="nowrap">
+        <button-shelf wrap="nowrap" group-wrap="nowrap">
           <n-button secondary size="small" :focusable="false" @click="handleScrollClick('top')">
             <template #icon>
               <n-icon :component="TopIcon" />
@@ -141,7 +142,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
             </template>
           </n-button>
         </button-shelf>
-      </div>
+      </n-flex>
 
       <n-virtual-list
         ref="virtualListInst"
@@ -158,7 +159,7 @@ function handleScrollClick(scrollType: 'up' | 'down' | 'top' | 'bottom') {
               </span>
             </template>
             <template #header-extra>
-              <span style="margin-right: var(--layout-gap)"> ({{ item.extra }}) </span>
+              <span class="mr-lg"> ({{ item.extra }}) </span>
             </template>
             <template #description>
               <div class="cov-block">

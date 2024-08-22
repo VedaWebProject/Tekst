@@ -34,7 +34,7 @@ function toggleCategory(index: number, activate: boolean) {
   <n-drawer v-model:show="show" :width="680" :auto-focus="false" style="max-width: 90%">
     <n-drawer-content closable header-style="border: none">
       <template #header>
-        <icon-heading level="2" :icon="ResourceIcon" style="margin: 0">
+        <icon-heading level="2" :icon="ResourceIcon" class="m-0">
           {{ $t('browse.resourceToggleDrawer.heading') }}
         </icon-heading>
       </template>
@@ -62,7 +62,7 @@ function toggleCategory(index: number, activate: boolean) {
           justify="space-between"
           :style="{ borderBottom: `1px solid ${theme.mainBgColor}` }"
         >
-          <h3 style="margin: 0">
+          <h3 class="m-0">
             {{ category.category.translation }}
           </h3>
           <n-button
@@ -105,6 +105,6 @@ function toggleCategory(index: number, activate: boolean) {
 }
 
 .category-header:first-child {
-  margin-top: var(--content-gap);
+  margin-top: var(--gap-md);
 }
 </style>

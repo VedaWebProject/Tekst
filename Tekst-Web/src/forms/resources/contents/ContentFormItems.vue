@@ -25,7 +25,7 @@ function handleUpdate(field: string, value: any) {
       v-model="model"
       :resource="resource"
     />
-    <n-collapse style="margin-bottom: var(--layout-gap)">
+    <n-collapse class="mb-lg">
       <n-collapse-item :title="$t('resources.types.common.label')" name="common">
         <!-- COMMENT -->
         <n-form-item

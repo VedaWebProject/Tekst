@@ -131,7 +131,7 @@ onMounted(() => {
         {{ $t('register.heading') }}
       </icon-heading>
 
-      <p v-if="introText" class="text-small" style="margin-bottom: var(--layout-gap)">
+      <p v-if="introText" class="text-small mb-lg">
         {{ introText }}
       </p>
 
@@ -205,7 +205,7 @@ onMounted(() => {
         </n-form-item>
       </n-form>
 
-      <n-flex vertical :size="12" style="margin-top: 1rem">
+      <n-flex vertical :size="12" class="mt-lg">
         <n-button
           block
           type="primary"

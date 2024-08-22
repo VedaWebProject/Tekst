@@ -197,16 +197,13 @@ onMounted(() => {
   </define-template>
 
   <!-- Filters -->
-  <n-collapse
-    style="margin-bottom: var(--layout-gap)"
-    @item-header-click="handleFilterCollapseItemClick"
-  >
+  <n-collapse class="mb-lg" @item-header-click="handleFilterCollapseItemClick">
     <n-collapse-item :title="$t('general.filters')" name="filters">
-      <n-flex vertical class="gray-box" style="padding-left: var(--layout-gap)">
+      <n-flex vertical class="gray-box" style="padding-left: var(--gap-lg)">
         <n-input
           v-model:value="filters.q"
           :placeholder="$t('search.searchAction')"
-          style="margin-bottom: var(--content-gap)"
+          class="mb-md"
           round
           clearable
           @update:value="resetPagination"
@@ -247,7 +244,7 @@ onMounted(() => {
           @update:model-value="resetPagination"
         />
 
-        <n-button style="margin-top: var(--content-gap)" @click="filters = initialFilters()">
+        <n-button class="mt-md" @click="filters = initialFilters()">
           {{ $t('general.resetAction') }}
           <template #icon>
             <n-icon :component="UndoIcon" />
@@ -276,7 +273,7 @@ onMounted(() => {
       <template v-if="!!total">
         <!-- Pagination -->
         <reuse-template />
-        <n-list style="background-color: transparent; margin: var(--layout-gap) 0">
+        <n-list class="my-lg" style="background-color: transparent">
           <user-list-item
             v-for="user in users"
             :key="user.id"

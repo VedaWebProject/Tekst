@@ -24,11 +24,7 @@ const theme = useThemeStore();
 </script>
 
 <template>
-  <component
-    :is="`h${level}`"
-    style="display: flex; align-items: center; gap: var(--content-gap)"
-    :style="style"
-  >
+  <component :is="`h${level}`" class="icon-heading" :style="style">
     <n-icon
       v-if="icon"
       :component="icon"
@@ -43,3 +39,11 @@ const theme = useThemeStore();
     </template>
   </component>
 </template>
+
+<style scoped>
+.icon-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+}
+</style>

@@ -96,11 +96,3 @@ async function handleClick() {
     </button-shelf>
   </generic-modal>
 </template>
-
-<style scoped>
-.parent-location {
-  font-size: var(--font-size-large);
-  opacity: 0.6;
-  margin-bottom: 1rem;
-}
-</style>

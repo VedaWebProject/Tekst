@@ -68,7 +68,7 @@ watch(
     </template>
   </n-input>
 
-  <div class="text-small translucent" style="margin-top: var(--layout-gap)">
+  <div class="text-small translucent mt-lg">
     {{ $t('help.msgFoundCount', { count: helpTextsFiltered?.length }) }}
   </div>
 
@@ -78,7 +78,7 @@ watch(
         v-for="[textKey, text] of helpTextsFiltered"
         :key="textKey"
         :title="text.title || textKey"
-        style="margin-bottom: 0.4rem"
+        class="mb-sm"
       >
         <span class="help-topic" @click="(e) => handleClick(e, textKey)">
           {{ text.title || textKey }}
