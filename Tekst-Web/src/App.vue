@@ -34,8 +34,9 @@ const nUiLangLocale = computed(() => getLocaleProfile(state.locale)?.nUiLangLoca
 const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLocale);
 
 // favicon
-const { favicon } = useLogo();
-useFavicon(favicon, { rel: 'icon' });
+const { faviconPng, faviconIco } = useLogo();
+useFavicon(faviconPng, { rel: 'icon' });
+useFavicon(faviconIco, { rel: 'icon' });
 </script>
 
 <template>

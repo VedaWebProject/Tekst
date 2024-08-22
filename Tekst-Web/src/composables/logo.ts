@@ -2,23 +2,51 @@ import { STATIC_PATH } from '@/common';
 import { useFetch, usePreferredDark } from '@vueuse/core';
 import logo from '@/assets/logo.png';
 import logoDarkmode from '@/assets/logo-darkmode.png';
-import { computed, ref } from 'vue';
+import faviconPng from '@/assets/favicon.png';
+import faviconPngDarkmode from '@/assets/favicon-darkmode.png';
+import faviconIco from '@/assets/favicon.ico';
+import faviconIcoDarkmode from '@/assets/favicon-darkmode.ico';
+import { computed, ref, type Ref } from 'vue';
 import { useThemeStore } from '@/stores';
 
-const customLogo = `${STATIC_PATH}/logo.png`;
-const customLogoDark = `${STATIC_PATH}/logo-darkmode.png`;
-const logoLight = ref<string>();
-const logoDark = ref<string>();
+interface LogoImage {
+  url?: string;
+  custom: string;
+  fallback: string;
+}
 
-(async () => {
-  logoLight.value = !(await useFetch(customLogo)).error.value ? customLogo : logo;
-  logoDark.value = !(await useFetch(customLogoDark)).error.value ? customLogoDark : logoDarkmode;
-})();
+// define possible custom images
+const imgs: Ref<{ [key: string]: LogoImage }> = ref({
+  logoPng: { custom: `${STATIC_PATH}/logo.png`, fallback: logo },
+  logoPngDark: { custom: `${STATIC_PATH}/logo-darkmode.png`, fallback: logoDarkmode },
+  favPng: { custom: `${STATIC_PATH}/favicon.png`, fallback: faviconPng },
+  favPngDark: { custom: `${STATIC_PATH}/favicon-darkmode.png`, fallback: faviconPngDarkmode },
+  favIco: { custom: `${STATIC_PATH}/favicon.ico`, fallback: faviconIco },
+  favIcoDark: { custom: `${STATIC_PATH}/favicon-darkmode.ico`, fallback: faviconIcoDarkmode },
+});
+
+// check whether custom images exist and set URLs accordingly
+Object.values(imgs.value).forEach(async (img) => {
+  img.url =
+    (await useFetch(img.custom).head()).statusCode.value === 200 ? img.custom : img.fallback;
+});
 
 export function useLogo() {
   const theme = useThemeStore();
-  const darkPreferred = usePreferredDark();
-  const pageLogo = computed(() => (theme.darkMode ? logoDark.value : logoLight.value));
-  const favicon = computed(() => (darkPreferred.value ? logoDark.value : logoLight.value));
-  return { pageLogo, favicon };
+  const darkPref = usePreferredDark();
+  const pageLogo = computed(() =>
+    theme.darkMode ? imgs.value.logoPngDark.url || imgs.value.logoPng.url : imgs.value.logoPng.url
+  );
+  const faviconPng = computed(() =>
+    darkPref.value
+      ? imgs.value.favPngDark.url ||
+        imgs.value.logoPngDark.url ||
+        imgs.value.favPng.url ||
+        imgs.value.logoPng.url
+      : imgs.value.favPng.url || imgs.value.logoPng.url
+  );
+  const faviconIco = computed(() =>
+    darkPref.value ? imgs.value.favIcoDark.url || imgs.value.favIco.url : imgs.value.favIco.url
+  );
+  return { pageLogo, faviconPng, faviconIco };
 }
