@@ -34,6 +34,7 @@ general:
   not: nicht
   new: New
   in: in
+  with: mit
   system: System
   details: Details
   loading: Lade...
@@ -828,21 +829,20 @@ admin:
       phSelectPage: Seite auswählen
 
 search:
-  heading: Suche
   searchAction: Suchen
   quickSearch:
     title: Schnelle Suche
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
-    optional: optional
+    required: muss zutreffen
   settings:
     heading: Einstellungen
     general:
       heading: '@:general.general'
       strict: berücksichtige Diakritika
     quick:
-      defaultOperator: alle Suchausdrücke müssen Treffer sein
+      defaultOperator: alle Suchausdrücke müssen zutreffen
       texts: Texte
       textsPlaceholder: Alle Texte
   results:
@@ -851,7 +851,6 @@ search:
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: in {ms} Millisekunden
     indexCreationTime: Letztes update der Suchdaten
-    relevance: Relevanz
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
     sortingPresets:
       tooltip: Suchergebnisse sortieren

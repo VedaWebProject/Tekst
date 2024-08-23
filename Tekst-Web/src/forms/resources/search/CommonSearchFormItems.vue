@@ -10,7 +10,7 @@ defineProps<{
 }>();
 
 const comment = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['cmt']>('comment');
-const optional = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['opt']>('optional');
+const required = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['req']>('required');
 </script>
 
 <template>
@@ -25,6 +25,6 @@ const optional = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['opt'
     />
   </n-form-item>
   <n-form-item :show-label="false" :show-feedback="false">
-    <labelled-switch v-model="optional" :label="$t('search.advancedSearch.optional')" />
+    <labelled-switch v-model="required" :label="$t('search.advancedSearch.required')" />
   </n-form-item>
 </template>

@@ -8522,11 +8522,11 @@
       },
       "CommonResourceSearchQueryData": {
         "properties": {
-          "opt": {
+          "req": {
             "type": "boolean",
-            "title": "Opt",
-            "description": "Whether this query matching is optional for the location to be considered a search hit",
-            "default": true
+            "title": "Req",
+            "description": "Whether this query is required to match for the location to be considered a search hit",
+            "default": false
           },
           "res": {
             "type": "string",
@@ -15247,7 +15247,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:42:41.017385"
+            "default": "2024-08-23T08:18:05.239480"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15379,7 +15379,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:42:41.017385"
+            "default": "2024-08-23T08:18:05.239480"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15559,7 +15559,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-21T07:42:41.017385"
+            "default": "2024-08-23T08:18:05.239480"
           },
           "indexCreatedAt": {
             "type": "string",

@@ -2,7 +2,7 @@
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NFlex, NList, NTime, NSpin, NPagination } from 'naive-ui';
+import { NFlex, NList, NSpin, NPagination } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
@@ -14,7 +14,10 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
+import { isOverlayOpen, pickTranslation } from '@/utils';
+import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
+import AdvancedSearchQueryDisplay from '@/components/search/AdvancedSearchQueryDisplay.vue';
+import SearchStatusDisplay from '@/components/search/SearchStatusDisplay.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -39,6 +42,7 @@ const sortingPreset = ref<SortingPreset>();
 const loading = ref(false);
 const searchError = ref(false);
 const resultsData = ref<SearchResults>();
+
 const results = computed<SearchResultProps[]>(() => {
   const resourceTitles = Object.fromEntries(
     resources.all.map((r) => [r.id, pickTranslation(r.title, state.locale)])
@@ -52,7 +56,7 @@ const results = computed<SearchResultProps[]>(() => {
         fullLabel: r.fullLabel,
         textSlug: text?.slug || '',
         textTitle: text?.title || '',
-        textColor: theme.generateAccentColorVariants(text?.accentColor).base,
+        textColor: theme.getAccentColors(text?.id).base,
         level: r.level,
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,
@@ -195,42 +199,22 @@ onBeforeMount(() => processQuery());
     {{ $t('search.results.heading') }}
   </icon-heading>
 
-  <div
-    style="
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      column-gap: var(--gap-lg);
-      flex-wrap: wrap;
-    "
-    class="text-small translucent"
-  >
-    <template v-if="resultsData">
-      <div>
-        {{ resultsData.totalHitsRelation === 'eq' ? '' : '≥' }}
-        {{
-          $t('search.results.count', {
-            count: resultsData.totalHits,
-          })
-        }}
-        {{
-          $t('search.results.took', {
-            ms: resultsData.took,
-          })
-        }}
-      </div>
-      <div v-if="pfData?.state.indicesUpdatedAt">
-        {{ $t('search.results.indexCreationTime') }}:
-        <n-time :time="utcToLocalTime(pfData.state.indicesUpdatedAt)" type="datetime" />
-      </div>
-    </template>
-    <template v-else-if="loading">
-      {{ $t('search.results.searching') }}
-    </template>
-    <template v-else-if="searchError">
-      {{ $t('errors.unexpected') }}
-    </template>
-  </div>
+  <quick-search-query-display v-if="searchReq?.type === 'quick'" :req="searchReq" class="mb-lg" />
+  <advanced-search-query-display
+    v-else-if="searchReq?.type === 'advanced'"
+    :req="searchReq"
+    class="mb-lg"
+  />
+
+  <search-status-display
+    v-if="resultsData"
+    :total-hits="resultsData.totalHits"
+    :total-hits-relation="resultsData.totalHitsRelation"
+    :took="resultsData.took"
+    :indices-updated-at="pfData?.state.indicesUpdatedAt"
+    :loading="loading"
+    :error="searchError"
+  />
 
   <div class="content-block">
     <reuse-template />
@@ -252,6 +236,7 @@ onBeforeMount(() => processQuery());
 .pagination-container:first-child {
   margin-bottom: var(--gap-lg);
 }
+
 .pagination-container:last-child {
   margin-top: var(--gap-lg);
 }

@@ -49,6 +49,10 @@ const { message } = useMessages();
 const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
+const searchHeading = computed(
+  () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search')
+);
+
 const resourceOptions = computed(() => {
   const textIds = [
     ...(state.text?.id ? [state.text?.id] : []),
@@ -100,7 +104,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
-      cmn: { res: resId, opt: true },
+      cmn: { res: resId, req: false },
       rts: { type: resType },
       resource: resources.all.find((r) => r.id === resId),
     };
@@ -113,7 +117,7 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
     resources.ofText[0].id;
   const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
   return {
-    cmn: { res: resource.id, opt: true },
+    cmn: { res: resource.id, req: false },
     rts: { type: resource.resourceType },
     resource: resource,
   };
@@ -176,7 +180,7 @@ watch(
 
 <template>
   <icon-heading level="1" :icon="SearchIcon">
-    {{ $t('search.heading') }}
+    {{ searchHeading }}
     <help-button-widget help-key="searchView" />
   </icon-heading>
 
@@ -235,7 +239,7 @@ watch(
           />
           <common-search-form-items
             v-model:comment="query.cmn.cmt"
-            v-model:optional="query.cmn.opt"
+            v-model:required="query.cmn.req"
             :query-index="queryIndex"
           />
           <div class="search-item-action-buttons">

@@ -69,16 +69,16 @@ async def call_resource_maintenance_hooks(
 
 
 class CommonResourceSearchQueryData(ModelBase):
-    optional: Annotated[
+    required: Annotated[
         bool,
         Field(
-            alias="opt",
+            alias="req",
             description=(
-                "Whether this query matching is optional for the "
+                "Whether this query is required to match for the "
                 "location to be considered a search hit"
             ),
         ),
-    ] = True
+    ] = False
     resource_id: Annotated[
         PydanticObjectId,
         Field(

@@ -24,7 +24,7 @@ import {
   BlockCircleIcon,
   UserPromoteIcon,
   UserDowngradeIcon,
-  StarIcon,
+  AdminIcon,
 } from '@/icons';
 import { renderIcon, utcToLocalTime } from '@/utils';
 
@@ -176,7 +176,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="StarIcon" color="#fff" />
+              <n-icon :component="AdminIcon" color="#fff" />
             </template>
           </n-badge>
         </n-flex>

@@ -6,6 +6,7 @@ import { useStateStore } from '@/stores';
 import { lightTheme, darkTheme } from 'naive-ui';
 import { usePreferredDark } from '@vueuse/core';
 import { defineStore } from 'pinia';
+import { usePlatformData } from '@/composables/platformData';
 
 export declare type ThemeMode = 'light' | 'dark';
 
@@ -59,6 +60,7 @@ _mergeWith(darkOverrides, commonOverrides);
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
+  const { pfData } = usePlatformData();
   const browserDarkThemePreferred = usePreferredDark();
   const darkMode = ref<boolean>(
     (localStorage.getItem('theme') as ThemeMode) === 'dark' ||
@@ -90,10 +92,26 @@ export const useThemeStore = defineStore('theme', () => {
     };
   }
 
+  // all texts access color variants
+  const allAccentColors = computed(() =>
+    Object.fromEntries(
+      pfData.value?.texts.map((t) => [
+        t.id,
+        generateAccentColorVariants(t.accentColor || '#7A7A7A', darkMode.value),
+      ]) || []
+    )
+  );
+
+  function getAccentColors(textId?: string) {
+    return allAccentColors.value[textId || ''] || generateAccentColorVariants('#7A7A7A');
+  }
+
   // current text accent color variants
-  const accentColors = computed(() => {
-    return generateAccentColorVariants(state.text?.accentColor || '#7A7A7A', darkMode.value);
-  });
+  const accentColors = computed(
+    () =>
+      allAccentColors.value[state.text?.id || ''] ||
+      generateAccentColorVariants('#7A7A7A', darkMode.value)
+  );
 
   const overrides = computed(() => {
     const primaryColorHex = accentColors.value.base;
@@ -120,6 +138,7 @@ export const useThemeStore = defineStore('theme', () => {
     mainBgColor,
     contentBgColor,
     generateAccentColorVariants,
+    getAccentColors,
     accentColors,
   };
 });

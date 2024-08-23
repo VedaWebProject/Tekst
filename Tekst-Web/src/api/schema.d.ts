@@ -1205,11 +1205,11 @@ export interface components {
     /** CommonResourceSearchQueryData */
     CommonResourceSearchQueryData: {
       /**
-       * Opt
-       * @description Whether this query matching is optional for the location to be considered a search hit
-       * @default true
+       * Req
+       * @description Whether this query is required to match for the location to be considered a search hit
+       * @default false
        */
-      opt?: boolean;
+      req?: boolean;
       /**
        * Res
        * @description ID of the resource to search in
@@ -4681,7 +4681,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:42:41.017385
+       * @default 2024-08-23T08:18:05.239480
        */
       contentsChangedAt?: string;
       /**
@@ -4767,7 +4767,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:42:41.017385
+       * @default 2024-08-23T08:18:05.239480
        */
       contentsChangedAt?: string;
       /**
@@ -4859,7 +4859,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-21T07:42:41.017385
+       * @default 2024-08-23T08:18:05.239480
        */
       contentsChangedAt?: string;
       /**

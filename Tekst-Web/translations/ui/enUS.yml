@@ -34,6 +34,7 @@ general:
   not: not
   new: New
   in: in
+  with: with
   system: System
   details: Details
   loading: Loading...
@@ -804,21 +805,20 @@ admin:
       phSelectPage: Select page
 
 search:
-  heading: Search
   searchAction: Search
   quickSearch:
     title: Quick Search
     gotoAdvancedSearch: Go to Advanced Search
   advancedSearch:
     msgNoResources: There are no resources associated with this text to search in.
-    optional: optional
+    required: must apply
   settings:
     heading: Settings
     general:
       heading: '@:general.general'
       strict: respect diacritics
     quick:
-      defaultOperator: all search expressions must match
+      defaultOperator: all search terms must match
       texts: Texts
       textsPlaceholder: All texts
   results:
@@ -827,7 +827,6 @@ search:
     count: No results | One result | {count} results
     took: in {ms} milliseconds
     indexCreationTime: Last update of search data
-    relevance: Relevance
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
     sortingPresets:
       tooltip: Sort search results

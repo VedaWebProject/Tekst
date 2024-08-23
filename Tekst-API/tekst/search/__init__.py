@@ -468,10 +468,10 @@ async def search_advanced(
                 query=q,
                 strict=settings_general.strict,
             )
-            if q.common.optional:
-                sub_queries_should.extend(resource_es_queries)
-            else:
+            if q.common.required:
                 sub_queries_must.extend(resource_es_queries)
+            else:
+                sub_queries_should.extend(resource_es_queries)
 
     # compose the overall compound query
     es_query = {

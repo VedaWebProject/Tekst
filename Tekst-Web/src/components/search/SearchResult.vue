@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SearchHit, TextRead } from '@/api';
-import { BookIcon } from '@/icons';
+import { TextsIcon } from '@/icons';
+import { BookIcon, StarHalfIcon, LevelsIcon } from '@/icons';
 import Color from 'color';
 import { NListItem, NTag, NIcon } from 'naive-ui';
 import { computed } from 'vue';
@@ -23,7 +24,7 @@ const props = defineProps<{
 }>();
 export type SearchResultProps = typeof props;
 
-const textTagColor = computed(() => Color(props.textColor).fade(0.6).rgb().string());
+const textTagColor = computed(() => Color(props.textColor).fade(0.8).rgb().string());
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
 );
@@ -55,17 +56,26 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
           </div>
           <div class="sr-header-tags">
             <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
+              <template #icon>
+                <n-icon class="translucent" :component="TextsIcon" />
+              </template>
               {{ textTitle }}
             </n-tag>
             <n-tag size="small" :bordered="false">
+              <template #icon>
+                <n-icon class="translucent" :component="LevelsIcon" />
+              </template>
               {{ levelLabel }}
             </n-tag>
             <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
-              {{ $t('search.results.relevance') }}: {{ scorePercentDisplay }}
+              <template #icon>
+                <n-icon class="translucent" :component="StarHalfIcon" />
+              </template>
+              {{ scorePercentDisplay }}
             </n-tag>
           </div>
         </div>
-        <div class="sr-location text-small translucent ellipsis" :title="fullLabel">
+        <div class="sr-location text-tiny translucent ellipsis" :title="fullLabel">
           <n-icon :component="BookIcon" />
           {{ fullLabel }}
         </div>
