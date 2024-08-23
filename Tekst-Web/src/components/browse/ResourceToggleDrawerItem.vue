@@ -3,7 +3,6 @@ import { computed } from 'vue';
 import { NFlex, NSwitch, NIcon } from 'naive-ui';
 import { $t } from '@/i18n';
 import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
-import { useStateStore } from '@/stores';
 import type { AnyResourceRead, UserRead } from '@/api';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
@@ -16,26 +15,26 @@ const props = defineProps<{
 
 const active = defineModel<boolean>('active');
 
-const state = useStateStore();
 const infoTooltip = computed(() =>
   props.disabled ? $t('browse.locationResourceNoData') : undefined
 );
 </script>
 
 <template>
-  <n-flex align="center" class="item mb-sm" :class="disabled && 'disabled'" :title="infoTooltip">
+  <n-flex
+    align="center"
+    :wrap="false"
+    class="item mb-sm"
+    :class="disabled && 'disabled'"
+    :title="infoTooltip"
+  >
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
-      <n-flex align="baseline">
-        <div class="item-title text-color-accent">
-          <translation-display v-if="resource.title" :value="resource.title" />
-        </div>
-        <div class="item-title-extra">
-          ({{ $t('browse.location.level') }}: {{ state.textLevelLabels[resource.level] }})
-        </div>
-      </n-flex>
+      <div>
+        <translation-display v-if="resource.title" :value="resource.title" />
+      </div>
       <div class="text-mini translucent ellipsis">
-        <metadata-display-minimal :data="resource.meta" :resource-type="resource.resourceType" />
+        <metadata-display-minimal :resource="resource" />
       </div>
     </div>
     <div v-if="user" class="item-extra">
@@ -59,14 +58,6 @@ const infoTooltip = computed(() =>
 .item.disabled > .item-main {
   opacity: 0.5;
   cursor: help;
-}
-
-.item .item-title-extra {
-  opacity: 0.75;
-  font-size: 0.8em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .item-extra {
