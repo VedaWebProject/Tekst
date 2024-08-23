@@ -65,7 +65,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             ignore-path-change
             :label="$t('resources.types.audio.contentFields.sourceUrl')"
             :path="`files[${index}].sourceUrl`"
-            :rule="contentFormRules.audio.optionalUrl"
+            :rule="contentFormRules.common.optionalUrl"
             style="flex-grow: 2"
           >
             <n-input

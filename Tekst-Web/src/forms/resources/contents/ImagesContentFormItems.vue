@@ -65,7 +65,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               ignore-path-change
               :label="$t('resources.types.images.contentFields.thumbUrl')"
               :path="`files[${index}].thumbUrl`"
-              :rule="contentFormRules.images.optionalUrl"
+              :rule="contentFormRules.common.optionalUrl"
             >
               <n-input
                 v-model:value="model.files[index].thumbUrl"
@@ -79,7 +79,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               ignore-path-change
               :label="$t('resources.types.images.contentFields.sourceUrl')"
               :path="`files[${index}].sourceUrl`"
-              :rule="contentFormRules.images.optionalUrl"
+              :rule="contentFormRules.common.optionalUrl"
             >
               <n-input
                 v-model:value="model.files[index].sourceUrl"
