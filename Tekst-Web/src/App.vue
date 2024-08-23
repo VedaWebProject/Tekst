@@ -16,13 +16,12 @@ import {
 import PageHeader from './layout/PageHeader.vue';
 import PageFooter from './layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';
+import { useFavicon } from '@/composables/favicon';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
 import TasksWidget from '@/components/TasksWidget.vue';
-import { useLogo } from '@/composables/logo';
-import { useFavicon } from '@vueuse/core';
 
 const state = useStateStore();
 const theme = useThemeStore();
@@ -34,9 +33,7 @@ const nUiLangLocale = computed(() => getLocaleProfile(state.locale)?.nUiLangLoca
 const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLocale);
 
 // favicon
-const { faviconPng, faviconIco } = useLogo();
-useFavicon(faviconPng, { rel: 'icon' });
-useFavicon(faviconIco, { rel: 'icon' });
+useFavicon();
 </script>
 
 <template>
