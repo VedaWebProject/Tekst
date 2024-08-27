@@ -93,7 +93,12 @@ async function handleSearch(e: UIEvent) {
   }
 
   loading.value = false;
-  quickSearchInputRef.value?.select();
+
+  if (!state.smallScreen) {
+    quickSearchInputRef.value?.select();
+  } else {
+    quickSearchInputRef.value?.blur();
+  }
 }
 
 function handleSelect(value: string, option: SelectOption) {

@@ -23,7 +23,7 @@ const props = defineProps<{
   font?: string;
 }>();
 
-defineExpose({ focus: focusTargetInput, select: selectTargetInput });
+defineExpose({ focus: focusTargetInput, select: selectTargetInput, blur: blurTargetInput });
 
 const model = defineModel<string | null>();
 
@@ -73,6 +73,12 @@ function focusTargetInput() {
 function selectTargetInput() {
   nextTick().then(() => {
     targetInputRef.value?.select();
+  });
+}
+
+function blurTargetInput() {
+  nextTick().then(() => {
+    targetInputRef.value?.blur();
   });
 }
 
