@@ -221,6 +221,10 @@ code {
   margin-left: var(--gap-sm);
 }
 
+.box-shadow {
+  box-shadow: var(--block-box-shadow);
+}
+
 .form-container {
   max-width: 512px;
   margin: 0 auto;

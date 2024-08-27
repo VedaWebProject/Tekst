@@ -220,7 +220,7 @@ watch(capsLock, () => (shift.value = false));
                       :key="groupIndex"
                       justify="center"
                       align="center"
-                      size="small"
+                      :size="[8, 16]"
                     >
                       <template v-for="(key, keyIndex) in group">
                         <n-button
@@ -230,6 +230,8 @@ watch(capsLock, () => (shift.value = false));
                           secondary
                           :size="state.smallScreen ? undefined : 'large'"
                           :style="fontStyle"
+                          style="border: 1px solid #ddd"
+                          class="box-shadow"
                           @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
                         >
                           {{ shiftActive && key.shift ? key.shift : key.char }}
@@ -242,7 +244,7 @@ watch(capsLock, () => (shift.value = false));
                   <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
                     <n-button
                       type="primary"
-                      size="large"
+                      :size="state.smallScreen ? undefined : 'large'"
                       :secondary="!capsLock"
                       :focusable="false"
                       @click="capsLock = !capsLock"
@@ -253,7 +255,7 @@ watch(capsLock, () => (shift.value = false));
                     </n-button>
                     <n-button
                       type="primary"
-                      size="large"
+                      :size="state.smallScreen ? undefined : 'large'"
                       :secondary="!shift"
                       :focusable="false"
                       :disabled="capsLock"
