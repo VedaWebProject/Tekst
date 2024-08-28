@@ -1,0 +1,18 @@
+[
+  [
+    [
+      { "char": "a", "shift": "A" },
+      { "char": "b", "shift": "B" }
+    ],
+    [
+      { "char": "c", "shift": "C" },
+      { "char": "d", "shift": "D" }
+    ]
+  ],
+  [
+    [
+      { "char": "e", "shift": "E" },
+      { "char": "f", "shift": "F" }
+    ]
+  ]
+]
