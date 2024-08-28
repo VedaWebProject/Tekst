@@ -18,7 +18,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 
-from tekst import errors
+from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.logs import log
 from tekst.models.common import Translations
@@ -272,8 +272,51 @@ async def import_text_structure(
         locations = children
 
 
+async def _update_text_structure_task(location_updates: list[dict]) -> None:
+    updated_docs = []
+    last_text_id = None
+    all_locs_same_text = True
+    for loc in location_updates:
+        try:
+            doc_id = PydanticObjectId(loc["id"])
+        except Exception:
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+        doc = await LocationDocument.get(doc_id)
+        if not doc:
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+
+        # check if this location belongs to the same text as the last one
+        all_locs_same_text = all_locs_same_text and (
+            doc.text_id == last_text_id or last_text_id is None
+        )
+        last_text_id = doc.text_id
+        if not all_locs_same_text:
+            raise errors.E_422_UPLOAD_INVALID_DATA
+
+        # modify label and aliases according to updates
+        try:
+            if "label" in loc:
+                doc.label = loc["label"]
+            if "aliases" in loc:
+                doc.aliases = loc["aliases"]
+            LocationDocument.model_validate(doc.model_dump())
+        except Exception as e:
+            http_err = errors.update_values(
+                exc=errors.E_422_UPLOAD_INVALID_DATA,
+                values={"errors": e.errors()},
+            )
+            raise http_err
+        updated_docs.append(doc)
+
+    # save modified documents
+    await LocationDocument.replace_many(updated_docs)
+    # call the text's hook for changed contents
+    await (await TextDocument.get(last_text_id)).contents_changed_hook()
+
+
 @router.patch(
     "/{id}/structure",
+    response_model=tasks.TaskRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -293,7 +336,7 @@ async def update_text_structure(
     file: Annotated[
         UploadFile, File(description="JSON file containing the locations to update")
     ],
-) -> None:
+) -> tasks.TaskDocument:
     """
     Uploads updated locations data.
     Only existing locations (with a correct ID) will be updated.
@@ -310,44 +353,22 @@ async def update_text_structure(
     # validate JSON
     try:
         location_updates = json.loads(await file.read())
-        if not isinstance(location_updates, list):
-            http_err = errors.update_values(
-                exc=errors.E_422_UPLOAD_INVALID_DATA,
-                values={"errors": "Expected list of location updates"},
-            )
-            raise http_err
     except Exception:
         raise errors.E_400_UPLOAD_INVALID_JSON
+    # check if we got a list (at least)
+    if not isinstance(location_updates, list):
+        http_err = errors.update_values(
+            exc=errors.E_422_UPLOAD_INVALID_DATA,
+            values={"errors": "Expected list of location updates"},
+        )
+        raise http_err
 
-    # ensure all IDs exist before making changes
-    # (yes, this is expensive, but it happens rarely and it's important that we check
-    # this in advance so we can return an error before saving any data)
-    docs = []
-    for loc in location_updates:
-        try:
-            doc_id = PydanticObjectId(loc["id"])
-        except Exception:
-            raise errors.E_400_IMPORT_ID_NON_EXISTENT
-        doc = await LocationDocument.get(doc_id)
-        if not doc:
-            raise errors.E_400_IMPORT_ID_NON_EXISTENT
-        # modify label and aliases according to updates
-        try:
-            if "label" in loc:
-                doc.label = loc["label"]
-            if "aliases" in loc:
-                doc.aliases = loc["aliases"]
-            LocationDocument.model_validate(doc.model_dump())
-        except Exception as e:
-            http_err = errors.update_values(
-                exc=errors.E_422_UPLOAD_INVALID_DATA,
-                values={"errors": e.errors()},
-            )
-            raise http_err
-        docs.append(doc)
-
-    # save modified documents
-    await LocationDocument.replace_many(docs)
+    return await tasks.create_task(
+        _update_text_structure_task,
+        tasks.TaskType.STRUCTURE_UPDATE,
+        user_id=su.id,
+        task_kwargs={"location_updates": location_updates},
+    )
 
 
 @router.post(

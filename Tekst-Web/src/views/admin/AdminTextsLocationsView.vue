@@ -40,6 +40,7 @@ import {
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { renderIcon } from '@/utils';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { useTasks } from '@/composables/tasks';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -51,6 +52,7 @@ export interface LocationTreeOption extends TreeOption {
 const state = useStateStore();
 const { message } = useMessages();
 const dialog = useDialog();
+const { addTask, startTasksPolling } = useTasks();
 
 const treeData = ref<LocationTreeOption[]>([]);
 const dragNode = ref<LocationTreeOption | null>(null);
@@ -319,7 +321,7 @@ async function handleUpdateClick() {
   withSelectedFile(async (file: File | null) => {
     if (!file) return;
     loadingUpload.value = true;
-    const { error } = await PATCH('/texts/{id}/structure', {
+    const { error, data } = await PATCH('/texts/{id}/structure', {
       params: { path: { id: state.text?.id || '' } },
       body: { file },
       bodySerializer(body) {
@@ -331,7 +333,9 @@ async function handleUpdateClick() {
       },
     });
     if (!error) {
-      message.success($t('admin.text.locations.updateSuccess'));
+      addTask(data);
+      message.info($t('admin.text.locations.updateInfo'), undefined, 5);
+      startTasksPolling();
     }
     loadingUpload.value = false;
     loadTreeData();

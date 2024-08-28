@@ -4079,7 +4079,8 @@ export interface components {
       | 'resource_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
-      | 'resource_maintenance_hook';
+      | 'resource_maintenance_hook'
+      | 'structure_update';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -4681,7 +4682,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-23T08:18:05.239480
+       * @default 2024-08-28T11:38:40.806162
        */
       contentsChangedAt?: string;
       /**
@@ -4767,7 +4768,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-23T08:18:05.239480
+       * @default 2024-08-28T11:38:40.806162
        */
       contentsChangedAt?: string;
       /**
@@ -4859,7 +4860,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-23T08:18:05.239480
+       * @default 2024-08-28T11:38:40.806162
        */
       contentsChangedAt?: string;
       /**
@@ -7590,7 +7591,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': unknown;
+          'application/json': components['schemas']['TaskRead'];
         };
       };
       /** @description Bad Request */

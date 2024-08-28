@@ -25,6 +25,7 @@ class TaskType(Enum):
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
     RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook"
+    STRUCTURE_UPDATE = "structure_update"
 
 
 _task_type_props = {
@@ -34,6 +35,7 @@ _task_type_props = {
     TaskType.BROADCAST_USER_NTFC: {"locking": False},
     TaskType.BROADCAST_ADMIN_NTFC: {"locking": False},
     TaskType.RESOURCE_MAINTENANCE_HOOK: {"locking": True},
+    TaskType.STRUCTURE_UPDATE: {"locking": True},
 }
 
 

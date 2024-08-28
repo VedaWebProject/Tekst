@@ -81,6 +81,7 @@ errors:
   bookmarkExists: You already have a bookmark for this location.
   uploadInvalidMimeTypeNotJson: Invalid file type. Only JSON files are allowed.
   uploadInvalidJson: The uploaded file is not a valid JSON file.
+  uploadInvalidData: The uploaded data does not follow the required schema.
   importIdMismatch: An ID in the import data does not match the respective ID in the request.
   importIdNonExistent: An ID in the import data could not be found in the database.
   importInvalidContentData: Some contents in the import data don't follow the required schema.
@@ -116,6 +117,7 @@ tasks:
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
     resource_maintenance_hook: Automatic maintenance of resource data
+    structure_update: Update text structure
   results:
     indices_create_update: Search indices created in {took} seconds.
     resource_maintenance_hook: Maintenance took {took} seconds.
@@ -733,7 +735,7 @@ admin:
         heading: Edit Location
         msgSuccess: Location "{label}" saved
       importSuccess: New text structure uploaded and processed successfully
-      updateSuccess: Modified labels and aliases for locations imported successfully
+      updateInfo: Modified labels and aliases for locations are processed in the background. @:general.takeAWhile
   newText:
     heading: New Text
     headerInfoAlert: |

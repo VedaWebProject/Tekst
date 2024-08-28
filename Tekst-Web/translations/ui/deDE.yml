@@ -83,6 +83,7 @@ errors:
   bookmarkExists: Sie haben bereits ein Lesezeichen für diese Belegstelle angelegt.
   uploadInvalidMimeTypeNotJson: Ungültiger Dateityp. Nur JSON-Dateien sind erlaubt.
   uploadInvalidJson: Die hochgeladene JSON-Datei ist ungültig.
+  uploadInvalidData: Die hochgeladenen Daten entsprechen nicht dem erwarteten Schema.
   importIdMismatch: Eine ID in den Importdaten stimmt nicht mit der entsprechenden ID in der Anfrage überein.
   importIdNonExistent: Eine ID in den Importdaten konnte nicht in der Datenbank gefunden werden.
   importInvalidContentData: Einige Inhalte in den Importdaten entsprechen nicht dem erforderlichen Schema.
@@ -119,6 +120,7 @@ tasks:
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     resource_maintenance_hook: Automatische Wartung von Ressourcen-Daten
+    structure_update: Textstruktur aktualisieren
   results:
     indices_create_update: Suchindizes erzeugt in {took} Sekunden.
     resource_maintenance_hook: Die Wartung hat {took} Sekunden gedauert.
@@ -757,7 +759,7 @@ admin:
         heading: Belegstelle bearbeiten
         msgSuccess: Belegstelle "{label}" gespeichert
       importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
-      updateSuccess: Geänderte Beschriftungen und Aliase für Belegstellen erfolgreich importiert
+      updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
   newText:
     heading: Neuer Text
     headerInfoAlert: |
