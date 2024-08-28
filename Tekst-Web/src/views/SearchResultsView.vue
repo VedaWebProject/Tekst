@@ -14,7 +14,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isOverlayOpen, pickTranslation } from '@/utils';
+import { isInputFocused, isOverlayOpen, pickTranslation } from '@/utils';
 import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
 import AdvancedSearchQueryDisplay from '@/components/search/AdvancedSearchQueryDisplay.vue';
 import SearchStatusDisplay from '@/components/search/SearchStatusDisplay.vue';
@@ -156,10 +156,10 @@ function turnPage(direction: 'previous' | 'next') {
 
 // react to keyboard for in-/decreasing page number
 whenever(ArrowRight, () => {
-  !isOverlayOpen() && turnPage('next');
+  !isOverlayOpen() && !isInputFocused() && turnPage('next');
 });
 whenever(ArrowLeft, () => {
-  !isOverlayOpen() && turnPage('previous');
+  !isOverlayOpen() && !isInputFocused() && turnPage('previous');
 });
 
 onBeforeMount(() => processQuery());

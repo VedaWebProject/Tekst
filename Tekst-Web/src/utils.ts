@@ -68,6 +68,12 @@ export function isOverlayOpen() {
   return document.querySelectorAll('.n-modal-body-wrapper, .n-image-preview-overlay').length > 0;
 }
 
+export function isInputFocused() {
+  return (
+    document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA'
+  );
+}
+
 export async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

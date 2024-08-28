@@ -11,7 +11,7 @@ import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
 
 import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
-import { isOverlayOpen } from '@/utils';
+import { isInputFocused, isOverlayOpen } from '@/utils';
 
 withDefaults(
   defineProps<{
@@ -56,10 +56,10 @@ function handleLocationSelect(locationPath: LocationRead[]) {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowRight, () => {
-  !isOverlayOpen() && router.replace(getPrevNextRoute(1));
+  !isOverlayOpen() && !isInputFocused() && router.replace(getPrevNextRoute(1));
 });
 whenever(ArrowLeft, () => {
-  !isOverlayOpen() && router.replace(getPrevNextRoute(-1));
+  !isOverlayOpen() && !isInputFocused() && router.replace(getPrevNextRoute(-1));
 });
 </script>
 
