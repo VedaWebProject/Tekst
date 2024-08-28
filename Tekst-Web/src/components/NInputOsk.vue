@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlatformData } from '@/composables/platformData';
-import { CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
+import { CapsLockIcon, KeyboardIcon, ShiftIcon, BackspaceIcon } from '@/icons';
 import {
   NSpin,
   NFlex,
@@ -18,6 +18,7 @@ import { useOskLayout } from '@/composables/fetchers';
 import type { CSSProperties } from 'vue';
 import { watch } from 'vue';
 import { useStateStore } from '@/stores';
+import { useMagicKeys, whenever } from '@vueuse/core';
 
 const props = defineProps<{
   font?: string;
@@ -32,11 +33,11 @@ const state = useStateStore();
 const slots = useSlots();
 
 const showOsk = ref(false);
-const oskInput = ref<string>('');
+const oskInput = ref<string[]>([]);
 const targetSelectionRange = ref<[number, number]>([0, 0]);
 
 const targetInputRef = ref<InputInst | null>(null);
-const oskInputRef = ref<InputInst | null>(null);
+const oskModeSelectRef = ref<InstanceType<typeof NSelect> | null>(null);
 
 const oskModeOptions = computed(
   () => pfData.value?.state.oskModes?.map((m) => ({ label: m.name, value: m.key })) || []
@@ -97,25 +98,20 @@ function captureTargetSelectionRange() {
 
 function handleOpen() {
   captureTargetSelectionRange();
+  blurTargetInput();
   oskModeKey.value = localStorage.getItem('oskMode') || pfData.value?.state.oskModes?.[0]?.key;
-  oskInput.value = '';
+  oskInput.value = [];
   shift.value = false;
   capsLock.value = false;
-
-  nextTick().then(() => {
-    oskInputRef.value?.focus();
-  });
-
   showOsk.value = true;
 }
 
-function handleSubmit(e: UIEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+function handleSubmit() {
   const preOskValue = model.value?.substring(0, targetSelectionRange.value[0]) || '';
   const postOskValue = model.value?.substring(targetSelectionRange.value[1]) || '';
-  model.value = preOskValue + oskInput.value + postOskValue;
-  const newCaretPos = targetSelectionRange.value[0] + oskInput.value.length;
+  const input = oskInput.value.join('');
+  model.value = preOskValue + input + postOskValue;
+  const newCaretPos = targetSelectionRange.value[0] + input.length;
   showOsk.value = false;
   nextTick().then(() => {
     targetInputRef.value?.focus();
@@ -127,17 +123,8 @@ function handleSubmit(e: UIEvent) {
 }
 
 function handleInput(input: string) {
-  const caretPos =
-    (oskInputRef.value?.inputElRef?.selectionStart ??
-      oskInputRef.value?.textareaElRef?.selectionStart ??
-      oskInput.value?.length) ||
-    0;
-  oskInput.value =
-    oskInput.value?.substring(0, caretPos) + input + oskInput.value?.substring(caretPos);
-  nextTick().then(() => {
-    oskInputRef.value?.focus();
-    oskInputRef.value?.inputElRef?.setSelectionRange(caretPos + 1, caretPos + 1);
-  });
+  oskInput.value.push(input);
+  oskModeSelectRef.value?.blur();
   shift.value = false;
 }
 
@@ -147,6 +134,14 @@ function handleOskModeChange(oskModeKey: string) {
 }
 
 watch(capsLock, () => (shift.value = false));
+
+const { Enter } = useMagicKeys();
+
+whenever(Enter, () => {
+  if (showOsk.value && oskModeSelectRef.value && !oskModeSelectRef.value.focused) {
+    handleSubmit();
+  }
+});
 </script>
 
 <template>
@@ -180,23 +175,43 @@ watch(capsLock, () => (shift.value = false));
           <n-drawer
             v-model:show="showOsk"
             placement="bottom"
-            :auto-focus="true"
+            :auto-focus="false"
             :height="680"
             style="max-height: 90%"
             to="#app-container"
           >
-            <n-drawer-content>
+            <n-drawer-content closable>
               <template #header>
-                <n-flex style="flex-wrap: wrap-reverse">
-                  <n-input
-                    ref="oskInputRef"
-                    v-model:value="oskInput"
-                    :placeholder="$t('osk.inputPlaceholder')"
-                    style="flex-grow: 4; width: 200px"
-                    :input-props="{ style: fontStyle }"
-                    @keydown.enter="handleSubmit"
-                  />
+                <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
+                  <n-flex align="center" :wrap="false" style="flex-grow: 4; width: 200px">
+                    <n-icon :component="KeyboardIcon" size="28" color="var(--accent-color)" />
+                    <div
+                      v-if="!!oskInput.length"
+                      :style="fontStyle"
+                      style="line-height: 1.5"
+                      :class="{ 'text-large': !state.smallScreen, 'text-small': state.smallScreen }"
+                      class="ellipsis"
+                    >
+                      {{ oskInput.join('') }}
+                    </div>
+                    <div v-else class="text-large translucent ellipsis">
+                      {{ $t('osk.inputPlaceholder') }}
+                    </div>
+                    <div style="flex-grow: 2"></div>
+                    <n-button
+                      secondary
+                      type="primary"
+                      :focusable="false"
+                      :disabled="!oskInput.length"
+                      @click="oskInput.pop()"
+                    >
+                      <template #icon>
+                        <n-icon :component="BackspaceIcon" />
+                      </template>
+                    </n-button>
+                  </n-flex>
                   <n-select
+                    ref="oskModeSelectRef"
                     v-model:value="oskModeKey"
                     :options="oskModeOptions"
                     style="flex-grow: 1; width: 200px"
@@ -280,7 +295,12 @@ watch(capsLock, () => (shift.value = false));
               </n-flex>
 
               <template #footer>
-                <button-shelf>
+                <button-shelf style="width: 100%">
+                  <template #start>
+                    <n-button secondary :focusable="false" @click="oskInput = []">
+                      {{ $t('general.resetAction') }}
+                    </n-button>
+                  </template>
                   <n-button secondary :focusable="false" @click="showOsk = false">
                     {{ $t('general.cancelAction') }}
                   </n-button>
@@ -288,7 +308,7 @@ watch(capsLock, () => (shift.value = false));
                     type="primary"
                     :focusable="false"
                     :disabled="loading || error"
-                    @click="handleSubmit"
+                    @click.stop.prevent="handleSubmit"
                   >
                     {{ $t('general.insertAction') }}
                   </n-button>
