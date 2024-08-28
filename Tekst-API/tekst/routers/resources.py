@@ -873,6 +873,10 @@ async def _import_resource_contents_task(
     else:
         created_count = 0
 
+    # call the resource's and text's hooks for changed contents
+    await resource.contents_changed_hook()
+    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+
     return {
         "created": created_count,
         "updated": updated_count,
