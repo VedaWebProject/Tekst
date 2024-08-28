@@ -15250,7 +15250,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-28T11:38:40.806162"
+            "default": "1970-01-02T00:00:00"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15382,7 +15382,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-28T11:38:40.806162"
+            "default": "1970-01-02T00:00:00"
           },
           "indexCreatedAt": {
             "type": "string",
@@ -15562,7 +15562,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of any resource on this text changed",
-            "default": "2024-08-28T11:38:40.806162"
+            "default": "1970-01-02T00:00:00"
           },
           "indexCreatedAt": {
             "type": "string",

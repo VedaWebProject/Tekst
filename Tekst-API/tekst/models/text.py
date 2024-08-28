@@ -182,7 +182,7 @@ class Text(ModelBase, ModelFactoryMixin):
         Field(
             description="The last time contents of any resource on this text changed",
         ),
-    ] = datetime.utcnow()
+    ] = datetime.utcfromtimestamp(86400)
 
     index_created_at: Annotated[
         datetime,
