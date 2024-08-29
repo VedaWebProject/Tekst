@@ -18,8 +18,8 @@ const props = withDefaults(
 
 const state = useStateStore();
 
-const imageHeight = computed(() =>
-  state.smallScreen ? (props.reduced ? '60px' : '80px') : props.reduced ? '60px' : '140px'
+const imageSize = computed(() =>
+  state.smallScreen ? (props.reduced ? '60px' : '80px') : props.reduced ? '60px' : '200px'
 );
 const fontStyle: CSSProperties = {
   fontFamily: props.resource.config?.general?.font || 'Tekst UI Font',
@@ -48,34 +48,43 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
       class="images-content"
     >
       <n-image-group :render-toolbar="renderToolbar">
-        <n-flex :size="reduced ? [20, 10] : [32, 22]">
+        <n-flex :vertical="!reduced">
           <figure
             v-for="(image, index) in content.files"
             :key="index"
             class="image-container"
-            :class="{ 'small-screen': state.smallScreen }"
+            :class="{ reduced }"
           >
-            <n-image
-              lazy
-              :src="image.thumbUrl || image.url"
-              :preview-src="image.url"
-              :alt="image.caption || undefined"
-              :title="image.caption"
-              :height="imageHeight"
-            />
-            <figcaption v-if="!reduced" class="caption" :style="fontStyle">
-              <span class="text-tiny translucent">{{ image.caption }}</span>
-              <a
-                v-if="image.sourceUrl"
-                :href="image.sourceUrl"
-                :title="image.sourceUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="source-link ml-sm"
-              >
-                <n-icon :component="LinkIcon" />
-              </a>
-            </figcaption>
+            <n-flex :wrap="state.smallScreen" :size="[18, 0]">
+              <div>
+                <n-image
+                  lazy
+                  :src="image.thumbUrl || image.url"
+                  :preview-src="image.url"
+                  :alt="image.caption || undefined"
+                  :title="image.caption"
+                  :width="reduced ? undefined : imageSize"
+                  :height="reduced ? imageSize : undefined"
+                >
+                  <template #placeholder>
+                    {{ $t('general.loading') }}
+                  </template>
+                </n-image>
+              </div>
+              <figcaption v-if="!reduced" class="caption" :style="fontStyle">
+                <span class="text-tiny translucent">{{ image.caption }}</span>
+                <a
+                  v-if="image.sourceUrl"
+                  :href="image.sourceUrl"
+                  :title="image.sourceUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="source-link ml-sm"
+                >
+                  <n-icon :component="LinkIcon" />
+                </a>
+              </figcaption>
+            </n-flex>
           </figure>
         </n-flex>
       </n-image-group>
@@ -96,10 +105,14 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 }
 .image-container {
   margin: 0;
-  max-width: 40%;
 }
-.image-container.small-screen {
-  max-width: 100%;
+.image-container:not(:first-child) {
+  padding-top: var(--gap-sm);
+  border-top: 1px solid var(--main-bg-color);
+}
+.image-container.reduced {
+  padding-top: 0;
+  border: none;
 }
 .caption {
   white-space: pre-line;
