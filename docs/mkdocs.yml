@@ -5,9 +5,8 @@ repo_name: VedaWebProject/Tekst
 site_description: A tool for creating open collaborative text research platforms
 
 nav:
-  - Introduction:
-    - index.md
-    - introduction/concepts.md
+  - What is Tekst?: index.md
+  - Concepts: concepts.md
   - Setup:
     - setup/installation.md
     - setup/configuration.md
