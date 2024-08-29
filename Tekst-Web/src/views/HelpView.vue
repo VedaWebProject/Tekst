@@ -73,7 +73,7 @@ watch(
   </div>
 
   <div class="content-block">
-    <ul v-if="helpTextsFiltered" style="list-style-type: circle">
+    <ul v-if="helpTextsFiltered">
       <li
         v-for="[textKey, text] of helpTextsFiltered"
         :key="textKey"
