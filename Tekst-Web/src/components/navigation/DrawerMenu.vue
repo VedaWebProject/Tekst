@@ -14,6 +14,7 @@ import {
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
+import LogoutButton from '@/components/navigation/LogoutButton.vue';
 
 withDefaults(
   defineProps<{
@@ -82,6 +83,7 @@ const allMenuOptions = computed(() => [
           <locale-switcher />
           <help-nav-button @click="() => (show = false)" />
           <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
+          <logout-button v-if="auth.loggedIn" @click="() => (show = false)" />
         </n-flex>
       </template>
       <navigation-menu mode="vertical" :options="allMenuOptions" @select="() => (show = false)" />
