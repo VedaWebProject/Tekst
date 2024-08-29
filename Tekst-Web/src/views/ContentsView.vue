@@ -59,7 +59,8 @@ import {
   SkipNextIcon,
   CorrectionNoteIcon,
 } from '@/icons';
-import { pickTranslation, renderIcon } from '@/utils';
+import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
+import { useMagicKeys, whenever } from '@vueuse/core';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 
@@ -70,6 +71,7 @@ const { message } = useMessages();
 const router = useRouter();
 const route = useRoute();
 const dialog = useDialog();
+const { ArrowLeft, ArrowRight } = useMagicKeys();
 
 const showJumpToModal = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -372,6 +374,14 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
     }
   }
 }
+
+// react to keyboard for in-/decreasing location
+whenever(ArrowLeft, () => {
+  !isOverlayOpen() && !isInputFocused() && navigateContents(-1);
+});
+whenever(ArrowRight, () => {
+  !isOverlayOpen() && !isInputFocused() && navigateContents(1);
+});
 </script>
 
 <template>

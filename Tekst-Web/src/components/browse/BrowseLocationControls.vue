@@ -55,11 +55,11 @@ function handleLocationSelect(locationPath: LocationRead[]) {
 }
 
 // react to keyboard for in-/decreasing location
-whenever(ArrowRight, () => {
-  !isOverlayOpen() && !isInputFocused() && router.replace(getPrevNextRoute(1));
-});
 whenever(ArrowLeft, () => {
   !isOverlayOpen() && !isInputFocused() && router.replace(getPrevNextRoute(-1));
+});
+whenever(ArrowRight, () => {
+  !isOverlayOpen() && !isInputFocused() && router.replace(getPrevNextRoute(1));
 });
 </script>
 
