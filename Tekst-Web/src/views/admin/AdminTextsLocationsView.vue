@@ -355,7 +355,7 @@ function renderSwitcherIcon() {
 function renderLabel({ option }: { option: TreeOption }) {
   const levelLabel = state.textLevelLabels[option.level as number];
   return h('div', { class: 'entry-label mr-lg' }, [
-    h('span', `${levelLabel}: ${option.label}`),
+    h('span', { style: 'white-space: nowrap' }, `${levelLabel}: ${option.label}`),
     (option.aliases as string[])?.map((alias) => h(NTag, { size: 'small' }, alias)),
   ]);
 }
@@ -531,8 +531,10 @@ watch(
 
 :deep(.entry-label) {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  column-gap: 12px;
+  row-gap: 4px;
   padding: 4px;
 }
 </style>
