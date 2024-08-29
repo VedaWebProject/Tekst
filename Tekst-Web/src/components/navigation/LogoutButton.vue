@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
-import { LogOutIcon } from '@/icons';
+import { LogoutIcon } from '@/icons';
 
 const emit = defineEmits(['click']);
 </script>
@@ -21,7 +21,7 @@ const emit = defineEmits(['click']);
     "
   >
     <template #icon>
-      <n-icon :component="LogOutIcon" />
+      <n-icon :component="LogoutIcon" />
     </template>
   </n-button>
 </template>

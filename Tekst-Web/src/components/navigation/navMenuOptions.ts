@@ -32,7 +32,7 @@ import {
   MessageIcon,
   CommunityIcon,
   ResourceIcon,
-  LogOutIcon,
+  LogoutIcon,
 } from '@/icons';
 
 function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {
@@ -186,7 +186,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
           {
             label: renderLink(() => $t('account.logoutBtn'), { name: 'logout' }),
             key: 'logout',
-            icon: (showIcons && renderIcon(LogOutIcon)) || undefined,
+            icon: (showIcons && renderIcon(LogoutIcon)) || undefined,
           },
         ]
       : []),

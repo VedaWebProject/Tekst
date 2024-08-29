@@ -11,8 +11,8 @@ import { type RouteLocationRaw, RouterLink } from 'vue-router';
 import { NBadge, NButton, NIcon, NDropdown, NFlex } from 'naive-ui';
 import { $t } from '@/i18n';
 import {
-  LogInIcon,
-  LogOutIcon,
+  LoginIcon,
+  LogoutIcon,
   UserIcon,
   AdminIcon,
   CommunityIcon,
@@ -98,7 +98,7 @@ const userOptions = computed(() => [
   {
     label: $t('account.logoutBtn'),
     key: 'logout',
-    icon: renderIcon(LogOutIcon),
+    icon: renderIcon(LogoutIcon),
   },
 ]);
 
@@ -176,7 +176,7 @@ function handleUserOptionSelect(key: string) {
     @click="handleLoginClick"
   >
     <template #icon>
-      <n-icon :component="LogInIcon" />
+      <n-icon :component="LoginIcon" />
     </template>
   </n-button>
 </template>

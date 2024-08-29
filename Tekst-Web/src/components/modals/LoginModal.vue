@@ -9,7 +9,7 @@ import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { LogInIcon } from '@/icons';
+import { LoginIcon } from '@/icons';
 
 interface LoginCredentialsModel {
   email: string | null;
@@ -77,7 +77,7 @@ async function handleForgotPasswordClick() {
     v-model:show="auth.loginModalState.show"
     width="narrow"
     :title="$t('account.login.heading')"
-    :icon="LogInIcon"
+    :icon="LoginIcon"
     @close="auth.closeLoginModal(false)"
     @mask-click="auth.closeLoginModal(false)"
     @after-enter="emailInputRef?.focus()"
