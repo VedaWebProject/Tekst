@@ -48,6 +48,7 @@ class Images(ResourceTypeABC):
                         "type": "text",
                     }
                 },
+                "index_prefixes": {},
             },
         }
 

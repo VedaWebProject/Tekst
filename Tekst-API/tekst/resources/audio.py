@@ -44,6 +44,7 @@ class Audio(ResourceTypeABC):
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
+                "index_prefixes": {},
             },
         }
 

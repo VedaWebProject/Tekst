@@ -49,6 +49,7 @@ class PlainText(ResourceTypeABC):
                         "type": "text",
                     }
                 },
+                "index_prefixes": {},
             },
         }
 

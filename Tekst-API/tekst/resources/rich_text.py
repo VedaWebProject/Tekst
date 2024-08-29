@@ -45,6 +45,7 @@ class RichText(ResourceTypeABC):
                         "type": "text",
                     }
                 },
+                "index_prefixes": {},
             },
         }
 
