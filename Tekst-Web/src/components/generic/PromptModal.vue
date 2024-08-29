@@ -82,9 +82,7 @@ function handleSubmit() {
     });
 }
 
-function handleInputReturn(e: KeyboardEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+function handleInputReturn() {
   if (liveProps.value.type === 'input' || liveProps.value.type === 'input-osk') {
     handleSubmit();
   }
