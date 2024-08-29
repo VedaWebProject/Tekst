@@ -12,6 +12,7 @@ import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { GET } from '@/api';
 import { $t } from '@/i18n';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 const emit = defineEmits(['submit']);
 
@@ -166,6 +167,7 @@ function quickSearch(q: string) {
               <n-icon :component="SettingsIcon" />
             </template>
           </n-button>
+          <help-button-widget help-key="quickSearch" />
         </template>
       </n-input-osk>
     </n-popselect>
