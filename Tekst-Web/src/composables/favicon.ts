@@ -23,8 +23,8 @@ export function useFavicon() {
   watch(
     [faviconIco, faviconPng],
     ([nIco, nPng], [oIco, oPng]) => {
-      if (typeof nIco === 'string' && nIco !== oIco) applyIcon(nIco);
-      if (typeof nPng === 'string' && nPng !== oPng) applyIcon(nPng);
+      if (!!nIco && nIco !== oIco) applyIcon(nIco);
+      if (!!nPng && nPng !== oPng) applyIcon(nPng);
     },
     { immediate: true }
   );
