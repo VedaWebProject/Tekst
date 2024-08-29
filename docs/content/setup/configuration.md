@@ -103,6 +103,9 @@ Configuration for the OpenAPI schema URL and API documentation via SwaggerUI and
 | `TEKST_API__LICENSE_URL` | API license URL (String – default: _none_) |
 
 
+## Cross-Origin Resource Sharing (CORS)
+You _should_ handle CORS via your webserver configuration. But if for some reason you nead app-level CORS management, this is where to look.
+
 | Variable | Description |
 | --- | --- |
 | `TEKST_CORS__ENABLE` | Enable CORS header control; only enable this if you don't have a web server / reverse proxy that already handles it! (Boolean – default: `false`) |
@@ -111,6 +114,9 @@ Configuration for the OpenAPI schema URL and API documentation via SwaggerUI and
 | `TEKST_CORS__ALLOW_METHODS` | CORS allow methods (Comma-separated list as string – default: `*`) |
 | `TEKST_CORS__ALLOW_HEADERS` | CORS allow headers (Comma-separated list as string – default: `*`) |
 
+
+## What is left
+All these configuration values – and then some...
 
 | Variable | Description |
 | --- | --- |
