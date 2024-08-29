@@ -11,9 +11,7 @@ const props = defineProps<{
 
 const emits = defineEmits(['deleteThread']);
 
-function handleDeleteClick(e: UIEvent) {
-  e.stopPropagation();
-  e.preventDefault();
+function handleDeleteClick() {
   emits('deleteThread', props.thread.id || 'system');
 }
 </script>
@@ -32,7 +30,7 @@ function handleDeleteClick(e: UIEvent) {
         secondary
         :title="$t('account.messages.deleteThread')"
         :disabled="disableDelete"
-        @click="handleDeleteClick"
+        @click.stop.prevent="handleDeleteClick"
       >
         <template #icon>
           <n-icon :component="DeleteIcon" />

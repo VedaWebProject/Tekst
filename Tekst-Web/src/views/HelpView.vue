@@ -40,8 +40,7 @@ async function requestHelpTexts() {
   loading.value = false;
 }
 
-function handleClick(e: MouseEvent, textKey: string) {
-  e.preventDefault();
+function handleClick(textKey: string) {
   helpTextContent.value = helpTextsFiltered.value?.find((h) => h[0] === textKey)?.[1].content;
   showModal.value = true;
 }
@@ -80,7 +79,7 @@ watch(
         :title="text.title || textKey"
         class="mb-sm"
       >
-        <span class="help-topic" @click="(e) => handleClick(e, textKey)">
+        <span class="help-topic" @click.stop.prevent="handleClick(textKey)">
           {{ text.title || textKey }}
         </span>
       </li>

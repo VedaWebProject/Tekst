@@ -131,9 +131,7 @@ function removeSearchItem(index: number) {
   formModel.value.queries.splice(index, 1);
 }
 
-function handleSearch(e: UIEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+function handleSearch() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
@@ -286,7 +284,11 @@ watch(
   />
 
   <button-shelf v-if="!!resources.all.length" top-gap>
-    <n-button type="primary" :disabled="!formModel.queries.length" @click="handleSearch">
+    <n-button
+      type="primary"
+      :disabled="!formModel.queries.length"
+      @clicks.stop.prevent="handleSearch"
+    >
       {{ $t('search.searchAction') }}
     </n-button>
   </button-shelf>

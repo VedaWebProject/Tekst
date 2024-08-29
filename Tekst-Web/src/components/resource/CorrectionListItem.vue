@@ -37,9 +37,7 @@ function handleCorrectionClick(correction: CorrectionRead) {
   });
 }
 
-async function deleteCorrection(e: UIEvent, correctionId: string) {
-  e.stopPropagation();
-  e.preventDefault();
+async function deleteCorrection(correctionId: string) {
   loading.value = true;
   const { error } = await DELETE('/corrections/{id}', {
     params: { path: { id: correctionId } },
@@ -59,9 +57,7 @@ async function deleteCorrection(e: UIEvent, correctionId: string) {
   loading.value = false;
 }
 
-function gotoUserProfile(e: UIEvent, userId: string) {
-  e.stopPropagation();
-  e.preventDefault();
+function gotoUserProfile(userId: string) {
   router.push({ name: 'user', params: { username: userId } });
 }
 </script>
@@ -90,7 +86,7 @@ function gotoUserProfile(e: UIEvent, userId: string) {
             :disabled="loading"
             :loading="loading"
             :title="$t('models.user.modelLabel')"
-            @click="(e) => gotoUserProfile(e, correction.userId)"
+            @click.stop.prevent="gotoUserProfile(correction.userId)"
           >
             <template #icon>
               <n-icon :component="UserIcon" />
@@ -104,7 +100,7 @@ function gotoUserProfile(e: UIEvent, userId: string) {
             :disabled="loading"
             :loading="loading"
             :title="$t('general.deleteAction')"
-            @click="(e) => deleteCorrection(e, correction.id)"
+            @click.stop.prevent="deleteCorrection(correction.id)"
           >
             <template #icon>
               <n-icon :component="DeleteIcon" />

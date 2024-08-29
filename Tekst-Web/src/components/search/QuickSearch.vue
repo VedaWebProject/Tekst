@@ -28,9 +28,7 @@ const quickSearchInputRef = ref<InputInst | null>(null);
 
 const locationSelectOptions = ref<SelectOption[]>([]);
 
-async function handleSearch(e: UIEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+async function handleSearch() {
   loading.value = true;
   const matchesToShow = 10;
 
@@ -151,7 +149,7 @@ function quickSearch(q: string) {
         :max-length="512"
         :loading="loading"
         @input="showLocationSelect = false"
-        @keydown.enter="handleSearch"
+        @keydown.enter.stop.prevent="handleSearch"
       >
         <template #prefix>
           <n-icon :component="SearchIcon" />

@@ -33,9 +33,7 @@ const currentBookmarks = computed(
 );
 const maxCountReached = computed(() => bookmarks.value.length >= 1000);
 
-async function handleDeleteBookmark(e: MouseEvent, bookmarkId: string) {
-  e.preventDefault();
-  e.stopPropagation();
+async function handleDeleteBookmark(bookmarkId: string) {
   loading.value = true;
   await deleteBookmark(bookmarkId);
   loading.value = false;
@@ -127,7 +125,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
                 :disabled="loading"
                 :loading="loading"
                 :title="$t('general.deleteAction')"
-                @click="(e) => handleDeleteBookmark(e, bookmark.id)"
+                @click.stop.prevent="handleDeleteBookmark(bookmark.id)"
               >
                 <template #icon>
                   <n-icon :component="DeleteIcon" />

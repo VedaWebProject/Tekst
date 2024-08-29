@@ -48,9 +48,7 @@ function open(locationData: EditLocationModalData) {
   show.value = true;
 }
 
-function handleSubmit(e: UIEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+function handleSubmit() {
   locationFormRef.value
     ?.validate(async (validationErrors) => {
       if (!validationErrors) {
@@ -91,7 +89,7 @@ defineExpose({ open });
           v-model:value="data.label"
           type="text"
           :autofocus="true"
-          @keydown.enter="handleSubmit"
+          @keydown.enter.stop.prevent="handleSubmit"
         />
       </n-form-item>
       <n-form-item :label="$t('models.location.aliases')" path="aliases">
@@ -109,7 +107,7 @@ defineExpose({ open });
       <n-button secondary @click="show = false">
         {{ $t('general.cancelAction') }}
       </n-button>
-      <n-button type="primary" :disabled="!data.label" @click="handleSubmit">
+      <n-button type="primary" :disabled="!data.label" @click.stop.prevent="handleSubmit">
         {{ $t('general.saveAction') }}
       </n-button>
     </button-shelf>

@@ -33,9 +33,7 @@ const showWidgetsModal = ref(false);
 const closeModal = () => (showWidgetsModal.value = false);
 const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 
-function handleSmallScreenWidgetsTriggered(e: UIEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+function handleSmallScreenWidgetsTriggered() {
   showWidgetsModal.value = !showWidgetsModal.value;
 }
 </script>
@@ -73,7 +71,7 @@ function handleSmallScreenWidgetsTriggered(e: UIEvent) {
     circle
     :focusable="false"
     :style="{ opacity }"
-    @click="handleSmallScreenWidgetsTriggered"
+    @click.stop.prevent="handleSmallScreenWidgetsTriggered"
   >
     <template #icon>
       <n-icon :component="MoreIcon" />
