@@ -97,7 +97,7 @@ class DevelopmentModeConfig(ConfigSubSection):
     (these values are all used exclusively internally)
     """
 
-    use_xsrf_protection: bool = False
+    use_xsrf_protection: bool = True
     use_db: bool = True
     use_es: bool = True
 
