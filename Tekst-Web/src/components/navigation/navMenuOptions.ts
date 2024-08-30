@@ -217,7 +217,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
           label: state.text?.title || '',
           children: [
             {
-              label: renderLink(() => $t('admin.text.settings.heading'), {
+              label: renderLink(() => $t('general.settings'), {
                 name: 'adminTextsSettings',
                 params: { text: state.text?.slug },
               }),
@@ -262,7 +262,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
       icon: (showIcons && renderIcon(SystemIcon)) || undefined,
       children: [
         {
-          label: renderLink(() => $t('admin.system.platformSettings.heading'), {
+          label: renderLink(() => $t('general.settings'), {
             name: 'adminSystemSettings',
           }),
           key: 'adminSystemSettings',

@@ -40,7 +40,7 @@ function handleClick() {
   <content-container-header-widget
     v-if="show"
     :full="full"
-    :title="$t('browse.contents.widgets.resourceSettings.title')"
+    :title="$t('general.settings')"
     :icon-component="SettingsIcon"
     @click="handleClick"
   />

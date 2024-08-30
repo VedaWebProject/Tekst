@@ -157,7 +157,7 @@ function quickSearch(q: string) {
         <template #suffix>
           <n-button
             text
-            :title="$t('search.settings.heading')"
+            :title="$t('general.settings')"
             :focusable="false"
             @click.stop.prevent="
               () => {
@@ -178,7 +178,7 @@ function quickSearch(q: string) {
 
   <generic-modal
     v-model:show="showSettingsModal"
-    :title="`${$t('search.quickSearch.title')}: ${$t('search.settings.heading')}`"
+    :title="`${$t('search.quickSearch.title')}: ${$t('general.settings')}`"
     :icon="SettingsIcon"
   >
     <quick-search-settings-form />

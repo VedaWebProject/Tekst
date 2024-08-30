@@ -2,6 +2,7 @@ general:
   general: Allgemein
   status: Status
   comment: Kommentar
+  settings: Einstellungen
   tipThemeToggleLight: Zu hellem Farbschema wechseln
   tipThemeToggleDark: Zu dunklem Farbschema wechseln
   yesAction: 'Ja'
@@ -190,8 +191,6 @@ browse:
     widgets:
       contentEdit:
         title: Bearbeiten
-      resourceSettings:
-        title: Einstellungen
       correctionNote:
         title: Korrektur vorschlagen
         info: |
@@ -374,7 +373,6 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
-  settingsAction: Einstellungen
   contentsAction: Inhalte
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
@@ -675,7 +673,6 @@ admin:
   text:
     heading: Text
     settings:
-      heading: Einstellungen
       msgSaved: Text-Einstellungen gespeichert.
       warnDeleteText: |
         Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
@@ -773,7 +770,6 @@ admin:
   system:
     heading: System
     platformSettings:
-      heading: Einstellungen
       headingInfo: Plattform-Informationen
       headingConfig: Allgemeine Konfiguration
       msgSaved: Plattform-Einstellungen gespeichert.
@@ -839,7 +835,6 @@ search:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
     required: muss zutreffen
   settings:
-    heading: Einstellungen
     general:
       heading: '@:general.general'
       strict: berücksichtige Diakritika

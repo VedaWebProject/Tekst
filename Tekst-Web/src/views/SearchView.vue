@@ -183,7 +183,7 @@ watch(
   </icon-heading>
 
   <n-collapse>
-    <n-collapse-item :title="$t('search.settings.heading')" name="settings">
+    <n-collapse-item :title="$t('general.settings')" name="settings">
       <div class="gray-box mb-lg">
         <general-search-settings-form />
       </div>

@@ -187,8 +187,6 @@ browse:
     widgets:
       contentEdit:
         title: Edit
-      resourceSettings:
-        title: Settings
       correctionNote:
         title: Suggest correction
         info: |
@@ -371,7 +369,6 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes
   transferAction: Transfer to user
-  settingsAction: Settings
   contentsAction: Contents
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
@@ -664,7 +661,6 @@ admin:
   text:
     heading: Text
     settings:
-      heading: Settings
       msgSaved: Text settings saved.
       warnDeleteText: |
         Deleting this text ("{title}") will delete all data associated with it,
@@ -749,7 +745,6 @@ admin:
   system:
     heading: System
     platformSettings:
-      heading: Settings
       headingInfo: Platform Information
       headingConfig: General Configuration
       msgSaved: Platform settings saved.
@@ -815,7 +810,6 @@ search:
     msgNoResources: There are no resources associated with this text to search in.
     required: must apply
   settings:
-    heading: Settings
     general:
       heading: '@:general.general'
       strict: respect diacritics

@@ -131,7 +131,7 @@ async function handleDelete() {
 
 <template>
   <icon-heading level="2" :icon="SettingsIcon">
-    {{ $t('admin.text.settings.heading') }}
+    {{ $t('general.settings') }}
     <help-button-widget help-key="adminTextsSettingsView" />
   </icon-heading>
 

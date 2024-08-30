@@ -77,7 +77,7 @@ const actionOptions = computed(() => [
           label: $t('general.editAction'),
           children: [
             {
-              label: $t('resources.settingsAction'),
+              label: $t('general.settings'),
               key: 'settings',
               icon: renderIcon(SettingsIcon),
               action: () => emit('settingsClick', props.targetResource),
