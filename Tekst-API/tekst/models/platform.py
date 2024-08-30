@@ -82,7 +82,7 @@ class OskMode(ModelBase):
 
 
 class PlatformState(ModelBase, ModelFactoryMixin):
-    """Settings defining platform behavior configured by admins"""
+    """Platform state model holding platform settings and state data"""
 
     platform_name: Annotated[
         str,
@@ -210,7 +210,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     available_locales: Annotated[
         list[LocaleKey],
         Field(
-            descriptions="Locales available for use in platform client",
+            description="Locales available for use in platform client",
             max_length=len(get_args(LocaleKey.__value__)),
             min_length=1,
         ),

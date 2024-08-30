@@ -12404,11 +12404,11 @@
             "maxItems": 2,
             "minItems": 1,
             "title": "Availablelocales",
+            "description": "Locales available for use in platform client",
             "default": [
               "deDE",
               "enUS"
-            ],
-            "descriptions": "Locales available for use in platform client"
+            ]
           },
           "oskModes": {
             "items": {
@@ -12574,11 +12574,11 @@
             "maxItems": 2,
             "minItems": 1,
             "title": "Availablelocales",
+            "description": "Locales available for use in platform client",
             "default": [
               "deDE",
               "enUS"
-            ],
-            "descriptions": "Locales available for use in platform client"
+            ]
           },
           "oskModes": {
             "items": {
