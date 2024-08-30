@@ -30,7 +30,9 @@ async def startup_routine(app: FastAPI) -> None:
     if not _cfg.dev_mode or _cfg.dev.use_es:
         await search.init_es_client()
 
-    settings = await get_state() if _cfg.dev.use_db else PlatformState()
+    settings = (
+        await get_state() if not _cfg.dev_mode or _cfg.dev.use_db else PlatformState()
+    )
     customize_openapi(app=app, settings=settings)
 
     if not _cfg.email.smtp_server:

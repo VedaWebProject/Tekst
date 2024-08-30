@@ -42,8 +42,8 @@ def get_db_client(db_uri: str | None = None) -> DatabaseClient:
 
 
 async def get_db_status() -> dict[str, Any] | None:
-    global _db_client
-    return await _db_client.server_info() if _db_client else None
+    db_client = get_db_client()
+    return await db_client.server_info() if db_client else None
 
 
 def get_db(
