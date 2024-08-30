@@ -127,27 +127,27 @@ tasks:
 routes:
   pageTitle:
     home: Home
-    browse: Browse "{text}"
-    search: Search "{text}"
+    browse: '{text}'
+    search: Search
     searchResults: '@:search.results.heading'
     help: Help
     login: Login
     register: '@:register.heading'
-    resources: Resources on "{text}"
+    resources: Resources – {text}
     resourceSettings: '@:resources.settings.heading'
     resourcesCorrections: Correction notes
     user: Profile of {username}
     community: Community
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
-    adminStatistics: '@:admin.heading - Statistics'
-    adminSystemUsers: '@:admin.heading - Users'
-    adminTextsSettings: '@:admin.heading - {text}: General'
-    adminTextsLevels: '@:admin.heading - {text}: Levels'
-    adminTextsLocations: '@:admin.heading - {text}: Locations'
-    adminNewText: '@:admin.heading - New Text'
-    adminSystemSegments: '@:admin.heading - Site Segments'
-    adminSystemInfoPages: '@:admin.heading - Info Pages'
+    adminStatistics: Statistics
+    adminSystemUsers: Users
+    adminTextsSettings: '@:general.settings – {text}'
+    adminTextsLevels: Levels – {text}
+    adminTextsLocations: Locations – {text}
+    adminNewText: New Text
+    adminSystemSegments: Site Segments
+    adminSystemInfoPages: Info Pages
     verify: Verification
     reset: Reset password
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'

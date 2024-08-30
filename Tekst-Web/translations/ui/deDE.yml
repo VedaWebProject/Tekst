@@ -130,27 +130,27 @@ tasks:
 routes:
   pageTitle:
     home: Startseite
-    browse: Lesen in "{text}"
-    search: Suchen in "{text}"
+    browse: '{text}'
+    search: Suche
     searchResults: '@:search.results.heading'
     help: Hilfe
     login: Anmeldung
     register: '@:register.heading'
-    resources: Ressourcen zu "{text}"
+    resources: Ressourcen – {text}
     resourcesCorrections: Korrekturnotizen
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
     community: Gemeinschaft
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
-    adminStatistics: '@:admin.heading - Statistiken'
-    adminSystemUsers: '@:admin.heading - Benutzer'
-    adminTextsSettings: '@:admin.heading - {text}: Allgemein'
-    adminTextsLevels: '@:admin.heading - {text}: Ebenen'
-    adminTextsLocations: '@:admin.heading - {text}: Belegstellen'
-    adminNewText: '@:admin.heading - Neuer Text'
-    adminSystemSegments: '@:admin.heading - Segmente'
-    adminSystemInfoPages: '@:admin.heading - Info-Seiten'
+    adminStatistics: Statistiken
+    adminSystemUsers: Benutzer
+    adminTextsSettings: '@:general.settings – {text}'
+    adminTextsLevels: Ebenen – {text}
+    adminTextsLocations: Belegstellen – {text}
+    adminNewText: Neuer Text
+    adminSystemSegments: Segmente
+    adminSystemInfoPages: Info-Seiten
     verify: Verifizierung
     reset: Passwort zurücksetzen
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
