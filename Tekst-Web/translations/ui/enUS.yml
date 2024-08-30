@@ -2,6 +2,7 @@ general:
   general: General
   status: Status
   comment: Comment
+  settings: Settings
   tipThemeToggleLight: Switch to light mode
   tipThemeToggleDark: Switch to dark mode
   yesAction: 'Yes'
