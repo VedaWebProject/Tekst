@@ -94,7 +94,7 @@ async def update_platform_settings(
             }
         )
     # apply updates
-    return await update_state(**updates.model_dump())
+    return await update_state(**updates.model_dump(exclude_unset=True))
 
 
 @router.get(
