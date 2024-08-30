@@ -9,13 +9,12 @@ import pytest
 from asgi_lifespan import LifespanManager
 from beanie import PydanticObjectId
 from bson import ObjectId, json_util
-from httpx import AsyncClient, Response
+from httpx import ASGITransport, AsyncClient, Response
 from humps import camelize
 from tekst import db, tasks
 from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
-from tekst.db import DatabaseClient
 from tekst.models.user import UserCreate
 
 
@@ -70,20 +69,10 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
     return _get_sample_data
 
 
-# @pytest.fixture(scope="session")
-# def event_loop():
-#     try:
-#         loop = asyncio.get_running_loop()
-#     except RuntimeError:
-#         loop = asyncio.new_event_loop()
-#     yield loop
-#     loop.close()
-
-
 @pytest.fixture(scope="session")
-async def get_db_client_override(config) -> DatabaseClient:
+async def get_db_client_override(config) -> db.DatabaseClient:
     """Dependency override for the database client dependency"""
-    db_client: DatabaseClient = DatabaseClient(config.db.uri)
+    db_client = db.DatabaseClient(config.db.uri)
     yield db_client
     # close db connection
     db_client.close()
@@ -103,7 +92,8 @@ async def test_app(config, get_db_client_override):
 async def test_client(test_app, config) -> AsyncClient:
     """Returns an asynchronous test client for API testing"""
     async with AsyncClient(
-        app=test_app, base_url=f"{config.server_url}{config.api_path}"
+        transport=ASGITransport(app=test_app),
+        base_url=f"{config.server_url}{config.api_path}",
     ) as client:
         # set XSRF header and cookie if server sends XSRF cookie
         resp = await client.get("/")
@@ -126,30 +116,36 @@ async def run_before_and_after_each_test_case(get_db_client_override, config):
         "resources",
         "contents",
         "users",
+        "state",
     ):
         await get_db_client_override[config.db.name][collection].delete_many({})
     ### run test case
     yield  # test case running now
-    ### after test cae
+    ### after test case
     # ...
 
 
 @pytest.fixture
-async def insert_sample_data(config, get_sample_data) -> Callable:
+async def insert_sample_data(
+    config, get_sample_data, get_db_client_override
+) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
     """
 
     async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
-        database = db.get_db(db.get_db_client(), config)
+        database = get_db_client_override[config.db.name]
         ids = dict()
         for collection in collections:
-            result = await database[collection].insert_many(
-                get_sample_data(f"db/{collection}.json")
-            )
+            sample_data = get_sample_data(f"db/{collection}.json")
+            if not sample_data:
+                raise Exception(
+                    f"Could not find sample data for collection '{collection}'"
+                )
+            result = await database[collection].insert_many(sample_data)
             if not result.acknowledged:
-                raise Exception(f"Failed to insert test {collection}")
+                raise Exception(f"Failed to insert into test collection '{collection}'")
             ids[collection] = [str(id_) for id_ in result.inserted_ids]
         return ids
 

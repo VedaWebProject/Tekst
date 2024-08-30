@@ -295,7 +295,7 @@ async def update_resource(
         for user_id in updates.shared_read + updates.shared_write:
             if not await UserDocument.find_one(UserDocument.id == user_id).exists():
                 raise errors.E_400_SHARED_WITH_USER_NON_EXISTENT
-    # update document with reduced updates
+    # update document with constrained updates
     await resource_doc.apply_updates(
         updates,
         exclude={
