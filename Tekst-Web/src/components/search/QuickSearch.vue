@@ -157,15 +157,20 @@ function quickSearch(q: string) {
         <template #suffix>
           <n-button
             text
-            :title="$t('search.quickSearch.title')"
+            :title="$t('search.settings.heading')"
             :focusable="false"
-            @click="showSettingsModal = true"
+            @click.stop.prevent="
+              () => {
+                quickSearchInputRef?.blur();
+                showSettingsModal = true;
+              }
+            "
           >
             <template #icon>
               <n-icon :component="SettingsIcon" />
             </template>
           </n-button>
-          <help-button-widget help-key="quickSearch" />
+          <help-button-widget help-key="quickSearch" @click="quickSearchInputRef?.blur()" />
         </template>
       </n-input-osk>
     </n-popselect>

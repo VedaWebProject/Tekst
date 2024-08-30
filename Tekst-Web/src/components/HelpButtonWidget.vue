@@ -21,6 +21,8 @@ const props = withDefaults(
   }
 );
 
+const emit = defineEmits(['click']);
+
 const { getHelpText } = useHelp();
 const showModal = ref(false);
 const loading = ref(false);
@@ -48,6 +50,7 @@ async function handleClose() {
 }
 
 async function handleHelpButtonClick() {
+  emit('click');
   loadHelp();
   showModal.value = true;
 }
@@ -62,7 +65,7 @@ async function handleHelpButtonClick() {
     :title="$t('help.tipHelpButton')"
     :focusable="false"
     :style="buttonStyle"
-    @click="handleHelpButtonClick"
+    @click.stop.prevent="handleHelpButtonClick"
   >
     <template #icon>
       <n-icon :component="QuestionMarkIcon" />

@@ -833,7 +833,7 @@ admin:
 search:
   searchAction: Suchen
   quickSearch:
-    title: Schnelle Suche
+    title: Schnellsuche
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
