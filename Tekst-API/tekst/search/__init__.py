@@ -121,12 +121,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
 
     for text in await TextDocument.find_all().to_list():
         # get names of existing indices for this text
-        old_txt_idxs = [
-            idx
-            for idx in client.indices.get(
-                index=f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_*"
-            )
-        ]
+        old_txt_idxs = [idx for idx in old_idxs if str(text.id) in idx]
 
         # check if indexing is necessary and if not, remember the index that's still
         # in use for this text, then continue with the next text
@@ -136,7 +131,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
         ):
             # indexing is NOT necessary
             if force:
-                log.debug(f"Indexing will be forced for text '{text.title}'.")
+                log.debug(f"Index for '{text.title}' is up to date. Forcing re-index.")
             else:
                 log.debug(f"Indexing is not necessary for text '{text.title}'.")
                 utd_idxs.extend(old_txt_idxs)
