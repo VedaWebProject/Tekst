@@ -34,13 +34,15 @@ Please see the [contributing guidelines](CONTRIBUTING.md).
 
 ## Development
 
+### Projects and technologies
+
 This is a monorepo containing the codebases of the following parts of the Tekst platform:
 
-| Directory | Description | Technologies |
-| --- | --- | --- |
-| [Tekst-API](Tekst-API) | API server project | [Python](https://github.com/python/cpython), [Pydantic](https://github.com/pydantic/pydantic), [FastAPI](https://github.com/tiangolo/fastapi), [FastAPI-Users](https://github.com/fastapi-users/fastapi-users), [Beanie](https://github.com/BeanieODM/beanie), [MongoDB](https://github.com/mongodb/mongo), [Elasticsearch](https://github.com/elastic/elasticsearch), ... |
-| [Tekst-Web](Tekst-Web) | Web client project | [TypeScript](https://github.com/microsoft/TypeScript), [Vue.js 3](https://github.com/vuejs/core), [Pinia](https://github.com/vuejs/pinia), [Naive UI](https://github.com/tusen-ai/naive-ui), [Vue I18n](https://github.com/intlify/vue-i18n), [OpenAPI-TypeScript & OpenAPI-Fetch](https://github.com/openapi-ts/openapi-typescript), ... |
-| [Tekst-Util](Tekst-Util) | API maintenance utility script | [Bash](https://www.gnu.org/software/bash/), [Bashly](https://github.com/DannyBen/bashly) |
-| [docs](docs) | Documentation and user manual, to be found [here](https://vedawebproject.github.io/Tekst) | [MkDocs](https://github.com/mkdocs/mkdocs), [Material for MkDocs](https://github.com/squidfunk/mkdocs-material), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions) |
+| Directory | Technologies |
+| --- | --- |
+| [`Tekst-API/`](Tekst-API) (server) | [Python](https://github.com/python/cpython), [Pydantic](https://github.com/pydantic/pydantic), [FastAPI](https://github.com/tiangolo/fastapi), [FastAPI-Users](https://github.com/fastapi-users/fastapi-users), [Beanie](https://github.com/BeanieODM/beanie), [MongoDB](https://github.com/mongodb/mongo), [Elasticsearch](https://github.com/elastic/elasticsearch), ... |
+| [`Tekst-Web/`](Tekst-Web) (client) | [TypeScript](https://github.com/microsoft/TypeScript), [Vue.js 3](https://github.com/vuejs/core), [Pinia](https://github.com/vuejs/pinia), [Naive UI](https://github.com/tusen-ai/naive-ui), [Vue I18n](https://github.com/intlify/vue-i18n), [OpenAPI-TypeScript & OpenAPI-Fetch](https://github.com/openapi-ts/openapi-typescript), ... |
+| [`Tekst-Util/`](Tekst-Util) (API maintenance utility) | [Bash](https://www.gnu.org/software/bash/), [Bashly](https://github.com/DannyBen/bashly) |
+| [`docs/`](docs) (Documentation and user manual, to be found [here](https://vedawebproject.github.io/Tekst)) | [MkDocs](https://github.com/mkdocs/mkdocs), [Material for MkDocs](https://github.com/squidfunk/mkdocs-material), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions) |
 
 Where applicable, the different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
