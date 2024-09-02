@@ -92,6 +92,7 @@ class Images(ResourceTypeABC):
                             f"resources.{str(query.common.resource_id)}.caption{strict_suffix}"
                         ],
                         "query": query.resource_type_specific.caption,
+                        "analyze_wildcard": True,
                     }
                 }
             )

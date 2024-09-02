@@ -89,6 +89,7 @@ class RichText(ResourceTypeABC):
                             )
                         ],
                         "query": query.resource_type_specific.html,
+                        "analyze_wildcard": True,
                     }
                 }
             )

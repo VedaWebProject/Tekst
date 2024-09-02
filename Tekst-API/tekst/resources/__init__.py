@@ -185,6 +185,7 @@ class ResourceTypeABC(ABC):
                             f"resources.{str(query.common.resource_id)}.comment{strict_suffix}"
                         ],
                         "query": query.common.comment,
+                        "analyze_wildcard": True,
                     }
                 }
             )

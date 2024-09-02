@@ -88,6 +88,7 @@ class PlainText(ResourceTypeABC):
                             f"resources.{str(query.common.resource_id)}.text{strict_suffix}"
                         ],
                         "query": query.resource_type_specific.text,
+                        "analyze_wildcard": True,
                     }
                 }
             )

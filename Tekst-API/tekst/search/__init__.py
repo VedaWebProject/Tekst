@@ -430,7 +430,7 @@ async def search_quick(
             index=IDX_ALIAS,
             query=es_query,
             highlight={
-                "fields": {"resources.*": {}},
+                "fields": [{field: {}} for field in fields],
             },
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),

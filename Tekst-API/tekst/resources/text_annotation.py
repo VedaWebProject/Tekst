@@ -70,6 +70,7 @@ class TextAnnotation(ResourceTypeABC):
                     "simple_query_string": {
                         "fields": [f"resources.{res_id}.tokens.token{strict_suffix}"],
                         "query": query.resource_type_specific.token,
+                        "analyze_wildcard": True,
                     }
                 }
                 if query.resource_type_specific.token
@@ -117,6 +118,7 @@ class TextAnnotation(ResourceTypeABC):
                                     f"resources.{res_id}.tokens.annotations.{anno.key}"
                                 ],
                                 "query": anno.value,
+                                "analyze_wildcard": True,
                             }
                         }
                     )
