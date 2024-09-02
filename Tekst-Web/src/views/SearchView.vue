@@ -287,7 +287,7 @@ watch(
     <n-button
       type="primary"
       :disabled="!formModel.queries.length"
-      @clicks.stop.prevent="handleSearch"
+      @click.stop.prevent="handleSearch"
     >
       {{ $t('search.searchAction') }}
     </n-button>
