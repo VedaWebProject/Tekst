@@ -1,7 +1,9 @@
 import csv
 
+from collections.abc import Callable
 from pathlib import Path
 from typing import Annotated, Any, Literal
+from uuid import uuid4
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
@@ -36,6 +38,42 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
+    def rtype_index_doc_props(cls) -> dict[str, Any]:
+        return {
+            "tokens": {
+                "type": "nested",
+                "dynamic": True,
+                "properties": {
+                    "token": {
+                        "type": "keyword",
+                        "normalizer": "no_diacritics_normalizer",
+                        "fields": {"strict": {"type": "keyword"}},
+                    }
+                },
+            },
+        }
+
+    @classmethod
+    def rtype_index_doc_data(
+        cls,
+        content: "TextAnnotationContent",
+    ) -> dict[str, Any]:
+        return {
+            "tokens": [
+                {
+                    "token": token.token or "",
+                    "annotations": {
+                        anno.key: anno.value[0] if len(anno.value) == 1 else anno.value
+                        for anno in token.annotations
+                    }
+                    if token.annotations
+                    else None,
+                }
+                for token in content.tokens
+            ],
+        }
+
+    @classmethod
     def rtype_es_queries(
         cls,
         *,
@@ -45,9 +83,10 @@ class TextAnnotation(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
         res_id = str(query.common.resource_id)
+        q_id = str(uuid4())
 
         if (
-            not query.resource_type_specific.token.strip("* ")
+            query.resource_type_specific.token.strip(" ") == "*"
             and not query.resource_type_specific.annotations
         ):
             # handle empty/match-all query (query for existing target resource field)
@@ -60,10 +99,14 @@ class TextAnnotation(ResourceTypeABC):
                                 "field": f"resources.{res_id}.tokens.token",
                             }
                         },
+                        "inner_hits": {"name": q_id},
                     }
                 }
             )
-        else:
+        elif (
+            query.resource_type_specific.token
+            or query.resource_type_specific.annotations
+        ):
             # construct token query
             token_query = (
                 {
@@ -136,6 +179,7 @@ class TextAnnotation(ResourceTypeABC):
                                 ],
                             },
                         },
+                        "inner_hits": {"name": q_id},
                     }
                 }
             )
@@ -143,40 +187,23 @@ class TextAnnotation(ResourceTypeABC):
         return es_queries
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
-        return {
-            "tokens": {
-                "type": "nested",
-                "dynamic": True,
-                "properties": {
-                    "token": {
-                        "type": "keyword",
-                        "normalizer": "no_diacritics_normalizer",
-                        "fields": {"strict": {"type": "keyword"}},
-                    }
-                },
-            },
-        }
+    def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
+        def _highlights_generator(hit: dict[str, Any]) -> list[str]:
+            hl_strings = []
+            for hl_k, hl_v in hit["highlight"].items():
+                if ".comment" in hl_k:
+                    hl_strings.extend(hl_v)
+            for ih in hit.get("inner_hits", {}).values():
+                for ih_hit in ih.get("hits", {}).get("hits", []):
+                    token = ih_hit["_source"]["token"]
+                    annos = ih_hit["_source"]["annotations"]
+                    annos = (
+                        f" ({'; '.join([a for a in annos.values()])})" if annos else ""
+                    )
+                    hl_strings.append(f"{token} {annos}")
+            return hl_strings
 
-    @classmethod
-    def rtype_index_doc_data(
-        cls,
-        content: "TextAnnotationContent",
-    ) -> dict[str, Any]:
-        return {
-            "tokens": [
-                {
-                    "token": token.token or "",
-                    "annotations": {
-                        anno.key: anno.value[0] if len(anno.value) == 1 else anno.value
-                        for anno in token.annotations
-                    }
-                    if token.annotations
-                    else None,
-                }
-                for token in content.tokens
-            ],
-        }
+        return _highlights_generator
 
     @classmethod
     async def export(

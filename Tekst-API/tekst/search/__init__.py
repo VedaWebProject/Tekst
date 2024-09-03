@@ -454,15 +454,16 @@ async def search_advanced(
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
-
+    highlights_generators = {}  # special highlights generators, if any
     for q in queries:
         if str(q.common.resource_id) in target_resource_ids:
-            resource_es_queries = resource_types_mgr.get(
-                q.resource_type_specific.resource_type
-            ).es_queries(
+            res_type = resource_types_mgr.get(q.resource_type_specific.resource_type)
+            resource_es_queries = res_type.es_queries(
                 query=q,
                 strict=settings_general.strict,
             )
+            if (hl_gen := res_type.highlights_generator()) is not None:
+                highlights_generators[str(q.common.resource_id)] = hl_gen
             if q.common.required:
                 sub_queries_must.extend(resource_es_queries)
             else:
@@ -497,4 +498,5 @@ async def search_advanced(
             source={"includes": QUERY_SOURCE_INCLUDES},
             timeout=_cfg.es.timeout_search_s,
         ),
+        highlights_generators=highlights_generators,
     )

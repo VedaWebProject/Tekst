@@ -4,6 +4,7 @@ import json
 import pkgutil
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
@@ -364,6 +365,16 @@ class ResourceTypeABC(ABC):
         in the given resource search query instance.
         Common content fields are not included in the returned queries.
         """
+
+    @classmethod
+    def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
+        """
+        For resource types that need a custom highlights generator, this method can be
+        overwritten to return a function that takes a list of search hits and returns
+        custom highlights for them. If this function returns None (the default if not
+        overwritten), the default highlighting will be used.
+        """
+        return None
 
     @classmethod
     @abstractmethod

@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from datetime import datetime
 from typing import Annotated, Any, Literal
 
@@ -27,19 +28,31 @@ class SearchResults(ModelBase):
     max_score: float | None
 
     @classmethod
-    def __transform_highlights(cls, hit: dict[str, Any]) -> dict[str, set[str]]:
+    def __transform_highlights(
+        cls,
+        hit: dict[str, Any],
+        highlights_generators: dict[str, Callable[[dict[str, Any]], list[str]]],
+    ) -> dict[str, set[str]]:
         if not hit.get("highlight"):
             return {}
         highlights = {}
+        highlights_generators = highlights_generators or {}
         for k, v in hit["highlight"].items():
             hl_res_id = k.split(".")[1]
             if hl_res_id not in highlights:
                 highlights[hl_res_id] = set()
+            if hl_res_id in highlights_generators:
+                v = highlights_generators[hl_res_id](hit)
             highlights[hl_res_id].update(v)
         return highlights
 
     @classmethod
-    def from_es_results(cls, results: dict[str, Any]) -> "SearchResults":
+    def from_es_results(
+        cls,
+        results: dict[str, Any],
+        highlights_generators: dict[str, Callable[[dict[str, Any]], list[str]]]
+        | None = None,
+    ) -> "SearchResults":
         return cls(
             hits=[
                 SearchHit(
@@ -50,7 +63,9 @@ class SearchResults(ModelBase):
                     level=hit["_source"]["level"],
                     position=hit["_source"]["position"],
                     score=hit["_score"],
-                    highlight=cls.__transform_highlights(hit),
+                    highlight=cls.__transform_highlights(
+                        hit, highlights_generators or {}
+                    ),
                 )
                 for hit in results["hits"]["hits"]
             ],
