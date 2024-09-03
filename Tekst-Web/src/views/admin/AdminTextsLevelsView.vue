@@ -2,7 +2,7 @@
 import { useStateStore } from '@/stores';
 import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 import { textFormRules } from '@/forms/formRules';
-import { NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
+import { NFlex, NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
@@ -166,24 +166,14 @@ async function handleModalSubmit() {
         :disabled="levels.length >= 32"
         @click="() => handleInsertClick(lvlIndex)"
       />
-      <div class="level">
+      <n-flex align="center" :wrap="false" class="level">
         <div class="level-index">{{ lvlIndex + 1 }}.</div>
-        <div class="level-translations ellipsis">
-          <template v-for="lvlTranslation in lvl" :key="lvlTranslation.locale">
-            <div>
-              {{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}
-              <span class="b">
-                {{
-                  getLocaleProfile(lvlTranslation.locale)?.displayFull ||
-                  $t('models.locale.allLanguages')
-                }}:
-              </span>
-            </div>
-            <div>
-              {{ lvlTranslation.translation }}
-            </div>
-          </template>
-        </div>
+        <n-flex vertical :wrap="false" style="flex-grow: 2">
+          <n-flex v-for="lvlTranslation in lvl" :key="lvlTranslation.locale" :wrap="false">
+            <span>{{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}</span>
+            <span>{{ lvlTranslation.translation }}</span>
+          </n-flex>
+        </n-flex>
         <div class="level-buttons">
           <n-button
             secondary
@@ -204,7 +194,7 @@ async function handleModalSubmit() {
             <n-icon :component="DeleteIcon" />
           </n-button>
         </div>
-      </div>
+      </n-flex>
     </div>
 
     <insert-item-separator
@@ -261,30 +251,16 @@ async function handleModalSubmit() {
 </template>
 
 <style scoped>
-.level {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
 .level:not(:last-child) {
   margin-bottom: var(--gap-md);
 }
 
 .level-index {
   min-width: 28px;
+  align-self: stretch;
   color: var(--accent-color);
   font-weight: var(--font-weight-bold);
-}
-
-.level-translations {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  flex-grow: 2;
-}
-
-.level-translations > * {
-  padding-right: 28px;
+  border-right: 2px solid var(--accent-color);
 }
 
 .level-buttons {
