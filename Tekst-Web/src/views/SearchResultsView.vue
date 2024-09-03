@@ -2,7 +2,7 @@
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NFlex, NList, NSpin, NPagination } from 'naive-ui';
+import { NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
@@ -14,10 +14,8 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isInputFocused, isOverlayOpen, pickTranslation } from '@/utils';
-import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
-import AdvancedSearchQueryDisplay from '@/components/search/AdvancedSearchQueryDisplay.vue';
-import SearchStatusDisplay from '@/components/search/SearchStatusDisplay.vue';
+import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
+import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -199,26 +197,22 @@ onBeforeMount(() => processQuery());
     {{ $t('search.results.heading') }}
   </icon-heading>
 
-  <quick-search-query-display v-if="searchReq?.type === 'quick'" :req="searchReq" class="mb-lg" />
-  <advanced-search-query-display
-    v-else-if="searchReq?.type === 'advanced'"
+  <search-query-display
     :req="searchReq"
-    class="mb-lg"
-  />
-
-  <search-status-display
-    v-if="resultsData"
-    :total-hits="resultsData.totalHits"
-    :total-hits-relation="resultsData.totalHitsRelation"
-    :took="resultsData.took"
-    :indices-updated-at="pfData?.state.indicesUpdatedAt"
-    :loading="loading"
+    :total="resultsData?.totalHits"
+    :total-relation="resultsData?.totalHitsRelation"
+    :took="resultsData?.took"
     :error="searchError"
+    class="mb-lg"
   />
 
   <div class="content-block">
     <reuse-template />
-    <n-spin v-if="loading" class="centered-spinner" :description="$t('search.results.searching')" />
+    <n-spin
+      v-if="loading"
+      class="centered-spinner"
+      :description="`${$t('search.results.searching')}...`"
+    />
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
@@ -229,6 +223,15 @@ onBeforeMount(() => processQuery());
     />
     <huge-labelled-icon v-else :icon="NothingFoundIcon" :message="$t('search.nothingFound')" />
     <reuse-template />
+  </div>
+
+  <div
+    v-if="pfData?.state.indicesUpdatedAt"
+    class="text-tiny translucent"
+    style="text-align: center"
+  >
+    {{ $t('search.results.indexCreationTime') }}:
+    <n-time :time="utcToLocalTime(pfData?.state.indicesUpdatedAt)" type="datetime" />
   </div>
 </template>
 

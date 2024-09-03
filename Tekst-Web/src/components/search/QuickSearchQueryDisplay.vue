@@ -7,9 +7,19 @@ import { useThemeStore } from '@/stores';
 import { $t } from '@/i18n';
 import { SearchIcon, SettingsIcon, TextsIcon } from '@/icons';
 
-const props = defineProps<{
-  req: QuickSearchRequestBody;
-}>();
+const props = withDefaults(
+  defineProps<{
+    req: QuickSearchRequestBody;
+    total?: number;
+    totalRelation?: 'eq' | 'gte';
+    took?: number;
+  }>(),
+  {
+    total: undefined,
+    totalRelation: undefined,
+    took: undefined,
+  }
+);
 
 const { pfData } = usePlatformData();
 const theme = useThemeStore();
@@ -17,10 +27,7 @@ const theme = useThemeStore();
 const neutralTagColor = { color: 'var(--main-bg-color)' };
 
 const targetTexts = computed(() => {
-  const qt = (props.req.qck?.txt || [])
-    .map((txtId) => pfData.value?.texts.find((txt) => txt.id === txtId))
-    .filter((t) => !!t);
-  return qt.length ? qt : pfData.value?.texts || [];
+  return pfData.value?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || [];
 });
 const settings = computed(() => [
   ...(props.req.qck?.op?.toLowerCase() === 'and'
@@ -32,6 +39,22 @@ const settings = computed(() => [
 
 <template>
   <n-flex align="center" class="text-tiny" :size="[4, 8]">
+    <span v-if="total != null && totalRelation">
+      {{ totalRelation === 'eq' ? '' : '≥' }}
+      {{
+        $t('search.results.count', {
+          count: total,
+        })
+      }}
+    </span>
+    <span v-else>
+      {{ $t('search.results.searching') }}
+    </span>
+
+    <span>
+      {{ $t('general.for') }}
+    </span>
+
     <n-tag :color="neutralTagColor" :bordered="false" class="b" size="small">
       <template #icon>
         <n-icon class="translucent" :component="SearchIcon" />
@@ -39,21 +62,22 @@ const settings = computed(() => [
       {{ req.q }}
     </n-tag>
 
-    {{ $t('general.in') }}
+    <span>
+      {{ $t('general.in') }}
+    </span>
 
-    <template v-for="text in targetTexts" :key="text.id">
-      <n-tag
-        v-if="text"
-        :color="{ color: theme.getAccentColors(text.id).fade4 }"
-        :bordered="false"
-        size="small"
-      >
-        <template #icon>
-          <n-icon class="translucent" :component="TextsIcon" />
-        </template>
-        {{ text.title }}
-      </n-tag>
-    </template>
+    <n-tag
+      v-for="text in targetTexts"
+      :key="text.id"
+      :color="{ color: theme.getAccentColors(text.id).fade4 }"
+      :bordered="false"
+      size="small"
+    >
+      <template #icon>
+        <n-icon class="translucent" :component="TextsIcon" />
+      </template>
+      {{ text.title }}
+    </n-tag>
 
     <span v-if="!!settings.length">{{ $t('general.with') }}</span>
 
@@ -65,5 +89,14 @@ const settings = computed(() => [
         {{ setting }}
       </n-tag>
     </template>
+
+    <span v-if="!!took">
+      {{
+        $t('search.results.took', {
+          ms: took,
+        })
+      }}
+    </span>
+    <span v-else>...</span>
   </n-flex>
 </template>

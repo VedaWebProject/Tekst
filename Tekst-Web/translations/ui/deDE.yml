@@ -35,6 +35,7 @@ general:
   not: nicht
   new: New
   in: in
+  for: für
   with: mit
   system: System
   details: Details
@@ -844,7 +845,7 @@ search:
       textsPlaceholder: Alle Texte
   results:
     heading: Suchergebnisse
-    searching: Suche...
+    searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: in {ms} Millisekunden
     indexCreationTime: Letztes update der Suchdaten
