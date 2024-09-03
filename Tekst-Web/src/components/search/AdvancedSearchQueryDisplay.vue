@@ -99,7 +99,7 @@ const settings = computed(() => [
       {{ setting }}
     </n-tag>
 
-    <span v-if="!!took">
+    <span v-if="took != null">
       {{
         $t('search.results.took', {
           ms: took,
