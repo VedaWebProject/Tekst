@@ -9,7 +9,7 @@ from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
 from time import perf_counter
-from typing import Annotated, Any, Union
+from typing import Annotated, Any, Literal, Union
 
 import jsonref
 
@@ -70,16 +70,13 @@ async def call_resource_maintenance_hooks(
 
 
 class CommonResourceSearchQueryData(ModelBase):
-    required: Annotated[
-        bool,
+    occurrence: Annotated[
+        Literal["should", "must", "not"],
         Field(
-            alias="req",
-            description=(
-                "Whether this query is required to match for the "
-                "location to be considered a search hit"
-            ),
+            alias="occ",
+            description="The occurrence type of the search query",
         ),
-    ] = False
+    ] = "should"
     resource_id: Annotated[
         PydanticObjectId,
         Field(

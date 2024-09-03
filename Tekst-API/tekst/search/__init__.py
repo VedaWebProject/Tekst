@@ -454,6 +454,7 @@ async def search_advanced(
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
+    sub_queries_must_not = []
     highlights_generators = {}  # special highlights generators, if any
     for q in queries:
         if str(q.common.resource_id) in target_resource_ids:
@@ -464,8 +465,10 @@ async def search_advanced(
             )
             if (hl_gen := res_type.highlights_generator()) is not None:
                 highlights_generators[str(q.common.resource_id)] = hl_gen
-            if q.common.required:
+            if q.common.occurrence == "must":
                 sub_queries_must.extend(resource_es_queries)
+            elif q.common.occurrence == "not":
+                sub_queries_must_not.extend(resource_es_queries)
             else:
                 sub_queries_should.extend(resource_es_queries)
 
@@ -474,6 +477,7 @@ async def search_advanced(
         "bool": dict(
             **({"must": sub_queries_must} if sub_queries_must else {}),
             **({"should": sub_queries_should} if sub_queries_should else {}),
+            **({"must_not": sub_queries_must_not} if sub_queries_must_not else {}),
         )
     }
 

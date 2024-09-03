@@ -51,18 +51,6 @@ IDX_TEMPLATE = {
         "properties": {
             "resources": {"type": "object"},
         },
-        "dynamic_templates": [
-            {
-                "annotations": {
-                    "path_match": "*.tokens.annotations.*",
-                    "mapping": {
-                        "type": "keyword",
-                        "normalizer": "no_diacritics_normalizer",
-                        "fields": {"strict": {"type": "keyword"}},
-                    },
-                }
-            }
-        ],
     },
 }
 

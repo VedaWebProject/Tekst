@@ -812,7 +812,11 @@ search:
     gotoAdvancedSearch: Go to Advanced Search
   advancedSearch:
     msgNoResources: There are no resources associated with this text to search in.
-    required: must apply
+    occ:
+      label: Occurrence
+      should: optional
+      must: required
+      not: exclude
   settings:
     general:
       heading: '@:general.general'

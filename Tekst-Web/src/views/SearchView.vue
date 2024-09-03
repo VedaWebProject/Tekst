@@ -104,7 +104,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
-      cmn: { res: resId, req: false },
+      cmn: { res: resId, occ: 'should' },
       rts: { type: resType },
       resource: resources.all.find((r) => r.id === resId),
     };
@@ -117,7 +117,7 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
     resources.ofText[0].id;
   const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
   return {
-    cmn: { res: resource.id, req: false },
+    cmn: { res: resource.id, occ: 'should' },
     rts: { type: resource.resourceType },
     resource: resource,
   };
@@ -237,7 +237,7 @@ watch(
           />
           <common-search-form-items
             v-model:comment="query.cmn.cmt"
-            v-model:required="query.cmn.req"
+            v-model:occurrence="query.cmn.occ"
             :query-index="queryIndex"
           />
           <div class="search-item-action-buttons">

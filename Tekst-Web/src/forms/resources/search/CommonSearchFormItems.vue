@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import { NFormItem } from 'naive-ui';
+import { NFormItem, NSelect } from 'naive-ui';
 import NInputOsk from '@/components/NInputOsk.vue';
 import type { AdvancedSearchRequestBody } from '@/api';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { searchFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 
 defineProps<{
   queryIndex: number;
 }>();
 
 const comment = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['cmt']>('comment');
-const required = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['req']>('required');
+const occurrence = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['occ']>('occurrence');
+
+const occurrenceOptions = [
+  { label: () => $t('search.advancedSearch.occ.should'), value: 'should' },
+  { label: () => $t('search.advancedSearch.occ.must'), value: 'must' },
+  { label: () => $t('search.advancedSearch.occ.not'), value: 'not' },
+];
 </script>
 
 <template>
@@ -24,7 +30,7 @@ const required = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['req'
       :placeholder="$t('resources.types.common.contentFields.comment')"
     />
   </n-form-item>
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labelled-switch v-model="required" :label="$t('search.advancedSearch.required')" />
+  <n-form-item :label="$t('search.advancedSearch.occ.label')" :show-feedback="false">
+    <n-select v-model:value="occurrence" :options="occurrenceOptions" />
   </n-form-item>
 </template>

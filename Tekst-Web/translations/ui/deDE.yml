@@ -836,7 +836,11 @@ search:
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
-    required: muss zutreffen
+    occ:
+      label: Vorkommen
+      should: optional
+      must: erforderlich
+      not: ausschließen
   settings:
     general:
       heading: '@:general.general'

@@ -42,13 +42,25 @@ class TextAnnotation(ResourceTypeABC):
         return {
             "tokens": {
                 "type": "nested",
-                "dynamic": True,
                 "properties": {
                     "token": {
                         "type": "keyword",
                         "normalizer": "no_diacritics_normalizer",
                         "fields": {"strict": {"type": "keyword"}},
-                    }
+                    },
+                    "annotations": {
+                        "type": "nested",
+                        "properties": {
+                            "key": {
+                                "type": "keyword",
+                            },
+                            "value": {
+                                "type": "keyword",
+                                "normalizer": "no_diacritics_normalizer",
+                                "fields": {"strict": {"type": "keyword"}},
+                            },
+                        },
+                    },
                 },
             },
         }
@@ -62,10 +74,15 @@ class TextAnnotation(ResourceTypeABC):
             "tokens": [
                 {
                     "token": token.token or "",
-                    "annotations": {
-                        anno.key: anno.value[0] if len(anno.value) == 1 else anno.value
+                    "annotations": [
+                        {
+                            "key": anno.key,
+                            "value": anno.value[0]
+                            if len(anno.value) == 1
+                            else anno.value,
+                        }
                         for anno in token.annotations
-                    }
+                    ]
                     if token.annotations
                     else None,
                 }
@@ -99,7 +116,6 @@ class TextAnnotation(ResourceTypeABC):
                                 "field": f"resources.{res_id}.tokens.token",
                             }
                         },
-                        "inner_hits": {"name": q_id},
                     }
                 }
             )
@@ -127,83 +143,106 @@ class TextAnnotation(ResourceTypeABC):
                     # query for the existence of the key
                     anno_queries.append(
                         {
-                            "exists": {
-                                "field": (
-                                    f"resources.{res_id}.tokens.annotations.{anno.key}"
-                                ),
-                            }
-                        }
-                    )
-                elif anno.value == "__missing__":
-                    # if value is set to "__missing__", we're looking for tokens
-                    # that specifically DON'T have an annotation with the given key
-                    anno_queries.append(
-                        {
-                            "bool": {
-                                "must_not": {
-                                    "exists": {
-                                        "field": (
-                                            f"resources.{res_id}"
-                                            f".tokens.annotations.{anno.key}"
-                                        ),
+                            "nested": {
+                                "path": f"resources.{res_id}.tokens.annotations",
+                                "query": {
+                                    "term": {
+                                        f"resources.{res_id}.tokens.annotations.key": anno.key
                                     }
-                                }
+                                },
                             }
                         }
                     )
+                # elif anno.value == "__missing__":
+                #     # if value is set to "__missing__", we're looking for tokens
+                #     # that specifically DON'T have an annotation with the given key
+                #     anno_queries.append(
+                #         {
+                #             "nested": {
+                #                 "path": f"resources.{res_id}.tokens.annotations",
+                #                 "query": {
+                #                     "bool": {
+                #                         "must_not": {
+                #                             "term": {
+                #                                 f"resources.{res_id}.tokens.annotations.key": anno.key
+                #                             }
+                #                         }
+                #                     }
+                #                 },
+                #             }
+                #         }
+                #     )
                 else:
                     # if both key and value are set,
                     # query for the specific key/value combination
+                    anno_k_q = {
+                        "term": {f"resources.{res_id}.tokens.annotations.key": anno.key}
+                    }
+                    anno_v_q = {
+                        "simple_query_string": {
+                            "fields": [
+                                (
+                                    f"resources.{res_id}.tokens.annotations"
+                                    f".value{strict_suffix}"
+                                ),
+                            ],
+                            "query": anno.value,
+                            "analyze_wildcard": True,
+                        }
+                    }
                     anno_queries.append(
                         {
-                            "simple_query_string": {
-                                "fields": [
-                                    f"resources.{res_id}.tokens.annotations.{anno.key}"
-                                ],
-                                "query": anno.value,
-                                "analyze_wildcard": True,
+                            "nested": {
+                                "path": f"resources.{res_id}.tokens.annotations",
+                                "query": {
+                                    "bool": {
+                                        "must": [anno_k_q, anno_v_q],
+                                    },
+                                },
                             }
                         }
                     )
 
             # add token and annotation queries to the ES query
+            sub_queries = [
+                *([token_query] if token_query else []),
+                *anno_queries,
+            ]
             es_queries.append(
                 {
                     "nested": {
                         "path": f"resources.{res_id}.tokens",
                         "query": {
                             "bool": {
-                                "must": [
-                                    *([token_query] if token_query else []),
-                                    *anno_queries,
-                                ],
+                                "must": sub_queries,
                             },
-                        },
-                        "inner_hits": {"name": q_id},
+                        }
+                        if len(sub_queries) > 1
+                        else sub_queries[0],
                     }
                 }
             )
 
         return es_queries
 
-    @classmethod
-    def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
-        def _highlights_generator(hit: dict[str, Any]) -> list[str]:
-            hl_strings = []
-            for hl_k, hl_v in hit["highlight"].items():
-                if ".comment" in hl_k:
-                    hl_strings.extend(hl_v)
-            for ih in hit.get("inner_hits", {}).values():
-                for ih_hit in ih.get("hits", {}).get("hits", []):
-                    token = ih_hit["_source"]["token"]
-                    annos = ih_hit["_source"]["annotations"]
-                    annos = (
-                        f" ({'; '.join([a for a in annos.values()])})" if annos else ""
-                    )
-                    hl_strings.append(f"{token} {annos}")
-            return hl_strings
+    # @classmethod
+    # def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
+    #     def _highlights_generator(hit: dict[str, Any]) -> list[str]:
+    #         hl_strings = []
+    #         for hl_k, hl_v in hit["highlight"].items():
+    #             if ".comment" in hl_k:
+    #                 hl_strings.extend(hl_v)
+    #         for ih in hit.get("inner_hits", {}).values():
+    #             for ih_hit in ih.get("hits", {}).get("hits", []):
+    #                 token = ih_hit["_source"]["token"]
+    #                 annos = ih_hit["_source"]["annotations"]
+    #                 annos = (
+    #                     f" ({'; '.join([a for a in annos.values()])})" if annos else ""
+    #                 )
+    #                 hl_strings.append(f"{token} {annos}")
+    #         return hl_strings
 
-        return _highlights_generator
+    #     return _highlights_generator
 
     @classmethod
     async def export(
