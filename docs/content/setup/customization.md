@@ -73,7 +73,7 @@ To provide custom assets, you need administrative access to the server on which 
 **For a Docker-based deployment...**
 
 1. In case you haven't done so already, in the `.env` file, set the value for `TEKST_WEB_STATIC_DIR` to a path under which you want to make additional static files available for the web client (e.g., `/var/www/tekst/static/`) and create the corresponding directories.
-2. For the client container to recognize the changed value in `.env`, it needs to be restarted (`docker-compose restart client`).
+2. For the client container to recognize the changed value in `.env`, it needs to be restarted (`docker compose restart client`).
 
 
 **For a bare-metal deployment...**

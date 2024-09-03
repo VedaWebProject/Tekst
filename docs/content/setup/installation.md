@@ -27,7 +27,7 @@ The instructions below will help you deploy a stack consisting of everything Tek
 
 - [Git](https://git-scm.com/)
 - [Docker](https://docs.docker.com/engine/install)
-- Docker Compose (If you're on Linux, the [docker-compose-plugin](https://docs.docker.com/compose/install/linux/) for Docker is recommended. Otherwise there's [Compose](https://docs.docker.com/compose/install/other/) standalone, for which the commands below have to be run as `docker-compose ...` instead of `docker compose ...`)
+- Docker Compose (If you're on Linux, the [Docker Compose Plugin](https://docs.docker.com/compose/install/linux/) for Docker is recommended. Otherwise there's [Compose](https://docs.docker.com/compose/install/other/) standalone, for which the commands below have to be run as `docker-compose ...` instead of `docker compose ...`)
 
 ### Instructions
 
@@ -109,7 +109,7 @@ Please be aware that taking this approach is considerably more difficult and req
 
 ### Requirements
 
-Please see the general requirements at the top of this page and see the `docker-compose.yaml` for the versions of the services used.
+Please see the general requirements at the top of this page and see the `compose.yaml` file for the versions of the services used.
 
 You will also need:
 
