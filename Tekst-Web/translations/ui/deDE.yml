@@ -145,13 +145,15 @@ routes:
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     adminStatistics: Statistiken
-    adminSystemUsers: Benutzer
     adminTextsSettings: '@:general.settings – {text}'
     adminTextsLevels: Ebenen – {text}
     adminTextsLocations: Belegstellen – {text}
     adminNewText: Neuer Text
+    adminSystemSettings: '@:general.settings'
+    adminSystemUsers: Benutzer
     adminSystemSegments: Segmente
     adminSystemInfoPages: Info-Seiten
+    adminSystemMaintenance: '@:admin.system.maintenance.heading'
     verify: Verifizierung
     reset: Passwort zurücksetzen
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
