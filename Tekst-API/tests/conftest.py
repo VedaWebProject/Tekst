@@ -41,7 +41,10 @@ def wrong_id() -> str:
 
 @pytest.fixture
 def get_sample_data_path(request) -> Callable[[str], Path]:
-    """Returns the absolute path to a file relative to tests/data"""
+    """
+    Returns a function to get the absolute
+    path to a file relative to tests/data
+    """
 
     def _get_sample_data_path(rel_path: str) -> Path:
         datadir = Path(request.config.rootdir) / "tekst/sample_data"
@@ -52,7 +55,10 @@ def get_sample_data_path(request) -> Callable[[str], Path]:
 
 @pytest.fixture
 def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
-    """Returns the object representation of a JSON file relative to tests/data"""
+    """
+    Returns a function to get the object representation
+    of a JSON file relative to tests/data
+    """
 
     def _get_sample_data(rel_path: str, for_http: bool = False) -> Any:
         path = get_sample_data_path(rel_path)
