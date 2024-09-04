@@ -1,2 +1,2 @@
-FROM elasticsearch:8.13.4
+FROM elasticsearch:8.15.0
 RUN elasticsearch-plugin install analysis-icu

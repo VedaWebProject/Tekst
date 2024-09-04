@@ -34,7 +34,7 @@ pydantic-extra-types = "^2.0.0"
 setuptools = "^69.1.1"
 bleach = "^6.1.0"
 jsonref = "^1.1.0"
-elasticsearch = "^8.13.0"
+elasticsearch = "^8.15.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
