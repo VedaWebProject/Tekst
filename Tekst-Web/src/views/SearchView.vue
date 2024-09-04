@@ -104,7 +104,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
-      cmn: { res: resId, occ: 'should' },
+      cmn: { res: resId, occ: formModel.value.queries[resQueryIndex].cmn.occ },
       rts: { type: resType },
       resource: resources.all.find((r) => r.id === resId),
     };

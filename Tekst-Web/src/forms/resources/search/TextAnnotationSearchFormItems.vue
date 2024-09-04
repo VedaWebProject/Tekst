@@ -29,13 +29,7 @@ function getAnnotationKeyOptions() {
 }
 
 function getAnnotationValueOptions(key: string): { label: string; value: string }[] {
-  const values = [
-    { label: $t('resources.types.textAnnotation.searchFields.any'), value: '' },
-    {
-      label: $t('resources.types.textAnnotation.searchFields.missing'),
-      value: '__missing__',
-    },
-  ];
+  const values = [{ label: $t('resources.types.textAnnotation.searchFields.any'), value: '' }];
   if (!key) return values;
   return [
     ...values,
@@ -46,7 +40,7 @@ function getAnnotationValueOptions(key: string): { label: string; value: string 
 }
 
 function getAnnoValueSelectStyle(value?: string) {
-  return !value || value === '__missing__' ? undefined : annoValueStyle;
+  return value ? annoValueStyle : undefined;
 }
 </script>
 

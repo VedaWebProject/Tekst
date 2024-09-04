@@ -493,8 +493,7 @@ resources:
         annotationKey: Annotation
         annotationValue: Wert
       searchFields:
-        any: '[beliebig]'
-        missing: '[fehlt]'
+        any: '[beliebiger Wert]'
     audio:
       label: Audio
       parenthesis: Audiowiedergabe
