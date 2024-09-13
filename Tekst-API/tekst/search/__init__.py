@@ -363,6 +363,27 @@ async def get_indices_info() -> list[IndexInfo]:
         return []
 
 
+async def _get_target_resources(
+    *,
+    user: UserRead | None = None,
+    text_ids: list[PydanticObjectId] | None = None,
+    resource_types: list[str] | None = None,
+) -> list[ResourceBaseDocument]:
+    """
+    Returns a constrained list of target resources for a search request,
+    based on the requesting user's permissions, target texts and resource types.
+    """
+    return await ResourceBaseDocument.find(
+        In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
+        In(ResourceBaseDocument.resource_type, resource_types)
+        if resource_types
+        else {},
+        Eq(ResourceBaseDocument.public, True),
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    ).to_list()
+
+
 async def _get_target_resource_ids(
     *,
     user: UserRead | None = None,
@@ -375,15 +396,11 @@ async def _get_target_resource_ids(
     """
     return [
         str(res.id)
-        for res in await ResourceBaseDocument.find(
-            In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
-            In(ResourceBaseDocument.resource_type, resource_types)
-            if resource_types
-            else {},
-            Eq(ResourceBaseDocument.public, True),
-            await ResourceBaseDocument.access_conditions_read(user),
-            with_children=True,
-        ).to_list()
+        for res in await _get_target_resources(
+            user=user,
+            text_ids=text_ids,
+            resource_types=resource_types,
+        )
     ]
 
 
@@ -449,28 +466,43 @@ async def search_advanced(
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    target_resource_ids = await _get_target_resource_ids(user=user)
+    target_resources = {
+        str(res.id): res for res in await _get_target_resources(user=user)
+    }
 
     # construct all the sub-queries
     sub_queries_must = []
     sub_queries_should = []
     sub_queries_must_not = []
-    highlights_generators = {}  # special highlights generators, if any
+    highlights_generators = {}
     for q in queries:
-        if str(q.common.resource_id) in target_resource_ids:
-            res_type = resource_types_mgr.get(q.resource_type_specific.resource_type)
-            resource_es_queries = res_type.es_queries(
-                query=q,
-                strict=settings_general.strict,
-            )
-            if (hl_gen := res_type.highlights_generator()) is not None:
-                highlights_generators[str(q.common.resource_id)] = hl_gen
-            if q.common.occurrence == "must":
-                sub_queries_must.extend(resource_es_queries)
-            elif q.common.occurrence == "not":
-                sub_queries_must_not.extend(resource_es_queries)
-            else:
-                sub_queries_should.extend(resource_es_queries)
+        if str(q.common.resource_id) not in target_resources:
+            continue
+        res_type = resource_types_mgr.get(q.resource_type_specific.resource_type)
+        txt_id = str(target_resources[str(q.common.resource_id)].text_id)
+        res_es_query = {
+            "bool": {
+                "must": [
+                    # actual, resource-specific queries
+                    *res_type.es_queries(
+                        query=q,
+                        strict=settings_general.strict,
+                    ),
+                    # ensure the query is run against the correct index
+                    {"term": {"_index": f"*_{txt_id}_*"}},
+                ]
+            }
+        }
+        # collect highlights generators for custom, resource-type-specific highlighting
+        if (hl_gen := res_type.highlights_generator()) is not None:
+            highlights_generators[str(q.common.resource_id)] = hl_gen
+        # add individual sub-queries to the root query based on the selected occurrence
+        if q.common.occurrence == "must":
+            sub_queries_must.append(res_es_query)
+        elif q.common.occurrence == "not":
+            sub_queries_must_not.append(res_es_query)
+        else:
+            sub_queries_should.append(res_es_query)
 
     # compose the overall compound query
     es_query = {
