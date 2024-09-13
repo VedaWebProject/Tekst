@@ -12,6 +12,7 @@ import {
   NIcon,
   NSelect,
   NFormItem,
+  NFlex,
   useThemeVars,
   type FormInst,
 } from 'naive-ui';
@@ -20,11 +21,12 @@ import type { AdvancedSearchRequestBody, AnyResourceRead, ResourceType } from '@
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
-import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import { $t } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
+import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
+import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceSelector.vue';
 import { useMessages } from '@/composables/messages';
 import { pickTranslation } from '@/utils';
 import { usePlatformData } from '@/composables/platformData';
@@ -38,11 +40,11 @@ interface AdvancedSearchFormModel {
 }
 
 const state = useStateStore();
+const theme = useThemeStore();
 const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
-const theme = useThemeStore();
 const themeVars = useThemeVars();
 const { message } = useMessages();
 
@@ -66,7 +68,7 @@ const resourceOptions = computed(() => {
         {
           class: 'text-tiny b',
           style: {
-            color: theme.generateAccentColorVariants(state.textsProps[tId].accentColor).base,
+            color: state.textsProps[tId].accentColor,
             padding: '8px',
           },
         },
@@ -91,20 +93,28 @@ const resourceOptions = computed(() => {
         return catA * 100 + soA - (catB * 100 + soB);
       })
       .map((r) => ({
-        label: `${pickTranslation(r.title, state.locale)} – ${$t('resources.types.' + r.resourceType + '.label')}`,
+        label: pickTranslation(r.title, state.locale),
         value: r.id,
         resourceType: r.resourceType,
         textColor: state.textsProps[tId].accentColor,
-        textTitle: state.textsProps[tId].title,
       })),
   }));
 });
+
+const resourceMeta = computed(() =>
+  Object.fromEntries(
+    resourceOptions.value
+      .map((ro) => ro.children)
+      .flat()
+      .map((r) => [r.value, { colors: theme.generateAccentColorVariants(r.textColor) }])
+  )
+);
 
 function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
-      cmn: { res: resId, occ: formModel.value.queries[resQueryIndex].cmn.occ },
+      cmn: { res: resId, occ: formModel.value.queries[resQueryIndex].cmn.occ || 'should' },
       rts: { type: resType },
       resource: resources.all.find((r) => r.id === resId),
     };
@@ -202,44 +212,53 @@ watch(
       v-model:value="formModel.queries"
       :min="1"
       :max="32"
-      item-class="advanced-search-item"
-      item-style="flex-direction: column; margin: 0"
+      item-class="search-item"
       @create="getNewSearchItem"
     >
       <!-- SEARCH ITEM -->
       <template #default="{ value: query, index: queryIndex }">
-        <div style="flex-grow: 2" class="search-item content-block">
-          <n-form-item :show-label="false" style="flex-grow: 2">
-            <n-select
-              class="search-resource-select"
-              :value="query.cmn.res"
-              :options="resourceOptions"
-              :consistent-menu-width="false"
-              :menu-props="{ class: 'search-resource-select-menu' }"
-              size="large"
-              style="font-weight: var(--font-weight-bold)"
-              :style="{
-                color: theme.generateAccentColorVariants(
-                  state.textsProps[query.resource?.textId]?.accentColor
-                ).base,
-              }"
-              @update:value="
-                (v, o: SelectMixedOption) =>
-                  handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
-              "
+        <div class="content-block p-0" style="position: relative">
+          <n-flex
+            class="search-item-header"
+            :style="{
+              borderBottomColor: resourceMeta[query.cmn.res].colors.fade1,
+            }"
+          >
+            <n-form-item
+              :show-label="false"
+              :show-feedback="false"
+              style="flex-basis: 400px; flex-grow: 6"
+            >
+              <n-select
+                class="search-resource-select b"
+                :value="query.cmn.res"
+                :options="resourceOptions"
+                :consistent-menu-width="false"
+                :menu-props="{ class: 'search-resource-select-menu' }"
+                :style="{
+                  color: resourceMeta[query.cmn.res].colors.base,
+                }"
+                @update:value="
+                  (v, o: SelectMixedOption) =>
+                    handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
+                "
+              />
+            </n-form-item>
+            <search-occurrence-selector
+              v-model:occurrence="query.cmn.occ"
+              :query-index="queryIndex"
+              style="flex-basis: 180px; flex-grow: 1"
             />
-          </n-form-item>
-          <component
-            :is="resourceTypeSearchForms[query.rts.type]"
-            v-model="query.rts"
-            :resource="query.resource"
-            :query-index="queryIndex"
-          />
-          <common-search-form-items
-            v-model:comment="query.cmn.cmt"
-            v-model:occurrence="query.cmn.occ"
-            :query-index="queryIndex"
-          />
+          </n-flex>
+          <div class="p">
+            <component
+              :is="resourceTypeSearchForms[query.rts.type]"
+              v-model="query.rts"
+              :resource="query.resource"
+              :query-index="queryIndex"
+            />
+            <common-search-form-items v-model:comment="query.cmn.cmt" :query-index="queryIndex" />
+          </div>
           <div class="search-item-action-buttons">
             <n-button
               v-if="formModel.queries.length < 32"
@@ -247,6 +266,7 @@ watch(
               :color="themeVars.bodyColor"
               :style="{ color: themeVars.textColor1 }"
               :title="$t('general.insertAction')"
+              size="large"
               :focusable="false"
               class="action-button-insert"
               @click="addSearchItem(queryIndex)"
@@ -259,6 +279,7 @@ watch(
               :color="themeVars.bodyColor"
               :style="{ color: themeVars.textColor1 }"
               :title="$t('general.removeAction')"
+              size="large"
               :focusable="false"
               class="action-button-remove"
               @click="removeSearchItem(queryIndex)"
@@ -295,31 +316,41 @@ watch(
 </template>
 
 <style scoped>
-.search-item {
+:deep(.search-item) {
   position: relative;
+  flex-direction: column;
+  margin: 0;
 }
 
-.search-item-action-buttons {
+:deep(.search-item .search-item-header) {
+  padding: 0.8rem 1rem;
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+}
+
+:deep(.search-item-action-buttons) {
   position: absolute;
   left: 0;
-  bottom: -16px;
+  bottom: -18px;
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   gap: var(--gap-lg);
 }
-.search-item-action-buttons .action-button-insert:hover {
+:deep(.search-item-action-buttons .action-button-insert:hover) {
   color: var(--col-success) !important;
 }
-.search-item-action-buttons .action-button-remove:hover {
+:deep(.search-item-action-buttons .action-button-remove:hover) {
   color: var(--col-error) !important;
 }
-.search-item-action-button-wrapper {
-  border-radius: 3px;
-}
+
 .search-resource-select :deep(.n-base-selection .n-base-selection-label .n-base-selection-input) {
   color: inherit;
+}
+
+.content-block.p-0 {
+  padding: 0 !important;
 }
 </style>
 
