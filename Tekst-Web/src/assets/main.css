@@ -221,6 +221,14 @@ code {
   margin-left: var(--gap-sm);
 }
 
+.p {
+  padding: 1rem;
+}
+
+.p-lg {
+  padding: 1.2rem !important;
+}
+
 .box-shadow {
   box-shadow: var(--block-box-shadow);
 }
@@ -234,7 +242,7 @@ code {
 .content-block {
   max-width: 100%;
   margin: var(--gap-lg) 0;
-  padding: 1.2rem;
+  padding: 1rem;
   border-radius: var(--border-radius);
   background-color: var(--content-bg-color);
   box-shadow: var(--block-box-shadow);

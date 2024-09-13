@@ -1205,11 +1205,12 @@ export interface components {
     /** CommonResourceSearchQueryData */
     CommonResourceSearchQueryData: {
       /**
-       * Req
-       * @description Whether this query is required to match for the location to be considered a search hit
-       * @default false
+       * Occ
+       * @description The occurrence type of the search query
+       * @default should
+       * @enum {string}
        */
-      req?: boolean;
+      occ?: 'should' | 'must' | 'not';
       /**
        * Res
        * @description ID of the resource to search in
@@ -3214,6 +3215,7 @@ export interface components {
       showTekstFooterHint?: boolean;
       /**
        * Availablelocales
+       * @description Locales available for use in platform client
        * @default [
        *   "deDE",
        *   "enUS"
@@ -3325,6 +3327,7 @@ export interface components {
       showTekstFooterHint?: boolean;
       /**
        * Availablelocales
+       * @description Locales available for use in platform client
        * @default [
        *   "deDE",
        *   "enUS"
@@ -4682,7 +4685,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-28T11:38:40.806162
+       * @default 1970-01-02T00:00:00
        */
       contentsChangedAt?: string;
       /**
@@ -4768,7 +4771,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-28T11:38:40.806162
+       * @default 1970-01-02T00:00:00
        */
       contentsChangedAt?: string;
       /**
@@ -4860,7 +4863,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of any resource on this text changed
-       * @default 2024-08-28T11:38:40.806162
+       * @default 1970-01-02T00:00:00
        */
       contentsChangedAt?: string;
       /**
