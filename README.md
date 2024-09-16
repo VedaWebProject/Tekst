@@ -6,10 +6,7 @@
 
 ![Server tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
 [![Server tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=server%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
-![Client build status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20build) \
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/VedaWebProject/Tekst)
-![GitHub code size](https://img.shields.io/github/languages/code-size/VedaWebProject/Tekst)
-![GitHub repo size](https://img.shields.io/github/repo-size/VedaWebProject/Tekst)
+![Client build status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20checks)
 
 > 🏗 Tekst is still in its initial development phase. As of now there's no complete (let alone production-ready) version available. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
 
