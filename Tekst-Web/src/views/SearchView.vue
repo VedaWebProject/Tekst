@@ -13,7 +13,6 @@ import {
   NSelect,
   NFormItem,
   NFlex,
-  useThemeVars,
   type FormInst,
 } from 'naive-ui';
 import { computed, h, ref, watch } from 'vue';
@@ -45,7 +44,6 @@ const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
-const themeVars = useThemeVars();
 const { message } = useMessages();
 
 const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
@@ -68,7 +66,7 @@ const resourceOptions = computed(() => {
         {
           class: 'text-tiny b',
           style: {
-            color: state.textsProps[tId].accentColor,
+            color: theme.getAccentColors(tId).base,
             padding: '8px',
           },
         },
@@ -96,18 +94,13 @@ const resourceOptions = computed(() => {
         label: pickTranslation(r.title, state.locale),
         value: r.id,
         resourceType: r.resourceType,
-        textColor: state.textsProps[tId].accentColor,
+        textColor: theme.getAccentColors(tId).base,
       })),
   }));
 });
 
-const resourceMeta = computed(() =>
-  Object.fromEntries(
-    resourceOptions.value
-      .map((ro) => ro.children)
-      .flat()
-      .map((r) => [r.value, { colors: theme.generateAccentColorVariants(r.textColor) }])
-  )
+const resourceColors = computed(() =>
+  Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getAccentColors(r.textId) }]))
 );
 
 function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
@@ -212,45 +205,53 @@ watch(
       v-model:value="formModel.queries"
       :min="1"
       :max="32"
-      item-class="search-item"
+      item-class="search-item my-md"
       @create="getNewSearchItem"
     >
       <!-- SEARCH ITEM -->
       <template #default="{ value: query, index: queryIndex }">
-        <div class="content-block p-0" style="position: relative">
+        <div class="content-block">
           <n-flex
-            class="search-item-header"
-            :style="{
-              borderBottomColor: resourceMeta[query.cmn.res].colors.fade1,
-            }"
+            :wrap="false"
+            class="mb-md"
+            style="border-bottom: 2px solid"
+            :style="{ borderBottomColor: resourceColors[query.cmn.res].colors.fade2 }"
           >
-            <n-form-item
-              :show-label="false"
-              :show-feedback="false"
-              style="flex-basis: 400px; flex-grow: 6"
-            >
-              <n-select
-                class="search-resource-select b"
-                :value="query.cmn.res"
-                :options="resourceOptions"
-                :consistent-menu-width="false"
-                :menu-props="{ class: 'search-resource-select-menu' }"
-                :style="{
-                  color: resourceMeta[query.cmn.res].colors.base,
-                }"
-                @update:value="
-                  (v, o: SelectMixedOption) =>
-                    handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
-                "
+            <n-flex align="flex-start" style="flex-grow: 2">
+              <n-form-item :show-label="false" style="flex-basis: 400px; flex-grow: 6">
+                <n-select
+                  class="search-resource-select b"
+                  :value="query.cmn.res"
+                  :options="resourceOptions"
+                  :consistent-menu-width="false"
+                  :menu-props="{ class: 'search-resource-select-menu' }"
+                  :style="{
+                    color: resourceColors[query.cmn.res].colors.base,
+                  }"
+                  @update:value="
+                    (v, o: SelectMixedOption) =>
+                      handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
+                  "
+                />
+              </n-form-item>
+              <search-occurrence-selector
+                v-model:occurrence="query.cmn.occ"
+                :query-index="queryIndex"
+                style="flex-basis: 180px; flex-grow: 1"
               />
-            </n-form-item>
-            <search-occurrence-selector
-              v-model:occurrence="query.cmn.occ"
-              :query-index="queryIndex"
-              style="flex-basis: 180px; flex-grow: 1"
-            />
+            </n-flex>
+            <n-button
+              v-if="formModel.queries.length > 1"
+              quaternary
+              :title="$t('general.removeAction')"
+              :focusable="false"
+              class="action-button-remove"
+              @click="removeSearchItem(queryIndex)"
+            >
+              <n-icon :component="ClearIcon" />
+            </n-button>
           </n-flex>
-          <div class="p">
+          <div>
             <component
               :is="resourceTypeSearchForms[query.rts.type]"
               v-model="query.rts"
@@ -259,35 +260,18 @@ watch(
             />
             <common-search-form-items v-model:comment="query.cmn.cmt" :query-index="queryIndex" />
           </div>
-          <div class="search-item-action-buttons">
-            <n-button
-              v-if="formModel.queries.length < 32"
-              circle
-              :color="themeVars.bodyColor"
-              :style="{ color: themeVars.textColor1 }"
-              :title="$t('general.insertAction')"
-              size="large"
-              :focusable="false"
-              class="action-button-insert"
-              @click="addSearchItem(queryIndex)"
-            >
-              <n-icon :component="AddIcon" />
-            </n-button>
-            <n-button
-              v-if="formModel.queries.length > 1"
-              circle
-              :color="themeVars.bodyColor"
-              :style="{ color: themeVars.textColor1 }"
-              :title="$t('general.removeAction')"
-              size="large"
-              :focusable="false"
-              class="action-button-remove"
-              @click="removeSearchItem(queryIndex)"
-            >
-              <n-icon :component="ClearIcon" />
-            </n-button>
-          </div>
         </div>
+        <n-button
+          v-if="formModel.queries.length < 32 && queryIndex === formModel.queries.length - 1"
+          dashed
+          size="large"
+          :title="$t('general.insertAction')"
+          :focusable="false"
+          class="mt-lg"
+          @click="addSearchItem(queryIndex)"
+        >
+          <n-icon :component="AddIcon" />
+        </n-button>
       </template>
       <!-- ADD / REMOVE ACTION BUTTONS -->
       <template #action>
@@ -319,38 +303,15 @@ watch(
 :deep(.search-item) {
   position: relative;
   flex-direction: column;
+  margin: 1rem 0;
+}
+
+:deep(.search-item > .content-block) {
   margin: 0;
-}
-
-:deep(.search-item .search-item-header) {
-  padding: 0.8rem 1rem;
-  border-bottom-width: 4px;
-  border-bottom-style: solid;
-}
-
-:deep(.search-item-action-buttons) {
-  position: absolute;
-  left: 0;
-  bottom: -18px;
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: var(--gap-lg);
-}
-:deep(.search-item-action-buttons .action-button-insert:hover) {
-  color: var(--col-success) !important;
-}
-:deep(.search-item-action-buttons .action-button-remove:hover) {
-  color: var(--col-error) !important;
 }
 
 .search-resource-select :deep(.n-base-selection .n-base-selection-label .n-base-selection-input) {
   color: inherit;
-}
-
-.content-block.p-0 {
-  padding: 0 !important;
 }
 </style>
 

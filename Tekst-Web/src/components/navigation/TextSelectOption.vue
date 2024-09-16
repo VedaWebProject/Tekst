@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const theme = useThemeStore();
 const indicatorStyle = computed(() => ({
-  backgroundColor: theme.generateAccentColorVariants(props.text.accentColor).base,
+  backgroundColor: theme.getAccentColors(props.text.id).base,
 }));
 </script>
 
