@@ -828,6 +828,7 @@ admin:
       heading: Info-Seiten
       newPage: Neue Seite
       phSelectPage: Seite auswählen
+      noPage: Bitte wählen Sie eine Info-Seite aus oder erstellen Sie eine neue!
 
 search:
   searchAction: Suchen

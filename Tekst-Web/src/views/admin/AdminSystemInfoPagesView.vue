@@ -323,9 +323,5 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <huge-labelled-icon
-    v-else
-    :message="$t('admin.system.segments.noSegment')"
-    :icon="FileOpenIcon"
-  />
+  <huge-labelled-icon v-else :message="$t('admin.system.infoPages.noPage')" :icon="FileOpenIcon" />
 </template>

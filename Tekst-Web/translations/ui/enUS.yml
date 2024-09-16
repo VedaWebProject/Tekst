@@ -804,6 +804,7 @@ admin:
       heading: Info Pages
       newPage: New Page
       phSelectPage: Select page
+      noPage: Please select an info page or create a new one!
 
 search:
   searchAction: Search
