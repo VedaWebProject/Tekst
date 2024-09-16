@@ -31,7 +31,7 @@ function toggleCategory(index: number, activate: boolean) {
 </script>
 
 <template>
-  <n-drawer v-model:show="show" :width="680" :auto-focus="false" style="max-width: 90%">
+  <n-drawer v-model:show="show" :width="680" style="max-width: 90%">
     <n-drawer-content closable header-style="border: none">
       <template #header>
         <icon-heading level="2" :icon="ResourceIcon" class="m-0">

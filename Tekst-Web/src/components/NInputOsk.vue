@@ -175,7 +175,6 @@ whenever(Enter, () => {
           <n-drawer
             v-model:show="showOsk"
             placement="bottom"
-            :auto-focus="false"
             :height="680"
             style="max-height: 90%"
             to="#app-container"

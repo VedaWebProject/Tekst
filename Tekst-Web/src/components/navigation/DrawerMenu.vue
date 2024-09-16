@@ -75,7 +75,7 @@ const allMenuOptions = computed(() => [
 </script>
 
 <template>
-  <n-drawer v-model:show="show" :width="600" :auto-focus="false" style="max-width: 90%">
+  <n-drawer v-model:show="show" :width="600" style="max-width: 90%">
     <n-drawer-content closable>
       <template #header>
         <n-flex justify="center">

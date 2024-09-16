@@ -81,7 +81,6 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
 
   <generic-modal
     v-model:show="showModal"
-    :auto-focus="false"
     width="wide"
     :title="$t('browse.bookmarks.bookmarks')"
     :icon="BookmarksIcon"
