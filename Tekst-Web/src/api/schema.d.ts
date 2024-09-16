@@ -3190,6 +3190,12 @@ export interface components {
        */
       prioritizeBrowseLevelResources?: boolean;
       /**
+       * Showlocationaliases
+       * @description Show location aliases in browse view
+       * @default false
+       */
+      showLocationAliases?: boolean;
+      /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages
        * @default true
@@ -3301,6 +3307,12 @@ export interface components {
        * @default true
        */
       prioritizeBrowseLevelResources?: boolean;
+      /**
+       * Showlocationaliases
+       * @description Show location aliases in browse view
+       * @default false
+       */
+      showLocationAliases?: boolean;
       /**
        * Alwaysshowtextinfo
        * @description Always show text info and selector in header, even on non-text-specific pages

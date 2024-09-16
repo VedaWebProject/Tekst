@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useAuthStore, useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useThemeStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -11,11 +11,12 @@ import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { NButton, NFlex } from 'naive-ui';
+import { NButton, NFlex, NTag } from 'naive-ui';
 
 import { NoContentIcon, HourglassIcon, BookIcon, ErrorIcon } from '@/icons';
 
 const auth = useAuthStore();
+const theme = useThemeStore();
 const route = useRoute();
 const browse = useBrowseStore();
 const { pfData } = usePlatformData();
@@ -66,6 +67,26 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
+  <n-flex
+    v-if="pfData?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
+    class="mb-lg"
+  >
+    <n-tag
+      v-for="alias in browse.locationPathHead?.aliases"
+      :key="alias"
+      size="small"
+      :bordered="false"
+      class="translucent"
+      :color="{
+        color: 'var(--main-bg-color)',
+        textColor: 'var(--text-color)',
+        borderColor: theme.accentColors.base,
+      }"
+    >
+      {{ alias }}
+    </n-tag>
+  </n-flex>
+
   <browse-toolbar v-if="browse.locationPath.length" />
 
   <div
@@ -73,7 +94,7 @@ onMounted(() => {
     class="content-container-container"
     :class="browse.reducedView ? 'reduced' : ''"
   >
-    <template v-for="category in browse.resourcesCategorized" :key="category.key">
+    <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
       <n-flex
         v-if="
           pfData?.state.showResourceCategoryHeadings &&

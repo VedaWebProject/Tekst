@@ -339,6 +339,7 @@ models:
     oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show category headings in browse view
     prioritizeBrowseLevelResources: Place resources of current browse level before others in browse view (inside their category)
+    showLocationAliases: Show location aliases in browse view
     customFonts: Additional custom fonts
     resourceFontName: Name
   segment:

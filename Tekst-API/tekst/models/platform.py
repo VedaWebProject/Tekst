@@ -176,6 +176,13 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
+    show_location_aliases: Annotated[
+        bool,
+        Field(
+            description="Show location aliases in browse view",
+        ),
+    ] = True
+
     always_show_text_info: Annotated[
         bool,
         Field(

@@ -12377,6 +12377,12 @@
             "description": "Display resources of current browse level before others in browse view",
             "default": true
           },
+          "showLocationAliases": {
+            "type": "boolean",
+            "title": "Showlocationaliases",
+            "description": "Show location aliases in browse view",
+            "default": false
+          },
           "alwaysShowTextInfo": {
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
@@ -12546,6 +12552,12 @@
             "title": "Prioritizebrowselevelresources",
             "description": "Display resources of current browse level before others in browse view",
             "default": true
+          },
+          "showLocationAliases": {
+            "type": "boolean",
+            "title": "Showlocationaliases",
+            "description": "Show location aliases in browse view",
+            "default": false
           },
           "alwaysShowTextInfo": {
             "type": "boolean",

@@ -213,11 +213,6 @@ function resetForm() {
             v-model="formModel.showLogoInHeader"
             :label="$t('models.platformSettings.showLogoInHeader')"
           />
-          <!-- SHOW TEKST FOOTER HINT -->
-          <labelled-switch
-            v-model="formModel.showTekstFooterHint"
-            :label="$t('models.platformSettings.showTekstFooterHint')"
-          />
           <!-- SHOW RESOURCE CATEGORY HEADINGS -->
           <labelled-switch
             v-model="formModel.showResourceCategoryHeadings"
@@ -227,6 +222,16 @@ function resetForm() {
           <labelled-switch
             v-model="formModel.prioritizeBrowseLevelResources"
             :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
+          />
+          <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
+          <labelled-switch
+            v-model="formModel.showLocationAliases"
+            :label="$t('models.platformSettings.showLocationAliases')"
+          />
+          <!-- SHOW TEKST FOOTER HINT -->
+          <labelled-switch
+            v-model="formModel.showTekstFooterHint"
+            :label="$t('models.platformSettings.showTekstFooterHint')"
           />
         </n-flex>
       </n-form-item>
