@@ -161,6 +161,7 @@ browse:
     modalHeading: Location
     level: Level
     goTo: Go to location
+    aliasesTip: Search for one of these location aliases in the quick search to directly jump to this location.
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level

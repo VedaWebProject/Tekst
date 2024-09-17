@@ -164,6 +164,7 @@ browse:
     modalHeading: Belegstelle
     level: Ebene
     goTo: Gehe zu Belegstelle
+    aliasesTip: Suchen Sie nach einem dieser Belegstellen-Aliase in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
   toolbar:
     tipSelectLocation: Belegstelle auswählen
     tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene

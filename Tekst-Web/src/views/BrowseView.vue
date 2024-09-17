@@ -70,6 +70,7 @@ onMounted(() => {
   <n-flex
     v-if="pfData?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
     class="mb-lg"
+    :title="$t('browse.location.aliasesTip')"
   >
     <n-tag
       v-for="alias in browse.locationPathHead?.aliases"
