@@ -220,7 +220,7 @@ async def _populate_index(
     if text is None:
         raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
-    bulk_index_max_size = 500
+    bulk_index_max_size = 250
     bulk_index_body = []
     errors = False
     target_resource_ids = [
@@ -248,6 +248,7 @@ async def _populate_index(
     # abort if initial stack is empty
     if not stack:
         return
+    bulk_req_count = 0
 
     while stack:
         labels, location = stack.pop(0)
@@ -282,7 +283,8 @@ async def _populate_index(
 
         # check bulk request body size, fire bulk request if necessary
         if len(bulk_index_body) / 2 >= bulk_index_max_size:
-            errors |= not _bulk_index(client, bulk_index_body)
+            bulk_req_count += 1
+            errors |= not _bulk_index(client, bulk_index_body, bulk_req_count)
             bulk_index_body = []
 
         # add all child locations to the stack
@@ -298,7 +300,7 @@ async def _populate_index(
         )
 
     # index the remaining documents
-    errors |= not _bulk_index(client, bulk_index_body)
+    errors |= not _bulk_index(client, bulk_index_body, bulk_req_count + 1)
     bulk_index_body = []
 
     if errors:
@@ -308,9 +310,11 @@ async def _populate_index(
 def _bulk_index(
     client: Elasticsearch,
     reqest_body: dict[str, Any],
+    req_no: int = None,
 ) -> bool:
     resp = client.bulk(body=reqest_body)
-    log.debug(f"Bulk index response took: {resp.get('took', '???')}ms")
+    req_no_str = f"#{req_no} " if req_no is not None else ""
+    log.debug(f"Bulk index request {req_no_str}took: {resp.get('took', '???')}ms")
     return bool(resp) and not resp.get("errors", False)
 
 
