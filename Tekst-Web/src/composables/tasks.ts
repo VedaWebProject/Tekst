@@ -82,8 +82,12 @@ export function useTasks() {
   const addTask = (task: TaskRead) => {
     tasks.value.push(task);
   };
-  const removeTask = (id: string) => {
-    tasks.value = tasks.value.filter((t) => t.id !== id);
+  const removeTask = (id?: string) => {
+    if (id) {
+      tasks.value = tasks.value.filter((t) => t.id !== id);
+    } else {
+      tasks.value = tasks.value.filter((t) => t.status !== 'done');
+    }
   };
 
   return { tasks, addTask, removeTask, startTasksPolling: resume, stopTasksPolling: pause };

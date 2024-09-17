@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { NFlex, NBadge, NFloatButton, NIcon, useDialog, type DialogOptions } from 'naive-ui';
+import {
+  NButton,
+  NFlex,
+  NBadge,
+  NFloatButton,
+  NIcon,
+  useDialog,
+  type DialogOptions,
+} from 'naive-ui';
 import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
 import { useStateStore } from '@/stores';
-import type { Component } from 'vue';
+import { computed, type Component } from 'vue';
 import { useTasks } from '@/composables/tasks';
 import { $t, $te } from '@/i18n';
 
@@ -22,6 +30,8 @@ const dialogTypeMap: Record<string, DialogOptions['type']> = {
   running: 'info',
   waiting: 'default',
 };
+
+const hasSuccessfulTasks = computed(() => tasks.value.some((t) => t.status === 'done'));
 
 function handleTaskClick(id: string) {
   const t = tasks.value.find((t) => t.id === id);
@@ -60,9 +70,21 @@ function handleTaskClick(id: string) {
     </n-badge>
     <template #menu>
       <div class="task-list">
-        <div class="task-list-header">
-          {{ $t('tasks.title') }}
-        </div>
+        <n-flex justify="space-between" align="center" :wrap="false" class="task-list-header">
+          <span class="b ellipsis" style="color: var(--base-color)">{{ $t('tasks.title') }}</span>
+          <n-button
+            v-if="hasSuccessfulTasks"
+            quaternary
+            circle
+            :focusable="false"
+            color="var(--base-color)"
+            @click="() => removeTask()"
+          >
+            <template #icon>
+              <n-icon :component="CheckCircleIcon" />
+            </template>
+          </n-button>
+        </n-flex>
         <n-flex
           v-for="task in tasks"
           :key="task.id"
@@ -104,11 +126,9 @@ function handleTaskClick(id: string) {
 }
 
 #tasks-widget .task-list-header {
-  padding: 10px 16px 12px 16px;
-  color: var(--base-color);
+  padding: 10px 16px;
   background-color: var(--accent-color);
   margin: 0;
-  font-weight: var(--font-weight-bold);
 }
 
 #tasks-widget .task-item {
