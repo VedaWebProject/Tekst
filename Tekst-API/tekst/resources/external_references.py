@@ -156,6 +156,10 @@ class ExternalReferencesResource(ResourceBase):
     resource_type: Literal["externalReferences"]  # camelCased resource type classname
     config: ExternalReferencesResourceConfig = ExternalReferencesResourceConfig()
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["text"]
+
 
 class ExternalReferencesLink(ModelBase):
     url: Annotated[

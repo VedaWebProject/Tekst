@@ -371,41 +371,20 @@ async def _get_target_resources(
     *,
     user: UserRead | None = None,
     text_ids: list[PydanticObjectId] | None = None,
-    resource_types: list[str] | None = None,
-) -> list[ResourceBaseDocument]:
+) -> dict[str, ResourceBaseDocument]:
     """
     Returns a constrained list of target resources for a search request,
     based on the requesting user's permissions, target texts and resource types.
     """
-    return await ResourceBaseDocument.find(
-        In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
-        In(ResourceBaseDocument.resource_type, resource_types)
-        if resource_types
-        else {},
-        Eq(ResourceBaseDocument.public, True),
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    ).to_list()
-
-
-async def _get_target_resource_ids(
-    *,
-    user: UserRead | None = None,
-    text_ids: list[PydanticObjectId] | None = None,
-    resource_types: list[str] | None = None,
-) -> list[str]:
-    """
-    Returns a constrained list of IDs for the target resources for a search request,
-    based on the requesting user's permissions, target texts and resource types.
-    """
-    return [
-        str(res.id)
-        for res in await _get_target_resources(
-            user=user,
-            text_ids=text_ids,
-            resource_types=resource_types,
-        )
-    ]
+    return {
+        str(res.id): res
+        for res in await ResourceBaseDocument.find(
+            In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
+            Eq(ResourceBaseDocument.public, True),
+            await ResourceBaseDocument.access_conditions_read(user),
+            with_children=True,
+        ).to_list()
+    }
 
 
 async def search_quick(
@@ -415,33 +394,45 @@ async def search_quick(
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    target_resource_ids = await _get_target_resource_ids(
+    target_resources = await _get_target_resources(
         user=user,
         text_ids=settings_quick.texts,  # constrain target texts
-        resource_types=[
-            "plainText",
-            "richText",
-            "audio",
-            "images",
-            "externalReferences",
-        ],  # constrain target resource types for quick search
     )
 
     # compose a list of target index fields based on the resources to search:
-    field_pattern_suffix = ".*.strict" if settings_general.strict else ".*"
-    fields = [
-        f"resources.{res_id}{field_pattern_suffix}" for res_id in target_resource_ids
-    ]
+    field_pattern_suffix = ".strict" if settings_general.strict else ""
+    fields = []
+    for res_id, res in target_resources.items():
+        for field in res.quick_search_fields():
+            fields.append(f"resources.{res_id}.{field}{field_pattern_suffix}")
 
     # compose the query
-    es_query = {
-        "simple_query_string": {
-            "query": query_string or "*",  # fall back to '*' if empty
-            "fields": fields,
-            "default_operator": settings_quick.default_operator,
-            "analyze_wildcard": True,
+    if not settings_quick.regexp or not query_string:
+        es_query = {
+            "simple_query_string": {
+                "query": query_string or "*",  # fall back to '*' if empty
+                "fields": fields,
+                "default_operator": settings_quick.default_operator,
+                "analyze_wildcard": True,
+            }
         }
-    }
+    else:
+        es_query = {
+            "bool": {
+                "should": [
+                    {
+                        "regexp": {
+                            field: {
+                                "value": query_string,
+                                "flags": "ALL",
+                                "case_insensitive": True,
+                            }
+                        }
+                    }
+                    for field in fields
+                ]
+            }
+        }
 
     log.debug(f"Running ES query: {es_query}")
 

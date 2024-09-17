@@ -198,6 +198,15 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         }
         return {k for k, v in restrictions.items() if v}
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        """
+        Should return a list of search index fields that can be searched via
+        quick search. By default, it returns an empty list. This is supposed to be
+        overridden by concrete resource implementations.
+        """
+        return []
+
     async def contents_changed_hook(self) -> None:
         """
         Will be called whenever contents of a given resource are changed.

@@ -28,6 +28,7 @@ export const useSearchStore = defineStore('search', () => {
   });
   const settingsQuick = ref<QuickSearchSettings>({
     op: 'OR',
+    re: false,
   });
   const settingsAdvanced = ref<AdvancedSearchSettings>({});
 

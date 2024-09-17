@@ -33,6 +33,7 @@ const settings = computed(() => [
   ...(props.req.qck?.op?.toLowerCase() === 'and'
     ? [$t('search.settings.quick.defaultOperator')]
     : []),
+  ...(props.req.qck?.re ? [$t('search.settings.quick.regexp')] : []),
   ...(props.req.gen?.strict ? [$t('search.settings.general.strict')] : []),
 ]);
 </script>

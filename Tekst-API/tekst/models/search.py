@@ -140,6 +140,13 @@ class QuickSearchSettings(ModelBase):
             description="Default operator",
         ),
     ] = "OR"
+    regexp: Annotated[
+        bool,
+        Field(
+            alias="re",
+            description="Whether to use regular expressions",
+        ),
+    ] = False
     texts: Annotated[
         list[PydanticObjectId] | None,
         Field(

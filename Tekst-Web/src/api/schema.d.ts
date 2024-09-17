@@ -3192,7 +3192,7 @@ export interface components {
       /**
        * Showlocationaliases
        * @description Show location aliases in browse view
-       * @default false
+       * @default true
        */
       showLocationAliases?: boolean;
       /**
@@ -3310,7 +3310,7 @@ export interface components {
       /**
        * Showlocationaliases
        * @description Show location aliases in browse view
-       * @default false
+       * @default true
        */
       showLocationAliases?: boolean;
       /**
@@ -3412,7 +3412,8 @@ export interface components {
       /**
        * @description Quick search settings
        * @default {
-       *   "op": "OR"
+       *   "op": "OR",
+       *   "re": false
        * }
        */
       qck?: components['schemas']['QuickSearchSettings'];
@@ -3426,6 +3427,12 @@ export interface components {
        * @enum {string}
        */
       op?: 'AND' | 'OR';
+      /**
+       * Re
+       * @description Whether to use regular expressions
+       * @default false
+       */
+      re?: boolean;
       /**
        * Txt
        * @description IDs of texts to search in

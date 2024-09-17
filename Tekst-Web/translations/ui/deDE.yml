@@ -847,9 +847,10 @@ search:
   settings:
     general:
       heading: '@:general.general'
-      strict: berücksichtige Diakritika
+      strict: Berücksichtige Diakritika
     quick:
-      defaultOperator: alle Suchausdrücke müssen zutreffen
+      defaultOperator: Alle Begriffe müssen vorkommen
+      regexp: Interpretiere Reguläre Ausdrücke
       texts: Texte
       textsPlaceholder: Alle Texte
   results:

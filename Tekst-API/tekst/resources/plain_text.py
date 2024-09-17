@@ -252,6 +252,10 @@ class PlainTextResource(ResourceBase):
     resource_type: Literal["plainText"]  # camelCased resource type classname
     config: PlainTextResourceConfig = PlainTextResourceConfig()
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["text"]
+
 
 class PlainTextContent(ContentBase):
     """A content of a plain text resource"""

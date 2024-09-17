@@ -37,7 +37,7 @@ class RichText(ResourceTypeABC):
     @classmethod
     def rtype_index_doc_props(cls) -> dict[str, Any]:
         return {
-            "html": {
+            "text": {
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
                 "fields": {
@@ -55,7 +55,7 @@ class RichText(ResourceTypeABC):
         content: "RichTextContent",
     ) -> dict[str, Any]:
         return {
-            "html": get_html_text(content.html),
+            "text": get_html_text(content.html),
         }
 
     @classmethod
@@ -151,6 +151,10 @@ class RichTextResourceConfig(ResourceConfigBase):
 class RichTextResource(ResourceBase):
     resource_type: Literal["richText"]  # camelCased resource type classname
     config: RichTextResourceConfig = RichTextResourceConfig()
+
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["text"]
 
 
 class RichTextContent(ContentBase):

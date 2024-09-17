@@ -17,7 +17,7 @@ const textOptions = computed(() =>
     <!-- TEXTS -->
     <n-form-item
       v-if="(pfData?.texts.length || 0) > 1"
-      path="defaultOperator"
+      path="txt"
       :label="$t('search.settings.quick.texts')"
     >
       <n-select
@@ -30,12 +30,22 @@ const textOptions = computed(() =>
     </n-form-item>
 
     <!-- DEFAULT OPERATOR -->
-    <n-form-item path="texts" :show-label="false" :show-feedback="false">
+    <n-form-item path="op" :show-label="false" :show-feedback="false">
       <labelled-switch
         v-model="search.settingsQuick.op"
         checked-value="AND"
         unchecked-value="OR"
         :label="$t('search.settings.quick.defaultOperator')"
+        :disabled="search.settingsQuick.re"
+      />
+    </n-form-item>
+
+    <!-- REGEXP -->
+    <n-form-item path="re" :show-label="false" :show-feedback="false">
+      <labelled-switch
+        v-model="search.settingsQuick.re"
+        :label="$t('search.settings.quick.regexp')"
+        @update:model-value="(v) => v && (search.settingsQuick.op = 'OR')"
       />
     </n-form-item>
   </n-form>

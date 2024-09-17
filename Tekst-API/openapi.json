@@ -7036,11 +7036,7 @@
             "description": "Resource-specific queries"
           },
           "gen": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralSearchSettings"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralSearchSettings",
             "description": "General search settings",
             "default": {
               "pgn": {
@@ -7051,11 +7047,7 @@
             }
           },
           "adv": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdvancedSearchSettings"
-              }
-            ],
+            "$ref": "#/components/schemas/AdvancedSearchSettings",
             "description": "Advanced search settings",
             "default": {}
           }
@@ -7370,11 +7362,7 @@
       "AudioResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -7382,11 +7370,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralAudioResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralAudioResourceConfig",
             "default": {
               "defaultCollapsed": false
             }
@@ -7532,11 +7516,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AudioResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/AudioResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -7753,11 +7733,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AudioResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/AudioResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -7936,11 +7912,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AudioResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/AudioResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -8271,11 +8243,7 @@
             "default": "wysiwyg"
           },
           "locale": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TranslationLocaleKey"
-              }
-            ],
+            "$ref": "#/components/schemas/TranslationLocaleKey",
             "description": "Locale indicating the translation language of this segment"
           },
           "title": {
@@ -8373,11 +8341,7 @@
             "default": "wysiwyg"
           },
           "locale": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TranslationLocaleKey"
-              }
-            ],
+            "$ref": "#/components/schemas/TranslationLocaleKey",
             "description": "Locale indicating the translation language of this segment"
           },
           "title": {
@@ -9057,11 +9021,7 @@
       "ExternalReferencesResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -9069,11 +9029,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralExternalReferencesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralExternalReferencesResourceConfig",
             "default": {
               "defaultCollapsed": false
             }
@@ -9219,11 +9175,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -9440,11 +9392,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -9623,11 +9571,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -9764,11 +9708,7 @@
             "description": "Name of the font to use for this resource."
           },
           "reducedView": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReducedViewConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ReducedViewConfig",
             "default": {
               "singleLine": false,
               "singleLineDelimiter": " / "
@@ -9805,11 +9745,7 @@
       "GeneralSearchSettings": {
         "properties": {
           "pgn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaginationSettings"
-              }
-            ],
+            "$ref": "#/components/schemas/PaginationSettings",
             "description": "Pagination settings",
             "default": {
               "pg": 1,
@@ -10157,11 +10093,7 @@
       "ImagesResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -10169,11 +10101,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralImagesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralImagesResourceConfig",
             "default": {
               "defaultCollapsed": true
             }
@@ -10319,11 +10247,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImagesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ImagesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -10540,11 +10464,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImagesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ImagesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -10723,11 +10643,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImagesResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/ImagesResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -10942,7 +10858,7 @@
           },
           "contents": {
             "items": {
-              "anyOf": [
+              "oneOf": [
                 {
                   "$ref": "#/components/schemas/AudioContentRead"
                 },
@@ -10961,7 +10877,18 @@
                 {
                   "$ref": "#/components/schemas/TextAnnotationContentRead"
                 }
-              ]
+              ],
+              "discriminator": {
+                "propertyName": "resourceType",
+                "mapping": {
+                  "audio": "#/components/schemas/AudioContentRead",
+                  "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                  "images": "#/components/schemas/ImagesContentRead",
+                  "plainText": "#/components/schemas/PlainTextContentRead",
+                  "richText": "#/components/schemas/RichTextContentRead",
+                  "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                }
+              }
             },
             "type": "array",
             "title": "Contents",
@@ -11495,11 +11422,7 @@
       "PlainTextResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -11507,11 +11430,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralPlainTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralPlainTextResourceConfig",
             "default": {
               "defaultCollapsed": false,
               "reducedView": {
@@ -11521,22 +11440,14 @@
             }
           },
           "lineLabelling": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LineLabellingConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/LineLabellingConfig",
             "default": {
               "enabled": false,
               "labellingType": "numbersOneBased"
             }
           },
           "deeplLinks": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DeepLLinksConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/DeepLLinksConfig",
             "default": {
               "enabled": false
             }
@@ -11682,11 +11593,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/PlainTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -11914,11 +11821,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/PlainTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -12108,11 +12011,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/PlainTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -12381,7 +12280,7 @@
             "type": "boolean",
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
-            "default": false
+            "default": true
           },
           "alwaysShowTextInfo": {
             "type": "boolean",
@@ -12557,7 +12456,7 @@
             "type": "boolean",
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
-            "default": false
+            "default": true
           },
           "alwaysShowTextInfo": {
             "type": "boolean",
@@ -12685,11 +12584,7 @@
             "default": "*"
           },
           "gen": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralSearchSettings"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralSearchSettings",
             "description": "General search settings",
             "default": {
               "pgn": {
@@ -12700,14 +12595,11 @@
             }
           },
           "qck": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QuickSearchSettings"
-              }
-            ],
+            "$ref": "#/components/schemas/QuickSearchSettings",
             "description": "Quick search settings",
             "default": {
-              "op": "OR"
+              "op": "OR",
+              "re": false
             }
           }
         },
@@ -12728,6 +12620,12 @@
             "title": "Op",
             "description": "Default operator",
             "default": "OR"
+          },
+          "re": {
+            "type": "boolean",
+            "title": "Re",
+            "description": "Whether to use regular expressions",
+            "default": false
           },
           "txt": {
             "anyOf": [
@@ -12942,11 +12840,7 @@
       "ResourceSearchQuery": {
         "properties": {
           "cmn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceSearchQueryData"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceSearchQueryData",
             "description": "Common resource search query data"
           },
           "rts": {
@@ -13258,11 +13152,7 @@
       "RichTextResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -13270,11 +13160,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralRichTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralRichTextResourceConfig",
             "default": {
               "defaultCollapsed": true
             }
@@ -13420,11 +13306,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RichTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -13641,11 +13523,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RichTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -13824,11 +13702,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RichTextResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -13997,11 +13871,7 @@
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TaskType"
-              }
-            ],
+            "$ref": "#/components/schemas/TaskType",
             "description": "Type of the task"
           },
           "targetId": {
@@ -14373,11 +14243,7 @@
             "description": "Key of the annotation"
           },
           "value": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TextAnnotationValues"
-              }
-            ],
+            "$ref": "#/components/schemas/TextAnnotationValues",
             "description": "Value(s) of the annotation"
           }
         },
@@ -14420,11 +14286,7 @@
       "TextAnnotationResourceConfig": {
         "properties": {
           "common": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CommonResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/CommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
@@ -14432,11 +14294,7 @@
             }
           },
           "general": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig",
             "default": {
               "defaultCollapsed": false
             }
@@ -14603,11 +14461,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -14846,11 +14700,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -15051,11 +14901,7 @@
             "default": []
           },
           "config": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
-              }
-            ],
+            "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "default": {
               "common": {
                 "defaultActive": true,
@@ -15694,11 +15540,7 @@
             "title": "Bio"
           },
           "publicFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
-              }
-            ],
+            "$ref": "#/components/schemas/MaybePrivateUserFields",
             "default": []
           },
           "userNotificationTriggers": {
@@ -16022,11 +15864,7 @@
             "title": "Bio"
           },
           "publicFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
-              }
-            ],
+            "$ref": "#/components/schemas/MaybePrivateUserFields",
             "default": []
           },
           "userNotificationTriggers": {
@@ -16299,11 +16137,7 @@
             "title": "Bio"
           },
           "publicFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
-              }
-            ],
+            "$ref": "#/components/schemas/MaybePrivateUserFields",
             "default": []
           },
           "userNotificationTriggers": {

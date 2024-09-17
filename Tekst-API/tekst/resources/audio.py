@@ -153,6 +153,10 @@ class AudioResource(ResourceBase):
     resource_type: Literal["audio"]  # camelCased resource type classname
     config: AudioResourceConfig = AudioResourceConfig()
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["caption"]
+
 
 class AudioFile(ModelBase):
     url: Annotated[

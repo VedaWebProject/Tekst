@@ -158,6 +158,10 @@ class ImagesResource(ResourceBase):
     resource_type: Literal["images"]  # camelCased resource type classname
     config: ImagesResourceConfig = ImagesResourceConfig()
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["caption"]
+
 
 class ImageFile(ModelBase):
     url: Annotated[

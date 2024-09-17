@@ -823,9 +823,10 @@ search:
   settings:
     general:
       heading: '@:general.general'
-      strict: respect diacritics
+      strict: Respect diacritics
     quick:
-      defaultOperator: all search terms must match
+      defaultOperator: All terms must occur
+      regexp: Interpret Regular Expressions
       texts: Texts
       textsPlaceholder: All texts
   results:
