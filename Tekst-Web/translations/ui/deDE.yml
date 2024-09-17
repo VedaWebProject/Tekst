@@ -837,6 +837,7 @@ search:
     title: Schnellsuche
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
   advancedSearch:
+    addQuery: Abfrage hinzufügen
     msgNoResources: Es gibt keine Ressourcen zu diesem Text, in denen gesucht werden könnte.
     occ:
       label: Vorkommen

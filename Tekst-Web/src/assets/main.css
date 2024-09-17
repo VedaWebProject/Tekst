@@ -225,8 +225,8 @@ code {
   padding: 1rem;
 }
 
-.p-lg {
-  padding: 1.2rem !important;
+.p-0 {
+  padding: 0 !important;
 }
 
 .box-shadow {

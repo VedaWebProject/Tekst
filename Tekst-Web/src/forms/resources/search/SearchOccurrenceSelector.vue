@@ -17,7 +17,7 @@ const occurrenceOptions = [
 </script>
 
 <template>
-  <n-form-item :show-label="false">
+  <n-form-item :show-label="false" :show-feedback="false">
     <n-select
       v-model:value="occurrence"
       :options="occurrenceOptions"

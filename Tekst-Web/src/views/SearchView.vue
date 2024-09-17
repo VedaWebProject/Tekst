@@ -210,24 +210,24 @@ watch(
     >
       <!-- SEARCH ITEM -->
       <template #default="{ value: query, index: queryIndex }">
-        <div class="content-block">
+        <div class="content-block p-0">
           <n-flex
             :wrap="false"
-            class="mb-md"
-            style="border-bottom: 2px solid"
-            :style="{ borderBottomColor: resourceColors[query.cmn.res].colors.fade2 }"
+            class="search-item-header p"
+            :style="{ backgroundColor: resourceColors[query.cmn.res].colors.fade3 }"
           >
             <n-flex align="flex-start" style="flex-grow: 2">
-              <n-form-item :show-label="false" style="flex-basis: 400px; flex-grow: 6">
+              <n-form-item
+                :show-label="false"
+                :show-feedback="false"
+                style="flex-basis: 400px; flex-grow: 6"
+              >
                 <n-select
                   class="search-resource-select b"
                   :value="query.cmn.res"
                   :options="resourceOptions"
                   :consistent-menu-width="false"
                   :menu-props="{ class: 'search-resource-select-menu' }"
-                  :style="{
-                    color: resourceColors[query.cmn.res].colors.base,
-                  }"
                   @update:value="
                     (v, o: SelectMixedOption) =>
                       handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
@@ -242,7 +242,7 @@ watch(
             </n-flex>
             <n-button
               v-if="formModel.queries.length > 1"
-              quaternary
+              secondary
               :title="$t('general.removeAction')"
               :focusable="false"
               class="action-button-remove"
@@ -251,7 +251,7 @@ watch(
               <n-icon :component="ClearIcon" />
             </n-button>
           </n-flex>
-          <div>
+          <div class="p">
             <component
               :is="resourceTypeSearchForms[query.rts.type]"
               v-model="query.rts"
@@ -264,13 +264,15 @@ watch(
         <n-button
           v-if="formModel.queries.length < 32 && queryIndex === formModel.queries.length - 1"
           dashed
-          size="large"
           :title="$t('general.insertAction')"
           :focusable="false"
           class="mt-lg"
           @click="addSearchItem(queryIndex)"
         >
-          <n-icon :component="AddIcon" />
+          <template #icon>
+            <n-icon :component="AddIcon" />
+          </template>
+          {{ $t('search.advancedSearch.addQuery') }}
         </n-button>
       </template>
       <!-- ADD / REMOVE ACTION BUTTONS -->
@@ -308,6 +310,11 @@ watch(
 
 :deep(.search-item > .content-block) {
   margin: 0;
+}
+
+:deep(.search-item .search-item-header) {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
 }
 
 .search-resource-select :deep(.n-base-selection .n-base-selection-label .n-base-selection-input) {

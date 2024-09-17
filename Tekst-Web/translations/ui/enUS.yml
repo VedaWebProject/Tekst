@@ -813,6 +813,7 @@ search:
     title: Quick Search
     gotoAdvancedSearch: Go to Advanced Search
   advancedSearch:
+    addQuery: Add query
     msgNoResources: There are no resources associated with this text to search in.
     occ:
       label: Occurrence
