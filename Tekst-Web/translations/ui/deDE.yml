@@ -23,6 +23,8 @@ general:
   refreshAction: Aktualisieren
   exportAction: Export
   runAction: Ausführen
+  expandAction: Ausklappen
+  collapseAction: Einklappen
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
   warning: Warnung

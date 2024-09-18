@@ -32,7 +32,8 @@ watch(
   () => browse.reducedView,
   (reduced) => {
     contentCollapsed.value = !reduced && !!props.resource.config?.general?.defaultCollapsed;
-  }
+  },
+  { immediate: true }
 );
 
 const headerExtraText = computed(() => {
@@ -115,25 +116,23 @@ const fromChildLevel = computed(
       </n-flex>
     </n-spin>
 
-    <div
-      v-if="resource.config?.general?.defaultCollapsed != null"
-      class="content-collapse-btn-wrapper"
+    <n-button
+      v-if="
+        resource.config?.general?.defaultCollapsed &&
+        !browse.reducedView &&
+        resource.contents?.length
+      "
+      text
+      block
+      class="mt-sm"
+      :focusable="false"
+      @click="contentCollapsed = !contentCollapsed"
     >
-      <n-button
-        v-if="resource.config?.general?.defaultCollapsed && resource.contents?.length"
-        circle
-        :color="themeVars.bodyColor"
-        :style="{ color: 'var(--text-color)' }"
-        :focusable="false"
-        class="content-collapse-btn"
-        size="small"
-        @click="contentCollapsed = !contentCollapsed"
-      >
-        <template #icon>
-          <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
-        </template>
-      </n-button>
-    </div>
+      <template #icon>
+        <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
+      </template>
+      {{ contentCollapsed ? $t('general.expandAction') : $t('general.collapseAction') }}
+    </n-button>
   </div>
 </template>
 
@@ -141,7 +140,6 @@ const fromChildLevel = computed(
 .content-container {
   padding-top: var(--gap-md);
   padding-bottom: var(--gap-md);
-  position: relative;
   font-size: var(--font-size);
 }
 .content-container.reduced {
@@ -225,24 +223,5 @@ const fromChildLevel = computed(
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   max-height: 150px;
   overflow-y: scroll;
-}
-
-.content-collapse-btn-wrapper {
-  position: absolute;
-  left: 0;
-  bottom: -16px;
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: var(--gap-lg);
-}
-
-.reduced > .content-collapse-btn-wrapper {
-  display: none;
-}
-
-.content-collapse-btn:hover {
-  color: var(--accent-color) !important;
 }
 </style>

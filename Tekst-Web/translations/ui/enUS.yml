@@ -23,6 +23,8 @@ general:
   refreshAction: Refresh
   exportAction: Export
   runAction: Run
+  expandAction: Expand
+  collapseAction: Collapse
   textSelect: Select the text you want to work with
   info: Information
   warning: Warning
