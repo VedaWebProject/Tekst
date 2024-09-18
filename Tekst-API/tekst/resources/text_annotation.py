@@ -323,6 +323,10 @@ class TextAnnotationResource(ResourceBase):
         ),
     ] = True
 
+    @classmethod
+    def quick_search_fields(cls) -> list[str]:
+        return ["tokens.token", "tokens.annotations.value"]
+
     async def _update_aggregations(self) -> None:
         # get resource document
         rs_doc_model = self.document_model()
