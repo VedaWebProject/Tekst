@@ -14,7 +14,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
+import { isInputFocused, isOverlayOpen, utcToLocalTime } from '@/utils';
 import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
 
 const { pfData } = usePlatformData();
@@ -42,9 +42,6 @@ const searchError = ref(false);
 const resultsData = ref<SearchResults>();
 
 const results = computed<SearchResultProps[]>(() => {
-  const resourceTitles = Object.fromEntries(
-    resources.all.map((r) => [r.id, pickTranslation(r.title, state.locale)])
-  );
   return (
     resultsData.value?.hits.map((r) => {
       const text = pfData.value?.texts.find((t) => t.id === r.textId);
@@ -64,7 +61,7 @@ const results = computed<SearchResultProps[]>(() => {
             : undefined,
         highlight: r.highlight,
         smallScreen: state.smallScreen,
-        resourceTitles,
+        resourceTitles: resources.resourceTitles,
       };
     }) || []
   );

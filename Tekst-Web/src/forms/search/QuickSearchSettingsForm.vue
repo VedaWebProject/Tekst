@@ -7,6 +7,7 @@ import { computed } from 'vue';
 
 const search = useSearchStore();
 const { pfData } = usePlatformData();
+
 const textOptions = computed(() =>
   pfData.value?.texts.map((t) => ({ label: t.title, value: t.id }))
 );

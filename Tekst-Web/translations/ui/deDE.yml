@@ -445,6 +445,7 @@ resources:
         sortOrder: Sortierreihenfolge
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
+        quickSearchable: Ressource ist über Schnellsuche durchsuchbar
       general:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
@@ -853,6 +854,7 @@ search:
       regexp: Interpretiere Reguläre Ausdrücke
       texts: Texte
       textsPlaceholder: Alle Texte
+      searchableResources: Ziel-Ressourcen
   results:
     heading: Suchergebnisse
     searching: Suche

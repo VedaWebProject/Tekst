@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { SearchIcon } from '@/icons';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { useRouter } from 'vue-router';
-import { useSearchStore, useStateStore } from '@/stores';
-import { NButton, NIcon, NPopselect, type InputInst, type SelectOption } from 'naive-ui';
+import { useResourcesStore, useSearchStore, useStateStore } from '@/stores';
+import {
+  NCollapse,
+  NCollapseItem,
+  NButton,
+  NIcon,
+  NPopselect,
+  type InputInst,
+  type SelectOption,
+} from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { SettingsIcon } from '@/icons';
@@ -13,11 +21,14 @@ import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue'
 import { GET } from '@/api';
 import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { usePlatformData } from '@/composables/platformData';
 
 const emit = defineEmits(['submit']);
 
 const state = useStateStore();
+const { pfData } = usePlatformData();
 const search = useSearchStore();
+const resources = useResourcesStore();
 const router = useRouter();
 
 const showLocationSelect = ref(false);
@@ -27,6 +38,18 @@ const loading = ref(false);
 const quickSearchInputRef = ref<InputInst | null>(null);
 
 const locationSelectOptions = ref<SelectOption[]>([]);
+
+const searchableResources = computed(() =>
+  Object.fromEntries(
+    (search.settingsQuick.txt?.length
+      ? search.settingsQuick.txt
+      : pfData.value?.texts.map((t) => t.id)
+    )?.map((tId) => [
+      pfData.value?.texts.find((t) => t.id === tId)?.title,
+      resources.all.filter((r) => r.textId === tId && r.config?.common?.quickSearchable),
+    ]) || []
+  )
+);
 
 async function handleSearch() {
   loading.value = true;
@@ -183,6 +206,22 @@ function quickSearch(q: string) {
   >
     <quick-search-settings-form />
     <general-search-settings-form />
+
+    <!-- SEARCHABLE RESOURCES PREVIEW -->
+    <n-collapse class="my-lg">
+      <n-collapse-item name="resources" :title="$t('search.settings.quick.searchableResources')">
+        <div class="text-tiny gray-box">
+          <template v-for="(txtResources, txtTitle) in searchableResources" :key="txtTitle">
+            <h5>{{ txtTitle }}</h5>
+            <ul class="m-0">
+              <li v-for="res in txtResources" :key="res.id">
+                {{ resources.resourceTitles[res.id] }}
+              </li>
+            </ul>
+          </template>
+        </div>
+      </n-collapse-item>
+    </n-collapse>
 
     <button-shelf>
       <n-button type="primary" @click="showSettingsModal = false">

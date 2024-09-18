@@ -403,8 +403,9 @@ async def search_quick(
     field_pattern_suffix = ".strict" if settings_general.strict else ""
     fields = []
     for res_id, res in target_resources.items():
-        for field in res.quick_search_fields():
-            fields.append(f"resources.{res_id}.{field}{field_pattern_suffix}")
+        if res.config.common.quick_searchable:
+            for field in res.quick_search_fields():
+                fields.append(f"resources.{res_id}.{field}{field_pattern_suffix}")
 
     # compose the query
     if not settings_quick.regexp or not query_string:

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { type CorrectionRead, GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useStateStore } from '@/stores';
-import { hashCode } from '@/utils';
+import { hashCode, pickTranslation } from '@/utils';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();
@@ -10,6 +10,11 @@ export const useResourcesStore = defineStore('resources', () => {
   const resourcesAll = ref<AnyResourceRead[]>([]);
   const resourcesOfText = computed(() =>
     resourcesAll.value.filter((r) => r.textId === state.text?.id)
+  );
+  const resourceTitles = computed(() =>
+    Object.fromEntries(
+      resourcesAll.value.map((r) => [r.id, pickTranslation(r.title, state.locale)])
+    )
   );
   const corrections = ref<Record<string, CorrectionRead[]>>({});
   const correctionsCount = computed<Record<string, number>>(() =>
@@ -124,6 +129,7 @@ export const useResourcesStore = defineStore('resources', () => {
   return {
     all: resourcesAll,
     ofText: resourcesOfText,
+    resourceTitles,
     correctionsCount,
     correctionsCountTotal,
     corrections,

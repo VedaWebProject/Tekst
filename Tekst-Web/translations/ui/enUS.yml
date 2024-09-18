@@ -435,6 +435,7 @@ resources:
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
         showOnParentLevel: Enable viewing combined contents on the parent level
+        quickSearchable: Resource is searchable in quick search
       general:
         heading: General
         defaultCollapsed: Collapse contents by default
@@ -829,6 +830,7 @@ search:
       regexp: Interpret Regular Expressions
       texts: Texts
       textsPlaceholder: All texts
+      searchableResources: Target resources
   results:
     heading: Search Results
     searching: Searching

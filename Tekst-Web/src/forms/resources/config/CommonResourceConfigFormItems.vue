@@ -74,6 +74,12 @@ function handleUpdate(field: string, value: any) {
         />
         <help-button-widget help-key="resourceConfigCombinedSiblings" />
       </n-flex>
+      <!-- QUICK SEARCHABLE -->
+      <labelled-switch
+        :model-value="model.quickSearchable"
+        :label="$t('resources.settings.config.common.quickSearchable')"
+        @update:model-value="(v) => handleUpdate('quickSearchable', v)"
+      />
     </n-flex>
   </n-form-item>
 </template>
