@@ -1,7 +1,9 @@
+import re
+
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import NE, Eq, Or, Text
+from beanie.operators import NE, Eq, Or, RegEx
 from fastapi import APIRouter, Depends, Path, Query, Request, status
 
 from tekst import errors
@@ -19,6 +21,26 @@ from tekst.models.user import (
     UsersSearchResult,
 )
 from tekst.utils import validators as val
+
+
+def _get_user_text_query(
+    query_str: str,
+    *,
+    min_q_length: int = 1,
+    empty_q_matches_all: bool = True,
+) -> dict:
+    q = re.sub(r"\W", "", query_str or "").strip()
+    if not q or len(q) < min_q_length:
+        if empty_q_matches_all:
+            return {}
+        else:
+            return Eq(UserDocument.id, 0)
+    else:
+        return Or(
+            RegEx(UserDocument.username, q, "i"),
+            RegEx(UserDocument.name, q, "i"),
+            RegEx(UserDocument.affiliation, q, "i"),
+        )
 
 
 router = APIRouter(
@@ -126,7 +148,7 @@ async def find_users(
 ) -> UsersSearchResult:
     # construct DB query
     db_query = [
-        Text(query) if query else {},
+        _get_user_text_query(query),
         Or(
             Eq(UserDocument.is_active, is_active)
             if is_active
@@ -259,11 +281,12 @@ async def find_public_users(
 
     # construct DB query
     db_query = [
-        Text(query) if query else {},
+        _get_user_text_query(query),
         Eq(UserDocument.is_active, True),
     ]
 
     # count total possible hits
+    # (yeah, MongoDB doesn't give us the total for a skipped query)
     total = await UserDocument.find(*db_query).count()
 
     # return actual paginated, sorted restults
@@ -271,7 +294,7 @@ async def find_public_users(
     return PublicUsersSearchResult(
         users=(
             await UserDocument.find(*db_query)
-            .sort(+UserDocument.name)
+            .sort(+UserDocument.name, +UserDocument.username)
             .skip(pgn.mongo_skip())
             .limit(pgn.mongo_limit())
             .to_list()

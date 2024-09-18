@@ -1,8 +1,6 @@
 from datetime import datetime
 from typing import Annotated, Literal, get_args
 
-import pymongo
-
 from beanie import Document, PydanticObjectId
 from fastapi_users import (
     schemas,
@@ -151,13 +149,6 @@ class UserDocument(User, BeanieBaseUser, Document):
         name = "users"
         indexes = BeanieBaseUser.Settings.indexes + [
             IndexModel("username", unique=True),
-            IndexModel(
-                [
-                    ("username", pymongo.TEXT),
-                    ("name", pymongo.TEXT),
-                    ("affiliation", pymongo.TEXT),
-                ],
-            ),
         ]
 
     is_active: bool = _cfg.security.users_active_by_default
