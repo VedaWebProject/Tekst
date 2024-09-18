@@ -55,7 +55,6 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",
-    "isomorphic-dompurify": "^2.4.0",
     "marked": "^12.0.1",
     "naive-ui": "^2.34.4",
     "npm-run-all2": "^6.1.2",

@@ -1,5 +1,4 @@
 import { marked } from 'marked';
-import DOMPurify from 'isomorphic-dompurify';
 import path from 'path';
 import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, existsSync } from 'fs';
 
@@ -11,6 +10,14 @@ const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry)
 );
 
 const localeImports = []; // imports in index file
+
+// customize marked's link renderer to include "target" and "rel" attributes
+const mdRenderer = new marked.Renderer();
+mdRenderer.link = (href, title, text) => {
+  const titleAttr = title ? ` title="${title}"` : '';
+  return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+};
+marked.setOptions({ renderer: mdRenderer });
 
 // delete old target files
 console.log(`🗑 Deleting old help text translations in ${OUT_DIR} ...`);
@@ -47,7 +54,7 @@ for (const localeDir of localeDirs) {
     }
     const data = readFileSync(sourceFilePath, 'utf8');
     const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but simple!
-    const html = DOMPurify.sanitize(marked.parse(data));
+    const html = marked.parse(data);
     helpTranslations[mdFile.name.replace(/.md$/, '')] = { title: title, content: html };
     // console.log(`  🗸 ${localeDir.name}/${mdFile.name}`);
   }
