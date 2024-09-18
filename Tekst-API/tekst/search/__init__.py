@@ -461,9 +461,7 @@ async def search_advanced(
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    target_resources = {
-        str(res.id): res for res in await _get_target_resources(user=user)
-    }
+    target_resources = await _get_target_resources(user=user)
 
     # construct all the sub-queries
     sub_queries_must = []
