@@ -10,8 +10,13 @@
   "reviewers": ["bkis"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch", "pin", "digest"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major", "minor"],
+      "matchPackageNames": ["typescript"],
+      "automerge": false
     }
   ]
 }
