@@ -3,13 +3,14 @@ name: Run Server Tests
 on:
   push:
     branches:
-      - main
+      - development
     paths:
       - 'Tekst-API/tekst/**'
       - 'Tekst-API/tests/**'
       - 'Tekst-API/pyproject.toml'
   pull_request:
     branches:
+      - development
       - main
     paths:
       - 'Tekst-API/tekst/**'

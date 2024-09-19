@@ -3,12 +3,15 @@ name: Documentation
 on:
   push:
     branches:
-      - main
+      - development
     paths:
       - 'docs/**'
   pull_request:
     branches:
       - main
+      - development
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
