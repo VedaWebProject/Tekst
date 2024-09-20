@@ -35,7 +35,7 @@ const fontStyle: CSSProperties = {
           <a
             :href="link.url"
             target="_blank"
-            :title="link.title + (link.description ? ' – ' + link.description : '' || undefined)"
+            :title="link.title + (link.description ? ' – ' + link.description : '')"
             style="line-height: 1.2"
             :style="fontStyle"
             rel="noopener noreferrer"
