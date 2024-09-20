@@ -48,7 +48,7 @@ const i18nOptions: I18nOptions = {
 };
 
 export const i18n = createI18n(i18nOptions);
-export const { t: $t, te: $te, tm: $tm, tc: $tc } = i18n.global;
+export const { t: $t, te: $te, tm: $tm } = i18n.global;
 
 // set initial i18n locale
 //(happens before app init, where locale is set respecting platform settings)
