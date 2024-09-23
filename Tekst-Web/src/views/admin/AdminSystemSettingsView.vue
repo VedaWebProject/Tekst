@@ -126,6 +126,8 @@ function resetForm() {
       <n-divider />
       <h3>{{ $t('admin.system.platformSettings.headingConfig') }}</h3>
 
+      <h4>{{ $t('admin.system.platformSettings.headingConfigTexts') }}</h4>
+
       <!-- DEFAULT TEXT -->
       <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
         <n-select
@@ -137,6 +139,16 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
+
+      <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
+      <n-form-item :show-label="false">
+        <labelled-switch
+          v-model="formModel.alwaysShowTextInfo"
+          :label="$t('models.platformSettings.alwaysShowTextInfo')"
+        />
+      </n-form-item>
+
+      <h4>{{ $t('admin.system.platformSettings.headingConfigI18n') }}</h4>
 
       <!-- AVAILABLE LOCALES -->
       <n-form-item
@@ -153,6 +165,8 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
+
+      <h4>{{ $t('admin.system.platformSettings.headingConfigCustomLabels') }}</h4>
 
       <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
       <translation-form-item
@@ -195,46 +209,47 @@ function resetForm() {
         multiline
       />
 
-      <!-- DISPLAY OPTIONS -->
-      <n-form-item :label="$t('admin.system.platformSettings.formLabelDisplay')">
-        <n-flex vertical>
-          <!-- ALWAY SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-          <labelled-switch
-            v-model="formModel.alwaysShowTextInfo"
-            :label="$t('models.platformSettings.alwaysShowTextInfo')"
-          />
-          <!-- SHOW LOGO ON LOADING SCREEN -->
-          <labelled-switch
-            v-model="formModel.showLogoOnLoadingScreen"
-            :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
-          />
-          <!-- SHOW LOGO IN HEADER -->
-          <labelled-switch
-            v-model="formModel.showLogoInHeader"
-            :label="$t('models.platformSettings.showLogoInHeader')"
-          />
-          <!-- SHOW RESOURCE CATEGORY HEADINGS -->
-          <labelled-switch
-            v-model="formModel.showResourceCategoryHeadings"
-            :label="$t('models.platformSettings.showResourceCategoryHeadings')"
-          />
-          <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
-          <labelled-switch
-            v-model="formModel.prioritizeBrowseLevelResources"
-            :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
-          />
-          <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
-          <labelled-switch
-            v-model="formModel.showLocationAliases"
-            :label="$t('models.platformSettings.showLocationAliases')"
-          />
-          <!-- SHOW TEKST FOOTER HINT -->
-          <labelled-switch
-            v-model="formModel.showTekstFooterHint"
-            :label="$t('models.platformSettings.showTekstFooterHint')"
-          />
-        </n-flex>
-      </n-form-item>
+      <h4>{{ $t('admin.system.platformSettings.headingConfigBrowseView') }}</h4>
+
+      <!-- BROWSE VIEW -->
+      <n-flex vertical>
+        <!-- SHOW RESOURCE CATEGORY HEADINGS -->
+        <labelled-switch
+          v-model="formModel.showResourceCategoryHeadings"
+          :label="$t('models.platformSettings.showResourceCategoryHeadings')"
+        />
+        <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
+        <labelled-switch
+          v-model="formModel.prioritizeBrowseLevelResources"
+          :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
+        />
+        <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
+        <labelled-switch
+          v-model="formModel.showLocationAliases"
+          :label="$t('models.platformSettings.showLocationAliases')"
+        />
+      </n-flex>
+
+      <h4>{{ $t('admin.system.platformSettings.headingConfigBranding') }}</h4>
+
+      <!-- BRANDING -->
+      <n-flex vertical>
+        <!-- SHOW LOGO ON LOADING SCREEN -->
+        <labelled-switch
+          v-model="formModel.showLogoOnLoadingScreen"
+          :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
+        />
+        <!-- SHOW LOGO IN HEADER -->
+        <labelled-switch
+          v-model="formModel.showLogoInHeader"
+          :label="$t('models.platformSettings.showLogoInHeader')"
+        />
+        <!-- SHOW TEKST FOOTER HINT -->
+        <labelled-switch
+          v-model="formModel.showTekstFooterHint"
+          :label="$t('models.platformSettings.showTekstFooterHint')"
+        />
+      </n-flex>
 
       <n-divider />
 

@@ -335,15 +335,15 @@ models:
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
-    showTekstFooterHint: Show small hint to Tekst software in footer (Thank you!)
-    oskModes: On-screen keyboard modes
+    showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
+    oskModes: On-screen Keyboards
     oskModeKey: Key
     oskModeName: Name
     oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show category headings in browse view
     prioritizeBrowseLevelResources: Place resources of current browse level before others in browse view (inside their category)
     showLocationAliases: Show location aliases in browse view
-    customFonts: Additional custom fonts
+    customFonts: Additional Custom Fonts
     resourceFontName: Name
   segment:
     modelLabel: Segment
@@ -755,9 +755,13 @@ admin:
     platformSettings:
       headingInfo: Platform Information
       headingConfig: General Configuration
+      headingConfigTexts: Texts
+      headingConfigI18n: Internationalization
+      headingConfigCustomLabels: Custom Labels
+      headingConfigBrowseView: Browse View
+      headingConfigBranding: Branding
       msgSaved: Platform settings saved.
       defaultTextPlaceholder: Automatic
-      formLabelDisplay: Display
     maintenance:
       heading: Maintenance
       indices:

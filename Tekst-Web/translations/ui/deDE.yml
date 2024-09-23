@@ -337,8 +337,8 @@ models:
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
-    showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke!)
-    oskModes: Bildschirmtastatur-Modi
+    showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
+    oskModes: Bildschirmtastaturen
     oskModeKey: Schlüssel
     oskModeName: Name
     oskModeFont: Tastatur-Schriftart
@@ -779,9 +779,13 @@ admin:
     platformSettings:
       headingInfo: Plattform-Informationen
       headingConfig: Allgemeine Konfiguration
+      headingConfigTexts: Texte
+      headingConfigI18n: Internationalisierung
+      headingConfigCustomLabels: Benutzerdefinierte Beschriftungen
+      headingConfigBrowseView: Lese-Ansicht
+      headingConfigBranding: Branding
       msgSaved: Plattform-Einstellungen gespeichert.
       defaultTextPlaceholder: Automatisch
-      formLabelDisplay: Darstellung
     maintenance:
       heading: Wartung
       indices:
