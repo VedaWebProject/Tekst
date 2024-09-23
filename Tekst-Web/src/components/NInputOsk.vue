@@ -34,6 +34,7 @@ const slots = useSlots();
 
 const showOsk = ref(false);
 const oskInput = ref<string[]>([]);
+const oskInputResult = computed(() => oskInput.value.join('').normalize('NFC'));
 const targetSelectionRange = ref<[number, number]>([0, 0]);
 
 const targetInputRef = ref<InputInst | null>(null);
@@ -109,9 +110,8 @@ function handleOpen() {
 function handleSubmit() {
   const preOskValue = model.value?.substring(0, targetSelectionRange.value[0]) || '';
   const postOskValue = model.value?.substring(targetSelectionRange.value[1]) || '';
-  const input = oskInput.value.join('');
-  model.value = preOskValue + input + postOskValue;
-  const newCaretPos = targetSelectionRange.value[0] + input.length;
+  model.value = preOskValue + oskInputResult.value + postOskValue;
+  const newCaretPos = targetSelectionRange.value[0] + oskInputResult.value.length;
   showOsk.value = false;
   nextTick().then(() => {
     targetInputRef.value?.focus();
@@ -191,7 +191,7 @@ whenever(Enter, () => {
                       :class="{ 'text-large': !state.smallScreen, 'text-small': state.smallScreen }"
                       class="ellipsis"
                     >
-                      {{ oskInput.join('') }}
+                      {{ oskInputResult }}
                     </div>
                     <div v-else class="text-large translucent ellipsis">
                       {{ $t('osk.inputPlaceholder') }}
