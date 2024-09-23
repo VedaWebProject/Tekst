@@ -12,12 +12,14 @@ const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry)
 const localeImports = []; // imports in index file
 
 // customize marked's link renderer to include "target" and "rel" attributes
-const mdRenderer = new marked.Renderer();
-mdRenderer.link = (href, title, text) => {
-  const titleAttr = title ? ` title="${title}"` : '';
-  return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+const renderer = {
+  link(href, title, text) {
+    const link = marked.Renderer.prototype.link.call(this, href, title, text);
+    const titleAttr = title ? ` title="${title}"` : '';
+    return link.replace('<a', `<a target="_blank" rel="noreferrer"${titleAttr} `);
+  },
 };
-marked.setOptions({ renderer: mdRenderer });
+marked.use({ renderer });
 
 // delete old target files
 console.log(`🗑 Deleting old help text translations in ${OUT_DIR} ...`);
