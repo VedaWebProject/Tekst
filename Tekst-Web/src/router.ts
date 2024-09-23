@@ -72,9 +72,6 @@ const router = createRouter({
       path: '/text/:text?/search',
       name: 'search',
       component: SearchView,
-      meta: {
-        isTextSpecific: true,
-      },
     },
     {
       path: '/search',
