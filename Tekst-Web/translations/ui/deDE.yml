@@ -335,6 +335,7 @@ models:
     navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Eigener Einführungstext für Registrierungsseite
     alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
+    directJumpOnUniqueAliasSearch: Springe direkt zu entsprechender Belegstelle bei Suche nach eindeutigem Belegstellen-Alias
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
@@ -779,7 +780,7 @@ admin:
     platformSettings:
       headingInfo: Plattform-Informationen
       headingConfig: Allgemeine Konfiguration
-      headingConfigTexts: Texte
+      headingConfigTextsLocs: Texte und Belegstellen
       headingConfigI18n: Internationalisierung
       headingConfigCustomLabels: Benutzerdefinierte Beschriftungen
       headingConfigBrowseView: Lese-Ansicht

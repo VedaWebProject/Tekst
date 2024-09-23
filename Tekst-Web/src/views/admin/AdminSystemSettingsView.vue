@@ -126,7 +126,7 @@ function resetForm() {
       <n-divider />
       <h3>{{ $t('admin.system.platformSettings.headingConfig') }}</h3>
 
-      <h4>{{ $t('admin.system.platformSettings.headingConfigTexts') }}</h4>
+      <h4>{{ $t('admin.system.platformSettings.headingConfigTextsLocs') }}</h4>
 
       <!-- DEFAULT TEXT -->
       <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
@@ -140,13 +140,18 @@ function resetForm() {
         />
       </n-form-item>
 
-      <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-      <n-form-item :show-label="false">
+      <n-flex vertical>
+        <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
         <labelled-switch
           v-model="formModel.alwaysShowTextInfo"
           :label="$t('models.platformSettings.alwaysShowTextInfo')"
         />
-      </n-form-item>
+        <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
+        <labelled-switch
+          v-model="formModel.directJumpOnUniqueAliasSearch"
+          :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
+        />
+      </n-flex>
 
       <h4>{{ $t('admin.system.platformSettings.headingConfigI18n') }}</h4>
 

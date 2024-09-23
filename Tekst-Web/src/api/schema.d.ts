@@ -3170,6 +3170,18 @@ export interface components {
        */
       defaultTextId?: string | null;
       /**
+       * Alwaysshowtextinfo
+       * @description Always show text info and selector in header, even on non-text-specific pages
+       * @default true
+       */
+      alwaysShowTextInfo?: boolean;
+      /**
+       * Directjumponuniquealiassearch
+       * @description Directly jump to respective location when searching for unique location alias
+       * @default true
+       */
+      directJumpOnUniqueAliasSearch?: boolean;
+      /**
        * Navbrowseentry
        * @description Custom label for main navigation browse entry
        * @default []
@@ -3217,12 +3229,6 @@ export interface components {
        * @default true
        */
       showLocationAliases?: boolean;
-      /**
-       * Alwaysshowtextinfo
-       * @description Always show text info and selector in header, even on non-text-specific pages
-       * @default true
-       */
-      alwaysShowTextInfo?: boolean;
       /**
        * Showlogoonloadingscreen
        * @description Show logo on loading screen
@@ -3288,6 +3294,18 @@ export interface components {
        */
       defaultTextId?: string | null;
       /**
+       * Alwaysshowtextinfo
+       * @description Always show text info and selector in header, even on non-text-specific pages
+       * @default true
+       */
+      alwaysShowTextInfo?: boolean;
+      /**
+       * Directjumponuniquealiassearch
+       * @description Directly jump to respective location when searching for unique location alias
+       * @default true
+       */
+      directJumpOnUniqueAliasSearch?: boolean;
+      /**
        * Navbrowseentry
        * @description Custom label for main navigation browse entry
        * @default []
@@ -3335,12 +3353,6 @@ export interface components {
        * @default true
        */
       showLocationAliases?: boolean;
-      /**
-       * Alwaysshowtextinfo
-       * @description Always show text info and selector in header, even on non-text-specific pages
-       * @default true
-       */
-      alwaysShowTextInfo?: boolean;
       /**
        * Showlogoonloadingscreen
        * @description Show logo on loading screen

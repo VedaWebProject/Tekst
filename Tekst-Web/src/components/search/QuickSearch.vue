@@ -63,8 +63,8 @@ async function handleSearch() {
   });
 
   if (!error && !!data.length) {
-    if (data.length === 1) {
-      // there is one matching location alias, so we navigate to this location
+    if (data.length === 1 && !!pfData.value?.state.directJumpOnUniqueAliasSearch) {
+      // there is one matching location alias, so we directly navigate to this location
       router.push({
         name: 'browse',
         params: { text: state.text?.slug || '' },

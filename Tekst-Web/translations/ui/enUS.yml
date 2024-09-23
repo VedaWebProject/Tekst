@@ -333,6 +333,7 @@ models:
     navInfoEntry: Custom label for "Info" in main navigation
     registerIntroText: Custom introduction text for register page
     alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
+    directJumpOnUniqueAliasSearch: Directly jump to respective location when searching for unambiguous location alias
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
@@ -755,7 +756,7 @@ admin:
     platformSettings:
       headingInfo: Platform Information
       headingConfig: General Configuration
-      headingConfigTexts: Texts
+      headingConfigTextsLocs: Texts and Locations
       headingConfigI18n: Internationalization
       headingConfigCustomLabels: Custom Labels
       headingConfigBrowseView: Browse View

@@ -115,6 +115,26 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
+    always_show_text_info: Annotated[
+        bool,
+        Field(
+            description=(
+                "Always show text info and selector in header, "
+                "even on non-text-specific pages"
+            ),
+        ),
+    ] = True
+
+    direct_jump_on_unique_alias_search: Annotated[
+        bool,
+        Field(
+            description=(
+                "Directly jump to respective location "
+                "when searching for unique location alias"
+            ),
+        ),
+    ] = True
+
     nav_browse_entry: Annotated[
         Translations[MainNavEntryTranslation],
         Field(
@@ -180,16 +200,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         bool,
         Field(
             description="Show location aliases in browse view",
-        ),
-    ] = True
-
-    always_show_text_info: Annotated[
-        bool,
-        Field(
-            description=(
-                "Always show text info and selector in header, "
-                "even on non-text-specific pages"
-            ),
         ),
     ] = True
 
