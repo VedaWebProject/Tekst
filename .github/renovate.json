@@ -5,7 +5,7 @@
     "schedule:weekly"
   ],
   "baseBranches": ["development"],
-  "prHourlyLimit": 1,
+  "prHourlyLimit": 2,
   "labels": ["dependencies"],
   "reviewers": ["bkis"],
   "packageRules": [
