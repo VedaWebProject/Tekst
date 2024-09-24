@@ -9,6 +9,7 @@ on:
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/poetry.lock"
+      - ".github/workflows/server-style.yml"
   pull_request:
     branches:
       - development
@@ -18,6 +19,7 @@ on:
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/poetry.lock"
+      - ".github/workflows/server-style.yml"
   workflow_dispatch:
 
 jobs:
