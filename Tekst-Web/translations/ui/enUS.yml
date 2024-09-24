@@ -837,7 +837,7 @@ search:
       regexp: Interpret Regular Expressions
       texts: Texts
       textsPlaceholder: All texts
-      searchableResources: Target resources
+      targetResources: Which resources will be searched?
   results:
     heading: Search Results
     searching: Searching

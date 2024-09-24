@@ -861,7 +861,7 @@ search:
       regexp: Interpretiere Reguläre Ausdrücke
       texts: Texte
       textsPlaceholder: Alle Texte
-      searchableResources: Ziel-Ressourcen
+      targetResources: In welchen Ressourcen wird gesucht?
   results:
     heading: Suchergebnisse
     searching: Suche

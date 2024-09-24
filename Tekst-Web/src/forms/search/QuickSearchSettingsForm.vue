@@ -2,8 +2,10 @@
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { useSearchStore } from '@/stores';
-import { NForm, NFormItem, NSelect } from 'naive-ui';
+import { NButton, NFlex, NForm, NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
+
+const emit = defineEmits(['targetResourcesClick']);
 
 const search = useSearchStore();
 const { pfData } = usePlatformData();
@@ -29,6 +31,12 @@ const textOptions = computed(() =>
         multiple
       />
     </n-form-item>
+
+    <n-flex justify="flex-end" class="mb-sm translucent">
+      <n-button text size="tiny" class="i" :focusable="false" @click="emit('targetResourcesClick')">
+        {{ $t('search.settings.quick.targetResources') }}
+      </n-button>
+    </n-flex>
 
     <!-- DEFAULT OPERATOR -->
     <n-form-item path="op" :show-label="false" :show-feedback="false">
