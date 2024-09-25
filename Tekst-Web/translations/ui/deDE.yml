@@ -211,7 +211,12 @@ browse:
         title: Informationen
         citeAs: Zitieren als
         coverage: Abdeckung
+        coverageOverview: Übersicht
+        coverageRanges: Vorhandene/fehlende Inhalte
+        coverageDetails: Detaillierter Abdeckungsbericht
         coverageStatement: '{present} von {total} Belegstellen auf Ebene "{level}"'
+        coverageRangesPresent: 'Inhalte liegen vor für die folgenden Belegstellen:'
+        coverageRangesMissing: 'Inhalte fehlen für die folgenden Belegstellen:'
       deactivateWidget:
         title: Ausblenden
       siblingsWidget:

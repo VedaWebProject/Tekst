@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { NEllipsis, NDivider, NButton, NProgress, NFlex } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { NEllipsis, NDivider, NButton, NFlex } from 'naive-ui';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
-import { type AnyResourceRead, type ResourceCoverage } from '@/api';
+import { useAuthStore, useStateStore } from '@/stores';
+import { type AnyResourceRead } from '@/api';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
-import CoverageDetailsWidget from './CoverageDetailsWidget.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
-
 import { InfoIcon, CommentIcon, FormatQuoteIcon, CoverageIcon, MetadataIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
+import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -26,23 +25,9 @@ const emit = defineEmits(['done']);
 
 const auth = useAuthStore();
 const state = useStateStore();
-const resources = useResourcesStore();
 
 const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
-const showCoverageDetailsModal = ref(false);
 const showInfoModal = ref(false);
-const coverage = ref<ResourceCoverage>();
-const coveragePercent = computed(() =>
-  parseFloat(
-    (coverage.value ? (coverage.value.covered / coverage.value.total) * 100 : 0).toFixed(2)
-  )
-);
-
-watch(showInfoModal, async (after) => {
-  if (after) {
-    coverage.value = await resources.getCoverage(props.resource.id);
-  }
-});
 </script>
 
 <template>
@@ -58,7 +43,8 @@ watch(showInfoModal, async (after) => {
     "
   />
 
-  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="InfoIcon">
+  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="InfoIcon" width="wide">
+    <!-- USER -->
     <user-display
       v-if="auth.loggedIn && !!resource.owner"
       :user="resource.owner"
@@ -66,6 +52,7 @@ watch(showInfoModal, async (after) => {
       class="mb-lg"
     />
 
+    <!-- PUBLICATION, VERSION -->
     <div v-if="auth.loggedIn" class="gray-box">
       <n-flex vertical>
         <resource-publication-status :resource="resource" size="tiny" />
@@ -73,10 +60,12 @@ watch(showInfoModal, async (after) => {
       </n-flex>
     </div>
 
+    <!-- DESCRIPTION -->
     <p v-if="resource.description?.length">
       <translation-display :value="resource.description" />
     </p>
 
+    <!-- METADATA -->
     <template v-if="resource.meta && Object.keys(resource.meta).length">
       <icon-heading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
@@ -85,6 +74,7 @@ watch(showInfoModal, async (after) => {
       <n-divider />
     </template>
 
+    <!-- CITATION -->
     <template v-if="resource.citation">
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
@@ -95,46 +85,7 @@ watch(showInfoModal, async (after) => {
       <n-divider />
     </template>
 
-    <template v-if="coverage">
-      <icon-heading level="3" :icon="CoverageIcon">
-        {{ $t('browse.contents.widgets.infoWidget.coverage') }}
-      </icon-heading>
-
-      <n-flex justify="flex-end" align="center" class="mb-sm">
-        <span>
-          {{
-            $t('browse.contents.widgets.infoWidget.coverageStatement', {
-              present: coverage.covered,
-              total: coverage.total,
-              level: state.textLevelLabels[resource.level],
-            })
-          }}
-        </span>
-        <span style="flex: 2"></span>
-        <template v-if="auth.loggedIn">
-          <n-button
-            quaternary
-            type="primary"
-            size="small"
-            :focusable="false"
-            @click="showCoverageDetailsModal = true"
-          >
-            {{ $t('general.details') }}
-          </n-button>
-        </template>
-      </n-flex>
-      <n-progress
-        type="line"
-        :percentage="coveragePercent"
-        :height="16"
-        :border-radius="3"
-        indicator-placement="inside"
-        color="var(--accent-color)"
-        rail-color="var(--accent-color-fade4)"
-      />
-      <n-divider />
-    </template>
-
+    <!-- COMMENT -->
     <template v-if="resource.comment?.length">
       <icon-heading level="3" :icon="CommentIcon">
         {{ $t('general.comment') }}
@@ -144,7 +95,14 @@ watch(showInfoModal, async (after) => {
           <translation-display :value="resource.comment" />
         </n-ellipsis>
       </div>
+      <n-divider />
     </template>
+
+    <!-- COVERAGE -->
+    <icon-heading level="3" :icon="CoverageIcon">
+      {{ $t('browse.contents.widgets.infoWidget.coverage') }}
+    </icon-heading>
+    <resource-coverage-widget :resource="resource" />
 
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">
@@ -152,14 +110,6 @@ watch(showInfoModal, async (after) => {
       </n-button>
     </button-shelf>
   </generic-modal>
-
-  <coverage-details-widget
-    v-if="auth.loggedIn"
-    v-model:show="showCoverageDetailsModal"
-    :resource="resource"
-    :coverage-basic="coverage"
-    @navigated="showInfoModal = false"
-  />
 </template>
 
 <style scoped>

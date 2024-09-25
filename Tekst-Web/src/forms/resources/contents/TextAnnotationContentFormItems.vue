@@ -1,23 +1,57 @@
 <script setup lang="ts">
-import type { TextAnnotationContentCreate, TextAnnotationResourceRead } from '@/api';
+import type {
+  AnnotationAggregation,
+  TextAnnotationContentCreate,
+  TextAnnotationResourceRead,
+} from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { KeyboardReturnIcon } from '@/icons';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { $t } from '@/i18n';
+import { useResourcesStore } from '@/stores';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;
 }>();
-
 const model = defineModel<TextAnnotationContentCreate>({ required: true });
 const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof NInputOsk> }>({});
+
+const resources = useResourcesStore();
 
 const annoValueStyle = {
   fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
 };
+
+const aggregations = ref<AnnotationAggregation[]>([]);
+const annoOptions = computed(() => {
+  const keys = aggregations.value.map((agg) => agg.key);
+  return model.value.tokens.map(
+    (t) =>
+      t.annotations?.map((a) => ({
+        keysOptions: keys
+          .filter((k) => !t.annotations?.map((a) => a.key).includes(k))
+          .map((k) => ({
+            label: k,
+            value: k,
+          })),
+        valuesOptions:
+          aggregations.value
+            .find((agg) => agg.key === a.key)
+            ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || [],
+      })) || []
+  );
+});
+
+function handleInsertToken(index: number) {
+  setTimeout(() => {
+    tokenInputRefs.value[index]?.focus();
+  }, 100);
+  return { token: undefined, annotations: [] };
+}
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -26,25 +60,9 @@ function handleUpdate(field: string, value: any) {
   };
 }
 
-function getAnnotationKeyOptions() {
-  return props.resource.aggregations?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
-}
-
-function getAnnotationValueOptions(key?: string) {
-  if (!key) return [];
-  return (
-    props.resource.aggregations
-      ?.find((agg) => agg.key === key)
-      ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []
-  );
-}
-
-function handleInsertToken(index: number) {
-  setTimeout(() => {
-    tokenInputRefs.value[index]?.focus();
-  }, 100);
-  return { token: undefined, annotations: [] };
-}
+onMounted(async () => {
+  aggregations.value = await resources.getAggregations(props.resource.id);
+});
 </script>
 
 <template>
@@ -138,10 +156,11 @@ function handleInsertToken(index: number) {
                       filterable
                       tag
                       clearable
-                      :options="getAnnotationKeyOptions()"
+                      :options="annoOptions[tokenItemIndex][annotationItemIndex].keysOptions"
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationKey')
                       "
+                      @update:value="() => (annotationItem.value = '')"
                     />
                   </n-form-item>
                   <n-form-item
@@ -158,7 +177,7 @@ function handleInsertToken(index: number) {
                       tag
                       clearable
                       :disabled="!annotationItem.key"
-                      :options="getAnnotationValueOptions(annotationItem.key)"
+                      :options="annoOptions[tokenItemIndex][annotationItemIndex].valuesOptions"
                       :placeholder="
                         $t('resources.types.textAnnotation.contentFields.annotationValue')
                       "

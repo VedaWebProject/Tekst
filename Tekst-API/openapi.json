@@ -605,128 +605,6 @@
         }
       }
     },
-    "/browse/resources/{id}/coverage": {
-      "get": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Get resource coverage data",
-        "operationId": "getResourceCoverageData",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResourceCoverage"
-                }
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/browse/resources/{id}/coverage-details": {
-      "get": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Get detailed resource coverage data",
-        "operationId": "getDetailedResourceCoverageData",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResourceCoverageDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/contents": {
       "post": {
         "tags": [
@@ -4873,6 +4751,142 @@
         }
       }
     },
+    "/resources/{id}/aggregations": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Get annotation aggregations",
+        "operationId": "getAnnotationAggregations",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationAggregation"
+                  },
+                  "title": "Response Get Annotation Aggregations Resources  Id  Aggregations Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/coverage": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Get resource coverage data",
+        "operationId": "getResourceCoverageData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceCoverage"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/search": {
       "post": {
         "tags": [
@@ -7064,7 +7078,7 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
-      "AnnotationAggregationGroup": {
+      "AnnotationAggregation": {
         "properties": {
           "key": {
             "type": "string",
@@ -7089,7 +7103,7 @@
         "required": [
           "key"
         ],
-        "title": "AnnotationAggregationGroup"
+        "title": "AnnotationAggregation"
       },
       "AudioContentCreate": {
         "properties": {
@@ -7529,6 +7543,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -7747,6 +7768,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -7927,6 +7955,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -9198,6 +9233,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -9416,6 +9458,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -9596,6 +9645,13 @@
                 "defaultCollapsed": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -10274,6 +10330,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -10492,6 +10555,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -10672,6 +10742,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -10793,6 +10870,29 @@
           "deDE",
           "enUS"
         ]
+      },
+      "LocationCoverage": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "covered": {
+            "type": "boolean",
+            "title": "Covered",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "position"
+        ],
+        "title": "LocationCoverage"
       },
       "LocationCreate": {
         "properties": {
@@ -11220,6 +11320,34 @@
         "type": "object",
         "title": "PaginationSettings"
       },
+      "ParentCoverage": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "locations": {
+            "items": {
+              "$ref": "#/components/schemas/LocationCoverage"
+            },
+            "type": "array",
+            "title": "Locations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "locations"
+        ],
+        "title": "ParentCoverage"
+      },
       "PlainTextContentCreate": {
         "properties": {
           "resourceId": {
@@ -11635,6 +11763,13 @@
                 "enabled": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -11864,6 +11999,13 @@
                 "enabled": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -12055,6 +12197,13 @@
                 "enabled": false
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -12793,41 +12942,38 @@
           "total": {
             "type": "integer",
             "title": "Total"
+          },
+          "ranges": {
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Ranges"
+          },
+          "rangesCovered": {
+            "type": "boolean",
+            "title": "Rangescovered"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ParentCoverage"
+            },
+            "type": "array",
+            "title": "Details"
           }
         },
         "type": "object",
         "required": [
           "covered",
-          "total"
+          "total",
+          "ranges",
+          "rangesCovered",
+          "details"
         ],
         "title": "ResourceCoverage"
-      },
-      "ResourceCoverageDetails": {
-        "properties": {
-          "parentLabels": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Parentlabels"
-          },
-          "locationsCoverage": {
-            "items": {
-              "items": {
-                "$ref": "#/components/schemas/ResourceLocationCoverage"
-              },
-              "type": "array"
-            },
-            "type": "array",
-            "title": "Locationscoverage"
-          }
-        },
-        "type": "object",
-        "required": [
-          "parentLabels",
-          "locationsCoverage"
-        ],
-        "title": "ResourceCoverageDetails"
       },
       "ResourceDescriptionTranslation": {
         "properties": {
@@ -12847,29 +12993,6 @@
           "translation"
         ],
         "title": "ResourceDescriptionTranslation"
-      },
-      "ResourceLocationCoverage": {
-        "properties": {
-          "label": {
-            "type": "string",
-            "title": "Label"
-          },
-          "position": {
-            "type": "integer",
-            "title": "Position"
-          },
-          "covered": {
-            "type": "boolean",
-            "title": "Covered",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "label",
-          "position"
-        ],
-        "title": "ResourceLocationCoverage"
       },
       "ResourceSearchQuery": {
         "properties": {
@@ -13353,6 +13476,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -13571,6 +13701,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -13751,6 +13888,13 @@
                 "defaultCollapsed": true
               }
             }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -14514,26 +14658,12 @@
               "multiValueDelimiter": "/"
             }
           },
-          "aggregations": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregations",
-            "description": "Aggregated groups for this resource's annotations"
-          },
-          "aggregationsOod": {
-            "type": "boolean",
-            "title": "Aggregationsood",
-            "description": "Whether the aggregations are out-of-date",
-            "default": true
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -14754,26 +14884,12 @@
               "multiValueDelimiter": "/"
             }
           },
-          "aggregations": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregations",
-            "description": "Aggregated groups for this resource's annotations"
-          },
-          "aggregationsOod": {
-            "type": "boolean",
-            "title": "Aggregationsood",
-            "description": "Whether the aggregations are out-of-date",
-            "default": true
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "additionalProperties": true,
@@ -14956,26 +15072,12 @@
               "multiValueDelimiter": "/"
             }
           },
-          "aggregations": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AnnotationAggregationGroup"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Aggregations",
-            "description": "Aggregated groups for this resource's annotations"
-          },
-          "aggregationsOod": {
-            "type": "boolean",
-            "title": "Aggregationsood",
-            "description": "Whether the aggregations are out-of-date",
-            "default": true
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",

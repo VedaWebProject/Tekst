@@ -135,8 +135,8 @@ async def _run_task(
     try:
         if await is_locked(task_type, task_doc.id, target_id):
             log.warning(
-                f"Task of type '{task_type.value}' with target ID "
-                f"'{target_id}' already running. Task will be ended as 'failed'."
+                f"Task '{task_type.value}' with target ID "
+                f"{target_id} already running. Task will be ended as 'failed'."
             )
             raise errors.E_409_ACTION_LOCKED
         result = await task(**task_kwargs)
@@ -147,6 +147,9 @@ async def _run_task(
             log.debug(f"Could not encode task result for task: {str(task)}")
     except Exception as e:
         task_doc.status = "failed"
+        log.error(
+            f"Task '{task_type.value}' with target ID {target_id} failed: {str(e)}"
+        )
         try:
             task_doc.error = e.detail.detail.key
         except Exception:

@@ -5,7 +5,7 @@ from beanie.operators import In, NotIn
 from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
-from tekst.auth import OptionalUserDep, UserDep
+from tekst.auth import OptionalUserDep
 from tekst.models.browse import LocationData
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
@@ -14,10 +14,7 @@ from tekst.models.location import (
 )
 from tekst.models.resource import (
     ResourceBaseDocument,
-    ResourceCoverage,
-    ResourceCoverageDetails,
 )
-from tekst.models.text import TextDocument
 from tekst.resources import AnyContentReadBody
 
 
@@ -332,123 +329,3 @@ async def get_path_options_by_root(
         options.append(children)
         location_doc = children[0]
     return options
-
-
-@router.get(
-    "/resources/{id}/coverage",
-    status_code=status.HTTP_200_OK,
-    response_model=ResourceCoverage,
-    responses=errors.responses(
-        [
-            errors.E_404_RESOURCE_NOT_FOUND,
-        ]
-    ),
-)
-async def get_resource_coverage_data(
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
-) -> dict:
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-    return {
-        "covered": await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == resource_id,
-            with_children=True,
-        ).count(),
-        "total": await LocationDocument.find(
-            LocationDocument.text_id == resource_doc.text_id,
-            LocationDocument.level == resource_doc.level,
-        ).count(),
-    }
-
-
-@router.get(
-    "/resources/{id}/coverage-details",
-    status_code=status.HTTP_200_OK,
-    response_model=ResourceCoverageDetails,
-    responses=errors.responses(
-        [
-            errors.E_404_RESOURCE_NOT_FOUND,
-        ]
-    ),
-)
-async def get_detailed_resource_coverage_data(
-    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
-) -> list[list[dict]]:
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-    data: list[dict] = (
-        await LocationDocument.find(
-            LocationDocument.text_id == resource_doc.text_id,
-            LocationDocument.level == resource_doc.level,
-        )
-        .sort(+LocationDocument.position)
-        .aggregate(
-            [
-                {
-                    "$lookup": {
-                        "from": "contents",
-                        "localField": "_id",
-                        "foreignField": "location_id",
-                        "let": {"location_id": "$_id", "resource_id": resource_id},
-                        "pipeline": [
-                            {
-                                "$match": {
-                                    "$expr": {
-                                        "$and": [
-                                            {"$eq": ["$location_id", "$$location_id"]},
-                                            {"$eq": ["$resource_id", "$$resource_id"]},
-                                        ]
-                                    }
-                                }
-                            },
-                            {"$project": {"_id": 1}},
-                        ],
-                        "as": "contents",
-                    }
-                },
-                {
-                    "$project": {
-                        "id": "$_id",
-                        "label": 1,
-                        "position": 1,
-                        "parent_id": 1,
-                        "covered": {"$gt": [{"$size": "$contents"}, 0]},
-                    }
-                },
-            ],
-        )
-        .to_list()
-    )
-
-    # get parent level location labels
-    text_doc: TextDocument = await TextDocument.get(resource_doc.text_id)
-    parent_location_locations = await text_doc.full_location_labels(
-        max(resource_doc.level - 1, 0)
-    )
-
-    # group locations by parent
-    out = []
-    parent_labels = []
-    prev_parent_id = "init"
-    for location in data:
-        if location["parent_id"] == prev_parent_id:
-            out[-1].append(location)
-        else:
-            out.append([location])
-            if location["parent_id"]:
-                parent_labels.append(
-                    parent_location_locations[str(location["parent_id"])]
-                )
-        prev_parent_id = location["parent_id"]
-
-    return ResourceCoverageDetails(locations_coverage=out, parent_labels=parent_labels)

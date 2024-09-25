@@ -1,21 +1,52 @@
 <script setup lang="ts">
-import type { TextAnnotationResourceRead, TextAnnotationSearchQuery } from '@/api';
+import type {
+  AnnotationAggregation,
+  TextAnnotationResourceRead,
+  TextAnnotationSearchQuery,
+} from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { computed, onMounted, ref } from 'vue';
+import { useResourcesStore } from '@/stores';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;
   queryIndex: number;
 }>();
-
 const model = defineModel<TextAnnotationSearchQuery>({ required: true });
+
+const resources = useResourcesStore();
 
 const annoValueStyle = {
   fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
 };
+
+const aggregations = ref<AnnotationAggregation[]>([]);
+const annoOptions = computed(() => {
+  const keysOptions = aggregations.value.map((agg) => ({ label: agg.key, value: agg.key }));
+  const anyValueOption = {
+    label: () => $t('resources.types.textAnnotation.searchFields.any'),
+    value: '',
+  };
+  return (
+    model.value.anno?.map((a) => ({
+      keysOptions,
+      valuesOptions: [
+        anyValueOption,
+        ...(aggregations.value
+          .find((agg) => agg.key === a.k)
+          ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
+      ],
+    })) || []
+  );
+});
+
+function getAnnoValueSelectStyle(value?: string) {
+  return value ? annoValueStyle : undefined;
+}
 
 function handleUpdate(field: string, value: any) {
   model.value = {
@@ -24,24 +55,9 @@ function handleUpdate(field: string, value: any) {
   };
 }
 
-function getAnnotationKeyOptions() {
-  return props.resource.aggregations?.map((agg) => ({ label: agg.key, value: agg.key })) || [];
-}
-
-function getAnnotationValueOptions(key: string): { label: string; value: string }[] {
-  const values = [{ label: $t('resources.types.textAnnotation.searchFields.any'), value: '' }];
-  if (!key) return values;
-  return [
-    ...values,
-    ...(props.resource.aggregations
-      ?.find((agg) => agg.key === key)
-      ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
-  ];
-}
-
-function getAnnoValueSelectStyle(value?: string) {
-  return value ? annoValueStyle : undefined;
-}
+onMounted(async () => {
+  aggregations.value = await resources.getAggregations(props.resource.id);
+});
 </script>
 
 <template>
@@ -93,7 +109,7 @@ function getAnnoValueSelectStyle(value?: string) {
               v-model:value="annotationItem.k"
               filterable
               clearable
-              :options="getAnnotationKeyOptions()"
+              :options="annoOptions[annotationItemIndex].keysOptions"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationKey')"
               @update:value="() => (annotationItem.v = '')"
             />
@@ -112,7 +128,7 @@ function getAnnoValueSelectStyle(value?: string) {
               clearable
               :disabled="!annotationItem.k"
               :style="getAnnoValueSelectStyle(annotationItem.v)"
-              :options="getAnnotationValueOptions(annotationItem.k)"
+              :options="annoOptions[annotationItemIndex].valuesOptions"
               :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
             />
           </n-form-item>

@@ -208,7 +208,12 @@ browse:
         title: Information
         citeAs: Cite as
         coverage: Coverage
+        coverageOverview: Overview
+        coverageRanges: Existing/missing contents
+        coverageDetails: Detailed coverage report
         coverageStatement: '{present} of {total} locations on level "{level}"'
+        coverageRangesPresent: 'Contents are available for the following locations:'
+        coverageRangesMissing: 'Contents are missing for the following locations:'
       deactivateWidget:
         title: Hide
       siblingsWidget:

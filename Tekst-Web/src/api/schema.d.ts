@@ -67,14 +67,6 @@ export interface paths {
      */
     get: operations['getPathOptionsByRoot'];
   };
-  '/browse/resources/{id}/coverage': {
-    /** Get resource coverage data */
-    get: operations['getResourceCoverageData'];
-  };
-  '/browse/resources/{id}/coverage-details': {
-    /** Get detailed resource coverage data */
-    get: operations['getDetailedResourceCoverageData'];
-  };
   '/contents': {
     /**
      * Find contents
@@ -303,6 +295,14 @@ export interface paths {
     /** Download resource export */
     get: operations['downloadResourceExport'];
   };
+  '/resources/{id}/aggregations': {
+    /** Get annotation aggregations */
+    get: operations['getAnnotationAggregations'];
+  };
+  '/resources/{id}/coverage': {
+    /** Get resource coverage data */
+    get: operations['getResourceCoverageData'];
+  };
   '/search': {
     /** Perform search */
     post: operations['performSearch'];
@@ -473,8 +473,8 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
-    /** AnnotationAggregationGroup */
-    AnnotationAggregationGroup: {
+    /** AnnotationAggregation */
+    AnnotationAggregation: {
       /** Key */
       key: string;
       /** Values */
@@ -714,6 +714,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['AudioResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** AudioResourceRead */
     AudioResourceRead: {
@@ -832,6 +839,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['AudioResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** AudioResourceUpdate */
@@ -919,6 +933,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['AudioResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** AudioSearchQuery */
     AudioSearchQuery: {
@@ -1600,6 +1621,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ExternalReferencesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** ExternalReferencesResourceRead */
     ExternalReferencesResourceRead: {
@@ -1718,6 +1746,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ExternalReferencesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** ExternalReferencesResourceUpdate */
@@ -1805,6 +1840,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ExternalReferencesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** ExternalReferencesSearchQuery */
     ExternalReferencesSearchQuery: {
@@ -2175,6 +2217,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ImagesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** ImagesResourceRead */
     ImagesResourceRead: {
@@ -2293,6 +2342,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ImagesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** ImagesResourceUpdate */
@@ -2380,6 +2436,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['ImagesResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** ImagesSearchQuery */
     ImagesSearchQuery: {
@@ -2435,6 +2498,18 @@ export interface components {
     };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
+    /** LocationCoverage */
+    LocationCoverage: {
+      /** Label */
+      label: string;
+      /** Position */
+      position: number;
+      /**
+       * Covered
+       * @default false
+       */
+      covered?: boolean;
+    };
     /** LocationCreate */
     LocationCreate: {
       /**
@@ -2598,6 +2673,13 @@ export interface components {
        * @default 10
        */
       pgs?: number;
+    };
+    /** ParentCoverage */
+    ParentCoverage: {
+      /** Label */
+      label: string | null;
+      /** Locations */
+      locations: components['schemas']['LocationCoverage'][];
     };
     /** PlainTextContentCreate */
     PlainTextContentCreate: {
@@ -2843,6 +2925,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['PlainTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** PlainTextResourceRead */
     PlainTextResourceRead: {
@@ -2972,6 +3061,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['PlainTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** PlainTextResourceUpdate */
@@ -3070,6 +3166,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['PlainTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** PlainTextSearchQuery */
     PlainTextSearchQuery: {
@@ -3517,31 +3620,18 @@ export interface components {
       covered: number;
       /** Total */
       total: number;
-    };
-    /** ResourceCoverageDetails */
-    ResourceCoverageDetails: {
-      /** Parentlabels */
-      parentLabels: string[];
-      /** Locationscoverage */
-      locationsCoverage: components['schemas']['ResourceLocationCoverage'][][];
+      /** Ranges */
+      ranges: string[][];
+      /** Rangescovered */
+      rangesCovered: boolean;
+      /** Details */
+      details: components['schemas']['ParentCoverage'][];
     };
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
       translation: string;
-    };
-    /** ResourceLocationCoverage */
-    ResourceLocationCoverage: {
-      /** Label */
-      label: string;
-      /** Position */
-      position: number;
-      /**
-       * Covered
-       * @default false
-       */
-      covered?: boolean;
     };
     /** ResourceSearchQuery */
     ResourceSearchQuery: {
@@ -3802,6 +3892,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** RichTextResourceRead */
     RichTextResourceRead: {
@@ -3920,6 +4017,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** RichTextResourceUpdate */
@@ -4007,6 +4111,13 @@ export interface components {
        * }
        */
       config?: components['schemas']['RichTextResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt?: string;
     };
     /** RichTextSearchQuery */
     RichTextSearchQuery: {
@@ -4397,16 +4508,12 @@ export interface components {
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregations
-       * @description Aggregated groups for this resource's annotations
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
        */
-      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
-      /**
-       * Aggregationsood
-       * @description Whether the aggregations are out-of-date
-       * @default true
-       */
-      aggregationsOod?: boolean;
+      contentsChangedAt?: string;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -4527,16 +4634,12 @@ export interface components {
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregations
-       * @description Aggregated groups for this resource's annotations
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
        */
-      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
-      /**
-       * Aggregationsood
-       * @description Whether the aggregations are out-of-date
-       * @default true
-       */
-      aggregationsOod?: boolean;
+      contentsChangedAt?: string;
       [key: string]: unknown;
     };
     /** TextAnnotationResourceUpdate */
@@ -4626,16 +4729,12 @@ export interface components {
        */
       config?: components['schemas']['TextAnnotationResourceConfig'];
       /**
-       * Aggregations
-       * @description Aggregated groups for this resource's annotations
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
        */
-      aggregations?: components['schemas']['AnnotationAggregationGroup'][] | null;
-      /**
-       * Aggregationsood
-       * @description Whether the aggregations are out-of-date
-       * @default true
-       */
-      aggregationsOod?: boolean;
+      contentsChangedAt?: string;
     };
     /** TextAnnotationSearchQuery */
     TextAnnotationSearchQuery: {
@@ -5515,62 +5614,6 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['LocationRead'][][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get resource coverage data */
-  getResourceCoverageData: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['ResourceCoverage'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  /** Get detailed resource coverage data */
-  getDetailedResourceCoverageData: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': components['schemas']['ResourceCoverageDetails'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */
@@ -7355,6 +7398,68 @@ export interface operations {
       200: {
         content: {
           'application/json': unknown;
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get annotation aggregations */
+  getAnnotationAggregations: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['AnnotationAggregation'][];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  /** Get resource coverage data */
+  getResourceCoverageData: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['ResourceCoverage'];
         };
       };
       /** @description Not Found */
