@@ -220,7 +220,7 @@ async def _populate_index(
     if text is None:
         raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
-    bulk_index_max_size = 100
+    bulk_index_max_size = 200
     bulk_index_body = []
     errors = False
     target_resource_ids = [
