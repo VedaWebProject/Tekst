@@ -143,7 +143,7 @@ class ElasticsearchConfig(ConfigSubSection):
     port: int = 9200
     prefix: str = "tekst"
     timeout_init_s: int = 240
-    timeout_general_s: int = 30
+    timeout_general_s: int = 60
     timeout_search_s: str = "30s"
     max_field_mappings: int = 1000
 
