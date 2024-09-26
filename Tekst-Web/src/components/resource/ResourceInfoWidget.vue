@@ -102,7 +102,7 @@ const showInfoModal = ref(false);
     <icon-heading level="3" :icon="CoverageIcon">
       {{ $t('browse.contents.widgets.infoWidget.coverage') }}
     </icon-heading>
-    <resource-coverage-widget :resource="resource" />
+    <resource-coverage-widget :resource="resource" @navigate="showInfoModal = false" />
 
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">

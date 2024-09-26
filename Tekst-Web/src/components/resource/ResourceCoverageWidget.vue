@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useResourcesStore, useStateStore } from '@/stores';
-import ResourceCoverageDetailsWidget from '@/components/resource/ResourceCoverageDetailsWidget.vue';
-import { NCollapse, NCollapseItem, NSpin, NProgress } from 'naive-ui';
+import { NThing, NVirtualList, NCollapse, NCollapseItem, NSpin, NProgress } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
+import { useRoute, useRouter } from 'vue-router';
+import { pickTranslation } from '@/utils';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -12,6 +13,8 @@ const props = defineProps<{
 const emit = defineEmits(['navigate']);
 
 const state = useStateStore();
+const router = useRouter();
+const route = useRoute();
 const resources = useResourcesStore();
 
 const coverage = ref<ResourceCoverage>();
@@ -21,6 +24,29 @@ const coveragePercent = computed(() =>
   )
 );
 const coverageLoading = ref(false);
+
+const coverageDetailsItems = computed(
+  () =>
+    coverage.value?.details.map((parent) => ({
+      title: state.textLevelLabels[props.resource.level - 1]
+        ? `${state.textLevelLabels[props.resource.level - 1]}: ${parent.label}`
+        : pickTranslation(props.resource.title, state.locale),
+      extra: `${parent.locations.filter((loc) => loc.covered).length}/${parent.locations.length}`,
+      locations: parent.locations,
+    })) || []
+);
+
+function handleDetailsLocationClick(level: number, position: number) {
+  router.push({
+    name: 'browse',
+    params: { text: route.params.text },
+    query: {
+      lvl: level,
+      pos: position,
+    },
+  });
+  emit('navigate');
+}
 
 onMounted(async () => {
   coverageLoading.value = true;
@@ -75,11 +101,39 @@ onMounted(async () => {
       :title="$t('browse.contents.widgets.infoWidget.coverageDetails')"
       name="details"
     >
-      <resource-coverage-details-widget
-        :resource="resource"
-        :coverage-data="coverage"
-        @navigated="emit('navigate')"
-      />
+      <div class="gray-box">
+        <n-virtual-list
+          style="max-height: 512px"
+          :item-size="42"
+          :items="coverageDetailsItems"
+          item-resizable
+        >
+          <template #default="{ item }">
+            <n-thing>
+              <template #header>
+                <span style="font-weight: var(--font-weight-normal)">
+                  {{ item.title }}
+                </span>
+              </template>
+              <template #header-extra>
+                <span class="mr-lg"> ({{ item.extra }}) </span>
+              </template>
+              <template #description>
+                <div class="cov-block">
+                  <div
+                    v-for="location in item.locations"
+                    :key="location.position"
+                    class="cov-box"
+                    :class="location.covered && 'covered'"
+                    :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
+                    @click="() => handleDetailsLocationClick(resource.level, location.position)"
+                  ></div>
+                </div>
+              </template>
+            </n-thing>
+          </template>
+        </n-virtual-list>
+      </div>
     </n-collapse-item>
   </n-collapse>
   <n-spin v-else-if="coverageLoading" class="centered-spinner" />
@@ -93,5 +147,30 @@ onMounted(async () => {
 }
 :deep(.n-collapse-item__content-inner) {
   padding-top: var(--gap-sm) !important;
+}
+
+/** Coverage details */
+
+.cov-block {
+  margin: 0.25rem 0 0.75rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.cov-box {
+  width: 16px;
+  height: 16px;
+  background-color: var(--col-error);
+  border-radius: 2px;
+  opacity: 0.75;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.cov-box:hover {
+  opacity: 1;
+}
+
+.cov-box.covered {
+  background-color: var(--col-success);
 }
 </style>
