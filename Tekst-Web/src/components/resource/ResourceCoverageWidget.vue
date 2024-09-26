@@ -87,15 +87,24 @@ onMounted(async () => {
       <div v-else class="text-small mb-sm" style="color: var(--col-error)">
         {{ $t('browse.contents.widgets.infoWidget.coverageRangesMissing') }}
       </div>
-      <ul class="m-0">
-        <li v-for="(range, index) in coverage.ranges" :key="`${index}_${range.toString()}`">
-          <span class="range-boundary">{{ range[0] }}</span>
-          <template v-if="range[0] !== range[1]">
-            <span class="mx-sm">–</span>
-            <span class="range-boundary">{{ range[1] }}</span>
+      <div class="gray-box">
+        <n-virtual-list
+          style="max-height: 512px"
+          :item-size="42"
+          :items="coverage.ranges"
+          item-resizable
+        >
+          <template #default="{ item: range }">
+            <div class="range">
+              <span class="range-boundary">{{ range[0] }}</span>
+              <template v-if="range[0] !== range[1]">
+                <span class="mx-sm">–</span>
+                <span class="range-boundary">{{ range[1] }}</span>
+              </template>
+            </div>
           </template>
-        </li>
-      </ul>
+        </n-virtual-list>
+      </div>
     </n-collapse-item>
     <n-collapse-item
       :title="$t('browse.contents.widgets.infoWidget.coverageDetails')"
@@ -140,9 +149,20 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.range {
+  border-bottom: 1px solid var(--main-bg-color);
+  padding: 0.5rem 0;
+}
+.range:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.range:first-child {
+  padding-top: 0;
+}
 .range-boundary {
   padding: 0 var(--gap-sm);
-  background-color: var(--main-bg-color);
+  background-color: var(--accent-color-fade5);
   border-radius: var(--border-radius);
 }
 :deep(.n-collapse-item__content-inner) {
