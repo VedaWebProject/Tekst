@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useResourcesStore, useStateStore } from '@/stores';
 import ResourceCoverageDetailsWidget from '@/components/resource/ResourceCoverageDetailsWidget.vue';
-import { NCollapse, NCollapseItem, NSpin, NProgress, NTag } from 'naive-ui';
+import { NCollapse, NCollapseItem, NSpin, NProgress } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
 
@@ -35,7 +35,7 @@ onMounted(async () => {
       :title="$t('browse.contents.widgets.infoWidget.coverageOverview')"
       name="overview"
     >
-      <div>
+      <div class="text-small mb-sm">
         {{
           $t('browse.contents.widgets.infoWidget.coverageStatement', {
             present: coverage.covered,
@@ -63,10 +63,10 @@ onMounted(async () => {
       </div>
       <ul class="m-0">
         <li v-for="(range, index) in coverage.ranges" :key="`${index}_${range.toString()}`">
-          <n-tag :color="{ color: 'var(--main-bg-color)' }">{{ range[0] }}</n-tag>
+          <span class="range-boundary">{{ range[0] }}</span>
           <template v-if="range[0] !== range[1]">
-            <span> – </span>
-            <n-tag :color="{ color: 'var(--main-bg-color)' }">{{ range[1] }}</n-tag>
+            <span class="mx-sm">–</span>
+            <span class="range-boundary">{{ range[1] }}</span>
           </template>
         </li>
       </ul>
@@ -86,6 +86,11 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.range-boundary {
+  padding: 0 var(--gap-sm);
+  background-color: var(--main-bg-color);
+  border-radius: var(--border-radius);
+}
 :deep(.n-collapse-item__content-inner) {
   padding-top: var(--gap-sm) !important;
 }
