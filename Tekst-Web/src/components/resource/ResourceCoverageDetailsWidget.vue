@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { NThing, NVirtualList, type VirtualListInst } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { NThing, NVirtualList } from 'naive-ui';
+import { computed } from 'vue';
 import { type AnyResourceRead, type ResourceCoverage } from '@/api';
 import { useRoute } from 'vue-router';
 import { useStateStore } from '@/stores';
@@ -27,7 +27,6 @@ const coverageListItems = computed(
       locations: parent.locations,
     })) || []
 );
-const virtualListInst = ref<VirtualListInst>();
 
 function handleLocationClick(level: number, position: number) {
   router.push({
@@ -45,7 +44,6 @@ function handleLocationClick(level: number, position: number) {
 <template>
   <div class="gray-box">
     <n-virtual-list
-      ref="virtualListInst"
       style="max-height: 768px"
       :item-size="42"
       :items="coverageListItems"
