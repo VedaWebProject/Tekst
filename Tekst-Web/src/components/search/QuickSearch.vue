@@ -1,21 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { SearchIcon } from '@/icons';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { useRouter } from 'vue-router';
-import { useResourcesStore, useSearchStore, useStateStore } from '@/stores';
-import {
-  NCollapse,
-  NCollapseItem,
-  NButton,
-  NIcon,
-  NPopselect,
-  type InputInst,
-  type SelectOption,
-} from 'naive-ui';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { NButton, NIcon, NPopselect, type InputInst, type SelectOption } from 'naive-ui';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { SettingsIcon } from '@/icons';
+import { SettingsIcon, SearchIcon, ResourceIcon } from '@/icons';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { GET } from '@/api';
@@ -26,6 +17,7 @@ import { usePlatformData } from '@/composables/platformData';
 const emit = defineEmits(['submit']);
 
 const state = useStateStore();
+const theme = useThemeStore();
 const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
@@ -33,22 +25,23 @@ const router = useRouter();
 
 const showLocationSelect = ref(false);
 const showSettingsModal = ref(false);
+const showTargetResourcesModal = ref(false);
 const searchInput = ref<string>('');
 const loading = ref(false);
 const quickSearchInputRef = ref<InputInst | null>(null);
 
 const locationSelectOptions = ref<SelectOption[]>([]);
 
-const searchableResources = computed(() =>
-  Object.fromEntries(
+const searchableResources = computed(
+  () =>
     (search.settingsQuick.txt?.length
       ? search.settingsQuick.txt
       : pfData.value?.texts.map((t) => t.id)
-    )?.map((tId) => [
-      pfData.value?.texts.find((t) => t.id === tId)?.title,
-      resources.all.filter((r) => r.textId === tId && r.config?.common?.quickSearchable),
-    ]) || []
-  )
+    )?.map((tId) => ({
+      title: pfData.value?.texts.find((t) => t.id === tId)?.title,
+      color: theme.getAccentColors(tId).base,
+      resources: resources.all.filter((r) => r.textId === tId && r.config?.common?.quickSearchable),
+    })) || []
 );
 
 async function handleSearch() {
@@ -204,29 +197,29 @@ function quickSearch(q: string) {
     :title="`${$t('search.quickSearch.title')}: ${$t('general.settings')}`"
     :icon="SettingsIcon"
   >
-    <quick-search-settings-form />
+    <quick-search-settings-form @target-resources-click="showTargetResourcesModal = true" />
     <general-search-settings-form />
-
-    <!-- SEARCHABLE RESOURCES PREVIEW -->
-    <n-collapse class="my-lg">
-      <n-collapse-item name="resources" :title="$t('search.settings.quick.searchableResources')">
-        <div class="text-tiny gray-box">
-          <template v-for="(txtResources, txtTitle) in searchableResources" :key="txtTitle">
-            <h5>{{ txtTitle }}</h5>
-            <ul class="m-0">
-              <li v-for="res in txtResources" :key="res.id">
-                {{ resources.resourceTitles[res.id] }}
-              </li>
-            </ul>
-          </template>
-        </div>
-      </n-collapse-item>
-    </n-collapse>
 
     <button-shelf>
       <n-button type="primary" @click="showSettingsModal = false">
         {{ $t('general.okAction') }}
       </n-button>
     </button-shelf>
+  </generic-modal>
+
+  <generic-modal
+    v-model:show="showTargetResourcesModal"
+    :title="$t('search.settings.quick.targetResources')"
+    :icon="ResourceIcon"
+    width="wide"
+  >
+    <template v-for="(txt, index) in searchableResources" :key="`${txt.title}_${index}`">
+      <h3 :style="{ color: txt.color }">{{ txt.title }}</h3>
+      <ul class="m-0">
+        <li v-for="res in txt.resources" :key="res.id">
+          {{ resources.resourceTitles[res.id] }}
+        </li>
+      </ul>
+    </template>
   </generic-modal>
 </template>

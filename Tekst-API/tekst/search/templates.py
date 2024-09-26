@@ -50,6 +50,9 @@ IDX_TEMPLATE = {
         "dynamic": False,
         "properties": {
             "resources": {"type": "object"},
+            "text_id": {"type": "keyword"},
+            "level": {"type": "short"},
+            "position": {"type": "integer"},
         },
     },
 }

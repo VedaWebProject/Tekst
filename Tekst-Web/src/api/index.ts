@@ -217,7 +217,6 @@ export type PlatformData = components['schemas']['PlatformData'];
 export type PlatformSettingsRead = components['schemas']['PlatformStateRead'];
 export type PlatformSettingsUpdate = components['schemas']['PlatformStateUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
-export type ResourceCoverageDetails = components['schemas']['ResourceCoverageDetails'];
 
 // client segments
 
@@ -259,6 +258,7 @@ export type TextAnnotationResourceRead = components['schemas']['TextAnnotationRe
   ResourceReadExtras & {
     contents?: TextAnnotationContentRead[];
   };
+export type AnnotationAggregation = components['schemas']['AnnotationAggregation'];
 
 export type AudioContentRead = components['schemas']['AudioContentRead'];
 export type AudioContentCreate = components['schemas']['AudioContentCreate'];

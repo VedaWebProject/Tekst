@@ -5,21 +5,23 @@ on:
     branches:
       - development
     paths:
-      - 'Tekst-Web/public/**'
-      - 'Tekst-Web/scripts/**'
-      - 'Tekst-Web/src/**'
-      - 'Tekst-Web/package.json'
-      - 'Tekst-Web/package-lock.json'
+      - "Tekst-Web/public/**"
+      - "Tekst-Web/scripts/**"
+      - "Tekst-Web/src/**"
+      - "Tekst-Web/package.json"
+      - "Tekst-Web/package-lock.json"
+      - ".github/workflows/client-build.yml"
   pull_request:
     branches:
       - main
       - development
     paths:
-      - 'Tekst-Web/public/**'
-      - 'Tekst-Web/scripts/**'
-      - 'Tekst-Web/src/**'
-      - 'Tekst-Web/package.json'
-      - 'Tekst-Web/package-lock.json'
+      - "Tekst-Web/public/**"
+      - "Tekst-Web/scripts/**"
+      - "Tekst-Web/src/**"
+      - "Tekst-Web/package.json"
+      - "Tekst-Web/package-lock.json"
+      - ".github/workflows/client-build.yml"
   workflow_dispatch:
 
 jobs:
@@ -32,12 +34,12 @@ jobs:
         working-directory: ./Tekst-Web
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js 20.14.0
       uses: actions/setup-node@v3
       with:
-        node-version: '20.14.0'
-        cache: 'npm'
-        cache-dependency-path: './Tekst-Web/package-lock.json'
+        node-version: "20.14.0"
+        cache: "npm"
+        cache-dependency-path: "./Tekst-Web/package-lock.json"
     - run: npm install
     - run: npm run build --if-present

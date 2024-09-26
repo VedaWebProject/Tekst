@@ -27,11 +27,13 @@ from tekst import errors, notifications, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.logs import log
+from tekst.models.common import PrecomputedDataDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
+    ResourceCoverage,
     ResourceExportFormat,
     ResourceImportData,
     res_exp_fmt_info,
@@ -47,6 +49,7 @@ from tekst.resources import (
     get_resource_template_readme,
     resource_types_mgr,
 )
+from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.utils import pick_translation
 from tekst.utils.html import sanitize_dict_html
 
@@ -1134,3 +1137,76 @@ async def download_resource_export(
         media_type=mimetype,
         background=BackgroundTask(tasks.delete_task, task),
     )
+
+
+@router.get(
+    "/{id}/aggregations",
+    status_code=status.HTTP_200_OK,
+    response_model=list[AnnotationAggregation],
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
+        ]
+    ),
+)
+async def get_annotation_aggregations(
+    user: OptionalUserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(
+            alias="id",
+        ),
+    ],
+) -> list:
+    # try to get resource doc to check if access is allowed for user
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise errors.E_404_RESOURCE_NOT_FOUND
+    if not resource_doc.resource_type == "textAnnotation":
+        raise errors.E_400_INVALID_REQUEST_DATA
+    # find requested precomputed data
+    precomp_doc = await PrecomputedDataDocument.find_one(
+        PrecomputedDataDocument.ref_id == resource_doc.id,
+        PrecomputedDataDocument.precomputed_type == "aggregations",
+    )
+    if precomp_doc and precomp_doc.data:
+        return precomp_doc.data
+    else:
+        return []
+
+
+@router.get(
+    "/{id}/coverage",
+    status_code=status.HTTP_200_OK,
+    response_model=ResourceCoverage,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+        ]
+    ),
+)
+async def get_resource_coverage_data(
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+) -> dict:
+    # try to get resource doc to check if access is allowed for user
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise errors.E_404_RESOURCE_NOT_FOUND
+    # find requested precomputed data
+    precomp_doc = await PrecomputedDataDocument.find_one(
+        PrecomputedDataDocument.ref_id == resource_doc.id,
+        PrecomputedDataDocument.precomputed_type == "coverage",
+    )
+    if precomp_doc and precomp_doc.data:
+        return precomp_doc.data
+    else:
+        raise errors.E_404_NOT_FOUND

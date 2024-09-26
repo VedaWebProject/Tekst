@@ -14,7 +14,7 @@ _SAMPLE_DATA_DIR = Path(realpath(__file__)).parent / "db"
 
 async def insert_sample_data():
     log.info("Inserting sample data...")
-    target_collections = ("texts", "locations", "resources", "contents")
+    target_collections = ("texts", "locations", "resources", "contents", "precomputed")
     if _cfg.dev_mode:
         target_collections += ("users", "state")
     database = db.get_db()

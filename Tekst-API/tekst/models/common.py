@@ -1,9 +1,5 @@
-from typing import (  # noqa: UP035
-    Annotated,
-    Literal,
-    TypeVar,
-    get_args,
-)
+from datetime import datetime
+from typing import Annotated, Any, Literal, TypeVar, get_args  # noqa: UP035
 
 from beanie import (
     Document,
@@ -87,7 +83,7 @@ class ModelBase(ModelTransformerMixin, BaseModel):
 
 
 class DocumentBase(ModelTransformerMixin, Document):
-    """Base model for all Tekst ODM models"""
+    """Base model for all Tekst ODMs"""
 
     class Settings:
         validate_on_save = True
@@ -191,3 +187,47 @@ class ModelFactoryMixin:
                 **fields,
             )
         return cls._update_model
+
+
+class PrecomputedDataDocument(ModelBase, DocumentBase):
+    """Base model for precomputed data"""
+
+    class Settings(DocumentBase.Settings):
+        name = "precomputed"
+        indexes = [
+            "precomputed_type",
+            "ref_id",
+        ]
+
+    ref_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the resource this precomputed data refers to",
+        ),
+    ]
+
+    precomputed_type: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=64,
+            strip_whitespace=True,
+        ),
+        Field(
+            description="String identifying the type of precomputed data",
+        ),
+    ]
+
+    created_at: Annotated[
+        datetime,
+        Field(
+            description="The time this data was created",
+        ),
+    ] = datetime.utcnow()
+
+    data: Annotated[
+        Any | None,
+        Field(
+            description="The precomputed data",
+        ),
+    ] = None

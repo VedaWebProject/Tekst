@@ -1,0 +1,314 @@
+[
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd74" },
+    "created_at": { "$date": "2024-09-26T13:24:08.727Z" },
+    "data": {
+      "covered": 12,
+      "total": 12,
+      "ranges": [["1 > 1 > 1", "1 > 3 > 4"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": "1 > 1",
+          "locations": [
+            { "label": "1 > 1 > 1", "position": 0, "covered": true },
+            { "label": "1 > 1 > 2", "position": 1, "covered": true },
+            { "label": "1 > 1 > 3", "position": 2, "covered": true },
+            { "label": "1 > 1 > 4", "position": 3, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 2",
+          "locations": [
+            { "label": "1 > 2 > 1", "position": 4, "covered": true },
+            { "label": "1 > 2 > 2", "position": 5, "covered": true },
+            { "label": "1 > 2 > 3", "position": 6, "covered": true },
+            { "label": "1 > 2 > 4", "position": 7, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 3",
+          "locations": [
+            { "label": "1 > 3 > 1", "position": 8, "covered": true },
+            { "label": "1 > 3 > 2", "position": 9, "covered": true },
+            { "label": "1 > 3 > 3", "position": 10, "covered": true },
+            { "label": "1 > 3 > 4", "position": 11, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "654b825533ee5737b297f8f3" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd75" },
+    "created_at": { "$date": "2024-09-26T13:24:08.745Z" },
+    "data": {
+      "covered": 1,
+      "total": 1,
+      "ranges": [["1", "1"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [{ "label": "1", "position": 0, "covered": true }]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "6641ce24affa6cb96bc85a55" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd76" },
+    "created_at": { "$date": "2024-09-26T13:24:08.761Z" },
+    "data": {
+      "covered": 1,
+      "total": 1,
+      "ranges": [["1", "1"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [{ "label": "1", "position": 0, "covered": true }]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "6641d2bfaffa6cb96bc85a58" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd77" },
+    "created_at": { "$date": "2024-09-26T13:24:08.776Z" },
+    "data": {
+      "covered": 1,
+      "total": 1,
+      "ranges": [["1", "1"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [{ "label": "1", "position": 0, "covered": true }]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "6641d510affa6cb96bc85a5b" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd78" },
+    "created_at": { "$date": "2024-09-26T13:24:08.797Z" },
+    "data": {
+      "covered": 12,
+      "total": 12,
+      "ranges": [["1 > 1 > 1", "1 > 3 > 4"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": "1 > 1",
+          "locations": [
+            { "label": "1 > 1 > 1", "position": 0, "covered": true },
+            { "label": "1 > 1 > 2", "position": 1, "covered": true },
+            { "label": "1 > 1 > 3", "position": 2, "covered": true },
+            { "label": "1 > 1 > 4", "position": 3, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 2",
+          "locations": [
+            { "label": "1 > 2 > 1", "position": 4, "covered": true },
+            { "label": "1 > 2 > 2", "position": 5, "covered": true },
+            { "label": "1 > 2 > 3", "position": 6, "covered": true },
+            { "label": "1 > 2 > 4", "position": 7, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 3",
+          "locations": [
+            { "label": "1 > 3 > 1", "position": 8, "covered": true },
+            { "label": "1 > 3 > 2", "position": 9, "covered": true },
+            { "label": "1 > 3 > 3", "position": 10, "covered": true },
+            { "label": "1 > 3 > 4", "position": 11, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "664717b0ba9e65342c8e4941" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd79" },
+    "created_at": { "$date": "2024-09-26T13:24:08.833Z" },
+    "data": {
+      "covered": 12,
+      "total": 12,
+      "ranges": [["1 > 1 > 1", "1 > 3 > 4"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": "1 > 1",
+          "locations": [
+            { "label": "1 > 1 > 1", "position": 0, "covered": true },
+            { "label": "1 > 1 > 2", "position": 1, "covered": true },
+            { "label": "1 > 1 > 3", "position": 2, "covered": true },
+            { "label": "1 > 1 > 4", "position": 3, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 2",
+          "locations": [
+            { "label": "1 > 2 > 1", "position": 4, "covered": true },
+            { "label": "1 > 2 > 2", "position": 5, "covered": true },
+            { "label": "1 > 2 > 3", "position": 6, "covered": true },
+            { "label": "1 > 2 > 4", "position": 7, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 3",
+          "locations": [
+            { "label": "1 > 3 > 1", "position": 8, "covered": true },
+            { "label": "1 > 3 > 2", "position": 9, "covered": true },
+            { "label": "1 > 3 > 3", "position": 10, "covered": true },
+            { "label": "1 > 3 > 4", "position": 11, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "66471b68ba9e65342c8e495b" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7a" },
+    "created_at": { "$date": "2024-09-26T13:24:08.849Z" },
+    "data": {
+      "covered": 1,
+      "total": 1,
+      "ranges": [["1", "1"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [{ "label": "1", "position": 0, "covered": true }]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "66471de0ba9e65342c8e4995" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7b" },
+    "created_at": { "$date": "2024-09-26T13:24:08.883Z" },
+    "data": {
+      "covered": 12,
+      "total": 12,
+      "ranges": [["1 > 1 > 1", "1 > 3 > 4"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": "1 > 1",
+          "locations": [
+            { "label": "1 > 1 > 1", "position": 0, "covered": true },
+            { "label": "1 > 1 > 2", "position": 1, "covered": true },
+            { "label": "1 > 1 > 3", "position": 2, "covered": true },
+            { "label": "1 > 1 > 4", "position": 3, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 2",
+          "locations": [
+            { "label": "1 > 2 > 1", "position": 4, "covered": true },
+            { "label": "1 > 2 > 2", "position": 5, "covered": true },
+            { "label": "1 > 2 > 3", "position": 6, "covered": true },
+            { "label": "1 > 2 > 4", "position": 7, "covered": true }
+          ]
+        },
+        {
+          "label": "1 > 3",
+          "locations": [
+            { "label": "1 > 3 > 1", "position": 8, "covered": true },
+            { "label": "1 > 3 > 2", "position": 9, "covered": true },
+            { "label": "1 > 3 > 3", "position": 10, "covered": true },
+            { "label": "1 > 3 > 4", "position": 11, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "6656cc7b81a66322c1bffb24" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7c" },
+    "created_at": { "$date": "2024-09-26T13:24:08.894Z" },
+    "data": [
+      { "key": "Entity", "values": ["Fox", "Goose", "Hunter", "Mouse"] },
+      { "key": "comment", "values": ["This is a comment."] }
+    ],
+    "precomputed_type": "aggregations",
+    "ref_id": { "$oid": "6656cc7b81a66322c1bffb24" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7d" },
+    "created_at": { "$date": "2024-09-26T13:24:08.915Z" },
+    "data": {
+      "covered": 3,
+      "total": 3,
+      "ranges": [["1", "3"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [
+            { "label": "1", "position": 0, "covered": true },
+            { "label": "2", "position": 1, "covered": true },
+            { "label": "3", "position": 2, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "654ba3a6ec7833e469dde77a" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7e" },
+    "created_at": { "$date": "2024-09-26T13:24:08.934Z" },
+    "data": {
+      "covered": 3,
+      "total": 3,
+      "ranges": [["1", "3"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [
+            { "label": "1", "position": 0, "covered": true },
+            { "label": "2", "position": 1, "covered": true },
+            { "label": "3", "position": 2, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "654ba525ec7833e469dde77e" }
+  },
+  {
+    "_id": { "$oid": "66f56078431e7d4adacebd7f" },
+    "created_at": { "$date": "2024-09-26T13:24:08.949Z" },
+    "data": {
+      "covered": 3,
+      "total": 3,
+      "ranges": [["1", "3"]],
+      "ranges_covered": true,
+      "details": [
+        {
+          "label": null,
+          "locations": [
+            { "label": "1", "position": 0, "covered": true },
+            { "label": "2", "position": 1, "covered": true },
+            { "label": "3", "position": 2, "covered": true }
+          ]
+        }
+      ]
+    },
+    "precomputed_type": "coverage",
+    "ref_id": { "$oid": "654ba678ec7833e469dde782" }
+  }
+]

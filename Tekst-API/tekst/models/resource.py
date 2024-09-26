@@ -1,5 +1,6 @@
 import re
 
+from datetime import datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
@@ -10,14 +11,17 @@ from pydantic import (
     field_validator,
 )
 
+from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     DocumentBase,
     Metadata,
     ModelBase,
     ModelFactoryMixin,
+    PrecomputedDataDocument,
     TranslationBase,
     Translations,
 )
+from tekst.models.location import LocationDocument
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
@@ -68,18 +72,21 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             min_length=1,
         ),
     ]
+
     description: Annotated[
         Translations[ResourceDescriptionTranslation],
         Field(
             description="Short, concise description of this resource",
         ),
     ] = []
+
     text_id: Annotated[
         PydanticObjectId,
         Field(
             description="ID of the text this resource belongs to",
         ),
     ]
+
     level: Annotated[
         int,
         Field(
@@ -87,6 +94,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Text level this resource belongs to",
         ),
     ]
+
     resource_type: Annotated[
         str,
         StringConstraints(
@@ -98,6 +106,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="A string identifying one of the available resource types",
         ),
     ]
+
     original_id: Annotated[
         PydanticObjectId | None,
         Field(
@@ -107,12 +116,14 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             ),
         ),
     ] = None
+
     owner_id: Annotated[
         PydanticObjectId | None,
         Field(
             description="User owning this resource",
         ),
     ] = None
+
     shared_read: Annotated[
         list[PydanticObjectId],
         Field(
@@ -120,6 +131,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             max_length=64,
         ),
     ] = []
+
     shared_write: Annotated[
         list[PydanticObjectId],
         Field(
@@ -127,18 +139,21 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             max_length=64,
         ),
     ] = []
+
     public: Annotated[
         bool,
         Field(
             description="Publication status of this resource",
         ),
     ] = False
+
     proposed: Annotated[
         bool,
         Field(
             description="Whether this resource has been proposed for publication",
         ),
     ] = False
+
     citation: Annotated[
         str | None,
         StringConstraints(
@@ -150,14 +165,24 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Citation details for this resource",
         ),
     ] = None
+
     meta: Metadata = []
+
     comment: Annotated[
         Translations[ResourceCommentTranslation],
         Field(
             description="Plain text, potentially multiline comment on this resource",
         ),
     ] = []
+
     config: ResourceConfigBase = ResourceConfigBase()
+
+    contents_changed_at: Annotated[
+        datetime,
+        Field(
+            description="The last time contents of this resource changed",
+        ),
+    ] = datetime.utcfromtimestamp(86400)
 
     @field_validator("description", mode="after")
     @classmethod
@@ -211,15 +236,170 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         """
         Will be called whenever contents of a given resource are changed.
         This may be overridden by concrete resource implementations to do whatever
-        is necessary to react to content changes. Otherwise it is just a no-op.
+        is necessary to react to content changes. Overriding implementations MUST
+        call `await super().contents_changed_hook()`!
         """
+        self.contents_changed_at = datetime.utcnow()
+        await self.replace()
 
     async def resource_maintenance_hook(self) -> None:
         """
         Will be called whenever the central resource maintenance procedures are run.
         This may be overridden by concrete resource implementations to run arbitrary
-        maintenance procedures. Otherwise it is just a no-op.
+        maintenance procedures. Overriding implementations MUST
+        call `await super().resource_maintenance_hook()`!
         """
+        op_id = log_op_start(f"Precompute coverage data for resource {self.id}")
+        try:
+            await self.__precompute_coverage_data()
+        except Exception as e:
+            log_op_end(op_id, failed=True)
+            raise e
+        log_op_end(op_id)
+
+    async def __precompute_coverage_data(self) -> None:
+        # get precomputed resource coverage data
+        precomp_doc = await PrecomputedDataDocument.find_one(
+            PrecomputedDataDocument.ref_id == self.id,
+            PrecomputedDataDocument.precomputed_type == "coverage",
+        )
+        if precomp_doc:
+            if precomp_doc.created_at > self.contents_changed_at:
+                log.debug(
+                    f"Coverage data for resource {str(self.id)} up-to-date. Skipping."
+                )
+                return
+        else:
+            # create new coverage data document
+            precomp_doc = PrecomputedDataDocument(
+                ref_id=self.id,
+                precomputed_type="coverage",
+            )
+
+        data: list[dict] = (
+            await LocationDocument.find(
+                LocationDocument.text_id == self.text_id,
+                LocationDocument.level == self.level,
+            )
+            .sort(+LocationDocument.position)
+            .aggregate(
+                [
+                    {
+                        "$lookup": {
+                            "from": "contents",
+                            "localField": "_id",
+                            "foreignField": "location_id",
+                            "let": {"location_id": "$_id", "resource_id": self.id},
+                            "pipeline": [
+                                {
+                                    "$match": {
+                                        "$expr": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$location_id",
+                                                        "$$location_id",
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$resource_id",
+                                                        "$$resource_id",
+                                                    ]
+                                                },
+                                            ]
+                                        }
+                                    }
+                                },
+                                {"$project": {"_id": 1}},
+                            ],
+                            "as": "contents",
+                        }
+                    },
+                    {
+                        "$project": {
+                            "id": "$_id",
+                            "label": 1,
+                            "position": 1,
+                            "parent_id": 1,
+                            "covered": {"$gt": [{"$size": "$contents"}, 0]},
+                        }
+                    },
+                ],
+            )
+            .to_list()
+        )
+
+        text_doc: TextDocument = await TextDocument.get(self.text_id)
+        # get all resource level location labels
+        location_labels = await text_doc.full_location_labels(self.level)
+        # get all parent level location labels
+        parent_location_labels = await text_doc.full_location_labels(
+            max(self.level - 1, 0)
+        )
+
+        # generate coverage details data
+        coverage_per_parent = {}
+        covered_locations_count = 0
+        for location in data:
+            parent_id = str(location["parent_id"])
+            if parent_id not in coverage_per_parent:
+                coverage_per_parent[parent_id] = []
+            coverage_per_parent[parent_id].append(
+                {
+                    "label": location_labels[str(location["id"])],
+                    "position": location["position"],
+                    "covered": location["covered"],
+                }
+            )
+            covered_locations_count += 1 if location["covered"] else 0
+        details = [
+            {"label": parent_location_labels.get(p_id), "locations": loc_cov}
+            for p_id, loc_cov in coverage_per_parent.items()
+        ]
+
+        # generate coverage ranges data
+        ranges = []
+        curr_range: dict[str, str | bool] | None = None
+        for location in data:
+            if curr_range and curr_range.get("covered") != location["covered"]:
+                # there is a range, but it's complete, so we add it to the ranges
+                ranges.append(curr_range)
+                curr_range = None
+            if curr_range is None:
+                # no current range, start a new one
+                curr_range = {
+                    "start": location_labels[str(location["id"])],
+                    "end": location_labels[str(location["id"])],
+                    "covered": location["covered"],
+                }
+            else:
+                # there is a current range, coverage matches, so we extend it
+                curr_range["end"] = location_labels[str(location["id"])]
+        if curr_range:
+            # there is a range, but it's complete, so we add it to the ranges
+            ranges.append(curr_range)
+        covered_count = len([r for r in ranges if r.get("covered")])
+        missing_count = len(ranges) - covered_count
+        use_covered_ranges = (
+            covered_count == len(ranges) or covered_count <= missing_count
+        )
+        ranges = [
+            [r.get("start"), r.get("end")]
+            for r in ranges
+            if r.get("covered") == use_covered_ranges
+        ]
+
+        precomp_doc.data = ResourceCoverage(
+            covered=covered_locations_count,
+            total=len(data),
+            ranges=ranges,
+            ranges_covered=use_covered_ranges,
+            details=details,
+        ).model_dump()
+
+        precomp_doc.created_at = datetime.utcnow()
+        await precomp_doc.save()
 
 
 # generate document and update models for this base model,
@@ -328,20 +508,23 @@ class ResourceReadExtras(ModelBase):
 ResourceBaseUpdate = ResourceBase.update_model()
 
 
-class ResourceCoverage(ModelBase):
-    covered: int
-    total: int
-
-
-class ResourceLocationCoverage(ModelBase):
+class LocationCoverage(ModelBase):
     label: str
     position: int
     covered: bool = False
 
 
-class ResourceCoverageDetails(ModelBase):
-    parent_labels: list[str]
-    locations_coverage: list[list[ResourceLocationCoverage]]
+class ParentCoverage(ModelBase):
+    label: str | None
+    locations: list[LocationCoverage]
+
+
+class ResourceCoverage(ModelBase):
+    covered: int
+    total: int
+    ranges: list[list[str]]
+    ranges_covered: bool
+    details: list[ParentCoverage]
 
 
 ResourceExportFormat = Literal["json", "tekst-json", "csv", "txt", "html"]

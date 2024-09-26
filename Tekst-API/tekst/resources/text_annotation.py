@@ -1,6 +1,7 @@
 import csv
 
 from collections.abc import Callable
+from datetime import datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
@@ -9,9 +10,12 @@ from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
 
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import ModelBase
+from tekst.models.common import ModelBase, PrecomputedDataDocument
 from tekst.models.content import ContentBase, ContentBaseDocument
-from tekst.models.resource import ResourceBase, ResourceExportFormat
+from tekst.models.resource import (
+    ResourceBase,
+    ResourceExportFormat,
+)
 from tekst.models.resource_configs import (
     DefaultCollapsedConfigType,
     FontConfigType,
@@ -302,7 +306,7 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
     ] = "/"
 
 
-class AnnotationAggregationGroup(ModelBase):
+class AnnotationAggregation(ModelBase):
     key: str
     values: list[str] | None = None
 
@@ -310,37 +314,32 @@ class AnnotationAggregationGroup(ModelBase):
 class TextAnnotationResource(ResourceBase):
     resource_type: Literal["textAnnotation"]  # camelCased resource type classname
     config: TextAnnotationResourceConfig = TextAnnotationResourceConfig()
-    aggregations: Annotated[
-        list[AnnotationAggregationGroup] | None,
-        Field(
-            description="Aggregated groups for this resource's annotations",
-        ),
-    ] = None
-    aggregations_ood: Annotated[
-        bool,
-        Field(
-            description="Whether the aggregations are out-of-date",
-        ),
-    ] = True
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
         return ["tokens.token", "tokens.annotations.value"]
 
     async def _update_aggregations(self) -> None:
-        # get resource document
-        rs_doc_model = self.document_model()
-        res = await rs_doc_model.get(self.id)
-
-        if not res:
-            log.error(f"Resource {self.id} not found")
-
-        if res.aggregations_ood is not None and not res.aggregations_ood:
-            log.debug(f"Resource {self.id} aggregations are up-to-date. Skipping.")
-            return
+        # get precomputed resource aggregations data, if present
+        precomp_doc = await PrecomputedDataDocument.find_one(
+            PrecomputedDataDocument.ref_id == self.id,
+            PrecomputedDataDocument.precomputed_type == "aggregations",
+        )
+        if precomp_doc:
+            if precomp_doc.created_at > self.contents_changed_at:
+                log.debug(
+                    f"Aggregations for resource {str(self.id)} up-to-date. Skipping."
+                )
+                return
+        else:
+            # create new aggregations document
+            precomp_doc = PrecomputedDataDocument(
+                ref_id=self.id,
+                precomputed_type="aggregations",
+            )
 
         # group annotations
-        anno_aggs = (
+        precomp_doc.data = (
             await ContentBaseDocument.find(
                 ContentBaseDocument.resource_id == self.id,
                 with_children=True,
@@ -428,20 +427,15 @@ class TextAnnotationResource(ResourceBase):
         )
 
         # update aggregations in DB
-        res.aggregations = anno_aggs
-        res.aggregations_ood = False
-        await res.replace()
+        precomp_doc.created_at = datetime.utcnow()
+        await precomp_doc.save()
 
     async def contents_changed_hook(self) -> None:
-        # get resource document
-        doc_model = self.document_model()
-        resource_doc = await doc_model.get(self.id)
-        # mark aggregations as out-of-date
-        resource_doc.aggregations_ood = True
-        await resource_doc.replace()
+        await super().contents_changed_hook()
 
     async def resource_maintenance_hook(self) -> None:
-        op_id = log_op_start(f"Generate aggregations for resource {self.id}")
+        await super().resource_maintenance_hook()
+        op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
         try:
             await self._update_aggregations()
         except Exception as e:

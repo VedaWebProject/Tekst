@@ -343,16 +343,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
     annotationValue: [
       {
-        required: true,
-        type: 'array',
-        message: () =>
-          $t('forms.rulesFeedback.isRequired', {
-            x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
-          }),
-        trigger: 'blur',
-      },
-      {
-        validator: (rule: FormItemRule, value: any) => Array.isArray(value),
+        validator: (rule: FormItemRule, value: any) => !!value && Array.isArray(value),
         message: () =>
           $t('forms.rulesFeedback.isRequired', {
             x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
@@ -360,13 +351,14 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
         trigger: 'change',
       },
       {
-        validator: (rule: FormItemRule, value: any[]) => value.length >= 1 && value.length <= 64,
+        validator: (rule: FormItemRule, value: any[]) =>
+          !!value && value.length >= 1 && value.length <= 64,
         message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
         trigger: 'change',
       },
       {
         validator: (rule: FormItemRule, value: any[]) =>
-          value.every((item) => item.length >= 1 && item.length <= 256),
+          !!value && value.every((item) => item.length >= 1 && item.length <= 256),
         message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
         trigger: 'change',
       },

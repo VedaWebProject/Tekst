@@ -8,12 +8,15 @@ from tekst.auth import AccessToken
 from tekst.config import TekstConfig, get_config
 from tekst.logs import log
 from tekst.models.bookmark import BookmarkDocument
+from tekst.models.common import PrecomputedDataDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
-from tekst.models.resource import ResourceBaseDocument
+from tekst.models.resource import (
+    ResourceBaseDocument,
+)
 from tekst.models.segment import ClientSegmentDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
@@ -68,6 +71,7 @@ async def init_odm(db: Database = get_db()) -> None:
         BookmarkDocument,
         AccessToken,
         TaskDocument,
+        PrecomputedDataDocument,
     ]
     # add all resource types' resource and content document models
     for lt_class in resource_types_mgr.get_all().values():

@@ -285,7 +285,7 @@ code {
 .gray-box {
   padding: var(--gap-lg);
   margin: var(--gap-lg) 0;
-  background-color: var(--main-bg-color);
+  background-color: color-mix(in srgb, var(--main-bg-color), #0000 40%);
   border-radius: var(--border-radius);
 }
 

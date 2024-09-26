@@ -149,42 +149,18 @@ async def test_get_resource_coverage_data(
     test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
 ):
     inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
+        "texts", "locations", "resources", "contents", "precomputed"
     )
     resource_id = inserted_ids["resources"][0]
     resp = await test_client.get(
-        f"/browse/resources/{resource_id}/coverage",
+        f"/resources/{resource_id}/coverage",
     )
     assert resp.status_code == 200, status_fail_msg(200, resp)
     assert isinstance(resp.json(), dict)
 
     # invalid location data
     resp = await test_client.get(
-        f"/browse/resources/{wrong_id}/coverage",
-    )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
-
-
-@pytest.mark.anyio
-async def test_get_detailed_resource_coverage_data(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
-):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
-    )
-    resource_id = inserted_ids["resources"][0]
-    await login()
-
-    # get detailed resource coverage data
-    resp = await test_client.get(
-        f"/browse/resources/{resource_id}/coverage-details",
-    )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
-    assert isinstance(resp.json(), dict)
-
-    # fail with wrong resource ID
-    resp = await test_client.get(
-        f"/browse/resources/{wrong_id}/coverage-details",
+        f"/resources/{wrong_id}/coverage",
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 

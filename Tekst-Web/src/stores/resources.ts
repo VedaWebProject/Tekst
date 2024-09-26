@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { type CorrectionRead, GET, type AnyResourceRead, type ResourceCoverage } from '@/api';
+import {
+  type CorrectionRead,
+  GET,
+  type AnyResourceRead,
+  type ResourceCoverage,
+  type AnnotationAggregation,
+} from '@/api';
 import { useStateStore } from '@/stores';
 import { hashCode, pickTranslation } from '@/utils';
 
@@ -16,6 +22,8 @@ export const useResourcesStore = defineStore('resources', () => {
       resourcesAll.value.map((r) => [r.id, pickTranslation(r.title, state.locale)])
     )
   );
+  const aggregations = ref<Record<string, AnnotationAggregation[]>>({});
+  const coverage = ref<Record<string, ResourceCoverage>>({});
   const corrections = ref<Record<string, CorrectionRead[]>>({});
   const correctionsCount = computed<Record<string, number>>(() =>
     Object.fromEntries(resourcesAll.value.map((r) => [r.id, r.corrections || 0]))
@@ -94,17 +102,33 @@ export const useResourcesStore = defineStore('resources', () => {
     resourcesAll.value = resourcesAll.value.filter((r) => r.id !== resourceId);
   }
 
-  async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
-    const res = resourcesAll.value.find((r) => r.id === resourceId);
-    if (!res) return;
-    const cov = res?.coverage;
-    if (cov) return cov;
-    const { data } = await GET('/browse/resources/{id}/coverage', {
+  async function getAggregations(resourceId: string): Promise<AnnotationAggregation[]> {
+    if (!resourcesAll.value.find((r) => r.id === resourceId)) return [];
+    const agg = aggregations.value[resourceId];
+    if (agg) return agg;
+    const { data, error } = await GET('/resources/{id}/aggregations', {
       params: { path: { id: resourceId } },
     });
-    if (!data) return;
-    res.coverage = data;
-    return data;
+    if (!error && !!data) {
+      aggregations.value[resourceId] = data;
+      return data;
+    } else {
+      aggregations.value[resourceId] = [];
+      return [];
+    }
+  }
+
+  async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
+    if (!resourcesAll.value.find((r) => r.id === resourceId)) return undefined;
+    const cov = coverage.value[resourceId];
+    if (cov) return cov;
+    const { data, error } = await GET('/resources/{id}/coverage', {
+      params: { path: { id: resourceId } },
+    });
+    if (!error && !!data) {
+      coverage.value[resourceId] = data;
+      return data;
+    }
   }
 
   function resetCoverage(resourceId?: string) {
@@ -130,6 +154,7 @@ export const useResourcesStore = defineStore('resources', () => {
     all: resourcesAll,
     ofText: resourcesOfText,
     resourceTitles,
+    getAggregations,
     correctionsCount,
     correctionsCountTotal,
     corrections,
