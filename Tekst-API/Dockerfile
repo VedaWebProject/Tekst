@@ -5,6 +5,13 @@
 
 FROM python:3.10-slim-bullseye AS base
 
+COPY --chmod=0644 <<"EOF" /etc/apt/apt.conf
+APT::Get::Assume-Yes "true";
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+APT::Sandbox::User "root";
+EOF
+
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONUNBUFFERED=1 \
@@ -69,8 +76,7 @@ ENV FASTAPI_ENV=production
 
 # install needed OS packages
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        curl && \
+    apt-get install curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
