@@ -11,9 +11,6 @@ on:
       - "Tekst-API/poetry.lock"
       - ".github/workflows/server-style.yml"
   pull_request:
-    branches:
-      - development
-      - main
     paths:
       - "Tekst-API/tekst/**"
       - "Tekst-API/tests/**"
