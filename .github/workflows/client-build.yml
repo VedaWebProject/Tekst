@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - development
+      - main
     paths:
       - "Tekst-Web/public/**"
       - "Tekst-Web/scripts/**"
@@ -12,6 +13,8 @@ on:
       - "Tekst-Web/package-lock.json"
       - ".github/workflows/client-build.yml"
   pull_request:
+    branches:
+      - development
     paths:
       - "Tekst-Web/public/**"
       - "Tekst-Web/scripts/**"

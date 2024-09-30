@@ -3,15 +3,10 @@ name: Documentation
 on:
   push:
     branches:
-      - development
-    paths:
-      - 'docs/**'
-  pull_request:
-    branches:
       - main
-      - development
     paths:
       - 'docs/**'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
 permissions:

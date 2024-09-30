@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - development
+      - main
     paths:
       - "Tekst-API/tekst/**"
       - "Tekst-API/tests/**"
@@ -11,6 +12,8 @@ on:
       - "Tekst-API/poetry.lock"
       - ".github/workflows/server-style.yml"
   pull_request:
+    branches:
+      - development
     paths:
       - "Tekst-API/tekst/**"
       - "Tekst-API/tests/**"
