@@ -821,8 +821,7 @@ async def _import_resource_contents_task(
             )
             raise http_err
 
-    # a sacrifice for the GC
-    import_data = None
+    del import_data  # a sacrifice for the GC
 
     # process updates to existing contents
     updated_count = 0
@@ -873,12 +872,15 @@ async def _import_resource_contents_task(
         )
         created_count = len(insert_many_result.inserted_ids)
         errors_count += len(contents["creates"]) - created_count
+        del insert_many_result
     else:
         created_count = 0
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()
     await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+
+    del existing_contents_dict, contents
 
     return {
         "created": created_count,
