@@ -4,11 +4,22 @@
   "baseBranches": ["development"],
   "prHourlyLimit": 2,
   "labels": ["dependencies"],
+  "assignees": ["bkis"],
+  "assigneesSampleSize": 1,
   "reviewers": ["bkis"],
+  "reviewersSampleSize": 1,
+  "automerge": true,
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      "matchUpdateTypes": ["major"],
+      "labels": ["possibly breaking"],
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": ["major", "minor"],
+      "allowedVersions": "<1.0.0",
+      "labels": ["possibly breaking"],
+      "automerge": false
     },
     {
       "matchUpdateTypes": ["major", "minor"],
