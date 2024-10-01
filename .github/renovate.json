@@ -17,7 +17,7 @@
     },
     {
       "matchUpdateTypes": ["major", "minor"],
-      "allowedVersions": "<1.0.0",
+      "matchCurrentVersion": "<1.0.0",
       "labels": ["possibly breaking"],
       "automerge": false
     },
