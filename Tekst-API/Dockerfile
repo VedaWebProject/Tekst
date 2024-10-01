@@ -3,7 +3,7 @@
 # BASE IMAGE
 # =====================
 
-FROM python:3.10-slim-bullseye AS base
+FROM python:3.12-slim-bullseye AS base
 
 COPY --chmod=0644 <<"EOF" /etc/apt/apt.conf
 APT::Get::Assume-Yes "true";
