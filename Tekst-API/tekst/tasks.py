@@ -1,4 +1,5 @@
 import asyncio
+import gc
 
 from collections.abc import Awaitable
 from datetime import datetime, timedelta
@@ -160,6 +161,8 @@ async def _run_task(
             task_doc.end_time - task_doc.start_time
         ).total_seconds()
         await task_doc.save()
+        del task, task_doc
+        gc.collect()
 
 
 async def create_task(
