@@ -16,7 +16,6 @@ from tekst.resources import (
     AnyContentUpdateBody,
     resource_types_mgr,
 )
-from tekst.utils.html import sanitize_model_html
 
 
 # initialize content router
@@ -56,9 +55,6 @@ async def create_content(
         with_children=True,
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
-
-    # if the content has a "html" field, sanitize it
-    content = sanitize_model_html(content)
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()
@@ -137,9 +133,6 @@ async def update_content(
     )
     if not resource:
         raise errors.E_403_FORBIDDEN
-
-    # if the updated content has a "html" field, sanitize it
-    updates = sanitize_model_html(updates)
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()

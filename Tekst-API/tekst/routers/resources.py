@@ -7,9 +7,7 @@ from typing import Annotated, Any
 from uuid import uuid4
 
 from beanie import PydanticObjectId
-from beanie.exceptions import DocumentNotFound
 from beanie.operators import GTE, LTE, In
-from bson.errors import InvalidId
 from fastapi import (
     APIRouter,
     Body,
@@ -20,7 +18,7 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
-from pydantic import StringConstraints, ValidationError
+from pydantic import StringConstraints
 from starlette.background import BackgroundTask
 
 from tekst import errors, notifications, tasks
@@ -35,7 +33,6 @@ from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceCoverage,
     ResourceExportFormat,
-    ResourceImportData,
     res_exp_fmt_info,
 )
 from tekst.models.text import TextDocument
@@ -51,7 +48,6 @@ from tekst.resources import (
 )
 from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.utils import pick_translation
-from tekst.utils.html import sanitize_dict_html
 
 
 async def preprocess_resource_read(
@@ -752,140 +748,122 @@ async def _import_resource_contents_task(
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if user has permission to write to this resource, if so, fetch from DB
-    resource = await ResourceBaseDocument.find_one(
+    resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     )
-    if not resource:
+    if not resource_doc:
         raise errors.E_403_FORBIDDEN
 
     # validate import file format
     try:
-        import_data = ResourceImportData.model_validate_json(file_bytes)
+        import_data = json.loads(file_bytes)
     except Exception as e:
-        http_err = errors.update_values(
-            exc=errors.E_422_UPLOAD_INVALID_DATA,
-            values={"errors": e.errors()},
+        raise errors.update_values(
+            exc=errors.E_400_UPLOAD_INVALID_JSON,
+            values={"errors": e},
         )
-        raise http_err
+    finally:
+        del file_bytes
 
     # check if resource_id matches the one in the import file
-    if str(resource_id) != str(import_data.resource_id):
+    if str(resource_id) != str(import_data.get("resourceId")):
+        del import_data
         raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
 
-    # find contents that already exist and have to be updated instead of created
-    try:
-        existing_contents_dict = {
-            str(content_doc.location_id): content_doc
-            for content_doc in await ContentBaseDocument.find(
-                ContentBaseDocument.resource_id == resource.id,
-                In(
-                    ContentBaseDocument.location_id,
-                    [
-                        PydanticObjectId(content_data.get("locationId", ""))
-                        for content_data in import_data.contents
-                    ],
-                ),
-                with_children=True,
-            ).to_list()
-        }
-    except InvalidId:  # pragma: no cover
-        raise errors.E_400_IMPORT_ID_NON_EXISTENT
+    # chek if "contents" is a list
+    if not isinstance(import_data.get("contents"), list):
+        del import_data
+        raise errors.E_422_UPLOAD_INVALID_DATA
 
-    # create lists of validated content updates/creates depending on whether they exist
-    contents = {
-        "updates": [],
-        "creates": [],
-    }
-    update_model = (
-        resource_types_mgr.get(resource.resource_type).content_model().update_model()
-    )
-    create_model = (
-        resource_types_mgr.get(resource.resource_type).content_model().create_model()
-    )
-    for content_data in import_data.contents:
-        is_update = str(content_data.get("locationId", "")) in existing_contents_dict
-        try:
-            contents["updates" if is_update else "creates"].append(
-                (update_model if is_update else create_model)(
-                    resource_id=resource.id,
-                    resource_type=resource.resource_type,
-                    **content_data,
-                )
-            )
-        except ValidationError as e:
-            http_err = errors.update_values(
-                exc=errors.E_400_IMPORT_INVALID_CONTENT_DATA,
-                values={"errors": e.errors()},
-            )
-            raise http_err
+    # get content document model
+    content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
+    doc_model: ContentBaseDocument = content_model.document_model()
+    update_model = content_model.update_model()
 
-    del import_data  # a sacrifice for the GC
-
-    # process updates to existing contents
+    created_count = 0
     updated_count = 0
-    errors_count = 0
-    for update in contents["updates"]:
-        update = sanitize_dict_html(update)
-        content_doc = existing_contents_dict.get(str(update.location_id))
-        if content_doc:
-            try:
-                await content_doc.apply_updates(
-                    update,
-                    exclude={"id", "resource_id", "location_id", "resource_type"},
-                )
-                updated_count += 1
-            except (ValueError, DocumentNotFound) as e:  # pragma: no cover
-                log.error(e)
-                raise errors.E_500_INTERNAL_SERVER_ERROR
-                errors_count += 1
-        else:  # pragma: no cover
-            errors_count += 1
 
-    # process new contents
-    content_document_model = (
-        resource_types_mgr.get(resource.resource_type).content_model().document_model()
-    )
-    # get location IDs from target level to check if the ones in new contents are valid
-    existing_location_ids = {
-        n.id
-        for n in await LocationDocument.find(
-            LocationDocument.text_id == resource.text_id,
-            LocationDocument.level == resource.level,
-        ).to_list()
+    todo = []
+
+    preserve_fields = {
+        "_id",
+        "resource_type",
+        "resource_id",
+        "location_id",
     }
-    # filter out contents that reference non-existent location IDs
-    contents_creates_len_before = len(contents["creates"])
-    contents["creates"] = [
-        u for u in contents["creates"] if u.location_id in existing_location_ids
-    ]
-    errors_count += contents_creates_len_before - len(contents["creates"])
-    # sanitize content HTML if any
-    contents["creates"] = sanitize_dict_html(contents["creates"])
 
-    # insert new contents
-    if len(contents["creates"]):
-        insert_many_result = await ContentBaseDocument.insert_many(
-            [content_document_model.model_from(c) for c in contents["creates"]],
-            ordered=False,
-        )
-        created_count = len(insert_many_result.inserted_ids)
-        errors_count += len(contents["creates"]) - created_count
-        del insert_many_result
-    else:
-        created_count = 0
+    try:
+        # check import data
+        while import_data.get("contents"):
+            content = import_data["contents"].pop(0)
 
-    # call the resource's and text's hooks for changed contents
-    await resource.contents_changed_hook()
-    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+            # check if location ID is valid
+            if not content.get("locationId") or not PydanticObjectId.is_valid(
+                content.get("locationId")
+            ):
+                raise errors.E_400_IMPORT_ID_NON_EXISTENT
+            loc_id = PydanticObjectId(content.get("locationId"))
 
-    del existing_contents_dict, contents
+            # check if location exists
+            if not await LocationDocument.find_one(
+                LocationDocument.id == loc_id
+            ).exists():
+                raise errors.E_400_IMPORT_ID_NON_EXISTENT
+
+            # check if this content already exists
+            content_doc = await doc_model.find_one(
+                doc_model.resource_id == resource_doc.id,
+                doc_model.location_id == loc_id,
+            )
+
+            # validate content against model
+            try:
+                if content_doc:
+                    await content_doc.apply_updates(
+                        update_model(
+                            resource_id=resource_doc.id,
+                            resource_type=resource_doc.resource_type,
+                            location_id=loc_id,
+                            **content,
+                        ),
+                        exclude=preserve_fields,
+                        replace=False,
+                    )
+                    todo.append((content_doc, True))
+                else:
+                    content_doc = doc_model(
+                        resource_type=resource_doc.resource_type,
+                        resource_id=resource_doc.id,
+                        location_id=loc_id,
+                        **content,
+                    )
+                    todo.append((content_doc, False))
+            except Exception as e:
+                print(e)
+                raise errors.E_422_UPLOAD_INVALID_DATA
+
+        # write import data
+        while todo:
+            content_doc, is_update = todo.pop(0)
+            if is_update:
+                await content_doc.replace()
+                updated_count += 1
+            else:
+                await content_doc.save()
+                created_count += 1
+    except Exception as e:
+        raise e
+    finally:
+        del import_data, todo
+        # call the resource's and text's hooks for changed contents
+        await resource_doc.contents_changed_hook()
+        await (await TextDocument.get(resource_doc.text_id)).contents_changed_hook()
 
     return {
         "created": created_count,
         "updated": updated_count,
-        "errors": errors_count,
     }
 
 
@@ -913,6 +891,8 @@ async def import_resource_contents(
         ),
     ],
 ) -> tasks.TaskDocument:
+    file_bytes = await file.read()
+    await file.close()
     return await tasks.create_task(
         _import_resource_contents_task,
         tasks.TaskType.RESOURCE_IMPORT,
@@ -920,7 +900,7 @@ async def import_resource_contents(
         user_id=user.id,
         task_kwargs={
             "resource_id": resource_id,
-            "file_bytes": await file.read(),
+            "file_bytes": file_bytes,
             "user": user,
         },
     )
