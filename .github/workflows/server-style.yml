@@ -43,7 +43,7 @@ jobs:
         run: poetry install --sync
       - name: Cancel on setup error
         if: failure()
-        uses: andymckay/cancel-action@0.2
+        uses: andymckay/cancel-action@0.5
       - name: Lint code base
         if: always()
         run: poetry run ruff check . --extend-select N
