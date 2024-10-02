@@ -1,7 +1,5 @@
 import bleach
 
-from pydantic import BaseModel
-
 
 _ALLOWED_TAGS = frozenset(
     {
@@ -44,37 +42,3 @@ def sanitize_html(html: str | None = None) -> str:
         strip=True,
         strip_comments=False,
     )
-
-
-def sanitize_model_html(
-    models: BaseModel | list[BaseModel],
-) -> BaseModel | list[BaseModel]:
-    """
-    Sanitizes HTML in user-provided models' data.
-    Only operates on fields explicitly named 'html'.
-    """
-    passed_list = True
-    if not isinstance(models, list):
-        passed_list = False
-        models = [models]
-    for model in models:
-        if getattr(model, "html", None):
-            model.html = sanitize_html(model.html)
-    return models if passed_list else models[0]
-
-
-def sanitize_dict_html(
-    data: dict | list[dict],
-) -> dict | list[dict]:
-    """
-    Sanitizes HTML in data dicts.
-    Only operates on properties explicitly named 'html'.
-    """
-    passed_list = True
-    if not isinstance(data, list):
-        passed_list = False
-        data = [data]
-    for d in data:
-        if "html" in d and d["html"]:
-            d["html"] = sanitize_html(d["html"])
-    return data if passed_list else data[0]

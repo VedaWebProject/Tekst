@@ -3,7 +3,7 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
@@ -16,7 +16,7 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
-from tekst.utils.html import get_html_text
+from tekst.utils.html import get_html_text, sanitize_html
 
 
 class RichText(ResourceTypeABC):
@@ -175,6 +175,10 @@ class RichTextContent(ContentBase):
         Literal["wysiwyg", "html"],
         Field(description="Last used editor mode for this content"),
     ] = "wysiwyg"
+
+    @field_validator("html", mode="after")
+    def validate_html(cls, value: str) -> str:
+        return sanitize_html(value)
 
 
 class RichTextSearchQuery(ModelBase):

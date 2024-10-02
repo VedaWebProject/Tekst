@@ -125,7 +125,7 @@ tasks:
   results:
     indices_create_update: Search indices created in {took} seconds.
     resource_maintenance_hook: Maintenance took {took} seconds.
-    resource_import: Created {created} contents, updated {updated} contents, encountered {errors} errors.
+    resource_import: Created {created} contents, updated {updated} contents.
 
 routes:
   pageTitle:

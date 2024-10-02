@@ -128,7 +128,7 @@ tasks:
   results:
     indices_create_update: Suchindizes erzeugt in {took} Sekunden.
     resource_maintenance_hook: Die Wartung hat {took} Sekunden gedauert.
-    resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert, {errors} Fehler.'
+    resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert.'
 
 routes:
   pageTitle:

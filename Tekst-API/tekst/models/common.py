@@ -100,7 +100,7 @@ class DocumentBase(ModelTransformerMixin, Document):
         updates_model: BaseModel,
         *,
         exclude: set[int] | set[str] | None = None,
-        **kwargs,
+        replace: bool = True,
     ):
         """
         Custom method to apply updates to the document. It does a few things of which
@@ -112,7 +112,11 @@ class DocumentBase(ModelTransformerMixin, Document):
         for field in updates_model.model_fields_set:
             if not exclude or field not in exclude:
                 setattr(self, field, getattr(updates_model, field))
-        return await self.replace()
+
+        if replace:
+            return await self.replace()
+        else:
+            return self
 
 
 class ReadBase:
