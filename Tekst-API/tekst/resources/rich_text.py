@@ -177,6 +177,7 @@ class RichTextContent(ContentBase):
     ] = "wysiwyg"
 
     @field_validator("html", mode="after")
+    @classmethod
     def validate_html(cls, value: str) -> str:
         return sanitize_html(value)
 
