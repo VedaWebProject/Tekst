@@ -756,7 +756,7 @@ async def _import_resource_contents_task(
     if not resource_doc:
         raise errors.E_403_FORBIDDEN
 
-    # validate import file format
+    # parse data and validate import file format
     try:
         import_data = json.loads(file_bytes)
     except Exception as e:
@@ -777,15 +777,14 @@ async def _import_resource_contents_task(
         del import_data
         raise errors.E_422_UPLOAD_INVALID_DATA
 
-    # get content document model
+    # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     doc_model: ContentBaseDocument = content_model.document_model()
     update_model = content_model.update_model()
 
     created_count = 0
     updated_count = 0
-
-    todo = []
+    contents = []  # [(<content_doc: ContentBaseDocument>, <is_update: bool>)]
 
     preserve_fields = {
         "_id",
@@ -831,7 +830,7 @@ async def _import_resource_contents_task(
                         exclude=preserve_fields,
                         replace=False,
                     )
-                    todo.append((content_doc, True))
+                    contents.append((content_doc, True))
                 else:
                     content_doc = doc_model(
                         resource_type=resource_doc.resource_type,
@@ -839,14 +838,14 @@ async def _import_resource_contents_task(
                         location_id=loc_id,
                         **content,
                     )
-                    todo.append((content_doc, False))
+                    contents.append((content_doc, False))
             except Exception as e:
                 print(e)
                 raise errors.E_422_UPLOAD_INVALID_DATA
 
         # write import data
-        while todo:
-            content_doc, is_update = todo.pop(0)
+        while contents:
+            content_doc, is_update = contents.pop(0)
             if is_update:
                 await content_doc.replace()
                 updated_count += 1
@@ -856,7 +855,7 @@ async def _import_resource_contents_task(
     except Exception as e:
         raise e
     finally:
-        del import_data, todo
+        del import_data, contents
         # call the resource's and text's hooks for changed contents
         await resource_doc.contents_changed_hook()
         await (await TextDocument.get(resource_doc.text_id)).contents_changed_hook()
