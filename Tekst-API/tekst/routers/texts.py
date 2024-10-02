@@ -189,7 +189,6 @@ async def download_structure_template(
         [
             errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST,
             errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
-            errors.E_400_UPLOAD_INVALID_JSON,
             errors.E_422_UPLOAD_INVALID_DATA,
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_401_UNAUTHORIZED,
@@ -223,14 +222,8 @@ async def import_text_structure(
     # validate structure definition
     try:
         structure_def = TextStructureImportData.model_validate_json(await file.read())
-    except ValueError:
-        raise errors.E_400_UPLOAD_INVALID_JSON
-    except Exception as e:
-        http_err = errors.update_values(
-            exc=errors.E_422_UPLOAD_INVALID_DATA,
-            values={"errors": e.errors()},
-        )
-        raise http_err
+    except Exception as _:
+        raise errors.E_422_UPLOAD_INVALID_DATA
 
     # import locations depth-first
     locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
@@ -303,7 +296,7 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
         except Exception as e:
             http_err = errors.update_values(
                 exc=errors.E_422_UPLOAD_INVALID_DATA,
-                values={"errors": e.errors()},
+                values={"errors": str(e)},
             )
             raise http_err
         updated_docs.append(doc)

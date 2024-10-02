@@ -359,7 +359,7 @@ async def test_import_text_structure(
         f"/texts/{text_id}/structure",
         files={"file": ("fdhdgg.json", r"{foo: bar}", "application/json")},
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert resp.status_code == 422, status_fail_msg(422, resp)
 
     # upload structure definition file for wrong text ID
     with open(sample_data_path, "rb") as f:

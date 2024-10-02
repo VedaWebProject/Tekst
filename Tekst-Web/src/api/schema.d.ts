@@ -7340,6 +7340,12 @@ export interface operations {
           'application/json': components['schemas']['TaskRead'];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Unauthorized */
       401: {
         content: {
