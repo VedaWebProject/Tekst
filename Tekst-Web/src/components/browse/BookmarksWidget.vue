@@ -27,14 +27,14 @@ const router = useRouter();
 
 const filterString = ref<string>();
 const filteredBookmarks = computed(() =>
-  filterString.value
-    ? bookmarks.value.filter((b) =>
+  !filterString.value
+    ? bookmarks.value
+    : bookmarks.value.filter((b) =>
         [b.comment, ...b.locationLabels]
           .join(' ')
           .toLowerCase()
-          .includes(filterString.value.toLowerCase())
+          .includes(filterString.value?.toLowerCase() || ':(')
       )
-    : bookmarks.value
 );
 
 const showModal = ref(false);

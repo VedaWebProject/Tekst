@@ -4,7 +4,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { RefreshIcon, DeleteIcon, MaintenanceIcon, UpdateIcon } from '@/icons';
-import { NTime, NFlex, NButton, NIcon, NTable } from 'naive-ui';
+import { NTime, NButton, NIcon, NTable } from 'naive-ui';
 import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { onBeforeMount, ref } from 'vue';
