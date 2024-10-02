@@ -28,10 +28,11 @@ const router = useRouter();
 const showModal = ref(false);
 const promptModalRef = ref();
 const loading = ref(false);
-const currentBookmarks = computed(
-  () => bookmarks.value.filter((b) => b.textId === state.text?.id) || []
-);
+
 const maxCountReached = computed(() => bookmarks.value.length >= 1000);
+const bookmarkAlreadyExists = computed(
+  () => !!bookmarks.value.find((b) => b.locationId === browse.locationPathHead?.id)
+);
 
 async function handleDeleteBookmark(bookmarkId: string) {
   loading.value = true;
@@ -40,10 +41,10 @@ async function handleDeleteBookmark(bookmarkId: string) {
 }
 
 function handleCreateBookmarkClick() {
-  if (maxCountReached.value) {
+  if (loading.value || maxCountReached.value) {
     return;
   }
-  if (currentBookmarks.value.find((b) => b.locationId === browse.locationPathHead?.id)) {
+  if (bookmarkAlreadyExists.value) {
     message.error($t('errors.bookmarkExists'));
     return;
   }
@@ -94,8 +95,8 @@ async function handleWidgetClick() {
   >
     <n-list hoverable clickable style="background-color: transparent">
       <n-list-item
-        :class="{ disabled: loading || maxCountReached }"
-        @click="!loading && !maxCountReached && handleCreateBookmarkClick()"
+        :class="{ disabled: loading || maxCountReached || bookmarkAlreadyExists }"
+        @click="handleCreateBookmarkClick"
       >
         <n-thing content-indented>
           <template #avatar>
@@ -108,7 +109,7 @@ async function handleWidgetClick() {
         </n-thing>
       </n-list-item>
       <n-list-item
-        v-for="bookmark in currentBookmarks"
+        v-for="bookmark in bookmarks"
         :key="bookmark.id"
         @click="handleBookmarkSelect(bookmark)"
       >
