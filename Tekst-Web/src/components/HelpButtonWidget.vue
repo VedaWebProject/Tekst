@@ -80,9 +80,15 @@ async function handleHelpButtonClick() {
     heading-level="3"
     @after-leave="handleClose"
   >
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-if="helpText" v-html="helpText.content"></div>
-    <n-spin v-else-if="loading" :description="$t('general.loading')" class="centered-spinner" />
-    <div v-else>{{ $t('help.errorNotFound') }}</div>
+    <n-spin
+      :show="loading"
+      :delay="100"
+      :description="$t('general.loading')"
+      class="centered-spinner"
+    >
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-if="helpText" v-html="helpText.content"></div>
+      <div v-else-if="!loading">{{ $t('help.errorNotFound') }}</div>
+    </n-spin>
   </generic-modal>
 </template>

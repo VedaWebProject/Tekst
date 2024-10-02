@@ -73,12 +73,7 @@ function resetPagination() {
     </template>
   </n-input>
 
-  <n-spin
-    v-if="loading"
-    size="large"
-    class="centered-spinner"
-    :description="$t('general.loading')"
-  />
+  <n-spin v-if="loading" class="centered-spinner" :description="$t('general.loading')" />
 
   <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
 

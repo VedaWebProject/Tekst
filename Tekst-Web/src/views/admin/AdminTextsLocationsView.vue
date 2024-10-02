@@ -511,11 +511,7 @@ watch(
       @dragend="handleDragEnd"
       @drop="handleDrop"
     />
-    <n-spin
-      v-if="loading"
-      style="position: absolute; top: 50%; left: 50%"
-      :description="$t('general.loading')"
-    />
+    <n-spin v-if="loading" class="centered-spinner" :description="$t('general.loading')" />
   </div>
 
   <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />

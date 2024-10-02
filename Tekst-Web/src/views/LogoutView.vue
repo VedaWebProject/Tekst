@@ -6,5 +6,5 @@ auth.logout();
 </script>
 
 <template>
-  <n-spin size="large" class="centered-spinner my-lg" />
+  <n-spin class="centered-spinner my-lg" />
 </template>

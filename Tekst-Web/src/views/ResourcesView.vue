@@ -479,12 +479,7 @@ onMounted(() => {
     </div>
   </template>
 
-  <n-spin
-    v-else-if="loading"
-    size="large"
-    class="centered-spinner"
-    :description="$t('general.loading')"
-  />
+  <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
 
   <div v-else>
     {{ $t('errors.error') }}
