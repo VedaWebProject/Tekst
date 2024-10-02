@@ -124,12 +124,16 @@ function applyAnnotationDisplayTemplate(
   // apply templates, compute content
   return items.map((item, i) => {
     const content =
-      item.template.content
-        ?.replace(/k/g, item.data?.key || '')
-        .replace(
-          /v/g,
-          item.data?.value.join(props.resource.config?.multiValueDelimiter || '/') || ''
-        ) || '';
+      item.template.content?.replace(/k/g, item.data?.key || '').replace(
+        /v/g,
+        item.data?.value
+          // capitalize the first letter of each value if the template format wants small caps
+          .map((v) =>
+            item.template.format?.caps ? v.charAt(0).toUpperCase() + v.slice(1).toLowerCase() : v
+          )
+          // join the values with the delimiter set in the resource config
+          .join(props.resource.config?.multiValueDelimiter || '/') || ''
+      ) || '';
     const prefix = i > 0 ? item.template.prefix || '' : '';
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
