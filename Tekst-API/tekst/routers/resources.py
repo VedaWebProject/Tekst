@@ -873,6 +873,7 @@ async def _import_resource_contents_task(
     responses=errors.responses(
         [
             errors.E_401_UNAUTHORIZED,
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
         ]
     ),
 )
@@ -890,6 +891,10 @@ async def import_resource_contents(
         ),
     ],
 ) -> tasks.TaskDocument:
+    # test upload file MIME type
+    if file.content_type.lower() != "application/json":
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
+
     file_bytes = await file.read()
     await file.close()
     return await tasks.create_task(
