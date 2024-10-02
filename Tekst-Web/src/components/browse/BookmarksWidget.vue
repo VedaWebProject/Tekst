@@ -2,7 +2,7 @@
 import { type BookmarkRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NThing, NIcon, NButton, NList, NListItem, NFlex } from 'naive-ui';
+import { NInput, NThing, NIcon, NButton, NList, NListItem, NFlex } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PromptModal from '@/components/generic/PromptModal.vue';
@@ -12,7 +12,7 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
 import { bookmarkFormRules } from '@/forms/formRules';
-import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon } from '@/icons';
+import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, SearchIcon } from '@/icons';
 
 defineProps<{
   size?: 'small' | 'medium' | 'large';
@@ -24,6 +24,18 @@ const { pfData } = usePlatformData();
 const { message } = useMessages();
 const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
+
+const filterString = ref<string>();
+const filteredBookmarks = computed(() =>
+  filterString.value
+    ? bookmarks.value.filter((b) =>
+        [b.comment, ...b.locationLabels]
+          .join(' ')
+          .toLowerCase()
+          .includes(filterString.value.toLowerCase())
+      )
+    : bookmarks.value
+);
 
 const showModal = ref(false);
 const promptModalRef = ref();
@@ -93,6 +105,18 @@ async function handleWidgetClick() {
     :title="$t('browse.bookmarks.bookmarks')"
     :icon="BookmarksIcon"
   >
+    <n-input
+      v-model:value="filterString"
+      :placeholder="$t('search.searchAction')"
+      round
+      clearable
+      class="my-md"
+    >
+      <template #prefix>
+        <n-icon :component="SearchIcon" />
+      </template>
+    </n-input>
+
     <n-list hoverable clickable style="background-color: transparent">
       <n-list-item
         :class="{ disabled: loading || maxCountReached || bookmarkAlreadyExists }"
@@ -108,8 +132,9 @@ async function handleWidgetClick() {
           <span v-else>{{ $t('browse.bookmarks.maxCountReached') }}</span>
         </n-thing>
       </n-list-item>
+
       <n-list-item
-        v-for="bookmark in bookmarks"
+        v-for="bookmark in filteredBookmarks"
         :key="bookmark.id"
         @click="handleBookmarkSelect(bookmark)"
       >
