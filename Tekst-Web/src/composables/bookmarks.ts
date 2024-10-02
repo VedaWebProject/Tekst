@@ -1,40 +1,41 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { DELETE, GET, POST } from '@/api';
 import type { BookmarkRead } from '@/api';
-import { useAuthStore } from '@/stores';
-import { watchEffect } from 'vue';
+import { useAuthStore, useStateStore } from '@/stores';
 import { useMessages } from './messages';
 import { $t } from '@/i18n';
 
-const bookmarks = ref<BookmarkRead[]>([]);
-const lastUserId = ref<string>();
+const allBookmarks = ref<BookmarkRead[] | null>(null);
 
 export function useBookmarks() {
+  const state = useStateStore();
   const auth = useAuthStore();
   const { message } = useMessages();
 
+  const bookmarks = computed<BookmarkRead[]>(
+    () => allBookmarks.value?.filter((b) => b.textId === state.text?.id) || []
+  );
+
   async function loadBookmarks() {
-    if (auth.user?.id) {
+    if (auth.loggedIn && allBookmarks.value === null) {
       const { data, error } = await GET('/bookmarks', {});
       if (!error) {
-        bookmarks.value = data;
+        allBookmarks.value = data;
       } else {
-        bookmarks.value = [];
+        allBookmarks.value = null;
       }
-    } else {
-      bookmarks.value = [];
     }
   }
 
   async function createBookmark(locationId: string, comment: string) {
-    const { error } = await POST('/bookmarks', {
+    const { data, error } = await POST('/bookmarks', {
       body: {
         locationId,
         comment,
       },
     });
     if (!error) {
-      await loadBookmarks();
+      allBookmarks.value?.push(data);
       message.success($t('browse.bookmarks.createSuccess'));
     }
   }
@@ -44,19 +45,10 @@ export function useBookmarks() {
       params: { path: { id } },
     });
     if (!error) {
-      bookmarks.value = bookmarks.value.filter((b) => b.id !== id);
+      allBookmarks.value = allBookmarks.value?.filter((b) => b.id !== id) || null;
       message.success($t('browse.bookmarks.deleteSuccess'));
-    } else {
-      auth.logout();
     }
   }
-
-  watchEffect(() => {
-    if (auth.loggedIn && auth.user?.id !== lastUserId.value) {
-      lastUserId.value = auth.user?.id;
-      loadBookmarks();
-    }
-  });
 
   return { bookmarks, loadBookmarks, createBookmark, deleteBookmark };
 }

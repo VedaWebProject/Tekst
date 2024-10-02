@@ -22,7 +22,7 @@ const browse = useBrowseStore();
 const state = useStateStore();
 const { pfData } = usePlatformData();
 const { message } = useMessages();
-const { bookmarks, createBookmark, deleteBookmark } = useBookmarks();
+const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
 
 const showModal = ref(false);
@@ -64,6 +64,13 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     query: { lvl: bookmark.level, pos: bookmark.position },
   });
 }
+
+async function handleWidgetClick() {
+  showModal.value = true;
+  loading.value = true;
+  await loadBookmarks();
+  loading.value = false;
+}
 </script>
 
 <template>
@@ -72,7 +79,7 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
     :size="size"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"
-    @click="showModal = true"
+    @click.stop.prevent="handleWidgetClick"
   >
     <template #icon>
       <n-icon :component="BookmarksIcon" />
