@@ -56,7 +56,7 @@ jobs:
         run: poetry install --sync
       - name: Cancel on setup error
         if: failure()
-        uses: andymckay/cancel-action@0.2
+        uses: andymckay/cancel-action@0.5
       - name: Run tests
         if: always()
         run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
