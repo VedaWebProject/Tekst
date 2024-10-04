@@ -107,11 +107,11 @@ onMounted(() => {
         class="mb-md"
       >
         <h2
+          class="mb-0"
           :class="{
             translucent:
               catHiddenResCount[category.category.key || ''] === category.resources.length,
           }"
-          style="margin-bottom: 0"
         >
           {{ category.category.translation }}
         </h2>

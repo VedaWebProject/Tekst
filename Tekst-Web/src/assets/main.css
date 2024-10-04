@@ -143,6 +143,10 @@ code {
   margin: 0;
 }
 
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
 .my-lg {
   margin-top: var(--gap-lg);
   margin-bottom: var(--gap-lg);

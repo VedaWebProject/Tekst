@@ -121,7 +121,7 @@ async function handleSave() {
           v-model:value="model.levels"
           :min="1"
           :max="32"
-          item-style="margin-bottom: 0;"
+          item-class="mb-0"
           @create="() => [{ locale: '*', translation: '' }]"
         >
           <template #default="{ index: levelIndex }">

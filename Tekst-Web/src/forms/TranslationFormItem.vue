@@ -53,7 +53,7 @@ const localeOptions = computed(() =>
       v-model:value="model"
       :min="minItems"
       :max="localeOptions.length"
-      item-style="margin-bottom: 0;"
+      item-class="mb-0"
       :default-value="[]"
       @create="
         () => ({
