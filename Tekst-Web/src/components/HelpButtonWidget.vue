@@ -84,6 +84,7 @@ async function handleHelpButtonClick() {
       :show="loading"
       :delay="100"
       :description="$t('general.loading')"
+      content-style="width: 100%;"
       class="centered-spinner"
     >
       <!-- eslint-disable-next-line vue/no-v-html -->
