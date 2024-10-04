@@ -320,7 +320,7 @@ class TextAnnotationResource(ResourceBase):
         return ["tokens.token", "tokens.annotations.value"]
 
     async def _update_aggregations(self) -> None:
-        MAX_VALUES_PER_ANNO = 250
+        max_values_per_anno = 250
         # get precomputed resource aggregations data, if present
         precomp_doc = await PrecomputedDataDocument.find_one(
             PrecomputedDataDocument.ref_id == self.id,
@@ -390,7 +390,7 @@ class TextAnnotationResource(ResourceBase):
                                     "if": {
                                         "$gt": [
                                             {"$size": "$values"},
-                                            MAX_VALUES_PER_ANNO,
+                                            max_values_per_anno,
                                         ]
                                     },
                                     "then": "$$REMOVE",
