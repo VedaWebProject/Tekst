@@ -132,16 +132,11 @@ function handleSelect(value: string, option: SelectOption) {
 }
 
 function quickSearch(q: string) {
-  router.push({
-    name: 'searchResults',
-    query: {
-      q: search.encodeQueryParam({
-        type: 'quick',
-        q,
-        gen: search.settingsGeneral,
-        qck: search.settingsQuick,
-      }),
-    },
+  search.search(true, {
+    type: 'quick',
+    q,
+    gen: search.settingsGeneral,
+    qck: search.settingsQuick,
   });
   emit('submit', searchInput.value);
 }

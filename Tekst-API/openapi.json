@@ -7061,25 +7061,19 @@
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
-            "description": "General search settings",
-            "default": {
-              "pgn": {
-                "pg": 1,
-                "pgs": 10
-              },
-              "strict": false
-            }
+            "description": "General search settings"
           },
           "adv": {
             "$ref": "#/components/schemas/AdvancedSearchSettings",
-            "description": "Advanced search settings",
-            "default": {}
+            "description": "Advanced search settings"
           }
         },
         "type": "object",
         "required": [
           "type",
-          "q"
+          "q",
+          "gen",
+          "adv"
         ],
         "title": "AdvancedSearchRequestBody"
       },
@@ -12778,27 +12772,18 @@
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
-            "description": "General search settings",
-            "default": {
-              "pgn": {
-                "pg": 1,
-                "pgs": 10
-              },
-              "strict": false
-            }
+            "description": "General search settings"
           },
           "qck": {
             "$ref": "#/components/schemas/QuickSearchSettings",
-            "description": "Quick search settings",
-            "default": {
-              "op": "OR",
-              "re": false
-            }
+            "description": "Quick search settings"
           }
         },
         "type": "object",
         "required": [
-          "type"
+          "type",
+          "gen",
+          "qck"
         ],
         "title": "QuickSearchRequestBody"
       },

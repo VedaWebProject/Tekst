@@ -193,14 +193,14 @@ class QuickSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-    ] = GeneralSearchSettings()
+    ]
     settings_quick: Annotated[
         QuickSearchSettings,
         Field(
             alias="qck",
             description="Quick search settings",
         ),
-    ] = QuickSearchSettings()
+    ]
 
 
 class AdvancedSearchRequestBody(ModelBase):
@@ -225,14 +225,14 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-    ] = GeneralSearchSettings()
+    ]
     settings_advanced: Annotated[
         AdvancedSearchSettings,
         Field(
             alias="adv",
             description="Advanced search settings",
         ),
-    ] = AdvancedSearchSettings()
+    ]
 
 
 class IndexInfo(ModelBase):

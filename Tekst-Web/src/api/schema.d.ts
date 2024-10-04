@@ -454,22 +454,10 @@ export interface components {
        * @description Resource-specific queries
        */
       q: components['schemas']['ResourceSearchQuery'][];
-      /**
-       * @description General search settings
-       * @default {
-       *   "pgn": {
-       *     "pg": 1,
-       *     "pgs": 10
-       *   },
-       *   "strict": false
-       * }
-       */
-      gen?: components['schemas']['GeneralSearchSettings'];
-      /**
-       * @description Advanced search settings
-       * @default {}
-       */
-      adv?: components['schemas']['AdvancedSearchSettings'];
+      /** @description General search settings */
+      gen: components['schemas']['GeneralSearchSettings'];
+      /** @description Advanced search settings */
+      adv: components['schemas']['AdvancedSearchSettings'];
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
@@ -3535,25 +3523,10 @@ export interface components {
        * @default *
        */
       q?: string;
-      /**
-       * @description General search settings
-       * @default {
-       *   "pgn": {
-       *     "pg": 1,
-       *     "pgs": 10
-       *   },
-       *   "strict": false
-       * }
-       */
-      gen?: components['schemas']['GeneralSearchSettings'];
-      /**
-       * @description Quick search settings
-       * @default {
-       *   "op": "OR",
-       *   "re": false
-       * }
-       */
-      qck?: components['schemas']['QuickSearchSettings'];
+      /** @description General search settings */
+      gen: components['schemas']['GeneralSearchSettings'];
+      /** @description Quick search settings */
+      qck: components['schemas']['QuickSearchSettings'];
     };
     /** QuickSearchSettings */
     QuickSearchSettings: {

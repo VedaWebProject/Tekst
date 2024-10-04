@@ -7,7 +7,7 @@ import { $t } from '@/i18n';
 import { useIntervalFn } from '@vueuse/core';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 import { usePlatformData } from '@/composables/platformData';
-import { useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { useResourcesStore, useSearchStore, useStateStore, useUserMessagesStore } from '@/stores';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
@@ -28,6 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { pfData, loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const state = useStateStore();
+  const search = useSearchStore();
   const userMessages = useUserMessagesStore();
 
   const user = ref<UserRead>();
@@ -70,6 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
     userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
+    search.req = undefined;
   }
 
   function _sessionExpiresInS() {

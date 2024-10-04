@@ -39,15 +39,11 @@ const showDot = computed(() => !!model.value && model.value !== 'relevance');
     @select="(v) => (model = v)"
   >
     <n-badge :show="showDot" :offset="[-1, 4]" dot>
-      <n-button
-        :focusable="false"
-        :size="size"
-        :disabled="disabled"
-        :title="$t('search.results.sortingPresets.tooltip')"
-      >
+      <n-button secondary :focusable="false" :size="size" :disabled="disabled">
         <template #icon>
           <n-icon :component="SortIcon" />
         </template>
+        {{ $t('search.results.sortingPresets.title') }}
       </n-button>
     </n-badge>
   </n-dropdown>

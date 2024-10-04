@@ -873,10 +873,11 @@ search:
     searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: in {ms} Millisekunden
+    browse: Top-100 Ergebnisse in "{browse}"-Ansicht öffnen
     indexCreationTime: Letztes update der Suchdaten
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
     sortingPresets:
-      tooltip: Suchergebnisse sortieren
+      title: Sortieren
       relevance: Relevanz
       textLevelPosition: Text / Ebene / Position
       textLevelRelevance: Text / Ebene / Relevanz
