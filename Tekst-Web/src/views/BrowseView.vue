@@ -100,7 +100,8 @@ onMounted(() => {
         v-if="
           pfData?.state.showResourceCategoryHeadings &&
           !!category.resources.length &&
-          !browse.reducedView
+          !browse.reducedView &&
+          !!category.category.translation
         "
         align="baseline"
         class="mb-md"

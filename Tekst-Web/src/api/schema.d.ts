@@ -3606,7 +3606,7 @@ export interface components {
     ResourceCategoryTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
-      translation: string;
+      translation: string | null;
     };
     /** ResourceCommentTranslation */
     ResourceCommentTranslation: {

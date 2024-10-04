@@ -440,6 +440,7 @@ resources:
       common:
         heading: Common
         category: Category
+        catUnlabelled: unlabelled
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
         showOnParentLevel: Enable viewing combined contents on the parent level

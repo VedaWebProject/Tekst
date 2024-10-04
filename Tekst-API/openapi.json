@@ -12911,9 +12911,14 @@
             "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Translation"
           }
         },

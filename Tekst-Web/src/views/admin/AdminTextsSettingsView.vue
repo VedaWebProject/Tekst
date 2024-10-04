@@ -251,7 +251,6 @@ async function handleDelete() {
                 v-model="model.resourceCategories[index].translations"
                 ignore-path-change
                 secondary
-                required
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 style="flex-grow: 2"
                 :main-form-label="$t('models.text.resourceCategoryTranslation')"

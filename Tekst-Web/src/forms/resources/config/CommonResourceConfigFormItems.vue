@@ -7,6 +7,7 @@ import { computed } from 'vue';
 import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();
@@ -14,7 +15,9 @@ const state = useStateStore();
 const categoryOptions = computed(
   () =>
     state.text?.resourceCategories?.map((c) => ({
-      label: pickTranslation(c.translations, state.locale) || c.key,
+      label:
+        pickTranslation(c.translations, state.locale) ||
+        `${c.key} (${$t('resources.settings.config.common.catUnlabelled')})`,
       value: c.key,
     })) || []
 );

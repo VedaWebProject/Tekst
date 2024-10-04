@@ -48,13 +48,11 @@ class TextLevelTranslation(TranslationBase):
 
 class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
-        str,
+        str | None,
         StringConstraints(
-            min_length=1,
-            max_length=32,
             strip_whitespace=True,
         ),
-    ]
+    ] = None
 
 
 class ResourceCategory(TypedDict):

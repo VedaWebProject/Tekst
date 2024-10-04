@@ -168,7 +168,7 @@ export type LocaleKey = components['schemas']['LocaleKey'];
 export type TranslationLocaleKey = components['schemas']['TranslationLocaleKey'];
 export type Translation = {
   locale: TranslationLocaleKey;
-  translation: string;
+  translation?: string | null;
 };
 export type ResourceExportFormat = NonNullable<
   NonNullable<paths['/resources/{id}/export']['get']['parameters']['query']>['format']

@@ -129,10 +129,6 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('models.text.resourceCategoryKey'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
   ],
-  resourceCategoryTranslation: [
-    requiredStringRule(() => $t('models.text.resourceCategoryTranslation'), 'blur'),
-    minMaxCharsRule(1, 32, 'blur'),
-  ],
 };
 
 export const locationFormRules: Record<string, FormItemRule[]> = {
