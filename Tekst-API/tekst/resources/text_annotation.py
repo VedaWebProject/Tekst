@@ -320,6 +320,7 @@ class TextAnnotationResource(ResourceBase):
         return ["tokens.token", "tokens.annotations.value"]
 
     async def _update_aggregations(self) -> None:
+        MAX_VALUES_PER_ANNO = 250
         # get precomputed resource aggregations data, if present
         precomp_doc = await PrecomputedDataDocument.find_one(
             PrecomputedDataDocument.ref_id == self.id,
@@ -381,12 +382,17 @@ class TextAnnotationResource(ResourceBase):
                             }
                         }
                     },
-                    # remove values array if it contains more than 100 items
+                    # remove values array if it contains more than n items
                     {
                         "$set": {
                             "values": {
                                 "$cond": {
-                                    "if": {"$gt": [{"$size": "$values"}, 100]},
+                                    "if": {
+                                        "$gt": [
+                                            {"$size": "$values"},
+                                            MAX_VALUES_PER_ANNO,
+                                        ]
+                                    },
                                     "then": "$$REMOVE",
                                     "else": "$values",
                                 }
