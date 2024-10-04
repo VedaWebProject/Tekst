@@ -67,6 +67,11 @@ class TextAnnotation(ResourceTypeABC):
                     },
                 },
             },
+            "tokens_concat": {
+                "type": "text",
+                "analyzer": "standard_no_diacritics",
+                "fields": {"strict": {"type": "text"}},
+            },
         }
 
     @classmethod
@@ -92,6 +97,7 @@ class TextAnnotation(ResourceTypeABC):
                 }
                 for token in content.tokens
             ],
+            "tokens_concat": "; ".join(token.token or "" for token in content.tokens),
         }
 
     @classmethod
@@ -317,7 +323,7 @@ class TextAnnotationResource(ResourceBase):
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["tokens.token", "tokens.annotations.value"]
+        return ["tokens_concat"]
 
     async def _update_aggregations(self) -> None:
         max_values_per_anno = 250
