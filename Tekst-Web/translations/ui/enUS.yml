@@ -22,7 +22,7 @@ general:
   moveDownAction: Move down
   refreshAction: Refresh
   exportAction: Export
-  runAction: Run
+  precomputeAction: Precompute
   expandAction: Expand
   collapseAction: Collapse
   textSelect: Select the text you want to work with
@@ -784,8 +784,8 @@ admin:
         actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
         actionCreateSuccess: Search indices have been updated
       resourceMaintenance:
-        heading: Resource Data Maintenance
-        actionStarted: The automatic resource data maintenance is performed in the background. @:general.takeAWhile
+        heading: Precomputed Resource Data
+        actionStarted: The update of precomputed resource data is performed in the background. @:general.takeAWhile
       tasks:
         noTasks: No active background tasks
         type: Type

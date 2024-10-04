@@ -22,7 +22,7 @@ general:
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
   exportAction: Export
-  runAction: Ausführen
+  precomputeAction: Vorberechnen
   expandAction: Ausklappen
   collapseAction: Einklappen
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
@@ -808,8 +808,8 @@ admin:
         actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
         actionCreateSuccess: Suchindizes wurden aktualisiert
       resourceMaintenance:
-        heading: Wartung von Ressourcen-Daten
-        actionStarted: Die automatische Wartung von Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
+        heading: Vorberechnete Ressourcen-Daten
+        actionStarted: Die Aktualisierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
       tasks:
         noTasks: Keine aktiven @:tasks.title
         type: Typ
