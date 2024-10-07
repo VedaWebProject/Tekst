@@ -37,8 +37,22 @@ const annoOptions = computed(() => {
       valuesOptions: [
         anyValueOption,
         ...(aggregations.value
-          .find((agg) => agg.key === a.k)
-          ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
+          .find(
+            // find possible values for the selected key
+            (agg) => agg.key === a.k
+          )
+          ?.values?.filter(
+            // filter out already selected values
+            (v) =>
+              !model.value.anno
+                ?.filter((an) => an.k === a.k)
+                .map((an) => an.v)
+                ?.includes(v)
+          )
+          .map(
+            // map anno key-value pairs to options
+            (v) => ({ label: v, value: v, style: annoValueStyle })
+          ) || []),
       ],
     })) || []
   );
