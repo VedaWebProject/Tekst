@@ -132,12 +132,7 @@ function handleSelect(value: string, option: SelectOption) {
 }
 
 function quickSearch(q: string) {
-  search.search(true, {
-    type: 'quick',
-    q,
-    gen: search.settingsGeneral,
-    qck: search.settingsQuick,
-  });
+  search.searchQuick(q);
   emit('submit', searchInput.value);
 }
 </script>

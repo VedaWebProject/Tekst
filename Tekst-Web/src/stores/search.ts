@@ -1,11 +1,9 @@
 import {
   POST,
-  type AdvancedSearchSettings,
-  type GeneralSearchSettings,
-  type QuickSearchSettings,
-  type SearchRequestBody,
   type SearchResults,
   type SortingPreset,
+  type SearchPagination,
+  type ResourceSearchQuery,
 } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
@@ -17,32 +15,72 @@ import { useStateStore } from './state';
 import { usePlatformData } from '@/composables/platformData';
 import _cloneDeep from 'lodash.clonedeep';
 
+type GeneralSearchSettings = {
+  pgn: SearchPagination;
+  sort: SortingPreset;
+  strict: boolean;
+};
+
+type QuickSearchSettings = {
+  op: 'OR' | 'AND';
+  re: boolean;
+  txt?: string[];
+};
+
+type AdvancedSearchSettings = {};
+
+type QuickSearchRequest = {
+  type: 'quick';
+  q: string;
+  gen: GeneralSearchSettings;
+  qck: QuickSearchSettings;
+};
+
+type AdvancedSearchRequest = {
+  type: 'advanced';
+  q: ResourceSearchQuery[];
+  gen: GeneralSearchSettings;
+  adv: AdvancedSearchSettings;
+};
+
+type SearchRequest = QuickSearchRequest | AdvancedSearchRequest;
+
+const DEFAULT_SEARCH_SETTINGS = {
+  gen: {
+    pgn: { pg: 1, pgs: 10 },
+    sort: 'relevance',
+    strict: false,
+  } as GeneralSearchSettings,
+  qck: {
+    op: 'OR',
+    re: false,
+  } as QuickSearchSettings,
+  adv: {} as AdvancedSearchSettings,
+};
+
+const DEFAULT_SEARCH_REQUEST_BODY: QuickSearchRequest = {
+  type: 'quick',
+  q: '',
+  gen: DEFAULT_SEARCH_SETTINGS.gen,
+  qck: DEFAULT_SEARCH_SETTINGS.qck,
+};
+
 export const useSearchStore = defineStore('search', () => {
   const state = useStateStore();
   const { pfData } = usePlatformData();
   const router = useRouter();
   const { message } = useMessages();
 
-  const req = ref<SearchRequestBody>();
-
-  const settingsGeneral = ref<GeneralSearchSettings>({
-    strict: false,
-  });
-  const settingsQuick = ref<QuickSearchSettings>({
-    op: 'OR',
-    re: false,
-  });
-  const settingsAdvanced = ref<AdvancedSearchSettings>({});
-
-  const paginationDefaults = () => ({ pg: 1, pgs: 10 });
-  const pagination = ref(paginationDefaults());
-  const sorting = ref<SortingPreset>();
+  const settingsGeneral = ref<GeneralSearchSettings>(DEFAULT_SEARCH_SETTINGS.gen);
+  const settingsQuick = ref<QuickSearchSettings>(DEFAULT_SEARCH_SETTINGS.qck);
+  const settingsAdvanced = ref<AdvancedSearchSettings>(DEFAULT_SEARCH_SETTINGS.adv);
+  const currentRequest = ref<SearchRequest>();
 
   const loading = ref(false);
   const error = ref(false);
   const results = ref<SearchResults>();
 
-  function encodeQueryParam(requestBody?: SearchRequestBody): string | undefined {
+  function encodeReqInUrl(requestBody?: SearchRequest): string | undefined {
     if (!requestBody) return undefined;
     try {
       return Base64.encode(JSON.stringify(requestBody), true);
@@ -52,80 +90,86 @@ export const useSearchStore = defineStore('search', () => {
     }
   }
 
-  function decodeQueryParam(): SearchRequestBody | undefined {
-    const queryParam = router.currentRoute.value.query.q?.toString();
+  function decodeReqFromUrl(): SearchRequest {
     try {
-      const decoded: SearchRequestBody = queryParam
-        ? JSON.parse(Base64.decode(queryParam))
-        : undefined;
+      const q = router.currentRoute.value.query.q?.toString();
+      const decoded: SearchRequest = q ? JSON.parse(Base64.decode(q)) : undefined;
       if (!decoded) throw new Error();
-      pagination.value = {
-        pg: decoded.gen.pgn?.pg || paginationDefaults().pg,
-        pgs: decoded.gen.pgn?.pgs || paginationDefaults().pgs,
-      };
-      sorting.value = decoded.gen.sort || undefined;
+      settingsGeneral.value = decoded.gen || DEFAULT_SEARCH_SETTINGS.gen;
+      settingsGeneral.value.pgn.pg = 1;
+      settingsGeneral.value.pgn.pgs = 10;
       if (decoded.type === 'quick') {
-        settingsQuick.value = decoded.qck;
+        settingsQuick.value = decoded.qck || DEFAULT_SEARCH_SETTINGS.qck;
       } else if (decoded.type === 'advanced') {
-        settingsAdvanced.value = decoded.adv;
+        settingsAdvanced.value = decoded.adv || DEFAULT_SEARCH_SETTINGS.adv;
       } else {
-        throw new Error();
+        return DEFAULT_SEARCH_REQUEST_BODY;
       }
       return decoded;
     } catch {
-      return undefined;
+      return DEFAULT_SEARCH_REQUEST_BODY;
     }
   }
 
-  function processQuery() {
-    pagination.value.pg = 1;
-    try {
-      const q = decodeQueryParam();
-      if (!q || !['quick', 'advanced'].includes(q.type)) {
-        throw new Error();
-      }
-      return q;
-    } catch {
-      message.error($t('search.results.msgInvalidRequest'));
-    }
+  async function searchQuick(
+    q: string,
+    pg: number = settingsGeneral.value.pgn.pg,
+    pgs: number = settingsGeneral.value.pgn.pgs
+  ) {
+    const req: QuickSearchRequest = {
+      type: 'quick',
+      q,
+      gen: { ...settingsGeneral.value, pgn: { pg, pgs } },
+      qck: settingsQuick.value,
+    };
+    gotoSearchResultsView(req);
+    await _search(req);
   }
 
-  async function search(resetPage?: boolean, query?: SearchRequestBody) {
-    loading.value = true;
-    error.value = false;
-    results.value = undefined;
-    if (query) {
-      settingsGeneral.value.pgn = pagination.value;
-      settingsGeneral.value.sort = sorting.value;
-      req.value = {
-        ...query,
-        gen: settingsGeneral.value,
-      };
-    } else {
-      req.value = processQuery();
-    }
-    if (!req.value) {
-      error.value = true;
-      loading.value = false;
-      return;
-    }
-    // change to search results view
+  async function searchAdvanced(
+    q: ResourceSearchQuery[],
+    pg: number = settingsGeneral.value.pgn.pg,
+    pgs: number = settingsGeneral.value.pgn.pgs
+  ) {
+    const req: AdvancedSearchRequest = {
+      type: 'advanced',
+      q,
+      gen: { ...settingsGeneral.value, pgn: { pg, pgs } },
+      adv: settingsAdvanced.value,
+    };
+    gotoSearchResultsView(req);
+    await _search(req);
+  }
+
+  async function searchFromUrl() {
+    if (currentRequest.value) return;
+    await _search(decodeReqFromUrl());
+  }
+
+  async function searchSecondary() {
+    await _search({
+      ...(currentRequest.value || DEFAULT_SEARCH_REQUEST_BODY),
+      gen: settingsGeneral.value,
+    });
+  }
+
+  function gotoSearchResultsView(req: SearchRequest) {
     router.push({
       name: 'searchResults',
       query: {
-        q: encodeQueryParam(req.value),
+        q: encodeReqInUrl(req),
       },
     });
-    // reset page
-    if (resetPage) {
-      pagination.value.pg = paginationDefaults().pg;
-    }
+  }
+
+  async function _search(req: SearchRequest) {
+    loading.value = true;
+    error.value = false;
+    results.value = undefined;
+    currentRequest.value = req;
     // search
     const { data, error: e } = await POST('/search', {
-      body: {
-        ...req.value,
-        gen: settingsGeneral.value,
-      },
+      body: req,
     });
     if (!e) {
       results.value = data;
@@ -135,31 +179,21 @@ export const useSearchStore = defineStore('search', () => {
     loading.value = false;
   }
 
-  function handleSortingChange() {
-    search(true, {
-      ...req.value,
-      gen: {
-        ...req.value?.gen,
-        sort: sorting.value,
-      },
-    } as SearchRequestBody);
-  }
-
   function turnPage(direction: 'previous' | 'next') {
     if (!results.value) return;
-    const currPage = pagination.value.pg;
-    pagination.value.pg =
+    const currPage = settingsGeneral.value.pgn.pg;
+    settingsGeneral.value.pgn.pg =
       direction === 'previous'
-        ? Math.max(1, pagination.value.pg - 1)
+        ? Math.max(1, settingsGeneral.value.pgn.pg - 1)
         : Math.min(
-            pagination.value.pg + 1,
-            Math.floor(results.value.totalHits / pagination.value.pg) + 1
+            settingsGeneral.value.pgn.pg + 1,
+            Math.floor(results.value.totalHits / settingsGeneral.value.pgn.pg) + 1
           );
-    currPage !== pagination.value.pg && search();
+    currPage !== settingsGeneral.value.pgn.pg && searchSecondary();
   }
 
   function browse() {
-    const q = _cloneDeep(req.value);
+    const q = _cloneDeep(currentRequest.value);
     if (!q) return;
     q.gen.pgn = { pg: 1, pgs: 100 };
     console.log(q);
@@ -178,12 +212,12 @@ export const useSearchStore = defineStore('search', () => {
     settingsGeneral,
     settingsQuick,
     settingsAdvanced,
-    handleSortingChange,
-    req,
-    sorting,
-    pagination,
-    search,
+    searchQuick,
+    searchAdvanced,
+    searchFromUrl,
+    searchSecondary,
     turnPage,
+    currentRequest,
     loading,
     error,
     results,

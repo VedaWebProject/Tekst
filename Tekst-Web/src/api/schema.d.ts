@@ -445,19 +445,33 @@ export interface components {
       /**
        * Type
        * @description Search type
+       * @default advanced
        * @constant
        * @enum {string}
        */
-      type: 'advanced';
+      type?: 'advanced';
       /**
        * Q
        * @description Resource-specific queries
+       * @default []
        */
-      q: components['schemas']['ResourceSearchQuery'][];
-      /** @description General search settings */
-      gen: components['schemas']['GeneralSearchSettings'];
-      /** @description Advanced search settings */
-      adv: components['schemas']['AdvancedSearchSettings'];
+      q?: components['schemas']['ResourceSearchQuery'][];
+      /**
+       * @description General search settings
+       * @default {
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
+       *   "strict": false
+       * }
+       */
+      gen?: components['schemas']['GeneralSearchSettings'];
+      /**
+       * @description Advanced search settings
+       * @default {}
+       */
+      adv?: components['schemas']['AdvancedSearchSettings'];
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
@@ -3513,20 +3527,36 @@ export interface components {
       /**
        * Type
        * @description Search type
+       * @default quick
        * @constant
        * @enum {string}
        */
-      type: 'quick';
+      type?: 'quick';
       /**
        * Q
        * @description Query string
        * @default *
        */
       q?: string;
-      /** @description General search settings */
-      gen: components['schemas']['GeneralSearchSettings'];
-      /** @description Quick search settings */
-      qck: components['schemas']['QuickSearchSettings'];
+      /**
+       * @description General search settings
+       * @default {
+       *   "pgn": {
+       *     "pg": 1,
+       *     "pgs": 10
+       *   },
+       *   "strict": false
+       * }
+       */
+      gen?: components['schemas']['GeneralSearchSettings'];
+      /**
+       * @description Quick search settings
+       * @default {
+       *   "op": "OR",
+       *   "re": false
+       * }
+       */
+      qck?: components['schemas']['QuickSearchSettings'];
     };
     /** QuickSearchSettings */
     QuickSearchSettings: {

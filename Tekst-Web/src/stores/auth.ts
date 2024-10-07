@@ -71,7 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
     userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
-    search.req = undefined;
+    search.currentRequest = undefined;
   }
 
   function _sessionExpiresInS() {

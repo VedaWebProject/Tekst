@@ -30,7 +30,7 @@ const resources = useResourcesStore();
 const neutralTagColor = { color: 'var(--main-bg-color)' };
 
 const searchedResources = computed(() => {
-  const qRes = [...new Set(props.req.q.map((q) => q.cmn.res))];
+  const qRes = [...new Set(props.req.q?.map((q) => q.cmn.res))];
   return resources.all
     .filter((r) => qRes.includes(r.id))
     .map((r) => {

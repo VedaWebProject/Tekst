@@ -9,7 +9,7 @@ import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
-import { createReusableTemplate, useMagicKeys, useUrlSearchParams, whenever } from '@vueuse/core';
+import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
@@ -21,7 +21,6 @@ const search = useSearchStore();
 const theme = useThemeStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
-const params = useUrlSearchParams('history');
 
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
 
@@ -64,9 +63,7 @@ whenever(ArrowLeft, () => {
 });
 
 onBeforeMount(() => {
-  if (params.q && !search.req) {
-    search.search();
-  }
+  search.searchFromUrl();
 });
 </script>
 
@@ -75,8 +72,8 @@ onBeforeMount(() => {
     <n-flex justify="end" class="pagination-container" align="center">
       <n-pagination
         v-if="search.results?.hits.length"
-        v-model:page="search.pagination.pg"
-        v-model:page-size="search.pagination.pgs"
+        v-model:page="search.settingsGeneral.pgn.pg"
+        v-model:page-size="search.settingsGeneral.pgn.pgs"
         :simple="state.smallScreen"
         :page-sizes="[10, 25, 50]"
         :default-page-size="10"
@@ -85,8 +82,8 @@ onBeforeMount(() => {
         :disabled="search.loading"
         show-size-picker
         size="medium"
-        @update:page="() => search.search()"
-        @update:page-size="() => search.search(true)"
+        @update:page="() => search.searchSecondary()"
+        @update:page-size="() => search.searchSecondary()"
       />
     </n-flex>
   </define-template>
@@ -97,7 +94,7 @@ onBeforeMount(() => {
 
   <n-flex justify="space-between" size="large" class="mb-lg">
     <search-query-display
-      :req="search.req"
+      :req="search.currentRequest"
       :total="search.results?.totalHits"
       :total-relation="search.results?.totalHitsRelation"
       :took="search.results?.took"
@@ -105,9 +102,9 @@ onBeforeMount(() => {
     />
     <n-flex :wrap="false">
       <search-results-sort-widget
-        v-model="search.sorting"
+        v-model="search.settingsGeneral.sort"
         :disabled="search.loading || !results.length"
-        @update:model-value="search.handleSortingChange"
+        @update:model-value="() => search.searchSecondary()"
       />
       <n-button
         secondary

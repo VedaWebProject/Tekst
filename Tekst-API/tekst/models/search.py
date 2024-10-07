@@ -175,7 +175,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="type",
             description="Search type",
         ),
-    ]
+    ] = "quick"
     query: Annotated[
         str,
         StringConstraints(
@@ -193,14 +193,14 @@ class QuickSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-    ]
+    ] = GeneralSearchSettings()
     settings_quick: Annotated[
         QuickSearchSettings,
         Field(
             alias="qck",
             description="Quick search settings",
         ),
-    ]
+    ] = QuickSearchSettings()
 
 
 class AdvancedSearchRequestBody(ModelBase):
@@ -210,7 +210,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="type",
             description="Search type",
         ),
-    ]
+    ] = "advanced"
     query: Annotated[
         list[ResourceSearchQuery],
         Field(
@@ -218,21 +218,21 @@ class AdvancedSearchRequestBody(ModelBase):
             max_length=32,
             description="Resource-specific queries",
         ),
-    ]
+    ] = []
     settings_general: Annotated[
         GeneralSearchSettings,
         Field(
             alias="gen",
             description="General search settings",
         ),
-    ]
+    ] = GeneralSearchSettings()
     settings_advanced: Annotated[
         AdvancedSearchSettings,
         Field(
             alias="adv",
             description="Advanced search settings",
         ),
-    ]
+    ] = AdvancedSearchSettings()
 
 
 class IndexInfo(ModelBase):

@@ -227,11 +227,9 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
 // resources
 
-export type ResourceType =
-  components['schemas']['AdvancedSearchRequestBody']['q'][number]['rts']['type'];
+export type ResourceType = AnyResourceRead['resourceType'];
 type ResourceReadExtras = {
   active?: boolean;
-  coverage?: ResourceCoverage;
   corrections?: number;
 };
 
@@ -319,13 +317,11 @@ export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
 
 export type SearchResults = components['schemas']['SearchResults'];
 export type SearchHit = components['schemas']['SearchHit'];
-export type GeneralSearchSettings = components['schemas']['GeneralSearchSettings'];
-export type QuickSearchSettings = components['schemas']['QuickSearchSettings'];
 export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBody'];
-export type AdvancedSearchSettings = components['schemas']['AdvancedSearchSettings'];
 export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
-export type SearchRequestBody = QuickSearchRequestBody | AdvancedSearchRequestBody;
 export type SortingPreset = components['schemas']['SortingPreset'];
+export type SearchPagination = { pg: number; pgs: number };
+export type ResourceSearchQuery = components['schemas']['ResourceSearchQuery'];
 
 export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
