@@ -4,7 +4,7 @@ import { NButton, NBadge, NIcon, NFlex, useThemeVars } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
-
+import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
@@ -39,22 +39,18 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
-  <div ref="affixRef" class="browse-toolbar-container accent-color-bg mb-lg">
+  <div ref="affixRef" class="browse-toolbar-container mb-lg">
     <n-flex
       v-show="!!state.text"
       :wrap="false"
-      justify="space-around"
+      justify="space-between"
       align="center"
-      class="browse-toolbar"
+      class="browse-toolbar accent-color-bg box-shadow"
     >
       <browse-location-controls :button-size="buttonSize" />
 
       <div class="browse-toolbar-middle">
-        <div
-          v-show="!state.smallScreen"
-          class="browse-location-label"
-          :style="{ color: themeVars.bodyColor }"
-        >
+        <div v-show="!state.smallScreen" class="browse-location-label">
           <location-label />
         </div>
       </div>
@@ -90,6 +86,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         </n-badge>
       </div>
     </n-flex>
+    <browse-search-results-toolbar :small-screen="state.smallScreen" :button-size="buttonSize" />
   </div>
 </template>
 
@@ -98,27 +95,26 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   position: sticky;
   top: -1px;
   border-radius: var(--border-radius);
-  box-shadow: var(--block-box-shadow);
   width: 100%;
   max-width: var(--max-app-width);
-  padding: var(--gap-sm) 0;
-  border-radius: var(--border-radius);
-  box-shadow: var(--block-box-shadow);
   transition: none;
 }
 
 .browse-toolbar-container.affixed {
-  border-top-left-radius: unset;
-  border-top-right-radius: unset;
   max-width: unset;
   /* width: 100vw; */
   left: 0px;
-  box-shadow: var(--fixed-box-shadow);
   z-index: 1801;
 }
 
+.browse-toolbar-container.affixed .browse-toolbar {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}
+
 .browse-toolbar {
-  margin: 0 var(--gap-sm);
+  padding: var(--gap-sm);
+  border-radius: var(--border-radius);
 }
 
 .browse-toolbar-middle {
@@ -139,6 +135,8 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 .browse-toolbar .browse-location-label {
   display: none;
+  color: var(--base-color);
+  font-weight: var(--font-weight-bold);
 }
 
 .browse-toolbar-container.affixed .browse-location-label {

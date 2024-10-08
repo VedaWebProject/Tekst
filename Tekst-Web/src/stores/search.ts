@@ -13,7 +13,6 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStateStore } from './state';
 import { usePlatformData } from '@/composables/platformData';
-import _cloneDeep from 'lodash.clonedeep';
 
 type GeneralSearchSettings = {
   pgn: SearchPagination;
@@ -80,6 +79,10 @@ export const useSearchStore = defineStore('search', () => {
   const error = ref(false);
   const results = ref<SearchResults>();
 
+  const browseHits = ref(false);
+  const browseCurrHit = ref<SearchResults['hits'][number]>();
+  const browseHitIndexOnPage = ref(0);
+
   function encodeReqInUrl(requestBody?: SearchRequest): string | undefined {
     if (!requestBody) return undefined;
     try {
@@ -111,30 +114,29 @@ export const useSearchStore = defineStore('search', () => {
     }
   }
 
-  async function searchQuick(
-    q: string,
-    pg: number = settingsGeneral.value.pgn.pg,
-    pgs: number = settingsGeneral.value.pgn.pgs
-  ) {
+  function _resetSearch() {
+    browseHits.value = false;
+    browseHitIndexOnPage.value = 0;
+  }
+
+  async function searchQuick(q: string) {
+    _resetSearch();
     const req: QuickSearchRequest = {
       type: 'quick',
       q,
-      gen: { ...settingsGeneral.value, pgn: { pg, pgs } },
+      gen: settingsGeneral.value,
       qck: settingsQuick.value,
     };
     gotoSearchResultsView(req);
     await _search(req);
   }
 
-  async function searchAdvanced(
-    q: ResourceSearchQuery[],
-    pg: number = settingsGeneral.value.pgn.pg,
-    pgs: number = settingsGeneral.value.pgn.pgs
-  ) {
+  async function searchAdvanced(q: ResourceSearchQuery[]) {
+    _resetSearch();
     const req: AdvancedSearchRequest = {
       type: 'advanced',
       q,
-      gen: { ...settingsGeneral.value, pgn: { pg, pgs } },
+      gen: settingsGeneral.value,
       adv: settingsAdvanced.value,
     };
     gotoSearchResultsView(req);
@@ -142,6 +144,7 @@ export const useSearchStore = defineStore('search', () => {
   }
 
   async function searchFromUrl() {
+    _resetSearch();
     if (currentRequest.value) return;
     await _search(decodeReqFromUrl());
   }
@@ -153,7 +156,9 @@ export const useSearchStore = defineStore('search', () => {
     });
   }
 
-  function gotoSearchResultsView(req: SearchRequest) {
+  function gotoSearchResultsView(
+    req: SearchRequest = currentRequest.value || DEFAULT_SEARCH_REQUEST_BODY
+  ) {
     router.push({
       name: 'searchResults',
       query: {
@@ -179,8 +184,8 @@ export const useSearchStore = defineStore('search', () => {
     loading.value = false;
   }
 
-  function turnPage(direction: 'previous' | 'next') {
-    if (!results.value) return;
+  async function turnPage(direction: 'previous' | 'next'): Promise<boolean> {
+    if (!results.value) return false;
     const currPage = settingsGeneral.value.pgn.pg;
     settingsGeneral.value.pgn.pg =
       direction === 'previous'
@@ -189,14 +194,50 @@ export const useSearchStore = defineStore('search', () => {
             settingsGeneral.value.pgn.pg + 1,
             Math.floor(results.value.totalHits / settingsGeneral.value.pgn.pg) + 1
           );
-    currPage !== settingsGeneral.value.pgn.pg && searchSecondary();
+    if (currPage !== settingsGeneral.value.pgn.pg) {
+      await searchSecondary();
+      return true;
+    }
+    return false;
   }
 
-  function browse() {
-    const q = _cloneDeep(currentRequest.value);
-    if (!q) return;
-    q.gen.pgn = { pg: 1, pgs: 100 };
-    console.log(q);
+  async function browse() {
+    if (!results.value || !currentRequest.value) return;
+    browseHits.value = true;
+    browseHitIndexOnPage.value = 0;
+    browseCurrHit.value = results.value.hits[browseHitIndexOnPage.value];
+    router.push({
+      name: 'browse',
+      params: {
+        text: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+      },
+      query: { lvl: browseCurrHit.value.level, pos: browseCurrHit.value.position },
+    });
+  }
+
+  async function browseSkipTo(direction: 'previous' | 'next'): Promise<boolean> {
+    if (!results.value || !currentRequest.value) return false;
+    const targetIndexOnPage = browseHitIndexOnPage.value + (direction === 'previous' ? -1 : 1);
+
+    if (targetIndexOnPage < 0 && (await turnPage('previous'))) {
+      browseHitIndexOnPage.value = settingsGeneral.value.pgn.pgs - 1;
+    } else if (targetIndexOnPage >= results.value.hits.length && (await turnPage('next'))) {
+      browseHitIndexOnPage.value = 0;
+    } else {
+      browseHitIndexOnPage.value = targetIndexOnPage;
+    }
+
+    browseCurrHit.value = results.value.hits[browseHitIndexOnPage.value];
+    if (!browseCurrHit.value) return false;
+
+    router.push({
+      name: 'browse',
+      params: {
+        text: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+      },
+      query: { lvl: browseCurrHit.value?.level, pos: browseCurrHit.value?.position },
+    });
+    return true;
   }
 
   // set quick search settings text selection to all texts on working text change
@@ -217,10 +258,15 @@ export const useSearchStore = defineStore('search', () => {
     searchFromUrl,
     searchSecondary,
     turnPage,
+    gotoSearchResultsView,
     currentRequest,
     loading,
     error,
     results,
     browse,
+    browseHits,
+    browseHitIndexOnPage,
+    browseCurrHit,
+    browseSkipTo,
   };
 });

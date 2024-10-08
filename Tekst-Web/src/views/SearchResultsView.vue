@@ -103,14 +103,14 @@ onBeforeMount(() => {
     <n-flex :wrap="false">
       <search-results-sort-widget
         v-model="search.settingsGeneral.sort"
-        :disabled="search.loading || !results.length"
+        :disabled="!results.length || search.loading"
         @update:model-value="() => search.searchSecondary()"
       />
       <n-button
         secondary
         :title="$t('search.results.browse', { browse: browseViewLabel })"
         :focusable="false"
-        :disabled="!results.length"
+        :disabled="!results.length || search.loading"
         @click="search.browse"
       >
         <template #icon>
