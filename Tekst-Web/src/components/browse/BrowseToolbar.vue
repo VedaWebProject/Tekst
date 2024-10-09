@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { NButton, NBadge, NIcon, NFlex, useThemeVars } from 'naive-ui';
+import { NButton, NBadge, NIcon, NFlex } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
-const themeVars = useThemeVars();
+const theme = useThemeStore();
 
 const affixRef = ref(null);
 const resourcesCount = computed(
@@ -56,13 +56,13 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge value="!" color="var(--accent-color-pastel)" :show="browse.reducedView">
+        <n-badge value="!" color="var(--accent-color-invert)" :show="browse.reducedView">
           <n-button
             type="primary"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
             :focusable="false"
-            :color="browse.reducedView ? themeVars.primaryColorHover : undefined"
+            :color="browse.reducedView ? theme.accentColors.lighter : undefined"
             :bordered="false"
             @click="browse.reducedView = !browse.reducedView"
           >
@@ -72,7 +72,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
 
-        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-pastel)">
+        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-invert)">
           <n-button
             type="primary"
             :size="buttonSize"
@@ -152,6 +152,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 <style>
 .browse-toolbar .n-badge > .n-badge-sup {
-  color: var(--accent-color-dark);
+  color: #000;
 }
 </style>

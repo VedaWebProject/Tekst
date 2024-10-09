@@ -83,7 +83,7 @@ whenever(ArrowRight, () => {
     <n-badge
       :show="!browse.isOnDefaultLevel && !browse.loadingLocationData"
       value="!"
-      color="var(--accent-color-pastel)"
+      color="var(--accent-color-invert)"
     >
       <n-button
         type="primary"
@@ -102,7 +102,7 @@ whenever(ArrowRight, () => {
       </n-button>
     </n-badge>
 
-    <bookmarks-widget v-if="auth.loggedIn" :size="buttonSize" />
+    <bookmarks-widget v-if="auth.loggedIn" :button-size="buttonSize" />
 
     <n-button
       type="primary"

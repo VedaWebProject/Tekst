@@ -87,8 +87,9 @@ export const useThemeStore = defineStore('theme', () => {
       fade3: base.fade(0.6).hexa(),
       fade4: base.fade(0.8).hexa(),
       fade5: base.fade(0.9).hexa(),
-      dark: baseStatic.darken(0.6).hex(),
-      pastel: baseStatic.saturate(0.9).lighten(1.4).hex(),
+      light: base.lighten(0.1).hex(),
+      lighter: base.lighten(0.2).hex(),
+      invert: baseStatic.negate().lighten(0.5).saturate(0.8).hex(),
     };
   }
 

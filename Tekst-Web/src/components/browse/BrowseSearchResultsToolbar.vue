@@ -46,12 +46,12 @@ function stopBrowsing() {
 </script>
 
 <template>
-  <div v-if="search.browseHits" class="bsr-container accent-color-bg mt-sm">
-    <n-flex justify="space-between" align="center" :wrap="false">
+  <div v-if="search.browseHits" class="bsr-container mt-sm">
+    <n-flex justify="space-between" align="center" :wrap="false" class="bsr-toolbar">
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
         <n-button
-          type="primary"
+          quaternary
           :size="buttonSize"
           :title="$t('search.results.browsePrev')"
           :focusable="false"
@@ -65,7 +65,7 @@ function stopBrowsing() {
         </n-button>
         <!-- go to search results -->
         <n-button
-          type="primary"
+          quaternary
           :size="buttonSize"
           :title="$t('search.results.heading')"
           :focusable="false"
@@ -79,7 +79,7 @@ function stopBrowsing() {
         </n-button>
         <!-- skip to next search result -->
         <n-button
-          type="primary"
+          quaternary
           :size="buttonSize"
           :title="$t('search.results.browseNext')"
           :focusable="false"
@@ -127,7 +127,7 @@ function stopBrowsing() {
       <n-flex :wrap="false">
         <!-- just a spacer button to match the alignment of the browse toolbar -->
         <n-button
-          type="primary"
+          quaternary
           :size="buttonSize"
           :focusable="false"
           :bordered="false"
@@ -139,7 +139,7 @@ function stopBrowsing() {
         </n-button>
         <!-- stop browsing search results -->
         <n-button
-          type="primary"
+          quaternary
           :size="buttonSize"
           :title="$t('search.results.browseStop')"
           :focusable="false"
@@ -158,12 +158,17 @@ function stopBrowsing() {
 <style scoped>
 .bsr-container {
   border-radius: var(--border-radius);
-  padding: var(--gap-sm);
   box-shadow: var(--fixed-box-shadow);
+  background-color: var(--base-color);
+}
+
+.bsr-toolbar {
+  padding: var(--gap-sm);
+  border-radius: var(--border-radius);
+  background-color: var(--accent-color-fade3);
 }
 
 .bsr-toolbar-middle {
   flex-grow: 2;
-  color: var(--base-color);
 }
 </style>
