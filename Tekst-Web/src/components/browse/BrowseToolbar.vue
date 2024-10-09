@@ -45,7 +45,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       :wrap="false"
       justify="space-between"
       align="center"
-      class="browse-toolbar accent-color-bg box-shadow"
+      class="browse-toolbar accent-color-bg"
     >
       <browse-location-controls :button-size="buttonSize" />
 
@@ -115,6 +115,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 .browse-toolbar {
   padding: var(--gap-sm);
   border-radius: var(--border-radius);
+  box-shadow: var(--fixed-box-shadow);
 }
 
 .browse-toolbar-middle {

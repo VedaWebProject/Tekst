@@ -46,7 +46,7 @@ function stopBrowsing() {
 </script>
 
 <template>
-  <div v-if="search.browseHits" class="bsr-container accent-color-bg mt-sm box-shadow">
+  <div v-if="search.browseHits" class="bsr-container accent-color-bg mt-sm">
     <n-flex justify="space-between" align="center" :wrap="false">
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
@@ -141,6 +141,7 @@ function stopBrowsing() {
 .bsr-container {
   border-radius: var(--border-radius);
   padding: var(--gap-sm);
+  box-shadow: var(--fixed-box-shadow);
 }
 
 .bsr-toolbar-middle {
