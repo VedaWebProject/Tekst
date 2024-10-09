@@ -26,6 +26,12 @@ interface AnnotationDisplayStructure {
   format?: AnnotationDisplayFormatFlags;
 }
 
+interface TokenDetails {
+  token: string;
+  comment?: string;
+  annotations?: TextAnnotationContentRead['tokens'][number]['annotations'];
+}
+
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
 const PAT_TMPL_ITEM_PARTS = /_([kpcsf]):(.*?)(?=_[kpcsf]:|$)/g;
 
@@ -40,10 +46,7 @@ const props = withDefaults(
 );
 
 const showDetailsModal = ref(false);
-const tokenDetailsData = ref<TextAnnotationContentRead['tokens'][number]>();
-const tokenDetailsComment = computed(() =>
-  tokenDetailsData.value?.annotations?.find((a) => a.key === 'comment')?.value.join('\n')
-);
+const tokenDetails = ref<TokenDetails>();
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config?.displayTemplate) return [];
@@ -155,7 +158,12 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 
 function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
   if (!token.annotations?.length) return;
-  tokenDetailsData.value = token;
+  const annos = token.annotations?.filter((a) => a.key !== 'comment');
+  tokenDetails.value = {
+    token: token.token,
+    comment: token.annotations?.find((a) => a.key === 'comment')?.value.join('\n'),
+    annotations: annos.length ? annos : undefined,
+  };
   showDetailsModal.value = true;
 }
 </script>
@@ -191,27 +199,32 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
 
   <generic-modal
     v-model:show="showDetailsModal"
-    :title="tokenDetailsData?.token"
+    :title="tokenDetails?.token"
     :icon="MetadataIcon"
     heading-level="3"
     :header-style="{
       'font-family': resource.config?.general?.font || 'Tekst Content Font',
       'font-style': 'italic',
     }"
-    @after-leave="() => (tokenDetailsData = undefined)"
+    @after-leave="() => (tokenDetails = undefined)"
   >
     <n-alert
-      v-if="tokenDetailsComment"
+      v-if="tokenDetails?.comment"
       type="default"
       :show-icon="false"
       :title="$t('general.comment')"
       class="mb-lg"
     >
       <div class="content-font text-small" style="white-space: pre-line">
-        {{ tokenDetailsComment }}
+        {{ tokenDetails.comment }}
       </div>
     </n-alert>
-    <n-table :bordered="false" :bottom-bordered="false" size="small">
+    <n-table
+      v-if="tokenDetails?.annotations"
+      :bordered="false"
+      :bottom-bordered="false"
+      size="small"
+    >
       <thead>
         <tr>
           <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
@@ -219,7 +232,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
         </tr>
       </thead>
       <tbody>
-        <template v-for="(annotation, index) in tokenDetailsData?.annotations" :key="index">
+        <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
           <tr v-if="annotation.key !== 'comment'">
             <td>{{ annotation.key }}</td>
             <td class="content-font">
