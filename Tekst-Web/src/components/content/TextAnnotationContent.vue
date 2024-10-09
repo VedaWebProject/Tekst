@@ -207,7 +207,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
       :title="$t('general.comment')"
       class="mb-lg"
     >
-      <div style="white-space: pre-line">
+      <div class="content-font text-small" style="white-space: pre-line">
         {{ tokenDetailsComment }}
       </div>
     </n-alert>
