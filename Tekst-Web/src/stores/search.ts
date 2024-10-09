@@ -4,6 +4,8 @@ import {
   type SortingPreset,
   type SearchPagination,
   type ResourceSearchQuery,
+  type QuickSearchRequestBody,
+  type AdvancedSearchRequestBody,
 } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
@@ -13,6 +15,7 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStateStore } from './state';
 import { usePlatformData } from '@/composables/platformData';
+import _cloneDeep from 'lodash.clonedeep';
 
 type GeneralSearchSettings = {
   pgn: SearchPagination;
@@ -83,10 +86,14 @@ export const useSearchStore = defineStore('search', () => {
   const browseCurrHit = ref<SearchResults['hits'][number]>();
   const browseHitIndexOnPage = ref(0);
 
-  function encodeReqInUrl(requestBody?: SearchRequest): string | undefined {
+  function encodeReqInUrl(
+    requestBody?: QuickSearchRequestBody | AdvancedSearchRequestBody
+  ): string | undefined {
     if (!requestBody) return undefined;
+    const req = _cloneDeep(requestBody);
+    delete req.gen?.pgn;
     try {
-      return Base64.encode(JSON.stringify(requestBody), true);
+      return Base64.encode(JSON.stringify(req), true);
     } catch {
       message.error($t('errors.unexpected'));
       return undefined;
@@ -99,8 +106,7 @@ export const useSearchStore = defineStore('search', () => {
       const decoded: SearchRequest = q ? JSON.parse(Base64.decode(q)) : undefined;
       if (!decoded) throw new Error();
       settingsGeneral.value = decoded.gen || DEFAULT_SEARCH_SETTINGS.gen;
-      settingsGeneral.value.pgn.pg = 1;
-      settingsGeneral.value.pgn.pgs = 10;
+      settingsGeneral.value.pgn = settingsGeneral.value.pgn || DEFAULT_SEARCH_SETTINGS.gen.pgn;
       if (decoded.type === 'quick') {
         settingsQuick.value = decoded.qck || DEFAULT_SEARCH_SETTINGS.qck;
       } else if (decoded.type === 'advanced') {
@@ -117,6 +123,7 @@ export const useSearchStore = defineStore('search', () => {
   function _resetSearch() {
     browseHits.value = false;
     browseHitIndexOnPage.value = 0;
+    settingsGeneral.value.pgn = DEFAULT_SEARCH_SETTINGS.gen.pgn;
   }
 
   async function searchQuick(q: string) {
@@ -170,7 +177,6 @@ export const useSearchStore = defineStore('search', () => {
   async function _search(req: SearchRequest) {
     loading.value = true;
     error.value = false;
-    results.value = undefined;
     currentRequest.value = req;
     // search
     const { data, error: e } = await POST('/search', {
@@ -230,7 +236,7 @@ export const useSearchStore = defineStore('search', () => {
     browseCurrHit.value = results.value.hits[browseHitIndexOnPage.value];
     if (!browseCurrHit.value) return false;
 
-    router.push({
+    router.replace({
       name: 'browse',
       params: {
         text: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',

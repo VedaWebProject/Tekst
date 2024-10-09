@@ -92,6 +92,7 @@ async function handleWidgetClick() {
     :size="size"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"
+    :bordered="false"
     @click.stop.prevent="handleWidgetClick"
   >
     <template #icon>

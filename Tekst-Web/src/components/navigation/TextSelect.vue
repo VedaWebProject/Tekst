@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
 import { computed, h, ref } from 'vue';
-import { useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon, useThemeVars } from 'naive-ui';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
@@ -12,12 +12,12 @@ import { ExpandArrowDownIcon } from '@/icons';
 
 const router = useRouter();
 const state = useStateStore();
+const browse = useBrowseStore();
 const themeVars = useThemeVars();
 const { locale } = useI18n();
 const { pfData } = usePlatformData();
 
-const availableTexts = computed(() => pfData.value?.texts || []);
-const disabled = computed(() => availableTexts.value.length <= 1);
+const disabled = computed(() => !pfData.value?.texts || pfData.value.texts.length <= 1);
 const textSelectDropdownRef = ref();
 
 const btnStyle = computed(() => ({
@@ -33,28 +33,32 @@ const renderLabel = (t: TextRead) => {
       text: t,
       locale: locale.value,
       selected: t.id === state.text?.id,
-      onClick: () => handleSelect(t.slug),
+      onClick: () => handleSelect(t),
     });
 };
-const options = computed(() =>
-  availableTexts.value.map((t: TextRead) => ({
-    render: renderLabel(t),
-    key: t.slug,
-    type: 'render',
-    show: t.id !== state.text?.id,
-  }))
+
+const options = computed(
+  () =>
+    pfData.value?.texts.map((t: TextRead) => ({
+      render: renderLabel(t),
+      key: t.id,
+      type: 'render',
+      show: t.id !== state.text?.id,
+    })) || []
 );
 
-function handleSelect(key: string) {
+function handleSelect(text: TextRead) {
   textSelectDropdownRef.value.doUpdateShow(false);
+  browse.locationPath = [];
+
   if ('text' in router.currentRoute.value.params) {
     router.push({
       name: router.currentRoute.value.name || 'browse',
-      params: { ...router.currentRoute.value.params, text: key },
+      params: { ...router.currentRoute.value.params, text: text.slug },
     });
-  } else {
-    state.text = availableTexts.value.find((t) => t.slug === key);
   }
+
+  state.text = pfData.value?.texts.find((t) => t.id === text.id);
 }
 </script>
 

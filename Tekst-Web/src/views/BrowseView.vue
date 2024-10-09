@@ -62,7 +62,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading v-if="browse.locationPath.length" level="1" :icon="BookIcon">
+  <icon-heading v-if="!!browse.locationPath.length" level="1" :icon="BookIcon">
     <location-label />
     <help-button-widget help-key="browseView" />
   </icon-heading>

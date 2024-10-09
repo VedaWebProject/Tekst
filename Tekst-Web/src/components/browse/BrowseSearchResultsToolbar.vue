@@ -56,6 +56,7 @@ function stopBrowsing() {
           :title="$t('search.results.browsePrev')"
           :focusable="false"
           :disabled="search.loading || resultNo === 1"
+          :bordered="false"
           @click="() => search.browseSkipTo('previous')"
         >
           <template #icon>
@@ -69,6 +70,7 @@ function stopBrowsing() {
           :title="$t('search.results.heading')"
           :focusable="false"
           :disabled="search.loading"
+          :bordered="false"
           @click="gotoSearchResults"
         >
           <template #icon>
@@ -82,6 +84,7 @@ function stopBrowsing() {
           :title="$t('search.results.browseNext')"
           :focusable="false"
           :disabled="search.loading || resultNo === search.results?.totalHits"
+          :bordered="false"
           @click="() => search.browseSkipTo('next')"
         >
           <template #icon>
@@ -98,24 +101,38 @@ function stopBrowsing() {
         :wrap="false"
         class="bsr-toolbar-middle text-small"
       >
-        <n-icon :component="!search.loading ? SearchIcon : RefreshIcon" />
-        <div v-if="!search.loading && viewingSearchResult">
+        <n-flex
+          v-if="!search.loading"
+          align="center"
+          :wrap="false"
+          :style="{
+            opacity: viewingSearchResult ? '1' : '0',
+            transition: 'opacity 0.2s ease-in-out',
+          }"
+        >
+          <n-icon :component="SearchIcon" />
           {{
             $t('search.results.browseCurrHit', {
               no: resultNo,
               of: search.results?.totalHits || '?',
             })
           }}
-        </div>
-        <div v-else-if="!search.loading && !viewingSearchResult">–</div>
-        <div v-else class="translucent">
+        </n-flex>
+        <n-flex v-else align="center" :wrap="false" class="translucent">
+          <n-icon :component="RefreshIcon" />
           {{ $t('general.loading') }}
-        </div>
+        </n-flex>
       </n-flex>
 
       <n-flex :wrap="false">
         <!-- just a spacer button to match the alignment of the browse toolbar -->
-        <n-button type="primary" :size="buttonSize" :focusable="false" style="visibility: hidden">
+        <n-button
+          type="primary"
+          :size="buttonSize"
+          :focusable="false"
+          :bordered="false"
+          style="visibility: hidden"
+        >
           <template #icon>
             <n-icon :component="SearchIcon" />
           </template>
@@ -126,6 +143,7 @@ function stopBrowsing() {
           :size="buttonSize"
           :title="$t('search.results.browseStop')"
           :focusable="false"
+          :bordered="false"
           @click="stopBrowsing"
         >
           <template #icon>

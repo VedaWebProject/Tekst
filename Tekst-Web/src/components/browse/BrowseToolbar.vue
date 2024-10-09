@@ -63,6 +63,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :title="$t('browse.toolbar.tipReducedView')"
             :focusable="false"
             :color="browse.reducedView ? themeVars.primaryColorHover : undefined"
+            :bordered="false"
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
@@ -77,6 +78,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
+            :bordered="false"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>
