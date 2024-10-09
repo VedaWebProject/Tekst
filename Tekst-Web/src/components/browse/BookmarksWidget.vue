@@ -15,7 +15,7 @@ import { bookmarkFormRules } from '@/forms/formRules';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, SearchIcon } from '@/icons';
 
 defineProps<{
-  size?: 'small' | 'medium' | 'large';
+  buttonSize?: 'small' | 'medium' | 'large';
 }>();
 
 const browse = useBrowseStore();
@@ -89,9 +89,10 @@ async function handleWidgetClick() {
 <template>
   <n-button
     type="primary"
-    :size="size"
+    :size="buttonSize"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"
+    :bordered="false"
     @click.stop.prevent="handleWidgetClick"
   >
     <template #icon>

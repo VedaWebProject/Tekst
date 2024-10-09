@@ -16,12 +16,11 @@ import {
   type FormInst,
 } from 'naive-ui';
 import { computed, h, ref, watch } from 'vue';
-import type { AdvancedSearchRequestBody, AnyResourceRead, ResourceType } from '@/api';
+import type { AnyResourceRead, ResourceSearchQuery, ResourceType } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
 import { $t } from '@/i18n';
-import { useRouter } from 'vue-router';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
@@ -30,8 +29,7 @@ import { useMessages } from '@/composables/messages';
 import { pickTranslation } from '@/utils';
 import { usePlatformData } from '@/composables/platformData';
 
-type AdvancedSearchRequestQuery = AdvancedSearchRequestBody['q'][number];
-interface AdvancedSearchFormModelItem extends AdvancedSearchRequestQuery {
+interface AdvancedSearchFormModelItem extends ResourceSearchQuery {
   resource?: AnyResourceRead;
 }
 interface AdvancedSearchFormModel {
@@ -43,7 +41,6 @@ const theme = useThemeStore();
 const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
-const router = useRouter();
 const { message } = useMessages();
 
 const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
@@ -138,21 +135,13 @@ function handleSearch() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
-      router.push({
-        name: 'searchResults',
-        query: {
-          q: search.encodeQueryParam({
-            type: 'advanced',
-            q: formModel.value.queries.map((q) => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { resource, ...query } = q; // remove "resource" q
-              return query;
-            }),
-            gen: search.settingsGeneral,
-            adv: search.settingsAdvanced,
-          }),
-        },
-      });
+      search.searchAdvanced(
+        formModel.value.queries.map((q) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { resource, ...query } = q; // remove "resource" prop from q
+          return query;
+        })
+      );
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));
@@ -160,8 +149,8 @@ function handleSearch() {
 }
 
 function initQueries() {
-  if (search.lastReq?.type === 'advanced') {
-    formModel.value.queries = search.lastReq.q.map((q) => ({
+  if (search.currentRequest?.type === 'advanced') {
+    formModel.value.queries = search.currentRequest.q.map((q) => ({
       ...q,
       resource: resources.all.find((r) => r.id === q.cmn.res),
     }));

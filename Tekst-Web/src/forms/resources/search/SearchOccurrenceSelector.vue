@@ -7,7 +7,8 @@ defineProps<{
   queryIndex: number;
 }>();
 
-const occurrence = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['occ']>('occurrence');
+const occurrence =
+  defineModel<NonNullable<AdvancedSearchRequestBody['q']>[number]['cmn']['occ']>('occurrence');
 
 const occurrenceOptions = [
   { label: () => $t('search.advancedSearch.occ.should'), value: 'should' },

@@ -7048,7 +7048,8 @@
             ],
             "const": "advanced",
             "title": "Type",
-            "description": "Search type"
+            "description": "Search type",
+            "default": "advanced"
           },
           "q": {
             "items": {
@@ -7057,7 +7058,8 @@
             "type": "array",
             "maxItems": 32,
             "title": "Q",
-            "description": "Resource-specific queries"
+            "description": "Resource-specific queries",
+            "default": []
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
@@ -7077,10 +7079,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "type",
-          "q"
-        ],
         "title": "AdvancedSearchRequestBody"
       },
       "AdvancedSearchSettings": {
@@ -12767,7 +12765,8 @@
             ],
             "const": "quick",
             "title": "Type",
-            "description": "Search type"
+            "description": "Search type",
+            "default": "quick"
           },
           "q": {
             "type": "string",
@@ -12797,9 +12796,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
         "title": "QuickSearchRequestBody"
       },
       "QuickSearchSettings": {

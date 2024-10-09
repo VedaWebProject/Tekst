@@ -849,10 +849,15 @@ search:
     searching: Searching
     count: No results | One result | {count} results
     took: in {ms} milliseconds
+    browse: Open results in "{browse}" view
+    browsePrev: Previous search result
+    browseNext: Next search result
+    browseCurrHit: '{no} of {of}'
+    browseStop: Close search results navigation
     indexCreationTime: Last update of search data
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
     sortingPresets:
-      tooltip: Sort search results
+      title: Sort
       relevance: Relevance
       textLevelPosition: Text / Level / Position
       textLevelRelevance: Text / Level / Relevance

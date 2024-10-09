@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useStateStore, useResourcesStore } from '@/stores';
@@ -31,8 +31,10 @@ export const useBrowseStore = defineStore('browse', () => {
   const locationPathHead = computed<LocationRead | undefined>(
     () => locationPath.value[locationPath.value.length - 1]
   );
-  const level = computed(() => locationPathHead.value?.level ?? state.text?.defaultLevel ?? 0);
-  const isOnDefaultLevel = computed(() => level.value === state.text?.defaultLevel);
+  const level = computed(() => locationPathHead.value?.level);
+  const isOnDefaultLevel = computed(
+    () => !state.text || level.value == null || level.value === state.text.defaultLevel
+  );
   const position = computed(() => locationPathHead.value?.position ?? 0);
 
   // update browse location path
@@ -97,15 +99,6 @@ export const useBrowseStore = defineStore('browse', () => {
       },
     });
   }
-
-  // set browse location to text default when text changes
-  watch(
-    () => state.text,
-    () => {
-      locationPath.value = [];
-      route.name === 'browse' && resetBrowseLocation();
-    }
-  );
 
   /* RESOURCES AND CONTENTS */
 

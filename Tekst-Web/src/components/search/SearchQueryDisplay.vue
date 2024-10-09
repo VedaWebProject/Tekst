@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { SearchRequestBody } from '@/api';
+import type { QuickSearchRequestBody, AdvancedSearchRequestBody } from '@/api';
 import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
 import AdvancedSearchQueryDisplay from '@/components/search/AdvancedSearchQueryDisplay.vue';
 
 withDefaults(
   defineProps<{
-    req?: SearchRequestBody;
+    req?: QuickSearchRequestBody | AdvancedSearchRequestBody;
     total?: number;
     totalRelation?: 'eq' | 'gte';
     took?: number;

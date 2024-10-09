@@ -445,15 +445,17 @@ export interface components {
       /**
        * Type
        * @description Search type
+       * @default advanced
        * @constant
        * @enum {string}
        */
-      type: 'advanced';
+      type?: 'advanced';
       /**
        * Q
        * @description Resource-specific queries
+       * @default []
        */
-      q: components['schemas']['ResourceSearchQuery'][];
+      q?: components['schemas']['ResourceSearchQuery'][];
       /**
        * @description General search settings
        * @default {
@@ -3525,10 +3527,11 @@ export interface components {
       /**
        * Type
        * @description Search type
+       * @default quick
        * @constant
        * @enum {string}
        */
-      type: 'quick';
+      type?: 'quick';
       /**
        * Q
        * @description Query string

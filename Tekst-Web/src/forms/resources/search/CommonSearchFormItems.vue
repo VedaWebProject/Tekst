@@ -9,7 +9,8 @@ defineProps<{
   queryIndex: number;
 }>();
 
-const comment = defineModel<AdvancedSearchRequestBody['q'][number]['cmn']['cmt']>('comment');
+const comment =
+  defineModel<NonNullable<AdvancedSearchRequestBody['q']>[number]['cmn']['cmt']>('comment');
 </script>
 
 <template>

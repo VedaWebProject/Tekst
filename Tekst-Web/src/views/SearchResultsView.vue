@@ -1,49 +1,32 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
+import { BookIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
-import { NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
+import { NIcon, NButton, NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
-import { computed, onBeforeMount, ref, watch } from 'vue';
-import { POST, type SearchRequestBody, type SearchResults, type SortingPreset } from '@/api';
+import { computed, onBeforeMount } from 'vue';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isInputFocused, isOverlayOpen, utcToLocalTime } from '@/utils';
+import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
 const resources = useResourcesStore();
 const search = useSearchStore();
-const route = useRoute();
-const router = useRouter();
 const theme = useThemeStore();
-const { message } = useMessages();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
-const searchReq = ref<SearchRequestBody>();
-const paginationDefaults = () => ({
-  page: 1,
-  pageSize: 10,
-});
-const pagination = ref(paginationDefaults());
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
-const sortingPreset = ref<SortingPreset>();
-
-const loading = ref(false);
-const searchError = ref(false);
-const resultsData = ref<SearchResults>();
 
 const results = computed<SearchResultProps[]>(() => {
   return (
-    resultsData.value?.hits.map((r) => {
+    search.results?.hits.map((r) => {
       const text = pfData.value?.texts.find((t) => t.id === r.textId);
       return {
         id: r.id,
@@ -56,8 +39,8 @@ const results = computed<SearchResultProps[]>(() => {
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,
         scorePercent:
-          resultsData.value?.maxScore && r.score
-            ? (r.score / resultsData.value?.maxScore) * 100
+          search.results?.maxScore && r.score
+            ? (r.score / search.results?.maxScore) * 100
             : undefined,
         highlight: r.highlight,
         smallScreen: state.smallScreen,
@@ -67,126 +50,41 @@ const results = computed<SearchResultProps[]>(() => {
   );
 });
 
-async function execSearch(resetPage?: boolean) {
-  if (!searchReq.value) return;
-  if (resetPage) {
-    pagination.value.page = paginationDefaults().page;
-  }
-  loading.value = true;
-  searchError.value = false;
-  const { data, error } = await POST('/search', {
-    body: {
-      ...searchReq.value,
-      gen: {
-        ...searchReq.value?.gen,
-        pgn: {
-          pg: pagination.value.page,
-          pgs: pagination.value.pageSize,
-        },
-        sort: sortingPreset.value,
-      },
-    },
-  });
-  if (!error) {
-    resultsData.value = data;
-  } else {
-    searchError.value = true;
-  }
-  window.scrollTo(0, 0);
-  loading.value = false;
-}
-
-async function processQuery() {
-  loading.value = true;
-  searchError.value = false;
-  resultsData.value = undefined;
-  pagination.value.page = 1;
-  try {
-    searchReq.value = search.decodeQueryParam();
-    if (!searchReq.value || !['quick', 'advanced'].includes(searchReq.value.type)) {
-      throw new Error();
-    }
-    search.lastReq = searchReq.value;
-    sortingPreset.value = searchReq.value.gen?.sort || undefined;
-    await execSearch();
-  } catch {
-    message.error($t('search.results.msgInvalidRequest'));
-  } finally {
-    loading.value = false;
-  }
-}
-
-function handleSortingChange() {
-  router.replace({
-    name: 'searchResults',
-    query: {
-      q: search.encodeQueryParam({
-        ...searchReq.value,
-        gen: {
-          ...searchReq.value?.gen,
-          sort: sortingPreset.value,
-        },
-      } as SearchRequestBody),
-    },
-  });
-}
-
-watch(
-  () => route.query.q,
-  () => processQuery()
+const browseViewLabel = computed(
+  () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse')
 );
-
-function turnPage(direction: 'previous' | 'next') {
-  if (!resultsData.value) return;
-  const currPage = pagination.value.page;
-  pagination.value.page =
-    direction === 'previous'
-      ? Math.max(1, pagination.value.page - 1)
-      : Math.min(
-          pagination.value.page + 1,
-          Math.floor(resultsData.value.totalHits / pagination.value.pageSize) + 1
-        );
-  currPage !== pagination.value.page && execSearch();
-}
 
 // react to keyboard for in-/decreasing page number
 whenever(ArrowRight, () => {
-  !isOverlayOpen() && !isInputFocused() && turnPage('next');
+  !isOverlayOpen() && !isInputFocused() && search.turnPage('next');
 });
 whenever(ArrowLeft, () => {
-  !isOverlayOpen() && !isInputFocused() && turnPage('previous');
+  !isOverlayOpen() && !isInputFocused() && search.turnPage('previous');
 });
 
-onBeforeMount(() => processQuery());
+onBeforeMount(() => {
+  search.searchFromUrl();
+});
 </script>
 
 <template>
   <define-template>
     <n-flex justify="end" class="pagination-container" align="center">
       <n-pagination
-        v-if="resultsData?.hits.length"
-        v-model:page="pagination.page"
-        v-model:page-size="pagination.pageSize"
+        v-if="search.results?.hits.length"
+        v-model:page="search.settingsGeneral.pgn.pg"
+        v-model:page-size="search.settingsGeneral.pgn.pgs"
         :simple="state.smallScreen"
         :page-sizes="[10, 25, 50]"
         :default-page-size="10"
         :page-slot="paginationSlots"
-        :item-count="resultsData.totalHits"
-        :disabled="loading"
+        :item-count="search.results.totalHits"
+        :disabled="search.loading"
         show-size-picker
         size="medium"
-        @update:page="() => execSearch()"
-        @update:page-size="() => execSearch(true)"
-      >
-        <template #suffix>
-          <search-results-sort-widget
-            v-model="sortingPreset"
-            size="small"
-            :disabled="loading"
-            @update:model-value="handleSortingChange"
-          />
-        </template>
-      </n-pagination>
+        @update:page="() => search.searchSecondary()"
+        @update:page-size="() => search.searchSecondary()"
+      />
     </n-flex>
   </define-template>
 
@@ -194,19 +92,39 @@ onBeforeMount(() => processQuery());
     {{ $t('search.results.heading') }}
   </icon-heading>
 
-  <search-query-display
-    :req="searchReq"
-    :total="resultsData?.totalHits"
-    :total-relation="resultsData?.totalHitsRelation"
-    :took="resultsData?.took"
-    :error="searchError"
-    class="mb-lg"
-  />
+  <n-flex justify="space-between" size="large" class="mb-lg">
+    <search-query-display
+      :req="search.currentRequest"
+      :total="search.results?.totalHits"
+      :total-relation="search.results?.totalHitsRelation"
+      :took="search.results?.took"
+      :error="search.error"
+    />
+    <n-flex :wrap="false">
+      <search-results-sort-widget
+        v-model="search.settingsGeneral.sort"
+        :disabled="!results.length || search.loading"
+        @update:model-value="() => search.searchSecondary()"
+      />
+      <n-button
+        secondary
+        :title="$t('search.results.browse', { browse: browseViewLabel })"
+        :focusable="false"
+        :disabled="!results.length || search.loading"
+        @click="search.browse"
+      >
+        <template #icon>
+          <n-icon :component="BookIcon" />
+        </template>
+        {{ browseViewLabel }}
+      </n-button>
+    </n-flex>
+  </n-flex>
 
   <div class="content-block">
     <reuse-template />
     <n-spin
-      v-if="loading"
+      v-if="search.loading"
       class="centered-spinner"
       :description="`${$t('search.results.searching')}...`"
     />
@@ -214,7 +132,7 @@ onBeforeMount(() => processQuery());
       <search-result v-for="result in results" :key="result.id" v-bind="result" />
     </n-list>
     <huge-labelled-icon
-      v-else-if="searchError"
+      v-else-if="search.error"
       :icon="ErrorIcon"
       :message="$t('errors.unexpected')"
     />

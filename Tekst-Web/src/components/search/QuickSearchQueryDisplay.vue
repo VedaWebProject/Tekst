@@ -56,11 +56,11 @@ const settings = computed(() => [
       {{ $t('general.for') }}
     </span>
 
-    <n-tag :color="neutralTagColor" :bordered="false" class="b" size="small">
+    <n-tag :color="neutralTagColor" :bordered="false" class="b content-font" size="small">
       <template #icon>
         <n-icon class="translucent" :component="SearchIcon" />
       </template>
-      {{ req.q }}
+      {{ req.q || '*' }}
     </n-tag>
 
     <span>

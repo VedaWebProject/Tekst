@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { NButton, NBadge, NIcon, NFlex, useThemeVars } from 'naive-ui';
+import { NButton, NBadge, NIcon, NFlex } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
-
+import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
+import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
-const themeVars = useThemeVars();
+const theme = useThemeStore();
 
 const affixRef = ref(null);
 const resourcesCount = computed(
@@ -39,34 +39,31 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
-  <div ref="affixRef" class="browse-toolbar-container accent-color-bg mb-lg">
+  <div ref="affixRef" class="browse-toolbar-container mb-lg">
     <n-flex
       v-show="!!state.text"
       :wrap="false"
-      justify="space-around"
+      justify="space-between"
       align="center"
-      class="browse-toolbar"
+      class="browse-toolbar accent-color-bg"
     >
       <browse-location-controls :button-size="buttonSize" />
 
       <div class="browse-toolbar-middle">
-        <div
-          v-show="!state.smallScreen"
-          class="browse-location-label"
-          :style="{ color: themeVars.bodyColor }"
-        >
+        <div v-show="!state.smallScreen" class="browse-location-label">
           <location-label />
         </div>
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge value="!" color="var(--accent-color-pastel)" :show="browse.reducedView">
+        <n-badge value="!" color="var(--accent-color-invert)" :show="browse.reducedView">
           <n-button
             type="primary"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
             :focusable="false"
-            :color="browse.reducedView ? themeVars.primaryColorHover : undefined"
+            :color="browse.reducedView ? theme.accentColors.lighter : undefined"
+            :bordered="false"
             @click="browse.reducedView = !browse.reducedView"
           >
             <template #icon>
@@ -75,12 +72,13 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
 
-        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-pastel)">
+        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-invert)">
           <n-button
             type="primary"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
+            :bordered="false"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>
@@ -90,6 +88,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         </n-badge>
       </div>
     </n-flex>
+    <browse-search-results-toolbar :small-screen="state.smallScreen" :button-size="buttonSize" />
   </div>
 </template>
 
@@ -98,27 +97,27 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   position: sticky;
   top: -1px;
   border-radius: var(--border-radius);
-  box-shadow: var(--block-box-shadow);
   width: 100%;
   max-width: var(--max-app-width);
-  padding: var(--gap-sm) 0;
-  border-radius: var(--border-radius);
-  box-shadow: var(--block-box-shadow);
   transition: none;
 }
 
 .browse-toolbar-container.affixed {
-  border-top-left-radius: unset;
-  border-top-right-radius: unset;
   max-width: unset;
   /* width: 100vw; */
   left: 0px;
-  box-shadow: var(--fixed-box-shadow);
   z-index: 1801;
 }
 
+.browse-toolbar-container.affixed .browse-toolbar {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}
+
 .browse-toolbar {
-  margin: 0 var(--gap-sm);
+  padding: var(--gap-sm);
+  border-radius: var(--border-radius);
+  box-shadow: var(--fixed-box-shadow);
 }
 
 .browse-toolbar-middle {
@@ -139,6 +138,8 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 .browse-toolbar .browse-location-label {
   display: none;
+  color: var(--base-color);
+  font-weight: var(--font-weight-bold);
 }
 
 .browse-toolbar-container.affixed .browse-location-label {
@@ -151,6 +152,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 <style>
 .browse-toolbar .n-badge > .n-badge-sup {
-  color: var(--accent-color-dark);
+  color: #000;
 }
 </style>

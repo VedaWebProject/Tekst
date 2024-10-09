@@ -873,10 +873,15 @@ search:
     searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: in {ms} Millisekunden
+    browse: Ergebnisse in "{browse}"-Ansicht öffnen
+    browsePrev: Vorheriges Suchergebnis
+    browseNext: Nächstes Suchergebnis
+    browseCurrHit: '{no} von {of}'
+    browseStop: Suchergebnis-Navigation schließen
     indexCreationTime: Letztes update der Suchdaten
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
     sortingPresets:
-      tooltip: Suchergebnisse sortieren
+      title: Sortieren
       relevance: Relevanz
       textLevelPosition: Text / Ebene / Position
       textLevelRelevance: Text / Ebene / Relevanz
