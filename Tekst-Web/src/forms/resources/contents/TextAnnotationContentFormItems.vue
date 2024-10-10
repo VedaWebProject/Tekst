@@ -5,12 +5,12 @@ import type {
   TextAnnotationResourceRead,
 } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NSelect, NFormItem, NDynamicInput, type SelectOption } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { KeyboardReturnIcon } from '@/icons';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, h } from 'vue';
 import { $t } from '@/i18n';
 import { useResourcesStore } from '@/stores';
 
@@ -28,7 +28,14 @@ const annoValueStyle = {
 
 const aggregations = ref<AnnotationAggregation[]>([]);
 const annoOptions = computed(() => {
-  const keys = aggregations.value.map((agg) => agg.key);
+  // all possible keys, containing unique keys collected in
+  // aggregations and from the current model state
+  const keys = [
+    ...new Set([
+      ...aggregations.value.map((agg) => agg.key),
+      ...model.value.tokens.map((t) => t.annotations?.map((a) => a.key) || []).flat(),
+    ]),
+  ];
   return model.value.tokens.map(
     (t) =>
       t.annotations?.map((a) => ({
@@ -41,10 +48,20 @@ const annoOptions = computed(() => {
         valuesOptions:
           aggregations.value
             .find((agg) => agg.key === a.key)
-            ?.values?.map((v) => ({ label: v, value: v, style: annoValueStyle })) || [],
+            ?.values?.map((v) => ({ label: v, value: v })) || [],
       })) || []
   );
 });
+
+function renderValueLabel(option: SelectOption) {
+  return h(
+    'div',
+    {
+      style: annoValueStyle,
+    },
+    option.label as string
+  );
+}
 
 function handleInsertToken(index: number) {
   setTimeout(() => {
@@ -182,6 +199,7 @@ onMounted(async () => {
                         $t('resources.types.textAnnotation.contentFields.annotationValue')
                       "
                       :style="annoValueStyle"
+                      :render-label="renderValueLabel"
                     />
                   </n-form-item>
                 </div>
