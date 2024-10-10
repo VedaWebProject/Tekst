@@ -122,7 +122,7 @@ a:hover {
   --accent-color-fade5: v-bind(theme.accentColors.fade5);
   --accent-color-light: v-bind(theme.accentColors.light);
   --accent-color-lighter: v-bind(theme.accentColors.lighter);
-  --accent-color-invert: v-bind(theme.accentColors.invert);
+  --accent-color-spotlight: v-bind(theme.accentColors.spotlight);
 
   --link-color: v-bind(theme.accentColors.base);
   --link-color-hover: v-bind(theme.accentColors.fade1);

@@ -83,7 +83,7 @@ whenever(ArrowRight, () => {
     <n-badge
       :show="!browse.isOnDefaultLevel && !browse.loadingLocationData"
       value="!"
-      color="var(--accent-color-invert)"
+      color="var(--accent-color-spotlight)"
     >
       <n-button
         type="primary"

@@ -89,7 +89,9 @@ export const useThemeStore = defineStore('theme', () => {
       fade5: base.fade(0.9).hexa(),
       light: base.lighten(0.1).hex(),
       lighter: base.lighten(0.2).hex(),
-      invert: baseStatic.negate().lighten(0.5).saturate(0.8).hex(),
+      // this is supposed to create an attention-boosting UI highlight color that
+      // complements eacht text's accent color, normalized in saturation and lightness
+      spotlight: baseStatic.saturate(9999).desaturate(0.3).rotate(180).lightness(85).hex(),
     };
   }
 
