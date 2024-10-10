@@ -75,7 +75,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-flex :wrap="false" align="center" style="flex-grow: 1; flex-basis: 264px">
+  <n-flex :wrap="false" align="center" style="flex-grow: 1; flex-basis: 248px">
     <!-- TOKEN -->
     <n-form-item
       :label="$t('resources.types.textAnnotation.contentFields.token')"
@@ -92,7 +92,7 @@ onMounted(async () => {
       />
     </n-form-item>
     <!-- TOKEN QUERY WILDCARDS -->
-    <n-form-item ignore-path-change style="flex-basis: 64px">
+    <n-form-item ignore-path-change style="flex-basis: 48px">
       <n-switch
         v-model:value="model.twc"
         :round="false"
@@ -136,7 +136,7 @@ onMounted(async () => {
             />
           </n-form-item>
 
-          <n-flex :wrap="false" align="center" style="flex-grow: 2; flex-basis: 264px">
+          <n-flex :wrap="false" align="center" style="flex-grow: 2; flex-basis: 248px">
             <!-- VALUE -->
             <n-form-item
               :show-label="false"
@@ -158,7 +158,7 @@ onMounted(async () => {
             </n-form-item>
 
             <!-- VALUE QUERY WILDCARDS -->
-            <n-form-item :show-label="false" ignore-path-change style="flex-basis: 64px">
+            <n-form-item :show-label="false" ignore-path-change style="flex-basis: 48px">
               <n-switch
                 v-model:value="annotationItem.wc"
                 :round="false"
