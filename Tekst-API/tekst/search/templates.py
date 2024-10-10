@@ -43,6 +43,10 @@ IDX_TEMPLATE = {
                     "type": "custom",
                     "filter": ["no_diacritics", "lowercase"],
                 },
+                "lowercase_normalizer": {
+                    "type": "custom",
+                    "filter": ["lowercase"],
+                },
             },
         },
     },

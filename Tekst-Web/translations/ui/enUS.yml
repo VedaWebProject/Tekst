@@ -834,6 +834,7 @@ search:
       should: optional
       must: required
       not: exclude
+    wc: Interpret wildcards (* and ?) for this field
   settings:
     general:
       heading: '@:general.general'

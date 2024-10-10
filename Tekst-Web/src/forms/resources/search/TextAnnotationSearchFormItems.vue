@@ -5,7 +5,7 @@ import type {
   TextAnnotationSearchQuery,
 } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NSelect, NFormItem, NDynamicInput } from 'naive-ui';
+import { NSwitch, NSelect, NFormItem, NDynamicInput, NFlex } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -75,21 +75,35 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- TOKEN -->
-  <n-form-item
-    :label="$t('resources.types.textAnnotation.contentFields.token')"
-    ignore-path-change
-    :path="`queries[${queryIndex}].rts.token`"
-    :rule="searchFormRules.textAnnotation.token"
-    style="flex-grow: 1; flex-basis: 200px"
-  >
-    <n-input-osk
-      :model-value="model.token"
-      :font="resource.config?.general?.font || undefined"
-      :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-      @update:model-value="(v) => handleUpdate('token', v)"
-    />
-  </n-form-item>
+  <n-flex :wrap="false" align="center" style="flex-grow: 1; flex-basis: 264px">
+    <!-- TOKEN -->
+    <n-form-item
+      :label="$t('resources.types.textAnnotation.contentFields.token')"
+      ignore-path-change
+      :path="`queries[${queryIndex}].rts.token`"
+      :rule="searchFormRules.textAnnotation.token"
+      style="flex-grow: 2"
+    >
+      <n-input-osk
+        :model-value="model.token"
+        :font="resource.config?.general?.font || undefined"
+        :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
+        @update:model-value="(v) => handleUpdate('token', v)"
+      />
+    </n-form-item>
+    <!-- TOKEN QUERY WILDCARDS -->
+    <n-form-item ignore-path-change style="flex-basis: 64px">
+      <n-switch
+        v-model:value="model.twc"
+        :round="false"
+        class="b text-small"
+        :title="$t('search.advancedSearch.wc')"
+      >
+        <template #checked>*</template>
+        <template #unchecked>*</template>
+      </n-switch>
+    </n-form-item>
+  </n-flex>
 
   <!-- ANNOTATIONS -->
   <n-form-item
@@ -103,15 +117,8 @@ onMounted(async () => {
       @create="() => ({ k: undefined, v: undefined })"
     >
       <template #default="{ value: annotationItem, index: annotationItemIndex }">
-        <div
-          style="
-            display: flex;
-            flex-wrap: wrap;
-            flex-grow: 2;
-            gap: var(--gap-md);
-            align-items: flex-start;
-          "
-        >
+        <n-flex wrap align="flex-start" style="flex-grow: 2">
+          <!-- KEY -->
           <n-form-item
             style="flex-grow: 2; flex-basis: 200px"
             :show-label="false"
@@ -128,25 +135,42 @@ onMounted(async () => {
               @update:value="() => (annotationItem.v = '')"
             />
           </n-form-item>
-          <n-form-item
-            style="flex-grow: 2; flex-basis: 200px"
-            :show-label="false"
-            ignore-path-change
-            :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].v`"
-            :rule="searchFormRules.textAnnotation.annotationValue"
-          >
-            <n-select
-              v-model:value="annotationItem.v"
-              tag
-              filterable
-              clearable
-              :disabled="!annotationItem.k"
-              :style="getAnnoValueSelectStyle(annotationItem.v)"
-              :options="annoOptions[annotationItemIndex].valuesOptions"
-              :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
-            />
-          </n-form-item>
-        </div>
+
+          <n-flex :wrap="false" align="center" style="flex-grow: 2; flex-basis: 264px">
+            <!-- VALUE -->
+            <n-form-item
+              :show-label="false"
+              ignore-path-change
+              :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].v`"
+              :rule="searchFormRules.textAnnotation.annotationValue"
+              style="flex-grow: 2; flex-basis: 200px"
+            >
+              <n-select
+                v-model:value="annotationItem.v"
+                tag
+                filterable
+                clearable
+                :disabled="!annotationItem.k"
+                :style="getAnnoValueSelectStyle(annotationItem.v)"
+                :options="annoOptions[annotationItemIndex].valuesOptions"
+                :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
+              />
+            </n-form-item>
+
+            <!-- VALUE QUERY WILDCARDS -->
+            <n-form-item :show-label="false" ignore-path-change style="flex-basis: 64px">
+              <n-switch
+                v-model:value="annotationItem.wc"
+                :round="false"
+                class="b text-small"
+                :title="$t('search.advancedSearch.wc')"
+              >
+                <template #checked>*</template>
+                <template #unchecked>*</template>
+              </n-switch>
+            </n-form-item>
+          </n-flex>
+        </n-flex>
       </template>
       <template
         #action="{

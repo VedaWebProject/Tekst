@@ -14468,6 +14468,12 @@
             ],
             "title": "V",
             "description": "Value of the annotation"
+          },
+          "wc": {
+            "type": "boolean",
+            "title": "Wc",
+            "description": "Whether to interpret wildcards in the annotation value query",
+            "default": false
           }
         },
         "type": "object",
@@ -15113,6 +15119,12 @@
             "maxLength": 512,
             "title": "Token",
             "default": ""
+          },
+          "twc": {
+            "type": "boolean",
+            "title": "Twc",
+            "description": "Whether to interpret wildcards in the token query",
+            "default": false
           },
           "anno": {
             "items": {

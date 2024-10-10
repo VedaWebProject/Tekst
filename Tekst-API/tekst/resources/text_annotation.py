@@ -22,7 +22,7 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -50,7 +50,12 @@ class TextAnnotation(ResourceTypeABC):
                     "token": {
                         "type": "keyword",
                         "normalizer": "no_diacritics_normalizer",
-                        "fields": {"strict": {"type": "keyword"}},
+                        "fields": {
+                            "strict": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer",
+                            }
+                        },
                     },
                     "annotations": {
                         "type": "nested",
@@ -61,7 +66,12 @@ class TextAnnotation(ResourceTypeABC):
                             "value": {
                                 "type": "keyword",
                                 "normalizer": "no_diacritics_normalizer",
-                                "fields": {"strict": {"type": "keyword"}},
+                                "fields": {
+                                    "strict": {
+                                        "type": "keyword",
+                                        "normalizer": "lowercase_normalizer",
+                                    }
+                                },
                             },
                         },
                     },
@@ -104,7 +114,7 @@ class TextAnnotation(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "TextAnnotationSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
@@ -114,6 +124,7 @@ class TextAnnotation(ResourceTypeABC):
 
         token_usr_q = (query.resource_type_specific.token or "").strip(" ") or None
         token_es_q = []
+        token_wc = query.resource_type_specific.token_wildcards
         annos_usr_q = query.resource_type_specific.annotations or []
         annos_es_q = []
 
@@ -131,10 +142,16 @@ class TextAnnotation(ResourceTypeABC):
             # handle actual token query with content
             token_es_q.append(
                 {
-                    "simple_query_string": {
-                        "fields": [f"resources.{res_id}.tokens.token{strict_suffix}"],
-                        "query": token_usr_q,
-                        "analyze_wildcard": True,
+                    "wildcard": {
+                        f"resources.{res_id}.tokens.token{strict_suffix}": {
+                            "value": token_usr_q,
+                        }
+                    }
+                }
+                if token_wc
+                else {
+                    "term": {
+                        f"resources.{res_id}.tokens.token{strict_suffix}": token_usr_q
                     }
                 }
             )
@@ -159,18 +176,27 @@ class TextAnnotation(ResourceTypeABC):
                 anno_k_q = {
                     "term": {f"resources.{res_id}.tokens.annotations.key": anno_q.key}
                 }
-                anno_v_q = {
-                    "simple_query_string": {
-                        "fields": [
+                anno_v_q = (
+                    {
+                        "wildcard": {
                             (
                                 f"resources.{res_id}.tokens.annotations"
                                 f".value{strict_suffix}"
-                            ),
-                        ],
-                        "query": anno_q.value,
-                        "analyze_wildcard": True,
+                            ): {
+                                "value": anno_q.value,
+                            }
+                        }
                     }
-                }
+                    if anno_q.wildcards
+                    else {
+                        "term": {
+                            (
+                                f"resources.{res_id}.tokens.annotations"
+                                f".value{strict_suffix}"
+                            ): anno_q.value
+                        }
+                    }
+                )
                 annos_es_q.append(
                     {
                         "nested": {
@@ -216,9 +242,11 @@ class TextAnnotation(ResourceTypeABC):
                 for ih_hit in ih.get("hits", {}).get("hits", []):
                     token = ih_hit["_source"]["token"]
                     annos = ih_hit["_source"]["annotations"]
-                    annos = (
-                        f" ({'; '.join([a['value'] for a in annos])})" if annos else ""
-                    )
+                    values = [a["value"] for a in annos] if annos else []
+                    values_strings = []
+                    for v in values:
+                        values_strings.extend(v if isinstance(v, list) else [v])
+                    annos = f" ({'; '.join(values_strings)})"
                     hl_strings.append(f"{token} {annos}")
             return hl_strings
 
@@ -531,6 +559,13 @@ class TextAnnotationQueryEntry(ModelBase):
             strip_whitespace=True,
         ),
     ] = None
+    wildcards: Annotated[
+        bool,
+        Field(
+            alias="wc",
+            description="Whether to interpret wildcards in the annotation value query",
+        ),
+    ] = False
 
     @field_validator("key", "value", mode="before")
     @classmethod
@@ -592,6 +627,13 @@ class TextAnnotationSearchQuery(ModelBase):
         ),
         val.CleanupOneline,
     ] = ""
+    token_wildcards: Annotated[
+        bool,
+        Field(
+            alias="twc",
+            description="Whether to interpret wildcards in the token query",
+        ),
+    ] = False
     annotations: Annotated[
         list[TextAnnotationQueryEntry],
         Field(

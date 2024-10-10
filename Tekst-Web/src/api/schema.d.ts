@@ -4384,6 +4384,12 @@ export interface components {
        * @description Value of the annotation
        */
       v?: string | null;
+      /**
+       * Wc
+       * @description Whether to interpret wildcards in the annotation value query
+       * @default false
+       */
+      wc?: boolean;
     };
     /** TextAnnotationResourceConfig */
     TextAnnotationResourceConfig: {
@@ -4753,6 +4759,12 @@ export interface components {
        * @default
        */
       token?: string;
+      /**
+       * Twc
+       * @description Whether to interpret wildcards in the token query
+       * @default false
+       */
+      twc?: boolean;
       /**
        * Anno
        * @description List of annotations to match
