@@ -190,7 +190,7 @@ function renderToolbarIcon(icon?: Component) {
     });
 }
 
-function renderBlockTypeOption(option: SelectOption) {
+function renderBlockTypeLabel(option: SelectOption) {
   return [
     h(
       NIcon,
@@ -269,7 +269,7 @@ onUnmounted(() => {
         :size="toolbarSize"
         :consistent-menu-width="false"
         status="success"
-        :render-label="renderBlockTypeOption"
+        :render-label="renderBlockTypeLabel"
         style="width: auto; min-width: 320px; flex-grow: 2"
         @update:value="handleSelectBlockType"
       />
