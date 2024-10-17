@@ -31,17 +31,17 @@ const getLineLabel = (index: number, labellingType: LineLabellingConfig['labelli
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
-    lines: (props.reduced && props.resource.config?.general?.reducedView?.singleLine
+    lines: (props.reduced && props.resource.config.general.reducedView.singleLine
       ? [
           c.text.replace(
             /(\r\n|\r|\n)+/g,
-            props.resource.config.general?.reducedView?.singleLineDelimiter || ' '
+            props.resource.config.general.reducedView.singleLineDelimiter || ' '
           ),
         ]
       : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
     ).map((l, i) => ({
       label: !props.reduced
-        ? getLineLabel(i, props.resource.config?.lineLabelling?.labellingType)
+        ? getLineLabel(i, props.resource.config.lineLabelling.labellingType)
         : null,
       text: l,
     })),
@@ -49,7 +49,7 @@ const contents = computed(() =>
 );
 
 const fontStyle = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 </script>
 
@@ -63,7 +63,7 @@ const fontStyle = {
     >
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
         <div
-          v-if="resource.config?.lineLabelling?.enabled && line.label != null"
+          v-if="resource.config.lineLabelling.enabled && line.label != null"
           class="text-color-accent ui-font text-small"
         >
           {{ line.label }}

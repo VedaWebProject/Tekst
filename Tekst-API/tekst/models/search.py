@@ -5,7 +5,12 @@ from typing import Annotated, Any, Literal
 from pydantic import Field, StringConstraints, conint, field_validator
 from typing_extensions import TypeAliasType
 
-from tekst.models.common import ModelBase, PydanticObjectId
+from tekst.models.common import (
+    ModelBase,
+    PydanticObjectId,
+    SchemaOptionalNonNullable,
+    SchemaOptionalNullable,
+)
 from tekst.resources import ResourceSearchQuery
 
 
@@ -91,6 +96,7 @@ class PaginationSettings(ModelBase):
             alias="pg",
             description="Page number",
         ),
+        SchemaOptionalNonNullable,
     ] = 1
     page_size: Annotated[
         int,
@@ -99,6 +105,7 @@ class PaginationSettings(ModelBase):
             alias="pgs",
             description="Page size",
         ),
+        SchemaOptionalNonNullable,
     ] = 10
 
     def es_from(self) -> int:
@@ -121,6 +128,7 @@ class GeneralSearchSettings(ModelBase):
             alias="pgn",
             description="Pagination settings",
         ),
+        SchemaOptionalNonNullable,
     ] = PaginationSettings()
     sorting_preset: Annotated[
         SortingPreset | None,
@@ -128,6 +136,7 @@ class GeneralSearchSettings(ModelBase):
             alias="sort",
             description="Sorting preset",
         ),
+        SchemaOptionalNullable,
     ] = None
     strict: bool = False
 
@@ -139,6 +148,7 @@ class QuickSearchSettings(ModelBase):
             alias="op",
             description="Default operator",
         ),
+        SchemaOptionalNonNullable,
     ] = "OR"
     regexp: Annotated[
         bool,
@@ -146,6 +156,7 @@ class QuickSearchSettings(ModelBase):
             alias="re",
             description="Whether to use regular expressions",
         ),
+        SchemaOptionalNonNullable,
     ] = False
     texts: Annotated[
         list[PydanticObjectId] | None,
@@ -153,6 +164,7 @@ class QuickSearchSettings(ModelBase):
             alias="txt",
             description="IDs of texts to search in",
         ),
+        SchemaOptionalNullable,
     ] = None
 
     @field_validator(
@@ -186,6 +198,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="q",
             description="Query string",
         ),
+        SchemaOptionalNonNullable,
     ] = "*"
     settings_general: Annotated[
         GeneralSearchSettings,
@@ -193,6 +206,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
+        SchemaOptionalNonNullable,
     ] = GeneralSearchSettings()
     settings_quick: Annotated[
         QuickSearchSettings,
@@ -200,6 +214,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="qck",
             description="Quick search settings",
         ),
+        SchemaOptionalNonNullable,
     ] = QuickSearchSettings()
 
 
@@ -218,6 +233,7 @@ class AdvancedSearchRequestBody(ModelBase):
             max_length=32,
             description="Resource-specific queries",
         ),
+        SchemaOptionalNonNullable,
     ] = []
     settings_general: Annotated[
         GeneralSearchSettings,
@@ -225,6 +241,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
+        SchemaOptionalNonNullable,
     ] = GeneralSearchSettings()
     settings_advanced: Annotated[
         AdvancedSearchSettings,
@@ -232,6 +249,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="adv",
             description="Advanced search settings",
         ),
+        SchemaOptionalNonNullable,
     ] = AdvancedSearchSettings()
 
 

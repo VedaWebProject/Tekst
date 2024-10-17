@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import NotIn
+from beanie.operators import GTE, LT, NotIn, Or
 from fastapi import APIRouter, Header, Path, status
 from humps import camelize
 
@@ -54,11 +54,17 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
         texts=await get_all_texts(ou),
         state=await get_state(),
         security=PlatformSecurityInfo(),
+        # find segments with keys starting with "system"
         system_segments=await ClientSegmentDocument.find(
-            ClientSegmentDocument.is_system_segment == True  # noqa: E712
+            GTE(ClientSegmentDocument.key, "system"),
+            LT(ClientSegmentDocument.key, "systen"),
         ).to_list(),
+        # find segments with keys not starting with "system"
         info_segments=await ClientSegmentDocument.find(
-            ClientSegmentDocument.is_system_segment == False  # noqa: E712
+            Or(
+                LT(ClientSegmentDocument.key, "system"),
+                GTE(ClientSegmentDocument.key, "systen"),
+            )
         )
         .project(ClientSegmentHead)
         .to_list(),

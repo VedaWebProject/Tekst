@@ -10,7 +10,11 @@ from pydantic import BeforeValidator, Field, StringConstraints, field_validator
 from typing_extensions import TypeAliasType
 
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import ModelBase, PrecomputedDataDocument
+from tekst.models.common import (
+    ModelBase,
+    PrecomputedDataDocument,
+    SchemaOptionalNonNullable,
+)
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
@@ -626,6 +630,7 @@ class TextAnnotationSearchQuery(ModelBase):
             strip_whitespace=True,
         ),
         val.CleanupOneline,
+        SchemaOptionalNonNullable,
     ] = ""
     token_wildcards: Annotated[
         bool,
@@ -633,6 +638,7 @@ class TextAnnotationSearchQuery(ModelBase):
             alias="twc",
             description="Whether to interpret wildcards in the token query",
         ),
+        SchemaOptionalNonNullable,
     ] = False
     annotations: Annotated[
         list[TextAnnotationQueryEntry],
@@ -641,4 +647,5 @@ class TextAnnotationSearchQuery(ModelBase):
             description="List of annotations to match",
             max_length=64,
         ),
+        SchemaOptionalNonNullable,
     ] = []

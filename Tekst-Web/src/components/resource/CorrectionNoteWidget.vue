@@ -70,7 +70,7 @@ async function handleModalSubmit(note: string) {
     :icon="CorrectionNoteIcon"
     :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"
     :msg="$t('browse.contents.widgets.correctionNote.info')"
-    :font="resource.config?.general?.font || undefined"
+    :font="resource.config.general.font || undefined"
     :rows="3"
     :validation-rules="correctionFormRules.note"
     @submit="(_, v) => handleModalSubmit(v)"

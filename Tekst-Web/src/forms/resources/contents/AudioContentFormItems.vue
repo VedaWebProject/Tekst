@@ -85,7 +85,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             <n-input-osk
               v-model="model.files[index].caption"
               type="textarea"
-              :font="resource.config?.general?.font || undefined"
+              :font="resource.config.general.font || undefined"
               :rows="2"
               :max-length="512"
               :placeholder="$t('resources.types.audio.contentFields.caption')"

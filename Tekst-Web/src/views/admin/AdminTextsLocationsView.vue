@@ -21,7 +21,7 @@ import { watch } from 'vue';
 import type { Component, Ref } from 'vue';
 import { dialogProps } from '@/common';
 import { computed } from 'vue';
-import { saveDownload } from '@/api';
+import { downloadData } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import EditLocationModal, {
   type EditLocationModalData,
@@ -148,7 +148,7 @@ async function moveLocation(dropData: TreeDropInfo) {
     body: {
       position: dropData.node.position as number,
       after: dropData.dropPosition === 'after',
-      parentId: dropData.node.parentKey as string | null,
+      parentId: (dropData.node.parentKey as string) || null,
     },
   });
   if (!error) {
@@ -282,14 +282,14 @@ async function handleAddEditSubmit(addEditData: EditLocationModalData) {
 
 async function handleDownloadTemplateClick() {
   loadingTemplate.value = true;
-  const { response, error } = await GET('/texts/{id}/template', {
+  const { data, error } = await GET('/texts/{id}/template', {
     params: { path: { id: state.text?.id || '' } },
     parseAs: 'blob',
   });
   if (!error) {
     const filename = `${state.text?.slug}_structure_template.json`.toLowerCase();
     message.info($t('general.downloadSaved', { filename }));
-    saveDownload(await response.blob(), filename);
+    downloadData(data, filename);
   }
   loadingTemplate.value = false;
 }

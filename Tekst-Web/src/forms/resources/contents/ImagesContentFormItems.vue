@@ -100,7 +100,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               v-model="model.files[index].caption"
               type="textarea"
               class="caption-textarea"
-              :font="resource.config?.general?.font || undefined"
+              :font="resource.config.general.font || undefined"
               style="height: 100%"
               :max-length="512"
               :placeholder="$t('resources.types.images.contentFields.caption')"

@@ -47,21 +47,21 @@ const initialUserDataModel = () => ({
 });
 
 const initialUserNotificationTriggersModel = () => ({
-  resourceProposed: !!auth.user?.userNotificationTriggers?.includes('resourceProposed'),
-  resourcePublished: !!auth.user?.userNotificationTriggers?.includes('resourcePublished'),
-  messageReceived: !!auth.user?.userNotificationTriggers?.includes('messageReceived'),
-  newCorrection: !!auth.user?.userNotificationTriggers?.includes('newCorrection'),
+  resourceProposed: !!auth.user?.userNotificationTriggers.includes('resourceProposed'),
+  resourcePublished: !!auth.user?.userNotificationTriggers.includes('resourcePublished'),
+  messageReceived: !!auth.user?.userNotificationTriggers.includes('messageReceived'),
+  newCorrection: !!auth.user?.userNotificationTriggers.includes('newCorrection'),
 });
 
 const initialAdminNotificationTriggersModel = () => ({
-  userAwaitsActivation: !!auth.user?.adminNotificationTriggers?.includes('userAwaitsActivation'),
-  newCorrection: !!auth.user?.adminNotificationTriggers?.includes('newCorrection'),
+  userAwaitsActivation: !!auth.user?.adminNotificationTriggers.includes('userAwaitsActivation'),
+  newCorrection: !!auth.user?.adminNotificationTriggers.includes('newCorrection'),
 });
 
 const initialPublicFieldsModel = () => ({
-  name: !!auth.user?.publicFields?.includes('name'),
-  affiliation: !!auth.user?.publicFields?.includes('affiliation'),
-  bio: !!auth.user?.publicFields?.includes('bio'),
+  name: !!auth.user?.publicFields.includes('name'),
+  affiliation: !!auth.user?.publicFields.includes('affiliation'),
+  bio: !!auth.user?.publicFields.includes('bio'),
 });
 
 const emailFormRef = ref<FormInst | null>(null);
@@ -137,7 +137,7 @@ async function updateEmail() {
   emailFormModel.value = initialEmailModel();
   resetEmailModelChanges();
   message.success($t('account.settings.msgEmailSaveSuccess'));
-  if (pfData.value?.security?.closedMode === true) return;
+  if (pfData.value?.security.closedMode === true) return;
   await auth.logout();
   const { error } = await POST('/auth/request-verify-token', {
     body: { email: emailFormModel.value.email || '' },
@@ -156,7 +156,7 @@ function handleEmailSave() {
   emailFormRef.value
     ?.validate(async (errors) => {
       if (!errors) {
-        if (pfData.value?.security?.closedMode) {
+        if (pfData.value?.security.closedMode) {
           updateEmail();
         } else {
           dialog.warning({

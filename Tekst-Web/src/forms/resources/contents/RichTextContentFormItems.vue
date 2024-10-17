@@ -30,7 +30,7 @@ function handleUpdate(field: string, value: any) {
       :editor-mode="model.editorMode ?? 'wysiwyg'"
       toolbar-size="medium"
       :max-chars="102400"
-      :wysiwyg-font="resource.config?.general?.font || undefined"
+      :wysiwyg-font="resource.config.general.font || undefined"
       @update:value="(v: string | null) => handleUpdate('html', v)"
       @update:editor-mode="(v: string) => handleUpdate('editorMode', v)"
     />

@@ -6,7 +6,6 @@ from pydantic import (
     Field,
     StringConstraints,
     field_validator,
-    model_validator,
 )
 
 from tekst.models.common import (
@@ -33,13 +32,6 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
     ]
-    is_system_segment: Annotated[
-        bool,
-        Field(
-            description="Whether this is a system segment (will be set automatically)",
-            alias="isSystemSegment",
-        ),
-    ] = False
     editor_mode: Annotated[
         Literal["wysiwyg", "html"],
         Field(
@@ -80,19 +72,12 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
     def force_unset_empty_title(cls, v) -> str | None:
         return v if v else None
 
-    @model_validator(mode="after")
-    def set_is_system_segment(self) -> "ClientSegment":
-        if self.key and self.key.startswith("system"):
-            self.is_system_segment = True
-        return self
-
 
 class ClientSegmentDocument(ClientSegment, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "segments"
         indexes = [
             "key",
-            "is_system_segment",
             "locale",
         ]
 

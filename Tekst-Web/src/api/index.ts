@@ -1,4 +1,4 @@
-import createClient from 'openapi-fetch';
+import createClient, { type Middleware } from 'openapi-fetch';
 import type { paths, components } from '@/api/schema';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
@@ -10,55 +10,52 @@ const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
 const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
 
-// custom, modified "fetch" for implementing request/response interceptors
-const customFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
-  // --- request interceptors go here... ---
-  // add XSRF header to request headers
-  const xsrfToken = Cookies.get('XSRF-TOKEN');
-  if (xsrfToken) {
-    init = init || {};
-    init.headers = new Headers(init.headers);
-    init.headers.set('X-XSRF-TOKEN', xsrfToken);
-  }
-
-  // --- perform request ---
-  const response = await globalThis.fetch(input, init);
-
-  // --- response interceptors go here... ---
-  if (response.ok) return response; // allow 200-299 response to pass through early
-  const bodyText = await response.clone().text(); // extract response body text
-
-  if (response.status === 401) {
-    // automatically log out on a 401 response
-    if (!response.url.endsWith('/logout')) {
+// HTTP client middleware for intercepting requests and responses
+const interceptors: Middleware = {
+  // intercept requests
+  async onRequest({ request }) {
+    // set XSRF header
+    const xsrfToken = Cookies.get('XSRF-TOKEN');
+    if (xsrfToken) {
+      request.headers.set('X-XSRF-TOKEN', xsrfToken);
+    }
+    return request;
+  },
+  // intercept responses
+  async onResponse({ response }) {
+    const responseBodyText = await response.clone().text();
+    if (response.ok) {
+      return;
+    } else if (response.status === 401) {
+      // automatically log out on a 401 response
+      if (!response.url.endsWith('/logout')) {
+        const { message } = useMessages();
+        message.warning($t('account.sessionExpired'));
+        console.log("Oh no! You don't seem to have access to this resource!");
+        const auth = useAuthStore();
+        if (auth.loggedIn) {
+          console.log('Running logout sequence in reaction to 401/403 response...');
+          await auth.logout(true);
+        }
+      }
+    } else if (response.status === 403 && responseBodyText.includes('CSRF')) {
+      // show CSRF/XSRF error on 403 response mentioning CSRF
       const { message } = useMessages();
-      message.warning($t('account.sessionExpired'));
-      console.log("Oh no! You don't seem to have access to this resource!");
-      const auth = useAuthStore();
-      if (auth.loggedIn) {
-        console.log('Running logout sequence in reaction to 401/403 response...');
-        await auth.logout(true);
+      message.error($t('errors.csrf'));
+    } else if (response.status >= 400) {
+      // it's some kind of error, so pass the response body to the error message util
+      try {
+        const responseJson = await response.clone().json();
+        useErrors().msg(responseJson);
+      } catch (e) {
+        console.error(e);
       }
     }
-  } else if (response.status === 403 && bodyText.includes('CSRF')) {
-    // show CSRF/XSRF error on 403 response mentioning CSRF
-    const { message } = useMessages();
-    message.error($t('errors.csrf'));
-  } else if (response.status >= 400) {
-    // it's some kind of error, so pass the response body to the error message util
-    try {
-      useErrors().msg(await response.clone().json());
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  return response;
+  },
 };
 
-const client = createClient<paths>({
-  baseUrl: apiUrl,
-  fetch: customFetch,
-});
+const client = createClient<paths>({ baseUrl: apiUrl });
+client.use(interceptors);
 
 export const { GET, POST, PUT, PATCH, DELETE } = client;
 
@@ -98,7 +95,7 @@ export async function withSelectedFile(
   input.click();
 }
 
-export function saveDownload(blob: Blob, filename: string) {
+export function downloadData(blob: Blob, filename: string) {
   const a = document.createElement('a');
   a.href = window.URL.createObjectURL(blob);
   if (filename) {
@@ -162,8 +159,8 @@ export type HTTPValidationError = components['schemas']['HTTPValidationError'];
 export type IndexInfoResponse = components['schemas']['IndexInfo'][];
 export type TaskRead = components['schemas']['TaskRead'];
 
-export type Metadate = components['schemas']['Metadate'];
-export type Metadata = Metadate[];
+export type MetadataEntry = components['schemas']['MetadataEntry'];
+export type Metadata = MetadataEntry[];
 export type LocaleKey = components['schemas']['LocaleKey'];
 export type TranslationLocaleKey = components['schemas']['TranslationLocaleKey'];
 export type Translation = {

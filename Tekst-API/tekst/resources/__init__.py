@@ -19,7 +19,12 @@ from humps import camelize
 from pydantic import Field, StringConstraints
 
 from tekst.logs import log
-from tekst.models.common import ModelBase, PydanticObjectId, ReadBase
+from tekst.models.common import (
+    ModelBase,
+    PydanticObjectId,
+    ReadBase,
+    SchemaOptionalNonNullable,
+)
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
     ResourceBase,
@@ -76,6 +81,7 @@ class CommonResourceSearchQueryData(ModelBase):
             alias="occ",
             description="The occurrence type of the search query",
         ),
+        SchemaOptionalNonNullable,
     ] = "should"
     resource_id: Annotated[
         PydanticObjectId,
@@ -92,6 +98,7 @@ class CommonResourceSearchQueryData(ModelBase):
         ),
         StringConstraints(max_length=512, strip_whitespace=True),
         val.CleanupOneline,
+        SchemaOptionalNonNullable,
     ] = ""
 
 

@@ -5,6 +5,7 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     PydanticObjectId,
@@ -43,18 +44,21 @@ class UserMessage(ModelBase, ModelFactoryMixin):
         Field(
             description="Time when the message was sent",
         ),
+        ExcludeFromModelVariants(create=True),
     ] = None
     read: Annotated[
         bool,
         Field(
             description="Whether the message has been read by the recipient",
         ),
+        ExcludeFromModelVariants(create=True),
     ] = False
     deleted: Annotated[
         PydanticObjectId | None,
         Field(
             description="ID of the user who deleted the message or None if not deleted",
         ),
+        ExcludeFromModelVariants(create=True),
     ] = None
 
 

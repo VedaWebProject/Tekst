@@ -65,7 +65,7 @@ async function registerUser() {
   });
 
   if (!error) {
-    const activationNeeded = !pfData.value?.security?.usersActiveByDefault;
+    const activationNeeded = !pfData.value?.security.usersActiveByDefault;
     const activationHint = activationNeeded
       ? $t('register.activationNeededHint')
       : $t('register.activationNotNeededHint');
@@ -75,7 +75,7 @@ async function registerUser() {
       activationNeeded ? 20 : 5
     );
     // if no activation is needed, send verification link right away
-    if (!activationNeeded && !pfData.value?.security?.closedMode) {
+    if (!activationNeeded && !pfData.value?.security.closedMode) {
       const { error: verifyTokenError } = await POST('/auth/request-verify-token', {
         body: { email: formModel.value.email || '' },
       });
@@ -114,7 +114,7 @@ function switchToLogin() {
 onMounted(() => {
   if (
     (auth.loggedIn && !auth.user?.isSuperuser) ||
-    (!auth.loggedIn && pfData.value?.security?.closedMode)
+    (!auth.loggedIn && pfData.value?.security.closedMode)
   ) {
     router.push({ name: 'home' });
   }

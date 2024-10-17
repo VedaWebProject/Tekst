@@ -82,8 +82,8 @@ async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate>
   if (!segmentId) {
     return {
       key: '',
-      title: null,
-      locale: null,
+      title: undefined,
+      locale: '*',
       editorMode: 'wysiwyg',
       html: '',
     };
@@ -136,7 +136,7 @@ async function handleSaveClick() {
 async function updateSegment() {
   const { data, error } = await PATCH('/platform/segments/{id}', {
     params: { path: { id: selectedSegmentId.value || '' } },
-    body: getModelChanges(),
+    body: getModelChanges() as ClientSegmentUpdate,
   });
   if (!error) {
     message.success(

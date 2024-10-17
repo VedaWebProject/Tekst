@@ -302,7 +302,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   // enforce route restrictions
-  if (to.meta?.restricted) {
+  if (to.meta.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
     while (!state.init.authChecked) {

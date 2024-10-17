@@ -49,7 +49,7 @@ const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
-  if (!props.resource.config?.displayTemplate) return [];
+  if (!props.resource.config.displayTemplate) return [];
   const out: AnnotationDisplayTemplate[] = [];
   // iterate over template items
   const items = [...props.resource.config.displayTemplate.matchAll(PAT_TMPL_ITEM)];
@@ -92,13 +92,13 @@ const contents = computed(() =>
       lb: t.lb,
       annotations: t.annotations,
       annotationsDisplay: applyAnnotationDisplayTemplate(t.annotations),
-      comment: t.annotations?.find((a) => a.key === 'comment')?.value,
+      comment: t.annotations.find((a) => a.key === 'comment')?.value,
     })),
   }))
 );
 
 const fontStyle = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
 function applyAnnotationDisplayTemplate(
@@ -135,7 +135,7 @@ function applyAnnotationDisplayTemplate(
             item.template.format?.caps ? v.charAt(0).toUpperCase() + v.slice(1).toLowerCase() : v
           )
           // join the values with the delimiter set in the resource config
-          .join(props.resource.config?.multiValueDelimiter || '/') || ''
+          .join(props.resource.config.multiValueDelimiter || '/') || ''
       ) || '';
     const prefix = i > 0 ? item.template.prefix || '' : '';
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
@@ -157,11 +157,11 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
 }
 
 function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
-  if (!token.annotations?.length) return;
-  const annos = token.annotations?.filter((a) => a.key !== 'comment');
+  if (!token.annotations.length) return;
+  const annos = token.annotations.filter((a) => a.key !== 'comment');
   tokenDetails.value = {
     token: token.token,
-    comment: token.annotations?.find((a) => a.key === 'comment')?.value.join('\n'),
+    comment: token.annotations.find((a) => a.key === 'comment')?.value.join('\n'),
     annotations: annos.length ? annos : undefined,
   };
   showDetailsModal.value = true;
@@ -174,8 +174,8 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
       <div
         class="token-container"
         :class="{
-          'token-with-annos': !!token.annotations?.length,
-          'token-with-comment': !!token.annotations?.find((a) => a.key === 'comment'),
+          'token-with-annos': !!token.annotations.length,
+          'token-with-comment': !!token.annotations.find((a) => a.key === 'comment'),
         }"
         :title="token.comment?.join(' ') || undefined"
         @click="handleTokenClick(token)"
@@ -203,7 +203,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
     :icon="MetadataIcon"
     heading-level="3"
     :header-style="{
-      'font-family': resource.config?.general?.font || 'Tekst Content Font',
+      'font-family': resource.config.general.font || 'Tekst Content Font',
       'font-style': 'italic',
     }"
     @after-leave="() => (tokenDetails = undefined)"
@@ -236,7 +236,7 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
           <tr v-if="annotation.key !== 'comment'">
             <td>{{ annotation.key }}</td>
             <td class="content-font">
-              {{ annotation.value.join(resource.config?.multiValueDelimiter || '/') }}
+              {{ annotation.value.join(resource.config.multiValueDelimiter || '/') }}
             </td>
           </tr>
         </template>

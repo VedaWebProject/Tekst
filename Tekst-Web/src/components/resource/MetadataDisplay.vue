@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { $t, $te } from '@/i18n';
-import { prioritizedMetadataKeys, type Metadata, type Metadate } from '@/api';
+import { prioritizedMetadataKeys, type Metadata, type MetadataEntry } from '@/api';
 
 const props = defineProps<{
   data?: Metadata;
@@ -24,7 +24,7 @@ const metaExtra = computed<string[][] | null>(() => {
   const m: string[][] = [];
   const data = props.data || [];
 
-  data.forEach((e: Metadate) => {
+  data.forEach((e: MetadataEntry) => {
     if (!prioritizedMetadataKeys.includes(e.key)) {
       m.push([$te(`models.meta.${e.key}`) ? $t(`models.meta.${e.key}`) : e.key, e.value]);
     }

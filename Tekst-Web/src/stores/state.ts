@@ -52,7 +52,7 @@ export const useStateStore = defineStore('state', () => {
   });
 
   const availableLocales = computed(() =>
-    localeProfiles.filter((lp) => !!pfData.value?.state.availableLocales?.includes(lp.key))
+    localeProfiles.filter((lp) => !!pfData.value?.state.availableLocales.includes(lp.key))
   );
 
   const translationLocaleOptions = computed<

@@ -12,7 +12,7 @@ const props = withDefaults(
 );
 
 const fontStyle = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 </script>
 

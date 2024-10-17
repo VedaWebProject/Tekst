@@ -116,8 +116,8 @@ function handleUpdate(field: string, value: any) {
 function handleSharesUpdate(field: string, value: string[]) {
   addedSharesUsersCache.value = [...addedSharesUsersCache.value, ...searchedUsers.value].filter(
     (u) =>
-      model.value.sharedRead?.includes(u.id) ||
-      model.value.sharedWrite?.includes(u.id) ||
+      model.value.sharedRead.includes(u.id) ||
+      model.value.sharedWrite.includes(u.id) ||
       value.includes(u.id)
   );
   userSearchQuery.value = initialUserSearchQuery();

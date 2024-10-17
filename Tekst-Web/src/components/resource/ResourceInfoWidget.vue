@@ -61,7 +61,7 @@ const showInfoModal = ref(false);
     </div>
 
     <!-- DESCRIPTION -->
-    <p v-if="resource.description?.length">
+    <p v-if="resource.description.length">
       <translation-display :value="resource.description" />
     </p>
 
@@ -86,7 +86,7 @@ const showInfoModal = ref(false);
     </template>
 
     <!-- COMMENT -->
-    <template v-if="resource.comment?.length">
+    <template v-if="resource.comment.length">
       <icon-heading level="3" :icon="CommentIcon">
         {{ $t('general.comment') }}
       </icon-heading>

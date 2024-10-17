@@ -18,7 +18,7 @@ const props = withDefaults(
 const playerRefs = ref<{ id: string; ref: InstanceType<typeof AudioPlayer> }[]>([]);
 
 const fontStyle: CSSProperties = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst UI Font',
+  fontFamily: props.resource.config.general.font || 'Tekst UI Font',
 };
 
 function handlePlay(playerInstanceId: string) {

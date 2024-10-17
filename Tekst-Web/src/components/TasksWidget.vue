@@ -39,13 +39,10 @@ function handleTaskClick(id: string) {
 
   // open dialog if task has failed (to display error info)
   if (t.status === 'failed') {
-    const title =
-      $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status || 'running'}`);
-    const content = $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || '';
     dialog.create({
       type: dialogTypeMap[t.status || 'running'],
-      title,
-      content,
+      title: $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status || 'running'}`),
+      content: $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || '',
     });
   }
 

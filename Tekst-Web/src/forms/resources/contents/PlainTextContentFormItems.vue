@@ -29,7 +29,7 @@ function handleUpdate(field: string, value: any) {
       type="textarea"
       :rows="3"
       :model-value="model.text"
-      :font="resource.config?.general?.font || undefined"
+      :font="resource.config.general.font || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
       @update:model-value="(v) => handleUpdate('text', v)"
     />
