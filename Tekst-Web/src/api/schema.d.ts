@@ -1941,12 +1941,6 @@ export interface components {
        */
       key: string;
       /**
-       * Issystemsegment
-       * @description Whether this is a system segment (will be set automatically)
-       * @default false
-       */
-      isSystemSegment: boolean;
-      /**
        * Editormode
        * @description Last used editor mode
        * @default wysiwyg

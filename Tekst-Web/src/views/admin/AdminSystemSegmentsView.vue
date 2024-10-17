@@ -98,7 +98,7 @@ function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
     return {
       key: '',
       title: undefined,
-      locale: undefined,
+      locale: '*',
       editorMode: 'wysiwyg',
       html: '',
     };

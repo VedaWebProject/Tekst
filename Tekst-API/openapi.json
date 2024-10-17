@@ -8329,12 +8329,6 @@
             "title": "Key",
             "description": "Key of this segment. System segment keys must start with `system`."
           },
-          "isSystemSegment": {
-            "type": "boolean",
-            "title": "Issystemsegment",
-            "description": "Whether this is a system segment (will be set automatically)",
-            "default": false
-          },
           "editorMode": {
             "type": "string",
             "enum": [

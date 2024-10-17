@@ -83,7 +83,7 @@ async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate>
     return {
       key: '',
       title: undefined,
-      locale: undefined,
+      locale: '*',
       editorMode: 'wysiwyg',
       html: '',
     };
