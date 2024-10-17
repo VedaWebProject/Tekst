@@ -14,5 +14,10 @@
 		file_server
 	}
 
+	handle /favicon.ico {
+		root * /var/www/tekst/static
+		file_server
+	}
+
 	reverse_proxy * 127.0.0.1:5173
 }

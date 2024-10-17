@@ -4,18 +4,28 @@
 }
 
 :80 {
+    # redirect requests to API to use trailing slash
 	redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
 
+    # proxy all requests to API to server app
 	handle_path {$TEKST_API_PATH:/api}/* {
 		reverse_proxy http://api:8000
 	}
 
+    # serve static files (custom assets)
 	handle_path /static/* {
         encode gzip
 		root * /var/www/tekst/static
 		file_server
 	}
 
+    # help browsers to find the custom favicon at root
+	handle /favicon.ico {
+		root * /var/www/tekst/static
+		file_server
+	}
+
+    # try to serve web client files for all other requests
 	handle * {
 		try_files {path} /
 		encode gzip
