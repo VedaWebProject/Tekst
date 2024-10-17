@@ -289,9 +289,14 @@ class TextAnnotation(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
-            anno_keys = sorted(list({agg.key for agg in resource.aggregations}))
+            annos = await PrecomputedDataDocument.find_one(
+                PrecomputedDataDocument.ref_id == resource.id,
+                PrecomputedDataDocument.precomputed_type == "aggregations",
+            )
+            annos = annos.data if annos and annos.data else []
+            anno_keys = sorted(list({anno["key"] for anno in annos if anno.get("key")}))
             csv_writer.writerow(
-                ["LOCATION", "TOKEN", "POSITION", *anno_keys, "COMMENT"]
+                ["LOCATION", "POSITION", "TOKEN", *anno_keys, "COMMENT"]
             )
             for content in contents:
                 for i, token in enumerate(content.tokens):
@@ -307,8 +312,8 @@ class TextAnnotation(ResourceTypeABC):
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
-                            token.token,
                             i,
+                            token.token,
                             *csv_annos,
                             content.comment,
                         ]
