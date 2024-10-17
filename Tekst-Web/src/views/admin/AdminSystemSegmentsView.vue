@@ -97,8 +97,8 @@ function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
   if (!segmentId) {
     return {
       key: '',
-      title: null,
-      locale: null,
+      title: undefined,
+      locale: undefined,
       editorMode: 'wysiwyg',
       html: '',
     };
@@ -147,7 +147,7 @@ async function handleSaveClick() {
 async function updateSegment() {
   const { data, error } = await PATCH('/platform/segments/{id}', {
     params: { path: { id: selectedSegmentId.value || '' } },
-    body: getModelChanges(),
+    body: getModelChanges() as ClientSegmentUpdate,
   });
   if (!error) {
     message.success(

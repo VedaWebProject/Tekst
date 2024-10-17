@@ -16,6 +16,7 @@ from typing_extensions import TypedDict
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     TranslationBase,
@@ -180,12 +181,20 @@ class Text(ModelBase, ModelFactoryMixin):
         Field(
             description="The last time contents of any resource on this text changed",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
     ] = datetime.utcfromtimestamp(86400)
 
     index_created_at: Annotated[
         datetime,
         Field(
             description="The time the search index for this text was created/updated",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
         ),
     ] = datetime.utcfromtimestamp(0)
 

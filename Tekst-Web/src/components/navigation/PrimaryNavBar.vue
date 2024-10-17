@@ -32,7 +32,7 @@ const resources = useResourcesStore();
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
 const menuOpen = ref(false);
 const showUserActionsButton = computed(
-  () => pfData.value?.security?.closedMode === false || auth.loggedIn
+  () => pfData.value?.security.closedMode === false || auth.loggedIn
 );
 
 const { pageLogo } = useLogo();
@@ -66,7 +66,7 @@ const titleLinkTo = computed(() => {
       <router-link :to="titleLinkTo">
         <div class="text-gigantic">{{ pfData?.state.platformName }}</div>
       </router-link>
-      <div v-if="pfData?.state.platformSubtitle?.length" class="translucent text-tiny">
+      <div v-if="pfData?.state.platformSubtitle.length" class="translucent text-tiny">
         <translation-display :value="pfData?.state.platformSubtitle" />
       </div>
     </div>

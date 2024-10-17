@@ -105,7 +105,6 @@ async def get_content(
     responses=errors.responses(
         [
             errors.E_404_CONTENT_NOT_FOUND,
-            errors.E_400_CONTENT_ID_MISMATCH,
             errors.E_400_CONTENT_TYPE_MISMATCH,
             errors.E_403_FORBIDDEN,
         ]
@@ -119,9 +118,6 @@ async def update_content(
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
-    # check if content's resource ID matches updates' resource ID (if any)
-    if updates.resource_id and content_doc.resource_id != updates.resource_id:
-        raise errors.E_400_CONTENT_ID_MISMATCH
     # check if content's resource type matches updates' resource type
     if updates.resource_type != content_doc.resource_type:
         raise errors.E_400_CONTENT_TYPE_MISMATCH
@@ -139,9 +135,7 @@ async def update_content(
     await (await TextDocument.get(resource.text_id)).contents_changed_hook()
 
     # apply updates, return the updated document
-    return await content_doc.apply_updates(
-        updates, exclude={"id", "resource_id", "location_id", "resource_type"}
-    )
+    return await content_doc.apply_updates(updates)
 
 
 @router.delete(

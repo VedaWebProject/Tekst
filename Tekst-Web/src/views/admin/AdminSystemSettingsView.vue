@@ -31,7 +31,8 @@ const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
-const getFormModel = (): PlatformSettingsUpdate => _cloneDeep(pfData.value?.state || {});
+const getFormModel = (): PlatformSettingsUpdate =>
+  _cloneDeep(pfData.value?.state || ({} as PlatformSettingsUpdate));
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -49,7 +50,7 @@ const localeOptions = computed(() =>
 );
 
 const oskFontOptions = computed(
-  () => pfData.value?.state.customFonts?.map((f) => ({ label: f, value: f })) || []
+  () => pfData.value?.state.customFonts.map((f) => ({ label: f, value: f })) || []
 );
 
 async function handleSaveClick() {
@@ -58,7 +59,7 @@ async function handleSaveClick() {
     ?.validate(async (validationError) => {
       if (validationError) return;
       const { error } = await PATCH('/platform/settings', {
-        body: getChanges(),
+        body: getChanges() as PlatformSettingsUpdate,
       });
       if (!error) {
         await loadPlatformData();
@@ -290,7 +291,7 @@ function resetForm() {
             <dynamic-input-controls
               top-offset
               :movable="false"
-              :insert-disabled="(formModel.customFonts?.length || 0) >= 64"
+              :insert-disabled="(formModel.customFonts.length || 0) >= 64"
               @remove="() => remove(indexAction)"
               @insert="() => create(indexAction)"
             />
@@ -371,7 +372,7 @@ function resetForm() {
             <dynamic-input-controls
               top-offset
               :move-up-disabled="indexAction === 0"
-              :move-down-disabled="indexAction === formModel.oskModes?.length - 1"
+              :move-down-disabled="indexAction === formModel.oskModes.length - 1"
               :insert-disabled="(formModel.customFonts?.length || 0) >= 64"
               @move-up="() => move('up', indexAction)"
               @move-down="() => move('down', indexAction)"

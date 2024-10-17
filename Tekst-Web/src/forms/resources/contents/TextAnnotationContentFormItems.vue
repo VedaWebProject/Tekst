@@ -23,7 +23,7 @@ const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof NInputOsk> }>({}
 const resources = useResourcesStore();
 
 const annoValueStyle = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
 const aggregations = ref<AnnotationAggregation[]>([]);
@@ -33,14 +33,14 @@ const annoOptions = computed(() => {
   const keys = [
     ...new Set([
       ...aggregations.value.map((agg) => agg.key),
-      ...model.value.tokens.map((t) => t.annotations?.map((a) => a.key) || []).flat(),
+      ...model.value.tokens.map((t) => t.annotations.map((a) => a.key) || []).flat(),
     ]),
   ];
   return model.value.tokens.map(
     (t) =>
-      t.annotations?.map((a) => ({
+      t.annotations.map((a) => ({
         keysOptions: keys
-          .filter((k) => !t.annotations?.map((a) => a.key).includes(k))
+          .filter((k) => !t.annotations.map((a) => a.key).includes(k))
           .map((k) => ({
             label: k,
             value: k,
@@ -125,7 +125,7 @@ onMounted(async () => {
                   (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof NInputOsk>)
                 "
                 v-model="tokenItem.token"
-                :font="resource.config?.general?.font || undefined"
+                :font="resource.config.general.font || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
               />
             </n-form-item>

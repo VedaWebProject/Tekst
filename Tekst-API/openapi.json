@@ -7059,7 +7059,8 @@
             "maxItems": 32,
             "title": "Q",
             "description": "Resource-specific queries",
-            "default": []
+            "default": [],
+            "optionalNullable": false
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
@@ -7070,12 +7071,14 @@
                 "pgs": 10
               },
               "strict": false
-            }
+            },
+            "optionalNullable": false
           },
           "adv": {
             "$ref": "#/components/schemas/AdvancedSearchSettings",
             "description": "Advanced search settings",
-            "default": {}
+            "default": {},
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -7258,18 +7261,6 @@
       },
       "AudioContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -7277,18 +7268,6 @@
             ],
             "const": "audio",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -7301,7 +7280,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -7314,7 +7294,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "files": {
             "anyOf": [
@@ -7330,7 +7311,9 @@
                 "type": "null"
               }
             ],
-            "title": "Files"
+            "title": "Files",
+            "description": "List of audio file objects",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -7519,7 +7502,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -7744,7 +7727,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -7812,41 +7795,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -7867,54 +7835,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -7927,49 +7885,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/AudioResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AudioResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": false
+              {
+                "type": "null"
               }
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -7993,7 +7956,8 @@
             "type": "string",
             "maxLength": 512,
             "title": "Caption",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -8273,12 +8237,6 @@
             "title": "Key",
             "description": "Key of this segment. System segment keys must start with `system`."
           },
-          "isSystemSegment": {
-            "type": "boolean",
-            "title": "Issystemsegment",
-            "description": "Whether this is a system segment (will be set automatically)",
-            "default": false
-          },
           "editorMode": {
             "type": "string",
             "enum": [
@@ -8436,23 +8394,26 @@
                 "type": "null"
               }
             ],
-            "title": "Key"
-          },
-          "isSystemSegment": {
-            "type": "boolean",
-            "title": "Issystemsegment",
-            "description": "Whether this is a system segment (will be set automatically)",
-            "default": false
+            "title": "Key",
+            "description": "Key of this segment. System segment keys must start with `system`.",
+            "optionalNullable": false
           },
           "editorMode": {
-            "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "wysiwyg",
+                  "html"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
             "title": "Editormode",
             "description": "Last used editor mode",
-            "default": "wysiwyg"
+            "optionalNullable": false
           },
           "locale": {
             "anyOf": [
@@ -8462,7 +8423,9 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "description": "Locale indicating the translation language of this segment",
+            "optionalNullable": false
           },
           "title": {
             "anyOf": [
@@ -8475,7 +8438,8 @@
               }
             ],
             "title": "Title",
-            "description": "Title of this segment"
+            "description": "Title of this segment",
+            "optionalNullable": true
           },
           "html": {
             "anyOf": [
@@ -8488,7 +8452,9 @@
                 "type": "null"
               }
             ],
-            "title": "Html"
+            "title": "Html",
+            "description": "HTML content of this segment",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -8550,7 +8516,8 @@
             ],
             "title": "Occ",
             "description": "The occurrence type of the search query",
-            "default": "should"
+            "default": "should",
+            "optionalNullable": false
           },
           "res": {
             "type": "string",
@@ -8563,7 +8530,8 @@
             "maxLength": 512,
             "title": "Cmt",
             "description": "Comment",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -8953,18 +8921,6 @@
       },
       "ExternalReferencesContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -8972,18 +8928,6 @@
             ],
             "const": "externalReferences",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -8996,7 +8940,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -9009,7 +8954,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "links": {
             "anyOf": [
@@ -9025,7 +8971,9 @@
                 "type": "null"
               }
             ],
-            "title": "Links"
+            "title": "Links",
+            "description": "List of external reference link objects",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -9209,7 +9157,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -9434,7 +9382,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -9502,41 +9450,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -9557,54 +9490,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -9617,49 +9540,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": false
+              {
+                "type": "null"
               }
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -9684,7 +9612,8 @@
             "maxLength": 512,
             "title": "Text",
             "description": "Text to search for",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -9828,7 +9757,8 @@
             "default": {
               "pg": 1,
               "pgs": 10
-            }
+            },
+            "optionalNullable": false
           },
           "sort": {
             "anyOf": [
@@ -9839,7 +9769,8 @@
                 "type": "null"
               }
             ],
-            "description": "Sorting preset"
+            "description": "Sorting preset",
+            "optionalNullable": true
           },
           "strict": {
             "type": "boolean",
@@ -10087,18 +10018,6 @@
       },
       "ImagesContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -10106,18 +10025,6 @@
             ],
             "const": "images",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -10130,7 +10037,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -10143,7 +10051,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "files": {
             "anyOf": [
@@ -10159,7 +10068,9 @@
                 "type": "null"
               }
             ],
-            "title": "Files"
+            "title": "Files",
+            "description": "List of image file objects",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -10306,7 +10217,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -10531,7 +10442,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -10599,41 +10510,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -10654,54 +10550,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -10714,49 +10600,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/ImagesResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImagesResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": true
+              {
+                "type": "null"
               }
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -10780,7 +10671,8 @@
             "type": "string",
             "maxLength": 512,
             "title": "Caption",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -11103,18 +10995,6 @@
       },
       "LocationUpdate": {
         "properties": {
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
           "parentId": {
             "anyOf": [
               {
@@ -11126,7 +11006,8 @@
               }
             ],
             "title": "Parentid",
-            "description": "ID of parent location"
+            "description": "ID of parent location",
+            "optionalNullable": true
           },
           "level": {
             "anyOf": [
@@ -11139,7 +11020,9 @@
                 "type": "null"
               }
             ],
-            "title": "Level"
+            "title": "Level",
+            "description": "Index of structure level this location is on",
+            "optionalNullable": false
           },
           "position": {
             "anyOf": [
@@ -11151,7 +11034,9 @@
                 "type": "null"
               }
             ],
-            "title": "Position"
+            "title": "Position",
+            "description": "Position among all text locations on this level",
+            "optionalNullable": false
           },
           "label": {
             "anyOf": [
@@ -11164,7 +11049,9 @@
                 "type": "null"
               }
             ],
-            "title": "Label"
+            "title": "Label",
+            "description": "Label for identifying this text location in level context",
+            "optionalNullable": false
           },
           "aliases": {
             "anyOf": [
@@ -11183,7 +11070,8 @@
               }
             ],
             "title": "Aliases",
-            "description": "List of aliases for this location"
+            "description": "List of aliases for this location",
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -11223,7 +11111,7 @@
         "type": "array",
         "maxItems": 3
       },
-      "Metadate": {
+      "MetadataEntry": {
         "properties": {
           "key": {
             "type": "string",
@@ -11243,7 +11131,7 @@
           "key",
           "value"
         ],
-        "title": "Metadate"
+        "title": "MetadataEntry"
       },
       "MoveLocationRequestBody": {
         "properties": {
@@ -11316,13 +11204,15 @@
             "type": "integer",
             "title": "Pg",
             "description": "Page number",
-            "default": 1
+            "default": 1,
+            "optionalNullable": false
           },
           "pgs": {
             "type": "integer",
             "title": "Pgs",
             "description": "Page size",
-            "default": 10
+            "default": 10,
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -11495,18 +11385,6 @@
       },
       "PlainTextContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -11514,18 +11392,6 @@
             ],
             "const": "plainText",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -11538,7 +11404,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -11551,7 +11418,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "text": {
             "anyOf": [
@@ -11564,7 +11432,9 @@
                 "type": "null"
               }
             ],
-            "title": "Text"
+            "title": "Text",
+            "description": "Text content of the plain text content object",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -11728,7 +11598,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -11964,7 +11834,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -12043,41 +11913,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -12098,54 +11953,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -12158,60 +12003,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/PlainTextResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlainTextResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": false,
-                "reducedView": {
-                  "singleLine": false,
-                  "singleLineDelimiter": " / "
-                }
-              },
-              "lineLabelling": {
-                "enabled": false,
-                "labellingType": "numbersOneBased"
-              },
-              "deeplLinks": {
-                "enabled": false
+              {
+                "type": "null"
               }
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -12235,7 +12074,8 @@
             "type": "string",
             "maxLength": 512,
             "title": "Text",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -12538,27 +12378,36 @@
       "PlatformStateUpdate": {
         "properties": {
           "platformName": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Platformname",
             "description": "Name of the platform",
-            "default": "Tekst-Dev"
+            "optionalNullable": false
           },
           "platformSubtitle": {
-            "items": {
-              "$ref": "#/components/schemas/PlatformDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PlatformDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Platformsubtitle",
             "description": "Short description of the platform, in multiple languages",
-            "default": [
-              {
-                "locale": "*",
-                "translation": "An online text research platform"
-              }
-            ]
+            "optionalNullable": false
           },
           "defaultTextId": {
             "anyOf": [
@@ -12571,130 +12420,233 @@
               }
             ],
             "title": "Defaulttextid",
-            "description": "Default text to load in UI"
+            "description": "Default text to load in UI",
+            "optionalNullable": true
           },
           "alwaysShowTextInfo": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Alwaysshowtextinfo",
             "description": "Always show text info and selector in header, even on non-text-specific pages",
-            "default": true
+            "optionalNullable": false
           },
           "directJumpOnUniqueAliasSearch": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Directjumponuniquealiassearch",
             "description": "Directly jump to respective location when searching for unique location alias",
-            "default": true
+            "optionalNullable": false
           },
           "navBrowseEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MainNavEntryTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Navbrowseentry",
             "description": "Custom label for main navigation browse entry",
-            "default": []
+            "optionalNullable": false
           },
           "navSearchEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MainNavEntryTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Navsearchentry",
             "description": "Custom label for main navigation search entry",
-            "default": []
+            "optionalNullable": false
           },
           "navInfoEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MainNavEntryTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Navinfoentry",
             "description": "Custom label for main navigation info entry",
-            "default": []
+            "optionalNullable": false
           },
           "registerIntroText": {
-            "items": {
-              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RegisterIntroTextTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Registerintrotext",
             "description": "Intro text shown in registration form",
-            "default": []
+            "optionalNullable": false
           },
           "customFonts": {
-            "items": {
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 1
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Customfonts",
             "description": "CSS font family names for use in resources",
-            "default": []
+            "optionalNullable": false
           },
           "showResourceCategoryHeadings": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Showresourcecategoryheadings",
             "description": "Show resource category headings in browse view",
-            "default": true
+            "optionalNullable": false
           },
           "prioritizeBrowseLevelResources": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Prioritizebrowselevelresources",
             "description": "Display resources of current browse level before others in browse view",
-            "default": true
+            "optionalNullable": false
           },
           "showLocationAliases": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
-            "default": true
+            "optionalNullable": false
           },
           "showLogoOnLoadingScreen": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Showlogoonloadingscreen",
             "description": "Show logo on loading screen",
-            "default": true
+            "optionalNullable": false
           },
           "showLogoInHeader": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Showlogoinheader",
             "description": "Show logo in page header",
-            "default": true
+            "optionalNullable": false
           },
           "showTekstFooterHint": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Showtekstfooterhint",
             "description": "Show a small hint to the Tekst software in the footer",
-            "default": true
+            "optionalNullable": false
           },
           "availableLocales": {
-            "items": {
-              "$ref": "#/components/schemas/LocaleKey"
-            },
-            "type": "array",
-            "maxItems": 2,
-            "minItems": 1,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/LocaleKey"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Availablelocales",
             "description": "Locales available for use in platform client",
-            "default": [
-              "deDE",
-              "enUS"
-            ]
+            "optionalNullable": false
           },
           "oskModes": {
-            "items": {
-              "$ref": "#/components/schemas/OskMode"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OskMode"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
-            "default": []
+            "optionalNullable": false
           },
           "indicesUpdatedAt": {
             "anyOf": [
@@ -12707,7 +12659,8 @@
               }
             ],
             "title": "Indicesupdatedat",
-            "description": "Time when indices were created"
+            "description": "Time when indices were created",
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -12773,7 +12726,8 @@
             "maxLength": 512,
             "title": "Q",
             "description": "Query string",
-            "default": "*"
+            "default": "*",
+            "optionalNullable": false
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
@@ -12784,7 +12738,8 @@
                 "pgs": 10
               },
               "strict": false
-            }
+            },
+            "optionalNullable": false
           },
           "qck": {
             "$ref": "#/components/schemas/QuickSearchSettings",
@@ -12792,7 +12747,8 @@
             "default": {
               "op": "OR",
               "re": false
-            }
+            },
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -12808,13 +12764,15 @@
             ],
             "title": "Op",
             "description": "Default operator",
-            "default": "OR"
+            "default": "OR",
+            "optionalNullable": false
           },
           "re": {
             "type": "boolean",
             "title": "Re",
             "description": "Whether to use regular expressions",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "txt": {
             "anyOf": [
@@ -12830,7 +12788,8 @@
               }
             ],
             "title": "Txt",
-            "description": "IDs of texts to search in"
+            "description": "IDs of texts to search in",
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -13230,18 +13189,6 @@
       },
       "RichTextContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -13249,18 +13196,6 @@
             ],
             "const": "richText",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -13273,7 +13208,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -13286,7 +13222,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "html": {
             "anyOf": [
@@ -13298,17 +13235,26 @@
                 "type": "null"
               }
             ],
-            "title": "Html"
+            "title": "Html",
+            "description": "HTML content of the rich text content object",
+            "optionalNullable": false
           },
           "editorMode": {
-            "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "wysiwyg",
+                  "html"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
             "title": "Editormode",
             "description": "Last used editor mode for this content",
-            "default": "wysiwyg"
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -13455,7 +13401,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -13680,7 +13626,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -13748,41 +13694,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -13803,54 +13734,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -13863,49 +13784,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/RichTextResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RichTextResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": true
+              {
+                "type": "null"
               }
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -13929,7 +13855,8 @@
             "type": "string",
             "maxLength": 512,
             "title": "Html",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -14346,18 +14273,6 @@
       },
       "TextAnnotationContentUpdate": {
         "properties": {
-          "resourceId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resourceid"
-          },
           "resourceType": {
             "type": "string",
             "enum": [
@@ -14365,18 +14280,6 @@
             ],
             "const": "textAnnotation",
             "title": "Resourcetype"
-          },
-          "locationId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Locationid"
           },
           "comment": {
             "anyOf": [
@@ -14389,7 +14292,8 @@
               }
             ],
             "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -14402,7 +14306,8 @@
               }
             ],
             "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
           },
           "tokens": {
             "anyOf": [
@@ -14417,7 +14322,9 @@
                 "type": "null"
               }
             ],
-            "title": "Tokens"
+            "title": "Tokens",
+            "description": "List of annotated tokens in this content object",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -14641,7 +14548,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -14867,7 +14774,7 @@
           },
           "meta": {
             "items": {
-              "$ref": "#/components/schemas/Metadate"
+              "$ref": "#/components/schemas/MetadataEntry"
             },
             "type": "array",
             "maxItems": 64,
@@ -14936,41 +14843,26 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
           },
           "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "Short, concise description of this resource",
-            "default": []
-          },
-          "textId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textid"
-          },
-          "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Level"
+            "optionalNullable": false
           },
           "resourceType": {
             "type": "string",
@@ -14991,54 +14883,44 @@
               }
             ],
             "title": "Originalid",
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
           },
-          "ownerId": {
+          "sharedRead": {
             "anyOf": [
               {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
-            "default": []
+            "optionalNullable": false
           },
           "sharedWrite": {
-            "items": {
-              "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
+            "optionalNullable": false
           },
           "citation": {
             "anyOf": [
@@ -15051,50 +14933,54 @@
               }
             ],
             "title": "Citation",
-            "description": "Citation details for this resource"
+            "description": "Citation details for this resource",
+            "optionalNullable": true
           },
           "meta": {
-            "items": {
-              "$ref": "#/components/schemas/Metadate"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "minItems": 0,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
+            "optionalNullable": false
           },
           "comment": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment on this resource",
-            "default": []
+            "optionalNullable": false
           },
           "config": {
-            "$ref": "#/components/schemas/TextAnnotationResourceConfig",
-            "default": {
-              "common": {
-                "defaultActive": true,
-                "quickSearchable": true,
-                "showOnParentLevel": false,
-                "sortOrder": 10
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "multiValueDelimiter": "/"
-            }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+              {
+                "type": "null"
+              }
+            ],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -15118,13 +15004,15 @@
             "type": "string",
             "maxLength": 512,
             "title": "Token",
-            "default": ""
+            "default": "",
+            "optionalNullable": false
           },
           "twc": {
             "type": "boolean",
             "title": "Twc",
             "description": "Whether to interpret wildcards in the token query",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "anno": {
             "items": {
@@ -15134,7 +15022,8 @@
             "maxItems": 64,
             "title": "Anno",
             "description": "List of annotations to match",
-            "default": []
+            "default": [],
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -15274,20 +15163,6 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed",
-            "default": "1970-01-02T00:00:00"
-          },
-          "indexCreatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated",
-            "default": "1970-01-01T00:00:00"
           }
         },
         "type": "object",
@@ -15497,7 +15372,9 @@
                 "type": "null"
               }
             ],
-            "title": "Title"
+            "title": "Title",
+            "description": "Title of this text",
+            "optionalNullable": false
           },
           "slug": {
             "anyOf": [
@@ -15511,17 +15388,26 @@
                 "type": "null"
               }
             ],
-            "title": "Slug"
+            "title": "Slug",
+            "description": "A short identifier for use in URLs and internal operations",
+            "optionalNullable": false
           },
           "subtitle": {
-            "items": {
-              "$ref": "#/components/schemas/TextSubtitleTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TextSubtitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Subtitle",
             "description": "Subtitle translations of this text (if set, it must contain at least one element)",
-            "default": []
+            "optionalNullable": false
           },
           "levels": {
             "anyOf": [
@@ -15541,65 +15427,95 @@
                 "type": "null"
               }
             ],
-            "title": "Levels"
+            "title": "Levels",
+            "description": "Structure levels of this text and their label translations",
+            "optionalNullable": false
           },
           "defaultLevel": {
-            "type": "integer",
-            "minimum": 0.0,
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Defaultlevel",
             "description": "Default structure level for the client to use for browsing this text",
-            "default": 0
+            "optionalNullable": false
           },
           "locDelim": {
-            "type": "string",
-            "maxLength": 3,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 3,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
-            "default": ", "
+            "optionalNullable": false
           },
           "labeledLocation": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Labeledlocation",
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
-            "default": true
+            "optionalNullable": false
           },
           "accentColor": {
-            "type": "string",
-            "format": "color",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "color"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Accentcolor",
             "description": "Accent color used for this text in the client UI",
-            "default": "#305D97"
+            "optionalNullable": false
           },
           "isActive": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
-            "default": false
+            "optionalNullable": false
           },
           "resourceCategories": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceCategory"
-            },
-            "type": "array",
-            "maxItems": 32,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCategory"
+                },
+                "type": "array",
+                "maxItems": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
-            "default": []
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed",
-            "default": "1970-01-02T00:00:00"
-          },
-          "indexCreatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated",
-            "default": "1970-01-01T00:00:00"
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -15788,38 +15704,6 @@
             "minLength": 1,
             "title": "Content",
             "description": "Content of the message"
-          },
-          "time": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time",
-            "description": "Time when the message was sent"
-          },
-          "read": {
-            "type": "boolean",
-            "title": "Read",
-            "description": "Whether the message has been read by the recipient",
-            "default": false
-          },
-          "deleted": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Deleted",
-            "description": "ID of the user who deleted the message or None if not deleted"
           }
         },
         "type": "object",
@@ -16241,7 +16125,8 @@
                 "type": "null"
               }
             ],
-            "title": "Username"
+            "title": "Username",
+            "optionalNullable": false
           },
           "name": {
             "anyOf": [
@@ -16254,7 +16139,8 @@
                 "type": "null"
               }
             ],
-            "title": "Name"
+            "title": "Name",
+            "optionalNullable": false
           },
           "affiliation": {
             "anyOf": [
@@ -16267,7 +16153,8 @@
                 "type": "null"
               }
             ],
-            "title": "Affiliation"
+            "title": "Affiliation",
+            "optionalNullable": false
           },
           "locale": {
             "anyOf": [
@@ -16277,7 +16164,8 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "optionalNullable": true
           },
           "avatarUrl": {
             "anyOf": [
@@ -16289,7 +16177,8 @@
                 "type": "null"
               }
             ],
-            "title": "Avatarurl"
+            "title": "Avatarurl",
+            "optionalNullable": true
           },
           "bio": {
             "anyOf": [
@@ -16301,39 +16190,53 @@
                 "type": "null"
               }
             ],
-            "title": "Bio"
+            "title": "Bio",
+            "optionalNullable": true
           },
           "publicFields": {
-            "$ref": "#/components/schemas/MaybePrivateUserFields",
-            "default": []
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MaybePrivateUserFields"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "optionalNullable": false
           },
           "userNotificationTriggers": {
-            "items": {
-              "$ref": "#/components/schemas/UserNotificationTrigger"
-            },
-            "type": "array",
-            "maxItems": 4,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserNotificationTrigger"
+                },
+                "type": "array",
+                "maxItems": 4
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
-            "default": [
-              "messageReceived",
-              "newCorrection",
-              "resourceProposed",
-              "resourcePublished"
-            ]
+            "optionalNullable": false
           },
           "adminNotificationTriggers": {
-            "items": {
-              "$ref": "#/components/schemas/AdminNotificationTrigger"
-            },
-            "type": "array",
-            "maxItems": 2,
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AdminNotificationTrigger"
+                },
+                "type": "array",
+                "maxItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
-            "default": [
-              "userAwaitsActivation",
-              "newCorrection"
-            ]
+            "optionalNullable": false
           },
           "seen": {
             "anyOf": [
@@ -16344,7 +16247,8 @@
                 "type": "null"
               }
             ],
-            "title": "Seen"
+            "title": "Seen",
+            "optionalNullable": true
           }
         },
         "type": "object",

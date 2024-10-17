@@ -22,7 +22,7 @@ const imageSize = computed(() =>
   state.smallScreen ? (props.reduced ? '60px' : '80px') : props.reduced ? '60px' : '200px'
 );
 const fontStyle: CSSProperties = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst UI Font',
+  fontFamily: props.resource.config.general.font || 'Tekst UI Font',
 };
 
 const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {

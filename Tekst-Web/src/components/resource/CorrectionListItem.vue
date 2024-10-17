@@ -120,7 +120,7 @@ function gotoUserProfile(userId: string) {
           :show-icon="false"
           :style="{
             'white-space': 'pre-wrap',
-            'font-family': resource.config?.general?.font || 'Tekst Content Font',
+            'font-family': resource.config.general.font || 'Tekst Content Font',
           }"
         >
           {{ correction.note }}

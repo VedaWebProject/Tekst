@@ -5,6 +5,7 @@ from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
 )
@@ -18,6 +19,9 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId,
         Field(
             description="Resource ID",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ]
     resource_type: Annotated[
@@ -35,6 +39,9 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId,
         Field(
             description="Text location ID",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ]
     comment: Annotated[

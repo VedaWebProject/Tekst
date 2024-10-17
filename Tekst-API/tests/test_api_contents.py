@@ -135,24 +135,12 @@ async def test_update_content(
     )
     assert resp.status_code == 404, status_fail_msg(404, resp)
 
-    # fail to update content with changed resource ID
-    resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
-        json={
-            "resourceType": "plainText",
-            "text": "FOO BAR",
-            "resourceId": wrong_id,
-        },
-    )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
-
     # fail to update content with bogus resource type
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
         json={
             "resourceType": "bogus",
             "text": "FOO BAR",
-            "resourceId": str(resource.id),
         },
     )
     assert resp.status_code == 422, status_fail_msg(422, resp)
@@ -163,7 +151,6 @@ async def test_update_content(
         json={
             "resourceType": "richText",
             "text": "FOO BAR",
-            "resourceId": str(resource.id),
         },
     )
     assert resp.status_code == 400, status_fail_msg(400, resp)

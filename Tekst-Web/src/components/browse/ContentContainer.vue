@@ -27,11 +27,11 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayLeave: 0,
 });
 
-const contentCollapsed = ref(!!props.resource.config?.general?.defaultCollapsed);
+const contentCollapsed = ref(!!props.resource.config.general.defaultCollapsed);
 watch(
   () => browse.reducedView,
   (reduced) => {
-    contentCollapsed.value = !reduced && !!props.resource.config?.general?.defaultCollapsed;
+    contentCollapsed.value = !reduced && !!props.resource.config.general.defaultCollapsed;
   },
   { immediate: true }
 );
@@ -56,8 +56,7 @@ const headerWidgetsOpacity = computed<number>(() =>
 const hasContent = computed(() => props.resource.contents?.length);
 const show = computed(() => props.resource.active && (hasContent.value || !browse.reducedView));
 const fromChildLevel = computed(
-  () =>
-    props.resource.level - 1 === browse.level && props.resource.config?.common?.showOnParentLevel
+  () => props.resource.level - 1 === browse.level && props.resource.config.common.showOnParentLevel
 );
 </script>
 
@@ -118,9 +117,7 @@ const fromChildLevel = computed(
 
     <n-button
       v-if="
-        resource.config?.general?.defaultCollapsed &&
-        !browse.reducedView &&
-        resource.contents?.length
+        resource.config.general.defaultCollapsed && !browse.reducedView && resource.contents?.length
       "
       text
       block

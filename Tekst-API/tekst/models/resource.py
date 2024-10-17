@@ -10,11 +10,12 @@ from pydantic import (
     StringConstraints,
     field_validator,
 )
+from typing_extensions import TypedDict
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     DocumentBase,
-    Metadata,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     PrecomputedDataDocument,
@@ -27,6 +28,26 @@ from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.utils import validators as val
 from tekst.utils.strings import cleanup_spaces_multiline
+
+
+# class for one arbitrary metadate
+class MetadataEntry(TypedDict):
+    key: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=16,
+            strip_whitespace=True,
+        ),
+    ]
+    value: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=128,
+            strip_whitespace=True,
+        ),
+    ]
 
 
 class ResourceTitleTranslation(TranslationBase):
@@ -85,6 +106,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             description="ID of the text this resource belongs to",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ]
 
     level: Annotated[
@@ -92,6 +116,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             ge=0,
             description="Text level this resource belongs to",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ]
 
@@ -122,6 +149,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             description="User owning this resource",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ] = None
 
     shared_read: Annotated[
@@ -145,12 +175,18 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             description="Publication status of this resource",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ] = False
 
     proposed: Annotated[
         bool,
         Field(
             description="Whether this resource has been proposed for publication",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ] = False
 
@@ -166,7 +202,14 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    meta: Metadata = []
+    meta: Annotated[
+        list[MetadataEntry],
+        Field(
+            description="Arbitrary metadata",
+            min_length=0,
+            max_length=64,
+        ),
+    ] = []
 
     comment: Annotated[
         Translations[ResourceCommentTranslation],
@@ -181,6 +224,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         datetime,
         Field(
             description="The last time contents of this resource changed",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ] = datetime.utcfromtimestamp(86400)
 

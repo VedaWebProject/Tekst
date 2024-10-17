@@ -38,7 +38,7 @@ const options = computed(() =>
 );
 
 const show = computed(
-  () => props.widgetConfig?.enabled && props.widgetConfig?.sourceLanguage && contentsTextEncoded
+  () => props.widgetConfig.enabled && props.widgetConfig.sourceLanguage && contentsTextEncoded
 );
 
 function handleOptionSelect(_: string, option: SelectBaseOption) {

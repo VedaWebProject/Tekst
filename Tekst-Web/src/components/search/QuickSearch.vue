@@ -40,7 +40,7 @@ const searchableResources = computed(
     )?.map((tId) => ({
       title: pfData.value?.texts.find((t) => t.id === tId)?.title,
       color: theme.getAccentColors(tId).base,
-      resources: resources.all.filter((r) => r.textId === tId && r.config?.common?.quickSearchable),
+      resources: resources.all.filter((r) => r.textId === tId && r.config.common.quickSearchable),
     })) || []
 );
 

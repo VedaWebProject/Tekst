@@ -4,6 +4,7 @@ from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     PydanticObjectId,
@@ -18,17 +19,28 @@ class Bookmark(ModelBase, ModelFactoryMixin):
         Field(
             description="ID of user who created this bookmark",
         ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
     ]
     text_id: Annotated[
         PydanticObjectId,
         Field(
             description="ID of text this bookmark belongs to",
         ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
     ]
     location_id: Annotated[
         PydanticObjectId,
         Field(
             description="ID of the text location this bookmark refers to",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ]
     level: Annotated[
@@ -37,6 +49,10 @@ class Bookmark(ModelBase, ModelFactoryMixin):
             ge=0,
             description="Text level this bookmark refers to",
         ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
     ]
     position: Annotated[
         int,
@@ -44,11 +60,19 @@ class Bookmark(ModelBase, ModelFactoryMixin):
             ge=0,
             description="Position of the text location this bookmark refers to",
         ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
     ]
     location_labels: Annotated[
         list[str],
         Field(
             description="Text location labels from root to target location",
+        ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
         ),
     ]
     comment: Annotated[
@@ -62,6 +86,9 @@ class Bookmark(ModelBase, ModelFactoryMixin):
         ),
         val.CleanupMultiline,
         val.EmptyStringToNone,
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ] = None
 
     @field_validator("comment", mode="after")
@@ -79,24 +106,4 @@ class BookmarkDocument(Bookmark, DocumentBase):
 
 
 BookmarkRead = Bookmark.read_model()
-
-
-class BookmarkCreate(ModelBase):
-    location_id: Annotated[
-        PydanticObjectId,
-        Field(
-            description="ID of the text location this bookmark refers to",
-        ),
-    ]
-    comment: Annotated[
-        str | None,
-        Field(
-            description="Comment associated with this bookmark",
-        ),
-        StringConstraints(
-            max_length=1000,
-            strip_whitespace=True,
-        ),
-        val.CleanupMultiline,
-        val.EmptyStringToNone,
-    ] = None
+BookmarkCreate = Bookmark.create_model()

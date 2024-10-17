@@ -21,7 +21,7 @@ const model = defineModel<TextAnnotationSearchQuery>({ required: true });
 const resources = useResourcesStore();
 
 const annoValueStyle = {
-  fontFamily: props.resource.config?.general?.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
 const aggregations = ref<AnnotationAggregation[]>([]);
@@ -86,7 +86,7 @@ onMounted(async () => {
     >
       <n-input-osk
         :model-value="model.token"
-        :font="resource.config?.general?.font || undefined"
+        :font="resource.config.general.font || undefined"
         :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
         @update:model-value="(v) => handleUpdate('token', v)"
       />

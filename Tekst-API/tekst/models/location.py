@@ -9,6 +9,7 @@ from pydantic import (
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
 )
@@ -31,6 +32,9 @@ class Location(ModelBase, ModelFactoryMixin):
         PydanticObjectId,
         Field(
             description="ID of the text this location belongs to",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
         ),
     ]
     parent_id: Annotated[

@@ -11,6 +11,7 @@ from pydantic import (
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     TranslationLocaleKey,
@@ -37,7 +38,10 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         bool,
         Field(
             description="Whether this is a system segment (will be set automatically)",
-            alias="isSystemSegment",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
         ),
     ] = False
     editor_mode: Annotated[

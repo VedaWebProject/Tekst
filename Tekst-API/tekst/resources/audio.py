@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase
+from tekst.models.common import ModelBase, SchemaOptionalNonNullable
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -224,4 +224,5 @@ class AudioSearchQuery(ModelBase):
             strip_whitespace=True,
         ),
         val.CleanupOneline,
+        SchemaOptionalNonNullable,
     ] = ""

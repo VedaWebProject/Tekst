@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { GET, saveDownload, type TaskRead } from '@/api';
+import { GET, downloadData, type TaskRead } from '@/api';
 import { useTimeoutPoll } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { $t, $te } from '@/i18n';
@@ -44,7 +44,7 @@ const { resume, pause } = useTimeoutPoll(
           }
           // check if task is a completed export task, if so: download
           if (task.type === 'resource_export' && task.status === 'done') {
-            const { response, error } = await GET('/resources/export/download', {
+            const { data, response, error } = await GET('/resources/export/download', {
               params: {
                 query: {
                   pickupKey: task.pickupKey,
@@ -54,11 +54,11 @@ const { resume, pause } = useTimeoutPoll(
             });
             if (!error) {
               const filename =
-                response.clone().headers.get('content-disposition')?.split('filename=')[1] ||
+                response.headers.get('content-disposition')?.split('filename=')[1] ||
                 task.result?.filename ||
                 'export';
               message.info($t('general.downloadSaved', { filename }));
-              saveDownload(await response.blob(), filename);
+              downloadData(data, filename);
             }
           }
         }

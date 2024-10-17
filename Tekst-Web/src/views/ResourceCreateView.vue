@@ -31,21 +31,20 @@ const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
 
-const getInitialModel = () =>
+const getInitialModel = (): AnyResourceRead =>
   ({
     id: '',
-    title: [{ locale: '*', translation: '' }],
-    description: [],
+    title: [{ locale: '*', translation: '' }] as AnyResourceRead['title'],
+    description: [] as AnyResourceRead['description'],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
-    resourceType: 'plainText',
-    ownerId: auth.user?.id || null,
-    category: null,
+    resourceType: 'plainText' as AnyResourceRead['resourceType'],
+    ownerId: auth.user?.id,
     public: false,
     proposed: false,
-    citation: null,
-    meta: [],
-    comment: [],
+    citation: undefined,
+    meta: [] as AnyResourceRead['meta'],
+    comment: [] as AnyResourceRead['comment'],
   }) as AnyResourceRead;
 
 const formRef = ref<FormInst | null>(null);

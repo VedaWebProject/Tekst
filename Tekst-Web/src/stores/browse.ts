@@ -103,8 +103,8 @@ export const useBrowseStore = defineStore('browse', () => {
   /* RESOURCES AND CONTENTS */
 
   const compareResourceOrder = (a: AnyResourceRead, b: AnyResourceRead) => {
-    const sortOrderA = a.config?.common?.sortOrder ?? 0;
-    const sortOrderB = b.config?.common?.sortOrder ?? 0;
+    const sortOrderA = a.config.common.sortOrder ?? 0;
+    const sortOrderB = b.config.common.sortOrder ?? 0;
     const modA =
       pfData.value?.state.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
     const modB =
@@ -121,8 +121,7 @@ export const useBrowseStore = defineStore('browse', () => {
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
         resources: resources.ofText
           .filter(
-            (r) =>
-              r.config?.common?.category === c.key && (showNonPublicResources.value || r.public)
+            (r) => r.config.common.category === c.key && (showNonPublicResources.value || r.public)
           )
           .sort(compareResourceOrder),
       })) || [];
@@ -134,7 +133,7 @@ export const useBrowseStore = defineStore('browse', () => {
         },
         resources: resources.ofText.filter(
           (r) =>
-            !categorized.find((c) => c.category.key === r.config?.common?.category) &&
+            !categorized.find((c) => c.category.key === r.config.common.category) &&
             (showNonPublicResources.value || r.public)
         ),
       },

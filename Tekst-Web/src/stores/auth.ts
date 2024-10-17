@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
       Date.now() / 1000 +
-      (pfData.value?.security?.authCookieLifetime || 0) -
+      (pfData.value?.security.authCookieLifetime || 0) -
       SESSION_EXPIRY_OFFSET_S;
     localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
@@ -126,7 +126,7 @@ export const useAuthStore = defineStore('auth', () => {
     loginModalState.value.loading = true;
     // login
     const { error } = await POST('/auth/cookie/login', {
-      body: { username, password },
+      body: { username, password, scope: '' },
       ...optionsPresets.formUrlEncoded,
     });
 

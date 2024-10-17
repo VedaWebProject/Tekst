@@ -77,14 +77,14 @@ const resourceOptions = computed(() => {
           pfData.value?.texts
             .find((t) => t.id === a.textId)
             ?.resourceCategories?.map((c) => c.key) || [];
-        const catA = categories.includes(a.config?.common?.category || '')
-          ? categories.indexOf(a.config?.common?.category || '')
+        const catA = categories.includes(a.config.common.category || '')
+          ? categories.indexOf(a.config.common.category || '')
           : 99;
-        const catB = categories.includes(b.config?.common?.category || '')
-          ? categories.indexOf(b.config?.common?.category || '')
+        const catB = categories.includes(b.config.common.category || '')
+          ? categories.indexOf(b.config.common.category || '')
           : 99;
-        const soA = a.config?.common?.sortOrder || 99;
-        const soB = b.config?.common?.sortOrder || 99;
+        const soA = a.config.common.sortOrder || 99;
+        const soB = b.config.common.sortOrder || 99;
         return catA * 100 + soA - (catB * 100 + soB);
       })
       .map((r) => ({

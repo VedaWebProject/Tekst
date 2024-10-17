@@ -13,7 +13,6 @@ withDefaults(
   {
     toolbarSize: 'small',
     maxChars: undefined,
-    editorMode: 'wysiwyg',
     wysiwygFont: undefined,
   }
 );
@@ -21,7 +20,9 @@ withDefaults(
 const emit = defineEmits(['blur', 'focus', 'input']);
 
 const value = defineModel<string | null>('value');
-const editorMode = defineModel<'wysiwyg' | 'html'>('editorMode');
+const editorMode = defineModel<'wysiwyg' | 'html' | undefined>('editorMode', {
+  default: 'wysiwyg',
+});
 
 const dialog = useDialog();
 

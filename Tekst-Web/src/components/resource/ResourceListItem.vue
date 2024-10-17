@@ -262,7 +262,7 @@ function handleCorrectionsClick() {
         </n-flex>
       </template>
 
-      <template v-if="targetResource.description?.length">
+      <template v-if="targetResource.description.length">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
           <translation-display :value="targetResource.description" />
         </n-ellipsis>

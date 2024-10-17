@@ -291,21 +291,11 @@ async def update_resource(
         updates.shared_write = []
     # if the updates contain user shares, check if they are valid
     if updates.shared_read or updates.shared_write:
-        for user_id in updates.shared_read + updates.shared_write:
+        for user_id in (updates.shared_read or []) + (updates.shared_write or []):
             if not await UserDocument.find_one(UserDocument.id == user_id).exists():
                 raise errors.E_400_SHARED_WITH_USER_NON_EXISTENT
-    # update document with constrained updates
-    await resource_doc.apply_updates(
-        updates,
-        exclude={
-            "public",
-            "proposed",
-            "text_id",
-            "owner_id",
-            "level",
-            "resource_type",
-        },
-    )
+    # update document
+    await resource_doc.apply_updates(updates)
     return await preprocess_resource_read(resource_doc, user)
 
 
@@ -786,13 +776,6 @@ async def _import_resource_contents_task(
     updated_count = 0
     contents = []  # [(<content_doc: ContentBaseDocument>, <is_update: bool>)]
 
-    preserve_fields = {
-        "_id",
-        "resource_type",
-        "resource_id",
-        "location_id",
-    }
-
     try:
         # check import data
         while import_data.get("contents"):
@@ -804,6 +787,9 @@ async def _import_resource_contents_task(
             ):
                 raise errors.E_400_IMPORT_ID_NON_EXISTENT
             loc_id = PydanticObjectId(content.get("locationId"))
+            # remove location ID from content data
+            # to pass update model validation
+            del content["locationId"]
 
             # check if location exists
             if not await LocationDocument.find_one(
@@ -822,12 +808,9 @@ async def _import_resource_contents_task(
                 if content_doc:
                     await content_doc.apply_updates(
                         update_model(
-                            resource_id=resource_doc.id,
                             resource_type=resource_doc.resource_type,
-                            location_id=loc_id,
                             **content,
                         ),
-                        exclude=preserve_fields,
                         replace=False,
                     )
                     contents.append((content_doc, True))

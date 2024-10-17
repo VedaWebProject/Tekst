@@ -31,7 +31,7 @@ import { useMessages } from '@/composables/messages';
 import { useRouter } from 'vue-router';
 import { useResourcesStore } from '@/stores';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
-import { saveDownload } from '@/api';
+import { downloadData } from '@/api';
 import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { useTasks } from '@/composables/tasks';
@@ -78,9 +78,9 @@ function filterData(resourcesData: AnyResourceRead[]) {
     const resourceStringContent = filters.value.search
       ? [
           r.title.map((t) => t.translation).join(' '),
-          r.description?.map((d) => d.translation).join(' ') || '',
+          r.description.map((d) => d.translation).join(' ') || '',
           r.ownerId,
-          r.comment?.map((c) => c.translation).join(' ') || '',
+          r.comment.map((c) => c.translation).join(' ') || '',
           r.citation,
           JSON.stringify(r.meta),
         ]
@@ -307,7 +307,7 @@ function handleDeleteClick(resource: AnyResourceRead) {
 
 async function handleDownloadTemplateClick(resource: AnyResourceRead) {
   actionsLoading.value = true;
-  const { response, error } = await GET('/resources/{id}/template', {
+  const { data, error } = await GET('/resources/{id}/template', {
     params: { path: { id: resource.id } },
     parseAs: 'blob',
   });
@@ -318,7 +318,7 @@ async function handleDownloadTemplateClick(resource: AnyResourceRead) {
       .replace(/\W+/g, '_');
     const filename = `${resSaveName}_${resource.id}_template.json`.toLowerCase();
     message.info($t('general.downloadSaved', { filename }));
-    saveDownload(await response.blob(), filename);
+    downloadData(data, filename);
   }
   actionsLoading.value = false;
 }
