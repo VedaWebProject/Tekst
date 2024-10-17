@@ -8622,38 +8622,6 @@
         ],
         "title": "CorrectionRead"
       },
-      "DeepLLanguageCode": {
-        "type": "string",
-        "enum": [
-          "BG",
-          "CS",
-          "DA",
-          "DE",
-          "EL",
-          "EN",
-          "ES",
-          "ET",
-          "FI",
-          "FR",
-          "HU",
-          "ID",
-          "IT",
-          "JA",
-          "LT",
-          "LV",
-          "NL",
-          "PL",
-          "PT",
-          "RO",
-          "RU",
-          "SK",
-          "SL",
-          "SV",
-          "TR",
-          "UK",
-          "ZH"
-        ]
-      },
       "DeepLLinksConfig": {
         "properties": {
           "enabled": {
@@ -8665,7 +8633,7 @@
           "sourceLanguage": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/DeepLLanguageCode"
+                "$ref": "#/components/schemas/DeepLSourceLanguage"
               },
               {
                 "type": "null"
@@ -8677,6 +8645,41 @@
         "type": "object",
         "title": "DeepLLinksConfig",
         "description": "Resource configuration model for DeepL translation links.\nThe corresponding field MUST be named `deepl_links`!"
+      },
+      "DeepLSourceLanguage": {
+        "type": "string",
+        "enum": [
+          "ar",
+          "bg",
+          "cs",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "et",
+          "fi",
+          "fr",
+          "hu",
+          "id",
+          "it",
+          "ja",
+          "ko",
+          "lt",
+          "lv",
+          "nb",
+          "nl",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sk",
+          "sl",
+          "sv",
+          "tr",
+          "uk",
+          "zh"
+        ]
       },
       "DeleteLocationResult": {
         "properties": {

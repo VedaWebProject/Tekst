@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { deeplLanguageCodes, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
+import { deeplTargetLanguages, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
 import { computed } from 'vue';
 import { NPopselect } from 'naive-ui';
 import { TranslateIcon } from '@/icons';
@@ -30,7 +30,7 @@ const contentsTextEncoded = computed<string>(() => {
 });
 
 const options = computed(() =>
-  deeplLanguageCodes.map((l) => ({
+  deeplTargetLanguages.map((l) => ({
     label: l,
     value: l,
     url: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${l}/${contentsTextEncoded.value}`,

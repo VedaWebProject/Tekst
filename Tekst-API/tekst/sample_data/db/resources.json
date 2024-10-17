@@ -53,8 +53,7 @@
       },
       "deeplLinks": {
         "enabled": true,
-        "sourceLanguage": "DE",
-        "languages": ["EN", "ES", "FR", "IT", "PL", "RU", "TR", "UK", "JA"]
+        "sourceLanguage": "de"
       }
     }
   },
@@ -105,8 +104,7 @@
       },
       "deeplLinks": {
         "enabled": true,
-        "sourceLanguage": "JA",
-        "languages": ["EN", "DE", "FR", "ES"]
+        "sourceLanguage": "ja"
       }
     }
   },
@@ -147,8 +145,7 @@
       },
       "deeplLinks": {
         "enabled": false,
-        "sourceLanguage": "BG",
-        "languages": ["EN", "DE"]
+        "sourceLanguage": "en"
       }
     }
   },
@@ -183,8 +180,7 @@
       },
       "deeplLinks": {
         "enabled": false,
-        "sourceLanguage": "BG",
-        "languages": ["EN", "DE"]
+        "sourceLanguage": "en"
       }
     }
   },
@@ -357,36 +353,7 @@
       },
       "deeplLinks": {
         "enabled": true,
-        "sourceLanguage": "EN",
-        "languages": [
-          "DE",
-          "BG",
-          "CS",
-          "DA",
-          "EL",
-          "EN",
-          "ES",
-          "ET",
-          "FI",
-          "FR",
-          "HU",
-          "ID",
-          "IT",
-          "JA",
-          "LT",
-          "LV",
-          "NL",
-          "PL",
-          "PT",
-          "RO",
-          "RU",
-          "SK",
-          "SL",
-          "SV",
-          "TR",
-          "UK",
-          "ZH"
-        ]
+        "sourceLanguage": "en"
       }
     }
   },
@@ -441,8 +408,7 @@
       },
       "deeplLinks": {
         "enabled": true,
-        "sourceLanguage": "DE",
-        "languages": ["EN", "DE", "DA", "ES", "FI", "IT", "PL", "UK"]
+        "sourceLanguage": "de"
       }
     }
   },

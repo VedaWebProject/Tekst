@@ -2103,35 +2103,6 @@ export interface components {
     } & {
       [key: string]: unknown;
     };
-    /** @enum {string} */
-    DeepLLanguageCode:
-      | 'BG'
-      | 'CS'
-      | 'DA'
-      | 'DE'
-      | 'EL'
-      | 'EN'
-      | 'ES'
-      | 'ET'
-      | 'FI'
-      | 'FR'
-      | 'HU'
-      | 'ID'
-      | 'IT'
-      | 'JA'
-      | 'LT'
-      | 'LV'
-      | 'NL'
-      | 'PL'
-      | 'PT'
-      | 'RO'
-      | 'RU'
-      | 'SK'
-      | 'SL'
-      | 'SV'
-      | 'TR'
-      | 'UK'
-      | 'ZH';
     /**
      * DeepLLinksConfig
      * @description Resource configuration model for DeepL translation links.
@@ -2145,8 +2116,40 @@ export interface components {
        */
       enabled: boolean;
       /** @description Source language */
-      sourceLanguage?: components['schemas']['DeepLLanguageCode'] | null;
+      sourceLanguage?: components['schemas']['DeepLSourceLanguage'] | null;
     };
+    /** @enum {string} */
+    DeepLSourceLanguage:
+      | 'ar'
+      | 'bg'
+      | 'cs'
+      | 'da'
+      | 'de'
+      | 'el'
+      | 'en'
+      | 'es'
+      | 'et'
+      | 'fi'
+      | 'fr'
+      | 'hu'
+      | 'id'
+      | 'it'
+      | 'ja'
+      | 'ko'
+      | 'lt'
+      | 'lv'
+      | 'nb'
+      | 'nl'
+      | 'pl'
+      | 'pt'
+      | 'ro'
+      | 'ru'
+      | 'sk'
+      | 'sl'
+      | 'sv'
+      | 'tr'
+      | 'uk'
+      | 'zh';
     /** DeleteLocationResult */
     DeleteLocationResult: {
       /** Contents */
