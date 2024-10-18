@@ -71,7 +71,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.80"
           memory: 2G
     ulimits:
       memlock:
