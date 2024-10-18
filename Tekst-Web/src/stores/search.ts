@@ -29,7 +29,7 @@ type QuickSearchSettings = {
   txt?: string[];
 };
 
-type AdvancedSearchSettings = {};
+type AdvancedSearchSettings = { [key: string]: never };
 
 type QuickSearchRequest = {
   type: 'quick';

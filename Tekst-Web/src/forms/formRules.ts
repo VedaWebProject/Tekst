@@ -1,6 +1,6 @@
 import type { FormItemRule } from 'naive-ui';
 import { $t, localeProfiles } from '@/i18n';
-import { resourceTypes } from '@/api';
+import { resourceTypes, type Translation } from '@/api';
 
 function requiredStringRule(
   inputLabel: () => string,
@@ -104,8 +104,8 @@ export const textFormRules: Record<string, FormItemRule[]> = {
   ],
   levels: [
     {
-      validator: (rule: FormItemRule, value: any[]) =>
-        !!value && value.length >= 1 && value.length <= 32,
+      validator: (rule: FormItemRule, value: Translation[]) =>
+        !!value && Array.isArray(value) && value.length >= 1 && value.length <= 32,
       message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 32 }),
       trigger: 'blur',
     },
@@ -138,7 +138,7 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
   ],
   aliases: [
     {
-      validator: (rule: FormItemRule, value: any) =>
+      validator: (rule: FormItemRule, value: string[] | null) =>
         value == null || (Array.isArray(value) && value.length <= 16),
       message: () => $t('forms.rulesFeedback.minMaxItems', { min: 0, max: 16 }),
       trigger: 'blur',
@@ -339,7 +339,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
     annotationValue: [
       {
-        validator: (rule: FormItemRule, value: any) => !!value && Array.isArray(value),
+        validator: (rule: FormItemRule, value: string[]) => !!value && Array.isArray(value),
         message: () =>
           $t('forms.rulesFeedback.isRequired', {
             x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
@@ -347,13 +347,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
         trigger: 'change',
       },
       {
-        validator: (rule: FormItemRule, value: any[]) =>
+        validator: (rule: FormItemRule, value: string[]) =>
           !!value && value.length >= 1 && value.length <= 64,
         message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
         trigger: 'change',
       },
       {
-        validator: (rule: FormItemRule, value: any[]) =>
+        validator: (rule: FormItemRule, value: string[]) =>
           !!value && value.every((item) => item.length >= 1 && item.length <= 256),
         message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
         trigger: 'change',

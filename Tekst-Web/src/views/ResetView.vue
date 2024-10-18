@@ -65,7 +65,7 @@ async function handlePasswordSave() {
 }
 
 onMounted(() => {
-  !token && router.push({ name: 'home' });
+  if (!token) router.push({ name: 'home' });
 });
 </script>
 

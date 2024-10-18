@@ -8,7 +8,7 @@ import { NIcon, NFlex } from 'naive-ui';
 
 withDefaults(
   defineProps<{
-    user?: UserReadPublic & Record<string, any>;
+    user?: UserReadPublic & Record<string, unknown>;
     showAvatar?: boolean;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     link?: boolean;

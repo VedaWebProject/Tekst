@@ -14,7 +14,7 @@ const meta = computed<string[][] | null>(() => {
   // prioritized keys first
   prioritizedMetadataKeys.forEach((p: string) => {
     const v = data.find((d) => d.key === p)?.value;
-    v && m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, v]);
+    if (v) m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, v]);
   });
 
   return m.length > 0 ? m : null;

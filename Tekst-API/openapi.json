@@ -12863,14 +12863,7 @@
             "$ref": "#/components/schemas/TranslationLocaleKey"
           },
           "translation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Translation"
           }
         },

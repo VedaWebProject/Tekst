@@ -17,7 +17,7 @@ const router = useRouter();
 // hook in loading bar
 onBeforeMount(() => {
   router.beforeEach(() => {
-    !state.init.loading && loadingBar.start();
+    if (!state.init.loading) loadingBar.start();
   });
   router.afterEach(() => {
     loadingBar.finish();

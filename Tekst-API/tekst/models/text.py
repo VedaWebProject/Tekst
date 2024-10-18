@@ -49,11 +49,11 @@ class TextLevelTranslation(TranslationBase):
 
 class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
-        str | None,
+        str,
         StringConstraints(
             strip_whitespace=True,
         ),
-    ] = None
+    ]
 
 
 class ResourceCategory(TypedDict):

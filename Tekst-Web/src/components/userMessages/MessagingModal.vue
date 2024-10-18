@@ -40,7 +40,7 @@ async function handleSendMessage() {
     sender: auth.user?.id,
     recipient: userMessages.openThread?.contact?.id || '',
   });
-  msg && messages.value?.push(msg);
+  if (msg) messages.value?.push(msg);
   messageInput.value = '';
   await scrollDownMessageContainer(300);
   loadingSend.value = false;

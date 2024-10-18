@@ -19,7 +19,7 @@ const fapiUsersErrorCodesMap: Record<string, string> = {
   RESET_PASSWORD_BAD_TOKEN: 'resetPasswordBadToken',
 };
 
-function isObject(o: any) {
+function isObject(o: unknown) {
   return o && typeof o === 'object' && o.constructor === Object;
 }
 
@@ -59,11 +59,11 @@ export function useErrors() {
     // show error message
     if ($te(`errors.${detail.key}`)) {
       const m = $t(`errors.${detail.key}`, (detail.values as Record<string, unknown>) || undefined);
-      displayMessage && message.error(m, detail.values || undefined, 10);
+      if (displayMessage) message.error(m, detail.values || undefined, 10);
       return m;
     } else {
       const m = $t('errors.unexpected');
-      displayMessage && message.error(m, error, 10);
+      if (displayMessage) message.error(m, error, 10);
       return m;
     }
   }

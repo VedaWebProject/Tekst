@@ -35,7 +35,7 @@ export function useInitializeApp() {
           await loadPlatformData();
           await state.setLocale(localStorage.getItem('locale') || undefined);
           return success;
-        } catch (e) {
+        } catch {
           message.error($t('errors.loadData'));
           return false;
         }
@@ -59,7 +59,7 @@ export function useInitializeApp() {
         try {
           await resources.load();
           return success;
-        } catch (e) {
+        } catch {
           message.error($t('errors.loadData'));
           return false;
         }

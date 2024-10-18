@@ -7,7 +7,7 @@ const model = defineModel<DeepLLinksConfig>({ required: true });
 
 const languageOptions = deeplSourceLanguages.map((l) => ({ label: l, value: l }));
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

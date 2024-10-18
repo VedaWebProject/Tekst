@@ -13,9 +13,12 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
 
   const { pause: stopThreadsPolling, resume: startThreadsPolling } = useIntervalFn(
     async () => {
-      auth.user && (await loadThreads());
-      unreadCount.value &&
+      if (auth.user) {
+        await loadThreads();
+      }
+      if (unreadCount.value) {
         message.info($t('account.messages.msgUnreadCount', { count: unreadCount.value }));
+      }
     },
     30 * 1000, // 30 seconds
     { immediate: false, immediateCallback: true }

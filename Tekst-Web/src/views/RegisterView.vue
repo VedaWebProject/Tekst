@@ -92,7 +92,7 @@ function handleRegisterClick() {
   loading.value = true;
   formRef.value
     ?.validate((errors) => {
-      !errors && registerUser();
+      if (!errors) registerUser();
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));

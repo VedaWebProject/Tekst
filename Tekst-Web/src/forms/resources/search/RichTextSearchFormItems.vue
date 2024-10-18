@@ -11,7 +11,7 @@ defineProps<{
 
 const model = defineModel<RichTextSearchQuery>({ required: true });
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

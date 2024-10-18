@@ -72,7 +72,7 @@ export const optionsPresets = {
   },
 };
 
-export function getFullUrl(path: string, query?: Record<string, any>): URL {
+export function getFullUrl(path: string, query?: Record<string, unknown>): URL {
   const searchParams = new URLSearchParams(
     Object.fromEntries(Object.entries(query || {}).map(([key, value]) => [key, String(value)]))
   );
@@ -202,10 +202,7 @@ export type MetadataEntry = components['schemas']['MetadataEntry'];
 export type Metadata = MetadataEntry[];
 export type LocaleKey = components['schemas']['LocaleKey'];
 export type TranslationLocaleKey = components['schemas']['TranslationLocaleKey'];
-export type Translation = {
-  locale: TranslationLocaleKey;
-  translation?: string | null;
-};
+export type Translation = components['schemas']['TextLevelTranslation'];
 export type ResourceExportFormat = NonNullable<
   NonNullable<paths['/resources/{id}/export']['get']['parameters']['query']>['format']
 >;

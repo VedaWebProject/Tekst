@@ -2,11 +2,10 @@ import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useWindowSize } from '@vueuse/core';
 import type { RouteLocationNormalized } from 'vue-router';
-import { i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
+import { $t, $te, i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
 import type { LocaleProfile } from '@/i18n';
 import { useRoute } from 'vue-router';
 import type { TextRead, TranslationLocaleKey } from '@/api';
-import { $t, $te } from '@/i18n';
 import { usePlatformData } from '@/composables/platformData';
 import { useAuthStore } from './auth';
 import type { LocaleKey } from '@/api';
@@ -125,7 +124,7 @@ export const useStateStore = defineStore('state', () => {
     () => text.value?.id,
     () => {
       setPageTitle(route);
-      text.value && localStorage.setItem('text', text.value?.slug);
+      if (text.value) localStorage.setItem('text', text.value?.slug);
     }
   );
 

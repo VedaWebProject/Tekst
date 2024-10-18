@@ -19,19 +19,16 @@ import { usePlatformData } from '@/composables/platformData';
 import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import { useI18n } from 'vue-i18n';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useMessages } from '@/composables/messages';
 import { infoSegmentFormRules } from '@/forms/formRules';
 import { dialogProps } from '@/common';
 import { useStateStore } from '@/stores';
-
 import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData, getSegment } = usePlatformData();
-const { locale } = useI18n();
 const { message } = useMessages();
 const dialog = useDialog();
 
@@ -51,7 +48,7 @@ const segmentOptions = computed(() =>
   [...new Set(pfData.value?.infoSegments.map((p) => p.key))].map((key) => {
     const groupSegments = pfData.value?.infoSegments.filter((s) => s.key === key) || [];
     const currLocaleSegment =
-      groupSegments.find((s) => s.locale === locale.value) ||
+      groupSegments.find((s) => s.locale === state.locale) ||
       groupSegments.find((s) => s.locale === 'enUS') ||
       groupSegments[0];
     return {

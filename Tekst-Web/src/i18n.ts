@@ -48,28 +48,20 @@ const i18nOptions: I18nOptions = {
 };
 
 export const i18n = createI18n(i18nOptions);
-export const { t: $t, te: $te, tm: $tm } = i18n.global;
-
-// set initial i18n locale
-//(happens before app init, where locale is set respecting platform settings)
-// @ts-ignore
-i18n.global.locale.value = 'enUS';
+export const $t: typeof i18n.global.t = i18n.global.t;
+export const $te: typeof i18n.global.te = i18n.global.te;
+i18n.global.locale = 'enUS';
 
 export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
   return localeProfiles.find((lp) => lp.key === localeKey);
 }
 
-export function setI18nLocale(locale: I18nOptions['locale'] = i18n.global.locale): LocaleProfile {
-  const l = unref(locale) ?? i18n.global.locale;
-  if (!l) {
-    // passed locale is invalid
-    console.error(`Invalid locale code: ${l}`);
-    return getLocaleProfile('enUS') || localeProfiles[0];
-  }
-  // @ts-ignore
-  i18n.global.locale.value = l;
-  document.querySelector('html')?.setAttribute('lang', l);
-  return getLocaleProfile(l) || localeProfiles[0];
+export function setI18nLocale(
+  newLocale: I18nOptions['locale'] = i18n.global.locale
+): LocaleProfile {
+  i18n.global.locale = unref(newLocale);
+  document.querySelector('html')?.setAttribute('lang', i18n.global.locale);
+  return getLocaleProfile(i18n.global.locale) || localeProfiles[0];
 }
 
 export function getAvaliableBrowserLocaleKey() {

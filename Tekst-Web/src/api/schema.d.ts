@@ -4187,7 +4187,7 @@ export interface components {
     ResourceCategoryTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
       /** Translation */
-      translation: string | null;
+      translation: string;
     };
     /** ResourceCommentTranslation */
     ResourceCommentTranslation: {

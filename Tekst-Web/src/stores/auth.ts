@@ -104,9 +104,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function closeLoginModal(gotoNextRoute: boolean = true) {
-    gotoNextRoute &&
-      loginModalState.value.nextRoute &&
+    if (gotoNextRoute && loginModalState.value.nextRoute) {
       router.replace(loginModalState.value.nextRoute);
+    }
     loginModalState.value = {};
   }
 
@@ -165,8 +165,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(noMsg?: boolean) {
     router.push({ name: 'home' });
-    if (!(await POST('/auth/cookie/logout', {})).error) {
-      !noMsg && message.success($t('account.logoutSuccessful'));
+    if (!(await POST('/auth/cookie/logout', {})).error && !noMsg) {
+      message.success($t('account.logoutSuccessful'));
     }
     _cleanupSession();
     await loadPlatformData(); // reload platform data as some resources might not be accessible anymore

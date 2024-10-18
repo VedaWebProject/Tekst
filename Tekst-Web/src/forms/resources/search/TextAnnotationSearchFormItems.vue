@@ -62,7 +62,7 @@ function getAnnoValueSelectStyle(value?: string) {
   return value ? annoValueStyle : undefined;
 }
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

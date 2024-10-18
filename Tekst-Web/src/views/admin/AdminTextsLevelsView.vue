@@ -13,23 +13,20 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { POST, PATCH, DELETE } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
-import { useI18n } from 'vue-i18n';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-
 import { DeleteIcon, EditIcon, LevelsIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
-const { locale } = useI18n({ useScope: 'global' });
 const dialog = useDialog();
 
 const levels = computed<Translation[][]>(() => state.text?.levels || [[]]);
 
 const showEditModal = ref(false);
-const formModel = ref<Record<string, any>>({});
+const formModel = ref<{ translations: Translation[] }>({ translations: [] });
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
 const editModalLevel = ref<number>(-1);
@@ -96,11 +93,11 @@ function handleDeleteClick(level: number) {
 
 function getLevelLabel(lvl: Translation[]) {
   if (!lvl?.length) return '';
-  return lvl.find((t) => t.locale === locale.value)?.translation || lvl[0].translation || '';
+  return lvl.find((t) => t.locale === state.locale)?.translation || lvl[0].translation || '';
 }
 
 function destroyEditModal() {
-  formModel.value = {};
+  formModel.value.translations = [];
   editModalAction.value = 'edit';
   editModalLevel.value = -1;
 }

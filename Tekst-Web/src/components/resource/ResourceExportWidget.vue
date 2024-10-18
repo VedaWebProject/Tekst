@@ -13,7 +13,7 @@ import { useMessages } from '@/composables/messages';
 import { getFullLocationLabel, pickTranslation } from '@/utils';
 import { useTasks } from '@/composables/tasks';
 
-const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: any }[] = [
+const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: unknown }[] = [
   {
     label: 'JSON',
     value: 'json',

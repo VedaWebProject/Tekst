@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 import { NDropdown, NButton, NIcon, useThemeVars } from 'naive-ui';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { usePlatformData } from '@/composables/platformData';
-import { useI18n } from 'vue-i18n';
 
 import { ExpandArrowDownIcon } from '@/icons';
 
@@ -14,7 +13,6 @@ const router = useRouter();
 const state = useStateStore();
 const browse = useBrowseStore();
 const themeVars = useThemeVars();
-const { locale } = useI18n();
 const { pfData } = usePlatformData();
 
 const disabled = computed(() => !pfData.value?.texts || pfData.value.texts.length <= 1);
@@ -31,7 +29,7 @@ const renderLabel = (t: TextRead) => {
   return () =>
     h(TextSelectOption, {
       text: t,
-      locale: locale.value,
+      locale: state.locale,
       selected: t.id === state.text?.id,
       onClick: () => handleSelect(t),
     });

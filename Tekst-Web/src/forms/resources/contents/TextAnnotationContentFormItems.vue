@@ -70,7 +70,7 @@ function handleInsertToken(index: number) {
   return { token: undefined, annotations: [] };
 }
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

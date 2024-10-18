@@ -18,7 +18,7 @@ const emit = defineEmits(['done']);
 
 const contentsTextEncoded = computed<string>(() => {
   const contentsText = props.resource.contents
-    ?.map((c: Record<string, any>) => c.text as string)
+    ?.map((c: Record<string, unknown>) => c.text as string)
     .join('\n')
     .trim();
   return encodeURIComponent(

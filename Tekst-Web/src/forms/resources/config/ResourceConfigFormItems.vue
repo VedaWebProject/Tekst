@@ -10,7 +10,7 @@ defineProps<{
 
 const model = defineModel<AnyResourceConfig>({ default: {} });
 
-function handleUpdateGeneralConfig(field: string, value: any) {
+function handleUpdateGeneralConfig(field: string, value: unknown) {
   model.value = {
     ...model.value,
     general: {
@@ -20,7 +20,7 @@ function handleUpdateGeneralConfig(field: string, value: any) {
   };
 }
 
-function handleUpdateSpecialConfig(field: string, value: any) {
+function handleUpdateSpecialConfig(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

@@ -10,7 +10,7 @@ defineProps<{
 
 const model = defineModel<PlainTextContentCreate>({ required: true });
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

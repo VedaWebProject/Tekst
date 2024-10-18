@@ -56,10 +56,14 @@ const browseViewLabel = computed(
 
 // react to keyboard for in-/decreasing page number
 whenever(ArrowRight, () => {
-  !isOverlayOpen() && !isInputFocused() && search.turnPage('next');
+  if (!isOverlayOpen() && !isInputFocused()) {
+    search.turnPage('next');
+  }
 });
 whenever(ArrowLeft, () => {
-  !isOverlayOpen() && !isInputFocused() && search.turnPage('previous');
+  if (!isOverlayOpen() && !isInputFocused()) {
+    search.turnPage('previous');
+  }
 });
 
 onBeforeMount(() => {

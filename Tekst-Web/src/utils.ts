@@ -2,7 +2,7 @@ import { h, type Component } from 'vue';
 import type { LocationRead, TextRead, Translation, TranslationLocaleKey } from '@/api';
 import { NIcon } from 'naive-ui';
 
-export function hashCode(obj: any) {
+export function hashCode(obj: object) {
   const string = JSON.stringify(obj);
   let hash = 0;
   for (let i = 0; i < string.length; i++) {

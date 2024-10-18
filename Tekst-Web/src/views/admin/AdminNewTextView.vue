@@ -8,30 +8,31 @@ import { POST } from '@/api';
 import { useStateStore } from '@/stores';
 import { usePlatformData } from '@/composables/platformData';
 import { useRouter } from 'vue-router';
-import type { TextCreate, Translation } from '@/api';
+import type { TextCreate } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { AddCircleIcon } from '@/icons';
 
-interface NewTextModel {
-  title?: string;
-  slug?: string;
-  levels: Translation[][];
-}
-
-const initialModel = (): NewTextModel => ({
-  title: undefined,
-  slug: undefined,
+const initialModel = (): TextCreate => ({
+  title: '',
+  slug: '',
   levels: [[{ locale: '*', translation: '' }]],
+  accentColor: '#43895F',
+  defaultLevel: 0,
+  isActive: false,
+  labeledLocation: true,
+  locDelim: '; ',
+  resourceCategories: [],
+  subtitle: [],
 });
 
 const router = useRouter();
 const { message } = useMessages();
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
-const model = ref<Record<string, any>>(initialModel());
+const model = ref<TextCreate>(initialModel());
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
 

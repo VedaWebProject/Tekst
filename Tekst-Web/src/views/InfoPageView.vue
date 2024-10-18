@@ -2,17 +2,17 @@
 import type { ClientSegmentRead } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { ref, type Component, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { NSpin } from 'naive-ui';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStateStore } from '@/stores';
 
 const props = defineProps<{
   pageKey?: string;
   icon?: Component;
 }>();
 
-const { locale } = useI18n();
+const state = useStateStore();
 const loading = ref(false);
 const { getSegment } = usePlatformData();
 const router = useRouter();
@@ -22,7 +22,7 @@ const page = ref<ClientSegmentRead>();
 
 watchEffect(async () => {
   loading.value = true;
-  page.value = await getSegment(props.pageKey || String(route.params.p), locale.value);
+  page.value = await getSegment(props.pageKey || String(route.params.p), state.locale);
   if (!page.value) {
     router.replace({ name: 'browse' });
   }

@@ -377,10 +377,10 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {
-  !isOverlayOpen() && !isInputFocused() && navigateContents(-1);
+  if (!isOverlayOpen() && !isInputFocused()) navigateContents(-1);
 });
 whenever(ArrowRight, () => {
-  !isOverlayOpen() && !isInputFocused() && navigateContents(1);
+  if (!isOverlayOpen() && !isInputFocused()) navigateContents(1);
 });
 </script>
 

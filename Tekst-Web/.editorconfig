@@ -11,6 +11,8 @@ indent_size = 4
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{js,ts,json,yml,vue,css}]
-indent_style = space
+[*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue,json,yml,css}]
 indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true

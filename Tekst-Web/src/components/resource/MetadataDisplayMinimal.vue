@@ -17,10 +17,11 @@ const meta = computed<string>(() => {
   // prioritized metadata goes first
   prioritizedMetadataKeys.forEach((p: string) => {
     const v = data.find((d) => d.key === p)?.value;
-    v && m.push(v);
+    if (v) m.push(v);
   });
   // resource type
-  props.resource.resourceType && m.push($t(`resources.types.${props.resource.resourceType}.label`));
+  if (props.resource.resourceType)
+    m.push($t(`resources.types.${props.resource.resourceType}.label`));
   // level
   const levelLabel = ` – ${$t('browse.location.level')}: ${state.textLevelLabels[props.resource.level]}`;
   // join metadata to string

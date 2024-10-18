@@ -15,7 +15,7 @@ defineProps<{
 const model = defineModel<AudioContentCreate>({ required: true });
 const { message } = useMessages();
 
-function handleUpdate(field: string, value: any) {
+function handleUpdate(field: string, value: unknown) {
   model.value = {
     ...model.value,
     [field]: value,

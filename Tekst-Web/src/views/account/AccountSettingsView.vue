@@ -180,29 +180,29 @@ function handleEmailSave() {
 async function handlePasswordSave() {
   passwordFormRef.value
     ?.validate(async (errors) => {
-      !errors &&
-        dialog.warning({
-          title: $t('general.warning'),
-          content: $t('account.settings.msgPasswordChangeWarning'),
-          positiveText: $t('general.saveAction'),
-          negativeText: $t('general.cancelAction'),
-          autoFocus: false,
-          closable: false,
-          ...dialogProps,
-          onPositiveClick: async () => {
-            if (
-              !(await updateUser({
-                password: passwordFormModel.value.password || undefined,
-              }))
-            )
-              return;
-            passwordFormModel.value = initialPasswordModel();
-            resetPasswordModelChanges();
-            message.success($t('account.settings.msgPasswordSaveSuccess'));
-            await auth.logout();
-            auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
-          },
-        });
+      if (errors) return;
+      dialog.warning({
+        title: $t('general.warning'),
+        content: $t('account.settings.msgPasswordChangeWarning'),
+        positiveText: $t('general.saveAction'),
+        negativeText: $t('general.cancelAction'),
+        autoFocus: false,
+        closable: false,
+        ...dialogProps,
+        onPositiveClick: async () => {
+          if (
+            !(await updateUser({
+              password: passwordFormModel.value.password || undefined,
+            }))
+          )
+            return;
+          passwordFormModel.value = initialPasswordModel();
+          resetPasswordModelChanges();
+          message.success($t('account.settings.msgPasswordSaveSuccess'));
+          await auth.logout();
+          auth.showLoginModal(undefined, { name: 'accountProfile' }, false);
+        },
+      });
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));

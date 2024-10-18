@@ -36,11 +36,12 @@ const currentTimeString = computed(() => secondsToTimeString(currentTime.value |
 const durationString = computed(() => secondsToTimeString(duration.value || 0));
 
 function playPause() {
-  !playing.value ? play() : pause();
+  if (!playing.value) play();
+  else pause();
 }
 
 function play(reset?: boolean) {
-  reset && (currentTime.value = 0);
+  if (reset) currentTime.value = 0;
   playing.value = true;
   emit('play', props.instanceId);
 }
@@ -58,7 +59,7 @@ function openTab(url: string) {
 }
 
 watch(ended, (after) => {
-  after && emit('ended', props.instanceId);
+  if (after) emit('ended', props.instanceId);
 });
 
 onMounted(() => {
@@ -145,6 +146,7 @@ onMounted(() => {
 .audio-player {
   padding: 8px 0;
 }
+
 .caption {
   white-space: pre-wrap;
 }

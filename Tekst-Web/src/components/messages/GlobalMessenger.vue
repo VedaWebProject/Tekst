@@ -28,20 +28,20 @@ const MessageDispatcher = defineComponent({
       if (after.length > before.length) {
         while (messageQueue.value.length > 0) {
           const msg = messageQueue.value.pop();
-          msg &&
-            messageUtil.create('', {
-              type: msg.type,
-              duration: msg.seconds * 1000,
-              render: (props) =>
-                renderMessage({
-                  ...props,
-                  content: () =>
-                    h(GlobalMessageContent, null, {
-                      default: () => msg.text,
-                      details: msg.details ? () => msg.details : undefined,
-                    }),
-                }),
-            });
+          if (!msg) continue;
+          messageUtil.create('', {
+            type: msg.type,
+            duration: msg.seconds * 1000,
+            render: (props) =>
+              renderMessage({
+                ...props,
+                content: () =>
+                  h(GlobalMessageContent, null, {
+                    default: () => msg.text,
+                    details: msg.details ? () => msg.details : undefined,
+                  }),
+              }),
+          });
         }
       }
     });
