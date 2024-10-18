@@ -127,7 +127,15 @@ class ExternalReferences(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
-            csv_writer.writerow(["LOCATION", "URL", "TITLE", "DESCRIPTION", "COMMENT"])
+            csv_writer.writerow(
+                [
+                    "LOCATION",
+                    "URL",
+                    "TITLE",
+                    "DESCRIPTION",
+                    "LOCATION_COMMENT",
+                ]
+            )
             for content in contents:
                 for link in content.links:
                     csv_writer.writerow(

@@ -128,7 +128,13 @@ class RichText(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
-            csv_writer.writerow(["LOCATION", "HTML", "COMMENT"])
+            csv_writer.writerow(
+                [
+                    "LOCATION",
+                    "HTML",
+                    "LOCATION_COMMENT",
+                ]
+            )
             for content in contents:
                 csv_writer.writerow(
                     [

@@ -296,7 +296,13 @@ class TextAnnotation(ResourceTypeABC):
             annos = annos.data if annos and annos.data else []
             anno_keys = sorted(list({anno["key"] for anno in annos if anno.get("key")}))
             csv_writer.writerow(
-                ["LOCATION", "POSITION", "TOKEN", *anno_keys, "COMMENT"]
+                [
+                    "LOCATION",
+                    "POSITION",
+                    "TOKEN",
+                    *anno_keys,
+                    "LOCATION_COMMENT",
+                ]
             )
             for content in contents:
                 for i, token in enumerate(content.tokens):

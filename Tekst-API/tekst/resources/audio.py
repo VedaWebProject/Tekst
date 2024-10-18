@@ -127,7 +127,14 @@ class Audio(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
-            csv_writer.writerow(["LOCATION", "URL", "CAPTION", "COMMENT"])
+            csv_writer.writerow(
+                [
+                    "LOCATION",
+                    "URL",
+                    "CAPTION",
+                    "LOCATION_COMMENT",
+                ]
+            )
             for content in contents:
                 for audio_file in content.files:
                     csv_writer.writerow(

@@ -127,7 +127,13 @@ class PlainText(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
-            csv_writer.writerow(["LOCATION", "TEXT", "COMMENT"])
+            csv_writer.writerow(
+                [
+                    "LOCATION",
+                    "TEXT",
+                    "LOCATION_COMMENT",
+                ]
+            )
             for content in contents:
                 csv_writer.writerow(
                     [
