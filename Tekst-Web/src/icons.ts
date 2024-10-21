@@ -106,19 +106,21 @@ import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
 import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
 import SendFilled from '@vicons/material/SendFilled';
 import GroupsFilled from '@vicons/material/GroupsFilled';
-import WarningOutlined from '@vicons/material/WarningOutlined';
+import WarningAmberOutlined from '@vicons/material/WarningAmberOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
 import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
 import PauseFilled from '@vicons/material/PauseFilled';
 import PanToolAltOutlined from '@vicons/material/PanToolAltOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
+import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
 
 export {
+  ChecklistOutlined as CheckListIcon,
   BackspaceOutlined as BackspaceIcon,
   PanToolAltOutlined as CorrectionNoteIcon,
   PauseFilled as PauseIcon,
   PlayArrowFilled as PlayIcon,
-  WarningOutlined as WarningIcon,
+  WarningAmberOutlined as WarningIcon,
   GroupsFilled as CommunityIcon,
   SendFilled as SendIcon,
   MarkChatReadRound as MarkChatReadIcon,

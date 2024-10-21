@@ -12,7 +12,6 @@ import { $t } from '@/i18n';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { NButton, NFlex, NTag } from 'naive-ui';
-
 import { NoContentIcon, HourglassIcon, BookIcon, ErrorIcon } from '@/icons';
 
 const auth = useAuthStore();
@@ -156,6 +155,7 @@ onMounted(() => {
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
 }
+
 .content-container-container.reduced {
   box-shadow: var(--block-box-shadow);
 }
