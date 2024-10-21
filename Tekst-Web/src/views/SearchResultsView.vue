@@ -111,11 +111,11 @@ onBeforeMount(() => {
         @update:model-value="() => search.searchSecondary()"
       />
       <n-button
-        secondary
+        type="primary"
         :title="$t('search.results.browse', { browse: browseViewLabel })"
         :focusable="false"
         :disabled="!results.length || search.loading"
-        @click="search.browse"
+        @click="() => search.browse(0)"
       >
         <template #icon>
           <n-icon :component="BookIcon" />
@@ -133,7 +133,7 @@ onBeforeMount(() => {
       :description="`${$t('search.results.searching')}...`"
     />
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
-      <search-result v-for="result in results" :key="result.id" v-bind="result" />
+      <search-result v-for="result, index in results" :key="result.id" v-bind="result" @click="search.browse(index)" />
     </n-list>
     <huge-labelled-icon
       v-else-if="search.error"

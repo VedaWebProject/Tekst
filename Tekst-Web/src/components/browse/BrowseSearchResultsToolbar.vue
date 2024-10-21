@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NFlex, NButton, NIcon } from 'naive-ui';
+import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
 import {
   SearchResultsIcon,
   ClearIcon,
@@ -7,9 +7,10 @@ import {
   SkipNextIcon,
   SearchIcon,
   RefreshIcon,
+  CheckListIcon,
 } from '@/icons';
 import { useBrowseStore, useSearchStore } from '@/stores';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 withDefaults(
   defineProps<{
@@ -35,18 +36,40 @@ const viewingSearchResult = computed(
   () => search.browseCurrHit?.id === browse.locationPathHead?.id
 );
 
+async function skip(direction: 'previous' | 'next') {
+  await search.browseSkipTo(direction);
+  if (search.browseHitResourcesActive) {
+    browse.setResourcesActiveState(search.browseHitResources, true, true);
+  }
+}
+
 function gotoSearchResults() {
   search.gotoSearchResultsView();
 }
 
-function stopBrowsing() {
-  search.browseHits = false;
-  search.browseHitIndexOnPage = 0;
+function switchBrowseHitResourcesActive(active: boolean) {
+  search.browseHitResourcesActive = active;
+  if (active) {
+    browse.setResourcesActiveState(search.browseHitResources, true, true);
+  } else {
+    browse.setResourcesActiveState();
+  }
 }
+
+function stopBrowsing() {
+  search.stopBrowsing();
+  browse.setResourcesActiveState();
+}
+
+onMounted(() => {
+  if (search.browseHits && search.browseHitResourcesActive) {
+    browse.setResourcesActiveState(search.browseHitResources, true, true);
+  }
+})
 </script>
 
 <template>
-  <div v-if="search.browseHits" class="bsr-container mt-sm">
+  <div v-if="search.browseHits" class="bsr-container">
     <n-flex justify="space-between" align="center" :wrap="false" class="bsr-toolbar">
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
@@ -57,7 +80,7 @@ function stopBrowsing() {
           :focusable="false"
           :disabled="search.loading || resultNo === 1"
           :bordered="false"
-          @click="() => search.browseSkipTo('previous')"
+          @click="() => skip('previous')"
         >
           <template #icon>
             <n-icon :component="SkipPreviousIcon" />
@@ -85,7 +108,7 @@ function stopBrowsing() {
           :focusable="false"
           :disabled="search.loading || resultNo === search.results?.totalHits"
           :bordered="false"
-          @click="() => search.browseSkipTo('next')"
+          @click="() => skip('next')"
         >
           <template #icon>
             <n-icon :component="SkipNextIcon" />
@@ -125,18 +148,22 @@ function stopBrowsing() {
       </n-flex>
 
       <n-flex :wrap="false">
-        <!-- just a spacer button to match the alignment of the browse toolbar -->
-        <n-button
-          quaternary
-          :size="buttonSize"
-          :focusable="false"
-          :bordered="false"
-          style="visibility: hidden"
-        >
-          <template #icon>
-            <n-icon :component="SearchIcon" />
-          </template>
-        </n-button>
+        <!-- keep active resources in sync with relevant resources from current hit? -->
+        <n-badge dot :offset="[0, 5]" color="var(--accent-color-spotlight)" :show="search.browseHitResourcesActive">
+          <n-button
+            :quaternary="!search.browseHitResourcesActive"
+            :tertiary="search.browseHitResourcesActive"
+            :size="buttonSize"
+            :title="$t('search.results.browseHitResourcesActive')"
+            :focusable="false"
+            :bordered="false"
+            @click="() => switchBrowseHitResourcesActive(!search.browseHitResourcesActive)"
+          >
+            <template #icon>
+              <n-icon :component="CheckListIcon" />
+            </template>
+          </n-button>
+        </n-badge>
         <!-- stop browsing search results -->
         <n-button
           quaternary
@@ -157,18 +184,21 @@ function stopBrowsing() {
 
 <style scoped>
 .bsr-container {
-  border-radius: var(--border-radius);
-  box-shadow: var(--fixed-box-shadow);
   background-color: var(--base-color);
 }
 
 .bsr-toolbar {
   padding: var(--gap-sm);
-  border-radius: var(--border-radius);
   background-color: var(--accent-color-fade3);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .bsr-toolbar-middle {
   flex-grow: 2;
+}
+
+:deep(.n-badge > .n-badge-sup) {
+  color: #000;
 }
 </style>

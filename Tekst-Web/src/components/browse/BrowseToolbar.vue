@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, nextTick } from 'vue';
 import { NButton, NBadge, NIcon, NFlex } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
+import { useBrowseStore, useStateStore, useThemeStore, useSearchStore } from '@/stores';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
+const search = useSearchStore();
 const theme = useThemeStore();
 
-const affixRef = ref(null);
+const affixRef = ref();
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
 );
@@ -27,19 +28,22 @@ const resourceDrawerBadgeLabel = computed(() =>
 );
 
 onMounted(() => {
-  if (affixRef.value) {
-    new IntersectionObserver(
-      ([e]) => e.target.classList.toggle('affixed', e.intersectionRatio < 1),
-      { threshold: [1] }
-    ).observe(affixRef.value);
-  }
+  nextTick(() => {
+    if (affixRef.value) {
+      new IntersectionObserver(
+        ([e]) => e.target.classList.toggle('affixed', e.intersectionRatio < 1),
+        { threshold: [1] }
+      ).observe(affixRef.value);
+    }
+  });
 });
 
 const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 </script>
 
 <template>
-  <div ref="affixRef" class="browse-toolbar-container mb-lg">
+  <div ref="affixRef" :wrap="false" class="browse-toolbar-container mb-lg">
+    <browse-search-results-toolbar v-if="search.browseHits" :small-screen="state.smallScreen" :button-size="buttonSize" />
     <n-flex
       v-show="!!state.text"
       :wrap="false"
@@ -47,7 +51,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       align="center"
       class="browse-toolbar accent-color-bg"
     >
-      <browse-location-controls :button-size="buttonSize" />
+      <browse-location-controls :button-size="buttonSize" @navigate="() => browse.setResourcesActiveState()" />
 
       <div class="browse-toolbar-middle">
         <div v-show="!state.smallScreen" class="browse-location-label">
@@ -56,7 +60,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge value="!" color="var(--accent-color-spotlight)" :show="browse.reducedView">
+        <n-badge dot :offset="[0, 5]" color="var(--accent-color-spotlight)" :show="browse.reducedView">
           <n-button
             type="primary"
             :size="buttonSize"
@@ -88,7 +92,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         </n-badge>
       </div>
     </n-flex>
-    <browse-search-results-toolbar :small-screen="state.smallScreen" :button-size="buttonSize" />
   </div>
 </template>
 
@@ -96,10 +99,36 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 .browse-toolbar-container {
   position: sticky;
   top: -1px;
-  border-radius: var(--border-radius);
+
   width: 100%;
   max-width: var(--max-app-width);
+
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0;
+
+  border-radius: var(--border-radius);
+  box-shadow: var(--block-box-shadow);
   transition: none;
+}
+
+.browse-toolbar-container > div:only-child {
+  border-radius: var(--border-radius);
+}
+
+.browse-toolbar-container > div:last-child:not(:only-child) {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.browse-toolbar-container > div:first-child:not(:only-child) {
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.browse-toolbar-container.affixed > div:last-child {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
 }
 
 .browse-toolbar-container.affixed {
@@ -107,16 +136,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   /* width: 100vw; */
   left: 0px;
   z-index: 1801;
-}
-
-.browse-toolbar-container.affixed .browse-toolbar {
-  border-top-left-radius: unset;
-  border-top-right-radius: unset;
+  box-shadow: var(--fixed-box-shadow);
 }
 
 .browse-toolbar {
   padding: var(--gap-sm);
-  border-radius: var(--border-radius);
   box-shadow: var(--fixed-box-shadow);
 }
 

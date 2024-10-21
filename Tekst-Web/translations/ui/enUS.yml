@@ -853,7 +853,8 @@ search:
     browse: Open results in "{browse}" view
     browsePrev: Previous search result
     browseNext: Next search result
-    browseCurrHit: '{no} of {of}'
+    browseCurrHit: 'Search hit: {no} of {of}'
+    browseHitResourcesActive: Automatically activate resources with search hits
     browseStop: Close search results navigation
     indexCreationTime: Last update of search data
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?

@@ -237,7 +237,6 @@ browse:
           csv: Tabellarischer Datenexport als kommagetrennte Werte - nützlich für Tabellenkalkulationsprogramme wie Excel oder die spätere Weiterverarbeitung
           txt: Einfacher Textexport ohne Formatierung über die Ausrichtung durch Leerzeichen hinaus
 
-
 forms:
   rulesFeedback:
     minChars: 'Mindestens {min} Zeichen'
@@ -877,7 +876,8 @@ search:
     browse: Ergebnisse in "{browse}"-Ansicht öffnen
     browsePrev: Vorheriges Suchergebnis
     browseNext: Nächstes Suchergebnis
-    browseCurrHit: '{no} von {of}'
+    browseCurrHit: 'Suchtreffer: {no} von {of}'
+    browseHitResourcesActive: Aktiviere automatisch Ressourcen mit Suchtreffern
     browseStop: Suchergebnis-Navigation schließen
     indexCreationTime: Letztes update der Suchdaten
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?

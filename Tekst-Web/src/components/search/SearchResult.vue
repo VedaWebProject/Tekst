@@ -3,9 +3,8 @@ import type { SearchHit, TextRead } from '@/api';
 import { TextsIcon } from '@/icons';
 import { BookIcon, StarHalfIcon, LevelsIcon } from '@/icons';
 import Color from 'color';
-import { NListItem, NTag, NIcon } from 'naive-ui';
+import { NListItem, NTag, NIcon, NFlex } from 'naive-ui';
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
 
 const props = defineProps<{
   id: SearchHit['id'];
@@ -33,11 +32,6 @@ const scoreTagColor = computed(() =>
     ? `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.25)`
     : undefined
 );
-const linkTargetRoute = computed(() => ({
-  name: 'browse',
-  params: { text: props.textSlug },
-  query: { lvl: props.level, pos: props.position },
-}));
 const highlightsProcessed = computed<Record<string, string>>(() => {
   if (!props.highlight) return {};
   return Object.fromEntries(
@@ -48,84 +42,70 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
 
 <template>
   <n-list-item style="padding: 0">
-    <router-link :to="linkTargetRoute" class="sr-link">
-      <div class="sr-container">
-        <div class="sr-header" :title="fullLabel">
-          <div class="sr-header-title" :style="{ color: textColor }">
-            {{ label }}
-          </div>
-          <div class="sr-header-tags">
-            <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
-              <template #icon>
-                <n-icon class="translucent" :component="TextsIcon" />
-              </template>
-              {{ textTitle }}
-            </n-tag>
-            <n-tag size="small" :bordered="false">
-              <template #icon>
-                <n-icon class="translucent" :component="LevelsIcon" />
-              </template>
-              {{ levelLabel }}
-            </n-tag>
-            <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
-              <template #icon>
-                <n-icon class="translucent" :component="StarHalfIcon" />
-              </template>
-              {{ scorePercentDisplay }}
-            </n-tag>
-          </div>
+    <n-flex vertical size="small" class="sr-container">
+      <n-flex wrap align="center" :title="fullLabel">
+        <div class="sr-header-title" :style="{ color: textColor }">
+          {{ label }}
         </div>
-        <div class="sr-location text-tiny translucent ellipsis" :title="fullLabel">
-          <n-icon :component="BookIcon" />
-          {{ fullLabel }}
+        <div class="sr-header-tags">
+          <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
+            <template #icon>
+              <n-icon class="translucent" :component="TextsIcon" />
+            </template>
+            {{ textTitle }}
+          </n-tag>
+          <n-tag size="small" :bordered="false">
+            <template #icon>
+              <n-icon class="translucent" :component="LevelsIcon" />
+            </template>
+            {{ levelLabel }}
+          </n-tag>
+          <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
+            <template #icon>
+              <n-icon class="translucent" :component="StarHalfIcon" />
+            </template>
+            {{ scorePercentDisplay }}
+          </n-tag>
         </div>
-        <div class="sr-highlights">
-          <div v-for="(hl, key) in highlightsProcessed" :key="key" :title="key">
-            <span class="b" :style="{ color: textColor }">{{ key }}: </span>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <span class="content-font" v-html="hl"></span>
-          </div>
+      </n-flex>
+      <div class="sr-location text-tiny translucent ellipsis" :title="fullLabel">
+        <n-icon :component="BookIcon" />
+        {{ fullLabel }}
+      </div>
+      <div class="sr-highlights">
+        <div v-for="(hl, key) in highlightsProcessed" :key="key" :title="key">
+          <span class="b" :style="{ color: textColor }">{{ key }}: </span>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span class="content-font" v-html="hl"></span>
         </div>
       </div>
-    </router-link>
+    </n-flex>
   </n-list-item>
 </template>
 
 <style scoped>
 .sr-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
   padding: var(--gap-md);
 }
-.sr-link {
-  color: inherit;
-  text-decoration: inherit;
-  font-style: inherit;
-  font-weight: inherit;
-}
-.sr-header {
-  display: flex;
-  align-items: center;
-  column-gap: var(--gap-md);
-  row-gap: 0.25rem;
-  flex-wrap: wrap;
-}
+
 .sr-header-title {
   font-weight: var(--font-weight-bold);
   flex-grow: 2;
 }
+
 .sr-header-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
 .sr-location {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   column-gap: 0.5rem;
 }
+
 .sr-highlights {
   display: flex;
   flex-direction: column;

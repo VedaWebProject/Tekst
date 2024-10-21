@@ -9,8 +9,7 @@ import { useMagicKeys, whenever } from '@vueuse/core';
 import { $t } from '@/i18n';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
-
-import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
+import { ArrowBackIcon, ArrowForwardIcon, BookIcon, WarningIcon } from '@/icons';
 import { isInputFocused, isOverlayOpen } from '@/utils';
 
 withDefaults(
@@ -21,6 +20,8 @@ withDefaults(
     buttonSize: 'large',
   }
 );
+
+const emit = defineEmits(['navigate']);
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
@@ -39,6 +40,7 @@ function gotoPosition(direction: 'prev' | 'next') {
       pos: targetPos >= 0 ? targetPos : 0,
     },
   });
+  emit('navigate');
 }
 
 function handleLocationSelect(locationPath: LocationRead[]) {
@@ -52,6 +54,7 @@ function handleLocationSelect(locationPath: LocationRead[]) {
       pos: selectedLocation.position,
     },
   });
+  emit('navigate');
 }
 
 // react to keyboard for in-/decreasing location
@@ -82,15 +85,16 @@ whenever(ArrowRight, () => {
 
     <n-badge
       :show="!browse.isOnDefaultLevel && !browse.loadingLocationData"
-      value="!"
       color="var(--accent-color-spotlight)"
     >
+      <template #value>
+          <n-icon :component="WarningIcon" />
+      </template>
       <n-button
         type="primary"
-        :title="
-          $t('browse.toolbar.tipSelectLocation') +
+        :title="$t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
-        "
+          "
         :focusable="false"
         :size="buttonSize"
         :bordered="false"

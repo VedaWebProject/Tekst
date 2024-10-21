@@ -11,7 +11,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { Base64 } from 'js-base64';
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStateStore } from './state';
 import { usePlatformData } from '@/composables/platformData';
@@ -85,6 +85,10 @@ export const useSearchStore = defineStore('search', () => {
   const browseHits = ref(false);
   const browseCurrHit = ref<SearchResults['hits'][number]>();
   const browseHitIndexOnPage = ref(0);
+  const browseHitResources = computed(() =>
+    browseCurrHit.value?.highlight ? Object.keys(browseCurrHit.value.highlight) : undefined
+  );
+  const browseHitResourcesActive = ref(true);
 
   function encodeReqInUrl(
     requestBody?: QuickSearchRequestBody | AdvancedSearchRequestBody
@@ -207,11 +211,12 @@ export const useSearchStore = defineStore('search', () => {
     return false;
   }
 
-  async function browse() {
+  async function browse(resultIndexOnPage: number) {
     if (!results.value || !currentRequest.value) return;
     browseHits.value = true;
-    browseHitIndexOnPage.value = 0;
-    browseCurrHit.value = results.value.hits[browseHitIndexOnPage.value];
+    browseHitIndexOnPage.value = resultIndexOnPage;
+    browseCurrHit.value = results.value.hits[browseHitIndexOnPage.value] || results.value.hits[0];
+    browseHitResourcesActive.value = true;
     router.push({
       name: 'browse',
       params: {
@@ -219,6 +224,13 @@ export const useSearchStore = defineStore('search', () => {
       },
       query: { lvl: browseCurrHit.value.level, pos: browseCurrHit.value.position },
     });
+  }
+
+  function stopBrowsing() {
+    browseHits.value = false;
+    browseHitIndexOnPage.value = 0;
+    browseCurrHit.value = undefined;
+    browseHitResourcesActive.value = false;
   }
 
   async function browseSkipTo(direction: 'previous' | 'next'): Promise<boolean> {
@@ -270,9 +282,12 @@ export const useSearchStore = defineStore('search', () => {
     error,
     results,
     browse,
+    stopBrowsing,
     browseHits,
     browseHitIndexOnPage,
     browseCurrHit,
+    browseHitResources,
+    browseHitResourcesActive,
     browseSkipTo,
   };
 });

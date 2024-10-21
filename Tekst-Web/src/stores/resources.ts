@@ -136,12 +136,24 @@ export const useResourcesStore = defineStore('resources', () => {
     res.coverage = undefined;
   }
 
-  function setResourcesActiveState(resourceIds: string[], active: boolean) {
+  function setResourcesActiveState(
+    resourceIds?: string[],
+    active: boolean = true,
+    deactivateOthers: boolean = false
+  ) {
+    const targetResourceIds =
+      resourceIds ||
+      resourcesAll.value.filter((r) => r.config.common.defaultActive).map((r) => r.id);
     resourcesAll.value = resourcesAll.value.map((r) => {
-      if (resourceIds.includes(r.id)) {
+      if (targetResourceIds.includes(r.id)) {
         return {
           ...r,
-          active,
+          active: !!active,
+        };
+      } else if (deactivateOthers) {
+        return {
+          ...r,
+          active: false,
         };
       }
       return r;
