@@ -129,7 +129,6 @@ export const useSearchStore = defineStore('search', () => {
     browseHits.value = false;
     browseHitIndexOnPage.value = 0;
     browseCurrHit.value = undefined;
-    console.log(settingsGeneral.value);
   }
 
   async function searchQuick(q: string) {
