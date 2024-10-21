@@ -130,10 +130,6 @@ function applyAnnotationDisplayTemplate(
       item.template.content?.replace(/k/g, item.data?.key || '').replace(
         /v/g,
         item.data?.value
-          // capitalize the first letter of each value if the template format wants small caps
-          .map((v) =>
-            item.template.format?.caps ? v.charAt(0).toUpperCase() + v.slice(1).toLowerCase() : v
-          )
           // join the values with the delimiter set in the resource config
           .join(props.resource.config.multiValueDelimiter || '/') || ''
       ) || '';
