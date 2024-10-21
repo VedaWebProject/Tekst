@@ -50,18 +50,24 @@ const i18nOptions: I18nOptions = {
 export const i18n = createI18n(i18nOptions);
 export const $t: typeof i18n.global.t = i18n.global.t;
 export const $te: typeof i18n.global.te = i18n.global.te;
-i18n.global.locale = 'enUS';
+
+// @ts-expect-error typing for i18n.global.locale is wrong when not in legacy mode;
+// see https://vue-i18n.intlify.dev/guide/essentials/scope.html#local-scope-1
+i18n.global.locale.value = 'enUS';
 
 export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
   return localeProfiles.find((lp) => lp.key === localeKey);
 }
 
 export function setI18nLocale(
-  newLocale: I18nOptions['locale'] = i18n.global.locale
+  // @ts-expect-error same as above :(
+  newLocale: I18nOptions['locale'] = i18n.global.locale.value
 ): LocaleProfile {
-  i18n.global.locale = unref(newLocale);
-  document.querySelector('html')?.setAttribute('lang', i18n.global.locale);
-  return getLocaleProfile(i18n.global.locale) || localeProfiles[0];
+  const l = unref(newLocale);
+  // @ts-expect-error same as above :(
+  i18n.global.locale.value = l;
+  document.querySelector('html')?.setAttribute('lang', l);
+  return getLocaleProfile(l) || localeProfiles[0];
 }
 
 export function getAvaliableBrowserLocaleKey() {

@@ -43,7 +43,8 @@ export const useStateStore = defineStore('state', () => {
     (auth.user?.locale ||
       localStorage.getItem('locale') ||
       getAvaliableBrowserLocaleKey() ||
-      i18n.global.locale) as LocaleKey
+      // @ts-expect-error see src/i18n.ts for why the typing of this is messed up
+      i18n.global.locale.value) as LocaleKey
   );
   watch(locale, (after) => {
     localStorage.setItem('locale', after);
