@@ -47,7 +47,7 @@ type AdvancedSearchRequest = {
 
 type SearchRequest = QuickSearchRequest | AdvancedSearchRequest;
 
-const DEFAULT_SEARCH_SETTINGS = {
+const getDefaultSettings = () => ({
   gen: {
     pgn: { pg: 1, pgs: 10 },
     sort: 'relevance',
@@ -58,13 +58,13 @@ const DEFAULT_SEARCH_SETTINGS = {
     re: false,
   } as QuickSearchSettings,
   adv: {} as AdvancedSearchSettings,
-};
+});
 
 const DEFAULT_SEARCH_REQUEST_BODY: QuickSearchRequest = {
   type: 'quick',
   q: '',
-  gen: DEFAULT_SEARCH_SETTINGS.gen,
-  qck: DEFAULT_SEARCH_SETTINGS.qck,
+  gen: getDefaultSettings().gen,
+  qck: getDefaultSettings().qck,
 };
 
 export const useSearchStore = defineStore('search', () => {
@@ -73,9 +73,9 @@ export const useSearchStore = defineStore('search', () => {
   const router = useRouter();
   const { message } = useMessages();
 
-  const settingsGeneral = ref<GeneralSearchSettings>(DEFAULT_SEARCH_SETTINGS.gen);
-  const settingsQuick = ref<QuickSearchSettings>(DEFAULT_SEARCH_SETTINGS.qck);
-  const settingsAdvanced = ref<AdvancedSearchSettings>(DEFAULT_SEARCH_SETTINGS.adv);
+  const settingsGeneral = ref<GeneralSearchSettings>(getDefaultSettings().gen);
+  const settingsQuick = ref<QuickSearchSettings>(getDefaultSettings().qck);
+  const settingsAdvanced = ref<AdvancedSearchSettings>(getDefaultSettings().adv);
   const currentRequest = ref<SearchRequest>();
 
   const loading = ref(false);
@@ -109,12 +109,12 @@ export const useSearchStore = defineStore('search', () => {
       const q = router.currentRoute.value.query.q?.toString();
       const decoded: SearchRequest = q ? JSON.parse(Base64.decode(q)) : undefined;
       if (!decoded) throw new Error();
-      settingsGeneral.value = decoded.gen || DEFAULT_SEARCH_SETTINGS.gen;
-      settingsGeneral.value.pgn = settingsGeneral.value.pgn || DEFAULT_SEARCH_SETTINGS.gen.pgn;
+      settingsGeneral.value = decoded.gen || getDefaultSettings().gen;
+      settingsGeneral.value.pgn = settingsGeneral.value.pgn || getDefaultSettings().gen.pgn;
       if (decoded.type === 'quick') {
-        settingsQuick.value = decoded.qck || DEFAULT_SEARCH_SETTINGS.qck;
+        settingsQuick.value = decoded.qck || getDefaultSettings().qck;
       } else if (decoded.type === 'advanced') {
-        settingsAdvanced.value = decoded.adv || DEFAULT_SEARCH_SETTINGS.adv;
+        settingsAdvanced.value = decoded.adv || getDefaultSettings().adv;
       } else {
         return DEFAULT_SEARCH_REQUEST_BODY;
       }
@@ -125,9 +125,11 @@ export const useSearchStore = defineStore('search', () => {
   }
 
   function _resetSearch() {
+    settingsGeneral.value.pgn = getDefaultSettings().gen.pgn;
     browseHits.value = false;
     browseHitIndexOnPage.value = 0;
-    settingsGeneral.value.pgn = DEFAULT_SEARCH_SETTINGS.gen.pgn;
+    browseCurrHit.value = undefined;
+    console.log(settingsGeneral.value);
   }
 
   async function searchQuick(q: string) {
@@ -155,8 +157,8 @@ export const useSearchStore = defineStore('search', () => {
   }
 
   async function searchFromUrl() {
-    _resetSearch();
     if (currentRequest.value) return;
+    _resetSearch();
     await _search(decodeReqFromUrl());
   }
 
