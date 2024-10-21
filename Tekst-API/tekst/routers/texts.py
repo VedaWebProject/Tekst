@@ -160,7 +160,7 @@ async def download_structure_template(
         )
 
     # create temporary file and stream it as a file response
-    tempfile = NamedTemporaryFile(mode="w")
+    tempfile = NamedTemporaryFile(mode="w")  # noqa: SIM115 (intentional)
     tempfile.write(json_str)
     tempfile.flush()
     # prepare headers ... according to
