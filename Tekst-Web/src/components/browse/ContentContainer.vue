@@ -96,8 +96,8 @@ const fromChildLevel = computed(
       />
     </div>
 
-    <n-spin :show="loading" :delay="200">
-      <div v-if="hasContent" :class="{ 'content-collapsed': contentCollapsed }">
+    <n-spin :show="loading" size="small">
+      <div v-if="hasContent" class="content" :class="{ 'content-collapsed': contentCollapsed, 'content-loading': loading }">
         <!-- content-specific component (that displays the actual content data) -->
         <component
           :is="contentComponents[resource.resourceType]"
@@ -139,6 +139,7 @@ const fromChildLevel = computed(
   padding-bottom: var(--gap-md);
   font-size: var(--font-size);
 }
+
 .content-container.reduced {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -146,30 +147,36 @@ const fromChildLevel = computed(
   box-shadow: none;
   border-radius: 0;
 }
+
 .content-container.reduced:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   margin-top: var(--gap-lg);
 }
+
 .content-container.reduced:last-child {
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
   margin-bottom: var(--gap-lg);
 }
+
 .content-container.reduced:not(:first-child) {
   border-top: 1px solid var(--main-bg-color);
   margin-bottom: 0;
 }
+
 .content-container.empty {
   background-color: var(--main-bg-color);
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;
   padding: 12px var(--gap-lg);
 }
+
 .content-container.empty > .content-header {
   margin-bottom: 0;
   opacity: 0.6;
 }
+
 .content-header {
   display: flex;
   align-items: center;
@@ -177,6 +184,7 @@ const fromChildLevel = computed(
   column-gap: 12px;
   row-gap: 0px;
 }
+
 .content-header.reduced {
   margin-bottom: 0;
 }
@@ -220,5 +228,13 @@ const fromChildLevel = computed(
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   max-height: 150px;
   overflow-y: scroll;
+}
+
+.content {
+  transition: opacity 0.2s ease;
+}
+
+.content.content-loading {
+  opacity: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useAuthStore, useBrowseStore, useThemeStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -18,6 +18,7 @@ const auth = useAuthStore();
 const theme = useThemeStore();
 const route = useRoute();
 const browse = useBrowseStore();
+const search = useSearchStore();
 const { pfData } = usePlatformData();
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
@@ -128,7 +129,7 @@ onMounted(() => {
       <content-container
         v-for="resource in category.resources"
         :key="resource.id"
-        :loading="browse.loading"
+        :loading="browse.loading || search.loading"
         :resource="resource"
       />
     </template>
