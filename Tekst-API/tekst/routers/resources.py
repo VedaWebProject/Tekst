@@ -703,7 +703,7 @@ async def download_resource_template(
     ]
 
     # create temporary file and stream it as a file response
-    tempfile = NamedTemporaryFile(mode="w")
+    tempfile = NamedTemporaryFile(mode="w")  # noqa: SIM115 (intentional)
     tempfile.write(json.dumps(template, indent=2, sort_keys=True))
     tempfile.flush()
 
