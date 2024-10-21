@@ -124,6 +124,7 @@ async def download_structure_template(
             )
             # add empty array for aliases if none is present
             loc_data["aliases"] = loc_data.get("aliases", None) or []
+            loc_data["id"] = str(loc_data["id"])
             locations_data.append(loc_data)
         # dump JSON for writing to temp file
         json_str = json.dumps(locations_data, indent=2)
