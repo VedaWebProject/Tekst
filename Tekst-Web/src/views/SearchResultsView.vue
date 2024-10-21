@@ -133,7 +133,12 @@ onBeforeMount(() => {
       :description="`${$t('search.results.searching')}...`"
     />
     <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
-      <search-result v-for="result, index in results" :key="result.id" v-bind="result" @click="search.browse(index)" />
+      <search-result
+        v-for="(result, index) in results"
+        :key="result.id"
+        v-bind="result"
+        @click="search.browse(index)"
+      />
     </n-list>
     <huge-labelled-icon
       v-else-if="search.error"

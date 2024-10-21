@@ -88,13 +88,14 @@ whenever(ArrowRight, () => {
       color="var(--accent-color-spotlight)"
     >
       <template #value>
-          <n-icon :component="WarningIcon" />
+        <n-icon :component="WarningIcon" />
       </template>
       <n-button
         type="primary"
-        :title="$t('browse.toolbar.tipSelectLocation') +
+        :title="
+          $t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
-          "
+        "
         :focusable="false"
         :size="buttonSize"
         :bordered="false"

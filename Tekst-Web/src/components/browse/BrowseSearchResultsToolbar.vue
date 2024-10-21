@@ -65,7 +65,7 @@ onMounted(() => {
   if (search.browseHits && search.browseHitResourcesActive) {
     browse.setResourcesActiveState(search.browseHitResources, true, true);
   }
-})
+});
 </script>
 
 <template>
@@ -149,7 +149,12 @@ onMounted(() => {
 
       <n-flex :wrap="false">
         <!-- keep active resources in sync with relevant resources from current hit? -->
-        <n-badge dot :offset="[0, 5]" color="var(--accent-color-spotlight)" :show="search.browseHitResourcesActive">
+        <n-badge
+          dot
+          :offset="[0, 5]"
+          color="var(--accent-color-spotlight)"
+          :show="search.browseHitResourcesActive"
+        >
           <n-button
             :quaternary="!search.browseHitResourcesActive"
             :tertiary="search.browseHitResourcesActive"

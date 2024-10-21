@@ -43,7 +43,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 <template>
   <div ref="affixRef" :wrap="false" class="browse-toolbar-container mb-lg">
-    <browse-search-results-toolbar v-if="search.browseHits" :small-screen="state.smallScreen" :button-size="buttonSize" />
+    <browse-search-results-toolbar
+      v-if="search.browseHits"
+      :small-screen="state.smallScreen"
+      :button-size="buttonSize"
+    />
     <n-flex
       v-show="!!state.text"
       :wrap="false"
@@ -51,7 +55,10 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       align="center"
       class="browse-toolbar accent-color-bg"
     >
-      <browse-location-controls :button-size="buttonSize" @navigate="() => browse.setResourcesActiveState()" />
+      <browse-location-controls
+        :button-size="buttonSize"
+        @navigate="() => browse.setResourcesActiveState()"
+      />
 
       <div class="browse-toolbar-middle">
         <div v-show="!state.smallScreen" class="browse-location-label">
@@ -60,7 +67,12 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge dot :offset="[0, 5]" color="var(--accent-color-spotlight)" :show="browse.reducedView">
+        <n-badge
+          dot
+          :offset="[0, 5]"
+          color="var(--accent-color-spotlight)"
+          :show="browse.reducedView"
+        >
           <n-button
             type="primary"
             :size="buttonSize"
