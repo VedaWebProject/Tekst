@@ -23,20 +23,46 @@ class TaskType(Enum):
     INDICES_CREATE_UPDATE = "indices_create_update"
     RESOURCE_IMPORT = "resource_import"
     RESOURCE_EXPORT = "resource_export"
+    SEARCH_EXPORT = "search_export"
     BROADCAST_USER_NTFC = "broadcast_user_ntfc"
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
     RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook"
     STRUCTURE_UPDATE = "structure_update"
 
 
-_task_type_props = {
-    TaskType.INDICES_CREATE_UPDATE: {"locking": True},
-    TaskType.RESOURCE_IMPORT: {"locking": True},
-    TaskType.RESOURCE_EXPORT: {"locking": False},
-    TaskType.BROADCAST_USER_NTFC: {"locking": False},
-    TaskType.BROADCAST_ADMIN_NTFC: {"locking": False},
-    TaskType.RESOURCE_MAINTENANCE_HOOK: {"locking": True},
-    TaskType.STRUCTURE_UPDATE: {"locking": True},
+task_types_props = {
+    TaskType.INDICES_CREATE_UPDATE: {
+        "locking": True,
+        "artifact": False,
+    },
+    TaskType.RESOURCE_IMPORT: {
+        "locking": True,
+        "artifact": False,
+    },
+    TaskType.RESOURCE_EXPORT: {
+        "locking": False,
+        "artifact": True,
+    },
+    TaskType.SEARCH_EXPORT: {
+        "locking": False,
+        "artifact": True,
+    },
+    TaskType.BROADCAST_USER_NTFC: {
+        "locking": False,
+        "artifact": False,
+    },
+    TaskType.BROADCAST_ADMIN_NTFC: {
+        "locking": False,
+        "artifact": False,
+    },
+    TaskType.RESOURCE_MAINTENANCE_HOOK: {
+        "locking": True,
+        "artifact": False,
+    },
+    TaskType.STRUCTURE_UPDATE: {
+        "locking": True,
+        "artifact": False,
+    },
 }
 
 
@@ -235,7 +261,7 @@ async def is_locked(
     task_id: PydanticObjectId,
     target_id: PydanticObjectId | None = None,
 ) -> bool:
-    if not _task_type_props[task_type]["locking"]:
+    if not task_types_props[task_type]["locking"]:
         return False
     return await TaskDocument.find_one(
         NE(TaskDocument.id, task_id),
@@ -278,3 +304,17 @@ async def cleanup_tasks() -> None:
         LT(TaskDocument.start_time, datetime.utcnow() - timedelta(weeks=1)),
     ).to_list():
         await delete_task(task)
+
+
+async def _delete_temp_file_after_task(file_name: str, after_minutes: int) -> None:
+    cfg: TekstConfig = get_config()
+    tempfile_path = cfg.temp_files_dir / file_name
+    if tempfile_path.exists():
+        await asyncio.sleep(after_minutes * 60)
+        tempfile_path.unlink(missing_ok=True)
+
+
+def delete_temp_file_after(file_name: str, after_minutes: int = 5) -> None:
+    asyncio.create_task(
+        _delete_temp_file_after_task(file_name, after_minutes),
+    )

@@ -51,6 +51,7 @@ general:
     Sind Sie sicher, dass Sie fortfahren möchten?
   tekstFooterHint: Diese Website basiert auf
   takeAWhile: Dies kann einen Moment dauern.
+  msgExportStarted: Ihr Export wird im Hintergrund vorbereitet. Der Download startet, sobald er bereit ist.
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen
@@ -121,6 +122,7 @@ tasks:
     indices_create_update: Suchindizes neu erzeugen
     resource_import: Ressourcen-Inhalte importieren
     resource_export: Ressourcen-Export erstellen
+    search_export: Suchergebnisse exportieren
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     resource_maintenance_hook: Automatische Wartung von Ressourcen-Daten
@@ -229,7 +231,6 @@ browse:
         to: Bis
         rangeError: Der ausgewählte Belegstellenbereich ist ungültig!
         fullLocationRange: Alle Belegstellen auswählen
-        msgExportStarted: Der Export wird im Hintergrund vorbereitet und wird heruntergeladen, sobalt er fertig ist.
         info:
           json: Umfassende Exportdaten als JSON - ein Format, das gut zur Weiterverarbeitung geeignet ist
           tekst-json: Spezieller JSON-Export, der für den Wieder-Import in die Plattform geeignet ist
@@ -873,7 +874,7 @@ search:
     searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: in {ms} Millisekunden
-    browse: Ergebnisse in "{browse}"-Ansicht öffnen
+    browse: Ergebnis in "{browse}"-Ansicht öffnen
     browsePrev: Vorheriges Suchergebnis
     browseNext: Nächstes Suchergebnis
     browseCurrHit: 'Suchtreffer: {no} von {of}'

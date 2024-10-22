@@ -49,6 +49,7 @@ general:
     little '?' icon next to the heading of each page. Are you sure you want to proceed?
   tekstFooterHint: This website is based on
   takeAWhile: This might take a while.
+  msgExportStarted: Your export is being prepared in the background. The download will start as soon as it is ready.
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -117,7 +118,8 @@ tasks:
   types:
     indices_create_update: Re-create search indices
     resource_import: Import resource data
-    resource_export: Generate resource export data
+    resource_export: Export resource data
+    search_export: Export search results data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
     resource_maintenance_hook: Automatic maintenance of resource data
@@ -226,7 +228,6 @@ browse:
         to: To
         rangeError: The selected location range is invalid!
         fullLocationRange: Select all locations
-        msgExportStarted: The export will be prepared in the background and will start when it is ready.
         info:
           json: Comprehensive export data as JSON – a format that is easy to process for subsequent use
           tekst-json: Special JSON export that is suitable for a re-import into the platform
@@ -850,7 +851,7 @@ search:
     searching: Searching
     count: No results | One result | {count} results
     took: in {ms} milliseconds
-    browse: Open results in "{browse}" view
+    browse: Open result in "{browse}" view
     browsePrev: Previous search result
     browseNext: Next search result
     browseCurrHit: 'Search hit: {no} of {of}'

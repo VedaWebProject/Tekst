@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { BookIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
+import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NIcon, NButton, NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
@@ -13,6 +13,9 @@ import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
+import { POST } from '@/api';
+import { useTasks } from '@/composables/tasks';
+import { useMessages } from '@/composables/messages';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
@@ -21,9 +24,13 @@ const search = useSearchStore();
 const theme = useThemeStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
+const { addTask, startTasksPolling } = useTasks();
+const { message } = useMessages();
 
 const resultsContainer = ref<HTMLElement | null>(null);
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
+
+const loadingExport = ref(false);
 
 const results = computed<SearchResultProps[]>(() => {
   return (
@@ -61,6 +68,20 @@ async function afterPaginate() {
   if (resultsY < 0) {
     resultsContainer.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+}
+
+async function exportResults() {
+  if (!search.currentRequest) return;
+  loadingExport.value = true;
+  const { data, error } = await POST('/search/export', {
+    body: search.currentRequest,
+  });
+  if (!error) {
+    addTask(data);
+    message.info($t('general.msgExportStarted'));
+    startTasksPolling();
+  }
+  loadingExport.value = false;
 }
 
 // react to keyboard for in-/decreasing page number
@@ -121,16 +142,17 @@ onBeforeMount(() => {
         @update:model-value="() => search.searchSecondary()"
       />
       <n-button
-        type="primary"
-        :title="$t('search.results.browse', { browse: browseViewLabel })"
+        secondary
+        :title="$t('tasks.types.search_export')"
         :focusable="false"
-        :disabled="!results.length || search.loading"
-        @click="() => search.browse(0)"
+        :disabled="!search.currentRequest || search.loading || loadingExport"
+        :loading="loadingExport"
+        @click="() => exportResults()"
       >
         <template #icon>
-          <n-icon :component="BookIcon" />
+          <n-icon :component="DownloadIcon" />
         </template>
-        {{ browseViewLabel }}
+        {{ $t('general.exportAction') }}
       </n-button>
     </n-flex>
   </n-flex>
@@ -147,6 +169,7 @@ onBeforeMount(() => {
         v-for="(result, index) in results"
         :key="result.id"
         v-bind="result"
+        :title="$t('search.results.browse', { browse: browseViewLabel })"
         @click="search.browse(index)"
       />
     </n-list>

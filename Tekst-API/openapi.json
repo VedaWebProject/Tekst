@@ -2855,6 +2855,49 @@
         ]
       }
     },
+    "/platform/tasks": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get all tasks status",
+        "operationId": "getAllTasksStatus",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TaskRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Tasks Status Platform Tasks Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/platform/tasks/user": {
       "get": {
         "tags": [
@@ -2929,47 +2972,57 @@
         }
       }
     },
-    "/platform/tasks": {
+    "/platform/tasks/download": {
       "get": {
         "tags": [
           "platform"
         ],
-        "summary": "Get all tasks status",
-        "operationId": "getAllTasksStatus",
+        "summary": "Download task artifact",
+        "operationId": "downloadTaskArtifact",
+        "parameters": [
+          {
+            "name": "pickupKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "description": "Pickup key for accessing the export file",
+              "title": "Pickupkey"
+            },
+            "description": "Pickup key for accessing the export file"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/TaskRead"
-                  },
-                  "type": "array",
-                  "title": "Response Get All Tasks Status Platform Tasks Get"
-                }
+                "schema": {}
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TekstErrorModel"
                 }
               }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
             }
           }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/platform/tasks/system": {
@@ -4700,67 +4753,6 @@
         }
       }
     },
-    "/resources/export/download": {
-      "get": {
-        "tags": [
-          "resources"
-        ],
-        "summary": "Download resource export",
-        "operationId": "downloadResourceExport",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "pickupKey",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "maxLength": 64,
-              "description": "Pickup key for accessing the export file",
-              "title": "Pickupkey"
-            },
-            "description": "Pickup key for accessing the export file"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/resources/{id}/aggregations": {
       "get": {
         "tags": [
@@ -5058,6 +5050,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/search/export": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Export search results",
+        "operationId": "exportSearchResults",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/QuickSearchRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AdvancedSearchRequestBody"
+                  }
+                ],
+                "title": "Body",
+                "discriminator": {
+                  "propertyName": "type",
+                  "mapping": {
+                    "quick": "#/components/schemas/QuickSearchRequestBody",
+                    "advanced": "#/components/schemas/AdvancedSearchRequestBody"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -14101,6 +14157,7 @@
           "indices_create_update",
           "resource_import",
           "resource_export",
+          "search_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
           "resource_maintenance_hook",
