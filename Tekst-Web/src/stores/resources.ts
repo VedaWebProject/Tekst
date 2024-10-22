@@ -141,9 +141,9 @@ export const useResourcesStore = defineStore('resources', () => {
     active: boolean = true,
     deactivateOthers: boolean = false
   ) {
-    const targetResourceIds =
-      resourceIds ||
-      resourcesAll.value.filter((r) => r.config.common.defaultActive).map((r) => r.id);
+    const targetResourceIds = !!resourceIds?.length
+      ? resourceIds
+      : resourcesAll.value.filter((r) => r.config.common.defaultActive).map((r) => r.id);
     resourcesAll.value = resourcesAll.value.map((r) => {
       if (targetResourceIds.includes(r.id)) {
         return {
