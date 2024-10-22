@@ -1,42 +1,34 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import { CheckCircleIcon, SortIcon } from '@/icons';
-import { renderIcon } from '@/utils';
-import { NDropdown, NButton, NIcon, NBadge, useThemeVars } from 'naive-ui';
+import { SortIcon } from '@/icons';
+import { NPopselect, NButton, NIcon, NBadge } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed } from 'vue';
 
 defineProps<{ size?: Size; disabled?: boolean }>();
 const model = defineModel<string>();
 
-const themeVars = useThemeVars();
-const selectedIcon = renderIcon(CheckCircleIcon, themeVars.value.primaryColor);
 const sortingPresetOptions = computed(() => [
   {
     label: () => $t('search.results.sortingPresets.relevance'),
-    key: 'relevance',
-    icon: !model.value || model.value === 'relevance' ? selectedIcon : undefined,
+    value: 'relevance',
   },
   {
     label: () => $t('search.results.sortingPresets.textLevelPosition'),
-    key: 'text_level_position',
-    icon: model.value === 'text_level_position' ? selectedIcon : undefined,
+    value: 'text_level_position',
   },
   {
     label: () => $t('search.results.sortingPresets.textLevelRelevance'),
-    key: 'text_level_relevance',
-    icon: model.value === 'text_level_relevance' ? selectedIcon : undefined,
+    value: 'text_level_relevance',
   },
 ]);
 const showDot = computed(() => !!model.value && model.value !== 'relevance');
 </script>
 
 <template>
-  <n-dropdown
-    trigger="click"
+  <n-popselect
+    v-model:value="model"
     :options="sortingPresetOptions"
-    placement="bottom-end"
-    @select="(v) => (model = v)"
   >
     <n-badge :show="showDot" :offset="[-1, 4]" dot>
       <n-button secondary :focusable="false" :size="size" :disabled="disabled">
@@ -46,5 +38,5 @@ const showDot = computed(() => !!model.value && model.value !== 'relevance');
         {{ $t('search.results.sortingPresets.title') }}
       </n-button>
     </n-badge>
-  </n-dropdown>
+  </n-popselect>
 </template>
