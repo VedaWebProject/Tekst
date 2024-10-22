@@ -4,7 +4,7 @@ import { BookIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icon
 import SearchResult from '@/components/search/SearchResult.vue';
 import { NIcon, NButton, NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
 import { usePlatformData } from '@/composables/platformData';
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -22,6 +22,7 @@ const theme = useThemeStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
+const resultsContainer = ref<HTMLElement | null>(null);
 const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
 
 const results = computed<SearchResultProps[]>(() => {
@@ -53,6 +54,14 @@ const results = computed<SearchResultProps[]>(() => {
 const browseViewLabel = computed(
   () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse')
 );
+
+async function afterPaginate() {
+  await search.searchSecondary();
+  const resultsY = resultsContainer.value?.getBoundingClientRect().y || 0;
+  if (resultsY < 0) {
+    resultsContainer.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
 
 // react to keyboard for in-/decreasing page number
 whenever(ArrowRight, () => {
@@ -86,8 +95,8 @@ onBeforeMount(() => {
         :disabled="search.loading"
         show-size-picker
         size="medium"
-        @update:page="() => search.searchSecondary()"
-        @update:page-size="() => search.searchSecondary()"
+        @update:page="() => afterPaginate()"
+        @update:page-size="() => afterPaginate()"
       />
     </n-flex>
   </define-template>
@@ -96,13 +105,14 @@ onBeforeMount(() => {
     {{ $t('search.results.heading') }}
   </icon-heading>
 
-  <n-flex justify="space-between" size="large" class="mb-lg">
+  <n-flex justify="flex-end" align="center" style="gap: var(--gap-lg)" class="mb-lg">
     <search-query-display
       :req="search.currentRequest"
       :total="search.results?.totalHits"
       :total-relation="search.results?.totalHitsRelation"
       :took="search.results?.took"
       :error="search.error"
+      style="flex-grow: 2"
     />
     <n-flex :wrap="false">
       <search-results-sort-widget
@@ -125,7 +135,7 @@ onBeforeMount(() => {
     </n-flex>
   </n-flex>
 
-  <div class="content-block">
+  <div ref="resultsContainer" class="content-block">
     <reuse-template />
     <n-spin
       v-if="search.loading"
