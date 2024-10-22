@@ -255,7 +255,7 @@ class ResourceTypeABC(ABC):
         resource: ResourceBaseDocument,
         contents: list[ContentBaseDocument],
         file_path: Path,
-    ) -> str:
+    ) -> None:
         """
         Exports the given contents of the given resource as JSON, in a form that
         aims to be as comprehensive as possible.
@@ -305,10 +305,11 @@ class ResourceTypeABC(ABC):
             )
             for c in contents
         ]
+
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
         for content in contents:
-            content["location"] = full_location_labels[content["locationId"]]
+            content["location"] = full_location_labels.get(str(content["locationId"]))
             del content["locationId"]
         res["contents"] = contents
 
