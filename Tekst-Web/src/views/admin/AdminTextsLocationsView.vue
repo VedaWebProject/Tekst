@@ -211,7 +211,6 @@ async function handleDeleteClick(location: LocationTreeOption) {
     title: $t('general.warning'),
     content: $t('admin.text.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('general.deleteAction'),
-    autoFocus: true,
     ...dialogProps,
     onPositiveClick: async () => {
       d.loading = true;
@@ -403,11 +402,11 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     info.option.isLeaf
       ? null
       : renderSuffixButton(
-          AddIcon,
-          () => handleAddClick(info.option as LocationTreeOption),
-          $t('admin.text.locations.add.tooltip'),
-          loadingAdd
-        ),
+        AddIcon,
+        () => handleAddClick(info.option as LocationTreeOption),
+        $t('admin.text.locations.add.tooltip'),
+        loadingAdd
+      ),
   ]);
 }
 

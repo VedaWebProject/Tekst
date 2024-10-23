@@ -303,6 +303,7 @@ class MiscConfig(ConfigSubSection):
 
     usrmsg_force_delete_after_days: int = 365
     max_resources_per_user: int = 10
+    del_exports_after_minutes: int = 5
 
 
 class TekstConfig(BaseSettings):

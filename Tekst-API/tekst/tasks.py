@@ -1,5 +1,4 @@
 import asyncio
-import gc
 
 from collections.abc import Awaitable
 from datetime import datetime, timedelta
@@ -20,50 +19,35 @@ from tekst.models.user import UserRead
 
 
 class TaskType(Enum):
-    INDICES_CREATE_UPDATE = "indices_create_update"
-    RESOURCE_IMPORT = "resource_import"
-    RESOURCE_EXPORT = "resource_export"
-    SEARCH_EXPORT = "search_export"
-    BROADCAST_USER_NTFC = "broadcast_user_ntfc"
-    BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc"
-    RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook"
-    STRUCTURE_UPDATE = "structure_update"
+    INDICES_CREATE_UPDATE = "indices_create_update", True, False
+    RESOURCE_IMPORT = "resource_import", True, False
+    RESOURCE_EXPORT = "resource_export", False, True
+    SEARCH_EXPORT = "search_export", False, True
+    BROADCAST_USER_NTFC = "broadcast_user_ntfc", False, False
+    BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc", False, False
+    RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook", True, False
+    STRUCTURE_UPDATE = "structure_update", True, False
 
+    def __new__(cls, *args, **kwargs):
+        obj = object.__new__(cls)
+        obj._value_ = args[0]
+        return obj
 
-task_types_props = {
-    TaskType.INDICES_CREATE_UPDATE: {
-        "locking": True,
-        "artifact": False,
-    },
-    TaskType.RESOURCE_IMPORT: {
-        "locking": True,
-        "artifact": False,
-    },
-    TaskType.RESOURCE_EXPORT: {
-        "locking": False,
-        "artifact": True,
-    },
-    TaskType.SEARCH_EXPORT: {
-        "locking": False,
-        "artifact": True,
-    },
-    TaskType.BROADCAST_USER_NTFC: {
-        "locking": False,
-        "artifact": False,
-    },
-    TaskType.BROADCAST_ADMIN_NTFC: {
-        "locking": False,
-        "artifact": False,
-    },
-    TaskType.RESOURCE_MAINTENANCE_HOOK: {
-        "locking": True,
-        "artifact": False,
-    },
-    TaskType.STRUCTURE_UPDATE: {
-        "locking": True,
-        "artifact": False,
-    },
-}
+    # ignore the first param since it's already set by __new__
+    def __init__(self, _: str, locking: bool, artifact: bool):
+        self._locking_ = locking
+        self._artifact_ = artifact
+
+    def __str__(self):
+        return self.value
+
+    @property
+    def locking(self):
+        return self._locking_
+
+    @property
+    def artifact(self):
+        return self._artifact_
 
 
 class Task(ModelBase, ModelFactoryMixin):
@@ -75,7 +59,7 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ]
     target_id: Annotated[
-        PydanticObjectId | None,
+        PydanticObjectId | str | None,
         Field(
             description="ID of the target of the task or None if there is no target",
         ),
@@ -154,16 +138,14 @@ class TaskDocument(Task, DocumentBase):
 async def _run_task(
     *,
     task: Awaitable,
-    task_type: TaskType,
     task_doc: TaskDocument,
-    target_id: PydanticObjectId | None = None,
     task_kwargs: dict[str, Any] = {},
 ) -> None:
     try:
-        if await is_locked(task_type, task_doc.id, target_id):
+        if await is_locked(task_doc.task_type, task_doc.id, task_doc.target_id):
             log.warning(
-                f"Task '{task_type.value}' with target ID "
-                f"{target_id} already running. Task will be ended as 'failed'."
+                f"Task '{task_doc.task_type.value}' with target ID "
+                f"{task_doc.target_id} already running. Task will be ended as 'failed'."
             )
             raise errors.E_409_ACTION_LOCKED
         result = await task(**task_kwargs)
@@ -171,11 +153,12 @@ async def _run_task(
         try:
             task_doc.result = jsonable_encoder(result)
         except Exception as _:
-            log.debug(f"Could not encode task result for task: {str(task)}")
+            log.debug(f"Could not encode task result for task: {str(task_doc)}")
     except Exception as e:
         task_doc.status = "failed"
         log.error(
-            f"Task '{task_type.value}' with target ID {target_id} failed: {str(e)}"
+            f"Task '{task_doc.task_type.value}' with target ID "
+            f"{task_doc.target_id} failed: {str(e)}"
         )
         try:
             task_doc.error = e.detail.detail.key
@@ -187,15 +170,17 @@ async def _run_task(
             task_doc.end_time - task_doc.start_time
         ).total_seconds()
         await task_doc.save()
-        del task, task_doc
-        gc.collect()
+        # if this task produced an artifact, automatically
+        # delete it after the configured time
+        if task_doc.task_type.artifact:
+            _auto_delete_task_delayed(task_doc)
 
 
 async def create_task(
     task: Awaitable,
     task_type: TaskType,
     *,
-    target_id: PydanticObjectId | None = None,
+    target_id: PydanticObjectId | str | None = None,
     user_id: PydanticObjectId | None = None,
     task_kwargs: dict[str, Any] = {},
 ) -> TaskDocument:
@@ -210,9 +195,7 @@ async def create_task(
     asyncio.create_task(
         _run_task(
             task=task,
-            task_type=task_type,
             task_doc=task_doc,
-            target_id=target_id,
             task_kwargs=task_kwargs,
         )
     )
@@ -247,10 +230,7 @@ async def get_tasks(
             if (
                 task.status in ["done", "failed"]
                 and task.user_id is not None
-                and (
-                    task.task_type != TaskType.RESOURCE_EXPORT
-                    or task.status == "failed"
-                )
+                and (not task.task_type.artifact or task.status == "failed")
             ):
                 await delete_task(task)
     return tasks
@@ -259,9 +239,9 @@ async def get_tasks(
 async def is_locked(
     task_type: TaskType,
     task_id: PydanticObjectId,
-    target_id: PydanticObjectId | None = None,
+    target_id: PydanticObjectId | str | None = None,
 ) -> bool:
-    if not task_types_props[task_type]["locking"]:
+    if not task_type.locking:
         return False
     return await TaskDocument.find_one(
         NE(TaskDocument.id, task_id),
@@ -271,14 +251,14 @@ async def is_locked(
     ).exists()
 
 
-async def delete_task(task: TaskDocument) -> None:
-    if not task:
+async def delete_task(task_doc: TaskDocument) -> None:
+    if not task_doc:
         return
-    if task.result and "artifact" in task.result:
+    if task_doc.result and task_doc.result["artifact"]:
         cfg: TekstConfig = get_config()
-        tempfile_path = cfg.temp_files_dir / task.result["artifact"]
+        tempfile_path = cfg.temp_files_dir / task_doc.result["artifact"]
         tempfile_path.unlink(missing_ok=True)
-    await task.delete()
+    await task_doc.delete()
 
 
 async def delete_system_tasks() -> None:
@@ -306,15 +286,13 @@ async def cleanup_tasks() -> None:
         await delete_task(task)
 
 
-async def _delete_temp_file_after_task(file_name: str, after_minutes: int) -> None:
+async def _auto_delete_task_delayed_task(task_doc: TaskDocument) -> None:
     cfg: TekstConfig = get_config()
-    tempfile_path = cfg.temp_files_dir / file_name
-    if tempfile_path.exists():
-        await asyncio.sleep(after_minutes * 60)
-        tempfile_path.unlink(missing_ok=True)
+    await asyncio.sleep(cfg.misc.del_exports_after_minutes * 60)
+    await delete_task(task_doc)
 
 
-def delete_temp_file_after(file_name: str, after_minutes: int = 5) -> None:
+def _auto_delete_task_delayed(task_doc: TaskDocument) -> None:
     asyncio.create_task(
-        _delete_temp_file_after_task(file_name, after_minutes),
+        _auto_delete_task_delayed_task(task_doc),
     )

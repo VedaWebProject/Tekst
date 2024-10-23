@@ -77,15 +77,15 @@ function filterData(resourcesData: AnyResourceRead[]) {
   return resourcesData.filter((r) => {
     const resourceStringContent = filters.value.search
       ? [
-          r.title.map((t) => t.translation).join(' '),
-          r.description.map((d) => d.translation).join(' ') || '',
-          r.ownerId,
-          r.comment.map((c) => c.translation).join(' ') || '',
-          r.citation,
-          JSON.stringify(r.meta),
-        ]
-          .filter((prop) => prop)
-          .join(' ')
+        r.title.map((t) => t.translation).join(' '),
+        r.description.map((d) => d.translation).join(' ') || '',
+        r.ownerId,
+        r.comment.map((c) => c.translation).join(' ') || '',
+        r.citation,
+        JSON.stringify(r.meta),
+      ]
+        .filter((prop) => prop)
+        .join(' ')
       : '';
     return (
       (!filters.value.search ||
@@ -142,7 +142,6 @@ function handleProposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -168,7 +167,6 @@ function handleUnproposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpropose'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -194,7 +192,6 @@ function handlePublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -220,7 +217,6 @@ function handleUnpublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpublish'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -259,7 +255,6 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
     }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -286,7 +281,6 @@ function handleDeleteClick(resource: AnyResourceRead) {
     content: $t('resources.warnDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -347,7 +341,7 @@ async function handleImportClick(resource: AnyResourceRead) {
   });
 }
 
-async function handleExportClick() {}
+async function handleExportClick() { }
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
   if (data.name === 'filters' && !data.expanded) {
@@ -506,6 +500,7 @@ onMounted(() => {
 .pagination-container:first-child {
   margin-bottom: var(--gap-lg);
 }
+
 .pagination-container:last-child {
   margin-top: var(--gap-lg);
 }

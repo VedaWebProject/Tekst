@@ -164,7 +164,6 @@ function handleEmailSave() {
             content: $t('account.settings.msgEmailChangeWarning'),
             positiveText: $t('general.saveAction'),
             negativeText: $t('general.cancelAction'),
-            autoFocus: false,
             closable: false,
             ...dialogProps,
             onPositiveClick: updateEmail,
@@ -186,7 +185,6 @@ async function handlePasswordSave() {
         content: $t('account.settings.msgPasswordChangeWarning'),
         positiveText: $t('general.saveAction'),
         negativeText: $t('general.cancelAction'),
-        autoFocus: false,
         closable: false,
         ...dialogProps,
         onPositiveClick: async () => {
@@ -272,7 +270,6 @@ async function handleDeleteAccount() {
     content: $t('account.settings.msgDeleteAccountWarning'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     positiveButtonProps: { ...dialogProps.positiveButtonProps, type: 'error' },
     negativeButtonProps: { ...dialogProps.negativeButtonProps, type: 'success' },
@@ -603,9 +600,8 @@ async function checkUrlInput(input: HTMLInputElement) {
         secondary
         :loading="loading"
         :disabled="loading || !adminNotificationTriggersModelChanged"
-        @click="
-          () => (adminNotificationTriggersFormModel = initialAdminNotificationTriggersModel())
-        "
+        @click="() => (adminNotificationTriggersFormModel = initialAdminNotificationTriggersModel())
+          "
       >
         {{ $t('general.resetAction') }}
       </n-button>
@@ -629,9 +625,8 @@ async function checkUrlInput(input: HTMLInputElement) {
       <n-input
         v-model:value="deleteAccountSafetyInput"
         type="text"
-        :placeholder="
-          $t('account.settings.phDeleteAccountSafetyInput', { username: auth.user?.username })
-        "
+        :placeholder="$t('account.settings.phDeleteAccountSafetyInput', { username: auth.user?.username })
+          "
         :disabled="loading"
         @keydown.enter.prevent
       />

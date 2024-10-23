@@ -2987,10 +2987,10 @@
             "schema": {
               "type": "string",
               "maxLength": 64,
-              "description": "Pickup key for accessing the export file",
+              "description": "Pickup key for accessing the task's file artifact",
               "title": "Pickupkey"
             },
-            "description": "Pickup key for accessing the export file"
+            "description": "Pickup key for accessing the task's file artifact"
           }
         ],
         "responses": {
@@ -14045,6 +14045,9 @@
               {
                 "type": "string",
                 "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "string"
               },
               {
                 "type": "null"

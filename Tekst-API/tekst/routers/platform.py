@@ -321,7 +321,7 @@ async def download_task_artifact(
 
     if (
         not task
-        or not tasks.task_types_props[task.task_type]["artifact"]
+        or not task.task_type.artifact
         or task.status != "done"
         or not task.result
         or not task.result.get("filename")

@@ -110,9 +110,9 @@ const compareResourceOptions = computed(() =>
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
         ? renderIcon(
-            VersionIcon,
-            r.originalId === resource.value?.id ? 'var(--accent-color)' : undefined
-          )
+          VersionIcon,
+          r.originalId === resource.value?.id ? 'var(--accent-color)' : undefined
+        )
         : renderIcon(ResourceIcon),
     }))
 );
@@ -308,7 +308,6 @@ async function handleDeleteContentClick() {
     content: $t('contents.confirmDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: deleteContent,

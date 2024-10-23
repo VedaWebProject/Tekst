@@ -991,9 +991,6 @@ async def _export_resource_contents_task(
     fmt = res_exp_fmt_info[export_format]
     filename = f"{text.slug}_{resource.id}_export.{fmt['extension']}"
 
-    # schedule generated temp file for delayed deletion
-    tasks.delete_temp_file_after(tempfile_name)
-
     return {
         "filename": filename,
         "artifact": tempfile_name,

@@ -78,7 +78,6 @@ function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
       : $t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: () => updateUser(user, { isSuperuser: setSuperuser }),
@@ -93,7 +92,6 @@ function handleActiveClick(user: UserRead, setActive: boolean) {
       : $t('admin.users.confirmMsg.setActive', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -121,7 +119,6 @@ function handleVerifiedClick(user: UserRead, setVerified: boolean) {
       : $t('admin.users.confirmMsg.setVerified', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -146,7 +143,6 @@ function handleDeleteClick(user: UserRead) {
     content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
