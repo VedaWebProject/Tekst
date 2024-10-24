@@ -1,9 +1,12 @@
+from operator import itemgetter
 from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import GTE, LT, NotIn, Or
-from fastapi import APIRouter, Header, Path, status
+from fastapi import APIRouter, Header, Path, Query, status
+from fastapi.responses import FileResponse
 from humps import camelize
+from starlette.background import BackgroundTask
 
 from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
@@ -244,6 +247,20 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
 
 
 @router.get(
+    "/tasks",
+    status_code=status.HTTP_200_OK,
+    response_model=list[tasks.TaskRead],
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+        ]
+    ),
+)
+async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
+    return await tasks.get_tasks(su, get_all=True)
+
+
+@router.get(
     "/tasks/user",
     status_code=status.HTTP_200_OK,
     response_model=list[tasks.TaskRead],
@@ -275,17 +292,59 @@ async def get_user_tasks_status(
 
 
 @router.get(
-    "/tasks",
+    "/tasks/download",
     status_code=status.HTTP_200_OK,
-    response_model=list[tasks.TaskRead],
     responses=errors.responses(
         [
-            errors.E_401_UNAUTHORIZED,
+            errors.E_404_EXPORT_NOT_FOUND,
         ]
     ),
 )
-async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
-    return await tasks.get_tasks(su, get_all=True)
+async def download_task_artifact(
+    cfg: ConfigDep,
+    pickup_key: Annotated[
+        str,
+        Query(
+            description=("Pickup key for accessing the task's file artifact"),
+            alias="pickupKey",
+            max_length=64,
+        ),
+    ],
+) -> FileResponse:
+    try:
+        print(pickup_key)
+        task: tasks.TaskDocument = (
+            await tasks.get_tasks(None, pickup_keys=[pickup_key])
+        )[0]
+    except Exception:
+        raise errors.E_404_EXPORT_NOT_FOUND
+
+    if (
+        not task
+        or not task.task_type.artifact
+        or task.status != "done"
+        or not task.result
+        or not task.result.get("filename")
+        or not task.result.get("artifact")
+        or not task.result.get("mimetype")
+    ):
+        raise errors.E_404_EXPORT_NOT_FOUND
+
+    filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
+        task.result
+    )
+    # prepare headers ... according to
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+    # the filename should be quoted, but then Safari decides to download the file
+    # with a quoted filename :(
+    headers = {"Content-Disposition": f"attachment; filename={filename}"}
+
+    return FileResponse(
+        path=cfg.temp_files_dir / tempfile_name,
+        headers=headers,
+        media_type=mimetype,
+        background=BackgroundTask(tasks.delete_task, task),
+    )
 
 
 @router.delete(

@@ -1,15 +1,28 @@
-from typing import Annotated, Union
+import asyncio
+import json
+import re
 
-from fastapi import APIRouter, Body, status
+from pathlib import Path as PathObj
+from typing import Annotated, Any, Union
+from uuid import uuid4
+
+from beanie import PydanticObjectId
+from fastapi import APIRouter, Body, Request, status
 
 from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
+from tekst.config import ConfigDep, TekstConfig
+from tekst.models.content import ContentBaseDocument
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
     AdvancedSearchRequestBody,
     IndexInfo,
     QuickSearchRequestBody,
     SearchResults,
 )
+from tekst.models.text import TextDocument
+from tekst.state import get_state
+from tekst.utils import pick_translation
 
 
 router = APIRouter(
@@ -20,8 +33,8 @@ router = APIRouter(
 
 @router.post(
     "",
-    response_model=SearchResults,
     status_code=status.HTTP_200_OK,
+    response_model=SearchResults,
     responses=errors.responses(
         [
             errors.E_400_REQUESTED_TOO_MANY_SEARCH_RESULTS,
@@ -87,3 +100,127 @@ async def create_search_index(su: SuperuserDep) -> tasks.TaskDocument:
 )
 async def get_search_index_info(su: SuperuserDep) -> list[IndexInfo]:
     return await search.get_indices_info()
+
+
+async def _export_search_results_task(
+    user: OptionalUserDep,
+    cfg: TekstConfig,
+    req_body: QuickSearchRequestBody | AdvancedSearchRequestBody,
+) -> dict[str, Any]:
+    # setup pagination for chunked search requests
+    req_body.settings_general.pagination.page = 1
+    req_body.settings_general.pagination.page_size = 50
+
+    # prepare data needed for export data transformation
+    locale = user.locale if user else None
+    texts_by_ids = {str(txt.id): txt for txt in await TextDocument.find_all().to_list()}
+    resources_by_ids = {
+        str(res.id): res
+        for res in await ResourceBaseDocument.find_all(with_children=True).to_list()
+    }
+
+    # perform search, transform data into target export data format
+    hits = []
+    while (results := await perform_search(user, req_body)).hits:
+        # transform hits into actual search results export data
+        for hit in results.hits:
+            text = texts_by_ids.get(str(hit.text_id))
+            hit_out = {
+                "location": hit.full_label,
+                "text": text.title,
+                "level": hit.level,
+                "levelLabel": pick_translation(text.levels[hit.level], locale),
+                "position": hit.position,
+                "score": hit.score,
+                "contents": [],
+            }
+            for res_id in hit.highlight:
+                res_title = pick_translation(resources_by_ids.get(res_id).title, locale)
+                res_hl = hit.highlight[res_id]
+                res_content = (
+                    await ContentBaseDocument.find_one(
+                        ContentBaseDocument.resource_id == PydanticObjectId(res_id),
+                        ContentBaseDocument.location_id == hit.id,
+                        with_children=True,
+                    )
+                ).model_dump(
+                    exclude={
+                        "id",
+                        "location_id",
+                        "resource_id",
+                        "resource_type",
+                    },
+                    by_alias=True,
+                )
+                hit_out["contents"].append(
+                    {
+                        res_title: {
+                            "highlight": res_hl,
+                            "content": res_content,
+                        },
+                    }
+                )
+            hits.append(hit_out)
+
+        # break early if we already got all hits to avoid running into 10000 hits limit
+        # that's enforced by the search routine
+        if len(hits) >= results.total_hits:
+            break
+        # there's more, so advance pagination for the next search iteration
+        req_body.settings_general.pagination.page += 1
+        # pause task execution to avoid blocking the worker/process
+        await asyncio.sleep(0.5)
+
+    # construct temp file name and path
+    search_id = str(uuid4())
+    tempfile_name = search_id
+    tempfile_path: PathObj = cfg.temp_files_dir / tempfile_name
+
+    # write temp file
+    with tempfile_path.open("w") as f:
+        json.dump(hits, f)
+
+    # prepare download file info
+    fmt = {
+        "extension": "json",
+        "mimetype": "application/json",
+    }
+    settings = await get_state()
+    pf_title_safe = re.sub(r"[^a-zA-Z0-9]", "_", settings.platform_name).lower()
+    filename = f"{pf_title_safe}_search_{search_id}.{fmt['extension']}"
+
+    return {
+        "filename": filename,
+        "artifact": tempfile_name,
+        "mimetype": fmt["mimetype"],
+    }
+
+
+@router.post(
+    "/export",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=tasks.TaskRead,
+)
+async def export_search_results(
+    user: OptionalUserDep,
+    body: Annotated[
+        Union[  # noqa: UP007
+            QuickSearchRequestBody,
+            AdvancedSearchRequestBody,
+        ],
+        Body(discriminator="search_type"),
+    ],
+    request: Request,
+    cfg: ConfigDep,
+) -> tasks.TaskDocument:
+    return await tasks.create_task(
+        _export_search_results_task,
+        tasks.TaskType.SEARCH_EXPORT,
+        user_id=user.id if user else None,
+        target_id=user.id if user else request.client.host,
+        task_kwargs={
+            "user": user,
+            "cfg": cfg,
+            "req_body": body,
+        },
+    )

@@ -122,3 +122,4 @@ All these configuration values – and then some...
 | --- | --- |
 | `TEKST_MISC__USRMSG_FORCE_DELETE_AFTER_DAYS` | Delete old user messages after n days (Integer – default: `365`) |
 | `TEKST_MISC__MAX_RESOURCES_PER_USER` | Maximum number of resources/versions that one user is allowed to own (Integer – default: `10`) |
+| `TEKST_MISC__DEL_EXPORTS_AFTER_MINUTES` | Time in minutes after whichfinished/failed tasks that produce a downloadable file artifact (namely "exports") will be deleted automatically, including the respective file (Integer – default: `5`) |

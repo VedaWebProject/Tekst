@@ -81,7 +81,6 @@ class ModelTransformerMixin:
 
 
 class ModelBase(ModelTransformerMixin, BaseModel):
-    _exclude_from_updates = {"id", "_id"}
     model_config = ConfigDict(
         alias_generator=camelize,
         populate_by_name=True,
@@ -114,6 +113,9 @@ class DocumentBase(ModelTransformerMixin, Document):
     """Base model for all Tekst ODMs"""
 
     class Settings:
+        # this might be costly, but as we don't have transactions or anything like that
+        # we must do all we can to ensure data integrity so the application doesn't
+        # break its own data :(
         validate_on_save = True
 
     def __init__(self, *args, **kwargs):

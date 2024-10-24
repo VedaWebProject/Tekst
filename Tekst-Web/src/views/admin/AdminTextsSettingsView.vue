@@ -107,7 +107,6 @@ async function handleDelete() {
     content: $t('admin.text.settings.warnDeleteText', { title: state.text?.title || '?' }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {

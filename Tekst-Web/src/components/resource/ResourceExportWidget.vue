@@ -138,7 +138,7 @@ async function startExport() {
   });
   if (!error) {
     addTask(data);
-    message.info($t('browse.contents.widgets.exportWidget.msgExportStarted'));
+    message.info($t('general.msgExportStarted'));
     startTasksPolling();
   }
   loadingExport.value = false;

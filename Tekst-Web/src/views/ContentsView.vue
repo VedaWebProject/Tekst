@@ -308,7 +308,6 @@ async function handleDeleteContentClick() {
     content: $t('contents.confirmDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: deleteContent,

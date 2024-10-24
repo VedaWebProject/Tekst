@@ -211,7 +211,6 @@ async function handleDeleteClick(location: LocationTreeOption) {
     title: $t('general.warning'),
     content: $t('admin.text.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('general.deleteAction'),
-    autoFocus: true,
     ...dialogProps,
     onPositiveClick: async () => {
       d.loading = true;

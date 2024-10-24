@@ -175,7 +175,6 @@ function handleCancelClick() {
     content: $t('admin.system.segments.warnCancel'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: resetForm,
@@ -199,7 +198,6 @@ async function handleDeleteClick() {
     }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {

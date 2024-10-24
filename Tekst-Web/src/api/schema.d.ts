@@ -534,6 +534,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/platform/tasks': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get all tasks status */
+    get: operations['getAllTasksStatus'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/platform/tasks/user': {
     parameters: {
       query?: never;
@@ -551,15 +568,15 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/platform/tasks': {
+  '/platform/tasks/download': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Get all tasks status */
-    get: operations['getAllTasksStatus'];
+    /** Download task artifact */
+    get: operations['downloadTaskArtifact'];
     put?: never;
     post?: never;
     delete?: never;
@@ -832,23 +849,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/resources/export/download': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Download resource export */
-    get: operations['downloadResourceExport'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/resources/{id}/aggregations': {
     parameters: {
       query?: never;
@@ -928,6 +928,23 @@ export interface paths {
     get: operations['getSearchIndexInfo'];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/search/export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Export search results */
+    post: operations['exportSearchResults'];
     delete?: never;
     options?: never;
     head?: never;
@@ -4770,6 +4787,7 @@ export interface components {
       | 'indices_create_update'
       | 'resource_import'
       | 'resource_export'
+      | 'search_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
       | 'resource_maintenance_hook'
@@ -7480,6 +7498,35 @@ export interface operations {
       };
     };
   };
+  getAllTasksStatus: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TaskRead'][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
   getUserTasksStatus: {
     parameters: {
       query?: never;
@@ -7521,9 +7568,12 @@ export interface operations {
       };
     };
   };
-  getAllTasksStatus: {
+  downloadTaskArtifact: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Pickup key for accessing the task's file artifact */
+        pickupKey: string;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -7536,16 +7586,25 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['TaskRead'][];
+          'application/json': unknown;
         };
       };
-      /** @description Unauthorized */
-      401: {
+      /** @description Not Found */
+      404: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -8530,47 +8589,6 @@ export interface operations {
       };
     };
   };
-  downloadResourceExport: {
-    parameters: {
-      query: {
-        /** @description Pickup key for accessing the export file */
-        pickupKey: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   getAnnotationAggregations: {
     parameters: {
       query?: never;
@@ -8776,6 +8794,41 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  exportSearchResults: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['QuickSearchRequestBody']
+          | components['schemas']['AdvancedSearchRequestBody'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TaskRead'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };

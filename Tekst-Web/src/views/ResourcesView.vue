@@ -142,7 +142,6 @@ function handleProposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -168,7 +167,6 @@ function handleUnproposeClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpropose'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -194,7 +192,6 @@ function handlePublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -220,7 +217,6 @@ function handleUnpublishClick(resource: AnyResourceRead) {
     content: $t('resources.warnUnpublish'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -259,7 +255,6 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
     }),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -286,7 +281,6 @@ function handleDeleteClick(resource: AnyResourceRead) {
     content: $t('resources.warnDelete'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -346,8 +340,6 @@ async function handleImportClick(resource: AnyResourceRead) {
     actionsLoading.value = false;
   });
 }
-
-async function handleExportClick() {}
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
   if (data.name === 'filters' && !data.expanded) {
@@ -467,7 +459,6 @@ onMounted(() => {
             @delete-click="handleDeleteClick"
             @download-template-click="handleDownloadTemplateClick"
             @import-click="handleImportClick"
-            @export-click="handleExportClick"
           />
         </n-list>
         <!-- Pagination -->
@@ -506,6 +497,7 @@ onMounted(() => {
 .pagination-container:first-child {
   margin-bottom: var(--gap-lg);
 }
+
 .pagination-container:last-child {
   margin-top: var(--gap-lg);
 }

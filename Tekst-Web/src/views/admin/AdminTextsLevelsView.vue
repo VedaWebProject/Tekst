@@ -70,7 +70,6 @@ function handleDeleteClick(level: number) {
     }),
     positiveText: $t('general.deleteAction'),
     negativeText: $t('general.cancelAction'),
-    autoFocus: false,
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {

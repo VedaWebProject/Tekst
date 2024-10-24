@@ -97,7 +97,11 @@ const fromChildLevel = computed(
     </div>
 
     <n-spin :show="loading" size="small">
-      <div v-if="hasContent" class="content" :class="{ 'content-collapsed': contentCollapsed, 'content-loading': loading }">
+      <div
+        v-if="hasContent"
+        class="content"
+        :class="{ 'content-collapsed': contentCollapsed, 'content-loading': loading }"
+      >
         <!-- content-specific component (that displays the actual content data) -->
         <component
           :is="contentComponents[resource.resourceType]"

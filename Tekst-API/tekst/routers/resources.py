@@ -1,6 +1,5 @@
 import json
 
-from operator import itemgetter
 from pathlib import Path as PathObj
 from tempfile import NamedTemporaryFile
 from typing import Annotated, Any
@@ -937,7 +936,7 @@ async def _export_resource_contents_task(
     target_resource_type = resource_types_mgr.get(resource.resource_type)
 
     # get target location IDs from range
-    target_location_ids = {
+    target_loc_id_pos_map = {
         loc.id: loc.position
         for loc in await LocationDocument.find(
             LocationDocument.text_id == resource.text_id,
@@ -953,13 +952,13 @@ async def _export_resource_contents_task(
     content_doc_model = target_resource_type.content_model().document_model()
     contents = await content_doc_model.find(
         content_doc_model.resource_id == resource.id,
-        In(content_doc_model.location_id, target_location_ids.keys()),
+        In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
         with_children=True,
     ).to_list()
 
     # sort target contents
-    contents.sort(key=lambda c: target_location_ids[c.location_id])
-    target_location_ids = None
+    contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
+    target_loc_id_pos_map = None
 
     # construct temp file name and path
     tempfile_name = str(uuid4())
@@ -989,7 +988,6 @@ async def _export_resource_contents_task(
         except ValueError:
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
-    # prepare headers
     fmt = res_exp_fmt_info[export_format]
     filename = f"{text.slug}_{resource.id}_export.{fmt['extension']}"
 
@@ -1049,62 +1047,6 @@ async def export_resource_contents(
             "location_from_id": location_from_id,
             "location_to_id": location_to_id,
         },
-    )
-
-
-@router.get(
-    "/export/download",
-    status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_404_EXPORT_NOT_FOUND,
-        ]
-    ),
-)
-async def download_resource_export(
-    user: OptionalUserDep,
-    cfg: ConfigDep,
-    pickup_key: Annotated[
-        str,
-        Query(
-            description=("Pickup key for accessing the export file"),
-            alias="pickupKey",
-            max_length=64,
-        ),
-    ],
-) -> FileResponse:
-    try:
-        task: tasks.TaskDocument = (
-            await tasks.get_tasks(None, pickup_keys=[pickup_key])
-        )[0]
-    except Exception:
-        raise errors.E_404_EXPORT_NOT_FOUND
-
-    if (
-        not task
-        or task.task_type != tasks.TaskType.RESOURCE_EXPORT
-        or task.status != "done"
-        or not task.result
-        or not task.result.get("filename")
-        or not task.result.get("artifact")
-        or not task.result.get("mimetype")
-    ):
-        raise errors.E_404_EXPORT_NOT_FOUND
-
-    filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
-        task.result
-    )
-    # prepare headers ... according to
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
-    # the filename should be quoted, but then Safari decides to download the file
-    # with a quoted filename :(
-    headers = {"Content-Disposition": f"attachment; filename={filename}"}
-
-    return FileResponse(
-        path=cfg.temp_files_dir / tempfile_name,
-        headers=headers,
-        media_type=mimetype,
-        background=BackgroundTask(tasks.delete_task, task),
     )
 
 
