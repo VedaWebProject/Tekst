@@ -936,7 +936,7 @@ async def _export_resource_contents_task(
     target_resource_type = resource_types_mgr.get(resource.resource_type)
 
     # get target location IDs from range
-    target_location_ids = {
+    target_loc_id_pos_map = {
         loc.id: loc.position
         for loc in await LocationDocument.find(
             LocationDocument.text_id == resource.text_id,
@@ -952,13 +952,13 @@ async def _export_resource_contents_task(
     content_doc_model = target_resource_type.content_model().document_model()
     contents = await content_doc_model.find(
         content_doc_model.resource_id == resource.id,
-        In(content_doc_model.location_id, target_location_ids.keys()),
+        In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
         with_children=True,
     ).to_list()
 
     # sort target contents
-    contents.sort(key=lambda c: target_location_ids[c.location_id])
-    target_location_ids = None
+    contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
+    target_loc_id_pos_map = None
 
     # construct temp file name and path
     tempfile_name = str(uuid4())
