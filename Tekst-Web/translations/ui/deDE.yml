@@ -348,9 +348,9 @@ models:
     oskModeKey: Schlüssel
     oskModeName: Name
     oskModeFont: Tastatur-Schriftart
-    showResourceCategoryHeadings: Zeige Überschriften für Kategorien in der Leseansicht
-    prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene in der Lese-Ansicht vor anderen auf (innerhalb ihrer Kategorien)
-    showLocationAliases: Zeige Belegstellen-Aliase in der Lese-Ansicht
+    showResourceCategoryHeadings: Zeige Überschriften für Kategorien
+    prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
+    showLocationAliases: Zeige Belegstellen-Aliase
     customFonts: Zusätzliche, individuelle Schriftarten
     resourceFontName: Name
   segment:
