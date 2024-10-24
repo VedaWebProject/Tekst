@@ -145,7 +145,7 @@ onBeforeMount(() => {
         secondary
         :title="$t('tasks.types.search_export')"
         :focusable="false"
-        :disabled="!search.currentRequest || search.loading || loadingExport"
+        :disabled="!results.length || !search.currentRequest || search.loading || loadingExport"
         :loading="loadingExport"
         @click="() => exportResults()"
       >
