@@ -242,10 +242,11 @@ async function handleDeleteClick() {
       size="large"
       :disabled="modelChanged"
       :options="segmentOptions"
-      :placeholder="modelChanged
+      :placeholder="
+        modelChanged
           ? $t('admin.system.segments.newSegment')
           : $t('admin.system.segments.phSelectSegment')
-        "
+      "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
     />

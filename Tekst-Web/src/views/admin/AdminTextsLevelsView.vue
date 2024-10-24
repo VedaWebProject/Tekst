@@ -34,8 +34,8 @@ const editModalAction = ref<'edit' | 'insert'>('edit');
 const editModalTitle = computed(() =>
   editModalAction.value === 'edit'
     ? $t('admin.text.levels.tipEditLevel', {
-      levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
-    })
+        levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
+      })
     : $t('admin.text.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
 );
 const editModalWarning = computed(() =>

@@ -13,7 +13,7 @@ import { useMessages } from '@/composables/messages';
 import { getFullLocationLabel, pickTranslation } from '@/utils';
 import { useTasks } from '@/composables/tasks';
 
-const allFormatOptions: { label: string; value: ResourceExportFormat;[key: string]: unknown }[] = [
+const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: unknown }[] = [
   {
     label: 'JSON',
     value: 'json',
@@ -232,11 +232,12 @@ function handleWidgetClick() {
       <template #start>
         <n-button
           secondary
-          :disabled="loadingExport ||
+          :disabled="
+            loadingExport ||
             !isLocationRangeValid ||
             !fromLocationPath.length ||
             !toLocationPath.length
-            "
+          "
           @click="selectFullLocationRange"
         >
           {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
@@ -245,11 +246,12 @@ function handleWidgetClick() {
       <n-button
         type="primary"
         :loading="loadingExport"
-        :disabled="loadingExport ||
+        :disabled="
+          loadingExport ||
           !isLocationRangeValid ||
           !fromLocationPath.length ||
           !toLocationPath.length
-          "
+        "
         @click="startExport"
       >
         {{ $t('general.exportAction') }}

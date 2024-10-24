@@ -77,15 +77,15 @@ function filterData(resourcesData: AnyResourceRead[]) {
   return resourcesData.filter((r) => {
     const resourceStringContent = filters.value.search
       ? [
-        r.title.map((t) => t.translation).join(' '),
-        r.description.map((d) => d.translation).join(' ') || '',
-        r.ownerId,
-        r.comment.map((c) => c.translation).join(' ') || '',
-        r.citation,
-        JSON.stringify(r.meta),
-      ]
-        .filter((prop) => prop)
-        .join(' ')
+          r.title.map((t) => t.translation).join(' '),
+          r.description.map((d) => d.translation).join(' ') || '',
+          r.ownerId,
+          r.comment.map((c) => c.translation).join(' ') || '',
+          r.citation,
+          JSON.stringify(r.meta),
+        ]
+          .filter((prop) => prop)
+          .join(' ')
       : '';
     return (
       (!filters.value.search ||
@@ -341,8 +341,6 @@ async function handleImportClick(resource: AnyResourceRead) {
   });
 }
 
-async function handleExportClick() { }
-
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
   if (data.name === 'filters' && !data.expanded) {
     filters.value = initialFilters();
@@ -461,7 +459,6 @@ onMounted(() => {
             @delete-click="handleDeleteClick"
             @download-template-click="handleDownloadTemplateClick"
             @import-click="handleImportClick"
-            @export-click="handleExportClick"
           />
         </n-list>
         <!-- Pagination -->

@@ -402,11 +402,11 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     info.option.isLeaf
       ? null
       : renderSuffixButton(
-        AddIcon,
-        () => handleAddClick(info.option as LocationTreeOption),
-        $t('admin.text.locations.add.tooltip'),
-        loadingAdd
-      ),
+          AddIcon,
+          () => handleAddClick(info.option as LocationTreeOption),
+          $t('admin.text.locations.add.tooltip'),
+          loadingAdd
+        ),
   ]);
 }
 
