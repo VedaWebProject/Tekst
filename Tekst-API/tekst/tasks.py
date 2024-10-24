@@ -254,7 +254,7 @@ async def is_locked(
 async def delete_task(task_doc: TaskDocument) -> None:
     if not task_doc:
         return
-    if task_doc.result and task_doc.result["artifact"]:
+    if task_doc.result and task_doc.result.get("artifact"):
         cfg: TekstConfig = get_config()
         tempfile_path = cfg.temp_files_dir / task_doc.result["artifact"]
         tempfile_path.unlink(missing_ok=True)
