@@ -1,3 +1,4 @@
+import asyncio
 import json
 import re
 
@@ -17,7 +18,6 @@ from tekst.models.search import (
     AdvancedSearchRequestBody,
     IndexInfo,
     QuickSearchRequestBody,
-    SearchHit,
     SearchResults,
 )
 from tekst.models.text import TextDocument
@@ -107,59 +107,69 @@ async def _export_search_results_task(
     cfg: TekstConfig,
     req_body: QuickSearchRequestBody | AdvancedSearchRequestBody,
 ) -> dict[str, Any]:
-    # perform search, collect hits
-    hits: list[SearchHit] = []
-    while (results := await perform_search(user, req_body)).hits:
-        hits.extend(results.hits)
-        req_body.settings_general.pagination.page += 1
+    # setup pagination for chunked search requests
+    req_body.settings_general.pagination.page = 1
+    req_body.settings_general.pagination.page_size = 50
 
+    # prepare data needed for export data transformation
+    locale = user.locale if user else None
     texts_by_ids = {str(txt.id): txt for txt in await TextDocument.find_all().to_list()}
     resources_by_ids = {
         str(res.id): res
         for res in await ResourceBaseDocument.find_all(with_children=True).to_list()
     }
 
-    # transform hits into actual search results export data
-    locale = user.locale if user else None
-    for i in range(len(hits)):
-        hit = hits[i]
-        text = texts_by_ids.get(str(hit.text_id))
-        hit_out = {
-            "location": hit.full_label,
-            "text": text.title,
-            "level": hit.level,
-            "levelLabel": pick_translation(text.levels[hit.level], locale),
-            "position": hit.position,
-            "score": hit.score,
-            "contents": [],
-        }
-        for res_id in hit.highlight:
-            res_title = pick_translation(resources_by_ids.get(res_id).title, locale)
-            res_hl = hit.highlight[res_id]
-            res_content = (
-                await ContentBaseDocument.find_one(
-                    ContentBaseDocument.resource_id == PydanticObjectId(res_id),
-                    ContentBaseDocument.location_id == hit.id,
-                    with_children=True,
-                )
-            ).model_dump(
-                exclude={
-                    "id",
-                    "location_id",
-                    "resource_id",
-                    "resource_type",
-                },
-                by_alias=True,
-            )
-            hit_out["contents"].append(
-                {
-                    res_title: {
-                        "highlight": res_hl,
-                        "content": res_content,
+    # perform search, transform data into target export data format
+    hits = []
+    while (results := await perform_search(user, req_body)).hits:
+        # transform hits into actual search results export data
+        for hit in results.hits:
+            text = texts_by_ids.get(str(hit.text_id))
+            hit_out = {
+                "location": hit.full_label,
+                "text": text.title,
+                "level": hit.level,
+                "levelLabel": pick_translation(text.levels[hit.level], locale),
+                "position": hit.position,
+                "score": hit.score,
+                "contents": [],
+            }
+            for res_id in hit.highlight:
+                res_title = pick_translation(resources_by_ids.get(res_id).title, locale)
+                res_hl = hit.highlight[res_id]
+                res_content = (
+                    await ContentBaseDocument.find_one(
+                        ContentBaseDocument.resource_id == PydanticObjectId(res_id),
+                        ContentBaseDocument.location_id == hit.id,
+                        with_children=True,
+                    )
+                ).model_dump(
+                    exclude={
+                        "id",
+                        "location_id",
+                        "resource_id",
+                        "resource_type",
                     },
-                }
-            )
-        hits[i] = hit_out
+                    by_alias=True,
+                )
+                hit_out["contents"].append(
+                    {
+                        res_title: {
+                            "highlight": res_hl,
+                            "content": res_content,
+                        },
+                    }
+                )
+            hits.append(hit_out)
+
+        # break early if we already got all hits to avoid running into 10000 hits limit
+        # that's enforced by the search routine
+        if len(hits) >= results.total_hits:
+            break
+        # there's more, so advance pagination for the next search iteration
+        req_body.settings_general.pagination.page += 1
+        # pause task execution to avoid blocking the worker/process
+        await asyncio.sleep(0.5)
 
     # construct temp file name and path
     search_id = str(uuid4())
