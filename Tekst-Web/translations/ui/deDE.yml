@@ -62,7 +62,7 @@ init:
   loadResources: Lade Ressourcen-Daten...
   workingText: Lege Arbeitstext fest...
   systemSegments: Füge Seitensegmente ein...
-  customFonts: Lade individuelle Schriftarten-Definitionen...
+  customFonts: Lade Schriftarten...
   ready: Fertig.
   error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht bereit oder nicht erreichbar zu sein.
 
@@ -327,20 +327,20 @@ models:
     key: Metadatum-Schlüssel
     value: Metadatum-Wert
   platformSettings:
-    platformName: Name der Plattform
-    platformSubtitle: Untertitel der Plattform
+    platformName: Plattform-Name
+    platformSubtitle: Plattform-Untertitel
     infoTerms: API Nutzungsbedingungen (URL)
     infoContactName: Name Kontaktperson
     infoContactEmail: E-Mail Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
-    availableLocales: Verfügbare Sprachen
-    navBrowseEntry: Eigene Beschriftung für "Lesen" in Hauptnavigation
-    navSearchEntry: Eigene Beschriftung für "Suche" in Hauptnavigation
-    navInfoEntry: Eigene Beschriftung für "Info" in Hauptnavigation
-    registerIntroText: Eigener Einführungstext für Registrierungsseite
-    alwaysShowTextInfo: Zeige Textinformationen und -auswahl auch auf nicht-textspezifischen Seiten
-    directJumpOnUniqueAliasSearch: Springe direkt zu entsprechender Belegstelle bei Suche nach eindeutigem Belegstellen-Alias
+    availableLocales: Verfügbare UI-Sprachen
+    navBrowseEntry: Beschriftung für "Lesen" in Hauptnavigation
+    navSearchEntry: Beschriftung für "Suche" in Hauptnavigation
+    navInfoEntry: Beschriftung für "Info" in Hauptnavigation
+    registerIntroText: Einführungstext für Registrierungsseite
+    alwaysShowTextInfo: Zeige Textinformationen und -auswahl auf nicht-textspezifischen Seiten
+    directJumpOnUniqueAliasSearch: Springe direkt zur Belegstelle bei Suche nach eindeutigem Alias
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
@@ -351,7 +351,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    customFonts: Zusätzliche, individuelle Schriftarten
+    customFonts: Eigene Schriftarten für Inhalte
     resourceFontName: Name
   segment:
     modelLabel: Segment
@@ -784,13 +784,9 @@ admin:
   system:
     heading: System
     platformSettings:
-      headingInfo: Plattform-Informationen
-      headingConfig: Allgemeine Konfiguration
-      headingConfigTextsLocs: Texte und Belegstellen
-      headingConfigI18n: Internationalisierung
-      headingConfigCustomLabels: Benutzerdefinierte Beschriftungen
-      headingConfigBrowseView: Lese-Ansicht
-      headingConfigBranding: Branding
+      headingNav: Navigation
+      headingBrowseView: Lese-Ansicht
+      headingBranding: Branding
       msgSaved: Plattform-Einstellungen gespeichert.
       defaultTextPlaceholder: Automatisch
     maintenance:

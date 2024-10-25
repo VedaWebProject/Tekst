@@ -60,7 +60,7 @@ init:
   loadResources: Loading resources data...
   workingText: Setting up working text...
   systemSegments: Inserting system site segments...
-  customFonts: Loading custom font definitions...
+  customFonts: Loading fonts...
   ready: Ready.
   error: There were errors initializing the application. It seems like the server is not ready or unreachable.
 
@@ -333,13 +333,13 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
-    availableLocales: Available Languages
-    navBrowseEntry: Custom label for "Browse" in main navigation
-    navSearchEntry: Custom label for "Search" in main navigation
-    navInfoEntry: Custom label for "Info" in main navigation
-    registerIntroText: Custom introduction text for register page
-    alwaysShowTextInfo: Show text info and selector in header even on non-text-specific pages
-    directJumpOnUniqueAliasSearch: Directly jump to respective location when searching for unambiguous location alias
+    availableLocales: Available UI Languages
+    navBrowseEntry: Label for "Browse" in main navigation
+    navSearchEntry: Label for "Search" in main navigation
+    navInfoEntry: Label for "Info" in main navigation
+    registerIntroText: Introduction text for register page
+    alwaysShowTextInfo: Show text info and selector in header on non-text-specific pages
+    directJumpOnUniqueAliasSearch: Directly jump to location when searching for unambiguous alias
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
@@ -350,7 +350,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    customFonts: Additional Custom Fonts
+    customFonts: Custom Fonts for Resources
     resourceFontName: Name
   segment:
     modelLabel: Segment
@@ -761,13 +761,9 @@ admin:
   system:
     heading: System
     platformSettings:
-      headingInfo: Platform Information
-      headingConfig: General Configuration
-      headingConfigTextsLocs: Texts and Locations
-      headingConfigI18n: Internationalization
-      headingConfigCustomLabels: Custom Labels
-      headingConfigBrowseView: Browse View
-      headingConfigBranding: Branding
+      headingNav: Navigation
+      headingBrowseView: Browse View
+      headingBranding: Branding
       msgSaved: Platform settings saved.
       defaultTextPlaceholder: Automatic
     maintenance:

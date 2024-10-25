@@ -12271,6 +12271,20 @@
               }
             ]
           },
+          "availableLocales": {
+            "items": {
+              "$ref": "#/components/schemas/LocaleKey"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Availablelocales",
+            "description": "Locales available for use in platform client",
+            "default": [
+              "deDE",
+              "enUS"
+            ]
+          },
           "defaultTextId": {
             "anyOf": [
               {
@@ -12326,28 +12340,6 @@
             "description": "Custom label for main navigation info entry",
             "default": []
           },
-          "registerIntroText": {
-            "items": {
-              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Registerintrotext",
-            "description": "Intro text shown in registration form",
-            "default": []
-          },
-          "customFonts": {
-            "items": {
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 1
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Customfonts",
-            "description": "CSS font family names for use in resources",
-            "default": []
-          },
           "showResourceCategoryHeadings": {
             "type": "boolean",
             "title": "Showresourcecategoryheadings",
@@ -12384,19 +12376,27 @@
             "description": "Show a small hint to the Tekst software in the footer",
             "default": true
           },
-          "availableLocales": {
+          "registerIntroText": {
             "items": {
-              "$ref": "#/components/schemas/LocaleKey"
+              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
             },
             "type": "array",
-            "maxItems": 2,
-            "minItems": 1,
-            "title": "Availablelocales",
-            "description": "Locales available for use in platform client",
-            "default": [
-              "deDE",
-              "enUS"
-            ]
+            "maxItems": 3,
+            "title": "Registerintrotext",
+            "description": "Intro text shown in registration form",
+            "default": []
+          },
+          "customFonts": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Customfonts",
+            "description": "CSS font family names for use in resources",
+            "default": []
           },
           "oskModes": {
             "items": {
@@ -12460,6 +12460,24 @@
             ],
             "title": "Platformsubtitle",
             "description": "Short description of the platform, in multiple languages",
+            "optionalNullable": false
+          },
+          "availableLocales": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/LocaleKey"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availablelocales",
+            "description": "Locales available for use in platform client",
             "optionalNullable": false
           },
           "defaultTextId": {
@@ -12553,42 +12571,6 @@
             "description": "Custom label for main navigation info entry",
             "optionalNullable": false
           },
-          "registerIntroText": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/RegisterIntroTextTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Registerintrotext",
-            "description": "Intro text shown in registration form",
-            "optionalNullable": false
-          },
-          "customFonts": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "maxLength": 32,
-                  "minLength": 1
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Customfonts",
-            "description": "CSS font family names for use in resources",
-            "optionalNullable": false
-          },
           "showResourceCategoryHeadings": {
             "anyOf": [
               {
@@ -12667,22 +12649,40 @@
             "description": "Show a small hint to the Tekst software in the footer",
             "optionalNullable": false
           },
-          "availableLocales": {
+          "registerIntroText": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/LocaleKey"
+                  "$ref": "#/components/schemas/RegisterIntroTextTranslation"
                 },
                 "type": "array",
-                "maxItems": 2,
-                "minItems": 1
+                "maxItems": 3
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Availablelocales",
-            "description": "Locales available for use in platform client",
+            "title": "Registerintrotext",
+            "description": "Intro text shown in registration form",
+            "optionalNullable": false
+          },
+          "customFonts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customfonts",
+            "description": "CSS font family names for use in resources",
             "optionalNullable": false
           },
           "oskModes": {

@@ -108,6 +108,15 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         }
     ]
 
+    available_locales: Annotated[
+        list[LocaleKey],
+        Field(
+            description="Locales available for use in platform client",
+            max_length=len(get_args(LocaleKey.__value__)),
+            min_length=1,
+        ),
+    ] = list(get_args(LocaleKey.__value__))
+
     default_text_id: Annotated[
         PydanticObjectId | None,
         Field(
@@ -156,30 +165,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
-    register_intro_text: Annotated[
-        Translations[RegisterIntroTextTranslation],
-        Field(
-            description="Intro text shown in registration form",
-        ),
-    ] = []
-
-    custom_fonts: Annotated[
-        list[
-            Annotated[
-                str,
-                StringConstraints(
-                    min_length=1,
-                    max_length=32,
-                    strip_whitespace=True,
-                ),
-            ]
-        ],
-        Field(
-            description="CSS font family names for use in resources",
-            max_length=64,
-        ),
-    ] = []
-
     show_resource_category_headings: Annotated[
         bool,
         Field(
@@ -224,14 +209,29 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
-    available_locales: Annotated[
-        list[LocaleKey],
+    register_intro_text: Annotated[
+        Translations[RegisterIntroTextTranslation],
         Field(
-            description="Locales available for use in platform client",
-            max_length=len(get_args(LocaleKey.__value__)),
-            min_length=1,
+            description="Intro text shown in registration form",
         ),
-    ] = list(get_args(LocaleKey.__value__))
+    ] = []
+
+    custom_fonts: Annotated[
+        list[
+            Annotated[
+                str,
+                StringConstraints(
+                    min_length=1,
+                    max_length=32,
+                    strip_whitespace=True,
+                ),
+            ]
+        ],
+        Field(
+            description="CSS font family names for use in resources",
+            max_length=64,
+        ),
+    ] = []
 
     osk_modes: Annotated[
         list[OskMode],

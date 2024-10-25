@@ -4,7 +4,6 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { computed, ref } from 'vue';
 import {
   NDynamicInput,
-  NDivider,
   NButton,
   NFlex,
   NSelect,
@@ -103,7 +102,7 @@ function resetForm() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <h3>{{ $t('admin.system.platformSettings.headingInfo') }}</h3>
+      <h3>{{ $t('general.general') }}</h3>
 
       <!-- PLATFORM TITLE -->
       <n-form-item path="platformName" :label="$t('models.platformSettings.platformName')">
@@ -114,6 +113,7 @@ function resetForm() {
           @keydown.enter.prevent
         />
       </n-form-item>
+
       <!-- PLATFORM DESCRIPTION -->
       <translation-form-item
         v-model="formModel.platformSubtitle"
@@ -123,38 +123,6 @@ function resetForm() {
         :translation-form-label="$t('models.platformSettings.platformSubtitle')"
         :translation-form-rule="platformSettingsFormRules.platformSubtitleTranslation"
       />
-
-      <n-divider />
-      <h3>{{ $t('admin.system.platformSettings.headingConfig') }}</h3>
-
-      <h4>{{ $t('admin.system.platformSettings.headingConfigTextsLocs') }}</h4>
-
-      <!-- DEFAULT TEXT -->
-      <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
-        <n-select
-          v-model:value="formModel.defaultTextId"
-          clearable
-          :options="defaultTextOptions"
-          :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
-          :consistent-menu-width="false"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
-
-      <n-flex vertical>
-        <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-        <labelled-switch
-          v-model="formModel.alwaysShowTextInfo"
-          :label="$t('models.platformSettings.alwaysShowTextInfo')"
-        />
-        <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
-        <labelled-switch
-          v-model="formModel.directJumpOnUniqueAliasSearch"
-          :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
-        />
-      </n-flex>
-
-      <h4>{{ $t('admin.system.platformSettings.headingConfigI18n') }}</h4>
 
       <!-- AVAILABLE LOCALES -->
       <n-form-item
@@ -172,7 +140,32 @@ function resetForm() {
         />
       </n-form-item>
 
-      <h4>{{ $t('admin.system.platformSettings.headingConfigCustomLabels') }}</h4>
+      <!-- DEFAULT TEXT -->
+      <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
+        <n-select
+          v-model:value="formModel.defaultTextId"
+          clearable
+          :options="defaultTextOptions"
+          :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
+          :consistent-menu-width="false"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+
+      <h3>{{ $t('admin.system.platformSettings.headingNav') }}</h3>
+
+      <n-flex vertical class="mb-lg">
+        <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
+        <labelled-switch
+          v-model="formModel.alwaysShowTextInfo"
+          :label="$t('models.platformSettings.alwaysShowTextInfo')"
+        />
+        <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
+        <labelled-switch
+          v-model="formModel.directJumpOnUniqueAliasSearch"
+          :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
+        />
+      </n-flex>
 
       <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
       <translation-form-item
@@ -204,18 +197,7 @@ function resetForm() {
         :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
       />
 
-      <!-- CUSTOM REGISTER FROM INTRO TEXT -->
-      <translation-form-item
-        v-model="formModel.registerIntroText"
-        parent-form-path-prefix="registerIntroText"
-        :loading="loading"
-        :main-form-label="$t('models.platformSettings.registerIntroText')"
-        :translation-form-label="$t('models.platformSettings.registerIntroText')"
-        :translation-form-rule="platformSettingsFormRules.registerIntroTextTranslation"
-        multiline
-      />
-
-      <h4>{{ $t('admin.system.platformSettings.headingConfigBrowseView') }}</h4>
+      <h3>{{ $t('admin.system.platformSettings.headingBrowseView') }}</h3>
 
       <!-- BROWSE VIEW -->
       <n-flex vertical>
@@ -236,10 +218,9 @@ function resetForm() {
         />
       </n-flex>
 
-      <h4>{{ $t('admin.system.platformSettings.headingConfigBranding') }}</h4>
+      <h3>{{ $t('admin.system.platformSettings.headingBranding') }}</h3>
 
-      <!-- BRANDING -->
-      <n-flex vertical>
+      <n-flex vertical class="mb-lg">
         <!-- SHOW LOGO ON LOADING SCREEN -->
         <labelled-switch
           v-model="formModel.showLogoOnLoadingScreen"
@@ -257,13 +238,22 @@ function resetForm() {
         />
       </n-flex>
 
-      <n-divider />
+      <!-- CUSTOM REGISTER FROM INTRO TEXT -->
+      <translation-form-item
+        v-model="formModel.registerIntroText"
+        parent-form-path-prefix="registerIntroText"
+        :loading="loading"
+        :main-form-label="$t('models.platformSettings.registerIntroText')"
+        :translation-form-label="$t('models.platformSettings.registerIntroText')"
+        :translation-form-rule="platformSettingsFormRules.registerIntroTextTranslation"
+        multiline
+      />
 
-      <!-- RESOURCE FONTS -->
       <icon-heading level="3">
         {{ $t('models.platformSettings.customFonts') }}
         <help-button-widget help-key="adminSystemSettingsResourceFonts" />
       </icon-heading>
+
       <n-form-item v-if="formModel.customFonts" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.customFonts"
@@ -299,13 +289,12 @@ function resetForm() {
         </n-dynamic-input>
       </n-form-item>
 
-      <n-divider />
-
       <!-- OSK MODES -->
       <icon-heading level="3">
         {{ $t('models.platformSettings.oskModes') }}
         <help-button-widget help-key="adminSystemSettingsOskModes" />
       </icon-heading>
+
       <n-form-item v-if="formModel.oskModes" :show-label="false">
         <n-dynamic-input
           v-model:value="formModel.oskModes"
