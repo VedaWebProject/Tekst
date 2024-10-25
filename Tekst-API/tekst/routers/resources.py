@@ -425,8 +425,11 @@ async def delete_resource(
         CorrectionDocument.resource_id == resource_id,
     ).delete()
 
-    # call the resource's text's hook for changed content
-    await (await TextDocument.get(resource_doc.text_id)).contents_changed_hook()
+    # mark the text's index as out-of-date
+    await set_index_ood(
+        resource_doc.text_id,
+        by_public_resource=resource_doc.public,
+    )
 
     # delete resource itself
     await ResourceBaseDocument.find_one(
@@ -839,10 +842,12 @@ async def _import_resource_contents_task(
         raise e
     finally:
         del import_data, contents
-        # call the resource's and text's hooks for changed contents
+        # call the resource's hook for changed contents
         await resource_doc.contents_changed_hook()
+        # mark the text's index as out-of-date
         await set_index_ood(
-            text_id=resource_doc.text_id, by_public_resource=resource_doc.public
+            resource_doc.text_id,
+            by_public_resource=resource_doc.public,
         )
 
     return {

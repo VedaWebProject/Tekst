@@ -10764,18 +10764,6 @@
             "type": "integer",
             "title": "Fields"
           },
-          "createdAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Createdat"
-          },
           "upToDate": {
             "type": "boolean",
             "title": "Uptodate"
@@ -10788,7 +10776,6 @@
           "size",
           "searches",
           "fields",
-          "createdAt",
           "upToDate"
         ],
         "title": "IndexInfo"
@@ -15232,6 +15219,12 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
+          },
+          "fullLocLabelAsHitHeading": {
+            "type": "boolean",
+            "title": "Fullloclabelashitheading",
+            "description": "Whether to use the full location label as the hit heading in the search results",
+            "default": false
           }
         },
         "type": "object",
@@ -15350,6 +15343,12 @@
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "default": []
+          },
+          "fullLocLabelAsHitHeading": {
+            "type": "boolean",
+            "title": "Fullloclabelashitheading",
+            "description": "Whether to use the full location label as the hit heading in the search results",
+            "default": false
           },
           "indexUtd": {
             "type": "boolean",
@@ -15576,6 +15575,19 @@
             ],
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
+            "optionalNullable": false
+          },
+          "fullLocLabelAsHitHeading": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fullloclabelashitheading",
+            "description": "Whether to use the full location label as the hit heading in the search results",
             "optionalNullable": false
           }
         },

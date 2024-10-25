@@ -10,6 +10,7 @@ const props = defineProps<{
   id: SearchHit['id'];
   label: SearchHit['label'];
   fullLabel: SearchHit['fullLabel'];
+  fullLabelAsTitle?: boolean;
   textTitle: TextRead['title'];
   textSlug: TextRead['slug'];
   textColor: TextRead['accentColor'];
@@ -45,7 +46,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
     <n-flex vertical size="small" class="sr-container">
       <n-flex wrap align="center" :title="fullLabel">
         <div class="sr-header-title" :style="{ color: textColor }">
-          {{ label }}
+          {{ fullLabelAsTitle ? fullLabel : label }}
         </div>
         <div class="sr-header-tags">
           <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
@@ -68,7 +69,11 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
           </n-tag>
         </div>
       </n-flex>
-      <div class="sr-location text-tiny translucent ellipsis" :title="fullLabel">
+      <div
+        v-if="!fullLabelAsTitle"
+        class="sr-location text-tiny translucent ellipsis"
+        :title="fullLabel"
+      >
         <n-icon :component="BookIcon" />
         {{ fullLabel }}
       </div>

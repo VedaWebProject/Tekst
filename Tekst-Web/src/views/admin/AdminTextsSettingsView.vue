@@ -144,6 +144,8 @@ async function handleDelete() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
+      <h3>{{ $t('general.general') }}</h3>
+
       <!-- TITLE -->
       <n-form-item path="title" :label="$t('models.text.title')">
         <n-input
@@ -182,6 +184,11 @@ async function handleDelete() {
         />
       </n-form-item>
 
+      <!-- ACTIVE -->
+      <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+
+      <h3>{{ $t('general.presentation') }}</h3>
+
       <!-- LOCATION DELIMITER -->
       <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
         <n-input
@@ -192,20 +199,21 @@ async function handleDelete() {
         />
       </n-form-item>
 
-      <n-form-item :show-label="false">
-        <n-flex vertical>
-          <!-- LABELLED LOCATION -->
-          <labelled-switch
-            v-model="model.labeledLocation"
-            :label="$t('models.text.labeledLocation')"
-          />
-          <!-- ACTIVE -->
-          <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
-        </n-flex>
-      </n-form-item>
+      <n-flex vertical class="mb-lg">
+        <!-- LABELLED LOCATION -->
+        <labelled-switch
+          v-model="model.labeledLocation"
+          :label="$t('models.text.labeledLocation')"
+        />
+        <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
+        <labelled-switch
+          v-model="model.fullLocLabelAsHitHeading"
+          :label="$t('models.text.fullLocLabelAsHitHeading')"
+        />
+      </n-flex>
 
       <!-- ACCENT COLOR -->
-      <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
+      <n-form-item path="accentColor" :label="$t('models.text.accentColor')" :show-feedback="false">
         <n-color-picker
           v-model:value="model.accentColor"
           :modes="['hex']"
@@ -223,8 +231,8 @@ async function handleDelete() {
         />
       </n-form-item>
 
-      <!-- RESOURCE CATEGORIES-->
-      <n-form-item v-if="model.resourceCategories" :label="$t('models.text.resourceCategories')">
+      <h3>{{ $t('models.text.resourceCategories') }}</h3>
+      <n-form-item v-if="model.resourceCategories" :show-label="false">
         <n-dynamic-input
           v-model:value="model.resourceCategories"
           show-sort-button

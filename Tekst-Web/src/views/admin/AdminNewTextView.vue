@@ -21,6 +21,7 @@ const initialModel = (): TextCreate => ({
   levels: [[{ locale: '*', translation: '' }]],
   accentColor: '#43895F',
   defaultLevel: 0,
+  fullLocLabelAsHitHeading: false,
   isActive: false,
   labeledLocation: true,
   locDelim: '; ',

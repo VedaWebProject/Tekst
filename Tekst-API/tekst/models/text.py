@@ -175,6 +175,16 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
+    full_loc_label_as_hit_heading: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether to use the full location label as the hit heading "
+                "in the search results"
+            ),
+        ),
+    ] = False
+
     index_utd: Annotated[
         bool,
         Field(

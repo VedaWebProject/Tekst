@@ -309,8 +309,8 @@ onBeforeMount(() => {
                   {{
                     task.durationSeconds
                       ? $t('admin.system.maintenance.tasks.seconds', {
-                        seconds: task.durationSeconds.toFixed(2),
-                      })
+                          seconds: task.durationSeconds.toFixed(2),
+                        })
                       : '–'
                   }}
                 </td>

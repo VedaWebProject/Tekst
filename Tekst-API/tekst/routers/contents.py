@@ -56,9 +56,10 @@ async def create_content(
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
 
-    # call the resource's and text's hooks for changed contents
+    # call the resource's hook for changed contents
     await resource.contents_changed_hook()
-    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
+    # mark the text's index as out-of-date
+    await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
     # create the content document and return it
     return (
@@ -130,9 +131,10 @@ async def update_content(
     if not resource:
         raise errors.E_403_FORBIDDEN
 
-    # call the resource's and text's hooks for changed contents
+    # call the resource's hook for changed contents
     await resource.contents_changed_hook()
-    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
+    # mark the text's index as out-of-date
+    await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
     # apply updates, return the updated document
     return await content_doc.apply_updates(updates)
@@ -163,9 +165,10 @@ async def delete_content(
     if not resource:
         raise errors.E_403_FORBIDDEN
 
-    # call the resource's and text's hooks for changed contents
+    # call the resource's hook for changed contents
     await resource.contents_changed_hook()
-    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
+    # mark the text's index as out-of-date
+    await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
     # all fine, delete content
     await content_doc.delete()

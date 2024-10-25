@@ -56,7 +56,8 @@
         "key": "links",
         "translations": [{ "locale": "*", "translation": "Links" }]
       }
-    ]
+    ],
+    "full_loc_label_as_hit_heading": true
   },
   {
     "_id": { "$oid": "654ba1f3ec7833e469dde765" },
@@ -92,6 +93,7 @@
           { "locale": "deDE", "translation": "Übersetzungen" }
         ]
       }
-    ]
+    ],
+    "full_loc_label_as_hit_heading": true
   }
 ]

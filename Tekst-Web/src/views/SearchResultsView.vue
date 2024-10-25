@@ -32,14 +32,15 @@ const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
 
 const loadingExport = ref(false);
 
-const results = computed<SearchResultProps[]>(() => {
-  return (
+const results = computed<SearchResultProps[]>(
+  () =>
     search.results?.hits.map((r) => {
       const text = pfData.value?.texts.find((t) => t.id === r.textId);
       return {
         id: r.id,
         label: r.label,
         fullLabel: r.fullLabel,
+        fullLabelAsTitle: !!text?.fullLocLabelAsHitHeading,
         textSlug: text?.slug || '',
         textTitle: text?.title || '',
         textColor: theme.getAccentColors(text?.id).base,
@@ -55,8 +56,7 @@ const results = computed<SearchResultProps[]>(() => {
         resourceTitles: resources.resourceTitles,
       };
     }) || []
-  );
-});
+);
 
 const browseViewLabel = computed(
   () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse')

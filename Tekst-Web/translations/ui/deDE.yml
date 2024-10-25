@@ -34,6 +34,7 @@ general:
   selected: ausgewählt
   language: Sprache
   platform: Plattform
+  presentation: Darstellung
   not: nicht
   new: New
   in: in
@@ -288,7 +289,8 @@ models:
     levelLabel: Bezeichnung
     defaultLevel: Standardebene
     locDelim: Belegstellentrennzeichen
-    labeledLocation: Ebene in Bezeichnung der Belegstellen einschließen
+    labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
+    fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
     accentColor: Akzentfarbe
     resourceCategories: Ressourcen-Kategorien
     resourceCategoryKey: Schlüssel

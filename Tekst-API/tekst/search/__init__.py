@@ -548,8 +548,8 @@ async def search_advanced(
 
 
 async def set_index_ood(
-    *,
     text_id: PydanticObjectId,
+    *,
     by_public_resource: bool = True,
 ):
     print(by_public_resource)

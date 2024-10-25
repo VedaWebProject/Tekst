@@ -305,8 +305,8 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
 
     # save modified documents
     await LocationDocument.replace_many(updated_docs)
-    # call the text's hook for changed contents
-    await set_index_ood(text_id=last_text_id)
+    # mark the text's index as out-of-date
+    await set_index_ood(last_text_id)
 
 
 @router.patch(
@@ -581,8 +581,8 @@ async def delete_level(
         )
     await text_doc.save()
 
-    # call the text's hook for changed contents
-    await text_doc.contents_changed_hook()
+    # mark the text's index as out-of-date
+    await set_index_ood(text_doc.id)
 
     return text_doc
 
