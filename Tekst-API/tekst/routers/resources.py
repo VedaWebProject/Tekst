@@ -46,6 +46,7 @@ from tekst.resources import (
     resource_types_mgr,
 )
 from tekst.resources.text_annotation import AnnotationAggregation
+from tekst.search import set_index_ood
 from tekst.utils import pick_translation
 
 
@@ -840,7 +841,9 @@ async def _import_resource_contents_task(
         del import_data, contents
         # call the resource's and text's hooks for changed contents
         await resource_doc.contents_changed_hook()
-        await (await TextDocument.get(resource_doc.text_id)).contents_changed_hook()
+        await set_index_ood(
+            text_id=resource_doc.text_id, by_public_resource=resource_doc.public
+        )
 
     return {
         "created": created_count,

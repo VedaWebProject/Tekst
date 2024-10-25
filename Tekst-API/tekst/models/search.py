@@ -1,5 +1,4 @@
 from collections.abc import Callable
-from datetime import datetime
 from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints, conint, field_validator
@@ -259,5 +258,4 @@ class IndexInfo(ModelBase):
     size: str
     searches: int
     fields: int
-    created_at: datetime | None
     up_to_date: bool

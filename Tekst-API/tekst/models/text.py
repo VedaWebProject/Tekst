@@ -1,6 +1,5 @@
 import re
 
-from datetime import datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -176,27 +175,16 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
-    contents_changed_at: Annotated[
-        datetime,
+    index_utd: Annotated[
+        bool,
         Field(
-            description="The last time contents of any resource on this text changed",
+            description="The search index for this text is up-to-date",
         ),
         ExcludeFromModelVariants(
             update=True,
             create=True,
         ),
-    ] = datetime.utcfromtimestamp(86400)
-
-    index_created_at: Annotated[
-        datetime,
-        Field(
-            description="The time the search index for this text was created/updated",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-            create=True,
-        ),
-    ] = datetime.utcfromtimestamp(0)
+    ] = False
 
     @field_validator("subtitle", mode="after")
     @classmethod
@@ -269,16 +257,6 @@ class TextDocument(Text, DocumentBase):
                 .to_list()
             }
         return location_labels
-
-    async def contents_changed_hook(self):
-        """Updates the last contents modification time"""
-        self.contents_changed_at = datetime.utcnow()
-        await self.replace()
-
-    async def index_updated_hook(self):
-        """Updates the last index update time"""
-        self.index_created_at = datetime.utcnow()
-        await self.replace()
 
 
 TextCreate = Text.create_model()

@@ -38,7 +38,7 @@ from tekst.search.templates import (
     QUERY_SOURCE_INCLUDES,
     SORTING_PRESETS,
 )
-from tekst.state import update_state
+from tekst.state import get_state, update_state
 
 
 _cfg: TekstConfig = get_config()
@@ -113,6 +113,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
     op_id = log_op_start("Create search indices", level="INFO")
     await _wait_for_es()
     await _setup_index_templates()
+    state = await get_state()
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
@@ -125,10 +126,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
 
         # check if indexing is necessary and if not, remember the index that's still
         # in use for this text, then continue with the next text
-        if old_txt_idxs and (
-            text.index_created_at is not None
-            and text.contents_changed_at < text.index_created_at
-        ):
+        if old_txt_idxs and text.index_utd:
             # indexing is NOT necessary
             if force:
                 log.debug(f"Index for '{text.title}' is up to date. Forcing re-index.")
@@ -148,9 +146,14 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
 
         # extend index mappings adding one extra field for each target resource
         extra_properties = {}
+        only_public_res = (
+            {}
+            if state.index_unpublished_resources
+            else Eq(ResourceBaseDocument.public, True)
+        )
         for res in await ResourceBaseDocument.find(
             ResourceBaseDocument.text_id == text.id,
-            Eq(ResourceBaseDocument.public, True),
+            only_public_res,
             with_children=True,
         ).to_list():
             extra_properties[str(res.id)] = {
@@ -173,7 +176,8 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
             log_op_end(populate_op_id, failed=True, failed_msg=str(e))
 
         utd_idxs.append(new_idx_name)  # mark created index as "up to date"
-        await text.index_updated_hook()  # update indexing time for text
+        text.index_utd = True
+        await text.replace()
         log_op_end(populate_op_id)
 
     # delete indices that are no longer in use
@@ -223,11 +227,17 @@ async def _populate_index(
     bulk_index_max_size = 200
     bulk_index_body = []
     errors = False
+    state = await get_state()
+    only_public_res = (
+        {}
+        if state.index_unpublished_resources
+        else Eq(ResourceBaseDocument.public, True)
+    )
     target_resource_ids = [
         res.id
         for res in await ResourceBaseDocument.find(
             ResourceBaseDocument.text_id == text.id,
-            Eq(ResourceBaseDocument.public, True),
+            only_public_res,
             with_children=True,
         ).to_list()
     ]
@@ -355,15 +365,14 @@ async def get_indices_info() -> list[IndexInfo]:
             data.append(
                 {
                     "text_id": text_id if text else None,
-                    "created_at": text.index_created_at if text else None,
                     "fields": await _get_mapped_fields_count(idx_name),
-                    "up_to_date": text.index_created_at > text.contents_changed_at,
+                    "up_to_date": text.index_utd,
                     **await _get_index_stats(idx_name),
                 }
             )
         return [IndexInfo(**idx_info) for idx_info in data]
-    except Exception:
-        log.error("Error getting/processing indices info.")
+    except Exception as e:
+        log.error("Error getting/processing indices info: %s", str(e))
         return []
 
 
@@ -376,11 +385,17 @@ async def _get_target_resources(
     Returns a constrained list of target resources for a search request,
     based on the requesting user's permissions, target texts and resource types.
     """
+    state = await get_state()
+    only_public_res = (
+        {}
+        if state.index_unpublished_resources
+        else Eq(ResourceBaseDocument.public, True)
+    )
     return {
         str(res.id): res
         for res in await ResourceBaseDocument.find(
             In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
-            Eq(ResourceBaseDocument.public, True),
+            only_public_res,
             await ResourceBaseDocument.access_conditions_read(user),
             with_children=True,
         ).to_list()
@@ -530,3 +545,17 @@ async def search_advanced(
         ),
         highlights_generators=highlights_generators,
     )
+
+
+async def set_index_ood(
+    *,
+    text_id: PydanticObjectId,
+    by_public_resource: bool = True,
+):
+    print(by_public_resource)
+    """Set the index_utd flag for this text, considering the given parameters"""
+    if by_public_resource or (await get_state()).index_unpublished_resources:
+        print(text_id)
+        text = await TextDocument.get(text_id)
+        text.index_utd = False
+        await text.replace()

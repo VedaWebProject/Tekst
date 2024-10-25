@@ -3863,6 +3863,12 @@ export interface components {
              */
             defaultTextId?: string | null;
             /**
+             * Indexunpublishedresources
+             * @description Index unpublished resources
+             * @default false
+             */
+            indexUnpublishedResources: boolean;
+            /**
              * Alwaysshowtextinfo
              * @description Always show text info and selector in header, even on non-text-specific pages
              * @default true
@@ -3976,6 +3982,11 @@ export interface components {
              * @description Default text to load in UI
              */
             defaultTextId?: string | null;
+            /**
+             * Indexunpublishedresources
+             * @description Index unpublished resources
+             */
+            indexUnpublishedResources?: boolean;
             /**
              * Alwaysshowtextinfo
              * @description Always show text info and selector in header, even on non-text-specific pages
@@ -5350,19 +5361,11 @@ export interface components {
              */
             resourceCategories: components["schemas"]["ResourceCategory"][];
             /**
-             * Contentschangedat
-             * Format: date-time
-             * @description The last time contents of any resource on this text changed
-             * @default 1970-01-02T00:00:00
+             * Indexutd
+             * @description The search index for this text is up-to-date
+             * @default false
              */
-            contentsChangedAt: string;
-            /**
-             * Indexcreatedat
-             * Format: date-time
-             * @description The time the search index for this text was created/updated
-             * @default 1970-01-01T00:00:00
-             */
-            indexCreatedAt: string;
+            indexUtd: boolean;
         } & {
             [key: string]: unknown;
         };

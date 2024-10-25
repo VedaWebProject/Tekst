@@ -124,6 +124,13 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
+    index_unpublished_resources: Annotated[
+        bool,
+        Field(
+            description="Index unpublished resources",
+        ),
+    ] = False
+
     always_show_text_info: Annotated[
         bool,
         Field(

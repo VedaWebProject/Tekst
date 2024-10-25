@@ -485,9 +485,6 @@ class TextAnnotationResource(ResourceBase):
         precomp_doc.created_at = datetime.utcnow()
         await precomp_doc.save()
 
-    async def contents_changed_hook(self) -> None:
-        await super().contents_changed_hook()
-
     async def resource_maintenance_hook(self) -> None:
         await super().resource_maintenance_hook()
         op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")

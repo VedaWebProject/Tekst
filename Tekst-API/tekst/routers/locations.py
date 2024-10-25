@@ -20,6 +20,7 @@ from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
 )
+from tekst.search import set_index_ood
 
 
 router = APIRouter(
@@ -460,9 +461,7 @@ async def delete_location(
         with_children=True,
     ).to_list():
         await res.contents_changed_hook()
-
-    # call hook for changed content of this location's text
-    await (await TextDocument.get(text_id)).contents_changed_hook()
+        await set_index_ood(res.text_id, by_public_resource=res.public)
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)
 

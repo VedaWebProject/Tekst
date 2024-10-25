@@ -8,7 +8,6 @@ from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.models.text import TextDocument
 from tekst.resources import (
     AnyContentCreateBody,
     AnyContentDocument,
@@ -16,6 +15,7 @@ from tekst.resources import (
     AnyContentUpdateBody,
     resource_types_mgr,
 )
+from tekst.search import set_index_ood
 
 
 # initialize content router
@@ -58,7 +58,7 @@ async def create_content(
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()
-    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
 
     # create the content document and return it
     return (
@@ -132,7 +132,7 @@ async def update_content(
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()
-    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
 
     # apply updates, return the updated document
     return await content_doc.apply_updates(updates)
@@ -165,7 +165,7 @@ async def delete_content(
 
     # call the resource's and text's hooks for changed contents
     await resource.contents_changed_hook()
-    await (await TextDocument.get(resource.text_id)).contents_changed_hook()
+    await set_index_ood(text_id=resource.text_id, by_public_resource=resource.public)
 
     # all fine, delete content
     await content_doc.delete()

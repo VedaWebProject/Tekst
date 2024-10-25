@@ -12298,6 +12298,12 @@
             "title": "Defaulttextid",
             "description": "Default text to load in UI"
           },
+          "indexUnpublishedResources": {
+            "type": "boolean",
+            "title": "Indexunpublishedresources",
+            "description": "Index unpublished resources",
+            "default": false
+          },
           "alwaysShowTextInfo": {
             "type": "boolean",
             "title": "Alwaysshowtextinfo",
@@ -12493,6 +12499,19 @@
             "title": "Defaulttextid",
             "description": "Default text to load in UI",
             "optionalNullable": true
+          },
+          "indexUnpublishedResources": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexunpublishedresources",
+            "description": "Index unpublished resources",
+            "optionalNullable": false
           },
           "alwaysShowTextInfo": {
             "anyOf": [
@@ -15332,19 +15351,11 @@
             "description": "Resource categories to categorize resources in",
             "default": []
           },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of any resource on this text changed",
-            "default": "1970-01-02T00:00:00"
-          },
-          "indexCreatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Indexcreatedat",
-            "description": "The time the search index for this text was created/updated",
-            "default": "1970-01-01T00:00:00"
+          "indexUtd": {
+            "type": "boolean",
+            "title": "Indexutd",
+            "description": "The search index for this text is up-to-date",
+            "default": false
           }
         },
         "additionalProperties": true,

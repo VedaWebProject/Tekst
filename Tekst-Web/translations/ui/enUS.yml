@@ -333,6 +333,7 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
+    indexUnpublishedResources: Unpublished ressources are searchable (by users with read access)
     availableLocales: Available UI Languages
     navBrowseEntry: Label for "Browse" in main navigation
     navSearchEntry: Label for "Search" in main navigation
@@ -468,7 +469,7 @@ resources:
       multiValueDelimiter: Delimiter for multiple annotation values
   types:
     common:
-      label: Extended Content
+      label: Meta
       contentFields:
         comment: Comment
         notes: Working Notes
@@ -774,7 +775,6 @@ admin:
         size: Size
         searches: Searches
         fields: Fields
-        createdAt: Created
         utd: Up to date
         ood: Out of date
         actionCreate: Reindex

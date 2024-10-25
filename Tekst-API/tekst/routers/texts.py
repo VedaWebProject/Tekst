@@ -34,6 +34,7 @@ from tekst.models.text import (
     TextStructureImportData,
     TextUpdate,
 )
+from tekst.search import set_index_ood
 from tekst.state import get_state
 from tekst.utils import get_temp_dir
 
@@ -305,7 +306,7 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
     # save modified documents
     await LocationDocument.replace_many(updated_docs)
     # call the text's hook for changed contents
-    await (await TextDocument.get(last_text_id)).contents_changed_hook()
+    await set_index_ood(text_id=last_text_id)
 
 
 @router.patch(

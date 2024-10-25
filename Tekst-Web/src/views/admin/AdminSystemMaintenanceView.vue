@@ -176,7 +176,7 @@ onBeforeMount(() => {
               </tr>
             </thead>
             <template v-for="(value, key) in indexInfo" :key="key">
-              <tr v-if="!['createdAt', 'textId', 'fields', 'upToDate'].includes(key)">
+              <tr v-if="!['textId', 'fields', 'upToDate'].includes(key)">
                 <th style="font-weight: var(--font-weight-normal)">
                   {{ $t(`admin.system.maintenance.indices.${key}`) }}
                 </th>
@@ -189,19 +189,6 @@ onBeforeMount(() => {
               </th>
               <td :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
                 {{ indexInfo.fields }} / {{ pfData?.maxFieldMappings || '???' }}
-              </td>
-            </tr>
-            <tr>
-              <th style="font-weight: var(--font-weight-normal)">
-                {{ $t(`admin.system.maintenance.indices.createdAt`) }}
-              </th>
-              <td>
-                <n-time
-                  v-if="indexInfo.createdAt"
-                  :time="utcToLocalTime(indexInfo.createdAt)"
-                  type="datetime"
-                />
-                <span v-else>???</span>
               </td>
             </tr>
             <tr>
@@ -322,8 +309,8 @@ onBeforeMount(() => {
                   {{
                     task.durationSeconds
                       ? $t('admin.system.maintenance.tasks.seconds', {
-                          seconds: task.durationSeconds.toFixed(2),
-                        })
+                        seconds: task.durationSeconds.toFixed(2),
+                      })
                       : '–'
                   }}
                 </td>

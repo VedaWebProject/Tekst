@@ -152,6 +152,14 @@ function resetForm() {
         />
       </n-form-item>
 
+      <!-- INDEX UNPUBLISHED RESOURCES -->
+      <n-flex vertical>
+        <labelled-switch
+          v-model="formModel.indexUnpublishedResources"
+          :label="$t('models.platformSettings.indexUnpublishedResources')"
+        />
+      </n-flex>
+
       <h3>{{ $t('admin.system.platformSettings.headingNav') }}</h3>
 
       <n-flex vertical class="mb-lg">
