@@ -186,6 +186,9 @@ onMounted(async () => {
           @insert="() => createAnnotation(annotationActionIndex)"
         />
       </template>
+      <template #create-button-default>
+        {{ $t('general.selectAction') }}
+      </template>
     </n-dynamic-input>
   </n-form-item>
 </template>
