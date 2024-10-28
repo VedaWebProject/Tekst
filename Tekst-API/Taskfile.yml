@@ -60,6 +60,15 @@ tasks:
       - task: print-dev-uris
       - poetry run python3 -m tekst dev --reload
 
+  run-dev-mem:
+    desc: Run the application dev server with memory profiling (only for development!)
+    env:
+      TEKST_DEV_MODE: true
+    cmds:
+      - poetry run python3 -m tekst setup
+      - task: print-dev-uris
+      - poetry run memray run --live -m tekst dev --reload
+
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
     cmds:
@@ -68,6 +77,15 @@ tasks:
       - task: wait-for-mongodb
       - task: wait-for-elasticsearch
       - task: run-dev
+
+  dev-mem:
+    desc: Run dev services stack and dev server with memory profiling, clean up afterwards
+    cmds:
+      - defer: { task: dev-stack-down }
+      - task: dev-stack-up
+      - task: wait-for-mongodb
+      - task: wait-for-elasticsearch
+      - task: run-dev-mem
 
   schema:
     desc: Export (development) OpenAPI schema to file openapi.json
