@@ -32,7 +32,7 @@ jobs:
         ports:
           - 27017:27017
       mailpit:
-        image: axllent/mailpit:v1.20
+        image: axllent/mailpit:v1.21
         ports:
           - 1025:1025
         env:
