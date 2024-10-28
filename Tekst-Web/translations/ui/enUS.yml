@@ -500,6 +500,9 @@ resources:
         annotationValue: Value
       searchFields:
         any: '[any value]'
+      copyTokenAction: Copy token
+      copyFullAction: Copy token and annotations
+      copyHintTip: Right click or long press to copy
     audio:
       label: Audio
       parenthesis: audio playback

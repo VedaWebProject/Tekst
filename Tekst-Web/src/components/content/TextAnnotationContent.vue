@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
 import type { CSSProperties } from 'vue';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { MetadataIcon } from '@/icons';
-import { NTable, NAlert } from 'naive-ui';
+import { NTable, NAlert, NDropdown } from 'naive-ui';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { $t } from '@/i18n';
+import { useClipboard } from '@vueuse/core';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -32,6 +34,8 @@ interface TokenDetails {
   annotations?: TextAnnotationContentRead['tokens'][number]['annotations'];
 }
 
+type Token = TextAnnotationContentRead['tokens'][number];
+
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
 const PAT_TMPL_ITEM_PARTS = /_([kpcsf]):(.*?)(?=_[kpcsf]:|$)/g;
 
@@ -47,6 +51,26 @@ const props = withDefaults(
 
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
+
+const showTokenContextMenu = ref(false);
+const tokenContextMenuPos = ref({ x: 0, y: 0 });
+const tokenCopyIndex = ref(-1);
+const tokenCopyContent = ref<string>('');
+const {
+  copy: copyTokenContent,
+  copied: tokenContentCopied,
+  isSupported: isClipboardSupported,
+} = useClipboard({ source: tokenCopyContent, copiedDuring: 500 });
+const tokenContextMenuOptions = [
+  {
+    label: () => $t('resources.types.textAnnotation.copyTokenAction'),
+    key: 'copyToken',
+  },
+  {
+    label: () => $t('resources.types.textAnnotation.copyFullAction'),
+    key: 'copyFull',
+  },
+];
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.displayTemplate) return [];
@@ -102,7 +126,7 @@ const fontStyle = {
 };
 
 function applyAnnotationDisplayTemplate(
-  annotations: TextAnnotationContentRead['tokens'][number]['annotations']
+  annotations: Token['annotations']
 ): AnnotationDisplayStructure[] {
   // if there are no annotation display templates, just return the annotations in a
   // default form (k:v, k:v, etc.) without any styling flags set
@@ -152,7 +176,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
   };
 }
 
-function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
+function handleTokenClick(token: Token) {
   if (!token.annotations.length) return;
   const annos = token.annotations.filter((a) => a.key !== 'comment');
   tokenDetails.value = {
@@ -161,6 +185,38 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
     annotations: annos.length ? annos : undefined,
   };
   showDetailsModal.value = true;
+}
+
+function handleTokenRightClick(e: MouseEvent, token: Token, tokenIndex: number) {
+  showTokenContextMenu.value = false;
+  if (!isClipboardSupported.value) return;
+  tokenDetails.value = token;
+  tokenCopyIndex.value = tokenIndex;
+  nextTick().then(() => {
+    tokenContextMenuPos.value = { x: e.clientX, y: e.clientY };
+    showTokenContextMenu.value = true;
+  });
+}
+
+function handleTokenContextMenuClickOutside() {
+  showTokenContextMenu.value = false;
+}
+
+function handleTokenContextMenuSelect(key: string | number) {
+  showTokenContextMenu.value = false;
+  if (key === 'copyToken') {
+    tokenCopyContent.value = tokenDetails.value?.token || '';
+  } else if (key === 'copyFull') {
+    const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
+    const annos = tokenDetails.value?.annotations
+      ? tokenDetails.value.annotations
+          .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
+          .join('; ')
+      : [];
+    tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
+  }
+  copyTokenContent(tokenCopyContent.value);
+  tokenCopyContent.value = '';
 }
 </script>
 
@@ -172,9 +228,11 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
         :class="{
           'token-with-annos': !!token.annotations.length,
           'token-with-comment': !!token.annotations.find((a) => a.key === 'comment'),
+          'token-content-copied': tokenContentCopied && tokenCopyIndex === tokenIndex,
         }"
-        :title="token.comment?.join(' ') || undefined"
+        :title="$t('resources.types.textAnnotation.copyHintTip')"
         @click="handleTokenClick(token)"
+        @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, token, tokenIndex)"
       >
         <div class="token b i" :style="fontStyle">
           {{ token.token }}
@@ -239,6 +297,17 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
       </tbody>
     </n-table>
   </generic-modal>
+
+  <n-dropdown
+    placement="bottom-start"
+    trigger="manual"
+    :x="tokenContextMenuPos.x"
+    :y="tokenContextMenuPos.y"
+    :options="tokenContextMenuOptions"
+    :show="showTokenContextMenu"
+    :on-clickoutside="handleTokenContextMenuClickOutside"
+    @select="handleTokenContextMenuSelect"
+  />
 </template>
 
 <style scoped>
@@ -265,11 +334,11 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
   flex-wrap: nowrap;
   border-left: 1px solid var(--main-bg-color);
   padding: 0 8px;
+  transition: outline 0.2s ease;
 }
 
 .token-container.token-with-annos {
   cursor: pointer;
-  transition: background-color 0.2s;
   background: linear-gradient(135deg, var(--main-bg-color) 5px, transparent 0);
 }
 
@@ -279,6 +348,11 @@ function handleTokenClick(token: TextAnnotationContentRead['tokens'][number]) {
 
 .token-container.token-with-comment {
   background: linear-gradient(135deg, var(--accent-color-fade3) 5px, transparent 0);
+}
+
+.token-container.token-content-copied {
+  outline: 4px solid var(--col-success);
+  border-radius: var(--border-radius);
 }
 
 .reduced .token-container {
