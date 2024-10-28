@@ -3,6 +3,9 @@ import { NTabs, NTabPane, NInput, useDialog } from 'naive-ui';
 import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
 import { $t } from '@/i18n';
 import { dialogProps } from '@/common';
+import type { components } from '@/api/schema';
+
+type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
 
 withDefaults(
   defineProps<{
@@ -19,8 +22,8 @@ withDefaults(
 
 const emit = defineEmits(['blur', 'focus', 'input']);
 
-const value = defineModel<string | null>('value');
-const editorMode = defineModel<'wysiwyg' | 'html' | undefined>('editorMode', {
+const value = defineModel<string>('value');
+const editorMode = defineModel<EditorMode>('editorMode', {
   default: 'wysiwyg',
 });
 

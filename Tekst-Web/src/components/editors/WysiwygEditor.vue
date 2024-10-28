@@ -46,7 +46,7 @@ const props = withDefaults(
   }
 );
 const emit = defineEmits(['blur', 'focus', 'input']);
-const value = defineModel<string | null>('value', { default: '' });
+const value = defineModel<string>('value', { default: '' });
 
 const promptModalRef = ref();
 
