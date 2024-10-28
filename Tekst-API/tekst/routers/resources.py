@@ -13,6 +13,7 @@ from fastapi import (
     File,
     Path,
     Query,
+    Request,
     UploadFile,
     status,
 )
@@ -1014,6 +1015,7 @@ async def _export_resource_contents_task(
 async def export_resource_contents(
     user: OptionalUserDep,
     cfg: ConfigDep,
+    request: Request,
     resource_id: Annotated[
         PydanticObjectId,
         Path(
@@ -1047,6 +1049,7 @@ async def export_resource_contents(
         _export_resource_contents_task,
         tasks.TaskType.RESOURCE_EXPORT,
         user_id=user.id if user else None,
+        target_id=user.id if user else request.client.host,
         task_kwargs={
             "user": user,
             "cfg": cfg,

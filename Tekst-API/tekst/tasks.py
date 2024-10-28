@@ -21,8 +21,8 @@ from tekst.models.user import UserRead
 class TaskType(Enum):
     INDICES_CREATE_UPDATE = "indices_create_update", True, False
     RESOURCE_IMPORT = "resource_import", True, False
-    RESOURCE_EXPORT = "resource_export", False, True
-    SEARCH_EXPORT = "search_export", False, True
+    RESOURCE_EXPORT = "resource_export", True, True
+    SEARCH_EXPORT = "search_export", True, True
     BROADCAST_USER_NTFC = "broadcast_user_ntfc", False, False
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc", False, False
     RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook", True, False
