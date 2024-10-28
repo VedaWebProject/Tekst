@@ -210,8 +210,8 @@ function handleTokenContextMenuSelect(key: string | number) {
     const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
     const annos = tokenDetails.value?.annotations
       ? tokenDetails.value.annotations
-        .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
-        .join('; ')
+          .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
+          .join('; ')
       : [];
     tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
   }
