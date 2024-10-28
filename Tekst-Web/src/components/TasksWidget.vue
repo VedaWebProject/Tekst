@@ -5,6 +5,7 @@ import {
   NBadge,
   NFloatButton,
   NIcon,
+  NScrollbar,
   useDialog,
   type DialogOptions,
 } from 'naive-ui';
@@ -15,7 +16,7 @@ import { useTasks } from '@/composables/tasks';
 import { $t, $te } from '@/i18n';
 
 const state = useStateStore();
-const { tasks, removeTask } = useTasks();
+const { tasks, removeTask, showTasksList } = useTasks();
 const dialog = useDialog();
 
 const iconsMap: Record<string, Component> = {
@@ -55,8 +56,8 @@ function handleTaskClick(id: string) {
 
 <template>
   <n-float-button
-    v-if="tasks.length > 0"
     id="tasks-widget"
+    v-model:show-menu="showTasksList"
     type="primary"
     menu-trigger="click"
     :right="42"
@@ -82,25 +83,27 @@ function handleTaskClick(id: string) {
             </template>
           </n-button>
         </n-flex>
-        <n-flex
-          v-for="task in tasks"
-          :key="task.id"
-          :wrap="false"
-          align="center"
-          :class="`task-item task-item-${task.status || 'running'}`"
-          :focusable="false"
-          @click="handleTaskClick(task.id)"
-        >
-          <n-icon
-            class="task-item-icon"
-            size="20"
-            :component="iconsMap[task.status || 'running']"
-          />
-          <div class="task-item-label ellipsis">
-            {{ $t(`tasks.types.${task.type}`) }}
-            ({{ $t(`tasks.statuses.${task.status || 'running'}`) }})
-          </div>
-        </n-flex>
+        <n-scrollbar style="max-height: 60vh">
+          <n-flex
+            v-for="task in tasks"
+            :key="task.id"
+            :wrap="false"
+            align="center"
+            :class="`task-item task-item-${task.status || 'running'}`"
+            :focusable="false"
+            @click="handleTaskClick(task.id)"
+          >
+            <n-icon
+              class="task-item-icon"
+              size="20"
+              :component="iconsMap[task.status || 'running']"
+            />
+            <div class="task-item-label ellipsis">
+              {{ $t(`tasks.types.${task.type}`) }}
+              ({{ $t(`tasks.statuses.${task.status || 'running'}`) }})
+            </div>
+          </n-flex>
+        </n-scrollbar>
       </div>
     </template>
   </n-float-button>

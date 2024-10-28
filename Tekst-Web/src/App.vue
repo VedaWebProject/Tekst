@@ -13,8 +13,8 @@ import {
   NBackTop,
   NFlex,
 } from 'naive-ui';
-import PageHeader from './layout/PageHeader.vue';
-import PageFooter from './layout/PageFooter.vue';
+import PageHeader from '@/layout/PageHeader.vue';
+import PageFooter from '@/layout/PageFooter.vue';
 import { useInitializeApp } from '@/composables/init';
 import { useFavicon } from '@/composables/favicon';
 import LoginModal from '@/components/modals/LoginModal.vue';
@@ -22,9 +22,11 @@ import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { ErrorIcon } from '@/icons';
 import TasksWidget from '@/components/TasksWidget.vue';
+import { useTasks } from '@/composables/tasks';
 
 const state = useStateStore();
 const theme = useThemeStore();
+const { showTasksWidget } = useTasks();
 
 useInitializeApp();
 
@@ -71,7 +73,7 @@ useFavicon();
 
           <app-loading-feedback />
           <global-messenger />
-          <tasks-widget />
+          <tasks-widget v-if="showTasksWidget" />
         </div>
         <messaging-modal />
         <login-modal />

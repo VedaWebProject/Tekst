@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { GET, downloadData, type TaskRead } from '@/api';
 import { useTimeoutPoll } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
@@ -6,6 +6,9 @@ import { $t, $te } from '@/i18n';
 
 const tasks = ref<TaskRead[]>([]);
 const { message } = useMessages();
+
+const showTasksWidget = computed(() => tasks.value.length > 0);
+const showTasksList = ref(false);
 
 // configure tasks polling
 const { resume, pause } = useTimeoutPoll(
@@ -81,6 +84,7 @@ const { resume, pause } = useTimeoutPoll(
 export function useTasks() {
   const addTask = (task: TaskRead) => {
     tasks.value.push(task);
+    showTasksList.value = true;
   };
   const removeTask = (id?: string) => {
     if (id) {
@@ -90,5 +94,13 @@ export function useTasks() {
     }
   };
 
-  return { tasks, addTask, removeTask, startTasksPolling: resume, stopTasksPolling: pause };
+  return {
+    tasks,
+    addTask,
+    removeTask,
+    startTasksPolling: resume,
+    stopTasksPolling: pause,
+    showTasksWidget,
+    showTasksList,
+  };
 }
