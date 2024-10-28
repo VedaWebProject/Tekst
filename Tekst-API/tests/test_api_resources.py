@@ -871,7 +871,7 @@ async def test_import_resource_data(
     }
     sample_data_string = json.dumps(sample_data)
 
-    # upload invalid structure definition file (invalid JSON)
+    # upload invalid resource data file (invalid JSON)
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", r"{foo: bar}", "application/json")},
@@ -880,7 +880,7 @@ async def test_import_resource_data(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # fail to upload structure definition file for wrong resource ID
+    # fail to upload resource data file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
@@ -889,7 +889,7 @@ async def test_import_resource_data(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # upload valid structure definition file
+    # upload valid resource data file
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
