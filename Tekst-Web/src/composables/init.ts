@@ -5,7 +5,6 @@ import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { STATIC_PATH } from '@/common';
-import { delay } from '@/utils';
 
 interface InitStep {
   key: string;
@@ -30,7 +29,7 @@ export function useInitializeApp() {
       key: 'pfData',
       info: () => '',
       action: async (success: boolean = true) => {
-        startInit();
+        state.init.loading = true;
         try {
           await loadPlatformData();
           await state.setLocale(localStorage.getItem('locale') || undefined);
@@ -124,31 +123,19 @@ export function useInitializeApp() {
       info: () => $t('init.ready'),
       action: async (success: boolean = true) => {
         state.init.initialized = true;
-        state.init.progress = 1;
-        finishInit(800, 200);
+        state.init.loading = false;
+        state.init.stepMsg = '';
+        state.init.progress = 0;
         return success;
       },
     },
   ];
 
-  function startInit() {
-    state.init.loading = true;
-  }
-
-  async function finishInit(delayMs: number = 0, resetLoadingDataDelayMs: number = 0) {
-    await delay(delayMs);
-    state.init.loading = false;
-    await delay(resetLoadingDataDelayMs);
-    state.init.stepMsg = '';
-    state.init.progress = 0;
-  }
-
   useAsyncQueue(
     initSteps.map((step: InitStep, i: number) => async (success: boolean) => {
       state.init.stepMsg = step.info();
-      state.init.progress = i / initSteps.length;
+      state.init.progress = (i + 1) / initSteps.length;
       state.init.error = state.init.error || success === false;
-      await delay(200); // misdemeanor
       return await step.action(success);
     })
   );
