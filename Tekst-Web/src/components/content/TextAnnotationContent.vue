@@ -210,8 +210,8 @@ function handleTokenContextMenuSelect(key: string | number) {
     const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
     const annos = tokenDetails.value?.annotations
       ? tokenDetails.value.annotations
-          .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
-          .join('; ')
+        .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
+        .join('; ')
       : [];
     tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
   }
@@ -334,7 +334,8 @@ function handleTokenContextMenuSelect(key: string | number) {
   flex-wrap: nowrap;
   border-left: 1px solid var(--main-bg-color);
   padding: 0 8px;
-  transition: outline 0.2s ease;
+  outline-color: transparent;
+  transition: outline-color 0.3s ease-in-out;
 }
 
 .token-container.token-with-annos {
@@ -351,8 +352,7 @@ function handleTokenContextMenuSelect(key: string | number) {
 }
 
 .token-container.token-content-copied {
-  outline: 4px solid var(--col-success);
-  border-radius: var(--border-radius);
+  outline: 2px dashed var(--accent-color-fade2);
 }
 
 .reduced .token-container {
