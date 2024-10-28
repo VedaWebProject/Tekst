@@ -50,6 +50,7 @@ RUN poetry run pip install --upgrade \
 
 # export dependencies as requirements.txt
 RUN poetry export \
+        --without dev \
         --without-hashes \
         --without-urls \
         --format requirements.txt \
