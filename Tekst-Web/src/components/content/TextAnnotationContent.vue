@@ -54,7 +54,7 @@ const tokenDetails = ref<TokenDetails>();
 
 const showTokenContextMenu = ref(false);
 const tokenContextMenuPos = ref({ x: 0, y: 0 });
-const tokenCopyIndex = ref(-1);
+const tokenCopyIndex = ref<string>();
 const tokenCopyContent = ref<string>('');
 const {
   copy: copyTokenContent,
@@ -187,11 +187,11 @@ function handleTokenClick(token: Token) {
   showDetailsModal.value = true;
 }
 
-function handleTokenRightClick(e: MouseEvent, token: Token, tokenIndex: number) {
+function handleTokenRightClick(e: MouseEvent, token: Token, tokenId: string) {
   showTokenContextMenu.value = false;
   if (!isClipboardSupported.value) return;
   tokenDetails.value = token;
-  tokenCopyIndex.value = tokenIndex;
+  tokenCopyIndex.value = tokenId;
   nextTick().then(() => {
     tokenContextMenuPos.value = { x: e.clientX, y: e.clientY };
     showTokenContextMenu.value = true;
@@ -221,18 +221,26 @@ function handleTokenContextMenuSelect(key: string | number) {
 </script>
 
 <template>
-  <div v-for="content in contents" :key="content.id" class="content-container" :class="{ reduced }">
+  <div
+    v-for="(content, contentIndex) in contents"
+    :key="content.id"
+    class="content-container"
+    :class="{ reduced }"
+  >
     <template v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex">
       <div
         class="token-container"
         :class="{
           'token-with-annos': !!token.annotations.length,
           'token-with-comment': !!token.annotations.find((a) => a.key === 'comment'),
-          'token-content-copied': tokenContentCopied && tokenCopyIndex === tokenIndex,
+          'token-content-copied':
+            tokenContentCopied && tokenCopyIndex === `${contentIndex}-${tokenIndex}`,
         }"
         :title="$t('resources.types.textAnnotation.copyHintTip')"
         @click="handleTokenClick(token)"
-        @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, token, tokenIndex)"
+        @contextmenu.prevent.stop="
+          (e) => handleTokenRightClick(e, token, `${contentIndex}-${tokenIndex}`)
+        "
       >
         <div class="token b i" :style="fontStyle">
           {{ token.token }}
