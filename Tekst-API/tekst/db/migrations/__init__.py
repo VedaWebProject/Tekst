@@ -38,15 +38,13 @@ async def _is_migration_pending(db_version: str) -> bool:
     return bool(_MIGRATIONS and Version(db_version) < Version(_MIGRATIONS[-1].version))
 
 
-async def check_db_version(db_version: str, exit_on_fail: bool = True) -> None:
+async def check_db_version(db_version: str) -> None:
     if await _is_migration_pending(db_version):
-        log.critical(
+        log.warning(
             "Found pending DB migrations. "
             "The data in your database might not be compatible with "
             "the currently running version of Tekst. Please run the DB migrations!"
         )
-        if exit_on_fail:
-            exit(1)
 
 
 async def migrate() -> None:

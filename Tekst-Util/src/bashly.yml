@@ -66,8 +66,7 @@ commands:
   examples:
   - tekst-util migration
   - tekst-util migration -c tekst-api-1
-  - tekst-util migration -c tekst-api-1 -f /home/user/tekst-something.backup
-  - tekst-util migration -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+  - tekst-util migration -c tekst-api-1 --dev
 
 - name: index
   help: Create/update search index (MongoDB and ES services must be running)

@@ -212,8 +212,7 @@ tekst_util_migration_usage() {
     printf "%s\n" "Examples:"
     printf "  tekst-util migration\n"
     printf "  tekst-util migration -c tekst-api-1\n"
-    printf "  tekst-util migration -c tekst-api-1 -f /home/user/tekst-something.backup\n"
-    printf "  tekst-util migration -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin\n"
+    printf "  tekst-util migration -c tekst-api-1 --dev\n"
     echo
 
   fi
