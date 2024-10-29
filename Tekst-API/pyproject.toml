@@ -44,7 +44,6 @@ httpx = "^0.27.0"
 asgi-lifespan = "^2.1.0"
 ruff = "^0.7.0"
 pytest-env = "^1.1.1"
-memray = "^1.14.0"
 
 [tool.ruff]
 target-version = "py310"
