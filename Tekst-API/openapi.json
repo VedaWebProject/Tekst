@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.0.1"
+    "version": "0.1.0a0"
   },
   "servers": [
     {
@@ -12412,6 +12412,18 @@
             ],
             "title": "Indicesupdatedat",
             "description": "Time when indices were created"
+          },
+          "dbVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dbversion",
+            "description": "Version of the database"
           }
         },
         "additionalProperties": true,
@@ -12706,20 +12718,6 @@
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
             "optionalNullable": false
-          },
-          "indicesUpdatedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Indicesupdatedat",
-            "description": "Time when indices were created",
-            "optionalNullable": true
           }
         },
         "type": "object",

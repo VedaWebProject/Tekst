@@ -4,6 +4,7 @@ import click
 
 from tekst import db
 from tekst.config import TekstConfig, get_config
+from tekst.db import migrations
 from tekst.openapi import generate_openapi_schema
 from tekst.resources import call_resource_maintenance_hooks, init_resource_types_mgr
 from tekst.search import create_indices_task
@@ -32,17 +33,39 @@ async def _run_resource_maintenance() -> None:
 
 @click.command()
 def setup():
+    """Runs the Tekst initial setup procedure"""
     asyncio.run(app_setup())
 
 
 @click.command()
 def index():
+    """(Re)creates search indices"""
     asyncio.run(_create_indices())
 
 
 @click.command()
 def maintenance():
+    """Runs the resource data maintenance procedure"""
     asyncio.run(_run_resource_maintenance())
+
+
+@click.command()
+@click.option(
+    "--yes",
+    "-y",
+    is_flag=True,
+    help="Answer safety prompts with yes automatically",
+)
+def migration(yes: bool):
+    """Runs the database migration procedure"""
+    if not yes and not click.confirm(
+        "Are you sure you want to run DB migrations?",
+        default=False,
+        abort=True,
+    ):
+        click.echo("Aborting database migration.")
+        return
+    asyncio.run(migrations.migrate())
 
 
 @click.command()
@@ -78,11 +101,19 @@ def maintenance():
     is_flag=True,
     help="Don't output anything (only effective if --to-file flag is not set)",
 )
-def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet: bool):
+def schema(
+    to_file: bool,
+    output_file: str,
+    indent: int,
+    sort_keys: bool,
+    quiet: bool,
+):
     """
     Exports Tekst's OpenAPI schema to a JSON file
-    (Important: The active Tekst environment variables might influence the schema!)
+
+    Important: The active Tekst environment variables might influence the schema!
     """
+    cfg: TekstConfig = get_config()
     schema = asyncio.run(
         generate_openapi_schema(
             to_file=to_file,
@@ -94,7 +125,7 @@ def schema(to_file: bool, output_file: str, indent: int, sort_keys: bool, quiet:
     if to_file and not quiet:
         click.echo(
             f"Saved Tekst "
-            f"({'development' if _cfg.dev_mode else 'production'} mode)"
+            f"({'development' if cfg.dev_mode else 'production'} mode)"
             f" OpenAPI schema to {output_file}."
         )
     if not to_file:
@@ -148,6 +179,7 @@ def cli():
 cli.add_command(setup)
 cli.add_command(index)
 cli.add_command(maintenance)
+cli.add_command(migration)
 cli.add_command(schema)
 cli.add_command(dev)
 

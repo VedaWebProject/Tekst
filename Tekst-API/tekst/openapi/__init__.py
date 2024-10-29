@@ -13,21 +13,21 @@ from tekst.utils import pick_translation
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
-def customize_openapi(app: FastAPI, settings: PlatformState):
+def customize_openapi(app: FastAPI, state: PlatformState):
     def _custom_openapi():
         if not app.openapi_schema:
-            app.openapi_schema = generate_schema(app, settings)
+            app.openapi_schema = generate_schema(app, state)
         return app.openapi_schema
 
     app.openapi = _custom_openapi
 
 
-def generate_schema(app: FastAPI, settings: PlatformState):
+def generate_schema(app: FastAPI, state: PlatformState):
     api_url = urljoin(str(_cfg.server_url), str(_cfg.api_path))
     schema = get_openapi(
-        title=settings.platform_name,
+        title=state.platform_name,
         version=_cfg.tekst["version"],
-        summary=_cfg.api_doc.summary or pick_translation(settings.platform_subtitle),
+        summary=_cfg.api_doc.summary or pick_translation(state.platform_subtitle),
         description=_cfg.api_doc.description,
         routes=app.routes,
         servers=[{"url": api_url}],

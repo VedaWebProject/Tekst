@@ -3998,6 +3998,11 @@ export interface components {
        * @description Time when indices were created
        */
       indicesUpdatedAt?: string | null;
+      /**
+       * Dbversion
+       * @description Version of the database
+       */
+      dbVersion?: string | null;
     } & {
       [key: string]: unknown;
     };
@@ -4098,11 +4103,6 @@ export interface components {
        * @description OSK modes available for use in platform client
        */
       oskModes?: components['schemas']['OskMode'][];
-      /**
-       * Indicesupdatedat
-       * @description Time when indices were created
-       */
-      indicesUpdatedAt?: string | null;
     };
     /**
      * PlatformStats

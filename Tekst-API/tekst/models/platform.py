@@ -7,6 +7,7 @@ from pydantic import Field, StringConstraints
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     LocaleKey,
     ModelBase,
     ModelFactoryMixin,
@@ -251,6 +252,21 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         datetime | None,
         Field(
             description="Time when indices were created",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+    ] = None
+
+    db_version: Annotated[
+        str | None,
+        Field(
+            description="Version of the database",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
         ),
     ] = None
 

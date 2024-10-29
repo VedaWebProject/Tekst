@@ -46,6 +46,7 @@ tasks:
     dotenv: [".env.test"]
     cmds:
       - defer: { task: test-stack-down }
+      - task: install
       - task: test-stack-up
       - task: wait-for-mongodb
       - poetry run coverage run -m pytest {{.CLI_ARGS}}

@@ -10,6 +10,7 @@ from starlette_csrf import CSRFMiddleware
 
 from tekst import db, search
 from tekst.config import TekstConfig, get_config
+from tekst.db import migrations
 from tekst.errors import TekstHTTPException
 from tekst.logs import log
 from tekst.models.platform import PlatformState
@@ -28,21 +29,22 @@ async def startup_routine(app: FastAPI) -> None:
 
     if not _cfg.dev_mode or _cfg.dev.use_db:
         await db.init_odm()
-        settings = await get_state()
+        state = await get_state()
+        await migrations.check_db_version(state.db_version)
     else:
-        settings = PlatformState()
+        state = PlatformState()
 
     if not _cfg.dev_mode or _cfg.dev.use_es:
         await search.init_es_client()
 
-    customize_openapi(app=app, settings=settings)
+    customize_openapi(app=app, state=state)
 
     if not _cfg.email.smtp_server:
         log.warning("No SMTP server configured")  # pragma: no cover
 
     # Hello World!
     log.info(
-        f"{settings.platform_name} ({_cfg.tekst['name']} "
+        f"{state.platform_name} ({_cfg.tekst['name']} "
         f"Server v{_cfg.tekst['version']}) "
         f"running in {'DEVELOPMENT' if _cfg.dev_mode else 'PRODUCTION'} MODE"
     )
