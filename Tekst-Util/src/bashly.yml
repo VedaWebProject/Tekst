@@ -23,7 +23,7 @@ commands:
     default: mongodb://127.0.0.1:27017
   examples:
   - tekst-util backup
-  - tekst-util backup -c tekst-util
+  - tekst-util backup -c tekst-mongo
   - tekst-util backup -c tekst-mongo -f /home/user/tekst-something.backup
   - tekst-util backup -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
 
@@ -49,9 +49,25 @@ commands:
     help: Delete backup file after successful restore
   examples:
   - tekst-util restore
-  - tekst-util restore -c tekst-util
+  - tekst-util restore -c tekst-mongo
   - tekst-util restore -c tekst-mongo -f /home/user/tekst-something.backup
   - tekst-util restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
+
+- name: migration
+  help: Migrate DB data to newer version (MongoDB service must be running)
+  flags:
+  - long: --container-name
+    short: -c
+    help: Tekst-API Docker container name (if using Docker)
+    arg: container
+  - long: --dev
+    short: -d
+    help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
+  examples:
+  - tekst-util migration
+  - tekst-util migration -c tekst-api-1
+  - tekst-util migration -c tekst-api-1 -f /home/user/tekst-something.backup
+  - tekst-util migration -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
 
 - name: index
   help: Create/update search index (MongoDB and ES services must be running)
@@ -65,7 +81,7 @@ commands:
     help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
   examples:
   - tekst-util index
-  - tekst-util index -c tekst-api
+  - tekst-util index -c tekst-api-1
   - tekst-util index --dev
 
 - name: maintenance
@@ -80,5 +96,5 @@ commands:
     help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
   examples:
   - tekst-util maintenance
-  - tekst-util maintenance -c tekst-api
+  - tekst-util maintenance -c tekst-api-1
   - tekst-util maintenance --dev

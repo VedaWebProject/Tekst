@@ -36,6 +36,7 @@ tekst_util_usage() {
   printf "%s\n" "Commands:"
   printf "  %s   Create DB backup (MongoDB service must be running)\n" "backup     "
   printf "  %s   Restore DB backup (MongoDB service must be running)\n" "restore    "
+  printf "  %s   Migrate DB data to newer version (MongoDB service must be running)\n" "migration  "
   printf "  %s   Create/update search index (MongoDB and ES services must be running)\n" "index      "
   printf "  %s   Run resource maintenance routines (MongoDB service must be running)\n" "maintenance"
   echo
@@ -102,7 +103,7 @@ tekst_util_backup_usage() {
     # :command.usage_examples
     printf "%s\n" "Examples:"
     printf "  tekst-util backup\n"
-    printf "  tekst-util backup -c tekst-util\n"
+    printf "  tekst-util backup -c tekst-mongo\n"
     printf "  tekst-util backup -c tekst-mongo -f /home/user/tekst-something.backup\n"
     printf "  tekst-util backup -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin\n"
     echo
@@ -162,9 +163,57 @@ tekst_util_restore_usage() {
     # :command.usage_examples
     printf "%s\n" "Examples:"
     printf "  tekst-util restore\n"
-    printf "  tekst-util restore -c tekst-util\n"
+    printf "  tekst-util restore -c tekst-mongo\n"
     printf "  tekst-util restore -c tekst-mongo -f /home/user/tekst-something.backup\n"
     printf "  tekst-util restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+tekst_util_migration_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "tekst-util migration - Migrate DB data to newer version (MongoDB service must be running)\n"
+    echo
+
+  else
+    printf "tekst-util migration - Migrate DB data to newer version (MongoDB service must be running)\n"
+    echo
+
+  fi
+
+  printf "%s\n" "Usage:"
+  printf "  tekst-util migration [OPTIONS]\n"
+  printf "  tekst-util migration --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--container-name, -c CONTAINER"
+    printf "    Tekst-API Docker container name (if using Docker)\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--dev, -d"
+    printf "    Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)\n"
+    echo
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  tekst-util migration\n"
+    printf "  tekst-util migration -c tekst-api-1\n"
+    printf "  tekst-util migration -c tekst-api-1 -f /home/user/tekst-something.backup\n"
+    printf "  tekst-util migration -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin\n"
     echo
 
   fi
@@ -210,7 +259,7 @@ tekst_util_index_usage() {
     # :command.usage_examples
     printf "%s\n" "Examples:"
     printf "  tekst-util index\n"
-    printf "  tekst-util index -c tekst-api\n"
+    printf "  tekst-util index -c tekst-api-1\n"
     printf "  tekst-util index --dev\n"
     echo
 
@@ -257,7 +306,7 @@ tekst_util_maintenance_usage() {
     # :command.usage_examples
     printf "%s\n" "Examples:"
     printf "  tekst-util maintenance\n"
-    printf "  tekst-util maintenance -c tekst-api\n"
+    printf "  tekst-util maintenance -c tekst-api-1\n"
     printf "  tekst-util maintenance --dev\n"
     echo
 
@@ -390,6 +439,25 @@ tekst_util_restore_command() {
 }
 
 # :command.function
+tekst_util_migration_command() {
+  # src/migration_command.sh
+  container=${args[--container-name]}
+  dev=${args[--dev]}
+
+  # if in dev mode, run python using poetry's virtual env
+  [[ $dev ]] && run_python="poetry run python" || run_python="python"
+
+  if [[ $container ]]; then
+      docker exec -e TEKST_DEV_MODE=$dev -i $container $run_python -m tekst migration -y
+  else
+      cd_to_script_parent_dir
+      cd ../Tekst-API
+      TEKST_DEV_MODE=$dev $run_python -m tekst migration -y
+  fi
+
+}
+
+# :command.function
 tekst_util_index_command() {
   # src/index_command.sh
   container=${args[--container-name]}
@@ -467,6 +535,13 @@ parse_requirements() {
       action="restore"
       shift
       tekst_util_restore_parse_requirements "$@"
+      shift $#
+      ;;
+
+    migration)
+      action="migration"
+      shift
+      tekst_util_migration_parse_requirements "$@"
       shift $#
       ;;
 
@@ -707,6 +782,71 @@ tekst_util_restore_parse_requirements() {
 }
 
 # :command.parse_requirements
+tekst_util_migration_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        tekst_util_migration_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="migration"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --container-name | -c)
+
+        # :flag.case_arg
+        if [[ -n ${2+x} ]]; then
+          args['--container-name']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--container-name requires an argument: --container-name, -c CONTAINER" >&2
+          exit 1
+        fi
+        ;;
+
+      # :flag.case
+      --dev | -d)
+
+        # :flag.case_no_arg
+        args['--dev']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
 tekst_util_index_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
@@ -857,6 +997,7 @@ run() {
   case "$action" in
     "backup") tekst_util_backup_command ;;
     "restore") tekst_util_restore_command ;;
+    "migration") tekst_util_migration_command ;;
     "index") tekst_util_index_command ;;
     "maintenance") tekst_util_maintenance_command ;;
   esac
