@@ -47,7 +47,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.mergewith": "^4.6.9",
-    "@types/node": "^20.11.10",
+    "@types/node": "^22.0.0",
     "@vicons/material": "^0.12.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/eslint-config-prettier": "^10.0.0",
