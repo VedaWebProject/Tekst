@@ -20,12 +20,12 @@ async def app_setup():
     await db.init_odm()
 
     cfg: TekstConfig = get_config()
-    state: PlatformStateDocument = await get_state()
 
     # insert sample data if DB collections are empty
     inserted_sample_data: bool = await insert_sample_data()
 
     # check for pending migrations
+    state: PlatformStateDocument = await get_state()
     if state.db_version and not inserted_sample_data:
         await migrations.check_db_version(state.db_version)
     else:
