@@ -1,3 +1,5 @@
+import asyncio
+
 from collections.abc import Callable
 from dataclasses import dataclass
 from importlib import import_module
@@ -44,12 +46,20 @@ async def check_db_version(db_version: str, auto_migrate: bool = False) -> None:
             log.warning("Found pending DB migrations.")
             await migrate()
         else:
+            # log a critical message and check again every minute for one hour to
+            # give time to run the migrations in the background, then repeat
             log.critical(
                 "Found pending DB migrations. "
                 "The data in your database might not be compatible with "
                 "the currently running version of Tekst. Please run the DB migrations!"
             )
-            exit(1)
+            for i in range(60):
+                if await _is_migration_pending(db_version):
+                    await asyncio.sleep(60)
+                else:
+                    break
+            else:
+                await check_db_version(db_version, auto_migrate=auto_migrate)
 
 
 async def migrate() -> None:
