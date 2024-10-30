@@ -134,7 +134,7 @@ whenever(ctrlEnter, () => {
         />
         <n-button
           type="primary"
-          :title="$t('account.messages.btnSend')"
+          :title="`${$t('account.messages.btnSend')} (${$t('general.ctrlEnter')})`"
           :loading="loadingSend"
           :disabled="
             loadingSend || !messageInput || messageInput.length < 1 || !userMessages.openThread?.id

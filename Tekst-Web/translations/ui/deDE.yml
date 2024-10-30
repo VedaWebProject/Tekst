@@ -53,6 +53,7 @@ general:
   tekstFooterHint: Diese Website basiert auf
   takeAWhile: Dies kann einen Moment dauern.
   msgExportStarted: Ihr Export wird im Hintergrund vorbereitet. Der Download startet, sobald er bereit ist.
+  ctrlEnter: Strg+Enter
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen

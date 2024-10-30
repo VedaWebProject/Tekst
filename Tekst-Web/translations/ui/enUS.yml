@@ -51,6 +51,7 @@ general:
   tekstFooterHint: This website is based on
   takeAWhile: This might take a while.
   msgExportStarted: Your export is being prepared in the background. The download will start as soon as it is ready.
+  ctrlEnter: Ctrl+Enter
 
 i18n:
   tipSwitcher: Choose language for user interface

@@ -28,6 +28,7 @@ import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceS
 import { useMessages } from '@/composables/messages';
 import { pickTranslation } from '@/utils';
 import { usePlatformData } from '@/composables/platformData';
+import { useMagicKeys, whenever } from '@vueuse/core';
 
 interface AdvancedSearchFormModelItem extends ResourceSearchQuery {
   resource?: AnyResourceRead;
@@ -166,6 +167,13 @@ watch(
   },
   { immediate: true }
 );
+
+// search on Ctrl+Enter
+const keys = useMagicKeys();
+const ctrlEnter = keys['Ctrl+Enter'];
+whenever(ctrlEnter, () => {
+  handleSearch();
+});
 </script>
 
 <template>
@@ -282,6 +290,7 @@ watch(
   <button-shelf v-if="!!resources.all.length" top-gap>
     <n-button
       type="primary"
+      :title="`${$t('search.searchAction')} (${$t('general.ctrlEnter')})`"
       :disabled="!formModel.queries.length"
       @click.stop.prevent="handleSearch"
     >
