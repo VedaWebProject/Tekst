@@ -31,8 +31,6 @@ function handleUpdate(field: string, value: unknown) {
 </script>
 
 <template>
-  <h4>{{ $t('resources.settings.config.common.heading') }}</h4>
-
   <!-- CATEGORY -->
   <n-form-item :label="$t('resources.settings.config.common.category')">
     <n-select

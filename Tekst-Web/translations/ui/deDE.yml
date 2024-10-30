@@ -369,7 +369,6 @@ models:
 
 resources:
   heading: Ressourcen
-  headingBasic: Basisinformationen
   msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
   versionOf: Version von "{title}"
   unknownOriginal: Unbekannte Original-Ressource
@@ -452,7 +451,6 @@ resources:
       heading: Konfiguration
       enabled: Aktiv
       common:
-        heading: Allgemein
         category: Kategorie
         catUnlabelled: unbeschriftet
         sortOrder: Sortierreihenfolge

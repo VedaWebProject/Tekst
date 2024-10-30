@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { AnyResourceConfig } from '@/api';
 import { generalConfigFormItems, specialConfigFormItems } from '@/forms/resources/config/mappings';
-import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
 
 defineProps<{
   resourceType: string;
   loading?: boolean;
 }>();
 
-const model = defineModel<AnyResourceConfig>({ default: {} });
+const model = defineModel<AnyResourceConfig>({ required: true });
 
 function handleUpdateGeneralConfig(field: string, value: unknown) {
   model.value = {
@@ -29,19 +28,6 @@ function handleUpdateSpecialConfig(field: string, value: unknown) {
 </script>
 
 <template>
-  <h3>{{ $t('resources.settings.config.heading') }}</h3>
-
-  <!-- COMMON RESOURCE CONFIG -->
-  <common-resource-config-form-items
-    v-if="model?.common"
-    :model-value="model.common"
-    @update:model-value="(u: any) => (model = { ...model, common: u })"
-  />
-
-  <!-- GENERAL RESOURCE TYPE-SPECIFIC CONFIG -->
-  <h4>
-    {{ $t('resources.types.' + resourceType + '.label') }}
-  </h4>
   <h5>
     {{ $t('general.general') }}
   </h5>

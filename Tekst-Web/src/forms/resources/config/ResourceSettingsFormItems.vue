@@ -13,13 +13,14 @@ import { useAuthStore } from '@/stores';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { computed, h, ref, type VNodeChild } from 'vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import ResourceConfigFormItems from '@/forms/resources/config/ResourceConfigFormItems.vue';
+import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
+import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialResourceConfigFormItems.vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import {
   NSelect,
   NIcon,
-  NDivider,
+  NTabs,
+  NTabPane,
   NDynamicInput,
   NFormItem,
   NTag,
@@ -29,7 +30,6 @@ import {
 } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { UserIcon, TranslateIcon } from '@/icons';
-import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = defineProps<{
   owner?: UserRead | UserReadPublic | null;
@@ -155,171 +155,176 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 </script>
 
 <template>
-  <h3>{{ $t('resources.headingBasic') }}</h3>
-
-  <!-- TITLE -->
-  <translation-form-item
-    :model-value="model.title"
-    parent-form-path-prefix="title"
-    :main-form-label="$t('models.resource.title')"
-    :translation-form-label="$t('models.resource.title')"
-    :translation-form-rule="resourceSettingsFormRules.titleTranslation"
-    @update:model-value="(v) => handleUpdate('title', v)"
-  />
-
-  <!-- DESCRIPTION -->
-  <translation-form-item
-    :model-value="model.description"
-    parent-form-path-prefix="description"
-    :main-form-label="$t('models.resource.description')"
-    :translation-form-label="$t('models.resource.description')"
-    :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
-    @update:model-value="(v) => handleUpdate('description', v)"
-  />
-
-  <!-- CITATION -->
-  <n-form-item path="citation" :label="$t('models.resource.citation')">
-    <n-input
-      :value="model.citation"
-      type="text"
-      :placeholder="$t('models.resource.citation')"
-      @keydown.enter.prevent
-      @update:value="(v) => handleUpdate('citation', v)"
-    />
-  </n-form-item>
-
-  <!-- COMMENT -->
-  <translation-form-item
-    :model-value="model.comment"
-    parent-form-path-prefix="comment"
-    multiline
-    :max-translation-length="2000"
-    :main-form-label="$t('general.comment')"
-    :translation-form-label="$t('general.comment')"
-    :translation-form-rule="resourceSettingsFormRules.commentTranslation"
-    @update:model-value="(v) => handleUpdate('comment', v)"
-  />
-
-  <!-- METADATA -->
-  <template v-if="model.meta">
-    <n-divider />
-    <icon-heading level="3">
-      {{ $t('models.meta.modelLabel') }}
-      <help-button-widget help-key="metadataForm" />
-    </icon-heading>
-    <n-form-item :show-label="false" :show-feedback="false">
-      <n-dynamic-input
-        :value="model.meta"
-        :min="0"
-        :max="64"
-        @create="() => ({ key: '', value: '' })"
-        @update:value="(v) => handleUpdate('meta', v)"
-      >
-        <template #default="{ index, value: metaEntryValue }">
-          <n-flex align="flex-start" wrap style="flex-grow: 2">
-            <n-form-item
-              ignore-path-change
-              :show-label="false"
-              :path="`meta[${index}].key`"
-              :rule="resourceSettingsFormRules.metaKey"
-              style="flex-grow: 1; min-width: 100px"
-              required
-            >
-              <n-select
-                v-model:value="metaEntryValue.key"
-                filterable
-                tag
-                clearable
-                :options="metadataKeysOptions"
-              />
-            </n-form-item>
-            <n-form-item
-              ignore-path-changechange
-              :show-label="false"
-              :path="`meta[${index}].value`"
-              :rule="resourceSettingsFormRules.metaValue"
-              style="flex-grow: 2; min-width: 100px"
-              required
-            >
-              <n-input
-                v-model:value="metaEntryValue.value"
-                :placeholder="$t('models.meta.value')"
-                @keydown.enter.prevent
-              />
-            </n-form-item>
-          </n-flex>
-        </template>
-        <template #action="{ index: indexAction, create, remove, move }">
-          <dynamic-input-controls
-            :move-up-disabled="indexAction === 0"
-            :move-down-disabled="indexAction === model.meta.length - 1"
-            :insert-disabled="model.meta.length >= 64"
-            @move-up="() => move('up', indexAction)"
-            @move-down="() => move('down', indexAction)"
-            @remove="() => remove(indexAction)"
-            @insert="() => create(indexAction)"
-          />
-        </template>
-      </n-dynamic-input>
-    </n-form-item>
-  </template>
-
-  <!-- CONFIG -->
-  <template v-if="model.config">
-    <n-divider />
-    <resource-config-form-items
-      :model-value="model.config"
-      :resource-type="model.resourceType"
-      @update:model-value="(v: AnyResourceConfig) => handleUpdate('config', v)"
-    />
-  </template>
-
-  <!-- ACCESS SHARES -->
-  <template v-if="sharingAuthorized && model.sharedRead && model.sharedWrite">
-    <n-divider />
-    <h3>{{ $t('models.resource.share') }}</h3>
-    <div v-if="public" class="text-tiny mb-md" style="color: var(--col-error)">
-      {{ $t('resources.settings.onlyForUnpublished') }}
-    </div>
-    <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">
-      <n-select
-        :value="model.sharedRead"
-        multiple
-        filterable
-        clearable
-        remote
-        clear-filter-after-select
-        :disabled="!sharingAuthorized || public"
-        :max-tag-count="64"
-        :render-label="renderUserSelectLabel"
-        :render-tag="renderUserSelectTag"
-        :loading="loadingUsers"
-        :status="errorUsers ? 'error' : undefined"
-        :options="usersOptionsRead"
-        :placeholder="$t('resources.phSearchUsers')"
-        @update:value="(v) => handleSharesUpdate('sharedRead', v)"
-        @search="handleUserSearch"
+  <n-tabs type="card" size="small" tab-style="font-size: var(--font-size-small)" pane-class="mt-md">
+    <!-- GENERAL -->
+    <n-tab-pane :tab="$t('general.general')" name="general">
+      <!-- TITLE -->
+      <translation-form-item
+        :model-value="model.title"
+        parent-form-path-prefix="title"
+        :main-form-label="$t('models.resource.title')"
+        :translation-form-label="$t('models.resource.title')"
+        :translation-form-rule="resourceSettingsFormRules.titleTranslation"
+        @update:model-value="(v) => handleUpdate('title', v)"
       />
-    </n-form-item>
-    <n-form-item path="sharedWrite" :label="$t('models.resource.sharedWrite')">
-      <n-select
-        :value="model.sharedWrite"
-        multiple
-        filterable
-        clearable
-        remote
-        clear-filter-after-select
-        :disabled="!sharingAuthorized || public"
-        :max-tag-count="64"
-        :render-label="renderUserSelectLabel"
-        :render-tag="renderUserSelectTag"
-        :loading="loadingUsers"
-        :status="errorUsers ? 'error' : undefined"
-        :options="usersOptionsWrite"
-        :placeholder="$t('resources.phSearchUsers')"
-        @update:value="(v) => handleSharesUpdate('sharedWrite', v)"
-        @search="handleUserSearch"
+
+      <!-- DESCRIPTION -->
+      <translation-form-item
+        :model-value="model.description"
+        parent-form-path-prefix="description"
+        :main-form-label="$t('models.resource.description')"
+        :translation-form-label="$t('models.resource.description')"
+        :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
+        @update:model-value="(v) => handleUpdate('description', v)"
       />
-    </n-form-item>
-  </template>
+
+      <!-- CITATION -->
+      <n-form-item path="citation" :label="$t('models.resource.citation')">
+        <n-input
+          :value="model.citation"
+          type="text"
+          :placeholder="$t('models.resource.citation')"
+          @keydown.enter.prevent
+          @update:value="(v) => handleUpdate('citation', v)"
+        />
+      </n-form-item>
+
+      <!-- COMMENT -->
+      <translation-form-item
+        :model-value="model.comment"
+        parent-form-path-prefix="comment"
+        multiline
+        :max-translation-length="2000"
+        :main-form-label="$t('general.comment')"
+        :translation-form-label="$t('general.comment')"
+        :translation-form-rule="resourceSettingsFormRules.commentTranslation"
+        @update:model-value="(v) => handleUpdate('comment', v)"
+      />
+
+      <!-- METADATA -->
+      <n-form-item :label="$t('models.meta.modelLabel')" :show-feedback="false">
+        <n-dynamic-input
+          :value="model.meta"
+          :min="0"
+          :max="64"
+          @create="() => ({ key: '', value: '' })"
+          @update:value="(v) => handleUpdate('meta', v)"
+        >
+          <template #default="{ index, value: metaEntryValue }">
+            <n-flex align="flex-start" wrap style="flex-grow: 2">
+              <n-form-item
+                ignore-path-change
+                :show-label="false"
+                :path="`meta[${index}].key`"
+                :rule="resourceSettingsFormRules.metaKey"
+                style="flex-grow: 1; min-width: 100px"
+                required
+              >
+                <n-select
+                  v-model:value="metaEntryValue.key"
+                  filterable
+                  tag
+                  clearable
+                  :options="metadataKeysOptions"
+                />
+              </n-form-item>
+              <n-form-item
+                ignore-path-changechange
+                :show-label="false"
+                :path="`meta[${index}].value`"
+                :rule="resourceSettingsFormRules.metaValue"
+                style="flex-grow: 2; min-width: 100px"
+                required
+              >
+                <n-input
+                  v-model:value="metaEntryValue.value"
+                  :placeholder="$t('models.meta.value')"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+            </n-flex>
+          </template>
+          <template #action="{ index: indexAction, create, remove, move }">
+            <dynamic-input-controls
+              :move-up-disabled="indexAction === 0"
+              :move-down-disabled="indexAction === model.meta.length - 1"
+              :insert-disabled="model.meta.length >= 64"
+              @move-up="() => move('up', indexAction)"
+              @move-down="() => move('down', indexAction)"
+              @remove="() => remove(indexAction)"
+              @insert="() => create(indexAction)"
+            />
+          </template>
+        </n-dynamic-input>
+      </n-form-item>
+    </n-tab-pane>
+
+    <!-- RESOURCE COMMON CONFIG -->
+    <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
+      <common-resource-config-form-items
+        :model-value="model.config.common"
+        @update:model-value="(u: any) => (model = { ...model, common: u })"
+      />
+    </n-tab-pane>
+
+    <!-- RESOURCE SPECIAL CONFIG -->
+    <n-tab-pane
+      :tab="$t('resources.types.' + model.resourceType + '.label')"
+      name="configTypeSpecific"
+    >
+      <!-- RESOURCE COMMON CONFIG -->
+      <special-resource-config-form-items
+        :model-value="model.config"
+        :resource-type="model.resourceType"
+        @update:model-value="(v: AnyResourceConfig) => handleUpdate('config', v)"
+      />
+    </n-tab-pane>
+
+    <!-- ACCESS SHARES -->
+    <n-tab-pane v-if="sharingAuthorized" :tab="$t('models.resource.share')" name="access">
+      <div v-if="public" class="text-tiny mb-md" style="color: var(--col-error)">
+        {{ $t('resources.settings.onlyForUnpublished') }}
+      </div>
+      <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">
+        <n-select
+          :value="model.sharedRead"
+          multiple
+          filterable
+          clearable
+          remote
+          clear-filter-after-select
+          :disabled="!sharingAuthorized || public"
+          :max-tag-count="64"
+          :render-label="renderUserSelectLabel"
+          :render-tag="renderUserSelectTag"
+          :loading="loadingUsers"
+          :status="errorUsers ? 'error' : undefined"
+          :options="usersOptionsRead"
+          :placeholder="$t('resources.phSearchUsers')"
+          @update:value="(v) => handleSharesUpdate('sharedRead', v)"
+          @search="handleUserSearch"
+        />
+      </n-form-item>
+      <n-form-item path="sharedWrite" :label="$t('models.resource.sharedWrite')">
+        <n-select
+          :value="model.sharedWrite"
+          multiple
+          filterable
+          clearable
+          remote
+          clear-filter-after-select
+          :disabled="!sharingAuthorized || public"
+          :max-tag-count="64"
+          :render-label="renderUserSelectLabel"
+          :render-tag="renderUserSelectTag"
+          :loading="loadingUsers"
+          :status="errorUsers ? 'error' : undefined"
+          :options="usersOptionsWrite"
+          :placeholder="$t('resources.phSearchUsers')"
+          @update:value="(v) => handleSharesUpdate('sharedWrite', v)"
+          @search="handleUserSearch"
+        />
+      </n-form-item>
+    </n-tab-pane>
+  </n-tabs>
 </template>

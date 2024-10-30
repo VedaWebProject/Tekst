@@ -8,7 +8,7 @@ import { useMessages } from '@/composables/messages';
 import { computed, ref, watch } from 'vue';
 import _cloneDeep from 'lodash.clonedeep';
 import { RouterLink } from 'vue-router';
-import { NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
+import { NDivider, NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useModelChanges } from '@/composables/modelChanges';
 import { useRoute } from 'vue-router';
@@ -141,7 +141,9 @@ async function handleSaveClick() {
         />
       </n-form>
 
-      <button-shelf top-gap>
+      <n-divider />
+
+      <button-shelf>
         <n-button secondary :disabled="!changed" @click="handleResetClick">
           {{ $t('general.resetAction') }}
         </n-button>
