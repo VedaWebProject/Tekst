@@ -34,17 +34,22 @@ _MIGRATIONS = _list_migrations()
 async def _is_migration_pending(db_version: str) -> bool:
     if db_version is None:
         log.error("No DB version found. Has setup been run?")
-        return
+        return False
     return bool(_MIGRATIONS and Version(db_version) < Version(_MIGRATIONS[-1].version))
 
 
-async def check_db_version(db_version: str) -> None:
+async def check_db_version(db_version: str, auto_migrate: bool = False) -> None:
     if await _is_migration_pending(db_version):
-        log.warning(
-            "Found pending DB migrations. "
-            "The data in your database might not be compatible with "
-            "the currently running version of Tekst. Please run the DB migrations!"
-        )
+        if auto_migrate:
+            log.warning("Found pending DB migrations.")
+            await migrate()
+        else:
+            log.critical(
+                "Found pending DB migrations. "
+                "The data in your database might not be compatible with "
+                "the currently running version of Tekst. Please run the DB migrations!"
+            )
+            exit(1)
 
 
 async def migrate() -> None:

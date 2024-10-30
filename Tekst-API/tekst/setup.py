@@ -27,7 +27,10 @@ async def app_setup():
     # check for pending migrations
     state: PlatformStateDocument = await get_state()
     if state.db_version and not inserted_sample_data:
-        await migrations.check_db_version(state.db_version)
+        await migrations.check_db_version(
+            db_version=state.db_version,
+            auto_migrate=cfg.auto_migrate,
+        )
     else:
         # set app version the DB data is based on in platform state
         state = await update_state(db_version=cfg.tekst["version"])

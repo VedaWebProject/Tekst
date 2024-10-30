@@ -30,7 +30,10 @@ async def startup_routine(app: FastAPI) -> None:
     if not _cfg.dev_mode or _cfg.dev.use_db:
         await db.init_odm()
         state = await get_state()
-        await migrations.check_db_version(state.db_version)
+        await migrations.check_db_version(
+            db_version=state.db_version,
+            auto_migrate=_cfg.auto_migrate,
+        )
     else:
         state = PlatformState()
 

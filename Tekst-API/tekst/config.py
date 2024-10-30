@@ -324,6 +324,7 @@ class TekstConfig(BaseSettings):
 
     dev_mode: bool = False
     log_level: str = "warning"
+    auto_migrate: bool = False
 
     temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
 
