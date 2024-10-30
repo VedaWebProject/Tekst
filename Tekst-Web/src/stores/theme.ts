@@ -1,6 +1,6 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
 import _mergeWith from 'lodash.mergewith';
-import Color from 'color';
+import { transparentize, lighten, saturate, adjustHue, toRgba } from 'color2k';
 import { computed, ref, watch } from 'vue';
 import { useStateStore } from '@/stores';
 import { lightTheme, darkTheme } from 'naive-ui';
@@ -72,26 +72,25 @@ export const useThemeStore = defineStore('theme', () => {
   const theme = computed(() => (darkMode.value ? darkTheme : lightTheme));
   const mainBgColor = computed(() => (darkMode.value ? '#ffffff10' : '#00000010'));
   const contentBgColor = computed(() => (darkMode.value ? '#00000044' : '#ffffffcc'));
+  const messageBgColor = computed(() => (darkMode.value ? '#232323' : '#ffffff'));
 
   function generateAccentColorVariants(
     baseColor: string = state.text?.accentColor || '#7A7A7A',
     dark: boolean = darkMode.value
   ) {
-    const lighten = dark ? 0.8 : 0.0;
-    const baseStatic = Color(baseColor);
-    const base = baseStatic.lighten(lighten);
+    const lightenBy = dark ? 0.375 : 0.0;
+    const baseStatic = baseColor;
+    const base = lighten(baseColor, lightenBy);
     return {
-      base: base.hex(),
-      fade1: base.fade(0.2).hexa(),
-      fade2: base.fade(0.4).hexa(),
-      fade3: base.fade(0.6).hexa(),
-      fade4: base.fade(0.8).hexa(),
-      fade5: base.fade(0.9).hexa(),
-      light: base.lighten(0.1).hex(),
-      lighter: base.lighten(0.2).hex(),
-      // this is supposed to create an attention-boosting UI highlight color that
-      // complements eacht text's accent color, normalized in saturation and lightness
-      spotlight: baseStatic.saturate(9999).desaturate(0.3).rotate(180).lightness(85).hex(),
+      base: toRgba(base),
+      fade1: toRgba(transparentize(base, 0.2)),
+      fade2: toRgba(transparentize(base, 0.4)),
+      fade3: toRgba(transparentize(base, 0.6)),
+      fade4: toRgba(transparentize(base, 0.8)),
+      fade5: toRgba(transparentize(base, 0.9)),
+      // this is supposed to create an attention-grabbing UI highlight color that
+      // complements each text's accent color
+      spotlight: toRgba(lighten(adjustHue(saturate(baseStatic, 0.3), 180), 0.45)),
     };
   }
 
@@ -117,17 +116,16 @@ export const useThemeStore = defineStore('theme', () => {
   );
 
   const overrides = computed(() => {
-    const primaryColorHex = accentColors.value.base;
+    const primary = toRgba(accentColors.value.base);
     const baseOverrides = darkMode.value ? darkOverrides : lightOverrides;
-    const primaryColor = Color(primaryColorHex);
     return {
       ...baseOverrides,
       common: {
         ...baseOverrides.common,
-        primaryColor: primaryColorHex,
-        primaryColorHover: primaryColor.lighten(0.1).saturate(0.15).hex(),
-        primaryColorPressed: primaryColor.lighten(0.3).hex(),
-        primaryColorSuppl: primaryColorHex,
+        primaryColor: primary,
+        primaryColorHover: toRgba(lighten(primary, 0.075)),
+        primaryColorPressed: toRgba(saturate(lighten(primary, 0.2), 0.1)),
+        primaryColorSuppl: primary,
       },
     };
   });
@@ -140,6 +138,7 @@ export const useThemeStore = defineStore('theme', () => {
     overrides,
     mainBgColor,
     contentBgColor,
+    messageBgColor,
     generateAccentColorVariants,
     getAccentColors,
     accentColors,

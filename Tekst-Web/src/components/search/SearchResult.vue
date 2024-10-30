@@ -2,7 +2,7 @@
 import type { SearchHit, TextRead } from '@/api';
 import { TextsIcon } from '@/icons';
 import { BookIcon, StarHalfIcon, LevelsIcon } from '@/icons';
-import Color from 'color';
+import { transparentize } from 'color2k';
 import { NListItem, NTag, NIcon, NFlex } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -24,7 +24,7 @@ const props = defineProps<{
 }>();
 export type SearchResultProps = typeof props;
 
-const textTagColor = computed(() => Color(props.textColor).fade(0.8).rgb().string());
+const textTagColor = computed(() => transparentize(props.textColor, 0.8));
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
 );

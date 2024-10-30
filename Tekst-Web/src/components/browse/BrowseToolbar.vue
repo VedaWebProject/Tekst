@@ -3,14 +3,13 @@ import { ref, onMounted, computed, nextTick } from 'vue';
 import { NButton, NBadge, NIcon, NFlex } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore, useThemeStore, useSearchStore } from '@/stores';
+import { useBrowseStore, useStateStore, useSearchStore } from '@/stores';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
-const theme = useThemeStore();
 
 const affixRef = ref();
 const resourcesCount = computed(
@@ -78,7 +77,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :size="buttonSize"
             :title="$t('browse.toolbar.tipReducedView')"
             :focusable="false"
-            :color="browse.reducedView ? theme.accentColors.lighter : undefined"
+            :color="browse.reducedView ? '#fff5' : undefined"
             :bordered="false"
             @click="browse.reducedView = !browse.reducedView"
           >

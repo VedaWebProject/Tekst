@@ -1,34 +1,20 @@
 <script setup lang="ts">
-import { NAlert, useThemeVars, type MessageType } from 'naive-ui';
-import Color from 'color';
+import { NAlert, type MessageType } from 'naive-ui';
 
 defineProps<{
   closable: boolean;
   onClose?: () => void;
   type: MessageType;
 }>();
-
-const themeVars = useThemeVars();
 </script>
 
 <template>
-  <div
-    :style="{
-      backgroundColor: Color(themeVars.bodyColor).lighten(0.8).hex(),
-      borderRadius: themeVars.borderRadius,
-    }"
-  >
+  <div class="global-msg-container">
     <n-alert
       :closable="closable"
       :on-close="onClose"
       :type="type === 'loading' ? 'default' : type"
-      :style="{
-        boxShadow: 'var(--n-box-shadow)',
-        maxWidth: 'calc(100vw - 32px)',
-        width: '512px',
-        lineHeight: '1.5rem',
-        paddingRight: '36px',
-      }"
+      class="global-msg-alert"
     >
       <div class="text-small" style="margin: -5px 0">
         <slot></slot>
@@ -36,3 +22,17 @@ const themeVars = useThemeVars();
     </n-alert>
   </div>
 </template>
+
+<style scoped>
+.global-msg-container {
+  background-color: #232323;
+}
+
+.global-msg-alert {
+  box-shadow: var(--n-box-shadow);
+  max-width: calc(100vw - 32px);
+  width: 512px;
+  line-height: 1.5rem;
+  padding-right: 36px;
+}
+</style>
