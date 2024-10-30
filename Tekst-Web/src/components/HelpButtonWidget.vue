@@ -31,8 +31,8 @@ const helpText = ref<HelpText>();
 const buttonStyle = computed(() => ({
   alignSelf: 'center',
   verticalAlign: 'center',
-  marginLeft: props.gapLeft ? 'var(--gap-md)' : undefined,
-  marginRight: props.gapRight ? 'var(--gap-md)' : undefined,
+  marginLeft: props.gapLeft ? 'var(--gap-sm)' : undefined,
+  marginRight: props.gapRight ? 'var(--gap-sm)' : undefined,
 }));
 
 async function loadHelp() {
