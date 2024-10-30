@@ -26,6 +26,7 @@ defineProps<{
 <style scoped>
 .global-msg-container {
   background-color: #232323;
+  border-radius: var(--border-radius);
 }
 
 .global-msg-alert {
