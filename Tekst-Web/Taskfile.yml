@@ -58,6 +58,7 @@ tasks:
   build:
     desc: Build project
     cmds:
+      - npm install
       - npm run build
 
   api-schema:
