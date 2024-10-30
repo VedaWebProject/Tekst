@@ -4,7 +4,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { RefreshIcon, DeleteIcon, MaintenanceIcon, UpdateIcon } from '@/icons';
-import { NCollapse, NCollapseItem, NTime, NButton, NIcon, NTable } from 'naive-ui';
+import { NTabs, NTabPane, NTime, NButton, NIcon, NTable } from 'naive-ui';
 import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { onBeforeMount, ref } from 'vue';
@@ -129,29 +129,32 @@ onBeforeMount(() => {
   </icon-heading>
 
   <div class="content-block">
-    <!-- SEARCH INDICES -->
-    <n-collapse default-expanded-names="1" accordion>
-      <n-collapse-item :title="$t('admin.system.maintenance.indices.heading')" name="1">
+    <n-tabs
+      type="card"
+      size="small"
+      tab-style="font-size: var(--font-size-small)"
+      pane-class="mt-md"
+    >
+      <!-- SEARCH INDICES -->
+      <n-tab-pane :tab="$t('admin.system.maintenance.indices.heading')" name="1">
         <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="indicesInfoLoading"
-              :loading="indicesInfoLoading"
-              @click="loadIndexInfo"
-            >
-              <template #icon>
-                <n-icon :component="RefreshIcon" />
-              </template>
-              {{ $t('general.refreshAction') }}
-            </n-button>
-            <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
-              <template #icon>
-                <n-icon :component="UpdateIcon" />
-              </template>
-              {{ $t('admin.system.maintenance.indices.actionCreate') }}
-            </n-button>
-          </template>
+          <n-button
+            secondary
+            :disabled="indicesInfoLoading"
+            :loading="indicesInfoLoading"
+            @click="loadIndexInfo"
+          >
+            <template #icon>
+              <n-icon :component="RefreshIcon" />
+            </template>
+            {{ $t('general.refreshAction') }}
+          </n-button>
+          <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
+            <template #icon>
+              <n-icon :component="UpdateIcon" />
+            </template>
+            {{ $t('admin.system.maintenance.indices.actionCreate') }}
+          </n-button>
         </button-shelf>
 
         <n-table
@@ -208,66 +211,62 @@ onBeforeMount(() => {
             </tr>
           </template>
         </n-table>
-      </n-collapse-item>
+      </n-tab-pane>
 
       <!-- RESOURCE MAINTENANCE -->
-      <n-collapse-item :title="$t('admin.system.maintenance.resourceMaintenance.heading')" name="2">
+      <n-tab-pane :tab="$t('admin.system.maintenance.resourceMaintenance.heading')" name="2">
         <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="resourceMaintenanceLoading"
-              :loading="resourceMaintenanceLoading"
-              @click="triggerResourceMaintenance"
-            >
-              <template #icon>
-                <n-icon :component="UpdateIcon" />
-              </template>
-              {{ $t('general.precomputeAction') }}
-            </n-button>
-          </template>
+          <n-button
+            secondary
+            :disabled="resourceMaintenanceLoading"
+            :loading="resourceMaintenanceLoading"
+            @click="triggerResourceMaintenance"
+          >
+            <template #icon>
+              <n-icon :component="UpdateIcon" />
+            </template>
+            {{ $t('general.precomputeAction') }}
+          </n-button>
         </button-shelf>
-      </n-collapse-item>
+      </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
-      <n-collapse-item :title="$t('tasks.title')" name="3">
+      <n-tab-pane :tab="$t('tasks.title')" name="3">
         <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="tasksLoading"
-              :loading="tasksLoading"
-              @click="updateAllTasksData"
-            >
-              <template #icon>
-                <n-icon :component="RefreshIcon" />
-              </template>
-              {{ $t('general.refreshAction') }}
-            </n-button>
-            <n-button
-              secondary
-              :disabled="tasksLoading"
-              :loading="tasksLoading"
-              @click="deleteSystemTasks"
-            >
-              <template #icon>
-                <n-icon :component="DeleteIcon" />
-              </template>
-              {{ $t('admin.system.maintenance.tasks.actionDeleteSystem') }}
-            </n-button>
-            <n-button
-              secondary
-              type="error"
-              :disabled="tasksLoading"
-              :loading="tasksLoading"
-              @click="deleteAllTasks"
-            >
-              <template #icon>
-                <n-icon :component="DeleteIcon" />
-              </template>
-              {{ $t('admin.system.maintenance.tasks.actionDeleteAll') }}
-            </n-button>
-          </template>
+          <n-button
+            secondary
+            :disabled="tasksLoading"
+            :loading="tasksLoading"
+            @click="updateAllTasksData"
+          >
+            <template #icon>
+              <n-icon :component="RefreshIcon" />
+            </template>
+            {{ $t('general.refreshAction') }}
+          </n-button>
+          <n-button
+            secondary
+            :disabled="tasksLoading"
+            :loading="tasksLoading"
+            @click="deleteSystemTasks"
+          >
+            <template #icon>
+              <n-icon :component="DeleteIcon" />
+            </template>
+            {{ $t('admin.system.maintenance.tasks.actionDeleteSystem') }}
+          </n-button>
+          <n-button
+            secondary
+            type="error"
+            :disabled="tasksLoading"
+            :loading="tasksLoading"
+            @click="deleteAllTasks"
+          >
+            <template #icon>
+              <n-icon :component="DeleteIcon" />
+            </template>
+            {{ $t('admin.system.maintenance.tasks.actionDeleteAll') }}
+          </n-button>
         </button-shelf>
 
         <template v-if="allTasks.length">
@@ -346,8 +345,8 @@ onBeforeMount(() => {
         <div v-else>
           {{ $t('admin.system.maintenance.tasks.noTasks') }}
         </div>
-      </n-collapse-item>
-    </n-collapse>
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </template>
 
