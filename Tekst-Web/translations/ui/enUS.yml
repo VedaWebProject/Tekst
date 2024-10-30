@@ -62,7 +62,7 @@ init:
   loadResources: Loading resources data...
   workingText: Setting up working text...
   systemSegments: Inserting system site segments...
-  customFonts: Loading fonts...
+  fonts: Loading fonts...
   ready: Ready.
   error: There were errors initializing the application. It seems like the server is not ready or unreachable.
 
@@ -354,7 +354,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    customFonts: Custom Fonts for Resources
+    fonts: Resource Fonts
     resourceFontName: Name
   segment:
     modelLabel: Segment

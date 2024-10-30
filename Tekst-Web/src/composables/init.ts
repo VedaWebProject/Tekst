@@ -105,7 +105,7 @@ export function useInitializeApp() {
     // load custom fontface definitions
     {
       key: 'customFonts',
-      info: () => $t('init.customFonts'),
+      info: () => $t('init.fonts'),
       action: async (success: boolean = true) => {
         try {
           const response = await fetch(`${STATIC_PATH}/fonts.css`);

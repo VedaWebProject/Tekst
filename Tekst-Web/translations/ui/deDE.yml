@@ -64,7 +64,7 @@ init:
   loadResources: Lade Ressourcen-Daten...
   workingText: Lege Arbeitstext fest...
   systemSegments: Füge Seitensegmente ein...
-  customFonts: Lade Schriftarten...
+  fonts: Lade Schriftarten...
   ready: Fertig.
   error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht bereit oder nicht erreichbar zu sein.
 
@@ -355,7 +355,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    customFonts: Eigene Schriftarten für Inhalte
+    fonts: Ressourcen-Schriftarten
     resourceFontName: Name
   segment:
     modelLabel: Segment
