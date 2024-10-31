@@ -68,7 +68,10 @@ async def init_es_client() -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(_cfg.es.uri, timeout=_cfg.es.timeout_general_s)
+        _es_client = Elasticsearch(
+            _cfg.es.uri,
+            request_timeout=_cfg.es.timeout_general_s,
+        )
         if not await _wait_for_es():
             raise RuntimeError("Waiting for Elasticsearch client exceeded timeout!")
     return _es_client
