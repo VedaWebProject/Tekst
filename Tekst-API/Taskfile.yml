@@ -49,6 +49,7 @@ tasks:
       - task: install
       - task: test-stack-up
       - task: wait-for-mongodb
+      - task: wait-for-elasticsearch
       - poetry run coverage run -m pytest {{.CLI_ARGS}}
       - poetry run coverage report -m
 
