@@ -9,6 +9,7 @@ import pytest
 from asgi_lifespan import LifespanManager
 from beanie import PydanticObjectId
 from bson import ObjectId, json_util
+from elasticsearch import Elasticsearch
 from httpx import ASGITransport, AsyncClient, Response
 from humps import camelize
 from tekst import db, tasks
@@ -16,6 +17,7 @@ from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.models.user import UserCreate
+from tekst.search import create_indices_task
 
 
 """
@@ -156,6 +158,19 @@ async def insert_sample_data(
         return ids
 
     return _insert_sample_data
+
+
+@pytest.fixture
+async def create_indices(config, insert_sample_data) -> None:
+    # delete indices
+    Elasticsearch(config.es.uri).indices.delete(
+        index="{config.es.prefix}*",
+        ignore=[400, 404],
+    )
+    # insert sample data
+    await insert_sample_data("texts", "locations", "resources", "contents")
+    # create indices
+    await create_indices_task(force=True)
 
 
 @pytest.fixture
