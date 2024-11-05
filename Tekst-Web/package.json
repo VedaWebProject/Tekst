@@ -43,7 +43,7 @@
     "@intlify/unplugin-vue-i18n": "^5.0.0",
     "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node20": "^20.1.4",
-    "@types/color": "^3.0.6",
+    "@types/color": "^4.0.0",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.mergewith": "^4.6.9",
