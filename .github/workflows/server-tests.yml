@@ -31,6 +31,14 @@ jobs:
         image: mongo:8
         ports:
           - 27017:27017
+      es:
+        image: elasticsearch:8.15.3
+        ports:
+          - 9200:9200
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+          ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
       mailpit:
         image: axllent/mailpit:v1.21
         ports:
