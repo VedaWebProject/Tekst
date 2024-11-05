@@ -8,7 +8,7 @@ from tekst.models.text import TextDocument
 
 @pytest.mark.anyio
 async def test_get_content_siblings(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
+    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id, login
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
@@ -22,7 +22,7 @@ async def test_get_content_siblings(
         "/browse/content-siblings",
         params={"res": str(resource.id)},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
 
@@ -31,21 +31,21 @@ async def test_get_content_siblings(
         "/browse/content-siblings",
         params={"res": wrong_id},
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)
 
     # siblings of resource version
     await login()
     resp = await test_client.post(
         f"/resources/{str(resource.id)}/version",
     )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert status_assertion(201, resp)
     assert "id" in resp.json()
     version_id = resp.json()["id"]
     resp = await test_client.get(
         "/browse/content-siblings",
         params={"res": version_id},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
 
@@ -55,7 +55,7 @@ async def test_get_location_data(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data,
-    status_fail_msg,
+    status_assertion,
     wrong_id,
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
@@ -68,7 +68,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": text_id, "lvl": 0, "pos": 0},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
@@ -78,7 +78,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": text_id, "lvl": 2, "pos": 0},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
@@ -88,7 +88,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) == 0
     assert len(resp.json()["contents"]) == 0
@@ -96,7 +96,7 @@ async def test_get_location_data(
 
 @pytest.mark.anyio
 async def test_get_path_options_by_head(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
 ):
     await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
@@ -106,7 +106,7 @@ async def test_get_path_options_by_head(
     resp = await test_client.get(
         f"/browse/locations/{str(location.id)}/path/options-by-head",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
@@ -114,14 +114,14 @@ async def test_get_path_options_by_head(
     resp = await test_client.get(
         f"/browse/locations/{wrong_id}/path/options-by-head",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
 
 @pytest.mark.anyio
 async def test_get_path_options_by_root(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
 ):
     await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
@@ -131,7 +131,7 @@ async def test_get_path_options_by_root(
     resp = await test_client.get(
         f"/browse/locations/{str(location.id)}/path/options-by-root",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
@@ -139,14 +139,14 @@ async def test_get_path_options_by_root(
     resp = await test_client.get(
         f"/browse/locations/{wrong_id}/path/options-by-root",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
 
 @pytest.mark.anyio
 async def test_get_resource_coverage_data(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents", "precomputed"
@@ -155,19 +155,19 @@ async def test_get_resource_coverage_data(
     resp = await test_client.get(
         f"/resources/{resource_id}/coverage",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
 
     # invalid location data
     resp = await test_client.get(
         f"/resources/{wrong_id}/coverage",
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)
 
 
 @pytest.mark.anyio
 async def test_get_nearest_content_position(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, wrong_id, login
+    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id, login
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
@@ -180,7 +180,7 @@ async def test_get_nearest_content_position(
         "/browse/nearest-content-position",
         params={"res": resource_id, "pos": 0, "mode": "subsequent"},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), int)
     assert resp.json() == 1
 
@@ -189,4 +189,4 @@ async def test_get_nearest_content_position(
         "/browse/nearest-content-position",
         params={"res": wrong_id, "pos": 0, "mode": "subsequent"},
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)

@@ -242,14 +242,14 @@ async def login(config, test_client, logout, register_test_user) -> Callable:
 
 
 @pytest.fixture(scope="session")
-def status_fail_msg() -> Callable:
-    def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
+def status_assertion() -> Callable:
+    def _status_assertion(expected_status: int, resp: Response) -> tuple[bool, str]:
         return (
-            f"HTTP {response.status_code} (expected: {expected_status})"
-            f" -- {response.text}"
+            resp.status_code == 200,
+            f"HTTP {resp.status_code} (expected: {expected_status}) -- {resp.text}",
         )
 
-    return _status_fail_msg
+    return _status_assertion
 
 
 @pytest.fixture(scope="session")
