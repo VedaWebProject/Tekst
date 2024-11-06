@@ -57,7 +57,7 @@
     "eslint-plugin-vue": "^9.29.0",
     "marked": "^14.1.2",
     "naive-ui": "^2.39.0",
-    "npm-run-all2": "^6.2.3",
+    "npm-run-all2": "^7.0.0",
     "openapi-typescript": "^7.4.1",
     "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.12.0",
