@@ -25,7 +25,7 @@ email-validator = "^2.0.0"
 pyhumps = "^3.8.0"
 click = "^8.1.6"
 beanie = "^1.21.0"
-fastapi-users = {extras = ["beanie"], version = "^13.0.0"}
+fastapi-users = {extras = ["beanie"], version = "^14.0.0"}
 starlette-csrf = "^3.0.0"
 pydantic-settings = "^2.0.2"
 pydantic-extra-types = "^2.0.0"
