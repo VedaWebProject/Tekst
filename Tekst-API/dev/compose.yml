@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: "caddy:2.8-alpine"
+    image: "caddy:2.9-alpine"
     volumes:
       - "./caddy:/etc/caddy/:ro"
       - "./static:/var/www/tekst/static/:ro"
