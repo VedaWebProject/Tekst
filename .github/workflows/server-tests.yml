@@ -26,19 +26,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:8
-        ports:
-          - 27017:27017
-      mailpit:
-        image: axllent/mailpit:v1.21
-        ports:
-          - 1025:1025
-        env:
-          MP_SMTP_AUTH_ACCEPT_ANY: true
-          MP_SMTP_AUTH_ALLOW_INSECURE: true
-
     defaults:
       run:
         working-directory: ./Tekst-API
@@ -60,15 +47,15 @@ jobs:
           sudo sysctl -w vm.swappiness=1
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
-      - uses: miyataka/elasticsearch-github-actions@1
-        with:
-          stack-version: "8.15.3"
-          plugins: "analysis-icu"
       - name: Cancel on setup error
         if: failure()
         uses: andymckay/cancel-action@0.5
       - name: Run tests
         if: always()
-        run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
+        run: |
+          docker compose -f dev/compose.yml --profile test -p tekst-testing up --detach
+          printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+          printf "Waiting for Elasticsearch service"; while ! $(curl -f http://127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+          TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v2
