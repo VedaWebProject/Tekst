@@ -1,6 +1,6 @@
 import asyncio
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +18,7 @@ from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.models.user import UserCreate
 from tekst.search import create_indices_task
+from tekst.search.templates import IDX_ALIAS
 
 
 """
@@ -113,26 +114,6 @@ async def test_client(test_app, config) -> AsyncClient:
         yield client
 
 
-@pytest.fixture(autouse=True)
-async def run_before_and_after_each_test_case(get_db_client_override, config):
-    """Fixture to execute asserts before and after a test is run"""
-    ### before test case
-    # clear DB collections
-    for collection in (
-        "texts",
-        "locations",
-        "resources",
-        "contents",
-        "users",
-        "state",
-    ):
-        await get_db_client_override[config.db.name][collection].delete_many({})
-    ### run test case
-    yield  # test case running now
-    ### after test case
-    # ...
-
-
 @pytest.fixture
 async def insert_sample_data(
     config, get_sample_data, get_db_client_override
@@ -145,6 +126,15 @@ async def insert_sample_data(
     async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
         database = get_db_client_override[config.db.name]
         ids = dict()
+        collections = collections or [
+            "contents",
+            "locations",
+            "precomputed",
+            "resources",
+            "state",
+            "texts",
+            "users",
+        ]
         for collection in collections:
             sample_data = get_sample_data(f"db/{collection}.json")
             if not sample_data:
@@ -161,16 +151,12 @@ async def insert_sample_data(
 
 
 @pytest.fixture
-async def create_indices(config, insert_sample_data) -> None:
-    # delete indices
-    Elasticsearch(config.es.uri).indices.delete(
-        index="{config.es.prefix}*",
-        ignore=[400, 404],
-    )
-    # insert sample data
-    await insert_sample_data("texts", "locations", "resources", "contents")
-    # create indices
+async def use_indices(config, insert_sample_data) -> Iterator[None]:
+    await insert_sample_data()
     await create_indices_task(force=True)
+    yield
+    for index in Elasticsearch(config.es.uri).indices.get(index=IDX_ALIAS).body:
+        Elasticsearch(config.es.uri).indices.delete(index=index)
 
 
 @pytest.fixture
@@ -185,6 +171,16 @@ def get_fake_user() -> Callable:
         )
 
     return _get_fake_user
+
+
+@pytest.fixture(autouse=True)
+async def setup_teardown() -> Callable:
+    yield
+    # drop all DB collections
+    for collection in await get_db_client_override[
+        config.db.name
+    ].list_collection_names():
+        await get_db_client_override[config.db.name].drop_collection(collection)
 
 
 @pytest.fixture

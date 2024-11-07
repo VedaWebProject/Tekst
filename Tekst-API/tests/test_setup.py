@@ -4,7 +4,7 @@ from tekst.setup import app_setup
 
 
 @pytest.mark.anyio
-async def test_setup(create_indices):
+async def test_setup(use_indices):
     await app_setup()
 
 
