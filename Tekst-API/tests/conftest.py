@@ -174,7 +174,7 @@ def get_fake_user() -> Callable:
 
 
 @pytest.fixture(autouse=True)
-async def setup_teardown() -> Callable:
+async def setup_teardown(config, get_db_client_override) -> Callable:
     yield
     # drop all DB collections
     for collection in await get_db_client_override[
