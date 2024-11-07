@@ -31,14 +31,6 @@ jobs:
         image: mongo:8
         ports:
           - 27017:27017
-      es:
-        image: elasticsearch:8.15.3
-        ports:
-          - 9200:9200
-        env:
-          discovery.type: single-node
-          xpack.security.enabled: false
-          ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
       mailpit:
         image: axllent/mailpit:v1.21
         ports:
@@ -62,6 +54,16 @@ jobs:
           cache-dependency-path: "./Tekst-API/poetry.lock"
       - name: Install dependencies
         run: poetry install --sync
+      - name: Configure sysctl limits for ES
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - uses: miyataka/elasticsearch-github-actions@1
+        with:
+          stack-version: "8.15.3"
+          plugins: "analysis-icu"
       - name: Cancel on setup error
         if: failure()
         uses: andymckay/cancel-action@0.5
