@@ -1,6 +1,6 @@
 import asyncio
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +9,7 @@ import pytest
 from asgi_lifespan import LifespanManager
 from beanie import PydanticObjectId
 from bson import ObjectId, json_util
+from elasticsearch import Elasticsearch
 from httpx import ASGITransport, AsyncClient, Response
 from humps import camelize
 from tekst import db, tasks
@@ -16,6 +17,8 @@ from tekst.app import app
 from tekst.auth import _create_user
 from tekst.config import TekstConfig, get_config
 from tekst.models.user import UserCreate
+from tekst.search import create_indices_task
+from tekst.search.templates import IDX_ALIAS
 
 
 """
@@ -111,26 +114,6 @@ async def test_client(test_app, config) -> AsyncClient:
         yield client
 
 
-@pytest.fixture(autouse=True)
-async def run_before_and_after_each_test_case(get_db_client_override, config):
-    """Fixture to execute asserts before and after a test is run"""
-    ### before test case
-    # clear DB collections
-    for collection in (
-        "texts",
-        "locations",
-        "resources",
-        "contents",
-        "users",
-        "state",
-    ):
-        await get_db_client_override[config.db.name][collection].delete_many({})
-    ### run test case
-    yield  # test case running now
-    ### after test case
-    # ...
-
-
 @pytest.fixture
 async def insert_sample_data(
     config, get_sample_data, get_db_client_override
@@ -143,6 +126,15 @@ async def insert_sample_data(
     async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
         database = get_db_client_override[config.db.name]
         ids = dict()
+        collections = collections or [
+            "contents",
+            "locations",
+            "precomputed",
+            "resources",
+            "state",
+            "texts",
+            "users",
+        ]
         for collection in collections:
             sample_data = get_sample_data(f"db/{collection}.json")
             if not sample_data:
@@ -159,6 +151,15 @@ async def insert_sample_data(
 
 
 @pytest.fixture
+async def use_indices(config, insert_sample_data) -> Iterator[None]:
+    await insert_sample_data()
+    await create_indices_task(force=True)
+    yield
+    for index in Elasticsearch(config.es.uri).indices.get(index=IDX_ALIAS).body:
+        Elasticsearch(config.es.uri).indices.delete(index=index)
+
+
+@pytest.fixture
 def get_fake_user() -> Callable:
     def _get_fake_user(suffix: str = ""):
         return dict(
@@ -170,6 +171,16 @@ def get_fake_user() -> Callable:
         )
 
     return _get_fake_user
+
+
+@pytest.fixture(autouse=True)
+async def setup_teardown(config, get_db_client_override) -> Callable:
+    yield
+    # drop all DB collections
+    for collection in await get_db_client_override[
+        config.db.name
+    ].list_collection_names():
+        await get_db_client_override[config.db.name].drop_collection(collection)
 
 
 @pytest.fixture
@@ -227,14 +238,14 @@ async def login(config, test_client, logout, register_test_user) -> Callable:
 
 
 @pytest.fixture(scope="session")
-def status_fail_msg() -> Callable:
-    def _status_fail_msg(expected_status: int, response: Response) -> tuple[bool, str]:
+def status_assertion() -> Callable:
+    def _status_assertion(expected_status: int, resp: Response) -> tuple[bool, str]:
         return (
-            f"HTTP {response.status_code} (expected: {expected_status})"
-            f" -- {response.text}"
+            resp.status_code == 200,
+            f"HTTP {resp.status_code} (expected: {expected_status}) -- {resp.text}",
         )
 
-    return _status_fail_msg
+    return _status_assertion
 
 
 @pytest.fixture(scope="session")

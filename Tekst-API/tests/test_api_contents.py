@@ -10,7 +10,7 @@ from tekst.models.resource import ResourceBaseDocument
 async def test_create_content(
     test_client: AsyncClient,
     insert_sample_data,
-    status_fail_msg,
+    status_assertion,
     login,
 ):
     await insert_sample_data("texts", "locations", "resources")
@@ -30,7 +30,7 @@ async def test_create_content(
         "/contents",
         json=content_create_data,
     )
-    assert resp.status_code == 201, status_fail_msg(201, resp)
+    assert status_assertion(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == content_create_data["text"]
     assert resp.json()["comment"] == content_create_data["comment"]
@@ -41,7 +41,7 @@ async def test_create_content(
         "/contents",
         json=content_create_data,
     )
-    assert resp.status_code == 409, status_fail_msg(409, resp)
+    assert status_assertion(409, resp)
 
     # fail to create content for resource we don't have write access to
     await login(is_superuser=False)
@@ -49,12 +49,12 @@ async def test_create_content(
         "/contents",
         json=content_create_data,
     )
-    assert resp.status_code == 403, status_fail_msg(403, resp)
+    assert status_assertion(403, resp)
 
 
 @pytest.mark.anyio
 async def test_get_content(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
@@ -66,7 +66,7 @@ async def test_get_content(
     resp = await test_client.get(
         f"/contents/{content_id}",
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == content_id
@@ -75,12 +75,12 @@ async def test_get_content(
     resp = await test_client.get(
         f"/contents/{wrong_id}",
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)
 
 
 @pytest.mark.anyio
 async def test_find_contents(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
 ):
     resource_id = (
         await insert_sample_data("texts", "locations", "resources", "contents")
@@ -92,7 +92,7 @@ async def test_find_contents(
         "/contents",
         params={"res": [resource_id], "limit": 100},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
 
@@ -101,14 +101,14 @@ async def test_find_contents(
         "/contents",
         params={"limit": 100},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
 
 
 @pytest.mark.anyio
 async def test_update_content(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
@@ -122,7 +122,7 @@ async def test_update_content(
         f"/contents/{str(content.id)}",
         json={"resourceType": "plainText", "text": "FOO BAR"},
     )
-    assert resp.status_code == 200, status_fail_msg(200, resp)
+    assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == str(content.id)
@@ -133,7 +133,7 @@ async def test_update_content(
         f"/contents/{wrong_id}",
         json={"resourceType": "plainText", "text": "FOO BAR"},
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)
 
     # fail to update content with bogus resource type
     resp = await test_client.patch(
@@ -143,7 +143,7 @@ async def test_update_content(
             "text": "FOO BAR",
         },
     )
-    assert resp.status_code == 422, status_fail_msg(422, resp)
+    assert status_assertion(422, resp)
 
     # fail to update content with changed resource type
     resp = await test_client.patch(
@@ -153,7 +153,7 @@ async def test_update_content(
             "text": "FOO BAR",
         },
     )
-    assert resp.status_code == 400, status_fail_msg(400, resp)
+    assert status_assertion(400, resp)
 
     # fail to update content of resource we don't have write access to
     await login(is_superuser=False)
@@ -167,12 +167,12 @@ async def test_update_content(
             "text": "FOO BAR",
         },
     )
-    assert resp.status_code == 403, status_fail_msg(403, resp)
+    assert status_assertion(403, resp)
 
 
 @pytest.mark.anyio
 async def test_delete_content(
-    test_client: AsyncClient, insert_sample_data, status_fail_msg, login, wrong_id
+    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
@@ -184,18 +184,18 @@ async def test_delete_content(
     resp = await test_client.delete(
         f"/contents/{wrong_id}",
     )
-    assert resp.status_code == 404, status_fail_msg(404, resp)
+    assert status_assertion(404, resp)
 
     # fail to delete without write access
     await login(is_superuser=False)
     resp = await test_client.delete(
         f"/contents/{content_id}",
     )
-    assert resp.status_code == 403, status_fail_msg(403, resp)
+    assert status_assertion(403, resp)
 
     # delete content
     await login(user=superuser)
     resp = await test_client.delete(
         f"/contents/{content_id}",
     )
-    assert resp.status_code == 204, status_fail_msg(204, resp)
+    assert status_assertion(204, resp)

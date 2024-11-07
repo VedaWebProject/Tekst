@@ -59,15 +59,16 @@ def _select_env_files() -> list[str]:
 
     Selection and priority work as follows:
 
-    - A maximum of two env files will be loaded (".env" and a second one)
-    - Additional env files override values found in ".env"
-    - If one additional env file is found, selection is complete
+    - A maximum of three env files will be loaded
+      (".env", one of ".env.dev" and ".env.prod",
+      and, if defined, an additional custom env file)
+    - Env files loaded later override values of env files loaded earlier
 
     Selection steps:
 
     1. ".env" if it exists
-    2. ".env.dev" if it exists AND if TEKST_DEV_MODE env var is set to true
-    3. ".env.prod" if it exists
+    2. ".env.dev" if it exists AND if TEKST_DEV_MODE env var is set to `true`
+    3. ".env.prod" if it exists AND if TEKST_DEV_MODE env var is set to `false`
     4. Custom env file defined in "TEKST_CUSTOM_ENV_FILE" env var if it exists
 
     :return: List of .env file paths
@@ -84,7 +85,7 @@ def _select_env_files() -> list[str]:
         env_files.append(f_env)
     if _DEV_MODE and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
-    if os.path.exists(f_env_prod):  # pragma: no cover
+    elif os.path.exists(f_env_prod):  # pragma: no cover
         env_files.append(f_env_prod)
     if f_env_custom and os.path.exists(f_env_custom):  # pragma: no cover
         env_files.append(f_env_custom)

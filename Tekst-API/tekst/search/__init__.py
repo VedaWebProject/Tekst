@@ -68,7 +68,10 @@ async def init_es_client() -> Elasticsearch:
     global _es_client
     if _es_client is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(_cfg.es.uri, timeout=_cfg.es.timeout_general_s)
+        _es_client = Elasticsearch(
+            _cfg.es.uri,
+            request_timeout=_cfg.es.timeout_general_s,
+        )
         if not await _wait_for_es():
             raise RuntimeError("Waiting for Elasticsearch client exceeded timeout!")
     return _es_client
@@ -224,6 +227,20 @@ async def _populate_index(
     if text is None:
         raise ValueError("text is None!")
     client: Elasticsearch = await _get_es_client()
+
+    def _bulk_index(
+        reqest_body: dict[str, Any],
+        req_no: int = None,
+    ) -> bool:
+        resp = client.bulk(
+            body=reqest_body,
+            timeout=f"{_cfg.es.timeout_general_s}s",
+            refresh="wait_for",
+        )
+        req_no_str = f"#{req_no} " if req_no is not None else ""
+        log.debug(f"Bulk index request {req_no_str}took: {resp.get('took', '???')}ms")
+        return bool(resp) and not resp.get("errors", False)
+
     bulk_index_max_size = 200
     bulk_index_body = []
     errors = False
@@ -294,7 +311,7 @@ async def _populate_index(
         # check bulk request body size, fire bulk request if necessary
         if len(bulk_index_body) / 2 >= bulk_index_max_size:
             bulk_req_count += 1
-            errors |= not _bulk_index(client, bulk_index_body, bulk_req_count)
+            errors |= not _bulk_index(bulk_index_body, bulk_req_count)
             bulk_index_body = []
 
         # add all child locations to the stack
@@ -310,22 +327,11 @@ async def _populate_index(
         )
 
     # index the remaining documents
-    errors |= not _bulk_index(client, bulk_index_body, bulk_req_count + 1)
+    errors |= not _bulk_index(bulk_index_body, bulk_req_count + 1)
     bulk_index_body = []
 
     if errors:
         raise RuntimeError(f"Failed to index some documents for text '{text.title}'.")
-
-
-def _bulk_index(
-    client: Elasticsearch,
-    reqest_body: dict[str, Any],
-    req_no: int = None,
-) -> bool:
-    resp = client.bulk(body=reqest_body, timeout=f"{_cfg.es.timeout_general_s}s")
-    req_no_str = f"#{req_no} " if req_no is not None else ""
-    log.debug(f"Bulk index request {req_no_str}took: {resp.get('took', '???')}ms")
-    return bool(resp) and not resp.get("errors", False)
 
 
 async def _get_mapped_fields_count(index: str) -> int:

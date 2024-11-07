@@ -51,6 +51,7 @@ services:
       ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
     profiles:
       - dev
+      - test
 
   mongo-express:
     image: mongo-express:1
