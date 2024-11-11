@@ -19,7 +19,7 @@ const emit = defineEmits(['play', 'ended']);
 
 const audioRef = ref<HTMLAudioElement>();
 const error = ref(false);
-const { playing, waiting, currentTime, duration, ended, onSourceError } = useMediaControls(
+const { playing, waiting, currentTime, duration, ended, onSourceError, onPlaybackError } = useMediaControls(
   audioRef,
   {
     src: props.src,
@@ -64,6 +64,10 @@ watch(ended, (after) => {
 
 onMounted(() => {
   onSourceError(() => {
+    playing.value = false;
+    error.value = true;
+  });
+  onPlaybackError(() => {
     playing.value = false;
     error.value = true;
   });
