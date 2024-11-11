@@ -98,8 +98,8 @@ RUN rm -rf dist deps
 
 # install uvicorn ASGI workers and gunicorn WSGI server
 RUN python3 -m pip install \
-        "uvicorn[standard]==0.30.0" \
-        "gunicorn==22.0.0"
+        "uvicorn[standard]==0.32.0" \
+        "gunicorn==23.0.0"
 
 HEALTHCHECK \
     --interval=2m \
