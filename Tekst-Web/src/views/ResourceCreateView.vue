@@ -20,7 +20,7 @@ import {
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
+import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
 import { ResourceIcon, ArrowBackIcon, WarningIcon } from '@/icons';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 import { pickTranslation } from '@/utils';
@@ -96,6 +96,13 @@ async function handleSaveClick() {
         );
         resources.add(data);
         router.push({ name: 'resources', params: { text: state.text?.slug } });
+        router.push({
+          name: 'resourceSettings',
+          params: {
+            text: router.currentRoute.value.params.text,
+            id: data.id,
+          },
+        });
       }
       loadingSave.value = false;
     })
@@ -165,8 +172,10 @@ async function handleSaveClick() {
             />
           </n-form-item>
         </n-alert>
+
         <!-- COMMON RESOURCE FORM FIELDS -->
-        <resource-settings-form-items v-model="model" :owner="auth.user" :public="false" />
+        <h3>{{ $t('general.general') }}</h3>
+        <resource-settings-general-form-items v-model="model" />
       </n-form>
 
       <button-shelf top-gap>
