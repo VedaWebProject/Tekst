@@ -61,7 +61,7 @@
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [
-      { "locale": "*", "translation": "Japanese Version" },
+      { "locale": "enUS", "translation": "Japanese Version" },
       { "locale": "deDE", "translation": "Japanische Version" }
     ],
     "description": [
