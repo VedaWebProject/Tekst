@@ -14,15 +14,7 @@ import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResour
 import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialResourceConfigFormItems.vue';
 import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import {
-  NSelect,
-  NIcon,
-  NTabs,
-  NTabPane,
-  NFormItem,
-  NTag,
-  type SelectOption,
-} from 'naive-ui';
+import { NSelect, NIcon, NTabs, NTabPane, NFormItem, NTag, type SelectOption } from 'naive-ui';
 import { UserIcon } from '@/icons';
 
 const props = defineProps<{
@@ -140,14 +132,25 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <n-tabs type="card" size="small" tab-style="font-size: var(--font-size-small)" pane-class="mt-md">
     <!-- GENERAL -->
     <n-tab-pane :tab="$t('general.general')" name="general">
-      <resource-settings-general-form-items :model-value="model" @update:model-value="(v: AnyResourceRead) => { model = v }" />
+      <resource-settings-general-form-items
+        :model-value="model"
+        @update:model-value="
+          (v: AnyResourceRead) => {
+            model = v;
+          }
+        "
+      />
     </n-tab-pane>
 
     <!-- RESOURCE COMMON CONFIG -->
     <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
       <common-resource-config-form-items
         :model-value="model.config.common"
-        @update:model-value="(u: AnyResourceConfig['common']) => { model.config.common = u }"
+        @update:model-value="
+          (u: AnyResourceConfig['common']) => {
+            model.config.common = u;
+          }
+        "
       />
     </n-tab-pane>
 
