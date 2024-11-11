@@ -21,11 +21,14 @@ interface AnnotationDisplayTemplate {
   content?: string;
   suffix?: string;
   format?: AnnotationDisplayFormatFlags;
+  break?: boolean; // line break after this template
 }
 
-interface AnnotationDisplayStructure {
-  display: string;
+interface AnnotationDisplay {
+  content: string;
   format?: AnnotationDisplayFormatFlags;
+  style?: CSSProperties;
+  break?: boolean;
 }
 
 interface TokenDetails {
@@ -37,7 +40,7 @@ interface TokenDetails {
 type Token = TextAnnotationContentRead['tokens'][number];
 
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
-const PAT_TMPL_ITEM_PARTS = /_([kpcsf]):(.*?)(?=_[kpcsf]:|$)/g;
+const PAT_TMPL_ITEM_PARTS = /_([kpcsfb]):(.*?)(?=_[kpcsfb]:|$)/g;
 
 const props = withDefaults(
   defineProps<{
@@ -101,6 +104,10 @@ const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
             caps: p[2].toLowerCase().includes('c'),
             font: p[2].toLowerCase().includes('f'),
           };
+          break;
+        case 'b':
+          item.break = true;
+          break;
       }
     });
     out.push(item);
@@ -125,15 +132,13 @@ const fontStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
-function applyAnnotationDisplayTemplate(
-  annotations: Token['annotations']
-): AnnotationDisplayStructure[] {
+function applyAnnotationDisplayTemplate(annotations: Token['annotations']): AnnotationDisplay[] {
   // if there are no annotation display templates, just return the annotations in a
   // default form (k:v, k:v, etc.) without any styling flags set
   if (!annotationDisplayTemplates.value.length) {
     return (
       annotations?.map((a, i) => ({
-        display: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
+        content: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
       })) || []
     );
   }
@@ -160,8 +165,10 @@ function applyAnnotationDisplayTemplate(
     const prefix = i > 0 ? item.template.prefix || '' : '';
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
-      display: `${prefix}${content}${suffix}`,
+      content: `${prefix}${content}${suffix}`,
       format: item.template.format,
+      style: getAnnotationStyle(item.template.format),
+      break: item.template.break,
     };
   });
 }
@@ -246,13 +253,10 @@ function handleTokenContextMenuSelect(key: string | number) {
           {{ token.token }}
         </div>
         <div class="annotations">
-          <span
-            v-for="(annotationDisplay, index) in token.annotationsDisplay"
-            :key="index"
-            :style="getAnnotationStyle(annotationDisplay.format)"
-          >
-            {{ annotationDisplay.display }}
-          </span>
+          <template v-for="(annotationDisplay, index) in token.annotationsDisplay" :key="index">
+            <span :style="annotationDisplay.style">{{ annotationDisplay.content }}</span>
+            <br v-if="annotationDisplay.break" />
+          </template>
         </div>
       </div>
       <hr v-if="token.lb" class="token-lb" />
@@ -379,6 +383,7 @@ function handleTokenContextMenuSelect(key: string | number) {
 }
 
 .annotations {
+  line-height: 1.4em;
   font-size: var(--font-size-small);
 }
 
