@@ -165,6 +165,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         :main-form-label="$t('models.resource.title')"
         :translation-form-label="$t('models.resource.title')"
         :translation-form-rule="resourceSettingsFormRules.titleTranslation"
+        :min-items="1"
         @update:model-value="(v) => handleUpdate('title', v)"
       />
 
