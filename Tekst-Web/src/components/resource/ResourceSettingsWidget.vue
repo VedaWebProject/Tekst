@@ -21,7 +21,7 @@ const show = computed(
     auth.user &&
     ((props.resource.ownerId && auth.user.id === props.resource.ownerId) ||
       props.resource.sharedWrite.includes(auth.user.id) ||
-      (props.resource.public && auth.user.isSuperuser))
+      (auth.user.isSuperuser))
 );
 
 function handleClick() {
