@@ -22,7 +22,7 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { dialogProps } from '@/common';
-import _cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import router from '@/router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -37,7 +37,7 @@ const { message } = useMessages();
 const dialog = useDialog();
 const loading = ref(false);
 
-const initialModel = () => _cloneDeep(state.text);
+const initialModel = () => cloneDeep(state.text);
 
 const model = ref<TextCreate | undefined>(initialModel());
 

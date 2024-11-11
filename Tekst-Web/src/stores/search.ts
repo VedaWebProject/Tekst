@@ -15,7 +15,7 @@ import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStateStore } from './state';
 import { usePlatformData } from '@/composables/platformData';
-import _cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 
 type GeneralSearchSettings = {
   pgn: SearchPagination;
@@ -94,7 +94,7 @@ export const useSearchStore = defineStore('search', () => {
     requestBody?: QuickSearchRequestBody | AdvancedSearchRequestBody
   ): string | undefined {
     if (!requestBody) return undefined;
-    const req = _cloneDeep(requestBody);
+    const req = cloneDeep(requestBody);
     delete req.gen?.pgn;
     try {
       return Base64.encode(JSON.stringify(req), true);

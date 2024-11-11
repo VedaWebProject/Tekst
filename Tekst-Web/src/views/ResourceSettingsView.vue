@@ -6,7 +6,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { computed, ref, watch } from 'vue';
-import _cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { RouterLink } from 'vue-router';
 import { NDivider, NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
 import { resourceSettingsFormRules } from '@/forms/formRules';
@@ -29,7 +29,7 @@ const resources = useResourcesStore();
 
 const resource = ref<AnyResourceRead>();
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
-const getInitialModel = () => _cloneDeep(resource.value);
+const getInitialModel = () => cloneDeep(resource.value);
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);

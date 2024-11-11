@@ -23,7 +23,7 @@ import {
   POST,
   DELETE,
 } from '@/api';
-import _cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { ref, computed, watch } from 'vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { $t } from '@/i18n';
@@ -227,7 +227,7 @@ watch(
 );
 
 function resetForm() {
-  contentModel.value = _cloneDeep(initialContentModel.value);
+  contentModel.value = cloneDeep(initialContentModel.value);
   reset();
   formRef.value?.restoreValidation();
 }
@@ -317,7 +317,7 @@ async function handleDeleteContentClick() {
 function handleAddContentClick() {
   if (resource.value && location.value) {
     contentModel.value = {
-      ..._cloneDeep(defaultContentModels[resource.value.resourceType]),
+      ...cloneDeep(defaultContentModels[resource.value.resourceType]),
       resourceId: resource.value.id,
       resourceType: resource.value.resourceType,
       locationId: location.value.id,

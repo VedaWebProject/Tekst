@@ -23,7 +23,7 @@ import { platformSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useStateStore } from '@/stores';
-import _cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { SettingsIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -34,7 +34,7 @@ const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
 const getFormModel = (): PlatformSettingsUpdate =>
-  _cloneDeep(pfData.value?.state || ({} as PlatformSettingsUpdate));
+  cloneDeep(pfData.value?.state || ({} as PlatformSettingsUpdate));
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
