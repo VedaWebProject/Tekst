@@ -263,7 +263,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
       <common-resource-config-form-items
         :model-value="model.config.common"
-        @update:model-value="(u: any) => (model = { ...model, common: u })"
+        @update:model-value="(u: AnyResourceConfig['common']) => { model.config.common = u }"
       />
     </n-tab-pane>
 
