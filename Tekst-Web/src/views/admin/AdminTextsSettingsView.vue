@@ -15,7 +15,7 @@ import {
   useDialog,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { DELETE, PATCH } from '@/api';
+import { DELETE, PATCH, accentColorPresets } from '@/api';
 import { $t } from '@/i18n';
 import type { TextCreate } from '@/api';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -218,16 +218,7 @@ async function handleDelete() {
           v-model:value="model.accentColor"
           :modes="['hex']"
           :show-alpha="false"
-          :swatches="[
-            '#305D97',
-            '#3C8589',
-            '#43895F',
-            '#CC9618',
-            '#BA5614',
-            '#C62B26',
-            '#B52651',
-            '#88447F',
-          ]"
+          :swatches="accentColorPresets"
         />
       </n-form-item>
 

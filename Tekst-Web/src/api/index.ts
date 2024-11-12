@@ -107,6 +107,17 @@ export function downloadData(blob: Blob, filename: string) {
 
 // export some common platform properties for use throughout codebase
 
+export const accentColorPresets = [
+  '#305D97',
+  '#3C8589',
+  '#43895F',
+  '#CC9618',
+  '#BA5614',
+  '#C62B26',
+  '#B52651',
+  '#88447F',
+];
+
 export const resourceTypes = [
   'plainText',
   'richText',
