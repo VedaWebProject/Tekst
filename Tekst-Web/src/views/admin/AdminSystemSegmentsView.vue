@@ -279,11 +279,11 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('models.segment.key')">
+        <n-form-item path="key" :label="$t('general.key')">
           <n-select
             v-model:value="segmentModel.key"
             :options="systemSegmentKeyOptions"
-            :placeholder="$t('models.segment.key')"
+            :placeholder="$t('general.key')"
             :consistent-menu-width="false"
             style="min-width: 200px"
             @keydown.enter.prevent

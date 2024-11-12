@@ -1352,6 +1352,22 @@ export interface components {
       /** Values */
       values?: string[] | null;
     };
+    /** AnnotationGroup */
+    AnnotationGroup: {
+      /** Key */
+      key: string;
+      /**
+       * Translations
+       * @description Translation for the label of an annotation group
+       */
+      translations: components['schemas']['AnnotationGroupTranslation'][];
+    };
+    /** AnnotationGroupTranslation */
+    AnnotationGroupTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
+    };
     /** AudioContentCreate */
     AudioContentCreate: {
       /**
@@ -4948,6 +4964,12 @@ export interface components {
        *     } */
       general: components['schemas']['GeneralTextAnnotationResourceConfig'];
       /**
+       * Annotationgroups
+       * @description Display groups to use for grouping annotations
+       * @default []
+       */
+      annotationGroups: components['schemas']['AnnotationGroup'][];
+      /**
        * Displaytemplate
        * @description Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)
        */
@@ -5049,6 +5071,7 @@ export interface components {
        *       "general": {
        *         "defaultCollapsed": false
        *       },
+       *       "annotationGroups": [],
        *       "multiValueDelimiter": "/"
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
@@ -5172,6 +5195,7 @@ export interface components {
        *       "general": {
        *         "defaultCollapsed": false
        *       },
+       *       "annotationGroups": [],
        *       "multiValueDelimiter": "/"
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];

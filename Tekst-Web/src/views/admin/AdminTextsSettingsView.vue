@@ -222,6 +222,7 @@ async function handleDelete() {
         />
       </n-form-item>
 
+      <!-- RESOURCE CATEGORIES -->
       <h3>{{ $t('models.text.resourceCategories') }}</h3>
       <n-form-item v-if="model.resourceCategories" :show-label="false">
         <n-dynamic-input
@@ -235,13 +236,13 @@ async function handleDelete() {
             <n-flex align="flex-start" style="width: 100%">
               <n-form-item
                 ignore-path-change
-                :label="$t('models.text.resourceCategoryKey')"
+                :label="$t('general.key')"
                 :path="`resourceCategories[${index}].key`"
                 :rule="textFormRules.resourceCategoryKey"
               >
                 <n-input
                   v-model:value="model.resourceCategories[index].key"
-                  :placeholder="$t('models.text.resourceCategoryKey')"
+                  :placeholder="$t('general.key')"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -251,8 +252,8 @@ async function handleDelete() {
                 secondary
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 style="flex-grow: 2"
-                :main-form-label="$t('models.text.resourceCategoryTranslation')"
-                :translation-form-label="$t('models.text.resourceCategoryTranslation')"
+                :main-form-label="$t('general.label')"
+                :translation-form-label="$t('general.label')"
                 :translation-form-rule="textFormRules.resourceCategoryTranslation"
               />
             </n-flex>

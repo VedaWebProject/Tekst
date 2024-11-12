@@ -195,9 +195,7 @@ onMounted(async () => {
                       clearable
                       :disabled="!annotationItem.key"
                       :options="annoOptions[tokenItemIndex][annotationItemIndex].valuesOptions"
-                      :placeholder="
-                        $t('resources.types.textAnnotation.contentFields.annotationValue')
-                      "
+                      :placeholder="$t('general.value')"
                       :style="annoValueStyle"
                       :render-label="renderValueLabel"
                     />

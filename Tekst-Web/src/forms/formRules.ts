@@ -126,7 +126,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     minMaxCharsRule(1, 3, 'blur'),
   ],
   resourceCategoryKey: [
-    requiredStringRule(() => $t('models.text.resourceCategoryKey'), 'blur'),
+    requiredStringRule(() => $t('general.key'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
   ],
 };
@@ -155,7 +155,7 @@ export const correctionFormRules: Record<string, FormItemRule[]> = {
 
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [minMaxCharsRule(0, 32, 'blur')],
-  key: [requiredStringRule(() => $t('models.segment.key'), 'blur')],
+  key: [requiredStringRule(() => $t('general.key'), 'blur')],
   locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
   html: [
     requiredStringRule(() => $t('models.segment.html'), 'blur'),
@@ -166,7 +166,7 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
 export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [minMaxCharsRule(0, 32, 'blur')],
   key: [
-    requiredStringRule(() => $t('models.segment.key'), 'blur'),
+    requiredStringRule(() => $t('general.key'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
     {
       validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]+$/.test(value),
@@ -205,10 +205,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   ],
   navEntryTranslation: [minMaxCharsRule(1, 42, 'blur')],
   registerIntroTextTranslation: [minMaxCharsRule(1, 500, 'blur')],
-  oskModeKey: [
-    requiredStringRule(() => $t('models.platformSettings.oskModeKey'), 'blur'),
-    minMaxCharsRule(1, 32, 'blur'),
-  ],
+  oskModeKey: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
   oskModeName: [
     requiredStringRule(() => $t('models.platformSettings.oskModeName'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
@@ -233,14 +230,8 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('general.comment'), 'blur'),
     minMaxCharsRule(1, 2000, 'blur'),
   ],
-  metaKey: [
-    requiredStringRule(() => $t('models.meta.key'), 'blur'),
-    minMaxCharsRule(1, 16, 'blur'),
-  ],
-  metaValue: [
-    requiredStringRule(() => $t('models.meta.value'), 'blur'),
-    minMaxCharsRule(1, 128, 'blur'),
-  ],
+  metaKey: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 16, 'blur')],
+  metaValue: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 128, 'blur')],
   resourceType: [
     requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),
     {
@@ -303,6 +294,14 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
       requiredStringRule(() => $t('resources.settings.config.multiValueDelimiter'), 'blur'),
       minMaxCharsRule(1, 3, 'blur'),
     ],
+    annotationGroupKey: [
+      requiredStringRule(() => $t('general.key', 1), 'blur'),
+      minMaxCharsRule(1, 16, 'blur'),
+    ],
+    annotationGroupTranslation: [
+      requiredStringRule(() => $t('resources.settings.config.annotationGroup', 1), 'blur'),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
   },
 };
 
@@ -342,7 +341,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
         validator: (rule: FormItemRule, value: string[]) => !!value && Array.isArray(value),
         message: () =>
           $t('forms.rulesFeedback.isRequired', {
-            x: $t('resources.types.textAnnotation.contentFields.annotationValue'),
+            x: $t('general.value'),
           }),
         trigger: 'change',
       },

@@ -40,6 +40,10 @@ general:
   in: in
   for: für
   with: mit
+  key: Schlüssel
+  value: Wert
+  label: Beschriftung
+  caption: Beschriftung
   system: System
   details: Details
   loading: Lade...
@@ -294,8 +298,6 @@ models:
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
     accentColor: Akzentfarbe
     resourceCategories: Ressourcen-Kategorien
-    resourceCategoryKey: Schlüssel
-    resourceCategoryTranslation: Beschriftung
     isActive: Öffentlich gelistet
     isInactive: Nicht öffentlich gelistet
     formRulesFeedback:
@@ -327,8 +329,6 @@ models:
     language: Sprache
     resourceType: '@:models.resource.resourceType'
     onLevel: auf Ebene "{level}"
-    key: Metadatum-Schlüssel
-    value: Metadatum-Wert
   platformSettings:
     platformName: Plattform-Name
     platformSubtitle: Plattform-Untertitel
@@ -349,7 +349,6 @@ models:
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     oskModes: Bildschirmtastaturen
-    oskModeKey: Schlüssel
     oskModeName: Name
     oskModeFont: Tastatur-Schriftart
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
@@ -359,7 +358,6 @@ models:
     resourceFontName: Name
   segment:
     modelLabel: Segment
-    key: Schlüssel
     title: Titel
     locale: Sprache
     html: Inhalt
@@ -477,6 +475,7 @@ resources:
         lettersUppercase: Buchstaben (groß)
       displayTemplate: Darstellungsvorlage
       multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
+      annotationGroup: Annotations-Gruppe | Annotations-Gruppen
   types:
     common:
       label: Meta
@@ -505,7 +504,6 @@ resources:
         lb: Dieses Token schließt eine Zeile ab
         annotations: Annotationen
         annotationKey: Annotation
-        annotationValue: Wert
       searchFields:
         any: '[beliebiger Wert]'
       copyTokenAction: Token kopieren
@@ -518,7 +516,6 @@ resources:
         files: Audio-Dateien
         url: URL
         sourceUrl: URL der Quellen-Website
-        caption: Beschriftung
     images:
       label: Bilder
       parenthesis: Bildergalerie
@@ -527,7 +524,6 @@ resources:
         url: URL
         thumbUrl: Miniatur-URL
         sourceUrl: URL der Quellen-Website
-        caption: Beschriftung
     externalReferences:
       label: Externe Referenzen
       parenthesis: Links zu externen Ressourcen

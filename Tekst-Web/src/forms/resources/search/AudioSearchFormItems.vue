@@ -22,13 +22,13 @@ function handleUpdate(field: string, value: unknown) {
 <template>
   <n-form-item
     ignore-path-change
-    :label="$t('resources.types.audio.contentFields.caption')"
+    :label="$t('general.caption')"
     :path="`queries[${queryIndex}].rts.caption`"
     :rule="searchFormRules.audio.caption"
   >
     <n-input-osk
       :model-value="model.caption"
-      :placeholder="$t('resources.types.audio.contentFields.caption')"
+      :placeholder="$t('general.caption')"
       @update:model-value="(v) => handleUpdate('caption', v)"
     />
   </n-form-item>

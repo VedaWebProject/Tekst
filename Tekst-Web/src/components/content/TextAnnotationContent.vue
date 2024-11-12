@@ -2,11 +2,13 @@
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
-import { MetadataIcon } from '@/icons';
-import { NTable, NAlert, NDropdown } from 'naive-ui';
+import { CheckIcon, ClearIcon, CopyIcon, MetadataIcon } from '@/icons';
+import { NTable, NAlert, NDropdown, NButton, NFlex, NIcon } from 'naive-ui';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useClipboard } from '@vueuse/core';
+import { pickTranslation, renderIcon } from '@/utils';
+import { useStateStore } from '@/stores';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -21,13 +23,14 @@ interface AnnotationDisplayTemplate {
   content?: string;
   suffix?: string;
   format?: AnnotationDisplayFormatFlags;
+  group?: string;
   break?: boolean; // line break after this template
 }
 
 interface AnnotationDisplay {
   content: string;
-  format?: AnnotationDisplayFormatFlags;
   style?: CSSProperties;
+  group?: string;
   break?: boolean;
 }
 
@@ -40,7 +43,7 @@ interface TokenDetails {
 type Token = TextAnnotationContentRead['tokens'][number];
 
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
-const PAT_TMPL_ITEM_PARTS = /_([kpcsfb]):(.*?)(?=_[kpcsfb]:|$)/g;
+const PAT_TMPL_ITEM_PARTS = /_([kpcsfgb]):(.*?)(?=_[kpcsfgb]:|$)/g;
 
 const props = withDefaults(
   defineProps<{
@@ -52,28 +55,38 @@ const props = withDefaults(
   }
 );
 
+const state = useStateStore();
+
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
 
+const annotationGroups = computed(() => props.resource.config.annotationGroups);
+const activeAnnoGroups = ref(props.resource.config.annotationGroups.map((g) => g.key));
+
 const showTokenContextMenu = ref(false);
 const tokenContextMenuPos = ref({ x: 0, y: 0 });
-const tokenCopyIndex = ref<string>();
+const tokenContextIndex = ref<string>();
 const tokenCopyContent = ref<string>('');
 const {
   copy: copyTokenContent,
   copied: tokenContentCopied,
   isSupported: isClipboardSupported,
 } = useClipboard({ source: tokenCopyContent, copiedDuring: 500 });
-const tokenContextMenuOptions = [
+
+const tokenContextMenuOptions = computed(() => [
   {
     label: () => $t('resources.types.textAnnotation.copyTokenAction'),
     key: 'copyToken',
+    disabled: !isClipboardSupported.value,
+    icon: renderIcon(CopyIcon),
   },
   {
     label: () => $t('resources.types.textAnnotation.copyFullAction'),
     key: 'copyFull',
+    disabled: !isClipboardSupported.value,
+    icon: renderIcon(CopyIcon),
   },
-];
+]);
 
 const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.displayTemplate) return [];
@@ -104,6 +117,9 @@ const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
             caps: p[2].toLowerCase().includes('c'),
             font: p[2].toLowerCase().includes('f'),
           };
+          break;
+        case 'g':
+          item.group = p[2];
           break;
         case 'b':
           item.break = true;
@@ -166,8 +182,8 @@ function applyAnnotationDisplayTemplate(annotations: Token['annotations']): Anno
     const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
     return {
       content: `${prefix}${content}${suffix}`,
-      format: item.template.format,
       style: getAnnotationStyle(item.template.format),
+      group: item.template.group,
       break: item.template.break,
     };
   });
@@ -198,7 +214,7 @@ function handleTokenRightClick(e: MouseEvent, token: Token, tokenId: string) {
   showTokenContextMenu.value = false;
   if (!isClipboardSupported.value) return;
   tokenDetails.value = token;
-  tokenCopyIndex.value = tokenId;
+  tokenContextIndex.value = tokenId;
   nextTick().then(() => {
     tokenContextMenuPos.value = { x: e.clientX, y: e.clientY };
     showTokenContextMenu.value = true;
@@ -225,9 +241,36 @@ function handleTokenContextMenuSelect(key: string | number) {
   copyTokenContent(tokenCopyContent.value);
   tokenCopyContent.value = '';
 }
+
+function toggleAnnoGroup(key: string) {
+  if (activeAnnoGroups.value.includes(key)) {
+    activeAnnoGroups.value = activeAnnoGroups.value.filter((g) => g !== key);
+  } else {
+    activeAnnoGroups.value = [...activeAnnoGroups.value, key];
+  }
+}
 </script>
 
 <template>
+  <!-- ANNOTATION GROUP TOGGLES -->
+  <n-flex v-if="!!annotationGroups.length" class="mb-lg">
+    <n-button
+      tertiary
+      v-for="group in annotationGroups"
+      :key="group.key"
+      size="tiny"
+      :focusable="false"
+      :disabled="activeAnnoGroups.includes(group.key) && activeAnnoGroups.length <= 1"
+      @click="toggleAnnoGroup(group.key)"
+    >
+      <template #icon>
+        <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
+      </template>
+      {{ pickTranslation(group.translations, state.locale) }}
+    </n-button>
+  </n-flex>
+
+  <!-- CONTENT -->
   <div
     v-for="(content, contentIndex) in contents"
     :key="content.id"
@@ -241,7 +284,7 @@ function handleTokenContextMenuSelect(key: string | number) {
           'token-with-annos': !!token.annotations.length,
           'token-with-comment': !!token.annotations.find((a) => a.key === 'comment'),
           'token-content-copied':
-            tokenContentCopied && tokenCopyIndex === `${contentIndex}-${tokenIndex}`,
+            tokenContentCopied && tokenContextIndex === `${contentIndex}-${tokenIndex}`,
         }"
         :title="$t('resources.types.textAnnotation.copyHintTip')"
         @click="handleTokenClick(token)"
@@ -253,9 +296,17 @@ function handleTokenContextMenuSelect(key: string | number) {
           {{ token.token }}
         </div>
         <div class="annotations">
-          <template v-for="(annotationDisplay, index) in token.annotationsDisplay" :key="index">
-            <span :style="annotationDisplay.style">{{ annotationDisplay.content }}</span>
-            <br v-if="annotationDisplay.break" />
+          <template v-for="(anno, index) in token.annotationsDisplay" :key="index">
+            <template
+              v-if="
+                !anno.group ||
+                !resource.config.annotationGroups.length ||
+                activeAnnoGroups.includes(anno.group)
+              "
+            >
+              <span :style="anno.style">{{ anno.content }}</span>
+              <br v-if="anno.break" />
+            </template>
           </template>
         </div>
       </div>
@@ -294,7 +345,7 @@ function handleTokenContextMenuSelect(key: string | number) {
       <thead>
         <tr>
           <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
-          <th>{{ $t('resources.types.textAnnotation.contentFields.annotationValue') }}</th>
+          <th>{{ $t('general.value') }}</th>
         </tr>
       </thead>
       <tbody>

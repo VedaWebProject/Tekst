@@ -113,8 +113,12 @@ import PauseFilled from '@vicons/material/PauseFilled';
 import PanToolAltOutlined from '@vicons/material/PanToolAltOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
+import CheckOutlined from '@vicons/material/CheckOutlined';
+import ContentCopyOutlined from '@vicons/material/ContentCopyOutlined';
 
 export {
+  ContentCopyOutlined as CopyIcon,
+  CheckOutlined as CheckIcon,
   ChecklistOutlined as CheckListIcon,
   BackspaceOutlined as BackspaceIcon,
   PanToolAltOutlined as CorrectionNoteIcon,

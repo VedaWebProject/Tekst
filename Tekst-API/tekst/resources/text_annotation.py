@@ -7,13 +7,15 @@ from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from pydantic import BeforeValidator, Field, StringConstraints, field_validator
-from typing_extensions import TypeAliasType
+from typing_extensions import TypeAliasType, TypedDict
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
     PrecomputedDataDocument,
     SchemaOptionalNonNullable,
+    TranslationBase,
+    Translations,
 )
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
@@ -331,8 +333,43 @@ class GeneralTextAnnotationResourceConfig(ModelBase):
     font: FontConfigType = None
 
 
+class AnnotationGroupTranslation(TranslationBase):
+    translation: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
+    ]
+
+
+class AnnotationGroup(TypedDict):
+    key: Annotated[
+        str,
+        StringConstraints(
+            min_length=1,
+            max_length=16,
+            strip_whitespace=True,
+        ),
+    ]
+    translations: Annotated[
+        Translations[AnnotationGroupTranslation],
+        Field(
+            description="Translation for the label of an annotation group",
+        ),
+    ] = []
+
+
 class TextAnnotationResourceConfig(ResourceConfigBase):
     general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
+    annotation_groups: Annotated[
+        list[AnnotationGroup],
+        Field(
+            description="Display groups to use for grouping annotations",
+            max_length=32,
+        ),
+    ] = []
     display_template: Annotated[
         str | None,
         Field(
@@ -351,7 +388,11 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
         Field(
             description="String used to delimit multiple values for an annotation",
         ),
-        StringConstraints(min_length=1, max_length=3, strip_whitespace=True),
+        StringConstraints(
+            min_length=1,
+            max_length=3,
+            strip_whitespace=True,
+        ),
     ] = "/"
 
 

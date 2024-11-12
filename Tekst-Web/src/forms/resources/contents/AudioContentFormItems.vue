@@ -77,7 +77,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.audio.contentFields.caption')"
+            :label="$t('general.caption')"
             :path="`files[${index}].caption`"
             :rule="contentFormRules.audio.caption"
             style="flex-grow: 2"
@@ -88,7 +88,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               :font="resource.config.general.font || undefined"
               :rows="2"
               :max-length="512"
-              :placeholder="$t('resources.types.audio.contentFields.caption')"
+              :placeholder="$t('general.caption')"
             />
           </n-form-item>
         </n-flex>

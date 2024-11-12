@@ -40,6 +40,10 @@ general:
   in: in
   for: for
   with: with
+  key: Key
+  value: Value
+  label: Label
+  caption: Caption
   system: System
   details: Details
   loading: Loading...
@@ -293,8 +297,6 @@ models:
     fullLocLabelAsHitHeading: Use full location label as search result heading
     accentColor: Accent color
     resourceCategories: Resource Categories
-    resourceCategoryKey: Key
-    resourceCategoryTranslation: Label
     isActive: Publicly listed
     isInactive: Not publicly listed
     formRulesFeedback:
@@ -326,8 +328,6 @@ models:
     language: Language
     resourceType: '@:models.resource.resourceType'
     onLevel: on level "{level}"
-    key: Metadata key
-    value: Metadata value
   platformSettings:
     platformName: Platform Name
     platformSubtitle: Platform Subtitle
@@ -348,7 +348,6 @@ models:
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
     oskModes: On-screen Keyboards
-    oskModeKey: Key
     oskModeName: Name
     oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show category headings
@@ -358,7 +357,6 @@ models:
     resourceFontName: Name
   segment:
     modelLabel: Segment
-    key: Key
     title: Title
     locale: Language
     html: Content
@@ -468,6 +466,7 @@ resources:
         lettersUppercase: Letters (uppercase)
       displayTemplate: Display template
       multiValueDelimiter: Delimiter for multiple annotation values
+      annotationGroup: Annotation group | Annotation groups
   types:
     common:
       label: Meta
@@ -496,7 +495,6 @@ resources:
         lb: This token concludes a line
         annotations: Annotations
         annotationKey: Annotation
-        annotationValue: Value
       searchFields:
         any: '[any value]'
       copyTokenAction: Copy token
@@ -509,7 +507,6 @@ resources:
         files: Audio Files
         url: URL
         sourceUrl: URL of source website
-        caption: Caption
     images:
       label: Images
       parenthesis: image gallery
@@ -518,7 +515,6 @@ resources:
         url: URL
         thumbUrl: Thumbnail URL
         sourceUrl: URL of source website
-        caption: Caption
     externalReferences:
       label: External References
       parenthesis: links to external resources

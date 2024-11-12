@@ -339,14 +339,14 @@ function resetForm() {
                 >
                   <n-form-item
                     ignore-path-change
-                    :label="$t('models.platformSettings.oskModeKey')"
+                    :label="$t('general.key')"
                     :path="`oskModes[${index}].key`"
                     :rule="platformSettingsFormRules.oskModeKey"
                     style="flex-grow: 1"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].key"
-                      :placeholder="$t('models.platformSettings.oskModeKey')"
+                      :placeholder="$t('general.key')"
                       @keydown.enter.prevent
                     />
                   </n-form-item>

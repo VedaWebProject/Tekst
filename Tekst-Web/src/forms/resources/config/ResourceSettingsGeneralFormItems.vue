@@ -112,7 +112,7 @@ function handleUpdate(field: string, value: unknown) {
           >
             <n-input
               v-model:value="metaEntryValue.value"
-              :placeholder="$t('models.meta.value')"
+              :placeholder="$t('general.key')"
               @keydown.enter.prevent
             />
           </n-form-item>

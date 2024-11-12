@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.1.0a0"
+    "version": "0.1.1a0"
   },
   "servers": [
     {
@@ -7171,6 +7171,50 @@
           "key"
         ],
         "title": "AnnotationAggregation"
+      },
+      "AnnotationGroup": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/AnnotationGroupTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations",
+            "description": "Translation for the label of an annotation group"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "AnnotationGroup"
+      },
+      "AnnotationGroupTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "AnnotationGroupTranslation"
       },
       "AudioContentCreate": {
         "properties": {
@@ -14460,6 +14504,16 @@
               "defaultCollapsed": false
             }
           },
+          "annotationGroups": {
+            "items": {
+              "$ref": "#/components/schemas/AnnotationGroup"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Annotationgroups",
+            "description": "Display groups to use for grouping annotations",
+            "default": []
+          },
           "displayTemplate": {
             "anyOf": [
               {
@@ -14633,6 +14687,7 @@
               "general": {
                 "defaultCollapsed": false
               },
+              "annotationGroups": [],
               "multiValueDelimiter": "/"
             }
           },
@@ -14859,6 +14914,7 @@
               "general": {
                 "defaultCollapsed": false
               },
+              "annotationGroups": [],
               "multiValueDelimiter": "/"
             }
           },

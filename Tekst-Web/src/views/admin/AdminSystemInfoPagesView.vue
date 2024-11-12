@@ -268,11 +268,11 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('models.segment.key')">
+        <n-form-item path="key" :label="$t('general.key')">
           <n-input
             v-model:value="segmentModel.key"
             type="text"
-            :placeholder="$t('models.segment.key')"
+            :placeholder="$t('general.key')"
             @keydown.enter.prevent
           />
         </n-form-item>

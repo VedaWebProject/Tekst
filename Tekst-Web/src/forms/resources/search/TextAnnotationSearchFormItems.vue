@@ -153,7 +153,7 @@ onMounted(async () => {
                 :disabled="!annotationItem.k"
                 :style="getAnnoValueSelectStyle(annotationItem.v)"
                 :options="annoOptions[annotationItemIndex].valuesOptions"
-                :placeholder="$t('resources.types.textAnnotation.contentFields.annotationValue')"
+                :placeholder="$t('general.value')"
               />
             </n-form-item>
 
