@@ -228,8 +228,7 @@ const fromChildLevel = computed(
 }
 
 .content-collapsed {
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  border-bottom: 2px dashed var(--accent-color-fade3);
   max-height: 150px;
   overflow-y: scroll;
 }
