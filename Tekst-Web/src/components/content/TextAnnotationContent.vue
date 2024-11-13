@@ -18,20 +18,19 @@ interface AnnotationDisplayFormatFlags {
 }
 
 interface AnnotationDisplayTemplate {
+  type: 'anno' | 'br';
   key?: string;
   prefix?: string;
   content?: string;
   suffix?: string;
   format?: AnnotationDisplayFormatFlags;
   group?: string;
-  break?: boolean; // line break after this template
 }
 
 interface AnnotationDisplay {
-  content: string;
+  content?: string;
   style?: CSSProperties;
   group?: string;
-  break?: boolean;
 }
 
 interface TokenDetails {
@@ -43,7 +42,8 @@ interface TokenDetails {
 type Token = TextAnnotationContentRead['tokens'][number];
 
 const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
-const PAT_TMPL_ITEM_PARTS = /_([kpcsfgb]):(.*?)(?=_[kpcsfgb]:|$)/g;
+const PAT_TMPL_ITEM_PARTS = /_([kpcsfg]):(.*?)(?=_[kpcsfg]:|$)/g;
+const PAT_TMPL_LINE_BREAK = /^br$/g;
 
 const props = withDefaults(
   defineProps<{
@@ -88,106 +88,160 @@ const tokenContextMenuOptions = computed(() => [
   },
 ]);
 
-const annotationDisplayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
+const fontFamilyStyle = computed(() => ({
+  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+}));
+
+const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.displayTemplate) return [];
   const out: AnnotationDisplayTemplate[] = [];
   // iterate over template items
   const items = [...props.resource.config.displayTemplate.matchAll(PAT_TMPL_ITEM)];
   items.forEach((a) => {
-    const item: AnnotationDisplayTemplate = {};
-    // iterate over template item parts
-    [...a[1].matchAll(PAT_TMPL_ITEM_PARTS)].forEach((p) => {
-      switch (p[1]) {
-        case 'k':
-          item.key = p[2];
-          break;
-        case 'p':
-          item.prefix = p[2];
-          break;
-        case 'c':
-          item.content = p[2];
-          break;
-        case 's':
-          item.suffix = p[2];
-          break;
-        case 'f':
-          item.format = {
-            bold: p[2].toLowerCase().includes('b'),
-            italic: p[2].toLowerCase().includes('i'),
-            caps: p[2].toLowerCase().includes('c'),
-            font: p[2].toLowerCase().includes('f'),
-          };
-          break;
-        case 'g':
-          item.group = p[2];
-          break;
-        case 'b':
-          item.break = true;
-          break;
-      }
-    });
+    const item: AnnotationDisplayTemplate = {
+      // check if template item is a line break marker
+      type: a[1].match(PAT_TMPL_LINE_BREAK) ? 'br' : 'anno',
+    };
+    if (item.type !== 'br') {
+      // iterate over template item parts
+      [...a[1].matchAll(PAT_TMPL_ITEM_PARTS)].forEach((p) => {
+        switch (p[1]) {
+          case 'k':
+            item.key = p[2];
+            break;
+          case 'p':
+            item.prefix = p[2];
+            break;
+          case 'c':
+            item.content = p[2];
+            break;
+          case 's':
+            item.suffix = p[2];
+            break;
+          case 'f':
+            item.format = {
+              bold: p[2].toLowerCase().includes('b'),
+              italic: p[2].toLowerCase().includes('i'),
+              caps: p[2].toLowerCase().includes('c'),
+              font: p[2].toLowerCase().includes('f'),
+            };
+            break;
+          case 'g':
+            item.group = p[2];
+            break;
+        }
+      });
+    }
     out.push(item);
   });
   return out;
 });
 
-const contents = computed(() =>
-  props.resource.contents?.map((c) => ({
+function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
+  const lineDisplaysPerToken = tokens.map((t) => {
+    // if there are no annotation display templates, just return the annotations in a
+    // default form (k:v, k:v, etc.) without any styling flags set, in a single line (array)
+    if (!displayTemplates.value.length) {
+      return [
+        t.annotations?.map(
+          (a, i) =>
+            ({
+              type: 'anno',
+              content: `${a.key}:${a.value}` + (i < t.annotations.length - 1 ? '; ' : ''),
+            }) as AnnotationDisplay
+        ) || [],
+      ];
+    }
+
+    // prepare templates for next step
+    const annos = displayTemplates.value
+      // associate templates with annotations data
+      .map((template) => {
+        return {
+          template,
+          data: t.annotations?.find((a) => a.key === template.key),
+        };
+      })
+      // filter to keep only templates that are either line break markers or annotations
+      // that have `content` AND do carry data for `key` (if they have one)
+      .filter(
+        (item) =>
+          item.template.type === 'br' ||
+          (item.template.content && (!item.template.key || !!item.data))
+      );
+
+    // apply templates, compose final display content
+    const lines: AnnotationDisplay[][] = [[]];
+    annos.forEach((anno, i) => {
+      // if the current template is a line break marker, add an empty line
+      if (anno.template.type === 'br') {
+        lines.push([]);
+        return;
+      }
+      // compose the content, prefix and suffix from the template and the data
+      const content =
+        anno.template.content?.replace(/k/g, anno.data?.key || '').replace(
+          /v/g,
+          anno.data?.value
+            // join the values with the delimiter set in the resource config
+            .join(props.resource.config.multiValueDelimiter || '/') || ''
+        ) || '';
+      const prefix = i > 0 ? anno.template.prefix || '' : '';
+      const suffix = i < annos.length - 1 ? anno.template.suffix || '' : '';
+      lines[lines.length - 1].push({
+        content: `${prefix}${content}${suffix}`,
+        style: getAnnotationStyle(anno.template.format),
+        group: anno.template.group,
+      });
+    });
+    return lines;
+  });
+
+  return lineDisplaysPerToken;
+}
+
+const contents = computed(() => {
+  const out =
+    props.resource.contents?.map((c) => {
+      const displays = applyDisplayTemplate(c.tokens);
+      return {
+        ...c,
+        tokens: c.tokens.map((t, i) => ({
+          token: t.token,
+          lb: t.lb,
+          annotations: t.annotations,
+          annoDisplay: displays[i],
+          comment: t.annotations.find((a) => a.key === 'comment')?.value,
+        })),
+      };
+    }) || [];
+
+  // find lines that are empty in every annotation display of every content
+  // (either because they have no content or the annotation group is not active)
+  const emptyLines: boolean[] = Array.from(
+    Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys()
+  ).map(
+    (ln) =>
+      !out
+        .map((c) => c.tokens)
+        .flat()
+        .map((t) =>
+          t.annoDisplay[ln].filter(
+            (anno) => anno.group && activeAnnoGroups.value.includes(anno.group)
+          )
+        )
+        .some((line) => !!line.length)
+  );
+
+  // return contents with empty lines removed from their tokens' annotation displays
+  return out.map((c) => ({
     ...c,
     tokens: c.tokens.map((t) => ({
-      token: t.token,
-      lb: t.lb,
-      annotations: t.annotations,
-      annotationsDisplay: applyAnnotationDisplayTemplate(t.annotations),
-      comment: t.annotations.find((a) => a.key === 'comment')?.value,
+      ...t,
+      annoDisplay: t.annoDisplay.filter((_, ln) => !emptyLines[ln]),
     })),
-  }))
-);
-
-const fontStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
-};
-
-function applyAnnotationDisplayTemplate(annotations: Token['annotations']): AnnotationDisplay[] {
-  // if there are no annotation display templates, just return the annotations in a
-  // default form (k:v, k:v, etc.) without any styling flags set
-  if (!annotationDisplayTemplates.value.length) {
-    return (
-      annotations?.map((a, i) => ({
-        content: `${a.key}:${a.value}` + (i < annotations.length - 1 ? '; ' : ''),
-      })) || []
-    );
-  }
-
-  // associate templates with annotations data
-  const items = annotationDisplayTemplates.value
-    .map((template) => {
-      return {
-        template,
-        data: annotations?.find((a) => a.key === template.key),
-      };
-    })
-    .filter((item) => item.template.content && (item.template.key ? !!item.data : true));
-
-  // apply templates, compute content
-  return items.map((item, i) => {
-    const content =
-      item.template.content?.replace(/k/g, item.data?.key || '').replace(
-        /v/g,
-        item.data?.value
-          // join the values with the delimiter set in the resource config
-          .join(props.resource.config.multiValueDelimiter || '/') || ''
-      ) || '';
-    const prefix = i > 0 ? item.template.prefix || '' : '';
-    const suffix = i < items.length - 1 ? item.template.suffix || '' : '';
-    return {
-      content: `${prefix}${content}${suffix}`,
-      style: getAnnotationStyle(item.template.format),
-      group: item.template.group,
-      break: item.template.break,
-    };
-  });
-}
+  }));
+});
 
 function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSProperties | undefined {
   if (!fmtFlags) return;
@@ -195,7 +249,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
     fontWeight: fmtFlags.bold ? 'bold' : undefined,
     fontStyle: fmtFlags.italic ? 'italic' : undefined,
     fontVariant: fmtFlags.caps ? 'small-caps' : undefined,
-    fontFamily: fmtFlags.font ? fontStyle.fontFamily : undefined,
+    fontFamily: fmtFlags.font ? fontFamilyStyle.value.fontFamily : undefined,
   };
 }
 
@@ -243,7 +297,9 @@ function handleTokenContextMenuSelect(key: string | number) {
 }
 
 function toggleAnnoGroup(key: string) {
-  if (activeAnnoGroups.value.includes(key)) {
+  if (activeAnnoGroups.value.includes(key) && activeAnnoGroups.value.length <= 1) {
+    activeAnnoGroups.value = annotationGroups.value.map((g) => g.key);
+  } else if (activeAnnoGroups.value.includes(key)) {
     activeAnnoGroups.value = activeAnnoGroups.value.filter((g) => g !== key);
   } else {
     activeAnnoGroups.value = [...activeAnnoGroups.value, key];
@@ -260,7 +316,6 @@ function toggleAnnoGroup(key: string) {
       :key="group.key"
       size="tiny"
       :focusable="false"
-      :disabled="activeAnnoGroups.includes(group.key) && activeAnnoGroups.length <= 1"
       @click="toggleAnnoGroup(group.key)"
     >
       <template #icon>
@@ -292,22 +347,27 @@ function toggleAnnoGroup(key: string) {
           (e) => handleTokenRightClick(e, token, `${contentIndex}-${tokenIndex}`)
         "
       >
-        <div class="token b i" :style="fontStyle">
+        <div class="token b i" :style="fontFamilyStyle">
           {{ token.token }}
         </div>
         <div class="annotations">
-          <template v-for="(anno, index) in token.annotationsDisplay" :key="index">
-            <template
-              v-if="
-                !anno.group ||
-                !resource.config.annotationGroups.length ||
-                activeAnnoGroups.includes(anno.group)
-              "
-            >
-              <span :style="anno.style">{{ anno.content }}</span>
-              <br v-if="anno.break" />
+          <div
+            v-for="(annoLine, lineIndex) in token.annoDisplay"
+            :key="lineIndex"
+            style="height: 1.4em"
+          >
+            <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
+              <span
+                v-if="
+                  !anno.group ||
+                  !resource.config.annotationGroups.length ||
+                  activeAnnoGroups.includes(anno.group)
+                "
+                :style="anno.style"
+                >{{ anno.content }}</span
+              >
             </template>
-          </template>
+          </div>
         </div>
       </div>
       <hr v-if="token.lb" class="token-lb" />
@@ -391,11 +451,13 @@ function toggleAnnoGroup(key: string) {
 }
 
 .token-container {
+  margin-right: 4px;
   position: relative;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  border-left: 1px solid var(--main-bg-color);
+  border-left: 2px dashed var(--main-bg-color);
+  border-radius: 8px;
   padding: 0 8px;
   outline-color: transparent;
   transition: outline-color 0.3s ease-in-out;
@@ -403,7 +465,7 @@ function toggleAnnoGroup(key: string) {
 
 .token-container.token-with-annos {
   cursor: pointer;
-  background: linear-gradient(135deg, var(--main-bg-color) 5px, transparent 0);
+  border-left-style: solid;
 }
 
 .token-container.token-with-annos:hover {
@@ -411,10 +473,11 @@ function toggleAnnoGroup(key: string) {
 }
 
 .token-container.token-with-comment {
-  background: linear-gradient(135deg, var(--accent-color-fade3) 5px, transparent 0);
+  border-left-color: var(--accent-color-fade3);
 }
 
 .token-container.token-content-copied {
+  border-color: transparent;
   outline: 2px dashed var(--accent-color-fade2);
 }
 
