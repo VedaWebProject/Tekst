@@ -227,7 +227,10 @@ const contents = computed(() => {
         .flat()
         .map((t) =>
           t.annoDisplay[ln].filter(
-            (anno) => anno.group && activeAnnoGroups.value.includes(anno.group)
+            (anno) =>
+              !anno.group ||
+              activeAnnoGroups.value.includes(anno.group) ||
+              !annotationGroups.value.length
           )
         )
         .some((line) => !!line.length)
@@ -316,6 +319,7 @@ function toggleAnnoGroup(key: string) {
       :key="group.key"
       size="tiny"
       :focusable="false"
+      :disabled="annotationGroups.length == 1"
       @click="toggleAnnoGroup(group.key)"
     >
       <template #icon>
