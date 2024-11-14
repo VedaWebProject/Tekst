@@ -312,7 +312,7 @@ models:
     title: Titel
     description: Beschreibung
     level: Ebene
-    resourceType: Datenschichttyp
+    resourceType: Ressourcentyp
     public: öffentlich
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
