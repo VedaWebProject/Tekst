@@ -360,33 +360,25 @@ function toggleAnnoGroup(key: string) {
   </n-flex>
 
   <!-- CONTENT -->
-  <div
-    v-for="(content, contentIndex) in contents"
-    :key="content.id"
-    class="content-container"
-    :class="{ reduced }"
-  >
-    <template v-for="(token, tokenIndex) in content.tokens" :key="tokenIndex">
+  <div v-for="(c, cIndex) in contents" :key="c.id" class="content-container" :class="{ reduced }">
+    <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
       <div
         class="token-container"
         :class="{
-          'token-with-annos': !!token.annotations.length,
-          'token-with-comment': !!token.annotations.find((a) => a.key === 'comment'),
-          'token-content-copied':
-            tokenContentCopied && tokenContextIndex === `${contentIndex}-${tokenIndex}`,
+          'token-with-annos': !!t.annotations.length,
+          'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
+          'token-content-copied': tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
         }"
         :title="$t('resources.types.textAnnotation.copyHintTip')"
-        @click="handleTokenClick(token)"
-        @contextmenu.prevent.stop="
-          (e) => handleTokenRightClick(e, token, `${contentIndex}-${tokenIndex}`)
-        "
+        @click="handleTokenClick(t)"
+        @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
       >
         <div class="token b i" :style="fontFamilyStyle">
-          {{ token.token }}
+          {{ t.token }}
         </div>
         <div class="annotations">
           <div
-            v-for="(annoLine, lineIndex) in token.annoDisplay"
+            v-for="(annoLine, lineIndex) in t.annoDisplay"
             :key="lineIndex"
             class="annotation-line"
           >
@@ -399,16 +391,18 @@ function toggleAnnoGroup(key: string) {
                 "
                 :style="{
                   ...anno.style,
+                  transition: 'background-color 0.2s ease',
                   backgroundColor:
                     colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
                 }"
-                >{{ anno.content }}</span
               >
+                {{ anno.content }}
+              </span>
             </template>
           </div>
         </div>
       </div>
-      <hr v-if="token.lb" class="token-lb" />
+      <hr v-if="t.lb" class="token-lb" />
     </template>
   </div>
 
