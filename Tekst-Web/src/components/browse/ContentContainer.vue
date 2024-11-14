@@ -53,7 +53,7 @@ const contentContainerTitle = computed(() =>
 const headerWidgetsOpacity = computed<number>(() =>
   isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
 );
-const hasContent = computed(() => props.resource.contents?.length);
+const hasContent = computed(() => !!props.resource.contents?.length);
 const show = computed(() => props.resource.active && (hasContent.value || !browse.reducedView));
 const fromChildLevel = computed(
   () => props.resource.level - 1 === browse.level && props.resource.config.common.showOnParentLevel
@@ -87,6 +87,7 @@ const fromChildLevel = computed(
         </div>
         <div class="content-header-title-extra">
           {{ headerExtraText }}
+          <span v-if="loading && !hasContent" class="ml-lg">{{ $t('general.loading') }}</span>
         </div>
       </div>
       <content-header-widget-bar
@@ -96,7 +97,7 @@ const fromChildLevel = computed(
       />
     </div>
 
-    <n-spin :show="loading" size="small">
+    <n-spin :show="loading && hasContent" size="small">
       <div
         v-if="hasContent"
         class="content"
