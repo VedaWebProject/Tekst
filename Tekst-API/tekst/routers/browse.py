@@ -15,7 +15,7 @@ from tekst.models.location import (
 from tekst.models.resource import (
     ResourceBaseDocument,
 )
-from tekst.resources import AnyContentReadBody
+from tekst.resources import AnyContentRead
 
 
 # initialize content router
@@ -27,7 +27,7 @@ router = APIRouter(
 
 @router.get(
     "/content-siblings",
-    response_model=list[AnyContentReadBody],
+    response_model=list[AnyContentRead],
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [

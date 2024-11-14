@@ -9,10 +9,10 @@ from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.resources import (
-    AnyContentCreateBody,
+    AnyContentCreate,
     AnyContentDocument,
-    AnyContentReadBody,
-    AnyContentUpdateBody,
+    AnyContentRead,
+    AnyContentUpdate,
     resource_types_mgr,
 )
 from tekst.search import set_index_ood
@@ -27,7 +27,7 @@ router = APIRouter(
 
 @router.post(
     "",
-    response_model=AnyContentReadBody,
+    response_model=AnyContentRead,
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
@@ -37,7 +37,7 @@ router = APIRouter(
     ),
 )
 async def create_content(
-    content: AnyContentCreateBody,
+    content: AnyContentCreate,
     user: UserDep,
 ) -> AnyContentDocument:
     # check if the resource this content belongs to is writable by user
@@ -73,7 +73,7 @@ async def create_content(
 
 @router.get(
     "/{id}",
-    response_model=AnyContentReadBody,
+    response_model=AnyContentRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -101,7 +101,7 @@ async def get_content(
 
 @router.patch(
     "/{id}",
-    response_model=AnyContentReadBody,
+    response_model=AnyContentRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -113,7 +113,7 @@ async def get_content(
 )
 async def update_content(
     content_id: Annotated[PydanticObjectId, Path(alias="id")],
-    updates: AnyContentUpdateBody,
+    updates: AnyContentUpdate,
     user: UserDep,
 ) -> AnyContentDocument:
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
@@ -176,7 +176,7 @@ async def delete_content(
 
 @router.get(
     "",
-    response_model=list[AnyContentReadBody],
+    response_model=list[AnyContentRead],
     status_code=status.HTTP_200_OK,
 )
 async def find_contents(

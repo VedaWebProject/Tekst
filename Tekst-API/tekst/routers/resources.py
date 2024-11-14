@@ -38,10 +38,9 @@ from tekst.models.resource import (
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.resources import (
-    AnyResourceCreateBody,
+    AnyResourceCreate,
     AnyResourceRead,
-    AnyResourceReadBody,
-    AnyResourceUpdateBody,
+    AnyResourceUpdate,
     call_resource_maintenance_hooks,
     get_resource_template_readme,
     resource_types_mgr,
@@ -134,7 +133,7 @@ async def trigger_resources_maintenance(
 
 @router.post(
     "",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
@@ -145,7 +144,7 @@ async def trigger_resources_maintenance(
     ),
 )
 async def create_resource(
-    resource: AnyResourceCreateBody, user: UserDep, cfg: ConfigDep
+    resource: AnyResourceCreate, user: UserDep, cfg: ConfigDep
 ) -> AnyResourceRead:
     # check user resources limit
     if (
@@ -182,7 +181,7 @@ async def create_resource(
 
 @router.post(
     "/{id}/version",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
@@ -261,7 +260,7 @@ async def create_resource_version(
 
 @router.patch(
     "/{id}",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -272,7 +271,7 @@ async def create_resource_version(
 )
 async def update_resource(
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-    updates: AnyResourceUpdateBody,
+    updates: AnyResourceUpdate,
     user: UserDep,
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.find_one(
@@ -302,7 +301,7 @@ async def update_resource(
 
 @router.get(
     "",
-    response_model=list[AnyResourceReadBody],
+    response_model=list[AnyResourceRead],
     status_code=status.HTTP_200_OK,
 )
 async def find_resources(
@@ -356,7 +355,7 @@ async def find_resources(
 @router.get(
     "/{id}",
     status_code=status.HTTP_200_OK,
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
@@ -441,7 +440,7 @@ async def delete_resource(
 
 @router.post(
     "/{id}/transfer",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -508,7 +507,7 @@ async def transfer_resource(
 
 @router.post(
     "/{id}/propose",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -551,7 +550,7 @@ async def propose_resource(
 
 @router.post(
     "/{id}/unpropose",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -580,7 +579,7 @@ async def unpropose_resource(
 
 @router.post(
     "/{id}/publish",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -624,7 +623,7 @@ async def publish_resource(
 
 @router.post(
     "/{id}/unpublish",
-    response_model=AnyResourceReadBody,
+    response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [

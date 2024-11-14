@@ -462,117 +462,107 @@ init_resource_types_mgr()
 
 # ### create union type aliases for models of any resource type model
 
-# CREATE
-AnyResourceCreate = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.resource_model().create_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyResourceCreateBody = Annotated[
-    AnyResourceCreate,
+AnyResourceCreate = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.resource_model().create_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# READ
-AnyResourceRead = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.resource_model().read_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyResourceReadBody = Annotated[
-    AnyResourceRead,
+AnyResourceRead = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.resource_model().read_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# UPDATE
-AnyResourceUpdate = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.resource_model().update_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyResourceUpdateBody = Annotated[
-    AnyResourceUpdate,
+AnyResourceUpdate = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.resource_model().update_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
-]
-
-# DOCUMENT
-AnyResourceDocument = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.resource_model().document_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
+    Field(discriminator="resource_type"),
 ]
 
 
-# ### create union type aliases for models of any content type model
+# ### CREATE UNION TYPE ALIASES FOR MODELS OF ANY CONTENT TYPE MODEL
 
-# CREATE
-AnyContentCreate = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.content_model().create_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyContentCreateBody = Annotated[
-    AnyContentCreate,
+AnyContentCreate = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().create_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# READ
-AnyContentRead = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.content_model().read_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyContentReadBody = Annotated[
-    AnyContentRead,
+AnyContentRead = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().read_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# UPDATE
-AnyContentUpdate = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.content_model().update_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
-]
-AnyContentUpdateBody = Annotated[
-    AnyContentUpdate,
+AnyContentUpdate = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().update_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
     Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# DOCUMENT
-AnyContentDocument = Union[  # noqa: UP007
-    tuple(
-        [
-            rt.content_model().document_model()
-            for rt in resource_types_mgr.get_all().values()
-        ]
-    )
+AnyContentDocument = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().document_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+        )
+    ],
+    Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
 ]
 
-# ANY RESOURCE SEARCH QUERY
+
+# ### CREATE UNION TYPE ALIASES FOR MODELS OF RESOURCE TYPE-SPECIFIC SEARCH QUERIES
+
 AnyResourceSearchQuery = Annotated[
     Union[  # noqa: UP007
         tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
     ],
+    Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
 ]

@@ -74,18 +74,16 @@ Translations = conlist(
 )
 
 
-class ModelTransformerMixin:
-    @classmethod
-    def model_from(cls, obj: BaseModel) -> BaseModel:
-        return cls.model_validate(obj, from_attributes=True)
-
-
-class ModelBase(ModelTransformerMixin, BaseModel):
+class ModelBase(BaseModel):
     model_config = ConfigDict(
         alias_generator=camelize,
         populate_by_name=True,
         from_attributes=True,
     )
+
+    @classmethod
+    def model_from(cls, obj: BaseModel) -> BaseModel:
+        return cls.model_validate(obj, from_attributes=True)
 
     @classmethod
     def _field_excluded_from_model_variant(
@@ -109,7 +107,7 @@ class ModelBase(ModelTransformerMixin, BaseModel):
         return False
 
 
-class DocumentBase(ModelTransformerMixin, Document):
+class DocumentBase(Document):
     """Base model for all Tekst ODMs"""
 
     class Settings:
