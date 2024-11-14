@@ -115,8 +115,10 @@ import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
 import CheckOutlined from '@vicons/material/CheckOutlined';
 import ContentCopyOutlined from '@vicons/material/ContentCopyOutlined';
+import FormatColorFillOutlined from '@vicons/material/FormatColorFillOutlined';
 
 export {
+  FormatColorFillOutlined as ColorIcon,
   ContentCopyOutlined as CopyIcon,
   CheckOutlined as CheckIcon,
   ChecklistOutlined as CheckListIcon,

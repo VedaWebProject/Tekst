@@ -2,13 +2,14 @@
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
-import { CheckIcon, ClearIcon, CopyIcon, MetadataIcon } from '@/icons';
+import { CheckIcon, ClearIcon, ColorIcon, CopyIcon, MetadataIcon } from '@/icons';
 import { NTable, NAlert, NDropdown, NButton, NFlex, NIcon } from 'naive-ui';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { useClipboard } from '@vueuse/core';
 import { pickTranslation, renderIcon } from '@/utils';
-import { useStateStore } from '@/stores';
+import { useStateStore, useThemeStore } from '@/stores';
+import { transparentize, saturate, adjustHue, toRgba } from 'color2k';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -56,6 +57,7 @@ const props = withDefaults(
 );
 
 const state = useStateStore();
+const theme = useThemeStore();
 
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
@@ -91,6 +93,24 @@ const tokenContextMenuOptions = computed(() => [
 const fontFamilyStyle = computed(() => ({
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 }));
+
+const annoLineNumbers = computed(() =>
+  Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
+);
+const colorAnnoLines = ref(false);
+const annoLineColors = computed(() =>
+  annoLineNumbers.value.map((ln) =>
+    toRgba(
+      transparentize(
+        saturate(
+          adjustHue(theme.accentColors.base, (360 / (annoLineNumbers.value.length + 1)) * (ln + 1)),
+          1
+        ),
+        theme.darkMode ? 0.8 : 0.9
+      )
+    )
+  )
+);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.displayTemplate) return [];
@@ -218,9 +238,7 @@ const contents = computed(() => {
 
   // find lines that are empty in every annotation display of every content
   // (either because they have no content or the annotation group is not active)
-  const emptyLines: boolean[] = Array.from(
-    Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys()
-  ).map(
+  const emptyLines: boolean[] = annoLineNumbers.value.map(
     (ln) =>
       !out
         .map((c) => c.tokens)
@@ -314,18 +332,32 @@ function toggleAnnoGroup(key: string) {
   <!-- ANNOTATION GROUP TOGGLES -->
   <n-flex v-if="!!annotationGroups.length" class="mb-lg">
     <n-button
-      tertiary
-      v-for="group in annotationGroups"
+      :tertiary="!colorAnnoLines"
+      :type="colorAnnoLines ? 'primary' : undefined"
+      v-for="(group, index) in annotationGroups"
       :key="group.key"
       size="tiny"
       :focusable="false"
       :disabled="annotationGroups.length == 1"
+      :color="colorAnnoLines ? annoLineColors[index] : undefined"
+      :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
       @click="toggleAnnoGroup(group.key)"
     >
       <template #icon>
         <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
       </template>
       {{ pickTranslation(group.translations, state.locale) }}
+    </n-button>
+    <n-button
+      tertiary
+      size="tiny"
+      :focusable="false"
+      :class="{ rainbow: colorAnnoLines }"
+      @click="colorAnnoLines = !colorAnnoLines"
+    >
+      <template #icon>
+        <n-icon :component="ColorIcon" />
+      </template>
     </n-button>
   </n-flex>
 
@@ -358,7 +390,8 @@ function toggleAnnoGroup(key: string) {
           <div
             v-for="(annoLine, lineIndex) in token.annoDisplay"
             :key="lineIndex"
-            style="height: 1.4em"
+            class="annotation-line"
+            :style="{ backgroundColor: colorAnnoLines ? annoLineColors[lineIndex] : undefined }"
           >
             <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
               <span
@@ -508,5 +541,18 @@ function toggleAnnoGroup(key: string) {
 .reduced .annotations {
   font-size: var(--font-size-tiny);
   opacity: 0.75;
+}
+
+.annotations > .annotation-line {
+  height: 1.4em;
+  border-radius: var(--border-radius);
+}
+
+.annotations > .annotation-line:empty {
+  visibility: hidden;
+}
+
+.rainbow {
+  background: linear-gradient(in hsl longer hue 45deg, rgba(200, 100, 100, 0.3) 0 0);
 }
 </style>
