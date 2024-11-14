@@ -2,7 +2,7 @@
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
-import { CheckIcon, ClearIcon, ColorIcon, CopyIcon, MetadataIcon } from '@/icons';
+import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
 import { NTable, NAlert, NDropdown, NButton, NFlex, NIcon } from 'naive-ui';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
@@ -312,8 +312,8 @@ function handleTokenContextMenuSelect(key: string | number) {
     const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
     const annos = tokenDetails.value?.annotations
       ? tokenDetails.value.annotations
-        .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
-        .join('; ')
+          .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
+          .join('; ')
       : [];
     tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
   }
@@ -352,15 +352,9 @@ function toggleAnnoGroup(key: string) {
       </template>
       {{ pickTranslation(group.translations, state.locale) }}
     </n-button>
-    <n-button
-      tertiary
-      size="tiny"
-      :focusable="false"
-      :class="{ rainbow: colorAnnoLines }"
-      @click="colorAnnoLines = !colorAnnoLines"
-    >
+    <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
       <template #icon>
-        <n-icon :component="ColorIcon" />
+        <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
       </template>
     </n-button>
   </n-flex>
@@ -383,8 +377,9 @@ function toggleAnnoGroup(key: string) {
         }"
         :title="$t('resources.types.textAnnotation.copyHintTip')"
         @click="handleTokenClick(token)"
-        @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, token, `${contentIndex}-${tokenIndex}`)
-          "
+        @contextmenu.prevent.stop="
+          (e) => handleTokenRightClick(e, token, `${contentIndex}-${tokenIndex}`)
+        "
       >
         <div class="token b i" :style="fontFamilyStyle">
           {{ token.token }}
@@ -555,9 +550,5 @@ function toggleAnnoGroup(key: string) {
 
 .annotations > .annotation-line:empty {
   visibility: hidden;
-}
-
-.rainbow {
-  background: linear-gradient(in hsl longer hue 45deg, rgba(200, 100, 100, 0.3) 0 0);
 }
 </style>

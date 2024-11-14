@@ -115,10 +115,12 @@ import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
 import CheckOutlined from '@vicons/material/CheckOutlined';
 import ContentCopyOutlined from '@vicons/material/ContentCopyOutlined';
-import FormatColorFillOutlined from '@vicons/material/FormatColorFillOutlined';
+import InvertColorsOutlined from '@vicons/material/InvertColorsOutlined';
+import InvertColorsOffOutlined from '@vicons/material/InvertColorsOffOutlined';
 
 export {
-  FormatColorFillOutlined as ColorIcon,
+  InvertColorsOutlined as ColorIcon,
+  InvertColorsOffOutlined as ColorOffIcon,
   ContentCopyOutlined as CopyIcon,
   CheckOutlined as CheckIcon,
   ChecklistOutlined as CheckListIcon,
