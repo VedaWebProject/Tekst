@@ -228,7 +228,7 @@ browse:
       deactivateWidget:
         title: Ausblenden
       siblingsWidget:
-        title: Inhalt übergeordneter Belegstelle
+        title: Zeige Kontext
         noSiblings: Es existieren keine Inhalte für untergeordnete Belegstellen.
       exportWidget:
         title: Export

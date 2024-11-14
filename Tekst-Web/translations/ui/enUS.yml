@@ -225,7 +225,7 @@ browse:
       deactivateWidget:
         title: Hide
       siblingsWidget:
-        title: Parent location's content
+        title: Show context
         noSiblings: There are no contents for subordinate locations.
       exportWidget:
         title: Export
