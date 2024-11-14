@@ -62,8 +62,27 @@ const theme = useThemeStore();
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
 
-const annotationGroups = computed(() => props.resource.config.annotationGroups);
+const annoGroups = computed(() => props.resource.config.annotationGroups);
 const activeAnnoGroups = ref(props.resource.config.annotationGroups.map((g) => g.key));
+const groupColors = computed<Record<string, string>>(() =>
+  Object.fromEntries(
+    annoGroups.value.map((g, i) => [
+      g.key,
+      toRgba(
+        transparentize(
+          saturate(
+            adjustHue(
+              theme.accentColors.base,
+              (360 / (annoLineNumbers.value.length + 1)) * (i + 1)
+            ),
+            1
+          ),
+          theme.darkMode ? 0.8 : 0.9
+        )
+      ),
+    ])
+  )
+);
 
 const showTokenContextMenu = ref(false);
 const tokenContextMenuPos = ref({ x: 0, y: 0 });
@@ -98,19 +117,6 @@ const annoLineNumbers = computed(() =>
   Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
 );
 const colorAnnoLines = ref(false);
-const annoLineColors = computed(() =>
-  annoLineNumbers.value.map((ln) =>
-    toRgba(
-      transparentize(
-        saturate(
-          adjustHue(theme.accentColors.base, (360 / (annoLineNumbers.value.length + 1)) * (ln + 1)),
-          1
-        ),
-        theme.darkMode ? 0.8 : 0.9
-      )
-    )
-  )
-);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.displayTemplate) return [];
@@ -246,9 +252,7 @@ const contents = computed(() => {
         .map((t) =>
           t.annoDisplay[ln].filter(
             (anno) =>
-              !anno.group ||
-              activeAnnoGroups.value.includes(anno.group) ||
-              !annotationGroups.value.length
+              !anno.group || activeAnnoGroups.value.includes(anno.group) || !annoGroups.value.length
           )
         )
         .some((line) => !!line.length)
@@ -319,7 +323,7 @@ function handleTokenContextMenuSelect(key: string | number) {
 
 function toggleAnnoGroup(key: string) {
   if (activeAnnoGroups.value.includes(key) && activeAnnoGroups.value.length <= 1) {
-    activeAnnoGroups.value = annotationGroups.value.map((g) => g.key);
+    activeAnnoGroups.value = annoGroups.value.map((g) => g.key);
   } else if (activeAnnoGroups.value.includes(key)) {
     activeAnnoGroups.value = activeAnnoGroups.value.filter((g) => g !== key);
   } else {
@@ -330,16 +334,16 @@ function toggleAnnoGroup(key: string) {
 
 <template>
   <!-- ANNOTATION GROUP TOGGLES -->
-  <n-flex v-if="!!annotationGroups.length" class="mb-lg">
+  <n-flex v-if="!!annoGroups.length" class="mb-lg">
     <n-button
       :tertiary="!colorAnnoLines"
       :type="colorAnnoLines ? 'primary' : undefined"
-      v-for="(group, index) in annotationGroups"
+      v-for="group in annoGroups"
       :key="group.key"
       size="tiny"
       :focusable="false"
-      :disabled="annotationGroups.length == 1"
-      :color="colorAnnoLines ? annoLineColors[index] : undefined"
+      :disabled="annoGroups.length == 1"
+      :color="colorAnnoLines ? groupColors[group.key] : undefined"
       :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
       @click="toggleAnnoGroup(group.key)"
     >
@@ -391,7 +395,6 @@ function toggleAnnoGroup(key: string) {
             v-for="(annoLine, lineIndex) in token.annoDisplay"
             :key="lineIndex"
             class="annotation-line"
-            :style="{ backgroundColor: colorAnnoLines ? annoLineColors[lineIndex] : undefined }"
           >
             <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
               <span
@@ -400,7 +403,11 @@ function toggleAnnoGroup(key: string) {
                   !resource.config.annotationGroups.length ||
                   activeAnnoGroups.includes(anno.group)
                 "
-                :style="anno.style"
+                :style="{
+                  ...anno.style,
+                  backgroundColor:
+                    colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
+                }"
                 >{{ anno.content }}</span
               >
             </template>
@@ -545,7 +552,6 @@ function toggleAnnoGroup(key: string) {
 
 .annotations > .annotation-line {
   height: 1.4em;
-  border-radius: var(--border-radius);
 }
 
 .annotations > .annotation-line:empty {
