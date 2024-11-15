@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useLogo } from '@/composables/logo';
 import { usePlatformData } from '@/composables/platformData';
-import { useLoadingBar } from 'naive-ui';
+import { useStateStore } from '@/stores';
+import { NFlex, NProgress, useLoadingBar } from 'naive-ui';
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import { NProgress, NFlex } from 'naive-ui';
-import { useStateStore } from '@/stores';
 
 const state = useStateStore();
 const { pfData } = usePlatformData();

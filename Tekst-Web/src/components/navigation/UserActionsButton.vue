@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, h } from 'vue';
+import UserAvatar from '@/components/user/UserAvatar.vue';
+import { $t } from '@/i18n';
+import {
+  AdminIcon,
+  CommunityIcon,
+  CorrectionNoteIcon,
+  LoginIcon,
+  LogoutIcon,
+  MessageIcon,
+  ResourceIcon,
+  UserIcon,
+} from '@/icons';
 import {
   useAuthStore,
   useResourcesStore,
@@ -7,21 +18,10 @@ import {
   useThemeStore,
   useUserMessagesStore,
 } from '@/stores';
-import { type RouteLocationRaw, RouterLink } from 'vue-router';
-import { NBadge, NButton, NIcon, NDropdown, NFlex } from 'naive-ui';
-import { $t } from '@/i18n';
-import {
-  LoginIcon,
-  LogoutIcon,
-  UserIcon,
-  AdminIcon,
-  CommunityIcon,
-  ResourceIcon,
-  MessageIcon,
-  CorrectionNoteIcon,
-} from '@/icons';
 import { renderIcon } from '@/utils';
-import UserAvatar from '@/components/user/UserAvatar.vue';
+import { NBadge, NButton, NDropdown, NFlex, NIcon } from 'naive-ui';
+import { computed, h, ref } from 'vue';
+import { type RouteLocationRaw, RouterLink } from 'vue-router';
 
 const auth = useAuthStore();
 const userMessages = useUserMessagesStore();
@@ -186,6 +186,7 @@ function handleUserOptionSelect(key: string) {
   cursor: pointer;
   transition: filter 0.2s ease-in-out;
 }
+
 .avatar-btn:hover {
   filter: brightness(1.1) saturate(1.1);
 }

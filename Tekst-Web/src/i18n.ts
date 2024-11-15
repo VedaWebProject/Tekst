@@ -1,10 +1,9 @@
 import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
-import { createI18n } from 'vue-i18n';
-import type { I18nOptions } from 'vue-i18n';
 import type { NDateLocale, NLocale, SelectOption } from 'naive-ui';
-import { enUS, dateEnUS } from 'naive-ui';
-import { deDE, dateDeDE } from 'naive-ui';
+import { dateDeDE, dateEnUS, deDE, enUS } from 'naive-ui';
 import { unref } from 'vue';
+import type { I18nOptions } from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
 
 export enum LocaleKey {
   EnUs = 'enUS',

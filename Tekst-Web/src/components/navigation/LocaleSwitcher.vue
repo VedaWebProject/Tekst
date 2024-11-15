@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useStateStore } from '@/stores';
-import { NButton, NPopselect, NIcon } from 'naive-ui';
-import { $t } from '@/i18n';
 import type { LocaleKey } from '@/api';
+import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { NButton, NIcon, NPopselect } from 'naive-ui';
+import { computed } from 'vue';
 
 import { LanguageIcon } from '@/icons';
 

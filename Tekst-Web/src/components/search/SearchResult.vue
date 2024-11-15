@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { SearchHit, TextRead } from '@/api';
-import { TextsIcon } from '@/icons';
-import { BookIcon, StarHalfIcon, LevelsIcon } from '@/icons';
+import { BookIcon, LevelsIcon, StarHalfIcon, TextsIcon } from '@/icons';
 import { transparentize } from 'color2k';
-import { NListItem, NTag, NIcon, NFlex } from 'naive-ui';
+import { NFlex, NIcon, NListItem, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{

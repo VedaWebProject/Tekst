@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useResourcesStore, useStateStore } from '@/stores';
-import { NThing, NVirtualList, NCollapse, NCollapseItem, NSpin, NProgress } from 'naive-ui';
-import { computed, onMounted, ref } from 'vue';
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
-import { useRoute, useRouter } from 'vue-router';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
+import { NCollapse, NCollapseItem, NProgress, NSpin, NThing, NVirtualList } from 'naive-ui';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -153,18 +153,22 @@ onMounted(async () => {
   border-bottom: 1px solid var(--main-bg-color);
   padding: 0.5rem 0;
 }
+
 .range:last-child {
   border-bottom: none;
   padding-bottom: 0;
 }
+
 .range:first-child {
   padding-top: 0;
 }
+
 .range-boundary {
   padding: 0 var(--gap-sm);
   background-color: var(--accent-color-fade5);
   border-radius: var(--border-radius);
 }
+
 :deep(.n-collapse-item__content-inner) {
   padding-top: var(--gap-sm) !important;
 }
@@ -177,6 +181,7 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 4px;
 }
+
 .cov-box {
   width: 16px;
   height: 16px;
@@ -186,6 +191,7 @@ onMounted(async () => {
   transition: 0.2s;
   cursor: pointer;
 }
+
 .cov-box:hover {
   opacity: 1;
 }

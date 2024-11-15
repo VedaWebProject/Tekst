@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NScrollbar, NCollapse, NCollapseItem } from 'naive-ui';
+import { NCollapse, NCollapseItem, NScrollbar } from 'naive-ui';
 </script>
 
 <template>

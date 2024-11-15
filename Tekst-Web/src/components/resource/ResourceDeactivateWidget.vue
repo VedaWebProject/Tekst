@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useBrowseStore } from '@/stores';
-import { $t } from '@/i18n';
 import type { AnyResourceRead } from '@/api';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
+import { $t } from '@/i18n';
+import { useBrowseStore } from '@/stores';
 
 import { ClearIcon } from '@/icons';
 

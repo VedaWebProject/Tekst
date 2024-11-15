@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { type AnyResourceUpdate, PATCH, type AnyResourceRead } from '@/api';
+import { PATCH, type AnyResourceRead, type AnyResourceUpdate } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
+import { useMessages } from '@/composables/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { resourceSettingsFormRules } from '@/forms/formRules';
+import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { useMessages } from '@/composables/messages';
-import { computed, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
-import { RouterLink } from 'vue-router';
-import { NDivider, NIcon, NAlert, NSpin, NForm, NButton, type FormInst } from 'naive-ui';
-import { resourceSettingsFormRules } from '@/forms/formRules';
-import { useModelChanges } from '@/composables/modelChanges';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
-import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
+import { NAlert, NButton, NDivider, NForm, NIcon, NSpin, type FormInst } from 'naive-ui';
+import { computed, ref, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 
-import { SettingsIcon, ArrowBackIcon, ResourceIcon } from '@/icons';
+import { ArrowBackIcon, ResourceIcon, SettingsIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();

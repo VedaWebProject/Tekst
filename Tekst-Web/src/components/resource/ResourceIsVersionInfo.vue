@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
-import { NIcon, NFlex } from 'naive-ui';
 import { useResourcesStore, useStateStore } from '@/stores';
+import { NFlex, NIcon } from 'naive-ui';
 
 import { VersionIcon } from '@/icons';
 import { pickTranslation } from '@/utils';

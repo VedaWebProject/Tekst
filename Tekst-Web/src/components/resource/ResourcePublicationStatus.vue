@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
-import { NIcon, NFlex } from 'naive-ui';
+import { NFlex, NIcon } from 'naive-ui';
 
-import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
+import { ProposedIcon, PublicIcon, PublicOffIcon } from '@/icons';
 
 withDefaults(
   defineProps<{

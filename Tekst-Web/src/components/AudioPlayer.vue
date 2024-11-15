@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { PlayIcon, PauseIcon, ErrorIcon, DownloadIcon, LinkIcon } from '@/icons';
+import { DownloadIcon, ErrorIcon, LinkIcon, PauseIcon, PlayIcon } from '@/icons';
 import { useMediaControls } from '@vueuse/core';
-import { NSlider, NFlex, NButton, NIcon } from 'naive-ui';
-import { watch } from 'vue';
-import { onMounted } from 'vue';
-import { ref, type CSSProperties, computed } from 'vue';
+import { NButton, NFlex, NIcon, NSlider } from 'naive-ui';
+import { computed, onMounted, ref, watch, type CSSProperties } from 'vue';
 
 const props = defineProps<{
   src: string;

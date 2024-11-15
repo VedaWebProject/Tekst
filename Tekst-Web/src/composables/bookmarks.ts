@@ -1,9 +1,9 @@
-import { computed, ref } from 'vue';
-import { DELETE, GET, POST } from '@/api';
 import type { BookmarkRead } from '@/api';
-import { useAuthStore, useStateStore } from '@/stores';
-import { useMessages } from './messages';
+import { DELETE, GET, POST } from '@/api';
 import { $t } from '@/i18n';
+import { useAuthStore, useStateStore } from '@/stores';
+import { computed, ref } from 'vue';
+import { useMessages } from './messages';
 
 const allBookmarks = ref<BookmarkRead[] | null>(null);
 

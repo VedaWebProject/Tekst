@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { NFlex, NSpin, NIcon, NButton, useThemeVars } from 'naive-ui';
-import { ref, watch } from 'vue';
-import { useBrowseStore, useStateStore } from '@/stores';
-import { computed } from 'vue';
-import { $t } from '@/i18n';
-import { useElementHover } from '@vueuse/core';
+import type { AnyResourceRead } from '@/api';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
 import contentComponents from '@/components/content/mappings';
-import type { AnyResourceRead } from '@/api';
-import { NoContentIcon, ExpandIcon, CompressIcon, PublicOffIcon } from '@/icons';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { MergeIcon } from '@/icons';
+import { $t } from '@/i18n';
+import { CompressIcon, ExpandIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
+import { useBrowseStore, useStateStore } from '@/stores';
+import { useElementHover } from '@vueuse/core';
+import { NButton, NFlex, NIcon, NSpin, useThemeVars } from 'naive-ui';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
   loading?: boolean;

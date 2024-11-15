@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { UserMessageRead } from '@/api';
+import GenericModal from '@/components/generic/GenericModal.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
 import { $t } from '@/i18n';
 import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
-import { ref } from 'vue';
-import { NFlex, NButton, NInput, NIcon, NTime, type InputInst } from 'naive-ui';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
-import UserDisplay from '@/components/user/UserDisplay.vue';
-import GenericModal from '@/components/generic/GenericModal.vue';
+import { delay, utcToLocalTime } from '@/utils';
 import { useIntervalFn, useMagicKeys, whenever } from '@vueuse/core';
-import type { UserMessageRead } from '@/api';
-import { utcToLocalTime, delay } from '@/utils';
+import { NButton, NFlex, NIcon, NInput, NTime, type InputInst } from 'naive-ui';
+import { ref } from 'vue';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
-import { resourceSettingsFormRules } from '@/forms/formRules';
-import { $t } from '@/i18n';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import { computed, h } from 'vue';
-import { NSelect, NIcon, NDynamicInput, NFormItem, NInput, NFlex } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { resourceSettingsFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { $t } from '@/i18n';
 import { TranslateIcon } from '@/icons';
+import { NDynamicInput, NFlex, NFormItem, NIcon, NInput, NSelect } from 'naive-ui';
+import { computed, h } from 'vue';
 
 const model = defineModel<AnyResourceRead>({ required: true });
 

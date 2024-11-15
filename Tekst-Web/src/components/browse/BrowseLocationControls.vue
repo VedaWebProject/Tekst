@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import type { LocationRead } from '@/api';
+import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
+import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
+import { $t } from '@/i18n';
+import { ArrowBackIcon, ArrowForwardIcon, BookIcon, WarningIcon } from '@/icons';
+import router from '@/router';
+import { useAuthStore, useBrowseStore } from '@/stores';
+import { isInputFocused, isOverlayOpen } from '@/utils';
+import { useMagicKeys, whenever } from '@vueuse/core';
+import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAuthStore, useBrowseStore } from '@/stores';
-import { NBadge, NButton, NIcon, NFlex } from 'naive-ui';
-import type { LocationRead } from '@/api';
-import router from '@/router';
-import { useMagicKeys, whenever } from '@vueuse/core';
-import { $t } from '@/i18n';
-import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
-import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
-import { ArrowBackIcon, ArrowForwardIcon, BookIcon, WarningIcon } from '@/icons';
-import { isInputFocused, isOverlayOpen } from '@/utils';
 
 withDefaults(
   defineProps<{

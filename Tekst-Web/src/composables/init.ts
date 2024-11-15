@@ -1,10 +1,10 @@
-import { $t } from '@/i18n';
-import { useRoute, useRouter } from 'vue-router';
-import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
-import { useAsyncQueue, useStyleTag } from '@vueuse/core';
+import { STATIC_PATH } from '@/common';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
-import { STATIC_PATH } from '@/common';
+import { $t } from '@/i18n';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { useAsyncQueue, useStyleTag } from '@vueuse/core';
+import { useRoute, useRouter } from 'vue-router';
 
 interface InitStep {
   key: string;

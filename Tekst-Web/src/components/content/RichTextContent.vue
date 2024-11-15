@@ -39,6 +39,7 @@ const fontStyle = {
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--main-bg-color);
 }
+
 .rich-text-content-wrapper:last-child {
   border-bottom: none;
 }

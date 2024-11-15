@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { NFlex, NDrawer, NDrawerContent } from 'naive-ui';
-import { computed } from 'vue';
-import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
-import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
-import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
-import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
+import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
+import LogoutButton from '@/components/navigation/LogoutButton.vue';
+import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import {
   useAccountMenuOptions,
   useAdminMenuOptions,
   useMainMenuOptions,
 } from '@/components/navigation/navMenuOptions';
+import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
+import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
+import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
-import LogoutButton from '@/components/navigation/LogoutButton.vue';
+import { NDrawer, NDrawerContent, NFlex } from 'naive-ui';
+import { computed } from 'vue';
 
 withDefaults(
   defineProps<{

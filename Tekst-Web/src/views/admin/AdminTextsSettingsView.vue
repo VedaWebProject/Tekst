@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { textFormRules } from '@/forms/formRules';
+import type { TextCreate } from '@/api';
+import { DELETE, PATCH, accentColorPresets } from '@/api';
+import { dialogProps } from '@/common';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { useMessages } from '@/composables/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { usePlatformData } from '@/composables/platformData';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { textFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { $t } from '@/i18n';
+import { SettingsIcon } from '@/icons';
+import router from '@/router';
 import { useStateStore } from '@/stores';
+import { cloneDeep } from 'lodash-es';
 import {
-  NSelect,
-  NFlex,
   NButton,
+  NColorPicker,
+  NDynamicInput,
+  NFlex,
   NForm,
   NFormItem,
   NInput,
-  NDynamicInput,
-  NColorPicker,
-  type FormInst,
+  NSelect,
   useDialog,
+  type FormInst,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { DELETE, PATCH, accentColorPresets } from '@/api';
-import { $t } from '@/i18n';
-import type { TextCreate } from '@/api';
-import { useModelChanges } from '@/composables/modelChanges';
-import { usePlatformData } from '@/composables/platformData';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { dialogProps } from '@/common';
-import { cloneDeep } from 'lodash-es';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import router from '@/router';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { SettingsIcon } from '@/icons';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();

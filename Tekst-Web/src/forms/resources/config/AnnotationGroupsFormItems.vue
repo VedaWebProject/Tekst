@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
-import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
-import { NFormItem, NFlex, NInput, NDynamicInput } from 'naive-ui';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
 const model = defineModel<
   components['schemas']['TextAnnotationResourceConfig']['annotationGroups']

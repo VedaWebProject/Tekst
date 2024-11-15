@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { NIcon, NFlex, NButton, NListItem, NThing } from 'naive-ui';
 import { ArrowBackIcon, ArrowForwardIcon, CorrectionNoteIcon } from '@/icons';
+import { NButton, NFlex, NIcon, NListItem, NThing } from 'naive-ui';
 
 defineProps<{
   otherCount: number;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
+import type { HelpText } from '@/composables/help';
+import { useHelp } from '@/composables/help';
+import { $t } from '@/i18n';
 import { NButton, NIcon, NSpin } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
-import { $t } from '@/i18n';
-import { useHelp } from '@/composables/help';
-import type { HelpText } from '@/composables/help';
-import GenericModal from '@/components/generic/GenericModal.vue';
+import { computed, ref } from 'vue';
 
 import { QuestionMarkIcon } from '@/icons';
 

@@ -1,21 +1,21 @@
 import {
   POST,
+  type AdvancedSearchRequestBody,
+  type QuickSearchRequestBody,
+  type ResourceSearchQuery,
+  type SearchPagination,
   type SearchResults,
   type SortingPreset,
-  type SearchPagination,
-  type ResourceSearchQuery,
-  type QuickSearchRequestBody,
-  type AdvancedSearchRequestBody,
 } from '@/api';
 import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { Base64 } from 'js-base64';
+import { cloneDeep } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStateStore } from './state';
-import { usePlatformData } from '@/composables/platformData';
-import { cloneDeep } from 'lodash-es';
 
 type GeneralSearchSettings = {
   pgn: SearchPagination;

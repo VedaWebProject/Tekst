@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { NAlert, NCollapse, NCollapseItem, NButton, NFormItem, NSelect } from 'naive-ui';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { GET, type AnyResourceRead, type LocationRead, type ResourceExportFormat } from '@/api';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { DownloadIcon } from '@/icons';
+import { useMessages } from '@/composables/messages';
+import { useTasks } from '@/composables/tasks';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
+import { DownloadIcon } from '@/icons';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { getFullLocationLabel, pickTranslation } from '@/utils';
-import { useTasks } from '@/composables/tasks';
+import { NAlert, NButton, NCollapse, NCollapseItem, NFormItem, NSelect } from 'naive-ui';
+import { computed, ref } from 'vue';
 
 const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: unknown }[] = [
   {

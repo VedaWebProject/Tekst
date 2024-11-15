@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
-import { computed, h, ref } from 'vue';
-import { useBrowseStore, useStateStore } from '@/stores';
-import { useRouter } from 'vue-router';
-import { NDropdown, NButton, NIcon, useThemeVars } from 'naive-ui';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { usePlatformData } from '@/composables/platformData';
+import { useBrowseStore, useStateStore } from '@/stores';
+import { NButton, NDropdown, NIcon, useThemeVars } from 'naive-ui';
+import { computed, h, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { ExpandArrowDownIcon } from '@/icons';
 

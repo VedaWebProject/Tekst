@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { DELETE, POST } from '@/api';
-import { accountFormRules } from '@/forms/formRules';
-import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
-import { useAuthStore } from '@/stores';
-import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NInput, NFormItem, NForm, useDialog, NFlex } from 'naive-ui';
-import { ref } from 'vue';
-import { $t } from '@/i18n';
-import { useModelChanges } from '@/composables/modelChanges';
 import type {
   UserUpdate,
-  UserUpdatePublicFields,
   UserUpdateAdminNotificationTriggers,
+  UserUpdatePublicFields,
   UserUpdateUserNotificationTriggers,
 } from '@/api';
+import { DELETE, POST } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import UserAvatar from '@/components/user/UserAvatar.vue';
-import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import UserAvatar from '@/components/user/UserAvatar.vue';
+import { useMessages } from '@/composables/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { usePlatformData } from '@/composables/platformData';
+import { accountFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
+import { ManageAccountIcon, NoImageIcon } from '@/icons';
+import { useAuthStore } from '@/stores';
 import { checkUrl } from '@/utils';
+import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
+import { NButton, NFlex, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
+import { ref } from 'vue';
 
 const dialog = useDialog();
 const auth = useAuthStore();

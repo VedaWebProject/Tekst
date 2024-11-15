@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { AddIcon, ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
-import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
-import {
-  NCollapse,
-  NCollapseItem,
-  NForm,
-  NButton,
-  NDynamicInput,
-  NIcon,
-  NSelect,
-  NFormItem,
-  NFlex,
-  type FormInst,
-} from 'naive-ui';
-import { computed, h, ref, watch } from 'vue';
 import type { AnyResourceRead, ResourceSearchQuery, ResourceType } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
-import { $t } from '@/i18n';
-import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
-import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceSelector.vue';
-import { useMessages } from '@/composables/messages';
+import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
+import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
+import { $t } from '@/i18n';
+import { AddIcon, ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { usePlatformData } from '@/composables/platformData';
 import { useMagicKeys, whenever } from '@vueuse/core';
+import {
+  NButton,
+  NCollapse,
+  NCollapseItem,
+  NDynamicInput,
+  NFlex,
+  NForm,
+  NFormItem,
+  NIcon,
+  NSelect,
+  type FormInst,
+} from 'naive-ui';
+import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
+import { computed, h, ref, watch } from 'vue';
 
 interface AdvancedSearchFormModelItem extends ResourceSearchQuery {
   resource?: AnyResourceRead;

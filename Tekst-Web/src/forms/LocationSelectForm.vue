@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import { useStateStore } from '@/stores';
-import { NSelect, NFormItem, NForm, NDivider } from 'naive-ui';
 import type { LocationRead, TextRead } from '@/api';
 import { GET } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { NDivider, NForm, NFormItem, NSelect } from 'naive-ui';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{

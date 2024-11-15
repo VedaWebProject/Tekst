@@ -1,7 +1,7 @@
-import pluginVue from 'eslint-plugin-vue';
-import vueTsEslintConfig from '@vue/eslint-config-typescript';
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 import vueI18n from '@intlify/eslint-plugin-vue-i18n';
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
+import vueTsEslintConfig from '@vue/eslint-config-typescript';
+import pluginVue from 'eslint-plugin-vue';
 
 export default [
   {
@@ -11,19 +11,18 @@ export default [
 
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', 'translations/**', 'Taskfile.yml'],
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
+
+  ...pluginVue.configs['flat/essential'],
+  ...vueTsEslintConfig(),
+  skipFormatting,
 
   ...vueI18n.configs['flat/recommended'],
   {
     rules: {
       '@intlify/vue-i18n/no-raw-text': 'off',
-      '@intlify/vue-i18n/no-unused-keys': [
-        'error',
-        {
-          extensions: ['.ts', '.js', '.vue'],
-        },
-      ],
+      '@intlify/vue-i18n/no-unused-keys': 'off',
     },
     settings: {
       'vue-i18n': {
@@ -35,18 +34,6 @@ export default [
         // If not specified, the message will be parsed twice.
         messageSyntaxVersion: '^10.0.1',
       },
-    },
-  },
-
-  ...pluginVue.configs['flat/essential'],
-  ...vueTsEslintConfig(),
-  skipFormatting,
-
-  {
-    files: ['**/*.json'],
-    rules: {
-      // Turn off rules
-      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ];

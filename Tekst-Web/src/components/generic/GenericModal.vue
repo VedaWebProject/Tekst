@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import IconHeading from '@/components/generic/IconHeading.vue';
 import { NModal } from 'naive-ui';
 import { computed, type Component, type CSSProperties } from 'vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
 
 const props = withDefaults(
   defineProps<{

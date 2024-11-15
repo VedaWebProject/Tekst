@@ -1,46 +1,43 @@
 <script setup lang="ts">
-import {
-  NSpin,
-  NButton,
-  NIcon,
-  NFlex,
-  NTree,
-  NTag,
-  NAlert,
-  useDialog,
-  type TreeDropInfo,
-  type TreeOption,
-  type TreeDragInfo,
-} from 'naive-ui';
-import { h, ref } from 'vue';
-import { DELETE, GET, POST, withSelectedFile, PATCH } from '@/api';
-import { useStateStore } from '@/stores';
-import { useMessages } from '@/composables/messages';
-import { $t } from '@/i18n';
-import { watch } from 'vue';
-import type { Component, Ref } from 'vue';
+import { DELETE, downloadData, GET, PATCH, POST, withSelectedFile } from '@/api';
 import { dialogProps } from '@/common';
-import { computed } from 'vue';
-import { downloadData } from '@/api';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import EditLocationModal, {
   type EditLocationModalData,
 } from '@/components/modals/EditLocationModal.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import {
+  NAlert,
+  NButton,
+  NFlex,
+  NIcon,
+  NSpin,
+  NTag,
+  NTree,
+  useDialog,
+  type TreeDragInfo,
+  type TreeDropInfo,
+  type TreeOption,
+} from 'naive-ui';
+import type { Component, Ref } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 
+import IconHeading from '@/components/generic/IconHeading.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { useTasks } from '@/composables/tasks';
 import {
   AddIcon,
   DeleteIcon,
-  ExpandArrowRightIcon,
-  EditIcon,
   DownloadIcon,
-  UploadIcon,
+  EditIcon,
+  ExpandArrowRightIcon,
   TreeIcon,
+  UploadIcon,
 } from '@/icons';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { renderIcon } from '@/utils';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { useTasks } from '@/composables/tasks';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;

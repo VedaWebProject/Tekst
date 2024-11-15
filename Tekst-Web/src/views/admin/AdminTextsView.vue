@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import IconHeading from '@/components/generic/IconHeading.vue';
 import { useStateStore } from '@/stores';
 import { RouterView } from 'vue-router';
-import IconHeading from '@/components/generic/IconHeading.vue';
 
 import { TextsIcon } from '@/icons';
 

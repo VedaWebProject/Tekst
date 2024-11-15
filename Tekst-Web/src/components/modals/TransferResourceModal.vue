@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import {
-  NForm,
-  NAlert,
-  NSelect,
-  NButton,
-  NFormItem,
-  type SelectOption,
-  type FormInst,
-  type FormItemRule,
-} from 'naive-ui';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import { computed, h, ref, type VNodeChild } from 'vue';
-import { useUsersSearch } from '@/composables/fetchers';
 import type { AnyResourceRead, PublicUserSearchFilters, UserReadPublic } from '@/api';
-import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { pickTranslation } from '@/utils';
+import UserDisplayText from '@/components/user/UserDisplayText.vue';
+import { useUsersSearch } from '@/composables/fetchers';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
+import {
+  NAlert,
+  NButton,
+  NForm,
+  NFormItem,
+  NSelect,
+  type FormInst,
+  type FormItemRule,
+  type SelectOption,
+} from 'naive-ui';
+import { computed, h, ref, type VNodeChild } from 'vue';
 
 const props = defineProps<{ resource?: AnyResourceRead; loading?: boolean }>();
 const emit = defineEmits(['submit']);

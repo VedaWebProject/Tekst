@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ExternalReferencesResourceRead } from '@/api';
-import { type CSSProperties } from 'vue';
-import { NIcon, NFlex } from 'naive-ui';
 import { LinkIcon } from '@/icons';
+import { NFlex, NIcon } from 'naive-ui';
+import { type CSSProperties } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -57,13 +57,16 @@ const fontStyle: CSSProperties = {
 .ext-ref-content:not(:only-child) {
   padding: var(--gap-lg) 0;
 }
+
 .ext-ref-content {
   margin-top: inherit;
 }
+
 .ext-ref-content:not(:first-child) {
   padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);
 }
+
 .ext-ref-description {
   white-space: pre-line;
 }

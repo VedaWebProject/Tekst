@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick } from 'vue';
-import { NButton, NBadge, NIcon, NFlex } from 'naive-ui';
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
-import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore, useSearchStore } from '@/stores';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
+import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
+import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
+import { computed, nextTick, onMounted, ref } from 'vue';
 
 const state = useStateStore();
 const browse = useBrowseStore();

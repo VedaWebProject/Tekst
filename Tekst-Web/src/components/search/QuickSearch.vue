@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import NInputOsk from '@/components/NInputOsk.vue';
-import { useRouter } from 'vue-router';
-import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
-import { NButton, NIcon, NPopselect, type InputInst, type SelectOption } from 'naive-ui';
+import { GET } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { SettingsIcon, SearchIcon, ResourceIcon } from '@/icons';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import NInputOsk from '@/components/NInputOsk.vue';
+import { usePlatformData } from '@/composables/platformData';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
-import { GET } from '@/api';
 import { $t } from '@/i18n';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { usePlatformData } from '@/composables/platformData';
+import { ResourceIcon, SearchIcon, SettingsIcon } from '@/icons';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { NButton, NIcon, NPopselect, type InputInst, type SelectOption } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['submit']);
 

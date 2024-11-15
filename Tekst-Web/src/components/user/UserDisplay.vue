@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import type { UserReadPublic } from '@/api';
-import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
+import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import { AdminIcon } from '@/icons';
-import { NIcon, NFlex } from 'naive-ui';
+import { NFlex, NIcon } from 'naive-ui';
+import { RouterLink } from 'vue-router';
 
 withDefaults(
   defineProps<{

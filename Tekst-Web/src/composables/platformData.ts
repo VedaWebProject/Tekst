@@ -1,6 +1,6 @@
-import { computed, ref } from 'vue';
-import { GET } from '@/api';
 import type { ClientSegmentRead, PlatformData } from '@/api';
+import { GET } from '@/api';
+import { computed, ref } from 'vue';
 
 const pfData = ref<PlatformData>();
 const loadedInfoSegments = ref<ClientSegmentRead[]>([]);

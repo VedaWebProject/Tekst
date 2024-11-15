@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { usePlatformData } from '@/composables/platformData';
-import { CapsLockIcon, KeyboardIcon, ShiftIcon, BackspaceIcon } from '@/icons';
-import {
-  NSpin,
-  NFlex,
-  NSelect,
-  NInput,
-  NButton,
-  NIcon,
-  NDrawer,
-  NDrawerContent,
-  type InputInst,
-} from 'naive-ui';
-import { computed, nextTick, ref, useSlots } from 'vue';
-import ButtonShelf from './generic/ButtonShelf.vue';
 import { useOskLayout } from '@/composables/fetchers';
-import type { CSSProperties } from 'vue';
-import { watch } from 'vue';
+import { usePlatformData } from '@/composables/platformData';
+import { BackspaceIcon, CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useMagicKeys, whenever } from '@vueuse/core';
+import {
+  NButton,
+  NDrawer,
+  NDrawerContent,
+  NFlex,
+  NIcon,
+  NInput,
+  NSelect,
+  NSpin,
+  type InputInst,
+} from 'naive-ui';
+import type { CSSProperties } from 'vue';
+import { computed, nextTick, ref, useSlots, watch } from 'vue';
+import ButtonShelf from './generic/ButtonShelf.vue';
 
 const props = defineProps<{
   font?: string;

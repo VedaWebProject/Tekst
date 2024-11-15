@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useAccountMenuOptions } from '@/components/navigation/navMenuOptions';
 import { useStateStore } from '@/stores';
+import { RouterView } from 'vue-router';
 
 const state = useStateStore();
 const { menuOptions } = useAccountMenuOptions();

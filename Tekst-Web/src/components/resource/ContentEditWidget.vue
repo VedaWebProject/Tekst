@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { computed } from 'vue';
 import type { AnyResourceRead } from '@/api';
-import { useAuthStore, useBrowseStore } from '@/stores';
-import { useRouter } from 'vue-router';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { EditIcon } from '@/icons';
+import { useAuthStore, useBrowseStore } from '@/stores';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   resource: AnyResourceRead;

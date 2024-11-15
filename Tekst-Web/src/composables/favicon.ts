@@ -1,5 +1,5 @@
-import { watch } from 'vue';
 import { useLogo } from '@/composables/logo';
+import { watch } from 'vue';
 
 export function useFavicon() {
   const { faviconIco, faviconPng } = useLogo();

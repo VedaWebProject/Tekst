@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
-import { useAuthStore, useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
-import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
+import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
+import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
+import { useAuthStore, useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
+import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { NButton, NFlex, NTag } from 'naive-ui';
-import { NoContentIcon, HourglassIcon, BookIcon, ErrorIcon } from '@/icons';
 
 const auth = useAuthStore();
 const theme = useThemeStore();

@@ -1,66 +1,65 @@
 <script setup lang="ts">
 import {
-  NIcon,
-  NAlert,
-  NDropdown,
-  NFlex,
-  NForm,
-  NButton,
-  NCollapseItem,
-  NCollapse,
-  NList,
-  NBadge,
-  type FormInst,
-  useDialog,
-} from 'naive-ui';
-import {
+  type AnyContentCreate,
+  type AnyContentUpdate,
   type AnyResourceRead,
   type LocationRead,
-  GET,
-  type AnyContentCreate,
-  PATCH,
-  type AnyContentUpdate,
-  POST,
   DELETE,
+  GET,
+  PATCH,
+  POST,
 } from '@/api';
-import { cloneDeep } from 'lodash-es';
-import { ref, computed, watch } from 'vue';
+import { dialogProps } from '@/common';
+import contentComponents from '@/components/content/mappings';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
+import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
+import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
+import OtherCorrectionsListItem from '@/components/resource/OtherCorrectionsListItem.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import { useMessages } from '@/composables/messages';
-import { useRoute, useRouter } from 'vue-router';
-import { useResourcesStore } from '@/stores';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { useModelChanges } from '@/composables/modelChanges';
 import ContentFormItems from '@/forms/resources/contents/ContentFormItems.vue';
 import { defaultContentModels } from '@/forms/resources/contents/defaultContentModels';
-import { dialogProps } from '@/common';
-import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
-import contentComponents from '@/components/content/mappings';
-import LocationLabel from '@/components/LocationLabel.vue';
-import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
-import OtherCorrectionsListItem from '@/components/resource/OtherCorrectionsListItem.vue';
+import { $t } from '@/i18n';
 import {
-  EditNoteIcon,
+  AddIcon,
   ArrowBackIcon,
   ArrowForwardIcon,
   BookIcon,
-  NoContentIcon,
-  AddIcon,
   CompareIcon,
-  VersionIcon,
-  ResourceIcon,
-  MoveDownIcon,
-  SkipPreviousIcon,
-  SkipNextIcon,
   CorrectionNoteIcon,
+  EditNoteIcon,
+  MoveDownIcon,
+  NoContentIcon,
+  ResourceIcon,
+  SkipNextIcon,
+  SkipPreviousIcon,
+  VersionIcon,
 } from '@/icons';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
+import { cloneDeep } from 'lodash-es';
+import {
+  type FormInst,
+  NAlert,
+  NBadge,
+  NButton,
+  NCollapse,
+  NCollapseItem,
+  NDropdown,
+  NFlex,
+  NForm,
+  NIcon,
+  NList,
+  useDialog,
+} from 'naive-ui';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 

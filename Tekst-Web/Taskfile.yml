@@ -52,8 +52,8 @@ tasks:
   fix:
     desc: Format and lint code
     cmds:
-      - task: format
       - task: lint
+      - task: format
 
   build:
     desc: Build project
@@ -73,6 +73,6 @@ tasks:
     cmds:
       - task: install
       - task: api-schema
-      - task: format
       - task: lint
+      - task: format
       - task: build

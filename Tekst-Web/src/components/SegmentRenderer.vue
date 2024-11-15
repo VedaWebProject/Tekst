@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
-import { watchEffect, ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps<{
   segmentKey: string;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { NFormItem } from 'naive-ui';
-import NInputOsk from '@/components/NInputOsk.vue';
 import type { AudioResourceRead, AudioSearchQuery } from '@/api';
+import NInputOsk from '@/components/NInputOsk.vue';
 import { searchFormRules } from '@/forms/formRules';
+import { NFormItem } from 'naive-ui';
 
 defineProps<{
   resource: AudioResourceRead;

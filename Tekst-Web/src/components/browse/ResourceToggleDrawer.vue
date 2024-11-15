@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { NDrawer, NDrawerContent, NButton, NFlex, NIcon } from 'naive-ui';
-import { useAuthStore, useBrowseStore, useResourcesStore, useThemeStore } from '@/stores';
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { useAuthStore, useBrowseStore, useResourcesStore, useThemeStore } from '@/stores';
+import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
+import { computed } from 'vue';
 
-import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 
 const show = defineModel<boolean>('show');
 

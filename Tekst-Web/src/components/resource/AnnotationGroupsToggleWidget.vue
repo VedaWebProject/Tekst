@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { ref } from 'vue';
 import { POST, type AnyResourceRead, type CorrectionCreate } from '@/api';
-import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
-import { CorrectionNoteIcon } from '@/icons';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { useMessages } from '@/composables/messages';
-import { $t } from '@/i18n';
 import { correctionFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
+import { CorrectionNoteIcon } from '@/icons';
+import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
+import { ref } from 'vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;

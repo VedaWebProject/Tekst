@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
-import { computed } from 'vue';
+import LoginModal from '@/components/modals/LoginModal.vue';
+import TasksWidget from '@/components/TasksWidget.vue';
+import MessagingModal from '@/components/userMessages/MessagingModal.vue';
+import { useFavicon } from '@/composables/favicon';
+import { useInitializeApp } from '@/composables/init';
+import { useTasks } from '@/composables/tasks';
 import { getLocaleProfile } from '@/i18n';
+import { ErrorIcon } from '@/icons';
+import PageFooter from '@/layout/PageFooter.vue';
+import PageHeader from '@/layout/PageHeader.vue';
 import { useStateStore, useThemeStore } from '@/stores';
 import {
-  NLoadingBarProvider,
+  NBackTop,
   NConfigProvider,
   NDialogProvider,
-  NGlobalStyle,
-  NBackTop,
   NFlex,
+  NGlobalStyle,
+  NLoadingBarProvider,
 } from 'naive-ui';
-import PageHeader from '@/layout/PageHeader.vue';
-import PageFooter from '@/layout/PageFooter.vue';
-import { useInitializeApp } from '@/composables/init';
-import { useFavicon } from '@/composables/favicon';
-import LoginModal from '@/components/modals/LoginModal.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import MessagingModal from '@/components/userMessages/MessagingModal.vue';
-import { ErrorIcon } from '@/icons';
-import TasksWidget from '@/components/TasksWidget.vue';
-import { useTasks } from '@/composables/tasks';
+import { computed } from 'vue';
+import { RouterView } from 'vue-router';
 
 const state = useStateStore();
 const theme = useThemeStore();

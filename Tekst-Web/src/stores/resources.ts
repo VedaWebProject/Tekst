@@ -1,14 +1,14 @@
-import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
 import {
-  type CorrectionRead,
   GET,
-  type AnyResourceRead,
-  type ResourceCoverage,
   type AnnotationAggregation,
+  type AnyResourceRead,
+  type CorrectionRead,
+  type ResourceCoverage,
 } from '@/api';
 import { useStateStore } from '@/stores';
 import { hashCode, pickTranslation } from '@/utils';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
 export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();

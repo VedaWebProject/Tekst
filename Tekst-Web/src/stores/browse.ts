@@ -1,12 +1,12 @@
-import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { defineStore } from 'pinia';
-import { useStateStore, useResourcesStore } from '@/stores';
-import type { AnyResourceRead, AnyContentRead, LocationRead } from '@/api';
+import type { AnyContentRead, AnyResourceRead, LocationRead } from '@/api';
 import { GET } from '@/api';
-import { pickTranslation } from '@/utils';
-import { $t } from '@/i18n';
 import { usePlatformData } from '@/composables/platformData';
+import { $t } from '@/i18n';
+import { useResourcesStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 export const useBrowseStore = defineStore('browse', () => {
   // composables

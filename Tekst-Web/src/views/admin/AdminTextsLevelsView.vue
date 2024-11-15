@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { useStateStore } from '@/stores';
-import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
-import { textFormRules } from '@/forms/formRules';
-import { NFlex, NIcon, NAlert, NButton, NForm, type FormInst, useDialog } from 'naive-ui';
-import { computed, ref } from 'vue';
-import { getLocaleProfile } from '@/i18n';
 import type { Translation } from '@/api';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { DELETE, PATCH, POST } from '@/api';
 import { dialogProps } from '@/common';
-import { useMessages } from '@/composables/messages';
-import { $t } from '@/i18n';
-import { POST, PATCH, DELETE } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { DeleteIcon, EditIcon, LevelsIcon } from '@/icons';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
+import { textFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { $t, getLocaleProfile } from '@/i18n';
+import { DeleteIcon, EditIcon, LevelsIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { NAlert, NButton, NFlex, NForm, NIcon, useDialog, type FormInst } from 'naive-ui';
+import { computed, ref } from 'vue';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();

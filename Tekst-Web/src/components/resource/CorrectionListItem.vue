@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { DELETE, type CorrectionRead, type AnyResourceRead } from '@/api';
+import { DELETE, type AnyResourceRead, type CorrectionRead } from '@/api';
+import LocationLabel from '@/components/LocationLabel.vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { CorrectionNoteIcon, DeleteIcon, UserIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import { NListItem, NThing, NIcon, NButton, NFlex, NTime, NAlert } from 'naive-ui';
+import { NAlert, NButton, NFlex, NIcon, NListItem, NThing, NTime } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import LocationLabel from '@/components/LocationLabel.vue';
 
 const props = withDefaults(
   defineProps<{

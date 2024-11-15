@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { ref } from 'vue';
-import { NButton } from 'naive-ui';
-import { CommentIcon } from '@/icons';
-import GenericModal from '@/components/generic/GenericModal.vue';
 import type { AnyResourceRead } from '@/api';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
+import { CommentIcon } from '@/icons';
+import { NButton } from 'naive-ui';
+import { ref } from 'vue';
 
 defineProps<{
   resource: AnyResourceRead;

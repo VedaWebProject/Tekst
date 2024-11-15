@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { $t, localeProfiles } from '@/i18n';
+import { PATCH, type PlatformSettingsUpdate } from '@/api';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { computed, ref } from 'vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { useMessages } from '@/composables/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { usePlatformData } from '@/composables/platformData';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { platformSettingsFormRules } from '@/forms/formRules';
+import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { $t, localeProfiles } from '@/i18n';
+import { SettingsIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { cloneDeep } from 'lodash-es';
 import {
-  NDynamicInput,
   NButton,
+  NDivider,
+  NDynamicInput,
   NFlex,
-  NSelect,
   NForm,
   NFormItem,
   NInput,
-  NDivider,
-  NTabs,
+  NSelect,
   NTabPane,
+  NTabs,
   type FormInst,
 } from 'naive-ui';
-import { usePlatformData } from '@/composables/platformData';
-import { PATCH, type PlatformSettingsUpdate } from '@/api';
-import { useModelChanges } from '@/composables/modelChanges';
-import { useMessages } from '@/composables/messages';
-import { platformSettingsFormRules } from '@/forms/formRules';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import { useStateStore } from '@/stores';
-import { cloneDeep } from 'lodash-es';
-import { SettingsIcon } from '@/icons';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { computed, ref } from 'vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();

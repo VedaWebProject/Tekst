@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
-import { NIcon } from 'naive-ui';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import { NIcon } from 'naive-ui';
 
 import { DisabledVisibleIcon } from '@/icons';
-import { computed } from 'vue';
 import { useThemeStore } from '@/stores';
+import { computed } from 'vue';
 
 const props = defineProps<{
   text: TextRead;

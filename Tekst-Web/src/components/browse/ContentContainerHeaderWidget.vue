@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
 import { NButton, NIcon } from 'naive-ui';
+import type { Component } from 'vue';
 
 defineProps<{
   iconComponent: Component;

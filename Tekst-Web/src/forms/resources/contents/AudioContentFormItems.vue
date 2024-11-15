@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { AudioContentCreate, AudioResourceRead } from '@/api';
-import { NFlex, NFormItem, NInput, NDynamicInput } from 'naive-ui';
-import { contentFormRules } from '@/forms/formRules';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { checkUrl } from '@/utils';
-import { $t } from '@/i18n';
 import { useMessages } from '@/composables/messages';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { contentFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
+import { checkUrl } from '@/utils';
+import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
 defineProps<{
   resource: AudioResourceRead;

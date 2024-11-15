@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import {
-  NButton,
-  NInput,
-  NAlert,
-  NFormItem,
-  type InputInst,
-  type FormItemRule,
-  NForm,
-  type FormItemInst,
-} from 'naive-ui';
-import ButtonShelf from './ButtonShelf.vue';
-import { ref, type Component } from 'vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { shallowRef } from 'vue';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
+import {
+  NAlert,
+  NButton,
+  NForm,
+  NFormItem,
+  NInput,
+  type FormItemInst,
+  type FormItemRule,
+  type InputInst,
+} from 'naive-ui';
+import { ref, shallowRef, type Component } from 'vue';
+import ButtonShelf from './ButtonShelf.vue';
 
 export interface PromptModalProps {
   actionKey?: string;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { $t, $te } from '@/i18n';
 import { prioritizedMetadataKeys, type Metadata, type MetadataEntry } from '@/api';
+import { $t, $te } from '@/i18n';
+import { computed } from 'vue';
 
 const props = defineProps<{
   data?: Metadata;

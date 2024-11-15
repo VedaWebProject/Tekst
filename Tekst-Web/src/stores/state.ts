@@ -1,15 +1,14 @@
-import { ref, computed, watch } from 'vue';
-import { defineStore } from 'pinia';
-import { useWindowSize } from '@vueuse/core';
-import type { RouteLocationNormalized } from 'vue-router';
-import { $t, $te, i18n, setI18nLocale, getAvaliableBrowserLocaleKey, localeProfiles } from '@/i18n';
-import type { LocaleProfile } from '@/i18n';
-import { useRoute } from 'vue-router';
-import type { TextRead, TranslationLocaleKey } from '@/api';
+import type { LocaleKey, TextRead, TranslationLocaleKey } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
-import { useAuthStore } from './auth';
-import type { LocaleKey } from '@/api';
+import type { LocaleProfile } from '@/i18n';
+import { $t, $te, getAvaliableBrowserLocaleKey, i18n, localeProfiles, setI18nLocale } from '@/i18n';
 import { pickTranslation } from '@/utils';
+import { useWindowSize } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { computed, ref, watch } from 'vue';
+import type { RouteLocationNormalized } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from './auth';
 
 interface AppInitState {
   progress: number;

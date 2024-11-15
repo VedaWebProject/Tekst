@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type CSSProperties, type Component } from 'vue';
-import { NEllipsis, NIcon } from 'naive-ui';
 import { useThemeStore } from '@/stores';
+import { NEllipsis, NIcon } from 'naive-ui';
+import { type CSSProperties, type Component } from 'vue';
 
 withDefaults(
   defineProps<{

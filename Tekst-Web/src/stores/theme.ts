@@ -1,12 +1,12 @@
-import type { GlobalThemeOverrides } from 'naive-ui';
-import { mergeWith } from 'lodash-es';
-import { transparentize, lighten, saturate, adjustHue, toRgba } from 'color2k';
-import { computed, ref, watch } from 'vue';
-import { useStateStore } from '@/stores';
-import { lightTheme, darkTheme } from 'naive-ui';
-import { usePreferredDark } from '@vueuse/core';
-import { defineStore } from 'pinia';
 import { usePlatformData } from '@/composables/platformData';
+import { useStateStore } from '@/stores';
+import { usePreferredDark } from '@vueuse/core';
+import { adjustHue, lighten, saturate, toRgba, transparentize } from 'color2k';
+import { mergeWith } from 'lodash-es';
+import type { GlobalThemeOverrides } from 'naive-ui';
+import { darkTheme, lightTheme } from 'naive-ui';
+import { defineStore } from 'pinia';
+import { computed, ref, watch } from 'vue';
 
 export declare type ThemeMode = 'light' | 'dark';
 

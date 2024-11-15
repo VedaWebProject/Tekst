@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useStateStore, useBrowseStore } from '@/stores';
 import type { LocationRead } from '@/api';
+import { useBrowseStore, useStateStore } from '@/stores';
 import { getFullLocationLabel } from '@/utils';
+import { computed } from 'vue';
 
 const props = defineProps<{
   locationPath?: LocationRead[];

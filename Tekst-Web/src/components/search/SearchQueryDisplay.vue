@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { QuickSearchRequestBody, AdvancedSearchRequestBody } from '@/api';
-import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
+import type { AdvancedSearchRequestBody, QuickSearchRequestBody } from '@/api';
 import AdvancedSearchQueryDisplay from '@/components/search/AdvancedSearchQueryDisplay.vue';
+import QuickSearchQueryDisplay from '@/components/search/QuickSearchQueryDisplay.vue';
 
 withDefaults(
   defineProps<{

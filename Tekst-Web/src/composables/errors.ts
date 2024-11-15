@@ -1,6 +1,6 @@
 import type { ErrorDetail, ErrorModel, HTTPValidationError, TekstErrorModel } from '@/api';
-import { useMessages } from './messages';
 import { $t, $te } from '@/i18n';
+import { useMessages } from './messages';
 
 type FapiUsersInvalidPasswordModel = {
   detail: {

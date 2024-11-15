@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { deeplTargetLanguages, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
-import { computed } from 'vue';
-import { NPopselect } from 'naive-ui';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { TranslateIcon } from '@/icons';
+import { NPopselect } from 'naive-ui';
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface';
+import { computed } from 'vue';
 
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 

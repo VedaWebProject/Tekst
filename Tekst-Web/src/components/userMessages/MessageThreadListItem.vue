@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { UserMessageThread } from '@/api';
-import { DeleteIcon } from '@/icons';
-import { NListItem, NFlex, NBadge, NButton, NIcon } from 'naive-ui';
 import UserDisplay from '@/components/user/UserDisplay.vue';
+import { DeleteIcon } from '@/icons';
+import { NBadge, NButton, NFlex, NIcon, NListItem } from 'naive-ui';
 
 const props = defineProps<{
   thread: UserMessageThread;

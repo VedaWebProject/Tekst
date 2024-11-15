@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
+import { DELETE, PATCH, POST, type ClientSegmentCreate, type ClientSegmentUpdate } from '@/api';
+import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
-import { computed, nextTick, ref } from 'vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
+import { useModelChanges } from '@/composables/modelChanges';
+import { usePlatformData } from '@/composables/platformData';
+import { infoSegmentFormRules } from '@/forms/formRules';
+import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
+import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 import {
-  NIcon,
   NButton,
-  NSelect,
+  NFlex,
   NForm,
   NFormItem,
+  NIcon,
   NInput,
-  NFlex,
-  type FormInst,
+  NSelect,
   useDialog,
+  type FormInst,
   type InputInst,
 } from 'naive-ui';
-import { usePlatformData } from '@/composables/platformData';
-import { PATCH, type ClientSegmentUpdate, POST, type ClientSegmentCreate, DELETE } from '@/api';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import { useModelChanges } from '@/composables/modelChanges';
-import { useMessages } from '@/composables/messages';
-import { infoSegmentFormRules } from '@/forms/formRules';
-import { dialogProps } from '@/common';
-import { useStateStore } from '@/stores';
-import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
-import IconHeading from '@/components/generic/IconHeading.vue';
+import { computed, nextTick, ref } from 'vue';
 
 const state = useStateStore();
 const { pfData, loadPlatformData, getSegment } = usePlatformData();

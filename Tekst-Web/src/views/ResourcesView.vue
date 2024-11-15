@@ -1,42 +1,40 @@
 <script setup lang="ts">
 import {
-  NButton,
-  NInput,
-  NIcon,
-  NFlex,
-  NSpin,
-  NPagination,
-  NList,
-  NCollapse,
-  NCollapseItem,
-  useDialog,
-} from 'naive-ui';
-import {
-  POST,
-  type AnyResourceRead,
   DELETE,
-  type UserReadPublic,
+  downloadData,
   GET,
+  POST,
   withSelectedFile,
+  type AnyResourceRead,
+  type UserReadPublic,
 } from '@/api';
-import { onMounted, ref } from 'vue';
-import { computed } from 'vue';
-import { $t } from '@/i18n';
-import { useAuthStore, useStateStore } from '@/stores';
-import ResourceListItem from '@/components/resource/ResourceListItem.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
 import { dialogProps } from '@/common';
-import { useMessages } from '@/composables/messages';
-import { useRouter } from 'vue-router';
-import { useResourcesStore } from '@/stores';
-import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
-import { downloadData } from '@/api';
-import { SearchIcon, UndoIcon, ResourceIcon, AddIcon } from '@/icons';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
+import ResourceListItem from '@/components/resource/ResourceListItem.vue';
+import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
+import { $t } from '@/i18n';
+import { AddIcon, ResourceIcon, SearchIcon, UndoIcon } from '@/icons';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { createReusableTemplate } from '@vueuse/core';
+import {
+  NButton,
+  NCollapse,
+  NCollapseItem,
+  NFlex,
+  NIcon,
+  NInput,
+  NList,
+  NPagination,
+  NSpin,
+  useDialog,
+} from 'naive-ui';
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const state = useStateStore();
 const auth = useAuthStore();

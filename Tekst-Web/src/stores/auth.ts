@@ -1,13 +1,13 @@
-import { ref, computed } from 'vue';
-import { defineStore } from 'pinia';
 import type { UserRead, UserUpdate } from '@/api';
-import { useMessages } from '@/composables/messages';
 import { GET, PATCH, POST, optionsPresets } from '@/api/index';
-import { $t } from '@/i18n';
-import { useIntervalFn } from '@vueuse/core';
-import { useRouter, type RouteLocationRaw } from 'vue-router';
+import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
+import { $t } from '@/i18n';
 import { useResourcesStore, useSearchStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { useIntervalFn } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { useRouter, type RouteLocationRaw } from 'vue-router';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
 const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early

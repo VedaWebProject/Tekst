@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import contentWidgets from '@/components/resource/mappings';
-import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
-import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
-import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import type { AnyResourceRead } from '@/api';
+import GenericModal from '@/components/generic/GenericModal.vue';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
-import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
-import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
-import { computed, ref } from 'vue';
+import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
+import contentWidgets from '@/components/resource/mappings';
+import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
+import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
+import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
+import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
 import { MoreIcon } from '@/icons';
-import { NButton, NIcon } from 'naive-ui';
-import { pickTranslation } from '@/utils';
 import { useStateStore } from '@/stores';
-import GenericModal from '@/components/generic/GenericModal.vue';
+import { pickTranslation } from '@/utils';
+import { NButton, NIcon } from 'naive-ui';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{

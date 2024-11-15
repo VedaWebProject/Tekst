@@ -1,16 +1,16 @@
-import { ref, isRef, unref, watchEffect, type Ref, watch } from 'vue';
-import { GET } from '@/api';
 import type {
-  UserReadPublic,
   PlatformStats,
-  UserRead,
-  UserSearchFilters,
   PublicUserSearchFilters,
+  UserRead,
+  UserReadPublic,
+  UserSearchFilters,
 } from '@/api';
-import { useDebounceFn } from '@vueuse/core';
+import { GET } from '@/api';
 import { STATIC_PATH } from '@/common';
-import { useMessages } from './messages';
 import { $t } from '@/i18n';
+import { useDebounceFn } from '@vueuse/core';
+import { isRef, ref, unref, watch, watchEffect, type Ref } from 'vue';
+import { useMessages } from './messages';
 
 export function useProfile(
   usernameOrId: string | Ref<string>,

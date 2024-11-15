@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed } from 'vue';
+import type { UserCreate } from '@/api';
+import { POST } from '@/api';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
+import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { UserIcon } from '@/icons';
+import router from '@/router';
+import { useAuthStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import {
   type FormInst,
   type FormItemInst,
   type FormItemRule,
+  NButton,
+  NFlex,
   NForm,
   NFormItem,
   NInput,
-  NButton,
-  NFlex,
 } from 'naive-ui';
-import type { UserCreate } from '@/api';
-import { POST } from '@/api';
-import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
-import { useAuthStore, useStateStore } from '@/stores';
-import { accountFormRules } from '@/forms/formRules';
-import router from '@/router';
-import { UserIcon } from '@/icons';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { pickTranslation } from '@/utils';
+import { computed, nextTick, onMounted, ref } from 'vue';
 
 const state = useStateStore();
 const auth = useAuthStore();

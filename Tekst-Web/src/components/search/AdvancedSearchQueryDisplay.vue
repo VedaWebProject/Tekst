@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { AdvancedSearchRequestBody } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
-import { computed } from 'vue';
-import { NFlex, NTag, NIcon } from 'naive-ui';
-import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { $t } from '@/i18n';
 import { ResourceIcon, SettingsIcon } from '@/icons';
+import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
+import { NFlex, NIcon, NTag } from 'naive-ui';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

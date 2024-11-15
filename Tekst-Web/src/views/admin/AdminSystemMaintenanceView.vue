@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import { $t } from '@/i18n';
 
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { RefreshIcon, DeleteIcon, MaintenanceIcon, UpdateIcon } from '@/icons';
-import { NTabs, NTabPane, NTime, NButton, NIcon, NTable } from 'naive-ui';
 import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
-import { useMessages } from '@/composables/messages';
-import { onBeforeMount, ref } from 'vue';
-import { useTasks } from '@/composables/tasks';
-import { utcToLocalTime } from '@/utils';
-import { usePlatformData } from '@/composables/platformData';
-import { useThemeStore } from '@/stores';
-import { RouterLink } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
+import { useTasks } from '@/composables/tasks';
+import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
+import { useThemeStore } from '@/stores';
+import { utcToLocalTime } from '@/utils';
+import { NButton, NIcon, NTable, NTabPane, NTabs, NTime } from 'naive-ui';
+import { onBeforeMount, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const { pfData } = usePlatformData();
 const theme = useThemeStore();

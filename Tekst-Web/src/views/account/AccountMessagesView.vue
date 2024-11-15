@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { MessageIcon, NoContentIcon } from '@/icons';
-import { NSpin, NList } from 'naive-ui';
-import { useUserMessagesStore } from '@/stores';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
 import type { UserMessageThread, UserReadPublic } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
+import { $t } from '@/i18n';
+import { MessageIcon, NoContentIcon } from '@/icons';
+import { useUserMessagesStore } from '@/stores';
+import { NList, NSpin } from 'naive-ui';
 import { onMounted } from 'vue';
 
 const userMessages = useUserMessagesStore();

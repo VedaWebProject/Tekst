@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { NButton, NIcon } from 'naive-ui';
 import { QuestionMarkIcon } from '@/icons';
+import { NButton, NIcon } from 'naive-ui';
 </script>
 
 <template>

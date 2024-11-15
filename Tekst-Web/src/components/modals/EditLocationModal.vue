@@ -1,21 +1,21 @@
 <script setup lang="ts">
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import GenericModal from '@/components/generic/GenericModal.vue';
+import { useMessages } from '@/composables/messages';
+import { locationFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { EditIcon } from '@/icons';
 import {
-  NSelect,
+  NButton,
   NForm,
   NFormItem,
-  NButton,
   NInput,
+  NSelect,
+  type FormInst,
   type InputInst,
   type SelectOption,
-  type FormInst,
 } from 'naive-ui';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { ref } from 'vue';
-import { locationFormRules } from '@/forms/formRules';
-import GenericModal from '@/components/generic/GenericModal.vue';
-import { EditIcon } from '@/icons';
-import { useMessages } from '@/composables/messages';
 
 export interface EditLocationModalData {
   action: 'add' | 'edit';

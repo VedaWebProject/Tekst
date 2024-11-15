@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import { accountFormRules } from '@/forms/formRules';
-import { useMessages } from '@/composables/messages';
-import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { ref } from 'vue';
-import { $t } from '@/i18n';
-import { NInput, NForm, NFormItem, NButton } from 'naive-ui';
-import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import { useMessages } from '@/composables/messages';
+import { accountFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
+import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
+import { NButton, NForm, NFormItem, NInput } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const { message } = useMessages();
 const route = useRoute();

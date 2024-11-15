@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UserRead, UserReadPublic } from '@/api';
 import { AdminIcon } from '@/icons';
-import { NIcon, NFlex } from 'naive-ui';
+import { NFlex, NIcon } from 'naive-ui';
 
 defineProps<{
   user?: UserRead | UserReadPublic;

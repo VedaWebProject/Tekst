@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import {
   type AnyResourceConfig,
-  type UserReadPublic,
+  type AnyResourceRead,
   type PublicUserSearchFilters,
   type UserRead,
-  type AnyResourceRead,
+  type UserReadPublic,
 } from '@/api';
-import { $t } from '@/i18n';
-import { useAuthStore } from '@/stores';
-import { computed, h, ref, type VNodeChild } from 'vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
-import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialResourceConfigFormItems.vue';
-import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
 import { useUsersSearch } from '@/composables/fetchers';
-import { NSelect, NIcon, NTabs, NTabPane, NFormItem, NTag, type SelectOption } from 'naive-ui';
+import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
+import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
+import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialResourceConfigFormItems.vue';
+import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
+import { useAuthStore } from '@/stores';
+import { NFormItem, NIcon, NSelect, NTabPane, NTabs, NTag, type SelectOption } from 'naive-ui';
+import { computed, h, ref, type VNodeChild } from 'vue';
 
 const props = defineProps<{
   owner?: UserRead | UserReadPublic | null;

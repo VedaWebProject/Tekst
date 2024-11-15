@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ImagesResourceRead } from '@/api';
-import { computed, type CSSProperties } from 'vue';
-import { NIcon, NFlex, NImage, NImageGroup } from 'naive-ui';
-import { useStateStore } from '@/stores';
-import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
 import { LinkIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { NFlex, NIcon, NImage, NImageGroup } from 'naive-ui';
+import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
+import { computed, type CSSProperties } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -94,29 +94,36 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 .images-content:not(:only-child) {
   padding: var(--gap-lg) 0;
 }
+
 .images-content {
   margin-top: inherit;
 }
+
 .images-content:not(:first-child) {
   padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);
 }
+
 .image-container {
   margin: 0;
 }
+
 .image-container:not(:first-child) {
   padding-top: var(--gap-sm);
   border-top: 1px solid var(--main-bg-color);
 }
+
 .image-container.reduced {
   padding-top: 0;
   border: none;
 }
+
 .caption {
   white-space: pre-line;
   line-height: 1.2;
   vertical-align: middle;
 }
+
 .caption > .source-link {
   display: inline-block;
   vertical-align: -4px;

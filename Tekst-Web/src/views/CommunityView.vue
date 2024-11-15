@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useUsersSearch } from '@/composables/fetchers';
-import { NListItem, NInput, NIcon, NFlex, NSpin, NPagination, NList } from 'naive-ui';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import type { PublicUserSearchFilters } from '@/api';
-import { ref } from 'vue';
-import { $t } from '@/i18n';
-import { useStateStore } from '@/stores';
-import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
-import IconHeading from '@/components/generic/IconHeading.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { createReusableTemplate } from '@vueuse/core';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
-import { RouterLink } from 'vue-router';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
+import { useUsersSearch } from '@/composables/fetchers';
+import { $t } from '@/i18n';
+import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { createReusableTemplate } from '@vueuse/core';
+import { NFlex, NIcon, NInput, NList, NListItem, NPagination, NSpin } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const state = useStateStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
@@ -123,6 +122,7 @@ function resetPagination() {
 .pagination-container:first-child {
   margin-bottom: var(--gap-lg);
 }
+
 .pagination-container:last-child {
   margin-top: var(--gap-lg);
 }

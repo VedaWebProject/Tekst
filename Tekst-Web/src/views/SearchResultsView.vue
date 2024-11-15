@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import IconHeading from '@/components/generic/IconHeading.vue';
-import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
-import SearchResult from '@/components/search/SearchResult.vue';
-import { NIcon, NButton, NFlex, NList, NSpin, NPagination, NTime } from 'naive-ui';
-import { usePlatformData } from '@/composables/platformData';
-import { computed, onBeforeMount, ref } from 'vue';
-import type { SearchResultProps } from '@/components/search/SearchResult.vue';
-import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { $t } from '@/i18n';
-import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
-import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
-import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
-import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
 import { POST } from '@/api';
-import { useTasks } from '@/composables/tasks';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
+import type { SearchResultProps } from '@/components/search/SearchResult.vue';
+import SearchResult from '@/components/search/SearchResult.vue';
+import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
+import { useTasks } from '@/composables/tasks';
+import { $t } from '@/i18n';
+import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
+import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
+import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
+import { NButton, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
+import { computed, onBeforeMount, ref } from 'vue';
 
 const { pfData } = usePlatformData();
 const state = useStateStore();

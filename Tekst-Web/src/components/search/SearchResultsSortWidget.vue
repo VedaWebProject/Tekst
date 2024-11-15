@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
 import { SortIcon } from '@/icons';
-import { NPopselect, NButton, NIcon, NBadge } from 'naive-ui';
+import { NBadge, NButton, NIcon, NPopselect } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed } from 'vue';
 

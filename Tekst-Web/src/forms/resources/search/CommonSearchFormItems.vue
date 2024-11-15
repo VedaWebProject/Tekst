@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { NFormItem } from 'naive-ui';
-import NInputOsk from '@/components/NInputOsk.vue';
 import type { AdvancedSearchRequestBody } from '@/api';
+import NInputOsk from '@/components/NInputOsk.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { NFormItem } from 'naive-ui';
 
 defineProps<{
   queryIndex: number;

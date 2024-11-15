@@ -1,8 +1,8 @@
+import crypto from 'crypto';
 import fs from 'node:fs';
 import openapiTS, { astToString, transformSchemaObject } from 'openapi-typescript';
 import path from 'path';
 import ts from 'typescript';
-import crypto from 'crypto';
 
 const SCHEMA_FILE_URL = new URL(path.normalize('../../Tekst-API/openapi.json'), import.meta.url);
 const TYPES_FILE = path.normalize('src/api/schema.d.ts');

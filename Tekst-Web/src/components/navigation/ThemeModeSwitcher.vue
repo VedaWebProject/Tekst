@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { $t } from '@/i18n';
 import { NButton, NIcon } from 'naive-ui';
 import { computed } from 'vue';
-import { $t } from '@/i18n';
 
-import { LightModeIcon, DarkModeIcon } from '@/icons';
+import { DarkModeIcon, LightModeIcon } from '@/icons';
 import { useThemeStore } from '@/stores';
 
 const theme = useThemeStore();

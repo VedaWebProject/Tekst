@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore, useStateStore } from '@/stores';
-import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
-import { SiteNoticeIcon, PrivacyIcon, InfoIcon } from '@/icons';
 import { WEB_PATH } from '@/common';
+import { useMessages } from '@/composables/messages';
+import { $t } from '@/i18n';
+import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
+import { useAuthStore, useStateStore } from '@/stores';
+import { createRouter, createWebHistory } from 'vue-router';
 import { delay } from './utils';
 
 declare module 'vue-router' {

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { NFlex, NSwitch, NIcon } from 'naive-ui';
-import { $t } from '@/i18n';
-import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
 import type { AnyResourceRead, UserRead } from '@/api';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { PublicIcon, ProposedIcon, PublicOffIcon } from '@/icons';
+import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
+import { $t } from '@/i18n';
+import { ProposedIcon, PublicIcon, PublicOffIcon } from '@/icons';
+import { NFlex, NIcon, NSwitch } from 'naive-ui';
+import { computed } from 'vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;

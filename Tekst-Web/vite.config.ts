@@ -1,10 +1,10 @@
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
-import { resolve, dirname } from 'node:path';
 
-import { defineConfig, PluginOption } from 'vite';
-import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig, PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({

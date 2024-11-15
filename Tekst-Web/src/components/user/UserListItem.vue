@@ -1,32 +1,32 @@
 <script setup lang="ts">
 import type { UserRead } from '@/api';
-import {
-  NIcon,
-  NTime,
-  NBadge,
-  NListItem,
-  NThing,
-  NFlex,
-  NButton,
-  NDropdown,
-  type DropdownOption,
-} from 'naive-ui';
-import { usePlatformData } from '@/composables/platformData';
-import { computed } from 'vue';
-import { $t } from '@/i18n';
 import UserAvatar from '@/components/user/UserAvatar.vue';
-import { RouterLink } from 'vue-router';
+import { usePlatformData } from '@/composables/platformData';
+import { $t } from '@/i18n';
 import {
-  VerifiedUserIcon,
-  MoreIcon,
-  DeleteIcon,
-  CheckCircleIcon,
-  BlockCircleIcon,
-  UserPromoteIcon,
-  UserDowngradeIcon,
   AdminIcon,
+  BlockCircleIcon,
+  CheckCircleIcon,
+  DeleteIcon,
+  MoreIcon,
+  UserDowngradeIcon,
+  UserPromoteIcon,
+  VerifiedUserIcon,
 } from '@/icons';
 import { renderIcon, utcToLocalTime } from '@/utils';
+import {
+  NBadge,
+  NButton,
+  NDropdown,
+  NFlex,
+  NIcon,
+  NListItem,
+  NThing,
+  NTime,
+  type DropdownOption,
+} from 'naive-ui';
+import { computed } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const props = defineProps<{
   targetUser: UserRead;
@@ -223,6 +223,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 .user-list-item:first-child {
   padding-top: 0;
 }
+
 .user-list-item:last-child {
   padding-bottom: 0;
 }

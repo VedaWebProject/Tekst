@@ -4,15 +4,15 @@ import type {
   TextAnnotationContentCreate,
   TextAnnotationResourceRead,
 } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
-import { NSelect, NFormItem, NDynamicInput, type SelectOption } from 'naive-ui';
-import { contentFormRules } from '@/forms/formRules';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import { KeyboardReturnIcon } from '@/icons';
-import { computed, onMounted, ref, h } from 'vue';
+import NInputOsk from '@/components/NInputOsk.vue';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { KeyboardReturnIcon } from '@/icons';
 import { useResourcesStore } from '@/stores';
+import { NDynamicInput, NFormItem, NSelect, type SelectOption } from 'naive-ui';
+import { computed, h, onMounted, ref } from 'vue';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;

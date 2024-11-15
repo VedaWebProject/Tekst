@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { QuickSearchRequestBody } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
-import { computed } from 'vue';
-import { NFlex, NTag, NIcon } from 'naive-ui';
-import { useThemeStore } from '@/stores';
 import { $t } from '@/i18n';
 import { SearchIcon, SettingsIcon, TextsIcon } from '@/icons';
+import { useThemeStore } from '@/stores';
+import { NFlex, NIcon, NTag } from 'naive-ui';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

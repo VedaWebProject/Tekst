@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores';
-import { type FormInst, NFlex, NForm, NFormItem, NInput, NButton, type InputInst } from 'naive-ui';
-import { ref } from 'vue';
-import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
-import { accountFormRules } from '@/forms/formRules';
 import { POST } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import { useMessages } from '@/composables/messages';
+import { accountFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 import { LoginIcon } from '@/icons';
+import { useAuthStore } from '@/stores';
+import { NButton, NFlex, NForm, NFormItem, NInput, type FormInst, type InputInst } from 'naive-ui';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface LoginCredentialsModel {
   email: string | null;

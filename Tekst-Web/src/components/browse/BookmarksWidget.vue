@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { type BookmarkRead } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
-import { useBrowseStore, useStateStore } from '@/stores';
-import { NInput, NThing, NIcon, NButton, NList, NListItem, NFlex } from 'naive-ui';
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import PromptModal from '@/components/generic/PromptModal.vue';
-import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import PromptModal from '@/components/generic/PromptModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import { bookmarkFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, SearchIcon } from '@/icons';
+import { useBrowseStore, useStateStore } from '@/stores';
+import { NButton, NFlex, NIcon, NInput, NList, NListItem, NThing } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineProps<{
   buttonSize?: 'small' | 'medium' | 'large';

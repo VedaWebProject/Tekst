@@ -1,6 +1,6 @@
-import type { FormItemRule } from 'naive-ui';
-import { $t, localeProfiles } from '@/i18n';
 import { resourceTypes, type Translation } from '@/api';
+import { $t, localeProfiles } from '@/i18n';
+import type { FormItemRule } from 'naive-ui';
 
 function requiredStringRule(
   inputLabel: () => string,

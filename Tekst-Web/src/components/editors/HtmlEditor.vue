@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { NTabs, NTabPane, NInput, useDialog } from 'naive-ui';
+import type { components } from '@/api/schema';
+import { dialogProps } from '@/common';
 import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
 import { $t } from '@/i18n';
-import { dialogProps } from '@/common';
-import type { components } from '@/api/schema';
+import { NInput, NTabPane, NTabs, useDialog } from 'naive-ui';
 
 type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
 

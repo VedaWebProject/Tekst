@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { POST, resourceTypes, type AnyResourceRead } from '@/api';
-import { $t } from '@/i18n';
-import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 import { useMessages } from '@/composables/messages';
-import { computed, ref, watch, type VNodeChild, h } from 'vue';
-import { RouterLink } from 'vue-router';
+import { resourceSettingsFormRules } from '@/forms/formRules';
+import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
+import { $t } from '@/i18n';
+import { ArrowBackIcon, ResourceIcon, WarningIcon } from '@/icons';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import {
-  NIcon,
   NAlert,
+  NButton,
   NForm,
   NFormItem,
+  NIcon,
   NSelect,
-  NButton,
   type FormInst,
   type SelectOption,
 } from 'naive-ui';
-import { resourceSettingsFormRules } from '@/forms/formRules';
-import { useRouter } from 'vue-router';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
-import { ResourceIcon, ArrowBackIcon, WarningIcon } from '@/icons';
-import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
-import { pickTranslation } from '@/utils';
+import { computed, h, ref, watch, type VNodeChild } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
 
 const { message } = useMessages();
 const router = useRouter();

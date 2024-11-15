@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
 import {
-  SearchResultsIcon,
-  ClearIcon,
-  SkipPreviousIcon,
-  SkipNextIcon,
-  SearchIcon,
-  RefreshIcon,
   CheckListIcon,
+  ClearIcon,
+  RefreshIcon,
+  SearchIcon,
+  SearchResultsIcon,
+  SkipNextIcon,
+  SkipPreviousIcon,
 } from '@/icons';
 import { useBrowseStore, useSearchStore } from '@/stores';
+import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
 withDefaults(

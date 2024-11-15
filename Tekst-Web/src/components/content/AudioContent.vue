@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { AudioResourceRead } from '@/api';
 import AudioPlayer from '@/components/AudioPlayer.vue';
-import { ref, type CSSProperties } from 'vue';
 import { NFlex } from 'naive-ui';
-import { onBeforeUpdate } from 'vue';
+import { onBeforeUpdate, ref, type CSSProperties } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -71,9 +70,11 @@ onBeforeUpdate(() => {
 .audio-content:not(:only-child) {
   padding: var(--gap-lg) 0;
 }
+
 .audio-content {
   margin-top: inherit;
 }
+
 .audio-content:not(:first-child) {
   padding-top: var(--gap-lg);
   border-top: 1px solid var(--main-bg-color);

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LineLabellingConfig, PlainTextResourceRead } from '@/api';
-import { computed } from 'vue';
 import { NFlex } from 'naive-ui';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

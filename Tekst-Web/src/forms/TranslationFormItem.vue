@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Translation, LocaleKey } from '@/api';
-import { $t, renderLanguageOptionLabel } from '@/i18n';
-import { NFormItem, NSelect, NDynamicInput, NInput, NFlex, type FormItemRule } from 'naive-ui';
-import { computed } from 'vue';
-import { translationFormRules } from '@/forms/formRules';
-import { useStateStore } from '@/stores';
+import type { LocaleKey, Translation } from '@/api';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
+import { translationFormRules } from '@/forms/formRules';
+import { $t, renderLanguageOptionLabel } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type FormItemRule } from 'naive-ui';
+import { computed } from 'vue';
 
 withDefaults(
   defineProps<{

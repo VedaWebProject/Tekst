@@ -1,19 +1,19 @@
 <script setup lang="ts">
+import { useTasks } from '@/composables/tasks';
+import { $t, $te } from '@/i18n';
+import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 import {
+  NBadge,
   NButton,
   NFlex,
-  NBadge,
   NFloatButton,
   NIcon,
   NScrollbar,
   useDialog,
   type DialogOptions,
 } from 'naive-ui';
-import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
-import { useStateStore } from '@/stores';
 import { computed, type Component } from 'vue';
-import { useTasks } from '@/composables/tasks';
-import { $t, $te } from '@/i18n';
 
 const state = useStateStore();
 const { tasks, removeTask, showTasksList } = useTasks();

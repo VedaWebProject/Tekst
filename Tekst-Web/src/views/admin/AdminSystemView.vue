@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { RouterView } from 'vue-router';
 
 import { SystemIcon } from '@/icons';
 </script>

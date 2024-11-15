@@ -1,6 +1,6 @@
-import { h, type Component } from 'vue';
 import type { LocationRead, TextRead, Translation, TranslationLocaleKey } from '@/api';
 import { NIcon } from 'naive-ui';
+import { h, type Component } from 'vue';
 
 export function hashCode(obj: object) {
   const string = JSON.stringify(obj);

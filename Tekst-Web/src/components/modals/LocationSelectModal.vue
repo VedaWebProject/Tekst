@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NButton } from 'naive-ui';
 import type { LocationRead } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { $t } from '@/i18n';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
+import { $t } from '@/i18n';
+import { NButton } from 'naive-ui';
+import { ref } from 'vue';
 
 import { BookIcon } from '@/icons';
 import { watch } from 'vue';

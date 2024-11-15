@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PlainTextContentCreate, PlainTextResourceRead } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NFormItem } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
+import { NFormItem } from 'naive-ui';
 
 defineProps<{
   resource: PlainTextResourceRead;

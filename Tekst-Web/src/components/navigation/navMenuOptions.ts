@@ -1,6 +1,5 @@
-import { NBadge, type MenuOption } from 'naive-ui';
-import { h, computed } from 'vue';
-import { RouterLink, type RouteLocationRaw } from 'vue-router';
+import type { ClientSegmentHead } from '@/api';
+import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import {
   useAuthStore,
@@ -9,30 +8,31 @@ import {
   useStateStore,
   useUserMessagesStore,
 } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
-import type { ClientSegmentHead } from '@/api';
 import { pickTranslation, renderIcon } from '@/utils';
+import { NBadge, type MenuOption } from 'naive-ui';
+import { computed, h } from 'vue';
+import { RouterLink, type RouteLocationRaw } from 'vue-router';
 
 import {
-  EyeIcon,
-  ManageAccountIcon,
-  TextsIcon,
-  BarChartIcon,
   AddCircleIcon,
-  SettingsIcon,
-  InfoIcon,
+  BarChartIcon,
   BookIcon,
-  SearchIcon,
-  MaintenanceIcon,
-  SystemIcon,
-  SegmentsIcon,
-  UsersIcon,
-  LevelsIcon,
-  TreeIcon,
-  MessageIcon,
   CommunityIcon,
-  ResourceIcon,
+  EyeIcon,
+  InfoIcon,
+  LevelsIcon,
   LogoutIcon,
+  MaintenanceIcon,
+  ManageAccountIcon,
+  MessageIcon,
+  ResourceIcon,
+  SearchIcon,
+  SegmentsIcon,
+  SettingsIcon,
+  SystemIcon,
+  TextsIcon,
+  TreeIcon,
+  UsersIcon,
 } from '@/icons';
 
 function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {

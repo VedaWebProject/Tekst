@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { RichTextContentCreate, RichTextResourceRead } from '@/api';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
-import { NFormItem } from 'naive-ui';
 import { contentFormRules } from '@/forms/formRules';
+import { NFormItem } from 'naive-ui';
 
 defineProps<{
   resource: RichTextResourceRead;

@@ -1,6 +1,6 @@
+import { copyFileSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { marked } from 'marked';
 import path from 'path';
-import { readdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, existsSync } from 'fs';
 
 const HELP_DIR = path.normalize('translations/help/');
 const OUT_DIR = path.normalize('src/assets/help/');

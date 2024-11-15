@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NIcon, NSwitch, NFlex } from 'naive-ui';
+import { NFlex, NIcon, NSwitch } from 'naive-ui';
 import type { Component } from 'vue';
 
 withDefaults(

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useProfile } from '@/composables/fetchers';
-import { computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { NButton, NSpin, NThing, NIcon } from 'naive-ui';
-import { useAuthStore, useUserMessagesStore, useStateStore } from '@/stores';
+import type { UserMessageThread } from '@/api';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
+import { useProfile } from '@/composables/fetchers';
 import { MessageIcon, UserIcon } from '@/icons';
-import type { UserMessageThread } from '@/api';
+import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { NButton, NIcon, NSpin, NThing } from 'naive-ui';
+import { computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const auth = useAuthStore();

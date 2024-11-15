@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { NFormItem, NInput } from 'naive-ui';
-import { reducedViewConfigFormRules } from '@/forms/formRules';
 import type { components } from '@/api/schema';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { reducedViewConfigFormRules } from '@/forms/formRules';
+import { NFormItem, NInput } from 'naive-ui';
 
 const model = defineModel<components['schemas']['ReducedViewConfig']>({ required: true });
 </script>

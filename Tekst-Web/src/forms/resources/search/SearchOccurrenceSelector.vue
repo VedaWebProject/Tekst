@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { NFormItem, NSelect } from 'naive-ui';
 import type { AdvancedSearchRequestBody } from '@/api';
 import { $t } from '@/i18n';
+import { NFormItem, NSelect } from 'naive-ui';
 
 defineProps<{
   queryIndex: number;

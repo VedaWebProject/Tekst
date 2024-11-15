@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { computed, onUnmounted, h, type Component, type CSSProperties, watch, ref } from 'vue';
-import { NSelect, NButton, NIcon, type SelectOption } from 'naive-ui';
-import { useEditor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-import TextAlign from '@tiptap/extension-text-align';
-import CharacterCount from '@tiptap/extension-character-count';
-import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
 import PromptModal from '@/components/generic/PromptModal.vue';
 import { $t } from '@/i18n';
+import CharacterCount from '@tiptap/extension-character-count';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import StarterKit from '@tiptap/starter-kit';
+import { EditorContent, useEditor } from '@tiptap/vue-3';
+import { NButton, NIcon, NSelect, type SelectOption } from 'naive-ui';
+import { computed, h, onUnmounted, ref, watch, type Component, type CSSProperties } from 'vue';
 
+import { wysiwygEditorFormRules } from '@/forms/formRules';
 import {
-  FormatBoldIcon,
-  FormatItalicIcon,
   CodeIcon,
+  FormatAlignCenterIcon,
+  FormatAlignJustifyIcon,
+  FormatAlignLeftIcon,
+  FormatAlignRightIcon,
+  FormatBoldIcon,
   FormatClearIcon,
-  FormatQuoteIcon,
+  FormatItalicIcon,
   FormatListBulletedIcon,
   FormatListNumberedIcon,
-  HorizontalRuleIcon,
-  KeyboardReturnIcon,
-  UndoIcon,
-  RedoIcon,
-  FormatAlignLeftIcon,
-  FormatAlignCenterIcon,
-  FormatAlignRightIcon,
-  FormatAlignJustifyIcon,
-  LinkIcon,
+  FormatQuoteIcon,
   FormatSizeIcon,
-  ShortTextIcon,
+  HorizontalRuleIcon,
   ImageIcon,
+  KeyboardReturnIcon,
+  LinkIcon,
+  RedoIcon,
+  ShortTextIcon,
+  UndoIcon,
 } from '@/icons';
-import { wysiwygEditorFormRules } from '@/forms/formRules';
 
 const props = withDefaults(
   defineProps<{

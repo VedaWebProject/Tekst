@@ -1,41 +1,41 @@
 <script setup lang="ts">
 import type { AnyResourceRead, UserRead } from '@/api';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
+import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
+import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
+import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
+import { $t } from '@/i18n';
+import { useResourcesStore, useStateStore } from '@/stores';
 import {
-  NFlex,
+  NBadge,
+  NButton,
   NDropdown,
   NEllipsis,
+  NFlex,
   NIcon,
   NListItem,
   NThing,
-  NButton,
-  NBadge,
   type DropdownOption,
 } from 'naive-ui';
 import { computed } from 'vue';
-import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
-import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { useResourcesStore, useStateStore } from '@/stores';
-import { $t } from '@/i18n';
-import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
-import UserDisplay from '@/components/user/UserDisplay.vue';
-import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 
 import {
-  MoreIcon,
+  CorrectionNoteIcon,
   DeleteIcon,
-  SettingsIcon,
+  DownloadIcon,
+  EditNoteIcon,
+  MoreIcon,
   ProposedIcon,
-  UnproposedIcon,
   PublicIcon,
   PublicOffIcon,
-  UserIcon,
-  EditNoteIcon,
-  VersionIcon,
-  DownloadIcon,
+  SettingsIcon,
+  UnproposedIcon,
   UploadIcon,
-  CorrectionNoteIcon,
+  UserIcon,
+  VersionIcon,
 } from '@/icons';
 import { pickTranslation, renderIcon } from '@/utils';
 import { useRouter } from 'vue-router';

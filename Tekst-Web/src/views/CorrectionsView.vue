@@ -1,16 +1,14 @@
 <script setup lang="ts">
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { ArrowBackIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
+import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
 import { $t } from '@/i18n';
+import { ArrowBackIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
-import { computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { pickTranslation } from '@/utils';
 import { NButton, NIcon, NList } from 'naive-ui';
-import { RouterLink } from 'vue-router';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { onBeforeMount } from 'vue';
-import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
+import { computed, onBeforeMount, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 
 const state = useStateStore();
 const resources = useResourcesStore();

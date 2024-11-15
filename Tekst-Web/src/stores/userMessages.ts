@@ -1,11 +1,11 @@
-import { computed, ref } from 'vue';
-import { DELETE, GET, POST } from '@/api';
 import type { UserMessageCreate, UserMessageRead, UserMessageThread } from '@/api';
-import { useAuthStore } from '@/stores';
+import { DELETE, GET, POST } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { defineStore } from 'pinia';
+import { useAuthStore } from '@/stores';
 import { useIntervalFn } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
 export const useUserMessagesStore = defineStore('userMessages', () => {
   const auth = useAuthStore();

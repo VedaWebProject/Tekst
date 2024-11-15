@@ -1,33 +1,32 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
-import { useUsersAdmin } from '@/composables/fetchers';
-import {
-  NButton,
-  NInput,
-  NIcon,
-  NFlex,
-  NSpin,
-  NPagination,
-  NList,
-  NCollapse,
-  NCollapseItem,
-  useDialog,
-} from 'naive-ui';
-import UserListItem from '@/components/user/UserListItem.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import type { UserRead, UserSearchFilters, UserUpdate } from '@/api';
-import { ref } from 'vue';
+import { DELETE, PATCH, POST } from '@/api';
+import { dialogProps } from '@/common';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import UserListItem from '@/components/user/UserListItem.vue';
+import { useUsersAdmin } from '@/composables/fetchers';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { useRoute } from 'vue-router';
-import { POST, PATCH, DELETE } from '@/api';
-import { useAuthStore, useStateStore } from '@/stores';
-import { dialogProps } from '@/common';
 import { ErrorIcon, NoContentIcon, SearchIcon, UndoIcon, UsersIcon } from '@/icons';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
+import { useAuthStore, useStateStore } from '@/stores';
 import { createReusableTemplate } from '@vueuse/core';
+import {
+  NButton,
+  NCollapse,
+  NCollapseItem,
+  NFlex,
+  NIcon,
+  NInput,
+  NList,
+  NPagination,
+  NSpin,
+  useDialog,
+} from 'naive-ui';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const { message } = useMessages();
 const dialog = useDialog();

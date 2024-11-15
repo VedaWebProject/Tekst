@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { NEllipsis, NDivider, NButton, NFlex } from 'naive-ui';
-import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { useAuthStore, useStateStore } from '@/stores';
 import { type AnyResourceRead } from '@/api';
-import UserDisplay from '@/components/user/UserDisplay.vue';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
-import { InfoIcon, CommentIcon, FormatQuoteIcon, CoverageIcon, MetadataIcon } from '@/icons';
-import { pickTranslation } from '@/utils';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
+import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
+import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
+import { CommentIcon, CoverageIcon, FormatQuoteIcon, InfoIcon, MetadataIcon } from '@/icons';
+import { useAuthStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
+import { NButton, NDivider, NEllipsis, NFlex } from 'naive-ui';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;

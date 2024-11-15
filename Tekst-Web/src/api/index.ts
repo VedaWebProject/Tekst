@@ -1,10 +1,10 @@
-import createClient, { type Middleware } from 'openapi-fetch';
-import type { paths, components } from '@/api/schema';
-import { useAuthStore } from '@/stores';
-import Cookies from 'js-cookie';
+import type { components, paths } from '@/api/schema';
+import { useErrors } from '@/composables/errors';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { useErrors } from '@/composables/errors';
+import { useAuthStore } from '@/stores';
+import Cookies from 'js-cookie';
+import createClient, { type Middleware } from 'openapi-fetch';
 
 const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
 const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useStats } from '@/composables/fetchers';
-import { computed } from 'vue';
-import { NProgress, NSpin, NStatistic, NIcon } from 'naive-ui';
-import { usePlatformData } from '@/composables/platformData';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { useStats } from '@/composables/fetchers';
+import { usePlatformData } from '@/composables/platformData';
+import { NIcon, NProgress, NSpin, NStatistic } from 'naive-ui';
+import { computed } from 'vue';
 
-import { UsersIcon, TextsIcon, TreeIcon, ResourceIcon, BarChartIcon } from '@/icons';
+import { BarChartIcon, ResourceIcon, TextsIcon, TreeIcon, UsersIcon } from '@/icons';
 
 const { pfData } = usePlatformData();
 const { stats, error } = useStats();

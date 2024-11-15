@@ -1,13 +1,13 @@
-import { STATIC_PATH } from '@/common';
-import { useFetch, usePreferredDark } from '@vueuse/core';
-import logo from '@/assets/logo.png';
-import logoDarkmode from '@/assets/logo-darkmode.png';
-import faviconPng from '@/assets/favicon.png';
+import faviconIcoDarkmode from '@/assets/favicon-darkmode.ico';
 import faviconPngDarkmode from '@/assets/favicon-darkmode.png';
 import faviconIco from '@/assets/favicon.ico';
-import faviconIcoDarkmode from '@/assets/favicon-darkmode.ico';
-import { computed, ref, type Ref } from 'vue';
+import faviconPng from '@/assets/favicon.png';
+import logoDarkmode from '@/assets/logo-darkmode.png';
+import logo from '@/assets/logo.png';
+import { STATIC_PATH } from '@/common';
 import { useThemeStore } from '@/stores';
+import { useFetch, usePreferredDark } from '@vueuse/core';
+import { computed, ref, type Ref } from 'vue';
 
 interface LogoImage {
   url?: string;

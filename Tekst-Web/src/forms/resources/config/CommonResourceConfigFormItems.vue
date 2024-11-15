@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
-import { useStateStore } from '@/stores';
-import { computed } from 'vue';
-import { pickTranslation } from '@/utils';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
+import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
+import { computed } from 'vue';
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();

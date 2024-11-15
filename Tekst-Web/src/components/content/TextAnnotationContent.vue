@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
-import type { CSSProperties } from 'vue';
-import { computed, nextTick, ref } from 'vue';
-import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
-import { NTable, NAlert, NDropdown, NButton, NFlex, NIcon } from 'naive-ui';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
-import { useClipboard } from '@vueuse/core';
-import { pickTranslation, renderIcon } from '@/utils';
+import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
-import { transparentize, saturate, adjustHue, toRgba } from 'color2k';
+import { pickTranslation, renderIcon } from '@/utils';
+import { useClipboard } from '@vueuse/core';
+import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
+import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable } from 'naive-ui';
+import type { CSSProperties } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -310,10 +310,9 @@ function handleTokenContextMenuSelect(key: string | number) {
     tokenCopyContent.value = tokenDetails.value?.token || '';
   } else if (key === 'copyFull') {
     const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
+    const delim = props.resource.config.multiValueDelimiter;
     const annos = tokenDetails.value?.annotations
-      ? tokenDetails.value.annotations
-          .map((a) => `${a.key}: ${a.value.join(props.resource.config.multiValueDelimiter)}`)
-          .join('; ')
+      ? tokenDetails.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
     tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
   }

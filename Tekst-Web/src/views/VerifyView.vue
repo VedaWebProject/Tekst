@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { $t } from '@/i18n';
-import { useRouter } from 'vue-router';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
-import { KeyOffIcon, CheckCircleIcon } from '@/icons';
 import { useErrors } from '@/composables/errors';
+import { $t } from '@/i18n';
+import { CheckCircleIcon, KeyOffIcon } from '@/icons';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();

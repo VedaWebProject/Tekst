@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
-import { ref, type Component, watchEffect } from 'vue';
-import { NSpin } from 'naive-ui';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { useRoute, useRouter } from 'vue-router';
+import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
+import { NSpin } from 'naive-ui';
+import { ref, watchEffect, type Component } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps<{
   pageKey?: string;

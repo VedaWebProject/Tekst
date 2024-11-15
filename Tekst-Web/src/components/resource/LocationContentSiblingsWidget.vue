@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { computed, ref } from 'vue';
-import { NButton, NSpin } from 'naive-ui';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
-import { $t } from '@/i18n';
+import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import contentComponents from '@/components/content/mappings';
-import LocationLabel from '@/components/LocationLabel.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import LocationLabel from '@/components/LocationLabel.vue';
+import { $t } from '@/i18n';
+import { useBrowseStore, useStateStore } from '@/stores';
+import { NButton, NSpin } from 'naive-ui';
+import { computed, ref } from 'vue';
 
-import { MergeIcon, BookIcon, ResourceIcon } from '@/icons';
+import { BookIcon, MergeIcon, ResourceIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
 
 const props = defineProps<{

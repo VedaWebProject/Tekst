@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { NButton, NIcon } from 'naive-ui';
 import { LogoutIcon } from '@/icons';
+import { NButton, NIcon } from 'naive-ui';
 
 const emit = defineEmits(['click']);
 </script>

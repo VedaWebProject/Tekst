@@ -2,7 +2,7 @@
 import { $t } from '@/i18n';
 import { AddIcon, ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@/icons';
 import { useStateStore } from '@/stores';
-import { NButtonGroup, NButton, NIcon, type ButtonProps } from 'naive-ui';
+import { NButton, NButtonGroup, NIcon, type ButtonProps } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = withDefaults(

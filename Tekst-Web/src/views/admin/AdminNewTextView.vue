@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NDynamicInput, NForm, NInput, NFormItem, NButton, NAlert, type FormInst } from 'naive-ui';
+import type { TextCreate } from '@/api';
+import { POST } from '@/api';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import IconHeading from '@/components/generic/IconHeading.vue';
+import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
+import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { textFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useMessages } from '@/composables/messages';
-import { POST } from '@/api';
-import { useStateStore } from '@/stores';
-import { usePlatformData } from '@/composables/platformData';
-import { useRouter } from 'vue-router';
-import type { TextCreate } from '@/api';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { AddCircleIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { NAlert, NButton, NDynamicInput, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const initialModel = (): TextCreate => ({
   title: '',

@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { NFlex, NButton, NIcon, NBadge } from 'naive-ui';
-import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
+import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
+import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearch from '@/components/search/QuickSearch.vue';
-import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
+import { useLogo } from '@/composables/logo';
+import { usePlatformData } from '@/composables/platformData';
+import { CorrectionNoteIcon, HamburgerMenuIcon, MessageIcon } from '@/icons';
 import {
   useAuthStore,
   useBrowseStore,
@@ -13,14 +16,11 @@ import {
   useStateStore,
   useUserMessagesStore,
 } from '@/stores';
+import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
+import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { usePlatformData } from '@/composables/platformData';
-import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
-import { useMainMenuOptions } from './navMenuOptions';
 import DrawerMenu from './DrawerMenu.vue';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { CorrectionNoteIcon, HamburgerMenuIcon, MessageIcon } from '@/icons';
-import { useLogo } from '@/composables/logo';
+import { useMainMenuOptions } from './navMenuOptions';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();

@@ -5,12 +5,12 @@ import type {
   TextAnnotationSearchQuery,
 } from '@/api';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { NSwitch, NSelect, NFormItem, NDynamicInput, NFlex } from 'naive-ui';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { computed, onMounted, ref } from 'vue';
 import { useResourcesStore } from '@/stores';
+import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
+import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps<{
   resource: TextAnnotationResourceRead;

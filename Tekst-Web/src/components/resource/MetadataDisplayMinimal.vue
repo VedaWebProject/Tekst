@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { $t } from '@/i18n';
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
+import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
+import { computed } from 'vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
