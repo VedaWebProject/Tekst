@@ -498,8 +498,9 @@ resources:
       searchFields:
         any: '[any value]'
       copyTokenAction: Copy token
-      copyFullAction: Copy token and annotations
+      copyTokenFullAction: Copy token and annotations
       copyHintTip: Right click or long press to copy
+      copyAnnosPlainAction: Copy all visible annotations as plain text
     audio:
       label: Audio
       parenthesis: audio playback

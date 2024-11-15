@@ -507,8 +507,9 @@ resources:
       searchFields:
         any: '[beliebiger Wert]'
       copyTokenAction: Token kopieren
-      copyFullAction: Token und Annotationen kopieren
+      copyTokenFullAction: Token und Annotationen kopieren
       copyHintTip: Rechtsklick order halten zum Kopieren
+      copyAnnosPlainAction: Alle sichtbaren Annotationen als einfachen Text kopieren
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

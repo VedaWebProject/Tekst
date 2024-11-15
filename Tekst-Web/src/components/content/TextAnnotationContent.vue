@@ -91,20 +91,27 @@ const tokenCopyContent = ref<string>('');
 const {
   copy: copyTokenContent,
   copied: tokenContentCopied,
-  isSupported: isClipboardSupported,
-} = useClipboard({ source: tokenCopyContent, copiedDuring: 500 });
+  isSupported: isTokenCopySupported,
+} = useClipboard({ source: tokenCopyContent, copiedDuring: 1000 });
+
+const annoPlaintextContent = ref<string>('');
+const {
+  copy: copyAnnoPlaintext,
+  copied: annoPlaintextCopied,
+  isSupported: isAnnoCopySupported,
+} = useClipboard({ source: annoPlaintextContent, copiedDuring: 1000 });
 
 const tokenContextMenuOptions = computed(() => [
   {
     label: () => $t('resources.types.textAnnotation.copyTokenAction'),
     key: 'copyToken',
-    disabled: !isClipboardSupported.value,
+    disabled: !isTokenCopySupported.value,
     icon: renderIcon(CopyIcon),
   },
   {
-    label: () => $t('resources.types.textAnnotation.copyFullAction'),
+    label: () => $t('resources.types.textAnnotation.copyTokenFullAction'),
     key: 'copyFull',
-    disabled: !isClipboardSupported.value,
+    disabled: !isTokenCopySupported.value,
     icon: renderIcon(CopyIcon),
   },
 ]);
@@ -291,7 +298,7 @@ function handleTokenClick(token: Token) {
 
 function handleTokenRightClick(e: MouseEvent, token: Token, tokenId: string) {
   showTokenContextMenu.value = false;
-  if (!isClipboardSupported.value) return;
+  if (!isTokenCopySupported.value) return;
   tokenDetails.value = token;
   tokenContextIndex.value = tokenId;
   nextTick().then(() => {
@@ -329,31 +336,86 @@ function toggleAnnoGroup(key: string) {
     activeAnnoGroups.value = [...activeAnnoGroups.value, key];
   }
 }
+
+function handleCopyAnnoPlaintextClick() {
+  const out: string[] = [];
+  // for each content...
+  contents.value.forEach((c, contentIndex) => {
+    // preprocess data
+    const tokenLines: { token: string; annoLines: string[]; maxLen: number }[][] = [[]];
+    c.tokens.forEach((t) => {
+      t.token = t.token.normalize('NFC');
+      if (!t.lb) {
+        const annoLines: string[] = t.annoDisplay.map((line) =>
+          line.map((anno) => anno.content?.normalize('NFC') || '').join('')
+        );
+        const maxLen = Math.max(t.token.length, ...annoLines.map((l) => l.length));
+        tokenLines[tokenLines.length - 1].push({ token: t.token, annoLines, maxLen });
+      } else {
+        tokenLines.push([]);
+      }
+    });
+    // "render" token lines
+    tokenLines.forEach((l, lineIndex) => {
+      l.forEach((t) => {
+        out.push(t.token.padEnd(t.maxLen + 1, ' '));
+      });
+      out.push('\n');
+      const annoLineCount = Math.max(...l.map((t) => t.annoLines.length));
+      for (let i = 0; i < annoLineCount; i++) {
+        l.forEach((t) => {
+          out.push(t.annoLines[i]?.padEnd(t.maxLen + 1, ' ') || '');
+        });
+        if (i < annoLineCount - 1) out.push('\n');
+      }
+      if (lineIndex < tokenLines.length - 1) out.push('\n');
+    });
+    if (contentIndex < contents.value.length - 1) out.push('\n\n');
+  });
+  annoPlaintextContent.value = out.join('').trim();
+  copyAnnoPlaintext();
+}
 </script>
 
 <template>
-  <!-- ANNOTATION GROUP TOGGLES -->
-  <n-flex v-if="!!annoGroups.length" class="mb-lg">
+  <n-flex class="mb-lg">
+    <!-- ANNOTATION GROUP TOGGLES -->
+    <template v-if="!!annoGroups.length">
+      <n-button
+        :tertiary="!colorAnnoLines"
+        :type="colorAnnoLines ? 'primary' : undefined"
+        v-for="group in annoGroups"
+        :key="group.key"
+        size="tiny"
+        :focusable="false"
+        :disabled="annoGroups.length == 1"
+        :color="colorAnnoLines ? groupColors[group.key] : undefined"
+        :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
+        @click="toggleAnnoGroup(group.key)"
+      >
+        <template #icon>
+          <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
+        </template>
+        {{ pickTranslation(group.translations, state.locale) }}
+      </n-button>
+      <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
+        <template #icon>
+          <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
+        </template>
+      </n-button>
+    </template>
+    <!-- COPY ANNOTATIONS TAB-ALIGNED AS PLAINTEXT -->
     <n-button
-      :tertiary="!colorAnnoLines"
-      :type="colorAnnoLines ? 'primary' : undefined"
-      v-for="group in annoGroups"
-      :key="group.key"
+      v-if="isAnnoCopySupported"
+      :tertiary="!annoPlaintextCopied"
+      :type="annoPlaintextCopied ? 'success' : undefined"
       size="tiny"
       :focusable="false"
-      :disabled="annoGroups.length == 1"
-      :color="colorAnnoLines ? groupColors[group.key] : undefined"
-      :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
-      @click="toggleAnnoGroup(group.key)"
+      :title="$t('resources.types.textAnnotation.copyAnnosPlainAction')"
+      @click="handleCopyAnnoPlaintextClick"
     >
       <template #icon>
-        <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
-      </template>
-      {{ pickTranslation(group.translations, state.locale) }}
-    </n-button>
-    <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
-      <template #icon>
-        <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
+        <n-icon :component="CopyIcon" />
       </template>
     </n-button>
   </n-flex>
