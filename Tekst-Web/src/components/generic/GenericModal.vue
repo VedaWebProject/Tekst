@@ -40,7 +40,6 @@ const modalStyle = computed<CSSProperties>(() => ({
     v-model:show="show"
     v-bind="$attrs"
     :to="to"
-    embedded
     display-directive="if"
     preset="card"
     :bordered="false"
