@@ -296,7 +296,7 @@ class TextAnnotation(ResourceTypeABC):
                 PrecomputedDataDocument.precomputed_type == "aggregations",
             )
             annos = annos.data if annos and annos.data else []
-            anno_keys = list({anno["key"] for anno in annos if anno.get("key")})
+            anno_keys = sorted(list({anno["key"] for anno in annos if anno.get("key")}))
             csv_writer.writerow(
                 [
                     "LOCATION",
