@@ -345,15 +345,12 @@ function handleCopyAnnoPlaintextClick() {
     const tokenLines: { token: string; annoLines: string[]; maxLen: number }[][] = [[]];
     c.tokens.forEach((t) => {
       t.token = t.token.normalize('NFC');
-      if (!t.lb) {
-        const annoLines: string[] = t.annoDisplay.map((line) =>
-          line.map((anno) => anno.content?.normalize('NFC') || '').join('')
-        );
-        const maxLen = Math.max(t.token.length, ...annoLines.map((l) => l.length));
-        tokenLines[tokenLines.length - 1].push({ token: t.token, annoLines, maxLen });
-      } else {
-        tokenLines.push([]);
-      }
+      const annoLines: string[] = t.annoDisplay.map((line) =>
+        line.map((anno) => anno.content?.normalize('NFC') || '').join('')
+      );
+      const maxLen = Math.max(t.token.length, ...annoLines.map((l) => l.length));
+      tokenLines[tokenLines.length - 1].push({ token: t.token, annoLines, maxLen });
+      if (t.lb) tokenLines.push([]); // push new line if token followed by line break
     });
     // "render" token lines
     tokenLines.forEach((l, lineIndex) => {
@@ -368,7 +365,7 @@ function handleCopyAnnoPlaintextClick() {
         });
         if (i < annoLineCount - 1) out.push('\n');
       }
-      if (lineIndex < tokenLines.length - 1) out.push('\n');
+      if (lineIndex < tokenLines.length - 1) out.push('\n\n');
     });
     if (contentIndex < contents.value.length - 1) out.push('\n\n');
   });
