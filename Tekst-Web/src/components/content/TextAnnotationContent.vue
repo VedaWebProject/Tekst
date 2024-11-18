@@ -87,19 +87,17 @@ const groupColors = computed<Record<string, string>>(() =>
 const showTokenContextMenu = ref(false);
 const tokenContextMenuPos = ref({ x: 0, y: 0 });
 const tokenContextIndex = ref<string>();
-const tokenCopyContent = ref<string>('');
 const {
   copy: copyTokenContent,
   copied: tokenContentCopied,
   isSupported: isTokenCopySupported,
-} = useClipboard({ source: tokenCopyContent, copiedDuring: 1000 });
+} = useClipboard({ copiedDuring: 1000 });
 
-const annoPlaintextContent = ref<string>('');
 const {
   copy: copyAnnoPlaintext,
   copied: annoPlaintextCopied,
   isSupported: isAnnoCopySupported,
-} = useClipboard({ source: annoPlaintextContent, copiedDuring: 1000 });
+} = useClipboard({ copiedDuring: 1000 });
 
 const tokenContextMenuOptions = computed(() => [
   {
@@ -313,18 +311,16 @@ function handleTokenContextMenuClickOutside() {
 
 function handleTokenContextMenuSelect(key: string | number) {
   showTokenContextMenu.value = false;
-  if (key === 'copyToken') {
-    tokenCopyContent.value = tokenDetails.value?.token || '';
+  if (key === 'copyToken' && tokenDetails.value?.token) {
+    copyTokenContent(tokenDetails.value.token);
   } else if (key === 'copyFull') {
-    const token = tokenDetails.value?.token ? tokenDetails.value.token : '';
+    const token = tokenDetails.value?.token ? tokenDetails.value.token : '???';
     const delim = props.resource.config.multiValueDelimiter;
     const annos = tokenDetails.value?.annotations
       ? tokenDetails.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
-    tokenCopyContent.value = token + (annos ? ` (${annos})` : '');
+    copyTokenContent(token + (annos ? ` (${annos})` : ''));
   }
-  copyTokenContent(tokenCopyContent.value);
-  tokenCopyContent.value = '';
 }
 
 function toggleAnnoGroup(key: string) {
@@ -341,9 +337,13 @@ function handleCopyAnnoPlaintextClick() {
   const out: string[] = [];
   const browse = useBrowseStore();
   const resTitle = pickTranslation(props.resource.title, state.locale);
-  const locLabel = getFullLocationLabel(browse.locationPath.slice(0, contents.value.length > 1 ? -1 : undefined), state.textLevelLabels, state.text);
-  out.push(state.text?.title ? `${state.text?.title}\n` : '')
-  out.push(resTitle + '\n' + locLabel + '\n\n---\n\n')
+  const locLabel = getFullLocationLabel(
+    browse.locationPath.slice(0, contents.value.length > 1 ? -1 : undefined),
+    state.textLevelLabels,
+    state.text
+  );
+  out.push(state.text?.title ? `${state.text?.title}\n` : '');
+  out.push(resTitle + '\n' + locLabel + '\n\n---\n\n');
 
   // for each content...
   contents.value.forEach((c, contentIndex) => {
@@ -375,13 +375,12 @@ function handleCopyAnnoPlaintextClick() {
     });
     if (contentIndex < contents.value.length - 1) out.push('\n\n---\n\n');
   });
-  annoPlaintextContent.value = out.join('').trim();
-  copyAnnoPlaintext();
+  copyAnnoPlaintext(out.join('').trim());
 }
 </script>
 
 <template>
-  <n-flex class="mb-lg">
+  <n-flex class="mb-md">
     <!-- ANNOTATION GROUP TOGGLES -->
     <template v-if="!!annoGroups.length">
       <n-button
