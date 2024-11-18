@@ -380,7 +380,8 @@ resources:
   hasCorrections: has correction notes
   hasNoCorrections: has no correction notes
   public: '@:models.resource.public'
-  notPublic: '@:general.not @:models.resource.public'
+  notPublic: private
+  shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes

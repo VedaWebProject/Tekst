@@ -31,5 +31,10 @@ withDefaults(
       <n-icon v-if="showIcon" :component="PublicOffIcon" />
       {{ $t('resources.notPublic') }}
     </template>
+    <template v-if="resource.sharedRead.length + resource.sharedWrite.length > 0">
+      ({{
+        $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })
+      }})
+    </template>
   </n-flex>
 </template>
