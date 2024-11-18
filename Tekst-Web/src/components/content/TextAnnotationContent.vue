@@ -3,8 +3,8 @@ import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/ap
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
-import { useStateStore, useThemeStore } from '@/stores';
-import { pickTranslation, renderIcon } from '@/utils';
+import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
+import { getFullLocationLabel, pickTranslation, renderIcon } from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
 import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable } from 'naive-ui';
@@ -339,6 +339,12 @@ function toggleAnnoGroup(key: string) {
 
 function handleCopyAnnoPlaintextClick() {
   const out: string[] = [];
+  const browse = useBrowseStore();
+  const resTitle = pickTranslation(props.resource.title, state.locale);
+  const locLabel = getFullLocationLabel(browse.locationPath.slice(0, contents.value.length > 1 ? -1 : undefined), state.textLevelLabels, state.text);
+  out.push(state.text?.title ? `${state.text?.title}\n` : '')
+  out.push(resTitle + '\n' + locLabel + '\n\n---\n\n')
+
   // for each content...
   contents.value.forEach((c, contentIndex) => {
     // preprocess data
@@ -367,7 +373,7 @@ function handleCopyAnnoPlaintextClick() {
       }
       if (lineIndex < tokenLines.length - 1) out.push('\n\n');
     });
-    if (contentIndex < contents.value.length - 1) out.push('\n\n');
+    if (contentIndex < contents.value.length - 1) out.push('\n\n---\n\n');
   });
   annoPlaintextContent.value = out.join('').trim();
   copyAnnoPlaintext();
