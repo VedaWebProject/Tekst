@@ -28,6 +28,8 @@ function handleUpdate(field: string, value: unknown) {
   >
     <n-input-osk
       :model-value="model.caption"
+      :font="resource.config.general.font || undefined"
+      :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('general.caption')"
       @update:model-value="(v) => handleUpdate('caption', v)"
     />

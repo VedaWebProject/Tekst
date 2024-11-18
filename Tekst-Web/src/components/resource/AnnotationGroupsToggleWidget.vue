@@ -71,6 +71,7 @@ async function handleModalSubmit(note: string) {
     :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"
     :msg="$t('browse.contents.widgets.correctionNote.info')"
     :font="resource.config.general.font || undefined"
+    :osk-mode-key="resource.config.common.osk || undefined"
     :rows="3"
     :validation-rules="correctionFormRules.note"
     @submit="(_, v) => handleModalSubmit(v)"

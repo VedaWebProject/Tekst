@@ -28,6 +28,8 @@ function handleUpdate(field: string, value: unknown) {
   >
     <n-input-osk
       :model-value="model.html"
+      :font="resource.config.general.font || undefined"
+      :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.richText.searchFields.html')"
       @update:model-value="(v) => handleUpdate('html', v)"
     />

@@ -30,7 +30,7 @@ import { RouterLink } from 'vue-router';
 
 const props = defineProps<{
   targetUser: UserRead;
-  currentUser?: UserRead;
+  currentUser?: UserRead | null;
 }>();
 
 const emit = defineEmits([

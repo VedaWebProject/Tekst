@@ -109,7 +109,7 @@ nav:
   info: Info
 
 osk:
-  inputBtnTip: Open on-screen keyboard
+  label: On-screen keyboard
   inputPlaceholder: Type on the on-screen keyboard and press Enter to insert your input...
   msgErrorLoading: 'Error loading on-screen keyboard layout: {layout}'
 

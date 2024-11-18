@@ -86,6 +86,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               v-model="model.files[index].caption"
               type="textarea"
               :font="resource.config.general.font || undefined"
+              :osk-key="resource.config.common.osk || undefined"
               :rows="2"
               :max-length="512"
               :placeholder="$t('general.caption')"

@@ -126,6 +126,7 @@ onMounted(async () => {
                 "
                 v-model="tokenItem.token"
                 :font="resource.config.general.font || undefined"
+                :osk-key="resource.config.common.osk || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
               />
             </n-form-item>

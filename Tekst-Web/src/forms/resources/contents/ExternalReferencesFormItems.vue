@@ -57,6 +57,7 @@ function handleUpdate(field: string, value: unknown) {
             <n-input-osk
               v-model="model.links[index].title"
               :font="resource.config.general.font || undefined"
+              :osk-key="resource.config.common.osk || undefined"
               :max-length="128"
               :placeholder="$t('resources.types.externalReferences.contentFields.title')"
             />
@@ -73,6 +74,7 @@ function handleUpdate(field: string, value: unknown) {
               v-model="model.links[index].description"
               type="textarea"
               :font="resource.config.general.font || undefined"
+              :osk-key="resource.config.common.osk || undefined"
               :rows="2"
               :max-length="4096"
               :placeholder="$t('resources.types.externalReferences.contentFields.description')"

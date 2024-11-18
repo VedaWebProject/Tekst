@@ -8594,6 +8594,20 @@
             "title": "Quicksearchable",
             "description": "Whether this resource should be included in quick search",
             "default": true
+          },
+          "osk": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1,
+                "description": "Key identifying an OSK mode"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Osk"
           }
         },
         "type": "object",
@@ -11254,7 +11268,8 @@
             "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "title": "Key"
+            "title": "Key",
+            "description": "Key identifying an OSK mode"
           },
           "name": {
             "type": "string",

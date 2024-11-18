@@ -29,6 +29,8 @@ function handleUpdate(field: string, value: unknown) {
     <n-input-osk
       :model-value="model.caption"
       :placeholder="$t('general.caption')"
+      :font="resource.config.general.font || undefined"
+      :osk-key="resource.config.common.osk || undefined"
       @update:model-value="(v) => handleUpdate('caption', v)"
     />
   </n-form-item>

@@ -71,7 +71,6 @@ tasks:
 
   pre-commit:
     cmds:
-      - task: install
       - task: api-schema
       - task: lint
       - task: format

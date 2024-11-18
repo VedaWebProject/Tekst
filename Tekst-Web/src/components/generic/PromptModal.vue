@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { useMessages } from '@/composables/messages';
@@ -14,7 +15,6 @@ import {
   type InputInst,
 } from 'naive-ui';
 import { ref, shallowRef, type Component } from 'vue';
-import ButtonShelf from './ButtonShelf.vue';
 
 export interface PromptModalProps {
   actionKey?: string;
@@ -25,6 +25,7 @@ export interface PromptModalProps {
   inputLabel?: string;
   title?: string;
   font?: string;
+  oskModeKey?: string;
   placeholder?: string;
   rows?: number;
   disableOkWhenNoValue?: boolean;
@@ -41,6 +42,7 @@ const props = withDefaults(defineProps<PromptModalProps>(), {
   title: undefined,
   multiline: false,
   font: undefined,
+  oskModeKey: undefined,
   placeholder: '',
   rows: undefined,
   disableOkWhenNoValue: false,
@@ -131,6 +133,7 @@ function handleInputReturn() {
           :default-value="liveProps.initialValue"
           :placeholder="liveProps.placeholder"
           :font="liveProps.font"
+          :osk-key="liveProps.oskModeKey"
           @keydown.enter="handleInputReturn"
         />
       </n-form-item>

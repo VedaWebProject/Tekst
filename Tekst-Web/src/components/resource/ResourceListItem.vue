@@ -42,7 +42,7 @@ import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   targetResource: AnyResourceRead;
-  currentUser?: UserRead;
+  currentUser?: UserRead | null;
 }>();
 
 const emit = defineEmits([

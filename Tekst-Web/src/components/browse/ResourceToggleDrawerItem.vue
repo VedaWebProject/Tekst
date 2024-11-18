@@ -10,7 +10,7 @@ import { computed } from 'vue';
 const props = defineProps<{
   resource: AnyResourceRead;
   disabled?: boolean;
-  user?: UserRead;
+  user?: UserRead | null;
 }>();
 
 const active = defineModel<boolean>('active');

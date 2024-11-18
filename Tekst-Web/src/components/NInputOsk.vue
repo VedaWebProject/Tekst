@@ -21,7 +21,7 @@ import ButtonShelf from './generic/ButtonShelf.vue';
 
 const props = defineProps<{
   font?: string;
-  preferredOsk?: string;
+  oskKey?: string;
 }>();
 
 defineExpose({ focus: focusTargetInput, select: selectTargetInput, blur: blurTargetInput });
@@ -43,11 +43,9 @@ const oskModeSelectRef = ref<InstanceType<typeof NSelect> | null>(null);
 const oskModeOptions = computed(
   () => pfData.value?.state.oskModes.map((m) => ({ label: m.name, value: m.key })) || []
 );
-const oskModeKey = ref<string | undefined>(props.preferredOsk);
-const oskMode = computed(() =>
-  pfData.value?.state.oskModes.find((m) => m.key === oskModeKey.value) || pfData.value?.state.oskModes[0]
-);
-const { oskLayout, loading, error } = useOskLayout(oskModeKey);
+const oskKey = ref<string | undefined>(props.oskKey || pfData.value?.state.oskModes[0]?.key);
+const oskMode = computed(() => pfData.value?.state.oskModes.find((m) => m.key === oskKey.value));
+const { oskLayout, loading, error } = useOskLayout(oskKey);
 
 const shiftCharsPresent = computed(() =>
   oskLayout.value
@@ -100,7 +98,7 @@ function captureTargetSelectionRange() {
 function handleOpen() {
   captureTargetSelectionRange();
   blurTargetInput();
-  oskModeKey.value = pfData.value?.state.oskModes[0]?.key;
+  oskKey.value = props.oskKey || pfData.value?.state.oskModes[0]?.key;
   oskInput.value = [];
   shift.value = false;
   capsLock.value = false;
@@ -154,7 +152,7 @@ whenever(Enter, () => {
         <n-button
           v-if="!!pfData?.state.oskModes.length"
           text
-          :title="$t('osk.inputBtnTip')"
+          :title="$t('osk.label')"
           :focusable="false"
           @click="handleOpen"
         >
@@ -167,13 +165,7 @@ whenever(Enter, () => {
           (b) make the drawer show up at all
           (which doesn't work when it's inside the n-input tag).
           -->
-          <n-drawer
-            v-model:show="showOsk"
-            placement="bottom"
-            :height="680"
-            style="max-height: 90%"
-            to="#app-container"
-          >
+          <n-drawer v-model:show="showOsk" placement="bottom" :height="680" style="max-height: 90%">
             <n-drawer-content closable>
               <template #header>
                 <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
@@ -206,7 +198,7 @@ whenever(Enter, () => {
                   </n-flex>
                   <n-select
                     ref="oskModeSelectRef"
-                    v-model:value="oskModeKey"
+                    v-model:value="oskKey"
                     :options="oskModeOptions"
                     style="flex-grow: 1; width: 200px"
                     :consistent-menu-width="false"

@@ -87,6 +87,7 @@ onMounted(async () => {
       <n-input-osk
         :model-value="model.token"
         :font="resource.config.general.font || undefined"
+        :osk-key="resource.config.common.osk || undefined"
         :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
         @update:model-value="(v) => handleUpdate('token', v)"
       />

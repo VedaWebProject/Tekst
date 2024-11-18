@@ -2051,6 +2051,8 @@ export interface components {
        * @default true
        */
       quickSearchable: boolean;
+      /** Osk */
+      osk?: string | null;
     };
     /** CommonResourceSearchQueryData */
     CommonResourceSearchQueryData: {
@@ -3363,7 +3365,10 @@ export interface components {
     };
     /** OskMode */
     OskMode: {
-      /** Key */
+      /**
+       * Key
+       * @description Key identifying an OSK mode
+       */
       key: string;
       /** Name */
       name: string;

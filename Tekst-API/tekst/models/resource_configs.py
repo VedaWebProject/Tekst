@@ -3,6 +3,7 @@ from typing import Annotated
 from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
+from tekst.models.platform import OskKey
 from tekst.utils import validators as val
 
 
@@ -44,6 +45,7 @@ class CommonResourceConfig(ModelBase):
             description="Whether this resource should be included in quick search",
         ),
     ] = True
+    osk: OskKey | None = None
 
 
 class ResourceConfigBase(ModelBase):

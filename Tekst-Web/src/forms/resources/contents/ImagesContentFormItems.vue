@@ -101,6 +101,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               type="textarea"
               class="caption-textarea"
               :font="resource.config.general.font || undefined"
+              :osk-key="resource.config.common.osk || undefined"
               style="height: 100%"
               :max-length="512"
               :placeholder="$t('general.caption')"

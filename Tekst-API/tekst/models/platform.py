@@ -55,15 +55,21 @@ class RegisterIntroTextTranslation(TranslationBase):
     ]
 
 
+OskKey = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=32,
+        strip_whitespace=True,
+    ),
+    Field(
+        description="Key identifying an OSK mode",
+    ),
+]
+
+
 class OskMode(ModelBase):
-    key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
-    ]
+    key: OskKey
     name: Annotated[
         str,
         StringConstraints(

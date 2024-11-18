@@ -30,6 +30,7 @@ function handleUpdate(field: string, value: unknown) {
       :rows="3"
       :model-value="model.text"
       :font="resource.config.general.font || undefined"
+      :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
       @update:model-value="(v) => handleUpdate('text', v)"
     />

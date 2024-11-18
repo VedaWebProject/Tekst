@@ -111,7 +111,7 @@ nav:
   info: Info
 
 osk:
-  inputBtnTip: Bildschirmtastatur öffnen
+  label: Bildschirmtastatur
   inputPlaceholder: Tippen Sie auf der Bildschirmtastatur und drücken Sie Enter, um Ihre Eingabe einzufügen...
   msgErrorLoading: 'Fehler beim Laden des Layouts für die Bildschirmtastatur: {layout}'
 

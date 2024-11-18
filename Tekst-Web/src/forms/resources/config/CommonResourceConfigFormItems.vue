@@ -2,6 +2,7 @@
 import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import { usePlatformData } from '@/composables/platformData';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
@@ -11,6 +12,7 @@ import { computed } from 'vue';
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();
+const { pfData } = usePlatformData();
 
 const categoryOptions = computed(
   () =>
@@ -19,6 +21,14 @@ const categoryOptions = computed(
         pickTranslation(c.translations, state.locale) ||
         `${c.key} (${$t('resources.settings.config.common.catUnlabelled')})`,
       value: c.key,
+    })) || []
+);
+
+const oskOptions = computed(
+  () =>
+    pfData.value?.state.oskModes?.map((oskMode) => ({
+      label: oskMode.name,
+      value: oskMode.key,
     })) || []
 );
 
@@ -39,6 +49,17 @@ function handleUpdate(field: string, value: unknown) {
       :placeholder="$t('browse.uncategorized')"
       :options="categoryOptions"
       @update:value="(v) => handleUpdate('category', v)"
+    />
+  </n-form-item>
+
+  <!-- PREFERRED OSK MODE -->
+  <n-form-item :label="$t('osk.label')">
+    <n-select
+      :value="model.osk"
+      clearable
+      placeholder="–"
+      :options="oskOptions"
+      @update:value="(v) => handleUpdate('osk', v)"
     />
   </n-form-item>
 
