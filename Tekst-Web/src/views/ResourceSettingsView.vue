@@ -136,6 +136,7 @@ async function handleSaveClick() {
           v-model="model"
           :owner="resource?.owner"
           :public="resource?.public"
+          :proposed="resource?.proposed"
         />
       </n-form>
 

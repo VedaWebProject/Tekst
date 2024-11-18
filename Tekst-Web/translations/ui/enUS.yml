@@ -434,7 +434,7 @@ resources:
     msgSaved: Your new resource "{title}" has been created.
   settings:
     heading: Resource Settings
-    onlyForUnpublished: Only for unpublished resources!
+    onlyForPrivate: Only for unpublished and unproposed resources!
     msgSaved: Your changes to the resource "{title}" have been saved.
     status: Status
     config:

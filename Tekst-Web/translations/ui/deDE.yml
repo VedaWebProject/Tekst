@@ -443,7 +443,7 @@ resources:
     msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   settings:
     heading: Ressourcen-Einstellungen
-    onlyForUnpublished: Nur für nicht veröffentlichte Ressourcen!
+    onlyForPrivate: Nur für nicht veröffentlichte und nicht vorgeschlagene Ressourcen!
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     status: Status
     config:

@@ -20,6 +20,7 @@ import { computed, h, ref, type VNodeChild } from 'vue';
 const props = defineProps<{
   owner?: UserRead | UserReadPublic | null;
   public?: boolean;
+  proposed?: boolean;
 }>();
 
 const model = defineModel<AnyResourceRead>({ required: true });
@@ -169,8 +170,8 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
     <!-- ACCESS SHARES -->
     <n-tab-pane v-if="sharingAuthorized" :tab="$t('models.resource.share')" name="access">
-      <div v-if="public" class="text-tiny mb-md" style="color: var(--col-error)">
-        {{ $t('resources.settings.onlyForUnpublished') }}
+      <div v-if="public || proposed" class="text-tiny mb-md" style="color: var(--col-error)">
+        {{ $t('resources.settings.onlyForPrivate') }}
       </div>
       <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">
         <n-select
@@ -180,7 +181,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized || public"
+          :disabled="!sharingAuthorized || public || proposed"
           :max-tag-count="64"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
@@ -200,7 +201,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized || public"
+          :disabled="!sharingAuthorized || public || proposed"
           :max-tag-count="64"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
