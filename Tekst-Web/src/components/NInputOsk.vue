@@ -21,6 +21,7 @@ import ButtonShelf from './generic/ButtonShelf.vue';
 
 const props = defineProps<{
   font?: string;
+  preferredOsk?: string;
 }>();
 
 defineExpose({ focus: focusTargetInput, select: selectTargetInput, blur: blurTargetInput });
@@ -42,9 +43,9 @@ const oskModeSelectRef = ref<InstanceType<typeof NSelect> | null>(null);
 const oskModeOptions = computed(
   () => pfData.value?.state.oskModes.map((m) => ({ label: m.name, value: m.key })) || []
 );
-const oskModeKey = ref<string>();
+const oskModeKey = ref<string | undefined>(props.preferredOsk);
 const oskMode = computed(() =>
-  pfData.value?.state.oskModes.find((m) => m.key === oskModeKey.value)
+  pfData.value?.state.oskModes.find((m) => m.key === oskModeKey.value) || pfData.value?.state.oskModes[0]
 );
 const { oskLayout, loading, error } = useOskLayout(oskModeKey);
 
@@ -99,7 +100,7 @@ function captureTargetSelectionRange() {
 function handleOpen() {
   captureTargetSelectionRange();
   blurTargetInput();
-  oskModeKey.value = localStorage.getItem('oskMode') || pfData.value?.state.oskModes[0]?.key;
+  oskModeKey.value = pfData.value?.state.oskModes[0]?.key;
   oskInput.value = [];
   shift.value = false;
   capsLock.value = false;
@@ -121,15 +122,10 @@ function handleSubmit() {
   });
 }
 
-function handleInput(input: string) {
-  oskInput.value.push(input);
+function handleInput(input?: string) {
+  if (input) oskInput.value.push(input);
   oskModeSelectRef.value?.blur();
   shift.value = false;
-}
-
-function handleOskModeChange(oskModeKey: string) {
-  handleInput('');
-  localStorage.setItem('oskMode', oskModeKey);
 }
 
 watch(capsLock, () => (shift.value = false));
@@ -214,7 +210,7 @@ whenever(Enter, () => {
                     :options="oskModeOptions"
                     style="flex-grow: 1; width: 200px"
                     :consistent-menu-width="false"
-                    @update:value="handleOskModeChange"
+                    @update:value="() => handleInput()"
                   />
                 </n-flex>
               </template>

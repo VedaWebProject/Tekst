@@ -1,11 +1,12 @@
 import type { LocaleKey, TextRead, TranslationLocaleKey } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import type { LocaleProfile } from '@/i18n';
-import { $t, $te, getAvaliableBrowserLocaleKey, i18n, localeProfiles, setI18nLocale } from '@/i18n';
+import { $t, $te, getAvaliableBrowserLocaleKey, localeProfiles, setI18nLocale } from '@/i18n';
 import { pickTranslation } from '@/utils';
-import { useWindowSize } from '@vueuse/core';
+import { StorageSerializers, useStorage, useWindowSize } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { RouteLocationNormalized } from 'vue-router';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from './auth';
@@ -25,6 +26,7 @@ export const useStateStore = defineStore('state', () => {
   const route = useRoute();
   const auth = useAuthStore();
   const windowSize = useWindowSize();
+  const { locale: i18nLocale } = useI18n({ useScope: 'global' });
 
   // app init
   const init = ref<AppInitState>({
@@ -38,15 +40,11 @@ export const useStateStore = defineStore('state', () => {
 
   // locale
 
-  const locale = ref<LocaleKey>(
-    (auth.user?.locale ||
-      localStorage.getItem('locale') ||
-      getAvaliableBrowserLocaleKey() ||
-      // @ts-expect-error see src/i18n.ts for why the typing of this is messed up
-      i18n.global.locale.value) as LocaleKey
+  const locale = useStorage<LocaleKey>(
+    'locale',
+    (auth.user?.locale || getAvaliableBrowserLocaleKey() || i18nLocale.value || 'enUS') as LocaleKey
   );
-  watch(locale, (after) => {
-    localStorage.setItem('locale', after);
+  watch(locale, () => {
     setPageTitle();
   });
 
@@ -108,6 +106,9 @@ export const useStateStore = defineStore('state', () => {
   // current text
 
   const text = ref<TextRead>();
+  const textSlug = useStorage<TextRead['slug']>('text', null, undefined, {
+    serializer: StorageSerializers.string,
+  });
   watch(
     () => route.params.text,
     (after) => {
@@ -124,18 +125,8 @@ export const useStateStore = defineStore('state', () => {
     () => text.value?.id,
     () => {
       setPageTitle(route);
-      if (text.value) localStorage.setItem('text', text.value?.slug);
+      if (text.value) textSlug.value = text.value.slug;
     }
-  );
-
-  // fallback text for invalid text references
-
-  const fallbackText = computed(
-    () =>
-      text.value ||
-      pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
-      pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId) ||
-      pfData.value?.texts[0]
   );
 
   // text level labels
@@ -194,8 +185,8 @@ export const useStateStore = defineStore('state', () => {
     availableLocales,
     translationLocaleOptions,
     text,
+    textSlug,
     textsProps,
-    fallbackText,
     textLevelLabels,
     getTextLevelLabel,
   };

@@ -85,7 +85,9 @@ export const useBrowseStore = defineStore('browse', () => {
   function resetBrowseLocation(
     level: number = state.text?.defaultLevel || 0,
     position: number = 0,
-    text: string = state.fallbackText?.slug || ''
+    text: string = state.text?.slug ||
+      pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId)?.slug ||
+      ''
   ) {
     router.replace({
       name: 'browse',

@@ -32,7 +32,7 @@ export function useInitializeApp() {
         state.init.loading = true;
         try {
           await loadPlatformData();
-          await state.setLocale(localStorage.getItem('locale') || undefined);
+          await state.setLocale();
           return success;
         } catch {
           message.error($t('errors.loadData'));
@@ -71,7 +71,7 @@ export function useInitializeApp() {
       action: async (success: boolean = true) => {
         state.text =
           pfData.value?.texts.find((t) => t.slug === route.params.text) ||
-          pfData.value?.texts.find((t) => t.slug == localStorage.getItem('text')) ||
+          pfData.value?.texts.find((t) => t.slug == state.textSlug) ||
           pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
           pfData.value?.texts[0];
 

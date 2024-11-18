@@ -1,12 +1,12 @@
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
-import { usePreferredDark } from '@vueuse/core';
+import { usePreferredDark, useStorage } from '@vueuse/core';
 import { adjustHue, lighten, saturate, toRgba, transparentize } from 'color2k';
 import { mergeWith } from 'lodash-es';
 import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 export declare type ThemeMode = 'light' | 'dark';
 
@@ -62,12 +62,7 @@ export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
   const { pfData } = usePlatformData();
   const browserDarkThemePreferred = usePreferredDark();
-  const darkMode = ref<boolean>(
-    (localStorage.getItem('theme') as ThemeMode) === 'dark' ||
-      browserDarkThemePreferred.value ||
-      false
-  );
-  watch(darkMode, (after) => localStorage.setItem('theme', after === true ? 'dark' : 'light'));
+  const darkMode = useStorage<boolean>('darkMode', browserDarkThemePreferred.value || false);
   const toggleThemeMode = () => (darkMode.value = !darkMode.value);
   const theme = computed(() => (darkMode.value ? darkTheme : lightTheme));
   const mainBgColor = computed(() => (darkMode.value ? '#ffffff10' : '#00000010'));

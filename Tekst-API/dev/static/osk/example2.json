@@ -1,0 +1,9 @@
+[
+  [
+    [
+      { "char": "x", "shift": "X" },
+      { "char": "y", "shift": "Y" }
+    ],
+    [{ "char": "z", "shift": "Z" }]
+  ]
+]

@@ -4,7 +4,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { useResourcesStore, useSearchStore, useStateStore, useUserMessagesStore } from '@/stores';
-import { useIntervalFn } from '@vueuse/core';
+import { StorageSerializers, useIntervalFn, useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
@@ -31,17 +31,15 @@ export const useAuthStore = defineStore('auth', () => {
   const search = useSearchStore();
   const userMessages = useUserMessagesStore();
 
-  const user = ref<UserRead>();
+  const user = useStorage<UserRead | null>('user', null, undefined, {
+    serializer: StorageSerializers.object,
+  });
   const loggedIn = computed(() => !!user.value);
 
-  const sessionExpiryTsSec = ref(
-    Number(localStorage.getItem('sessionExpiryS')) || Number.MAX_SAFE_INTEGER
-  );
+  const sessionExpiryTsSec = useStorage('sessionExpiryS', Number.MAX_SAFE_INTEGER);
 
   async function loadExistingSession() {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      user.value = JSON.parse(userData) as UserRead;
+    if (user.value) {
       await _loadUserData();
     }
   }
@@ -51,12 +49,10 @@ export const useAuthStore = defineStore('auth', () => {
       Date.now() / 1000 +
       (pfData.value?.security.authCookieLifetime || 0) -
       SESSION_EXPIRY_OFFSET_S;
-    localStorage.setItem('sessionExpiryS', String(sessionExpiryTsSec.value));
   }
 
   function _unsetCookieExpiry() {
     sessionExpiryTsSec.value = Number.MAX_SAFE_INTEGER;
-    localStorage.removeItem('sessionExpiryS');
   }
 
   async function _renewExpiredSession() {
@@ -66,8 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function _cleanupSession() {
-    user.value = undefined;
-    localStorage.removeItem('user');
+    user.value = null;
     userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
@@ -115,7 +110,6 @@ export const useAuthStore = defineStore('auth', () => {
     const { data, error } = await GET('/users/me', {});
     if (!error) {
       user.value = data;
-      localStorage.setItem('user', JSON.stringify(user.value));
       return user.value;
     } else {
       logout();
@@ -183,7 +177,6 @@ export const useAuthStore = defineStore('auth', () => {
     const { data: updatedUser, error } = await PATCH('/users/me', { body: userUpdate });
     if (!error) {
       user.value = updatedUser;
-      localStorage.setItem('user', JSON.stringify(updatedUser));
       return updatedUser;
     }
   }
