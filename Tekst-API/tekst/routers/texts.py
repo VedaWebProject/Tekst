@@ -276,32 +276,32 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
             doc_id = PydanticObjectId(loc["id"])
         except Exception:
             raise errors.E_400_IMPORT_ID_NON_EXISTENT
-        doc = await LocationDocument.get(doc_id)
-        if not doc:
+        loc_doc = await LocationDocument.get(doc_id)
+        if not loc_doc:
             raise errors.E_400_IMPORT_ID_NON_EXISTENT
 
         # check if this location belongs to the same text as the last one
         all_locs_same_text = all_locs_same_text and (
-            doc.text_id == last_text_id or last_text_id is None
+            loc_doc.text_id == last_text_id or last_text_id is None
         )
-        last_text_id = doc.text_id
+        last_text_id = loc_doc.text_id
         if not all_locs_same_text:
             raise errors.E_422_UPLOAD_INVALID_DATA
 
-        # modify label and aliases according to updates
+        # modify label and aliases according to updates (and nothing else!)
         try:
             if "label" in loc:
-                doc.label = loc["label"]
+                loc_doc.label = loc["label"]
             if "aliases" in loc:
-                doc.aliases = loc["aliases"]
-            LocationDocument.model_validate(doc.model_dump())
+                loc_doc.aliases = loc["aliases"]
+            LocationDocument.model_validate(loc_doc.model_dump())
         except Exception as e:
             http_err = errors.update_values(
                 exc=errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": str(e)},
             )
             raise http_err
-        updated_docs.append(doc)
+        updated_docs.append(loc_doc)
 
     # save modified documents
     await LocationDocument.replace_many(updated_docs)
@@ -312,7 +312,7 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
 @router.patch(
     "/{id}/structure",
     response_model=tasks.TaskRead,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_202_ACCEPTED,
     responses=errors.responses(
         [
             errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
@@ -348,7 +348,7 @@ async def update_text_structure(
     # validate JSON
     try:
         location_updates = json.loads(await file.read())
-    except Exception:
+    except Exception as _:
         raise errors.E_400_UPLOAD_INVALID_JSON
     # check if we got a list (at least)
     if not isinstance(location_updates, list):

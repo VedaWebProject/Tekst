@@ -4,11 +4,6 @@ from tekst.setup import app_setup
 
 
 @pytest.mark.anyio
-async def test_setup(use_indices):
+async def test_setup():
     await app_setup()
-
-
-@pytest.mark.anyio
-async def test_setup_db_has_data(insert_sample_data):
-    await insert_sample_data("texts", "locations", "resources")
-    await app_setup()
+    await app_setup()  # 2nd time to test setup attempt on already set-up instance

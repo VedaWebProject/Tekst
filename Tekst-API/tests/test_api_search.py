@@ -19,6 +19,21 @@ def _assert_search_resp(
 
 
 @pytest.mark.anyio
+async def test_get_indices_info(
+    test_client: AsyncClient,
+    use_indices,
+    status_assertion,
+    login,
+):
+    await login(is_superuser=True)
+    resp = await test_client.get("/search/index/info")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 2
+    assert resp.json()[0]["upToDate"]
+
+
+@pytest.mark.anyio
 async def test_quick(
     test_client: AsyncClient,
     use_indices,

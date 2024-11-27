@@ -23,18 +23,10 @@ from tekst.models.user import (
 from tekst.utils import validators as val
 
 
-def _get_user_text_query(
-    query_str: str,
-    *,
-    min_q_length: int = 1,
-    empty_q_matches_all: bool = True,
-) -> dict:
+def _get_user_text_query(query_str: str) -> dict:
     q = re.sub(r"\W", "", query_str or "").strip()
-    if not q or len(q) < min_q_length:
-        if empty_q_matches_all:
-            return {}
-        else:
-            return Eq(UserDocument.id, 0)
+    if not q or len(q) < 1:
+        return {}
     else:
         return Or(
             RegEx(UserDocument.username, q, "i"),

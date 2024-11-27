@@ -386,3 +386,58 @@ async def test_import_text_structure(
             files={"file": (f.name, f, "application/json")},
         )
         assert status_assertion(409, resp)
+
+
+@pytest.mark.anyio
+async def test_update_text_structure(
+    test_client: AsyncClient,
+    insert_sample_data,
+    get_sample_data_path,
+    status_assertion,
+    login,
+    wrong_id,
+    wait_for_task_success,
+):
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    await login(is_superuser=True)
+    sample_data_path = get_sample_data_path("import/structure_fdhdgg_updates.json")
+
+    # upload invalid locations updates file (give wrong MIME type)
+    with open(sample_data_path, "rb") as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "text/plain")},
+        )
+        assert status_assertion(400, resp)
+
+    # upload invalid locations updates file (invalid JSON)
+    resp = await test_client.patch(
+        f"/texts/{text_id}/structure",
+        files={"file": ("fdhdgg.json", r"{foo: bar}", "application/json")},
+    )
+    assert status_assertion(400, resp)
+
+    # upload invalid locations updates file (not a list/array)
+    resp = await test_client.patch(
+        f"/texts/{text_id}/structure",
+        files={"file": ("fdhdgg.json", '{"foo": "bar"}', "application/json")},
+    )
+    assert status_assertion(422, resp)
+
+    # upload locations updates file for wrong text ID
+    with open(sample_data_path, "rb") as f:
+        resp = await test_client.patch(
+            f"/texts/{wrong_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(404, resp)
+
+    # upload valid locations updates file
+    with open(sample_data_path, "rb") as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(202, resp)
+        assert "id" in resp.json()
+        assert await wait_for_task_success(resp.json()["id"])

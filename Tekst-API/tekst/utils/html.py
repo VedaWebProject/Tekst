@@ -20,7 +20,7 @@ _ALLOWED_ATTRIBUTES = {
 }
 
 
-def get_html_text(html: str | None = None) -> str:
+def get_html_text(html: str | None = None) -> str | None:
     if html is None:
         return None
     return bleach.clean(
@@ -32,7 +32,7 @@ def get_html_text(html: str | None = None) -> str:
     )
 
 
-def sanitize_html(html: str | None = None) -> str:
+def sanitize_html(html: str | None = None) -> str | None:
     if html is None:
         return None
     return bleach.clean(

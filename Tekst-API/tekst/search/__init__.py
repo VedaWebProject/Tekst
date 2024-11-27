@@ -132,7 +132,7 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
         if old_txt_idxs and text.index_utd:
             # indexing is NOT necessary
             if force:
-                log.debug(f"Index for '{text.title}' is up to date. Forcing re-index.")
+                log.debug(f"Index for '{text.title}' is up to date, forcing re-index.")
             else:
                 log.debug(f"Indexing is not necessary for text '{text.title}'.")
                 utd_idxs.extend(old_txt_idxs)

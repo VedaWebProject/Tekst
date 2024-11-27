@@ -772,7 +772,7 @@ async def _import_resource_contents_task(
     except Exception as e:
         raise errors.update_values(
             exc=errors.E_400_UPLOAD_INVALID_JSON,
-            values={"errors": e},
+            values={"errors": str(e)},
         )
     finally:
         del file_bytes
@@ -1026,7 +1026,7 @@ async def _export_resource_contents_task(
 @router.get(
     "/{id}/export",
     response_model=tasks.TaskRead,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_202_ACCEPTED,
 )
 async def export_resource_contents(
     user: OptionalUserDep,
