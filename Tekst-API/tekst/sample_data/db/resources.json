@@ -51,10 +51,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": true,
-        "sourceLanguage": "de"
-      }
+      "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
     }
   },
   {
@@ -102,10 +99,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": true,
-        "sourceLanguage": "ja"
-      }
+      "deeplLinks": { "enabled": true, "sourceLanguage": "ja" }
     }
   },
   {
@@ -143,10 +137,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": false,
-        "sourceLanguage": "en"
-      }
+      "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
     }
   },
   {
@@ -178,10 +169,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": false,
-        "sourceLanguage": "en"
-      }
+      "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
     }
   },
   {
@@ -351,10 +339,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": true,
-        "sourceLanguage": "en"
-      }
+      "deeplLinks": { "enabled": true, "sourceLanguage": "en" }
     }
   },
   {
@@ -406,10 +391,7 @@
         "reducedViewOneline": true,
         "font": null
       },
-      "deeplLinks": {
-        "enabled": true,
-        "sourceLanguage": "de"
-      }
+      "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
     }
   },
   {
@@ -487,5 +469,47 @@
       "general": { "defaultCollapsed": false, "font": null },
       "displayTemplate": "{{_k:Entity_c:v_f:c}}"
     }
+  },
+  {
+    "_id": { "$oid": "67472c393d0d7622956981c9" },
+    "_class_id": "ResourceBaseDocument.RichTextResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Chords" },
+      { "locale": "deDE", "translation": "Akkorde" }
+    ],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "The chords of the song aligned with the song text"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Die Akkorde des Liedes, am Text ausgerichtet"
+      }
+    ],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 0,
+    "resource_type": "richText",
+    "original_id": null,
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "multimedia",
+        "sortOrder": 10,
+        "defaultActive": true,
+        "showOnParentLevel": false,
+        "quickSearchable": true,
+        "osk": null
+      },
+      "general": { "defaultCollapsed": true, "font": null }
+    },
+    "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
   }
 ]
