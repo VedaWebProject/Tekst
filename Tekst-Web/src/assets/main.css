@@ -139,6 +139,15 @@ code {
   font-weight: var(--font-weight-normal);
 }
 
+pre > code {
+  display: block;
+  margin: 0.5em 0;
+  padding: 1rem;
+  border-radius: 3px;
+  background-color: var(--main-bg-color);
+  font-weight: var(--font-weight-normal);
+}
+
 .m-0 {
   margin: 0;
 }
