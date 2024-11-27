@@ -603,6 +603,7 @@ async def publish_resource(
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
         raise errors.E_400_RESOUCE_VERSION_PUBLISH
+
     # all fine, publish resource
     await resource_doc.set(
         {
@@ -613,11 +614,19 @@ async def publish_resource(
             ResourceBaseDocument.shared_write: [],
         }
     )
+
+    # mark the text's index as out-of-date
+    await set_index_ood(
+        resource_doc.text_id,
+        by_public_resource=resource_doc.public,
+    )
+
     # notify users about the new publication
     await notifications.broadcast_user_notification(
         notifications.TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED,
         resource_title=pick_translation(resource_doc.title),
     )
+
     return await preprocess_resource_read(resource_doc, user)
 
 
@@ -639,6 +648,7 @@ async def unpublish_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
+
     # all fine, unpublish resource
     await resource_doc.set(
         {
@@ -646,6 +656,13 @@ async def unpublish_resource(
             ResourceBaseDocument.proposed: False,
         }
     )
+
+    # mark the text's index as out-of-date
+    await set_index_ood(
+        resource_doc.text_id,
+        by_public_resource=True,  # act as if resource public, to force ood status
+    )
+
     return await preprocess_resource_read(resource_doc, user)
 
 
