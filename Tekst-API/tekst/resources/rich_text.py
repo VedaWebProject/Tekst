@@ -37,7 +37,7 @@ class RichText(ResourceTypeABC):
     @classmethod
     def rtype_index_doc_props(cls) -> dict[str, Any]:
         return {
-            "text": {
+            "html": {
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
                 "fields": {
@@ -55,7 +55,7 @@ class RichText(ResourceTypeABC):
         content: "RichTextContent",
     ) -> dict[str, Any]:
         return {
-            "text": get_html_text(content.html),
+            "html": get_html_text(content.html),
         }
 
     @classmethod
@@ -160,7 +160,7 @@ class RichTextResource(ResourceBase):
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["text"]
+        return ["html"]
 
 
 class RichTextContent(ContentBase):
