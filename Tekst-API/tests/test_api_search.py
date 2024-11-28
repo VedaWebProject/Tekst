@@ -19,6 +19,25 @@ def _assert_search_resp(
 
 
 @pytest.mark.anyio
+async def test_admin_create_search_index(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wait_for_task_success,
+):
+    await insert_sample_data()
+    await login(is_superuser=True)
+    resp = await test_client.get("/search/index/create")
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+    resp = await test_client.get("/search/index/info")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 2
+
+
+@pytest.mark.anyio
 async def test_get_indices_info(
     test_client: AsyncClient,
     use_indices,
@@ -39,6 +58,26 @@ async def test_quick(
     use_indices,
     status_assertion,
 ):
+    # find everything
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "quick",
+                "q": "*",
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "qck": {"op": "OR", "re": False, "txt": []},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=19,
+    )
+
     # simple without wildcards or regexes
     _assert_search_resp(
         await test_client.post(
@@ -218,6 +257,22 @@ async def test_quick(
         200,
         expected_hits=9,
     )
+
+    # request too many results
+    resp = await test_client.post(
+        "/search",
+        json={
+            "type": "quick",
+            "q": "s*",
+            "gen": {
+                "pgn": {"pg": 1, "pgs": 10001},
+                "sort": "relevance",
+                "strict": False,
+            },
+            "qck": {"op": "OR", "re": False, "txt": []},
+        },
+    )
+    assert status_assertion(400, resp)
 
 
 @pytest.mark.anyio
@@ -623,3 +678,27 @@ async def test_advanced_rich_text(
         200,
         expected_hits=1,
     )
+
+
+@pytest.mark.anyio
+async def test_export_search_results(
+    test_client: AsyncClient,
+    use_indices,
+    status_assertion,
+    wait_for_task_success,
+):
+    resp = await test_client.post(
+        "/search/export",
+        json={
+            "type": "quick",
+            "q": "*",
+            "gen": {
+                "sort": "relevance",
+                "strict": False,
+            },
+            "qck": {"op": "OR", "re": False, "txt": []},
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
