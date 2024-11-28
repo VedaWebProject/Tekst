@@ -779,12 +779,10 @@ async def _import_resource_contents_task(
 
     # check if resource_id matches the one in the import file
     if str(resource_id) != str(import_data.get("resourceId")):
-        del import_data
         raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
 
     # chek if "contents" is a list
     if not isinstance(import_data.get("contents"), list):
-        del import_data
         raise errors.E_422_UPLOAD_INVALID_DATA
 
     # get content models
