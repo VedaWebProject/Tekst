@@ -75,3 +75,7 @@ tasks:
       - task: lint
       - task: format
       - task: build
+
+  visualize-bundle:
+    cmds:
+      - npx vite-bundle-visualizer
