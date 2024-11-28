@@ -230,19 +230,26 @@ class ResourceTypeABC(ABC):
         Exports the given contents of the given resource as JSON, compatible for
         re-import in Tekst.
         """
+        contents = [
+            c.model_dump(
+                by_alias=True,
+                exclude_unset=True,
+                exclude_none=True,
+                exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+            )
+            for c in contents
+        ]
+        # stringify PydanticObjectIds
+        for c in contents:
+            for attr in c:
+                if isinstance(c[attr], PydanticObjectId):
+                    c[attr] = str(c[attr])
+        # write to file
         with open(file_path, "w") as fp:
             json.dump(
                 {
                     "resourceId": str(resource.id),
-                    "contents": [
-                        c.model_dump(
-                            by_alias=True,
-                            exclude_unset=True,
-                            exclude_none=True,
-                            exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
-                        )
-                        for c in contents
-                    ],
+                    "contents": contents,
                 },
                 fp=fp,
                 ensure_ascii=False,
