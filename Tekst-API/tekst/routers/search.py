@@ -6,13 +6,11 @@ from pathlib import Path as PathObj
 from typing import Annotated, Any, Union
 from uuid import uuid4
 
-from beanie import PydanticObjectId
 from fastapi import APIRouter, Body, Request, status
 
 from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep, TekstConfig
-from tekst.models.content import ContentBaseDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
     AdvancedSearchRequestBody,
@@ -125,42 +123,23 @@ async def _export_search_results_task(
         # transform hits into actual search results export data
         for hit in results.hits:
             text = texts_by_ids.get(str(hit.text_id))
-            hit_out = {
-                "location": hit.full_label,
-                "text": text.title,
-                "level": hit.level,
-                "levelLabel": pick_translation(text.levels[hit.level], locale),
-                "position": hit.position,
-                "score": hit.score,
-                "contents": [],
-            }
-            for res_id in hit.highlight:
-                res_title = pick_translation(resources_by_ids.get(res_id).title, locale)
-                res_hl = hit.highlight[res_id]
-                res_content = (
-                    await ContentBaseDocument.find_one(
-                        ContentBaseDocument.resource_id == PydanticObjectId(res_id),
-                        ContentBaseDocument.location_id == hit.id,
-                        with_children=True,
-                    )
-                ).model_dump(
-                    exclude={
-                        "id",
-                        "location_id",
-                        "resource_id",
-                        "resource_type",
+            hits.append(
+                {
+                    "location": hit.full_label,
+                    "text": text.title,
+                    "level": hit.level,
+                    "levelLabel": pick_translation(text.levels[hit.level], locale),
+                    "position": hit.position,
+                    "score": hit.score,
+                    "highlights": {
+                        pick_translation(
+                            resources_by_ids.get(hl_res_id).title, locale
+                        ): hl
+                        for hl_res_id, hl in hit.highlight.items()
+                        if hl
                     },
-                    by_alias=True,
-                )
-                hit_out["contents"].append(
-                    {
-                        res_title: {
-                            "highlight": res_hl,
-                            "content": res_content,
-                        },
-                    }
-                )
-            hits.append(hit_out)
+                }
+            )
 
         # break early if we already got all hits to avoid running into 10000 hits limit
         # that's enforced by the search routine
