@@ -1,4 +1,3 @@
-import asyncio
 import json
 import re
 
@@ -146,9 +145,7 @@ async def _export_search_results_task(
         if len(hits) >= results.total_hits:
             break
         # there's more, so advance pagination for the next search iteration
-        req_body.settings_general.pagination.page += 1
-        # pause task execution to avoid blocking the worker/process
-        await asyncio.sleep(0.5)
+        req_body.settings_general.pagination.page += 1  # pragma: no cover
 
     # construct temp file name and path
     search_id = str(uuid4())
