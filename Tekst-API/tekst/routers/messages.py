@@ -210,7 +210,6 @@ async def get_threads(
         [
             errors.E_401_UNAUTHORIZED,
             errors.E_404_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -240,13 +239,9 @@ async def delete_thread(
             ),
         )
     ).to_list():
-        # check if message exists
+        # check if message(s) exist(s)
         if not msg:
             raise errors.E_404_NOT_FOUND
-
-        # check if requesting user can delete message
-        if user.id != msg.sender and user.id != msg.recipient:
-            raise errors.E_403_FORBIDDEN
 
         # mark message as deleted or actually
         # delete it depending on current deletion status
