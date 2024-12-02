@@ -63,7 +63,10 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
     of a JSON file relative to tests/data
     """
 
-    def _get_sample_data(rel_path: str, for_http: bool = False) -> Any:
+    def _get_sample_data(
+        rel_path: str,
+        for_http: bool = False,
+    ) -> Any:
         path = get_sample_data_path(rel_path)
         data = json_util.loads(path.read_text())
         if for_http:
@@ -88,7 +91,10 @@ async def get_db_client_override(config) -> db.DatabaseClient:
 
 
 @pytest.fixture(scope="session")
-async def test_app(config, get_db_client_override):
+async def test_app(
+    config,
+    get_db_client_override,
+):
     """Provides an app instance with overridden dependencies"""
     app.dependency_overrides[db.get_db_client] = lambda: get_db_client_override
     async with LifespanManager(app):
@@ -98,7 +104,10 @@ async def test_app(config, get_db_client_override):
 
 
 @pytest.fixture
-async def test_client(test_app, config) -> AsyncClient:
+async def test_client(
+    test_app,
+    config,
+) -> AsyncClient:
     """Returns an asynchronous test client for API testing"""
     async with AsyncClient(
         transport=ASGITransport(app=test_app),
@@ -116,7 +125,9 @@ async def test_client(test_app, config) -> AsyncClient:
 
 @pytest.fixture
 async def insert_sample_data(
-    config, get_sample_data, get_db_client_override
+    config,
+    get_sample_data,
+    get_db_client_override,
 ) -> Callable:
     """
     Returns an asynchronous function to insert
@@ -151,7 +162,10 @@ async def insert_sample_data(
 
 
 @pytest.fixture
-async def use_indices(config, insert_sample_data) -> Iterator[None]:
+async def use_indices(
+    config,
+    insert_sample_data,
+) -> Iterator[None]:
     await insert_sample_data()
     await create_indices_task(force=True)
     yield
@@ -174,7 +188,10 @@ def get_fake_user() -> Callable:
 
 
 @pytest.fixture(autouse=True)
-async def setup_teardown(config, get_db_client_override) -> Callable:
+async def setup_teardown(
+    config,
+    get_db_client_override,
+) -> Callable:
     yield
     # drop all DB collections
     for collection in await get_db_client_override[
@@ -208,7 +225,10 @@ async def register_test_user(get_fake_user) -> Callable:
 
 
 @pytest.fixture
-async def logout(config, test_client: AsyncClient) -> Callable:
+async def logout(
+    config,
+    test_client: AsyncClient,
+) -> Callable:
     async def _logout() -> None:
         await test_client.post("/auth/cookie/logout")
         test_client.cookies.delete(name=config.security.auth_cookie_name)
@@ -217,7 +237,12 @@ async def logout(config, test_client: AsyncClient) -> Callable:
 
 
 @pytest.fixture
-async def login(config, test_client, logout, register_test_user) -> Callable:
+async def login(
+    config,
+    test_client,
+    logout,
+    register_test_user,
+) -> Callable:
     async def _login(*, user: dict | None = None, **kwargs) -> dict:
         await logout()
         if not user:
@@ -239,7 +264,10 @@ async def login(config, test_client, logout, register_test_user) -> Callable:
 
 @pytest.fixture(scope="session")
 def status_assertion() -> Callable:
-    def _status_assertion(expected_status: int, resp: Response) -> tuple[bool, str]:
+    def _status_assertion(
+        expected_status: int,
+        resp: Response,
+    ) -> tuple[bool, str]:
         return (
             resp.status_code == 200,
             f"HTTP {resp.status_code} (expected: {expected_status}) -- {resp.text}",
@@ -269,13 +297,3 @@ def wait_for_task_success():
             raise Exception(f"Task {task_id} not found")
 
     return _wait_for_task_success
-
-
-# @pytest.fixture(autouse=True)
-# def disable_network_calls(monkeypatch):
-#     """Prevents outside network access while testing"""
-
-#     def stunted_get():
-#         raise RuntimeError("Network access not allowed during testing!")
-
-#     monkeypatch.setattr(requests, "get", lambda *args, **kwargs: stunted_get())
