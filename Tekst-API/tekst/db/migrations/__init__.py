@@ -35,7 +35,7 @@ _MIGRATIONS = _list_migrations()
 
 async def _is_migration_pending(db_version: str) -> bool:
     if db_version is None:
-        log.error("No DB version found. Has setup been run?")
+        log.warning("No DB version found. Has setup been run?")
         return False
     return bool(_MIGRATIONS and Version(db_version) < Version(_MIGRATIONS[-1].version))
 
