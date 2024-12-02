@@ -56,11 +56,14 @@ async def send_message(
         raise errors.E_404_USER_NOT_FOUND
 
     # create message
-    message_doc = await UserMessageDocument.model_from(message).create()
+    message_doc = UserMessageDocument.model_from(message)
 
-    # set internal message values
+    # force some message values
     message_doc.sender = user.id
     message_doc.time = datetime.utcnow()
+
+    # create message object in DB
+    await message_doc.create()
 
     # send notification email to recipient
     if (
