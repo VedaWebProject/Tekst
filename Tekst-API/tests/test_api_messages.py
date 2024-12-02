@@ -13,12 +13,13 @@ async def test_send_receive_messages(
 ):
     await insert_sample_data()
     user = await login()
+    target_sample_user_id = "65c5fe0c691066aabd498238"
 
     # send valid message
     resp = await test_client.post(
         "/messages",
         json={
-            "recipient": "65c5fe0c691066aabd498238",
+            "recipient": target_sample_user_id,
             "content": "This\nis\na\ntest.",
         },
     )
@@ -30,7 +31,7 @@ async def test_send_receive_messages(
     resp = await test_client.post(
         "/messages",
         json={
-            "recipient": "65c5fe0c691066aabd498238",
+            "recipient": target_sample_user_id,
             "content": "FOO BAR",
         },
     )
@@ -62,7 +63,7 @@ async def test_send_receive_messages(
     resp = await test_client.post(
         "/messages",
         json={
-            "recipient": "65c5fe0c691066aabd498238",
+            "recipient": target_sample_user_id,
             "content": "",
         },
     )
@@ -73,8 +74,8 @@ async def test_send_receive_messages(
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
-    assert resp.json()[0]["id"] == "65c5fe0c691066aabd498238"
-    assert resp.json()[0]["contact"]["id"] == "65c5fe0c691066aabd498238"
+    assert resp.json()[0]["id"] == target_sample_user_id
+    assert resp.json()[0]["contact"]["id"] == target_sample_user_id
     assert resp.json()[0]["unread"] == 0
 
     # get messages for specific thread
@@ -82,4 +83,18 @@ async def test_send_receive_messages(
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
-    assert resp.json()[0]["recipient"] == "65c5fe0c691066aabd498238"
+    assert resp.json()[0]["recipient"] == target_sample_user_id
+
+    # fail to delete message thread w/ wrong ID
+    resp = await test_client.delete(f"/messages/threads/{wrong_id}")
+    assert status_assertion(404, resp)
+
+    # delete message thread
+    resp = await test_client.delete(f"/messages/threads/{target_sample_user_id}")
+    assert status_assertion(204, resp)
+
+    # get message threads (should be 0 now)
+    resp = await test_client.get("/messages/threads")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0

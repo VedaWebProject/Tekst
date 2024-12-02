@@ -937,7 +937,7 @@ async def test_import_resource_data(
 
 
 @pytest.mark.anyio
-async def test_export_resource_contents(
+async def test_export_plaintext(
     test_client: AsyncClient,
     insert_sample_data,
     status_assertion,
@@ -976,6 +976,57 @@ async def test_export_resource_contents(
     # export plaintext Tekst-JSON
     resp = await test_client.get(
         "/resources/66471b68ba9e65342c8e495b/export",
+        params={
+            "format": "tekst-json",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+
+@pytest.mark.anyio
+async def test_export_text_annotations(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wait_for_task_success,
+):
+    await insert_sample_data()
+    await login()
+
+    # export plaintext JSON
+    resp = await test_client.get(
+        "/resources/6656cc7b81a66322c1bffb24/export",
+        params={
+            "format": "json",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # export plaintext CSV
+    resp = await test_client.get(
+        "/resources/6656cc7b81a66322c1bffb24/export",
+        params={
+            "format": "csv",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # export plaintext Tekst-JSON
+    resp = await test_client.get(
+        "/resources/6656cc7b81a66322c1bffb24/export",
         params={
             "format": "tekst-json",
             "from": "654b825533ee5737b297f8e5",
