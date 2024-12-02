@@ -5,7 +5,10 @@ from tekst import package_metadata
 
 
 @pytest.mark.anyio
-async def test_platform_data(test_client: AsyncClient, status_assertion):
+async def test_platform_data(
+    test_client: AsyncClient,
+    status_assertion,
+):
     resp = await test_client.get("/platform")
     assert status_assertion(200, resp)
     assert resp.json()["tekst"]["version"] == package_metadata["version"]
@@ -46,7 +49,10 @@ async def test_update_platform_settings(
 
 @pytest.mark.anyio
 async def test_get_public_user_info(
-    test_client: AsyncClient, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     user = await login()
     resp = await test_client.get(f"/users/public/{user.get('id')}")
