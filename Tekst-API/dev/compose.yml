@@ -102,6 +102,7 @@ services:
       MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
     profiles:
       - dev
+      - test
 
 volumes:
   mongo_configdb:
