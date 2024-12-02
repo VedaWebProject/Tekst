@@ -45,7 +45,7 @@ async def check_db_version(db_version: str, auto_migrate: bool = False) -> None:
         if auto_migrate:
             log.warning("Found pending DB migrations.")
             await migrate()
-        else:
+        else:  # pragma: no cover
             # log a critical message and check again every minute for one hour to
             # give time to run the migrations in the background, then repeat
             log.critical(
@@ -66,7 +66,7 @@ async def migrate() -> None:
     log.info("Running DB migrations...")
 
     db = get_db()
-    if db is None:
+    if db is None:  # pragma: no cover
         log.error("DB client could not be initialized. Is MongoDB running?")
         return
 

@@ -10,7 +10,7 @@ from tekst.search import create_indices_task
 from tekst.state import get_state, update_state
 
 
-async def app_setup():
+async def app_setup(cfg: TekstConfig = get_config()):
     log.info("Running Tekst pre-launch app setup...")
 
     # register all resource types
@@ -18,8 +18,6 @@ async def app_setup():
 
     # init DB and ODM
     await db.init_odm()
-
-    cfg: TekstConfig = get_config()
 
     # insert sample data if DB collections are empty
     inserted_sample_data: bool = await insert_sample_data()
