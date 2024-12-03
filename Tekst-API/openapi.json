@@ -2391,16 +2391,6 @@
             },
             "description": "Not Found"
           },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
