@@ -289,6 +289,7 @@ def wait_for_task_success():
                 if task.status == "done":
                     return True
                 elif task.status == "failed":
+                    print(f"TASK FAILED: {str(task)}")
                     return False
             await asyncio.sleep(interval_s)
         if task:
