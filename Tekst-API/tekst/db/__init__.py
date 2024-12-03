@@ -34,7 +34,7 @@ def _init_db_client(db_uri: str | None = None) -> DatabaseClient:
         db_uri = db_uri or get_config().db.uri
         try:
             _db_client = DatabaseClient(db_uri)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             log.critical(f"Could not connect to database at {db_uri}: {e}")
             raise RuntimeError(f"Could not initialize database client: {e}")
     return _db_client

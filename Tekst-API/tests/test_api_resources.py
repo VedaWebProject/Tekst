@@ -937,7 +937,7 @@ async def test_import_resource_data(
 
 
 @pytest.mark.anyio
-async def test_export_plaintext(
+async def test_content_exports(
     test_client: AsyncClient,
     insert_sample_data,
     status_assertion,
@@ -947,92 +947,55 @@ async def test_export_plaintext(
     await insert_sample_data()
     await login()
 
-    # export plaintext JSON
-    resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
-        params={
-            "format": "json",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+    formats = [
+        "json",
+        "csv",
+        "tekst-json",
+    ]
+    targets = [
+        {
+            "res_id": "66471b68ba9e65342c8e495b",
+            "from_loc_id": "654b825533ee5737b297f8e5",
+            "to_loc_id": "654b825533ee5737b297f8f2",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
-    # export plaintext CSV
-    resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
-        params={
-            "format": "csv",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+        {
+            "res_id": "6656cc7b81a66322c1bffb24",
+            "from_loc_id": "654b825533ee5737b297f8e5",
+            "to_loc_id": "654b825533ee5737b297f8f2",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
-    # export plaintext Tekst-JSON
-    resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
-        params={
-            "format": "tekst-json",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+        {
+            "res_id": "6641ce24affa6cb96bc85a55",
+            "from_loc_id": "664321104aa6341acd83fb05",
+            "to_loc_id": "664321104aa6341acd83fb05",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
-
-@pytest.mark.anyio
-async def test_export_text_annotations(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_assertion,
-    login,
-    wait_for_task_success,
-):
-    await insert_sample_data()
-    await login()
-
-    # export plaintext JSON
-    resp = await test_client.get(
-        "/resources/6656cc7b81a66322c1bffb24/export",
-        params={
-            "format": "json",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+        {
+            "res_id": "6641d510affa6cb96bc85a5b",
+            "from_loc_id": "664321104aa6341acd83fb05",
+            "to_loc_id": "664321104aa6341acd83fb05",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
-    # export plaintext CSV
-    resp = await test_client.get(
-        "/resources/6656cc7b81a66322c1bffb24/export",
-        params={
-            "format": "csv",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+        {
+            "res_id": "6641d2bfaffa6cb96bc85a58",
+            "from_loc_id": "664321104aa6341acd83fb05",
+            "to_loc_id": "664321104aa6341acd83fb05",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
-    # export plaintext Tekst-JSON
-    resp = await test_client.get(
-        "/resources/6656cc7b81a66322c1bffb24/export",
-        params={
-            "format": "tekst-json",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+        {
+            "res_id": "67472c393d0d7622956981c9",
+            "from_loc_id": "664321104aa6341acd83fb05",
+            "to_loc_id": "664321104aa6341acd83fb05",
         },
-    )
-    assert status_assertion(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
+    ]
+
+    for fmt in formats:
+        for target in targets:
+            # export
+            resp = await test_client.get(
+                f"/resources/{target['res_id']}/export",
+                params={
+                    "format": fmt,
+                    "from": target["from_loc_id"],
+                    "to": target["to_loc_id"],
+                },
+            )
+            assert status_assertion(202, resp)
+            assert "id" in resp.json()
+            assert await wait_for_task_success(resp.json()["id"])

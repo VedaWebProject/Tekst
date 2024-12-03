@@ -84,6 +84,16 @@ LOGGING_CONFIG = {
     },
 }
 
+_LOG_LEVELS = {
+    "DEBUG": logging.getLevelName("DEBUG"),
+    "INFO": logging.getLevelName("INFO"),
+    "WARNING": logging.getLevelName("WARNING"),
+    "ERROR": logging.getLevelName("ERROR"),
+    "CRITICAL": logging.getLevelName("CRITICAL"),
+}
+
+LogLevelString = Literal[tuple(_LOG_LEVELS.keys())]
+
 config.dictConfig(LOGGING_CONFIG)
 log = logging.getLogger("tekst")
 
@@ -95,14 +105,11 @@ _running_ops: dict[str, tuple[str, float, int, bool]] = dict()
 def log_op_start(
     label: str,
     *,
-    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "DEBUG",
+    level: LogLevelString = "DEBUG",
     use_process_time: bool = False,
 ) -> str:
     global _running_ops
-    if level not in ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"):
-        level_code = logging.getLevelName("DEBUG")
-    else:
-        level_code = logging.getLevelName(level)
+    level_code = _LOG_LEVELS.get(level, _LOG_LEVELS["DEBUG"])
     op_id = str(uuid4())
     start_t = process_time() if use_process_time else perf_counter()
     _running_ops[op_id] = (label, start_t, level_code, use_process_time)
@@ -115,27 +122,18 @@ def log_op_end(
     *,
     failed: bool = False,
     failed_msg: str | None = None,
-    failed_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "ERROR",
-    not_found_ok: bool = True,
+    failed_level: LogLevelString = "ERROR",
 ) -> float:
     global _running_ops
     op_entry = _running_ops.pop(op_id, None)
-    if op_entry is None:
-        if not_found_ok:
-            return 0
-        else:
-            raise RuntimeError(
-                f"Operation {op_id} not found in running operations dict"
-            )
+    if op_entry is None:  # pragma: no cover
+        raise RuntimeError(f"Operation {op_id} not found in running operations dict")
     label, start_t, level_code, use_proc_t = op_entry
     dur = (process_time() if use_proc_t else perf_counter()) - start_t
     if not failed:
         log.log(level_code, f"Finished: {label} [took: {dur:.2f}s]")
     else:
-        if failed_level not in ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"):
-            level_code = logging.getLevelName("ERROR")
-        else:
-            level_code = logging.getLevelName(failed_level)
+        level_code = _LOG_LEVELS.get(failed_level, _LOG_LEVELS["ERROR"])
         failed_msg = f" – {failed_msg}" if failed_msg else ""
         log.log(level_code, f"Failed: {label} [took: {dur:.2f}s]{failed_msg}")
     return dur

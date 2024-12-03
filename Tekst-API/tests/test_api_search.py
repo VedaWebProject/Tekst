@@ -281,6 +281,31 @@ async def test_advanced_text_annotation(
     use_indices,
     status_assertion,
 ):
+    # token empty
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "rts": {"type": "textAnnotation", "token": "    *        "},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=12,
+    )
+
     # token only
     _assert_search_resp(
         await test_client.post(
@@ -551,6 +576,35 @@ async def test_advanced_plain_text(
         expected_hits=0,
     )
 
+    # search in location comment field
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {
+                            "res": "654b825533ee5737b297f8f3",
+                            "occ": "should",
+                            "cmt": "s*",
+                        },
+                        "rts": {"type": "plainText"},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=0,
+    )
+
 
 @pytest.mark.anyio
 async def test_advanced_images(
@@ -558,6 +612,30 @@ async def test_advanced_images(
     use_indices,
     status_assertion,
 ):
+    # caption, empty
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "6641ce24affa6cb96bc85a55", "occ": "should"},
+                        "rts": {"type": "images", "caption": "*"},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
+    )
     # caption, wildcard
     _assert_search_resp(
         await test_client.post(
@@ -590,6 +668,31 @@ async def test_advanced_audio(
     use_indices,
     status_assertion,
 ):
+    # caption, empty
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "6641d510affa6cb96bc85a5b", "occ": "should"},
+                        "rts": {"type": "audio", "caption": "*"},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
+    )
+
     # caption, wildcard
     _assert_search_resp(
         await test_client.post(
@@ -617,11 +720,36 @@ async def test_advanced_audio(
 
 
 @pytest.mark.anyio
-async def test_advanced_external_resources(
+async def test_advanced_external_references(
     test_client: AsyncClient,
     use_indices,
     status_assertion,
 ):
+    # description, empty
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "66471de0ba9e65342c8e4995", "occ": "should"},
+                        "rts": {"type": "externalReferences", "text": "*"},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
+    )
+
     # description, wildcard
     _assert_search_resp(
         await test_client.post(
@@ -654,6 +782,31 @@ async def test_advanced_rich_text(
     use_indices,
     status_assertion,
 ):
+    # html, empty query
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67472c393d0d7622956981c9", "occ": "should"},
+                        "rts": {"type": "richText", "html": "*   "},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
+    )
+
     # phrase
     _assert_search_resp(
         await test_client.post(

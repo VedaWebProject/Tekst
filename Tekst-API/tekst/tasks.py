@@ -13,7 +13,7 @@ from pydantic import Field, StringConstraints
 
 from tekst import errors
 from tekst.config import TekstConfig, get_config
-from tekst.logs import log
+from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
 
@@ -141,6 +141,10 @@ async def _run_task(
     task_doc: TaskDocument,
     task_kwargs: dict[str, Any] = {},
 ) -> None:
+    op_id = log_op_start(
+        f"Run task {str(task_doc.id)} of type {task_doc.task_type} "
+        f"with target ID {str(task_doc.target_id)}"
+    )
     try:
         if await is_locked(task_doc.task_type, task_doc.id, task_doc.target_id):
             log.warning(
@@ -150,16 +154,15 @@ async def _run_task(
             raise errors.E_409_ACTION_LOCKED
         result = await task(**task_kwargs)
         task_doc.status = "done"
+        log_op_end(op_id)
         try:
             task_doc.result = jsonable_encoder(result)
         except Exception as _:
-            log.debug(f"Could not encode task result for task: {str(task_doc)}")
+            task_doc.result = {"msg": str(result)}
+            log.warning(f"Could not JSON encode task result for task: {str(task_doc)}")
     except Exception as e:
+        log_op_end(op_id, failed=True)
         task_doc.status = "failed"
-        log.error(
-            f"Task '{task_doc.task_type.value}' with target ID "
-            f"{task_doc.target_id} failed: {str(e)}"
-        )
         try:
             task_doc.error = e.detail.detail.key
         except Exception:

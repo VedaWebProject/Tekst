@@ -1,8 +1,9 @@
+import gc
 import re
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.exception_handlers import http_exception_handler
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -34,7 +35,7 @@ async def startup_routine(app: FastAPI) -> None:
             db_version=state.db_version,
             auto_migrate=_cfg.auto_migrate,
         )
-    else:
+    else:  # pragma: no cover
         state = PlatformState()
 
     if not _cfg.dev_mode or _cfg.dev.use_es:
@@ -106,7 +107,10 @@ if _cfg.cors.enable:
 
 
 @app.exception_handler(StarletteHTTPException)
-async def custom_http_exception_handler(request, exc):
+async def custom_http_exception_handler(request: Request, exc: Exception):
+    # force garbage collection due to issues with custom exception handler
+    # (see https://github.com/fastapi/fastapi/discussions/9145#discussioncomment-7254388)
+    gc.collect()
     return await http_exception_handler(
         request,
         HTTPException(

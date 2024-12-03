@@ -48,6 +48,7 @@ class ConfigSubSection(BaseModel):
         alias_generator=camelize,
         populate_by_name=True,
         from_attributes=True,
+        validate_assignment=True,  # should only happen in tests anyway
     )
 
 
@@ -81,7 +82,7 @@ def _select_env_files() -> list[str]:
     f_env_prod = ".env.prod"
     f_env_custom = os.environ.get("TEKST_CUSTOM_ENV_FILE")
     # prio logic
-    if os.path.exists(f_env):
+    if os.path.exists(f_env):  # pragma: no cover
         env_files.append(f_env)
     if _DEV_MODE and os.path.exists(f_env_dev):
         env_files.append(f_env_dev)
@@ -113,7 +114,7 @@ class MongoDBConfig(ConfigSubSection):
     password: str | None = None
     name: str = "tekst"
 
-    @field_validator("name")
+    @field_validator("name", mode="before")
     @classmethod
     def validate_db_name(cls, v: Any) -> str:
         if not isinstance(v, str):
@@ -160,7 +161,10 @@ class ElasticsearchConfig(ConfigSubSection):
     def timeout_int_to_time_value(cls, v) -> str:
         if isinstance(v, int):
             return f"{v}s"
-        return v
+        v = re.sub(r"\D", "", v)  # keep only digits
+        if not v:
+            return "30s"
+        return f"{v}s"
 
     @computed_field
     @property
@@ -315,8 +319,10 @@ class TekstConfig(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="TEKST_",
         env_nested_delimiter="__",
+        populate_by_name=True,
         case_sensitive=False,
         protected_namespaces=("model_",),
+        validate_assignment=True,  # should only happen in tests anyway
     )
 
     server_url: CustomHttpUrl = "http://127.0.0.1:8000"
@@ -352,16 +358,18 @@ class TekstConfig(BaseSettings):
     @field_validator("temp_files_dir", mode="before")
     @classmethod
     def temp_dir_to_existing_path_obj(cls, v: Any) -> Path:
-        path = Path(str(v))
-        path.mkdir(parents=True, exist_ok=True)
-        test_file_path = path / (str(uuid4()) + ".tmp")
         try:
+            path = Path(str(v))
+            path.mkdir(parents=True, exist_ok=True)
+            test_file_path = path / (str(uuid4()) + ".tmp")
             test_file_path.unlink(missing_ok=True)
             test_file_path.write_text(data="test")
             test_file_path.unlink(missing_ok=True)
         except Exception as e:
             print(e)
-            raise ValueError(f"Temporary directoy is not writable: {path}") from e
+            raise ValueError(
+                f"Temporary directoy is not valid or writable: {path}"
+            ) from e
         return path
 
     @computed_field

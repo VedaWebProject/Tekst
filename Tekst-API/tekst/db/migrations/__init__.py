@@ -71,12 +71,6 @@ async def migrate() -> None:
         return
 
     state_coll = db.get_collection("state")
-    if state_coll is None:
-        log.error(
-            "DB collection 'state' not found. Has setup been run? Aborting migration."
-        )
-        return
-
     state = await state_coll.find_one()
     if state is None:
         log.error("No state document found. Has setup been run? Aborting migration.")
@@ -85,7 +79,7 @@ async def migrate() -> None:
     db_version_before: str | None = state.get("db_version")
     log.debug(f"DB version before migrations: {db_version_before}")
 
-    if db_version_before is None:
+    if db_version_before is None:  # pragma: no cover
         log.error(
             "`db_version` not found in state document."
             "Has setup been run? Aborting migration."
@@ -103,7 +97,7 @@ async def migrate() -> None:
             log.debug(f"Migrating DB from {curr_db_version} to {migration.version}...")
             try:
                 await migration.proc(db)
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 log.error(
                     f"Failed migrating DB from {curr_db_version} "
                     f"to {migration.version}: {e}"

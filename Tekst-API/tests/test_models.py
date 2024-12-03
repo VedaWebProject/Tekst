@@ -2,7 +2,7 @@ import pytest
 
 from pydantic import ValidationError
 from tekst.models.resource import ResourceBase
-from tekst.models.text import Text, TextCreate, TextRead
+from tekst.models.text import Text, TextCreate, TextDocument, TextRead, TextUpdate
 from tekst.models.user import UserReadPublic
 
 
@@ -104,6 +104,14 @@ def test_user_read_public():
     assert not urp.affiliation
 
 
+@pytest.mark.anyio
+async def test_text_get_full_loc_labels_invalid_level(insert_sample_data):
+    text_id = (await insert_sample_data())["texts"][0]
+    text_doc: TextDocument = await TextDocument.get(text_id)
+    with pytest.raises(ValueError):
+        await text_doc.full_location_labels(42)
+
+
 def test_text_valid_default_level():
     with pytest.raises(ValidationError):
         TextCreate(
@@ -126,3 +134,27 @@ def test_text_valid_default_color():
 def test_resource_type_validator():
     with pytest.raises(ValidationError):
         ResourceBase(resource_type="foo_bar", title="Foo Bar")
+
+
+@pytest.mark.anyio
+async def test_apply_updates(test_app):
+    text = TextCreate(
+        title="Foo",
+        subtitle=[{"locale": "enUS", "translation": "foo"}],
+        slug="foo",
+        levels=[[{"locale": "enUS", "translation": "foo"}]],
+        loc_delim=" > ",
+        accent_color="#FF0000",
+    )
+    assert text.labeled_location
+    text_doc = TextDocument.model_from(text)
+    await text_doc.create()
+    assert text_doc.accent_color.as_rgb() == "rgb(255, 0, 0)"
+    assert text_doc.id
+    text_updates = TextUpdate(slug="bar", loc_delim=None)
+    text_doc = await text_doc.apply_updates(text_updates)
+    assert text_doc.slug == "bar"
+    assert text_doc.loc_delim == " > "  # apply_updates should ignore None
+    text_read = TextRead.model_from(text_doc)
+    assert text_read.slug == "bar"
+    assert text_read.id

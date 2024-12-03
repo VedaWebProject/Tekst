@@ -276,7 +276,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         quick search. By default, it returns an empty list. This is supposed to be
         overridden by concrete resource implementations.
         """
-        return []
+        return []  # pragma: no cover
 
     async def contents_changed_hook(self) -> None:
         """
@@ -298,7 +298,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         op_id = log_op_start(f"Precompute coverage data for resource {self.id}")
         try:
             await self.__precompute_coverage_data()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             log_op_end(op_id, failed=True)
             raise e
         log_op_end(op_id)
@@ -423,7 +423,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 # there is a current range, coverage matches, so we extend it
                 curr_range["end"] = location_labels[str(location["id"])]
         if curr_range:
-            # there is a range, but it's complete, so we add it to the ranges
+            # append the last remaining coverage range
             ranges.append(curr_range)
         covered_count = len([r for r in ranges if r.get("covered")])
         missing_count = len(ranges) - covered_count

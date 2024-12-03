@@ -24,7 +24,7 @@ async def insert_sample_data() -> bool:
 
     # check if any of the target collections contains data
     for collection in target_collections:
-        if await database[collection].find_one():  # pragma: no cover
+        if await database[collection].find_one():
             log.warning(
                 f"Found data in collection: {collection}. "
                 f"Skipping sample data insertion."

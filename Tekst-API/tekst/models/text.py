@@ -245,9 +245,7 @@ class TextDocument(Text, DocumentBase):
         by the text's location delimiter or ", " if no delimiter is set.
         """
         if target_level is None or target_level < 0 or target_level >= len(self.levels):
-            raise AttributeError(
-                f"Invalid target level ({target_level}) for this text."
-            )
+            raise ValueError(f"Invalid target level ({target_level}) for this text.")
         loc_delim = self.loc_delim or ", "
         location_labels = {}
         for level in range(target_level + 1):

@@ -4,7 +4,13 @@ from httpx import AsyncClient
 
 
 @pytest.mark.anyio
-async def test_register(test_client: AsyncClient, get_fake_user, status_assertion):
+async def test_register(
+    insert_sample_data,
+    test_client: AsyncClient,
+    get_fake_user,
+    status_assertion,
+):
+    await insert_sample_data()  # to have an admin to notify after registration
     payload = get_fake_user()
     resp = await test_client.post("/auth/register", json=payload)
     assert status_assertion(201, resp)
@@ -13,7 +19,9 @@ async def test_register(test_client: AsyncClient, get_fake_user, status_assertio
 
 @pytest.mark.anyio
 async def test_register_invalid_pw(
-    test_client: AsyncClient, get_fake_user, status_assertion
+    test_client: AsyncClient,
+    get_fake_user,
+    status_assertion,
 ):
     payload = get_fake_user()
 
@@ -49,7 +57,9 @@ async def test_register_invalid_pw(
 
 @pytest.mark.anyio
 async def test_register_username_exists(
-    test_client: AsyncClient, get_fake_user, status_assertion
+    test_client: AsyncClient,
+    get_fake_user,
+    status_assertion,
 ):
     payload = get_fake_user()
 
@@ -64,7 +74,9 @@ async def test_register_username_exists(
 
 @pytest.mark.anyio
 async def test_register_email_exists(
-    test_client: AsyncClient, get_fake_user, status_assertion
+    test_client: AsyncClient,
+    get_fake_user,
+    status_assertion,
 ):
     payload = get_fake_user()
 
@@ -129,7 +141,11 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
-async def test_forgot_password(login, test_client: AsyncClient, status_assertion):
+async def test_forgot_password(
+    login,
+    test_client: AsyncClient,
+    status_assertion,
+):
     user = await login(is_active=True, is_verified=True)
     resp = await test_client.post(
         "/auth/forgot-password",

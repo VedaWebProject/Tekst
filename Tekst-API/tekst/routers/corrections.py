@@ -135,7 +135,12 @@ async def get_corrections(
 @router.delete(
     "/{id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    responses=errors.responses([errors.E_404_NOT_FOUND, errors.E_403_FORBIDDEN]),
+    responses=errors.responses(
+        [
+            errors.E_404_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 async def delete_correction(
     correction_id: Annotated[PydanticObjectId, Path(alias="id")],

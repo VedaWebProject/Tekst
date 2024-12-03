@@ -70,7 +70,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
                 log.debug(
                     "Skipping StartTLS handshake, using unencrypted connection..."
                 )
-            if _cfg.email.smtp_user and _cfg.email.smtp_password:
+            if _cfg.email.smtp_user and _cfg.email.smtp_password:  # pragma: no cover
                 log.debug("Logging in to SMTP server...")
                 smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
@@ -133,7 +133,7 @@ async def _broadcast_user_notification(
     template_id: TemplateIdentifier,
     **kwargs,
 ) -> None:
-    if not template_id.name.startswith("USRMSG_"):
+    if not template_id.name.startswith("USRMSG_"):  # pragma: no cover
         log.error(
             "Only user messages can be broadcasted to regular users "
             f"({template_id.name} is not a user message template!)."

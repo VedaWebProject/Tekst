@@ -64,7 +64,7 @@ def update_values(
     exc: TekstHTTPException,
     values: dict[str, Any],
 ) -> TekstHTTPException:
-    if "values" in exc.detail.detail:
+    if "values" in exc.detail.detail:  # pragma: no cover
         exc.detail.detail.values.update(values)
     else:
         exc.detail.detail.values = values

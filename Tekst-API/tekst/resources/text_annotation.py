@@ -135,7 +135,7 @@ class TextAnnotation(ResourceTypeABC):
         annos_es_q = []
 
         # process token query
-        if (token_usr_q == "*" or not token_usr_q) and not annos_usr_q:
+        if (not token_usr_q or not token_usr_q.strip("* ")) and not annos_usr_q:
             # handle empty/match-all query (query for existing target resource field)
             token_es_q.append(
                 {
