@@ -54,7 +54,11 @@ async def test_create_content(
 
 @pytest.mark.anyio
 async def test_get_content(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
@@ -80,7 +84,11 @@ async def test_get_content(
 
 @pytest.mark.anyio
 async def test_find_contents(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     resource_id = (
         await insert_sample_data("texts", "locations", "resources", "contents")
@@ -108,7 +116,11 @@ async def test_find_contents(
 
 @pytest.mark.anyio
 async def test_update_content(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
@@ -172,7 +184,11 @@ async def test_update_content(
 
 @pytest.mark.anyio
 async def test_delete_content(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"

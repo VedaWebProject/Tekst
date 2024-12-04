@@ -5,7 +5,9 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_get_texts(
-    test_client: AsyncClient, insert_sample_data, status_assertion
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
 ):
     await insert_sample_data("texts")
     resp = await test_client.get("/texts")
@@ -131,7 +133,11 @@ async def test_update_text(
 
 @pytest.mark.anyio
 async def test_delete_text(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][1]
@@ -164,7 +170,11 @@ async def test_delete_text(
 
 @pytest.mark.anyio
 async def test_download_structure_template(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
@@ -187,7 +197,11 @@ async def test_download_structure_template(
 
 @pytest.mark.anyio
 async def test_insert_level(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     await insert_sample_data("texts", "locations")
 
@@ -314,7 +328,11 @@ async def test_delete_middle_level(
 
 @pytest.mark.anyio
 async def test_fail_delete_level(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data("texts", "locations")
     text_id = inserted_ids["texts"][0]

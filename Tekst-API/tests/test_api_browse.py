@@ -8,7 +8,11 @@ from tekst.models.text import TextDocument
 
 @pytest.mark.anyio
 async def test_get_content_siblings(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id, login
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
+    login,
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
@@ -96,7 +100,10 @@ async def test_get_location_data(
 
 @pytest.mark.anyio
 async def test_get_path_options_by_head(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
 ):
     await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
@@ -121,7 +128,10 @@ async def test_get_path_options_by_head(
 
 @pytest.mark.anyio
 async def test_get_path_options_by_root(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
 ):
     await insert_sample_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
@@ -146,19 +156,24 @@ async def test_get_path_options_by_root(
 
 @pytest.mark.anyio
 async def test_get_resource_coverage_data(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
 ):
     inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents", "precomputed"
+        "texts", "locations", "resources", "contents"
     )
     resource_id = inserted_ids["resources"][0]
+
+    # get coverage data
     resp = await test_client.get(
         f"/resources/{resource_id}/coverage",
     )
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
 
-    # invalid location data
+    # use invalid resource ID
     resp = await test_client.get(
         f"/resources/{wrong_id}/coverage",
     )
@@ -167,7 +182,11 @@ async def test_get_resource_coverage_data(
 
 @pytest.mark.anyio
 async def test_get_nearest_content_position(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id, login
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
+    login,
 ):
     inserted_ids = await insert_sample_data(
         "texts", "locations", "resources", "contents"
