@@ -4669,9 +4669,7 @@
               "enum": [
                 "json",
                 "tekst-json",
-                "csv",
-                "txt",
-                "html"
+                "csv"
               ],
               "type": "string",
               "description": "Export format",

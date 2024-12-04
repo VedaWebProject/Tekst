@@ -8592,7 +8592,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Export format */
-        format?: 'json' | 'tekst-json' | 'csv' | 'txt' | 'html';
+        format?: 'json' | 'tekst-json' | 'csv';
         /** @description ID of the location to start the export's location range from */
         from?: string | null;
         /** @description ID of the location to end the export's location range at */
