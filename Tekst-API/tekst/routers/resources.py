@@ -1025,6 +1025,11 @@ async def _export_resource_contents_task(
     "/{id}/export",
     response_model=tasks.TaskRead,
     status_code=status.HTTP_202_ACCEPTED,
+    responses=errors.responses(
+        [
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
 )
 async def export_resource_contents(
     user: OptionalUserDep,
@@ -1059,6 +1064,10 @@ async def export_resource_contents(
         ),
     ] = None,
 ) -> tasks.TaskDocument:
+    # allow export format "tekst-json" only for logged-in users
+    if not user and export_format == "tekst-json":
+        raise errors.E_403_FORBIDDEN
+    # create and return background task
     return await tasks.create_task(
         _export_resource_contents_task,
         tasks.TaskType.RESOURCE_EXPORT,
