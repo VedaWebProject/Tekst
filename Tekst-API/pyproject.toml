@@ -40,7 +40,7 @@ coverage = {extras = ["toml"], version = "^7.2"}
 requests = "^2.31.0"
 colorlog = "^6.7.0"
 pytest-dotenv = "^0.5.2"
-httpx = "^0.27.0"
+httpx = "^0.28.0"
 asgi-lifespan = "^2.1.0"
 ruff = "^0.8.0"
 pytest-env = "^1.1.1"
