@@ -105,7 +105,7 @@ class PlainText(ResourceTypeABC):
     ) -> None:
         if export_format == "csv":
             await cls._export_csv(resource, contents, file_path)
-        else:
+        else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
                 f"for resource type '{cls.get_key()}'"
