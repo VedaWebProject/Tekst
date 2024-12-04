@@ -5,9 +5,16 @@ from tekst.setup import app_setup
 
 
 @pytest.mark.anyio
-async def test_setup_tabula_rasa(config):
+async def test_setup_tabula_rasa(
+    config,
+    get_db_client_override,
+):
+    # drop "precomputed" collection to force setup to regenerate precomputed data
+    await get_db_client_override[config.db.name].drop_collection("precomputed")
+    # run app setup – will insert sample data, run resource maintenance hooks, ...
     await app_setup()
-    await app_setup()  # 2nd time to test setup attempt on already set-up instance DB
+    # 2nd time to test setup attempt on already set-up instance DB
+    await app_setup()
 
 
 @pytest.mark.anyio
