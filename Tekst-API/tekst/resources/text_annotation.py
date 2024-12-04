@@ -135,16 +135,7 @@ class TextAnnotation(ResourceTypeABC):
         annos_es_q = []
 
         # process token query
-        if (not token_usr_q or not token_usr_q.strip("* ")) and not annos_usr_q:
-            # handle empty/match-all query (query for existing target resource field)
-            token_es_q.append(
-                {
-                    "exists": {
-                        "field": f"resources.{res_id}.tokens.token",
-                    }
-                }
-            )
-        elif token_usr_q:
+        if token_usr_q and token_usr_q.strip("* "):
             # handle actual token query with content
             token_es_q.append(
                 {
@@ -531,7 +522,7 @@ class TextAnnotationResource(ResourceBase):
         op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
         try:
             await self._update_aggregations()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             log_op_end(op_id, failed=True)
             raise e
         log_op_end(op_id)
