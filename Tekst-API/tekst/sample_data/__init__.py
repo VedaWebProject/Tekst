@@ -16,7 +16,12 @@ async def insert_sample_data() -> bool:
     log.info("Inserting sample data...")
 
     # define target collections
-    target_collections = ("texts", "locations", "resources", "contents", "precomputed")
+    target_collections = (
+        "texts",
+        "locations",
+        "resources",
+        "contents",
+    )
     if _cfg.dev_mode:
         target_collections += ("users", "state")
 

@@ -310,16 +310,6 @@
     "text": "with the rifle. :|"
   },
   {
-    "_id": { "$oid": "664717e2ba9e65342c8e494b" },
-    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-    "resource_type": "plainText",
-    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-    "comment": null,
-    "notes": null,
-    "text": "His big, long shotgun"
-  },
-  {
     "_id": { "$oid": "664717e9ba9e65342c8e494d" },
     "_class_id": "ContentBaseDocument.PlainTextContentDocument",
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },

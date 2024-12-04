@@ -140,7 +140,6 @@ async def insert_sample_data(
         collections = collections or [
             "contents",
             "locations",
-            "precomputed",
             "resources",
             "state",
             "texts",
