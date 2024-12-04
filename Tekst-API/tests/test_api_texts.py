@@ -176,13 +176,22 @@ async def test_download_structure_template(
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_sample_data("texts")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
     await login(is_superuser=True)
 
-    # download template
+    # download template without existing locations
+    resp = await test_client.get(
+        f"/texts/{text_id}/template",
+    )
+    assert status_assertion(200, resp)
+
+    # insert sample locations
+    await insert_sample_data("locations")
+
+    # download template with existing locations
     resp = await test_client.get(
         f"/texts/{text_id}/template",
     )
