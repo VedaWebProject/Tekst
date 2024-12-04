@@ -225,7 +225,7 @@ class AdvancedSearchRequestBody(ModelBase):
             description="Search type",
         ),
     ] = "advanced"
-    query: Annotated[
+    queries: Annotated[
         list[ResourceSearchQuery],
         Field(
             alias="q",

@@ -63,7 +63,7 @@ async def perform_search(
     elif body.search_type == "advanced":
         return await search.search_advanced(
             user=user,
-            queries=body.query,
+            queries=body.queries,
             settings_general=body.settings_general,
             settings_advanced=body.settings_advanced,
         )
