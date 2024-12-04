@@ -490,11 +490,15 @@ async def search_advanced(
     sub_queries_should = []
     sub_queries_must_not = []
     highlights_generators = {}
+
+    # for each query block in the advanced search request...
     for q in queries:
         if str(q.common.resource_id) not in target_resources:
             continue
         res_type = resource_types_mgr.get(q.resource_type_specific.resource_type)
         txt_id = str(target_resources[str(q.common.resource_id)].text_id)
+
+        # construct resource type-specific query
         res_es_query = {
             "bool": {
                 "must": [
@@ -508,9 +512,11 @@ async def search_advanced(
                 ]
             }
         }
+
         # collect highlights generators for custom, resource-type-specific highlighting
         if (hl_gen := res_type.highlights_generator()) is not None:
             highlights_generators[str(q.common.resource_id)] = hl_gen
+
         # add individual sub-queries to the root query based on the selected occurrence
         if q.common.occurrence == "must":
             sub_queries_must.append(res_es_query)

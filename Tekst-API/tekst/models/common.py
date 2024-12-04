@@ -53,7 +53,7 @@ class ExcludeFromModelVariants:
 
 
 # These FieldInfo instances are to be used as type annotation metadata for fields
-# that should be marked as optional in hte JSON schema. By default, any field
+# that should be marked as optional in the JSON schema. By default, any field
 # with a default value is "optional", but the generator we use to generate the
 # TypeScript types for the client is configured to transform fields with default
 # values as required to make working with response models easier. In turn, we have to

@@ -757,7 +757,7 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "comment": null,
+    "comment": "This is the only occurrence of the entity \"Mouse\"!",
     "notes": null,
     "tokens": [
       { "token": "mit", "annotations": [], "lb": false },

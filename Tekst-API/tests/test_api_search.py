@@ -281,7 +281,7 @@ async def test_advanced_text_annotation(
     use_indices,
     status_assertion,
 ):
-    # token empty
+    # token empty, nothing else (finds everything)
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -290,6 +290,7 @@ async def test_advanced_text_annotation(
                 "q": [
                     {
                         "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        # this counts as "empty"
                         "rts": {"type": "textAnnotation", "token": "    *        "},
                     }
                 ],
@@ -303,7 +304,37 @@ async def test_advanced_text_annotation(
         ),
         status_assertion,
         200,
-        expected_hits=12,
+        expected_hits=16,
+    )
+
+    # search for location comment
+    # (to test custom highlights generator of text annotation resource type)
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {
+                            "res": "6656cc7b81a66322c1bffb24",
+                            "occ": "should",
+                            "cmt": "m*",
+                        },
+                        "rts": {"type": "textAnnotation", "anno": []},
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
     )
 
     # token only
@@ -410,6 +441,40 @@ async def test_advanced_text_annotation(
         status_assertion,
         200,
         expected_hits=7,
+    )
+
+    # special "comment" annotation
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [
+                                {
+                                    "k": "comment",
+                                    "v": "thi*",
+                                    "wc": True,
+                                }
+                            ],
+                        },
+                    }
+                ],
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": False,
+                },
+                "adv": {},
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
     )
 
     # annotation key and value with wildcard
@@ -585,7 +650,7 @@ async def test_advanced_plain_text(
                 "q": [
                     {
                         "cmn": {
-                            "res": "654b825533ee5737b297f8f3",
+                            "res": "66471b68ba9e65342c8e495b",
                             "occ": "should",
                             "cmt": "s*",
                         },
@@ -602,7 +667,7 @@ async def test_advanced_plain_text(
         ),
         status_assertion,
         200,
-        expected_hits=0,
+        expected_hits=1,
     )
 
 
