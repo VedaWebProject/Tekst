@@ -25,18 +25,8 @@ const allFormatOptions: { label: string; value: ResourceExportFormat; [key: stri
     restricted: true,
   },
   {
-    label: 'HTML',
-    value: 'html',
-    restricted: false,
-  },
-  {
     label: 'CSV',
     value: 'csv',
-    restricted: false,
-  },
-  {
-    label: 'Plain text',
-    value: 'txt',
     restricted: false,
   },
 ];
