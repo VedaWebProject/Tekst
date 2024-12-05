@@ -6540,15 +6540,6 @@ export interface operations {
         };
         content?: never;
       };
-      /** @description Forbidden */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
       /** @description Not Found */
       404: {
         headers: {
@@ -8614,6 +8605,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TaskRead'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */
