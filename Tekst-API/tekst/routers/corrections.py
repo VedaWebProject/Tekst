@@ -138,7 +138,6 @@ async def get_corrections(
     responses=errors.responses(
         [
             errors.E_404_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -149,14 +148,16 @@ async def delete_correction(
     """Deletes a specific correction note"""
     # get correction
     correction_doc = await CorrectionDocument.get(correction_id)
+    # check if correction exists
     if not correction_doc:
         raise errors.E_404_NOT_FOUND
-    # check if the requested resource is owned by this user
-    resource_doc = await ResourceBaseDocument.get(
-        correction_doc.resource_id,
+    # check if the requested resource is writable by this user
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == correction_doc.resource_id,
+        await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     )
-    if not resource_doc or (user.id != resource_doc.owner_id and not user.is_superuser):
-        raise errors.E_403_FORBIDDEN
+    if not resource_doc:
+        raise errors.E_404_NOT_FOUND
     # delete correction
     await correction_doc.delete()

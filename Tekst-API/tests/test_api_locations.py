@@ -9,6 +9,7 @@ async def test_create_location(
     insert_sample_data,
     status_assertion,
     login,
+    wrong_id,
 ):
     text_id = (await insert_sample_data("texts"))["texts"][0]
     locations = [
@@ -32,6 +33,19 @@ async def test_create_location(
             "textId": text_id,
             "label": "Invalid Location",
             "level": 4,
+            "position": 0,
+        },
+    )
+    assert status_assertion(400, resp)
+
+    # invalid parent ID
+    resp = await test_client.post(
+        "/locations",
+        json={
+            "textId": text_id,
+            "parentId": wrong_id,
+            "label": "Invalid Location",
+            "level": 1,
             "position": 0,
         },
     )
@@ -263,6 +277,73 @@ async def test_get_locations(
 
 
 @pytest.mark.anyio
+async def test_find_locations_by_alias(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+):
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    resp = await test_client.get(
+        "/locations/by-alias",
+        params={
+            "txt": text_id,
+            "alias": "1.1.2",
+        },
+    )
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+
+
+@pytest.mark.anyio
+async def test_get_first_and_last_locations_paths(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
+):
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+
+    # find first and last locations
+    resp = await test_client.get(
+        "/locations/first-last-paths",
+        params={
+            "txt": text_id,
+            "lvl": 2,
+        },
+    )
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 2
+    assert len(resp.json()[0]) == 3
+    assert len(resp.json()[1]) == 3
+    first_loc = resp.json()[0][-1]
+    last_loc = resp.json()[1][-1]
+    assert first_loc["position"] == 0
+    assert last_loc["position"] > first_loc["position"]
+
+    # fail because of wrong text ID
+    resp = await test_client.get(
+        "/locations/first-last-paths",
+        params={
+            "txt": wrong_id,
+            "lvl": 2,
+        },
+    )
+    assert status_assertion(404, resp)
+
+    # fail because of invalid level
+    resp = await test_client.get(
+        "/locations/first-last-paths",
+        params={
+            "txt": text_id,
+            "lvl": 9,
+        },
+    )
+    assert status_assertion(404, resp)
+
+
+@pytest.mark.anyio
 async def test_update_location(
     test_client: AsyncClient,
     insert_sample_data,
@@ -273,7 +354,10 @@ async def test_update_location(
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
 
     # get location from db
-    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 1})
+    resp = await test_client.get(
+        "/locations",
+        params={"txt": text_id, "lvl": 1},
+    )
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
@@ -303,7 +387,10 @@ async def test_update_location(
 
     # update invalid location
     location_update = {"label": "Brand new label"}
-    resp = await test_client.patch(f"/locations/{wrong_id}", json=location_update)
+    resp = await test_client.patch(
+        f"/locations/{wrong_id}",
+        json=location_update,
+    )
     assert status_assertion(404, resp)
 
 
@@ -319,7 +406,8 @@ async def test_delete_location(
 
     # get location from db
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 0, "pos": 0}
+        "/locations",
+        params={"txt": text_id, "lvl": 0, "pos": 0},
     )
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
@@ -330,7 +418,10 @@ async def test_delete_location(
     await login(is_superuser=True)
 
     # get existing resource
-    resp = await test_client.get("/resources", params={"txt": text_id})
+    resp = await test_client.get(
+        "/resources",
+        params={"txt": text_id},
+    )
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0

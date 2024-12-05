@@ -131,7 +131,6 @@ class DocumentBase(Document):
     ):
         """
         Custom method to apply updates to the document, excluding any fields that are
-        - in the `exclude` set
         - not set in `updates_model`
         - equal to the default value of the respective field in `updates_model`
         """
@@ -145,6 +144,7 @@ class DocumentBase(Document):
                 None, self.model_fields[field].annotation
             ):
                 continue
+            # set attribute
             setattr(self, field, getattr(updates_model, field))
 
         if replace:

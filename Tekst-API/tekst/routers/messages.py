@@ -224,7 +224,8 @@ async def delete_thread(
     thread_id = (
         thread_id if thread_id != "system" else None
     )  # system threads don't have a thread (sender) ID
-    for msg in await UserMessageDocument.find(
+
+    messages = await UserMessageDocument.find(
         Or(
             And(
                 Eq(
@@ -238,11 +239,12 @@ async def delete_thread(
                 Eq(UserMessageDocument.recipient, thread_id),
             ),
         )
-    ).to_list():
-        # check if message(s) exist(s)
-        if not msg:
-            raise errors.E_404_NOT_FOUND
+    ).to_list()
 
+    if not messages:
+        raise errors.E_404_NOT_FOUND
+
+    for msg in messages:
         # mark message as deleted or actually
         # delete it depending on current deletion status
         if not msg.sender or (msg.deleted and msg.deleted != user.id):

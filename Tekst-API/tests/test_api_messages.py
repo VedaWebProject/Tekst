@@ -4,7 +4,7 @@ from httpx import AsyncClient
 
 
 @pytest.mark.anyio
-async def test_send_receive_messages(
+async def test_messages_crud(
     test_client: AsyncClient,
     status_assertion,
     insert_sample_data,

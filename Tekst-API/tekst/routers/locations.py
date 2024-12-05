@@ -46,7 +46,10 @@ router = APIRouter(
         ]
     ),
 )
-async def create_location(su: SuperuserDep, location: LocationCreate) -> LocationRead:
+async def create_location(
+    su: SuperuserDep,
+    location: LocationCreate,
+) -> LocationRead:
     """
     Creates a new location. The position will be automatically set to the last position
     of the location's parent (or the first parent before that has children).
