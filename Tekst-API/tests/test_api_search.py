@@ -29,6 +29,7 @@ async def test_admin_create_search_index(
     await insert_sample_data()
     await login(is_superuser=True)
     resp = await test_client.get("/search/index/create")
+    assert status_assertion(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
     resp = await test_client.get("/search/index/info")

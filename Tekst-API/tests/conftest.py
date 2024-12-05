@@ -242,7 +242,10 @@ async def login(
     logout,
     register_test_user,
 ) -> Callable:
-    async def _login(*, user: dict | None = None, **kwargs) -> dict:
+    async def _login(
+        user: dict | None = None,
+        **kwargs,
+    ) -> dict:
         await logout()
         if not user:
             user = await register_test_user(**kwargs)

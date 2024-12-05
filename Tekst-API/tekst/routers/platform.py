@@ -256,7 +256,9 @@ async def get_statistics(su: SuperuserDep) -> PlatformStats:
         ]
     ),
 )
-async def get_all_tasks_status(su: SuperuserDep) -> list[tasks.TaskDocument]:
+async def get_all_tasks_status(
+    su: SuperuserDep,
+) -> list[tasks.TaskDocument]:
     return await tasks.get_tasks(su, get_all=True)
 
 
@@ -312,7 +314,6 @@ async def download_task_artifact(
     ],
 ) -> FileResponse:
     try:
-        print(pickup_key)
         task: tasks.TaskDocument = (
             await tasks.get_tasks(None, pickup_keys=[pickup_key])
         )[0]
@@ -327,7 +328,7 @@ async def download_task_artifact(
         or not task.result.get("filename")
         or not task.result.get("artifact")
         or not task.result.get("mimetype")
-    ):
+    ):  # pragma: no cover
         raise errors.E_404_EXPORT_NOT_FOUND
 
     filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
