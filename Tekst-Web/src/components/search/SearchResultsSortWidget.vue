@@ -26,7 +26,7 @@ const showDot = computed(() => !!model.value && model.value !== 'relevance');
 </script>
 
 <template>
-  <n-popselect v-model:value="model" :options="sortingPresetOptions">
+  <n-popselect v-model:value="model" :options="sortingPresetOptions" :disabled="disabled">
     <n-badge :show="showDot" :offset="[-1, 4]" dot>
       <n-button secondary :focusable="false" :size="size" :disabled="disabled">
         <template #icon>
