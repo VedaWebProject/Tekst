@@ -3,6 +3,7 @@ import json
 import pytest
 
 from beanie import PydanticObjectId
+from beanie.operators import Set
 from httpx import AsyncClient
 from tekst.models.resource import ResourceBaseDocument
 
@@ -835,7 +836,7 @@ async def test_get_resource_template(
 
 
 @pytest.mark.anyio
-async def test_import_resource_data(
+async def test_import_resource_contents(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data_path,
@@ -880,10 +881,88 @@ async def test_import_resource_data(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
+    # fail to upload with wrong mime type
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", sample_data_string, "text/plain")},
+    )
+    assert status_assertion(400, resp)
+
     # fail to upload resource data file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
+
+    # fail to upload w/ invalid location ID
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": (
+                "foo.json",
+                json.dumps(
+                    {
+                        "contents": [
+                            {"locationId": "654ba282ec7833e469dde766", "text": "FOO"},
+                            {"locationId": wrong_id, "text": "BAR"},
+                            {"locationId": additional_location_id, "text": "BAZ"},
+                        ],
+                        "resourceId": resource_id,
+                    }
+                ),
+                "application/json",
+            )
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
+
+    # fail to upload w/ invalid content object
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": (
+                "foo.json",
+                json.dumps(
+                    {
+                        "contents": [
+                            {"locationId": "654ba282ec7833e469dde766", "text": 1},
+                            {"locationId": "654ba288ec7833e469dde768", "text": True},
+                            {
+                                "locationId": additional_location_id,
+                                "text": ["foo", "bar"],
+                            },
+                        ],
+                        "resourceId": resource_id,
+                    }
+                ),
+                "application/json",
+            )
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
+
+    # fail to upload w/ invalid contents prop type
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": (
+                "foo.json",
+                json.dumps(
+                    {
+                        "contents": {"foo": "bar"},
+                        "resourceId": resource_id,
+                    }
+                ),
+                "application/json",
+            )
+        },
     )
     assert status_assertion(202, resp)
     assert "id" in resp.json()
@@ -937,12 +1016,14 @@ async def test_import_resource_data(
 
 
 @pytest.mark.anyio
-async def test_content_exports(
+async def test_export_content(
     test_client: AsyncClient,
     insert_sample_data,
     status_assertion,
     login,
+    logout,
     wait_for_task_success,
+    wrong_id,
 ):
     await insert_sample_data()
     await login()
@@ -999,3 +1080,159 @@ async def test_content_exports(
             assert status_assertion(202, resp)
             assert "id" in resp.json()
             assert await wait_for_task_success(resp.json()["id"])
+
+    # log out for the next tests
+    await logout()
+
+    # fail to export w/ wrong resource ID
+    resp = await test_client.get(
+        f"/resources/{wrong_id}/export",
+        params={
+            "format": "csv",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
+
+    # fail to export tekst-json as non-user
+    resp = await test_client.get(
+        "/resources/66471b68ba9e65342c8e495b/export",
+        params={
+            "format": "tekst-json",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(403, resp)
+
+    # fail to export w/ invalid location range
+    resp = await test_client.get(
+        "/resources/66471b68ba9e65342c8e495b/export",
+        params={
+            "format": "csv",
+            "from": "654b825533ee5737b297f8e5",  # this location is on level 2
+            "to": "654b825533ee5737b297f8e4",  # this location is on level 1
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert not await wait_for_task_success(resp.json()["id"])
+
+    # fail to export without read permissions...
+    # set public = False on resource
+    await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == "66471b68ba9e65342c8e495b",
+        with_children=True,
+    ).update(Set({ResourceBaseDocument.public: False}))
+    # request export
+    resp = await test_client.get(
+        "/resources/66471b68ba9e65342c8e495b/export",
+        params={
+            "format": "csv",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(404, resp)
+
+
+@pytest.mark.anyio
+async def test_trigger_maintenance(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wait_for_task_success,
+):
+    await insert_sample_data("texts", "locations", "resources")
+    await login(is_superuser=True)
+
+    resp = await test_client.get("/resources/maintenance")
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+
+@pytest.mark.anyio
+async def test_get_aggregations(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wait_for_task_success,
+    wrong_id,
+):
+    await insert_sample_data()
+    await login(is_superuser=True)
+
+    # fail to get aggregations (none yet, expect empty array)
+    res_id = "6656cc7b81a66322c1bffb24"
+    resp = await test_client.get(f"/resources/{res_id}/aggregations")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+    # run resource maintenance to generate aggregations
+    resp = await test_client.get("/resources/maintenance")
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # get aggregations
+    res_id = "6656cc7b81a66322c1bffb24"
+    resp = await test_client.get(f"/resources/{res_id}/aggregations")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 1
+
+    # fail to get aggregations for wrong resource ID
+    resp = await test_client.get(f"/resources/{wrong_id}/aggregations")
+    assert status_assertion(404, resp)
+
+    # fail to get aggregations for non-annotation resource
+    res_id = "66471de0ba9e65342c8e4995"
+    resp = await test_client.get(f"/resources/{res_id}/aggregations")
+    assert status_assertion(400, resp)
+
+
+@pytest.mark.anyio
+async def test_get_resource_coverage_data(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    wrong_id,
+    login,
+    wait_for_task_success,
+):
+    inserted_ids = await insert_sample_data()
+    resource_id = inserted_ids["resources"][0]
+
+    # get coverage data (none yet)
+    resp = await test_client.get(
+        f"/resources/{resource_id}/coverage",
+    )
+    assert status_assertion(404, resp)
+
+    # run resource maintenance to generate coverage data
+    await login(is_superuser=True)
+    resp = await test_client.get("/resources/maintenance")
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # get coverage data
+    resp = await test_client.get(
+        f"/resources/{resource_id}/coverage",
+    )
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["ranges"]) > 0
+
+    # fail w/ invalid resource ID
+    resp = await test_client.get(
+        f"/resources/{wrong_id}/coverage",
+    )
+    assert status_assertion(404, resp)

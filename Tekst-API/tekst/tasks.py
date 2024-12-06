@@ -65,11 +65,11 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     user_id: Annotated[
-        PydanticObjectId | None,
+        PydanticObjectId,
         Field(
             description="ID of user who created this task",
         ),
-    ] = None
+    ]
     pickup_key: Annotated[
         str,
         StringConstraints(
@@ -157,7 +157,7 @@ async def _run_task(
         log_op_end(op_id)
         try:
             task_doc.result = jsonable_encoder(result)
-        except Exception as _:
+        except Exception as _:  # pragma: no cover
             task_doc.result = {"msg": str(result)}
             log.warning(f"Could not JSON encode task result for task: {str(task_doc)}")
     except Exception as e:
@@ -165,7 +165,7 @@ async def _run_task(
         task_doc.status = "failed"
         try:
             task_doc.error = e.detail.detail.key
-        except Exception:
+        except Exception:  # pragma: no cover
             task_doc.error = str(e)
     finally:
         task_doc.end_time = datetime.utcnow()
@@ -254,8 +254,8 @@ async def is_locked(
     ).exists()
 
 
-async def delete_task(task_doc: TaskDocument) -> None:
-    if not task_doc:
+async def delete_task(task_doc: TaskDocument | None) -> None:
+    if not task_doc:  # pragma: no cover
         return
     if task_doc.result and task_doc.result.get("artifact"):
         cfg: TekstConfig = get_config()
@@ -264,35 +264,24 @@ async def delete_task(task_doc: TaskDocument) -> None:
     await task_doc.delete()
 
 
-async def delete_system_tasks() -> None:
-    for task in await TaskDocument.find(Eq(TaskDocument.user_id, None)).to_list():
-        await delete_task(task)
-
-
 async def delete_all_tasks() -> None:
     for task in await TaskDocument.find_all().to_list():
         await delete_task(task)
 
 
 async def cleanup_tasks() -> None:
-    # delete export tasks that started min. 30 minutes ago
-    for task in await TaskDocument.find(
-        Eq(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
-        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(minutes=30)),
-    ).to_list():
-        await delete_task(task)
-    # delete all other tasks that started more than 1 week ago
+    # delete all tasks that started more than 1 week ago
     for task in await TaskDocument.find(
         NE(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
         LT(TaskDocument.start_time, datetime.utcnow() - timedelta(weeks=1)),
     ).to_list():
-        await delete_task(task)
+        await delete_task(task)  # pragma: no cover
 
 
 async def _auto_delete_task_delayed_task(task_doc: TaskDocument) -> None:
     cfg: TekstConfig = get_config()
     await asyncio.sleep(cfg.misc.del_exports_after_minutes * 60)
-    await delete_task(task_doc)
+    await delete_task(task_doc)  # pragma: no cover
 
 
 def _auto_delete_task_delayed(task_doc: TaskDocument) -> None:

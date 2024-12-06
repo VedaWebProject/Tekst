@@ -230,7 +230,7 @@ async def get_public_user(
     ),
 )
 async def find_public_users(
-    su: UserDep,
+    u: UserDep,
     query: Annotated[
         str,
         val.CleanupOneline,

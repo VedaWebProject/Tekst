@@ -23,8 +23,39 @@ async def test_get_user_tasks(
     test_client: AsyncClient,
     status_assertion,
     login,
+    wait_for_task_success,
 ):
     await login()
+
+    # get user tasks (none yet)
+    resp = await test_client.get("/platform/tasks/user")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+    # request resource export
+    resp = await test_client.get(
+        "/resources/66471b68ba9e65342c8e495b/export",
+        params={
+            "format": "csv",
+            "from": "654b825533ee5737b297f8e5",
+            "to": "654b825533ee5737b297f8f2",
+        },
+    )
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    task_id = resp.json()["id"]
+
+    # wait for task to finish (to make sure it's "done" before requesting tasks again)
+    wait_for_task_success(task_id)
+
+    # get user tasks (one now, requesting it deletes the "done" task)
+    resp = await test_client.get("/platform/tasks/user")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+
+    # get user tasks (no tasks anymore)
     resp = await test_client.get("/platform/tasks/user")
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
@@ -116,14 +147,8 @@ async def test_delete_tasks(
     assert len(resp.json()) == 1
     assert resp.json()[0]["status"] == "done"
 
-    # delete all system tasks
-    resp = await test_client.delete("/platform/tasks/system")
-    assert status_assertion(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 1  # still 1 because it's not a system task
-
     # delete all tasks
-    resp = await test_client.delete("/platform/tasks/all")
+    resp = await test_client.delete("/platform/tasks")
     assert status_assertion(204, resp)
 
     # get all tasks
@@ -131,3 +156,46 @@ async def test_delete_tasks(
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
+
+    # start index creation task (to have a task to work with)
+    resp = await test_client.get("/search/index/create")
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # get all tasks
+    resp = await test_client.get("/platform/tasks")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+
+    # delete specific task
+    resp = await test_client.delete(f"/platform/tasks/{resp.json()[0]['id']}")
+    assert status_assertion(204, resp)
+
+    # get all tasks
+    resp = await test_client.get("/platform/tasks")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+
+@pytest.mark.anyio
+async def test_tasks_locking(
+    config,
+    test_client: AsyncClient,
+    status_assertion,
+    insert_sample_data,
+    login,
+    wait_for_task_success,
+):
+    await insert_sample_data()
+    await login(is_superuser=True)
+    resp1 = await test_client.get("/search/index/create")
+    resp2 = await test_client.get("/search/index/create")
+    assert status_assertion(202, resp1)
+    assert status_assertion(202, resp2)
+    assert "id" in resp1.json()
+    assert "id" in resp2.json()
+    assert await wait_for_task_success(resp1.json()["id"])
+    assert not await wait_for_task_success(resp2.json()["id"])

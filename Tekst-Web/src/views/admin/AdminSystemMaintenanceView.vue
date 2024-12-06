@@ -64,19 +64,9 @@ async function deleteTask(id: string) {
   tasksLoading.value = false;
 }
 
-async function deleteSystemTasks() {
-  tasksLoading.value = true;
-  const { data, error } = await DELETE('/platform/tasks/system');
-  if (!error) {
-    message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
-    allTasks.value = data;
-  }
-  tasksLoading.value = false;
-}
-
 async function deleteAllTasks() {
   tasksLoading.value = true;
-  const { error } = await DELETE('/platform/tasks/all');
+  const { error } = await DELETE('/platform/tasks');
   if (!error) {
     message.success($t('admin.system.maintenance.tasks.actionDeleteAllSuccess'));
     allTasks.value = [];
@@ -243,17 +233,6 @@ onBeforeMount(() => {
               <n-icon :component="RefreshIcon" />
             </template>
             {{ $t('general.refreshAction') }}
-          </n-button>
-          <n-button
-            secondary
-            :disabled="tasksLoading"
-            :loading="tasksLoading"
-            @click="deleteSystemTasks"
-          >
-            <template #icon>
-              <n-icon :component="DeleteIcon" />
-            </template>
-            {{ $t('admin.system.maintenance.tasks.actionDeleteSystem') }}
           </n-button>
           <n-button
             secondary

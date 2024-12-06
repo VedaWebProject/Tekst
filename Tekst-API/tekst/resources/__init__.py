@@ -197,6 +197,13 @@ class ResourceTypeABC(ABC):
         return [
             *es_queries,
             *cls.rtype_es_queries(query=query, strict=strict),
+            # ensure we only find locations that
+            # the target resource potentially has data for
+            {
+                "exists": {
+                    "field": f"resources.{str(query.common.resource_id)}",
+                }
+            },
         ]
 
     @classmethod

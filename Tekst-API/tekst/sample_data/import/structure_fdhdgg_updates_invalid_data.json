@@ -1,0 +1,12 @@
+[
+  {
+    "id": "654b825533ee5737b297f8e5",
+    "label": "Oans",
+    "aliases": 4
+  },
+  {
+    "id": "654b825533ee5737b297f8e6",
+    "label": false,
+    "aliases": ["zwoa", "1.1.2", "1,1,2"]
+  }
+]

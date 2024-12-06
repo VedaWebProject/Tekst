@@ -545,7 +545,8 @@ export interface paths {
     get: operations['getAllTasksStatus'];
     put?: never;
     post?: never;
-    delete?: never;
+    /** Delete all tasks */
+    delete: operations['deleteAllTasks'];
     options?: never;
     head?: never;
     patch?: never;
@@ -580,40 +581,6 @@ export interface paths {
     put?: never;
     post?: never;
     delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/platform/tasks/system': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    /** Delete system tasks */
-    delete: operations['deleteSystemTasks'];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/platform/tasks/all': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    /** Delete all tasks */
-    delete: operations['deleteAllTasks'];
     options?: never;
     head?: never;
     patch?: never;
@@ -4767,8 +4734,9 @@ export interface components {
       /**
        * Userid
        * @description ID of user who created this task
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      userId?: string | null;
+      userId: string;
       /**
        * Pickupkey
        * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user
@@ -7556,6 +7524,42 @@ export interface operations {
       };
     };
   };
+  deleteAllTasks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
   getUserTasksStatus: {
     parameters: {
       query?: never;
@@ -7634,80 +7638,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  deleteSystemTasks: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TaskRead'][];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
-  deleteAllTasks: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
     };

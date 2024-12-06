@@ -275,18 +275,27 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
         try:
             doc_id = PydanticObjectId(loc["id"])
         except Exception:
-            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+            raise errors.update_values(
+                exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
+                values={"errors": f"Location ID {loc['id']} is not a valid ID"},
+            )
         loc_doc = await LocationDocument.get(doc_id)
         if not loc_doc:
-            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+            raise errors.update_values(
+                exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
+                values={"errors": f"Location with ID {loc['id']} does not exist"},
+            )
 
         # check if this location belongs to the same text as the last one
         all_locs_same_text = all_locs_same_text and (
             loc_doc.text_id == last_text_id or last_text_id is None
         )
-        last_text_id = loc_doc.text_id
         if not all_locs_same_text:
-            raise errors.E_422_UPLOAD_INVALID_DATA
+            raise errors.update_values(
+                exc=errors.E_422_UPLOAD_INVALID_DATA,
+                values={"errors": "Updates contain location IDs from different texts"},
+            )
+        last_text_id = loc_doc.text_id
 
         # modify label and aliases according to updates (and nothing else!)
         try:
@@ -296,11 +305,10 @@ async def _update_text_structure_task(location_updates: list[dict]) -> None:
                 loc_doc.aliases = loc["aliases"]
             LocationDocument.model_validate(loc_doc.model_dump())
         except Exception as e:
-            http_err = errors.update_values(
+            raise errors.update_values(
                 exc=errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": str(e)},
             )
-            raise http_err
         updated_docs.append(loc_doc)
 
     # save modified documents
@@ -639,10 +647,10 @@ async def delete_text(
     await text.delete()
 
     # check if deleted text was default text, correct if necessary
-    pf_settings_doc = await get_state()
-    if pf_settings_doc.default_text_id == text_id:
-        pf_settings_doc.default_text_id = (await TextDocument.find_one()).id
-        await pf_settings_doc.replace()
+    pf_state_doc = await get_state()
+    if pf_state_doc.default_text_id == text_id:
+        pf_state_doc.default_text_id = (await TextDocument.find_one()).id
+        await pf_state_doc.replace()
 
 
 @router.get(

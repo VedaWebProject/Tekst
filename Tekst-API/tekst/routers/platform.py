@@ -349,23 +349,7 @@ async def download_task_artifact(
 
 
 @router.delete(
-    "/tasks/system",
-    status_code=status.HTTP_200_OK,
-    response_model=list[tasks.TaskRead],
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-            errors.E_403_FORBIDDEN,
-        ]
-    ),
-)
-async def delete_system_tasks(su: SuperuserDep) -> None:
-    await tasks.delete_system_tasks()
-    return await tasks.get_tasks(su, get_all=True)
-
-
-@router.delete(
-    "/tasks/all",
+    "/tasks",
     status_code=status.HTTP_204_NO_CONTENT,
     responses=errors.responses(
         [

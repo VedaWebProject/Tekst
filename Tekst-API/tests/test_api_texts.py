@@ -169,6 +169,24 @@ async def test_delete_text(
 
 
 @pytest.mark.anyio
+async def test_delete_default_text(
+    test_client: AsyncClient,
+    insert_sample_data,
+    status_assertion,
+    login,
+    wrong_id,
+):
+    await insert_sample_data()
+    await login(is_superuser=True)
+
+    # delete default text
+    resp = await test_client.delete(
+        "/texts/654ba1f3ec7833e469dde765",
+    )
+    assert status_assertion(204, resp)
+
+
+@pytest.mark.anyio
 async def test_download_structure_template(
     test_client: AsyncClient,
     insert_sample_data,
@@ -429,13 +447,57 @@ async def test_update_text_structure(
     await login(is_superuser=True)
     sample_data_path = get_sample_data_path("import/structure_fdhdgg_updates.json")
 
-    # upload invalid locations updates file (give wrong MIME type)
+    # upload w/ wrong MIME type
     with open(sample_data_path, "rb") as f:
         resp = await test_client.patch(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "text/plain")},
         )
         assert status_assertion(400, resp)
+
+    # upload w/ invalid location ID
+    with open(
+        get_sample_data_path("import/structure_fdhdgg_updates_invalid_loc_id.json"),
+        "rb",
+    ) as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(400, resp)
+
+    # upload w/ wrong location ID
+    with open(
+        get_sample_data_path("import/structure_fdhdgg_updates_wrong_loc_id.json"),
+        "rb",
+    ) as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(400, resp)
+
+    # upload w/ location ID from different text
+    with open(
+        get_sample_data_path("import/structure_fdhdgg_updates_alien_loc_id.json"),
+        "rb",
+    ) as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(422, resp)
+
+    # upload w/ invalid label/alias data
+    with open(
+        get_sample_data_path("import/structure_fdhdgg_updates_invalid_data.json"),
+        "rb",
+    ) as f:
+        resp = await test_client.patch(
+            f"/texts/{text_id}/structure",
+            files={"file": (f.name, f, "application/json")},
+        )
+        assert status_assertion(422, resp)
 
     # upload invalid locations updates file (invalid JSON)
     resp = await test_client.patch(

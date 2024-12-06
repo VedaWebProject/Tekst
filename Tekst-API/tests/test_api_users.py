@@ -22,23 +22,23 @@ async def test_admin_get_all_users(
 
 
 @pytest.mark.anyio
-async def test_find_users(
+async def test_find_public_users(
     test_client: AsyncClient,
     status_assertion,
     login,
 ):
-    user = await login(is_superuser=True)
+    u = await login()
 
     # legitimate search
     resp = await test_client.get(
         "/users/public",
-        params={"q": user.get("username")},
+        params={"q": u.get("username")},
     )
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 1
-    assert resp.json()["users"][0]["username"] == user["username"]
+    assert resp.json()["users"][0]["username"] == u["username"]
     assert "id" in resp.json()["users"][0]
     assert "name" in resp.json()["users"][0]
     assert "isVerified" not in resp.json()["users"][0]
@@ -82,6 +82,39 @@ async def test_find_users(
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 0
+
+
+@pytest.mark.anyio
+async def test_get_public_user(
+    test_client: AsyncClient,
+    status_assertion,
+    register_test_user,
+):
+    u = await register_test_user()
+
+    # get by ID
+    resp = await test_client.get(f"/users/public/{u['id']}")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert "username" in resp.json()
+    assert resp.json()["username"] == u["username"]
+    assert "id" in resp.json()
+    assert "name" in resp.json()
+    assert "isVerified" not in resp.json()
+
+    # get by username
+    resp = await test_client.get(f"/users/public/{u['username']}")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert "username" in resp.json()
+    assert resp.json()["username"] == u["username"]
+    assert "id" in resp.json()
+    assert "name" in resp.json()
+    assert "isVerified" not in resp.json()
+
+    # fail to get by non-existent username
+    resp = await test_client.get("/users/public/i_do_not_exist")
+    assert status_assertion(404, resp)
 
 
 @pytest.mark.anyio

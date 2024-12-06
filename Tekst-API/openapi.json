@@ -2876,6 +2876,46 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Delete all tasks",
+        "operationId": "deleteAllTasks",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/tasks/user": {
@@ -3003,101 +3043,6 @@
             }
           }
         }
-      }
-    },
-    "/platform/tasks/system": {
-      "delete": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Delete system tasks",
-        "operationId": "deleteSystemTasks",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/TaskRead"
-                  },
-                  "type": "array",
-                  "title": "Response Delete System Tasks Platform Tasks System Delete"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/platform/tasks/all": {
-      "delete": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Delete all tasks",
-        "operationId": "deleteAllTasks",
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
       }
     },
     "/platform/tasks/{id}": {
@@ -14108,17 +14053,10 @@
             "description": "ID of the target of the task or None if there is no target"
           },
           "userId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Userid",
-            "description": "ID of user who created this task"
+            "description": "ID of user who created this task",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "pickupKey": {
             "type": "string",
@@ -14199,6 +14137,7 @@
         "required": [
           "id",
           "type",
+          "userId",
           "pickupKey",
           "status",
           "startTime"

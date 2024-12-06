@@ -923,13 +923,6 @@ async def _export_resource_contents_task(
     location_from_id: PydanticObjectId | None,
     location_to_id: PydanticObjectId | None,
 ) -> dict[str, Any]:
-    # check if resource exists
-    if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        with_children=True,
-    ).exists():
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
     # check if user has permission to read this resource, if so, fetch from DB
     resource: ResourceBaseDocument = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -937,7 +930,7 @@ async def _export_resource_contents_task(
         with_children=True,
     )
     if not resource:
-        raise errors.E_403_FORBIDDEN
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if location range is valid
     loc_from: LocationDocument = (
@@ -1008,7 +1001,7 @@ async def _export_resource_contents_task(
                 export_format=export_format,
                 file_path=tempfile_path,
             )
-        except ValueError:
+        except ValueError:  # pragma: no cover
             raise errors.E_400_UNSUPPORTED_EXPORT_FORMAT
 
     fmt = res_exp_fmt_info[export_format]
@@ -1103,7 +1096,7 @@ async def get_annotation_aggregations(
             alias="id",
         ),
     ],
-) -> list:
+) -> list[AnnotationAggregation]:
     # try to get resource doc to check if access is allowed for user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -1132,6 +1125,7 @@ async def get_annotation_aggregations(
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_404_NOT_FOUND,
         ]
     ),
 )

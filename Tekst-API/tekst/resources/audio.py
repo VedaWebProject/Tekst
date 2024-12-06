@@ -68,19 +68,10 @@ class Audio(ResourceTypeABC):
         strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
-        strict_suffix = ".strict" if strict else ""
 
-        if not query.resource_type_specific.caption.strip("* "):
-            # handle empty/match-all query (query for existing target field)
-            es_queries.append(
-                {
-                    "exists": {
-                        "field": f"resources.{str(query.common.resource_id)}",
-                    }
-                }
-            )
-        else:
-            # handle actual query with content
+        # add query only if not "empty"
+        if query.resource_type_specific.caption.strip("* "):
+            strict_suffix = ".strict" if strict else ""
             es_queries.append(
                 {
                     "simple_query_string": {

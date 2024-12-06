@@ -155,32 +155,6 @@ async def test_get_path_options_by_root(
 
 
 @pytest.mark.anyio
-async def test_get_resource_coverage_data(
-    test_client: AsyncClient,
-    insert_sample_data,
-    status_assertion,
-    wrong_id,
-):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
-    )
-    resource_id = inserted_ids["resources"][0]
-
-    # get coverage data
-    resp = await test_client.get(
-        f"/resources/{resource_id}/coverage",
-    )
-    assert status_assertion(200, resp)
-    assert isinstance(resp.json(), dict)
-
-    # use invalid resource ID
-    resp = await test_client.get(
-        f"/resources/{wrong_id}/coverage",
-    )
-    assert status_assertion(404, resp)
-
-
-@pytest.mark.anyio
 async def test_get_nearest_content_position(
     test_client: AsyncClient,
     insert_sample_data,

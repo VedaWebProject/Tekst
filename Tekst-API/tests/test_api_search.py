@@ -66,11 +66,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "*",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -86,11 +81,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "jäger",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -146,11 +136,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "mau*",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -166,11 +151,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": '"mit der"',
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -186,11 +166,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": '"you the"~6',
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -206,11 +181,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "maus~",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -226,11 +196,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "mau.*",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": True, "txt": []},
             },
         ),
@@ -246,11 +211,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "s*",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
                 "qck": {"op": "OR", "re": False, "txt": ["654b825533ee5737b297f8e3"]},
             },
         ),
@@ -295,17 +255,11 @@ async def test_advanced_text_annotation(
                         "rts": {"type": "textAnnotation", "token": "    *        "},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
         200,
-        expected_hits=16,
+        expected_hits=12,
     )
 
     # search for location comment
@@ -325,12 +279,6 @@ async def test_advanced_text_annotation(
                         "rts": {"type": "textAnnotation", "anno": []},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -350,12 +298,6 @@ async def test_advanced_text_annotation(
                         "rts": {"type": "textAnnotation", "token": "fuchs"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -375,12 +317,6 @@ async def test_advanced_text_annotation(
                         "rts": {"type": "textAnnotation", "token": "f*", "twc": True},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -403,12 +339,6 @@ async def test_advanced_text_annotation(
                         },
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -431,12 +361,6 @@ async def test_advanced_text_annotation(
                         },
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -465,12 +389,6 @@ async def test_advanced_text_annotation(
                         },
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -493,12 +411,6 @@ async def test_advanced_text_annotation(
                         },
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -522,12 +434,6 @@ async def test_advanced_text_annotation(
                         },
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -542,7 +448,7 @@ async def test_advanced_plain_text(
     use_indices,
     status_assertion,
 ):
-    # text, simple term
+    # text, simple term, optional/should
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -554,17 +460,49 @@ async def test_advanced_plain_text(
                         "rts": {"type": "plainText", "text": "gans"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
         200,
         expected_hits=1,
+    )
+
+    # text, simple term, required/must
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "must"},
+                        "rts": {"type": "plainText", "text": "gans"},
+                    }
+                ],
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=1,
+    )
+
+    # text, simple term, exclude/not
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "not"},
+                        "rts": {"type": "plainText", "text": "gans"},
+                    }
+                ],
+            },
+        ),
+        status_assertion,
+        200,
+        expected_hits=18,
     )
 
     # text with wildcard
@@ -579,12 +517,6 @@ async def test_advanced_plain_text(
                         "rts": {"type": "plainText", "text": "g*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -609,7 +541,6 @@ async def test_advanced_plain_text(
                     "sort": "relevance",
                     "strict": True,
                 },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -634,7 +565,6 @@ async def test_advanced_plain_text(
                     "sort": "relevance",
                     "strict": True,
                 },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -658,12 +588,6 @@ async def test_advanced_plain_text(
                         "rts": {"type": "plainText"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -690,12 +614,6 @@ async def test_advanced_images(
                         "rts": {"type": "images", "caption": "*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -714,12 +632,6 @@ async def test_advanced_images(
                         "rts": {"type": "images", "caption": "musikalisch*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -746,12 +658,6 @@ async def test_advanced_audio(
                         "rts": {"type": "audio", "caption": "*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -771,12 +677,6 @@ async def test_advanced_audio(
                         "rts": {"type": "audio", "caption": "g*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -803,12 +703,6 @@ async def test_advanced_external_references(
                         "rts": {"type": "externalReferences", "text": "*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -828,12 +722,6 @@ async def test_advanced_external_references(
                         "rts": {"type": "externalReferences", "text": "kurzfilm*"},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -860,12 +748,6 @@ async def test_advanced_rich_text(
                         "rts": {"type": "richText", "html": "*   "},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
@@ -885,12 +767,6 @@ async def test_advanced_rich_text(
                         "rts": {"type": "richText", "html": '"c g c g"'},
                     }
                 ],
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": False,
-                },
-                "adv": {},
             },
         ),
         status_assertion,
