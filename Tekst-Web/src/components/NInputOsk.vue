@@ -66,7 +66,14 @@ const fontStyle = computed<CSSProperties>(() => ({
 
 function focusTargetInput() {
   nextTick().then(() => {
-    targetInputRef.value?.focus();
+    targetInputRef.value?.focus(); // focus element
+    // for text inputs and textareas, set selection
+    // (to set caret position at end of input value)
+    const inputEl = targetInputRef.value?.inputElRef || targetInputRef.value?.textareaElRef;
+    if (inputEl) {
+      const pos = targetSelectionRange.value[0] + oskInputResult.value.length;
+      inputEl.setSelectionRange(pos, pos);
+    }
   });
 }
 
@@ -109,15 +116,12 @@ function handleSubmit() {
   const preOskValue = model.value?.substring(0, targetSelectionRange.value[0]) || '';
   const postOskValue = model.value?.substring(targetSelectionRange.value[1]) || '';
   model.value = preOskValue + oskInputResult.value + postOskValue;
-  const newCaretPos = targetSelectionRange.value[0] + oskInputResult.value.length;
+  handleClose();
+}
+
+function handleClose() {
   showOsk.value = false;
-  nextTick().then(() => {
-    targetInputRef.value?.focus();
-    (targetInputRef.value?.inputElRef || targetInputRef.value?.textareaElRef)?.setSelectionRange(
-      newCaretPos,
-      newCaretPos
-    );
-  });
+  focusTargetInput();
 }
 
 function handleInput(input?: string) {
@@ -165,7 +169,14 @@ whenever(Enter, () => {
           (b) make the drawer show up at all
           (which doesn't work when it's inside the n-input tag).
           -->
-          <n-drawer v-model:show="showOsk" placement="bottom" :height="680" style="max-height: 90%">
+          <n-drawer
+            v-model:show="showOsk"
+            placement="bottom"
+            :height="680"
+            style="max-height: 90%"
+            @esc="handleClose"
+            @update:show="focusTargetInput"
+          >
             <n-drawer-content closable>
               <template #header>
                 <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
@@ -287,7 +298,7 @@ whenever(Enter, () => {
                       {{ $t('general.resetAction') }}
                     </n-button>
                   </template>
-                  <n-button secondary :focusable="false" @click="showOsk = false">
+                  <n-button secondary :focusable="false" @click="handleClose">
                     {{ $t('general.cancelAction') }}
                   </n-button>
                   <n-button
