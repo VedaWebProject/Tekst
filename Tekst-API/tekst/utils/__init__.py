@@ -1,3 +1,5 @@
+import hashlib
+
 from collections.abc import Iterator
 from tempfile import TemporaryDirectory
 
@@ -25,3 +27,11 @@ async def get_temp_dir() -> Iterator[str]:
         raise
     finally:
         del dir
+
+
+def hash_args(*args, **kwargs) -> str:
+    return hashlib.sha256(
+        "_".join(
+            [str(arg) for arg in args] + [f"{k}:{v}" for k, v in kwargs.items()]
+        ).encode("utf-8"),
+    ).hexdigest()
