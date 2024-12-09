@@ -6,7 +6,7 @@ import { $t } from '@/i18n';
 import { useResourcesStore, useSearchStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { StorageSerializers, useIntervalFn, useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 
 const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
@@ -31,15 +31,15 @@ export const useAuthStore = defineStore('auth', () => {
   const search = useSearchStore();
   const userMessages = useUserMessagesStore();
 
-  const user = useStorage<UserRead | null>('user', null, undefined, {
-    serializer: StorageSerializers.object,
+  const user = ref<UserRead>();
+  const loggedIn = useStorage<boolean>('loggedIn', false, undefined, {
+    serializer: StorageSerializers.boolean,
   });
-  const loggedIn = computed(() => !!user.value);
 
   const sessionExpiryTsSec = useStorage('sessionExpiryS', Number.MAX_SAFE_INTEGER);
 
   async function loadExistingSession() {
-    if (user.value) {
+    if (loggedIn.value) {
       await _loadUserData();
     }
   }
@@ -62,7 +62,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function _cleanupSession() {
-    user.value = null;
+    user.value = undefined;
+    loggedIn.value = false;
     userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
@@ -139,6 +140,7 @@ export const useAuthStore = defineStore('auth', () => {
         await state.setLocale(userData.locale, false);
       }
       userMessages.startThreadsPolling();
+      loggedIn.value = true;
       // welcome
       if (userData.seen) {
         message.success($t('account.welcome', { name: userData.name }), undefined, 3);
