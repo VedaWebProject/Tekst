@@ -4,7 +4,7 @@ import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHe
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { CommentIcon } from '@/icons';
-import { NButton } from 'naive-ui';
+import { NBadge, NButton } from 'naive-ui';
 import { ref } from 'vue';
 
 defineProps<{
@@ -18,18 +18,19 @@ const showModal = ref(false);
 </script>
 
 <template>
-  <content-container-header-widget
-    v-if="!!resource.contents?.[0]?.comment"
-    :full="full"
-    :title="$t('general.comment')"
-    :icon-component="CommentIcon"
-    @click="
-      () => {
-        showModal = true;
-        emit('done');
-      }
-    "
-  />
+  <n-badge v-if="!!resource.contents?.[0]?.comment" show dot :offset="[-5, 10]">
+    <content-container-header-widget
+      :full="full"
+      :title="$t('general.comment')"
+      :icon-component="CommentIcon"
+      @click="
+        () => {
+          showModal = true;
+          emit('done');
+        }
+      "
+    />
+  </n-badge>
 
   <generic-modal
     v-model:show="showModal"
