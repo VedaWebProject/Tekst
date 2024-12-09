@@ -14,7 +14,7 @@ _cfg: TekstConfig = get_config()
 class StatusEndpointFilter(logging.Filter):
     """Log filter to exclude successful calls to /status endpoint"""
 
-    def filter(self, record):
+    def filter(self, record):  # pragma: no cover
         path = record.args[2].split("?")[0]
         status_code = record.args[4]
         return path != "/status" or status_code != 200
