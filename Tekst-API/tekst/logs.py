@@ -10,6 +10,16 @@ from tekst.config import TekstConfig, get_config
 
 _cfg: TekstConfig = get_config()
 
+
+class StatusEndpointFilter(logging.Filter):
+    """Log filter to exclude successful calls to /status endpoint"""
+
+    def filter(self, record):
+        path = record.args[2].split("?")[0]
+        status_code = record.args[4]
+        return path != "/status" or status_code != 200
+
+
 _FMT_DEFAULT = "%(asctime)s - %(levelprefix)s %(message)s"
 _FMT_DEFAULT_DEV = (
     "%(levelprefix)s %(message)s (%(funcName)s @ %(filename)s:%(lineno)d)"
@@ -20,9 +30,14 @@ _FMT_ACCESS = (
 )
 _FMT_ACCESS_DEV = "%(levelprefix)s %(request_line)s - %(status_code)s"
 
-LOGGING_CONFIG = {
+_LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        "exclude_api_status_endpoint_calls": {
+            "()": StatusEndpointFilter,
+        },
+    },
     "formatters": {
         "default": {
             "()": "uvicorn.logging.DefaultFormatter",
@@ -43,6 +58,7 @@ LOGGING_CONFIG = {
             "formatter": "access",
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
+            "filters": ["exclude_api_status_endpoint_calls"],
         },
     },
     "loggers": {
@@ -94,7 +110,7 @@ _LOG_LEVELS = {
 
 LogLevelString = Literal[tuple(_LOG_LEVELS.keys())]
 
-config.dictConfig(LOGGING_CONFIG)
+config.dictConfig(_LOGGING_CONFIG)
 log = logging.getLogger("tekst")
 
 
