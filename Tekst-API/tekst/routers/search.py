@@ -5,7 +5,7 @@ from pathlib import Path as PathObj
 from typing import Annotated, Any, Union
 from uuid import uuid4
 
-from fastapi import APIRouter, Body, Header, Request, status
+from fastapi import APIRouter, Body, Request, status
 
 from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
@@ -19,7 +19,7 @@ from tekst.models.search import (
 )
 from tekst.models.text import TextDocument
 from tekst.state import get_state
-from tekst.utils import hash_args, pick_translation
+from tekst.utils import client_hash, pick_translation
 
 
 router = APIRouter(
@@ -188,16 +188,14 @@ async def export_search_results(
     ],
     request: Request,
     cfg: ConfigDep,
-    x_forwarded_for: Annotated[
-        str | None,
-        Header(include_in_schema=False),
-    ] = None,
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
         _export_search_results_task,
         tasks.TaskType.SEARCH_EXPORT,
         user_id=user.id if user else None,
-        target_id=user.id if user else hash_args(request.client.host, x_forwarded_for),
+        target_id=user.id
+        if user
+        else client_hash(request, behind_reverse_proxy=cfg.behind_reverse_proxy),
         task_kwargs={
             "user": user,
             "cfg": cfg,

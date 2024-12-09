@@ -11,7 +11,6 @@ from fastapi import (
     APIRouter,
     Body,
     File,
-    Header,
     Path,
     Query,
     Request,
@@ -48,7 +47,7 @@ from tekst.resources import (
 )
 from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.search import set_index_ood
-from tekst.utils import hash_args, pick_translation
+from tekst.utils import client_hash, pick_translation
 
 
 async def preprocess_resource_read(
@@ -1057,10 +1056,6 @@ async def export_resource_contents(
             description="ID of the location to end the export's location range at",
         ),
     ] = None,
-    x_forwarded_for: Annotated[
-        str | None,
-        Header(include_in_schema=False),
-    ] = None,
 ) -> tasks.TaskDocument:
     # allow export format "tekst-json" only for logged-in users
     if not user and export_format == "tekst-json":
@@ -1070,7 +1065,9 @@ async def export_resource_contents(
         _export_resource_contents_task,
         tasks.TaskType.RESOURCE_EXPORT,
         user_id=user.id if user else None,
-        target_id=user.id if user else hash_args(request.client.host, x_forwarded_for),
+        target_id=user.id
+        if user
+        else client_hash(request, behind_reverse_proxy=cfg.behind_reverse_proxy),
         task_kwargs={
             "user": user,
             "cfg": cfg,

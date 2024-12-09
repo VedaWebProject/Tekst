@@ -5,15 +5,15 @@ services:
       context: ./Tekst-Web
       target: prod
       args:
-        WEB_PATH: ${TEKST_WEB_PATH:?TEKST_WEB_PATH not set in .env}
-        SERVER_URL: ${TEKST_SERVER_URL:?TEKST_SERVER_URL not set in .env}
-        API_PATH: ${TEKST_API_PATH:?TEKST_API_PATH not set in .env}
+        SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
+        API_PATH: ${TEKST_API_PATH:-/api}
+        WEB_PATH: ${TEKST_WEB_PATH:-/}
     image: "tekst-web:custom"
     environment:
-      TEKST_SERVER_URL: ${TEKST_SERVER_URL:?TEKST_SERVER_URL not set in .env}
-      TEKST_API_PATH: ${TEKST_API_PATH:?TEKST_API_PATH not set in .env}
+      TEKST_SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
+      TEKST_API_PATH: ${TEKST_API_PATH:-/api}
     volumes:
-      - ${TEKST_WEB_STATIC_DIR:?TEKST_WEB_STATIC_DIR not set in .env}:/var/www/tekst/static/:ro
+      - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
     restart: always
     ports:
       - "127.0.0.1:8087:80"

@@ -328,6 +328,7 @@ class TekstConfig(BaseSettings):
     server_url: CustomHttpUrl = "http://127.0.0.1:8000"
     api_path: str = "/api"
     web_path: str = "/"
+    behind_reverse_proxy: bool = False
 
     dev_mode: bool = False
     log_level: str = "warning"
