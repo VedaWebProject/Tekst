@@ -56,7 +56,10 @@ general:
     Sind Sie sicher, dass Sie fortfahren möchten?
   tekstFooterHint: Diese Website basiert auf
   takeAWhile: Dies kann einen Moment dauern.
-  msgExportStarted: Ihr Export wird im Hintergrund vorbereitet. Der Download startet, sobald er bereit ist.
+  msgExportStarted: |
+    Ihr Export wird im Hintergrund vorbereitet.
+    Diese Seite nicht schließen!
+    Der Download startet, sobald die Daten generiert sind.
   ctrlEnter: Strg+Enter
 
 i18n:

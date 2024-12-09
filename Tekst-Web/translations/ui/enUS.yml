@@ -54,7 +54,10 @@ general:
     little '?' icon next to the heading of each page. Are you sure you want to proceed?
   tekstFooterHint: This website is based on
   takeAWhile: This might take a while.
-  msgExportStarted: Your export is being prepared in the background. The download will start as soon as it is ready.
+  msgExportStarted: |
+    Your export is being prepared in the background.
+    Do not close this window/tab!
+    The download will start as soon as your data is generated.
   ctrlEnter: Ctrl+Enter
 
 i18n:
