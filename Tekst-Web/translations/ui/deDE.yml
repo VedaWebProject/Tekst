@@ -871,7 +871,7 @@ search:
     heading: Suchergebnisse
     searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
-    took: in {ms} Millisekunden
+    took: Diese Suche dauerte {ms} Millisekunden
     browse: Ergebnis in "{browse}"-Ansicht öffnen
     browsePrev: Vorheriges Suchergebnis
     browseNext: Nächstes Suchergebnis

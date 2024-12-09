@@ -12,12 +12,10 @@ const props = withDefaults(
     req: QuickSearchRequestBody;
     total?: number;
     totalRelation?: 'eq' | 'gte';
-    took?: number;
   }>(),
   {
     total: undefined,
     totalRelation: undefined,
-    took: undefined,
   }
 );
 
@@ -90,14 +88,5 @@ const settings = computed(() => [
         {{ setting }}
       </n-tag>
     </template>
-
-    <span v-if="took != null">
-      {{
-        $t('search.results.took', {
-          ms: took,
-        })
-      }}
-    </span>
-    <span v-else>...</span>
   </n-flex>
 </template>

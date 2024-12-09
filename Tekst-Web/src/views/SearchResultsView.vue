@@ -182,14 +182,20 @@ onBeforeMount(() => {
     <reuse-template />
   </div>
 
-  <div
-    v-if="pfData?.state.indicesUpdatedAt"
-    class="text-tiny translucent"
-    style="text-align: center"
-  >
-    {{ $t('search.results.indexCreationTime') }}:
-    <n-time :time="utcToLocalTime(pfData?.state.indicesUpdatedAt)" type="datetime" />
-  </div>
+  <n-flex vertical align="center" class="text-tiny translucent">
+    <div v-if="!search.loading && search.results?.took != null">
+      {{
+        $t('search.results.took', {
+          ms: search.results.took,
+        })
+      }}
+    </div>
+
+    <div v-if="pfData?.state.indicesUpdatedAt">
+      {{ $t('search.results.indexCreationTime') }}:
+      <n-time :time="utcToLocalTime(pfData?.state.indicesUpdatedAt)" type="datetime" />
+    </div>
+  </n-flex>
 </template>
 
 <style scoped>

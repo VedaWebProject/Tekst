@@ -848,7 +848,7 @@ search:
     heading: Search Results
     searching: Searching
     count: No results | One result | {count} results
-    took: in {ms} milliseconds
+    took: This search took {ms} milliseconds
     browse: Open result in "{browse}" view
     browsePrev: Previous search result
     browseNext: Next search result
