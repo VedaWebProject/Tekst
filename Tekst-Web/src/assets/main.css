@@ -144,7 +144,7 @@ pre > code {
   margin: 0.5em 0;
   padding: 1rem;
   border-radius: 3px;
-  background-color: var(--main-bg-color);
+  background-color: #8881;
   font-weight: var(--font-weight-normal);
 }
 
