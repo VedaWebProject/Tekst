@@ -102,6 +102,12 @@ function handleUpdate(field: string, value: unknown) {
         :label="$t('resources.settings.config.common.quickSearchable')"
         @update:model-value="(v) => handleUpdate('quickSearchable', v)"
       />
+      <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
+      <labelled-switch
+        :model-value="model.rtl"
+        :label="$t('resources.settings.config.common.rtl')"
+        @update:model-value="(v) => handleUpdate('rtl', v)"
+      />
     </n-flex>
   </n-form-item>
 </template>

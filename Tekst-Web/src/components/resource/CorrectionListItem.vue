@@ -122,6 +122,7 @@ function gotoUserProfile(userId: string) {
             'white-space': 'pre-wrap',
             'font-family': resource.config.general.font || 'Tekst Content Font',
           }"
+          :dir="resource.config.common.rtl ? 'rtl' : undefined"
         >
           {{ correction.note }}
         </n-alert>

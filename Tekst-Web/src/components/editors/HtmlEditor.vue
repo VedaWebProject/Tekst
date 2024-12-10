@@ -12,6 +12,7 @@ withDefaults(
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
     wysiwygFont?: string;
+    rtl?: boolean;
   }>(),
   {
     toolbarSize: 'small',
@@ -69,6 +70,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
         v-model:value="value"
         :max-chars="maxChars"
         :font="wysiwygFont"
+        :rtl="rtl"
         @blur="emit('blur')"
         @focus="emit('focus')"
         @input="emit('input')"
@@ -90,5 +92,3 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     </n-tab-pane>
   </n-tabs>
 </template>
-
-<style scoped></style>

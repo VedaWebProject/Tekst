@@ -7579,7 +7579,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -7746,6 +7747,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -7986,6 +7988,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -8753,6 +8756,12 @@
             "description": "Whether this resource should be included in quick search",
             "default": true
           },
+          "rtl": {
+            "type": "boolean",
+            "title": "Rtl",
+            "description": "Whether to display text contents in right-to-left direction",
+            "default": false
+          },
           "osk": {
             "anyOf": [
               {
@@ -9317,7 +9326,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -9484,6 +9494,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -9724,6 +9735,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -10413,7 +10425,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -10580,6 +10593,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -10820,6 +10834,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -11825,7 +11840,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -12009,6 +12025,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -12260,6 +12277,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -13700,7 +13718,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -13867,6 +13886,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -14107,6 +14127,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -14875,7 +14896,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true
+              "quickSearchable": true,
+              "rtl": false
             }
           },
           "general": {
@@ -15073,6 +15095,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -15315,6 +15338,7 @@
               "common": {
                 "defaultActive": true,
                 "quickSearchable": true,
+                "rtl": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },

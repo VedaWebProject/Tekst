@@ -78,7 +78,7 @@ async function handleClick() {
 
     <n-spin v-if="loading" class="centered-spinner" />
 
-    <div v-else-if="contents.length">
+    <div v-else-if="contents.length" :dir="resource.config.common.rtl ? 'rtl' : undefined">
       <component
         :is="contentComponents[resource.resourceType]"
         :resource="{ ...resource, contents: contents }"

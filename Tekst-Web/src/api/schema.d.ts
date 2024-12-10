@@ -1459,7 +1459,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -1551,6 +1552,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -1673,6 +1675,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2018,6 +2021,12 @@ export interface components {
        * @default true
        */
       quickSearchable: boolean;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl: boolean;
       /** Osk */
       osk?: string | null;
     };
@@ -2303,7 +2312,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -2395,6 +2405,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2517,6 +2528,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2839,7 +2851,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -2931,6 +2944,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3053,6 +3067,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3470,7 +3485,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -3575,6 +3591,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3708,6 +3725,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4375,7 +4393,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -4467,6 +4486,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4589,6 +4609,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4929,7 +4950,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true
+       *       "quickSearchable": true,
+       *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
@@ -5038,6 +5060,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -5162,6 +5185,7 @@ export interface components {
        *       "common": {
        *         "defaultActive": true,
        *         "quickSearchable": true,
+       *         "rtl": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },

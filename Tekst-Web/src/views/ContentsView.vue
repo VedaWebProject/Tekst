@@ -497,6 +497,7 @@ whenever(ArrowRight, () => {
           :is="contentComponents[compareResource.resourceType]"
           v-if="compareResource.contents?.length"
           :resource="compareResource"
+          :dir="resource.config.common.rtl ? 'rtl' : undefined"
         />
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
 

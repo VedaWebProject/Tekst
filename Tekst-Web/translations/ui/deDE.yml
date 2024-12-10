@@ -459,6 +459,7 @@ resources:
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
         quickSearchable: Ressource ist über Schnellsuche durchsuchbar
+        rtl: Stelle Inhalte mit Textrichtung rechts-nach-links dar
       general:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt

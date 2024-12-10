@@ -450,6 +450,7 @@ resources:
         defaultActive: Resource is active by default when public
         showOnParentLevel: Enable viewing combined contents on the parent level
         quickSearchable: Resource is searchable in quick search
+        rtl: Display contents with right-to-left text direction
       general:
         heading: General
         defaultCollapsed: Collapse contents by default

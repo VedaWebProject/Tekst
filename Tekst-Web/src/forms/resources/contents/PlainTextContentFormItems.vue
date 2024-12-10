@@ -33,6 +33,7 @@ function handleUpdate(field: string, value: unknown) {
       :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
       @update:model-value="(v) => handleUpdate('text', v)"
+      :dir="resource.config.common.rtl ? 'rtl' : undefined"
     />
   </n-form-item>
 </template>

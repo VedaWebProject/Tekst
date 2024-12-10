@@ -38,6 +38,7 @@ const props = withDefaults(
     toolbarSize?: 'small' | 'medium' | 'large';
     maxChars?: number;
     font?: string;
+    rtl?: boolean;
   }>(),
   {
     toolbarSize: 'small',
@@ -426,7 +427,11 @@ onUnmounted(() => {
         overflow-y: scroll;
       "
     >
-      <editor-content :editor="editor" :style="{ fontFamily: font || 'inherit' }" />
+      <editor-content
+        :editor="editor"
+        :style="{ fontFamily: font || 'inherit' }"
+        :dir="rtl ? 'rtl' : undefined"
+      />
     </div>
     <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>

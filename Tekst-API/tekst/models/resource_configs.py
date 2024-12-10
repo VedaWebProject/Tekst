@@ -45,6 +45,12 @@ class CommonResourceConfig(ModelBase):
             description="Whether this resource should be included in quick search",
         ),
     ] = True
+    rtl: Annotated[
+        bool,
+        Field(
+            description="Whether to display text contents in right-to-left direction",
+        ),
+    ] = False
     osk: OskKey | None = None
 
 

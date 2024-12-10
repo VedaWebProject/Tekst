@@ -90,6 +90,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               :rows="2"
               :max-length="512"
               :placeholder="$t('general.caption')"
+              :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
         </n-flex>

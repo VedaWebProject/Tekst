@@ -60,6 +60,7 @@ function handleUpdate(field: string, value: unknown) {
               :osk-key="resource.config.common.osk || undefined"
               :max-length="128"
               :placeholder="$t('resources.types.externalReferences.contentFields.title')"
+              :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
           <!-- DESCRIPTION -->
@@ -78,6 +79,7 @@ function handleUpdate(field: string, value: unknown) {
               :rows="2"
               :max-length="4096"
               :placeholder="$t('resources.types.externalReferences.contentFields.description')"
+              :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
         </n-flex>

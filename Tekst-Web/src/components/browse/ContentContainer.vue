@@ -85,7 +85,7 @@ const fromChildLevel = computed(
         </div>
         <div class="content-header-title-extra">
           {{ headerExtraText }}
-          <span v-if="loading && !hasContent" class="ml-lg">{{ $t('general.loading') }}</span>
+          <span v-if="loading && !hasContent" class="mx-lg">{{ $t('general.loading') }}</span>
         </div>
       </div>
       <content-header-widget-bar
@@ -100,6 +100,7 @@ const fromChildLevel = computed(
         v-if="hasContent"
         class="content"
         :class="{ 'content-collapsed': contentCollapsed, 'content-loading': loading }"
+        :dir="resource.config.common.rtl ? 'rtl' : undefined"
       >
         <!-- content-specific component (that displays the actual content data) -->
         <component

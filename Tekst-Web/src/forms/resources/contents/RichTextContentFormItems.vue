@@ -31,6 +31,7 @@ function handleUpdate(field: string, value: unknown) {
       toolbar-size="medium"
       :max-chars="102400"
       :wysiwyg-font="resource.config.general.font || undefined"
+      :rtl="resource.config.common.rtl"
       @update:value="(v: string | null) => handleUpdate('html', v)"
       @update:editor-mode="(v: string) => handleUpdate('editorMode', v)"
     />
