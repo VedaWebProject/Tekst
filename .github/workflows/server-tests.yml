@@ -9,7 +9,7 @@ on:
       - "Tekst-API/tekst/**"
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
-      - "Tekst-API/poetry.lock"
+      - "Tekst-API/uv.lock"
       - ".github/workflows/server-tests.yml"
   pull_request:
     branches:
@@ -18,7 +18,7 @@ on:
       - "Tekst-API/tekst/**"
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
-      - "Tekst-API/poetry.lock"
+      - "Tekst-API/uv.lock"
       - ".github/workflows/server-tests.yml"
   workflow_dispatch:
 
@@ -32,15 +32,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: "3.10"
-          cache: "poetry"
-          cache-dependency-path: "./Tekst-API/poetry.lock"
+          version: "0.5.7"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
       - name: Install dependencies
-        run: poetry install --sync
+        run: uv sync
       - name: Configure sysctl limits for ES
         run: |
           sudo swapoff -a
@@ -57,6 +60,6 @@ jobs:
         uses: andymckay/cancel-action@0.5
       - name: Run tests
         if: always()
-        run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false poetry run coverage run -m pytest && poetry run coverage lcov
+        run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false uv run coverage run -m pytest && uv run coverage lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v2

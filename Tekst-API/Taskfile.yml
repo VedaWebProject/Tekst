@@ -16,30 +16,30 @@ tasks:
   version:
     desc: Print project version
     cmds:
-      - poetry run python3 -c "from tekst import __version__ as v; print(v, end='')"
+      - uv run python3 -c "from tekst import __version__ as v; print(v, end='')"
     silent: true
 
   install:
     desc: Install dependencies
     cmds:
-      - poetry install
+      - uv sync
 
-  update:
-    desc: Update dependencies
+  upgrade:
+    desc: Upgrade dependencies
     cmds:
-      - poetry update
+      - uv sync --upgrade
 
   fix:
     desc: Run ruff to format code base and attempt to fix linting errors
     cmds:
-      - poetry run ruff format .
-      - poetry run ruff check . --fix
+      - uv run ruff format .
+      - uv run ruff check . --fix
 
   check:
     desc: Check code using ruff
     cmds:
-      - poetry run ruff format . --check
-      - poetry run ruff check . --extend-select N
+      - uv run ruff format . --check
+      - uv run ruff check . --extend-select N
 
   tests:
     desc: Run tests, start and stop services stack
@@ -51,17 +51,17 @@ tasks:
       - task: test-stack-up
       - task: wait-for-mongodb
       - task: wait-for-elasticsearch
-      - poetry run coverage run -m pytest {{.CLI_ARGS}}
-      - poetry run coverage report -m
+      - uv run coverage run -m pytest {{.CLI_ARGS}}
+      - uv run coverage report -m
 
   run-dev:
     desc: Run the application dev server (only for development!)
     env:
       TEKST_DEV_MODE: true
     cmds:
-      - poetry run python3 -m tekst setup
+      - uv run python3 -m tekst setup
       - task: print-dev-uris
-      - poetry run python3 -m tekst dev --reload
+      - uv run fastapi dev tekst/app.py
 
   dev:
     desc: Run dev services stack and dev server, clean up afterwards
@@ -80,7 +80,7 @@ tasks:
       TEKST_DEV__USE_ES: false
       TEKST_LOG_LEVEL: ERROR
     cmds:
-      - poetry run python3 -m tekst schema -f
+      - uv run python3 -m tekst schema -f
 
   pre-commit:
     desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
@@ -93,7 +93,7 @@ tasks:
   clean:
     desc: Cleanup of generated files (won't work on Windows)
     cmds:
-      - cmd: poetry run ruff clean
+      - cmd: uv run ruff clean
       - cmd: shopt -s globstar
       - cmd: |
           rm -rf \

@@ -2,9 +2,8 @@ import asyncio
 
 import click
 
-from tekst import db
 from tekst.config import TekstConfig, get_config
-from tekst.db import migrations
+from tekst.db import init_odm, migrations
 from tekst.openapi import generate_openapi_schema
 from tekst.resources import call_resource_maintenance_hooks, init_resource_types_mgr
 from tekst.search import create_indices_task
@@ -21,13 +20,13 @@ _cfg: TekstConfig = get_config()
 
 async def _create_indices() -> None:
     init_resource_types_mgr()
-    await db.init_odm()
+    await init_odm()
     await create_indices_task()
 
 
 async def _run_resource_maintenance() -> None:
     init_resource_types_mgr()
-    await db.init_odm()
+    await init_odm()
     await call_resource_maintenance_hooks()
 
 
@@ -132,43 +131,6 @@ def schema(
         click.echo(schema)
 
 
-@click.command()
-@click.option(
-    "--host",
-    "-h",
-    default="127.0.0.1",
-    help="Server host (dynamic default from environment)",
-    show_default=True,
-)
-@click.option(
-    "--port",
-    "-p",
-    default="8000",
-    help="Server port (dynamic default from environment)",
-    show_default=True,
-    type=click.INT,
-)
-@click.option(
-    "--reload",
-    "-r",
-    is_flag=True,
-    help="Hot-reload on source changes (only if TEKST_DEV_MODE env var is true)",
-    show_default=True,
-)
-def dev(host: str, port: int, reload: bool):
-    """Runs Tekst server via Uvicorn ASGI"""
-
-    import uvicorn
-
-    uvicorn.run(
-        "tekst.app:app",
-        host=host,
-        port=port,
-        reload=_cfg.dev_mode and reload,
-        log_config=None,
-    )
-
-
 @click.group()
 def cli():
     """Command line interface to the main functionalities of Tekst server"""
@@ -181,7 +143,6 @@ cli.add_command(index)
 cli.add_command(maintenance)
 cli.add_command(migration)
 cli.add_command(schema)
-cli.add_command(dev)
 
 
 if __name__ == "__main__":

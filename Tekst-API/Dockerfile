@@ -28,43 +28,34 @@ ENV PYTHONFAULTHANDLER=1 \
 # =====================
 
 FROM base AS builder
-
-ENV POETRY_VERSION=1.2.2 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1 \
-    PATH="/root/.local/bin:$PATH"
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-RUN python3 -m pip install pipx && \
-    pipx install poetry==$POETRY_VERSION
+COPY --from=ghcr.io/astral-sh/uv:0.5.7 /uv /uvx /bin/
 
 WORKDIR "$WORKDIR_PATH"
-COPY ./poetry.lock* ./pyproject.toml ./
+COPY ./uv.lock* ./pyproject.toml README.md LICENSE ./
+COPY tekst/ tekst/
 
-RUN poetry run pip install --upgrade \
+RUN uv run pip install --upgrade \
         pip \
         setuptools \
         wheel
 
 # export dependencies as requirements.txt
-RUN poetry export \
-        --without dev \
-        --without-hashes \
-        --without-urls \
-        --format requirements.txt \
-        --output requirements.txt
+RUN uv export \
+        --locked \
+        --no-group dev \
+        --no-hashes \
+        --no-progress \
+        --format requirements-txt \
+        --output-file requirements.txt
 
 # build wheels for dependencies
-RUN poetry run pip wheel \
+RUN uv run pip wheel \
         --requirement requirements.txt \
         --wheel-dir deps
 
-# copy app source and build wheel
-COPY tekst/ tekst/
-COPY README.md LICENSE ./
-RUN poetry build --format wheel
+# build tekst wheel
+RUN uv build --wheel
 
 
 # ==============

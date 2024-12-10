@@ -34,6 +34,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -201,8 +204,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of resource the requested contents belong to",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Res"
             },
             "description": "ID of resource the requested contents belong to"
@@ -215,6 +221,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -318,8 +327,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of text to look up data for",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "ID of text to look up data for"
@@ -354,6 +366,9 @@
               "type": "array",
               "items": {
                 "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               "description": "ID (or list of IDs) of resource(s) to return content data for",
@@ -445,8 +460,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of resource to return nearest location with content for",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Res"
             },
             "description": "ID of resource to return nearest location with content for"
@@ -518,6 +536,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -569,6 +590,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -759,6 +783,9 @@
               "type": "array",
               "items": {
                 "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               "description": "ID (or list of IDs) of resource(s) to return content data for",
@@ -775,6 +802,9 @@
               "type": "array",
               "items": {
                 "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               "description": "ID (or list of IDs) of location(s) to return content data for",
@@ -877,6 +907,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -967,6 +1000,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -1118,6 +1154,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -1243,6 +1282,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Resourceid"
             }
@@ -1309,6 +1351,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -1433,8 +1478,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of text to find locations for",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "ID of text to find locations for"
@@ -1483,6 +1531,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -1560,8 +1611,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of text to find locations for",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "ID of text to find locations for"
@@ -1632,8 +1686,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "Target text ID",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "Target text ID"
@@ -1718,6 +1775,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -1737,6 +1797,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -1831,6 +1894,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -1890,6 +1956,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -1980,6 +2049,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -2062,6 +2134,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -2224,6 +2299,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -2343,12 +2421,12 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
-                  "enum": [
-                    "system"
-                  ],
                   "const": "system",
                   "type": "string"
                 }
@@ -2507,6 +2585,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -2566,6 +2647,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -2655,6 +2739,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3067,6 +3154,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3320,8 +3410,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of text to find resources for",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "ID of text to find resources for"
@@ -3441,6 +3534,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3553,6 +3649,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3694,6 +3793,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3784,6 +3886,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3858,6 +3963,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -3869,6 +3977,9 @@
             "application/json": {
               "schema": {
                 "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593",
                 "title": "Target User Id"
               }
@@ -3992,6 +4103,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4104,6 +4218,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4206,6 +4323,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4328,6 +4448,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4440,6 +4563,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4509,6 +4635,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4590,8 +4719,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "description": "ID of the resource to export",
+              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             },
             "description": "ID of the resource to export"
@@ -4621,6 +4753,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -4640,6 +4775,9 @@
               "anyOf": [
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 {
@@ -4708,6 +4846,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -4783,6 +4924,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5250,6 +5394,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5330,6 +5477,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5438,6 +5588,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5539,6 +5692,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5660,6 +5816,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5764,6 +5923,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5838,6 +6000,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -5897,6 +6062,9 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
             }
@@ -6295,6 +6463,9 @@
                 },
                 {
                   "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 }
               ],
@@ -7032,9 +7203,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "advanced"
-            ],
             "const": "advanced",
             "title": "Type",
             "description": "Search type",
@@ -7153,20 +7321,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -7221,25 +7392,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -7296,9 +7473,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7442,6 +7616,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -7454,9 +7631,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7464,6 +7638,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -7477,6 +7654,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -7489,6 +7669,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -7500,6 +7683,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -7589,6 +7775,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -7667,6 +7856,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -7679,9 +7871,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7689,6 +7878,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -7702,6 +7894,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -7714,6 +7909,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -7725,6 +7923,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -7851,9 +8052,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Resourcetype"
           },
@@ -7861,6 +8059,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -7876,6 +8077,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -7894,6 +8098,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -7978,9 +8185,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "audio"
-            ],
             "const": "audio",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -8164,6 +8368,9 @@
         "properties": {
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "ID of the text location this bookmark refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8192,23 +8399,35 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "userId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Userid",
             "description": "ID of user who created this bookmark",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of text this bookmark belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "ID of the text location this bookmark refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8317,6 +8536,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -8351,6 +8573,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -8562,6 +8787,9 @@
           },
           "res": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Res",
             "description": "ID of the resource to search in",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8585,6 +8813,9 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8614,17 +8845,26 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "userId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Userid",
             "description": "ID of the user who created the correction note",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8824,20 +9064,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8892,25 +9135,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -8967,9 +9216,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9108,6 +9354,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -9120,9 +9369,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9130,6 +9376,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -9143,6 +9392,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -9155,6 +9407,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -9166,6 +9421,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -9255,6 +9513,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -9333,6 +9594,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -9345,9 +9609,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9355,6 +9616,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -9368,6 +9632,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -9380,6 +9647,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -9391,6 +9661,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -9517,9 +9790,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Resourcetype"
           },
@@ -9527,6 +9797,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -9542,6 +9815,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -9560,6 +9836,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -9644,9 +9923,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "externalReferences"
-            ],
             "const": "externalReferences",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -9921,20 +10197,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -9989,25 +10268,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -10064,9 +10349,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10168,6 +10450,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -10180,9 +10465,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10190,6 +10472,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10203,6 +10488,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10215,6 +10503,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -10226,6 +10517,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -10315,6 +10609,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -10393,6 +10690,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -10405,9 +10705,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10415,6 +10712,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10428,6 +10728,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10440,6 +10743,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -10451,6 +10757,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -10577,9 +10886,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Resourcetype"
           },
@@ -10587,6 +10893,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10602,6 +10911,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -10620,6 +10932,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -10704,9 +11019,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "images"
-            ],
             "const": "images",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -10731,6 +11043,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10829,6 +11144,9 @@
         "properties": {
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this location belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -10837,6 +11155,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -10951,11 +11272,17 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this location belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -10964,6 +11291,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11030,6 +11360,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11178,6 +11511,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11282,20 +11618,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -11347,25 +11686,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -11419,9 +11764,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11537,6 +11879,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -11549,9 +11894,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11559,6 +11901,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11572,6 +11917,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11584,6 +11932,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -11595,6 +11946,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -11695,6 +12049,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -11773,6 +12130,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -11785,9 +12145,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11795,6 +12152,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11808,6 +12168,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11820,6 +12183,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -11831,6 +12197,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -11968,9 +12337,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Resourcetype"
           },
@@ -11978,6 +12344,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -11993,6 +12362,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -12011,6 +12383,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -12095,9 +12470,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "plainText"
-            ],
             "const": "plainText",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -12224,6 +12596,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -12268,6 +12643,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -12481,6 +12859,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -12762,9 +13143,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "quick"
-            ],
             "const": "quick",
             "title": "Type",
             "description": "Search type",
@@ -12828,6 +13206,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array"
@@ -13078,20 +13459,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -13152,25 +13536,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -13233,9 +13623,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13350,6 +13737,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -13362,9 +13752,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13372,6 +13759,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -13385,6 +13775,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -13397,6 +13790,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -13408,6 +13804,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -13497,6 +13896,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -13575,6 +13977,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -13587,9 +13992,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13597,6 +13999,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -13610,6 +14015,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -13622,6 +14030,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -13633,6 +14044,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -13759,9 +14173,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Resourcetype"
           },
@@ -13769,6 +14180,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -13784,6 +14198,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -13802,6 +14219,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -13886,9 +14306,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "richText"
-            ],
             "const": "richText",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -13911,6 +14328,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -13924,6 +14344,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -14029,6 +14452,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -14040,6 +14466,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14054,6 +14483,9 @@
           },
           "userId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Userid",
             "description": "ID of user who created this task",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -14174,20 +14606,23 @@
         "properties": {
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -14241,25 +14676,31 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Resourceid",
             "description": "Resource ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
           "locationId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Locationid",
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -14315,9 +14756,6 @@
         "properties": {
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14505,6 +14943,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -14517,9 +14958,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14527,6 +14965,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14540,6 +14981,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14552,6 +14996,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -14563,6 +15010,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -14654,6 +15104,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -14732,6 +15185,9 @@
           },
           "textId": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Textid",
             "description": "ID of the text this resource belongs to",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -14744,9 +15200,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14754,6 +15207,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14767,6 +15223,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14779,6 +15238,9 @@
           "sharedRead": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -14790,6 +15252,9 @@
           "sharedWrite": {
             "items": {
               "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593"
             },
             "type": "array",
@@ -14918,9 +15383,6 @@
           },
           "resourceType": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
@@ -14928,6 +15390,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -14943,6 +15408,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -14961,6 +15429,9 @@
               {
                 "items": {
                   "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
                 },
                 "type": "array",
@@ -15045,9 +15516,6 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "textAnnotation"
-            ],
             "const": "textAnnotation",
             "title": "Type",
             "description": "Type of the resource to search in"
@@ -15254,6 +15722,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -15367,6 +15838,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -15752,6 +16226,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -15763,6 +16240,9 @@
           },
           "recipient": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Recipient",
             "description": "ID of the recipient",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -15786,6 +16266,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -15793,6 +16276,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -15804,6 +16290,9 @@
           },
           "recipient": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Recipient",
             "description": "ID of the recipient",
             "example": "5eb7cf5a86d9755df3a6c593"
@@ -15838,6 +16327,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -15863,6 +16355,9 @@
             "anyOf": [
               {
                 "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
@@ -15910,6 +16405,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
@@ -16051,6 +16549,9 @@
         "properties": {
           "id": {
             "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
             "title": "Id",
             "example": "5eb7cf5a86d9755df3a6c593"
           },

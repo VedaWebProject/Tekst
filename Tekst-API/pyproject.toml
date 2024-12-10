@@ -1,49 +1,63 @@
-[tool.poetry]
+[project]
 name = "tekst"
 version = "0.1.1a0"
 description = "An online text research platform"
 readme = "README.md"
-repository = "https://github.com/VedaWebProject/Tekst"
-documentation = "https://vedawebproject.github.io/Tekst"
-keywords = ["text", "research", "platform", "collaboration"]
-authors = ["Börge Kiss <bkis@bkis.github.io>"]
-license = "AGPL-3.0-or-later"
+authors = [{name = "Börge Kiss", email = "bkis@bkis.github.io"}]
+license = {text = "AGPL-3.0-or-later"}
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "ujson<6.0.0,>=5.8.0",
+    "python-dotenv<2.0.0,>=1.0.0",
+    "email-validator<3.0.0,>=2.0.0",
+    "pyhumps<4.0.0,>=3.8.0",
+    "click<9.0.0,>=8.1.6",
+    "beanie<2.0.0,>=1.21.0",
+    "fastapi-users[beanie]<15.0.0,>=14.0.0",
+    "starlette-csrf<4.0.0,>=3.0.0",
+    "pydantic-settings<3.0.0,>=2.0.2",
+    "pydantic-extra-types<3.0.0,>=2.0.0",
+    "bleach<7.0.0,>=6.1.0",
+    "jsonref<2.0.0,>=1.1.0",
+    "elasticsearch<9.0.0,>=8.15.1",
+    "fastapi[standard]>=0.115.6",
+]
+keywords = [
+    "text",
+    "research",
+    "platform",
+    "collaboration",
+]
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Development Status :: 1 - Planning",
 ]
 
-[tool.poetry.urls]
-"VedaWeb Project Website" = "https://vedaweb.uni-koeln.de"
-"License" = "https://www.gnu.org/licenses/agpl-3.0.txt"
 
-[tool.poetry.dependencies]
-python = "^3.10"
-ujson = "^5.8.0"
-python-dotenv = "^1.0.0"
-email-validator = "^2.0.0"
-pyhumps = "^3.8.0"
-click = "^8.1.6"
-beanie = "^1.21.0"
-fastapi-users = {extras = ["beanie"], version = "^14.0.0"}
-starlette-csrf = "^3.0.0"
-pydantic-settings = "^2.0.2"
-pydantic-extra-types = "^2.0.0"
-bleach = "^6.1.0"
-jsonref = "^1.1.0"
-elasticsearch = "^8.15.1"
-fastapi = {extras = ["standard"], version = "^0.115.0"}
+[project.urls]
+repository = "https://github.com/VedaWebProject/Tekst"
+documentation = "https://vedawebproject.github.io/Tekst"
+license = "https://www.gnu.org/licenses/agpl-3.0.txt"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
-coverage = {extras = ["toml"], version = "^7.2"}
-requests = "^2.31.0"
-colorlog = "^6.7.0"
-pytest-dotenv = "^0.5.2"
-httpx = "^0.28.0"
-asgi-lifespan = "^2.1.0"
-ruff = "^0.8.0"
-pytest-env = "^1.1.1"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[dependency-groups]
+dev = [
+    "pytest<9.0.0,>=8.1.1",
+    "coverage[toml]<8.0,>=7.2",
+    "requests<3.0.0,>=2.31.0",
+    "colorlog<7.0.0,>=6.7.0",
+    "pytest-dotenv<1.0.0,>=0.5.2",
+    "httpx<1.0.0,>=0.28.0",
+    "asgi-lifespan<3.0.0,>=2.1.0",
+    "ruff<1.0.0,>=0.8.0",
+    "pytest-env<2.0.0,>=1.1.1",
+]
+
 
 [tool.ruff]
 target-version = "py310"
@@ -52,24 +66,29 @@ indent-width = 4
 respect-gitignore = false
 src = ["tekst", "tests"]
 
+
 [tool.ruff.lint]
 fixable = ["ALL"]
 unfixable = []
 ignore = ["F722"]
 select = ["E", "F", "W", "I", "UP", "SIM"]
 
+
 [tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod", "pydantic.validator"]
+
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
 lines-between-types = 1
+
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
 skip-magic-trailing-comma = false
+
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -79,6 +98,7 @@ filterwarnings = [
     'ignore:directory "/run/secrets" does not exist:UserWarning'
 ]
 
+
 [tool.coverage.run]
 source = ["tekst"]
 branch = false
@@ -86,14 +106,11 @@ omit = [
     "tekst/__main__.py",
 ]
 
+
 [tool.coverage.report]
 precision = 2
 skip_empty = true
 
+
 [tool.coverage.html]
 title = "Tekst - Test Coverage Report"
-
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
