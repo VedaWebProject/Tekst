@@ -71,7 +71,12 @@ const titleLinkTo = computed(() => {
       </div>
     </div>
 
-    <n-flex v-if="!state.smallScreen" justify="end" style="flex-grow: 2; align-self: stretch">
+    <n-flex
+      v-if="!state.smallScreen"
+      justify="end"
+      align="flex-start"
+      style="flex-grow: 2; align-self: stretch"
+    >
       <theme-mode-switcher />
       <locale-switcher />
       <help-nav-button />
