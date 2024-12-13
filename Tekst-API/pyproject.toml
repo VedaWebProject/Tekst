@@ -7,9 +7,6 @@ authors = [{name = "Börge Kiss", email = "bkis@bkis.github.io"}]
 license = {text = "AGPL-3.0-or-later"}
 requires-python = ">=3.10,<4.0"
 dependencies = [
-    "ujson<6.0.0,>=5.8.0",
-    "python-dotenv<2.0.0,>=1.0.0",
-    "email-validator<3.0.0,>=2.0.0",
     "pyhumps<4.0.0,>=3.8.0",
     "click<9.0.0,>=8.1.6",
     "beanie<2.0.0,>=1.21.0",
