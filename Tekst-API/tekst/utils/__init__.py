@@ -44,5 +44,5 @@ def client_hash(request: Request, behind_reverse_proxy: bool = False) -> str | N
     )
     if ident:
         return hashlib.sha256(ident.encode("utf-8")).hexdigest()
-    else:
+    else:  # pragma: no cover
         return None
