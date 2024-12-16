@@ -30,17 +30,14 @@ classifiers = [
     "Development Status :: 1 - Planning",
 ]
 
-
 [project.urls]
 repository = "https://github.com/VedaWebProject/Tekst"
 documentation = "https://vedawebproject.github.io/Tekst"
 license = "https://www.gnu.org/licenses/agpl-3.0.txt"
 
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
 
 [dependency-groups]
 dev = [
@@ -55,6 +52,7 @@ dev = [
     "pytest-env<2.0.0,>=1.1.1",
 ]
 
+# ruff
 
 [tool.ruff]
 target-version = "py310"
@@ -63,22 +61,18 @@ indent-width = 4
 respect-gitignore = false
 src = ["tekst", "tests"]
 
-
 [tool.ruff.lint]
 fixable = ["ALL"]
 unfixable = []
 ignore = ["F722"]
 select = ["E", "F", "W", "I", "UP", "SIM"]
 
-
 [tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod", "pydantic.validator"]
-
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
 lines-between-types = 1
-
 
 [tool.ruff.format]
 quote-style = "double"
@@ -86,15 +80,14 @@ indent-style = "space"
 line-ending = "lf"
 skip-magic-trailing-comma = false
 
+# pytest
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 env_override_existing_values = 1
 env_files = [".env.dev", ".env.test"]
-filterwarnings = [
-    'ignore:directory "/run/secrets" does not exist:UserWarning'
-]
 
+# coverage
 
 [tool.coverage.run]
 source = ["tekst"]
@@ -103,11 +96,9 @@ omit = [
     "tekst/__main__.py",
 ]
 
-
 [tool.coverage.report]
 precision = 2
 skip_empty = true
-
 
 [tool.coverage.html]
 title = "Tekst - Test Coverage Report"
