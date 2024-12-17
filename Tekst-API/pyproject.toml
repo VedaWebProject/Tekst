@@ -3,8 +3,13 @@ name = "tekst"
 version = "0.1.1a0"
 description = "An online text research platform"
 readme = "README.md"
-authors = [{name = "Börge Kiss", email = "bkis@bkis.github.io"}]
-license = {text = "AGPL-3.0-or-later"}
+authors = [
+    { name = "Börge Kiss" }
+]
+maintainers = [
+    { name = "Börge Kiss" }
+]
+license = {file = "LICENSE"}
 requires-python = ">=3.10,<4.0"
 dependencies = [
     "pyhumps<4.0.0,>=3.8.0",
@@ -27,7 +32,18 @@ keywords = [
 ]
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
-    "Development Status :: 1 - Planning",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    # Audience
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "Topic :: Text Processing :: Linguistic",
+    # supported Python versions
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [project.urls]
