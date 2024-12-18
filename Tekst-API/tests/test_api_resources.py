@@ -1024,6 +1024,7 @@ async def test_export_content(
     logout,
     wait_for_task_success,
     wrong_id,
+    config,
 ):
     await insert_sample_data()
     await login()
@@ -1068,7 +1069,7 @@ async def test_export_content(
 
     for fmt in formats:
         for target in targets:
-            # export
+            # create export
             resp = await test_client.get(
                 f"/resources/{target['res_id']}/export",
                 params={
@@ -1080,6 +1081,12 @@ async def test_export_content(
             assert status_assertion(202, resp)
             assert "id" in resp.json()
             assert await wait_for_task_success(resp.json()["id"])
+            # download generated artifact
+            resp = await test_client.get(
+                "/platform/tasks/download",
+                params={"pickupKey": resp.json()["pickupKey"]},
+            )
+            assert status_assertion(200, resp)
 
     # log out for the next tests
     await logout()

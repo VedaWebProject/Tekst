@@ -3010,8 +3010,8 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get user tasks status",
-        "operationId": "getUserTasksStatus",
+        "summary": "Get user tasks",
+        "operationId": "getUserTasks",
         "security": [
           {
             "APIKeyCookie": []
@@ -3029,16 +3029,16 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "maxLength": 1024
+                  "maxLength": 2048
                 },
                 {
                   "type": "null"
                 }
               ],
-              "description": "Pickup keys for accessing the tasks in case they are requested by a non-authenticated user",
+              "description": "Comma-separated pickup keys for accessing the tasks in case they are requested by a non-authenticated user",
               "title": "Pickup-Keys"
             },
-            "description": "Pickup keys for accessing the tasks in case they are requested by a non-authenticated user"
+            "description": "Comma-separated pickup keys for accessing the tasks in case they are requested by a non-authenticated user"
           }
         ],
         "responses": {
@@ -3051,7 +3051,7 @@
                   "items": {
                     "$ref": "#/components/schemas/TaskRead"
                   },
-                  "title": "Response Get User Tasks Status Platform Tasks User Get"
+                  "title": "Response Get User Tasks Platform Tasks User Get"
                 }
               }
             }

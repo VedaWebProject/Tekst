@@ -272,16 +272,16 @@ async def get_all_tasks_status(
         ]
     ),
 )
-async def get_user_tasks_status(
+async def get_user_tasks(
     user: OptionalUserDep,
     pickup_keys: Annotated[
         str | None,
         Header(
             description=(
-                "Pickup keys for accessing the tasks in case they "
+                "Comma-separated pickup keys for accessing the tasks in case they "
                 "are requested by a non-authenticated user"
             ),
-            max_length=1024,
+            max_length=2048,
         ),
     ] = None,
 ) -> list[tasks.TaskDocument]:

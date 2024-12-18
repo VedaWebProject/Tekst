@@ -559,8 +559,8 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get user tasks status */
-    get: operations['getUserTasksStatus'];
+    /** Get user tasks */
+    get: operations['getUserTasks'];
     put?: never;
     post?: never;
     delete?: never;
@@ -7584,11 +7584,11 @@ export interface operations {
       };
     };
   };
-  getUserTasksStatus: {
+  getUserTasks: {
     parameters: {
       query?: never;
       header?: {
-        /** @description Pickup keys for accessing the tasks in case they are requested by a non-authenticated user */
+        /** @description Comma-separated pickup keys for accessing the tasks in case they are requested by a non-authenticated user */
         'pickup-keys'?: string | null;
       };
       path?: never;

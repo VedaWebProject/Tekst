@@ -1,3 +1,5 @@
+import asyncio
+
 from uuid import uuid4
 
 import pytest
@@ -10,24 +12,12 @@ async def test_get_non_user_tasks(
     config,
     test_client: AsyncClient,
     status_assertion,
-):
-    resp = await test_client.get("/platform/tasks/user")
-    assert status_assertion(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
-
-
-@pytest.mark.anyio
-async def test_get_user_tasks(
-    config,
-    test_client: AsyncClient,
-    status_assertion,
-    login,
     wait_for_task_success,
+    insert_sample_data,
 ):
-    await login()
+    await insert_sample_data()
 
-    # get user tasks (none yet)
+    # get (non-)user tasks (none, no pickup keys)
     resp = await test_client.get("/platform/tasks/user")
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
@@ -45,17 +35,79 @@ async def test_get_user_tasks(
     assert status_assertion(202, resp)
     assert "id" in resp.json()
     task_id = resp.json()["id"]
+    pickup_key = resp.json()["pickupKey"]
 
     # wait for task to finish (to make sure it's "done" before requesting tasks again)
-    wait_for_task_success(task_id)
+    await wait_for_task_success(task_id)
 
-    # get user tasks (one now, requesting it deletes the "done" task)
+    # get (non-)user tasks
+    # (one now, requesting it does not delete the task as it produced an artifact)
+    resp = await test_client.get(
+        "/platform/tasks/user",
+        headers={"pickup-keys": pickup_key},
+    )
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+    assert resp.json()[0]["id"] == task_id
+    assert resp.json()[0]["status"] == "done"
+
+    # download generated artifact
+    resp = await test_client.get(
+        "/platform/tasks/download",
+        params={"pickupKey": pickup_key},
+    )
+    assert status_assertion(200, resp)
+
+    # wait a bit because task deletion after download is async
+    await asyncio.sleep(2)
+
+    # get (non-)user tasks
+    # (no tasks anymore, as task got deleted when artifact was downloaded)
+    resp = await test_client.get(
+        "/platform/tasks/user",
+        headers={"pickup-keys": pickup_key},
+    )
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+
+@pytest.mark.anyio
+async def test_get_user_tasks(
+    config,
+    test_client: AsyncClient,
+    status_assertion,
+    login,
+    wait_for_task_success,
+    insert_sample_data,
+):
+    await insert_sample_data()
+    await login(is_superuser=True)
+
+    # get user tasks (none yet)
+    resp = await test_client.get("/platform/tasks/user")
+    assert status_assertion(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+    # create task to create index (to have a task to work with)
+    resp = await test_client.get("/search/index/create")
+    assert status_assertion(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # get user tasks
+    # (one now should be deleted on requesting tasks as it's
+    # not a task that produced an artifact)
     resp = await test_client.get("/platform/tasks/user")
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
+    assert resp.json()[0]["status"] == "done"
 
-    # get user tasks (no tasks anymore)
+    # get user tasks
+    # (no tasks anymore, as task got deleted)
     resp = await test_client.get("/platform/tasks/user")
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)

@@ -28,10 +28,14 @@ async def test_admin_create_search_index(
 ):
     await insert_sample_data()
     await login(is_superuser=True)
+
+    # create task to create index
     resp = await test_client.get("/search/index/create")
     assert status_assertion(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
+
+    # get index info
     resp = await test_client.get("/search/index/info")
     assert status_assertion(200, resp)
     assert isinstance(resp.json(), list)

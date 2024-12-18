@@ -213,6 +213,7 @@ async def get_tasks(
 ) -> list[TaskDocument]:
     # run tasks cleanup first
     await cleanup_tasks()
+
     # select tasks: get user-specific tasks if initiated by a regular user,
     # get all tasks if initiated by a superuser or None (system-internal)
     if not user:
@@ -224,14 +225,15 @@ async def get_tasks(
     else:
         # regular user or superuser that wants only user-specific tasks
         query = Eq(TaskDocument.user_id, user.id)
+
     tasks = await TaskDocument.find(query).to_list()
     # delete retrieved user tasks that are done/failed
-    # (excluding successful exports, because these are still
-    # needed for locating generated files)
+    # (excluding artifact-producing tasks, because these are still
+    # needed for locating the generated artifacts/files)
     if user and not get_all:
         for task in tasks:
             if (
-                task.status in ["done", "failed"]
+                task.status in ("done", "failed")
                 and task.user_id is not None
                 and (not task.task_type.artifact or task.status == "failed")
             ):
