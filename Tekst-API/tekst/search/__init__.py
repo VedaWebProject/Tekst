@@ -562,10 +562,8 @@ async def set_index_ood(
     *,
     by_public_resource: bool = True,
 ):
-    print(by_public_resource)
     """Set the index_utd flag for this text, considering the given parameters"""
     if by_public_resource or (await get_state()).index_unpublished_resources:
-        print(text_id)
         text = await TextDocument.get(text_id)
         text.index_utd = False
         await text.replace()
