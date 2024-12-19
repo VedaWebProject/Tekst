@@ -134,18 +134,16 @@ img {
 
 code {
   padding: 0 3px;
-  border-radius: 3px;
-  background-color: var(--main-bg-color);
+  border-radius: var(--border-radius);
+  background-color: #8881;
   font-weight: var(--font-weight-normal);
+  font-family: monospace;
+  font-size: 0.86em !important;
 }
 
 pre > code {
   display: block;
-  margin: 0.5em 0;
-  padding: 1rem;
-  border-radius: 3px;
-  background-color: #8881;
-  font-weight: var(--font-weight-normal);
+  padding: 0.75rem 1rem;
 }
 
 .m-0 {
