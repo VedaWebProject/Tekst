@@ -8,7 +8,8 @@
 [![Server tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=server%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
 ![Client build status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20checks)
 
-> 🏗 Tekst is still in its initial development phase. As of now there's no complete (let alone production-ready) version available. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
+> [!NOTE]
+> Tekst is still in development. As of now, we're testing Tekst internally and implementing the last missing features. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
 
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts (and more). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
 
@@ -22,12 +23,11 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 ## Publications
 
-We presented our vision for a collaborative text research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find our conference paper [here](https://doi.org/10.5281/zenodo.8107794)!
+We presented our vision for a collaborative text research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find the abstract of our presentation [here](https://doi.org/10.5281/zenodo.8107794)!
 
 ## Contributing
 
 Please see the [contributing guidelines](CONTRIBUTING.md).
-
 
 ## Development
 
