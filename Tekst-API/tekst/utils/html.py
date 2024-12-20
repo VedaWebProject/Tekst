@@ -3,7 +3,7 @@ import bleach
 
 _ALLOWED_TAGS = frozenset(
     {
-        "a", "abbr", "acronym", "address", "article", "b", "blockquote", "br",
+        "a", "abbr", "acronym", "address", "article", "b", "blockquote", "button", "br",
         "caption", "center", "cite", "code", "col", "colgroup", "data", "datalist",
         "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "figcaption",
         "figure", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "kbd",
@@ -14,9 +14,27 @@ _ALLOWED_TAGS = frozenset(
 )  # fmt: skip
 
 _ALLOWED_ATTRIBUTES = {
-    "*": ["id"],
-    "img": ["src", "alt", "title", "width", "height"],
-    "a": ["href", "alt", "title", "target", "rel"],
+    "*": [
+        "id",
+        "data-tekst-modal",
+        "data-tekst-modal-trigger",
+        "title",
+    ],
+    "a": [
+        "href",
+        "alt",
+        "target",
+        "rel",
+    ],
+    "button": [
+        "type",
+    ],
+    "img": [
+        "src",
+        "alt",
+        "width",
+        "height",
+    ],
 }
 
 

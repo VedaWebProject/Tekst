@@ -97,7 +97,6 @@ watch(
     heading-level="3"
     @after-leave="helpTextContent = undefined"
   >
-    <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-html="helpTextContent"></div>
   </generic-modal>
 </template>

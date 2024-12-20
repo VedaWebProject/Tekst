@@ -79,7 +79,6 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
       <div class="sr-highlights">
         <div v-for="(hl, key) in highlightsProcessed" :key="key" :title="key">
           <span class="b" :style="{ color: textColor }">{{ key }}: </span>
-          <!-- eslint-disable-next-line vue/no-v-html -->
           <span class="content-font" v-html="hl"></span>
         </div>
       </div>

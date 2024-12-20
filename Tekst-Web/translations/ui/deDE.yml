@@ -25,6 +25,7 @@ general:
   precomputeAction: Vorberechnen
   expandAction: Ausklappen
   collapseAction: Einklappen
+  showAttachmentsAction: Angehängte Inhalte anzeigen
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
   info: Information
   warning: Warnung

@@ -166,10 +166,7 @@ class QuickSearchSettings(ModelBase):
         SchemaOptionalNullable,
     ] = None
 
-    @field_validator(
-        "default_operator",
-        mode="before",
-    )
+    @field_validator("default_operator", mode="before")
     @classmethod
     def default_operator_upper(cls, v: Any) -> str:
         return str(v).upper()

@@ -18,7 +18,6 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
   <div v-if="html" class="segment-container" v-html="html"></div>
 </template>
 

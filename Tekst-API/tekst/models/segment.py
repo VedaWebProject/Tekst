@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
 from pydantic import (
@@ -69,7 +69,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
 
     @field_validator("title", mode="before")
     @classmethod
-    def force_unset_empty_title(cls, v) -> str | None:
+    def force_unset_empty_title(cls, v: Any) -> str | None:
         return v if v else None
 
 

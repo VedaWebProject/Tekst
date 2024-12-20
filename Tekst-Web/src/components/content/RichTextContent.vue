@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RichTextResourceRead } from '@/api';
+import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -24,10 +25,7 @@ const fontStyle = {
       'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
     }"
   >
-    <div v-if="!reduced" :style="fontStyle">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="content.html"></div>
-    </div>
+    <hydrated-html v-if="!reduced" :html="content.html" :style="fontStyle" />
     <div v-else class="translucent i ui-font">
       {{ $t('contents.msgContentNoReducedView') }}
     </div>
