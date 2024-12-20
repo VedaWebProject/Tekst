@@ -173,9 +173,11 @@ class RichTextContent(ContentBase):
         Field(description="Last used editor mode for this content"),
     ] = "wysiwyg"
 
-    @field_validator("html", mode="after")
+    @field_validator("html", mode="before")
     @classmethod
-    def validate_html(cls, value: str) -> str:
+    def validate_html(cls, value) -> str:
+        if not isinstance(value, str):
+            value = str(value)
         return sanitize_html(value)
 
 
