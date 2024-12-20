@@ -1,62 +1,13 @@
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
+import { darkOverrides, lightOverrides } from '@/themeOverrides';
 import { usePreferredDark, useStorage } from '@vueuse/core';
 import { adjustHue, lighten, saturate, toRgba, transparentize } from 'color2k';
-import { mergeWith } from 'lodash-es';
-import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
 
 export declare type ThemeMode = 'light' | 'dark';
-
-const commonOverrides: GlobalThemeOverrides = {
-  common: {
-    fontFamily: 'var(--font-family-ui)',
-    fontWeight: 'var(--font-weight-normal)',
-    fontSize: 'var(--font-size)',
-    fontSizeMini: 'var(--font-size-mini)',
-    fontSizeTiny: 'var(--font-size-tiny)',
-    fontSizeSmall: 'var(--font-size-small)',
-    fontSizeMedium: 'var(--font-size-medium)',
-    fontSizeLarge: 'var(--font-size-large)',
-    fontSizeHuge: 'var(--font-size-huge)',
-  },
-  Form: {
-    feedbackPadding: '4px 0 8px 2px',
-    feedbackHeightSmall: '18px',
-    feedbackHeightMedium: '18px',
-    feedbackHeightLarge: '20px',
-    labelFontWeight: 'var(--font-weight-bold)',
-  },
-  Badge: {
-    fontSize: 'var(--font-size-mini)',
-  },
-  Thing: {
-    titleFontWeight: 'var(--font-weight-bold)',
-  },
-};
-
-const lightOverrides: GlobalThemeOverrides = {
-  common: {
-    bodyColor: '#ffffff',
-  },
-};
-
-const darkOverrides: GlobalThemeOverrides = {
-  common: {
-    bodyColor: '#232323',
-  },
-  Button: {
-    textColorPrimary: '#232323FF',
-  },
-  Card: {
-    colorEmbedded: '#2a2a2a',
-  },
-};
-
-mergeWith(lightOverrides, commonOverrides);
-mergeWith(darkOverrides, commonOverrides);
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
