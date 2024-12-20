@@ -5,8 +5,10 @@ import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 
-import '@/assets/main.css';
 import 'normalize.css';
+
+// commented so the code formatter doesn't rearrange the CSS imports :(
+import '@/assets/main.css';
 
 const app = createApp(App);
 
