@@ -106,12 +106,16 @@ const tokenContextMenuOptions = computed(() => [
     disabled: !isTokenCopySupported.value,
     icon: renderIcon(CopyIcon),
   },
-  {
-    label: () => $t('resources.types.textAnnotation.copyTokenFullAction'),
-    key: 'copyFull',
-    disabled: !isTokenCopySupported.value,
-    icon: renderIcon(CopyIcon),
-  },
+  ...(tokenDetails.value?.annotations?.length
+    ? [
+        {
+          label: () => $t('resources.types.textAnnotation.copyTokenFullAction'),
+          key: 'copyFull',
+          disabled: !isTokenCopySupported.value,
+          icon: renderIcon(CopyIcon),
+        },
+      ]
+    : []),
 ]);
 
 const fontFamilyStyle = computed(() => ({
