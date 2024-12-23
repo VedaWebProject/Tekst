@@ -86,6 +86,7 @@ async function handleHelpButtonClick() {
       :description="$t('general.loading')"
       content-style="width: 100%;"
       class="centered-spinner"
+      style="padding: 0"
     >
       <div v-if="helpText" v-html="helpText.content"></div>
       <div v-else-if="!loading">{{ $t('help.errorNotFound') }}</div>
