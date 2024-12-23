@@ -24,7 +24,7 @@ Therefore, the main use case for Tekst are comparable research projects that eit
 The above being said, nothing is stopping you from using Tekst in different contexts. Tekst might be a viable option for you as long as
 
 1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years)
-2. the types of [resources](introduction/concepts.md#resources) Tekst offers are sufficiently able to represent the data you want to work with
+2. the types of [resources](concepts.md#resources) Tekst offers are sufficiently able to represent the data you want to work with
 
 In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#using-docker-recommended).
 
