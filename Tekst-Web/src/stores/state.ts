@@ -2,6 +2,7 @@ import type { LocaleKey, TextRead, TranslationLocaleKey } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import type { LocaleProfile } from '@/i18n';
 import { $t, $te, getAvaliableBrowserLocaleKey, localeProfiles, setI18nLocale } from '@/i18n';
+import { useAuthStore } from '@/stores/auth';
 import { pickTranslation } from '@/utils';
 import { StorageSerializers, useStorage, useWindowSize } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -9,7 +10,6 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationNormalized } from 'vue-router';
 import { useRoute } from 'vue-router';
-import { useAuthStore } from './auth';
 
 interface AppInitState {
   progress: number;
@@ -25,7 +25,7 @@ export const useStateStore = defineStore('state', () => {
   const { pfData } = usePlatformData();
   const route = useRoute();
   const auth = useAuthStore();
-  const windowSize = useWindowSize();
+  const { width: windowWidth } = useWindowSize({ type: 'visual' });
   const { locale: i18nLocale } = useI18n({ useScope: 'global' });
 
   // app init
@@ -144,7 +144,7 @@ export const useStateStore = defineStore('state', () => {
 
   // responsiveness
 
-  const smallScreen = computed(() => windowSize.width.value < 900);
+  const smallScreen = computed(() => windowWidth.value < 900);
 
   // detect touch device
   const isTouchDevice = ref(true);
