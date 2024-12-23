@@ -277,13 +277,13 @@ function resetForm() {
         <n-tab-pane :tab="$t('resources.heading')" name="resources">
           <!-- DENY RESOURCE TYPES -->
           <n-form-item :label="$t('models.platformSettings.denyResourceTypes')">
-          <n-select
-            v-model:value="formModel.denyResourceTypes"
-            multiple
-            clearable
-            :options="resourceTypeOptions"
-            placeholder="–"
-          />
+            <n-select
+              v-model:value="formModel.denyResourceTypes"
+              multiple
+              clearable
+              :options="resourceTypeOptions"
+              placeholder="–"
+            />
           </n-form-item>
 
           <!-- ADDITIONAL FONTS -->
@@ -333,7 +333,7 @@ function resetForm() {
             <template #label>
               <n-flex align="center" :wrap="false">
                 {{ $t('models.platformSettings.oskModes') }}
-            <help-button-widget help-key="adminSystemSettingsOskModes" />
+                <help-button-widget help-key="adminSystemSettingsOskModes" />
               </n-flex>
             </template>
             <n-dynamic-input

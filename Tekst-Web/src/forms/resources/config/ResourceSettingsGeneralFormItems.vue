@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { prioritizedMetadataKeys, type AnyResourceCreate } from '@/api';
+import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -8,7 +8,7 @@ import { TranslateIcon } from '@/icons';
 import { NDynamicInput, NFlex, NFormItem, NIcon, NInput, NSelect } from 'naive-ui';
 import { computed, h } from 'vue';
 
-const model = defineModel<AnyResourceCreate>({ required: true });
+const model = defineModel<AnyResourceRead>({ required: true });
 
 const metadataKeysOptions = computed(() =>
   prioritizedMetadataKeys.map((k) => ({

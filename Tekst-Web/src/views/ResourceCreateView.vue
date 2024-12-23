@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { POST, resourceTypes, type AnyResourceCreate } from '@/api';
+import { POST, resourceTypes, type AnyResourceRead } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -32,13 +32,12 @@ const auth = useAuthStore();
 const resources = useResourcesStore();
 const { pfData } = usePlatformData();
 
-const availableResourceTypes = resourceTypes
-  .filter(
-    (rt) =>
-      auth.user?.isSuperuser || (pfData.value && !pfData.value.state.denyResourceTypes.includes(rt))
-  );
+const availableResourceTypes = resourceTypes.filter(
+  (rt) =>
+    auth.user?.isSuperuser || (pfData.value && !pfData.value.state.denyResourceTypes.includes(rt))
+);
 
-const getInitialModel = (): AnyResourceCreate =>
+const getInitialModel = (): AnyResourceRead =>
   ({
     title: [{ locale: '*', translation: '' }],
     textId: state.text?.id || '',
@@ -48,11 +47,11 @@ const getInitialModel = (): AnyResourceCreate =>
     public: false,
     proposed: false,
     citation: undefined,
-  }) as AnyResourceCreate;
+  }) as AnyResourceRead;
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const model = ref<AnyResourceCreate>(getInitialModel());
+const model = ref<AnyResourceRead>(getInitialModel());
 
 const resourceTypeOptions = availableResourceTypes.map((rt) => ({
   label: () => $t(`resources.types.${rt}.label`),
