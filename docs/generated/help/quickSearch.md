@@ -1,5 +1,7 @@
 # Quick Search
 
+The quick search is a full-text search of all available resources of the [selected texts](#texts). Which resources are available for the quick search depends on your access permissions as well as the type and configuration of the resources.
+
 ## Operators
 
 - `+` signifies AND operation
@@ -15,7 +17,7 @@
 ## Settings
 
 ### Texts
-Decides which texts are searched.
+Decides which texts are searched. By default, all available texts are selected. This setting is automatically reset whenever you change your working text.
 
 ### All terms must occur
 With “_All terms must occur_” you can decide how individual search terms should be logically linked to each other. If the function is activated, only locations with contents that contain hits for all the search terms entered will be found. Otherwise, the locations with the most hits will be given a higher rank in the search results than those with fewer hits.

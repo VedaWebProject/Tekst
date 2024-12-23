@@ -1,5 +1,7 @@
 # Schnellsuche
 
+Die Schnellsuche ist einen Volltextsuche über alle verfügbaren Ressourcen der [ausgewählten Texte](#texte). Welche Ressourcen für die Schnellsuche verfügbar sind, hängt von Ihren Zugriffsrechten und dem Typ sowie der Konfiguration der Ressourcen ab.
+
 ## Operatoren
 
 - `+` für UND-Verknüpfung
@@ -14,7 +16,7 @@
 ## Einstellungen
 
 ### Texte
-Legt fest, in welchen Texten gesucht wird.
+Legt fest, welche Texte durchsucht werden. Standardmäßig werden alle verfügbaren Texte ausgewählt. Diese Einstellung wird automatisch zurückgesetzt, wenn Sie Ihren Arbeitstext ändern.
 
 ### Alle Begriffe müssen vorkommen
 Mit "_Alle Begriffe müssen vorkommen_" lässt sich bestimmen, wie einzelne Suchbegriffe logisch miteinander verknüpft sein sollen. Ist die Funktion aktiviert, werden ausschließlich Belegstellen mit Inhalten gefunden, in denen alle eingegebenen Suchbegriffe vorkommen. Andernfalls werden die Fundstellen mit den meisten Treffern einen höheren Rang in den Suchergebnissen erhalten, also solche mit weniger Treffern.
