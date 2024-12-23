@@ -1,98 +1,110 @@
 [
-  {
-    "_id": { "$oid": "65c5fe0b691066aabd498236" },
-    "email": "inactive@tekst.dev",
-    "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$01Q6hvaoSh5Eb95bH/yhMA$/JajttLvD4V+iSWF7pEO5j0+9ygb+TUjo+sG4gcEdrU",
-    "is_active": false,
-    "is_superuser": false,
-    "is_verified": true,
-    "username": "inactive_beaver",
-    "name": "Inactive Beaver",
-    "affiliation": "Beaver Dam University",
-    "locale": null,
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Beaver_%28PSF%29.jpg/287px-Beaver_%28PSF%29.jpg",
-    "bio": "Beavers (genus Castor) are large, semiaquatic rodents of the Northern Hemisphere. There are two existing species: the North American beaver (Castor canadensis) and the Eurasian beaver (C. fiber). Beavers are the second-largest living rodents, after capybaras, weighing up to 50 kg (110 lb). They have stout bodies with large heads, long chisel-like incisors, brown or gray fur, hand-like front feet, webbed back feet, and tails that are flat and scaly. The two species differ in skull and tail shape and fur color. Beavers can be found in a number of freshwater habitats, such as rivers, streams, lakes and ponds. They are herbivorous, consuming tree bark, aquatic plants, grasses and sedges. (Wikipedia)",
-    "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
-    "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
-    "user_notification_triggers": [
-      "messageReceived",
-      "resourceProposed",
-      "resourcePublished",
-      "newCorrection"
-    ],
-    "seen": null
-  },
-  {
-    "_id": { "$oid": "65c5fe0c691066aabd498237" },
-    "email": "unverified@tekst.dev",
-    "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$ZTV5euXVw8R16qMbCFbJ1A$8jVUgewY9AuknO2lWLfZzkl9dE3wn3/Kp3Ft5ccox+M",
-    "is_active": true,
-    "is_superuser": false,
-    "is_verified": false,
-    "username": "unverified_zebra",
-    "name": "Unverified Zebra",
-    "affiliation": "Stripes University",
-    "locale": null,
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Zebra_eating.JPG/306px-Zebra_eating.JPG",
-    "bio": "Zebras (subgenus Hippotigris) are African equines with distinctive black-and-white striped coats. There are three living species: Grévy's zebra (Equus grevyi), the plains zebra (E. quagga), and the mountain zebra (E. zebra). Zebras share the genus Equus with horses and asses, the three groups being the only living members of the family Equidae. Zebra stripes come in different patterns, unique to each individual. Several theories have been proposed for the function of these stripes, with most evidence supporting them as a deterrent for biting flies. Zebras inhabit eastern and southern Africa and can be found in a variety of habitats such as savannahs, grasslands, woodlands, shrublands, and mountainous areas. (Wikipedia)",
-    "public_fields": ["name", "affiliation", "bio"],
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
-    "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
-    "user_notification_triggers": [
-      "messageReceived",
-      "resourceProposed",
-      "resourcePublished",
-      "newCorrection"
-    ],
-    "seen": null
-  },
-  {
-    "_id": { "$oid": "65c5fe0c691066aabd498238" },
-    "email": "user@tekst.dev",
-    "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$eMAYBl0Pdc4I5iW7U4P9pw$W0YMu4EGJriJeYk1IMZ5Nzesr4gi60srmNYUwRVt9qE",
-    "is_active": true,
-    "is_superuser": false,
-    "is_verified": true,
-    "username": "regular_starling",
-    "name": "Regular Starling",
-    "affiliation": "Cherrypicker's University",
-    "locale": "enUS",
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Star_Sturnus_vulgaris.jpg",
-    "bio": "Starlings are small to medium-sized passerine birds in the family Sturnidae. The Sturnidae are named for the genus Sturnus, which in turn comes from the Latin word for starling, sturnus. The family contains 128 species which are divided into 36 genera. Many Asian species, particularly the larger ones, are called mynas, and many African species are known as glossy starlings because of their iridescent plumage. Starlings are native to Europe, Asia, and Africa, as well as northern Australia and the islands of the tropical Pacific. Several European and Asian species have been introduced to these areas, as well as North America, Hawaii, and New Zealand, where they generally compete for habitats with native birds and are considered to be invasive species. The starling species familiar to most people in Europe and North America is the common starling, and throughout much of Asia and the Pacific, the common myna is indeed common. (Wikipedia)",
-    "public_fields": ["name", "affiliation", "bio"],
-    "user_notification_triggers": [
-      "messageReceived",
-      "resourceProposed",
-      "resourcePublished",
-      "newCorrection"
-    ],
-    "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
-    "seen": false,
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
-  },
-  {
-    "_id": { "$oid": "65c5fe0c691066aabd498239" },
-    "email": "admin@tekst.dev",
-    "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$4Xc7TPGlz2GY8BMsHW9CUA$ahxtdaldT74kp2dIT2BL92oktatSm8f76wOolg6+nqM",
-    "is_active": true,
-    "is_superuser": true,
-    "is_verified": true,
-    "username": "admin_peacock",
-    "name": "Admin Peacock",
-    "affiliation": "Pretty Peacocks University",
-    "locale": "enUS",
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Peacock.displaying.better.800pix.jpg/301px-Peacock.displaying.better.800pix.jpg",
-    "bio": "Peafowl is a common name for two bird species in the genera Pavo and Afropavo within the tribe Pavonini of the family Phasianidae (the pheasants and their allies). Male peafowl are referred to as peacocks, and female peafowl are referred to as peahens, although peafowl of either sex are often referred to colloquially as \"peacocks\". (Wikipedia)",
-    "public_fields": ["name", "affiliation", "bio"],
-    "user_notification_triggers": [
-      "resourceProposed",
-      "resourcePublished",
-      "messageReceived",
-      "newCorrection"
-    ],
-    "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
-    "seen": true,
-    "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
-  }
+    {
+        "_id": { "$oid": "65c5fe0b691066aabd498236" },
+        "email": "inactive@tekst.dev",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$01Q6hvaoSh5Eb95bH/yhMA$/JajttLvD4V+iSWF7pEO5j0+9ygb+TUjo+sG4gcEdrU",
+        "is_active": false,
+        "is_superuser": false,
+        "is_verified": true,
+        "username": "inactive_beaver",
+        "name": "Inactive Beaver",
+        "affiliation": "Beaver Dam University",
+        "locale": null,
+        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Beaver_%28PSF%29.jpg/287px-Beaver_%28PSF%29.jpg",
+        "bio": "Beavers (genus Castor) are large, semiaquatic rodents of the Northern Hemisphere. There are two existing species: the North American beaver (Castor canadensis) and the Eurasian beaver (C. fiber). Beavers are the second-largest living rodents, after capybaras, weighing up to 50 kg (110 lb). They have stout bodies with large heads, long chisel-like incisors, brown or gray fur, hand-like front feet, webbed back feet, and tails that are flat and scaly. The two species differ in skull and tail shape and fur color. Beavers can be found in a number of freshwater habitats, such as rivers, streams, lakes and ponds. They are herbivorous, consuming tree bark, aquatic plants, grasses and sedges. (Wikipedia)",
+        "public_fields": ["name", "affiliation", "bio"],
+        "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+        "admin_notification_triggers": [
+            "userAwaitsActivation",
+            "newCorrection"
+        ],
+        "user_notification_triggers": [
+            "messageReceived",
+            "resourceProposed",
+            "resourcePublished",
+            "newCorrection"
+        ],
+        "seen": null
+    },
+    {
+        "_id": { "$oid": "65c5fe0c691066aabd498237" },
+        "email": "unverified@tekst.dev",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$ZTV5euXVw8R16qMbCFbJ1A$8jVUgewY9AuknO2lWLfZzkl9dE3wn3/Kp3Ft5ccox+M",
+        "is_active": true,
+        "is_superuser": false,
+        "is_verified": false,
+        "username": "unverified_zebra",
+        "name": "Unverified Zebra",
+        "affiliation": "Stripes University",
+        "locale": null,
+        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Zebra_eating.JPG/306px-Zebra_eating.JPG",
+        "bio": "Zebras (subgenus Hippotigris) are African equines with distinctive black-and-white striped coats. There are three living species: Grévy's zebra (Equus grevyi), the plains zebra (E. quagga), and the mountain zebra (E. zebra). Zebras share the genus Equus with horses and asses, the three groups being the only living members of the family Equidae. Zebra stripes come in different patterns, unique to each individual. Several theories have been proposed for the function of these stripes, with most evidence supporting them as a deterrent for biting flies. Zebras inhabit eastern and southern Africa and can be found in a variety of habitats such as savannahs, grasslands, woodlands, shrublands, and mountainous areas. (Wikipedia)",
+        "public_fields": ["name", "affiliation", "bio"],
+        "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
+        "admin_notification_triggers": [
+            "userAwaitsActivation",
+            "newCorrection"
+        ],
+        "user_notification_triggers": [
+            "messageReceived",
+            "resourceProposed",
+            "resourcePublished",
+            "newCorrection"
+        ],
+        "seen": null
+    },
+    {
+        "_id": { "$oid": "65c5fe0c691066aabd498238" },
+        "email": "user@tekst.dev",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$eMAYBl0Pdc4I5iW7U4P9pw$W0YMu4EGJriJeYk1IMZ5Nzesr4gi60srmNYUwRVt9qE",
+        "is_active": true,
+        "is_superuser": false,
+        "is_verified": true,
+        "username": "regular_starling",
+        "name": "Regular Starling",
+        "affiliation": "Cherrypicker's University",
+        "locale": "enUS",
+        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Star_Sturnus_vulgaris.jpg",
+        "bio": "Starlings are small to medium-sized passerine birds in the family Sturnidae. The Sturnidae are named for the genus Sturnus, which in turn comes from the Latin word for starling, sturnus. The family contains 128 species which are divided into 36 genera. Many Asian species, particularly the larger ones, are called mynas, and many African species are known as glossy starlings because of their iridescent plumage. Starlings are native to Europe, Asia, and Africa, as well as northern Australia and the islands of the tropical Pacific. Several European and Asian species have been introduced to these areas, as well as North America, Hawaii, and New Zealand, where they generally compete for habitats with native birds and are considered to be invasive species. The starling species familiar to most people in Europe and North America is the common starling, and throughout much of Asia and the Pacific, the common myna is indeed common. (Wikipedia)",
+        "public_fields": ["name", "affiliation", "bio"],
+        "user_notification_triggers": [
+            "messageReceived",
+            "resourceProposed",
+            "resourcePublished",
+            "newCorrection"
+        ],
+        "admin_notification_triggers": [
+            "userAwaitsActivation",
+            "newCorrection"
+        ],
+        "seen": false,
+        "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    },
+    {
+        "_id": { "$oid": "65c5fe0c691066aabd498239" },
+        "email": "admin@tekst.dev",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$4Xc7TPGlz2GY8BMsHW9CUA$ahxtdaldT74kp2dIT2BL92oktatSm8f76wOolg6+nqM",
+        "is_active": true,
+        "is_superuser": true,
+        "is_verified": true,
+        "username": "admin_peacock",
+        "name": "Admin Peacock",
+        "affiliation": "Pretty Peacocks University",
+        "locale": "enUS",
+        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Peacock.displaying.better.800pix.jpg/301px-Peacock.displaying.better.800pix.jpg",
+        "bio": "Peafowl is a common name for two bird species in the genera Pavo and Afropavo within the tribe Pavonini of the family Phasianidae (the pheasants and their allies). Male peafowl are referred to as peacocks, and female peafowl are referred to as peahens, although peafowl of either sex are often referred to colloquially as \"peacocks\". (Wikipedia)",
+        "public_fields": ["name", "affiliation", "bio"],
+        "user_notification_triggers": [
+            "resourceProposed",
+            "resourcePublished",
+            "messageReceived",
+            "newCorrection"
+        ],
+        "admin_notification_triggers": [
+            "userAwaitsActivation",
+            "newCorrection"
+        ],
+        "seen": true,
+        "created_at": { "$date": "2024-02-09T10:27:22.844Z" }
+    }
 ]

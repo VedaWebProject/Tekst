@@ -65,10 +65,15 @@ function handleUpdate(field: string, value: unknown) {
 
   <!-- SORT ORDER -->
   <n-form-item
-    :label="$t('resources.settings.config.common.sortOrder')"
     path="config.common.sortOrder"
     :rule="commonResourceConfigFormRules.sortOrder"
   >
+    <template #label>
+      <n-flex align="center" :wrap="false">
+        {{ $t('resources.settings.config.common.sortOrder') }}
+        <help-button-widget help-key="resourceSortOrder" />
+      </n-flex>
+    </template>
     <n-input-number
       :min="0"
       :max="999999"
@@ -76,7 +81,6 @@ function handleUpdate(field: string, value: unknown) {
       style="width: 100%"
       @update:value="(v) => handleUpdate('sortOrder', v)"
     />
-    <help-button-widget help-key="resourceSortOrder" gap-left />
   </n-form-item>
 
   <n-form-item :show-label="false" :show-feedback="false">

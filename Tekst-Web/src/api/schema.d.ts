@@ -3988,11 +3988,11 @@ export interface components {
        */
       registerIntroText: components['schemas']['RegisterIntroTextTranslation'][];
       /**
-       * Customfonts
+       * Fonts
        * @description CSS font family names for use in resources
        * @default []
        */
-      customFonts: string[];
+      fonts: string[];
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
@@ -4100,10 +4100,10 @@ export interface components {
        */
       registerIntroText?: components['schemas']['RegisterIntroTextTranslation'][];
       /**
-       * Customfonts
+       * Fonts
        * @description CSS font family names for use in resources
        */
-      customFonts?: string[];
+      fonts?: string[];
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client

@@ -1,5 +1,6 @@
 general:
   general: Allgemein
+  default: standard
   status: Status
   comment: Kommentar
   settings: Einstellungen
@@ -358,8 +359,8 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    fonts: Ressourcen-Schriftarten
-    resourceFontName: Name
+    fonts: Zusätzliche Schriftarten
+    fontName: Name
   segment:
     modelLabel: Segment
     title: Titel

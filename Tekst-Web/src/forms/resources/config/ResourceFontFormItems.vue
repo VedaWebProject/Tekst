@@ -7,7 +7,7 @@ const { pfData } = usePlatformData();
 const model = defineModel<string>();
 
 const options = computed(() =>
-  [...(pfData.value?.state.customFonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
+  [...(pfData.value?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
     label: f,
     value: f,
   }))

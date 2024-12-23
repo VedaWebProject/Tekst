@@ -104,7 +104,7 @@ export function useInitializeApp() {
     },
     // load custom fontface definitions
     {
-      key: 'customFonts',
+      key: 'fonts',
       info: () => $t('init.fonts'),
       action: async (success: boolean = true) => {
         try {

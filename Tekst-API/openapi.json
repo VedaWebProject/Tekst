@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.1.1a0"
+    "version": "0.2.0a0"
   },
   "servers": [
     {
@@ -12767,7 +12767,7 @@
             "description": "Intro text shown in registration form",
             "default": []
           },
-          "customFonts": {
+          "fonts": {
             "items": {
               "type": "string",
               "maxLength": 32,
@@ -12775,7 +12775,7 @@
             },
             "type": "array",
             "maxItems": 64,
-            "title": "Customfonts",
+            "title": "Fonts",
             "description": "CSS font family names for use in resources",
             "default": []
           },
@@ -13075,7 +13075,7 @@
             "description": "Intro text shown in registration form",
             "optionalNullable": false
           },
-          "customFonts": {
+          "fonts": {
             "anyOf": [
               {
                 "items": {
@@ -13090,7 +13090,7 @@
                 "type": "null"
               }
             ],
-            "title": "Customfonts",
+            "title": "Fonts",
             "description": "CSS font family names for use in resources",
             "optionalNullable": false
           },

@@ -1,5 +1,6 @@
 general:
   general: General
+  default: default
   status: Status
   comment: Comment
   settings: Settings
@@ -357,8 +358,8 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    fonts: Resource Fonts
-    resourceFontName: Name
+    fonts: Additional fonts
+    fontName: Name
   segment:
     modelLabel: Segment
     title: Title

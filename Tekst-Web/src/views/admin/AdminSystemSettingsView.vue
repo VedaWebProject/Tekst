@@ -52,7 +52,7 @@ const localeOptions = computed(() =>
 );
 
 const oskFontOptions = computed(
-  () => pfData.value?.state.customFonts.map((f) => ({ label: f, value: f })) || []
+  () => pfData.value?.state.fonts.map((f) => ({ label: f, value: f })) || []
 );
 
 async function handleSaveClick() {
@@ -257,7 +257,7 @@ function resetForm() {
             />
           </n-flex>
 
-          <!-- CUSTOM REGISTER FROM INTRO TEXT -->
+          <!-- CUSTOM REGISTER FORM INTRO TEXT -->
           <translation-form-item
             v-model="formModel.registerIntroText"
             parent-form-path-prefix="registerIntroText"
@@ -269,16 +269,16 @@ function resetForm() {
           />
         </n-tab-pane>
 
-        <!-- FONTS -->
-        <n-tab-pane name="fonts">
-          <template #tab>
+        <!-- RESOURCES -->
+        <n-tab-pane :tab="$t('resources.heading')" name="resources">
+          <!-- ADDITIONAL FONTS -->
+          <icon-heading level="5">
             {{ $t('models.platformSettings.fonts') }}
-            <help-button-widget help-key="adminSystemSettingsResourceFonts" gap-left />
-          </template>
-
-          <n-form-item v-if="formModel.customFonts" :show-label="false">
+            <help-button-widget help-key="adminSystemSettingsResourceFonts" />
+          </icon-heading>
+          <n-form-item v-if="formModel.fonts" :show-label="false">
             <n-dynamic-input
-              v-model:value="formModel.customFonts"
+              v-model:value="formModel.fonts"
               show-sort-button
               :min="0"
               :max="64"
@@ -287,14 +287,14 @@ function resetForm() {
               <template #default="{ index }">
                 <n-form-item
                   ignore-path-change
-                  :label="$t('models.platformSettings.resourceFontName')"
-                  :path="`customFonts[${index}]`"
-                  :rule="platformSettingsFormRules.resourceFontName"
+                  :label="$t('models.platformSettings.fontName')"
+                  :path="`fonts[${index}]`"
+                  :rule="platformSettingsFormRules.fontName"
                   style="flex-grow: 2"
                 >
                   <n-input
-                    v-model:value="formModel.customFonts[index]"
-                    :placeholder="$t('models.platformSettings.resourceFontName')"
+                    v-model:value="formModel.fonts[index]"
+                    :placeholder="$t('models.platformSettings.fontName')"
                     @keydown.enter.prevent
                   />
                 </n-form-item>
@@ -303,22 +303,19 @@ function resetForm() {
                 <dynamic-input-controls
                   top-offset
                   :movable="false"
-                  :insert-disabled="(formModel.customFonts.length || 0) >= 64"
+                  :insert-disabled="(formModel.fonts.length || 0) >= 64"
                   @remove="() => remove(indexAction)"
                   @insert="() => create(indexAction)"
                 />
               </template>
             </n-dynamic-input>
           </n-form-item>
-        </n-tab-pane>
 
-        <!-- OSK -->
-        <n-tab-pane name="osk">
-          <template #tab>
+          <!-- OSK -->
+          <icon-heading level="5">
             {{ $t('models.platformSettings.oskModes') }}
-            <help-button-widget help-key="adminSystemSettingsOskModes" gap-left />
-          </template>
-
+            <help-button-widget help-key="adminSystemSettingsOskModes" />
+          </icon-heading>
           <n-form-item v-if="formModel.oskModes" :show-label="false">
             <n-dynamic-input
               v-model:value="formModel.oskModes"
@@ -373,7 +370,7 @@ function resetForm() {
                       v-model:value="formModel.oskModes[index].font"
                       clearable
                       :options="oskFontOptions"
-                      :placeholder="$t('models.platformSettings.oskModeFont')"
+                      :placeholder="$t('general.default')"
                       :consistent-menu-width="false"
                       style="min-width: 200px"
                       @keydown.enter.prevent
@@ -386,7 +383,7 @@ function resetForm() {
                   top-offset
                   :move-up-disabled="indexAction === 0"
                   :move-down-disabled="indexAction === formModel.oskModes.length - 1"
-                  :insert-disabled="(formModel.customFonts?.length || 0) >= 64"
+                  :insert-disabled="(formModel.fonts?.length || 0) >= 64"
                   @move-up="() => move('up', indexAction)"
                   @move-down="() => move('down', indexAction)"
                   @remove="() => remove(indexAction)"

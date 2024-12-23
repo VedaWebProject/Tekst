@@ -230,7 +230,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
-    custom_fonts: Annotated[
+    fonts: Annotated[
         list[
             Annotated[
                 str,
