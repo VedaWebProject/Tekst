@@ -7,7 +7,7 @@ from httpx import AsyncClient
 async def test_crud_bookmark(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
     login,
 ):
@@ -23,7 +23,7 @@ async def test_crud_bookmark(
             "comment": "FOO",
         },
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # create bookmark
     resp = await test_client.post(
@@ -33,7 +33,7 @@ async def test_crud_bookmark(
             "comment": "FOO",
         },
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["comment"] == "FOO"
     assert "id" in resp.json()
@@ -48,26 +48,26 @@ async def test_crud_bookmark(
             "comment": "This should not work",
         },
     )
-    assert status_assertion(409, resp)
+    assert_status(409, resp)
 
     # get all user bookmarks
     resp = await test_client.get(
         "/bookmarks",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert resp.json()[0]["comment"] == "FOO"
 
     # fail to delete with wrong ID
     resp = await test_client.delete(f"/bookmarks/{wrong_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to delete as wrong user
     await login()
     resp = await test_client.delete(f"/bookmarks/{bookmark_id}")
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
     await login(user=superuser)
 
     # delete bookmark
     resp = await test_client.delete(f"/bookmarks/{bookmark_id}")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)

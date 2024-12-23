@@ -10,7 +10,8 @@ from asgi_lifespan import LifespanManager
 from beanie import PydanticObjectId
 from bson import ObjectId, json_util
 from elasticsearch import Elasticsearch
-from httpx import ASGITransport, AsyncClient, Response
+from fastapi import Response
+from httpx import ASGITransport, AsyncClient
 from humps import camelize
 from tekst import db, tasks
 from tekst.app import app
@@ -265,17 +266,16 @@ async def login(
 
 
 @pytest.fixture(scope="session")
-def status_assertion() -> Callable:
-    def _status_assertion(
+def assert_status() -> Callable:
+    def _assert_status(
         expected_status: int,
         resp: Response,
-    ) -> tuple[bool, str]:
-        return (
-            resp.status_code == 200,
-            f"HTTP {resp.status_code} (expected: {expected_status}) -- {resp.text}",
-        )
+    ) -> None:
+        assert (
+            resp.status_code == expected_status
+        ), f"HTTP {resp.status_code} -- {resp.text}"
 
-    return _status_assertion
+    return _assert_status
 
 
 @pytest.fixture(scope="session")

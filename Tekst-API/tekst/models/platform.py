@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import Field, StringConstraints
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import (
@@ -230,6 +230,14 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
+    deny_resource_types: Annotated[
+        list[str],
+        Field(
+            description="Resource types regular users are not allowed to create",
+            max_length=64,
+        ),
+    ] = []
+
     fonts: Annotated[
         list[
             Annotated[
@@ -275,6 +283,20 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             create=True,
         ),
     ] = None
+
+    @field_validator("deny_resource_types", mode="after")
+    @classmethod
+    def validate_deny_resource_types(cls, v):
+        from tekst.resources import resource_types_mgr
+
+        resource_type_names = resource_types_mgr.list_names()
+        for res_type in v:
+            if res_type not in resource_type_names:
+                raise ValueError(
+                    f"Given resource type ({res_type}) is not a valid "
+                    f"resource type name (one of {resource_type_names})."
+                )
+        return v
 
 
 class PlatformStateDocument(PlatformState, DocumentBase):

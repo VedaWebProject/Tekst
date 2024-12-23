@@ -33,6 +33,7 @@ router = APIRouter(
         [
             errors.E_403_FORBIDDEN,
             errors.E_409_CONTENT_CONFLICT,
+            errors.E_400_CONTENT_TYPE_MISMATCH,
         ]
     ),
 )
@@ -48,6 +49,7 @@ async def create_content(
     )
     if not resource:
         raise errors.E_403_FORBIDDEN
+
     # check for duplicates
     if await ContentBaseDocument.find_one(
         ContentBaseDocument.resource_id == content.resource_id,
@@ -55,6 +57,10 @@ async def create_content(
         with_children=True,
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
+
+    # check if resource type matches resource
+    if content.resource_type != resource.resource_type:
+        raise errors.E_400_CONTENT_TYPE_MISMATCH
 
     # call the resource's hook for changed contents
     await resource.contents_changed_hook()
@@ -106,7 +112,6 @@ async def get_content(
     responses=errors.responses(
         [
             errors.E_404_CONTENT_NOT_FOUND,
-            errors.E_400_CONTENT_TYPE_MISMATCH,
             errors.E_403_FORBIDDEN,
         ]
     ),
@@ -119,9 +124,6 @@ async def update_content(
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     if not content_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
-    # check if content's resource type matches updates' resource type
-    if updates.resource_type != content_doc.resource_type:
-        raise errors.E_400_CONTENT_TYPE_MISMATCH
     # check if the resource this content belongs to is writable by user
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,

@@ -8,14 +8,14 @@ from tekst.auth import create_initial_superuser
 @pytest.mark.anyio
 async def test_admin_get_all_users(
     test_client: AsyncClient,
-    status_assertion,
     insert_sample_data,
     login,
+    assert_status,
 ):
     await insert_sample_data("users")
     await login(is_superuser=True)
     resp = await test_client.get("/users")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 5
@@ -24,8 +24,8 @@ async def test_admin_get_all_users(
 @pytest.mark.anyio
 async def test_find_public_users(
     test_client: AsyncClient,
-    status_assertion,
     login,
+    assert_status,
 ):
     u = await login()
 
@@ -34,7 +34,7 @@ async def test_find_public_users(
         "/users/public",
         params={"q": u.get("username")},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 1
@@ -48,7 +48,7 @@ async def test_find_public_users(
         "/users/public",
         params={"q": "nonsense"},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 0
@@ -58,7 +58,7 @@ async def test_find_public_users(
         "/users/public",
         params={"emptyOk": False},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 0
@@ -68,7 +68,7 @@ async def test_find_public_users(
         "/users/public",
         params={"emptyOk": True},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) > 0
@@ -78,7 +78,7 @@ async def test_find_public_users(
         "/users/public",
         params={"q": "      ", "emptyOk": False},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
     assert len(resp.json()["users"]) == 0
@@ -87,14 +87,14 @@ async def test_find_public_users(
 @pytest.mark.anyio
 async def test_get_public_user(
     test_client: AsyncClient,
-    status_assertion,
     register_test_user,
+    assert_status,
 ):
     u = await register_test_user()
 
     # get by ID
     resp = await test_client.get(f"/users/public/{u['id']}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()
     assert resp.json()["username"] == u["username"]
@@ -104,7 +104,7 @@ async def test_get_public_user(
 
     # get by username
     resp = await test_client.get(f"/users/public/{u['username']}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()
     assert resp.json()["username"] == u["username"]
@@ -114,21 +114,21 @@ async def test_get_public_user(
 
     # fail to get by non-existent username
     resp = await test_client.get("/users/public/i_do_not_exist")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
 
 @pytest.mark.anyio
 async def test_user_updates_self(
     login,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
 ):
     await login()
     # get user data from /users/me
     resp = await test_client.get(
         "/users/me",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert "id" in resp.json()
     # update own first name
     user_id = resp.json()["id"]
@@ -137,7 +137,7 @@ async def test_user_updates_self(
         "/users/me",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["id"] == user_id
     assert resp.json()["name"] == "Bird Person"
 
@@ -146,14 +146,14 @@ async def test_user_updates_self(
 async def test_user_deletes_self(
     login,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
 ):
     await login()
     # delete self
     resp = await test_client.delete(
         "/users/me",
     )
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
 
 @pytest.mark.anyio
@@ -161,7 +161,7 @@ async def test_update_user(
     login,
     register_test_user,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
 ):
     user = await register_test_user(is_active=False)
     await login(is_superuser=True)
@@ -170,7 +170,7 @@ async def test_update_user(
         f"/users/{user['id']}",
         json={"isActive": True, "isSuperuser": True, "password": "XoiPOI09871"},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["isActive"] is True
     assert resp.json()["isSuperuser"] is True
     assert "password" not in resp.json()
@@ -178,7 +178,7 @@ async def test_update_user(
     resp = await test_client.patch(
         f"/users/{user['id']}", json={"isActive": False, "isSuperuser": False}
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["isActive"] is False
     assert resp.json()["isSuperuser"] is False
 

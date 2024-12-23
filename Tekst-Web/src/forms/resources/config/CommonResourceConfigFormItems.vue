@@ -64,10 +64,7 @@ function handleUpdate(field: string, value: unknown) {
   </n-form-item>
 
   <!-- SORT ORDER -->
-  <n-form-item
-    path="config.common.sortOrder"
-    :rule="commonResourceConfigFormRules.sortOrder"
-  >
+  <n-form-item path="config.common.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
     <template #label>
       <n-flex align="center" :wrap="false">
         {{ $t('resources.settings.config.common.sortOrder') }}
@@ -76,7 +73,7 @@ function handleUpdate(field: string, value: unknown) {
     </template>
     <n-input-number
       :min="0"
-      :max="999999"
+      :max="1000"
       :value="model.sortOrder"
       style="width: 100%"
       @update:value="(v) => handleUpdate('sortOrder', v)"

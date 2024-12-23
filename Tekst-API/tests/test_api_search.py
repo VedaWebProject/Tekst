@@ -1,5 +1,3 @@
-from collections.abc import Callable
-
 import pytest
 
 from httpx import AsyncClient, Response
@@ -7,11 +5,10 @@ from httpx import AsyncClient, Response
 
 def _assert_search_resp(
     resp: Response,
-    status_assertion: Callable,
     expected_status: int,
     expected_hits: int,
 ) -> None:
-    assert status_assertion(expected_status, resp)
+    assert resp.status_code == expected_status
     assert isinstance(resp.json(), dict)
     assert "hits" in resp.json()
     assert "totalHits" in resp.json()
@@ -22,7 +19,7 @@ def _assert_search_resp(
 async def test_admin_create_search_index(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wait_for_task_success,
 ):
@@ -31,13 +28,13 @@ async def test_admin_create_search_index(
 
     # create task to create index
     resp = await test_client.get("/search/index/create")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
     # get index info
     resp = await test_client.get("/search/index/info")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
 
@@ -46,12 +43,12 @@ async def test_admin_create_search_index(
 async def test_get_indices_info(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
+    assert_status,
     login,
 ):
     await login(is_superuser=True)
     resp = await test_client.get("/search/index/info")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
     assert resp.json()[0]["upToDate"]
@@ -61,7 +58,7 @@ async def test_get_indices_info(
 async def test_quick(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
+    assert_status,
 ):
     # find everything
     _assert_search_resp(
@@ -73,7 +70,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=19,
     )
@@ -88,7 +84,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=2,
     )
@@ -108,7 +103,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=2,
     )
@@ -128,7 +122,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=0,
     )
@@ -143,7 +136,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=2,
     )
@@ -158,7 +150,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=2,
     )
@@ -173,7 +164,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=3,
     )
@@ -188,7 +178,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=6,
     )
@@ -203,7 +192,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": True, "txt": []},
             },
         ),
-        status_assertion,
         200,
         expected_hits=2,
     )
@@ -218,7 +206,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": ["654b825533ee5737b297f8e3"]},
             },
         ),
-        status_assertion,
         200,
         expected_hits=9,
     )
@@ -237,14 +224,13 @@ async def test_quick(
             "qck": {"op": "OR", "re": False, "txt": []},
         },
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_advanced_text_annotation(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # token empty, nothing else (finds everything)
     _assert_search_resp(
@@ -261,7 +247,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=12,
     )
@@ -285,7 +270,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -304,7 +288,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -323,7 +306,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=4,
     )
@@ -345,7 +327,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=10,
     )
@@ -367,7 +348,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=7,
     )
@@ -395,7 +375,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -417,7 +396,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=7,
     )
@@ -440,7 +418,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -450,7 +427,6 @@ async def test_advanced_text_annotation(
 async def test_advanced_plain_text(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # text, simple term, optional/should
     _assert_search_resp(
@@ -466,7 +442,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -485,7 +460,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -504,7 +478,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=18,
     )
@@ -523,7 +496,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=4,
     )
@@ -547,7 +519,6 @@ async def test_advanced_plain_text(
                 },
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -571,7 +542,6 @@ async def test_advanced_plain_text(
                 },
             },
         ),
-        status_assertion,
         200,
         expected_hits=0,
     )
@@ -594,7 +564,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -604,7 +573,6 @@ async def test_advanced_plain_text(
 async def test_advanced_images(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # caption, empty
     _assert_search_resp(
@@ -620,7 +588,6 @@ async def test_advanced_images(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -638,7 +605,6 @@ async def test_advanced_images(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -648,7 +614,6 @@ async def test_advanced_images(
 async def test_advanced_audio(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # caption, empty
     _assert_search_resp(
@@ -664,7 +629,6 @@ async def test_advanced_audio(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -683,7 +647,6 @@ async def test_advanced_audio(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -693,7 +656,6 @@ async def test_advanced_audio(
 async def test_advanced_external_references(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # description, empty
     _assert_search_resp(
@@ -709,7 +671,6 @@ async def test_advanced_external_references(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -728,7 +689,6 @@ async def test_advanced_external_references(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -738,7 +698,6 @@ async def test_advanced_external_references(
 async def test_advanced_rich_text(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
 ):
     # html, empty query
     _assert_search_resp(
@@ -754,7 +713,6 @@ async def test_advanced_rich_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -773,7 +731,6 @@ async def test_advanced_rich_text(
                 ],
             },
         ),
-        status_assertion,
         200,
         expected_hits=1,
     )
@@ -783,7 +740,7 @@ async def test_advanced_rich_text(
 async def test_export_search_results(
     test_client: AsyncClient,
     use_indices,
-    status_assertion,
+    assert_status,
     wait_for_task_success,
 ):
     resp = await test_client.post(
@@ -798,6 +755,6 @@ async def test_export_search_results(
             "qck": {"op": "OR", "re": False, "txt": []},
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])

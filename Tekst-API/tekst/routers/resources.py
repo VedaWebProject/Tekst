@@ -47,6 +47,7 @@ from tekst.resources import (
 )
 from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.search import set_index_ood
+from tekst.state import StateDep
 from tekst.utils import client_hash, pick_translation
 
 
@@ -140,11 +141,12 @@ async def trigger_resources_maintenance(
             errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_400_RESOURCE_INVALID_LEVEL,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
 async def create_resource(
-    resource: AnyResourceCreate, user: UserDep, cfg: ConfigDep
+    resource: AnyResourceCreate, user: UserDep, cfg: ConfigDep, state: StateDep
 ) -> AnyResourceRead:
     # check user resources limit
     if (
@@ -153,6 +155,10 @@ async def create_resource(
         >= cfg.misc.max_resources_per_user
     ):
         raise errors.E_409_RESOURCES_LIMIT_REACHED
+
+    # check if creation of this resource type is allowed for user
+    if not user.is_superuser and resource.resource_type in state.deny_resource_types:
+        raise errors.E_403_FORBIDDEN
 
     # check text integrity
     text = await TextDocument.get(resource.text_id)

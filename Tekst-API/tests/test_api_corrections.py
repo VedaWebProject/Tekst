@@ -9,7 +9,7 @@ from tekst.models.resource import ResourceBaseDocument
 async def test_corrections_crud(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wrong_id,
 ):
@@ -27,7 +27,7 @@ async def test_corrections_crud(
             "note": "Something is wrong here.",
         },
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
 
     # fail to create correction note with wrong resource ID
     resp = await test_client.post(
@@ -38,7 +38,7 @@ async def test_corrections_crud(
             "note": "Something is wrong here.",
         },
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to create correction note for invalid location
     resp = await test_client.post(
@@ -49,18 +49,18 @@ async def test_corrections_crud(
             "note": "Something is wrong here.",
         },
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to get correction notes (because of missing permissions)
     resp = await test_client.get(f"/corrections/{res_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # log in as superuser (to be able to access corrections data)
     su = await login(is_superuser=True)
 
     # get correction notes
     resp = await test_client.get(f"/corrections/{res_id}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["note"] == "Something is wrong here."
@@ -68,15 +68,15 @@ async def test_corrections_crud(
 
     # fail to delete correction note with wrong ID
     resp = await test_client.delete(f"/corrections/{wrong_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # delete correction note
     resp = await test_client.delete(f"/corrections/{correction_id}")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get correction notes
     resp = await test_client.get(f"/corrections/{res_id}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -92,7 +92,7 @@ async def test_corrections_crud(
             "note": "This should trigger a notification to the resource owner.",
         },
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     correction_id = resp.json()["id"]
@@ -102,4 +102,4 @@ async def test_corrections_crud(
     await resource.replace()
     await login(user=u)  # logs out admin, logs in existing normal user
     resp = await test_client.delete(f"/corrections/{correction_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)

@@ -352,14 +352,15 @@ models:
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
-    oskModes: On-screen Keyboards
-    oskModeName: Name
-    oskModeFont: Keyboard font
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
+    denyResourceTypes: Prevent creation of resources of these types
     fonts: Additional fonts
     fontName: Name
+    oskModes: On-screen Keyboards
+    oskModeName: Name
+    oskModeFont: Keyboard font
   segment:
     modelLabel: Segment
     title: Title

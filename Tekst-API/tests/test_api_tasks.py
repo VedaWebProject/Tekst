@@ -11,7 +11,7 @@ from httpx import AsyncClient
 async def test_get_non_user_tasks(
     config,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
     wait_for_task_success,
     insert_sample_data,
 ):
@@ -19,7 +19,7 @@ async def test_get_non_user_tasks(
 
     # get (non-)user tasks (none, no pickup keys)
     resp = await test_client.get("/platform/tasks/user")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -32,7 +32,7 @@ async def test_get_non_user_tasks(
             "to": "654b825533ee5737b297f8f2",
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     task_id = resp.json()["id"]
     pickup_key = resp.json()["pickupKey"]
@@ -46,7 +46,7 @@ async def test_get_non_user_tasks(
         "/platform/tasks/user",
         headers={"pickup-keys": pickup_key},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == task_id
@@ -57,7 +57,7 @@ async def test_get_non_user_tasks(
         "/platform/tasks/download",
         params={"pickupKey": pickup_key},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # wait a bit because task deletion after download is async
     await asyncio.sleep(2)
@@ -68,7 +68,7 @@ async def test_get_non_user_tasks(
         "/platform/tasks/user",
         headers={"pickup-keys": pickup_key},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -77,7 +77,7 @@ async def test_get_non_user_tasks(
 async def test_get_user_tasks(
     config,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
     login,
     wait_for_task_success,
     insert_sample_data,
@@ -87,13 +87,13 @@ async def test_get_user_tasks(
 
     # get user tasks (none yet)
     resp = await test_client.get("/platform/tasks/user")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # create task to create index (to have a task to work with)
     resp = await test_client.get("/search/index/create")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
@@ -101,7 +101,7 @@ async def test_get_user_tasks(
     # (one now should be deleted on requesting tasks as it's
     # not a task that produced an artifact)
     resp = await test_client.get("/platform/tasks/user")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["status"] == "done"
@@ -109,7 +109,7 @@ async def test_get_user_tasks(
     # get user tasks
     # (no tasks anymore, as task got deleted)
     resp = await test_client.get("/platform/tasks/user")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -118,18 +118,18 @@ async def test_get_user_tasks(
 async def test_get_all_tasks(
     config,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
     login,
 ):
     # as normal user (fails)
     await login()
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(401, resp)
+    assert_status(403, resp)
 
     # as admin
     await login(is_superuser=True)
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -139,7 +139,7 @@ async def test_download_artifact(
     config,
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wait_for_task_success,
 ):
     await insert_sample_data()
@@ -153,7 +153,7 @@ async def test_download_artifact(
             "to": "654b825533ee5737b297f8f2",
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert "pickupKey" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
@@ -164,14 +164,14 @@ async def test_download_artifact(
         "/platform/tasks/download",
         params={"pickupKey": uuid4().hex},
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # download generated artifact
     resp = await test_client.get(
         "/platform/tasks/download",
         params={"pickupKey": pickup_key},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
 
 @pytest.mark.anyio
@@ -179,7 +179,7 @@ async def test_delete_tasks(
     config,
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wait_for_task_success,
     login,
 ):
@@ -188,46 +188,46 @@ async def test_delete_tasks(
 
     # start index creation task (to have a task to work with)
     resp = await test_client.get("/search/index/create")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
     # get all tasks
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["status"] == "done"
 
     # delete all tasks
     resp = await test_client.delete("/platform/tasks")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get all tasks
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # start index creation task (to have a task to work with)
     resp = await test_client.get("/search/index/create")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
     # get all tasks
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
 
     # delete specific task
     resp = await test_client.delete(f"/platform/tasks/{resp.json()[0]['id']}")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get all tasks
     resp = await test_client.get("/platform/tasks")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -236,7 +236,7 @@ async def test_delete_tasks(
 async def test_tasks_locking(
     config,
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
     insert_sample_data,
     login,
     wait_for_task_success,
@@ -245,8 +245,8 @@ async def test_tasks_locking(
     await login(is_superuser=True)
     resp1 = await test_client.get("/search/index/create")
     resp2 = await test_client.get("/search/index/create")
-    assert status_assertion(202, resp1)
-    assert status_assertion(202, resp2)
+    assert resp1.status_code == 202
+    assert resp2.status_code == 202
     assert "id" in resp1.json()
     assert "id" in resp2.json()
     assert await wait_for_task_success(resp1.json()["id"])

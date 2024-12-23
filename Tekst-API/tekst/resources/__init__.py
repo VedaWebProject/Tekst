@@ -446,28 +446,26 @@ def init_resource_types_mgr() -> None:
     lt_modules = [mod.name for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
         module = importlib.import_module(f"{__name__}.{lt_module}")
-        resource_types_from_module = inspect.getmembers(
+        res_types_from_module = inspect.getmembers(
             module, lambda o: inspect.isclass(o) and issubclass(o, ResourceTypeABC)
         )
-        for resource_type_impl in resource_types_from_module:
+        for res_type_impl in res_types_from_module:
             # exclude ResourceTypeABC class (which is weirdly picked up here)
-            if resource_type_impl[1] is not ResourceTypeABC:
-                resource_type_class = resource_type_impl[1]
+            if res_type_impl[1] is not ResourceTypeABC:
+                res_type_class = res_type_impl[1]
                 # init resource/content type CRUD models
                 # (don't init document models here!)
-                resource_type_class.resource_model().create_model()
-                resource_type_class.resource_model().read_model(
+                res_type_class.resource_model().create_model()
+                res_type_class.resource_model().read_model(
                     (ResourceReadExtras, ReadBase)
                 )
-                resource_type_class.resource_model().update_model()
-                resource_type_class.content_model().create_model()
-                resource_type_class.content_model().read_model()
-                resource_type_class.content_model().update_model()
+                res_type_class.resource_model().update_model()
+                res_type_class.content_model().create_model()
+                res_type_class.content_model().read_model()
+                res_type_class.content_model().update_model()
                 # register resource type instance with resource type manager
-                log.debug(
-                    f"Registering resource type: {resource_type_class.get_name()}"
-                )
-                manager.register(resource_type_class, resource_type_class.get_key())
+                log.debug(f"Registering resource type: {res_type_class.get_name()}")
+                manager.register(res_type_class, res_type_class.get_key())
     resource_types_mgr = manager
 
 

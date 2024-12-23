@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PATCH, type PlatformSettingsUpdate } from '@/api';
+import { PATCH, resourceTypes, type PlatformSettingsUpdate } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -53,6 +53,10 @@ const localeOptions = computed(() =>
 
 const oskFontOptions = computed(
   () => pfData.value?.state.fonts.map((f) => ({ label: f, value: f })) || []
+);
+
+const resourceTypeOptions = computed(
+  () => resourceTypes.map((f) => ({ label: $t(`resources.types.${f}.label`), value: f })) || []
 );
 
 async function handleSaveClick() {
@@ -271,12 +275,25 @@ function resetForm() {
 
         <!-- RESOURCES -->
         <n-tab-pane :tab="$t('resources.heading')" name="resources">
+          <!-- DENY RESOURCE TYPES -->
+          <n-form-item :label="$t('models.platformSettings.denyResourceTypes')">
+          <n-select
+            v-model:value="formModel.denyResourceTypes"
+            multiple
+            clearable
+            :options="resourceTypeOptions"
+            placeholder="–"
+          />
+          </n-form-item>
+
           <!-- ADDITIONAL FONTS -->
-          <icon-heading level="5">
-            {{ $t('models.platformSettings.fonts') }}
-            <help-button-widget help-key="adminSystemSettingsResourceFonts" />
-          </icon-heading>
-          <n-form-item v-if="formModel.fonts" :show-label="false">
+          <n-form-item v-if="formModel.fonts">
+            <template #label>
+              <n-flex align="center" :wrap="false">
+                {{ $t('models.platformSettings.fonts') }}
+                <help-button-widget help-key="adminSystemSettingsResourceFonts" />
+              </n-flex>
+            </template>
             <n-dynamic-input
               v-model:value="formModel.fonts"
               show-sort-button
@@ -312,11 +329,13 @@ function resetForm() {
           </n-form-item>
 
           <!-- OSK -->
-          <icon-heading level="5">
-            {{ $t('models.platformSettings.oskModes') }}
+          <n-form-item v-if="formModel.oskModes">
+            <template #label>
+              <n-flex align="center" :wrap="false">
+                {{ $t('models.platformSettings.oskModes') }}
             <help-button-widget help-key="adminSystemSettingsOskModes" />
-          </icon-heading>
-          <n-form-item v-if="formModel.oskModes" :show-label="false">
+              </n-flex>
+            </template>
             <n-dynamic-input
               v-model:value="formModel.oskModes"
               show-sort-button

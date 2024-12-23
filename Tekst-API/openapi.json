@@ -747,6 +747,16 @@
             },
             "description": "Conflict"
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1100,16 +1110,6 @@
               }
             },
             "description": "Not Found"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Bad Request"
           },
           "403": {
             "content": {
@@ -3375,6 +3375,16 @@
               }
             },
             "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -12767,6 +12777,16 @@
             "description": "Intro text shown in registration form",
             "default": []
           },
+          "denyResourceTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Denyresourcetypes",
+            "description": "Resource types regular users are not allowed to create",
+            "default": []
+          },
           "fonts": {
             "items": {
               "type": "string",
@@ -13073,6 +13093,23 @@
             ],
             "title": "Registerintrotext",
             "description": "Intro text shown in registration form",
+            "optionalNullable": false
+          },
+          "denyResourceTypes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denyresourcetypes",
+            "description": "Resource types regular users are not allowed to create",
             "optionalNullable": false
           },
           "fonts": {

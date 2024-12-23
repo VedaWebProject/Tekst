@@ -10,7 +10,7 @@ from tekst.models.text import TextDocument
 async def test_get_content_siblings(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
     login,
 ):
@@ -26,7 +26,7 @@ async def test_get_content_siblings(
         "/browse/content-siblings",
         params={"res": str(resource.id)},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
 
@@ -35,21 +35,21 @@ async def test_get_content_siblings(
         "/browse/content-siblings",
         params={"res": wrong_id},
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # siblings of resource version
     await login()
     resp = await test_client.post(
         f"/resources/{str(resource.id)}/version",
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert "id" in resp.json()
     version_id = resp.json()["id"]
     resp = await test_client.get(
         "/browse/content-siblings",
         params={"res": version_id},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 3
 
@@ -59,7 +59,7 @@ async def test_get_location_data(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
 ):
     await insert_sample_data("texts", "locations", "resources", "contents")
@@ -72,7 +72,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": text_id, "lvl": 0, "pos": 0},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
@@ -82,7 +82,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": text_id, "lvl": 2, "pos": 0},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
@@ -92,7 +92,7 @@ async def test_get_location_data(
         "/browse/location-data",
         params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) == 0
     assert len(resp.json()["contents"]) == 0
@@ -102,7 +102,7 @@ async def test_get_location_data(
 async def test_get_path_options_by_head(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
 ):
     await insert_sample_data("texts", "locations")
@@ -113,7 +113,7 @@ async def test_get_path_options_by_head(
     resp = await test_client.get(
         f"/browse/locations/{str(location.id)}/path/options-by-head",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
@@ -121,7 +121,7 @@ async def test_get_path_options_by_head(
     resp = await test_client.get(
         f"/browse/locations/{wrong_id}/path/options-by-head",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -130,7 +130,7 @@ async def test_get_path_options_by_head(
 async def test_get_path_options_by_root(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
 ):
     await insert_sample_data("texts", "locations")
@@ -141,7 +141,7 @@ async def test_get_path_options_by_root(
     resp = await test_client.get(
         f"/browse/locations/{str(location.id)}/path/options-by-root",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert isinstance(resp.json()[0], list)
 
@@ -149,7 +149,7 @@ async def test_get_path_options_by_root(
     resp = await test_client.get(
         f"/browse/locations/{wrong_id}/path/options-by-root",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -158,7 +158,7 @@ async def test_get_path_options_by_root(
 async def test_get_nearest_content_position(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
     login,
 ):
@@ -173,7 +173,7 @@ async def test_get_nearest_content_position(
         "/browse/nearest-content-position",
         params={"res": resource_id, "pos": 0, "mode": "subsequent"},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), int)
     assert resp.json() == 1
 
@@ -182,4 +182,4 @@ async def test_get_nearest_content_position(
         "/browse/nearest-content-position",
         params={"res": wrong_id, "pos": 0, "mode": "subsequent"},
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)

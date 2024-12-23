@@ -353,14 +353,15 @@ models:
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
-    oskModes: Bildschirmtastaturen
-    oskModeName: Name
-    oskModeFont: Tastatur-Schriftart
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
+    denyResourceTypes: Erstellen von Ressourcen dieser Typen unterbinden
     fonts: Zusätzliche Schriftarten
     fontName: Name
+    oskModes: Bildschirmtastaturen
+    oskModeName: Name
+    oskModeFont: Tastatur-Schriftart
   segment:
     modelLabel: Segment
     title: Titel

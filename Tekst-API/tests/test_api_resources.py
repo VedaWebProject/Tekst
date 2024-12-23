@@ -5,6 +5,7 @@ import pytest
 from beanie import PydanticObjectId
 from beanie.operators import Set
 from httpx import AsyncClient
+from tekst.models.platform import PlatformStateDocument
 from tekst.models.resource import ResourceBaseDocument
 
 
@@ -12,7 +13,7 @@ from tekst.models.resource import ResourceBaseDocument
 async def test_create_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
@@ -35,7 +36,7 @@ async def test_create_resource(
         "/resources",
         json=payload,
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert "id" in resp.json()
     assert resp.json()["title"][0]["translation"] == "A test resource"
     assert (
@@ -46,10 +47,40 @@ async def test_create_resource(
 
 
 @pytest.mark.anyio
+async def test_create_resource_w_invalid_type(
+    test_client: AsyncClient,
+    insert_sample_data,
+    login,
+    assert_status,
+):
+    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    user = await login()
+    payload = {
+        "title": [{"locale": "*", "translation": "A test resource"}],
+        "description": [
+            {
+                "locale": "*",
+                "translation": "This is     a string with \n some space    chars",
+            }
+        ],
+        "textId": text_id,
+        "level": 0,
+        "resourceType": "foo",
+        "ownerId": user["id"],
+    }
+
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
+    assert_status(422, resp)
+
+
+@pytest.mark.anyio
 async def test_create_too_many_resources(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
@@ -78,7 +109,7 @@ async def test_create_too_many_resources(
 async def test_create_resource_w_invalid_level(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
@@ -99,14 +130,14 @@ async def test_create_resource_w_invalid_level(
             "ownerId": user["id"],
         },
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_create_resource_w_wrong_text_id(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wrong_id,
 ):
@@ -124,14 +155,14 @@ async def test_create_resource_w_wrong_text_id(
         "/resources",
         json=payload,
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_create_resource_with_forged_owner_id(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
@@ -149,13 +180,43 @@ async def test_create_resource_with_forged_owner_id(
         "/resources",
         json=payload,
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert resp.json()["ownerId"] != payload["ownerId"]
 
 
 @pytest.mark.anyio
+async def test_create_resource_with_denied_type(
+    test_client: AsyncClient,
+    insert_sample_data,
+    login,
+    assert_status,
+):
+    text_id = (await insert_sample_data())["texts"][0]
+    await PlatformStateDocument.find().update(
+        Set({PlatformStateDocument.deny_resource_types: ["plainText"]})
+    )
+    u = await login()
+
+    resp = await test_client.post(
+        "/resources",
+        json={
+            "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
+            "textId": text_id,
+            "level": 0,
+            "resourceType": "plainText",
+            "ownerId": u["id"],
+        },
+    )
+    assert_status(403, resp)
+
+
+@pytest.mark.anyio
 async def test_create_resource_version(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    assert_status,
+    login,
+    wrong_id,
 ):
     resource_id = (await insert_sample_data("texts", "locations", "resources"))[
         "resources"
@@ -166,13 +227,13 @@ async def test_create_resource_version(
     resp = await test_client.post(
         f"/resources/{wrong_id}/version",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # create new resource version
     resp = await test_client.post(
         f"/resources/{resource_id}/version",
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert "id" in resp.json()
     assert "originalId" in resp.json()
     assert "ownerId" in resp.json()
@@ -182,14 +243,14 @@ async def test_create_resource_version(
     resp = await test_client.post(
         f"/resources/{resp.json()['id']}/version",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_create_too_many_resource_versions(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     resource_id = (await insert_sample_data("texts", "locations", "resources"))[
@@ -213,7 +274,7 @@ async def test_create_too_many_resource_versions(
 async def test_update_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     register_test_user,
     wrong_id,
@@ -235,7 +296,7 @@ async def test_update_resource(
         "/resources",
         json=payload,
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
@@ -251,7 +312,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == str(resource_data["id"])
@@ -266,7 +327,7 @@ async def test_update_resource(
         f"/resources/{wrong_id}",
         json=updates,
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # update resource's read shares
     updates = {"sharedRead": [other_user["id"]], "resourceType": "plainText"}
@@ -274,7 +335,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["sharedRead"][0] == other_user["id"]
 
@@ -288,7 +349,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["sharedRead"]) == 0
     assert resp.json()["sharedWrite"][0] == other_user["id"]
@@ -299,7 +360,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # check if updating public/proposed has no effect (as intended)
     updates = {"public": True, "proposed": True, "resourceType": "plainText"}
@@ -307,7 +368,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["public"] is False
     assert resp.json()["proposed"] is False
@@ -319,7 +380,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(401, resp)
+    assert_status(401, resp)
 
     # update resource shares as non-owner/non-admin
     await login(user=other_user)
@@ -328,7 +389,7 @@ async def test_update_resource(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert wrong_id not in resp.json()["sharedRead"]  # bc API should ignore the update!
 
 
@@ -336,7 +397,7 @@ async def test_update_resource(
 async def test_set_shares_for_public_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     register_test_user,
     wrong_id,
@@ -357,14 +418,18 @@ async def test_set_shares_for_public_resource(
         f"/resources/{resource_id}",
         json=updates,
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["public"] is True
     assert len(resp.json()["sharedRead"]) == 0  # bc API should clear shares updates!
 
 
 @pytest.mark.anyio
 async def test_get_resource(
-    test_client: AsyncClient, insert_sample_data, status_assertion, wrong_id, login
+    test_client: AsyncClient,
+    insert_sample_data,
+    wrong_id,
+    login,
+    assert_status,
 ):
     resource_id = (await insert_sample_data("texts", "locations", "resources"))[
         "resources"
@@ -372,29 +437,30 @@ async def test_get_resource(
 
     # get resource by ID
     resp = await test_client.get(f"/resources/{resource_id}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
     assert resp.json()["id"] == resource_id
 
     # fail to get resource by wrong ID
     resp = await test_client.get(f"/resources/{wrong_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to get resource without read permissions
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == PydanticObjectId(resource_id), with_children=True
+        ResourceBaseDocument.id == PydanticObjectId(resource_id),
+        with_children=True,
     ).set({ResourceBaseDocument.public: False})
     await login(is_superuser=False)
     resp = await test_client.get(f"/resources/{resource_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
 
 @pytest.mark.anyio
 async def test_access_private_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     logout,
 ):
@@ -404,7 +470,7 @@ async def test_access_private_resource(
 
     # get all accessible resources
     resp = await test_client.get("/resources", params={"txt": text_id})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     accessible_unauthorized = len(resp.json())
 
@@ -415,26 +481,28 @@ async def test_access_private_resource(
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # get all accessible resources again, unauthenticated
     await logout()
     resp = await test_client.get("/resources", params={"txt": text_id})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) < accessible_unauthorized  # this should be less now
 
 
 @pytest.mark.anyio
 async def test_get_resources(
-    test_client: AsyncClient, insert_sample_data, status_assertion
+    test_client: AsyncClient,
+    insert_sample_data,
+    assert_status,
 ):
     text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
         params={"txt": text_id, "lvl": 2, "type": "plainText"},
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     assert isinstance(resp.json()[0], dict)
@@ -443,18 +511,22 @@ async def test_get_resources(
     resource_id = resp.json()[0]["id"]
 
     resp = await test_client.get(f"/resources/{resource_id}")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "resourceType" in resp.json()
 
     # request invalid ID
     resp = await test_client.get("/resources/foo")
-    assert status_assertion(422, resp)
+    assert_status(422, resp)
 
 
 @pytest.mark.anyio
 async def test_propose_unpropose_publish_unpublish_resource(
-    test_client: AsyncClient, insert_sample_data, status_assertion, login, wrong_id
+    test_client: AsyncClient,
+    insert_sample_data,
+    login,
+    wrong_id,
+    assert_status,
 ):
     text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
     owner = await login(is_superuser=True)
@@ -471,7 +543,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
         "/resources",
         json=payload,
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
     assert "ownerId" in resource_data
@@ -481,36 +553,36 @@ async def test_propose_unpropose_publish_unpublish_resource(
     resp = await test_client.post(
         f"/resources/{resource_id}/publish",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # propose resource
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # propose resource w/ wrong ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/propose",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to propose resource version
     # create new resource version
     resp = await test_client.post(
         f"/resources/{resource_id}/version",
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     assert "id" in resp.json()
     version_id = resp.json()["id"]
     resp = await test_client.post(
         f"/resources/{version_id}/propose",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # get all accessible resources, check if ours is proposed
     resp = await test_client.get("/resources", params={"txt": text_id})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     for resource in resp.json():
         if resource["id"] == resource_id:
@@ -520,109 +592,110 @@ async def test_propose_unpropose_publish_unpublish_resource(
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # publish resource w/ wrong ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/publish",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to publish resource version
     # (this should be actually be impossible anyway,
     # because we can't even propose a version... so we create
     # an invalid resource state on purpose, here)
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == PydanticObjectId(version_id), with_children=True
+        ResourceBaseDocument.id == PydanticObjectId(version_id),
+        with_children=True,
     ).set({ResourceBaseDocument.proposed: True})
     resp = await test_client.post(
         f"/resources/{version_id}/publish",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # publish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/publish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["id"] == resource_id
 
     # publish already public resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_id}/publish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["id"] == resource_id
 
     # propose public resource
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # unpublish resource w/ wrong ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/unpublish",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # unpublish resource again (should just go through)
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # propose resource again
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # unpropose resource w/ wrong ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/unpropose",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # unpropose resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpropose",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # propose resource unauthorized
     other_user = await login()
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
     # propose resource again
     await login(user=owner)
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # unpropose resource unauthorized
     await login(user=other_user)
     resp = await test_client.post(
         f"/resources/{resource_id}/unpropose",
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
 
 @pytest.mark.anyio
 async def test_delete_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wrong_id,
 ):
@@ -632,7 +705,7 @@ async def test_delete_resource(
 
     # get all accessible resources
     resp = await test_client.get("/resources", params={"txt": text_id})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     resources_count = len(resp.json())
 
@@ -648,7 +721,7 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{wrong_id}",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # become non-owner/non-superuser
     await login()
@@ -657,7 +730,7 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{resource_id}",
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
     # become superuser again
     await login(user=user)
@@ -666,11 +739,11 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{resource_id}",
     )
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get all accessible resources again
     resp = await test_client.get("/resources", params={"txt": text_id})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == resources_count - 1
 
@@ -679,7 +752,7 @@ async def test_delete_resource(
 async def test_delete_public_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     inserted_ids = await insert_sample_data("texts", "locations", "resources")
@@ -689,24 +762,24 @@ async def test_delete_public_resource(
     # ensure resource is public
     resp = await test_client.post(f"/resources/{resource_id}/unpublish")
     resp = await test_client.post(f"/resources/{resource_id}/propose")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["proposed"] is True
     resp = await test_client.post(f"/resources/{resource_id}/publish")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["public"] is True
 
     # delete public resource (should not be possible)
     resp = await test_client.delete(
         f"/resources/{resource_id}",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_delete_proposed_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
 ):
     inserted_ids = await insert_sample_data("texts", "locations", "resources")
@@ -715,26 +788,26 @@ async def test_delete_proposed_resource(
 
     # ensure resource is not public
     resp = await test_client.post(f"/resources/{resource_id}/unpublish")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["public"] is False
 
     # ensure resource is proposed
     resp = await test_client.post(f"/resources/{resource_id}/propose")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert resp.json()["proposed"] is True
 
     # delete proposed resource (should not be possible)
     resp = await test_client.delete(
         f"/resources/{resource_id}",
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_transfer_resource(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     register_test_user,
     wrong_id,
@@ -752,27 +825,27 @@ async def test_transfer_resource(
         f"/resources/{resource_id}/transfer",
         json=user["id"],
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # unpublish resource
     resp = await test_client.post(
         f"/resources/{resource_id}/unpublish",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
 
     # transfer resource w/ wrong ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/transfer",
         json=user["id"],
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # transfer resource to user w/ wrong ID
     resp = await test_client.post(
         f"/resources/{resource_id}/transfer",
         json=wrong_id,
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # transfer resource without permission
     await login(user=user)
@@ -780,7 +853,7 @@ async def test_transfer_resource(
         f"/resources/{resource_id}/transfer",
         json=user["id"],
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
     # transfer resource to test user
     await login(user=superuser)
@@ -788,7 +861,7 @@ async def test_transfer_resource(
         f"/resources/{resource_id}/transfer",
         json=user["id"],
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["ownerId"] == user["id"]
 
@@ -797,7 +870,7 @@ async def test_transfer_resource(
         f"/resources/{resource_id}/transfer",
         json=user["id"],
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["ownerId"] == user["id"]
 
@@ -806,7 +879,7 @@ async def test_transfer_resource(
 async def test_get_resource_template(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wrong_id,
 ):
@@ -818,21 +891,21 @@ async def test_get_resource_template(
     resp = await test_client.get(
         f"/resources/{resource_id}/template",
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
     # get resource template
     await login(is_superuser=True)
     resp = await test_client.get(
         f"/resources/{resource_id}/template",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
 
     # get resource template w/ wrong ID
     resp = await test_client.get(
         f"/resources/{wrong_id}/template",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
 
 @pytest.mark.anyio
@@ -840,7 +913,7 @@ async def test_import_resource_contents(
     test_client: AsyncClient,
     insert_sample_data,
     get_sample_data_path,
-    status_assertion,
+    assert_status,
     login,
     wrong_id,
     wait_for_task_success,
@@ -857,7 +930,7 @@ async def test_import_resource_contents(
         "/locations",
         json={"textId": text_id, "label": "Location!!", "level": 0, "position": 3},
     )
-    assert status_assertion(201, resp)
+    assert_status(201, resp)
     additional_location_id = resp.json()["id"]
 
     # define sample data
@@ -877,7 +950,7 @@ async def test_import_resource_contents(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", r"{foo: bar}", "application/json")},
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -886,14 +959,14 @@ async def test_import_resource_contents(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "text/plain")},
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # fail to upload resource data file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -917,7 +990,7 @@ async def test_import_resource_contents(
             )
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -944,7 +1017,7 @@ async def test_import_resource_contents(
             )
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -964,7 +1037,7 @@ async def test_import_resource_contents(
             )
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -973,7 +1046,7 @@ async def test_import_resource_contents(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
@@ -983,7 +1056,7 @@ async def test_import_resource_contents(
         f"/resources/{resource_id}/import",
         files={"file": ("foo.json", sample_data_string, "application/json")},
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
     await login(user=superuser)
@@ -997,7 +1070,7 @@ async def test_import_resource_contents(
             "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -1010,7 +1083,7 @@ async def test_import_resource_contents(
             "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -1019,7 +1092,7 @@ async def test_import_resource_contents(
 async def test_export_content(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     logout,
     wait_for_task_success,
@@ -1078,7 +1151,7 @@ async def test_export_content(
                     "to": target["to_loc_id"],
                 },
             )
-            assert status_assertion(202, resp)
+            assert_status(202, resp)
             assert "id" in resp.json()
             assert await wait_for_task_success(resp.json()["id"])
             # download generated artifact
@@ -1086,7 +1159,7 @@ async def test_export_content(
                 "/platform/tasks/download",
                 params={"pickupKey": resp.json()["pickupKey"]},
             )
-            assert status_assertion(200, resp)
+            assert_status(200, resp)
 
     # log out for the next tests
     await logout()
@@ -1100,7 +1173,7 @@ async def test_export_content(
             "to": "654b825533ee5737b297f8f2",
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
@@ -1113,7 +1186,7 @@ async def test_export_content(
             "to": "654b825533ee5737b297f8f2",
         },
     )
-    assert status_assertion(403, resp)
+    assert_status(403, resp)
 
     # fail to export w/ invalid location range
     resp = await test_client.get(
@@ -1124,14 +1197,14 @@ async def test_export_content(
             "to": "654b825533ee5737b297f8e4",  # this location is on level 1
         },
     )
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
     # fail to export without read permissions...
     # set public = False on resource
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == "66471b68ba9e65342c8e495b",
+        ResourceBaseDocument.id == PydanticObjectId("66471b68ba9e65342c8e495b"),
         with_children=True,
     ).update(Set({ResourceBaseDocument.public: False}))
     # request export
@@ -1143,14 +1216,15 @@ async def test_export_content(
             "to": "654b825533ee5737b297f8f2",
         },
     )
-    assert status_assertion(404, resp)
+    assert_status(202, resp)
+    assert not await wait_for_task_success(resp.json()["id"])
 
 
 @pytest.mark.anyio
 async def test_trigger_maintenance(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wait_for_task_success,
 ):
@@ -1158,7 +1232,7 @@ async def test_trigger_maintenance(
     await login(is_superuser=True)
 
     resp = await test_client.get("/resources/maintenance")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
@@ -1167,7 +1241,7 @@ async def test_trigger_maintenance(
 async def test_get_aggregations(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     login,
     wait_for_task_success,
     wrong_id,
@@ -1178,38 +1252,38 @@ async def test_get_aggregations(
     # fail to get aggregations (none yet, expect empty array)
     res_id = "6656cc7b81a66322c1bffb24"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # run resource maintenance to generate aggregations
     resp = await test_client.get("/resources/maintenance")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
     # get aggregations
     res_id = "6656cc7b81a66322c1bffb24"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 1
 
     # fail to get aggregations for wrong resource ID
     resp = await test_client.get(f"/resources/{wrong_id}/aggregations")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # fail to get aggregations for non-annotation resource
     res_id = "66471de0ba9e65342c8e4995"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
 async def test_get_resource_coverage_data(
     test_client: AsyncClient,
     insert_sample_data,
-    status_assertion,
+    assert_status,
     wrong_id,
     login,
     wait_for_task_success,
@@ -1221,12 +1295,12 @@ async def test_get_resource_coverage_data(
     resp = await test_client.get(
         f"/resources/{resource_id}/coverage",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # run resource maintenance to generate coverage data
     await login(is_superuser=True)
     resp = await test_client.get("/resources/maintenance")
-    assert status_assertion(202, resp)
+    assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
@@ -1234,7 +1308,7 @@ async def test_get_resource_coverage_data(
     resp = await test_client.get(
         f"/resources/{resource_id}/coverage",
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["ranges"]) > 0
 
@@ -1242,4 +1316,4 @@ async def test_get_resource_coverage_data(
     resp = await test_client.get(
         f"/resources/{wrong_id}/coverage",
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)

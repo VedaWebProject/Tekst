@@ -3988,6 +3988,12 @@ export interface components {
        */
       registerIntroText: components['schemas']['RegisterIntroTextTranslation'][];
       /**
+       * Denyresourcetypes
+       * @description Resource types regular users are not allowed to create
+       * @default []
+       */
+      denyResourceTypes: string[];
+      /**
        * Fonts
        * @description CSS font family names for use in resources
        * @default []
@@ -4099,6 +4105,11 @@ export interface components {
        * @description Intro text shown in registration form
        */
       registerIntroText?: components['schemas']['RegisterIntroTextTranslation'][];
+      /**
+       * Denyresourcetypes
+       * @description Resource types regular users are not allowed to create
+       */
+      denyResourceTypes?: string[];
       /**
        * Fonts
        * @description CSS font family names for use in resources
@@ -6236,6 +6247,15 @@ export interface operations {
             | components['schemas']['TextAnnotationContentRead'];
         };
       };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Forbidden */
       403: {
         headers: {
@@ -6392,15 +6412,6 @@ export interface operations {
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Forbidden */
@@ -7831,6 +7842,15 @@ export interface operations {
       };
       /** @description Bad Request */
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
         headers: {
           [name: string]: unknown;
         };

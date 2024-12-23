@@ -6,7 +6,7 @@ from httpx import AsyncClient
 @pytest.mark.anyio
 async def test_messages_crud(
     test_client: AsyncClient,
-    status_assertion,
+    assert_status,
     insert_sample_data,
     register_test_user,
     login,
@@ -24,7 +24,7 @@ async def test_messages_crud(
             "content": "This\nis\na\ntest.",
         },
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["sender"] == u["id"]
 
@@ -36,7 +36,7 @@ async def test_messages_crud(
             "content": "FOO BAR",
         },
     )
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["sender"] == u["id"]
 
@@ -48,7 +48,7 @@ async def test_messages_crud(
             "content": "This\nis\na\ntest.",
         },
     )
-    assert status_assertion(400, resp)
+    assert_status(400, resp)
 
     # send message to non-existent recipient
     resp = await test_client.post(
@@ -58,7 +58,7 @@ async def test_messages_crud(
             "content": "This\nis\na\ntest.",
         },
     )
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # send message without content
     resp = await test_client.post(
@@ -68,11 +68,11 @@ async def test_messages_crud(
             "content": "",
         },
     )
-    assert status_assertion(422, resp)
+    assert_status(422, resp)
 
     # get message threads
     resp = await test_client.get("/messages/threads")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == su["id"]
@@ -81,22 +81,22 @@ async def test_messages_crud(
 
     # get messages for specific thread
     resp = await test_client.get("/messages", params={"thread": su["id"]})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
     assert resp.json()[0]["recipient"] == su["id"]
 
     # fail to delete message thread w/ wrong ID
     resp = await test_client.delete(f"/messages/threads/{wrong_id}")
-    assert status_assertion(404, resp)
+    assert_status(404, resp)
 
     # delete message thread
     resp = await test_client.delete(f"/messages/threads/{su['id']}")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get message threads (should be 0 now)
     resp = await test_client.get("/messages/threads")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
@@ -105,7 +105,7 @@ async def test_messages_crud(
 
     # get message threads
     resp = await test_client.get("/messages/threads")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == u["id"]
@@ -114,14 +114,14 @@ async def test_messages_crud(
 
     # get messages for specific thread
     resp = await test_client.get("/messages", params={"thread": u["id"]})
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
     assert resp.json()[0]["sender"] == u["id"]
 
     # get message threads (should have 0 unread messages now)
     resp = await test_client.get("/messages/threads")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
     assert resp.json()[0]["id"] == u["id"]
@@ -130,10 +130,10 @@ async def test_messages_crud(
 
     # delete message thread
     resp = await test_client.delete(f"/messages/threads/{u['id']}")
-    assert status_assertion(204, resp)
+    assert_status(204, resp)
 
     # get message threads (should be none left now)
     resp = await test_client.get("/messages/threads")
-    assert status_assertion(200, resp)
+    assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0

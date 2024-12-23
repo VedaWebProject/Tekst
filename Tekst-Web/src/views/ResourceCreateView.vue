@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { POST, resourceTypes, type AnyResourceRead } from '@/api';
+import { POST, resourceTypes, type AnyResourceCreate } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 import { useMessages } from '@/composables/messages';
+import { usePlatformData } from '@/composables/platformData';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
 import { $t } from '@/i18n';
@@ -29,28 +30,31 @@ const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
+const { pfData } = usePlatformData();
 
-const getInitialModel = (): AnyResourceRead =>
+const availableResourceTypes = resourceTypes
+  .filter(
+    (rt) =>
+      auth.user?.isSuperuser || (pfData.value && !pfData.value.state.denyResourceTypes.includes(rt))
+  );
+
+const getInitialModel = (): AnyResourceCreate =>
   ({
-    id: '',
-    title: [{ locale: '*', translation: '' }] as AnyResourceRead['title'],
-    description: [] as AnyResourceRead['description'],
+    title: [{ locale: '*', translation: '' }],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
-    resourceType: 'plainText' as AnyResourceRead['resourceType'],
+    resourceType: availableResourceTypes[0],
     ownerId: auth.user?.id,
     public: false,
     proposed: false,
     citation: undefined,
-    meta: [] as AnyResourceRead['meta'],
-    comment: [] as AnyResourceRead['comment'],
-  }) as AnyResourceRead;
+  }) as AnyResourceCreate;
 
 const formRef = ref<FormInst | null>(null);
 const loadingSave = ref(false);
-const model = ref<AnyResourceRead>(getInitialModel());
+const model = ref<AnyResourceCreate>(getInitialModel());
 
-const resourceTypeOptions = resourceTypes.map((rt) => ({
+const resourceTypeOptions = availableResourceTypes.map((rt) => ({
   label: () => $t(`resources.types.${rt}.label`),
   value: rt,
 }));
@@ -156,7 +160,7 @@ async function handleSaveClick() {
           <n-form-item :label="$t('models.resource.resourceType')" path="resourceType">
             <n-select
               v-model:value="model.resourceType"
-              :default-value="resourceTypeOptions[0].value"
+              :default-value="resourceTypeOptions[0]?.value"
               :placeholder="$t('models.resource.resourceType')"
               :options="resourceTypeOptions"
               :render-label="renderResourceTypeOptionLabel"

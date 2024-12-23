@@ -1,3 +1,7 @@
+from typing import Annotated
+
+from fastapi import Depends
+
 from tekst.models.platform import PlatformStateDocument
 
 
@@ -12,3 +16,6 @@ async def update_state(**kwargs) -> PlatformStateDocument:
     for k, v in kwargs.items():
         setattr(state, k, v)
     return await state.replace()
+
+
+StateDep = Annotated[PlatformStateDocument, Depends(get_state)]

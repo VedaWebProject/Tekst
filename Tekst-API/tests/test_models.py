@@ -1,6 +1,7 @@
 import pytest
 
 from pydantic import ValidationError
+from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.text import Text, TextCreate, TextDocument, TextRead, TextUpdate
 from tekst.models.user import UserReadPublic
@@ -131,9 +132,18 @@ def test_text_valid_default_color():
     t.model_dump()
 
 
-def test_resource_type_validator():
+def test_resource_type_validator(wrong_id):
     with pytest.raises(ValidationError):
-        ResourceBase(resource_type="foo_bar", title="Foo Bar")
+        ResourceBase(
+            resource_type="foo_bar",
+            title="Foo Bar",
+        )
+    with pytest.raises(ValidationError):
+        ContentBase(
+            resource_id=wrong_id,
+            resource_type="foo_bar",
+            location_id=wrong_id,
+        )
 
 
 @pytest.mark.anyio

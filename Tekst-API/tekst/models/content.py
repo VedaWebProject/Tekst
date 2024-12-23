@@ -34,6 +34,9 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         Field(
             description="A string identifying one of the available resource types",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ]
     location_id: Annotated[
         PydanticObjectId,
@@ -75,13 +78,17 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    @field_validator("resource_type", mode="after")
+    @field_validator(
+        "resource_type",
+        mode="after",
+        check_fields=False,
+    )
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resources import resource_types_mgr
 
         resource_type_names = resource_types_mgr.list_names()
-        if v not in resource_type_names:  # pragma: no cover
+        if v not in resource_type_names:
             raise ValueError(
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."

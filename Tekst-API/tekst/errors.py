@@ -289,12 +289,6 @@ E_404_CONTENT_NOT_FOUND = error_instance(
     msg="The requested content could not be found",
 )
 
-E_400_CONTENT_ID_MISMATCH = error_instance(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    key="contentIdMismatch",
-    msg="Referenced resource ID in updates doesn't match the one in target content",
-)
-
 E_400_MESSAGE_TO_SELF = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="messageToSelf",
@@ -304,7 +298,7 @@ E_400_MESSAGE_TO_SELF = error_instance(
 E_400_CONTENT_TYPE_MISMATCH = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="contentTypeMismatch",
-    msg="Referenced resource type in updates doesn't match the one in target content",
+    msg="Resource type doesn't match resource",
 )
 
 E_400_INVALID_TEXT = error_instance(

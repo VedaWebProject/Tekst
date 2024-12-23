@@ -132,6 +132,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             description="A string identifying one of the available resource types",
         ),
+        ExcludeFromModelVariants(
+            update=True,
+        ),
     ]
 
     original_id: Annotated[
@@ -239,7 +242,11 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             ).strip()
         return v
 
-    @field_validator("resource_type", mode="after")
+    @field_validator(
+        "resource_type",
+        mode="after",
+        check_fields=False,
+    )
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resources import resource_types_mgr
