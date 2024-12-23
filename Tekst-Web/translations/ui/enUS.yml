@@ -340,7 +340,7 @@ models:
     infoContactEmail: Contact Email
     infoContactUrl: Contact URL
     defaultText: Default Text
-    indexUnpublishedResources: Unpublished ressources are searchable (by users with read access)
+    indexUnpublishedResources: Unpublished resources are searchable (by users with read access)
     availableLocales: Available UI Languages
     navBrowseEntry: Label for "Browse" in main navigation
     navSearchEntry: Label for "Search" in main navigation
