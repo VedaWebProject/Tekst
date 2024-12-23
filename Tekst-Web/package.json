@@ -44,7 +44,7 @@
     "@types/color": "^4.0.0",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.0.0",
-    "@vicons/material": "^0.12.0",
+    "@vicons/material": "^0.13.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/eslint-config-prettier": "^10.0.0",
     "@vue/eslint-config-typescript": "^14.0.1",
