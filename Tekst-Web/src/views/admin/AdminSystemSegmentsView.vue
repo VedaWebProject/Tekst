@@ -83,6 +83,7 @@ const systemSegmentKeys = [
   'systemFooter',
   'systemSiteNotice',
   'systemPrivacyPolicy',
+  'systemRegisterIntro',
 ];
 
 const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
@@ -279,11 +280,10 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('general.key')">
+        <n-form-item path="key" :label="$t('general.type')">
           <n-select
             v-model:value="segmentModel.key"
             :options="systemSegmentKeyOptions"
-            :placeholder="$t('general.key')"
             :consistent-menu-width="false"
             style="min-width: 200px"
             @keydown.enter.prevent

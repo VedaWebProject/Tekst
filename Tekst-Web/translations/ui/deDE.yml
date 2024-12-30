@@ -37,6 +37,7 @@ general:
   language: Sprache
   platform: Plattform
   presentation: Darstellung
+  type: Typ
   not: nicht
   new: New
   in: in
@@ -451,7 +452,6 @@ resources:
     heading: Ressourcen-Einstellungen
     onlyForPrivate: Nur für nicht veröffentlichte und nicht vorgeschlagene Ressourcen!
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
-    status: Status
     config:
       heading: Konfiguration
       enabled: Aktiv
@@ -476,7 +476,6 @@ resources:
         sourceLanguage: Quellsprache
       lineLabelling:
         heading: Zeilenbeschriftung
-        labellingType: Typ
         numbersZeroBased: Zahlen (0-basiert)
         numbersOneBased: Zahlen (1-basiert)
         lettersLowercase: Buchstaben (klein)
@@ -817,8 +816,6 @@ admin:
         actionStarted: Die Aktualisierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
       tasks:
         noTasks: Keine aktiven @:tasks.title
-        type: Typ
-        status: Status
         started: Gestartet
         ended: Beendet
         duration: Dauer
@@ -836,6 +833,7 @@ admin:
         systemFooter: Fußzeile
         systemSiteNotice: Impressum
         systemPrivacyPolicy: Datenschutzerklärung
+        systemRegisterIntro: Einführungstext auf "Registrieren"-Seite
       noSegment: Bitte wählen Sie ein Segment aus oder erstellen Sie ein neues!
       newSegment: Neues Segment
       phSelectSegment: Segment auswählen

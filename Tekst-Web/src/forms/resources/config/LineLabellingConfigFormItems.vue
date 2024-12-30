@@ -37,7 +37,7 @@ function handleUpdate(field: string, value: unknown) {
   </n-form-item>
 
   <!-- LABELLING TYPE -->
-  <n-form-item :label="$t('resources.settings.config.lineLabelling.labellingType')">
+  <n-form-item :label="$t('general.type')">
     <n-select
       :disabled="!model.enabled"
       :value="model.labellingType"

@@ -252,8 +252,8 @@ onBeforeMount(() => {
           <n-table size="small" style="table-layout: fixed">
             <thead>
               <tr>
-                <th>{{ $t('admin.system.maintenance.tasks.type') }}</th>
-                <th>{{ $t('admin.system.maintenance.tasks.status') }}</th>
+                <th>{{ $t('general.type') }}</th>
+                <th>{{ $t('general.status') }}</th>
                 <th>{{ $t('admin.system.maintenance.tasks.started') }}</th>
                 <th>{{ $t('admin.system.maintenance.tasks.ended') }}</th>
                 <th>{{ $t('admin.system.maintenance.tasks.duration') }}</th>

@@ -82,59 +82,58 @@ async function handleForgotPasswordClick() {
     @mask-click="auth.closeLoginModal(false)"
     @after-enter="emailInputRef?.focus()"
   >
-    <div class="form-container">
-      <div v-show="auth.loginModalState.message" class="login-message mb-lg">
-        {{ auth.loginModalState.message }}
-      </div>
-      <n-form
-        ref="formRef"
-        :model="formModel"
-        label-placement="top"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item
-          path="email"
-          :rule="accountFormRules.loginEmail"
-          :label="$t('models.user.email')"
-        >
-          <n-input
-            ref="emailInputRef"
-            v-model:value="formModel.email"
-            type="text"
-            :placeholder="$t('models.user.email')"
-            :disabled="auth.loginModalState.loading"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item
-          path="password"
-          :rule="accountFormRules.loginPassword"
-          :label="$t('models.user.password')"
-        >
-          <n-input
-            v-model:value="formModel.password"
-            type="password"
-            show-password-on="mousedown"
-            :placeholder="$t('models.user.password')"
-            :disabled="auth.loginModalState.loading"
-            @keyup.enter="handleLoginClick"
-          />
-        </n-form-item>
-      </n-form>
-
-      <n-flex justify="end">
-        <n-button
-          text
-          :focusable="false"
-          :disabled="auth.loginModalState.loading"
-          class="text-tiny mb-lg"
-          @click="handleForgotPasswordClick"
-        >
-          {{ $t('account.forgotPassword.forgotPassword') }}
-        </n-button>
-      </n-flex>
+    <div v-show="auth.loginModalState.message" class="login-message mb-lg">
+      {{ auth.loginModalState.message }}
     </div>
+    <n-form
+      ref="formRef"
+      :model="formModel"
+      label-placement="top"
+      label-width="auto"
+      require-mark-placement="right-hanging"
+    >
+      <n-form-item
+        path="email"
+        :rule="accountFormRules.loginEmail"
+        :label="$t('models.user.email')"
+      >
+        <n-input
+          ref="emailInputRef"
+          v-model:value="formModel.email"
+          type="text"
+          :placeholder="$t('models.user.email')"
+          :disabled="auth.loginModalState.loading"
+          @keydown.enter.prevent
+        />
+      </n-form-item>
+      <n-form-item
+        path="password"
+        :rule="accountFormRules.loginPassword"
+        :label="$t('models.user.password')"
+      >
+        <n-input
+          v-model:value="formModel.password"
+          type="password"
+          show-password-on="mousedown"
+          :placeholder="$t('models.user.password')"
+          :disabled="auth.loginModalState.loading"
+          @keyup.enter="handleLoginClick"
+        />
+      </n-form-item>
+    </n-form>
+
+    <n-flex justify="end">
+      <n-button
+        text
+        :focusable="false"
+        :disabled="auth.loginModalState.loading"
+        class="text-tiny mb-lg"
+        @click="handleForgotPasswordClick"
+      >
+        {{ $t('account.forgotPassword.forgotPassword') }}
+      </n-button>
+    </n-flex>
+
     <button-shelf top-gap>
       <n-button
         v-if="auth.loginModalState.showRegisterLink"

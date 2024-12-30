@@ -8,8 +8,8 @@ import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import router from '@/router';
-import { useAuthStore, useStateStore } from '@/stores';
-import { pickTranslation } from '@/utils';
+import { useAuthStore } from '@/stores';
+import SegmentRenderer from '@/components/SegmentRenderer.vue';
 import {
   type FormInst,
   type FormItemInst,
@@ -19,10 +19,10 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NDivider,
 } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
-const state = useStateStore();
 const auth = useAuthStore();
 const { message } = useMessages();
 const { pfData } = usePlatformData();
@@ -42,8 +42,8 @@ const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
 
-const introText = computed(() =>
-  pickTranslation(pfData.value?.state.registerIntroText, state.locale)
+const introTextPresent = computed(
+  () => !!pfData.value?.systemSegments.find((s) => s.key === 'systemRegisterIntro')
 );
 
 const passwordRepeatMatchRule = {
@@ -125,100 +125,101 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="form-container">
+  <div :class="{ 'form-container': !introTextPresent }">
+    <icon-heading level="1" :icon="UserIcon">
+      {{ $t('register.heading') }}
+    </icon-heading>
+
     <div class="content-block">
-      <icon-heading level="1" :icon="UserIcon">
-        {{ $t('register.heading') }}
-      </icon-heading>
+      <segment-renderer v-if="introTextPresent" segment-key="systemRegisterIntro" />
+      <n-divider v-if="introTextPresent" />
 
-      <p v-if="introText" class="text-small mb-lg">
-        {{ introText }}
-      </p>
-
-      <n-form
-        ref="formRef"
-        :model="formModel"
-        :rules="accountFormRules"
-        :disabled="loading"
-        label-placement="top"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item path="email" :label="$t('models.user.email')">
-          <n-input
-            ref="firstInputRef"
-            v-model:value="formModel.email"
-            type="text"
-            :placeholder="$t('models.user.email')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="username" :label="$t('models.user.username')">
-          <n-input
-            v-model:value="formModel.username"
-            type="text"
-            :placeholder="$t('models.user.username')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="password" :label="$t('models.user.password')">
-          <n-input
-            v-model:value="formModel.password"
-            type="password"
-            show-password-on="mousedown"
-            :placeholder="$t('models.user.password')"
-            @input="handlePasswordInput"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item
-          ref="rPasswordFormItemRef"
-          first
-          path="passwordRepeat"
-          :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
-          :label="$t('register.repeatPassword')"
-        >
-          <n-input
-            v-model:value="formModel.passwordRepeat"
-            type="password"
-            show-password-on="mousedown"
-            :disabled="!formModel.password || loading"
-            :placeholder="$t('register.repeatPassword')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="name" :label="$t('models.user.name')">
-          <n-input
-            v-model:value="formModel.name"
-            type="text"
-            :placeholder="$t('models.user.name')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
-          <n-input
-            v-model:value="formModel.affiliation"
-            type="text"
-            :placeholder="$t('models.user.affiliation')"
-            @keyup.enter="() => handleRegisterClick()"
-          />
-        </n-form-item>
-      </n-form>
-
-      <n-flex vertical :size="12" class="mt-lg">
-        <n-button
-          block
-          type="primary"
-          :loading="loading"
+      <div :class="{ 'form-container': introTextPresent }">
+        <n-form
+          ref="formRef"
+          :model="formModel"
+          :rules="accountFormRules"
           :disabled="loading"
-          @click="handleRegisterClick"
+          label-placement="top"
+          label-width="auto"
+          require-mark-placement="right-hanging"
         >
-          {{ $t('register.register') }}
-        </n-button>
-        <n-button secondary block @click="switchToLogin">
-          {{ $t('register.switchToLogin') }}
-        </n-button>
-      </n-flex>
+          <n-form-item path="email" :label="$t('models.user.email')">
+            <n-input
+              ref="firstInputRef"
+              v-model:value="formModel.email"
+              type="text"
+              :placeholder="$t('models.user.email')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item path="username" :label="$t('models.user.username')">
+            <n-input
+              v-model:value="formModel.username"
+              type="text"
+              :placeholder="$t('models.user.username')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item path="password" :label="$t('models.user.password')">
+            <n-input
+              v-model:value="formModel.password"
+              type="password"
+              show-password-on="mousedown"
+              :placeholder="$t('models.user.password')"
+              @input="handlePasswordInput"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item
+            ref="rPasswordFormItemRef"
+            first
+            path="passwordRepeat"
+            :rule="accountFormRules.passwordRepeat.concat([passwordRepeatMatchRule])"
+            :label="$t('register.repeatPassword')"
+          >
+            <n-input
+              v-model:value="formModel.passwordRepeat"
+              type="password"
+              show-password-on="mousedown"
+              :disabled="!formModel.password || loading"
+              :placeholder="$t('register.repeatPassword')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item path="name" :label="$t('models.user.name')">
+            <n-input
+              v-model:value="formModel.name"
+              type="text"
+              :placeholder="$t('models.user.name')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <n-form-item path="affiliation" :label="$t('models.user.affiliation')">
+            <n-input
+              v-model:value="formModel.affiliation"
+              type="text"
+              :placeholder="$t('models.user.affiliation')"
+              @keyup.enter="() => handleRegisterClick()"
+            />
+          </n-form-item>
+        </n-form>
+
+        <n-flex vertical :size="12" class="mt-lg">
+          <n-button
+            block
+            type="primary"
+            :loading="loading"
+            :disabled="loading"
+            @click="handleRegisterClick"
+          >
+            {{ $t('register.register') }}
+          </n-button>
+          <n-button secondary block @click="switchToLogin">
+            {{ $t('register.switchToLogin') }}
+          </n-button>
+        </n-flex>
+      </div>
     </div>
   </div>
 </template>

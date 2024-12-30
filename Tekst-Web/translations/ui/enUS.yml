@@ -37,6 +37,7 @@ general:
   language: Language
   platform: Platform
   presentation: Presentation
+  type: Type
   not: not
   new: New
   in: in
@@ -442,7 +443,6 @@ resources:
     heading: Resource Settings
     onlyForPrivate: Only for unpublished and unproposed resources!
     msgSaved: Your changes to the resource "{title}" have been saved.
-    status: Status
     config:
       heading: Configuration
       enabled: Enabled
@@ -467,7 +467,6 @@ resources:
         sourceLanguage: Source language
       lineLabelling:
         heading: Line Labelling
-        labellingType: Type
         numbersZeroBased: Numbers (0-based)
         numbersOneBased: Numbers (1-based)
         lettersLowercase: Letters (lowercase)
@@ -794,8 +793,6 @@ admin:
         actionStarted: The update of precomputed resource data is performed in the background. @:general.takeAWhile
       tasks:
         noTasks: No active background tasks
-        type: Type
-        status: Status
         started: Started
         ended: Ended
         duration: Duration
@@ -807,12 +804,13 @@ admin:
     segments:
       heading: Site Segments
       systemKeys:
-        systemHome: Home Page
+        systemHome: Home page
         systemHeadEnd: End of HTML head
         systemBodyEnd: End of HTML body
-        systemFooter: Page Footer
-        systemSiteNotice: Site Notice
-        systemPrivacyPolicy: Privacy Policy
+        systemFooter: Page footer
+        systemSiteNotice: Site notice
+        systemPrivacyPolicy: Privacy policy
+        systemRegisterIntro: Intro text on "Register" page
       noSegment: Please select a segment or create a new one!
       newSegment: New Segment
       phSelectSegment: Select segment

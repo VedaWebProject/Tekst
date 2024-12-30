@@ -260,17 +260,6 @@ function resetForm() {
               :label="$t('models.platformSettings.showTekstFooterHint')"
             />
           </n-flex>
-
-          <!-- CUSTOM REGISTER FORM INTRO TEXT -->
-          <translation-form-item
-            v-model="formModel.registerIntroText"
-            parent-form-path-prefix="registerIntroText"
-            :loading="loading"
-            :main-form-label="$t('models.platformSettings.registerIntroText')"
-            :translation-form-label="$t('models.platformSettings.registerIntroText')"
-            :translation-form-rule="platformSettingsFormRules.registerIntroTextTranslation"
-            multiline
-          />
         </n-tab-pane>
 
         <!-- RESOURCES -->

@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.2.0a0"
+    "version": "0.2.1a0"
   },
   "servers": [
     {
@@ -3445,9 +3445,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 32,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 32
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Type of resources to find",
               "title": "Type"
             },
@@ -12767,16 +12774,6 @@
             "description": "Show a small hint to the Tekst software in the footer",
             "default": true
           },
-          "registerIntroText": {
-            "items": {
-              "$ref": "#/components/schemas/RegisterIntroTextTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Registerintrotext",
-            "description": "Intro text shown in registration form",
-            "default": []
-          },
           "denyResourceTypes": {
             "items": {
               "type": "string"
@@ -13078,23 +13075,6 @@
             "description": "Show a small hint to the Tekst software in the footer",
             "optionalNullable": false
           },
-          "registerIntroText": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/RegisterIntroTextTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Registerintrotext",
-            "description": "Intro text shown in registration form",
-            "optionalNullable": false
-          },
           "denyResourceTypes": {
             "anyOf": [
               {
@@ -13301,25 +13281,6 @@
           "singleLineDelimiter"
         ],
         "title": "ReducedViewConfig"
-      },
-      "RegisterIntroTextTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 500,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "RegisterIntroTextTranslation"
       },
       "ResourceCategory": {
         "properties": {

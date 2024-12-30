@@ -3982,12 +3982,6 @@ export interface components {
        */
       showTekstFooterHint: boolean;
       /**
-       * Registerintrotext
-       * @description Intro text shown in registration form
-       * @default []
-       */
-      registerIntroText: components['schemas']['RegisterIntroTextTranslation'][];
-      /**
        * Denyresourcetypes
        * @description Resource types regular users are not allowed to create
        * @default []
@@ -4101,11 +4095,6 @@ export interface components {
        */
       showTekstFooterHint?: boolean;
       /**
-       * Registerintrotext
-       * @description Intro text shown in registration form
-       */
-      registerIntroText?: components['schemas']['RegisterIntroTextTranslation'][];
-      /**
        * Denyresourcetypes
        * @description Resource types regular users are not allowed to create
        */
@@ -4212,12 +4201,6 @@ export interface components {
        * @description Delimiter used for single-line display in reduced reading mode
        */
       singleLineDelimiter: string;
-    };
-    /** RegisterIntroTextTranslation */
-    RegisterIntroTextTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
-      translation: string;
     };
     /** ResourceCategory */
     ResourceCategory: {
@@ -7770,7 +7753,7 @@ export interface operations {
         /** @description Structure level to find resources for */
         lvl?: number;
         /** @description Type of resources to find */
-        type?: string;
+        type?: string | null;
         limit?: number;
       };
       header?: never;

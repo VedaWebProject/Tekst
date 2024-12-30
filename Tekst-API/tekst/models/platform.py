@@ -44,17 +44,6 @@ class MainNavEntryTranslation(TranslationBase):
     ]
 
 
-class RegisterIntroTextTranslation(TranslationBase):
-    translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=500,
-            strip_whitespace=True,
-        ),
-    ]
-
-
 OskKey = Annotated[
     str,
     StringConstraints(
@@ -222,13 +211,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             description="Show a small hint to the Tekst software in the footer",
         ),
     ] = True
-
-    register_intro_text: Annotated[
-        Translations[RegisterIntroTextTranslation],
-        Field(
-            description="Intro text shown in registration form",
-        ),
-    ] = []
 
     deny_resource_types: Annotated[
         list[str],
