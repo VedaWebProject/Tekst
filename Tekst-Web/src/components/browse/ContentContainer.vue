@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
+import CollapsableContent from '@/components/CollapsableContent.vue';
 import contentComponents from '@/components/content/mappings';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { $t } from '@/i18n';
-import { CompressIcon, ExpandIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
+import { MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { useElementHover } from '@vueuse/core';
-import { NButton, NFlex, NIcon, NSpin, useThemeVars } from 'naive-ui';
+import { NFlex, NIcon, NSpin, useThemeVars } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -25,11 +26,17 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayLeave: 0,
 });
 
-const contentCollapsed = ref(!!props.resource.config.general.defaultCollapsed);
+const collapsable = computed(
+  () =>
+    !!props.resource.config.general.defaultCollapsed &&
+    !browse.reducedView &&
+    !!props.resource.contents?.length
+);
+const collapsed = ref(!!props.resource.config.general.defaultCollapsed);
 watch(
   () => browse.reducedView,
   (reduced) => {
-    contentCollapsed.value = !reduced && !!props.resource.config.general.defaultCollapsed;
+    collapsed.value = !reduced && !!props.resource.config.general.defaultCollapsed;
   },
   { immediate: true }
 );
@@ -96,19 +103,23 @@ const fromChildLevel = computed(
     </div>
 
     <n-spin :show="loading && hasContent" size="small">
-      <div
+      <collapsable-content
         v-if="hasContent"
+        :collapsable="collapsable"
+        :collapsed="collapsed"
+        :scrollable="!state.smallScreen"
+        :height-tresh-px="200"
         class="content"
-        :class="{ 'content-collapsed': contentCollapsed, 'content-loading': loading }"
-        :dir="resource.config.common.rtl ? 'rtl' : undefined"
+        :class="{ 'content-loading': loading }"
       >
         <!-- content-specific component (that displays the actual content data) -->
         <component
           :is="contentComponents[resource.resourceType]"
           :resource="resource"
           :reduced="browse.reducedView"
+          :dir="resource.config.common.rtl ? 'rtl' : undefined"
         />
-      </div>
+      </collapsable-content>
       <n-flex v-else-if="fromChildLevel" align="center" size="small" class="translucent text-tiny">
         {{
           $t('browse.contents.showCombinedContents', {
@@ -118,22 +129,6 @@ const fromChildLevel = computed(
         <n-icon :component="MergeIcon" />
       </n-flex>
     </n-spin>
-
-    <n-button
-      v-if="
-        resource.config.general.defaultCollapsed && !browse.reducedView && resource.contents?.length
-      "
-      text
-      block
-      class="mt-sm"
-      :focusable="false"
-      @click="contentCollapsed = !contentCollapsed"
-    >
-      <template #icon>
-        <n-icon :component="contentCollapsed ? ExpandIcon : CompressIcon" />
-      </template>
-      {{ contentCollapsed ? $t('general.expandAction') : $t('general.collapseAction') }}
-    </n-button>
   </div>
 </template>
 
@@ -225,12 +220,6 @@ const fromChildLevel = computed(
   flex-grow: 2;
   opacity: 0.5;
   font-size: 0.8em;
-}
-
-.content-collapsed {
-  border-bottom: 2px dashed var(--accent-color-fade3);
-  max-height: 150px;
-  overflow-y: scroll;
 }
 
 .content {

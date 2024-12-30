@@ -39,55 +39,57 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 </script>
 
 <template>
-  <n-flex
-    v-for="content in resource.contents"
-    :key="content.id"
-    vertical
-    :wrap="false"
-    class="images-content"
-  >
-    <n-image-group :render-toolbar="renderToolbar">
-      <n-flex :vertical="!reduced">
-        <figure
-          v-for="(image, index) in content.files"
-          :key="index"
-          class="image-container"
-          :class="{ reduced }"
-        >
-          <n-flex :wrap="state.smallScreen" :size="[18, 0]">
-            <div>
-              <n-image
-                lazy
-                :src="image.thumbUrl || image.url"
-                :preview-src="image.url"
-                :alt="image.caption || undefined"
-                :title="image.caption"
-                :width="reduced ? undefined : imageSize"
-                :height="reduced ? imageSize : undefined"
-              >
-                <template #placeholder>
-                  {{ $t('general.loading') }}
-                </template>
-              </n-image>
-            </div>
-            <figcaption v-if="!reduced" class="caption" :style="fontStyle">
-              <span class="text-tiny translucent">{{ image.caption }}</span>
-              <a
-                v-if="image.sourceUrl"
-                :href="image.sourceUrl"
-                :title="image.sourceUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="source-link mx-sm"
-              >
-                <n-icon :component="LinkIcon" />
-              </a>
-            </figcaption>
-          </n-flex>
-        </figure>
-      </n-flex>
-    </n-image-group>
-  </n-flex>
+  <div>
+    <n-flex
+      v-for="content in resource.contents"
+      :key="content.id"
+      vertical
+      :wrap="false"
+      class="images-content"
+    >
+      <n-image-group :render-toolbar="renderToolbar">
+        <n-flex :vertical="!reduced">
+          <figure
+            v-for="(image, index) in content.files"
+            :key="index"
+            class="image-container"
+            :class="{ reduced }"
+          >
+            <n-flex :wrap="state.smallScreen" :size="[18, 0]">
+              <div>
+                <n-image
+                  lazy
+                  :src="image.thumbUrl || image.url"
+                  :preview-src="image.url"
+                  :alt="image.caption || undefined"
+                  :title="image.caption"
+                  :width="reduced ? undefined : imageSize"
+                  :height="reduced ? imageSize : undefined"
+                >
+                  <template #placeholder>
+                    {{ $t('general.loading') }}
+                  </template>
+                </n-image>
+              </div>
+              <figcaption v-if="!reduced" class="caption" :style="fontStyle">
+                <span class="text-tiny translucent">{{ image.caption }}</span>
+                <a
+                  v-if="image.sourceUrl"
+                  :href="image.sourceUrl"
+                  :title="image.sourceUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="source-link mx-sm"
+                >
+                  <n-icon :component="LinkIcon" />
+                </a>
+              </figcaption>
+            </n-flex>
+          </figure>
+        </n-flex>
+      </n-image-group>
+    </n-flex>
+  </div>
 </template>
 
 <style scoped>

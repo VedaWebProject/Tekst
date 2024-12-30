@@ -384,152 +384,160 @@ function handleCopyAnnoPlaintextClick() {
 </script>
 
 <template>
-  <n-flex class="mb-md">
-    <!-- ANNOTATION GROUP TOGGLES -->
-    <template v-if="!!annoGroups.length">
+  <div>
+    <n-flex class="mb-md">
+      <!-- ANNOTATION GROUP TOGGLES -->
+      <template v-if="!!annoGroups.length">
+        <n-button
+          :tertiary="!colorAnnoLines"
+          :type="colorAnnoLines ? 'primary' : undefined"
+          v-for="group in annoGroups"
+          :key="group.key"
+          size="tiny"
+          :focusable="false"
+          :disabled="annoGroups.length == 1"
+          :color="colorAnnoLines ? groupColors[group.key] : undefined"
+          :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
+          @click="toggleAnnoGroup(group.key)"
+        >
+          <template #icon>
+            <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
+          </template>
+          {{ pickTranslation(group.translations, state.locale) }}
+        </n-button>
+        <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
+          <template #icon>
+            <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
+          </template>
+        </n-button>
+      </template>
+      <!-- COPY ANNOTATIONS TAB-ALIGNED AS PLAINTEXT -->
       <n-button
-        :tertiary="!colorAnnoLines"
-        :type="colorAnnoLines ? 'primary' : undefined"
-        v-for="group in annoGroups"
-        :key="group.key"
+        v-if="isAnnoCopySupported"
+        :tertiary="!annoPlaintextCopied"
+        :type="annoPlaintextCopied ? 'success' : undefined"
         size="tiny"
         :focusable="false"
-        :disabled="annoGroups.length == 1"
-        :color="colorAnnoLines ? groupColors[group.key] : undefined"
-        :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
-        @click="toggleAnnoGroup(group.key)"
+        :title="$t('resources.types.textAnnotation.copyAnnosPlainAction')"
+        @click="handleCopyAnnoPlaintextClick"
       >
         <template #icon>
-          <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
-        </template>
-        {{ pickTranslation(group.translations, state.locale) }}
-      </n-button>
-      <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
-        <template #icon>
-          <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
+          <n-icon :component="CopyIcon" />
         </template>
       </n-button>
-    </template>
-    <!-- COPY ANNOTATIONS TAB-ALIGNED AS PLAINTEXT -->
-    <n-button
-      v-if="isAnnoCopySupported"
-      :tertiary="!annoPlaintextCopied"
-      :type="annoPlaintextCopied ? 'success' : undefined"
-      size="tiny"
-      :focusable="false"
-      :title="$t('resources.types.textAnnotation.copyAnnosPlainAction')"
-      @click="handleCopyAnnoPlaintextClick"
-    >
-      <template #icon>
-        <n-icon :component="CopyIcon" />
-      </template>
-    </n-button>
-  </n-flex>
+    </n-flex>
 
-  <!-- CONTENT -->
-  <div v-for="(c, cIndex) in contents" :key="c.id" class="content-container" :class="{ reduced }">
-    <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
-      <div
-        class="token-container"
-        :class="{
-          'token-with-annos': !!t.annotations.length,
-          'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
-          'token-content-copied': tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
-        }"
-        :title="$t('resources.types.textAnnotation.copyHintTip')"
-        @click="handleTokenClick(t)"
-        @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
-      >
-        <div class="token b i" :style="fontFamilyStyle">
-          {{ t.token }}
-        </div>
-        <div class="annotations">
-          <div
-            v-for="(annoLine, lineIndex) in t.annoDisplay"
-            :key="lineIndex"
-            class="annotation-line"
-          >
-            <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
-              <span
-                v-if="
-                  !anno.group ||
-                  !resource.config.annotationGroups.length ||
-                  activeAnnoGroups.includes(anno.group)
-                "
-                :style="{
-                  ...anno.style,
-                  transition: 'background-color 0.2s ease',
-                  backgroundColor:
-                    colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
-                }"
-              >
-                {{ anno.content }}
-              </span>
-            </template>
+    <!-- CONTENT -->
+    <div
+      v-for="(c, cIndex) in contents"
+      :key="c.id"
+      class="content-container mb-sm"
+      :class="{ reduced }"
+    >
+      <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
+        <div
+          class="token-container"
+          :class="{
+            'token-with-annos': !!t.annotations.length,
+            'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
+            'token-content-copied':
+              tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
+          }"
+          :title="$t('resources.types.textAnnotation.copyHintTip')"
+          @click="handleTokenClick(t)"
+          @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
+        >
+          <div class="token b i" :style="fontFamilyStyle">
+            {{ t.token }}
+          </div>
+          <div class="annotations">
+            <div
+              v-for="(annoLine, lineIndex) in t.annoDisplay"
+              :key="lineIndex"
+              class="annotation-line"
+            >
+              <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
+                <span
+                  v-if="
+                    !anno.group ||
+                    !resource.config.annotationGroups.length ||
+                    activeAnnoGroups.includes(anno.group)
+                  "
+                  :style="{
+                    ...anno.style,
+                    transition: 'background-color 0.2s ease',
+                    backgroundColor:
+                      colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
+                  }"
+                >
+                  {{ anno.content }}
+                </span>
+              </template>
+            </div>
           </div>
         </div>
-      </div>
-      <hr v-if="t.lb" class="token-lb" />
-    </template>
-  </div>
+        <hr v-if="t.lb" class="token-lb" />
+      </template>
+    </div>
 
-  <generic-modal
-    v-model:show="showDetailsModal"
-    :title="tokenDetails?.token"
-    :icon="MetadataIcon"
-    heading-level="3"
-    :header-style="{
-      'font-family': resource.config.general.font || 'Tekst Content Font',
-      'font-style': 'italic',
-    }"
-    @after-leave="() => (tokenDetails = undefined)"
-  >
-    <n-alert
-      v-if="tokenDetails?.comment"
-      type="default"
-      :show-icon="false"
-      :title="$t('general.comment')"
-      class="mb-lg"
+    <generic-modal
+      v-model:show="showDetailsModal"
+      :title="tokenDetails?.token"
+      :icon="MetadataIcon"
+      heading-level="3"
+      :header-style="{
+        'font-family': resource.config.general.font || 'Tekst Content Font',
+        'font-style': 'italic',
+      }"
+      @after-leave="() => (tokenDetails = undefined)"
     >
-      <div class="content-font text-small" style="white-space: pre-line">
-        {{ tokenDetails.comment }}
-      </div>
-    </n-alert>
-    <n-table
-      v-if="tokenDetails?.annotations"
-      :bordered="false"
-      :bottom-bordered="false"
-      size="small"
-    >
-      <thead>
-        <tr>
-          <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
-          <th>{{ $t('general.value') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
-          <tr v-if="annotation.key !== 'comment'">
-            <td>{{ annotation.key }}</td>
-            <td class="content-font">
-              {{ annotation.value.join(resource.config.multiValueDelimiter || '/') }}
-            </td>
+      <n-alert
+        v-if="tokenDetails?.comment"
+        type="default"
+        :show-icon="false"
+        :title="$t('general.comment')"
+        class="mb-lg"
+      >
+        <div class="content-font text-small" style="white-space: pre-line">
+          {{ tokenDetails.comment }}
+        </div>
+      </n-alert>
+      <n-table
+        v-if="tokenDetails?.annotations"
+        :bordered="false"
+        :bottom-bordered="false"
+        size="small"
+      >
+        <thead>
+          <tr>
+            <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
+            <th>{{ $t('general.value') }}</th>
           </tr>
-        </template>
-      </tbody>
-    </n-table>
-  </generic-modal>
+        </thead>
+        <tbody>
+          <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
+            <tr v-if="annotation.key !== 'comment'">
+              <td>{{ annotation.key }}</td>
+              <td class="content-font">
+                {{ annotation.value.join(resource.config.multiValueDelimiter || '/') }}
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </n-table>
+    </generic-modal>
 
-  <n-dropdown
-    placement="bottom-start"
-    trigger="manual"
-    :x="tokenContextMenuPos.x"
-    :y="tokenContextMenuPos.y"
-    :options="tokenContextMenuOptions"
-    :show="showTokenContextMenu"
-    :on-clickoutside="handleTokenContextMenuClickOutside"
-    @select="handleTokenContextMenuSelect"
-  />
+    <n-dropdown
+      placement="bottom-start"
+      trigger="manual"
+      :x="tokenContextMenuPos.x"
+      :y="tokenContextMenuPos.y"
+      :options="tokenContextMenuOptions"
+      :show="showTokenContextMenu"
+      :on-clickoutside="handleTokenContextMenuClickOutside"
+      @select="handleTokenContextMenuSelect"
+    />
+  </div>
 </template>
 
 <style scoped>

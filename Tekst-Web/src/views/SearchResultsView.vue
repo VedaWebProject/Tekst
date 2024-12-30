@@ -164,13 +164,13 @@ onBeforeMount(() => {
       class="centered-spinner"
       :description="`${$t('search.results.searching')}...`"
     />
-    <n-list v-else-if="results.length" clickable hoverable style="background-color: transparent">
+    <n-list v-else-if="results.length" style="background-color: transparent" :show-divider="false">
       <search-result
         v-for="(result, index) in results"
         :key="result.id"
         v-bind="result"
         :title="$t('search.results.browse', { browse: browseViewLabel })"
-        @click="search.browse(index)"
+        @navigate="search.browse(index)"
       />
     </n-list>
     <huge-labelled-icon

@@ -18,16 +18,18 @@ const fontStyle = {
 </script>
 
 <template>
-  <div
-    v-for="content in resource.contents"
-    :key="content.id"
-    :class="{
-      'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
-    }"
-  >
-    <hydrated-html v-if="!reduced" :html="content.html" :style="fontStyle" />
-    <div v-else class="translucent i ui-font">
-      {{ $t('contents.msgContentNoReducedView') }}
+  <div>
+    <div
+      v-for="content in resource.contents"
+      :key="content.id"
+      :class="{
+        'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
+      }"
+    >
+      <hydrated-html v-if="!reduced" :html="content.html" :style="fontStyle" />
+      <div v-else class="translucent i ui-font">
+        {{ $t('contents.msgContentNoReducedView') }}
+      </div>
     </div>
   </div>
 </template>
