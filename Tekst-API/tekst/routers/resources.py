@@ -276,7 +276,10 @@ async def create_resource_version(
     ),
 )
 async def update_resource(
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
     updates: AnyResourceUpdate,
     user: UserDep,
 ) -> AnyResourceRead:
@@ -314,15 +317,29 @@ async def find_resources(
     user: OptionalUserDep,
     text_id: Annotated[
         PydanticObjectId,
-        Query(alias="txt", description="ID of text to find resources for"),
+        Query(
+            alias="txt",
+            description="ID of text to find resources for",
+        ),
     ] = None,
     level: Annotated[
-        int, Query(alias="lvl", description="Structure level to find resources for")
+        int,
+        Query(
+            alias="lvl",
+            description="Structure level to find resources for",
+        ),
     ] = None,
     resource_type: Annotated[
-        str,
-        StringConstraints(min_length=1, max_length=32, strip_whitespace=True),
-        Query(alias="type", description="Type of resources to find"),
+        str | None,
+        StringConstraints(
+            min_length=1,
+            max_length=32,
+            strip_whitespace=True,
+        ),
+        Query(
+            alias="type",
+            description="Type of resources to find",
+        ),
     ] = None,
     limit: int = 4096,
 ) -> list[AnyResourceRead]:
@@ -524,7 +541,11 @@ async def transfer_resource(
     ),
 )
 async def propose_resource(
-    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
@@ -566,7 +587,11 @@ async def propose_resource(
     ),
 )
 async def unpropose_resource(
-    user: UserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
@@ -598,7 +623,8 @@ async def unpropose_resource(
     ),
 )
 async def publish_resource(
-    user: SuperuserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: SuperuserDep,
+    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
@@ -649,7 +675,11 @@ async def publish_resource(
     ),
 )
 async def unpublish_resource(
-    user: SuperuserDep, resource_id: Annotated[PydanticObjectId, Path(alias="id")]
+    user: SuperuserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
@@ -684,7 +714,10 @@ async def unpublish_resource(
 )
 async def download_resource_template(
     user: UserDep,
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")],
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> FileResponse:
     resource_doc = await ResourceBaseDocument.get(
         resource_id,
@@ -1138,7 +1171,11 @@ async def get_annotation_aggregations(
     ),
 )
 async def get_resource_coverage_data(
-    resource_id: Annotated[PydanticObjectId, Path(alias="id")], user: OptionalUserDep
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
+    user: OptionalUserDep,
 ) -> dict:
     # try to get resource doc to check if access is allowed for user
     resource_doc = await ResourceBaseDocument.find_one(
