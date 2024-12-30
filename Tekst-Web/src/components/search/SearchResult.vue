@@ -26,7 +26,7 @@ export type SearchResultProps = typeof props;
 
 const emit = defineEmits(['navigate']);
 
-const textTagColor = computed(() => transparentize(props.textColor, 0.8));
+const textColorTranslucent = computed(() => transparentize(props.textColor, 0.8));
 const resultHoverColor = computed(() => transparentize(props.textColor, 0.9));
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
@@ -58,7 +58,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
         vertical
         size="small"
         class="sr-container"
-        :style="{ borderTopColor: textColor }"
+        :style="{ borderTopColor: textColorTranslucent }"
         @click="emit('navigate')"
       >
         <n-flex wrap align="center" :title="fullLabel">
@@ -66,13 +66,13 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
             {{ fullLabelAsTitle ? fullLabel : label }}
           </div>
           <div class="sr-header-tags">
-            <n-tag size="small" :bordered="false" :color="{ color: textTagColor }">
+            <n-tag size="small" :bordered="false" :color="{ color: textColorTranslucent }">
               <template #icon>
                 <n-icon class="translucent" :component="TextsIcon" />
               </template>
               {{ textTitle }}
             </n-tag>
-            <n-tag size="small" :bordered="false">
+            <n-tag size="small" :bordered="false" :color="{ color: 'var(--main-bg-color)' }">
               <template #icon>
                 <n-icon class="translucent" :component="LevelsIcon" />
               </template>
