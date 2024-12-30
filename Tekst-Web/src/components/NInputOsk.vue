@@ -16,7 +16,7 @@ import {
   type InputInst,
 } from 'naive-ui';
 import type { CSSProperties } from 'vue';
-import { computed, nextTick, ref, useSlots, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import ButtonShelf from './generic/ButtonShelf.vue';
 
 const props = defineProps<{
@@ -30,7 +30,6 @@ const model = defineModel<string | null>();
 
 const { pfData } = usePlatformData();
 const state = useStateStore();
-const slots = useSlots();
 
 const showOsk = ref(false);
 const oskInput = ref<string[]>([]);
@@ -151,7 +150,7 @@ whenever(Enter, () => {
     <template #prefix>
       <slot name="prefix"></slot>
     </template>
-    <template v-if="slots['suffix'] || !!pfData?.state.oskModes.length" #suffix>
+    <template v-if="$slots['suffix'] || !!pfData?.state.oskModes.length" #suffix>
       <n-flex :wrap="false">
         <n-button
           v-if="!!pfData?.state.oskModes.length"
