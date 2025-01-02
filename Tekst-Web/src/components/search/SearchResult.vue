@@ -26,7 +26,7 @@ export type SearchResultProps = typeof props;
 
 const emit = defineEmits(['navigate']);
 
-const textColorTranslucent = computed(() => transparentize(props.textColor, 0.8));
+const textColorTranslucent = computed(() => transparentize(props.textColor, 0.75));
 const resultHoverColor = computed(() => transparentize(props.textColor, 0.9));
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
@@ -111,7 +111,7 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
   cursor: pointer;
   border-radius: var(--border-radius);
   border-top-style: solid;
-  border-top-width: 1px;
+  border-top-width: 2px;
   transition: background-color 0.2s ease;
 }
 
