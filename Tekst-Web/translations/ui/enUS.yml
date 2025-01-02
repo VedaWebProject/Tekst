@@ -837,7 +837,7 @@ search:
       label: Occurrence
       should: optional
       must: required
-      not: exclude
+      not: excluded
     wc: Interpret wildcards (* and ?) for this field
   settings:
     general:

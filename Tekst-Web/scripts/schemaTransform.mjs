@@ -37,7 +37,7 @@ const ast = await openapiTS(SCHEMA_FILE_URL, {
       processedSchemaObjectHashes.add(hash);
       return {
         schema: transformSchemaObject(schemaObject, options),
-        questionToken: true, // set field to optional
+        questionToken: !!schemaObject.optionalNullable, // set field to optional
       };
     }
     // handle binary types as `Blob` or `Blob | null`

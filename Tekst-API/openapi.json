@@ -7231,6 +7231,7 @@
             },
             "type": "array",
             "maxItems": 32,
+            "minItems": 1,
             "title": "Q",
             "description": "Resource-specific queries",
             "default": [],
@@ -7246,13 +7247,13 @@
               },
               "strict": false
             },
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "adv": {
             "$ref": "#/components/schemas/AdvancedSearchSettings",
             "description": "Advanced search settings",
             "default": {},
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -8214,7 +8215,7 @@
             "maxLength": 512,
             "title": "Caption",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -8808,8 +8809,8 @@
             ],
             "title": "Occ",
             "description": "The occurrence type of the search query",
-            "default": "should",
-            "optionalNullable": false
+            "default": "must",
+            "optionalNullable": true
           },
           "res": {
             "type": "string",
@@ -8826,7 +8827,7 @@
             "title": "Cmt",
             "description": "Comment",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -9962,7 +9963,7 @@
             "title": "Text",
             "description": "Text to search for",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -10107,7 +10108,7 @@
               "pg": 1,
               "pgs": 10
             },
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "sort": {
             "anyOf": [
@@ -11060,7 +11061,7 @@
             "maxLength": 512,
             "title": "Caption",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -11605,14 +11606,14 @@
             "title": "Pg",
             "description": "Page number",
             "default": 1,
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "pgs": {
             "type": "integer",
             "title": "Pgs",
             "description": "Page size",
             "default": 10,
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -12514,7 +12515,7 @@
             "maxLength": 512,
             "title": "Text",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -13189,7 +13190,7 @@
             "title": "Q",
             "description": "Query string",
             "default": "*",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "gen": {
             "$ref": "#/components/schemas/GeneralSearchSettings",
@@ -13201,7 +13202,7 @@
               },
               "strict": false
             },
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "qck": {
             "$ref": "#/components/schemas/QuickSearchSettings",
@@ -13210,7 +13211,7 @@
               "op": "OR",
               "re": false
             },
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -13227,14 +13228,14 @@
             "title": "Op",
             "description": "Default operator",
             "default": "OR",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "re": {
             "type": "boolean",
             "title": "Re",
             "description": "Whether to use regular expressions",
             "default": false,
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "txt": {
             "anyOf": [
@@ -14334,7 +14335,7 @@
             "maxLength": 512,
             "title": "Html",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -15547,14 +15548,14 @@
             "maxLength": 512,
             "title": "Token",
             "default": "",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "twc": {
             "type": "boolean",
             "title": "Twc",
             "description": "Whether to interpret wildcards in the token query",
             "default": false,
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "anno": {
             "items": {
@@ -15565,7 +15566,7 @@
             "title": "Anno",
             "description": "List of annotations to match",
             "default": [],
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",

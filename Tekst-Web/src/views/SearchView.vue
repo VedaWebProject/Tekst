@@ -105,7 +105,7 @@ function handleResourceChange(resQueryIndex: number, resId: string, resType: Res
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
-      cmn: { res: resId, occ: formModel.value.queries[resQueryIndex].cmn.occ || 'should' },
+      cmn: { res: resId, occ: formModel.value.queries[resQueryIndex].cmn.occ || 'must' },
       rts: { type: resType },
       resource: resources.all.find((r) => r.id === resId),
     };
@@ -118,7 +118,7 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
     resources.ofText[0].id;
   const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
   return {
-    cmn: { res: resource.id, occ: 'should' },
+    cmn: { res: resource.id, occ: 'must' },
     rts: { type: resource.resourceType },
     resource: resource,
   };

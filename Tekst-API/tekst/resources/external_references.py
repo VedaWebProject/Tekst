@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase, SchemaOptionalNonNullable
+from tekst.models.common import ModelBase, SchemaOptionalNullable
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -230,5 +230,5 @@ class ExternalReferencesSearchQuery(ModelBase):
             description="Text to search for",
         ),
         val.CleanupOneline,
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = ""

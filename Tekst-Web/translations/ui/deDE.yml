@@ -860,7 +860,7 @@ search:
       label: Vorkommen
       should: optional
       must: erforderlich
-      not: ausschließen
+      not: ausgeschlossen
     wc: Interpretiere Platzhalter (* und ?) für dieses Feld
   settings:
     general:

@@ -95,7 +95,7 @@ class PaginationSettings(ModelBase):
             alias="pg",
             description="Page number",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = 1
     page_size: Annotated[
         int,
@@ -104,7 +104,7 @@ class PaginationSettings(ModelBase):
             alias="pgs",
             description="Page size",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = 10
 
     def es_from(self) -> int:
@@ -127,7 +127,7 @@ class GeneralSearchSettings(ModelBase):
             alias="pgn",
             description="Pagination settings",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = PaginationSettings()
     sorting_preset: Annotated[
         SortingPreset | None,
@@ -147,7 +147,7 @@ class QuickSearchSettings(ModelBase):
             alias="op",
             description="Default operator",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = "OR"
     regexp: Annotated[
         bool,
@@ -155,7 +155,7 @@ class QuickSearchSettings(ModelBase):
             alias="re",
             description="Whether to use regular expressions",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = False
     texts: Annotated[
         list[PydanticObjectId] | None,
@@ -194,7 +194,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="q",
             description="Query string",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = "*"
     settings_general: Annotated[
         GeneralSearchSettings,
@@ -202,7 +202,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = GeneralSearchSettings()
     settings_quick: Annotated[
         QuickSearchSettings,
@@ -210,7 +210,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="qck",
             description="Quick search settings",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = QuickSearchSettings()
 
 
@@ -226,6 +226,7 @@ class AdvancedSearchRequestBody(ModelBase):
         list[ResourceSearchQuery],
         Field(
             alias="q",
+            min_length=1,
             max_length=32,
             description="Resource-specific queries",
         ),
@@ -237,7 +238,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = GeneralSearchSettings()
     settings_advanced: Annotated[
         AdvancedSearchSettings,
@@ -245,7 +246,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="adv",
             description="Advanced search settings",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = AdvancedSearchSettings()
 
 

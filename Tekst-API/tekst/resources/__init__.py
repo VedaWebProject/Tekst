@@ -23,7 +23,7 @@ from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
     ReadBase,
-    SchemaOptionalNonNullable,
+    SchemaOptionalNullable,
 )
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
@@ -81,8 +81,8 @@ class CommonResourceSearchQueryData(ModelBase):
             alias="occ",
             description="The occurrence type of the search query",
         ),
-        SchemaOptionalNonNullable,
-    ] = "should"
+        SchemaOptionalNullable,
+    ] = "must"
     resource_id: Annotated[
         PydanticObjectId,
         Field(
@@ -98,7 +98,7 @@ class CommonResourceSearchQueryData(ModelBase):
         ),
         StringConstraints(max_length=512, strip_whitespace=True),
         val.CleanupOneline,
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = ""
 
 

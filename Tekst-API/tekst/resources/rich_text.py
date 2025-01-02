@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints, field_validator
 
-from tekst.models.common import ModelBase, SchemaOptionalNonNullable
+from tekst.models.common import ModelBase, SchemaOptionalNullable
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
@@ -194,5 +194,5 @@ class RichTextSearchQuery(ModelBase):
             strip_whitespace=True,
         ),
         val.CleanupOneline,
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = ""

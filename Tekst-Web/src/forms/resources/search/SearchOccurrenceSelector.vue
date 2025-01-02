@@ -11,8 +11,8 @@ const occurrence =
   defineModel<NonNullable<AdvancedSearchRequestBody['q']>[number]['cmn']['occ']>('occurrence');
 
 const occurrenceOptions = [
-  { label: () => $t('search.advancedSearch.occ.should'), value: 'should' },
   { label: () => $t('search.advancedSearch.occ.must'), value: 'must' },
+  { label: () => $t('search.advancedSearch.occ.should'), value: 'should' },
   { label: () => $t('search.advancedSearch.occ.not'), value: 'not' },
 ];
 </script>

@@ -58,7 +58,7 @@ class ExcludeFromModelVariants:
 # TypeScript types for the client is configured to transform fields with default
 # values as required to make working with response models easier. In turn, we have to
 # explicitly mark optional fields (especially for request models) as optinal in some way
-# for the generators to understand which fields to treat as optional.
+# for the generator to understand which fields to treat as optional/nullable.
 SchemaOptionalNullable = Field(json_schema_extra={"optionalNullable": True})
 SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
 

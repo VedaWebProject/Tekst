@@ -13,7 +13,7 @@ from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
     PrecomputedDataDocument,
-    SchemaOptionalNonNullable,
+    SchemaOptionalNullable,
     TranslationBase,
     Translations,
 )
@@ -670,7 +670,7 @@ class TextAnnotationSearchQuery(ModelBase):
             strip_whitespace=True,
         ),
         val.CleanupOneline,
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = ""
     token_wildcards: Annotated[
         bool,
@@ -678,7 +678,7 @@ class TextAnnotationSearchQuery(ModelBase):
             alias="twc",
             description="Whether to interpret wildcards in the token query",
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = False
     annotations: Annotated[
         list[TextAnnotationQueryEntry],
@@ -687,5 +687,5 @@ class TextAnnotationSearchQuery(ModelBase):
             description="List of annotations to match",
             max_length=64,
         ),
-        SchemaOptionalNonNullable,
+        SchemaOptionalNullable,
     ] = []

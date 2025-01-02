@@ -1292,7 +1292,7 @@ export interface components {
        * @description Resource-specific queries
        * @default []
        */
-      q?: components['schemas']['ResourceSearchQuery'][];
+      q: components['schemas']['ResourceSearchQuery'][];
       /**
        * @description General search settings
        * @default {
@@ -2035,7 +2035,7 @@ export interface components {
       /**
        * Occ
        * @description The occurrence type of the search query
-       * @default should
+       * @default must
        * @enum {string}
        */
       occ?: 'should' | 'must' | 'not';
