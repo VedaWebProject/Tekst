@@ -13,6 +13,7 @@ const props = withDefaults(
     req: AdvancedSearchRequestBody;
     total?: number;
     totalRelation?: 'eq' | 'gte';
+    loading?: boolean;
   }>(),
   {
     total: undefined,
@@ -51,7 +52,7 @@ const settings = computed(() => [
 
 <template>
   <n-flex align="center" class="text-tiny" :size="[4, 8]">
-    <template v-if="total != null && totalRelation">
+    <template v-if="!loading && total != null && totalRelation">
       <span>
         {{ totalRelation === 'eq' ? '' : '≥' }}
         {{

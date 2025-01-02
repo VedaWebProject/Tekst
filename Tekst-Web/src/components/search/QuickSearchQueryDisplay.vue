@@ -12,6 +12,7 @@ const props = withDefaults(
     req: QuickSearchRequestBody;
     total?: number;
     totalRelation?: 'eq' | 'gte';
+    loading?: boolean;
   }>(),
   {
     total: undefined,
@@ -38,7 +39,7 @@ const settings = computed(() => [
 
 <template>
   <n-flex align="center" class="text-tiny" :size="[4, 8]">
-    <span v-if="total != null && totalRelation">
+    <span v-if="!loading && total != null && totalRelation">
       {{ totalRelation === 'eq' ? '' : '≥' }}
       {{
         $t('search.results.count', {

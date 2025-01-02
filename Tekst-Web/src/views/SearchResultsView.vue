@@ -133,6 +133,7 @@ onBeforeMount(() => {
       :total-relation="search.results?.totalHitsRelation"
       :took="search.results?.took"
       :error="search.error"
+      :loading="search.loading"
       style="flex-grow: 2"
     />
     <n-flex :wrap="false">

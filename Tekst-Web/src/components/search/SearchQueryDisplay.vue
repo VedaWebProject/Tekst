@@ -8,6 +8,7 @@ withDefaults(
     req?: QuickSearchRequestBody | AdvancedSearchRequestBody;
     total?: number;
     totalRelation?: 'eq' | 'gte';
+    loading?: boolean;
     error?: boolean;
   }>(),
   {
@@ -27,11 +28,13 @@ withDefaults(
     :req="req"
     :total="total"
     :total-relation="totalRelation"
+    :loading="loading"
   />
   <advanced-search-query-display
     v-else-if="req?.type === 'advanced'"
     :req="req"
     :total="total"
     :total-relation="totalRelation"
+    :loading="loading"
   />
 </template>
