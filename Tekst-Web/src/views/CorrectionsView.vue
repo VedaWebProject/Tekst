@@ -25,7 +25,7 @@ const resourceTitle = computed(() => pickTranslation(resource.value?.title, stat
 watch(
   () => state.text,
   (newText) => {
-    router.push({ name: 'resources', params: { text: newText?.slug } });
+    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
   }
 );
 
@@ -39,7 +39,7 @@ onBeforeMount(async () => {
     {{ $t('corrections.heading', { title: resourceTitle }) }}
   </icon-heading>
 
-  <router-link :to="{ name: 'resources', params: { text: state.text?.slug } }">
+  <router-link :to="{ name: 'resources', params: { textSlug: state.text?.slug } }">
     <n-button text :focusable="false">
       <template #icon>
         <n-icon :component="ArrowBackIcon" />

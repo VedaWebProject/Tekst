@@ -74,7 +74,7 @@ export interface paths {
     };
     /**
      * Get location data
-     * @description Returns the location path from the location with the given level/position
+     * @description Returns the location path from the location with the given ID or text/level/position
      *     as the last element, up to its most distant ancestor location
      *     on structure level 0 as the first element of an array as well as all contents
      *     for the given resource(s) referencing the locations in the location path.
@@ -88,7 +88,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/browse/nearest-content-position': {
+  '/browse/nearest-content-location-id': {
     parameters: {
       query?: never;
       header?: never;
@@ -96,11 +96,11 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get nearest content position
+     * Get nearest content location id
      * @description Finds the nearest location the given resource holds content for and returns
-     *     its position index or -1 if no content was found.
+     *     its ID or an empty string if no more content was found.
      */
-    get: operations['getNearestContentPosition'];
+    get: operations['getNearestContentLocationId'];
     put?: never;
     post?: never;
     delete?: never;
@@ -1503,35 +1503,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -1561,13 +1532,6 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['AudioResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** AudioResourceRead */
     AudioResourceRead: {
@@ -2061,10 +2025,11 @@ export interface components {
        */
       resourceId: string;
       /**
-       * Position
-       * @description Position of the content this correction refers to
+       * Locationid
+       * @description ID of the location this correction refers to
+       * @example 5eb7cf5a86d9755df3a6c593
        */
-      position: number;
+      locationId: string;
       /**
        * Note
        * @description Content of the correction note
@@ -2085,6 +2050,17 @@ export interface components {
        */
       resourceId: string;
       /**
+       * Locationid
+       * @description ID of the location this correction refers to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Note
+       * @description Content of the correction note
+       */
+      note: string;
+      /**
        * Userid
        * @description ID of the user who created the correction note
        * @example 5eb7cf5a86d9755df3a6c593
@@ -2092,14 +2068,9 @@ export interface components {
       userId: string;
       /**
        * Position
-       * @description Position of the content this correction refers to
+       * @description Position of the correction on the resource's level
        */
       position: number;
-      /**
-       * Note
-       * @description Content of the correction note
-       */
-      note: string;
       /**
        * Date
        * Format: date-time
@@ -2356,35 +2327,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -2414,13 +2356,6 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['ExternalReferencesResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** ExternalReferencesResourceRead */
     ExternalReferencesResourceRead: {
@@ -2895,35 +2830,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -2953,13 +2859,6 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['ImagesResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** ImagesResourceRead */
     ImagesResourceRead: {
@@ -3187,10 +3086,10 @@ export interface components {
     LocaleKey: 'deDE' | 'enUS';
     /** LocationCoverage */
     LocationCoverage: {
+      /** Locid */
+      locId: string;
       /** Label */
       label: string;
-      /** Position */
-      position: number;
       /**
        * Covered
        * @default false
@@ -3235,11 +3134,23 @@ export interface components {
     LocationData: {
       /**
        * Locationpath
+       * @description Path of locations from level 0 to this location
        * @default []
        */
       locationPath: components['schemas']['LocationRead'][];
       /**
+       * Prev
+       * @description ID of the preceding location on the same level
+       */
+      prev?: string | null;
+      /**
+       * Next
+       * @description ID of the subsequent location on the same level
+       */
+      next?: string | null;
+      /**
        * Contents
+       * @description Contents of various resources on this location
        * @default []
        */
       contents: (
@@ -3542,35 +3453,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -3611,13 +3493,6 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** PlainTextResourceRead */
     PlainTextResourceRead: {
@@ -4431,35 +4306,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -4489,13 +4335,6 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['RichTextResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** RichTextResourceRead */
     RichTextResourceRead: {
@@ -5005,35 +4844,6 @@ export interface components {
        */
       originalId?: string | null;
       /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
-      /**
-       * Sharedread
-       * @description Users with shared read access to this resource
-       * @default []
-       */
-      sharedRead: string[];
-      /**
-       * Sharedwrite
-       * @description Users with shared write access to this resource
-       * @default []
-       */
-      sharedWrite: string[];
-      /**
-       * Public
-       * @description Publication status of this resource
-       * @default false
-       */
-      public: boolean;
-      /**
-       * Proposed
-       * @description Whether this resource has been proposed for publication
-       * @default false
-       */
-      proposed: boolean;
-      /**
        * Citation
        * @description Citation details for this resource
        */
@@ -5065,13 +4875,6 @@ export interface components {
        *       "multiValueDelimiter": "/"
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
-      /**
-       * Contentschangedat
-       * Format: date-time
-       * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
-       */
-      contentsChangedAt: string;
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
@@ -6006,14 +5809,16 @@ export interface operations {
   };
   getLocationData: {
     parameters: {
-      query: {
-        /** @description ID of text to look up data for */
-        txt: string;
-        /** @description Location level */
-        lvl: number;
-        /** @description Location position */
-        pos: number;
-        /** @description ID (or list of IDs) of resource(s) to return content data for */
+      query?: {
+        /** @description ID of location to request data for */
+        id?: string | null;
+        /** @description ID of text the target location belongs to (needed if no location ID is given) */
+        txt?: string | null;
+        /** @description Location level (only used if no location ID is given, text's default level is used by default) */
+        lvl?: number | null;
+        /** @description Location position (only used if no location ID is given) */
+        pos?: number;
+        /** @description ID (or list of IDs) of resource(s) to return contents for */
         res?: string[];
         /** @description Only return contents for the head location of the path */
         head?: boolean;
@@ -6035,6 +5840,15 @@ export interface operations {
           'application/json': components['schemas']['LocationData'];
         };
       };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
       /** @description Validation Error */
       422: {
         headers: {
@@ -6046,11 +5860,11 @@ export interface operations {
       };
     };
   };
-  getNearestContentPosition: {
+  getNearestContentLocationId: {
     parameters: {
       query: {
-        /** @description Location position */
-        pos: number;
+        /** @description Current content location */
+        loc: string;
         /** @description ID of resource to return nearest location with content for */
         res: string;
         /** @description Whether to look for the nearest preceding or subsequent location with content */
@@ -6068,7 +5882,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': number;
+          'application/json': string;
         };
       };
       /** @description Not Found */
@@ -6446,6 +6260,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['CorrectionRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */

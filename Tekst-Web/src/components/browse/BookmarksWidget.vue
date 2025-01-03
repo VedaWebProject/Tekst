@@ -73,8 +73,10 @@ async function handleBookmarkSelect(bookmark: BookmarkRead) {
   showModal.value = false;
   router.replace({
     name: 'browse',
-    params: { text: pfData.value?.texts.find((t) => t.id === bookmark.textId)?.slug || '' },
-    query: { lvl: bookmark.level, pos: bookmark.position },
+    params: {
+      textSlug: pfData.value?.texts.find((t) => t.id === bookmark.textId)?.slug || '',
+      locId: bookmark.locationId,
+    },
   });
 }
 

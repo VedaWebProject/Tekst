@@ -31,6 +31,8 @@ export const useBrowseStore = defineStore('browse', () => {
   const locationPathHead = computed<LocationRead | undefined>(
     () => locationPath.value[locationPath.value.length - 1]
   );
+  const nextLocationId = ref<string>();
+  const prevLocationId = ref<string>();
   const level = computed(() => locationPathHead.value?.level);
   const isOnDefaultLevel = computed(
     () => !state.text || level.value == null || level.value === state.text.defaultLevel
@@ -38,68 +40,59 @@ export const useBrowseStore = defineStore('browse', () => {
   const position = computed(() => locationPathHead.value?.position ?? 0);
 
   // update browse location path
-  async function loadLocationData(lvl?: string, pos?: string, force: boolean = false) {
+  async function loadLocationData(
+    locId: string | undefined = route.params.locId?.toString(),
+    force: boolean = false
+  ) {
     if (route.name !== 'browse') return;
     loadingLocationData.value = true;
-    const qLvl = parseInt(lvl || route.query.lvl?.toString() || '');
-    const qPos = parseInt(pos || route.query.pos?.toString() || '');
-    if (Number.isInteger(qLvl) && Number.isInteger(qPos)) {
-      if (
-        !force &&
-        qLvl == locationPathHead.value?.level &&
-        qPos == locationPathHead.value?.position
-      ) {
-        loadingLocationData.value = false;
-        return;
-      }
-      // fill browse location path up to root (no more parent)
-      const { data: locationData, error } = await GET('/browse/location-data', {
-        params: {
-          query: {
-            txt: state.text?.id || '',
-            lvl: qLvl,
-            pos: qPos,
-          },
-        },
-      });
-      if (!error && locationData.locationPath?.length) {
-        locationPath.value = locationData.locationPath;
-        resources.ofText.forEach((r: AnyResourceRead) => {
-          const content =
-            locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.id) ||
-            locationData.contents?.find((u: AnyContentRead) => u.resourceId === r.originalId);
-          r.contents = content ? [content] : [];
-        });
-      } else {
-        loadingLocationData.value = false;
-        resetBrowseLocation(level.value);
-      }
-    } else {
+    // do nothing if location data is already loaded and loading is not forced
+    if (!force && !!locId && locId === locationPathHead.value?.id) {
       loadingLocationData.value = false;
-      resetBrowseLocation();
+      return;
     }
-    loadingLocationData.value = false;
-  }
-
-  // reset browse location (change URI parameters)
-  function resetBrowseLocation(
-    level: number = state.text?.defaultLevel || 0,
-    position: number = 0,
-    text: string = state.text?.slug ||
+    const targetSlug =
+      state.text?.slug ||
       pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId)?.slug ||
-      ''
-  ) {
-    router.replace({
-      name: 'browse',
+      '';
+    // request location data
+    const { data: locationData, error } = await GET('/browse/location-data', {
       params: {
-        text: text,
-      },
-      query: {
-        ...route.query,
-        lvl: level,
-        pos: position,
+        query: locId ? { id: locId } : { txt: state.text?.id },
       },
     });
+    if (!error && !!locationData.locationPath?.length) {
+      locationPath.value = locationData.locationPath;
+      nextLocationId.value = locationData.next || undefined;
+      prevLocationId.value = locationData.prev || undefined;
+      resources.ofText.forEach((r: AnyResourceRead) => {
+        const content =
+          locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.id) ||
+          locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.originalId);
+        r.contents = content ? [content] : [];
+      });
+      // if the "loc" query param was missing, add it now
+      if (!locId) {
+        router.replace({
+          name: 'browse',
+          params: {
+            textSlug: targetSlug,
+            locId: locationPathHead.value?.id,
+          },
+        });
+      }
+    } else {
+      // on error, just reset the browse location by
+      // replacing the route with empty query params
+      console.log(targetSlug);
+      router.replace({
+        name: 'browse',
+        params: {
+          textSlug: targetSlug,
+        },
+      });
+    }
+    loadingLocationData.value = false;
   }
 
   /* RESOURCES AND CONTENTS */
@@ -154,10 +147,11 @@ export const useBrowseStore = defineStore('browse', () => {
     setResourcesActiveState: resources.setResourcesActiveState,
     locationPath,
     locationPathHead,
+    nextLocationId,
+    prevLocationId,
     level,
     isOnDefaultLevel,
     position,
     loadLocationData,
-    resetBrowseLocation,
   };
 });

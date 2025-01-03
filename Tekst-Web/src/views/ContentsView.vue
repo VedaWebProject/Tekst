@@ -3,9 +3,10 @@ import {
   type AnyContentCreate,
   type AnyContentUpdate,
   type AnyResourceRead,
-  type LocationRead,
+  type CorrectionRead,
   DELETE,
   GET,
+  type LocationRead,
   PATCH,
   POST,
 } from '@/api';
@@ -82,11 +83,15 @@ const originalResourceTitle = computed(() =>
     state.locale
   )
 );
-const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
+
+const locationId = computed<string | undefined>(() => route.params.locId?.toString());
 const locationPath = ref<LocationRead[]>();
 const location = computed<LocationRead | undefined>(
-  () => locationPath.value?.[resource.value?.level ?? -1]
+  () => locationPath.value?.[resource.value?.level ?? locationPath.value.length - 1]
 );
+const nextLocationId = ref<string>();
+const prevLocationId = ref<string>();
+
 const initialContentModel = ref<ContentFormModel>();
 const contentModel = ref<ContentFormModel | undefined>(initialContentModel.value);
 const { changed, reset, getChanges } = useModelChanges(contentModel);
@@ -124,22 +129,22 @@ const loading = computed(
 );
 
 const corrections = computed(() => resources.corrections[resource.value?.id || ''] || []);
-const prevCorrection = computed(
+const prevCorrection = computed<CorrectionRead | undefined>(
   () =>
     corrections.value
-      .filter((c) => c.position < position.value)
+      .filter((c) => c.position < (location.value?.position || 0))
       .sort((a, b) => a.position - b.position)
       .reverse()[0]
 );
-const nextCorrection = computed(
+const nextCorrection = computed<CorrectionRead | undefined>(
   () =>
     corrections.value
-      .filter((c) => c.position > position.value)
+      .filter((c) => c.position > (location.value?.position || 0))
       .sort((a, b) => a.position - b.position)[0]
 );
 
 const locCorrections = computed(
-  () => corrections.value.filter((c) => c.position === position.value) || []
+  () => corrections.value.filter((c) => c.position === location.value?.position) || []
 );
 
 const otherCorrectionsCount = computed(
@@ -150,21 +155,17 @@ const otherCorrectionsCount = computed(
 watch(
   () => state.text,
   (newText) => {
-    router.push({ name: 'resources', params: { text: newText?.slug } });
+    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
   }
 );
 
 async function loadLocationData() {
-  if (!resource.value || !Number.isInteger(position.value)) {
-    return;
-  }
+  if (!resource.value) return;
   loadingData.value = true;
   const { data: locationData, error } = await GET('/browse/location-data', {
     params: {
       query: {
-        txt: state.text?.id || '',
-        lvl: resource.value.level,
-        pos: position.value,
+        id: locationId.value,
         res: [
           resource.value.id,
           ...(compareResource.value?.id ? [compareResource.value.id] : []),
@@ -175,8 +176,10 @@ async function loadLocationData() {
     },
   });
   if (!error && locationData.locationPath?.length) {
-    // requested location exists, set current location path
+    // requested location exists, set current location path, prev and next location IDs
     locationPath.value = locationData.locationPath;
+    prevLocationId.value = locationData.prev || undefined;
+    nextLocationId.value = locationData.next || undefined;
     // process received contents
     initialContentModel.value =
       locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
@@ -196,7 +199,7 @@ async function loadLocationData() {
       name: 'resourceContents',
       params: {
         ...route.params,
-        pos: 0,
+        locId: undefined,
       },
     });
   }
@@ -205,15 +208,15 @@ async function loadLocationData() {
 
 // watch for position change and resources data updates
 watch(
-  [position, () => resources.ofText],
-  async ([newPosition, newResources]) => {
-    if (!newResources.length || newPosition == null) {
+  [locationId, () => resources.ofText],
+  async ([newLocationId, newResources]) => {
+    if (!newResources.length || !newLocationId) {
       return;
     }
     if (!resource.value) {
-      resource.value = newResources.find((l) => l.id === route.params.id.toString());
+      resource.value = newResources.find((l) => l.id === route.params.resId.toString());
       if (!resource.value) {
-        router.push({ name: 'resources', params: { text: state.text?.slug } });
+        router.push({ name: 'resources', params: { textSlug: state.text?.slug } });
         return;
       }
       if (resource.value.originalId) {
@@ -325,26 +328,16 @@ function handleAddContentClick() {
   }
 }
 
-function navigateContents(step: number) {
-  router.replace({
-    name: 'resourceContents',
-    params: {
-      ...route.params,
-      pos: position.value + step,
-    },
-  });
-}
-
-function gotoLocation(locationPath?: LocationRead[], pos?: number) {
-  if (!locationPath && pos == null) {
-    console.error('Invalid location path or position', locationPath, pos);
+function gotoLocation(locId?: string) {
+  if (!locId) {
+    console.error('No location ID provided');
     return;
   }
   router.push({
     name: 'resourceContents',
     params: {
       ...route.params,
-      pos: locationPath ? locationPath[locationPath.length - 1].position : pos,
+      locId,
     },
   });
 }
@@ -355,18 +348,18 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
-  const { data: pos, error } = await GET('/browse/nearest-content-position', {
+  const { data: nearestLocId, error } = await GET('/browse/nearest-content-location-id', {
     params: {
       query: {
-        pos: position.value,
+        loc: locationId.value || '',
         res: compareResourceId.value || '',
         mode,
       },
     },
   });
   if (!error) {
-    if (pos >= 0) {
-      navigateContents(pos - position.value);
+    if (nearestLocId) {
+      gotoLocation(nearestLocId);
     } else {
       message.info($t('contents.msgNoNearest'));
     }
@@ -375,10 +368,10 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {
-  if (!isOverlayOpen() && !isInputFocused()) navigateContents(-1);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(prevLocationId.value);
 });
 whenever(ArrowRight, () => {
-  if (!isOverlayOpen() && !isInputFocused()) navigateContents(1);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(nextLocationId.value);
 });
 </script>
 
@@ -388,7 +381,7 @@ whenever(ArrowRight, () => {
     <help-button-widget help-key="contentsView" />
   </icon-heading>
 
-  <router-link :to="{ name: 'resources', params: { text: state.text?.slug } }">
+  <router-link :to="{ name: 'resources', params: { textSlug: state.text?.slug } }">
     <n-button text :focusable="false">
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
@@ -406,9 +399,9 @@ whenever(ArrowRight, () => {
     <template #start>
       <n-button
         type="primary"
-        :disabled="loading || position === 0"
+        :disabled="loading || !prevLocationId"
         :focusable="false"
-        @click="navigateContents(-1)"
+        @click="gotoLocation(prevLocationId)"
       >
         <template #icon>
           <n-icon :component="ArrowBackIcon" />
@@ -419,7 +412,12 @@ whenever(ArrowRight, () => {
           <n-icon :component="BookIcon" />
         </template>
       </n-button>
-      <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateContents(1)">
+      <n-button
+        type="primary"
+        :disabled="loading || !nextLocationId"
+        :focusable="false"
+        @click="gotoLocation(nextLocationId)"
+      >
         <template #icon>
           <n-icon :component="ArrowForwardIcon" />
         </template>
@@ -562,8 +560,8 @@ whenever(ArrowRight, () => {
               :prev-disabled="!prevCorrection"
               :next-disabled="!nextCorrection"
               indent
-              @prev-click="() => gotoLocation(undefined, prevCorrection.position)"
-              @next-click="() => gotoLocation(undefined, nextCorrection.position)"
+              @prev-click="() => gotoLocation(prevCorrection?.locationId)"
+              @next-click="() => gotoLocation(nextCorrection?.locationId)"
             />
           </n-list>
         </n-collapse-item>
@@ -638,7 +636,7 @@ whenever(ArrowRight, () => {
     v-model:show="showJumpToModal"
     :current-location-path="locationPath"
     :show-level-select="false"
-    @submit="gotoLocation"
+    @submit="(locPath) => gotoLocation(locPath[locPath.length - 1].id)"
   />
 </template>
 

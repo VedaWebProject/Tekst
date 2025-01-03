@@ -310,7 +310,10 @@ E_400_INVALID_TEXT = error_instance(
 E_400_INVALID_LEVEL = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="locationInvalidLevel",
-    msg="The level index passed does not exist in target text",
+    msg=(
+        "The level index passed is invalid or doesn't "
+        "match the level of a referenced object"
+    ),
 )
 
 E_400_LOCATION_NO_LEVEL_NOR_PARENT = error_instance(

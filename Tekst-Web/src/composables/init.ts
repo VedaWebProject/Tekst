@@ -70,7 +70,7 @@ export function useInitializeApp() {
       info: () => $t('init.workingText'),
       action: async (success: boolean = true) => {
         state.text =
-          pfData.value?.texts.find((t) => t.slug === route.params.text) ||
+          pfData.value?.texts.find((t) => t.slug === route.params.textSlug) ||
           pfData.value?.texts.find((t) => t.slug == state.textSlug) ||
           pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
           pfData.value?.texts[0];
@@ -80,7 +80,7 @@ export function useInitializeApp() {
             name: route.name || 'browse',
             params: {
               ...route.params,
-              text: state.text?.slug,
+              textSlug: state.text?.slug,
             },
             query: route.query,
           });

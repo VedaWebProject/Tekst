@@ -31,7 +31,7 @@ function handleClick() {
 async function handleModalSubmit(note: string) {
   const correction: CorrectionCreate = {
     resourceId: props.resource.id,
-    position: browse.position,
+    locationId: browse.locationPathHead?.id || '',
     note,
   };
   const { error } = await POST('/corrections', {

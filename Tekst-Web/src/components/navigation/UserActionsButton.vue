@@ -66,7 +66,7 @@ const userOptions = computed(() => [
       {
         name: 'resources',
         params: {
-          text: state.text?.slug || '',
+          textSlug: state.text?.slug || '',
         },
       }
     ),

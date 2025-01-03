@@ -60,8 +60,7 @@ async function handleSearch() {
       // there is one matching location alias, so we directly navigate to this location
       router.push({
         name: 'browse',
-        params: { text: state.text?.slug || '' },
-        query: { lvl: data[0].level, pos: data[0].position },
+        params: { textSlug: state.text?.slug || '', locId: data[0].id },
       });
     } else {
       // there are multiple matching locations, so we show a list of them
@@ -74,8 +73,6 @@ async function handleSearch() {
               type: 'location',
               label: l.label + (l.full ? ` (${l.full})` : ''),
               value: l.id,
-              level: l.level,
-              position: l.position,
             })),
             ...(data.length === matchesToShow
               ? [
@@ -120,8 +117,7 @@ function handleSelect(value: string, option: SelectOption) {
   if (option.type === 'location') {
     router.push({
       name: 'browse',
-      params: { text: state.text?.slug || '' },
-      query: { lvl: option.level as number, pos: option.position as number },
+      params: { textSlug: state.text?.slug || '', locId: option.value },
     });
     emit('submit', searchInput.value);
   } else if (option.type === 'search') {

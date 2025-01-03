@@ -110,7 +110,7 @@ export const useStateStore = defineStore('state', () => {
     serializer: StorageSerializers.string,
   });
   watch(
-    () => route.params.text,
+    () => route.params.textSlug,
     (after) => {
       if (after && text.value?.slug !== after) {
         // use text from route OR default text

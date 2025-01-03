@@ -154,6 +154,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
         ExcludeFromModelVariants(
             update=True,
+            create=True,
         ),
     ] = None
 
@@ -163,6 +164,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Users with shared read access to this resource",
             max_length=64,
         ),
+        ExcludeFromModelVariants(
+            create=True,
+        ),
     ] = []
 
     shared_write: Annotated[
@@ -170,6 +174,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         Field(
             description="Users with shared write access to this resource",
             max_length=64,
+        ),
+        ExcludeFromModelVariants(
+            create=True,
         ),
     ] = []
 
@@ -180,6 +187,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
         ExcludeFromModelVariants(
             update=True,
+            create=True,
         ),
     ] = False
 
@@ -190,6 +198,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
         ExcludeFromModelVariants(
             update=True,
+            create=True,
         ),
     ] = False
 
@@ -230,6 +239,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
         ExcludeFromModelVariants(
             update=True,
+            create=True,
         ),
     ] = datetime.utcfromtimestamp(86400)
 
@@ -395,13 +405,14 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         coverage_per_parent = {}
         covered_locations_count = 0
         for location in data:
+            loc_id = str(location["id"])
             parent_id = str(location["parent_id"])
             if parent_id not in coverage_per_parent:
                 coverage_per_parent[parent_id] = []
             coverage_per_parent[parent_id].append(
                 {
-                    "label": location_labels[str(location["id"])],
-                    "position": location["position"],
+                    "loc_id": loc_id,
+                    "label": location_labels[loc_id],
                     "covered": location["covered"],
                 }
             )
@@ -562,8 +573,8 @@ ResourceBaseUpdate = ResourceBase.update_model()
 
 
 class LocationCoverage(ModelBase):
+    loc_id: str
     label: str
-    position: int
     covered: bool = False
 
 

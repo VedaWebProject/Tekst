@@ -39,7 +39,7 @@ const { changed, reset, getChanges } = useModelChanges(model);
 watch(
   () => state.text,
   (newText) => {
-    router.push({ name: 'resources', params: { text: newText?.slug } });
+    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
   }
 );
 
@@ -74,7 +74,7 @@ async function handleSaveClick() {
           $t('resources.settings.msgSaved', { title: pickTranslation(data.title, state.locale) })
         );
         resources.replace(data);
-        router.push({ name: 'resources', params: { text: state.text?.slug } });
+        router.push({ name: 'resources', params: { textSlug: state.text?.slug } });
       }
       loadingSave.value = false;
     })
@@ -93,7 +93,7 @@ async function handleSaveClick() {
 
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'resources', params: { text: state.text?.slug } }"
+    :to="{ name: 'resources', params: { textSlug: state.text?.slug } }"
     custom
   >
     <n-button text :focusable="false" @click="navigate">

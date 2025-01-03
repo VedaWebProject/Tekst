@@ -36,13 +36,12 @@ const coverageDetailsItems = computed(
     })) || []
 );
 
-function handleDetailsLocationClick(level: number, position: number) {
+function handleDetailsLocationClick(locId: string) {
   router.push({
     name: 'browse',
-    params: { text: route.params.text },
-    query: {
-      lvl: level,
-      pos: position,
+    params: {
+      textSlug: route.params.textSlug,
+      locId,
     },
   });
   emit('navigate');
@@ -131,11 +130,11 @@ onMounted(async () => {
                 <div class="cov-block">
                   <div
                     v-for="location in item.locations"
-                    :key="location.position"
+                    :key="location.id"
                     class="cov-box"
                     :class="location.covered && 'covered'"
                     :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
-                    @click="() => handleDetailsLocationClick(resource.level, location.position)"
+                    @click="() => handleDetailsLocationClick(location.locId)"
                   ></div>
                 </div>
               </template>

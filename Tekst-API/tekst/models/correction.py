@@ -5,6 +5,7 @@ from pydantic import Field, StringConstraints
 
 from tekst.models.common import (
     DocumentBase,
+    ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
     PydanticObjectId,
@@ -19,16 +20,10 @@ class Correction(ModelBase, ModelFactoryMixin):
             description="ID of the resource this correction refers to",
         ),
     ]
-    user_id: Annotated[
+    location_id: Annotated[
         PydanticObjectId,
         Field(
-            description="ID of the user who created the correction note",
-        ),
-    ]
-    position: Annotated[
-        int,
-        Field(
-            description="Position of the content this correction refers to",
+            description="ID of the location this correction refers to",
         ),
     ]
     note: Annotated[
@@ -42,45 +37,34 @@ class Correction(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
         val.CleanupMultiline,
+    ]
+    user_id: Annotated[
+        PydanticObjectId,
+        Field(
+            description="ID of the user who created the correction note",
+        ),
+        ExcludeFromModelVariants(create=True),
+    ]
+    position: Annotated[
+        int,
+        Field(
+            description="Position of the correction on the resource's level",
+        ),
+        ExcludeFromModelVariants(create=True),
     ]
     date: Annotated[
         datetime,
         Field(
             description="Date when the correction was created",
         ),
+        ExcludeFromModelVariants(create=True),
     ]
     location_labels: Annotated[
         list[str],
         Field(
             description="Text location labels from root to target location",
         ),
-    ]
-
-
-class CorrectionCreate(ModelBase):
-    resource_id: Annotated[
-        PydanticObjectId,
-        Field(
-            description="ID of the resource this correction refers to",
-        ),
-    ]
-    position: Annotated[
-        int,
-        Field(
-            description="Position of the content this correction refers to",
-        ),
-    ]
-    note: Annotated[
-        str,
-        Field(
-            description="Content of the correction note",
-        ),
-        StringConstraints(
-            min_length=1,
-            max_length=1000,
-            strip_whitespace=True,
-        ),
-        val.CleanupMultiline,
+        ExcludeFromModelVariants(create=True),
     ]
 
 
@@ -89,8 +73,9 @@ class CorrectionDocument(Correction, DocumentBase):
         name = "corrections"
         indexes = [
             "resource_id",
-            "position",
+            "location_id",
         ]
 
 
+CorrectionCreate = Correction.create_model()
 CorrectionRead = Correction.read_model()

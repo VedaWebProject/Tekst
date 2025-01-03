@@ -28,7 +28,7 @@ function handleClick() {
   router.push({
     name: 'resourceSettings',
     params: {
-      text: router.currentRoute.value.params.text,
+      textSlug: router.currentRoute.value.params.textSlug,
       id: props.resource.id,
     },
   });
