@@ -55,6 +55,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div>
   <n-collapse v-if="coverage && !coverageLoading" accordion default-expanded-names="overview">
     <n-collapse-item
       :title="$t('browse.contents.widgets.infoWidget.coverageOverview')"
@@ -145,6 +146,8 @@ onMounted(async () => {
     </n-collapse-item>
   </n-collapse>
   <n-spin v-else-if="coverageLoading" class="centered-spinner" />
+  <i v-else>{{ $t('errors.notFound') }}</i>
+</div>
 </template>
 
 <style scoped>

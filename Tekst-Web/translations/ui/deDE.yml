@@ -81,7 +81,7 @@ init:
 errors:
   error: Fehler
   loadData: Es ist ein Fehler beim Laden der Daten vom Server aufgetreten.
-  notFound: Diese Ressource konnte nicht gefunden werden.
+  notFound: Die angefragten Daten konnten nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
   conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
   forbidden: Sie verfügen nicht über die nötigen Berechtigungen für diese Aktion.
@@ -556,7 +556,7 @@ contents:
   tipBtnApplyChanges: Diese Version des Inhalts übernehmen
   tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt in dieser Version springen
   tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt in dieser Version springen
-  forComparison: 'Zum Vergleich: "{title}"'
+  forComparison: '{title} (zum Vergleich)'
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Belegstelle wurde gespeichert.
