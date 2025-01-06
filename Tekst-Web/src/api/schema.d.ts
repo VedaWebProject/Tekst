@@ -5867,8 +5867,8 @@ export interface operations {
         loc: string;
         /** @description ID of resource to return nearest location with content for */
         res: string;
-        /** @description Whether to look for the nearest preceding or subsequent location with content */
-        mode?: 'preceding' | 'subsequent';
+        /** @description Whether to look for the nearest preceding (before) or subsequent (after) location with content */
+        dir?: 'before' | 'after';
       };
       header?: never;
       path?: never;

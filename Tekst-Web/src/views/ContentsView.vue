@@ -6,6 +6,7 @@ import {
   type CorrectionRead,
   DELETE,
   GET,
+  type LocationDataQuery,
   type LocationRead,
   PATCH,
   POST,
@@ -33,7 +34,7 @@ import {
   BookIcon,
   CompareIcon,
   CorrectionNoteIcon,
-  EditNoteIcon,
+  EditIcon,
   MoveDownIcon,
   NoContentIcon,
   ResourceIcon,
@@ -84,7 +85,6 @@ const originalResourceTitle = computed(() =>
   )
 );
 
-const locationId = computed<string | undefined>(() => route.params.locId?.toString());
 const locationPath = ref<LocationRead[]>();
 const location = computed<LocationRead | undefined>(
   () => locationPath.value?.[resource.value?.level ?? locationPath.value.length - 1]
@@ -162,16 +162,28 @@ watch(
 async function loadLocationData() {
   if (!resource.value) return;
   loadingData.value = true;
+  // define part of query that will determine the target location
+  const locQuery: LocationDataQuery = {
+    id: route.params.locId?.toString(),
+  };
+  if (!locQuery.id) {
+    // if no location ID is provided, use the current text ID and resource level
+    // (will default to first location on level)
+    locQuery.txt = state.text?.id;
+    locQuery.lvl = resource.value.level;
+    delete locQuery.id;
+  }
+  // request location data
   const { data: locationData, error } = await GET('/browse/location-data', {
     params: {
       query: {
-        id: locationId.value,
         res: [
           resource.value.id,
           ...(compareResource.value?.id ? [compareResource.value.id] : []),
           ...(resource.value.originalId ? [resource.value.originalId] : []),
         ],
         head: true,
+        ...locQuery,
       },
     },
   });
@@ -193,6 +205,16 @@ async function loadLocationData() {
       compareResource.value.contents = compareContent ? [compareContent] : [];
     }
     resetForm();
+    // add location ID to URL params if not already present
+    if (!route.params.locId) {
+      router.replace({
+        name: 'resourceContents',
+        params: {
+          ...route.params,
+          locId: locationData.locationPath[locationData.locationPath.length - 1].id,
+        },
+      });
+    }
   } else {
     // requested location does not exist, go back to first content at first location
     router.replace({
@@ -205,28 +227,6 @@ async function loadLocationData() {
   }
   loadingData.value = false;
 }
-
-// watch for position change and resources data updates
-watch(
-  [locationId, () => resources.ofText],
-  async ([newLocationId, newResources]) => {
-    if (!newResources.length || !newLocationId) {
-      return;
-    }
-    if (!resource.value) {
-      resource.value = newResources.find((l) => l.id === route.params.resId.toString());
-      if (!resource.value) {
-        router.push({ name: 'resources', params: { textSlug: state.text?.slug } });
-        return;
-      }
-      if (resource.value.originalId) {
-        compareResourceId.value = resource.value.originalId;
-      }
-    }
-    await loadLocationData();
-  },
-  { immediate: true }
-);
 
 function resetForm() {
   contentModel.value = cloneDeep(initialContentModel.value);
@@ -347,13 +347,13 @@ function handleSelectcompareResource(key: string) {
   loadLocationData();
 }
 
-async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
+async function handleNearestChangeClick(direction: 'before' | 'after') {
   const { data: nearestLocId, error } = await GET('/browse/nearest-content-location-id', {
     params: {
       query: {
-        loc: locationId.value || '',
+        loc: route.params.locId?.toString() || '',
         res: compareResourceId.value || '',
-        mode,
+        dir: direction,
       },
     },
   });
@@ -366,6 +366,28 @@ async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
   }
 }
 
+// watch for position change and resources data updates
+watch(
+  [() => resources.ofText, () => route.params.locId?.toString()],
+  async ([newResources]) => {
+    if (!newResources.length) {
+      return;
+    }
+    if (!resource.value) {
+      resource.value = newResources.find((l) => l.id === route.params.resId.toString());
+      if (!resource.value) {
+        router.replace({ name: 'resources', params: { textSlug: state.text?.slug } });
+        return;
+      }
+      if (resource.value.originalId) {
+        compareResourceId.value = resource.value.originalId;
+      }
+    }
+    await loadLocationData();
+  },
+  { immediate: true }
+);
+
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {
   if (!isOverlayOpen() && !isInputFocused()) gotoLocation(prevLocationId.value);
@@ -376,7 +398,7 @@ whenever(ArrowRight, () => {
 </script>
 
 <template>
-  <icon-heading level="1" :icon="EditNoteIcon">
+  <icon-heading level="1" :icon="EditIcon">
     {{ $t('contents.heading') }}
     <help-button-widget help-key="contentsView" />
   </icon-heading>
@@ -505,7 +527,7 @@ whenever(ArrowRight, () => {
           <n-button
             secondary
             :title="$t('contents.tipBtnPrevChange')"
-            @click="() => handleNearestChangeClick('preceding')"
+            @click="() => handleNearestChangeClick('before')"
           >
             <template #icon>
               <n-icon :component="SkipPreviousIcon" />
@@ -524,7 +546,7 @@ whenever(ArrowRight, () => {
           <n-button
             secondary
             :title="$t('contents.tipBtnNextChange')"
-            @click="() => handleNearestChangeClick('subsequent')"
+            @click="() => handleNearestChangeClick('after')"
           >
             <template #icon>
               <n-icon :component="SkipNextIcon" />

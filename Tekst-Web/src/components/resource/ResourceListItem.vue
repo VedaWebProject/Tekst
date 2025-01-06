@@ -26,7 +26,7 @@ import {
   CorrectionNoteIcon,
   DeleteIcon,
   DownloadIcon,
-  EditNoteIcon,
+  EditIcon,
   MoreIcon,
   ProposedIcon,
   PublicIcon,
@@ -84,7 +84,7 @@ const actionOptions = computed(() => [
             {
               label: $t('resources.contentsAction'),
               key: 'contents',
-              icon: renderIcon(EditNoteIcon),
+              icon: renderIcon(EditIcon),
               action: () => emit('contentsClick', props.targetResource),
             },
             {

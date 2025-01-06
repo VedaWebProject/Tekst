@@ -291,15 +291,16 @@ async def get_nearest_content_location_id(
             description="ID of resource to return nearest location with content for",
         ),
     ],
-    mode: Annotated[
-        Literal["preceding", "subsequent"],
+    direction: Annotated[
+        Literal["before", "after"],
         Query(
+            alias="dir",
             description=(
-                "Whether to look for the nearest preceding "
-                "or subsequent location with content"
-            )
+                "Whether to look for the nearest preceding (before) "
+                "or subsequent (after) location with content"
+            ),
         ),
-    ] = "subsequent",
+    ] = "after",
 ) -> str:
     """
     Finds the nearest location the given resource holds content for and returns
@@ -324,19 +325,19 @@ async def get_nearest_content_location_id(
             LocationDocument.text_id == resource_doc.text_id,
             LocationDocument.level == resource_doc.level,
             (LocationDocument.position < location_doc.position)
-            if mode == "preceding"
+            if direction == "before"
             else (LocationDocument.position > location_doc.position),
         )
         .sort(
             +LocationDocument.position
-            if mode == "subsequent"
+            if direction == "after"
             else -LocationDocument.position
         )
         .aggregate([{"$project": {"position": 1}}])
         .to_list()
     )
     if not locations:  # pragma: no cover
-        return -1
+        return ""
 
     # get contents for these locations
     contents = (

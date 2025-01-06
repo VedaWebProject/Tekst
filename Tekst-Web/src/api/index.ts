@@ -218,6 +218,10 @@ export type ResourceExportFormat = NonNullable<
   NonNullable<paths['/resources/{id}/export']['get']['parameters']['query']>['format']
 >;
 
+// browse
+
+export type LocationDataQuery = paths['/browse/location-data']['get']['parameters']['query'];
+
 // bookmark
 
 export type BookmarkRead = components['schemas']['BookmarkRead'];

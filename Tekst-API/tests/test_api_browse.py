@@ -171,7 +171,7 @@ async def test_get_nearest_content_position(
     # get nearest content position
     resp = await test_client.get(
         "/browse/nearest-content-position",
-        params={"res": resource_id, "pos": 0, "mode": "subsequent"},
+        params={"res": resource_id, "pos": 0, "dir": "after"},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), int)
@@ -180,6 +180,6 @@ async def test_get_nearest_content_position(
     # fail to get nearest content position with wrong resource ID
     resp = await test_client.get(
         "/browse/nearest-content-position",
-        params={"res": wrong_id, "pos": 0, "mode": "subsequent"},
+        params={"res": wrong_id, "pos": 0, "dir": "after"},
     )
     assert_status(404, resp)

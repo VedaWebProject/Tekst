@@ -521,20 +521,20 @@
             "description": "ID of resource to return nearest location with content for"
           },
           {
-            "name": "mode",
+            "name": "dir",
             "in": "query",
             "required": false,
             "schema": {
               "enum": [
-                "preceding",
-                "subsequent"
+                "before",
+                "after"
               ],
               "type": "string",
-              "description": "Whether to look for the nearest preceding or subsequent location with content",
-              "default": "subsequent",
-              "title": "Mode"
+              "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content",
+              "default": "after",
+              "title": "Dir"
             },
-            "description": "Whether to look for the nearest preceding or subsequent location with content"
+            "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content"
           }
         ],
         "responses": {
