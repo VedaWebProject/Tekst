@@ -30,10 +30,11 @@ const interceptors: Middleware = {
       // automatically log out on a 401 response
       if (!response.url.endsWith('/logout')) {
         const { message } = useMessages();
-        message.warning($t('account.sessionExpired'));
+        message.error($t('errors.noAccess', { to: response.url }));
         console.log("Oh no! You don't seem to have access to this resource!");
         const auth = useAuthStore();
         if (auth.loggedIn) {
+          message.warning($t('account.sessionExpired'));
           console.log('Running logout sequence in reaction to 401/403 response...');
           await auth.logout(true);
         }
