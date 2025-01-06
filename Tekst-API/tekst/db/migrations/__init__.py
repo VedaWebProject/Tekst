@@ -1,7 +1,6 @@
 import asyncio
 
 from collections.abc import Callable
-from dataclasses import dataclass
 from importlib import import_module
 from pkgutil import iter_modules
 
@@ -11,33 +10,34 @@ from tekst.db import Database, get_db
 from tekst.logs import log
 
 
-@dataclass
-class Migration:
-    version: str
-    proc: Callable[[Database], None]
+MigrationsDict = dict[str, Callable[[Database], None]]
 
 
-def _sort_migrations(migrs: list[Migration]) -> list[Migration]:
-    return sorted(migrs, key=lambda m: Version(m.version))
+def _sort_migrations(migrations: MigrationsDict) -> MigrationsDict:
+    return {
+        key: migrations[key] for key in sorted(migrations, key=lambda m: Version(m))
+    }
 
 
-def _list_migrations() -> list[Migration]:
-    return _sort_migrations(
-        [
-            import_module(f"{__name__}.{mod.name}").MIGRATION
-            for mod in iter_modules(__path__)
-        ]
-    )
+def _read_migrations() -> MigrationsDict:
+    return {
+        mod.name.replace("migration_", "").replace("_", "."): import_module(
+            f"{__name__}.{mod.name}"
+        ).migration
+        for mod in iter_modules(__path__)
+    }
 
 
-_MIGRATIONS = _list_migrations()
+_MIGRATIONS = _read_migrations()
 
 
 async def _is_migration_pending(db_version: str) -> bool:
     if db_version is None:
         log.warning("No DB version found. Has setup been run?")
         return False
-    return bool(_MIGRATIONS and Version(db_version) < Version(_MIGRATIONS[-1].version))
+    return bool(
+        _MIGRATIONS and Version(db_version) < Version(list(_MIGRATIONS.keys())[-1])
+    )
 
 
 async def check_db_version(db_version: str, auto_migrate: bool = False) -> None:
@@ -92,18 +92,18 @@ async def migrate() -> None:
 
     # run relevant migrations
     curr_db_version = db_version_before
-    for migration in _MIGRATIONS:
-        if Version(migration.version) > Version(curr_db_version):
-            log.debug(f"Migrating DB from {curr_db_version} to {migration.version}...")
+    for migration_v in _MIGRATIONS:
+        if Version(migration_v) > Version(curr_db_version):
+            log.debug(f"Migrating DB from {curr_db_version} to {migration_v}...")
             try:
-                await migration.proc(db)
+                await _MIGRATIONS[migration_v](db)
             except Exception as e:  # pragma: no cover
                 log.error(
                     f"Failed migrating DB from {curr_db_version} "
-                    f"to {migration.version}: {e}"
+                    f"to {migration_v}: {e}"
                 )
                 raise e
-            curr_db_version = migration.version
+            curr_db_version = migration_v
 
     # update DB version in state document
     await state_coll.update_one(

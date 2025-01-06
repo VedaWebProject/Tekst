@@ -1,7 +1,7 @@
 import re
 
 from tekst import __version__
-from tekst.db.migrations import _list_migrations
+from tekst.db.migrations import _read_migrations
 
 
 # taken from https://github.com/pypa/packaging/blob/24.1/src/packaging/version.py#L117
@@ -47,21 +47,21 @@ def test_version_pep440():
 
 
 def test_migration_versions_pep440():
-    for migration in _list_migrations():
-        assert bool(re.match(_PEP440_VERSION_REGEX, migration.version))
+    for migration_version in _read_migrations():
+        assert bool(re.match(_PEP440_VERSION_REGEX, migration_version))
 
 
 def test_migration_sorting():
-    from tekst.db.migrations import Migration, _sort_migrations
+    from tekst.db.migrations import _sort_migrations
 
-    migrations = [
-        Migration(version="10.12.4a0", proc=lambda: 6),
-        Migration(version="1.2.30", proc=lambda: 5),
-        Migration(version="0.1.0", proc=lambda: 2),
-        Migration(version="1.2.4", proc=lambda: 4),
-        Migration(version="0.1.0a1", proc=lambda: 1),
-        Migration(version="1.2.3", proc=lambda: 3),
-        Migration(version="0.1.0a0", proc=lambda: 0),
-    ]
-    proc_results = [m.proc() for m in _sort_migrations(migrations)]
-    assert proc_results == sorted(proc_results)
+    migrations = {
+        "10.12.4a0": lambda: 6,
+        "1.2.30": lambda: 5,
+        "0.1.0": lambda: 2,
+        "1.2.4": lambda: 4,
+        "0.1.0a1": lambda: 1,
+        "1.2.3": lambda: 3,
+        "0.1.0a0": lambda: 0,
+    }
+    migration_results = [migrations[ver]() for ver in _sort_migrations(migrations)]
+    assert migration_results == sorted(migration_results)
