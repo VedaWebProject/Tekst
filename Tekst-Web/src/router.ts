@@ -3,8 +3,8 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
+import { delay } from '@/utils';
 import { createRouter, createWebHistory } from 'vue-router';
-import { delay } from './utils';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -61,7 +61,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/browse',
+      path: '/text/:textSlug?/browse/:locId?',
       name: 'browse',
       component: BrowseView,
       meta: {
@@ -69,7 +69,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/search',
+      path: '/text/:textSlug?/search',
       name: 'search',
       component: SearchView,
     },
@@ -138,7 +138,7 @@ const router = createRouter({
       component: ResetView,
     },
     {
-      path: '/text/:text?/resources',
+      path: '/text/:textSlug?/resources',
       name: 'resources',
       component: ResourcesView,
       meta: {
@@ -155,7 +155,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/:id/settings',
+      path: '/text/:textSlug?/resources/:id/settings',
       name: 'resourceSettings',
       component: ResourceSettingsView,
       meta: {
@@ -164,7 +164,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/create',
+      path: '/text/:textSlug?/resources/create',
       name: 'resourceCreate',
       component: ResourceCreateView,
       meta: {
@@ -173,7 +173,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/:id/contents/:pos',
+      path: '/text/:textSlug?/resources/:resId/contents/:locId?',
       name: 'resourceContents',
       component: ContentsView,
       meta: {
@@ -182,7 +182,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:text?/resources/:id/corrections',
+      path: '/text/:textSlug?/resources/:id/corrections',
       name: 'resourceCorrections',
       component: CorrectionsView,
       meta: {
@@ -231,7 +231,7 @@ const router = createRouter({
           component: AdminStatisticsView,
         },
         {
-          path: 'texts/:text',
+          path: 'texts/:textSlug',
           name: 'adminTexts',
           redirect: { name: 'adminTextsSettings' },
           component: AdminTextsView,

@@ -86,8 +86,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
         {
           name: 'browse',
-          params: { text: state.text?.slug },
-          query: { lvl: browse.level, pos: browse.position },
+          params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
         }
       ),
       key: 'browse',
@@ -98,7 +97,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search'),
         {
           name: 'search',
-          params: { text: state.text?.slug },
+          params: { textSlug: state.text?.slug },
         }
       ),
       key: 'search',
@@ -120,7 +119,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
               {
                 name: 'resources',
                 params: {
-                  text: state.text?.slug || '',
+                  textSlug: state.text?.slug || '',
                 },
               }
             ),
@@ -219,7 +218,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             {
               label: renderLink(() => $t('general.settings'), {
                 name: 'adminTextsSettings',
-                params: { text: state.text?.slug },
+                params: { textSlug: state.text?.slug },
               }),
               key: 'adminTextsSettings',
               icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
@@ -227,7 +226,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             {
               label: renderLink(() => $t('admin.text.levels.heading'), {
                 name: 'adminTextsLevels',
-                params: { text: state.text?.slug },
+                params: { textSlug: state.text?.slug },
               }),
               key: 'adminTextsLevels',
               icon: (showIcons && renderIcon(LevelsIcon)) || undefined,
@@ -235,7 +234,7 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
             {
               label: renderLink(() => $t('admin.text.locations.heading'), {
                 name: 'adminTextsLocations',
-                params: { text: state.text?.slug },
+                params: { textSlug: state.text?.slug },
               }),
               key: 'adminTextsLocations',
               icon: (showIcons && renderIcon(TreeIcon)) || undefined,

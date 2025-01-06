@@ -42,8 +42,10 @@ const titleLinkTo = computed(() => {
   } else {
     return {
       name: 'browse',
-      params: { text: state.text?.slug },
-      query: { lvl: browse.level, pos: browse.position },
+      params: {
+        textSlug: state.text?.slug,
+        locId: browse.locationPathHead?.id,
+      },
     };
   }
 });

@@ -29,9 +29,9 @@ function handleClick() {
   router.push({
     name: 'resourceContents',
     params: {
-      text: router.currentRoute.value.params.text,
-      id: props.resource.id,
-      pos: browse.position,
+      textSlug: router.currentRoute.value.params.textSlug,
+      resId: props.resource.id,
+      locId: browse.locationPathHead?.id,
     },
   });
   emit('done');

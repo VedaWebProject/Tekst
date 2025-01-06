@@ -221,9 +221,9 @@ export const useSearchStore = defineStore('search', () => {
     router.push({
       name: 'browse',
       params: {
-        text: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        textSlug: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        locId: browseCurrHit.value?.id,
       },
-      query: { lvl: browseCurrHit.value.level, pos: browseCurrHit.value.position },
     });
   }
 
@@ -252,9 +252,9 @@ export const useSearchStore = defineStore('search', () => {
     router.replace({
       name: 'browse',
       params: {
-        text: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        textSlug: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        locId: browseCurrHit.value?.id,
       },
-      query: { lvl: browseCurrHit.value?.level, pos: browseCurrHit.value?.position },
     });
     return true;
   }

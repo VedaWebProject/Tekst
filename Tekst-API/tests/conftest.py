@@ -83,7 +83,7 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
 
 
 @pytest.fixture(scope="session")
-async def get_db_client_override(config) -> db.DatabaseClient:
+async def db_client_override(config) -> db.DatabaseClient:
     """Dependency override for the database client dependency"""
     db_client = db.DatabaseClient(config.db.uri)
     yield db_client
@@ -92,16 +92,25 @@ async def get_db_client_override(config) -> db.DatabaseClient:
 
 
 @pytest.fixture(scope="session")
+async def database(
+    config,
+    db_client_override,
+) -> db.Database:
+    """DB driver for test session"""
+    yield db_client_override[config.db.name]
+
+
+@pytest.fixture(scope="session")
 async def test_app(
     config,
-    get_db_client_override,
+    db_client_override,
 ):
     """Provides an app instance with overridden dependencies"""
-    app.dependency_overrides[db.get_db_client] = lambda: get_db_client_override
+    app.dependency_overrides[db.get_db_client] = lambda: db_client_override
     async with LifespanManager(app):
         yield app
     # cleanup data
-    await get_db_client_override.drop_database(config.db.name)
+    await db_client_override.drop_database(config.db.name)
 
 
 @pytest.fixture
@@ -126,9 +135,8 @@ async def test_client(
 
 @pytest.fixture
 async def insert_sample_data(
-    config,
+    database,
     get_sample_data,
-    get_db_client_override,
 ) -> Callable:
     """
     Returns an asynchronous function to insert
@@ -136,7 +144,6 @@ async def insert_sample_data(
     """
 
     async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
-        database = get_db_client_override[config.db.name]
         ids = dict()
         collections = collections or [
             "contents",
@@ -188,16 +195,11 @@ def get_fake_user() -> Callable:
 
 
 @pytest.fixture(autouse=True)
-async def setup_teardown(
-    config,
-    get_db_client_override,
-) -> Callable:
+async def setup_teardown(database) -> Callable:
     yield
     # drop all DB collections
-    for collection in await get_db_client_override[
-        config.db.name
-    ].list_collection_names():
-        await get_db_client_override[config.db.name].drop_collection(collection)
+    for collection in await database.list_collection_names():
+        await database.drop_collection(collection)
 
 
 @pytest.fixture

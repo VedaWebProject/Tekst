@@ -42,22 +42,21 @@ function handleShowAllClick(categoryKey?: string) {
 
 // load fresh location data everytime the browse location changes in the URL
 watch(
-  [() => route.query.lvl, () => route.query.pos],
-  async ([newLvl, newPos]) => {
-    await browse.loadLocationData(newLvl?.toString(), newPos?.toString());
-  },
-  { immediate: true }
+  () => route.params.locId,
+  async (newLocId) => {
+    await browse.loadLocationData(newLocId?.toString());
+  }
 );
 
 watch(
   () => auth.loggedIn,
   () => {
-    browse.loadLocationData(undefined, undefined, true);
+    browse.loadLocationData(undefined, true);
   }
 );
 
 onMounted(() => {
-  browse.loadLocationData(undefined, undefined, true);
+  browse.loadLocationData(undefined, true);
 });
 </script>
 

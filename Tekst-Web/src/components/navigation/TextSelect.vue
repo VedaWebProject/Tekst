@@ -49,10 +49,10 @@ function handleSelect(text: TextRead) {
   textSelectDropdownRef.value.doUpdateShow(false);
   browse.locationPath = [];
 
-  if ('text' in router.currentRoute.value.params) {
+  if (router.currentRoute.value.meta.isTextSpecific) {
     router.push({
       name: router.currentRoute.value.name || 'browse',
-      params: { ...router.currentRoute.value.params, text: text.slug },
+      params: { textSlug: text.slug, locId: undefined },
     });
   }
 

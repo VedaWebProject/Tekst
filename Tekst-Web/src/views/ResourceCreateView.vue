@@ -69,7 +69,7 @@ const levelOptions = computed(() =>
 watch(
   () => state.text,
   (newText) => {
-    router.push({ name: 'resources', params: { text: newText?.slug } });
+    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
   }
 );
 
@@ -97,11 +97,10 @@ async function handleSaveClick() {
           $t('resources.create.msgSaved', { title: pickTranslation(data.title, state.locale) })
         );
         resources.add(data);
-        router.push({ name: 'resources', params: { text: state.text?.slug } });
         router.push({
           name: 'resourceSettings',
           params: {
-            text: router.currentRoute.value.params.text,
+            textSlug: state.text?.slug,
             id: data.id,
           },
         });
@@ -123,7 +122,7 @@ async function handleSaveClick() {
 
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'resources', params: { text: state.text?.slug } }"
+    :to="{ name: 'resources', params: { textSlug: state.text?.slug } }"
     custom
   >
     <n-button text :focusable="false" @click="navigate">

@@ -3,9 +3,11 @@ import {
   type AnyContentCreate,
   type AnyContentUpdate,
   type AnyResourceRead,
-  type LocationRead,
+  type CorrectionRead,
   DELETE,
   GET,
+  type LocationDataQuery,
+  type LocationRead,
   PATCH,
   POST,
 } from '@/api';
@@ -32,7 +34,7 @@ import {
   BookIcon,
   CompareIcon,
   CorrectionNoteIcon,
-  EditNoteIcon,
+  EditIcon,
   MoveDownIcon,
   NoContentIcon,
   ResourceIcon,
@@ -82,11 +84,14 @@ const originalResourceTitle = computed(() =>
     state.locale
   )
 );
-const position = computed<number>(() => Number.parseInt(route.params.pos.toString()));
+
 const locationPath = ref<LocationRead[]>();
 const location = computed<LocationRead | undefined>(
-  () => locationPath.value?.[resource.value?.level ?? -1]
+  () => locationPath.value?.[resource.value?.level ?? locationPath.value.length - 1]
 );
+const nextLocationId = ref<string>();
+const prevLocationId = ref<string>();
+
 const initialContentModel = ref<ContentFormModel>();
 const contentModel = ref<ContentFormModel | undefined>(initialContentModel.value);
 const { changed, reset, getChanges } = useModelChanges(contentModel);
@@ -124,22 +129,22 @@ const loading = computed(
 );
 
 const corrections = computed(() => resources.corrections[resource.value?.id || ''] || []);
-const prevCorrection = computed(
+const prevCorrection = computed<CorrectionRead | undefined>(
   () =>
     corrections.value
-      .filter((c) => c.position < position.value)
+      .filter((c) => c.position < (location.value?.position || 0))
       .sort((a, b) => a.position - b.position)
       .reverse()[0]
 );
-const nextCorrection = computed(
+const nextCorrection = computed<CorrectionRead | undefined>(
   () =>
     corrections.value
-      .filter((c) => c.position > position.value)
+      .filter((c) => c.position > (location.value?.position || 0))
       .sort((a, b) => a.position - b.position)[0]
 );
 
 const locCorrections = computed(
-  () => corrections.value.filter((c) => c.position === position.value) || []
+  () => corrections.value.filter((c) => c.position === location.value?.position) || []
 );
 
 const otherCorrectionsCount = computed(
@@ -150,33 +155,43 @@ const otherCorrectionsCount = computed(
 watch(
   () => state.text,
   (newText) => {
-    router.push({ name: 'resources', params: { text: newText?.slug } });
+    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
   }
 );
 
 async function loadLocationData() {
-  if (!resource.value || !Number.isInteger(position.value)) {
-    return;
-  }
+  if (!resource.value) return;
   loadingData.value = true;
+  // define part of query that will determine the target location
+  const locQuery: LocationDataQuery = {
+    id: route.params.locId?.toString(),
+  };
+  if (!locQuery.id) {
+    // if no location ID is provided, use the current text ID and resource level
+    // (will default to first location on level)
+    locQuery.txt = state.text?.id;
+    locQuery.lvl = resource.value.level;
+    delete locQuery.id;
+  }
+  // request location data
   const { data: locationData, error } = await GET('/browse/location-data', {
     params: {
       query: {
-        txt: state.text?.id || '',
-        lvl: resource.value.level,
-        pos: position.value,
         res: [
           resource.value.id,
           ...(compareResource.value?.id ? [compareResource.value.id] : []),
           ...(resource.value.originalId ? [resource.value.originalId] : []),
         ],
         head: true,
+        ...locQuery,
       },
     },
   });
   if (!error && locationData.locationPath?.length) {
-    // requested location exists, set current location path
+    // requested location exists, set current location path, prev and next location IDs
     locationPath.value = locationData.locationPath;
+    prevLocationId.value = locationData.prev || undefined;
+    nextLocationId.value = locationData.next || undefined;
     // process received contents
     initialContentModel.value =
       locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
@@ -190,40 +205,28 @@ async function loadLocationData() {
       compareResource.value.contents = compareContent ? [compareContent] : [];
     }
     resetForm();
+    // add location ID to URL params if not already present
+    if (!route.params.locId) {
+      router.replace({
+        name: 'resourceContents',
+        params: {
+          ...route.params,
+          locId: locationData.locationPath[locationData.locationPath.length - 1].id,
+        },
+      });
+    }
   } else {
     // requested location does not exist, go back to first content at first location
     router.replace({
       name: 'resourceContents',
       params: {
         ...route.params,
-        pos: 0,
+        locId: undefined,
       },
     });
   }
   loadingData.value = false;
 }
-
-// watch for position change and resources data updates
-watch(
-  [position, () => resources.ofText],
-  async ([newPosition, newResources]) => {
-    if (!newResources.length || newPosition == null) {
-      return;
-    }
-    if (!resource.value) {
-      resource.value = newResources.find((l) => l.id === route.params.id.toString());
-      if (!resource.value) {
-        router.push({ name: 'resources', params: { text: state.text?.slug } });
-        return;
-      }
-      if (resource.value.originalId) {
-        compareResourceId.value = resource.value.originalId;
-      }
-    }
-    await loadLocationData();
-  },
-  { immediate: true }
-);
 
 function resetForm() {
   contentModel.value = cloneDeep(initialContentModel.value);
@@ -325,26 +328,16 @@ function handleAddContentClick() {
   }
 }
 
-function navigateContents(step: number) {
-  router.replace({
-    name: 'resourceContents',
-    params: {
-      ...route.params,
-      pos: position.value + step,
-    },
-  });
-}
-
-function gotoLocation(locationPath?: LocationRead[], pos?: number) {
-  if (!locationPath && pos == null) {
-    console.error('Invalid location path or position', locationPath, pos);
+function gotoLocation(locId?: string) {
+  if (!locId) {
+    console.error('No location ID provided');
     return;
   }
   router.push({
     name: 'resourceContents',
     params: {
       ...route.params,
-      pos: locationPath ? locationPath[locationPath.length - 1].position : pos,
+      locId,
     },
   });
 }
@@ -354,41 +347,63 @@ function handleSelectcompareResource(key: string) {
   loadLocationData();
 }
 
-async function handleNearestChangeClick(mode: 'preceding' | 'subsequent') {
-  const { data: pos, error } = await GET('/browse/nearest-content-position', {
+async function handleNearestChangeClick(direction: 'before' | 'after') {
+  const { data: nearestLocId, error } = await GET('/browse/nearest-content-location-id', {
     params: {
       query: {
-        pos: position.value,
+        loc: route.params.locId?.toString() || '',
         res: compareResourceId.value || '',
-        mode,
+        dir: direction,
       },
     },
   });
   if (!error) {
-    if (pos >= 0) {
-      navigateContents(pos - position.value);
+    if (nearestLocId) {
+      gotoLocation(nearestLocId);
     } else {
       message.info($t('contents.msgNoNearest'));
     }
   }
 }
 
+// watch for position change and resources data updates
+watch(
+  [() => resources.ofText, () => route.params.locId?.toString()],
+  async ([newResources]) => {
+    if (!newResources.length) {
+      return;
+    }
+    if (!resource.value) {
+      resource.value = newResources.find((l) => l.id === route.params.resId.toString());
+      if (!resource.value) {
+        router.replace({ name: 'resources', params: { textSlug: state.text?.slug } });
+        return;
+      }
+      if (resource.value.originalId) {
+        compareResourceId.value = resource.value.originalId;
+      }
+    }
+    await loadLocationData();
+  },
+  { immediate: true }
+);
+
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {
-  if (!isOverlayOpen() && !isInputFocused()) navigateContents(-1);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(prevLocationId.value);
 });
 whenever(ArrowRight, () => {
-  if (!isOverlayOpen() && !isInputFocused()) navigateContents(1);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(nextLocationId.value);
 });
 </script>
 
 <template>
-  <icon-heading level="1" :icon="EditNoteIcon">
+  <icon-heading level="1" :icon="EditIcon">
     {{ $t('contents.heading') }}
     <help-button-widget help-key="contentsView" />
   </icon-heading>
 
-  <router-link :to="{ name: 'resources', params: { text: state.text?.slug } }">
+  <router-link :to="{ name: 'resources', params: { textSlug: state.text?.slug } }">
     <n-button text :focusable="false">
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
@@ -406,9 +421,9 @@ whenever(ArrowRight, () => {
     <template #start>
       <n-button
         type="primary"
-        :disabled="loading || position === 0"
+        :disabled="loading || !prevLocationId"
         :focusable="false"
-        @click="navigateContents(-1)"
+        @click="gotoLocation(prevLocationId)"
       >
         <template #icon>
           <n-icon :component="ArrowBackIcon" />
@@ -419,7 +434,12 @@ whenever(ArrowRight, () => {
           <n-icon :component="BookIcon" />
         </template>
       </n-button>
-      <n-button type="primary" :disabled="loading" :focusable="false" @click="navigateContents(1)">
+      <n-button
+        type="primary"
+        :disabled="loading || !nextLocationId"
+        :focusable="false"
+        @click="gotoLocation(nextLocationId)"
+      >
         <template #icon>
           <n-icon :component="ArrowForwardIcon" />
         </template>
@@ -507,7 +527,7 @@ whenever(ArrowRight, () => {
           <n-button
             secondary
             :title="$t('contents.tipBtnPrevChange')"
-            @click="() => handleNearestChangeClick('preceding')"
+            @click="() => handleNearestChangeClick('before')"
           >
             <template #icon>
               <n-icon :component="SkipPreviousIcon" />
@@ -526,7 +546,7 @@ whenever(ArrowRight, () => {
           <n-button
             secondary
             :title="$t('contents.tipBtnNextChange')"
-            @click="() => handleNearestChangeClick('subsequent')"
+            @click="() => handleNearestChangeClick('after')"
           >
             <template #icon>
               <n-icon :component="SkipNextIcon" />
@@ -562,8 +582,8 @@ whenever(ArrowRight, () => {
               :prev-disabled="!prevCorrection"
               :next-disabled="!nextCorrection"
               indent
-              @prev-click="() => gotoLocation(undefined, prevCorrection.position)"
-              @next-click="() => gotoLocation(undefined, nextCorrection.position)"
+              @prev-click="() => gotoLocation(prevCorrection?.locationId)"
+              @next-click="() => gotoLocation(nextCorrection?.locationId)"
             />
           </n-list>
         </n-collapse-item>
@@ -638,7 +658,7 @@ whenever(ArrowRight, () => {
     v-model:show="showJumpToModal"
     :current-location-path="locationPath"
     :show-level-select="false"
-    @submit="gotoLocation"
+    @submit="(locPath) => gotoLocation(locPath[locPath.length - 1].id)"
   />
 </template>
 

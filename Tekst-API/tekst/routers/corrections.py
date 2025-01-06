@@ -31,6 +31,7 @@ router = APIRouter(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_404_CONTENT_NOT_FOUND,
+            errors.E_400_INVALID_LEVEL,
         ]
     ),
 )
@@ -50,13 +51,14 @@ async def create_correction(
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     # get location, check if it is valid
-    location_doc = await LocationDocument.find_one(
-        LocationDocument.text_id == resource_doc.text_id,
-        LocationDocument.level == resource_doc.level,
-        LocationDocument.position == correction.position,
-    )
+    location_doc = await LocationDocument.get(correction.location_id)
     if not location_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
+    if (
+        resource_doc.level != location_doc.level
+        or resource_doc.text_id != location_doc.text_id
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
 
     # construct full label
     location_labels = [location_doc.label]
@@ -96,9 +98,10 @@ async def create_correction(
     # create correction
     return await CorrectionDocument(
         resource_id=correction.resource_id,
-        user_id=user.id,
-        position=correction.position,
+        location_id=correction.location_id,
+        position=location_doc.position,
         note=correction.note,
+        user_id=user.id,
         date=datetime.utcnow(),
         location_labels=location_labels,
     ).create()

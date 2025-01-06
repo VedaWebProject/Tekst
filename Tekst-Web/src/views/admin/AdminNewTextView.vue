@@ -63,7 +63,7 @@ async function handleSave() {
         if (!error) {
           await loadPlatformData();
           state.text = createdText || state.text;
-          router.push({ name: 'adminTextsSettings', params: { text: createdText.slug } });
+          router.push({ name: 'adminTextsSettings', params: { textSlug: createdText.slug } });
           message.success($t('admin.newText.msgSaveSuccess', { title: createdText.title }));
         }
       })

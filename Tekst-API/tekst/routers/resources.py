@@ -167,21 +167,16 @@ async def create_resource(
     if resource.level > len(text.levels) - 1:
         raise errors.E_400_RESOURCE_INVALID_LEVEL
 
-    # force some values on creation
-    resource.owner_id = user.id
-    resource.proposed = False
-    resource.public = False
-    resource.shared_read = []
-    resource.shared_write = []
-
     # find document model for this resource type, instantiate, create
     resource_doc = (
-        await resource_types_mgr.get(resource.resource_type)
+        resource_types_mgr.get(resource.resource_type)
         .resource_model()
         .document_model()
         .model_from(resource)
-        .create()
     )
+    resource_doc.owner_id = user.id  # set correct owner ID
+    await resource_doc.create()  # create resource in DB
+
     return await preprocess_resource_read(resource_doc, user)
 
 

@@ -79,7 +79,7 @@ init:
 errors:
   error: Error
   loadData: There was an error loading data from the server.
-  notFound: This resource could not be found.
+  notFound: The requested data could not be found.
   unexpected: An unexpected error occurred. This should not happen.
   conflict: There is a conflict with already existing data.
   forbidden: You have no permission to perform this action.
@@ -547,7 +547,7 @@ contents:
   tipBtnApplyChanges: Apply this content version
   tipBtnPrevChange: Skip to nearest preceding content in this version
   tipBtnNextChange: Skip to nearest subsequent content in this version
-  forComparison: 'For comparison: "{title}"'
+  forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content
   msgSaved: The content for this location has been saved.

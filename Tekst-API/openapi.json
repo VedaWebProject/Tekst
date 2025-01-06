@@ -310,7 +310,7 @@
           "browse"
         ],
         "summary": "Get location data",
-        "description": "Returns the location path from the location with the given level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
+        "description": "Returns the location path from the location with the given ID or text/level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
         "operationId": "getLocationData",
         "security": [
           {
@@ -322,41 +322,78 @@
         ],
         "parameters": [
           {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of location to request data for",
+              "title": "Id"
+            },
+            "description": "ID of location to request data for"
+          },
+          {
             "name": "txt",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of text to look up data for",
-              "example": "5eb7cf5a86d9755df3a6c593",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of text the target location belongs to (needed if no location ID is given)",
               "title": "Txt"
             },
-            "description": "ID of text to look up data for"
+            "description": "ID of text the target location belongs to (needed if no location ID is given)"
           },
           {
             "name": "lvl",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "integer",
-              "description": "Location level",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Location level (only used if no location ID is given, text's default level is used by default)",
               "title": "Lvl"
             },
-            "description": "Location level"
+            "description": "Location level (only used if no location ID is given, text's default level is used by default)"
           },
           {
             "name": "pos",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
-              "description": "Location position",
+              "description": "Location position (only used if no location ID is given)",
+              "default": 0,
               "title": "Pos"
             },
-            "description": "Location position"
+            "description": "Location position (only used if no location ID is given)"
           },
           {
             "name": "res",
@@ -371,11 +408,11 @@
                 "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of resource(s) to return content data for",
+              "description": "ID (or list of IDs) of resource(s) to return contents for",
               "default": [],
               "title": "Res"
             },
-            "description": "ID (or list of IDs) of resource(s) to return content data for"
+            "description": "ID (or list of IDs) of resource(s) to return contents for"
           },
           {
             "name": "head",
@@ -413,6 +450,16 @@
               }
             }
           },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -426,14 +473,14 @@
         }
       }
     },
-    "/browse/nearest-content-position": {
+    "/browse/nearest-content-location-id": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get nearest content position",
-        "description": "Finds the nearest location the given resource holds content for and returns\nits position index or -1 if no content was found.",
-        "operationId": "getNearestContentPosition",
+        "summary": "Get nearest content location id",
+        "description": "Finds the nearest location the given resource holds content for and returns\nits ID or an empty string if no more content was found.",
+        "operationId": "getNearestContentLocationId",
         "security": [
           {
             "APIKeyCookie": []
@@ -444,15 +491,19 @@
         ],
         "parameters": [
           {
-            "name": "pos",
+            "name": "loc",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "integer",
-              "description": "Location position",
-              "title": "Pos"
+              "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "description": "Current content location",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Loc"
             },
-            "description": "Location position"
+            "description": "Current content location"
           },
           {
             "name": "res",
@@ -470,20 +521,20 @@
             "description": "ID of resource to return nearest location with content for"
           },
           {
-            "name": "mode",
+            "name": "dir",
             "in": "query",
             "required": false,
             "schema": {
               "enum": [
-                "preceding",
-                "subsequent"
+                "before",
+                "after"
               ],
               "type": "string",
-              "description": "Whether to look for the nearest preceding or subsequent location with content",
-              "default": "subsequent",
-              "title": "Mode"
+              "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content",
+              "default": "after",
+              "title": "Dir"
             },
-            "description": "Whether to look for the nearest preceding or subsequent location with content"
+            "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content"
           }
         ],
         "responses": {
@@ -492,8 +543,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "title": "Response Get Nearest Content Position Browse Nearest Content Position Get"
+                  "type": "string",
+                  "title": "Response Get Nearest Content Location Id Browse Nearest Content Location Id Get"
                 }
               }
             }
@@ -1230,6 +1281,16 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -7669,62 +7730,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -7773,13 +7778,6 @@
                 "defaultCollapsed": false
               }
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -8847,10 +8845,14 @@
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "position": {
-            "type": "integer",
-            "title": "Position",
-            "description": "Position of the content this correction refers to"
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "ID of the location this correction refers to",
+            "example": "5eb7cf5a86d9755df3a6c593"
           },
           "note": {
             "type": "string",
@@ -8863,7 +8865,7 @@
         "type": "object",
         "required": [
           "resourceId",
-          "position",
+          "locationId",
           "note"
         ],
         "title": "CorrectionCreate"
@@ -8887,6 +8889,22 @@
             "description": "ID of the resource this correction refers to",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "ID of the location this correction refers to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Note",
+            "description": "Content of the correction note"
+          },
           "userId": {
             "type": "string",
             "maxLength": 24,
@@ -8899,14 +8917,7 @@
           "position": {
             "type": "integer",
             "title": "Position",
-            "description": "Position of the content this correction refers to"
-          },
-          "note": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 1,
-            "title": "Note",
-            "description": "Content of the correction note"
+            "description": "Position of the correction on the resource's level"
           },
           "date": {
             "type": "string",
@@ -8928,9 +8939,10 @@
         "required": [
           "id",
           "resourceId",
+          "locationId",
+          "note",
           "userId",
           "position",
-          "note",
           "date",
           "locationLabels"
         ],
@@ -9416,62 +9428,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -9520,13 +9476,6 @@
                 "defaultCollapsed": false
               }
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -10515,62 +10464,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -10619,13 +10512,6 @@
                 "defaultCollapsed": true
               }
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -11152,13 +11038,13 @@
       },
       "LocationCoverage": {
         "properties": {
+          "locId": {
+            "type": "string",
+            "title": "Locid"
+          },
           "label": {
             "type": "string",
             "title": "Label"
-          },
-          "position": {
-            "type": "integer",
-            "title": "Position"
           },
           "covered": {
             "type": "boolean",
@@ -11168,8 +11054,8 @@
         },
         "type": "object",
         "required": [
-          "label",
-          "position"
+          "locId",
+          "label"
         ],
         "title": "LocationCoverage"
       },
@@ -11257,7 +11143,40 @@
             },
             "type": "array",
             "title": "Locationpath",
+            "description": "Path of locations from level 0 to this location",
             "default": []
+          },
+          "prev": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prev",
+            "description": "ID of the preceding location on the same level"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next",
+            "description": "ID of the subsequent location on the same level"
           },
           "contents": {
             "items": {
@@ -11295,6 +11214,7 @@
             },
             "type": "array",
             "title": "Contents",
+            "description": "Contents of various resources on this location",
             "default": []
           }
         },
@@ -11947,62 +11867,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -12062,13 +11926,6 @@
                 "enabled": false
               }
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -13789,62 +13646,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -13893,13 +13694,6 @@
                 "defaultCollapsed": true
               }
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",
@@ -14998,62 +14792,6 @@
             "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ownerid",
-            "description": "User owning this resource"
-          },
-          "sharedRead": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedread",
-            "description": "Users with shared read access to this resource",
-            "default": []
-          },
-          "sharedWrite": {
-            "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Sharedwrite",
-            "description": "Users with shared write access to this resource",
-            "default": []
-          },
-          "public": {
-            "type": "boolean",
-            "title": "Public",
-            "description": "Publication status of this resource",
-            "default": false
-          },
-          "proposed": {
-            "type": "boolean",
-            "title": "Proposed",
-            "description": "Whether this resource has been proposed for publication",
-            "default": false
-          },
           "citation": {
             "anyOf": [
               {
@@ -15104,13 +14842,6 @@
               "annotationGroups": [],
               "multiValueDelimiter": "/"
             }
-          },
-          "contentsChangedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Contentschangedat",
-            "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
           }
         },
         "type": "object",

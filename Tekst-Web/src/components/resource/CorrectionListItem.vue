@@ -33,7 +33,11 @@ function handleCorrectionClick(correction: CorrectionRead) {
   if (!props.clickable) return;
   router.push({
     name: 'resourceContents',
-    params: { text: state.text?.slug, id: correction.resourceId, pos: correction.position },
+    params: {
+      textSlug: state.text?.slug,
+      resId: correction.resourceId,
+      locId: correction.locationId,
+    },
   });
 }
 

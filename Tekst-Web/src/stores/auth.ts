@@ -112,8 +112,6 @@ export const useAuthStore = defineStore('auth', () => {
     if (!error) {
       user.value = data;
       return user.value;
-    } else {
-      logout();
     }
   }
 

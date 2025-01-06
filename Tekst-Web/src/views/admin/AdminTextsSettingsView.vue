@@ -120,7 +120,7 @@ async function handleDelete() {
         state.text =
           pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
           pfData.value?.texts[0];
-        router.push({ name: 'home' });
+        router.replace({ name: 'home' });
       }
       loading.value = false;
     },

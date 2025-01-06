@@ -26,11 +26,10 @@ async def test_setup_auto_migrate_no_pending(
 @pytest.mark.anyio
 async def test_setup_auto_migrate_pending(
     config,
-    get_db_client_override,
+    database,
     insert_sample_data,
 ):
     await insert_sample_data()  # need sample data, as an empty DB will not be migrated
-    database = get_db_client_override[config.db.name]
     # set bugus DB data version to 0.0.0
     await database["state"].update_one({}, {"$set": {"db_version": "0.0.0"}})
     # run app setup with auto_migrate == True (with no pending migrations)
@@ -40,12 +39,10 @@ async def test_setup_auto_migrate_pending(
 
 @pytest.mark.anyio
 async def test_migrate_no_state_coll(
-    config,
-    get_db_client_override,
+    database,
     insert_sample_data,
 ):
     await insert_sample_data()  # need sample data, as an empty DB will not be migrated
-    database = get_db_client_override[config.db.name]
     # drop state collection to test failing migration with missing state
     await database.drop_collection("state")
     await migrations.migrate()

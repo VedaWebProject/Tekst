@@ -235,13 +235,16 @@ function handleUnpublishClick(resource: AnyResourceRead) {
 }
 
 function handleSettingsClick(resource: AnyResourceRead) {
-  router.push({ name: 'resourceSettings', params: { text: state.text?.slug, id: resource.id } });
+  router.push({
+    name: 'resourceSettings',
+    params: { textSlug: state.text?.slug, id: resource.id },
+  });
 }
 
 function handleContentsClick(resource: AnyResourceRead) {
   router.push({
     name: 'resourceContents',
-    params: { text: state.text?.slug, id: resource.id, pos: 0 },
+    params: { textSlug: state.text?.slug, resId: resource.id },
   });
 }
 

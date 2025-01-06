@@ -32,12 +32,13 @@ const { ArrowLeft, ArrowRight } = useMagicKeys();
 const showLocationSelectModal = ref(false);
 
 function gotoPosition(direction: 'prev' | 'next') {
-  const targetPos = browse.position + (direction === 'prev' ? -1 : 1);
+  const targetLocId = direction === 'prev' ? browse.prevLocationId : browse.nextLocationId;
+  if (!targetLocId) return;
   router.replace({
-    ...route,
-    query: {
-      ...route.query,
-      pos: targetPos >= 0 ? targetPos : 0,
+    name: 'browse',
+    params: {
+      ...route.params,
+      locId: targetLocId,
     },
   });
   emit('navigate');
@@ -50,8 +51,7 @@ function handleLocationSelect(locationPath: LocationRead[]) {
     name: 'browse',
     params: { ...route.params },
     query: {
-      lvl: selectedLocation.level,
-      pos: selectedLocation.position,
+      loc: selectedLocation.id,
     },
   });
   emit('navigate');
@@ -71,11 +71,11 @@ whenever(ArrowRight, () => {
   <n-flex justify="space-between" align="center" :wrap="false">
     <n-button
       type="primary"
-      :disabled="browse.position === 0"
       :focusable="false"
       :title="$t('browse.toolbar.tipPreviousLocation')"
       :size="buttonSize"
       :bordered="false"
+      :disabled="!browse.prevLocationId"
       @click="() => gotoPosition('prev')"
     >
       <template #icon>
@@ -115,6 +115,7 @@ whenever(ArrowRight, () => {
       :title="$t('browse.toolbar.tipNextLocation')"
       :size="buttonSize"
       :bordered="false"
+      :disabled="!browse.nextLocationId"
       @click="() => gotoPosition('next')"
     >
       <template #icon>

@@ -24,7 +24,6 @@ import ContentCopyOutlined from '@vicons/material/ContentCopyOutlined';
 import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
 import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
-import EditNoteOutlined from '@vicons/material/EditNoteOutlined';
 import EditOutlined from '@vicons/material/EditOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
 import ExpandOutlined from '@vicons/material/ExpandOutlined';
@@ -154,7 +153,6 @@ export {
   DisabledVisibleRound as DisabledVisibleIcon,
   FileDownloadOutlined as DownloadIcon,
   EditOutlined as EditIcon,
-  EditNoteOutlined as EditNoteIcon,
   ErrorOutlineOutlined as ErrorIcon,
   KeyboardArrowDownOutlined as ExpandArrowDownIcon,
   KeyboardArrowRightOutlined as ExpandArrowRightIcon,
@@ -178,9 +176,9 @@ export {
   HourglassTopOutlined as HourglassIcon,
   ImageOutlined as ImageIcon,
   InfoOutlined as InfoIcon,
-  KeyOffFilled as KeyOffIcon,
   KeyboardAltOutlined as KeyboardIcon,
   KeyboardReturnOutlined as KeyboardReturnIcon,
+  KeyOffFilled as KeyOffIcon,
   LanguageOutlined as LanguageIcon,
   FormatListNumberedOutlined as LevelsIcon,
   LightModeOutlined as LightModeIcon,
