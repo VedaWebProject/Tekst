@@ -87,15 +87,19 @@ async def test_get_location_data(
     assert len(resp.json()["locationPath"]) > 0
     assert len(resp.json()["contents"]) > 0
 
-    # invalid location data
+    # fail w/ invalid text ID
     resp = await test_client.get(
         "/browse/location-data",
         params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), dict)
-    assert len(resp.json()["locationPath"]) == 0
-    assert len(resp.json()["contents"]) == 0
+    assert_status(404, resp)
+
+    # fail w/ invalid location ID
+    resp = await test_client.get(
+        "/browse/location-data",
+        params={"txt": text_id, "id": wrong_id},
+    )
+    assert_status(404, resp)
 
 
 @pytest.mark.anyio
@@ -162,24 +166,84 @@ async def test_get_nearest_content_position(
     wrong_id,
     login,
 ):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
+    await insert_sample_data()
+    resource = await ResourceBaseDocument.get(
+        "654b825533ee5737b297f8f3",
+        with_children=True,
     )
-    resource_id = inserted_ids["resources"][0]
+    location = (
+        await LocationDocument.find(
+            LocationDocument.level == resource.level,
+            LocationDocument.text_id == resource.text_id,
+        )
+        .sort(+LocationDocument.position)
+        .first_or_none()
+    )
+    res_id = str(resource.id)
+    loc_id = str(location.id)
     await login()
 
     # get nearest content position
     resp = await test_client.get(
-        "/browse/nearest-content-position",
-        params={"res": resource_id, "pos": 0, "dir": "after"},
+        "/browse/nearest-content-location-id",
+        params={
+            "res": res_id,
+            "loc": loc_id,
+            "dir": "after",
+        },
     )
     assert_status(200, resp)
-    assert isinstance(resp.json(), int)
-    assert resp.json() == 1
+    assert isinstance(resp.json(), str)
 
     # fail to get nearest content position with wrong resource ID
     resp = await test_client.get(
-        "/browse/nearest-content-position",
-        params={"res": wrong_id, "pos": 0, "dir": "after"},
+        "/browse/nearest-content-location-id",
+        params={
+            "res": wrong_id,
+            "loc": loc_id,
+            "dir": "after",
+        },
     )
     assert_status(404, resp)
+
+    # fail to get nearest content position with wrong location ID
+    resp = await test_client.get(
+        "/browse/nearest-content-location-id",
+        params={
+            "res": res_id,
+            "loc": wrong_id,
+            "dir": "after",
+        },
+    )
+    assert_status(404, resp)
+
+    # fail to get nearest content position with location
+    # from different level then resource
+    location_wrong_level = await LocationDocument.find_one(
+        LocationDocument.level != resource.level,
+        LocationDocument.text_id == resource.text_id,
+    )
+    resp = await test_client.get(
+        "/browse/nearest-content-location-id",
+        params={
+            "res": res_id,
+            "loc": str(location_wrong_level.id),
+            "dir": "after",
+        },
+    )
+    assert_status(400, resp)
+
+    # fail to get nearest content position with location
+    # from different text then resource
+    location_wrong_text = await LocationDocument.find_one(
+        LocationDocument.text_id != resource.text_id,
+    )
+    resp = await test_client.get(
+        "/browse/nearest-content-location-id",
+        params={
+            "res": res_id,
+            "loc": str(location_wrong_text.id),
+            "dir": "after",
+        },
+    )
+    assert_status(400, resp)

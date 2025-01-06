@@ -281,7 +281,7 @@ async def get_nearest_content_location_id(
         PydanticObjectId,
         Query(
             alias="loc",
-            description="Current content location",
+            description="ID of the location to start from",
         ),
     ],
     resource_id: Annotated[
@@ -307,6 +307,7 @@ async def get_nearest_content_location_id(
     its ID or an empty string if no more content was found.
     """
     resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
         await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     )
@@ -316,8 +317,11 @@ async def get_nearest_content_location_id(
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
         raise errors.E_404_LOCATION_NOT_FOUND
-    if not location_doc.level == resource_doc.level:
-        raise errors.E_400_INVALID_LEVEL
+    if (
+        location_doc.level != resource_doc.level
+        or location_doc.text_id != resource_doc.text_id
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
 
     # get all locations before/after said location
     locations = (

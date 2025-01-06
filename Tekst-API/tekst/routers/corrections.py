@@ -54,8 +54,11 @@ async def create_correction(
     location_doc = await LocationDocument.get(correction.location_id)
     if not location_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
-    if not resource_doc.level == location_doc.level:
-        raise errors.E_400_INVALID_LEVEL
+    if (
+        resource_doc.level != location_doc.level
+        or resource_doc.text_id != location_doc.text_id
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
 
     # construct full label
     location_labels = [location_doc.label]

@@ -2,6 +2,7 @@ import pytest
 
 from beanie import PydanticObjectId
 from httpx import AsyncClient
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 
 
@@ -15,7 +16,12 @@ async def test_corrections_crud(
 ):
     await insert_sample_data()
     resource = await ResourceBaseDocument.find_one(with_children=True)
+    location = await LocationDocument.find_one(
+        LocationDocument.level == resource.level,
+        LocationDocument.text_id == resource.text_id,
+    )
     res_id = str(resource.id)
+    loc_id = str(location.id)
     u = await login()
 
     # create correction note on public resource
@@ -23,7 +29,7 @@ async def test_corrections_crud(
         "/corrections",
         json={
             "resourceId": res_id,
-            "position": 0,
+            "locationId": loc_id,
             "note": "Something is wrong here.",
         },
     )
@@ -34,22 +40,51 @@ async def test_corrections_crud(
         "/corrections",
         json={
             "resourceId": wrong_id,
-            "position": 0,
+            "locationId": loc_id,
             "note": "Something is wrong here.",
         },
     )
     assert_status(404, resp)
 
-    # fail to create correction note for invalid location
+    # fail to create correction note for invalid location ID
     resp = await test_client.post(
         "/corrections",
         json={
             "resourceId": res_id,
-            "position": 9999,
+            "locationId": wrong_id,
             "note": "Something is wrong here.",
         },
     )
     assert_status(404, resp)
+
+    # fail to create correction note for invalid location level
+    location_wrong_level = await LocationDocument.find_one(
+        LocationDocument.level != resource.level,
+        LocationDocument.text_id == resource.text_id,
+    )
+    resp = await test_client.post(
+        "/corrections",
+        json={
+            "resourceId": res_id,
+            "locationId": str(location_wrong_level.id),
+            "note": "Something is wrong here.",
+        },
+    )
+    assert_status(400, resp)
+
+    # fail to create correction note for location from different text
+    location_wrong_text = await LocationDocument.find_one(
+        LocationDocument.text_id != resource.text_id,
+    )
+    resp = await test_client.post(
+        "/corrections",
+        json={
+            "resourceId": res_id,
+            "locationId": str(location_wrong_text.id),
+            "note": "Something is wrong here.",
+        },
+    )
+    assert_status(400, resp)
 
     # fail to get correction notes (because of missing permissions)
     resp = await test_client.get(f"/corrections/{res_id}")
@@ -88,7 +123,7 @@ async def test_corrections_crud(
         "/corrections",
         json={
             "resourceId": res_id,
-            "position": 0,
+            "locationId": loc_id,
             "note": "This should trigger a notification to the resource owner.",
         },
     )
