@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { useAuthStore, useBrowseStore, useResourcesStore, useThemeStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -13,7 +13,6 @@ const show = defineModel<boolean>('show');
 const auth = useAuthStore();
 const browse = useBrowseStore();
 const resources = useResourcesStore();
-const theme = useThemeStore();
 
 const showNonPublicResourcesToggle = computed(
   () => !!resources.ofText.filter((r) => !r.public).length
@@ -42,7 +41,7 @@ function toggleCategory(index: number, activate: boolean) {
       <div
         v-if="auth.loggedIn && showNonPublicResourcesToggle"
         class="gray-box"
-        :style="{ backgroundColor: theme.mainBgColor, marginTop: 0 }"
+        style="margin-top: 0"
       >
         <labelled-switch
           v-model="browse.showNonPublicResources"
@@ -60,7 +59,6 @@ function toggleCategory(index: number, activate: boolean) {
           class="category-header"
           align="center"
           justify="space-between"
-          :style="{ borderBottom: `1px solid ${theme.mainBgColor}` }"
         >
           <h3 class="m-0">
             {{ category.category.translation }}
@@ -101,7 +99,7 @@ function toggleCategory(index: number, activate: boolean) {
 .category-header {
   margin: 1.5rem 0 0.8rem;
   padding-bottom: 0.25rem;
-  border: 10px solid var(--accent-color);
+  border-bottom: 1px solid var(--main-bg-color);
 }
 
 .category-header:first-child {

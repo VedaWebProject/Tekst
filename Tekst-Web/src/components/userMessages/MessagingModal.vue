@@ -7,11 +7,12 @@ import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import { delay, utcToLocalTime } from '@/utils';
 import { useIntervalFn, useMagicKeys, whenever } from '@vueuse/core';
-import { NButton, NFlex, NIcon, NInput, NTime, type InputInst } from 'naive-ui';
+import { NButton, NFlex, NIcon, NInput, NTime, useThemeVars, type InputInst } from 'naive-ui';
 import { ref } from 'vue';
 
 const userMessages = useUserMessagesStore();
 const auth = useAuthStore();
+const nuiTheme = useThemeVars();
 const keys = useMagicKeys();
 const ctrlEnter = keys['Ctrl+Enter'];
 
@@ -110,7 +111,7 @@ whenever(ctrlEnter, () => {
               v-if="msg.sender === auth.user?.id"
               :component="msg.read ? MarkChatReadIcon : MarkChatUnreadIcon"
               :title="$t(msg.read ? 'account.messages.read' : 'account.messages.unread')"
-              :color="msg.read ? 'var(--col-success)' : 'inherit'"
+              :color="msg.read ? nuiTheme.successColor : 'inherit'"
             />
           </n-flex>
         </div>

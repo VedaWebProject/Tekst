@@ -80,7 +80,7 @@ onMounted(() => {
       :color="{
         color: 'var(--main-bg-color)',
         textColor: 'var(--text-color)',
-        borderColor: theme.accentColors.base,
+        borderColor: theme.custom.accent.base,
       }"
     >
       {{ alias }}

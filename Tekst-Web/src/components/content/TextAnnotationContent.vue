@@ -7,7 +7,7 @@ import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import { getFullLocationLabel, pickTranslation, renderIcon } from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
-import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable } from 'naive-ui';
+import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
 
@@ -58,6 +58,7 @@ const props = withDefaults(
 
 const state = useStateStore();
 const theme = useThemeStore();
+const nuiTheme = useThemeVars();
 
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
@@ -72,12 +73,12 @@ const groupColors = computed<Record<string, string>>(() =>
         transparentize(
           saturate(
             adjustHue(
-              theme.accentColors.base,
+              theme.custom.accent.base,
               (360 / (annoLineNumbers.value.length + 1)) * (i + 1)
             ),
             1
           ),
-          theme.darkMode ? 0.8 : 0.9
+          theme.dark ? 0.8 : 0.9
         )
       ),
     ])
@@ -389,15 +390,15 @@ function handleCopyAnnoPlaintextClick() {
       <!-- ANNOTATION GROUP TOGGLES -->
       <template v-if="!!annoGroups.length">
         <n-button
+          v-for="group in annoGroups"
           :tertiary="!colorAnnoLines"
           :type="colorAnnoLines ? 'primary' : undefined"
-          v-for="group in annoGroups"
           :key="group.key"
           size="tiny"
           :focusable="false"
           :disabled="annoGroups.length == 1"
           :color="colorAnnoLines ? groupColors[group.key] : undefined"
-          :text-color="colorAnnoLines ? theme.theme.common.textColor1 : undefined"
+          :text-color="colorAnnoLines ? nuiTheme.textColor1 : undefined"
           @click="toggleAnnoGroup(group.key)"
         >
           <template #icon>

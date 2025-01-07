@@ -35,7 +35,7 @@ export function useLogo() {
   const theme = useThemeStore();
   const darkPref = usePreferredDark();
   const pageLogo = computed(() =>
-    theme.darkMode ? imgs.value.logoPngDark.url || imgs.value.logoPng.url : imgs.value.logoPng.url
+    theme.dark ? imgs.value.logoPngDark.url || imgs.value.logoPng.url : imgs.value.logoPng.url
   );
   const faviconPng = computed(() =>
     darkPref.value

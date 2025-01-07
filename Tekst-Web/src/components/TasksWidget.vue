@@ -11,25 +11,24 @@ import {
   NIcon,
   NScrollbar,
   useDialog,
+  useThemeVars,
   type DialogOptions,
 } from 'naive-ui';
 import { computed, type Component } from 'vue';
 
 const state = useStateStore();
+const nuiTheme = useThemeVars();
 const { tasks, removeTask, showTasksList } = useTasks();
 const dialog = useDialog();
 
-const iconsMap: Record<string, Component> = {
-  done: CheckCircleIcon,
-  failed: ErrorIcon,
-  running: HourglassIcon,
-};
-
-const dialogTypeMap: Record<string, DialogOptions['type']> = {
-  done: 'success',
-  failed: 'error',
-  running: 'info',
-  waiting: 'default',
+const statusThemes: Record<
+  string,
+  { icon: Component; color: string; dialogType: DialogOptions['type'] }
+> = {
+  done: { icon: CheckCircleIcon, color: nuiTheme.value.successColor, dialogType: 'success' },
+  failed: { icon: ErrorIcon, color: nuiTheme.value.errorColor, dialogType: 'error' },
+  running: { icon: HourglassIcon, color: nuiTheme.value.infoColor, dialogType: 'info' },
+  waiting: { icon: HourglassIcon, color: nuiTheme.value.infoColor, dialogType: 'default' },
 };
 
 const hasSuccessfulTasks = computed(() => tasks.value.some((t) => t.status === 'done'));
@@ -41,8 +40,8 @@ function handleTaskClick(id: string) {
   // open dialog if task has failed (to display error info)
   if (t.status === 'failed') {
     dialog.create({
-      type: dialogTypeMap[t.status || 'running'],
-      title: $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status || 'running'}`),
+      type: statusThemes[t.status].dialogType,
+      title: $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status}`),
       content: $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || '',
     });
   }
@@ -89,18 +88,19 @@ function handleTaskClick(id: string) {
             :key="task.id"
             :wrap="false"
             align="center"
-            :class="`task-item task-item-${task.status || 'running'}`"
+            :class="`task-item task-item-${task.status}`"
             :focusable="false"
             @click="handleTaskClick(task.id)"
           >
             <n-icon
               class="task-item-icon"
               size="20"
-              :component="iconsMap[task.status || 'running']"
+              :component="statusThemes[task.status].icon"
+              :color="statusThemes[task.status].color"
             />
             <div class="task-item-label ellipsis">
               {{ $t(`tasks.types.${task.type}`) }}
-              ({{ $t(`tasks.statuses.${task.status || 'running'}`) }})
+              ({{ $t(`tasks.statuses.${task.status}`) }})
             </div>
           </n-flex>
         </n-scrollbar>
@@ -154,17 +154,5 @@ function handleTaskClick(id: string) {
 
 #tasks-widget .task-item > .task-item-icon {
   transition: 0.2s;
-}
-
-#tasks-widget .task-item.task-item-running > .task-item-icon {
-  color: var(--col-info);
-}
-
-#tasks-widget .task-item.task-item-done > .task-item-icon {
-  color: var(--col-success);
-}
-
-#tasks-widget .task-item.task-item-failed > .task-item-icon {
-  color: var(--col-error);
 }
 </style>

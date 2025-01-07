@@ -2,7 +2,7 @@
 import type { AnyContentCreate, AnyResourceRead } from '@/api';
 import { contentFormRules } from '@/forms/formRules';
 import resourceContentFormItems from '@/forms/resources/contents/mappings';
-import { NCollapse, NCollapseItem, NFormItem, NInput } from 'naive-ui';
+import { NBadge, NCollapse, NCollapseItem, NFormItem, NInput } from 'naive-ui';
 
 defineProps<{
   resource: AnyResourceRead;
@@ -26,7 +26,12 @@ function handleUpdate(field: string, value: unknown) {
       :resource="resource"
     />
     <n-collapse class="mb-lg">
-      <n-collapse-item :title="$t('resources.types.common.label')" name="common">
+      <n-collapse-item name="meta">
+        <template #header>
+          <n-badge value="!" :show="!!model.comment || !!model.notes" :offset="[10, 2]">
+            {{ $t('resources.types.common.label') }}
+          </n-badge>
+        </template>
         <!-- COMMENT -->
         <n-form-item
           :label="$t('resources.types.common.contentFields.comment')"

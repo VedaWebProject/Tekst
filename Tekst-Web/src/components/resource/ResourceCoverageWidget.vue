@@ -2,7 +2,15 @@
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NCollapse, NCollapseItem, NProgress, NSpin, NThing, NVirtualList } from 'naive-ui';
+import {
+  NCollapse,
+  NCollapseItem,
+  NProgress,
+  NSpin,
+  NThing,
+  NVirtualList,
+  useThemeVars,
+} from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -13,6 +21,7 @@ const props = defineProps<{
 const emit = defineEmits(['navigate']);
 
 const state = useStateStore();
+const nuiTheme = useThemeVars();
 const router = useRouter();
 const route = useRoute();
 const resources = useResourcesStore();
@@ -87,11 +96,11 @@ onMounted(async () => {
         <div
           v-if="coverage.rangesCovered"
           class="text-small mb-sm"
-          style="color: var(--col-success)"
+          :style="{ color: nuiTheme.successColor }"
         >
           {{ $t('browse.contents.widgets.infoWidget.coverageRangesPresent') }}
         </div>
-        <div v-else class="text-small mb-sm" style="color: var(--col-error)">
+        <div v-else class="text-small mb-sm" :style="{ color: nuiTheme.errorColor }">
           {{ $t('browse.contents.widgets.infoWidget.coverageRangesMissing') }}
         </div>
         <div class="gray-box">
@@ -140,7 +149,11 @@ onMounted(async () => {
                       v-for="location in item.locations"
                       :key="location.id"
                       class="cov-box"
-                      :class="location.covered && 'covered'"
+                      :style="{
+                        backgroundColor: location.covered
+                          ? nuiTheme.successColor
+                          : nuiTheme.errorColor,
+                      }"
                       :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
                       @click="() => handleDetailsLocationClick(location.locId)"
                     ></div>
@@ -194,7 +207,6 @@ onMounted(async () => {
 .cov-box {
   width: 16px;
   height: 16px;
-  background-color: var(--col-error);
   border-radius: 2px;
   opacity: 0.75;
   transition: 0.2s;
@@ -203,9 +215,5 @@ onMounted(async () => {
 
 .cov-box:hover {
   opacity: 1;
-}
-
-.cov-box.covered {
-  background-color: var(--col-success);
 }
 </style>

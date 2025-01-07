@@ -8,9 +8,9 @@ import { useThemeStore } from '@/stores';
 
 const theme = useThemeStore();
 
-const icon = computed(() => (theme.darkMode ? LightModeIcon : DarkModeIcon));
+const icon = computed(() => (theme.dark ? LightModeIcon : DarkModeIcon));
 const title = computed(() =>
-  theme.darkMode ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
+  theme.dark ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
 );
 </script>
 

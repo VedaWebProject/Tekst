@@ -11,12 +11,13 @@ import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import { NButton, NIcon, NTable, NTabPane, NTabs, NTime } from 'naive-ui';
+import { NButton, NIcon, NTable, NTabPane, NTabs, NTime, useThemeVars } from 'naive-ui';
 import { onBeforeMount, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const { pfData } = usePlatformData();
 const theme = useThemeStore();
+const nuiTheme = useThemeVars();
 const { message } = useMessages();
 const { addTask, startTasksPolling } = useTasks();
 
@@ -28,9 +29,9 @@ const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
   waiting: 'inherit',
-  running: 'var(--col-info)',
-  done: 'var(--col-success)',
-  failed: 'var(--col-error)',
+  running: nuiTheme.value.infoColor,
+  done: nuiTheme.value.successColor,
+  failed: nuiTheme.value.errorColor,
 };
 
 async function createIndex() {
@@ -159,9 +160,7 @@ onBeforeMount(() => {
                 <th
                   colspan="2"
                   :style="{
-                    backgroundColor: theme.generateAccentColorVariants(
-                      pfData?.texts.find((t) => t.id === indexInfo.textId)?.accentColor
-                    ).fade4,
+                    backgroundColor: theme.getAccentColors(indexInfo.textId).fade4,
                   }"
                 >
                   {{ pfData?.texts.find((t) => t.id === indexInfo.textId)?.title || '???' }}
@@ -344,21 +343,21 @@ onBeforeMount(() => {
 }
 
 .max-fields-warn-near {
-  color: var(--col-warning);
+  color: v-bind('nuiTheme.warningColor');
   font-weight: var(--font-weight-bold);
 }
 
 .max-fields-warn-over {
-  color: var(--col-error);
+  color: v-bind('nuiTheme.errorColor');
   font-weight: var(--font-weight-bold);
 }
 
 .index-ood {
-  color: var(--col-error);
+  color: v-bind('nuiTheme.errorColor');
   font-weight: var(--font-weight-bold);
 }
 
 .index-utd {
-  color: var(--col-success);
+  color: v-bind('nuiTheme.successColor');
 }
 </style>

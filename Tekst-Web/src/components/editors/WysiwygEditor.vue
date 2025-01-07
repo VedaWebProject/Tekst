@@ -421,7 +421,7 @@ onUnmounted(() => {
       style="
         margin: 0.5rem 0;
         padding: 4px var(--gap-md);
-        border: 1px solid var(--text-color-fade);
+        border: 1px solid rgb(224, 224, 230);
         border-radius: var(--border-radius);
         max-height: 50vh;
         overflow-y: scroll;
@@ -456,6 +456,6 @@ onUnmounted(() => {
 .character-count {
   text-align: right;
   font-size: var(--font-size-tiny);
-  color: var(--text-color-fade);
+  color: #999f;
 }
 </style>

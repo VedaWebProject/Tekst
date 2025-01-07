@@ -1,30 +1,76 @@
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
-import { darkOverrides, lightOverrides } from '@/themeOverrides';
 import { usePreferredDark, useStorage } from '@vueuse/core';
 import { adjustHue, lighten, saturate, toRgba, transparentize } from 'color2k';
+import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
-import { computed } from 'vue';
+import { computed, watchEffect } from 'vue';
+
+const _COMMON_OVERRIDES: GlobalThemeOverrides = {
+  common: {
+    fontFamily: 'var(--font-family-ui)',
+    fontWeight: 'var(--font-weight-normal)',
+    fontSize: 'var(--font-size)',
+    fontSizeMini: 'var(--font-size-mini)',
+    fontSizeTiny: 'var(--font-size-tiny)',
+    fontSizeSmall: 'var(--font-size-small)',
+    fontSizeMedium: 'var(--font-size-medium)',
+    fontSizeLarge: 'var(--font-size-large)',
+    fontSizeHuge: 'var(--font-size-huge)',
+  },
+  Form: {
+    feedbackPadding: '4px 0 8px 2px',
+    feedbackHeightSmall: '18px',
+    feedbackHeightMedium: '18px',
+    feedbackHeightLarge: '20px',
+    labelFontWeight: 'var(--font-weight-bold)',
+  },
+  Badge: {
+    fontSize: 'var(--font-size-mini)',
+  },
+  Thing: {
+    titleFontWeight: 'var(--font-weight-bold)',
+  },
+};
+
+const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
+  ..._COMMON_OVERRIDES,
+  common: {
+    ..._COMMON_OVERRIDES.common,
+    bodyColor: '#ffffff',
+  },
+};
+
+const _DARK_OVERRIDES: GlobalThemeOverrides = {
+  ..._COMMON_OVERRIDES,
+  common: {
+    ..._COMMON_OVERRIDES.common,
+    bodyColor: '#232323',
+  },
+  Button: {
+    ..._COMMON_OVERRIDES.Button,
+    textColorPrimary: '#232323FF',
+  },
+  Card: {
+    ..._COMMON_OVERRIDES.Card,
+    colorEmbedded: '#2a2a2a',
+  },
+};
 
 export declare type ThemeMode = 'light' | 'dark';
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
   const { pfData } = usePlatformData();
-  const browserDarkThemePreferred = usePreferredDark();
-  const darkMode = useStorage<boolean>('darkMode', browserDarkThemePreferred.value || false);
-  const toggleThemeMode = () => (darkMode.value = !darkMode.value);
-  const theme = computed(() => (darkMode.value ? darkTheme : lightTheme));
-  const mainBgColor = computed(() => (darkMode.value ? '#ffffff10' : '#00000010'));
-  const contentBgColor = computed(() => (darkMode.value ? '#00000044' : '#ffffffcc'));
-  const messageBgColor = computed(() => (darkMode.value ? '#232323' : '#ffffff'));
+  const dark = useStorage<boolean>('darkMode', usePreferredDark().value);
+  const toggleThemeMode = () => (dark.value = !dark.value);
 
   function generateAccentColorVariants(
     baseColor: string = state.text?.accentColor || '#7A7A7A',
-    dark: boolean = darkMode.value
+    darkMode: boolean = dark.value
   ) {
-    const lightenBy = dark ? 0.375 : 0.0;
+    const lightenBy = darkMode ? 0.375 : 0.0;
     const baseStatic = baseColor;
     const base = lighten(baseColor, lightenBy);
     return {
@@ -40,30 +86,33 @@ export const useThemeStore = defineStore('theme', () => {
     };
   }
 
-  // all texts access color variants
-  const allAccentColors = computed(() =>
+  // all texts accent color variants
+  const _allAccentColors = computed(() =>
     Object.fromEntries(
       pfData.value?.texts.map((t) => [
         t.id,
-        generateAccentColorVariants(t.accentColor || '#7A7A7A', darkMode.value),
+        generateAccentColorVariants(t.accentColor || '#7A7A7A', dark.value),
       ]) || []
     )
   );
 
-  function getAccentColors(textId?: string) {
-    return allAccentColors.value[textId || ''] || generateAccentColorVariants('#7A7A7A');
+  function getAccentColors(textId?: string | null) {
+    return (
+      _allAccentColors.value[textId || ''] || generateAccentColorVariants('#7A7A7A', dark.value)
+    );
   }
 
-  // current text accent color variants
-  const accentColors = computed(
-    () =>
-      allAccentColors.value[state.text?.id || ''] ||
-      generateAccentColorVariants('#7A7A7A', darkMode.value)
-  );
+  const custom = computed(() => ({
+    mainBgColor: dark.value ? '#ffffff10' : '#00000010',
+    contentBgColor: dark.value ? '#00000044' : '#ffffffcc',
+    accent: getAccentColors(state.text?.id),
+  }));
 
-  const overrides = computed(() => {
-    const primary = toRgba(accentColors.value.base);
-    const baseOverrides = darkMode.value ? darkOverrides : lightOverrides;
+  const nuiBaseTheme = computed(() => (dark.value ? darkTheme : lightTheme));
+
+  const nuiThemeOverrides = computed(() => {
+    const primary = toRgba(custom.value.accent.base);
+    const baseOverrides = dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES;
     return {
       ...baseOverrides,
       common: {
@@ -76,17 +125,37 @@ export const useThemeStore = defineStore('theme', () => {
     };
   });
 
+  // set/update global CSS vars for use in CSS contexts
+  watchEffect(() => {
+    const vars = {
+      '--base-color': nuiBaseTheme.value.common.baseColor,
+      '--text-color': nuiBaseTheme.value.common.textColor1,
+
+      '--accent-color': custom.value.accent.base,
+      '--accent-color-fade1': custom.value.accent.fade1,
+      '--accent-color-fade2': custom.value.accent.fade2,
+      '--accent-color-fade3': custom.value.accent.fade3,
+      '--accent-color-fade4': custom.value.accent.fade4,
+      '--accent-color-fade5': custom.value.accent.fade5,
+      '--accent-color-spotlight': custom.value.accent.spotlight,
+
+      '--link-color': custom.value.accent.base,
+      '--link-color-hover': custom.value.accent.fade1,
+
+      '--main-bg-color': custom.value.mainBgColor,
+      '--content-bg-color': custom.value.contentBgColor,
+    };
+    Object.entries(vars).forEach(([k, v]) => {
+      document.documentElement.style.setProperty(k, v);
+    });
+  });
+
   return {
-    darkMode,
+    dark,
     toggleThemeMode,
-    browserDarkThemePreferred,
-    theme,
-    overrides,
-    mainBgColor,
-    contentBgColor,
-    messageBgColor,
-    generateAccentColorVariants,
+    nuiBaseTheme,
+    nuiThemeOverrides,
+    custom,
     getAccentColors,
-    accentColors,
   };
 });

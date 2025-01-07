@@ -306,7 +306,7 @@ class PrecomputedDataDocument(ModelBase, DocumentBase):
         Field(
             description="The time this data was created",
         ),
-    ] = datetime.utcnow()
+    ] = datetime.utcfromtimestamp(86400)
 
     data: Annotated[
         Any | None,

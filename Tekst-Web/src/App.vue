@@ -40,8 +40,8 @@ useFavicon();
 
 <template>
   <n-config-provider
-    :theme="theme.theme"
-    :theme-overrides="theme.overrides"
+    :theme="theme.nuiBaseTheme"
+    :theme-overrides="theme.nuiThemeOverrides"
     :locale="nUiLangLocale"
     :date-locale="nUiDateLocale"
   >
@@ -82,9 +82,9 @@ useFavicon();
           :visibility-height="200"
           style="z-index: 2"
         />
-        <n-global-style />
       </n-dialog-provider>
     </n-loading-bar-provider>
+    <n-global-style />
   </n-config-provider>
 </template>
 
@@ -102,41 +102,5 @@ main {
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--gap-md);
-}
-</style>
-
-<style>
-a,
-a:any-link {
-  color: var(--link-color);
-}
-
-a:hover {
-  color: var(--link-color-hover);
-}
-
-#app-container {
-  --accent-color: v-bind(theme.accentColors.base);
-  --accent-color-fade1: v-bind(theme.accentColors.fade1);
-  --accent-color-fade2: v-bind(theme.accentColors.fade2);
-  --accent-color-fade3: v-bind(theme.accentColors.fade3);
-  --accent-color-fade4: v-bind(theme.accentColors.fade4);
-  --accent-color-fade5: v-bind(theme.accentColors.fade5);
-  --accent-color-spotlight: v-bind(theme.accentColors.spotlight);
-
-  --link-color: v-bind(theme.accentColors.base);
-  --link-color-hover: v-bind(theme.accentColors.fade1);
-
-  --main-bg-color: v-bind(theme.mainBgColor);
-  --content-bg-color: v-bind(theme.contentBgColor);
-  --base-color: v-bind(theme.theme.common.baseColor);
-  --text-color: v-bind(theme.theme.common.textColor1);
-  --text-color-fade: v-bind(theme.theme.common.textColor3);
-
-  /* NaiveUI feedback colors */
-  --col-info: v-bind(theme.theme.common.infoColor);
-  --col-success: v-bind(theme.theme.common.successColor);
-  --col-warning: v-bind(theme.theme.common.warningColor);
-  --col-error: v-bind(theme.theme.common.errorColor);
 }
 </style>
