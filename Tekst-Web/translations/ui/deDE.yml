@@ -404,9 +404,9 @@ resources:
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
   warnTransfer: |
-    Wenn sie eine Ressource an einen Benutzer übertragen,
-    wird dieser Benutzer der neue einzige Besitzer der Ressource und kann diese editieren,
-    löschen, zur Veröffentlichung vorschlagen und Zugriffsrechte vergeben.
+    Wenn sie eine Ressource an einen anderen Benutzer übertragen,
+    verlieren Sie Ihre Berechtigungen diese zu editieren,
+    zu löschen, zur Veröffentlichung vorzuschlagen und Zugriffsrechte zu vergeben.
     Bitte fahren Sie nur fort, wenn Sie sich dessen bewusst sind!
   warnPropose: |
     Sie sind dabei, Ihre Ressource zur Veröffentlichung vorzuschlagen.
@@ -630,7 +630,7 @@ account:
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre @:models.user.email! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password gespeichert.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
-    msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, emenfalls gelöscht. Sind Sie sich sicher?
+    msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, ebenfalls gelöscht. Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzerdaten gespeichert.
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
   messages:
@@ -718,7 +718,7 @@ admin:
         Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
         bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
         anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
-        an Ihre Bedürfnisse anpassen müssen.
+        anpassen müssen.
         Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
         Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
       warnDeleteLevel: |
@@ -729,10 +729,8 @@ admin:
         Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
         zu verbinden, aber Sie werden das Ergebnis
         anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
-        an Ihre Bedürfnisse anpassen müssen.
-        Bitte vergewissern Sie sich, dass Sie wissen,
-        was Sie tun und machen Sie ein Backup Ihrer Datenbank,
-        bevor Sie diese Aktion durchführen!
+        anpassen müssen.
+        Bitte machen Sie ein Backup Ihrer Datenbank, bevor Sie eine Ebene löschen!
         Dies kann nicht rückgängig gemacht werden.
         Sind Sie sich sicher, dass Sie die
         Textebene "{levelLabel}" löschen möchten?
@@ -764,12 +762,10 @@ admin:
       warnDeleteLocation: |
         Wenn Sie diese Belegstelle löschen, werden alle Daten, die mit ihr und allen
         untergeordneten Belegstelle verbunden sind, ebenfalls gelöscht.
-        Dies kann potenziell alle Ressourcen betreffen – auch jene,
-        die von anderen Benutzern angelegt wurden. Falls Sie ihr Ziel auch durch das Verschieben
-        der Belegstelle auf ihrer Strukturebene erreichen können, sollten sie das stattdessen tun,
-        da auf diese Weise keine Daten gelöscht werden.
-        Dies kann nicht rückgängig gemacht werden.
-        Sind Sie sich wirklich sicher, dass Sie die ausgewählte Belegstelle löschen wollen?
+        Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
+        die von anderen Benutzern angelegt wurden. Die Belegstelle wird danach nicht mehr
+        über ihre ursprüngliche ID adressierbar sein.
+        Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
       tipDeleteLocation: Belegstelle "{location}" löschen
       infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
       infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben

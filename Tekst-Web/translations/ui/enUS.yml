@@ -402,8 +402,8 @@ resources:
   publishAction: Publish
   unpublishAction: Withdraw publication
   warnTransfer: |
-    When transferring a resource to a user, that user is becoming the new sole owner
-    who can edit, delete, propose and share access rights to the resource.
+    When transferring a resource to another user, you lose your ability to
+    edit, delete, propose and grant access rights to this resource.
     Please only proceed if you are sure that this is what you want.
   warnPropose: |
     You are about to propose your resource for publication. It's very important that
@@ -741,12 +741,9 @@ admin:
         database before making any changes, here.
       warnDeleteLocation: |
         If you delete this location, all data associated with it or its child locations will
-        be deleted with it. This can potentially affect all resources,
-        even ones created by other users. If what you want to do can be achieved by
-        merely moving the location within the structure level it is on, you should do
-        so instead, as moving locations works without deleting any data.
-        This cannot be undone.
-        Now, are you really sure you want to delete the selected location?
+        be deleted with it. This may affect contents of multiple resources,
+        even ones created by other users. The location will not be available under its original ID anymore.
+        This cannot be undone. Are you sure you want to proceed?
       tipDeleteLocation: Delete location "{location}"
       infoDeletedLocation: Deleted location "{location}" (total of {locations} locations and {contents} contents)
       infoMovedLocation: Moved location "{location}" to position {position} on level "{level}"
