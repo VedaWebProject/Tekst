@@ -473,6 +473,7 @@ whenever(ArrowRight, () => {
         <location-label :location-path="locationPath" />
       </icon-heading>
 
+      <!-- ALERT: THIS IS NOT YOUR RESOURCE! -->
       <n-alert
         v-if="
           contentModel &&
@@ -488,6 +489,7 @@ whenever(ArrowRight, () => {
         {{ $t('resources.msgNotYourResourceBody') }}
       </n-alert>
 
+      <!-- ALERT: NO OWN CONTENT AT THIS LOCATION! -->
       <n-alert
         v-if="
           contentModel &&
@@ -503,16 +505,17 @@ whenever(ArrowRight, () => {
         {{ $t('contents.msgNoOwnContentBody', { originalResourceTitle }) }}
       </n-alert>
 
+      <!-- COMPARISON WITH OTHER RESOURCE -->
       <n-alert
         v-if="compareResource"
         closable
         type="default"
-        :show-icon="false"
+        :title="compareResourceTitle"
         class="mb-lg"
         @after-leave="compareResourceId = undefined"
       >
-        <template #header>
-          <span style="color: var(--accent-color)">{{ compareResourceTitle }}</span>
+        <template #icon>
+          <n-icon :component="CompareIcon" />
         </template>
         <template v-if="compareResource.contents?.length">
           <component
@@ -561,6 +564,7 @@ whenever(ArrowRight, () => {
         </button-shelf>
       </n-alert>
 
+      <!-- CORRECTION NOTES -->
       <n-collapse v-if="resource && !!corrections.length" class="corrections mb-lg">
         <n-collapse-item name="corrections">
           <template #header>
