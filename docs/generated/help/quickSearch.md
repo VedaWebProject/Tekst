@@ -1,6 +1,6 @@
 # Quick Search
 
-The quick search is a full-text search of all available resources of the [selected texts](#texts). Which resources are available for the quick search depends on your access permissions as well as the type and configuration of the resources.
+The quick search is a full-text search of all available resources of the selected texts. Which resources are available for the quick search depends on your access permissions as well as the type and configuration of the resources.
 
 ## Operators
 

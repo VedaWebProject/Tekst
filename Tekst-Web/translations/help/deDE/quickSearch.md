@@ -1,6 +1,6 @@
 # Schnellsuche
 
-Die Schnellsuche ist einen Volltextsuche über alle verfügbaren Ressourcen der [ausgewählten Texte](#texte). Welche Ressourcen für die Schnellsuche verfügbar sind, hängt von Ihren Zugriffsrechten und dem Typ sowie der Konfiguration der Ressourcen ab.
+Die Schnellsuche ist eine Volltextsuche über alle verfügbaren Ressourcen der ausgewählten Texte. Welche Ressourcen für die Schnellsuche verfügbar sind, hängt von Ihren Zugriffsrechten und dem Typ sowie der Konfiguration der Ressourcen ab.
 
 ## Operatoren
 
