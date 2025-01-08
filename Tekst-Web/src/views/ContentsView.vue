@@ -53,6 +53,7 @@ import {
   NButton,
   NCollapse,
   NCollapseItem,
+  NDivider,
   NDropdown,
   NFlex,
   NForm,
@@ -234,7 +235,7 @@ function resetForm() {
   formRef.value?.restoreValidation();
 }
 
-function handleApplyChanges() {
+function copyFromComparison() {
   const changes = compareResource.value?.contents?.[0];
   if (changes && contentModel.value) {
     contentModel.value = {
@@ -506,24 +507,29 @@ whenever(ArrowRight, () => {
         v-if="compareResource"
         closable
         type="default"
-        :title="compareResourceTitle"
+        :show-icon="false"
         class="mb-lg"
         @after-leave="compareResourceId = undefined"
       >
-        <template #icon>
-          <n-icon :component="CompareIcon" />
+        <template #header>
+          <span style="color: var(--accent-color)">{{ compareResourceTitle }}</span>
         </template>
-        <component
-          :is="contentComponents[compareResource.resourceType]"
-          v-if="compareResource.contents?.length"
-          :resource="compareResource"
-          :dir="resource.config.common.rtl ? 'rtl' : undefined"
-        />
+        <template v-if="compareResource.contents?.length">
+          <component
+            :is="contentComponents[compareResource.resourceType]"
+            :resource="compareResource"
+            :dir="resource.config.common.rtl ? 'rtl' : undefined"
+            class="mt-md"
+          />
+          <div v-if="compareResource.contents[0]?.comment" class="text-small translucent">
+            <n-divider />
+            <strong>{{ $t('resources.types.common.contentFields.comment') }}:</strong>
+            {{ compareResource.contents[0].comment }}
+          </div>
+        </template>
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
 
-        <button-shelf
-          v-if="compareResource.originalId && compareResource.originalId == resource.id"
-        >
+        <button-shelf v-if="compareResource.resourceType == resource.resourceType">
           <n-button
             secondary
             :title="$t('contents.tipBtnPrevChange')"
@@ -537,7 +543,7 @@ whenever(ArrowRight, () => {
             secondary
             :title="$t('contents.tipBtnApplyChanges')"
             :disabled="!compareResource.contents?.length"
-            @click="handleApplyChanges"
+            @click="copyFromComparison"
           >
             <template #icon>
               <n-icon :component="MoveDownIcon" />

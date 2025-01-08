@@ -544,9 +544,9 @@ contents:
   tipBtnCompare: Select other resource to compare with
   lblBtnCopyOriginal: Copy
   tipBtnCopyOriginal: Copy from original resource
-  tipBtnApplyChanges: Apply this content version
-  tipBtnPrevChange: Skip to nearest preceding content in this version
-  tipBtnNextChange: Skip to nearest subsequent content in this version
+  tipBtnApplyChanges: Copy content for this location
+  tipBtnPrevChange: Skip to nearest preceding content
+  tipBtnNextChange: Skip to nearest subsequent content
   forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content

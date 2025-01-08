@@ -553,9 +553,9 @@ contents:
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   lblBtnCopyOriginal: Kopieren
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
-  tipBtnApplyChanges: Diese Version des Inhalts übernehmen
-  tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt in dieser Version springen
-  tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt in dieser Version springen
+  tipBtnApplyChanges: Inhalt für diese Fundstelle übernehmen
+  tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt springen
+  tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt springen
   forComparison: '{title} (zum Vergleich)'
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
