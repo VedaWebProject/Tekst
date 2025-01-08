@@ -30,7 +30,7 @@ const interceptors: Middleware = {
       // automatically log out on a 401 response
       if (!response.url.endsWith('/logout')) {
         const { message } = useMessages();
-        message.error($t('errors.noAccess', { to: response.url || '/' }));
+        message.error($t('errors.noAccess', { resource: response.url || '/' }));
         console.log("Oh no! You don't seem to have access to this resource!");
         const auth = useAuthStore();
         if (auth.loggedIn) {

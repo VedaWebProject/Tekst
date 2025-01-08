@@ -88,7 +88,7 @@ errors:
   conflict: Es besteht ein Konflikt mit bereits vorhandenen Daten.
   forbidden: Sie verfügen nicht über die nötigen Berechtigungen für diese Aktion.
   followFormRules: Bitte korrigieren Sie Ihre Eingaben entsprechend den Formularregeln!
-  noAccess: Sie haben keine Zugriffsberechtigung für {resource}.
+  noAccess: Sie haben keinen Zugriff auf {resource}.
   logoutAfter401: Sie wurden abgemeldet, nachdem Sie unbefugt auf eine geschützte Ressource zugreifen wollten.
   csrf: Ihre Anfrage hat die CSRF-Tests nicht bestanden. Löschen Sie ihre Cookies zu dieser Website und laden Sie sie neu.
   loginBadCredentials: Falsche E-Mail-Adresse/Passwort oder Konto noch nicht aktiviert
