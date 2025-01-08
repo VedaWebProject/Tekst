@@ -16,3 +16,5 @@ async def migration(db: Database) -> None:
         await db.corrections.update_one(
             {"_id": corr["_id"]}, {"$set": {"location_id": loc["_id"]}}
         )
+    # delete precomputed resource coverage data
+    await db.precomputed.delete_many({"precomputed_type": "coverage"})
