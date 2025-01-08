@@ -18,6 +18,7 @@ general:
   insertAction: Insert
   removeAction: Remove
   deleteAction: Delete
+  copyAction: Copy
   editAction: Edit
   moveUpAction: Move up
   moveDownAction: Move down
@@ -62,6 +63,7 @@ general:
     Do not close this window/tab!
     The download will start as soon as your data is generated.
   ctrlEnter: Ctrl+Enter
+  copiedMsg: 'Copied to clipboard: {text}'
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -178,6 +180,7 @@ browse:
     level: Level
     goTo: Go to location
     aliasesTip: Search for one of these location aliases in the quick search to directly jump to this location.
+    copyId: Copy location ID
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level

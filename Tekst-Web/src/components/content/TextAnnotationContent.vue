@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/api';
+import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
@@ -92,12 +93,6 @@ const {
   copy: copyTokenContent,
   copied: tokenContentCopied,
   isSupported: isTokenCopySupported,
-} = useClipboard({ copiedDuring: 1000 });
-
-const {
-  copy: copyAnnoPlaintext,
-  copied: annoPlaintextCopied,
-  isSupported: isAnnoCopySupported,
 } = useClipboard({ copiedDuring: 1000 });
 
 const tokenContextMenuOptions = computed(() => [
@@ -338,7 +333,7 @@ function toggleAnnoGroup(key: string) {
   }
 }
 
-function handleCopyAnnoPlaintextClick() {
+function generatePlaintextAnno(): string {
   const out: string[] = [];
   const browse = useBrowseStore();
   const resTitle = pickTranslation(props.resource.title, state.locale);
@@ -380,7 +375,7 @@ function handleCopyAnnoPlaintextClick() {
     });
     if (contentIndex < contents.value.length - 1) out.push('\n\n---\n\n');
   });
-  copyAnnoPlaintext(out.join('').trim());
+  return out.join('').trim();
 }
 </script>
 
@@ -413,19 +408,12 @@ function handleCopyAnnoPlaintextClick() {
         </n-button>
       </template>
       <!-- COPY ANNOTATIONS TAB-ALIGNED AS PLAINTEXT -->
-      <n-button
-        v-if="isAnnoCopySupported"
-        :tertiary="!annoPlaintextCopied"
-        :type="annoPlaintextCopied ? 'success' : undefined"
+      <copy-to-clipboard-button
+        tertiary
         size="tiny"
-        :focusable="false"
+        :text="generatePlaintextAnno"
         :title="$t('resources.types.textAnnotation.copyAnnosPlainAction')"
-        @click="handleCopyAnnoPlaintextClick"
-      >
-        <template #icon>
-          <n-icon :component="CopyIcon" />
-        </template>
-      </n-button>
+      />
     </n-flex>
 
     <!-- CONTENT -->

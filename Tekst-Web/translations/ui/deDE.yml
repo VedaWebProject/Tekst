@@ -19,6 +19,7 @@ general:
   removeAction: Entfernen
   deleteAction: Löschen
   editAction: Bearbeiten
+  copyAction: Copy
   moveUpAction: Nach oben bewegen
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
@@ -64,6 +65,7 @@ general:
     Diese Seite nicht schließen!
     Der Download startet, sobald die Daten generiert sind.
   ctrlEnter: Strg+Enter
+  copiedMsg: 'In Zwischenablage kopiert: {text}'
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen
@@ -181,6 +183,7 @@ browse:
     level: Ebene
     goTo: Gehe zu Belegstelle
     aliasesTip: Suchen Sie nach einem dieser Belegstellen-Aliase in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
+    copyId: Fundstellen-ID kopieren
   toolbar:
     tipSelectLocation: Belegstelle auswählen
     tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene
