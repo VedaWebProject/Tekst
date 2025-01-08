@@ -443,7 +443,7 @@ function generatePlaintextAnno(): string {
             <div
               v-for="(annoLine, lineIndex) in t.annoDisplay"
               :key="lineIndex"
-              class="annotation-line"
+              class="anno-sequence"
             >
               <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
                 <span
@@ -562,6 +562,7 @@ function generatePlaintextAnno(): string {
 .token-container.token-with-annos {
   cursor: pointer;
   border-left-style: solid;
+  transition: background-color 0.2s ease;
 }
 
 .token-container.token-with-annos:hover {
@@ -602,11 +603,11 @@ function generatePlaintextAnno(): string {
   opacity: 0.75;
 }
 
-.annotations > .annotation-line {
+.annotations > .anno-sequence {
   height: 1.4em;
 }
 
-.annotations > .annotation-line:empty {
+.annotations > .anno-sequence:empty {
   visibility: hidden;
 }
 </style>
