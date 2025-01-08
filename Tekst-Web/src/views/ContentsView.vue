@@ -109,6 +109,11 @@ const compareResourceTitle = computed(() =>
 const compareResourceOptions = computed(() =>
   resources.ofText
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
+    .sort(
+      (a, b) =>
+        (a.originalId === resource.value?.id ? 1 : 0) +
+        (b.originalId === resource.value?.id ? 1 : 0)
+    )
     .map((r) => ({
       label: pickTranslation(r.title, state.locale),
       key: r.id,
