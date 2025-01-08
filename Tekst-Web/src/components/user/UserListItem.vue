@@ -147,7 +147,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             {{ targetUser.name }}
           </router-link>
           <n-badge
-            :type="targetUser.isActive ? 'success' : 'error'"
+            :color="targetUser.isActive ? nuiTheme.successColor : nuiTheme.errorColor"
             :processing="!targetUser.isActive"
             :title="targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive')"
             :offset="[12, -2]"
@@ -155,12 +155,12 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             <template #value>
               <n-icon
                 :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon"
-                color="#fff"
+                :color="nuiTheme.baseColor"
               />
             </template>
           </n-badge>
           <n-badge
-            :type="targetUser.isVerified ? 'success' : 'warning'"
+            :color="targetUser.isVerified ? nuiTheme.successColor : nuiTheme.warningColor"
             :processing="!targetUser.isVerified"
             :title="
               targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
@@ -168,17 +168,17 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="VerifiedUserIcon" color="#fff" />
+              <n-icon :component="VerifiedUserIcon" :color="nuiTheme.baseColor" />
             </template>
           </n-badge>
           <n-badge
             v-if="targetUser.isSuperuser"
-            type="info"
+            :color="nuiTheme.infoColor"
             :title="$t('models.user.isSuperuser')"
             :offset="[12, -2]"
           >
             <template #value>
-              <n-icon :component="AdminIcon" color="#fff" />
+              <n-icon :component="AdminIcon" :color="nuiTheme.baseColor" />
             </template>
           </n-badge>
         </n-flex>
