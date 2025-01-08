@@ -2,16 +2,17 @@
 
 <img width="64" height="64" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px; z-index: 9" src="docs/content/assets/logo.png" alt="Tekst logo"/>
 
-...as in **T**ext **E**xploration and **K**nowledge **S**tructuring **T**ool
+A collaborative, web-based research platform for aligning, linking, publishing, exploring and enriching resources on natural language texts.
 
 ![Server tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
 [![Server tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=server%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
 ![Client build status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20checks)
 
-> [!NOTE]
-> Tekst is still in development. As of now, we're testing Tekst internally and implementing the last missing features. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development of Tekst in this very repository.
+> [!IMPORTANT]
+> Tekst is still in development. We're currently testing Tekst internally and implementing the last missing bits. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development in this very repository.
 
-Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts (and more). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
+Tekst is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which will be launched in its new form as part of the project's efforts.
+
 
 ## Manual
 
@@ -21,13 +22,16 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 ### 📖 [Click here for the _Tekst_ manual!](https://vedawebproject.github.io/Tekst)
 
+
 ## Publications
 
 We presented our vision for a collaborative text research platform at the **DH2023** conference (Digital Humanities 2023. Collaboration as Opportunity, Graz, Austria, 10-14 July 2023). You can find the abstract of our presentation [here](https://doi.org/10.5281/zenodo.8107794)!
 
+
 ## Contributing
 
 Please see the [contributing guidelines](CONTRIBUTING.md).
+
 
 ## Development
 
