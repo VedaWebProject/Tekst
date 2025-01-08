@@ -13,7 +13,7 @@ const props = withDefaults(
   }>(),
   {
     width: 'medium',
-    to: '#app-container',
+    to: undefined,
     title: undefined,
     icon: undefined,
     headingLevel: '2',

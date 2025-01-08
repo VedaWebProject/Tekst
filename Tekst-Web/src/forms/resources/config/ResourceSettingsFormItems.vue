@@ -14,7 +14,16 @@ import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialReso
 import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import { useAuthStore } from '@/stores';
-import { NFormItem, NIcon, NSelect, NTabPane, NTabs, NTag, type SelectOption } from 'naive-ui';
+import {
+  NFormItem,
+  NIcon,
+  NSelect,
+  NTabPane,
+  NTabs,
+  NTag,
+  useThemeVars,
+  type SelectOption,
+} from 'naive-ui';
 import { computed, h, ref, type VNodeChild } from 'vue';
 
 const props = defineProps<{
@@ -26,6 +35,7 @@ const props = defineProps<{
 const model = defineModel<AnyResourceRead>({ required: true });
 
 const auth = useAuthStore();
+const nuiTheme = useThemeVars();
 
 const initialUserSearchQuery = (): PublicUserSearchFilters => ({
   pg: 1,
@@ -170,7 +180,11 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
     <!-- ACCESS SHARES -->
     <n-tab-pane v-if="sharingAuthorized" :tab="$t('models.resource.share')" name="access">
-      <div v-if="public || proposed" class="text-tiny mb-md" style="color: var(--col-error)">
+      <div
+        v-if="public || proposed"
+        class="text-tiny mb-md"
+        :style="{ color: nuiTheme.errorColor }"
+      >
         {{ $t('resources.settings.onlyForPrivate') }}
       </div>
       <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">

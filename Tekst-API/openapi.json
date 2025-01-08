@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.2.1a0"
+    "version": "0.3.0a0"
   },
   "servers": [
     {
@@ -499,11 +499,11 @@
               "minLength": 24,
               "maxLength": 24,
               "pattern": "^[0-9a-f]{24}$",
-              "description": "Current content location",
+              "description": "ID of the location to start from",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Loc"
             },
-            "description": "Current content location"
+            "description": "ID of the location to start from"
           },
           {
             "name": "res",

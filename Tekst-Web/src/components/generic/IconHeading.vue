@@ -29,7 +29,7 @@ const theme = useThemeStore();
       v-if="icon"
       :component="icon"
       :size="iconSize"
-      :color="iconColor === 'accent' ? theme.accentColors.base : 'inherit'"
+      :color="iconColor === 'accent' ? theme.custom.accent.base : 'inherit'"
     />
     <n-ellipsis v-if="ellipsis">
       <slot></slot>

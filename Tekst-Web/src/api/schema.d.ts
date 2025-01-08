@@ -5863,7 +5863,7 @@ export interface operations {
   getNearestContentLocationId: {
     parameters: {
       query: {
-        /** @description Current content location */
+        /** @description ID of the location to start from */
         loc: string;
         /** @description ID of resource to return nearest location with content for */
         res: string;

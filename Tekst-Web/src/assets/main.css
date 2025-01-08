@@ -18,8 +18,13 @@ body {
 
 a,
 a:any-link {
+  color: var(--link-color);
   text-decoration: none;
   transition: 0.1s;
+}
+
+a:hover {
+  color: var(--link-color-hover);
 }
 
 p {
@@ -313,10 +318,6 @@ pre > code {
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-}
-
-input.invalid-url {
-  color: var(--col-warning) !important;
 }
 
 /*

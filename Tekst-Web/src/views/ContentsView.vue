@@ -417,7 +417,7 @@ whenever(ArrowRight, () => {
     <resource-info-widget :resource="resource" />
   </icon-heading>
 
-  <button-shelf top-gap bottom-gap wrap="wrap-reverse">
+  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="gray-box">
     <template #start>
       <n-button
         type="primary"

@@ -21,13 +21,14 @@ import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import { useAuthStore } from '@/stores';
 import { checkUrl } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NFlex, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
+import { NButton, NFlex, NForm, NFormItem, NInput, useDialog, useThemeVars } from 'naive-ui';
 import { ref } from 'vue';
 
 const dialog = useDialog();
 const auth = useAuthStore();
 const { pfData } = usePlatformData();
 const { message } = useMessages();
+const tuiTheme = useThemeVars();
 
 const initialEmailModel = () => ({
   email: auth.user?.email || null,
@@ -288,9 +289,9 @@ async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
   if (url && !(await checkUrl(url))) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.classList.add('invalid-url');
+    input.style.color = tuiTheme.value.errorColor;
   } else {
-    input.classList.remove('invalid-url');
+    input.style.color = 'inherit';
   }
 }
 </script>

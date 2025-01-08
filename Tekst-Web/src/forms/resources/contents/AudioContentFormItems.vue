@@ -6,7 +6,7 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { checkUrl } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput, useThemeVars } from 'naive-ui';
 
 defineProps<{
   resource: AudioResourceRead;
@@ -14,6 +14,7 @@ defineProps<{
 
 const model = defineModel<AudioContentCreate>({ required: true });
 const { message } = useMessages();
+const tuiTheme = useThemeVars();
 
 function handleUpdate(field: string, value: unknown) {
   model.value = {
@@ -26,9 +27,9 @@ async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
   if (url && !(await checkUrl(url))) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.classList.add('invalid-url');
+    input.style.color = tuiTheme.value.errorColor;
   } else {
-    input.classList.remove('invalid-url');
+    input.style.color = 'inherit';
   }
 }
 </script>
