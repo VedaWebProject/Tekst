@@ -237,16 +237,17 @@ function resetForm() {
 
 function copyFromComparison() {
   const changes = compareResource.value?.contents?.[0];
-  if (changes && contentModel.value) {
-    contentModel.value = {
-      ...contentModel.value,
-      ...Object.fromEntries(
-        Object.entries(changes).filter(
-          (e) => !['id', 'resourceId', 'resourceType', 'locationId', 'notes'].includes(e[0])
-        )
-      ),
-    };
-  }
+  if (!changes) return;
+  if (!contentModel.value) handleAddContentClick();
+  if (!contentModel.value) return;
+  contentModel.value = {
+    ...contentModel.value,
+    ...Object.fromEntries(
+      Object.entries(changes).filter(
+        (e) => !['id', 'resourceId', 'resourceType', 'locationId', 'notes'].includes(e[0])
+      )
+    ),
+  };
 }
 
 async function handleSaveClick() {
