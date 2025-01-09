@@ -73,10 +73,7 @@ whenever(ArrowRight, () => {
       </template>
     </n-button>
 
-    <n-badge
-      :show="!browse.isOnDefaultLevel && !browse.loadingLocationData"
-      color="var(--accent-color-spotlight)"
-    >
+    <n-badge :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <template #value>
         <n-icon :component="WarningIcon" />
       </template>

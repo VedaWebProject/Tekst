@@ -24,7 +24,7 @@
         "default_level": 2,
         "loc_delim": " > ",
         "labeled_location": true,
-        "accent_color": "#43895f",
+        "accent_color": "#416952",
         "is_active": true,
         "resource_categories": [
             {
@@ -76,7 +76,7 @@
         "default_level": 0,
         "loc_delim": "/",
         "labeled_location": true,
-        "accent_color": "#305d97",
+        "accent_color": "#405B85",
         "is_active": true,
         "resource_categories": [
             {

@@ -66,12 +66,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge
-          dot
-          :offset="[0, 5]"
-          color="var(--accent-color-spotlight)"
-          :show="browse.reducedView"
-        >
+        <n-badge dot :offset="[0, 5]" :show="browse.reducedView">
           <n-button
             type="primary"
             :size="buttonSize"
@@ -87,7 +82,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
 
-        <n-badge :value="resourceDrawerBadgeLabel" color="var(--accent-color-spotlight)">
+        <n-badge :value="resourceDrawerBadgeLabel">
           <n-button
             type="primary"
             :size="buttonSize"
@@ -182,11 +177,5 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-</style>
-
-<style>
-.browse-toolbar .n-badge > .n-badge-sup {
-  color: #000;
 }
 </style>

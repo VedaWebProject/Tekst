@@ -1,7 +1,7 @@
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { usePreferredDark, useStorage } from '@vueuse/core';
-import { adjustHue, lighten, saturate, toRgba, transparentize } from 'color2k';
+import { lighten, saturate, toRgba, transparentize } from 'color2k';
 import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
@@ -28,6 +28,7 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
+    color: '#D4443F',
   },
   Thing: {
     titleFontWeight: 'var(--font-weight-bold)',
@@ -38,7 +39,7 @@ const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
   ..._COMMON_OVERRIDES,
   common: {
     ..._COMMON_OVERRIDES.common,
-    bodyColor: '#ffffff',
+    bodyColor: '#FFFFFF',
   },
 };
 
@@ -71,7 +72,6 @@ export const useThemeStore = defineStore('theme', () => {
     darkMode: boolean = dark.value
   ) {
     const lightenBy = darkMode ? 0.375 : 0.0;
-    const baseStatic = baseColor;
     const base = lighten(baseColor, lightenBy);
     return {
       base: toRgba(base),
@@ -80,9 +80,6 @@ export const useThemeStore = defineStore('theme', () => {
       fade3: toRgba(transparentize(base, 0.6)),
       fade4: toRgba(transparentize(base, 0.8)),
       fade5: toRgba(transparentize(base, 0.9)),
-      // this is supposed to create an attention-grabbing UI highlight color that
-      // complements each text's accent color
-      spotlight: toRgba(lighten(adjustHue(saturate(baseStatic, 0.3), 180), 0.45)),
     };
   }
 
@@ -137,7 +134,6 @@ export const useThemeStore = defineStore('theme', () => {
       '--accent-color-fade3': custom.value.accent.fade3,
       '--accent-color-fade4': custom.value.accent.fade4,
       '--accent-color-fade5': custom.value.accent.fade5,
-      '--accent-color-spotlight': custom.value.accent.spotlight,
 
       '--link-color': custom.value.accent.base,
       '--link-color-hover': custom.value.accent.fade1,
