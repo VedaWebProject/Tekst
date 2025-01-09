@@ -48,13 +48,10 @@ const settings = computed(() => [
           count: total,
         })
       }}
+      {{ $t('general.for') }}
     </span>
     <span v-else>
       {{ $t('search.results.searching') }}
-    </span>
-
-    <span>
-      {{ $t('general.for') }}
     </span>
 
     <n-tag class="b content-font" size="small">
