@@ -10,7 +10,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useSearchStore } from '@/stores';
 import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
@@ -20,7 +20,6 @@ const props = defineProps<{
 }>();
 
 const auth = useAuthStore();
-const theme = useThemeStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
 const { pfData } = usePlatformData();
@@ -75,18 +74,7 @@ onMounted(() => {
     class="mb-lg"
     :title="$t('browse.location.aliasesTip')"
   >
-    <n-tag
-      v-for="alias in browse.locationPathHead?.aliases"
-      :key="alias"
-      size="small"
-      :bordered="false"
-      class="translucent"
-      :color="{
-        color: 'var(--main-bg-color)',
-        textColor: 'var(--text-color)',
-        borderColor: theme.custom.accent.base,
-      }"
-    >
+    <n-tag v-for="alias in browse.locationPathHead?.aliases" :key="alias" size="small">
       {{ alias }}
     </n-tag>
     <copy-to-clipboard-button

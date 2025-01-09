@@ -122,7 +122,6 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     NTag,
     {
       closable: true,
-      bordered: false,
       onMousedown: (e: FocusEvent) => {
         e.preventDefault();
       },

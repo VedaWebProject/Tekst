@@ -23,10 +23,12 @@ const props = withDefaults(
 const { pfData } = usePlatformData();
 const theme = useThemeStore();
 
-const neutralTagColor = { color: 'var(--main-bg-color)' };
-
 const targetTexts = computed(() => {
-  return pfData.value?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || [];
+  return (pfData.value?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || []).map((t) => ({
+    ...t,
+    color: theme.getAccentColors(t.id).base,
+    colorFade: theme.getAccentColors(t.id).fade3,
+  }));
 });
 const settings = computed(() => [
   ...(props.req.qck?.op?.toLowerCase() === 'and'
@@ -55,7 +57,7 @@ const settings = computed(() => [
       {{ $t('general.for') }}
     </span>
 
-    <n-tag :color="neutralTagColor" :bordered="false" class="b content-font" size="small">
+    <n-tag class="b content-font" size="small">
       <template #icon>
         <n-icon class="translucent" :component="SearchIcon" />
       </template>
@@ -69,8 +71,7 @@ const settings = computed(() => [
     <n-tag
       v-for="text in targetTexts"
       :key="text.id"
-      :color="{ color: theme.getAccentColors(text.id).fade4 }"
-      :bordered="false"
+      :color="{ borderColor: text.colorFade, textColor: text.color }"
       size="small"
     >
       <template #icon>
@@ -82,7 +83,7 @@ const settings = computed(() => [
     <span v-if="!!settings.length">{{ $t('general.with') }}</span>
 
     <template v-for="setting in settings" :key="setting">
-      <n-tag :color="neutralTagColor" :bordered="false" size="small">
+      <n-tag size="small">
         <template #icon>
           <n-icon class="translucent" :component="SettingsIcon" />
         </template>

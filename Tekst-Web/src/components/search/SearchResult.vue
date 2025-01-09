@@ -31,11 +31,12 @@ const resultHoverColor = computed(() => transparentize(props.textColor, 0.9));
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'
 );
-const scoreTagColor = computed(() =>
-  props.scorePercent
-    ? `rgba(${180 - props.scorePercent * 1.8}, ${props.scorePercent * 1.8}, 0, 0.25)`
-    : undefined
-);
+const scoreTagColor = computed(() => {
+  if (!props.scorePercent) return;
+  const red = 140 - (props.scorePercent / 100) * 140;
+  const green = (props.scorePercent / 100) * 140;
+  return `rgba(${red}, ${green}, 0, 1)`;
+});
 const highlightsProcessed = computed<Record<string, string>>(() => {
   if (!props.highlight) return {};
   return Object.fromEntries(
@@ -66,19 +67,22 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
             {{ fullLabelAsTitle ? fullLabel : label }}
           </div>
           <div class="sr-header-tags">
-            <n-tag size="small" :bordered="false" :color="{ color: textColorTranslucent }">
+            <n-tag
+              size="small"
+              :color="{ borderColor: textColorTranslucent, textColor: textColor }"
+            >
               <template #icon>
                 <n-icon class="translucent" :component="TextsIcon" />
               </template>
               {{ textTitle }}
             </n-tag>
-            <n-tag size="small" :bordered="false" :color="{ color: 'var(--main-bg-color)' }">
+            <n-tag size="small">
               <template #icon>
                 <n-icon class="translucent" :component="LevelsIcon" />
               </template>
               {{ levelLabel }}
             </n-tag>
-            <n-tag size="small" :bordered="false" :color="{ color: scoreTagColor }">
+            <n-tag size="small" :color="{ textColor: scoreTagColor }">
               <template #icon>
                 <n-icon class="translucent" :component="StarHalfIcon" />
               </template>

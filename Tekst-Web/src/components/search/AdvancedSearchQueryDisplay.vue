@@ -26,8 +26,6 @@ const { pfData } = usePlatformData();
 const theme = useThemeStore();
 const resources = useResourcesStore();
 
-const neutralTagColor = { color: 'var(--main-bg-color)' };
-
 const searchedResources = computed(() => {
   const qRes = [...new Set(props.req.q?.map((q) => q.cmn.res))];
   return resources.all
@@ -36,7 +34,8 @@ const searchedResources = computed(() => {
       return {
         id: r.id,
         label: pickTranslation(r.title, state.locale),
-        color: theme.getAccentColors(r.textId).fade4,
+        color: theme.getAccentColors(r.textId).base,
+        colorFade: theme.getAccentColors(r.textId).fade3,
       };
     });
 });
@@ -73,8 +72,7 @@ const settings = computed(() => [
     <n-tag
       v-for="(r, index) in searchedResources"
       :key="`${index}-${r.id}`"
-      :color="{ color: r.color }"
-      :bordered="false"
+      :color="{ borderColor: r.colorFade, textColor: r.color }"
       size="small"
     >
       <template #icon>
@@ -85,13 +83,7 @@ const settings = computed(() => [
 
     <span v-if="!!settings.length">{{ $t('general.with') }}</span>
 
-    <n-tag
-      v-for="setting in settings"
-      :key="setting"
-      :color="neutralTagColor"
-      :bordered="false"
-      size="small"
-    >
+    <n-tag v-for="setting in settings" :key="setting" size="small">
       <template #icon>
         <n-icon class="translucent" :component="SettingsIcon" />
       </template>
