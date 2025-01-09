@@ -13,13 +13,12 @@ import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { cloneDeep } from 'lodash-es';
 import { NAlert, NButton, NDivider, NForm, NIcon, NSpin, type FormInst } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
 
 import { ArrowBackIcon, ResourceIcon, SettingsIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();
-const route = useRoute();
 const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
@@ -35,17 +34,21 @@ const loading = computed(() => resources.loading || loadingSave.value);
 const model = ref<AnyResourceRead | undefined>();
 const { changed, reset, getChanges } = useModelChanges(model);
 
+const props = defineProps<{
+  textSlug?: string;
+  id: string;
+}>();
+
 // change route if text changes
-watch(
-  () => state.text,
-  (newText) => {
-    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
+    router.push({ name: 'resources', params: { textSlug: to.params.textSlug } });
   }
-);
+});
 
 // watch route for resource ID and react to resource data updates
 watch(
-  [() => route.params.id, () => resources.ofText],
+  [() => props.id, () => resources.ofText],
   ([newId, newResources]) => {
     if (!newId || !newResources.length) return;
     resource.value = newResources.find((l) => l.id === newId);
@@ -74,7 +77,7 @@ async function handleSaveClick() {
           $t('resources.settings.msgSaved', { title: pickTranslation(data.title, state.locale) })
         );
         resources.replace(data);
-        router.push({ name: 'resources', params: { textSlug: state.text?.slug } });
+        router.push({ name: 'resources', params: { textSlug: props.textSlug } });
       }
       loadingSave.value = false;
     })
@@ -93,7 +96,7 @@ async function handleSaveClick() {
 
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'resources', params: { textSlug: state.text?.slug } }"
+    :to="{ name: 'resources', params: { textSlug: props.textSlug } }"
     custom
   >
     <n-button text :focusable="false" @click="navigate">

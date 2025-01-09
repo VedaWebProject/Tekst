@@ -29,7 +29,8 @@ import {
   useDialog,
   type FormInst,
 } from 'naive-ui';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
 
 const state = useStateStore();
 const { pfData, loadPlatformData } = usePlatformData();
@@ -64,13 +65,6 @@ const textCanBeDeleted = computed(() => {
     return pfData.value.texts.length > 1;
   }
 });
-
-watch(
-  () => state.text,
-  () => {
-    resetForm();
-  }
-);
 
 function resetForm() {
   model.value = initialModel();
@@ -126,6 +120,12 @@ async function handleDelete() {
     },
   });
 }
+
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
+    resetForm();
+  }
+});
 </script>
 
 <template>

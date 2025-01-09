@@ -62,16 +62,21 @@ import {
   useDialog,
 } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 
 type ContentFormModel = AnyContentCreate & { id: string };
+
+const props = defineProps<{
+  textSlug?: string;
+  resId: string;
+  locId?: string;
+}>();
 
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
 const { message } = useMessages();
 const router = useRouter();
-const route = useRoute();
 const dialog = useDialog();
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
@@ -157,20 +162,12 @@ const otherCorrectionsCount = computed(
   () => corrections.value.length - locCorrections.value.length
 );
 
-// go to resource overview if text changes
-watch(
-  () => state.text,
-  (newText) => {
-    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
-  }
-);
-
 async function loadLocationData() {
   if (!resource.value) return;
   loadingData.value = true;
   // define part of query that will determine the target location
   const locQuery: LocationDataQuery = {
-    id: route.params.locId?.toString(),
+    id: props.locId,
   };
   if (!locQuery.id) {
     // if no location ID is provided, use the current text ID and resource level
@@ -212,11 +209,12 @@ async function loadLocationData() {
     }
     resetForm();
     // add location ID to URL params if not already present
-    if (!route.params.locId) {
+    if (!props.locId) {
       router.replace({
         name: 'resourceContents',
         params: {
-          ...route.params,
+          textSlug: props.textSlug,
+          resId: props.resId,
           locId: locationData.locationPath[locationData.locationPath.length - 1].id,
         },
       });
@@ -226,8 +224,8 @@ async function loadLocationData() {
     router.replace({
       name: 'resourceContents',
       params: {
-        ...route.params,
-        locId: undefined,
+        textSlug: props.textSlug,
+        resId: props.resId,
       },
     });
   }
@@ -343,7 +341,8 @@ function gotoLocation(locId?: string) {
   router.push({
     name: 'resourceContents',
     params: {
-      ...route.params,
+      textSlug: props.textSlug,
+      resId: props.resId,
       locId,
     },
   });
@@ -358,7 +357,7 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
   const { data: nearestLocId, error } = await GET('/browse/nearest-content-location-id', {
     params: {
       query: {
-        loc: route.params.locId?.toString() || '',
+        loc: props.locId || '',
         res: compareResourceId.value || '',
         dir: direction,
       },
@@ -375,13 +374,13 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
 
 // watch for position change and resources data updates
 watch(
-  [() => resources.ofText, () => route.params.locId?.toString()],
+  [() => resources.ofText, () => props.locId],
   async ([newResources]) => {
     if (!newResources.length) {
       return;
     }
     if (!resource.value) {
-      resource.value = newResources.find((l) => l.id === route.params.resId.toString());
+      resource.value = newResources.find((l) => l.id === props.resId);
       if (!resource.value) {
         router.replace({ name: 'resources', params: { textSlug: state.text?.slug } });
         return;
@@ -394,6 +393,13 @@ watch(
   },
   { immediate: true }
 );
+
+// go to resource overview if text changes
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
+    router.push({ name: 'resources', params: { textSlug: to.params.textSlug } });
+  }
+});
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {

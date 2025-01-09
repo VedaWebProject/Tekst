@@ -201,7 +201,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 function handleCorrectionsClick() {
   router.push({
     name: 'resourceCorrections',
-    params: { textSlug: state.text?.slug, id: props.targetResource.id },
+    params: { textSlug: state.text?.slug, resId: props.targetResource.id },
   });
 }
 </script>

@@ -23,7 +23,7 @@ import {
   type TreeOption,
 } from 'naive-ui';
 import type { Component, Ref } from 'vue';
-import { computed, h, ref, watch } from 'vue';
+import { computed, h, onMounted, ref } from 'vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
@@ -38,6 +38,7 @@ import {
   UploadIcon,
 } from '@/icons';
 import { renderIcon } from '@/utils';
+import { onBeforeRouteUpdate } from 'vue-router';
 
 export interface LocationTreeOption extends TreeOption {
   level: number;
@@ -407,13 +408,15 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
   ]);
 }
 
-watch(
-  () => state.text?.id,
-  () => {
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
     loadTreeData();
-  },
-  { immediate: true }
-);
+  }
+});
+
+onMounted(() => {
+  loadTreeData();
+});
 </script>
 
 <template>
@@ -490,24 +493,25 @@ watch(
   </n-flex>
 
   <div v-if="treeData.length" class="content-block" style="position: relative">
-    <n-tree
-      id="locations-tree"
-      block-line
-      show-line
-      :draggable="!loading"
-      :selectable="!loading"
-      :data="treeData"
-      :on-load="loadTreeData"
-      :render-switcher-icon="renderSwitcherIcon"
-      :render-label="renderLabel"
-      :allow-drop="isDropAllowed"
-      :render-suffix="renderSuffix"
-      :style="loading ? { opacity: 0.3, pointerEvents: 'none' } : {}"
-      @dragstart="handleDragStart"
-      @dragend="handleDragEnd"
-      @drop="handleDrop"
-    />
-    <n-spin v-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+    <n-spin :show="loading" :delay="300">
+      <n-tree
+        id="locations-tree"
+        block-line
+        show-line
+        :draggable="!loading"
+        :selectable="!loading"
+        :data="treeData"
+        :on-load="loadTreeData"
+        :render-switcher-icon="renderSwitcherIcon"
+        :render-label="renderLabel"
+        :allow-drop="isDropAllowed"
+        :render-suffix="renderSuffix"
+        :style="loading ? { opacity: 0.3, pointerEvents: 'none' } : {}"
+        @dragstart="handleDragStart"
+        @dragend="handleDragEnd"
+        @drop="handleDrop"
+      />
+    </n-spin>
   </div>
 
   <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />

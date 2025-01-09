@@ -67,6 +67,7 @@ const router = createRouter({
       meta: {
         isTextSpecific: true,
       },
+      props: true,
     },
     {
       path: '/text/:textSlug?/search',
@@ -126,6 +127,7 @@ const router = createRouter({
       path: '/user/:username',
       name: 'user',
       component: UserView,
+      props: true,
     },
     {
       path: '/verify',
@@ -145,6 +147,7 @@ const router = createRouter({
         isTextSpecific: true,
         restricted: 'user',
       },
+      props: true,
     },
     {
       path: '/community',
@@ -162,6 +165,7 @@ const router = createRouter({
         isTextSpecific: true,
         restricted: 'user',
       },
+      props: true,
     },
     {
       path: '/text/:textSlug?/resources/create',
@@ -171,6 +175,7 @@ const router = createRouter({
         isTextSpecific: true,
         restricted: 'user',
       },
+      props: true,
     },
     {
       path: '/text/:textSlug?/resources/:resId/contents/:locId?',
@@ -180,15 +185,17 @@ const router = createRouter({
         isTextSpecific: true,
         restricted: 'user',
       },
+      props: true,
     },
     {
-      path: '/text/:textSlug?/resources/:id/corrections',
+      path: '/text/:textSlug?/resources/:resId/corrections',
       name: 'resourceCorrections',
       component: CorrectionsView,
       meta: {
         isTextSpecific: true,
         restricted: 'user',
       },
+      props: true,
     },
     {
       path: '/account',

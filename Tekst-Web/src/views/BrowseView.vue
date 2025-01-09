@@ -13,11 +13,14 @@ import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
 import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+
+const props = defineProps<{
+  textSlug?: string;
+  locId?: string;
+}>();
 
 const auth = useAuthStore();
 const theme = useThemeStore();
-const route = useRoute();
 const browse = useBrowseStore();
 const search = useSearchStore();
 const { pfData } = usePlatformData();
@@ -43,21 +46,21 @@ function handleShowAllClick(categoryKey?: string) {
 
 // load fresh location data everytime the browse location changes in the URL
 watch(
-  () => route.params.locId,
+  () => props.locId,
   async (newLocId) => {
-    await browse.loadLocationData(newLocId?.toString());
+    await browse.loadLocationData(newLocId);
   }
 );
 
 watch(
   () => auth.loggedIn,
   () => {
-    browse.loadLocationData(undefined, true);
+    browse.loadLocationData(props.locId, true);
   }
 );
 
 onMounted(() => {
-  browse.loadLocationData(undefined, true);
+  browse.loadLocationData(props.locId, true);
 });
 </script>
 

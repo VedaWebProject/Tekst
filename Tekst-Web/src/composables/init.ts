@@ -75,7 +75,7 @@ export function useInitializeApp() {
           pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
           pfData.value?.texts[0];
 
-        if (route.meta.isTextSpecific) {
+        if (route.params.hasOwnProperty('textSlug') && state.text?.slug !== route.params.textSlug) {
           router.replace({
             name: route.name || 'browse',
             params: {

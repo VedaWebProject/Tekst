@@ -7,30 +7,31 @@ import { ArrowBackIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NButton, NIcon, NList } from 'naive-ui';
-import { computed, onBeforeMount, watch } from 'vue';
-import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { computed, onBeforeMount } from 'vue';
+import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
+
+const props = defineProps<{
+  textSlug?: string;
+  resId: string;
+}>();
 
 const state = useStateStore();
 const resources = useResourcesStore();
-const route = useRoute();
 const router = useRouter();
 
-const resourceId = computed(() => route.params.id.toString());
-const resource = computed(() =>
-  route.params.id ? resources.ofText.find((r) => r.id === resourceId.value) : undefined
-);
+const resourceId = computed(() => props.resId);
+const resource = computed(() => resources.ofText.find((r) => r.id === resourceId.value));
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 
 // change route if text changes
-watch(
-  () => state.text,
-  (newText) => {
-    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
+    router.push({ name: 'resources', params: { textSlug: to.params.textSlug } });
   }
-);
+});
 
 onBeforeMount(async () => {
-  await resources.loadCorrections(route.params.id.toString());
+  await resources.loadCorrections(props.resId);
 });
 </script>
 
@@ -39,7 +40,7 @@ onBeforeMount(async () => {
     {{ $t('corrections.heading', { title: resourceTitle }) }}
   </icon-heading>
 
-  <router-link :to="{ name: 'resources', params: { textSlug: state.text?.slug } }">
+  <router-link :to="{ name: 'resources', params: { textSlug: props.textSlug } }">
     <n-button text :focusable="false">
       <template #icon>
         <n-icon :component="ArrowBackIcon" />

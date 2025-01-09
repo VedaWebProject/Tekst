@@ -44,7 +44,6 @@ function handleClick(textKey: string) {
   showModal.value = true;
 }
 
-onMounted(() => requestHelpTexts());
 watch(
   () => state.locale,
   () => {
@@ -52,6 +51,10 @@ watch(
     requestHelpTexts();
   }
 );
+
+onMounted(() => {
+  requestHelpTexts();
+});
 </script>
 
 <template>

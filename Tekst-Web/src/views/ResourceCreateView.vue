@@ -22,8 +22,12 @@ import {
   type FormInst,
   type SelectOption,
 } from 'naive-ui';
-import { computed, h, ref, watch, type VNodeChild } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { computed, h, ref, type VNodeChild } from 'vue';
+import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
+
+const props = defineProps<{
+  textSlug?: string;
+}>();
 
 const { message } = useMessages();
 const router = useRouter();
@@ -66,12 +70,11 @@ const levelOptions = computed(() =>
 );
 
 // change route if text changes
-watch(
-  () => state.text,
-  (newText) => {
-    router.push({ name: 'resources', params: { textSlug: newText?.slug } });
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.textSlug !== from.params.textSlug) {
+    router.push({ name: 'resources', params: { textSlug: to.params.textSlug } });
   }
-);
+});
 
 function renderResourceTypeOptionLabel(o: SelectOption): VNodeChild {
   return h(ResourceTypeOptionLabel, {
@@ -100,7 +103,7 @@ async function handleSaveClick() {
         router.push({
           name: 'resourceSettings',
           params: {
-            textSlug: state.text?.slug,
+            textSlug: props.textSlug,
             id: data.id,
           },
         });
@@ -122,7 +125,7 @@ async function handleSaveClick() {
 
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'resources', params: { textSlug: state.text?.slug } }"
+    :to="{ name: 'resources', params: { textSlug: props.textSlug } }"
     custom
   >
     <n-button text :focusable="false" @click="navigate">

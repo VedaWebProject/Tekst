@@ -36,6 +36,10 @@ import {
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const props = defineProps<{
+  textSlug?: string;
+}>();
+
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
@@ -237,14 +241,14 @@ function handleUnpublishClick(resource: AnyResourceRead) {
 function handleSettingsClick(resource: AnyResourceRead) {
   router.push({
     name: 'resourceSettings',
-    params: { textSlug: state.text?.slug, id: resource.id },
+    params: { textSlug: props.textSlug, id: resource.id },
   });
 }
 
 function handleContentsClick(resource: AnyResourceRead) {
   router.push({
     name: 'resourceContents',
-    params: { textSlug: state.text?.slug, resId: resource.id },
+    params: { textSlug: props.textSlug, resId: resource.id },
   });
 }
 

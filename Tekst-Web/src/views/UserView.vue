@@ -7,8 +7,12 @@ import { useProfile } from '@/composables/fetchers';
 import { MessageIcon, UserIcon } from '@/icons';
 import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { NButton, NIcon, NSpin, NThing } from 'naive-ui';
-import { computed, watch } from 'vue';
+import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
+
+const props = defineProps<{
+  username: string;
+}>();
 
 const route = useRoute();
 const auth = useAuthStore();
@@ -16,12 +20,10 @@ const state = useStateStore();
 const userMessages = useUserMessagesStore();
 
 const usernameOrId = computed(() => {
-  if (route.name) {
-    if (route.name === 'user' && route.params.username) {
-      return String(route.params.username);
-    } else if (route.name === 'accountProfile') {
-      return auth.user?.username || '';
-    }
+  if (route.name && route.name === 'user' && props.username) {
+    return props.username;
+  } else if (route.name === 'accountProfile') {
+    return auth.user?.username || '';
   }
   return '';
 });
@@ -40,13 +42,9 @@ function handleSendUserMessage() {
   userMessages.showMessagingModal = true;
 }
 
-watch(
-  () => usernameOrId.value,
-  (newUsername) => {
-    state.setPageTitle(route, { username: newUsername });
-  },
-  { immediate: true }
-);
+watchEffect(() => {
+  state.setPageTitle(route, { username: usernameOrId.value });
+});
 </script>
 
 <template>
