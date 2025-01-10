@@ -65,13 +65,12 @@ tasks:
     cmds:
       - npm run api-schema
 
-  help-texts:
+  translations:
     cmds:
-      - npm run help-texts
+      - npm run translations
 
   pre-commit:
     cmds:
-      - task: api-schema
       - task: lint
       - task: format
       - task: build

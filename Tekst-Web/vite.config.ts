@@ -15,7 +15,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VueI18nPlugin({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './translations/ui/**'),
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './i18n/ui/**'),
     }),
   ],
   resolve: {

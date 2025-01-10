@@ -27,7 +27,7 @@ export default [
     settings: {
       'vue-i18n': {
         localeDir: {
-          pattern: './translations/ui/*.yml', // extension is glob formatting!
+          pattern: './i18n/ui/*.yml', // extension is glob formatting!
           localeKey: 'file', // or 'path' or 'key'
         },
         // Specify the version of `vue-i18n` you are using.

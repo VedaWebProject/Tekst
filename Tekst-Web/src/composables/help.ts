@@ -1,4 +1,4 @@
-import helpTranslationsModules from '@/assets/help';
+import helpTranslationsModules from '@/assets/i18n/help';
 import { useStateStore } from '@/stores';
 
 export interface HelpText {

@@ -42,7 +42,7 @@ export const useStateStore = defineStore('state', () => {
 
   const locale = useStorage<LocaleKey>(
     'locale',
-    (auth.user?.locale || getAvaliableBrowserLocaleKey() || i18nLocale.value || 'enUS') as LocaleKey
+    auth.user?.locale || getAvaliableBrowserLocaleKey() || (i18nLocale.value as LocaleKey) || 'enUS'
   );
   watch(locale, () => {
     setPageTitle();
@@ -75,9 +75,9 @@ export const useStateStore = defineStore('state', () => {
     l: string = locale.value,
     updateUserLocale: boolean = true
   ): Promise<LocaleProfile> {
-    const availableLocaleKeys = pfData.value?.state.availableLocales;
-    const effectiveLocale = setI18nLocale(
-      availableLocaleKeys?.find((al) => al === l) || availableLocaleKeys?.[0] || 'enUS'
+    const availableLocaleKeys = pfData.value?.state.availableLocales as LocaleKey[] | undefined;
+    const effectiveLocale = await setI18nLocale(
+      availableLocaleKeys?.find((al) => al === l) || 'enUS'
     );
     locale.value = effectiveLocale.key;
     if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {

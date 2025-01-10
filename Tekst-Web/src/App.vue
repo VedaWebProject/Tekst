@@ -48,12 +48,7 @@ useFavicon();
     <n-loading-bar-provider>
       <n-dialog-provider>
         <div id="app-container">
-          <n-flex
-            v-if="state.init.initialized && state.init.error"
-            justify="center"
-            align="center"
-            style="height: 100vh"
-          >
+          <n-flex v-if="state.init.error" justify="center" align="center" style="height: 100vh">
             <huge-labelled-icon
               :message="$t('init.error')"
               :loading="!state.init.error && !state.init.initialized"
@@ -69,21 +64,20 @@ useFavicon();
               </div>
             </main>
             <page-footer />
+            <login-modal />
+            <messaging-modal />
+            <tasks-widget v-if="showTasksWidget" />
+            <n-back-top
+              v-model:show="state.backtopVisible"
+              :visibility-height="200"
+              style="z-index: 2"
+            />
           </template>
-
-          <app-loading-feedback />
-          <global-messenger />
-          <tasks-widget v-if="showTasksWidget" />
         </div>
-        <messaging-modal />
-        <login-modal />
-        <n-back-top
-          v-model:show="state.backtopVisible"
-          :visibility-height="200"
-          style="z-index: 2"
-        />
       </n-dialog-provider>
+      <app-loading-feedback />
     </n-loading-bar-provider>
+    <global-messenger />
     <n-global-style />
   </n-config-provider>
 </template>

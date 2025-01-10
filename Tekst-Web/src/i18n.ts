@@ -1,14 +1,9 @@
-import staticI18nMsgs from '@intlify/unplugin-vue-i18n/messages';
+import type { LocaleKey } from '@/api';
 import type { NDateLocale, NLocale, SelectOption } from 'naive-ui';
 import { dateDeDE, dateEnUS, deDE, enUS } from 'naive-ui';
 import { unref } from 'vue';
 import type { I18nOptions } from 'vue-i18n';
 import { createI18n } from 'vue-i18n';
-
-export enum LocaleKey {
-  EnUs = 'enUS',
-  DeDe = 'deDE',
-}
 
 export interface LocaleProfile {
   key: LocaleKey;
@@ -21,7 +16,7 @@ export interface LocaleProfile {
 
 export const localeProfiles: LocaleProfile[] = [
   {
-    key: LocaleKey.EnUs,
+    key: 'enUS',
     displayFull: 'English (US)',
     displayShort: 'en-US',
     icon: '🇺🇸',
@@ -29,7 +24,7 @@ export const localeProfiles: LocaleProfile[] = [
     nUiDateLocale: dateEnUS,
   },
   {
-    key: LocaleKey.DeDe,
+    key: 'deDE',
     displayFull: 'Deutsch',
     displayShort: 'de-DE',
     icon: '🇩🇪',
@@ -43,7 +38,6 @@ const i18nOptions: I18nOptions = {
   globalInjection: true,
   locale: 'enUS',
   fallbackLocale: 'enUS',
-  messages: staticI18nMsgs,
 };
 
 export const i18n = createI18n(i18nOptions);
@@ -58,15 +52,20 @@ export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
   return localeProfiles.find((lp) => lp.key === localeKey);
 }
 
-export function setI18nLocale(
+export async function setI18nLocale(
   // @ts-expect-error same as above :(
-  newLocale: I18nOptions['locale'] = i18n.global.locale.value
-): LocaleProfile {
+  newLocale: LocaleKey = i18n.global.locale.value
+): Promise<LocaleProfile> {
   const l = unref(newLocale);
+  // load translations for this locale
+  i18n.global.setLocaleMessage(l, (await import(`@/assets/i18n/ui/${l}.json`)).default);
+  // set the new locale
   // @ts-expect-error same as above :(
   i18n.global.locale.value = l;
+  // set the HTML lang attribute
   document.querySelector('html')?.setAttribute('lang', l);
-  return getLocaleProfile(l) || localeProfiles[0];
+  // return the locale profile, fall back to English if not found
+  return getLocaleProfile(l) || (await setI18nLocale('enUS'));
 }
 
 export function getAvaliableBrowserLocaleKey() {

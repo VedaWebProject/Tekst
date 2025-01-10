@@ -2,10 +2,11 @@ import { copyFileSync, existsSync, readdirSync, readFileSync, rmSync, writeFileS
 import { marked } from 'marked';
 import path from 'path';
 
-const HELP_DIR = path.normalize('translations/help/');
-const OUT_DIR = path.normalize('src/assets/help/');
+const SOURCE_DIR = path.normalize('i18n/help/');
+const TARGET_DIR = path.normalize('src/assets/i18n/help/');
 const DOCS_PATH = path.normalize('../docs/generated/help/');
-const localeDirs = readdirSync(HELP_DIR, { withFileTypes: true }).filter((entry) =>
+
+const localeDirs = readdirSync(SOURCE_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
 );
 
@@ -22,12 +23,11 @@ const renderer = {
 marked.use({ renderer });
 
 // delete old target files
-console.log(`🗑 Deleting old help text translations in ${OUT_DIR} ...`);
-for (const d of readdirSync(OUT_DIR, { withFileTypes: true }).filter(
+console.log(`🗑 Deleting old help text translations in ${TARGET_DIR} ...`);
+for (const d of readdirSync(TARGET_DIR, { withFileTypes: true }).filter(
   (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
 )) {
   rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
-  //   console.log(`  🗸 ${d.name}/*`);
 }
 if (existsSync(DOCS_PATH)) {
   console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
@@ -35,12 +35,11 @@ if (existsSync(DOCS_PATH)) {
     (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
   )) {
     rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
-    //   console.log(`  🗸 ${d.name}/*`);
   }
 }
 
 // parse current markdown help texts
-console.log(`🗘 Processing help text translations in ${HELP_DIR} ...`);
+console.log(`🗘 Processing help text translations in ${SOURCE_DIR} ...`);
 for (const localeDir of localeDirs) {
   const sourceDirPath = path.join(localeDir.parentPath, localeDir.name);
   const mdFiles = readdirSync(sourceDirPath, { withFileTypes: true }).filter(
@@ -58,13 +57,11 @@ for (const localeDir of localeDirs) {
     const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but simple!
     const html = marked.parse(data);
     helpTranslations[mdFile.name.replace(/.md$/, '')] = { title: title, content: html };
-    // console.log(`  🗸 ${localeDir.name}/${mdFile.name}`);
   }
-  writeFileSync(
-    path.join(OUT_DIR, `${localeDir.name}.json`),
-    JSON.stringify(helpTranslations, null, 2)
+  writeFileSync(path.join(TARGET_DIR, `${localeDir.name}.json`), JSON.stringify(helpTranslations));
+  localeImports.push(
+    `${localeDir.name}: () => import('@/assets/i18n/help/${localeDir.name}.json'),`
   );
-  localeImports.push(`${localeDir.name}: () => import('@/assets/help/${localeDir.name}.json'),`);
 }
 
 // generate index.ts
@@ -72,4 +69,4 @@ const indexFileContent = `import type {HelpText} from '@/composables/help'; expo
   '\n'
 )}} as Record<string, () => Promise<{ default: Record<string, HelpText> }>>;`;
 
-writeFileSync(path.join(OUT_DIR, 'index.ts'), indexFileContent);
+writeFileSync(path.join(TARGET_DIR, 'index.ts'), indexFileContent);
