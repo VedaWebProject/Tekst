@@ -6,16 +6,15 @@ import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
-import { useThemeStore } from '@/stores';
+import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import { NButton, NIcon, NTable, NTabPane, NTabs, NTime, useThemeVars } from 'naive-ui';
 import { onBeforeMount, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const { pfData } = usePlatformData();
+const state = useStateStore();
 const theme = useThemeStore();
 const nuiTheme = useThemeVars();
 const { message } = useMessages();
@@ -97,7 +96,7 @@ async function loadIndexInfo() {
 }
 
 function getFieldMappingsStatus(fields: number) {
-  const maxFieldMappings = pfData.value?.maxFieldMappings || 0;
+  const maxFieldMappings = state.pf?.maxFieldMappings || 0;
   if (fields > maxFieldMappings * 0.9) {
     return 'over';
   } else if (fields > maxFieldMappings * 0.75) {
@@ -163,7 +162,7 @@ onBeforeMount(() => {
                     backgroundColor: theme.getAccentColors(indexInfo.textId).fade4,
                   }"
                 >
-                  {{ pfData?.texts.find((t) => t.id === indexInfo.textId)?.title || '???' }}
+                  {{ state.textById(indexInfo.textId)?.title || '???' }}
                 </th>
               </tr>
             </thead>
@@ -180,7 +179,7 @@ onBeforeMount(() => {
                 {{ $t(`admin.system.maintenance.indices.fields`) }}
               </th>
               <td :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
-                {{ indexInfo.fields }} / {{ pfData?.maxFieldMappings || '???' }}
+                {{ indexInfo.fields }} / {{ state.pf?.maxFieldMappings || '???' }}
               </td>
             </tr>
             <tr>

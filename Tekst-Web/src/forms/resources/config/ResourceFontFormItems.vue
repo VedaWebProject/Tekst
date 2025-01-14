@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { usePlatformData } from '@/composables/platformData';
+import { useStateStore } from '@/stores';
 import { NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
 
-const { pfData } = usePlatformData();
+const state = useStateStore();
 const model = defineModel<string>();
 
 const options = computed(() =>
-  [...(pfData.value?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
+  [...(state.pf?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
     label: f,
     value: f,
   }))

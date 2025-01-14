@@ -25,7 +25,7 @@ const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const resources = useResourcesStore();
-  const { pfData, loadPlatformData } = usePlatformData();
+  const { loadPlatformData } = usePlatformData();
   const { message } = useMessages();
   const state = useStateStore();
   const search = useSearchStore();
@@ -46,9 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
-      Date.now() / 1000 +
-      (pfData.value?.security.authCookieLifetime || 0) -
-      SESSION_EXPIRY_OFFSET_S;
+      Date.now() / 1000 + (state.pf?.security.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_S;
   }
 
   function _unsetCookieExpiry() {
@@ -164,10 +162,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
     _cleanupSession();
     await loadPlatformData(); // reload platform data as some resources might not be accessible anymore
-    if (!pfData.value?.texts.find((t) => t.id === state.text?.id)) {
-      state.text =
-        pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId) ||
-        pfData.value?.texts[0];
+    if (!state.pf?.texts.find((t) => t.id === state.text?.id)) {
+      router.replace({
+        name: 'browse',
+        params: { textSlug: state.textById(state.pf?.state.defaultTextId)?.slug },
+      });
     }
     await resources.load();
   }

@@ -7,7 +7,6 @@ import type { SearchResultProps } from '@/components/search/SearchResult.vue';
 import SearchResult from '@/components/search/SearchResult.vue';
 import SearchResultsSortWidget from '@/components/search/SearchResultsSortWidget.vue';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
@@ -17,7 +16,6 @@ import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import { NButton, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
 import { computed, onBeforeMount, ref } from 'vue';
 
-const { pfData } = usePlatformData();
 const state = useStateStore();
 const resources = useResourcesStore();
 const search = useSearchStore();
@@ -35,7 +33,7 @@ const loadingExport = ref(false);
 const results = computed<SearchResultProps[]>(
   () =>
     search.results?.hits.map((r) => {
-      const text = pfData.value?.texts.find((t) => t.id === r.textId);
+      const text = state.textById(r.textId);
       return {
         id: r.id,
         label: r.label,
@@ -59,7 +57,7 @@ const results = computed<SearchResultProps[]>(
 );
 
 const browseViewLabel = computed(
-  () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse')
+  () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('nav.browse')
 );
 
 async function afterPaginate() {
@@ -192,9 +190,9 @@ onBeforeMount(() => {
       }}
     </div>
 
-    <div v-if="pfData?.state.indicesUpdatedAt">
+    <div v-if="state.pf?.state.indicesUpdatedAt">
       {{ $t('search.results.indexCreationTime') }}:
-      <n-time :time="utcToLocalTime(pfData?.state.indicesUpdatedAt)" type="datetime" />
+      <n-time :time="utcToLocalTime(state.pf?.state.indicesUpdatedAt)" type="datetime" />
     </div>
   </n-flex>
 </template>

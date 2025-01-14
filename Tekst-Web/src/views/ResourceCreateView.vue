@@ -5,7 +5,6 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
 import { $t } from '@/i18n';
@@ -34,11 +33,9 @@ const router = useRouter();
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
-const { pfData } = usePlatformData();
 
 const availableResourceTypes = resourceTypes.filter(
-  (rt) =>
-    auth.user?.isSuperuser || (pfData.value && !pfData.value.state.denyResourceTypes.includes(rt))
+  (rt) => auth.user?.isSuperuser || (state.pf && !state.pf.state.denyResourceTypes.includes(rt))
 );
 
 const getInitialModel = (): AnyResourceRead =>

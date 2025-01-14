@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { UserRead } from '@/api';
 import UserAvatar from '@/components/user/UserAvatar.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import {
   AdminIcon,
@@ -31,6 +30,7 @@ import { RouterLink } from 'vue-router';
 
 const props = defineProps<{
   targetUser: UserRead;
+  platformName: string;
   currentUser?: UserRead | null;
 }>();
 
@@ -42,14 +42,13 @@ const emit = defineEmits([
   'deleteClick',
 ]);
 
-const { pfData } = usePlatformData();
 const nuiTheme = useThemeVars();
 
 const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.currentUser?.id);
 const emailLink = computed(
   () =>
     `mailto:${props.targetUser.email}?subject=${$t('admin.users.mailtoSubject', {
-      platform: pfData.value?.state.platformName,
+      platform: props.platformName,
     })}`
 );
 

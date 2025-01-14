@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useLogo } from '@/composables/logo';
-import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { NFlex, NProgress, useLoadingBar } from 'naive-ui';
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 
 const state = useStateStore();
-const { pfData } = usePlatformData();
 const { pageLogo } = useLogo();
 
 const loadingBar = useLoadingBar();
@@ -35,10 +33,10 @@ onBeforeMount(() => {
           class="global-loader-logo"
           :src="pageLogo"
           :style="{
-            opacity: pageLogo && pfData?.state.showLogoOnLoadingScreen ? 1 : 0,
+            opacity: pageLogo && state.pf?.state.showLogoOnLoadingScreen ? 1 : 0,
           }"
         />
-        <div class="text-huge">{{ pfData?.state.platformName }}</div>
+        <div class="text-huge">{{ state.pf?.state.platformName }}</div>
         <n-progress
           type="line"
           :percentage="state.init.progress * 100"

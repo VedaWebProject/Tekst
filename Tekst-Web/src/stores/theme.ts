@@ -1,4 +1,3 @@
-import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { usePreferredDark, useStorage } from '@vueuse/core';
 import { lighten, saturate, toRgba, transparentize } from 'color2k';
@@ -63,7 +62,6 @@ export declare type ThemeMode = 'light' | 'dark';
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
-  const { pfData } = usePlatformData();
   const dark = useStorage<boolean>('darkMode', usePreferredDark().value);
   const toggleThemeMode = () => (dark.value = !dark.value);
 
@@ -86,7 +84,7 @@ export const useThemeStore = defineStore('theme', () => {
   // all texts accent color variants
   const _allAccentColors = computed(() =>
     Object.fromEntries(
-      pfData.value?.texts.map((t) => [
+      state.pf?.texts.map((t) => [
         t.id,
         generateAccentColorVariants(t.accentColor || '#7A7A7A', dark.value),
       ]) || []

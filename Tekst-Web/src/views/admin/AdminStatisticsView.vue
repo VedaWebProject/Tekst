@@ -2,13 +2,13 @@
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useStats } from '@/composables/fetchers';
-import { usePlatformData } from '@/composables/platformData';
 import { NIcon, NProgress, NSpin, NStatistic } from 'naive-ui';
 import { computed } from 'vue';
 
 import { BarChartIcon, ResourceIcon, TextsIcon, TreeIcon, UsersIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 
-const { pfData } = usePlatformData();
+const state = useStateStore();
 const { stats, error } = useStats();
 
 const counts = computed(() => ({
@@ -87,7 +87,7 @@ const resourceTypes = computed(() => {
 
     <div v-for="(text, index) in stats.texts" :key="index">
       <div class="content-block">
-        <h3>{{ pfData?.texts.find((t) => t.id == text.id)?.title }}</h3>
+        <h3>{{ state.textById(text.id)?.title }}</h3>
 
         <div class="statistics-container">
           <n-statistic :label="$t('models.location.modelLabel', 2)" :value="text.locationsCount">

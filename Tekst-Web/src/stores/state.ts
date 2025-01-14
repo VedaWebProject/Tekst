@@ -22,7 +22,7 @@ interface AppInitState {
 
 export const useStateStore = defineStore('state', () => {
   // define resources
-  const { pfData } = usePlatformData();
+  const { pfData: pf } = usePlatformData();
   const route = useRoute();
   const auth = useAuthStore();
   const { width: windowWidth } = useWindowSize({ type: 'visual' });
@@ -52,7 +52,7 @@ export const useStateStore = defineStore('state', () => {
   );
 
   const availableLocales = computed(() =>
-    localeProfiles.filter((lp) => !!pfData.value?.state.availableLocales.includes(lp.key))
+    localeProfiles.filter((lp) => !!pf.value?.state.availableLocales.includes(lp.key))
   );
 
   const translationLocaleOptions = computed<
@@ -78,7 +78,7 @@ export const useStateStore = defineStore('state', () => {
     l: string = locale.value,
     updateUserLocale: boolean = true
   ): Promise<LocaleProfile> {
-    const availableLocaleKeys = pfData.value?.state.availableLocales as LocaleKey[] | undefined;
+    const availableLocaleKeys = pf.value?.state.availableLocales as LocaleKey[] | undefined;
     const effectiveLocale = await setI18nLocale(
       availableLocaleKeys?.find((al) => al === l) || 'enUS'
     );
@@ -93,18 +93,15 @@ export const useStateStore = defineStore('state', () => {
     return effectiveLocale;
   }
 
-  // text ID – text props mapping
-  const textsProps = computed(() =>
-    Object.fromEntries(
-      pfData.value?.texts.map((t) => [
-        t.id,
-        {
-          title: t.title,
-          accentColor: t.accentColor,
-        },
-      ]) || []
-    )
-  );
+  function textById(id?: string | null) {
+    if (!id) return undefined;
+    return pf.value?.texts.find((t) => t.id === id);
+  }
+
+  function textBySlug(slug?: string | null) {
+    if (!slug) return undefined;
+    return pf.value?.texts.find((t) => t.slug === slug);
+  }
 
   // current text
 
@@ -118,8 +115,8 @@ export const useStateStore = defineStore('state', () => {
       if (after && text.value?.slug !== after) {
         // use text from route OR default text
         text.value =
-          pfData.value?.texts.find((t) => t.slug === after) ||
-          pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId);
+          pf.value?.texts.find((t) => t.slug === after) ||
+          pf.value?.texts.find((t) => t.id === pf.value?.state.defaultTextId);
       }
     }
   );
@@ -136,8 +133,7 @@ export const useStateStore = defineStore('state', () => {
 
   function getTextLevelLabel(textId: string, level: number, localeKey: LocaleKey = locale.value) {
     return (
-      pickTranslation(pfData.value?.texts.find((t) => t.id === textId)?.levels[level], localeKey) ||
-      ''
+      pickTranslation(pf.value?.texts.find((t) => t.id === textId)?.levels[level], localeKey) || ''
     );
   }
 
@@ -173,11 +169,12 @@ export const useStateStore = defineStore('state', () => {
           ...variables,
         })
       : undefined;
-    const pfName = pfData.value?.state.platformName;
+    const pfName = pf.value?.state.platformName;
     document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 
   return {
+    pf,
     init,
     smallScreen,
     isTouchDevice,
@@ -189,7 +186,8 @@ export const useStateStore = defineStore('state', () => {
     translationLocaleOptions,
     text,
     textSlug,
-    textsProps,
+    textById,
+    textBySlug,
     textLevelLabels,
     getTextLevelLabel,
   };

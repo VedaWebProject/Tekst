@@ -33,7 +33,7 @@ import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
 const state = useStateStore();
-const { pfData, loadPlatformData } = usePlatformData();
+const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
 const loading = ref(false);
@@ -58,11 +58,11 @@ const defaultLevelOptions = computed(() =>
 );
 
 const textCanBeDeleted = computed(() => {
-  if (!pfData.value) return false;
+  if (!state.pf) return false;
   if (state.text?.isActive) {
-    return pfData.value.texts.filter((t) => t.isActive).length > 1;
+    return state.pf.texts.filter((t) => t.isActive).length > 1;
   } else {
-    return pfData.value.texts.length > 1;
+    return state.pf.texts.length > 1;
   }
 });
 
@@ -111,9 +111,7 @@ async function handleDelete() {
       if (!error) {
         message.success($t('admin.text.settings.msgDeleted', { title: state.text?.title || '?' }));
         await loadPlatformData();
-        state.text =
-          pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
-          pfData.value?.texts[0];
+        state.text = state.textById(state.pf?.state.defaultTextId) || state.pf?.texts[0];
         router.replace({ name: 'home' });
       }
       loading.value = false;

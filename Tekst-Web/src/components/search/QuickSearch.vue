@@ -4,7 +4,6 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
-import { usePlatformData } from '@/composables/platformData';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { $t } from '@/i18n';
@@ -18,7 +17,6 @@ const emit = defineEmits(['submit']);
 
 const state = useStateStore();
 const theme = useThemeStore();
-const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const router = useRouter();
@@ -36,9 +34,9 @@ const searchableResources = computed(
   () =>
     (search.settingsQuick.txt?.length
       ? search.settingsQuick.txt
-      : pfData.value?.texts.map((t) => t.id)
+      : state.pf?.texts.map((t) => t.id)
     )?.map((tId) => ({
-      title: pfData.value?.texts.find((t) => t.id === tId)?.title,
+      title: state.textById(tId)?.title,
       color: theme.getAccentColors(tId).base,
       resources: resources.all.filter((r) => r.textId === tId && r.config.common.quickSearchable),
     })) || []
@@ -56,7 +54,7 @@ async function handleSearch() {
   });
 
   if (!error && !!data.length) {
-    if (data.length === 1 && !!pfData.value?.state.directJumpOnUniqueAliasSearch) {
+    if (data.length === 1 && !!state.pf?.state.directJumpOnUniqueAliasSearch) {
       // there is one matching location alias, so we directly navigate to this location
       router.push({
         name: 'browse',

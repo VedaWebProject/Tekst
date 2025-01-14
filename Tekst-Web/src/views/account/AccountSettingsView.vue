@@ -14,19 +14,18 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
-import { usePlatformData } from '@/composables/platformData';
 import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { ManageAccountIcon, NoImageIcon } from '@/icons';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { checkUrl } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { NButton, NFlex, NForm, NFormItem, NInput, useDialog, useThemeVars } from 'naive-ui';
 import { ref } from 'vue';
 
 const dialog = useDialog();
+const state = useStateStore();
 const auth = useAuthStore();
-const { pfData } = usePlatformData();
 const { message } = useMessages();
 const tuiTheme = useThemeVars();
 
@@ -138,7 +137,7 @@ async function updateEmail() {
   emailFormModel.value = initialEmailModel();
   resetEmailModelChanges();
   message.success($t('account.settings.msgEmailSaveSuccess'));
-  if (pfData.value?.security.closedMode === true) return;
+  if (state.pf?.security.closedMode === true) return;
   await auth.logout();
   const { error } = await POST('/auth/request-verify-token', {
     body: { email: emailFormModel.value.email || '' },
@@ -157,7 +156,7 @@ function handleEmailSave() {
   emailFormRef.value
     ?.validate(async (errors) => {
       if (!errors) {
-        if (pfData.value?.security.closedMode) {
+        if (state.pf?.security.closedMode) {
           updateEmail();
         } else {
           dialog.warning({

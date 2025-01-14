@@ -30,11 +30,11 @@ import {
 import { computed, ref } from 'vue';
 
 const state = useStateStore();
-const { pfData, loadPlatformData } = usePlatformData();
+const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
 const getFormModel = (): PlatformSettingsUpdate =>
-  cloneDeep(pfData.value?.state || ({} as PlatformSettingsUpdate));
+  cloneDeep(state.pf?.state || ({} as PlatformSettingsUpdate));
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -42,7 +42,7 @@ const formModel = ref<PlatformSettingsUpdate>(getFormModel());
 
 const { changed, reset, getChanges } = useModelChanges(formModel);
 
-const defaultTextOptions = pfData.value?.texts.map((t) => ({
+const defaultTextOptions = state.pf?.texts.map((t) => ({
   label: t.title,
   value: t.id,
 }));
@@ -52,7 +52,7 @@ const localeOptions = computed(() =>
 );
 
 const oskFontOptions = computed(
-  () => pfData.value?.state.fonts.map((f) => ({ label: f, value: f })) || []
+  () => state.pf?.state.fonts.map((f) => ({ label: f, value: f })) || []
 );
 
 const resourceTypeOptions = computed(

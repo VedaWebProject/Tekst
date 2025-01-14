@@ -5,7 +5,6 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceSelector.vue';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
@@ -43,7 +42,6 @@ defineProps<{
 
 const state = useStateStore();
 const theme = useThemeStore();
-const { pfData } = usePlatformData();
 const search = useSearchStore();
 const resources = useResourcesStore();
 const { message } = useMessages();
@@ -52,7 +50,7 @@ const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
 const searchHeading = computed(
-  () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search')
+  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search')
 );
 
 const resourceOptions = computed(() => {
@@ -72,16 +70,15 @@ const resourceOptions = computed(() => {
             padding: '8px',
           },
         },
-        state.textsProps[tId].title
+        state.textById(tId)?.title || ''
       ),
     key: tId,
     children: resources.all
       .filter((r) => r.textId === tId)
       .sort((a, b) => {
         const categories =
-          pfData.value?.texts
-            .find((t) => t.id === a.textId)
-            ?.resourceCategories?.map((c) => c.key) || [];
+          state.pf?.texts.find((t) => t.id === a.textId)?.resourceCategories?.map((c) => c.key) ||
+          [];
         const catA = categories.includes(a.config.common.category || '')
           ? categories.indexOf(a.config.common.category || '')
           : 99;

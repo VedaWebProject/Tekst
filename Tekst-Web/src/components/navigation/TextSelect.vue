@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { NButton, NDropdown, NIcon, useThemeVars } from 'naive-ui';
 import { computed, h, ref } from 'vue';
@@ -13,9 +12,8 @@ const router = useRouter();
 const state = useStateStore();
 const browse = useBrowseStore();
 const themeVars = useThemeVars();
-const { pfData } = usePlatformData();
 
-const disabled = computed(() => !pfData.value?.texts || pfData.value.texts.length <= 1);
+const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
 const textSelectDropdownRef = ref();
 
 const btnStyle = computed(() => ({
@@ -37,7 +35,7 @@ const renderLabel = (t: TextRead) => {
 
 const options = computed(
   () =>
-    pfData.value?.texts.map((t: TextRead) => ({
+    state.pf?.texts.map((t: TextRead) => ({
       render: renderLabel(t),
       key: t.id,
       type: 'render',
@@ -61,7 +59,7 @@ function handleSelect(text: TextRead) {
     },
   });
 
-  state.text = pfData.value?.texts.find((t) => t.id === text.id);
+  state.text = state.textById(text.id);
 }
 </script>
 

@@ -1,6 +1,5 @@
 import type { AnyContentRead, AnyResourceRead, LocationRead } from '@/api';
 import { GET } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -11,7 +10,6 @@ import { useRoute, useRouter } from 'vue-router';
 export const useBrowseStore = defineStore('browse', () => {
   // composables
   const state = useStateStore();
-  const { pfData } = usePlatformData();
   const resources = useResourcesStore();
   const route = useRoute();
   const router = useRouter();
@@ -51,9 +49,7 @@ export const useBrowseStore = defineStore('browse', () => {
       return;
     }
     const targetSlug =
-      state.text?.slug ||
-      pfData.value?.texts.find((t) => t.id === pfData.value?.state.defaultTextId)?.slug ||
-      '';
+      state.text?.slug || state.textById(state.pf?.state.defaultTextId)?.slug || '';
     // request location data
     const { data: locationData, error } = await GET('/browse/location-data', {
       params: {
@@ -99,9 +95,9 @@ export const useBrowseStore = defineStore('browse', () => {
     const sortOrderA = a.config.common.sortOrder ?? 0;
     const sortOrderB = b.config.common.sortOrder ?? 0;
     const modA =
-      pfData.value?.state.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
+      state.pf?.state.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
     const modB =
-      pfData.value?.state.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
+      state.pf?.state.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
     return sortOrderA + modA - (sortOrderB + modB);
   };
 

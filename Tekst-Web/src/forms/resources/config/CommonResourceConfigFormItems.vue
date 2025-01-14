@@ -2,7 +2,6 @@
 import type { CommonResourceConfig } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
@@ -12,7 +11,6 @@ import { computed } from 'vue';
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();
-const { pfData } = usePlatformData();
 
 const categoryOptions = computed(
   () =>
@@ -26,7 +24,7 @@ const categoryOptions = computed(
 
 const oskOptions = computed(
   () =>
-    pfData.value?.state.oskModes?.map((oskMode) => ({
+    state.pf?.state.oskModes?.map((oskMode) => ({
       label: oskMode.name,
       value: oskMode.key,
     })) || []

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useOskLayout } from '@/composables/fetchers';
-import { usePlatformData } from '@/composables/platformData';
 import { BackspaceIcon, CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useMagicKeys, whenever } from '@vueuse/core';
@@ -28,7 +27,6 @@ defineExpose({ focus: focusTargetInput, select: selectTargetInput, blur: blurTar
 
 const model = defineModel<string | null>();
 
-const { pfData } = usePlatformData();
 const state = useStateStore();
 
 const showOsk = ref(false);
@@ -40,10 +38,10 @@ const targetInputRef = ref<InputInst | null>(null);
 const oskModeSelectRef = ref<InstanceType<typeof NSelect> | null>(null);
 
 const oskModeOptions = computed(
-  () => pfData.value?.state.oskModes.map((m) => ({ label: m.name, value: m.key })) || []
+  () => state.pf?.state.oskModes.map((m) => ({ label: m.name, value: m.key })) || []
 );
-const oskKey = ref<string | undefined>(props.oskKey || pfData.value?.state.oskModes[0]?.key);
-const oskMode = computed(() => pfData.value?.state.oskModes.find((m) => m.key === oskKey.value));
+const oskKey = ref<string | undefined>(props.oskKey || state.pf?.state.oskModes[0]?.key);
+const oskMode = computed(() => state.pf?.state.oskModes.find((m) => m.key === oskKey.value));
 const { oskLayout, loading, error } = useOskLayout(oskKey);
 
 const shiftCharsPresent = computed(() =>
@@ -104,7 +102,7 @@ function captureTargetSelectionRange() {
 function handleOpen() {
   captureTargetSelectionRange();
   blurTargetInput();
-  oskKey.value = props.oskKey || pfData.value?.state.oskModes[0]?.key;
+  oskKey.value = props.oskKey || state.pf?.state.oskModes[0]?.key;
   oskInput.value = [];
   shift.value = false;
   capsLock.value = false;
@@ -150,10 +148,10 @@ whenever(Enter, () => {
     <template #prefix>
       <slot name="prefix"></slot>
     </template>
-    <template v-if="$slots['suffix'] || !!pfData?.state.oskModes.length" #suffix>
+    <template v-if="$slots['suffix'] || !!state.pf?.state.oskModes.length" #suffix>
       <n-flex :wrap="false">
         <n-button
-          v-if="!!pfData?.state.oskModes.length"
+          v-if="!!state.pf?.state.oskModes.length"
           text
           :title="$t('osk.label')"
           :focusable="false"

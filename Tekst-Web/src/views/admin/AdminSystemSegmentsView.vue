@@ -28,7 +28,7 @@ import {
 import { computed, nextTick, ref } from 'vue';
 
 const state = useStateStore();
-const { pfData, loadPlatformData } = usePlatformData();
+const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
 
@@ -45,8 +45,8 @@ const {
 } = useModelChanges(segmentModel);
 
 const segmentOptions = computed(() =>
-  [...new Set(pfData.value?.systemSegments.map((s) => s.key))].map((key) => {
-    const groupSegments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
+  [...new Set(state.pf?.systemSegments.map((s) => s.key))].map((key) => {
+    const groupSegments = state.pf?.systemSegments.filter((s) => s.key === key) || [];
     const currLocaleSegment =
       groupSegments.find((s) => s.locale === state.locale) ||
       groupSegments.find((s) => s.locale === '*') ||
@@ -67,7 +67,7 @@ const segmentOptions = computed(() =>
 const localeOptions = computed(() =>
   state.translationLocaleOptions.map((tlo) => ({
     ...tlo,
-    disabled: !!pfData.value?.systemSegments.find(
+    disabled: !!state.pf?.systemSegments.find(
       (p) =>
         p.locale === tlo.value &&
         p.key === segmentModel.value?.key &&
@@ -101,7 +101,7 @@ function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
       html: '',
     };
   } else {
-    const selectedSegment = pfData.value?.systemSegments.find((s) => s.id === segmentId);
+    const selectedSegment = state.pf?.systemSegments.find((s) => s.id === segmentId);
     if (!selectedSegment) {
       return getSegmentModel();
     } else {

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { QuickSearchRequestBody } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { SearchIcon, SettingsIcon, TextsIcon } from '@/icons';
-import { useThemeStore } from '@/stores';
+import { useStateStore, useThemeStore } from '@/stores';
 import { NFlex, NIcon, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -20,11 +19,11 @@ const props = withDefaults(
   }
 );
 
-const { pfData } = usePlatformData();
+const state = useStateStore();
 const theme = useThemeStore();
 
 const targetTexts = computed(() => {
-  return (pfData.value?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || []).map((t) => ({
+  return (state.pf?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || []).map((t) => ({
     ...t,
     color: theme.getAccentColors(t.id).base,
     colorFade: theme.getAccentColors(t.id).fade3,

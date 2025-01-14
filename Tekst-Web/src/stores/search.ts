@@ -8,7 +8,6 @@ import {
   type SortingPreset,
 } from '@/api';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { Base64 } from 'js-base64';
 import { cloneDeep } from 'lodash-es';
@@ -69,7 +68,6 @@ const DEFAULT_SEARCH_REQUEST_BODY: QuickSearchRequest = {
 
 export const useSearchStore = defineStore('search', () => {
   const state = useStateStore();
-  const { pfData } = usePlatformData();
   const router = useRouter();
   const { message } = useMessages();
 
@@ -221,7 +219,7 @@ export const useSearchStore = defineStore('search', () => {
     router.push({
       name: 'browse',
       params: {
-        textSlug: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        textSlug: state.textById(browseCurrHit.value?.textId)?.slug || '',
         locId: browseCurrHit.value?.id,
       },
     });
@@ -252,7 +250,7 @@ export const useSearchStore = defineStore('search', () => {
     router.replace({
       name: 'browse',
       params: {
-        textSlug: pfData.value?.texts.find((t) => t.id === browseCurrHit.value?.textId)?.slug || '',
+        textSlug: state.textById(browseCurrHit.value?.textId)?.slug || '',
         locId: browseCurrHit.value?.id,
       },
     });
@@ -263,7 +261,7 @@ export const useSearchStore = defineStore('search', () => {
   watch(
     () => state.text?.id,
     () => {
-      settingsQuick.value.txt = pfData.value?.texts.map((t) => t.id);
+      settingsQuick.value.txt = state.pf?.texts.map((t) => t.id);
     },
     { immediate: true }
   );

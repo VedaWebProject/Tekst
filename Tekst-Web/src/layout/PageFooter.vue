@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import SegmentRenderer from '@/components/SegmentRenderer.vue';
-import { usePlatformData } from '@/composables/platformData';
+import { useStateStore } from '@/stores';
 import { computed } from 'vue';
 
-const { pfData } = usePlatformData();
+const state = useStateStore();
 const siteNotice = computed(
-  () => !!pfData.value?.systemSegments.find((s) => s.key === 'systemSiteNotice')
+  () => !!state.pf?.systemSegments.find((s) => s.key === 'systemSiteNotice')
 );
 const privacyPolicy = computed(
-  () => !!pfData.value?.systemSegments.find((s) => s.key === 'systemPrivacyPolicy')
+  () => !!state.pf?.systemSegments.find((s) => s.key === 'systemPrivacyPolicy')
 );
 </script>
 
@@ -23,16 +23,16 @@ const privacyPolicy = computed(
         {{ $t('admin.system.segments.systemKeys.systemPrivacyPolicy') }}
       </router-link>
     </div>
-    <div v-if="pfData?.state.showTekstFooterHint" class="text-tiny">
+    <div v-if="state.pf?.state.showTekstFooterHint" class="text-tiny">
       {{ $t('general.tekstFooterHint') }}
       <a
         href="http://github.com/VedaWebProject/Tekst"
         target="_blank"
         rel="external nofollow"
         style="font-weight: var(--font-weight-bold)"
-        :title="`${pfData.tekst?.name} – ${pfData.tekst?.description} (${pfData.tekst?.version})`"
+        :title="`${state.pf.tekst?.name} – ${state.pf.tekst?.description} (${state.pf.tekst?.version})`"
       >
-        {{ pfData.tekst?.name }}
+        {{ state.pf.tekst?.name }}
       </a>
     </div>
   </footer>

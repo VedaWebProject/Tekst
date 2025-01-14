@@ -2,30 +2,29 @@
 import type { UserCreate } from '@/api';
 import { POST } from '@/api';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import SegmentRenderer from '@/components/SegmentRenderer.vue';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import router from '@/router';
-import { useAuthStore } from '@/stores';
-import SegmentRenderer from '@/components/SegmentRenderer.vue';
+import { useAuthStore, useStateStore } from '@/stores';
 import {
   type FormInst,
   type FormItemInst,
   type FormItemRule,
   NButton,
+  NDivider,
   NFlex,
   NForm,
   NFormItem,
   NInput,
-  NDivider,
 } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
 const auth = useAuthStore();
+const state = useStateStore();
 const { message } = useMessages();
-const { pfData } = usePlatformData();
 
 const initialFormModel = () => ({
   email: null,
@@ -43,7 +42,7 @@ const firstInputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
 
 const introTextPresent = computed(
-  () => !!pfData.value?.systemSegments.find((s) => s.key === 'systemRegisterIntro')
+  () => !!state.pf?.systemSegments.find((s) => s.key === 'systemRegisterIntro')
 );
 
 const passwordRepeatMatchRule = {
@@ -65,7 +64,7 @@ async function registerUser() {
   });
 
   if (!error) {
-    const activationNeeded = !pfData.value?.security.usersActiveByDefault;
+    const activationNeeded = !state.pf?.security.usersActiveByDefault;
     const activationHint = activationNeeded
       ? $t('register.activationNeededHint')
       : $t('register.activationNotNeededHint');
@@ -75,7 +74,7 @@ async function registerUser() {
       activationNeeded ? 20 : 5
     );
     // if no activation is needed, send verification link right away
-    if (!activationNeeded && !pfData.value?.security.closedMode) {
+    if (!activationNeeded && !state.pf?.security.closedMode) {
       const { error: verifyTokenError } = await POST('/auth/request-verify-token', {
         body: { email: formModel.value.email || '' },
       });
@@ -114,7 +113,7 @@ function switchToLogin() {
 onMounted(() => {
   if (
     (auth.loggedIn && !auth.user?.isSuperuser) ||
-    (!auth.loggedIn && pfData.value?.security.closedMode)
+    (!auth.loggedIn && state.pf?.security.closedMode)
   ) {
     router.push({ name: 'home' });
   }

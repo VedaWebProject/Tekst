@@ -10,9 +10,8 @@ import {
 } from '@/components/navigation/navMenuOptions';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useStateStore } from '@/stores';
 import { NDrawer, NDrawerContent, NFlex } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -28,7 +27,7 @@ withDefaults(
 const show = defineModel<boolean>('show');
 
 const auth = useAuthStore();
-const { pfData } = usePlatformData();
+const state = useStateStore();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions();
 const { menuOptions: accountMenuOptions } = useAccountMenuOptions();
@@ -38,7 +37,7 @@ const allMenuOptions = computed(() => [
   {
     type: 'group',
     key: 'general-group',
-    label: pfData.value?.state.platformName || $t('general.platform'),
+    label: state.pf?.state.platformName || $t('general.platform'),
     children: mainMenuOptions.value.filter((o) => o.key !== 'info'),
   },
   ...(mainMenuOptions.value.find((o) => o.key === 'info')?.children?.length

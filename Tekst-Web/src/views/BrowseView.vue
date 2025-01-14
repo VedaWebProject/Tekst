@@ -7,10 +7,9 @@ import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useSearchStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
@@ -22,7 +21,7 @@ const props = defineProps<{
 const auth = useAuthStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
-const { pfData } = usePlatformData();
+const state = useStateStore();
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
@@ -70,7 +69,7 @@ onMounted(() => {
   </icon-heading>
 
   <n-flex
-    v-if="pfData?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
+    v-if="state.pf?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
     class="mb-lg"
     :title="$t('browse.location.aliasesTip')"
   >
@@ -98,7 +97,7 @@ onMounted(() => {
     <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
       <n-flex
         v-if="
-          pfData?.state.showResourceCategoryHeadings &&
+          state.pf?.state.showResourceCategoryHeadings &&
           !!category.resources.length &&
           !browse.reducedView &&
           !!category.category.translation

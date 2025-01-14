@@ -2,14 +2,12 @@
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
-import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { useThemeVars } from 'naive-ui';
 import { useRoute } from 'vue-router';
 
 const state = useStateStore();
 const route = useRoute();
-const { pfData } = usePlatformData();
 const themeVars = useThemeVars();
 </script>
 
@@ -17,7 +15,7 @@ const themeVars = useThemeVars();
   <header>
     <primary-nav-bar />
     <div class="accent-color-bg" style="min-height: 12px" :style="{ color: themeVars.baseColor }">
-      <div v-if="route.meta.isTextSpecific || pfData?.state.alwaysShowTextInfo" id="current-text">
+      <div v-if="route.meta.isTextSpecific || state.pf?.state.alwaysShowTextInfo" id="current-text">
         <text-select />
         <span
           v-if="!state.smallScreen && state.text?.subtitle?.length"

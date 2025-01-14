@@ -1,5 +1,4 @@
 import type { ClientSegmentHead } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import {
   useAuthStore,
@@ -51,7 +50,6 @@ function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string,
 }
 
 export function useMainMenuOptions(showIcons: boolean = true) {
-  const { pfData } = usePlatformData();
   const state = useStateStore();
   const auth = useAuthStore();
   const browse = useBrowseStore();
@@ -60,16 +58,16 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const infoPagesOptions = computed(() => {
     const pages: ClientSegmentHead[] = [];
     // add pages with current locale
-    pages.push(...(pfData.value?.infoSegments.filter((p) => p.locale === state.locale) || []));
+    pages.push(...(state.pf?.infoSegments.filter((p) => p.locale === state.locale) || []));
     // add pages without locale
     pages.push(
-      ...(pfData.value?.infoSegments.filter(
+      ...(state.pf?.infoSegments.filter(
         (p) => p.locale === '*' && !pages.find((i) => i.key === p.key)
       ) || [])
     );
     // add pages with enUS locale (fallback)
     pages.push(
-      ...(pfData.value?.infoSegments.filter(
+      ...(state.pf?.infoSegments.filter(
         (p) => p.locale === 'enUS' && !pages.find((i) => i.key === p.key)
       ) || [])
     );
@@ -83,7 +81,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const menuOptions = computed<MenuOption[]>(() => [
     {
       label: renderLink(
-        () => pickTranslation(pfData.value?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
+        () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
         {
           name: 'browse',
           params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
@@ -94,7 +92,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     },
     {
       label: renderLink(
-        () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search'),
+        () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search'),
         {
           name: 'search',
           params: { textSlug: state.text?.slug },
@@ -139,7 +137,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       ? [
           {
             label: () =>
-              pickTranslation(pfData.value?.state.navInfoEntry, state.locale) || $t('nav.info'),
+              pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('nav.info'),
             key: 'info',
             children: infoPagesOptions.value,
           },

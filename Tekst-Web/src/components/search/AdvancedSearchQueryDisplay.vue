@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AdvancedSearchRequestBody } from '@/api';
-import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { ResourceIcon, SettingsIcon } from '@/icons';
 import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
@@ -22,7 +21,6 @@ const props = withDefaults(
 );
 
 const state = useStateStore();
-const { pfData } = usePlatformData();
 const theme = useThemeStore();
 const resources = useResourcesStore();
 
@@ -41,7 +39,7 @@ const searchedResources = computed(() => {
 });
 
 const searchLabel = computed(
-  () => pickTranslation(pfData.value?.state.navSearchEntry, state.locale) || $t('nav.search')
+  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search')
 );
 
 const settings = computed(() => [

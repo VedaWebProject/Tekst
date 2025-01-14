@@ -268,6 +268,7 @@ onMounted(() => {
             v-for="user in users"
             :key="user.id"
             :target-user="user"
+            :platform-name="state.pf?.state.platformName || 'Tekst'"
             :current-user="auth.user"
             @activate-click="handleActiveClick"
             @verify-click="handleVerifiedClick"

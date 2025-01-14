@@ -1,25 +1,22 @@
 <script setup lang="ts">
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
-import { usePlatformData } from '@/composables/platformData';
-import { useSearchStore } from '@/stores';
+import { useSearchStore, useStateStore } from '@/stores';
 import { NButton, NFlex, NForm, NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
 
 const emit = defineEmits(['targetResourcesClick']);
 
 const search = useSearchStore();
-const { pfData } = usePlatformData();
+const state = useStateStore();
 
-const textOptions = computed(() =>
-  pfData.value?.texts.map((t) => ({ label: t.title, value: t.id }))
-);
+const textOptions = computed(() => state.pf?.texts.map((t) => ({ label: t.title, value: t.id })));
 </script>
 
 <template>
   <n-form :model="search.settingsQuick">
     <!-- TEXTS -->
     <n-form-item
-      v-if="(pfData?.texts.length || 0) > 1"
+      v-if="(state.pf?.texts.length || 0) > 1"
       path="txt"
       :label="$t('search.settings.quick.texts')"
     >
