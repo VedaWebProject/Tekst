@@ -46,19 +46,20 @@ const options = computed(
 );
 
 function handleSelect(text: TextRead) {
+  if (state.text?.id === text.id) return;
   textSelectDropdownRef.value.doUpdateShow(false);
   browse.locationPath = [];
 
-  if (router.currentRoute.value.params.hasOwnProperty('textSlug')) {
-    router.push({
-      name: router.currentRoute.value.name || 'browse',
-      params: {
-        ...router.currentRoute.value.params,
-        textSlug: text.slug,
-        locId: undefined,
-      },
-    });
-  }
+  router.push({
+    name: router.currentRoute.value.params.hasOwnProperty('textSlug')
+      ? router.currentRoute.value.name
+      : 'browse',
+    params: {
+      ...router.currentRoute.value.params,
+      textSlug: text.slug,
+      locId: undefined,
+    },
+  });
 
   state.text = pfData.value?.texts.find((t) => t.id === text.id);
 }
