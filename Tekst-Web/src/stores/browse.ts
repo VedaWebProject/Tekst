@@ -48,8 +48,7 @@ export const useBrowseStore = defineStore('browse', () => {
       loadingLocationData.value = false;
       return;
     }
-    const targetSlug =
-      state.text?.slug || state.textById(state.pf?.state.defaultTextId)?.slug || '';
+    const targetSlug = state.text?.slug || state.defaultText?.slug || '';
     // request location data
     const { data: locationData, error } = await GET('/browse/location-data', {
       params: {

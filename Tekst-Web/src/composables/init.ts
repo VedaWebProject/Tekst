@@ -18,7 +18,7 @@ export function useInitializeApp() {
   const auth = useAuthStore();
   const resources = useResourcesStore();
   const { message } = useMessages();
-  const { pfData, loadPlatformData, getSegment } = usePlatformData();
+  const { loadPlatformData, getSegment } = usePlatformData();
   const route = useRoute();
   const router = useRouter();
 
@@ -69,11 +69,7 @@ export function useInitializeApp() {
       key: 'workingText',
       info: () => $t('init.workingText'),
       action: async (success: boolean = true) => {
-        state.text =
-          pfData.value?.texts.find((t) => t.slug === route.params.textSlug) ||
-          pfData.value?.texts.find((t) => t.slug == state.textSlug) ||
-          pfData.value?.texts.find((t) => t.id == pfData.value?.state.defaultTextId) ||
-          pfData.value?.texts[0];
+        state.text = state.textBySlug(route.params.textSlug?.toString()) || state.defaultText;
 
         if (route.params.hasOwnProperty('textSlug') && state.text?.slug !== route.params.textSlug) {
           router.replace({

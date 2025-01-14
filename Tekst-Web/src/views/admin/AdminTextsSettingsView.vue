@@ -111,7 +111,7 @@ async function handleDelete() {
       if (!error) {
         message.success($t('admin.text.settings.msgDeleted', { title: state.text?.title || '?' }));
         await loadPlatformData();
-        state.text = state.textById(state.pf?.state.defaultTextId) || state.pf?.texts[0];
+        state.text = state.defaultText;
         router.replace({ name: 'home' });
       }
       loading.value = false;

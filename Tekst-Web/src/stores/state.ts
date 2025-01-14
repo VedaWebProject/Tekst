@@ -93,6 +93,14 @@ export const useStateStore = defineStore('state', () => {
     return effectiveLocale;
   }
 
+  // current text
+
+  const text = ref<TextRead>();
+  const textSlug = useStorage<TextRead['slug']>('text', null, undefined, {
+    serializer: StorageSerializers.string,
+  });
+  const defaultText = computed(() => textById(pf.value?.state.defaultTextId) || pf.value?.texts[0]);
+
   function textById(id?: string | null) {
     if (!id) return undefined;
     return pf.value?.texts.find((t) => t.id === id);
@@ -103,29 +111,15 @@ export const useStateStore = defineStore('state', () => {
     return pf.value?.texts.find((t) => t.slug === slug);
   }
 
-  // current text
-
-  const text = ref<TextRead>();
-  const textSlug = useStorage<TextRead['slug']>('text', null, undefined, {
-    serializer: StorageSerializers.string,
-  });
-  watch(
-    () => route.params.textSlug,
-    (after) => {
-      if (after && text.value?.slug !== after) {
-        // use text from route OR default text
-        text.value =
-          pf.value?.texts.find((t) => t.slug === after) ||
-          pf.value?.texts.find((t) => t.id === pf.value?.state.defaultTextId);
-      }
-    }
-  );
-
   watch(
     () => route.params.textSlug?.toString(),
-    (newSlug) => {
+    (newSlug, oldSlug) => {
+      const newText = textBySlug(newSlug);
+      if (newSlug && newSlug !== oldSlug && newText) {
+        text.value = newText || defaultText.value;
+        textSlug.value = newSlug;
+      }
       setPageTitle();
-      if (newSlug) textSlug.value = newSlug;
     }
   );
 
@@ -186,6 +180,7 @@ export const useStateStore = defineStore('state', () => {
     translationLocaleOptions,
     text,
     textSlug,
+    defaultText,
     textById,
     textBySlug,
     textLevelLabels,

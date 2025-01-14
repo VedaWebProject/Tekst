@@ -165,7 +165,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!state.pf?.texts.find((t) => t.id === state.text?.id)) {
       router.replace({
         name: 'browse',
-        params: { textSlug: state.textById(state.pf?.state.defaultTextId)?.slug },
+        params: { textSlug: state.defaultText?.slug },
       });
     }
     await resources.load();
