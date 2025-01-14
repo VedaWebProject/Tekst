@@ -5,7 +5,7 @@ import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { NSpin } from 'naive-ui';
 import { ref, watchEffect, type Component } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   pageKey?: string;
@@ -16,13 +16,12 @@ const state = useStateStore();
 const loading = ref(false);
 const { getSegment } = usePlatformData();
 const router = useRouter();
-const route = useRoute();
 
 const page = ref<ClientSegmentRead>();
 
 watchEffect(async () => {
   loading.value = true;
-  page.value = await getSegment(props.pageKey || String(route.params.p), state.locale);
+  page.value = await getSegment(props.pageKey, state.locale);
   if (!page.value) {
     router.replace({ name: 'browse' });
   }

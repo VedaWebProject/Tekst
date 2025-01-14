@@ -116,12 +116,13 @@ const router = createRouter({
       },
     },
     {
-      path: '/info/:p',
+      path: '/info/:pageKey?',
       name: 'info',
       component: InfoPageView,
-      props: {
+      props: (route) => ({
+        pageKey: route.params.pageKey,
         icon: InfoIcon,
-      },
+      }),
     },
     {
       path: '/user/:username',

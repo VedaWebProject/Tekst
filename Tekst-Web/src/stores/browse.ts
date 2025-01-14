@@ -39,7 +39,6 @@ export const useBrowseStore = defineStore('browse', () => {
   );
   const position = computed(() => locationPathHead.value?.position ?? 0);
 
-  // update browse location path
   async function loadLocationData(
     locId: string | undefined = route.params.locId?.toString(),
     force: boolean = false
@@ -71,7 +70,7 @@ export const useBrowseStore = defineStore('browse', () => {
           locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.originalId);
         r.contents = content ? [content] : [];
       });
-      // if the "loc" query param was missing, add it now
+      // if the "locId" path param was missing, add it now
       if (!locId) {
         router.replace({
           name: 'browse',
@@ -82,13 +81,12 @@ export const useBrowseStore = defineStore('browse', () => {
         });
       }
     } else {
-      // on error, just reset the browse location by
-      // replacing the route with empty query params
-      console.log(targetSlug);
+      // on error, just reset to targetSlug and empty location ID
       router.replace({
         name: 'browse',
         params: {
           textSlug: targetSlug,
+          locId: null,
         },
       });
     }

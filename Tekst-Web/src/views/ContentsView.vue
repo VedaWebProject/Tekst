@@ -211,10 +211,7 @@ async function loadLocationData() {
     // add location ID to URL params if not already present
     if (!props.locId) {
       router.replace({
-        name: 'resourceContents',
         params: {
-          textSlug: props.textSlug,
-          resId: props.resId,
           locId: locationData.locationPath[locationData.locationPath.length - 1].id,
         },
       });
@@ -222,10 +219,8 @@ async function loadLocationData() {
   } else {
     // requested location does not exist, go back to first content at first location
     router.replace({
-      name: 'resourceContents',
       params: {
-        textSlug: props.textSlug,
-        resId: props.resId,
+        locId: null,
       },
     });
   }

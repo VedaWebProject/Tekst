@@ -77,12 +77,9 @@ export function useInitializeApp() {
 
         if (route.params.hasOwnProperty('textSlug') && state.text?.slug !== route.params.textSlug) {
           router.replace({
-            name: route.name || 'browse',
             params: {
-              ...route.params,
               textSlug: state.text?.slug,
             },
-            query: route.query,
           });
         }
         return success;

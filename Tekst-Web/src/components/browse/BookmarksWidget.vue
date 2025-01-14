@@ -5,7 +5,6 @@ import PromptModal from '@/components/generic/PromptModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
 import { useMessages } from '@/composables/messages';
-import { usePlatformData } from '@/composables/platformData';
 import { bookmarkFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, SearchIcon } from '@/icons';
@@ -20,7 +19,6 @@ defineProps<{
 
 const browse = useBrowseStore();
 const state = useStateStore();
-const { pfData } = usePlatformData();
 const { message } = useMessages();
 const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
@@ -72,9 +70,7 @@ async function handleCreateModalSubmit(comment: string) {
 async function handleBookmarkSelect(bookmark: BookmarkRead) {
   showModal.value = false;
   router.replace({
-    name: 'browse',
     params: {
-      textSlug: pfData.value?.texts.find((t) => t.id === bookmark.textId)?.slug || '',
       locId: bookmark.locationId,
     },
   });

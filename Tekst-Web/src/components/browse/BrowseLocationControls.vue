@@ -10,7 +10,6 @@ import { isInputFocused, isOverlayOpen } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
 
 withDefaults(
   defineProps<{
@@ -25,7 +24,6 @@ const emit = defineEmits(['navigate']);
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
-const route = useRoute();
 
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
@@ -34,9 +32,7 @@ const showLocationSelectModal = ref(false);
 function gotoPosition(locId?: string) {
   if (!locId) return;
   router.replace({
-    name: 'browse',
     params: {
-      ...route.params,
       locId: locId,
     },
   });
