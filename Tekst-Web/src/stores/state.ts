@@ -44,9 +44,12 @@ export const useStateStore = defineStore('state', () => {
     'locale',
     auth.user?.locale || getAvaliableBrowserLocaleKey() || (i18nLocale.value as LocaleKey) || 'enUS'
   );
-  watch(locale, () => {
-    setPageTitle();
-  });
+  watch(
+    () => i18nLocale.value,
+    () => {
+      setPageTitle();
+    }
+  );
 
   const availableLocales = computed(() =>
     localeProfiles.filter((lp) => !!pfData.value?.state.availableLocales.includes(lp.key))
@@ -79,7 +82,6 @@ export const useStateStore = defineStore('state', () => {
     const effectiveLocale = await setI18nLocale(
       availableLocaleKeys?.find((al) => al === l) || 'enUS'
     );
-    locale.value = effectiveLocale.key;
     if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {
       try {
         await auth.updateUser({ locale: effectiveLocale.key });
@@ -87,6 +89,7 @@ export const useStateStore = defineStore('state', () => {
         // do sweet FA
       }
     }
+    locale.value = effectiveLocale.key;
     return effectiveLocale;
   }
 
@@ -122,10 +125,10 @@ export const useStateStore = defineStore('state', () => {
   );
 
   watch(
-    () => text.value?.id,
-    () => {
-      setPageTitle(route);
-      if (text.value) textSlug.value = text.value.slug;
+    () => route.params.textSlug?.toString(),
+    (newSlug) => {
+      setPageTitle();
+      if (newSlug) textSlug.value = newSlug;
     }
   );
 
