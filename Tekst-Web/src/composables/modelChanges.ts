@@ -11,13 +11,13 @@ export function useModelChanges(model: Ref<Record<string, unknown> | undefined>)
     return Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, JSON.stringify(v)]));
   }
 
-  function getChanges() {
+  function getChanges(forceProps?: string[]) {
     if (!changed.value) {
       return {};
     } else {
       return Object.fromEntries(
         Object.entries(afterEntriesJson.value)
-          .filter(([k, v]) => v !== beforeEntriesJson.value[k])
+          .filter(([k, v]) => v !== beforeEntriesJson.value[k] || forceProps?.includes(k))
           .map(([k, v]) => [k, JSON.parse(v)])
       );
     }
