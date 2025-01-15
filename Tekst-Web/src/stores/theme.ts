@@ -27,7 +27,7 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
-    color: '#D4443F',
+    color: '#cc3d39',
   },
   Thing: {
     titleFontWeight: 'var(--font-weight-bold)',
@@ -69,7 +69,7 @@ export const useThemeStore = defineStore('theme', () => {
     baseColor: string = state.text?.accentColor || '#7A7A7A',
     darkMode: boolean = dark.value
   ) {
-    const lightenBy = darkMode ? 0.375 : 0.0;
+    const lightenBy = darkMode ? 0.5 : 0.0;
     const base = lighten(baseColor, lightenBy);
     return {
       base: toRgba(base),
