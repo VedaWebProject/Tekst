@@ -31,7 +31,7 @@ function handleClick() {
     params: {
       textSlug: router.currentRoute.value.params.textSlug,
       resId: props.resource.id,
-      locId: browse.locationPath[props.resource.level || 0]?.id
+      locId: browse.locationPath[props.resource.level || 0]?.id,
     },
   });
   emit('done');

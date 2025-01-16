@@ -21,6 +21,7 @@ a:any-link {
   color: var(--link-color);
   text-decoration: none;
   transition: 0.1s;
+  cursor: pointer;
 }
 
 a:hover {

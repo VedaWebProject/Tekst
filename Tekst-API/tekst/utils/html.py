@@ -25,6 +25,8 @@ _ALLOWED_ATTRIBUTES = {
         "alt",
         "target",
         "rel",
+        "data-tekst-text",
+        "data-tekst-location",
     ],
     "button": [
         "type",

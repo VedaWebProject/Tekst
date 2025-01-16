@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
 import { onMounted, ref, watch, type CSSProperties } from 'vue';
+import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
 
 const props = withDefaults(
@@ -12,6 +13,8 @@ const props = withDefaults(
     html: '',
   }
 );
+
+const router = useRouter();
 
 const contentRef = ref<HTMLElement | null>(null);
 
@@ -26,8 +29,8 @@ function hydrate() {
   modalHtml.value = {};
   modalTitles.value = {};
   modalId.value = undefined;
-  // MODALS
-  // iterate modal triggers
+
+  // MODALS: iterate modal triggers
   contentRef.value?.querySelectorAll('[data-tekst-modal-trigger]').forEach((trigger) => {
     if (!(trigger instanceof HTMLElement)) return;
     const currModalId = trigger.getAttribute('data-tekst-modal-trigger');
@@ -57,6 +60,24 @@ function hydrate() {
       'title',
       trigger.getAttribute('title') || $t('general.showAttachmentsAction')
     );
+  });
+
+  // INTERNAL LINKS/REFERENCES: iterate internal location links
+  contentRef.value?.querySelectorAll('a[data-tekst-location]').forEach((a) => {
+    if (!(a instanceof HTMLAnchorElement)) return;
+    a.setAttribute('title', $t('browse.location.goTo'));
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      router.push({
+        name: 'browse',
+        params: {
+          textSlug: a.getAttribute('data-tekst-text') || router.currentRoute.value.params.textSlug,
+          locId: a.getAttribute('data-tekst-location'),
+        },
+      });
+      window.scrollTo(0, 0);
+    });
   });
 }
 
