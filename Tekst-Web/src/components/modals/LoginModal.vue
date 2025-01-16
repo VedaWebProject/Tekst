@@ -21,8 +21,8 @@ const { message } = useMessages();
 const router = useRouter();
 
 const initialFormModel: () => LoginCredentialsModel = () => ({
-  email: null,
-  password: null,
+  email: import.meta.env.DEV ? 'admin@tekst.dev' : null,
+  password: import.meta.env.DEV ? 'poiPOI098' : null,
 });
 
 const formModel = ref<LoginCredentialsModel>(initialFormModel());
