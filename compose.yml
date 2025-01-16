@@ -13,7 +13,7 @@ services:
             TEKST_API_PATH: ${TEKST_API_PATH:-/api}
         volumes:
             - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
-            - ./deploy/caddy/Caddyfile /etc/caddy/Caddyfile
+            - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
         restart: always
         ports:
             - "127.0.0.1:8087:80"
@@ -36,7 +36,7 @@ services:
                 restart: true
         env_file: .env
         volumes:
-            - ./deploy/gunicorn/gunicorn_conf.py /etc/gunicorn/gunicorn_conf.py
+            - ./deploy/gunicorn/gunicorn_conf.py:/etc/gunicorn/gunicorn_conf.py:ro
         networks:
             - api
             - mongo
