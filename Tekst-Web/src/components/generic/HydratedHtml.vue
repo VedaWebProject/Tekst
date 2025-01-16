@@ -72,7 +72,8 @@ function hydrate() {
       router.push({
         name: 'browse',
         params: {
-          textSlug: a.getAttribute('data-tekst-text') || router.currentRoute.value.params.textSlug,
+          textSlug:
+            a.getAttribute('data-tekst-text') || router.currentRoute.value.params.textSlug || null,
           locId: a.getAttribute('data-tekst-location'),
         },
       });
@@ -92,6 +93,6 @@ onMounted(hydrate);
     v-model:show="showModal"
     :title="modalId && modalTitles[modalId]"
   >
-    <div v-html="modalId && modalHtml[modalId]" :style="style"></div>
+    <hydrated-html :html="modalId && modalHtml[modalId]" :style="style" />
   </generic-modal>
 </template>

@@ -36,6 +36,8 @@ watchEffect(async () => {
     <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}
     </icon-heading>
-    <hydrated-html class="content-block" :html="page.html" style="padding: 1.2rem" />
+    <div class="content-block" style="padding: 1.2rem">
+      <hydrated-html :html="page.html" />
+    </div>
   </template>
 </template>

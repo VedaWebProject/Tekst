@@ -48,7 +48,6 @@ export const useBrowseStore = defineStore('browse', () => {
       loadingLocationData.value = false;
       return;
     }
-    const targetSlug = state.text?.slug || state.defaultText?.slug || '';
     // request location data
     const { data: locationData, error } = await GET('/browse/location-data', {
       params: {
@@ -65,22 +64,27 @@ export const useBrowseStore = defineStore('browse', () => {
           locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.originalId);
         r.contents = content ? [content] : [];
       });
-      // if the "locId" path param was missing, add it now
-      if (!locId) {
+      // set correct route params in case any were missing or an invalid combination
+      const textSlug =
+        state.textById(locationPath.value[locationPath.value.length - 1]?.textId)?.slug ||
+        state.text?.slug ||
+        state.defaultText?.slug ||
+        '';
+      if (!locId || !route.params.textSlug || (textSlug && route.params.textSlug !== textSlug)) {
         router.replace({
           name: 'browse',
           params: {
-            textSlug: targetSlug,
+            textSlug: textSlug,
             locId: locationPathHead.value?.id,
           },
         });
       }
     } else {
-      // on error, just reset to targetSlug and empty location ID
+      // on error, just reset textSlug and empty location ID
       router.replace({
         name: 'browse',
         params: {
-          textSlug: targetSlug,
+          textSlug: state.text?.slug || state.defaultText?.slug || '',
           locId: null,
         },
       });
