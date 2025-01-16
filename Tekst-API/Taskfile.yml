@@ -3,175 +3,175 @@
 version: "3"
 
 tasks:
-  default:
-    desc: Print this very list of available tasks
-    vars:
-      TEKST_VERSION:
-        sh: task version
-    cmds:
-      - echo "This is Tekst server {{.TEKST_VERSION}}"
-      - task --list
-    silent: true
+    default:
+        desc: Print this very list of available tasks
+        vars:
+            TEKST_VERSION:
+                sh: task version
+        cmds:
+            - echo "This is Tekst server {{.TEKST_VERSION}}"
+            - task --list
+        silent: true
 
-  version:
-    desc: Print project version
-    cmds:
-      - uv run python3 -c "from tekst import __version__ as v; print(v, end='')"
-    silent: true
+    version:
+        desc: Print project version
+        cmds:
+            - uv run python3 -c "from tekst import __version__ as v; print(v, end='')"
+        silent: true
 
-  install:
-    desc: Install dependencies
-    cmds:
-      - uv sync
+    install:
+        desc: Install dependencies
+        cmds:
+            - uv sync
 
-  upgrade:
-    desc: Upgrade dependencies
-    cmds:
-      - uv sync --upgrade
+    upgrade:
+        desc: Upgrade dependencies
+        cmds:
+            - uv sync --upgrade
 
-  fix:
-    desc: Run ruff to format code base and attempt to fix linting errors
-    cmds:
-      - uv run ruff format .
-      - uv run ruff check . --fix
+    fix:
+        desc: Run ruff to format code base and attempt to fix linting errors
+        cmds:
+            - uv run ruff format .
+            - uv run ruff check . --fix
 
-  check:
-    desc: Check code using ruff
-    cmds:
-      - uv run ruff format . --check
-      - uv run ruff check . --extend-select N
+    check:
+        desc: Check code using ruff
+        cmds:
+            - uv run ruff format . --check
+            - uv run ruff check . --extend-select N
 
-  tests:
-    desc: Run tests, start and stop services stack
-    env:
-      TEKST_CUSTOM_ENV_FILE: .env.test
-    cmds:
-      - defer: { task: test-stack-down }
-      - task: install
-      - task: test-stack-up
-      - task: wait-for-mongodb
-      - task: wait-for-elasticsearch
-      - uv run coverage run -m pytest {{.CLI_ARGS}}
-      - uv run coverage report -m
+    tests:
+        desc: Run tests, start and stop services stack
+        env:
+            TEKST_CUSTOM_ENV_FILE: .env.test
+        cmds:
+            - defer: { task: test-stack-down }
+            - task: install
+            - task: test-stack-up
+            - task: wait-for-mongodb
+            - task: wait-for-elasticsearch
+            - uv run coverage run -m pytest {{.CLI_ARGS}}
+            - uv run coverage report -m
 
-  run-dev:
-    desc: Run the application dev server (only for development!)
-    env:
-      TEKST_DEV_MODE: true
-    cmds:
-      - uv run python3 -m tekst setup
-      - task: print-dev-uris
-      - uv run fastapi dev tekst/app.py
+    run-dev:
+        desc: Run the application dev server (only for development!)
+        env:
+            TEKST_DEV_MODE: true
+        cmds:
+            - uv run python3 -m tekst setup
+            - task: print-dev-uris
+            - uv run fastapi dev tekst/app.py
 
-  dev:
-    desc: Run dev services stack and dev server, clean up afterwards
-    cmds:
-      - defer: { task: dev-stack-down }
-      - task: dev-stack-up
-      - task: wait-for-mongodb
-      - task: wait-for-elasticsearch
-      - task: run-dev
+    dev:
+        desc: Run dev services stack and dev server, clean up afterwards
+        cmds:
+            - defer: { task: dev-stack-down }
+            - task: dev-stack-up
+            - task: wait-for-mongodb
+            - task: wait-for-elasticsearch
+            - task: run-dev
 
-  schema:
-    desc: Export (development) OpenAPI schema to file openapi.json
-    env:
-      TEKST_DEV_MODE: true
-      TEKST_DEV__USE_DB: false
-      TEKST_DEV__USE_ES: false
-      TEKST_LOG_LEVEL: ERROR
-    cmds:
-      - uv run python3 -m tekst schema -f
+    schema:
+        desc: Export (development) OpenAPI schema to file openapi.json
+        env:
+            TEKST_DEV_MODE: true
+            TEKST_DEV__USE_DB: false
+            TEKST_DEV__USE_ES: false
+            TEKST_LOG_LEVEL: ERROR
+        cmds:
+            - uv run python3 -m tekst schema -f
 
-  pre-commit:
-    desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
-    cmds:
-      - task: fix
-      - task: tests
-      - task: check
-      - task: schema
+    pre-commit:
+        desc: Run full pre-commit toolchain (fix code, test, code checks, export schema)
+        cmds:
+            - task: fix
+            - task: tests
+            - task: check
+            - task: schema
 
-  clean:
-    desc: Cleanup of generated files (won't work on Windows)
-    cmds:
-      - cmd: uv run ruff clean
-      - cmd: shopt -s globstar
-      - cmd: |
-          rm -rf \
-            */**/__pycache__ \
-            .pytest_cache \
-            .ruff_cache \
-            .coverage \
-            .venv/ \
-            .env/ \
-            dist \
-            htmlcov \
+    clean:
+        desc: Cleanup of generated files (won't work on Windows)
+        cmds:
+            - cmd: uv run ruff clean
+            - cmd: shopt -s globstar
+            - cmd: |
+                  rm -rf \
+                    */**/__pycache__ \
+                    .pytest_cache \
+                    .ruff_cache \
+                    .coverage \
+                    .venv/ \
+                    .env/ \
+                    dist \
+                    htmlcov \
 
-  dev-stack-up:
-    desc: Run dev services stack
-    cmds:
-      - task: gen-smtp-ssl-cert
-      - docker compose -f dev/compose.yml --profile dev -p tekst-dev up --detach
+    dev-stack-up:
+        desc: Run dev services stack
+        cmds:
+            - task: gen-smtp-ssl-cert
+            - docker compose -f ../dev/compose.yml --profile dev -p tekst-dev up --detach
 
-  dev-stack-down:
-    desc: Stop dev stack and clean up all resources
-    cmds:
-      - docker compose -f dev/compose.yml --profile dev -p tekst-dev down --volumes
+    dev-stack-down:
+        desc: Stop dev stack and clean up all resources
+        cmds:
+            - docker compose -f ../dev/compose.yml --profile dev -p tekst-dev down --volumes
 
-  dev-stack-build:
-    desc: Build updated container images in the app stack
-    cmds:
-      - docker compose -f dev/compose.yml --profile dev --profile test build
+    dev-stack-build:
+        desc: Build updated container images in the app stack
+        cmds:
+            - docker compose -f ../dev/compose.yml --profile dev --profile test build
 
-  test-stack-up:
-    desc: Run test services stack
-    cmds:
-      - task: gen-smtp-ssl-cert
-      - docker compose -f dev/compose.yml --profile test -p tekst-testing up --detach
+    test-stack-up:
+        desc: Run test services stack
+        cmds:
+            - task: gen-smtp-ssl-cert
+            - docker compose -f ../dev/compose.yml --profile test -p tekst-testing up --detach
 
-  test-stack-down:
-    desc: Stop test stack and clean up all resources
-    cmds:
-      - docker compose -f dev/compose.yml --profile test -p tekst-testing down --volumes
+    test-stack-down:
+        desc: Stop test stack and clean up all resources
+        cmds:
+            - docker compose -f ../dev/compose.yml --profile test -p tekst-testing down --volumes
 
-  print-dev-uris:
-    internal: true
-    silent: true
-    cmd: |
-      printf "
-      ╭───────────────────────────────────────────────────────╮
-      │ 🌐 Tekst-Web Dev Server ... http://127.0.0.1          │
-      │ 🐍 Tekst-API .............. http://127.0.0.1/api      │
-      │ 📖 API Docs ............... http://127.0.0.1/api/docs │
-      │ 📬 MailPit ................ http://127.0.0.1:8025     │
-      │ 📂 MongoExpress ........... http://127.0.0.1:8081     │
-      │ 🔍 Elasticvue ............. http://127.0.0.1:9280     │
-      ╰───────────────────────────────────────────────────────╯
+    print-dev-uris:
+        internal: true
+        silent: true
+        cmd: |
+            printf "
+            ╭───────────────────────────────────────────────────────╮
+            │ 🌐 Tekst-Web Dev Server ... http://127.0.0.1          │
+            │ 🐍 Tekst-API .............. http://127.0.0.1/api      │
+            │ 📖 API Docs ............... http://127.0.0.1/api/docs │
+            │ 📬 MailPit ................ http://127.0.0.1:8025     │
+            │ 📂 MongoExpress ........... http://127.0.0.1:8081     │
+            │ 🔍 Elasticvue ............. http://127.0.0.1:9280     │
+            ╰───────────────────────────────────────────────────────╯
 
-      "
+            "
 
-  docker-build:
-    desc: Build and tag production Docker image for app
-    vars:
-      TEKST_VERSION:
-        sh: task version
-    cmds:
-      - cmd: |
-          docker build \
-            --tag "tekst-api:latest" \
-            --tag "tekst-api:{{.TEKST_VERSION}}" \
-            --target prod .
+    docker-build:
+        desc: Build and tag production Docker image for app
+        vars:
+            TEKST_VERSION:
+                sh: task version
+        cmds:
+            - cmd: |
+                  docker build \
+                    --tag "tekst-api:latest" \
+                    --tag "tekst-api:{{.TEKST_VERSION}}" \
+                    --target prod .
 
-  wait-for-mongodb:
-    internal: true
-    silent: true
-    cmd: printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+    wait-for-mongodb:
+        internal: true
+        silent: true
+        cmd: printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
 
-  wait-for-elasticsearch:
-    internal: true
-    silent: true
-    cmd: printf "Waiting for Elasticsearch service"; while ! $(curl -f http://127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+    wait-for-elasticsearch:
+        internal: true
+        silent: true
+        cmd: printf "Waiting for Elasticsearch service"; while ! $(curl -f http://127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
 
-  gen-smtp-ssl-cert:
-    internal: true
-    silent: true
-    cmd: cd dev/smtp-ssl && ./generate.sh
+    gen-smtp-ssl-cert:
+        internal: true
+        silent: true
+        cmd: cd ../dev/smtp-ssl && ./generate.sh

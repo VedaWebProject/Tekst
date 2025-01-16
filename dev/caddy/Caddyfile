@@ -5,19 +5,24 @@
 
 127.0.0.1:80 {
 	redir /api /api/
+
+	# proxy requests to FastAPI dev server (Tekst-API/server)
 	handle_path /api/* {
 		reverse_proxy 127.0.0.1:8000
 	}
 
+	# serve custom static files (example for dev)
 	handle_path /static/* {
 		root * /var/www/tekst/static
 		file_server
 	}
 
+	# improve favicon handling
 	handle /favicon.ico {
 		root * /var/www/tekst/static
 		file_server
 	}
 
+	# proxy requests to Vite dev server (Tekst-Web/client)
 	reverse_proxy * 127.0.0.1:5173
 }

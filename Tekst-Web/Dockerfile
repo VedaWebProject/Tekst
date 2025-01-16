@@ -26,9 +26,9 @@ ENV TEKST_API_PATH=$API_PATH
 
 WORKDIR /var/www/html
 COPY --from=builder /app/dist/ ./
-COPY ./deploy/Caddyfile /etc/caddy/
 
-VOLUME /var/www/tekst/static
+VOLUME /etc/caddy/
+VOLUME /var/www/tekst/static/
 
 # 82:82 is alpine default for www-data
 RUN set -x && adduser -u 82 -D -S -G www-data www-data

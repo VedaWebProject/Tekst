@@ -102,11 +102,11 @@ HEALTHCHECK \
 RUN groupadd -g 1000 tekst && \
     useradd -m -u 1000 -g tekst tekst
 
-COPY ./deployment/gunicorn/gunicorn_conf.py ./
-COPY ./deployment/entrypoint.sh /
+COPY ./entrypoint.sh /
 
 USER tekst
 
+VOLUME /etc/gunicorn/
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
