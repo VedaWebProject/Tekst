@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
 import { ref, watchEffect } from 'vue';
@@ -18,7 +19,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div v-if="html" class="segment-container" v-html="html"></div>
+  <hydrated-html v-if="html" class="segment-container" :html="html" />
 </template>
 
 <style>

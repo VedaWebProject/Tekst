@@ -86,7 +86,7 @@ onMounted(hydrate);
 </script>
 
 <template>
-  <div ref="contentRef" v-html="html" :style="style"></div>
+  <div ref="contentRef" v-bind="$attrs" v-html="html" :style="style"></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"

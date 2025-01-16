@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ClientSegmentRead } from '@/api';
+import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { usePlatformData } from '@/composables/platformData';
 import { useStateStore } from '@/stores';
@@ -35,6 +36,6 @@ watchEffect(async () => {
     <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}
     </icon-heading>
-    <div class="content-block" style="padding: 1.2rem" v-html="page.html"></div>
+    <hydrated-html class="content-block" :html="page.html" style="padding: 1.2rem" />
   </template>
 </template>
