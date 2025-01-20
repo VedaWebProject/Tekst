@@ -13,6 +13,10 @@ const showTasksList = ref(false);
 // configure tasks polling
 const { resume, pause } = useTimeoutPoll(
   async () => {
+    if (!tasks.value.length) {
+      pause();
+      return;
+    }
     const { data, error } = await GET('/platform/tasks/user', {
       headers: {
         'Pickup-Keys': tasks.value.map((t) => t.pickupKey).join(','),
@@ -82,7 +86,8 @@ const { resume, pause } = useTimeoutPoll(
 );
 
 export function useTasks() {
-  const addTask = (task: TaskRead) => {
+  const addTask = (task?: TaskRead) => {
+    if (!task) return;
     tasks.value.push(task);
     showTasksList.value = true;
   };
