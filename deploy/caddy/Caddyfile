@@ -4,6 +4,8 @@
 }
 
 :80 {
+    encode zstd gzip
+
     # redirect requests to API to use trailing slash
 	redir {$TEKST_API_PATH:/api} {$TEKST_API_PATH:/api}/
 
@@ -14,7 +16,6 @@
 
     # serve static files (custom assets)
 	handle_path /static/* {
-        encode gzip
 		root * /var/www/tekst/static
 		file_server
 	}
@@ -28,7 +29,6 @@
     # try to serve web client files for all other requests
 	handle * {
 		try_files {path} /
-		encode gzip
 		root * /var/www/html
 		file_server
 	}
