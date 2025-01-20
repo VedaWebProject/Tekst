@@ -16,8 +16,6 @@ import { pickTranslation } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import {
   NButton,
-  NCollapse,
-  NCollapseItem,
   NDynamicInput,
   NFlex,
   NForm,
@@ -183,13 +181,7 @@ whenever(ctrlEnter, () => {
     <help-button-widget help-key="searchView" />
   </icon-heading>
 
-  <n-collapse>
-    <n-collapse-item :title="$t('general.settings')" name="settings">
-      <div class="gray-box mb-lg">
-        <general-search-settings-form />
-      </div>
-    </n-collapse-item>
-  </n-collapse>
+  <general-search-settings-form />
 
   <n-form
     v-if="!!resources.all.length"
