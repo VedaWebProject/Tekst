@@ -27,7 +27,9 @@ for (const translationYamlFile of translationYamlFiles) {
   fs.writeFileSync(
     path.join(TARGET_DIR, `${localeKey}.json`),
     JSON.stringify(
-      YAML.parse(fs.readFileSync(path.join(SOURCE_DIR, `${localeKey}.${sourceFileExt}`), 'utf8'))
+      YAML.parse(fs.readFileSync(path.join(SOURCE_DIR, `${localeKey}.${sourceFileExt}`), 'utf8')),
+      undefined,
+      0
     )
   );
 }
