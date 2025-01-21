@@ -252,7 +252,7 @@ async function handlePromptModalSubmit(actionKey: string, input: string) {
   }
 }
 
-function handleSelectBlockType(value: string, option: SelectOption) {
+function handleSelectBlockType(_: string, option: SelectOption) {
   (option.action as () => void)();
 }
 

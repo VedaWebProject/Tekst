@@ -266,7 +266,12 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Find locations */
+    /**
+     * Find locations
+     * @description Finds locations by various combinations of location properties.
+     *     A full combined label including all parent location's labels is added to each
+     *     returned location object if add_full_labels is set to true.
+     */
     get: operations['findLocations'];
     put?: never;
     /**
@@ -275,27 +280,6 @@ export interface paths {
      *     of the location's parent (or the first parent before that has children).
      */
     post: operations['createLocation'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/locations/by-alias': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Find locations by alias
-     * @description Finds locations by text ID and their alias. A full combined label including
-     *     parent location's labels is added to each returned location object.
-     */
-    get: operations['findLocationsByAlias'];
-    put?: never;
-    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -6371,15 +6355,23 @@ export interface operations {
   };
   findLocations: {
     parameters: {
-      query: {
+      query?: {
+        /** @description ID of location to find */
+        locId?: string | null;
+        /** @description ID of parent location to find children of */
+        parentId?: string | null;
         /** @description ID of text to find locations for */
-        txt: string;
+        textId?: string | null;
+        /** @description Slug of text to find locations for */
+        textSlug?: string | null;
         /** @description Structure level to find locations for */
         lvl?: number | null;
         /** @description Position value of locations to find */
         pos?: number | null;
-        /** @description ID of parent location to find children of */
-        parent?: string | null;
+        /** @description Alias of location(s) to find */
+        alias?: string | null;
+        /** @description Add full combined label to each location */
+        fullLabels?: boolean;
         /** @description Return at most <limit> locations */
         limit?: number;
       };
@@ -6396,15 +6388,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['LocationRead'][];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */
@@ -6478,42 +6461,6 @@ export interface operations {
       };
     };
   };
-  findLocationsByAlias: {
-    parameters: {
-      query: {
-        /** @description ID of text to find locations for */
-        txt: string;
-        /** @description Alias of location(s) to find */
-        alias: string;
-        /** @description Return at most <limit> locations (maximum returned is 10) */
-        limit?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['LocationRead'][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   getFirstAndLastLocationsPaths: {
     parameters: {
       query: {
@@ -6560,7 +6507,7 @@ export interface operations {
   getChildren: {
     parameters: {
       query?: {
-        /** @description ID of text to find locations for */
+        /** @description ID of text to find locations for (required if no parent ID is given) */
         txt?: string | null;
         /** @description ID of parent location to find children of */
         parent?: string | null;

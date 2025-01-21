@@ -316,18 +316,6 @@ E_400_INVALID_LEVEL = error_instance(
     ),
 )
 
-E_400_LOCATION_NO_LEVEL_NOR_PARENT = error_instance(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    key="locationNoLevelNorParent",
-    msg="Must have either 'level' or 'parentId' set",
-)
-
-E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT = error_instance(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    key="locationChildrenNoParentNorText",
-    msg="Must have either 'parentId' or 'textId' set",
-)
-
 E_404_USER_NOT_FOUND = error_instance(
     status_code=status.HTTP_404_NOT_FOUND,
     key="userNotFound",

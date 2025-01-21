@@ -22,7 +22,7 @@ function minMaxCharsRule(
   trigger?: FormItemRule['trigger']
 ): FormItemRule {
   return {
-    validator: (rule: FormItemRule, value: string) =>
+    validator: (_: FormItemRule, value: string) =>
       (min <= 0 && !value) || (!!value && value.length >= min && value.length <= max),
     message: () => $t('forms.rulesFeedback.minMaxChars', { min, max }),
     trigger,
@@ -37,7 +37,7 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
   email: [
     requiredStringRule(() => $t('models.user.email'), 'input'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && /^.+@.+\.\w+$/.test(value),
+      validator: (_: FormItemRule, value: string) => !!value && /^.+@.+\.\w+$/.test(value),
       message: () => $t('models.user.formRulesFeedback.emailInvalid'),
       trigger: 'input',
     },
@@ -46,7 +46,7 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('models.user.username'), 'blur'),
     minMaxCharsRule(4, 16, 'blur'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
+      validator: (_: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]*$/.test(value),
       message: () => $t('models.user.formRulesFeedback.usernameChars'),
       trigger: 'blur',
     },
@@ -54,12 +54,12 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
   password: [
     requiredStringRule(() => $t('models.user.password'), 'blur'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && value.length >= 8,
+      validator: (_: FormItemRule, value: string) => !!value && value.length >= 8,
       message: () => $t('forms.rulesFeedback.minChars', { min: 8 }),
       trigger: ['input', 'blur'],
     },
     {
-      validator: (rule: FormItemRule, value: string) =>
+      validator: (_: FormItemRule, value: string) =>
         !!value && /[a-z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value),
       message: () => $t('models.user.formRulesFeedback.passwordChars'),
       trigger: ['input', 'blur'],
@@ -97,14 +97,14 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('models.text.slug'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && /^[a-z0-9]+$/.test(value),
+      validator: (_: FormItemRule, value: string) => !!value && /^[a-z0-9]+$/.test(value),
       message: () => $t('models.text.formRulesFeedback.slugChars'),
       trigger: ['input', 'blur'],
     },
   ],
   levels: [
     {
-      validator: (rule: FormItemRule, value: Translation[]) =>
+      validator: (_: FormItemRule, value: Translation[]) =>
         !!value && Array.isArray(value) && value.length >= 1 && value.length <= 32,
       message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 32 }),
       trigger: 'blur',
@@ -116,7 +116,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
   ],
   defaultLevel: [
     {
-      validator: (rule: FormItemRule, value: number) => value != null && value >= 0,
+      validator: (_: FormItemRule, value: number) => value != null && value >= 0,
       message: () => $t('models.text.formRulesFeedback.defaultLevelRange'),
       trigger: 'blur',
     },
@@ -138,7 +138,7 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
   ],
   aliases: [
     {
-      validator: (rule: FormItemRule, value: string[] | null) =>
+      validator: (_: FormItemRule, value: string[] | null) =>
         value == null || (Array.isArray(value) && value.length <= 16),
       message: () => $t('forms.rulesFeedback.minMaxItems', { min: 0, max: 16 }),
       trigger: 'blur',
@@ -169,12 +169,12 @@ export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('general.key'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]+$/.test(value),
+      validator: (_: FormItemRule, value: string) => !!value && /^[a-zA-Z0-9\-_]+$/.test(value),
       message: () => $t('models.segment.formRulesFeedback.keyChars'),
       trigger: ['input', 'blur'],
     },
     {
-      validator: (rule: FormItemRule, value: string) => !!value && !value.startsWith('system'),
+      validator: (_: FormItemRule, value: string) => !!value && !value.startsWith('system'),
       message: () => $t('models.segment.formRulesFeedback.systemPrefixReserved'),
       trigger: 'blur',
     },
@@ -194,7 +194,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   platformSubtitleTranslation: [minMaxCharsRule(1, 128, 'blur')],
   availableLocales: [
     {
-      validator: (rule: FormItemRule, value: string[]) =>
+      validator: (_: FormItemRule, value: string[]) =>
         !!value &&
         value.length >= 1 &&
         value.length <= localeProfiles.length &&
@@ -235,7 +235,7 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   resourceType: [
     requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),
     {
-      validator: (rule: FormItemRule, value: string) => !!value && resourceTypes.includes(value),
+      validator: (_: FormItemRule, value: string) => !!value && resourceTypes.includes(value),
       message: () =>
         $t('forms.rulesFeedback.mustBeOneOf', {
           x: $t('models.resource.resourceType'),
@@ -269,7 +269,7 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
     {
-      validator: (rule: FormItemRule, value: number) =>
+      validator: (_: FormItemRule, value: number) =>
         Number.isInteger(value) && value >= 0 && value <= 1000,
       message: '0-1000',
       trigger: 'blur',
@@ -338,7 +338,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
     annotationValue: [
       {
-        validator: (rule: FormItemRule, value: string[]) => !!value && Array.isArray(value),
+        validator: (_: FormItemRule, value: string[]) => !!value && Array.isArray(value),
         message: () =>
           $t('forms.rulesFeedback.isRequired', {
             x: $t('general.value'),
@@ -346,13 +346,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
         trigger: 'change',
       },
       {
-        validator: (rule: FormItemRule, value: string[]) =>
+        validator: (_: FormItemRule, value: string[]) =>
           !!value && value.length >= 1 && value.length <= 64,
         message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
         trigger: 'change',
       },
       {
-        validator: (rule: FormItemRule, value: string[]) =>
+        validator: (_: FormItemRule, value: string[]) =>
           !!value && value.every((item) => item.length >= 1 && item.length <= 256),
         message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
         trigger: 'change',

@@ -1,6 +1,7 @@
 import {
   GET,
   type AnnotationAggregation,
+  type AnyContentRead,
   type AnyResourceRead,
   type CorrectionRead,
   type ResourceCoverage,
@@ -116,6 +117,14 @@ export const useResourcesStore = defineStore('resources', () => {
     }
   }
 
+  function applyContents(contents: AnyContentRead[]) {
+    resourcesAll.value
+      .filter((r) => contents.map((c) => c.resourceId).includes(r.id))
+      .forEach((r) => {
+        r.contents = contents.filter((c) => c.resourceId === r.id) ?? [];
+      });
+  }
+
   async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {
     if (!resourcesAll.value.find((r) => r.id === resourceId)) return undefined;
     const cov = coverage.value[resourceId];
@@ -165,6 +174,7 @@ export const useResourcesStore = defineStore('resources', () => {
     ofText: resourcesOfText,
     resourceTitles,
     getAggregations,
+    applyContents,
     correctionsCount,
     correctionsCountTotal,
     corrections,

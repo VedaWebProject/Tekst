@@ -113,7 +113,7 @@ const deleteAccountSafetyInput = ref('');
 const loading = ref(false);
 
 const passwordRepeatMatchRule = {
-  validator: (rule: FormItemRule, value: string) =>
+  validator: (_: FormItemRule, value: string) =>
     !!value && !!passwordFormModel.value.password && value === passwordFormModel.value.password,
   message: () => $t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],

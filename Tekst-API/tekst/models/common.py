@@ -20,7 +20,9 @@ from pydantic import (
     ConfigDict,
     Field,
     StringConstraints,
+    conint,
     conlist,
+    constr,
     create_model,
 )
 from pydantic.aliases import PydanticUndefined
@@ -33,6 +35,22 @@ _platform_locales = ("deDE", "enUS")
 LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
 TranslationLocaleKey = TypeAliasType(
     "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
+)
+
+
+LocationLevel = conint(
+    ge=0,
+    le=32,
+)
+
+LocationPosition = conint(
+    ge=0,
+)
+
+LocationAlias = constr(
+    min_length=1,
+    max_length=32,
+    strip_whitespace=True,
 )
 
 

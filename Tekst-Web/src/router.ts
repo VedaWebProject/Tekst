@@ -1,10 +1,11 @@
+import { GET, type LocationRead } from '@/api';
 import { WEB_PATH } from '@/common';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type LocationQuery } from 'vue-router';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -48,6 +49,28 @@ const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMainte
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 const AdminSystemInfoPagesView = () => import('@/views/admin/AdminSystemInfoPagesView.vue');
 
+async function _resolveLocation(locationQuery: LocationQuery): Promise<LocationRead | null> {
+  const { data, error } = await GET('/locations', {
+    params: {
+      query: {
+        ...Object.fromEntries(
+          Object.entries(locationQuery)
+            .filter(([_, v]) => v != null)
+            .map(([k, v]) => [k, String(v)])
+        ),
+        // we limit to 2 because this way we know if we got ambiguous results
+        // while avoiding to get unnecessarily huge responses...
+        limit: 2,
+      },
+    },
+  });
+  if (error || !data.length || data.length > 1) {
+    return null;
+  } else {
+    return data[0];
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(WEB_PATH),
   linkActiveClass: 'active',
@@ -68,6 +91,30 @@ const router = createRouter({
         isTextSpecific: true,
       },
       props: true,
+    },
+    {
+      path: '/browse',
+      name: 'browseResolve',
+      component: () => null,
+      beforeEnter: async (to) => {
+        const loc = await _resolveLocation(to.query);
+        if (!loc) {
+          const { message } = useMessages();
+          message.warning(
+            'The location request could not be resolved or produced ambiguous results.'
+          );
+          return { name: 'browse' };
+        } else {
+          const state = useStateStore();
+          return {
+            name: 'browse',
+            params: {
+              textSlug: state.textById(loc.textId)?.slug || '',
+              locId: loc.id,
+            },
+          };
+        }
+      },
     },
     {
       path: '/text/:textSlug?/search',
@@ -308,7 +355,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   // enforce route restrictions
   if (to.meta.restricted) {
     const auth = useAuthStore();
@@ -326,12 +373,16 @@ router.beforeEach(async (to, from, next) => {
     if (!authorized) {
       const { message } = useMessages();
       message.warning($t('errors.noAccess', { resource: to.path }));
-      next({ name: 'home' });
       if (!auth.loggedIn) {
         auth.showLoginModal(undefined, to.fullPath, false);
       }
-      return; // this is important!
+      return next({ name: 'home' });
     }
+  }
+  // set current text in state store
+  if (!!to.params.textSlug) {
+    const state = useStateStore();
+    state.text = state.textBySlug(to.params.textSlug.toString()) || state.defaultText;
   }
   // proceed to next hook in router pipeline
   next();

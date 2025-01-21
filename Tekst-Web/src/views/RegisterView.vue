@@ -46,7 +46,7 @@ const introTextPresent = computed(
 );
 
 const passwordRepeatMatchRule = {
-  validator: (rule: FormItemRule, value: string) =>
+  validator: (_: FormItemRule, value: string) =>
     !!value && !!formModel.value.password && value === formModel.value.password,
   message: () => $t('models.user.formRulesFeedback.passwordRepNoMatch'),
   trigger: ['input', 'blur', 'password-input'],

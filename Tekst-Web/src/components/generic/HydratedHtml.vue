@@ -4,6 +4,19 @@ import { onMounted, ref, watch, type CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
 
+const _LOC_REF_ATTR_MAP = {
+  textId: 'data-tekst-text-id',
+  textSlug: 'data-tekst-text-slug',
+  locId: 'data-tekst-location-id',
+  alias: 'data-tekst-location-alias',
+  lvl: 'data-tekst-location-level',
+  pos: 'data-tekst-location-position',
+};
+
+const _LOC_REF_SELECTOR = Object.values(_LOC_REF_ATTR_MAP)
+  .map((attr) => `[${attr}]`)
+  .join(',');
+
 const props = withDefaults(
   defineProps<{
     html?: string;
@@ -63,19 +76,27 @@ function hydrate() {
   });
 
   // INTERNAL LINKS/REFERENCES: iterate internal location links
-  contentRef.value?.querySelectorAll('a[data-tekst-location]').forEach((a) => {
-    if (!(a instanceof HTMLAnchorElement)) return;
-    a.setAttribute('title', $t('browse.location.goTo'));
-    a.addEventListener('click', (e) => {
+  contentRef.value?.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
+    if (!(el instanceof HTMLElement)) return;
+    // remove href attr if this is an anchor element
+    if (el instanceof HTMLAnchorElement) {
+      el.removeAttribute('href');
+    }
+    // set cursor style to pointer
+    el.style.cursor = 'pointer';
+    // set title attr
+    el.setAttribute('title', $t('browse.location.goTo'));
+    // add click listener
+    el.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       router.push({
-        name: 'browse',
-        params: {
-          textSlug:
-            a.getAttribute('data-tekst-text') || router.currentRoute.value.params.textSlug || null,
-          locId: a.getAttribute('data-tekst-location'),
-        },
+        name: 'browseResolve',
+        query: Object.fromEntries(
+          Object.entries(_LOC_REF_ATTR_MAP)
+            .map(([k, v]) => [k, el.getAttribute(v)])
+            .filter(([_, v]) => !!v)
+        ),
       });
       window.scrollTo(0, 0);
     });

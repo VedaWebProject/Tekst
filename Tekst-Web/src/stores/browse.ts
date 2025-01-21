@@ -1,4 +1,4 @@
-import type { AnyContentRead, AnyResourceRead, LocationRead } from '@/api';
+import type { AnyResourceRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
@@ -58,18 +58,13 @@ export const useBrowseStore = defineStore('browse', () => {
       locationPath.value = locationData.locationPath;
       nextLocationId.value = locationData.next || undefined;
       prevLocationId.value = locationData.prev || undefined;
-      resources.ofText.forEach((r: AnyResourceRead) => {
-        const content =
-          locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.id) ||
-          locationData.contents?.find((c: AnyContentRead) => c.resourceId === r.originalId);
-        r.contents = content ? [content] : [];
-      });
-      // set correct route params in case any were missing or an invalid combination
       const textSlug =
         state.textById(locationPath.value[locationPath.value.length - 1]?.textId)?.slug ||
         state.text?.slug ||
         state.defaultText?.slug ||
         '';
+      resources.applyContents(locationData.contents);
+      // set correct route params in case any were missing or an invalid combination
       if (!locId || !route.params.textSlug || (textSlug && route.params.textSlug !== textSlug)) {
         router.replace({
           name: 'browse',

@@ -8,6 +8,7 @@ from pydantic import (
     Field,
     PlainSerializer,
     StringConstraints,
+    constr,
     field_validator,
 )
 from pydantic_extra_types.color import Color
@@ -16,6 +17,7 @@ from typing_extensions import TypedDict
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
+    LocationLevel,
     ModelBase,
     ModelFactoryMixin,
     TranslationBase,
@@ -67,27 +69,30 @@ class ResourceCategory(TypedDict):
     translations: Translations[ResourceCategoryTranslation]
 
 
+TextTitle = constr(
+    min_length=1,
+    max_length=64,
+    strip_whitespace=True,
+)
+
+TextSlug = constr(
+    min_length=1,
+    max_length=16,
+    strip_whitespace=True,
+    pattern=r"^[a-z0-9]+$",
+)
+
+
 class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
     title: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=64,
-            strip_whitespace=True,
-        ),
+        TextTitle,
         Field(description="Title of this text"),
     ]
 
     slug: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=16,
-            strip_whitespace=True,
-            pattern=r"^[a-z0-9]+$",
-        ),
+        TextSlug,
         Field(
             description="A short identifier for use in URLs and internal operations",
         ),
@@ -113,9 +118,8 @@ class Text(ModelBase, ModelFactoryMixin):
     ]
 
     default_level: Annotated[
-        int,
+        LocationLevel,
         Field(
-            ge=0,
             description=(
                 "Default structure level for the client "
                 "to use for browsing this text"

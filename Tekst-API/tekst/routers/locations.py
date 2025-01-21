@@ -3,10 +3,11 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, Path, Query, status
-from pydantic import Field
+from pydantic import Field, conint
 
 from tekst import errors
 from tekst.auth import SuperuserDep
+from tekst.models.common import LocationAlias, LocationLevel, LocationPosition
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
     DeleteLocationResult,
@@ -121,121 +122,201 @@ async def create_location(
     return await LocationDocument.model_from(location).create()
 
 
+# @router.get(
+#     "",
+#     response_model=list[LocationRead],
+#     status_code=status.HTTP_200_OK,
+#     responses=errors.responses(
+#         [
+#             errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT,
+#         ]
+#     ),
+# )
+# async def find_locations(
+#     text_id: Annotated[
+#         PydanticObjectId,
+#         Query(
+#             alias="txt",
+#             description="ID of text to find locations for",
+#         ),
+#     ],
+#     level: Annotated[
+#         int | None,
+#         Query(
+#             alias="lvl",
+#             description="Structure level to find locations for",
+#         ),
+#     ] = None,
+#     position: Annotated[
+#         int | None,
+#         Query(
+#             alias="pos",
+#             description="Position value of locations to find",
+#         ),
+#     ] = None,
+#     parent_id: Annotated[
+#         PydanticObjectId | None,
+#         Query(
+#             alias="parent",
+#             description="ID of parent location to find children of",
+#         ),
+#     ] = None,
+#     limit: Annotated[
+#         int,
+#         Query(
+#             description="Return at most <limit> locations",
+#         ),
+#     ] = 16384,
+# ) -> list[LocationDocument]:
+#     if level is None and parent_id is None:
+#         raise errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT
+
+#     example = {"text_id": text_id}
+
+#     if level is not None:
+#         example["level"] = level
+
+#     if position is not None:
+#         example["position"] = position
+
+#     if parent_id:
+#         example["parent_id"] = parent_id
+
+#     return await LocationDocument.find(example).limit(limit).to_list()
+
+
 @router.get(
     "",
     response_model=list[LocationRead],
     status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT,
-        ]
-    ),
 )
 async def find_locations(
-    text_id: Annotated[
-        PydanticObjectId,
+    location_id: Annotated[
+        PydanticObjectId | None,
         Query(
-            alias="txt",
+            alias="locId",
+            description="ID of location to find",
+        ),
+    ] = None,
+    parent_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="parentId",
+            description="ID of parent location to find children of",
+        ),
+    ] = None,
+    text_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="textId",
             description="ID of text to find locations for",
         ),
-    ],
+    ] = None,
+    text_slug: Annotated[
+        str | None,
+        Query(
+            alias="textSlug",
+            description="Slug of text to find locations for",
+        ),
+    ] = None,
     level: Annotated[
-        int | None,
+        LocationLevel | None,
         Query(
             alias="lvl",
             description="Structure level to find locations for",
         ),
     ] = None,
     position: Annotated[
-        int | None,
+        LocationPosition | None,
         Query(
             alias="pos",
             description="Position value of locations to find",
         ),
     ] = None,
-    parent_id: Annotated[
-        PydanticObjectId | None,
-        Query(
-            alias="parent",
-            description="ID of parent location to find children of",
-        ),
-    ] = None,
-    limit: Annotated[
-        int,
-        Query(
-            description="Return at most <limit> locations",
-        ),
-    ] = 16384,
-) -> list[LocationDocument]:
-    if level is None and parent_id is None:
-        raise errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT
-
-    example = {"text_id": text_id}
-
-    if level is not None:
-        example["level"] = level
-
-    if position is not None:
-        example["position"] = position
-
-    if parent_id:
-        example["parent_id"] = parent_id
-
-    return await LocationDocument.find(example).limit(limit).to_list()
-
-
-@router.get(
-    "/by-alias",
-    response_model=list[LocationRead],
-    status_code=status.HTTP_200_OK,
-)
-async def find_locations_by_alias(
-    text_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="txt",
-            description="ID of text to find locations for",
-        ),
-    ],
     alias: Annotated[
-        str,
+        LocationAlias | None,
         Query(
             description="Alias of location(s) to find",
         ),
-    ],
-    limit: Annotated[
-        int,
+    ] = None,
+    add_full_labels: Annotated[
+        bool,
         Query(
-            description="Return at most <limit> locations (maximum returned is 10)",
+            alias="fullLabels",
+            description="Add full combined label to each location",
         ),
-    ] = 10,
+    ] = False,
+    limit: Annotated[
+        conint(
+            ge=1,
+            le=100,
+        ),
+        Query(
+            description="Return at most <limit> locations",
+        ),
+    ] = 100,
 ) -> list[LocationDocument]:
     """
-    Finds locations by text ID and their alias. A full combined label including
-    parent location's labels is added to each returned location object.
+    Finds locations by various combinations of location properties.
+    A full combined label including all parent location's labels is added to each
+    returned location object if add_full_labels is set to true.
     """
-    # find locations and transform them into LocationRead instances
-    locations = [
-        LocationRead.model_from(loc)
-        for loc in await LocationDocument.find(
-            LocationDocument.text_id == text_id,
-            LocationDocument.aliases == alias,
-        )
-        .limit(min(limit, 10))
-        .to_list()
-    ]
+    text_doc = None
+    locations = []
 
-    # get text instance
-    text = await TextDocument.get(text_id)
+    # if loc ID is given, this will be very simple...
+    if location_id:
+        loc_doc = await LocationDocument.get(location_id)
+        if not loc_doc:
+            return []
+        text_doc = await TextDocument.get(loc_doc.text_id)
+        locations = [loc_doc]
+
+    # ...same for a given parent ID...
+    elif parent_id:
+        locations = (
+            await LocationDocument.find(LocationDocument.parent_id == parent_id)
+            .limit(limit)
+            .to_list()
+        )
+        if not locations:
+            return []
+        text_doc = await TextDocument.get(locations[0].text_id)
+
+    # ...in any other case, we'll have to puzzle a bit...
+    else:
+        # try to resolve text first
+        if text_id:
+            text_doc = await TextDocument.get(text_id)
+        if not text_doc and text_slug:
+            text_doc = await TextDocument.find_one(TextDocument.slug == text_slug)
+        if not text_doc:
+            return []
+
+        # build a query that contains all the other given props
+        query = {"text_id": text_doc.id}
+        if level is not None:
+            query["level"] = level
+        if position is not None:
+            query["position"] = position
+        if alias:
+            query["aliases"] = alias
+
+        # finally, apply query and limit
+        locations = await LocationDocument.find(query).limit(limit).to_list()
 
     # add the full combined label to each location
-    for location in locations:
-        full_label = location.label
-        parent = await LocationDocument.get(location.parent_id)
-        while parent:
-            full_label = f"{parent.label}{text.loc_delim}{full_label}"
-            parent = await LocationDocument.get(parent.parent_id)
-        location.full = full_label
+    if add_full_labels:
+        # transform location documents into LocationRead instances
+        # so we can add the additional full_label fields
+        locations = [LocationRead.model_from(loc) for loc in locations]
+        for location in locations:
+            full_label = location.label
+            parent = await LocationDocument.get(location.parent_id)
+            while parent:
+                full_label = f"{parent.label}{text_doc.loc_delim}{full_label}"
+                parent = await LocationDocument.get(parent.parent_id)
+            location.full = full_label
 
     return locations
 
@@ -316,7 +397,7 @@ async def get_first_and_last_locations_paths(
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
-            errors.E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT,
+            errors.E_400_INVALID_REQUEST_DATA,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
         ]
@@ -326,16 +407,23 @@ async def get_children(
     su: SuperuserDep,
     text_id: Annotated[
         PydanticObjectId | None,
-        Query(alias="txt", description="ID of text to find locations for"),
+        Query(
+            alias="txt",
+            description="ID of text to find locations for "
+            "(required if no parent ID is given)",
+        ),
     ] = None,
     parent_id: Annotated[
         PydanticObjectId | None,
-        Query(alias="parent", description="ID of parent location to find children of"),
+        Query(
+            alias="parent",
+            description="ID of parent location to find children of",
+        ),
     ] = None,
     limit: int = 8192,
 ) -> list:
     if parent_id is None and text_id is None:
-        raise errors.E_400_LOCATION_CHILDREN_NO_PARENT_NOR_TEXT
+        raise errors.E_400_INVALID_REQUEST_DATA
     return (
         await LocationDocument.find(
             And(
@@ -360,7 +448,10 @@ async def get_children(
     ),
 )
 async def get_location(
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+    location_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> LocationDocument:
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
@@ -382,7 +473,10 @@ async def get_location(
 )
 async def update_location(
     su: SuperuserDep,
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+    location_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
     updates: LocationUpdate,
 ) -> LocationDocument:
     location_doc = await LocationDocument.get(location_id)
@@ -405,7 +499,10 @@ async def update_location(
 )
 async def delete_location(
     su: SuperuserDep,
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+    location_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
 ) -> DeleteLocationResult:
     """
     Deletes the specified location. Also deletes any associated contents,
@@ -483,7 +580,10 @@ async def delete_location(
 )
 async def move_location(
     su: SuperuserDep,
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
+    location_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
     target: MoveLocationRequestBody,
 ) -> LocationRead:
     """Moves the specified location to a new position on its level."""

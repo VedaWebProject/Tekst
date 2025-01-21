@@ -3,6 +3,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { delay } from '@/utils';
 import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -69,8 +70,10 @@ export function useInitializeApp() {
       key: 'workingText',
       info: () => $t('init.workingText'),
       action: async (success: boolean = true) => {
-        state.text = state.textBySlug(route.params.textSlug?.toString()) || state.defaultText;
-
+        state.text =
+          state.textBySlug(route.params.textSlug?.toString()) ||
+          state.textBySlug(state.textSlug) ||
+          state.defaultText;
         if (route.params.hasOwnProperty('textSlug') && state.text?.slug !== route.params.textSlug) {
           router.replace({
             params: {
@@ -116,6 +119,7 @@ export function useInitializeApp() {
       info: () => $t('init.ready'),
       action: async (success: boolean = true) => {
         state.init.initialized = true;
+        await delay(500); // delay end of init process for loading initial view in bg
         state.init.loading = false;
         state.init.stepMsg = '';
         state.init.progress = 0;

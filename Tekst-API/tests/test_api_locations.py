@@ -64,7 +64,7 @@ async def test_create_additional_location(
 
     # get a parent location
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 0, "pos": 0}
+        "/locations", params={"textId": text_id, "lvl": 0, "pos": 0}
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -163,7 +163,7 @@ async def test_child_location_io(
 
     # find children by parent ID
     resp = await test_client.get(
-        "/locations", params={"txt": parent["textId"], "parent": parent["id"]}
+        "/locations", params={"textId": parent["textId"], "parentId": parent["id"]}
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -216,7 +216,7 @@ async def test_create_location_invalid_text_fail(
 
 
 @pytest.mark.anyio
-async def test_get_locations(
+async def test_find_locations(
     test_client: AsyncClient,
     get_sample_data,
     insert_sample_data,
@@ -228,42 +228,80 @@ async def test_get_locations(
 
     # test results length limit
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 1, "limit": 2}
+        "/locations", params={"textId": text_id, "lvl": 1, "limit": 2}
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
 
     # test empty results with status 200
-    resp = await test_client.get("/locations", params={"txt": wrong_id, "lvl": 1})
+    resp = await test_client.get("/locations", params={"textId": wrong_id, "lvl": 1})
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # test results contain all locations of level 1
-    resp = await test_client.get("/locations", params={"txt": text_id, "lvl": 1})
+    resp = await test_client.get("/locations", params={"textId": text_id, "lvl": 1})
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == len(
         [n for n in locations if n["textId"] == text_id and n["level"] == 1]
     )
-
-    # test returned locations have IDs
     assert "id" in resp.json()[0]
-    # save location ID for later
     location_id = resp.json()[0]["id"]
+
+    # test find location by ID
+    resp = await test_client.get("/locations", params={"locId": location_id})
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 1
+    assert "id" in resp.json()[0]
+    assert resp.json()[0]["id"] == location_id
+
+    # test fail to find location by wrong ID
+    resp = await test_client.get("/locations", params={"locId": wrong_id})
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+    # test find locations by parent ID
+    resp = await test_client.get("/locations", params={"parentId": location_id})
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 1
+
+    # test fail to find locations by wrong parent ID
+    resp = await test_client.get("/locations", params={"parentId": wrong_id})
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
+
+    # test find locations by text slug
+    resp = await test_client.get("/locations", params={"textSlug": "fdhdgg"})
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 1
+
+    # test find locations by text slug and request full location labels
+    resp = await test_client.get(
+        "/locations", params={"textSlug": "fdhdgg", "fullLabels": True}
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 1
+    assert "full" in resp.json()[0]
 
     # test specific position
     resp = await test_client.get(
-        "/locations", params={"txt": text_id, "lvl": 1, "pos": 0}
+        "/locations", params={"textId": text_id, "lvl": 1, "pos": 0}
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 1
 
-    # test invalid request
-    resp = await test_client.get("/locations", params={"txt": text_id})
-    assert_status(400, resp)
+    # test invalid text ID
+    resp = await test_client.get("/locations", params={"textId": "foobarbaz"})
+    assert_status(422, resp)
 
     # test get specific location by ID
     resp = await test_client.get(f"/locations/{location_id}")
@@ -284,9 +322,9 @@ async def test_find_locations_by_alias(
 ):
     text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
     resp = await test_client.get(
-        "/locations/by-alias",
+        "/locations",
         params={
-            "txt": text_id,
+            "textId": text_id,
             "alias": "1.1.2",
         },
     )
@@ -356,7 +394,7 @@ async def test_update_location(
     # get location from db
     resp = await test_client.get(
         "/locations",
-        params={"txt": text_id, "lvl": 1},
+        params={"textId": text_id, "lvl": 1},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -407,7 +445,7 @@ async def test_delete_location(
     # get location from db
     resp = await test_client.get(
         "/locations",
-        params={"txt": text_id, "lvl": 0, "pos": 0},
+        params={"textId": text_id, "lvl": 0, "pos": 0},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -475,7 +513,7 @@ async def test_move_location(
     # get location from db
     resp = await test_client.get(
         "/locations",
-        params={"txt": text_id, "lvl": 0, "pos": 0},
+        params={"textId": text_id, "lvl": 0, "pos": 0},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -535,7 +573,7 @@ async def test_move_location_lowest_level(
     # get location from db
     resp = await test_client.get(
         "/locations",
-        params={"txt": text_id, "lvl": 1, "pos": 0},
+        params={"textId": text_id, "lvl": 1, "pos": 0},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)

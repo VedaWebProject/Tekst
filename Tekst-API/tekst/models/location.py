@@ -10,19 +10,12 @@ from pydantic import (
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
+    LocationAlias,
+    LocationLevel,
+    LocationPosition,
     ModelBase,
     ModelFactoryMixin,
 )
-
-
-LocationAlias = Annotated[
-    str,
-    StringConstraints(
-        min_length=1,
-        max_length=32,
-        strip_whitespace=True,
-    ),
-]
 
 
 class Location(ModelBase, ModelFactoryMixin):
@@ -112,17 +105,14 @@ class LocationImport(ModelBase):
         ),
     ] = None
     level: Annotated[
-        int,
+        LocationLevel,
         Field(
-            ge=0,
-            lt=32,
             description="Index of structure level this location is on",
         ),
     ]
     position: Annotated[
-        int,
+        LocationPosition,
         Field(
-            ge=0,
             description="Position among all text locations on this level",
         ),
     ]
@@ -138,7 +128,7 @@ class LocationImport(ModelBase):
         ),
     ]
     aliases: Annotated[
-        list[str] | None,
+        list[LocationAlias] | None,
         Field(
             description="List of aliases for this location",
         ),

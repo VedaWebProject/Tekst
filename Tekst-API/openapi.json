@@ -1531,22 +1531,92 @@
           "locations"
         ],
         "summary": "Find locations",
+        "description": "Finds locations by various combinations of location properties.\nA full combined label including all parent location's labels is added to each\nreturned location object if add_full_labels is set to true.",
         "operationId": "findLocations",
         "parameters": [
           {
-            "name": "txt",
+            "name": "locId",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of location to find",
+              "title": "Locid"
+            },
+            "description": "ID of location to find"
+          },
+          {
+            "name": "parentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of parent location to find children of",
+              "title": "Parentid"
+            },
+            "description": "ID of parent location to find children of"
+          },
+          {
+            "name": "textId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "ID of text to find locations for",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Txt"
+              "title": "Textid"
             },
             "description": "ID of text to find locations for"
+          },
+          {
+            "name": "textSlug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Slug of text to find locations for",
+              "title": "Textslug"
+            },
+            "description": "Slug of text to find locations for"
           },
           {
             "name": "lvl",
@@ -1555,7 +1625,9 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "integer",
+                  "maximum": 32,
+                  "minimum": 0
                 },
                 {
                   "type": "null"
@@ -1573,7 +1645,8 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "integer",
+                  "minimum": 0
                 },
                 {
                   "type": "null"
@@ -1585,26 +1658,36 @@
             "description": "Position value of locations to find"
           },
           {
-            "name": "parent",
+            "name": "alias",
             "in": "query",
             "required": false,
             "schema": {
               "anyOf": [
                 {
                   "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "minLength": 1,
+                  "maxLength": 32
                 },
                 {
                   "type": "null"
                 }
               ],
-              "description": "ID of parent location to find children of",
-              "title": "Parent"
+              "description": "Alias of location(s) to find",
+              "title": "Alias"
             },
-            "description": "ID of parent location to find children of"
+            "description": "Alias of location(s) to find"
+          },
+          {
+            "name": "fullLabels",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Add full combined label to each location",
+              "default": false,
+              "title": "Fulllabels"
+            },
+            "description": "Add full combined label to each location"
           },
           {
             "name": "limit",
@@ -1612,8 +1695,10 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "description": "Return at most <limit> locations",
-              "default": 16384,
+              "default": 100,
               "title": "Limit"
             },
             "description": "Return at most <limit> locations"
@@ -1630,92 +1715,6 @@
                     "$ref": "#/components/schemas/LocationRead"
                   },
                   "title": "Response Find Locations Locations Get"
-                }
-              }
-            }
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Bad Request"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/locations/by-alias": {
-      "get": {
-        "tags": [
-          "locations"
-        ],
-        "summary": "Find locations by alias",
-        "description": "Finds locations by text ID and their alias. A full combined label including\nparent location's labels is added to each returned location object.",
-        "operationId": "findLocationsByAlias",
-        "parameters": [
-          {
-            "name": "txt",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of text to find locations for",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Txt"
-            },
-            "description": "ID of text to find locations for"
-          },
-          {
-            "name": "alias",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Alias of location(s) to find",
-              "title": "Alias"
-            },
-            "description": "Alias of location(s) to find"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Return at most <limit> locations (maximum returned is 10)",
-              "default": 10,
-              "title": "Limit"
-            },
-            "description": "Return at most <limit> locations (maximum returned is 10)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LocationRead"
-                  },
-                  "title": "Response Find Locations By Alias Locations By Alias Get"
                 }
               }
             }
@@ -1845,10 +1844,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of text to find locations for",
+              "description": "ID of text to find locations for (required if no parent ID is given)",
               "title": "Txt"
             },
-            "description": "ID of text to find locations for"
+            "description": "ID of text to find locations for (required if no parent ID is given)"
           },
           {
             "name": "parent",
@@ -15396,6 +15395,7 @@
           },
           "defaultLevel": {
             "type": "integer",
+            "maximum": 32.0,
             "minimum": 0.0,
             "title": "Defaultlevel",
             "description": "Default structure level for the client to use for browsing this text",
@@ -15523,6 +15523,7 @@
           },
           "defaultLevel": {
             "type": "integer",
+            "maximum": 32.0,
             "minimum": 0.0,
             "title": "Defaultlevel",
             "description": "Default structure level for the client to use for browsing this text",
@@ -15719,6 +15720,7 @@
             "anyOf": [
               {
                 "type": "integer",
+                "maximum": 32.0,
                 "minimum": 0.0
               },
               {

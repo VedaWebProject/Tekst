@@ -27,7 +27,7 @@ onBeforeMount(() => {
 
 <template>
   <transition name="fade">
-    <div v-if="!state.init.initialized" class="global-loader-container">
+    <div v-if="state.init.loading" class="global-loader-container">
       <n-flex vertical align="center" justify="flex-end" size="large" class="global-loader-top">
         <img
           class="global-loader-logo"

@@ -137,7 +137,6 @@ function handleSearch() {
       if (validationError) return;
       search.searchAdvanced(
         formModel.value.queries.map((q) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { resource, ...query } = q; // remove "resource" prop from q
           return query;
         })

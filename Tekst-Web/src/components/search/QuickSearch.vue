@@ -47,9 +47,13 @@ async function handleSearch() {
   const matchesToShow = 10;
 
   // check if the input matches a location alias
-  const { data, error } = await GET('/locations/by-alias', {
+  const { data, error } = await GET('/locations', {
     params: {
-      query: { txt: state.text?.id || '', alias: searchInput.value, limit: matchesToShow },
+      query: {
+        textId: state.text?.id || '',
+        alias: searchInput.value,
+        limit: matchesToShow,
+      },
     },
   });
 

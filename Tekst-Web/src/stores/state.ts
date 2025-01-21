@@ -116,7 +116,7 @@ export const useStateStore = defineStore('state', () => {
     (newSlug, oldSlug) => {
       const newText = textBySlug(newSlug);
       if (newSlug && newSlug !== oldSlug && newText) {
-        text.value = newText || defaultText.value;
+        text.value = newText;
         textSlug.value = newSlug;
       }
       setPageTitle();
