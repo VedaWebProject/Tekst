@@ -434,7 +434,11 @@ onMounted(() => {
         }}
       </div>
       <!-- Create new resource button -->
-      <n-button v-if="auth.user" type="primary" @click="router.push({ name: 'resourceCreate' })">
+      <n-button
+        v-if="auth.user"
+        type="primary"
+        @click="router.push({ name: 'resourceCreate', params: { textSlug: props.textSlug } })"
+      >
         <template #icon>
           <n-icon :component="AddIcon" />
         </template>
