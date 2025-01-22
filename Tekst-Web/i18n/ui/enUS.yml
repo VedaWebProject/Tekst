@@ -359,7 +359,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    denyResourceTypes: Prevent creation of resources of these types
+    denyResourceTypes: Resource types that can only be created by administrators
     fonts: Additional fonts
     fontName: Name
     oskModes: On-screen Keyboards
@@ -536,6 +536,11 @@ resources:
         description: Description
       searchFields:
         text: Title / Description
+    apiCall:
+      label: API Call
+      parenthesis: Request for data from a HTTP API
+      contentFields:
+        url: URL
 
 corrections:
   heading: Correction Notes for "{title}"

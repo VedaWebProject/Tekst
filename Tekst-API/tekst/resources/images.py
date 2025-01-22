@@ -34,11 +34,11 @@ class Images(ResourceTypeABC):
         return ImagesContent
 
     @classmethod
-    def search_query_model(cls) -> type["ImagesSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return ImagesSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "caption": {
                 "type": "text",
@@ -56,7 +56,7 @@ class Images(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "ImagesContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return {
             "caption": [
                 f.get("caption", "")
@@ -68,9 +68,9 @@ class Images(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ImagesSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
 
         # add query only if not "empty"

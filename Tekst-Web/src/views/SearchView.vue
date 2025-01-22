@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { AnyResourceRead, ResourceSearchQuery, ResourceType } from '@/api';
+import {
+  resourceTypes,
+  type AnyResourceRead,
+  type ResourceSearchQuery,
+  type SearchableResourceType,
+} from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -54,7 +59,7 @@ const searchHeading = computed(
 const resourceOptions = computed(() => {
   const textIds = [
     ...(state.text?.id ? [state.text?.id] : []),
-    ...[...new Set(resources.all.map((r) => r.textId))].filter((tId) => tId !== state.text?.id),
+    ...(state.pf?.texts.map((t) => t.id).filter((tId) => tId !== state.text?.id) || []),
   ];
   return textIds.map((tId) => ({
     type: 'group',
@@ -72,7 +77,14 @@ const resourceOptions = computed(() => {
       ),
     key: tId,
     children: resources.all
-      .filter((r) => r.textId === tId)
+      .filter(
+        (r) =>
+          r.textId === tId &&
+          resourceTypes
+            .filter((rt) => rt.searchable)
+            .map((rt) => rt.name)
+            .includes(r.resourceType)
+      )
       .sort((a, b) => {
         const categories =
           state.pf?.texts.find((t) => t.id === a.textId)?.resourceCategories?.map((c) => c.key) ||
@@ -100,7 +112,11 @@ const resourceColors = computed(() =>
   Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getAccentColors(r.textId) }]))
 );
 
-function handleResourceChange(resQueryIndex: number, resId: string, resType: ResourceType) {
+function handleResourceChange(
+  resQueryIndex: number,
+  resId: string,
+  resType: SearchableResourceType
+) {
   if (!formModel.value.queries[resQueryIndex]) return;
   if (formModel.value.queries[resQueryIndex].cmn.res !== resId) {
     formModel.value.queries[resQueryIndex] = {
@@ -118,7 +134,7 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
   const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
   return {
     cmn: { res: resource.id, occ: 'must' },
-    rts: { type: resource.resourceType },
+    rts: { type: resource.resourceType as SearchableResourceType },
     resource: resource,
   };
 }
@@ -219,7 +235,7 @@ whenever(ctrlEnter, () => {
                   :menu-props="{ class: 'search-resource-select-menu' }"
                   @update:value="
                     (v, o: SelectMixedOption) =>
-                      handleResourceChange(queryIndex, v, o.resourceType as ResourceType)
+                      handleResourceChange(queryIndex, v, o.resourceType as SearchableResourceType)
                   "
                 />
               </n-form-item>

@@ -290,7 +290,7 @@ async function checkUrlInput(input: HTMLInputElement) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
     input.style.color = tuiTheme.value.errorColor;
   } else {
-    input.style.color = 'inherit';
+    input.style.color = tuiTheme.value.successColor;
   }
 }
 </script>

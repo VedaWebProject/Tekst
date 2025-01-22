@@ -780,5 +780,15 @@
         "notes": null,
         "html": "<pre><code>G                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n\nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n\nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb</code></pre>",
         "editor_mode": "html"
+    },
+    {
+        "_id": { "$oid": "6791153e74030487c64fe560" },
+        "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+        "resource_id": { "$oid": "6791146a74030487c64fe55f" },
+        "resource_type": "apiCall",
+        "location_id": { "$oid": "664321104aa6341acd83fb05" },
+        "comment": "This happens to be JSON, but it actually renders as HTML.",
+        "notes": null,
+        "url": "http://127.0.0.1/api/texts"
     }
 ]

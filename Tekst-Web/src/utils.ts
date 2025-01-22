@@ -53,11 +53,11 @@ export function getFullLocationLabel(
     .join(text?.locDelim || ', ');
 }
 
-export async function checkUrl(url?: string): Promise<boolean> {
+export async function checkUrl(url?: string, method: 'GET' | 'HEAD' = 'HEAD'): Promise<boolean> {
   if (!url) return false;
   try {
     new URL(url);
-    const response = await fetch(url, { method: 'HEAD' });
+    const response = await fetch(url, { method });
     return response.ok;
   } catch {
     return false;

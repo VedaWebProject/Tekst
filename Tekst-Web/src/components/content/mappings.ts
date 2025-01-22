@@ -11,6 +11,7 @@ const contentComponents: Record<string, Component> = {
   externalReferences: defineAsyncComponent(
     () => import('@/components/content/ExternalReferencesContent.vue')
   ),
+  apiCall: defineAsyncComponent(() => import('@/components/content/ApiCallContent.vue')),
 };
 
 export default contentComponents;

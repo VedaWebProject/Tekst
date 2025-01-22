@@ -18,14 +18,13 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
-from pydantic import StringConstraints
 from starlette.background import BackgroundTask
 
 from tekst import errors, notifications, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.logs import log
-from tekst.models.common import PrecomputedDataDocument
+from tekst.models.common import PrecomputedDataDocument, ResourceTypeName
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
@@ -325,12 +324,7 @@ async def find_resources(
         ),
     ] = None,
     resource_type: Annotated[
-        str | None,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
+        ResourceTypeName | None,
         Query(
             alias="type",
             description="Type of resources to find",

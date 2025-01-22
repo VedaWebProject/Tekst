@@ -235,11 +235,12 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   resourceType: [
     requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),
     {
-      validator: (_: FormItemRule, value: string) => !!value && resourceTypes.includes(value),
+      validator: (_: FormItemRule, value: string) =>
+        !!value && resourceTypes.map((rt) => rt.name).includes(value),
       message: () =>
         $t('forms.rulesFeedback.mustBeOneOf', {
           x: $t('models.resource.resourceType'),
-          values: resourceTypes.join(', '),
+          values: resourceTypes.map((rt) => rt.name).join(', '),
         }),
       trigger: 'blur',
     },
@@ -384,6 +385,12 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 128, 'blur'),
     ],
     description: [minMaxCharsRule(0, 4096, 'blur')],
+  },
+  apiCall: {
+    url: [
+      requiredStringRule(() => $t('resources.types.apiCall.contentFields.url'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
   },
 };
 

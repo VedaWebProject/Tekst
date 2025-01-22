@@ -35,7 +35,8 @@ const auth = useAuthStore();
 const resources = useResourcesStore();
 
 const availableResourceTypes = resourceTypes.filter(
-  (rt) => auth.user?.isSuperuser || (state.pf && !state.pf.state.denyResourceTypes.includes(rt))
+  (rt) =>
+    auth.user?.isSuperuser || (state.pf && !state.pf.state.denyResourceTypes.includes(rt.name))
 );
 
 const getInitialModel = (): AnyResourceRead =>
@@ -43,7 +44,7 @@ const getInitialModel = (): AnyResourceRead =>
     title: [{ locale: '*', translation: '' }],
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
-    resourceType: availableResourceTypes[0],
+    resourceType: availableResourceTypes[0].name,
     ownerId: auth.user?.id,
     public: false,
     proposed: false,
@@ -55,8 +56,8 @@ const loadingSave = ref(false);
 const model = ref<AnyResourceRead>(getInitialModel());
 
 const resourceTypeOptions = availableResourceTypes.map((rt) => ({
-  label: () => $t(`resources.types.${rt}.label`),
-  value: rt,
+  label: () => $t(`resources.types.${rt.name}.label`),
+  value: rt.name,
 }));
 
 const levelOptions = computed(() =>

@@ -28,7 +28,7 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceBaseDocument, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.utils import validators as val
 
 
@@ -44,11 +44,11 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationContent
 
     @classmethod
-    def search_query_model(cls) -> type["TextAnnotationSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return TextAnnotationSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "tokens": {
                 "type": "nested",
@@ -94,7 +94,7 @@ class TextAnnotation(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "TextAnnotationContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return {
             "tokens": [
                 {
@@ -122,7 +122,7 @@ class TextAnnotation(ResourceTypeABC):
         *,
         query: "TextAnnotationSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
         res_id = str(query.common.resource_id)

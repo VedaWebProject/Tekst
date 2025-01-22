@@ -8,6 +8,7 @@ from tekst.models.common import (
     ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
+    ResourceTypeName,
 )
 from tekst.utils import validators as val
 
@@ -25,12 +26,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         ),
     ]
     resource_type: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
+        ResourceTypeName,
         Field(
             description="A string identifying one of the available resource types",
         ),

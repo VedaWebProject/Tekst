@@ -34,11 +34,11 @@ class ExternalReferences(ResourceTypeABC):
         return ExternalReferencesContent
 
     @classmethod
-    def search_query_model(cls) -> type["ExternalReferencesSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return ExternalReferencesSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "text": {
                 "type": "text",
@@ -52,7 +52,7 @@ class ExternalReferences(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "ExternalReferencesContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return {
             "text": [
                 f"{f.get('title', '')} – {f.get('description', '')}".strip()
@@ -64,9 +64,9 @@ class ExternalReferences(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ExternalReferencesSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
 
         # add query only if not "empty"

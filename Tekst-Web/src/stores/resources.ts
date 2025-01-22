@@ -118,11 +118,9 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function applyContents(contents: AnyContentRead[]) {
-    resourcesAll.value
-      .filter((r) => contents.map((c) => c.resourceId).includes(r.id))
-      .forEach((r) => {
-        r.contents = contents.filter((c) => c.resourceId === r.id) ?? [];
-      });
+    resourcesAll.value.forEach((r) => {
+      r.contents = contents.filter((c) => c.resourceId === r.id);
+    });
   }
 
   async function getCoverage(resourceId: string): Promise<ResourceCoverage | undefined> {

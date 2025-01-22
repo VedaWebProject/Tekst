@@ -360,7 +360,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    denyResourceTypes: Erstellen von Ressourcen dieser Typen unterbinden
+    denyResourceTypes: Nur von Administratoren erstellbare Ressourcentypen
     fonts: Zusätzliche Schriftarten
     fontName: Name
     oskModes: Bildschirmtastaturen
@@ -545,6 +545,11 @@ resources:
         description: Beschreibung
       searchFields:
         text: Titel / Beschreibung
+    apiCall:
+      label: API-Abruf
+      parenthesis: Abruf von Daten von einer HTTP-API
+      contentFields:
+        url: URL
 
 corrections:
   heading: Korrekturnotizen für "{title}"

@@ -1138,6 +1138,11 @@ async def test_export_content(
             "from_loc_id": "664321104aa6341acd83fb05",
             "to_loc_id": "664321104aa6341acd83fb05",
         },
+        {
+            "res_id": "6791146a74030487c64fe55f",
+            "from_loc_id": "664321104aa6341acd83fb05",
+            "to_loc_id": "664321104aa6341acd83fb05",
+        },
     ]
 
     for fmt in formats:

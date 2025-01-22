@@ -34,11 +34,11 @@ class Audio(ResourceTypeABC):
         return AudioContent
 
     @classmethod
-    def search_query_model(cls) -> type["AudioSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return AudioSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "caption": {
                 "type": "text",
@@ -52,7 +52,7 @@ class Audio(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "AudioContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return {
             "caption": [
                 f.get("caption", "")
@@ -64,9 +64,9 @@ class Audio(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "AudioSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
 
         # add query only if not "empty"

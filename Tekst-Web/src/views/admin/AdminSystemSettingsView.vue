@@ -56,7 +56,9 @@ const oskFontOptions = computed(
 );
 
 const resourceTypeOptions = computed(
-  () => resourceTypes.map((f) => ({ label: $t(`resources.types.${f}.label`), value: f })) || []
+  () =>
+    resourceTypes.map((f) => ({ label: $t(`resources.types.${f.name}.label`), value: f.name })) ||
+    []
 );
 
 async function handleSaveClick() {

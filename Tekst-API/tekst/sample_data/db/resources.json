@@ -520,5 +520,45 @@
             "general": { "defaultCollapsed": true, "font": null }
         },
         "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
+    },
+    {
+        "_id": { "$oid": "6791146a74030487c64fe55f" },
+        "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
+        "title": [{ "locale": "*", "translation": "Texts Info from API" }],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "An example for content requested from an API"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Ein Beispiel für Inhalt, der von einer API abgefragt wurde"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "apiCall",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "versions",
+                "sortOrder": 999,
+                "defaultActive": false,
+                "showOnParentLevel": false,
+                "quickSearchable": false,
+                "rtl": false,
+                "osk": null
+            },
+            "general": { "defaultCollapsed": true, "font": null }
+        },
+        "contents_changed_at": { "$date": "2025-01-22T16:03:05.105Z" }
     }
 ]

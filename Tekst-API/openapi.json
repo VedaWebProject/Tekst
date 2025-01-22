@@ -246,6 +246,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/ApiCallContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
@@ -267,6 +270,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "apiCall": "#/components/schemas/ApiCallContentRead",
                         "audio": "#/components/schemas/AudioContentRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
@@ -702,6 +706,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ApiCallContentCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/AudioContentCreate"
                   },
                   {
@@ -723,6 +730,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallContentCreate",
                     "audio": "#/components/schemas/AudioContentCreate",
                     "externalReferences": "#/components/schemas/ExternalReferencesContentCreate",
                     "images": "#/components/schemas/ImagesContentCreate",
@@ -743,6 +751,9 @@
               "application/json": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
                     {
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
@@ -765,6 +776,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
@@ -897,6 +909,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/ApiCallContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/AudioContentRead"
                       },
                       {
@@ -918,6 +933,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "apiCall": "#/components/schemas/ApiCallContentRead",
                         "audio": "#/components/schemas/AudioContentRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
@@ -984,6 +1000,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
                     {
@@ -1005,6 +1024,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
@@ -1076,6 +1096,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ApiCallContentUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/AudioContentUpdate"
                   },
                   {
@@ -1097,6 +1120,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallContentUpdate",
                     "audio": "#/components/schemas/AudioContentUpdate",
                     "externalReferences": "#/components/schemas/ExternalReferencesContentUpdate",
                     "images": "#/components/schemas/ImagesContentUpdate",
@@ -1117,6 +1141,9 @@
               "application/json": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
                     {
                       "$ref": "#/components/schemas/AudioContentRead"
                     },
@@ -1139,6 +1166,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
@@ -3330,6 +3358,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ApiCallResourceCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/AudioResourceCreate"
                   },
                   {
@@ -3351,6 +3382,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallResourceCreate",
                     "audio": "#/components/schemas/AudioResourceCreate",
                     "externalReferences": "#/components/schemas/ExternalReferencesResourceCreate",
                     "images": "#/components/schemas/ImagesResourceCreate",
@@ -3371,6 +3403,9 @@
               "application/json": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
                     {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
@@ -3393,6 +3428,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -3541,6 +3577,9 @@
                   "items": {
                     "oneOf": [
                       {
+                        "$ref": "#/components/schemas/ApiCallResourceRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/AudioResourceRead"
                       },
                       {
@@ -3562,6 +3601,7 @@
                     "discriminator": {
                       "propertyName": "resourceType",
                       "mapping": {
+                        "apiCall": "#/components/schemas/ApiCallResourceRead",
                         "audio": "#/components/schemas/AudioResourceRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                         "images": "#/components/schemas/ImagesResourceRead",
@@ -3627,6 +3667,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -3648,6 +3691,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -3741,6 +3785,9 @@
               "schema": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ApiCallResourceUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/AudioResourceUpdate"
                   },
                   {
@@ -3762,6 +3809,7 @@
                 "discriminator": {
                   "propertyName": "resourceType",
                   "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallResourceUpdate",
                     "audio": "#/components/schemas/AudioResourceUpdate",
                     "externalReferences": "#/components/schemas/ExternalReferencesResourceUpdate",
                     "images": "#/components/schemas/ImagesResourceUpdate",
@@ -3782,6 +3830,9 @@
               "application/json": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
                     {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
@@ -3804,6 +3855,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -3886,6 +3938,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -3907,6 +3962,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -4071,6 +4127,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -4092,6 +4151,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -4196,6 +4256,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -4217,6 +4280,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -4311,6 +4375,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -4332,6 +4399,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -4416,6 +4484,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -4437,6 +4508,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -4541,6 +4613,9 @@
                 "schema": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/AudioResourceRead"
                     },
                     {
@@ -4562,6 +4637,7 @@
                   "discriminator": {
                     "propertyName": "resourceType",
                     "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
@@ -7395,6 +7471,759 @@
         ],
         "title": "AnnotationGroupTranslation"
       },
+      "ApiCallContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL to use for the HTTP (GET) call"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "url"
+        ],
+        "title": "ApiCallContentCreate"
+      },
+      "ApiCallContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL to use for the HTTP (GET) call"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "url"
+        ],
+        "title": "ApiCallContentRead"
+      },
+      "ApiCallContentUpdate": {
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": true
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": true
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "URL to use for the HTTP (GET) call",
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "ApiCallContentUpdate"
+      },
+      "ApiCallResourceConfig": {
+        "properties": {
+          "common": {
+            "$ref": "#/components/schemas/CommonResourceConfig",
+            "default": {
+              "sortOrder": 10,
+              "defaultActive": true,
+              "showOnParentLevel": false,
+              "quickSearchable": false,
+              "rtl": false
+            }
+          },
+          "general": {
+            "$ref": "#/components/schemas/GeneralApiCallResourceConfig",
+            "default": {
+              "defaultCollapsed": false
+            }
+          }
+        },
+        "type": "object",
+        "title": "ApiCallResourceConfig"
+      },
+      "ApiCallResourceCreate": {
+        "properties": {
+          "title": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "$ref": "#/components/schemas/ApiCallResourceConfig",
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "quickSearchable": false,
+                "rtl": false,
+                "showOnParentLevel": false,
+                "sortOrder": 10
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "ApiCallResourceCreate"
+      },
+      "ApiCallResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "$ref": "#/components/schemas/ApiCallResourceConfig",
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "quickSearchable": false,
+                "rtl": false,
+                "showOnParentLevel": false,
+                "sortOrder": 10
+              },
+              "general": {
+                "defaultCollapsed": false
+              }
+            }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "ApiCallResourceRead"
+      },
+      "ApiCallResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
+          },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "optionalNullable": false
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "apiCall",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
+          },
+          "sharedRead": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "optionalNullable": false
+          },
+          "sharedWrite": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "optionalNullable": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource",
+            "optionalNullable": true
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "optionalNullable": false
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "optionalNullable": false
+          },
+          "config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ApiCallResourceConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "ApiCallResourceUpdate"
+      },
       "AudioContentCreate": {
         "properties": {
           "resourceId": {
@@ -9920,6 +10749,30 @@
         ],
         "title": "ExternalReferencesSearchQuery"
       },
+      "GeneralApiCallResourceConfig": {
+        "properties": {
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Font",
+            "description": "Name of the font to use for this resource."
+          }
+        },
+        "type": "object",
+        "title": "GeneralApiCallResourceConfig"
+      },
       "GeneralAudioResourceConfig": {
         "properties": {
           "defaultCollapsed": {
@@ -11181,6 +12034,9 @@
             "items": {
               "oneOf": [
                 {
+                  "$ref": "#/components/schemas/ApiCallContentRead"
+                },
+                {
                   "$ref": "#/components/schemas/AudioContentRead"
                 },
                 {
@@ -11202,6 +12058,7 @@
               "discriminator": {
                 "propertyName": "resourceType",
                 "mapping": {
+                  "apiCall": "#/components/schemas/ApiCallContentRead",
                   "audio": "#/components/schemas/AudioContentRead",
                   "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                   "images": "#/components/schemas/ImagesContentRead",
@@ -12639,7 +13496,9 @@
             "maxItems": 64,
             "title": "Denyresourcetypes",
             "description": "Resource types regular users are not allowed to create",
-            "default": []
+            "default": [
+              "apiCall"
+            ]
           },
           "fonts": {
             "items": {

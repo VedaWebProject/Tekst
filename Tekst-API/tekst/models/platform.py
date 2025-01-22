@@ -218,7 +218,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             description="Resource types regular users are not allowed to create",
             max_length=64,
         ),
-    ] = []
+    ] = ["apiCall"]
 
     fonts: Annotated[
         list[

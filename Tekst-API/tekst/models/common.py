@@ -53,6 +53,12 @@ LocationAlias = constr(
     strip_whitespace=True,
 )
 
+ResourceTypeName = constr(
+    min_length=1,
+    max_length=32,
+    strip_whitespace=True,
+)
+
 
 class ExcludeFromModelVariants:
     """

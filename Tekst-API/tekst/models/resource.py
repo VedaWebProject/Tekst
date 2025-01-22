@@ -19,6 +19,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
     PrecomputedDataDocument,
+    ResourceTypeName,
     TranslationBase,
     Translations,
 )
@@ -123,12 +124,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ]
 
     resource_type: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
+        ResourceTypeName,
         Field(
             description="A string identifying one of the available resource types",
         ),

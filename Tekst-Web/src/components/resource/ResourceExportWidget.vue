@@ -38,6 +38,7 @@ const supportedExportFormats: Record<AnyResourceRead['resourceType'], ResourceEx
   audio: ['json', 'tekst-json', 'csv'],
   images: ['json', 'tekst-json', 'csv'],
   externalReferences: ['json', 'tekst-json', 'csv'],
+  apiCall: ['json', 'tekst-json', 'csv'],
 };
 
 const props = defineProps<{

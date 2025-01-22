@@ -121,12 +121,34 @@ export const accentColorPresets = [
 ];
 
 export const resourceTypes = [
-  'plainText',
-  'richText',
-  'textAnnotation',
-  'audio',
-  'images',
-  'externalReferences',
+  {
+    name: 'plainText',
+    searchable: true,
+  },
+  {
+    name: 'richText',
+    searchable: true,
+  },
+  {
+    name: 'textAnnotation',
+    searchable: true,
+  },
+  {
+    name: 'audio',
+    searchable: true,
+  },
+  {
+    name: 'images',
+    searchable: true,
+  },
+  {
+    name: 'externalReferences',
+    searchable: true,
+  },
+  {
+    name: 'apiCall',
+    searchable: false,
+  },
 ];
 
 export const prioritizedMetadataKeys = ['author', 'year', 'language'];
@@ -278,6 +300,7 @@ export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 // resources
 
 export type ResourceType = AnyResourceRead['resourceType'];
+export type SearchableResourceType = Exclude<ResourceType, 'apiCall'>;
 type ResourceReadExtras = {
   active?: boolean;
   corrections?: number;
@@ -334,6 +357,14 @@ export type ExternalReferencesResourceRead =
     ResourceReadExtras & {
       contents?: ExternalReferencesContentRead[];
     };
+
+export type ApiCallContentRead = components['schemas']['ApiCallContentRead'];
+export type ApiCallContentCreate = components['schemas']['ApiCallContentCreate'];
+export type ApiCallResourceCreate = components['schemas']['ApiCallResourceCreate'];
+export type ApiCallResourceRead = components['schemas']['ApiCallResourceRead'] &
+  ResourceReadExtras & {
+    contents?: ApiCallContentRead[];
+  };
 
 export type AnyContentCreate =
   paths['/contents']['post']['requestBody']['content']['application/json'];

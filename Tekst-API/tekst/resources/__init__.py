@@ -160,7 +160,7 @@ class ResourceTypeABC(ABC):
                 "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
-            **cls.rtype_index_doc_props(),
+            **(cls.rtype_index_doc_props() or {}),
         )
 
     @classmethod
@@ -170,7 +170,7 @@ class ResourceTypeABC(ABC):
         """
         return dict(
             comment=content.comment,
-            **cls.rtype_index_doc_data(content),
+            **(cls.rtype_index_doc_data(content) or {}),
         )
 
     @classmethod
@@ -196,7 +196,7 @@ class ResourceTypeABC(ABC):
             )
         return [
             *es_queries,
-            *cls.rtype_es_queries(query=query, strict=strict),
+            *(cls.rtype_es_queries(query=query, strict=strict) or []),
             # ensure we only find locations that
             # the target resource potentially has data for
             {
@@ -354,7 +354,7 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         """
         Returns the mappings properties for ES search index
         documents unique for this type of resource content
@@ -365,7 +365,7 @@ class ResourceTypeABC(ABC):
     def rtype_index_doc_data(
         cls,
         content: ContentBase,
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """
         Returns the content for the ES index document
         for this type of resource content that is unique to this resource type
@@ -378,7 +378,7 @@ class ResourceTypeABC(ABC):
         *,
         query: "ResourceSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         """
         Constructs an Elasticsearch search query for each field
         in the given resource search query instance.
@@ -573,7 +573,13 @@ AnyContentDocument = Annotated[
 
 AnyResourceSearchQuery = Annotated[
     Union[  # noqa: UP007
-        tuple([rt.search_query_model() for rt in resource_types_mgr.get_all().values()])
+        tuple(
+            [
+                rt.search_query_model()
+                for rt in resource_types_mgr.get_all().values()
+                if rt.search_query_model() is not None
+            ]
+        )
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),

@@ -35,11 +35,11 @@ class PlainText(ResourceTypeABC):
         return PlainTextContent
 
     @classmethod
-    def search_query_model(cls) -> type["PlainTextSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return PlainTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "text": {
                 "type": "text",
@@ -57,16 +57,16 @@ class PlainText(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "PlainTextContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return content.model_dump(include={"text"})
 
     @classmethod
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "PlainTextSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
 
         # add query only if not "empty"

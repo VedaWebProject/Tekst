@@ -31,11 +31,11 @@ class RichText(ResourceTypeABC):
         return RichTextContent
 
     @classmethod
-    def search_query_model(cls) -> type["RichTextSearchQuery"]:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         return RichTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any]:
+    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
         return {
             "html": {
                 "type": "text",
@@ -53,7 +53,7 @@ class RichText(ResourceTypeABC):
     def rtype_index_doc_data(
         cls,
         content: "RichTextContent",
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return {
             "html": get_html_text(content.html),
         }
@@ -62,9 +62,9 @@ class RichText(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "RichTextSearchQuery",
         strict: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> list[dict[str, Any]] | None:
         es_queries = []
 
         # add query only if not "empty"

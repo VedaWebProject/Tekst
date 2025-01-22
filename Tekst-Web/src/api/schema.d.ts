@@ -1319,6 +1319,360 @@ export interface components {
       /** Translation */
       translation: string;
     };
+    /** ApiCallContentCreate */
+    ApiCallContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Url
+       * @description URL to use for the HTTP (GET) call
+       */
+      url: string;
+    };
+    /** ApiCallContentRead */
+    ApiCallContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Url
+       * @description URL to use for the HTTP (GET) call
+       */
+      url: string;
+    } & {
+      [key: string]: unknown;
+    };
+    /** ApiCallContentUpdate */
+    ApiCallContentUpdate: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string | null;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string | null;
+      /**
+       * Url
+       * @description URL to use for the HTTP (GET) call
+       */
+      url?: string;
+    };
+    /** ApiCallResourceConfig */
+    ApiCallResourceConfig: {
+      /** @default {
+       *       "sortOrder": 10,
+       *       "defaultActive": true,
+       *       "showOnParentLevel": false,
+       *       "quickSearchable": false,
+       *       "rtl": false
+       *     } */
+      common: components['schemas']['CommonResourceConfig'];
+      /** @default {
+       *       "defaultCollapsed": false
+       *     } */
+      general: components['schemas']['GeneralApiCallResourceConfig'];
+    };
+    /** ApiCallResourceCreate */
+    ApiCallResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment: components['schemas']['ResourceCommentTranslation'][];
+      /** @default {
+       *       "common": {
+       *         "defaultActive": true,
+       *         "quickSearchable": false,
+       *         "rtl": false,
+       *         "showOnParentLevel": false,
+       *         "sortOrder": 10
+       *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       }
+       *     } */
+      config: components['schemas']['ApiCallResourceConfig'];
+    };
+    /** ApiCallResourceRead */
+    ApiCallResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment: components['schemas']['ResourceCommentTranslation'][];
+      /** @default {
+       *       "common": {
+       *         "defaultActive": true,
+       *         "quickSearchable": false,
+       *         "rtl": false,
+       *         "showOnParentLevel": false,
+       *         "sortOrder": 10
+       *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       }
+       *     } */
+      config: components['schemas']['ApiCallResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt: string;
+    } & {
+      [key: string]: unknown;
+    };
+    /** ApiCallResourceUpdate */
+    ApiCallResourceUpdate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title?: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'apiCall';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       */
+      sharedWrite?: string[];
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string | null;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      config?: components['schemas']['ApiCallResourceConfig'];
+    };
     /** AudioContentCreate */
     AudioContentCreate: {
       /**
@@ -2529,6 +2883,20 @@ export interface components {
        */
       text?: string;
     };
+    /** GeneralApiCallResourceConfig */
+    GeneralApiCallResourceConfig: {
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed: boolean;
+      /**
+       * Font
+       * @description Name of the font to use for this resource.
+       */
+      font?: string | null;
+    };
     /** GeneralAudioResourceConfig */
     GeneralAudioResourceConfig: {
       /**
@@ -3138,6 +3506,7 @@ export interface components {
        * @default []
        */
       contents: (
+        | components['schemas']['ApiCallContentRead']
         | components['schemas']['AudioContentRead']
         | components['schemas']['ExternalReferencesContentRead']
         | components['schemas']['ImagesContentRead']
@@ -3843,7 +4212,9 @@ export interface components {
       /**
        * Denyresourcetypes
        * @description Resource types regular users are not allowed to create
-       * @default []
+       * @default [
+       *       "apiCall"
+       *     ]
        */
       denyResourceTypes: string[];
       /**
@@ -5762,6 +6133,7 @@ export interface operations {
         };
         content: {
           'application/json': (
+            | components['schemas']['ApiCallContentRead']
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
@@ -5974,6 +6346,7 @@ export interface operations {
         };
         content: {
           'application/json': (
+            | components['schemas']['ApiCallContentRead']
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
@@ -6004,6 +6377,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['ApiCallContentCreate']
           | components['schemas']['AudioContentCreate']
           | components['schemas']['ExternalReferencesContentCreate']
           | components['schemas']['ImagesContentCreate']
@@ -6020,6 +6394,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallContentRead']
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
@@ -6084,6 +6459,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallContentRead']
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
@@ -6171,6 +6547,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['ApiCallContentUpdate']
           | components['schemas']['AudioContentUpdate']
           | components['schemas']['ExternalReferencesContentUpdate']
           | components['schemas']['ImagesContentUpdate']
@@ -6187,6 +6564,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallContentRead']
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
@@ -7539,6 +7917,7 @@ export interface operations {
         };
         content: {
           'application/json': (
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7569,6 +7948,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['ApiCallResourceCreate']
           | components['schemas']['AudioResourceCreate']
           | components['schemas']['ExternalReferencesResourceCreate']
           | components['schemas']['ImagesResourceCreate']
@@ -7585,6 +7965,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7658,6 +8039,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7722,6 +8104,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7818,6 +8201,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['ApiCallResourceUpdate']
           | components['schemas']['AudioResourceUpdate']
           | components['schemas']['ExternalReferencesResourceUpdate']
           | components['schemas']['ImagesResourceUpdate']
@@ -7834,6 +8218,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7893,6 +8278,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -7966,6 +8352,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -8030,6 +8417,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -8085,6 +8473,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
@@ -8158,6 +8547,7 @@ export interface operations {
         };
         content: {
           'application/json':
+            | components['schemas']['ApiCallResourceRead']
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']

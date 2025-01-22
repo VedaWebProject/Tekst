@@ -5,7 +5,7 @@ import CollapsableContent from '@/components/CollapsableContent.vue';
 import contentComponents from '@/components/content/mappings';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { $t } from '@/i18n';
-import { MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
+import { HourglassIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { useElementHover } from '@vueuse/core';
 import { NFlex, NIcon, NSpin, useThemeVars } from 'naive-ui';
@@ -75,7 +75,7 @@ const fromChildLevel = computed(
   >
     <div class="content-header mb-sm" :class="browse.reducedView ? 'reduced' : ''">
       <n-icon v-if="!hasContent && !fromChildLevel" :component="NoContentIcon" />
-      <div class="content-header-title-container">
+      <n-flex align="center" :wrap="false" :gap="12" style="flex-grow: 2">
         <div
           class="content-header-title"
           :class="{ reduced: browse.reducedView, b: browse.reducedView }"
@@ -90,11 +90,20 @@ const fromChildLevel = computed(
             :title="$t('resources.notPublic')"
           />
         </div>
-        <div class="content-header-title-extra">
+        <div class="text-small translucent" style="flex-grow: 2">
           {{ headerExtraText }}
-          <span v-if="loading && !hasContent" class="mx-lg">{{ $t('general.loading') }}</span>
+          <n-flex
+            v-if="loading && !hasContent"
+            align="center"
+            size="small"
+            :wrap="false"
+            class="mx-lg translucent"
+          >
+            <n-icon :component="HourglassIcon" />
+            <span>{{ $t('general.loading') }}</span>
+          </n-flex>
         </div>
-      </div>
+      </n-flex>
       <content-header-widget-bar
         :resource="resource"
         :opacity="headerWidgetsOpacity"
@@ -188,14 +197,6 @@ const fromChildLevel = computed(
   margin-bottom: 0;
 }
 
-.content-header-title-container {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: nowrap;
-  flex-grow: 2;
-  column-gap: 12px;
-}
-
 .content-header-title {
   display: flex;
   align-items: center;
@@ -214,12 +215,6 @@ const fromChildLevel = computed(
 .content-header-title.reduced {
   font-size: var(--font-size-tiny);
   opacity: 0.8;
-}
-
-.content-header-title-extra {
-  flex-grow: 2;
-  opacity: 0.5;
-  font-size: 0.8em;
 }
 
 .content {

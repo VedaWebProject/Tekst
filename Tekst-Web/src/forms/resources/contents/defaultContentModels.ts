@@ -50,4 +50,8 @@ export const defaultContentModels = {
       },
     ],
   },
+  apiCall: {
+    ...common,
+    url: undefined,
+  },
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CommonResourceConfig } from '@/api';
+import { type CommonResourceConfig, resourceTypes } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabelledSwitch from '@/components/LabelledSwitch.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
@@ -8,6 +8,10 @@ import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
 import { computed } from 'vue';
+
+defineProps<{
+  resourceType: string;
+}>();
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
 const state = useStateStore();
@@ -99,6 +103,12 @@ function handleUpdate(field: string, value: unknown) {
       <labelled-switch
         :model-value="model.quickSearchable"
         :label="$t('resources.settings.config.common.quickSearchable')"
+        :disabled="
+          resourceTypes
+            .filter((rt) => !rt.searchable)
+            .map((rt) => rt.name)
+            .includes(resourceType)
+        "
         @update:model-value="(v) => handleUpdate('quickSearchable', v)"
       />
       <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
