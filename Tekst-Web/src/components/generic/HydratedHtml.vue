@@ -27,6 +27,8 @@ const props = withDefaults(
   }
 );
 
+const emit = defineEmits(['clickLocationRef']);
+
 const router = useRouter();
 
 const contentRef = ref<HTMLElement | null>(null);
@@ -40,6 +42,7 @@ const showModal = ref(false);
 function handleLocationRefClick(e: MouseEvent) {
   e.preventDefault();
   e.stopPropagation();
+  emit('clickLocationRef');
   const el = e.target as HTMLElement;
   router.push({
     name: 'browseResolve',
@@ -76,14 +79,11 @@ function hydrate() {
         // remove original modal content element from DOM
         modalContent.remove();
       });
-    // add click listener to trigger
     trigger.addEventListener('click', () => {
       modalId.value = currModalId;
       showModal.value = true;
     });
-    // style trigger
-    trigger.style.cursor = 'pointer';
-    // set trigger title attribute
+    trigger.classList.add('modal-trigger');
     trigger.setAttribute(
       'title',
       trigger.getAttribute('title') || $t('general.showAttachmentsAction')
@@ -114,7 +114,20 @@ onMounted(hydrate);
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
     :title="modalId && modalTitles[modalId]"
+    width="wide"
   >
-    <hydrated-html :html="modalId && modalHtml[modalId]" :style="style" />
+    <hydrated-html :html="modalId && modalHtml[modalId]" :style="style" @click-location-ref="showModal = false"/>
   </generic-modal>
 </template>
+
+<style scoped>
+:deep(.modal-trigger) {
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease-in-out;
+}
+
+:deep(.modal-trigger:hover) {
+  background-color: var(--accent-color-fade5);
+}
+</style>

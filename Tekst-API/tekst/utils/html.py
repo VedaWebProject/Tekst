@@ -16,6 +16,7 @@ _ALLOWED_TAGS = frozenset(
 _ALLOWED_ATTRIBUTES = {
     "*": [
         "id",
+        "class",
         "data-tekst-modal",
         "data-tekst-modal-trigger",
         "title",
@@ -34,6 +35,7 @@ _ALLOWED_ATTRIBUTES = {
     ],
     "button": [
         "type",
+        "role",
     ],
     "img": [
         "src",
