@@ -37,6 +37,21 @@ const modalHtml = ref<Record<string, string | undefined>>({});
 const modalTitles = ref<Record<string, string | undefined>>({});
 const showModal = ref(false);
 
+function handleLocationRefClick(e: MouseEvent) {
+  e.preventDefault();
+  e.stopPropagation();
+  const el = e.target as HTMLElement;
+  router.push({
+    name: 'browseResolve',
+    query: Object.fromEntries(
+      Object.entries(_LOC_REF_ATTR_MAP)
+        .map(([k, v]) => [k, el.getAttribute(v)])
+        .filter(([_, v]) => !!v)
+    ),
+  });
+  window.scrollTo(0, 0);
+}
+
 function hydrate() {
   // reset state
   modalHtml.value = {};
@@ -82,24 +97,10 @@ function hydrate() {
     if (el instanceof HTMLAnchorElement) {
       el.removeAttribute('href');
     }
-    // set cursor style to pointer
     el.style.cursor = 'pointer';
-    // set title attr
     el.setAttribute('title', $t('browse.location.goTo'));
-    // add click listener
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      router.push({
-        name: 'browseResolve',
-        query: Object.fromEntries(
-          Object.entries(_LOC_REF_ATTR_MAP)
-            .map(([k, v]) => [k, el.getAttribute(v)])
-            .filter(([_, v]) => !!v)
-        ),
-      });
-      window.scrollTo(0, 0);
-    });
+    el.classList.add('ui-font');
+    el.addEventListener('click', handleLocationRefClick);
   });
 }
 
