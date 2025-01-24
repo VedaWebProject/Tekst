@@ -75,7 +75,7 @@ function hydrate() {
           (modalHtml.value[currModalId] || '') + modalContent.innerHTML;
         // set modal title
         modalTitles.value[currModalId] =
-          modalContent.getAttribute('title') || trigger.textContent || undefined;
+          modalContent.getAttribute('title') || undefined;
         // remove original modal content element from DOM
         modalContent.remove();
       });
