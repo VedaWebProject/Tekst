@@ -21,11 +21,7 @@ const messageInput = ref<string>();
 const messageInputRef = ref<InputInst>();
 const loadingSend = ref(false);
 
-const {
-  pause: stopMessagesPolling,
-  resume: startMessagesPolling,
-  isActive: messagesPollingIsActive,
-} = useIntervalFn(
+const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
   async () => {
     messages.value = await userMessages.loadMessages();
   },
@@ -148,7 +144,7 @@ whenever(ctrlEnter, () => {
         </n-button>
       </n-flex>
       <div class="messaging-status text-tiny translucent mt-md">
-        <template v-if="userMessages.loading || !messagesPollingIsActive">
+        <template v-if="messages?.length == null">
           {{ $t('general.loading') }}
         </template>
         <template v-else>
