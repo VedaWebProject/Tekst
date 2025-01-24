@@ -1,6 +1,8 @@
 import pytest
 
 from httpx import AsyncClient
+from tekst.models.location import LocationDocument
+from tekst.models.text import TextDocument
 
 
 @pytest.mark.anyio
@@ -592,3 +594,55 @@ async def test_move_location_lowest_level(
     assert resp.json()["label"] == "1"
     assert resp.json()["level"] == 1
     assert resp.json()["position"] == 1
+
+
+@pytest.mark.anyio
+async def test_get_path_options_by_head(
+    test_client: AsyncClient,
+    insert_sample_data,
+    assert_status,
+    wrong_id,
+):
+    await insert_sample_data("texts", "locations")
+    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    location = await LocationDocument.find_one(
+        LocationDocument.text_id == text.id, LocationDocument.level == 1
+    )
+    resp = await test_client.get(
+        f"/locations/{str(location.id)}/path-options/head",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert isinstance(resp.json()[0], list)
+
+    # invalid location data
+    resp = await test_client.get(
+        f"/locations/{wrong_id}/path-options/head",
+    )
+    assert_status(404, resp)
+
+
+@pytest.mark.anyio
+async def test_get_path_options_by_root(
+    test_client: AsyncClient,
+    insert_sample_data,
+    assert_status,
+    wrong_id,
+):
+    await insert_sample_data("texts", "locations")
+    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    location = await LocationDocument.find_one(
+        LocationDocument.text_id == text.id, LocationDocument.level == 0
+    )
+    resp = await test_client.get(
+        f"/locations/{str(location.id)}/path-options/root",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert isinstance(resp.json()[0], list)
+
+    # invalid location data
+    resp = await test_client.get(
+        f"/locations/{wrong_id}/path-options/root",
+    )
+    assert_status(404, resp)

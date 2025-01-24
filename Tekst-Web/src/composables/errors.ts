@@ -32,7 +32,7 @@ export function useErrors() {
   ): string {
     // Here we have to unify the error model because the Tekst API always returns errors
     // of type ErrorDetail or HTTPValidationError, but the auth-related endpoints
-    // (coming from fastapi-users) their own ErrorModel.
+    // (coming from fastapi-users) have their own ErrorModel :'(
     let detail: ErrorDetail;
     if (isObject(error.detail) && 'key' in (error.detail as object)) {
       // the received error is an instance of TekstErrorModel

@@ -40,7 +40,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/browse/content-siblings': {
+  '/browse/context': {
     parameters: {
       query?: never;
       header?: never;
@@ -48,7 +48,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get content siblings
+     * Get content context
      * @description Returns a list of all resource contents belonging to the resource
      *     with the given ID, associated to locations that are children of the parent location
      *     with the given ID.
@@ -56,7 +56,7 @@ export interface paths {
      *     As the resulting list may contain contents of arbitrary type, the
      *     returned content objects cannot be typed to their precise resource content type.
      */
-    get: operations['getContentSiblings'];
+    get: operations['getContentContext'];
     put?: never;
     post?: never;
     delete?: never;
@@ -65,7 +65,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/browse/location-data': {
+  '/browse': {
     parameters: {
       query?: never;
       header?: never;
@@ -88,7 +88,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/browse/nearest-content-location-id': {
+  '/browse/nearest-content-location': {
     parameters: {
       query?: never;
       header?: never;
@@ -96,54 +96,10 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get nearest content location id
-     * @description Finds the nearest location the given resource holds content for and returns
-     *     its ID or an empty string if no more content was found.
+     * Get nearest content location
+     * @description Finds the nearest location the given resource holds content for and returns it.
      */
-    get: operations['getNearestContentLocationId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/browse/locations/{id}/path/options-by-head': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get path options by head id
-     * @description Returns the options for selecting text locations derived from the location path of
-     *     the location with the given ID as head.
-     */
-    get: operations['getPathOptionsByHeadId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/browse/locations/{id}/path/options-by-root': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get path options by root
-     * @description Returns the options for selecting text locations derived from the location path of
-     *     the location with the given ID as root. At each level, the first option is taken
-     *     as the basis for the next level.
-     */
-    get: operations['getPathOptionsByRoot'];
+    get: operations['getNearestContentLocation'];
     put?: never;
     post?: never;
     delete?: never;
@@ -280,6 +236,27 @@ export interface paths {
      *     of the location's parent (or the first parent before that has children).
      */
     post: operations['createLocation'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/locations/{id}/path-options/{by}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get path options by head id
+     * @description Returns the options for selecting text locations derived from the location path of
+     *     the location with the given ID as head or root.
+     */
+    get: operations['getPathOptionsByHeadId'];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -6112,12 +6089,12 @@ export interface operations {
       };
     };
   };
-  getContentSiblings: {
+  getContentContext: {
     parameters: {
       query: {
         /** @description ID of resource the requested contents belong to */
         res: string;
-        /** @description ID of location for which siblings to get contents for */
+        /** @description ID of parent location to get child contents for */
         parent?: string | null;
       };
       header?: never;
@@ -6216,7 +6193,7 @@ export interface operations {
       };
     };
   };
-  getNearestContentLocationId: {
+  getNearestContentLocation: {
     parameters: {
       query: {
         /** @description ID of the location to start from */
@@ -6238,7 +6215,16 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': string;
+          'application/json': components['schemas']['LocationRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -6248,68 +6234,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getPathOptionsByHeadId: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['LocationRead'][][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getPathOptionsByRoot: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['LocationRead'][][];
         };
       };
       /** @description Validation Error */
@@ -6821,6 +6745,49 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getPathOptionsByHeadId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Location ID */
+        id: string;
+        /** @description Wheter to handle the given location as path root or head */
+        by: 'root' | 'head';
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationRead'][][];
+        };
+      };
+      /** @description Not Found */
+      404: {
         headers: {
           [name: string]: unknown;
         };

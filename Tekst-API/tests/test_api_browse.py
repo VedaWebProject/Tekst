@@ -7,7 +7,7 @@ from tekst.models.text import TextDocument
 
 
 @pytest.mark.anyio
-async def test_get_content_siblings(
+async def test_get_content_context(
     test_client: AsyncClient,
     insert_sample_data,
     assert_status,
@@ -23,7 +23,7 @@ async def test_get_content_siblings(
     assert resource
 
     resp = await test_client.get(
-        "/browse/content-siblings",
+        "/browse/context",
         params={"res": str(resource.id)},
     )
     assert_status(200, resp)
@@ -32,12 +32,12 @@ async def test_get_content_siblings(
 
     # wrong resource ID
     resp = await test_client.get(
-        "/browse/content-siblings",
+        "/browse/context",
         params={"res": wrong_id},
     )
     assert_status(404, resp)
 
-    # siblings of resource version
+    # context of resource version
     await login()
     resp = await test_client.post(
         f"/resources/{str(resource.id)}/version",
@@ -46,7 +46,7 @@ async def test_get_content_siblings(
     assert "id" in resp.json()
     version_id = resp.json()["id"]
     resp = await test_client.get(
-        "/browse/content-siblings",
+        "/browse/context",
         params={"res": version_id},
     )
     assert_status(200, resp)
@@ -69,7 +69,7 @@ async def test_get_location_data(
 
     # get level 0 path and contents
     resp = await test_client.get(
-        "/browse/location-data",
+        "/browse",
         params={"txt": text_id, "lvl": 0, "pos": 0},
     )
     assert_status(200, resp)
@@ -79,7 +79,7 @@ async def test_get_location_data(
 
     # higher level
     resp = await test_client.get(
-        "/browse/location-data",
+        "/browse",
         params={"txt": text_id, "lvl": 2, "pos": 0},
     )
     assert_status(200, resp)
@@ -89,73 +89,17 @@ async def test_get_location_data(
 
     # fail w/ invalid text ID
     resp = await test_client.get(
-        "/browse/location-data",
+        "/browse",
         params={"txt": wrong_id, "lvl": 1, "pos": 0},
     )
     assert_status(404, resp)
 
     # fail w/ invalid location ID
     resp = await test_client.get(
-        "/browse/location-data",
+        "/browse",
         params={"txt": text_id, "id": wrong_id},
     )
     assert_status(404, resp)
-
-
-@pytest.mark.anyio
-async def test_get_path_options_by_head(
-    test_client: AsyncClient,
-    insert_sample_data,
-    assert_status,
-    wrong_id,
-):
-    await insert_sample_data("texts", "locations")
-    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
-    location = await LocationDocument.find_one(
-        LocationDocument.text_id == text.id, LocationDocument.level == 1
-    )
-    resp = await test_client.get(
-        f"/browse/locations/{str(location.id)}/path/options-by-head",
-    )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert isinstance(resp.json()[0], list)
-
-    # invalid location data
-    resp = await test_client.get(
-        f"/browse/locations/{wrong_id}/path/options-by-head",
-    )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
-
-
-@pytest.mark.anyio
-async def test_get_path_options_by_root(
-    test_client: AsyncClient,
-    insert_sample_data,
-    assert_status,
-    wrong_id,
-):
-    await insert_sample_data("texts", "locations")
-    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
-    location = await LocationDocument.find_one(
-        LocationDocument.text_id == text.id, LocationDocument.level == 0
-    )
-    resp = await test_client.get(
-        f"/browse/locations/{str(location.id)}/path/options-by-root",
-    )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert isinstance(resp.json()[0], list)
-
-    # invalid location data
-    resp = await test_client.get(
-        f"/browse/locations/{wrong_id}/path/options-by-root",
-    )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 0
 
 
 @pytest.mark.anyio
@@ -185,7 +129,7 @@ async def test_get_nearest_content_position(
 
     # get nearest content position
     resp = await test_client.get(
-        "/browse/nearest-content-location-id",
+        "/browse/nearest-content-location",
         params={
             "res": res_id,
             "loc": loc_id,
@@ -193,11 +137,22 @@ async def test_get_nearest_content_position(
         },
     )
     assert_status(200, resp)
-    assert isinstance(resp.json(), str)
+    assert isinstance(resp.json(), dict)
 
-    # fail to get nearest content position with wrong resource ID
+    # fail to get nearest preceding content location
     resp = await test_client.get(
-        "/browse/nearest-content-location-id",
+        "/browse/nearest-content-location",
+        params={
+            "res": res_id,
+            "loc": loc_id,
+            "dir": "before",
+        },
+    )
+    assert_status(404, resp)
+
+    # fail to get nearest content location with wrong resource ID
+    resp = await test_client.get(
+        "/browse/nearest-content-location",
         params={
             "res": wrong_id,
             "loc": loc_id,
@@ -206,9 +161,9 @@ async def test_get_nearest_content_position(
     )
     assert_status(404, resp)
 
-    # fail to get nearest content position with wrong location ID
+    # fail to get nearest content location with wrong location ID
     resp = await test_client.get(
-        "/browse/nearest-content-location-id",
+        "/browse/nearest-content-location",
         params={
             "res": res_id,
             "loc": wrong_id,
@@ -217,14 +172,14 @@ async def test_get_nearest_content_position(
     )
     assert_status(404, resp)
 
-    # fail to get nearest content position with location
+    # fail to get nearest content location with location
     # from different level then resource
     location_wrong_level = await LocationDocument.find_one(
         LocationDocument.level != resource.level,
         LocationDocument.text_id == resource.text_id,
     )
     resp = await test_client.get(
-        "/browse/nearest-content-location-id",
+        "/browse/nearest-content-location",
         params={
             "res": res_id,
             "loc": str(location_wrong_level.id),
@@ -233,13 +188,13 @@ async def test_get_nearest_content_position(
     )
     assert_status(400, resp)
 
-    # fail to get nearest content position with location
+    # fail to get nearest content location with location
     # from different text then resource
     location_wrong_text = await LocationDocument.find_one(
         LocationDocument.text_id != resource.text_id,
     )
     resp = await test_client.get(
-        "/browse/nearest-content-location-id",
+        "/browse/nearest-content-location",
         params={
             "res": res_id,
             "loc": str(location_wrong_text.id),

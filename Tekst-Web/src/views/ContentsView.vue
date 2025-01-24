@@ -177,7 +177,7 @@ async function loadLocationData() {
     delete locQuery.id;
   }
   // request location data
-  const { data: locationData, error } = await GET('/browse/location-data', {
+  const { data: locationData, error } = await GET('/browse', {
     params: {
       query: {
         res: [
@@ -349,7 +349,7 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(direction: 'before' | 'after') {
-  const { data: nearestLocId, error } = await GET('/browse/nearest-content-location-id', {
+  const { data, error } = await GET('/browse/nearest-content-location', {
     params: {
       query: {
         loc: props.locId || '',
@@ -359,11 +359,9 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
     },
   });
   if (!error) {
-    if (nearestLocId) {
-      gotoLocation(nearestLocId);
-    } else {
-      message.info($t('contents.msgNoNearest'));
-    }
+    gotoLocation(data.id);
+  } else {
+    message.info($t('contents.msgNoNearest'));
   }
 }
 

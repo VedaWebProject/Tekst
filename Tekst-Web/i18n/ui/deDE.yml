@@ -236,9 +236,9 @@ browse:
         coverageRangesMissing: 'Inhalte fehlen für die folgenden Belegstellen:'
       deactivateWidget:
         title: Ausblenden
-      siblingsWidget:
+      contextWidget:
         title: Zeige Kontext
-        noSiblings: Es existieren keine Inhalte für untergeordnete Belegstellen.
+        noContext: Es existieren keine Inhalte für diesen Kontext.
       exportWidget:
         title: Export
         format: Format

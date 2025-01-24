@@ -35,7 +35,7 @@ async function handleClick() {
   emit('done');
   loading.value = true;
 
-  const { data: contentsData, error } = await GET('/browse/content-siblings', {
+  const { data: contentsData, error } = await GET('/browse/context', {
     params: {
       query: {
         res: props.resource.id,
@@ -59,7 +59,7 @@ async function handleClick() {
       resource.config.common.showOnParentLevel &&
       (browse.level == resource.level || browse.level == resource.level - 1)
     "
-    :title="$t('browse.contents.widgets.siblingsWidget.title')"
+    :title="$t('browse.contents.widgets.contextWidget.title')"
     :icon-component="MergeIcon"
     :full="full"
     @click="handleClick"
@@ -86,7 +86,7 @@ async function handleClick() {
     </div>
 
     <span v-else class="translucent">
-      {{ $t('browse.contents.widgets.siblingsWidget.noSiblings') }}
+      {{ $t('browse.contents.widgets.contextWidget.noContext') }}
     </span>
 
     <button-shelf top-gap>

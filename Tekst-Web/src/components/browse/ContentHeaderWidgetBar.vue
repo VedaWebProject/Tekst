@@ -4,7 +4,7 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
-import LocationContentSiblingsWidget from '@/components/resource/LocationContentSiblingsWidget.vue';
+import LocationContentContextWidget from '@/components/resource/LocationContentContextWidget.vue';
 import contentWidgets from '@/components/resource/mappings';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
@@ -55,7 +55,7 @@ function handleSmallScreenWidgetsTriggered() {
       </template>
     </template>
     <!-- generic content widgets -->
-    <location-content-siblings-widget :resource="resource" />
+    <location-content-context-widget :resource="resource" />
     <content-comment-widget :resource="resource" />
     <correction-note-widget :resource="resource" />
     <resource-export-widget :resource="resource" />
@@ -105,7 +105,7 @@ function handleSmallScreenWidgetsTriggered() {
         </template>
       </template>
       <!-- generic content widgets -->
-      <location-content-siblings-widget :resource="resource" full @done="closeModal" />
+      <location-content-context-widget :resource="resource" full @done="closeModal" />
       <correction-note-widget :resource="resource" full @done="closeModal" />
       <resource-export-widget :resource="resource" full @done="closeModal" />
       <content-comment-widget :resource="resource" full @done="closeModal" />

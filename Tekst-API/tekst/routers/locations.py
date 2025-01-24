@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
@@ -120,69 +120,6 @@ async def create_location(
     ).inc({LocationDocument.position: 1})
     # all fine, create location
     return await LocationDocument.model_from(location).create()
-
-
-# @router.get(
-#     "",
-#     response_model=list[LocationRead],
-#     status_code=status.HTTP_200_OK,
-#     responses=errors.responses(
-#         [
-#             errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT,
-#         ]
-#     ),
-# )
-# async def find_locations(
-#     text_id: Annotated[
-#         PydanticObjectId,
-#         Query(
-#             alias="txt",
-#             description="ID of text to find locations for",
-#         ),
-#     ],
-#     level: Annotated[
-#         int | None,
-#         Query(
-#             alias="lvl",
-#             description="Structure level to find locations for",
-#         ),
-#     ] = None,
-#     position: Annotated[
-#         int | None,
-#         Query(
-#             alias="pos",
-#             description="Position value of locations to find",
-#         ),
-#     ] = None,
-#     parent_id: Annotated[
-#         PydanticObjectId | None,
-#         Query(
-#             alias="parent",
-#             description="ID of parent location to find children of",
-#         ),
-#     ] = None,
-#     limit: Annotated[
-#         int,
-#         Query(
-#             description="Return at most <limit> locations",
-#         ),
-#     ] = 16384,
-# ) -> list[LocationDocument]:
-#     if level is None and parent_id is None:
-#         raise errors.E_400_LOCATION_NO_LEVEL_NOR_PARENT
-
-#     example = {"text_id": text_id}
-
-#     if level is not None:
-#         example["level"] = level
-
-#     if position is not None:
-#         example["position"] = position
-
-#     if parent_id:
-#         example["parent_id"] = parent_id
-
-#     return await LocationDocument.find(example).limit(limit).to_list()
 
 
 @router.get(
@@ -319,6 +256,65 @@ async def find_locations(
             location.full = full_label
 
     return locations
+
+
+@router.get(
+    "/{id}/path-options/{by}",
+    response_model=list[list[LocationRead]],
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_LOCATION_NOT_FOUND,
+        ]
+    ),
+)
+async def get_path_options_by_head_id(
+    location_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id", description="Location ID"),
+    ],
+    by: Annotated[
+        Literal["root"] | Literal["head"],
+        Path(description="Wheter to handle the given location as path root or head"),
+    ],
+) -> list[list[LocationDocument]]:
+    """
+    Returns the options for selecting text locations derived from the location path of
+    the location with the given ID as head or root.
+    """
+
+    location_doc = await LocationDocument.get(location_id)
+    if not location_doc:
+        raise errors.E_404_LOCATION_NOT_FOUND
+
+    options = []
+
+    if by == "head":
+        # construct options for this path up to root location
+        while location_doc:
+            siblings = (
+                await LocationDocument.find(
+                    LocationDocument.text_id == location_doc.text_id,
+                    LocationDocument.parent_id == location_doc.parent_id,
+                )
+                .sort(+LocationDocument.position)
+                .to_list()
+            )
+            options.insert(0, siblings)
+            location_doc = await LocationDocument.get(location_doc.parent_id)
+
+    elif by == "root":
+        # construct options for this path up to max_level
+        while location_doc:
+            children = await LocationDocument.find(
+                LocationDocument.parent_id == location_doc.id
+            ).to_list()
+            if len(children) == 0:
+                break
+            options.append(children)
+            location_doc = children[0]
+
+    return options
 
 
 @router.get(

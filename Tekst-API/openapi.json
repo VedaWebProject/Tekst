@@ -181,14 +181,14 @@
         ]
       }
     },
-    "/browse/content-siblings": {
+    "/browse/context": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get content siblings",
+        "summary": "Get content context",
         "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.\n\nAs the resulting list may contain contents of arbitrary type, the\nreturned content objects cannot be typed to their precise resource content type.",
-        "operationId": "getContentSiblings",
+        "operationId": "getContentContext",
         "security": [
           {
             "APIKeyCookie": []
@@ -230,10 +230,10 @@
                   "type": "null"
                 }
               ],
-              "description": "ID of location for which siblings to get contents for",
+              "description": "ID of parent location to get child contents for",
               "title": "Parent"
             },
-            "description": "ID of location for which siblings to get contents for"
+            "description": "ID of parent location to get child contents for"
           }
         ],
         "responses": {
@@ -280,7 +280,7 @@
                       }
                     }
                   },
-                  "title": "Response Get Content Siblings Browse Content Siblings Get"
+                  "title": "Response Get Content Context Browse Context Get"
                 }
               }
             }
@@ -308,7 +308,7 @@
         }
       }
     },
-    "/browse/location-data": {
+    "/browse": {
       "get": {
         "tags": [
           "browse"
@@ -477,14 +477,14 @@
         }
       }
     },
-    "/browse/nearest-content-location-id": {
+    "/browse/nearest-content-location": {
       "get": {
         "tags": [
           "browse"
         ],
-        "summary": "Get nearest content location id",
-        "description": "Finds the nearest location the given resource holds content for and returns\nits ID or an empty string if no more content was found.",
-        "operationId": "getNearestContentLocationId",
+        "summary": "Get nearest content location",
+        "description": "Finds the nearest location the given resource holds content for and returns it.",
+        "operationId": "getNearestContentLocation",
         "security": [
           {
             "APIKeyCookie": []
@@ -547,8 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "title": "Response Get Nearest Content Location Id Browse Nearest Content Location Id Get"
+                  "$ref": "#/components/schemas/LocationRead"
                 }
               }
             }
@@ -563,113 +562,15 @@
             },
             "description": "Not Found"
           },
-          "422": {
-            "description": "Validation Error",
+          "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/TekstErrorModel"
                 }
               }
-            }
-          }
-        }
-      }
-    },
-    "/browse/locations/{id}/path/options-by-head": {
-      "get": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Get path options by head id",
-        "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as head.",
-        "operationId": "getPathOptionsByHeadId",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/LocationRead"
-                    }
-                  },
-                  "title": "Response Get Path Options By Head Id Browse Locations  Id  Path Options By Head Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/browse/locations/{id}/path/options-by-root": {
-      "get": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Get path options by root",
-        "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as root. At each level, the first option is taken\nas the basis for the next level.",
-        "operationId": "getPathOptionsByRoot",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/LocationRead"
-                    }
-                  },
-                  "title": "Response Get Path Options By Root Browse Locations  Id  Path Options By Root Get"
-                }
-              }
-            }
+            },
+            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -1746,6 +1647,92 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{id}/path-options/{by}": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Get path options by head id",
+        "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as head or root.",
+        "operationId": "getPathOptionsByHeadId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "description": "Location ID",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            },
+            "description": "Location ID"
+          },
+          {
+            "name": "by",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "root",
+                  "type": "string"
+                },
+                {
+                  "const": "head",
+                  "type": "string"
+                }
+              ],
+              "description": "Wheter to handle the given location as path root or head",
+              "title": "By"
+            },
+            "description": "Wheter to handle the given location as path root or head"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/LocationRead"
+                    }
+                  },
+                  "title": "Response Get Path Options By Head Id Locations  Id  Path Options  By  Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
           },
           "422": {
             "description": "Validation Error",

@@ -87,8 +87,8 @@ async function updateSelectModels(fromLvl: number = 0) {
     return;
   }
   // load location path options from location selected at lvl as root
-  const { data: locations, error } = await GET('/browse/locations/{id}/path/options-by-root', {
-    params: { path: { id: locationSelectModels.value[fromLvl].selected || '' } },
+  const { data: locations, error } = await GET('/locations/{id}/path-options/{by}', {
+    params: { path: { id: locationSelectModels.value[fromLvl].selected || '', by: 'root' } },
   });
   if (error) {
     updateModel();
@@ -131,12 +131,9 @@ async function initSelectModels() {
   if (!reqLocId) {
     return;
   }
-  const { data: locationsOptions, error } = await GET(
-    '/browse/locations/{id}/path/options-by-head',
-    {
-      params: { path: { id: reqLocId } },
-    }
-  );
+  const { data: locationsOptions, error } = await GET('/locations/{id}/path-options/{by}', {
+    params: { path: { id: reqLocId, by: 'head' } },
+  });
 
   if (error) {
     message.error($t('errors.unexpected'), error);

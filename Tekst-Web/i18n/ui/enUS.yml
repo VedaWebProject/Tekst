@@ -233,9 +233,9 @@ browse:
         coverageRangesMissing: 'Contents are missing for the following locations:'
       deactivateWidget:
         title: Hide
-      siblingsWidget:
+      contextWidget:
         title: Show context
-        noSiblings: There are no contents for subordinate locations.
+        noContext: There are no contents for this context.
       exportWidget:
         title: Export
         format: Format

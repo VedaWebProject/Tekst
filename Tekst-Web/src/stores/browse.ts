@@ -49,7 +49,7 @@ export const useBrowseStore = defineStore('browse', () => {
       return;
     }
     // request location data
-    const { data: locationData, error } = await GET('/browse/location-data', {
+    const { data: locationData, error } = await GET('/browse', {
       params: {
         query: locId ? { id: locId } : { txt: state.text?.id },
       },

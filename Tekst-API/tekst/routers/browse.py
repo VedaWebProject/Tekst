@@ -2,7 +2,7 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import In, NotIn
-from fastapi import APIRouter, Path, Query, status
+from fastapi import APIRouter, Query, status
 
 from tekst import errors
 from tekst.auth import OptionalUserDep
@@ -27,7 +27,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/content-siblings",
+    "/context",
     response_model=list[AnyContentRead],
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
@@ -36,7 +36,7 @@ router = APIRouter(
         ]
     ),
 )
-async def get_content_siblings(
+async def get_content_context(
     user: OptionalUserDep,
     resource_id: Annotated[
         PydanticObjectId,
@@ -49,7 +49,7 @@ async def get_content_siblings(
         PydanticObjectId | None,
         Query(
             alias="parent",
-            description="ID of location for which siblings to get contents for",
+            description="ID of parent location to get child contents for",
         ),
     ] = None,
 ) -> list[ContentBaseDocument]:
@@ -109,7 +109,7 @@ async def get_content_siblings(
 
 
 @router.get(
-    "/location-data",
+    "",
     response_model=LocationData,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
@@ -267,15 +267,18 @@ async def get_location_data(
 
 
 @router.get(
-    "/nearest-content-location-id",
+    "/nearest-content-location",
     status_code=status.HTTP_200_OK,
+    response_model=LocationRead,
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_404_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
         ]
     ),
 )
-async def get_nearest_content_location_id(
+async def get_nearest_content_location(
     user: OptionalUserDep,
     location_id: Annotated[
         PydanticObjectId,
@@ -301,10 +304,9 @@ async def get_nearest_content_location_id(
             ),
         ),
     ] = "after",
-) -> str:
+) -> LocationDocument:
     """
-    Finds the nearest location the given resource holds content for and returns
-    its ID or an empty string if no more content was found.
+    Finds the nearest location the given resource holds content for and returns it.
     """
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -341,7 +343,7 @@ async def get_nearest_content_location_id(
         .to_list()
     )
     if not locations:  # pragma: no cover
-        return ""
+        raise errors.E_404_NOT_FOUND
 
     # get contents for these locations
     contents = (
@@ -357,7 +359,7 @@ async def get_nearest_content_location_id(
         .to_list()
     )
     if not contents:  # pragma: no cover
-        return ""
+        raise errors.E_404_NOT_FOUND
 
     # find out nearest of those locations with contents
     locations = [
@@ -367,67 +369,7 @@ async def get_nearest_content_location_id(
     ]
 
     if len(locations) == 0:  # pragma: no cover
-        return ""
+        raise errors.E_404_NOT_FOUND
 
     # return ID of nearest location with contents of the target resource
-    return str(locations[0].get("_id"))
-
-
-@router.get(
-    "/locations/{id}/path/options-by-head",
-    response_model=list[list[LocationRead]],
-    status_code=status.HTTP_200_OK,
-)
-async def get_path_options_by_head_id(
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> list[list[LocationDocument]]:
-    """
-    Returns the options for selecting text locations derived from the location path of
-    the location with the given ID as head.
-    """
-    location_doc = await LocationDocument.get(location_id)
-    if not location_doc:
-        return []
-    # construct options for this path up to root location
-    options = []
-    while location_doc:
-        siblings = (
-            await LocationDocument.find(
-                LocationDocument.text_id == location_doc.text_id,
-                LocationDocument.parent_id == location_doc.parent_id,
-            )
-            .sort(+LocationDocument.position)
-            .to_list()
-        )
-        options.insert(0, siblings)
-        location_doc = await LocationDocument.get(location_doc.parent_id)
-    return options
-
-
-@router.get(
-    "/locations/{id}/path/options-by-root",
-    response_model=list[list[LocationRead]],
-    status_code=status.HTTP_200_OK,
-)
-async def get_path_options_by_root(
-    location_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> list[list[LocationDocument]]:
-    """
-    Returns the options for selecting text locations derived from the location path of
-    the location with the given ID as root. At each level, the first option is taken
-    as the basis for the next level.
-    """
-    location_doc = await LocationDocument.get(location_id)
-    if not location_doc:
-        return []
-    # construct options for this path up to max_level
-    options = []
-    while location_doc:
-        children = await LocationDocument.find(
-            LocationDocument.parent_id == location_doc.id
-        ).to_list()
-        if len(children) == 0:
-            break
-        options.append(children)
-        location_doc = children[0]
-    return options
+    return await LocationDocument.get(locations[0].get("_id"))

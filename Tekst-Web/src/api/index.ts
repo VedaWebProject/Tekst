@@ -23,13 +23,13 @@ const interceptors: Middleware = {
   },
   // intercept responses
   async onResponse({ response }) {
+    if (response.ok) return;
+    const { message } = useMessages();
     const responseBodyText = await response.clone().text();
-    if (response.ok) {
-      return;
-    } else if (response.status === 401) {
+
+    if (response.status === 401) {
       // automatically log out on a 401 response
       if (!response.url.endsWith('/logout')) {
-        const { message } = useMessages();
         const auth = useAuthStore();
         if (auth.loggedIn) {
           message.warning($t('account.sessionExpired'));
@@ -42,13 +42,14 @@ const interceptors: Middleware = {
       }
     } else if (response.status === 403 && responseBodyText.includes('CSRF')) {
       // show CSRF/XSRF error on 403 response mentioning CSRF
-      const { message } = useMessages();
       message.error($t('errors.csrf'));
-    } else if (response.status >= 400) {
-      // it's some kind of error, so pass the response body to the error message util
+    } else if (response.status === 500) {
+      message.error($t('errors.unexpected'));
+    } else if (response.status >= 400 && response.status !== 404) {
+      // it's some other kind of error,
+      // so pass the response body to the error message util...
       try {
-        const responseJson = await response.clone().json();
-        useErrors().msg(responseJson);
+        useErrors().msg(await response.clone().json());
       } catch (e) {
         console.error(e);
       }
@@ -244,7 +245,7 @@ export type ResourceExportFormat = NonNullable<
 
 // browse
 
-export type LocationDataQuery = paths['/browse/location-data']['get']['parameters']['query'];
+export type LocationDataQuery = paths['/browse']['get']['parameters']['query'];
 
 // bookmark
 
