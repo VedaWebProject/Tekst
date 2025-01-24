@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
 import { CompressIcon, ExpandIcon } from '@/icons';
 import { useElementSize } from '@vueuse/core';
 import { NButton, NIcon } from 'naive-ui';
@@ -17,8 +16,6 @@ const props = withDefaults(
   {
     collapsable: true,
     heightTreshPx: 150,
-    collapseText: $t('general.collapseAction'),
-    expandText: $t('general.expandAction'),
     scrollable: true,
     showBtnText: true,
   }
@@ -57,7 +54,11 @@ const isCollapsed = computed(() => isCollapsable.value && collapsed.value);
         <n-icon :component="isCollapsed ? ExpandIcon : CompressIcon" />
       </template>
       <template v-if="showBtnText">
-        {{ isCollapsed ? expandText : collapseText }}
+        {{
+          isCollapsed
+            ? expandText || $t('general.expandAction')
+            : collapseText || $t('general.collapseAction')
+        }}
       </template>
     </n-button>
   </div>

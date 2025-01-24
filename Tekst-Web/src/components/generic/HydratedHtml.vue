@@ -116,7 +116,11 @@ onMounted(hydrate);
     :title="modalId && modalTitles[modalId]"
     width="wide"
   >
-    <hydrated-html :html="modalId && modalHtml[modalId]" :style="style" @click-location-ref="showModal = false"/>
+    <hydrated-html
+      :html="modalId && modalHtml[modalId]"
+      :style="style"
+      @click-location-ref="showModal = false"
+    />
   </generic-modal>
 </template>
 
