@@ -80,7 +80,7 @@ const fromChildLevel = computed(
           class="content-header-title"
           :class="{ reduced: browse.reducedView, b: browse.reducedView }"
         >
-          <span>
+          <span class="text-large">
             <translation-display v-if="resource.title" :value="resource.title" />
           </span>
           <n-icon
@@ -201,7 +201,6 @@ const fromChildLevel = computed(
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: var(--font-size-large);
   color: var(--accent-color);
   overflow: hidden;
   text-overflow: ellipsis;
