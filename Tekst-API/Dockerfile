@@ -29,7 +29,7 @@ ENV PYTHONFAULTHANDLER=1 \
 
 FROM base AS builder
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-COPY --from=ghcr.io/astral-sh/uv:0.5.21 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.5.24 /uv /uvx /bin/
 
 WORKDIR "$WORKDIR_PATH"
 COPY ./uv.lock* ./pyproject.toml README.md LICENSE ./
