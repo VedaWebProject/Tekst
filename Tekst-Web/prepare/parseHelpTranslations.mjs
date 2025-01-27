@@ -1,10 +1,9 @@
-import { copyFileSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { readdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { marked } from 'marked';
 import path from 'path';
 
 const SOURCE_DIR = path.normalize('i18n/help/');
 const TARGET_DIR = path.normalize('src/assets/i18n/help/');
-const DOCS_PATH = path.normalize('../docs/generated/help/');
 
 const localeDirs = readdirSync(SOURCE_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
@@ -29,14 +28,6 @@ for (const d of readdirSync(TARGET_DIR, { withFileTypes: true }).filter(
 )) {
   rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
 }
-if (existsSync(DOCS_PATH)) {
-  console.log(`🗑 Deleting old help text translations in ${DOCS_PATH} ...`);
-  for (const d of readdirSync(DOCS_PATH, { withFileTypes: true }).filter(
-    (entry) => entry.name !== 'README.md' && entry.name !== '.gitignore'
-  )) {
-    rmSync(path.join(d.parentPath, d.name), { recursive: true, force: true });
-  }
-}
 
 // parse current markdown help texts
 console.log(`🗘 Processing help text translations in ${SOURCE_DIR} ...`);
@@ -49,10 +40,6 @@ for (const localeDir of localeDirs) {
 
   for (const mdFile of mdFiles) {
     const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
-    // copy file to documentation folder
-    if (localeDir.name === 'enUS' && existsSync(DOCS_PATH)) {
-      copyFileSync(sourceFilePath, path.join(DOCS_PATH, mdFile.name));
-    }
     const data = readFileSync(sourceFilePath, 'utf8');
     const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but simple!
     const html = marked.parse(data);

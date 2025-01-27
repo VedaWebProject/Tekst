@@ -28,7 +28,7 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets:
-      base_path: ["./generated/help/"]
+      base_path: ["../Tekst-Web/i18n/help/enUS"]
       check_paths: true
   - pymdownx.superfences
 
