@@ -8,4 +8,4 @@ To run the development server for locally previewing changes in the documentatio
 docker compose -f dev/compose.yml --profile docs -p tekst-docs up
 ```
 
-Then, visit the URL shown in the terminal using your web browser.
+Then, visit `http://127.0.0.1:8091` using your web browser.

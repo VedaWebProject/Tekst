@@ -113,13 +113,6 @@ services:
       - ../Tekst-Web/i18n/help/enUS:/Tekst-Web/i18n/help/enUS:ro
     ports:
       - 127.0.0.1:8091:8000
-    post_start:
-      - command:
-          [
-            "sh",
-            "-c",
-            "echo Documentation dev server running on http://127.0.0.1:8091",
-          ]
     profiles:
       - docs
 
