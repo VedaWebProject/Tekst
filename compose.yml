@@ -1,111 +1,111 @@
 services:
-    web:
-        build:
-            context: ./Tekst-Web
-            target: prod
-            args:
-                SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
-                API_PATH: ${TEKST_API_PATH:-/api}
-                WEB_PATH: ${TEKST_WEB_PATH:-/}
-        image: "tekst-web:custom"
-        environment:
-            TEKST_SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
-            TEKST_API_PATH: ${TEKST_API_PATH:-/api}
-        volumes:
-            - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
-            - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-        restart: always
-        ports:
-            - "127.0.0.1:8087:80"
-        networks:
-            - api
+  web:
+    build:
+      context: ./Tekst-Web
+      target: prod
+      args:
+        SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
+        API_PATH: ${TEKST_API_PATH:-/api}
+        WEB_PATH: ${TEKST_WEB_PATH:-/}
+    image: "tekst-web:custom"
+    environment:
+      TEKST_SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
+      TEKST_API_PATH: ${TEKST_API_PATH:-/api}
+    volumes:
+      - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    restart: always
+    ports:
+      - "127.0.0.1:8087:80"
+    networks:
+      - api
 
-    api:
-        build:
-            context: ./Tekst-API
-            target: prod
-        image: "tekst-api:custom"
-        restart: always
-        init: true
-        depends_on:
-            mongo:
-                condition: service_healthy
-                restart: true
-            es:
-                condition: service_healthy
-                restart: true
-        env_file: .env
-        volumes:
-            - ./deploy/gunicorn/gunicorn_conf.py:/etc/gunicorn/gunicorn_conf.py:ro
-        networks:
-            - api
-            - mongo
-            - es
+  api:
+    build:
+      context: ./Tekst-API
+      target: prod
+    image: "tekst-api:custom"
+    restart: always
+    init: true
+    depends_on:
+      mongo:
+        condition: service_healthy
+        restart: true
+      es:
+        condition: service_healthy
+        restart: true
+    env_file: .env
+    volumes:
+      - ./deploy/gunicorn/gunicorn_conf.py:/etc/gunicorn/gunicorn_conf.py:ro
+    networks:
+      - api
+      - mongo
+      - es
 
-    mongo:
-        image: mongo:8
-        restart: always
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
-            MONGO_INITDB_ROOT_PASSWORD: ${TEKST_DB__PASSWORD}
-        volumes:
-            - mongo_configdb:/data/configdb
-            - mongo_db:/data/db
-        networks:
-            - mongo
-        command:
-            [
-                "mongod",
-                "--quiet",
-                "--setParameter",
-                "diagnosticDataCollectionEnabled=false",
-            ]
-        healthcheck:
-            test: echo "db.getMongo()" | mongosh --norc --quiet --host=localhost:27017
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-            start_period: 1m
-            start_interval: 5s
+  mongo:
+    image: mongo:8
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${TEKST_DB__PASSWORD}
+    volumes:
+      - mongo_configdb:/data/configdb
+      - mongo_db:/data/db
+    networks:
+      - mongo
+    command:
+      [
+        "mongod",
+        "--quiet",
+        "--setParameter",
+        "diagnosticDataCollectionEnabled=false",
+      ]
+    healthcheck:
+      test: echo "db.getMongo()" | mongosh --norc --quiet --host=localhost:27017
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+      start_interval: 5s
 
-    es:
-        build:
-            context: ./deploy/elasticsearch
-        image: "elasticsearch:tekst"
-        environment:
-            discovery.type: single-node
-            xpack.security.enabled: false
-            logger.level: WARN
-        deploy:
-            resources:
-                limits:
-                    memory: 2G
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
-            nofile:
-                soft: 65536
-                hard: 65536
-        restart: always
-        volumes:
-            - es_data:/usr/share/elasticsearch/data
-        networks:
-            - es
-        healthcheck:
-            test: curl -f http://localhost:9200
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-            start_period: 3m
-            start_interval: 5s
+  es:
+    build:
+      context: ./deploy/elasticsearch
+    image: "elasticsearch:tekst"
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      logger.level: WARN
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: always
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - es
+    healthcheck:
+      test: curl -f http://localhost:9200
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 3m
+      start_interval: 5s
 
 volumes:
-    mongo_configdb:
-    mongo_db:
-    es_data:
+  mongo_configdb:
+  mongo_db:
+  es_data:
 
 networks:
-    api:
-    mongo:
-    es:
+  api:
+  mongo:
+  es:

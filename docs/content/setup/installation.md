@@ -6,7 +6,7 @@ The follwing requirements apply to either deployment strategy. Each deployment s
 
 - A server to deploy Tekst to (the deployment instructions below assume a Linux-based server with Docker and Docker Compose installed, as this is the recommended setup strategy)
 - A webserver configured to handle traffic between the outside world and Tekst **via HTTPS** (!)
-- Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](../index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
+- Access to a working, reliable **SMTP server** to send out emails containing verification links, password reset links, etc. It is important that this SMTP server is well-configured so the emails it sends actually reach their recepients. Whether you use a third-party SMTP server (like the one of your email provider) or your own self-hosted one is up to you. If you plan to run Tekst in [closed mode](../administration/index.md#closed-mode) (only one or more administrators, no public users who can create content), this requirement is **not strictly necessary**.
 
 ## Configuration
 
@@ -126,7 +126,8 @@ The following steps are just a rough outline of the deployment process:
 3. Copy `Tekst-Web/.env` to `Tekst-Web/.env.production`
 4. Configure the client (Tekst-Web) via the `Tekst-Web/.env.production` file
 5. Build the client: `npm run build-only`
-6. Make your webserver serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 3
+6. Make your web server serve the built client files (in `Tekst-Web/dist`) at the URL you configured in step 3
 7. Copy `Tekst-API/.env` to `Tekst-API/.env.prod`
 8. Configure the server (Tekst-API) via `Tekst-API/.env.prod`
 9. Run the server (Tekst-API) via the WSGI you have installed, using ASGI workers
+10. Configure your web server to reverse-proxy requests to the configured server URL + API path to the local port your WSGI server is serving the Tekst API on

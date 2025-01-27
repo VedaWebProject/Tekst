@@ -5,14 +5,17 @@ repo_name: VedaWebProject/Tekst
 site_description: A tool for creating open collaborative text research platforms
 
 nav:
-  - What is Tekst?: index.md
-  - Concepts: concepts.md
+  - Introduction:
+      - index.md
+      - concepts.md
   - Setup:
-    - setup/installation.md
-    - setup/configuration.md
-    - setup/customization.md
+      - setup/installation.md
+      - setup/configuration.md
+      - setup/customization.md
   - User Guide:
-    - usage/resources.md
+      - usage/resources.md
+  - Administration:
+      - administration/index.md
 
 plugins:
   - search
@@ -39,23 +42,30 @@ theme:
     - navigation.instant.progress
     - navigation.sections
     - navigation.expand
+    - navigation.tabs
     - navigation.top
+    - navigation.tracking
     - content.code.copy
     - search.suggest
     - search.highlight
     - search.share
+    - toc.follow
   palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: white
-      accent: indigo
+      primary: black
+      accent: blue
       toggle:
         icon: material/brightness-4
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
-      accent: indigo
+      accent: blue
       toggle:
         icon: material/brightness-7
         name: Switch to light mode

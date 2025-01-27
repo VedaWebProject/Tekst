@@ -1,113 +1,131 @@
 services:
-    caddy:
-        image: "caddy:2.9-alpine"
-        volumes:
-            - "./caddy:/etc/caddy/:ro"
-            - "./static:/var/www/tekst/static/:ro"
-        network_mode: "host"
-        profiles:
-            - dev
+  caddy:
+    image: "caddy:2.9-alpine"
+    restart: unless-stopped
+    volumes:
+      - "./caddy:/etc/caddy/:ro"
+      - "./static:/var/www/tekst/static/:ro"
+    network_mode: "host"
+    profiles:
+      - dev
 
-    mongo:
-        image: mongo:8
-        restart: always
-        init: true
-        volumes:
-            - mongo_configdb:/data/configdb
-            - mongo_db:/data/db
-        ports:
-            - 127.0.0.1:27017:27017
-        networks:
-            - devstack
-        profiles:
-            - dev
-            - test
-        command: mongod --setParameter diagnosticDataCollectionEnabled=false
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    init: true
+    volumes:
+      - mongo_configdb:/data/configdb
+      - mongo_db:/data/db
+    ports:
+      - 127.0.0.1:27017:27017
+    networks:
+      - devstack
+    profiles:
+      - dev
+      - test
+    command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
-    es:
-        build:
-            context: ../deploy/elasticsearch
-        image: "elasticsearch:tekst"
-        deploy:
-            resources:
-                limits:
-                    memory: 2G
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
-            nofile:
-                soft: 65536
-                hard: 65536
-        restart: always
-        init: true
-        volumes:
-            - es_data:/usr/share/elasticsearch/data
-        ports:
-            - 127.0.0.1:9200:9200
-        environment:
-            discovery.type: single-node
-            xpack.security.enabled: false
-            ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
-        profiles:
-            - dev
-            - test
+  es:
+    build:
+      context: ../deploy/elasticsearch
+    image: "elasticsearch:tekst"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: unless-stopped
+    init: true
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - 127.0.0.1:9200:9200
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
+    profiles:
+      - dev
+      - test
 
-    mongo-express:
-        image: mongo-express:1
-        restart: always
-        init: true
-        depends_on:
-            - mongo
-        ports:
-            - 127.0.0.1:8081:8081
-        environment:
-            ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
-            ME_CONFIG_BASICAUTH: false
-            ME_CONFIG_BASICAUTH_USERNAME: ""
-            ME_CONFIG_BASICAUTH_PASSWORD: ""
-        networks:
-            - devstack
-        profiles:
-            - dev
+  mongo-express:
+    image: mongo-express:1
+    restart: unless-stopped
+    init: true
+    depends_on:
+      - mongo
+    ports:
+      - 127.0.0.1:8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_BASICAUTH_USERNAME: ""
+      ME_CONFIG_BASICAUTH_PASSWORD: ""
+    networks:
+      - devstack
+    profiles:
+      - dev
 
-    elasticvue:
-        image: cars10/elasticvue
-        restart: always
-        init: true
-        depends_on:
-            - es
-        ports:
-            - 127.0.0.1:9280:8080
-        environment:
-            ELASTICVUE_CLUSTERS: '[{"name": "Tekst-DEV-ES", "uri": "http://127.0.0.1:9200"}]'
-        networks:
-            - devstack
-        profiles:
-            - dev
+  elasticvue:
+    image: cars10/elasticvue:1.4.0
+    restart: unless-stopped
+    init: true
+    depends_on:
+      - es
+    ports:
+      - 127.0.0.1:9280:8080
+    environment:
+      ELASTICVUE_CLUSTERS: '[{"name": "Tekst-DEV-ES", "uri": "http://127.0.0.1:9200"}]'
+    networks:
+      - devstack
+    profiles:
+      - dev
 
-    mailpit:
-        image: axllent/mailpit:v1.22
-        restart: always
-        init: true
-        volumes:
-            - ./smtp-ssl:/smtp-ssl:ro
-        ports:
-            - 127.0.0.1:1025:1025
-            - 127.0.0.1:8025:8025
-        environment:
-            MP_SMTP_AUTH_ACCEPT_ANY: true
-            MP_SMTP_AUTH_ALLOW_INSECURE: true
-            MP_SMTP_TLS_CERT: /smtp-ssl/localhost.crt
-            MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
-        profiles:
-            - dev
-            - test
+  mailpit:
+    image: axllent/mailpit:v1.22
+    restart: unless-stopped
+    init: true
+    volumes:
+      - ./smtp-ssl:/smtp-ssl:ro
+    ports:
+      - 127.0.0.1:1025:1025
+      - 127.0.0.1:8025:8025
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: true
+      MP_SMTP_AUTH_ALLOW_INSECURE: true
+      MP_SMTP_TLS_CERT: /smtp-ssl/localhost.crt
+      MP_SMTP_TLS_KEY: /smtp-ssl/localhost.key
+    profiles:
+      - dev
+      - test
+
+  docs:
+    image: squidfunk/mkdocs-material:9.5.50
+    restart: unless-stopped
+    volumes:
+      - ../docs:/docs:ro
+    ports:
+      - 127.0.0.1:8091:8000
+    post_start:
+      - command:
+          [
+            "sh",
+            "-c",
+            "echo Documentation dev server running on http://127.0.0.1:8091",
+          ]
+    profiles:
+      - docs
 
 volumes:
-    mongo_configdb:
-    mongo_db:
-    es_data:
+  mongo_configdb:
+  mongo_db:
+  es_data:
 
 networks:
-    devstack:
+  devstack:
