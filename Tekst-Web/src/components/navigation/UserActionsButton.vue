@@ -131,6 +131,7 @@ function handleUserOptionSelect(key: string) {
     v-if="auth.loggedIn && !state.smallScreen"
     :options="userOptions"
     trigger="click"
+    placement="bottom-end"
     @select="handleUserOptionSelect"
   >
     <n-badge
