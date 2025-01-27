@@ -162,7 +162,6 @@ class RichTextContent(ContentBase):
         str,
         StringConstraints(
             max_length=102400,
-            strip_whitespace=True,
         ),
         Field(
             description="HTML content of the rich text content object",

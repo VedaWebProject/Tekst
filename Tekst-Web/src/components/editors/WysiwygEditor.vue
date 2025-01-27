@@ -417,16 +417,7 @@ onUnmounted(() => {
         />
       </div>
     </div>
-    <div
-      style="
-        margin: 0.5rem 0;
-        padding: 4px var(--gap-md);
-        border: 1px solid rgb(224, 224, 230);
-        border-radius: var(--border-radius);
-        max-height: 50vh;
-        overflow-y: scroll;
-      "
-    >
+    <div id="wysiwyg-container">
       <editor-content
         :editor="editor"
         :style="{ fontFamily: font || 'inherit' }"
@@ -439,6 +430,15 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+#wysiwyg-container {
+  margin: 0.5rem 0;
+  padding: 4px var(--gap-md);
+  border: 1px solid rgb(224, 224, 230);
+  border-radius: var(--border-radius);
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+
 .toolbar {
   display: flex;
   gap: 1rem;
