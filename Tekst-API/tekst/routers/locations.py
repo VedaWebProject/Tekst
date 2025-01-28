@@ -274,7 +274,7 @@ async def get_path_options_by_head_id(
         Path(alias="id", description="Location ID"),
     ],
     by: Annotated[
-        Literal["root"] | Literal["head"],
+        Literal["root", "head"],
         Path(description="Wheter to handle the given location as path root or head"),
     ],
 ) -> list[list[LocationDocument]]:
