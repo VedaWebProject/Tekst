@@ -85,7 +85,7 @@ class Bookmark(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
         val.CleanupMultiline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         ExcludeFromModelVariants(
             update=True,
         ),

@@ -1327,6 +1327,7 @@ export interface components {
       notes?: string | null;
       /**
        * Url
+       * Format: uri
        * @description URL to use for the HTTP (GET) call
        */
       url: string;
@@ -1367,6 +1368,7 @@ export interface components {
       notes?: string | null;
       /**
        * Url
+       * Format: uri
        * @description URL to use for the HTTP (GET) call
        */
       url: string;
@@ -1754,6 +1756,7 @@ export interface components {
     AudioFile: {
       /**
        * Url
+       * Format: uri
        * @description URL of the audio file
        */
       url: string;
@@ -2578,6 +2581,7 @@ export interface components {
     ExternalReferencesLink: {
       /**
        * Url
+       * Format: uri
        * @description URL of the link
        */
       url: string;
@@ -2990,6 +2994,7 @@ export interface components {
     ImageFile: {
       /**
        * Url
+       * Format: uri
        * @description URL of the image file
        */
       url: string;

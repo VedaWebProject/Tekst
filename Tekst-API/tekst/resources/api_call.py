@@ -3,9 +3,9 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
-from tekst.models.common import ModelBase
+from tekst.models.common import CustomHttpUrl, ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -133,12 +133,7 @@ class ApiCallContent(ContentBase):
 
     resource_type: Literal["apiCall"]  # camelCased resource type classname
     url: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=2083,
-            strip_whitespace=True,
-        ),
+        CustomHttpUrl,
         Field(
             description="URL to use for the HTTP (GET) call",
         ),

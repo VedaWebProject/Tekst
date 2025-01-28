@@ -73,7 +73,7 @@ class OskMode(ModelBase):
             max_length=32,
             strip_whitespace=True,
         ),
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
 
 

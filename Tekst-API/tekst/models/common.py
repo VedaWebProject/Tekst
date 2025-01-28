@@ -17,8 +17,11 @@ from beanie import (
 from humps import camelize, decamelize
 from pydantic import (
     BaseModel,
+    BeforeValidator,
     ConfigDict,
     Field,
+    HttpUrl,
+    PlainSerializer,
     StringConstraints,
     conint,
     conlist,
@@ -30,13 +33,27 @@ from pydantic.fields import FieldInfo
 from typing_extensions import TypeAliasType, TypedDict
 
 
-# type alias for available locale/language setting identifiers
-_platform_locales = ("deDE", "enUS")
-LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
-TranslationLocaleKey = TypeAliasType(
-    "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
-)
+# GENERAL TYPES
 
+CustomHttpUrl = Annotated[
+    HttpUrl,
+    PlainSerializer(
+        str,
+        return_type=str,
+    ),
+]
+
+OptionalCustomHttpUrl = Annotated[
+    HttpUrl | None,
+    BeforeValidator(lambda v: v or None),
+    PlainSerializer(
+        lambda v: str(v) if v is not None else None,
+        return_type=str,
+    ),
+]
+
+
+# LOCATION-SPECIFIC PROPERTY TYPES
 
 LocationLevel = conint(
     ge=0,
@@ -53,11 +70,17 @@ LocationAlias = constr(
     strip_whitespace=True,
 )
 
+
+# RESOURCE-SPECIFIC PROPERTY TYPES
+
 ResourceTypeName = constr(
     min_length=1,
     max_length=32,
     strip_whitespace=True,
 )
+
+
+# ANNOTATIONS FOR MODYFYING MODEL VARIANTS
 
 
 class ExcludeFromModelVariants:
@@ -87,6 +110,16 @@ SchemaOptionalNullable = Field(json_schema_extra={"optionalNullable": True})
 SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
 
 
+# LOCALE AND TRANSLATION TYPES
+
+# type alias for available locale/language setting identifiers
+_platform_locales = ("deDE", "enUS")
+LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
+TranslationLocaleKey = TypeAliasType(
+    "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
+)
+
+
 class TranslationBase(TypedDict):
     locale: TranslationLocaleKey
 
@@ -96,6 +129,9 @@ Translations = conlist(
     T,
     max_length=len(get_args(TranslationLocaleKey.__value__)),
 )
+
+
+# MODEL BASE CLASSES
 
 
 class ModelBase(BaseModel):
@@ -207,6 +243,9 @@ class UpdateBase(BaseModel):
         cls.model_rebuild(force=True)
 
 
+# MODEL FACTORY MIXIN
+
+
 class ModelFactoryMixin:
     _document_model: type[DocumentBase] = None
     _create_model: type[ModelBase] = None
@@ -294,6 +333,9 @@ class ModelFactoryMixin:
                 **field_overrides,
             )
         return cls._update_model
+
+
+# PRECOMPUTED DATA
 
 
 class PrecomputedDataDocument(ModelBase, DocumentBase):

@@ -431,6 +431,6 @@ export const bookmarkFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const wysiwygEditorFormRules: Record<string, FormItemRule[]> = {
-  imageUrl: [minMaxCharsRule(0, 5000, undefined)],
-  linkUrl: [minMaxCharsRule(0, 5000, undefined)],
+  imageUrl: [minMaxCharsRule(0, 2083, undefined)],
+  linkUrl: [minMaxCharsRule(0, 2083, undefined)],
 };

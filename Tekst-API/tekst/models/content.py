@@ -50,7 +50,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
         val.CleanupMultiline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         Field(
             description=(
                 "Plain text, potentially multiline comment "
@@ -65,7 +65,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             strip_whitespace=True,
         ),
         val.CleanupMultiline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         Field(
             description=(
                 "Plain text, potentially multiline working notes on this content "

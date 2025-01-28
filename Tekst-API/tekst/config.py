@@ -16,8 +16,6 @@ from pydantic import (
     DirectoryPath,
     EmailStr,
     Field,
-    HttpUrl,
-    PlainSerializer,
     StringConstraints,
     computed_field,
     field_validator,
@@ -25,20 +23,11 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
+from tekst.models.common import CustomHttpUrl, OptionalCustomHttpUrl
 from tekst.utils import validators as val
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
-
-
-# Pydantic HttpUrl with added string serialization
-CustomHttpUrl = Annotated[
-    HttpUrl,
-    PlainSerializer(
-        lambda url: str(url),
-        return_type=str,
-    ),
-]
 
 
 class ConfigSubSection(BaseModel):
@@ -227,7 +216,7 @@ class ApiDocConfig(ConfigSubSection):
             max_length=256,
         ),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
     description: Annotated[
         str | None,
@@ -236,37 +225,27 @@ class ApiDocConfig(ConfigSubSection):
         ),
         val.CleanupMultiline,
     ] = None
-    terms_url: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(max_length=512),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = None
+    terms_url: OptionalCustomHttpUrl = None
     contact_name: Annotated[
         str | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
     contact_email: Annotated[
         EmailStr | None,
         StringConstraints(max_length=64),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
-    contact_url: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(max_length=512),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = None
+    contact_url: OptionalCustomHttpUrl = None
     license_name: Annotated[
         str | None,
         StringConstraints(
             max_length=32,
         ),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
     license_id: Annotated[
         str | None,
@@ -274,16 +253,9 @@ class ApiDocConfig(ConfigSubSection):
             max_length=32,
         ),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
-    license_url: Annotated[
-        CustomHttpUrl | None,
-        StringConstraints(
-            max_length=512,
-        ),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
-    ] = None
+    license_url: OptionalCustomHttpUrl = None
 
 
 class CORSConfig(ConfigSubSection):

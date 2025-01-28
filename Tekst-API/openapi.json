@@ -1690,16 +1690,11 @@
             "in": "path",
             "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "const": "root",
-                  "type": "string"
-                },
-                {
-                  "const": "head",
-                  "type": "string"
-                }
+              "enum": [
+                "root",
+                "head"
               ],
+              "type": "string",
               "description": "Wheter to handle the given location as path root or head",
               "title": "By"
             },
@@ -7513,6 +7508,7 @@
             "type": "string",
             "maxLength": 2083,
             "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "URL to use for the HTTP (GET) call"
           }
@@ -7589,6 +7585,7 @@
             "type": "string",
             "maxLength": 2083,
             "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "URL to use for the HTTP (GET) call"
           }
@@ -7644,7 +7641,8 @@
               {
                 "type": "string",
                 "maxLength": 2083,
-                "minLength": 1
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -8429,6 +8427,7 @@
             "type": "string",
             "maxLength": 2083,
             "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "URL of the audio file"
           },
@@ -8436,7 +8435,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2083
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -10132,6 +10133,7 @@
             "type": "string",
             "maxLength": 2083,
             "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "URL of the link"
           },
@@ -10962,6 +10964,7 @@
             "type": "string",
             "maxLength": 2083,
             "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "URL of the image file"
           },
@@ -10969,7 +10972,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2083
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -10982,7 +10987,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 2083
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -16747,7 +16754,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1024
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -17063,7 +17072,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1024
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -17186,7 +17197,10 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -17343,7 +17357,9 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1024
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"

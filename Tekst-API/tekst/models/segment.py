@@ -50,7 +50,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             max_length=32,
         ),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         Field(
             description="Title of this segment",
         ),

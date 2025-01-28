@@ -14,7 +14,7 @@ class CommonResourceConfig(ModelBase):
             max_length=16,
             strip_whitespace=True,
         ),
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         Field(
             description="Resource category key",
         ),

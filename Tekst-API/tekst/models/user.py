@@ -13,9 +13,14 @@ from pymongo import IndexModel
 from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
+from tekst.models.common import (
+    LocaleKey,
+    ModelBase,
+    ModelFactoryMixin,
+    OptionalCustomHttpUrl,
+)
 from tekst.models.notifications import TemplateIdentifier
-from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyStringToNone
+from tekst.utils.validators import CleanupMultiline, CleanupOneline, FalsyToNone
 
 
 _cfg: TekstConfig = get_config()
@@ -73,7 +78,7 @@ class UserReadPublic(ModelBase):
     username: str
     name: str | None = None
     affiliation: str | None = None
-    avatar_url: str | None = None
+    avatar_url: OptionalCustomHttpUrl = None
     bio: str | None = None
     is_active: bool
     is_superuser: bool
@@ -116,21 +121,14 @@ class User(ModelBase, ModelFactoryMixin):
         CleanupOneline,
     ]
     locale: LocaleKey | None = None
-    avatar_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=1024,
-        ),
-        CleanupOneline,
-        EmptyStringToNone,
-    ] = None
+    avatar_url: OptionalCustomHttpUrl = None
     bio: Annotated[
         str | None,
         StringConstraints(
             max_length=2000,
         ),
         CleanupMultiline,
-        EmptyStringToNone,
+        FalsyToNone,
     ] = None
     public_fields: MaybePrivateUserFields = []
     user_notification_triggers: UserNotificationTriggers = list(

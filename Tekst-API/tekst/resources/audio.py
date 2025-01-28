@@ -5,7 +5,12 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase, SchemaOptionalNullable
+from tekst.models.common import (
+    CustomHttpUrl,
+    ModelBase,
+    OptionalCustomHttpUrl,
+    SchemaOptionalNullable,
+)
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -158,24 +163,13 @@ class AudioResource(ResourceBase):
 
 class AudioFile(ModelBase):
     url: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        CustomHttpUrl,
         Field(
             description="URL of the audio file",
         ),
     ]
     source_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        OptionalCustomHttpUrl,
         Field(
             description="URL of the source website of the image",
         ),

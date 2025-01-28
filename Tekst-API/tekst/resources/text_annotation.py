@@ -372,7 +372,7 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
             ),
         ),
         val.CleanupMultiline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
     ] = None
     multi_value_delimiter: Annotated[
         str,

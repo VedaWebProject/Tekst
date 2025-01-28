@@ -204,7 +204,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             max_length=1000,
         ),
         val.CleanupOneline,
-        val.EmptyStringToNone,
+        val.FalsyToNone,
         Field(
             description="Citation details for this resource",
         ),
