@@ -7516,7 +7516,22 @@
           "query": {
             "type": "string",
             "title": "Query",
-            "description": "Query payload to use for the API call"
+            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 10240,
+                "minLength": 1
+              }
+            ],
+            "title": "Extra",
+            "description": "Extra data that should be made available to the transformation script.",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -7592,7 +7607,22 @@
           "query": {
             "type": "string",
             "title": "Query",
-            "description": "Query payload to use for the API call"
+            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 10240,
+                "minLength": 1
+              }
+            ],
+            "title": "Extra",
+            "description": "Extra data that should be made available to the transformation script.",
+            "optionalNullable": false
           }
         },
         "additionalProperties": true,
@@ -7653,7 +7683,22 @@
               }
             ],
             "title": "Query",
-            "description": "Query payload to use for the API call",
+            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.",
+            "optionalNullable": false
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 10240,
+                "minLength": 1
+              }
+            ],
+            "title": "Extra",
+            "description": "Extra data that should be made available to the transformation script.",
             "optionalNullable": false
           }
         },
@@ -7687,8 +7732,7 @@
               "endpoint": "https://api.example.com/v2/some/endpoint",
               "method": "GET",
               "contentType": "application/json",
-              "transformDeps": [],
-              "transformJs": ""
+              "transformDeps": []
             }
           }
         },
@@ -7805,8 +7849,7 @@
                 "contentType": "application/json",
                 "endpoint": "https://api.example.com/v2/some/endpoint",
                 "method": "GET",
-                "transformDeps": [],
-                "transformJs": ""
+                "transformDeps": []
               }
             }
           }
@@ -8047,8 +8090,7 @@
                 "contentType": "application/json",
                 "endpoint": "https://api.example.com/v2/some/endpoint",
                 "method": "GET",
-                "transformDeps": [],
-                "transformJs": ""
+                "transformDeps": []
               }
             }
           },
@@ -8280,11 +8322,18 @@
             "default": []
           },
           "transformJs": {
-            "type": "string",
-            "maxLength": 102400,
-            "minLength": 0,
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 0
+              }
+            ],
             "title": "Transformjs",
-            "default": ""
+            "optionalNullable": false
           }
         },
         "type": "object",

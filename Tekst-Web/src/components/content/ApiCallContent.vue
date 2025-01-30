@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type { ApiCallResourceRead } from '@/api';
+import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { HourglassIcon } from '@/icons';
 import { NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
+
+type ContentData = { query: ApiCallContentRead['query']; extra?: ApiCallContentRead['extra'] };
+type TransformationInput = { data: string; extra?: unknown };
 
 const props = withDefaults(
   defineProps<{
@@ -19,7 +22,9 @@ const fontStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
-const reqQueries = computed(() => props.resource.contents?.map((c) => c.query));
+const contents = computed(() =>
+  props.resource.contents?.map((c) => ({ query: c.query, extra: c.extra }))
+);
 const html = ref<(string | undefined)[]>([]);
 const loading = ref(false);
 
@@ -38,23 +43,34 @@ function prepareRequest(query: string): Request {
   }
 }
 
-function execTransformJs(transformFnBody?: string | null, data?: string): string {
-  if (!transformFnBody) return data || '';
-  return Function(`"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`).bind(
-    data
-  )();
+function execTransformJs(
+  transformFnBody?: string | null,
+  input: TransformationInput = { data: '' }
+): string {
+  if (!transformFnBody) return input.data;
+  try {
+    return Function(
+      `"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`
+    ).bind(input)();
+  } catch (e) {
+    console.log(e);
+    return input.data;
+  }
 }
 
-async function performApiCalls(queries?: string[]) {
-  if (!queries?.length) return;
+async function performApiCalls(contents?: ContentData[]) {
+  if (!contents?.length) return;
   loading.value = true;
-  html.value = Array(queries.length).fill(undefined);
-  for (const [i, q] of queries.entries()) {
-    if (!q) continue;
+  html.value = Array(contents.length).fill(undefined);
+  for (const [i, content] of contents.entries()) {
+    if (!content) continue;
     try {
-      const resp = await fetch(prepareRequest(q));
+      const resp = await fetch(prepareRequest(content.query));
       html.value[i] = resp.ok
-        ? execTransformJs(props.resource.config.apiCall.transformJs, await resp.text())
+        ? execTransformJs(props.resource.config.apiCall.transformJs, {
+            data: await resp.text(),
+            extra: !!content.extra ? JSON.parse(content.extra) : undefined,
+          })
         : undefined;
     } catch (e) {
       html.value[i] = undefined;
@@ -65,22 +81,22 @@ async function performApiCalls(queries?: string[]) {
 }
 
 watch(
-  reqQueries,
-  (newQueries, oldQueries) => {
-    if (!newQueries?.length) {
+  contents,
+  (newContents, oldContents) => {
+    if (!newContents?.length) {
       html.value = [];
       return;
-    } else if (JSON.stringify(newQueries) === JSON.stringify(oldQueries)) {
+    } else if (JSON.stringify(newContents) === JSON.stringify(oldContents)) {
       return;
     } else {
-      performApiCalls(newQueries);
+      performApiCalls(newContents);
     }
   },
   { deep: true }
 );
 
 onMounted(() => {
-  nextTick().then(() => performApiCalls(reqQueries.value));
+  nextTick().then(() => performApiCalls(contents.value));
 });
 </script>
 

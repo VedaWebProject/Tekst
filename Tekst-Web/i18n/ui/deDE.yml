@@ -553,8 +553,9 @@ resources:
       label: API-Abruf
       parenthesis: Abruf von Daten von einer HTTP-API
       contentFields:
-        queryString: URL Query String
+        queryString: URL-Query String
         body: Request Body
+        extra: Zusätzliche Daten für Transformationsfunktion (JSON)
 
 corrections:
   heading: Korrekturnotizen für "{title}"

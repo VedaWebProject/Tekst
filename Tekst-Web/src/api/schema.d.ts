@@ -1333,9 +1333,14 @@ export interface components {
       notes?: null | string;
       /**
        * Query
-       * @description Query payload to use for the API call
+       * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
        */
       query: string;
+      /**
+       * Extra
+       * @description Extra data that should be made available to the transformation script.
+       */
+      extra?: string;
     };
     /** ApiCallContentRead */
     ApiCallContentRead: {
@@ -1373,9 +1378,14 @@ export interface components {
       notes?: null | string;
       /**
        * Query
-       * @description Query payload to use for the API call
+       * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
        */
       query: string;
+      /**
+       * Extra
+       * @description Extra data that should be made available to the transformation script.
+       */
+      extra?: string;
     } & {
       [key: string]: unknown;
     };
@@ -1398,9 +1408,14 @@ export interface components {
       notes?: string;
       /**
        * Query
-       * @description Query payload to use for the API call
+       * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
        */
       query?: string;
+      /**
+       * Extra
+       * @description Extra data that should be made available to the transformation script.
+       */
+      extra?: string;
     };
     /** ApiCallResourceConfig */
     ApiCallResourceConfig: {
@@ -1420,8 +1435,7 @@ export interface components {
        *       "endpoint": "https://api.example.com/v2/some/endpoint",
        *       "method": "GET",
        *       "contentType": "application/json",
-       *       "transformDeps": [],
-       *       "transformJs": ""
+       *       "transformDeps": []
        *     } */
       apiCall: components['schemas']['ApiCallSpecificConfig'];
     };
@@ -1491,8 +1505,7 @@ export interface components {
        *         "contentType": "application/json",
        *         "endpoint": "https://api.example.com/v2/some/endpoint",
        *         "method": "GET",
-       *         "transformDeps": [],
-       *         "transformJs": ""
+       *         "transformDeps": []
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1614,8 +1627,7 @@ export interface components {
        *         "contentType": "application/json",
        *         "endpoint": "https://api.example.com/v2/some/endpoint",
        *         "method": "GET",
-       *         "transformDeps": [],
-       *         "transformJs": ""
+       *         "transformDeps": []
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1704,11 +1716,8 @@ export interface components {
        * @default []
        */
       transformDeps: string[];
-      /**
-       * Transformjs
-       * @default
-       */
-      transformJs: string;
+      /** Transformjs */
+      transformJs?: string;
     };
     /** AudioContentCreate */
     AudioContentCreate: {

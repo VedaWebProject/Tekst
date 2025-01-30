@@ -20,9 +20,11 @@ from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
+    ConStrOrNone,
     DefaultCollapsedValue,
     FontNameValueOrNone,
     HttpUrl,
+    SchemaOptionalNonNullable,
 )
 
 
@@ -132,12 +134,18 @@ class ApiCallSpecificConfig(ModelBase):
     ) = "application/json"
     transform_deps: Annotated[
         list[HttpUrl],
-        Field(min_length=0, max_length=32),
+        Field(
+            min_length=0,
+            max_length=32,
+        ),
     ] = []
-    transform_js: ConStr(
-        min_length=0,
-        max_length=102400,
-    ) = ""
+    transform_js: Annotated[
+        ConStrOrNone(
+            min_length=0,
+            max_length=102400,
+        ),
+        SchemaOptionalNonNullable,
+    ] = None
 
     @model_validator(mode="after")
     def validate_config(self):
@@ -173,6 +181,21 @@ class ApiCallContent(ContentBase):
             max_length=102400,
         ),
         Field(
-            description="Query payload to use for the API call",
+            description=(
+                "Query payload to use for the API call. This can be a URL query string,"
+                "(for GET requests) a JSON object, or whatever the API expects."
+            ),
         ),
     ]
+    extra: Annotated[
+        ConStrOrNone(
+            max_length=10240,
+        ),
+        Field(
+            description=(
+                "Extra data that should be made available "
+                "to the transformation script."
+            ),
+        ),
+        SchemaOptionalNonNullable,
+    ] = None

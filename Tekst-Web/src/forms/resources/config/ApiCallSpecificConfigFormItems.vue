@@ -124,7 +124,6 @@ function handleUpdate(field: string, value: unknown) {
       <codemirror
         :model-value="model.transformJs"
         :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
-        class="codemirror-container"
         :indent-with-tab="true"
         :tab-size="2"
         :extensions="codeEditorExtensions"

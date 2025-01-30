@@ -789,6 +789,7 @@
         "location_id": { "$oid": "664321104aa6341acd83fb05" },
         "comment": null,
         "notes": null,
-        "query": "foo=bar"
+        "query": "foo=bar",
+        "extra": "{\n  \"helloWorld\": \"On a side note: Hello World!\"\n}"
     }
 ]

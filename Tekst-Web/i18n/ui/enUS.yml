@@ -546,6 +546,7 @@ resources:
       contentFields:
         queryString: URL Query String
         body: Request Body
+        extra: Extra data for transformation function (JSON)
 
 corrections:
   heading: Correction Notes for "{title}"
