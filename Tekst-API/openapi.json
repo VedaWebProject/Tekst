@@ -7515,6 +7515,8 @@
           },
           "query": {
             "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
             "title": "Query",
             "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
           },
@@ -7606,6 +7608,8 @@
           },
           "query": {
             "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
             "title": "Query",
             "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
           },
@@ -7676,7 +7680,9 @@
           "query": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 1
               },
               {
                 "type": "null"

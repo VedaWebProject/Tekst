@@ -176,7 +176,6 @@ class ApiCallContent(ContentBase):
 
     resource_type: Literal["apiCall"]  # camelCased resource type classname
     query: Annotated[
-        str,
         ConStr(
             max_length=102400,
         ),
