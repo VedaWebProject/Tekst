@@ -28,9 +28,6 @@ function handleUpdateSpecialConfig(field: string, value: unknown) {
 </script>
 
 <template>
-  <h5>
-    {{ $t('general.general') }}
-  </h5>
   <template v-for="(configValue, key) in model?.general" :key="key">
     <component
       :is="generalConfigFormItems[key]"

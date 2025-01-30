@@ -8,11 +8,8 @@ const model = defineModel<TextAnnotationResourceConfig['multiValueDelimiter']>()
 
 <template>
   <!-- MULTI VALUE DELIMITER -->
-  <h5 style="margin-top: 0">
-    {{ $t('resources.settings.config.multiValueDelimiter') }}
-  </h5>
   <n-form-item
-    :show-label="false"
+    :label="$t('resources.settings.config.multiValueDelimiter')"
     :rule="typeSpecificResourceConfigFormRules.textAnnotation.multiValueDelimiter"
     path="config.multiValueDelimiter"
   >

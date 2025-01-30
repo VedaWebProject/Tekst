@@ -9,16 +9,21 @@ from uuid import uuid4
 from beanie import PydanticObjectId
 from beanie.operators import LT, NE, Eq, In
 from fastapi.encoders import jsonable_encoder
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
 from tekst import errors
 from tekst.config import TekstConfig, get_config
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
+from tekst.types import ConStr, ConStrOrNone
 
 
 class TaskType(Enum):
+    """
+    Task types with locking and artifact flags
+    """
+
     INDICES_CREATE_UPDATE = "indices_create_update", True, False
     RESOURCE_IMPORT = "resource_import", True, False
     RESOURCE_EXPORT = "resource_export", True, True
@@ -59,7 +64,7 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ]
     target_id: Annotated[
-        PydanticObjectId | str | None,
+        PydanticObjectId | ConStrOrNone(),
         Field(
             description="ID of the target of the task or None if there is no target",
         ),
@@ -71,9 +76,7 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ]
     pickup_key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=64,
         ),
         Field(
@@ -114,7 +117,7 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     error: Annotated[
-        str | None,
+        ConStrOrNone(),
         Field(
             description="Error message if the task failed",
         ),

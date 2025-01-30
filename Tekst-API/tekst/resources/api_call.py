@@ -3,9 +3,9 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
-from tekst.models.common import CustomHttpUrl, ModelBase
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -14,12 +14,16 @@ from tekst.models.resource import (
 )
 from tekst.models.resource_configs import (
     CommonResourceConfig,
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.types import (
+    ConStr,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    HttpUrl,
+)
 
 
 class ApiCall(ResourceTypeABC):
@@ -93,7 +97,10 @@ class ApiCall(ResourceTypeABC):
             csv_writer.writerow(
                 [
                     "LOCATION",
-                    "URL",
+                    "ENDPOINT",
+                    "METHOD",
+                    "CONTENT_TYPE",
+                    "QUERY",
                     "LOCATION_COMMENT",
                 ]
             )
@@ -101,22 +108,50 @@ class ApiCall(ResourceTypeABC):
                 csv_writer.writerow(
                     [
                         full_location_labels.get(str(content.location_id), ""),
-                        content.url,
+                        resource.config.api_call.endpoint,
+                        resource.config.api_call.method,
+                        resource.config.api_call.content_type,
+                        content.query,
                         content.comment,
                     ]
                 )
 
 
 class GeneralApiCallResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
+
+
+class ApiCallSpecificConfig(ModelBase):
+    """Config properties specific to the API call resource type"""
+
+    endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
+    method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
+    content_type: ConStr(
+        max_length=64,
+    ) = "application/json"
+    transform_deps: Annotated[
+        list[HttpUrl],
+        Field(min_length=0, max_length=32),
+    ] = []
+    transform_js: ConStr(
+        min_length=0,
+        max_length=102400,
+    ) = ""
+
+    @model_validator(mode="after")
+    def validate_config(self):
+        if self.transform_deps and not self.transform_js:  # pragma: no cover
+            self.transform_deps = []
+        return self
 
 
 class ApiCallResourceConfig(ResourceConfigBase):
-    # overriding common resource config field of ResourceConfigBase
+    # override common resource config field of ResourceConfigBase
     # to default quick_searchable to False
     common: CommonResourceConfig = CommonResourceConfig(quick_searchable=False)
     general: GeneralApiCallResourceConfig = GeneralApiCallResourceConfig()
+    api_call: ApiCallSpecificConfig = ApiCallSpecificConfig()
 
 
 class ApiCallResource(ResourceBase):
@@ -132,9 +167,12 @@ class ApiCallContent(ContentBase):
     """A content of an API call resource"""
 
     resource_type: Literal["apiCall"]  # camelCased resource type classname
-    url: Annotated[
-        CustomHttpUrl,
+    query: Annotated[
+        str,
+        ConStr(
+            max_length=102400,
+        ),
         Field(
-            description="URL to use for the HTTP (GET) call",
+            description="Query payload to use for the API call",
         ),
     ]

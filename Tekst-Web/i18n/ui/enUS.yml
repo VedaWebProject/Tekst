@@ -51,6 +51,7 @@ general:
   system: System
   details: Details
   loading: Loading...
+  url: URL
   downloadSaved: File saved as {filename}.
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
@@ -460,7 +461,7 @@ resources:
       general:
         heading: General
         defaultCollapsed: Collapse contents by default
-        font: Font (will use platform default font if not set)
+        font: Content font (will use default if not set)
       reducedView:
         heading: Reduced Reading View
         singleLine: Show contents as single line of text in reduced reading view
@@ -477,6 +478,12 @@ resources:
       displayTemplate: Display template
       multiValueDelimiter: Delimiter for multiple annotation values
       annotationGroup: Annotation group | Annotation groups
+      apiCall:
+        endpoint: API endpoint
+        method: HTTP request method
+        contentType: Request body content type
+        transformDeps: Transformation function dependencies (URLs)
+        transformJs: Transformation function body (JavaScript)
   types:
     common:
       label: Meta
@@ -516,14 +523,12 @@ resources:
       parenthesis: audio playback
       contentFields:
         files: Audio Files
-        url: URL
         sourceUrl: URL of source website
     images:
       label: Images
       parenthesis: image gallery
       contentFields:
         files: Image Files
-        url: URL
         thumbUrl: Thumbnail URL
         sourceUrl: URL of source website
     externalReferences:
@@ -531,7 +536,6 @@ resources:
       parenthesis: links to external resources
       contentFields:
         links: Links
-        url: URL
         title: Title / Text
         description: Description
       searchFields:
@@ -540,7 +544,8 @@ resources:
       label: API Call
       parenthesis: Request for data from a HTTP API
       contentFields:
-        url: URL
+        queryString: URL Query String
+        body: Request Body
 
 corrections:
   heading: Correction Notes for "{title}"

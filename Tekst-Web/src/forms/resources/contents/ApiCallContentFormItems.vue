@@ -1,45 +1,45 @@
 <script setup lang="ts">
 import type { ApiCallContentCreate, ApiCallResourceRead } from '@/api';
-import { useMessages } from '@/composables/messages';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { checkUrl } from '@/utils';
-import { NFormItem, NInput, useThemeVars } from 'naive-ui';
+import { NFormItem, NInput } from 'naive-ui';
+import { Codemirror } from 'vue-codemirror';
 
 defineProps<{
   resource: ApiCallResourceRead;
 }>();
 
 const model = defineModel<ApiCallContentCreate>({ required: true });
-const { message } = useMessages();
-const tuiTheme = useThemeVars();
-
-async function checkUrlInput(input: HTMLInputElement) {
-  const url = input.value;
-  if (url && !(await checkUrl(url, 'GET'))) {
-    message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    if (input.style) {
-      input.style.color = tuiTheme.value.errorColor;
-    }
-  } else {
-    if (input.style) {
-      input.style.color = tuiTheme.value.successColor;
-    }
-  }
-}
 </script>
 
 <template>
+  <!-- QUERY STRING (if method is GET) -->
   <n-form-item
-    :label="$t('resources.types.apiCall.contentFields.url')"
-    path="url"
-    :rule="contentFormRules.apiCall.url"
+    v-if="resource.config.apiCall.method === 'GET'"
+    :label="$t('resources.types.apiCall.contentFields.queryString')"
+    path="query"
+    :rule="contentFormRules.apiCall.queryString"
   >
     <n-input
-      v-model:value="model.url"
-      :placeholder="$t('resources.types.apiCall.contentFields.url')"
-      @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+      v-model:value="model.query"
+      :placeholder="$t('resources.types.apiCall.contentFields.queryString')"
       @keydown.enter.prevent
     />
+  </n-form-item>
+  <!-- REQUEST BODY STRING -->
+  <n-form-item
+    v-else
+    :label="$t('resources.types.apiCall.contentFields.body')"
+    path="query"
+    :rule="contentFormRules.apiCall.body"
+  >
+    <div class="codemirror-container">
+      <codemirror
+        v-model="model.query"
+        :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
+        :indent-with-tab="true"
+        :tab-size="2"
+      />
+    </div>
   </n-form-item>
 </template>

@@ -782,13 +782,13 @@
         "editor_mode": "html"
     },
     {
-        "_id": { "$oid": "6791153e74030487c64fe560" },
+        "_id": { "$oid": "679b60dba993e4db9b1bd9f5" },
         "_class_id": "ContentBaseDocument.ApiCallContentDocument",
-        "resource_id": { "$oid": "6791146a74030487c64fe55f" },
+        "resource_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
         "resource_type": "apiCall",
         "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": "This happens to be JSON, but it actually renders as HTML.",
+        "comment": null,
         "notes": null,
-        "url": "http://127.0.0.1/api/texts"
+        "query": "foo=bar"
     }
 ]

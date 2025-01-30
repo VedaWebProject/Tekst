@@ -23,8 +23,9 @@ from starlette.background import BackgroundTask
 from tekst import errors, notifications, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
+from tekst.i18n import pick_translation
 from tekst.logs import log
-from tekst.models.common import PrecomputedDataDocument, ResourceTypeName
+from tekst.models.common import PrecomputedDataDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
@@ -47,7 +48,8 @@ from tekst.resources import (
 from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.search import set_index_ood
 from tekst.state import StateDep
-from tekst.utils import client_hash, pick_translation
+from tekst.types import ResourceTypeName
+from tekst.utils import client_hash
 
 
 async def preprocess_resource_read(
@@ -173,7 +175,7 @@ async def create_resource(
         .document_model()
         .model_from(resource)
     )
-    resource_doc.owner_id = user.id  # set correct owner ID
+    resource_doc.owner_id = user.id  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
     return await preprocess_resource_read(resource_doc, user)

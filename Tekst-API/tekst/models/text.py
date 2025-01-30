@@ -7,96 +7,96 @@ from pydantic import (
     ConfigDict,
     Field,
     PlainSerializer,
-    StringConstraints,
-    constr,
     field_validator,
 )
 from pydantic_extra_types.color import Color
 from typing_extensions import TypedDict
 
+from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
-    LocationLevel,
     ModelBase,
     ModelFactoryMixin,
-    TranslationBase,
-    Translations,
 )
 from tekst.models.location import LocationDocument
+from tekst.types import ConStr, LocationLabel, LocationLevel
 
 
 class TextSubtitleTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=128,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Subtitle translation for a text",
         ),
     ]
 
 
 class TextLevelTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=32,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Translation of a text level label",
         ),
     ]
 
 
 class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            strip_whitespace=True,
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Translation of a resource category",
         ),
     ]
 
 
 class ResourceCategory(TypedDict):
     key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=16,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Key identifying this resource category",
         ),
     ]
     translations: Translations[ResourceCategoryTranslation]
 
 
-TextTitle = constr(
-    min_length=1,
-    max_length=64,
-    strip_whitespace=True,
-)
+TextTitle = Annotated[
+    ConStr(
+        max_length=64,
+        cleanup="oneline",
+    ),
+    Field(description="Title of this text"),
+]
 
-TextSlug = constr(
-    min_length=1,
-    max_length=16,
-    strip_whitespace=True,
-    pattern=r"^[a-z0-9]+$",
-)
+TextSlug = Annotated[
+    ConStr(
+        max_length=16,
+        cleanup="oneline",
+        pattern=r"^[a-z0-9]+$",
+    ),
+    Field(
+        description="A short identifier for use in URLs and internal operations",
+    ),
+]
 
 
 class Text(ModelBase, ModelFactoryMixin):
     """A text represented in Tekst"""
 
-    title: Annotated[
-        TextTitle,
-        Field(description="Title of this text"),
-    ]
-
-    slug: Annotated[
-        TextSlug,
-        Field(
-            description="A short identifier for use in URLs and internal operations",
-        ),
-    ]
+    title: TextTitle
+    slug: TextSlug
 
     subtitle: Annotated[
         Translations[TextSubtitleTranslation],
@@ -128,11 +128,10 @@ class Text(ModelBase, ModelFactoryMixin):
     ] = 0
 
     loc_delim: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=3,
-            strip_whitespace=False,
+            strip=False,
+            pattern=r"[^\n\r]+",
         ),
         Field(
             description="Delimiter for displaying text locations",
@@ -297,14 +296,7 @@ class MoveLocationRequestBody(ModelBase):
 
 
 class LocationDefinition(ModelBase):
-    label: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=256,
-            strip_whitespace=True,
-        ),
-    ]
+    label: LocationLabel
     locations: list["LocationDefinition"] | None = None
     aliases: list[str] | None = None
 

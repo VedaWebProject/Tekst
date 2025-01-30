@@ -522,19 +522,12 @@
         "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
     },
     {
-        "_id": { "$oid": "6791146a74030487c64fe55f" },
+        "_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
         "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
-        "title": [{ "locale": "*", "translation": "Texts Info from API" }],
-        "description": [
-            {
-                "locale": "enUS",
-                "translation": "An example for content requested from an API"
-            },
-            {
-                "locale": "deDE",
-                "translation": "Ein Beispiel für Inhalt, der von einer API abgefragt wurde"
-            }
+        "title": [
+            { "locale": "*", "translation": "Example API Call Resource" }
         ],
+        "description": [],
         "text_id": { "$oid": "654b825533ee5737b297f8e3" },
         "level": 0,
         "resource_type": "apiCall",
@@ -549,16 +542,23 @@
         "comment": [],
         "config": {
             "common": {
-                "category": "versions",
-                "sortOrder": 999,
+                "category": null,
+                "sortOrder": 10,
                 "defaultActive": false,
                 "showOnParentLevel": false,
                 "quickSearchable": false,
                 "rtl": false,
                 "osk": null
             },
-            "general": { "defaultCollapsed": true, "font": null }
+            "general": { "defaultCollapsed": false, "font": null },
+            "apiCall": {
+                "endpoint": "/api/texts",
+                "method": "GET",
+                "contentType": "application/json",
+                "transformDeps": [],
+                "transformJs": "const texts = JSON.parse(this);\nconst intro = '<strong class=\"ui-font\">Look at all those texts:</strong>';\nreturn intro + texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");"
+            }
         },
-        "contents_changed_at": { "$date": "2025-01-22T16:03:05.105Z" }
+        "contents_changed_at": { "$date": "2025-01-30T11:22:03.141Z" }
     }
 ]

@@ -213,6 +213,7 @@ async def create_indices(
     return await tasks.create_task(
         create_indices_task,
         tasks.TaskType.INDICES_CREATE_UPDATE,
+        target_id=tasks.TaskType.INDICES_CREATE_UPDATE.value,
         user_id=user.id if user else None,
         task_kwargs={
             "force": force,

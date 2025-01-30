@@ -5,9 +5,9 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
 from tekst.config import TekstConfig, get_config
+from tekst.i18n import pick_translation
 from tekst.models.platform import PlatformState
 from tekst.openapi.tags_metadata import get_tags_metadata
-from tekst.utils import pick_translation
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data

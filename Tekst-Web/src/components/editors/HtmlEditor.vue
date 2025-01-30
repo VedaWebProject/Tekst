@@ -5,7 +5,6 @@ import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
 import { $t } from '@/i18n';
 import { html } from '@codemirror/lang-html';
 import { NTabPane, NTabs, useDialog } from 'naive-ui';
-import 'prosemirror-view/style/prosemirror.css';
 import { Codemirror } from 'vue-codemirror';
 
 type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
@@ -81,7 +80,7 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
       />
     </n-tab-pane>
     <n-tab-pane name="html" :tab="$t('htmlEditor.html')">
-      <div id="code-container">
+      <div class="codemirror-container">
         <codemirror
           v-model="value"
           :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
@@ -96,10 +95,3 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     </n-tab-pane>
   </n-tabs>
 </template>
-
-<style scoped>
-#code-container {
-  border: 1px solid rgb(224, 224, 230);
-  border-radius: var(--border-radius);
-}
-</style>

@@ -20,7 +20,7 @@ from tekst.models.user import (
     UserReadPublic,
     UsersSearchResult,
 )
-from tekst.utils import validators as val
+from tekst.types import ConStr
 
 
 def _get_user_text_query(query_str: str) -> dict:
@@ -232,12 +232,14 @@ async def get_public_user(
 async def find_public_users(
     u: UserDep,
     query: Annotated[
-        str,
-        val.CleanupOneline,
+        ConStr(
+            min_length=0,
+            max_length=128,
+            cleanup="oneline",
+        ),
         Query(
             alias="q",
             description="Query string to search in user data",
-            max_length=128,
         ),
     ] = "",
     page: Annotated[

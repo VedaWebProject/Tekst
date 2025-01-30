@@ -1,15 +1,13 @@
 import { computed, ref, type Ref } from 'vue';
 
 export function useModelChanges(model: Ref<Record<string, unknown> | undefined>) {
+  const valuesToJSON = (o: Record<string, unknown> | undefined) =>
+    Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, JSON.stringify(v)]));
   const beforeEntriesJson = ref(valuesToJSON(model.value));
   const afterEntriesJson = computed(() => valuesToJSON(model.value));
   const changed = computed(() =>
     Object.entries(afterEntriesJson.value).some(([k, v]) => v !== beforeEntriesJson.value[k])
   );
-
-  function valuesToJSON(o: Record<string, unknown> | undefined) {
-    return Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [k, JSON.stringify(v)]));
-  }
 
   function getChanges(forceProps?: string[]) {
     if (!changed.value) {

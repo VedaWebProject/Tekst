@@ -1,0 +1,170 @@
+from re import Pattern
+from typing import Annotated, Literal, TypeAlias
+
+from pydantic import BeforeValidator, Field, StringConstraints, conint, constr
+from pydantic.functional_validators import AfterValidator
+
+from tekst.utils.strings import cleanup_spaces_multiline, cleanup_spaces_oneline
+
+
+# validators for internal use
+
+_CleanupOneline = AfterValidator(cleanup_spaces_oneline)
+_CleanupMultiline = AfterValidator(cleanup_spaces_multiline)
+
+
+# GENERAL TYPES
+
+
+def _empty_str_to_none(v: str | None) -> None:
+    if v is None:
+        return None
+    if isinstance(v, str) and v.strip() == "":
+        return None
+    raise ValueError("Value is not an empty string nor None")
+
+
+_EmptyStrToNone: TypeAlias = Annotated[None, BeforeValidator(_empty_str_to_none)]
+
+
+def ConStr(  # noqa: N802
+    min_length: int = 1,
+    max_length: int | None = None,
+    strip: bool = True,
+    cleanup: Literal["oneline", "multiline"] | None = None,
+    pattern: str | Pattern[str] | None = None,
+) -> TypeAlias:
+    return Annotated[
+        str,
+        StringConstraints(
+            min_length=min_length,
+            max_length=max_length,
+            strip_whitespace=strip,
+            pattern=pattern,
+        ),
+        _CleanupOneline if cleanup == "oneline" else None,
+        _CleanupMultiline if cleanup == "multiline" else None,
+    ]
+
+
+def ConStrOrNone(  # noqa: N802
+    min_length: int = 1,
+    max_length: int | None = None,
+    strip: bool = True,
+    cleanup: Literal["oneline", "multiline"] | None = None,
+    pattern: str | Pattern[str] | None = None,
+) -> TypeAlias:
+    return _EmptyStrToNone | ConStr(
+        min_length=min_length,
+        max_length=max_length,
+        strip=strip,
+        cleanup=cleanup,
+        pattern=pattern,
+    )
+
+
+HttpUrl = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=2083,
+        strip_whitespace=True,
+    ),
+]
+
+HttpUrlOrNone = _EmptyStrToNone | HttpUrl
+
+
+# LOCATION-SPECIFIC PROPERTY TYPES
+
+LocationLevel = conint(
+    ge=0,
+    le=32,
+)
+
+LocationPosition = conint(
+    ge=0,
+)
+
+LocationLabel = ConStr(
+    max_length=256,
+    cleanup="oneline",
+)
+
+LocationAlias = constr(
+    min_length=1,
+    max_length=32,
+    strip_whitespace=True,
+)
+
+
+# RESOURCE-SPECIFIC PROPERTY TYPES
+
+ResourceTypeName = constr(
+    min_length=1,
+    max_length=32,
+    strip_whitespace=True,
+)
+
+
+# TYPE ANNOTATIONS FOR FIELD THAT CAN BE PART OF
+# THE GENERAL TYPE-SPECIFIC RESOURCE CONFIGURATION
+
+DefaultCollapsedValue = Annotated[
+    bool,
+    Field(
+        description=(
+            "Whether contents of this resource should be collapsed by default"
+        ),
+    ),
+]
+
+FontNameValue = Annotated[
+    ConStr(
+        max_length=32,
+        cleanup="oneline",
+    ),
+    Field(
+        description="Name of a font",
+    ),
+]
+
+FontNameValueOrNone = Annotated[
+    ConStrOrNone(
+        max_length=32,
+        cleanup="oneline",
+    ),
+    Field(
+        description="Name of a font",
+    ),
+]
+
+
+# ANNOTATIONS FOR MODYFYING MODEL VARIANTS
+
+
+class ExcludeFromModelVariants:
+    """
+    Class to be used as type annotation metadata for fields that
+    should not be included in certain model types
+    """
+
+    def __init__(
+        self,
+        *,
+        create: bool = False,
+        update: bool = False,
+    ):
+        self.create = create
+        self.update = update
+
+
+# These FieldInfo instances are to be used as type annotation metadata for fields
+# that should be marked as optional in the JSON schema. By default, any field
+# with a default value is "optional", but the generator we use to generate the
+# TypeScript types for the client is configured to transform fields with default
+# values as required to make working with response models easier. In turn, we have to
+# explicitly mark optional fields (especially for request models) as optinal in some way
+# for the generator to understand which fields to treat as optional/nullable.
+SchemaOptionalNullable = Field(json_schema_extra={"optionalNullable": True})
+SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})

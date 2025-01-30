@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
 from tekst.models.common import (
     DocumentBase,
@@ -10,7 +10,7 @@ from tekst.models.common import (
     ModelFactoryMixin,
     PydanticObjectId,
 )
-from tekst.utils import validators as val
+from tekst.types import ConStr
 
 
 class Correction(ModelBase, ModelFactoryMixin):
@@ -27,16 +27,13 @@ class Correction(ModelBase, ModelFactoryMixin):
         ),
     ]
     note: Annotated[
-        str,
+        ConStr(
+            max_length=1000,
+            cleanup="multiline",
+        ),
         Field(
             description="Content of the correction note",
         ),
-        StringConstraints(
-            min_length=1,
-            max_length=1000,
-            strip_whitespace=True,
-        ),
-        val.CleanupMultiline,
     ]
     user_id: Annotated[
         PydanticObjectId,

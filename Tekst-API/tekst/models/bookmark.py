@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import Field, StringConstraints, field_validator
+from pydantic import Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -9,7 +9,7 @@ from tekst.models.common import (
     ModelFactoryMixin,
     PydanticObjectId,
 )
-from tekst.utils import validators as val
+from tekst.types import ConStrOrNone
 from tekst.utils.strings import cleanup_spaces_multiline
 
 
@@ -76,16 +76,13 @@ class Bookmark(ModelBase, ModelFactoryMixin):
         ),
     ]
     comment: Annotated[
-        str | None,
+        ConStrOrNone(
+            max_length=1000,
+            cleanup="multiline",
+        ),
         Field(
             description="Comment associated with this bookmark",
         ),
-        StringConstraints(
-            max_length=1000,
-            strip_whitespace=True,
-        ),
-        val.CleanupMultiline,
-        val.FalsyToNone,
         ExcludeFromModelVariants(
             update=True,
         ),

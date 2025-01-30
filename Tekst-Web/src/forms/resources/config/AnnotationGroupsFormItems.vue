@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
-import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
@@ -16,11 +15,13 @@ const model = defineModel<
 
 <template>
   <!-- ANNOTATION DISPLAY GROUPS -->
-  <icon-heading level="5" style="margin-top: 0">
-    {{ $t('resources.settings.config.annotationGroup', 2) }}
-    <help-button-widget help-key="textAnnotationGroups" />
-  </icon-heading>
-  <n-form-item v-if="model" :show-label="false">
+  <n-form-item v-if="model">
+    <template #label>
+      <n-flex align="center">
+        {{ $t('resources.settings.config.annotationGroup', 2) }}
+        <help-button-widget help-key="textAnnotationGroups" />
+      </n-flex>
+    </template>
     <n-dynamic-input
       v-model:value="model"
       show-sort-button

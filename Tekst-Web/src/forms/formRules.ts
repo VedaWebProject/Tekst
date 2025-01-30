@@ -129,6 +129,10 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('general.key'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
   ],
+  resourceCategoryTranslation: [
+    requiredStringRule(() => $t('general.key'), 'blur'),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
 };
 
 export const locationFormRules: Record<string, FormItemRule[]> = {
@@ -154,7 +158,10 @@ export const correctionFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
-  title: [minMaxCharsRule(0, 32, 'blur')],
+  title: [
+    requiredStringRule(() => $t('models.segment.title'), 'blur'),
+    minMaxCharsRule(0, 32, 'blur'),
+  ],
   key: [requiredStringRule(() => $t('general.key'), 'blur')],
   locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
   html: [
@@ -164,7 +171,7 @@ export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
-  title: [minMaxCharsRule(0, 32, 'blur')],
+  title: systemSegmentFormRules.title,
   key: [
     requiredStringRule(() => $t('general.key'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
@@ -179,11 +186,8 @@ export const infoSegmentFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
-  locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
-  html: [
-    requiredStringRule(() => $t('models.segment.html'), 'blur'),
-    minMaxCharsRule(1, 1048576, 'blur'),
-  ],
+  locale: systemSegmentFormRules.locale,
+  html: systemSegmentFormRules.html,
 };
 
 export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
@@ -290,7 +294,7 @@ export const reducedViewConfigFormRules: Record<string, FormItemRule[]> = {
 
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
-    displayTemplate: [minMaxCharsRule(0, 2048, 'blur')],
+    displayTemplate: [minMaxCharsRule(0, 4096, 'blur')],
     multiValueDelimiter: [
       requiredStringRule(() => $t('resources.settings.config.multiValueDelimiter'), 'blur'),
       minMaxCharsRule(1, 3, 'blur'),
@@ -303,6 +307,18 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
       requiredStringRule(() => $t('resources.settings.config.annotationGroup', 1), 'blur'),
       minMaxCharsRule(1, 32, 'blur'),
     ],
+  },
+  apiCall: {
+    endpoint: [
+      requiredStringRule(() => $t('resources.settings.config.apiCall.endpoint'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    contentType: [minMaxCharsRule(0, 64, 'blur')],
+    transformDep: [
+      requiredStringRule(() => $t('general.url'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    transformJs: [minMaxCharsRule(0, 102400, 'blur')],
   },
 };
 
@@ -361,22 +377,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
   },
   audio: {
-    url: [
-      requiredStringRule(() => $t('resources.types.audio.contentFields.url'), 'blur'),
-      minMaxCharsRule(1, 2083, 'blur'),
-    ],
+    url: [requiredStringRule(() => $t('general.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
   },
   images: {
-    url: [
-      requiredStringRule(() => $t('resources.types.images.contentFields.url'), 'blur'),
-      minMaxCharsRule(1, 2083, 'blur'),
-    ],
+    url: [requiredStringRule(() => $t('general.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
   },
   externalReferences: {
-    url: [
-      requiredStringRule(() => $t('resources.types.externalReferences.contentFields.url'), 'blur'),
-      minMaxCharsRule(1, 2083, 'blur'),
-    ],
+    url: [requiredStringRule(() => $t('general.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
     title: [
       requiredStringRule(
         () => $t('resources.types.externalReferences.contentFields.title'),
@@ -387,9 +394,13 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     description: [minMaxCharsRule(0, 4096, 'blur')],
   },
   apiCall: {
-    url: [
-      requiredStringRule(() => $t('resources.types.apiCall.contentFields.url'), 'blur'),
+    queryString: [
+      requiredStringRule(() => $t('resources.types.apiCall.contentFields.queryString'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    body: [
+      requiredStringRule(() => $t('resources.types.apiCall.contentFields.body'), 'blur'),
+      minMaxCharsRule(1, 102400, 'blur'),
     ],
   },
 };

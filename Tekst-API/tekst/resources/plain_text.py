@@ -3,10 +3,10 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 from typing_extensions import TypeAliasType
 
-from tekst.models.common import ModelBase, SchemaOptionalNullable
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -14,13 +14,16 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
-from tekst.utils import validators as val
+from tekst.types import (
+    ConStr,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    SchemaOptionalNullable,
+)
 
 
 class PlainText(ResourceTypeABC):
@@ -143,15 +146,16 @@ class ReducedViewConfig(ModelBase):
         ),
     ]
     single_line_delimiter: Annotated[
-        str,
+        ConStr(
+            min_length=1,
+            max_length=3,
+            strip=False,
+            pattern=r"[^\n\r]+",
+        ),
         Field(
             description=(
                 "Delimiter used for single-line display in reduced reading mode"
             ),
-        ),
-        StringConstraints(
-            min_length=1,
-            max_length=3,
         ),
     ]
 
@@ -234,8 +238,8 @@ class DeepLLinksConfig(ModelBase):
 
 
 class GeneralPlainTextResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
     reduced_view: ReducedViewConfig = ReducedViewConfig(
         single_line=False,
         single_line_delimiter=" / ",
@@ -262,11 +266,9 @@ class PlainTextContent(ContentBase):
 
     resource_type: Literal["plainText"]  # camelCased resource type classname
     text: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=102400,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
         Field(
             description="Text content of the plain text content object",
@@ -283,11 +285,13 @@ class PlainTextSearchQuery(ModelBase):
         ),
     ]
     text: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
+        Field(
+            description="Text content search query",
+        ),
         SchemaOptionalNullable,
     ] = ""

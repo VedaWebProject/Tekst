@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import ModelBase
+from tekst.types import ConStrOrNone
 
 
 _cfg: TekstConfig = get_config()
@@ -11,7 +12,7 @@ _cfg: TekstConfig = get_config()
 
 class ErrorDetail(ModelBase):
     key: str
-    msg: str | None = None
+    msg: ConStrOrNone() = None
     values: dict[str, str | int | float | bool] | None = None
 
 

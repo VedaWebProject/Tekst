@@ -19,19 +19,43 @@ const fontStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
-const urls = computed(() => props.resource.contents?.map((c) => c.url));
+const reqQueries = computed(() => props.resource.contents?.map((c) => c.query));
 const html = ref<(string | undefined)[]>([]);
 const loading = ref(false);
 
-async function performApiCalls(urls?: string[]) {
-  if (!urls?.length) return;
+function prepareRequest(query: string): Request {
+  const cfg = props.resource.config.apiCall;
+  if (cfg.method === 'GET') {
+    return new Request(`${cfg.endpoint}?${query}`, { method: 'GET' });
+  } else {
+    return new Request(cfg.endpoint || '', {
+      method: cfg.method,
+      body: query,
+      headers: {
+        'Content-Type': cfg.contentType || 'application/json',
+      },
+    });
+  }
+}
+
+function execTransformJs(transformFnBody?: string | null, data?: string): string {
+  if (!transformFnBody) return data || '';
+  return Function(`"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`).bind(
+    data
+  )();
+}
+
+async function performApiCalls(queries?: string[]) {
+  if (!queries?.length) return;
   loading.value = true;
-  html.value = Array(urls.length).fill(undefined);
-  for (const [i, url] of urls.entries()) {
-    if (!url) continue;
+  html.value = Array(queries.length).fill(undefined);
+  for (const [i, q] of queries.entries()) {
+    if (!q) continue;
     try {
-      const resp = await fetch(url);
-      html.value[i] = resp.ok ? await resp.text() : undefined;
+      const resp = await fetch(prepareRequest(q));
+      html.value[i] = resp.ok
+        ? execTransformJs(props.resource.config.apiCall.transformJs, await resp.text())
+        : undefined;
     } catch (e) {
       html.value[i] = undefined;
       console.log(e);
@@ -41,22 +65,22 @@ async function performApiCalls(urls?: string[]) {
 }
 
 watch(
-  urls,
-  (newUrls, oldUrls) => {
-    if (!newUrls?.length) {
+  reqQueries,
+  (newQueries, oldQueries) => {
+    if (!newQueries?.length) {
       html.value = [];
       return;
-    } else if (JSON.stringify(newUrls) === JSON.stringify(oldUrls)) {
+    } else if (JSON.stringify(newQueries) === JSON.stringify(oldQueries)) {
       return;
     } else {
-      performApiCalls(newUrls);
+      performApiCalls(newQueries);
     }
   },
   { deep: true }
 );
 
 onMounted(() => {
-  nextTick().then(() => performApiCalls(urls.value));
+  nextTick().then(() => performApiCalls(reqQueries.value));
 });
 </script>
 

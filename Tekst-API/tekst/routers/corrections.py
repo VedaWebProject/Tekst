@@ -6,6 +6,7 @@ from fastapi import APIRouter, Path, status
 
 from tekst import errors
 from tekst.auth import UserDep
+from tekst.i18n import pick_translation
 from tekst.models.correction import CorrectionCreate, CorrectionDocument, CorrectionRead
 from tekst.models.location import LocationDocument
 from tekst.models.notifications import TemplateIdentifier
@@ -13,7 +14,6 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.notifications import broadcast_admin_notification, send_notification
-from tekst.utils import pick_translation
 
 
 # initialize corrections router

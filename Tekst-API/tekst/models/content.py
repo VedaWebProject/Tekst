@@ -1,16 +1,15 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from pydantic import Field, StringConstraints, field_validator
+from pydantic import Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
-    ResourceTypeName,
 )
-from tekst.utils import validators as val
+from tekst.types import ConStrOrNone, ResourceTypeName
 
 
 class ContentBase(ModelBase, ModelFactoryMixin):
@@ -44,13 +43,10 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         ),
     ]
     comment: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=50000,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
-        val.FalsyToNone,
         Field(
             description=(
                 "Plain text, potentially multiline comment "
@@ -59,13 +55,10 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     notes: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=1000,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
-        val.FalsyToNone,
         Field(
             description=(
                 "Plain text, potentially multiline working notes on this content "

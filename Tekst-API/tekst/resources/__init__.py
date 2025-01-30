@@ -16,14 +16,13 @@ import jsonref
 from beanie.operators import In
 from fastapi import Body
 from humps import camelize
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
 from tekst.logs import log
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
     ReadBase,
-    SchemaOptionalNullable,
 )
 from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.resource import (
@@ -34,7 +33,7 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.text import TextDocument
-from tekst.utils import validators as val
+from tekst.types import ConStr, SchemaOptionalNullable
 
 
 # global variable to hold resource type manager instance
@@ -91,13 +90,15 @@ class CommonResourceSearchQueryData(ModelBase):
         ),
     ]
     comment: Annotated[
-        str,
+        ConStr(
+            min_length=0,
+            max_length=512,
+            cleanup="oneline",
+        ),
         Field(
             alias="cmt",
-            description="Comment",
+            description="Comment search query",
         ),
-        StringConstraints(max_length=512, strip_whitespace=True),
-        val.CleanupOneline,
         SchemaOptionalNullable,
     ] = ""
 

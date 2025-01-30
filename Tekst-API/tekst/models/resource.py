@@ -7,11 +7,11 @@ from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or
 from pydantic import (
     Field,
-    StringConstraints,
     field_validator,
 )
 from typing_extensions import TypedDict
 
+from tekst.i18n import TranslationBase, Translations
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     DocumentBase,
@@ -19,67 +19,69 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
     PrecomputedDataDocument,
-    ResourceTypeName,
-    TranslationBase,
-    Translations,
 )
 from tekst.models.location import LocationDocument
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
-from tekst.utils import validators as val
+from tekst.types import ConStr, ConStrOrNone, ResourceTypeName
 from tekst.utils.strings import cleanup_spaces_multiline
 
 
 # class for one arbitrary metadate
 class MetadataEntry(TypedDict):
     key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=16,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Key identifying this metadata entry",
         ),
     ]
     value: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=128,
-            strip_whitespace=True,
+            cleanup="multiline",
+        ),
+        Field(
+            description="Value of this metadata entry",
         ),
     ]
 
 
 class ResourceTitleTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=64,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Title translation for this resource",
         ),
     ]
 
 
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Description translation for this resource",
         ),
     ]
 
 
 class ResourceCommentTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=2000,
-            strip_whitespace=True,
+            cleanup="multiline",
+        ),
+        Field(
+            description="Comment translation for this resource",
         ),
     ]
 
@@ -199,12 +201,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = False
 
     citation: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=1000,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
-        val.FalsyToNone,
         Field(
             description="Citation details for this resource",
         ),

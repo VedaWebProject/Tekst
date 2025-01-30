@@ -2,54 +2,35 @@ from datetime import datetime
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import Field, StringConstraints, field_validator
+from pydantic import Field, field_validator
 
 from tekst.config import TekstConfig, get_config
+from tekst.i18n import LocaleKey, TranslationBase, Translations
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
-    LocaleKey,
     ModelBase,
     ModelFactoryMixin,
-    TranslationBase,
-    Translations,
 )
 from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.text import TextRead
-from tekst.utils import validators as val
+from tekst.types import ConStr, ConStrOrNone, FontNameValueOrNone
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
 class PlatformDescriptionTranslation(TranslationBase):
-    translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=128,
-            strip_whitespace=True,
-        ),
-    ]
+    translation: ConStr(max_length=128)
 
 
 class MainNavEntryTranslation(TranslationBase):
-    translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=42,
-            strip_whitespace=True,
-        ),
-    ]
+    translation: ConStr(max_length=42)
 
 
 OskKey = Annotated[
-    str,
-    StringConstraints(
-        min_length=1,
+    ConStr(
         max_length=32,
-        strip_whitespace=True,
     ),
     Field(
         description="Key identifying an OSK mode",
@@ -59,33 +40,18 @@ OskKey = Annotated[
 
 class OskMode(ModelBase):
     key: OskKey
-    name: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
-    ]
-    font: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=32,
-            strip_whitespace=True,
-        ),
-        val.FalsyToNone,
-    ] = None
+    name: ConStr(
+        max_length=32,
+    )
+    font: FontNameValueOrNone = None
 
 
 class PlatformState(ModelBase, ModelFactoryMixin):
     """Platform state model holding platform settings and state data"""
 
     platform_name: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=32,
-            strip_whitespace=True,
         ),
         Field(
             description="Name of the platform",
@@ -222,14 +188,10 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 
     fonts: Annotated[
         list[
-            Annotated[
-                str,
-                StringConstraints(
-                    min_length=1,
-                    max_length=32,
-                    strip_whitespace=True,
-                ),
-            ]
+            ConStr(
+                max_length=32,
+                cleanup="oneline",
+            )
         ],
         Field(
             description="CSS font family names for use in resources",
@@ -256,9 +218,12 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = None
 
     db_version: Annotated[
-        str | None,
+        ConStrOrNone(
+            max_length=64,
+            cleanup="oneline",
+        ),
         Field(
-            description="Version of the database",
+            description="Version string of DB data",
         ),
         ExcludeFromModelVariants(
             update=True,

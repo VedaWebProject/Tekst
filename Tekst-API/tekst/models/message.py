@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
 from tekst.models.common import (
     DocumentBase,
@@ -11,7 +11,7 @@ from tekst.models.common import (
     PydanticObjectId,
 )
 from tekst.models.user import UserReadPublic
-from tekst.utils import validators as val
+from tekst.types import ConStr
 
 
 class UserMessage(ModelBase, ModelFactoryMixin):
@@ -28,13 +28,10 @@ class UserMessage(ModelBase, ModelFactoryMixin):
         ),
     ]
     content: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=1000,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
         Field(
             description="Content of the message",
         ),

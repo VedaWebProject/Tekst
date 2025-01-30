@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import PromptModal from '@/components/generic/PromptModal.vue';
-import { $t } from '@/i18n';
-import CharacterCount from '@tiptap/extension-character-count';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align';
-import StarterKit from '@tiptap/starter-kit';
-import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { NButton, NIcon, NSelect, type SelectOption } from 'naive-ui';
-import { computed, h, onUnmounted, ref, watch, type Component, type CSSProperties } from 'vue';
-
 import { wysiwygEditorFormRules } from '@/forms/formRules';
+import { $t } from '@/i18n';
 import {
   CodeIcon,
   FormatAlignCenterIcon,
@@ -32,6 +23,15 @@ import {
   ShortTextIcon,
   UndoIcon,
 } from '@/icons';
+import CharacterCount from '@tiptap/extension-character-count';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import StarterKit from '@tiptap/starter-kit';
+import { EditorContent, useEditor } from '@tiptap/vue-3';
+import { NButton, NIcon, NSelect, type SelectOption } from 'naive-ui';
+import 'prosemirror-view/style/prosemirror.css';
+import { computed, h, onUnmounted, ref, watch, type Component, type CSSProperties } from 'vue';
 
 const props = withDefaults(
   defineProps<{

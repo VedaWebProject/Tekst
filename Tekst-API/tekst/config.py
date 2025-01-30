@@ -16,15 +16,13 @@ from pydantic import (
     DirectoryPath,
     EmailStr,
     Field,
-    StringConstraints,
     computed_field,
     field_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
-from tekst.models.common import CustomHttpUrl, OptionalCustomHttpUrl
-from tekst.utils import validators as val
+from tekst.types import ConStr, ConStrOrNone, HttpUrl, HttpUrlOrNone
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
@@ -99,8 +97,14 @@ class MongoDBConfig(ConfigSubSection):
     protocol: str = "mongodb"
     host: str = "127.0.0.1"
     port: int = 27017
-    user: str | None = None
-    password: str | None = None
+    user: ConStrOrNone(
+        cleanup="oneline",
+        max_length=64,
+    ) = None
+    password: ConStrOrNone(
+        cleanup="oneline",
+        max_length=64,
+    ) = None
     name: str = "tekst"
 
     @field_validator("name", mode="before")
@@ -164,33 +168,70 @@ class ElasticsearchConfig(ConfigSubSection):
 class SecurityConfig(ConfigSubSection):
     """Security config sub section model"""
 
-    secret: str = Field(default_factory=lambda: token_hex(32), min_length=16)
+    secret: ConStr(
+        min_length=16,
+        max_length=512,
+        cleanup="oneline",
+    ) = token_hex(32)
     closed_mode: bool = False
     users_active_by_default: bool = False
 
     enable_cookie_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
-    auth_cookie_domain: str | None = None
-    auth_cookie_lifetime: Annotated[int, Field(ge=3600)] = 43200
-    access_token_lifetime: Annotated[int, Field(ge=3600)] = 43200
+    auth_cookie_domain: ConStrOrNone(
+        cleanup="oneline",
+        max_length=64,
+    ) = None
+    auth_cookie_lifetime: Annotated[
+        int,
+        Field(ge=3600),
+    ] = 43200
+    access_token_lifetime: Annotated[
+        int,
+        Field(ge=3600),
+    ] = 43200
 
     enable_jwt_auth: bool = False
-    auth_jwt_lifetime: Annotated[int, Field(ge=3600)] = 86400
+    auth_jwt_lifetime: Annotated[
+        int,
+        Field(ge=3600),
+    ] = 86400
 
-    reset_pw_token_lifetime: Annotated[int, Field(ge=600)] = 3600  # 1h
-    verification_token_lifetime: Annotated[int, Field(ge=600)] = 86400  # 24h
+    reset_pw_token_lifetime: Annotated[
+        int,
+        Field(ge=600),
+    ] = 3600  # 1h
+    verification_token_lifetime: Annotated[
+        int,
+        Field(ge=600),
+    ] = 86400  # 24h
 
-    init_admin_email: str | None = None
-    init_admin_password: str | None = None
+    init_admin_email: ConStrOrNone(
+        max_length=256,
+        cleanup="oneline",
+    ) = None
+    init_admin_password: ConStrOrNone(
+        max_length=256,
+        cleanup="oneline",
+    ) = None
 
 
 class EMailConfig(ConfigSubSection):
     """Email-related things config sub section model"""
 
-    smtp_server: str | None = "127.0.0.1"
+    smtp_server: ConStr(
+        max_length=256,
+        cleanup="oneline",
+    ) = "127.0.0.1"
     smtp_port: int | None = 25
-    smtp_user: str | None = None
-    smtp_password: str | None = None
+    smtp_user: ConStrOrNone(
+        max_length=256,
+        cleanup="oneline",
+    ) = None
+    smtp_password: ConStrOrNone(
+        max_length=256,
+        cleanup="oneline",
+    ) = None
     smtp_starttls: bool = True
     from_address: str = "noreply@example-tekst-instance.org"
 
@@ -202,60 +243,34 @@ class ApiDocConfig(ConfigSubSection):
     swaggerui_url: str = "/docs"
     redoc_url: str = "/redoc"
 
-    title: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-        ),
-        val.CleanupOneline,
-    ] = "Tekst"
-    summary: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=256,
-        ),
-        val.CleanupOneline,
-        val.FalsyToNone,
-    ] = None
-    description: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=4096,
-        ),
-        val.CleanupMultiline,
-    ] = None
-    terms_url: OptionalCustomHttpUrl = None
-    contact_name: Annotated[
-        str | None,
-        StringConstraints(max_length=64),
-        val.CleanupOneline,
-        val.FalsyToNone,
-    ] = None
-    contact_email: Annotated[
-        EmailStr | None,
-        StringConstraints(max_length=64),
-        val.CleanupOneline,
-        val.FalsyToNone,
-    ] = None
-    contact_url: OptionalCustomHttpUrl = None
-    license_name: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=32,
-        ),
-        val.CleanupOneline,
-        val.FalsyToNone,
-    ] = None
-    license_id: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=32,
-        ),
-        val.CleanupOneline,
-        val.FalsyToNone,
-    ] = None
-    license_url: OptionalCustomHttpUrl = None
+    title: ConStr(
+        max_length=32,
+        cleanup="oneline",
+    ) = "Tekst"
+    summary: ConStrOrNone(
+        max_length=256,
+        cleanup="oneline",
+    ) = None
+    description: ConStrOrNone(
+        max_length=4096,
+        cleanup="multiline",
+    ) = None
+    terms_url: HttpUrlOrNone = None
+    contact_name: ConStrOrNone(
+        max_length=64,
+        cleanup="oneline",
+    ) = None
+    contact_email: EmailStr | None = None
+    contact_url: HttpUrlOrNone = None
+    license_name: ConStrOrNone(
+        max_length=32,
+        cleanup="oneline",
+    ) = None
+    license_id: ConStrOrNone(
+        max_length=32,
+        cleanup="oneline",
+    ) = None
+    license_url: HttpUrlOrNone = None
 
 
 class CORSConfig(ConfigSubSection):
@@ -297,7 +312,7 @@ class TekstConfig(BaseSettings):
         validate_assignment=True,  # should only happen in tests anyway
     )
 
-    server_url: CustomHttpUrl = "http://127.0.0.1:8000"
+    server_url: HttpUrl = "http://127.0.0.1:8000"
     api_path: str = "/api"
     web_path: str = "/"
     behind_reverse_proxy: bool = False

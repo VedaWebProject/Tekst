@@ -4,18 +4,15 @@ from beanie import PydanticObjectId
 from pydantic import (
     BeforeValidator,
     Field,
-    StringConstraints,
 )
 
 from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
-    LocationAlias,
-    LocationLevel,
-    LocationPosition,
     ModelBase,
     ModelFactoryMixin,
 )
+from tekst.types import LocationAlias, LocationLabel, LocationLevel, LocationPosition
 
 
 class Location(ModelBase, ModelFactoryMixin):
@@ -52,12 +49,7 @@ class Location(ModelBase, ModelFactoryMixin):
         ),
     ]
     label: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=256,
-            strip_whitespace=True,
-        ),
+        LocationLabel,
         Field(
             description="Label for identifying this text location in level context",
         ),
@@ -117,12 +109,7 @@ class LocationImport(ModelBase):
         ),
     ]
     label: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=256,
-            strip_whitespace=True,
-        ),
+        LocationLabel,
         Field(
             description="Label for identifying this text location in level context",
         ),
