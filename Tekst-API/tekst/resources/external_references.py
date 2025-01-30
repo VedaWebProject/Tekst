@@ -3,9 +3,9 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
-from tekst.models.common import ModelBase, SchemaOptionalNullable
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -13,13 +13,18 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
-from tekst.utils import validators as val
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    HttpUrl,
+    SchemaOptionalNullable,
+)
 
 
 class ExternalReferences(ResourceTypeABC):
@@ -141,8 +146,8 @@ class ExternalReferences(ResourceTypeABC):
 
 
 class GeneralExternalReferencesResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
 
 
 class ExternalReferencesResourceConfig(ResourceConfigBase):
@@ -162,36 +167,26 @@ class ExternalReferencesResource(ResourceBase):
 
 class ExternalReferencesLink(ModelBase):
     url: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrl,
         Field(
             description="URL of the link",
         ),
     ]
     title: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=128,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
         Field(
             description="Title/text of the link",
         ),
     ]
     description: Annotated[
-        str | None,
-        StringConstraints(
+        str,
+        ConStrOrNone(
             max_length=4096,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
         Field(
             description="Description of the link",
         ),
@@ -221,14 +216,13 @@ class ExternalReferencesSearchQuery(ModelBase):
         ),
     ]
     text: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
         Field(
             description="Text to search for",
         ),
-        val.CleanupOneline,
         SchemaOptionalNullable,
     ] = ""

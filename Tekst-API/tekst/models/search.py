@@ -1,16 +1,15 @@
 from collections.abc import Callable
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints, conint, field_validator
+from pydantic import Field, conint, field_validator
 from typing_extensions import TypeAliasType
 
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
-    SchemaOptionalNonNullable,
-    SchemaOptionalNullable,
 )
 from tekst.resources import ResourceSearchQuery
+from tekst.types import ConStr, SchemaOptionalNonNullable, SchemaOptionalNullable
 
 
 class SearchHit(ModelBase):
@@ -185,10 +184,10 @@ class QuickSearchRequestBody(ModelBase):
         ),
     ] = "quick"
     query: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
         Field(
             alias="q",

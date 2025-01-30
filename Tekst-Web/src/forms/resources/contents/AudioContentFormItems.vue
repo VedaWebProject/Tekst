@@ -49,14 +49,14 @@ async function checkUrlInput(input: HTMLInputElement) {
           <!-- URL -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.audio.contentFields.url')"
+            :label="$t('general.url')"
             :path="`files[${index}].url`"
             :rule="contentFormRules.audio.url"
             style="flex-grow: 2"
           >
             <n-input
               v-model:value="model.files[index].url"
-              :placeholder="$t('resources.types.audio.contentFields.url')"
+              :placeholder="$t('general.url')"
               @input-blur="checkUrlInput($event.target as HTMLInputElement)"
               @keydown.enter.prevent
             />

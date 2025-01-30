@@ -4,32 +4,28 @@ from beanie import PydanticObjectId
 from pydantic import (
     BaseModel,
     Field,
-    StringConstraints,
     field_validator,
 )
 
+from tekst.i18n import TranslationLocaleKey
 from tekst.models.common import (
     DocumentBase,
     ModelBase,
     ModelFactoryMixin,
-    TranslationLocaleKey,
 )
-from tekst.utils import validators as val
+from tekst.types import ConStr
 
 
 class ClientSegment(ModelBase, ModelFactoryMixin):
     key: Annotated[
-        str,
+        ConStr(
+            max_length=32,
+            pattern=r"[a-zA-Z0-9\-_]+",
+        ),
         Field(
             description=(
                 "Key of this segment. System segment keys must start with `system`."
             ),
-        ),
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            pattern=r"[a-zA-Z0-9\-_]+",
-            strip_whitespace=True,
         ),
     ]
     editor_mode: Annotated[
@@ -45,22 +41,17 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
         ),
     ]
     title: Annotated[
-        str | None,
-        StringConstraints(
+        ConStr(
             max_length=32,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
-        val.EmptyStringToNone,
         Field(
             description="Title of this segment",
         ),
-    ] = None
+    ]
     html: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=1048576,
-            strip_whitespace=True,
         ),
         Field(
             description="HTML content of this segment",

@@ -3,9 +3,11 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
-from tekst.models.common import ModelBase, SchemaOptionalNullable
+from tekst.models.common import (
+    ModelBase,
+)
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -13,13 +15,19 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
-from tekst.utils import validators as val
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    HttpUrl,
+    HttpUrlOrNone,
+    SchemaOptionalNullable,
+)
 
 
 class Images(ResourceTypeABC):
@@ -145,8 +153,8 @@ class Images(ResourceTypeABC):
 
 
 class GeneralImagesResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = True
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = True
+    font: FontNameValueOrNone = None
 
 
 class ImagesResourceConfig(ResourceConfigBase):
@@ -164,46 +172,28 @@ class ImagesResource(ResourceBase):
 
 class ImageFile(ModelBase):
     url: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrl,
         Field(
             description="URL of the image file",
         ),
     ]
     thumb_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrlOrNone,
         Field(
             description="URL of the image file thumbnail",
         ),
     ] = None
     source_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrlOrNone,
         Field(
             description="URL of the source website of the image",
         ),
     ] = None
     caption: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=8192,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
         Field(
             description="Caption of the image",
         ),
@@ -233,11 +223,13 @@ class ImagesSearchQuery(ModelBase):
         ),
     ]
     caption: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
+        Field(
+            description="Caption content search query",
+        ),
         SchemaOptionalNullable,
     ] = ""

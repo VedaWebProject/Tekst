@@ -111,15 +111,13 @@ const fromChildLevel = computed(
       />
     </div>
 
-    <n-spin :show="loading && hasContent" size="small">
+    <n-spin :show="loading && hasContent" size="small" :delay="200">
       <collapsable-content
         v-if="hasContent"
         :collapsable="collapsable"
         :collapsed="collapsed"
         :scrollable="!state.smallScreen"
         :height-tresh-px="200"
-        class="content"
-        :class="{ 'content-loading': loading }"
       >
         <!-- content-specific component (that displays the actual content data) -->
         <component
@@ -214,13 +212,5 @@ const fromChildLevel = computed(
 .content-header-title.reduced {
   font-size: var(--font-size-tiny);
   opacity: 0.8;
-}
-
-.content {
-  transition: opacity 0.2s ease;
-}
-
-.content.content-loading {
-  opacity: 0;
 }
 </style>

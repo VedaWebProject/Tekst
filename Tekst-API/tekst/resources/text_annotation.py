@@ -6,30 +6,29 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
-from pydantic import BeforeValidator, Field, StringConstraints, field_validator
+from pydantic import BeforeValidator, Field, field_validator
 from typing_extensions import TypeAliasType, TypedDict
 
+from tekst.i18n import TranslationBase, Translations
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import (
-    ModelBase,
-    PrecomputedDataDocument,
-    SchemaOptionalNullable,
-    TranslationBase,
-    Translations,
-)
+from tekst.models.common import ModelBase, PrecomputedDataDocument
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
-from tekst.utils import validators as val
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    SchemaOptionalNullable,
+)
 
 
 class TextAnnotation(ResourceTypeABC):
@@ -320,28 +319,30 @@ class TextAnnotation(ResourceTypeABC):
 
 
 class GeneralTextAnnotationResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
 
 
 class AnnotationGroupTranslation(TranslationBase):
     translation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=32,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Translation of an annotation group label",
         ),
     ]
 
 
 class AnnotationGroup(TypedDict):
     key: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=16,
-            strip_whitespace=True,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Key identifying this annotation group",
         ),
     ]
     translations: Annotated[
@@ -362,27 +363,25 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
         ),
     ] = []
     display_template: Annotated[
-        str | None,
+        ConStrOrNone(
+            max_length=4096,
+            cleanup="multiline",
+        ),
         Field(
-            max_length=2048,
             description=(
-                "Template string used for displaying the annotations in the web client "
-                "(if missing, all annotations are displayed with key and value, "
-                "separated by commas)"
+                "Template string used for displaying the annotations in the web "
+                "client(if missing, all annotations are displayed with key "
+                "and value,separated by commas)"
             ),
         ),
-        val.CleanupMultiline,
-        val.EmptyStringToNone,
     ] = None
     multi_value_delimiter: Annotated[
-        str,
+        ConStr(
+            max_length=3,
+            cleanup="oneline",
+        ),
         Field(
             description="String used to delimit multiple values for an annotation",
-        ),
-        StringConstraints(
-            min_length=1,
-            max_length=3,
-            strip_whitespace=True,
         ),
     ] = "/"
 
@@ -531,16 +530,15 @@ class TextAnnotationResource(ResourceBase):
 TextAnnotationValue = TypeAliasType(
     "TextAnnotationValue",
     Annotated[
-        str,
+        ConStr(
+            max_length=256,
+            cleanup="oneline",
+        ),
         Field(
             description="Value of an annotation",
         ),
+        # stringify, but avoid "None" string
         BeforeValidator(lambda v: str(v) if v is not None else None),
-        StringConstraints(
-            min_length=1,
-            max_length=256,
-            strip_whitespace=True,
-        ),
     ],
 )
 
@@ -560,16 +558,14 @@ TextAnnotationValues = TypeAliasType(
 
 class TextAnnotationEntry(ModelBase):
     key: Annotated[
-        str,
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
         Field(
             description="Key of the annotation",
         ),
         BeforeValidator(lambda v: str(v) if v is not None else None),
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
     ]
     value: Annotated[
         TextAnnotationValues,
@@ -581,26 +577,24 @@ class TextAnnotationEntry(ModelBase):
 
 class TextAnnotationQueryEntry(ModelBase):
     key: Annotated[
-        str,
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
         Field(
             alias="k",
             description="Key of the annotation",
         ),
-        StringConstraints(
-            min_length=1,
-            max_length=32,
-            strip_whitespace=True,
-        ),
     ]
     value: Annotated[
-        str | None,
+        ConStrOrNone(
+            min_length=0,
+            max_length=64,
+            cleanup="oneline",
+        ),
         Field(
             alias="v",
             description="Value of the annotation",
-        ),
-        StringConstraints(
-            max_length=64,
-            strip_whitespace=True,
         ),
     ] = None
     wildcards: Annotated[
@@ -619,14 +613,12 @@ class TextAnnotationQueryEntry(ModelBase):
 
 class TextAnnotationToken(ModelBase):
     token: Annotated[
-        str,
+        ConStr(
+            max_length=4096,
+            cleanup="oneline",
+        ),
         Field(
             description="Text token",
-        ),
-        StringConstraints(
-            min_length=1,
-            max_length=4096,
-            strip_whitespace=True,
         ),
     ]
     annotations: Annotated[
@@ -664,12 +656,14 @@ class TextAnnotationSearchQuery(ModelBase):
         ),
     ]
     token: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
+        Field(
+            description="Token search query",
+        ),
         SchemaOptionalNullable,
     ] = ""
     token_wildcards: Annotated[

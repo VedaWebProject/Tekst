@@ -1,20 +1,17 @@
 from typing import Annotated
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
 from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
-from tekst.utils import validators as val
+from tekst.types import ConStrOrNone
 
 
 class CommonResourceConfig(ModelBase):
     category: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=16,
-            strip_whitespace=True,
         ),
-        val.EmptyStringToNone,
         Field(
             description="Resource category key",
         ),
@@ -56,23 +53,3 @@ class CommonResourceConfig(ModelBase):
 
 class ResourceConfigBase(ModelBase):
     common: CommonResourceConfig = CommonResourceConfig()
-
-
-# TYPE ANNOTATIONS FOR FIELD THAT CAN BE PART OF
-# THE GENERAL TYPE-SPECIFIC RESOURCE CONFIGURATION
-
-DefaultCollapsedConfigType = Annotated[
-    bool,
-    Field(
-        description=(
-            "Whether contents of this resource should be collapsed by default"
-        ),
-    ),
-]
-
-FontConfigType = Annotated[
-    str | None,
-    Field(
-        description="Name of the font to use for this resource.",
-    ),
-]

@@ -1,4 +1,5 @@
 import AnnotationGroupsFormItems from '@/forms/resources/config/AnnotationGroupsFormItems.vue';
+import ApiCallSpecificConfigFormItems from '@/forms/resources/config/ApiCallSpecificConfigFormItems.vue';
 import DeepLLinksConfigFormItems from '@/forms/resources/config/DeepLLinksConfigFormItems.vue';
 import DefaultCollapsedFormItems from '@/forms/resources/config/DefaultCollapsedFormItems.vue';
 import DisplayTemplateConfigFormItems from '@/forms/resources/config/DisplayTemplateConfigFormItems.vue';
@@ -20,4 +21,5 @@ export const specialConfigFormItems: Record<string, Component> = {
   displayTemplate: DisplayTemplateConfigFormItems,
   annotationGroups: AnnotationGroupsFormItems,
   multiValueDelimiter: MultiValueDelimiterConfigFormItems,
+  apiCall: ApiCallSpecificConfigFormItems,
 };

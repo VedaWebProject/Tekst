@@ -51,6 +51,7 @@ general:
   system: System
   details: Details
   loading: Lade...
+  url: URL
   downloadSaved: Datei gespeichert als {filename}.
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
@@ -469,7 +470,7 @@ resources:
       general:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
-        font: Schriftart (nutzt Standard-Schriftart wenn nicht festgelegt)
+        font: Schriftart für Inhalte (nutzt Standard wenn nicht festgelegt)
       reducedView:
         heading: Reduzierte Leseansicht
         singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen
@@ -486,6 +487,12 @@ resources:
       displayTemplate: Darstellungsvorlage
       multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
       annotationGroup: Annotations-Gruppe | Annotations-Gruppen
+      apiCall:
+        endpoint: API-Endpoint
+        method: HTTP-Anfrage-Methode
+        contentType: Content-Type der Anfrage
+        transformDeps: Abhängigkeiten der Transformationsfunktion (URLs)
+        transformJs: Transformations-Funktionskörper (JavaScript)
   types:
     common:
       label: Meta
@@ -525,14 +532,12 @@ resources:
       parenthesis: Audiowiedergabe
       contentFields:
         files: Audio-Dateien
-        url: URL
         sourceUrl: URL der Quellen-Website
     images:
       label: Bilder
       parenthesis: Bildergalerie
       contentFields:
         files: Bild-Dateien
-        url: URL
         thumbUrl: Miniatur-URL
         sourceUrl: URL der Quellen-Website
     externalReferences:
@@ -540,7 +545,6 @@ resources:
       parenthesis: Links zu externen Ressourcen
       contentFields:
         links: Links
-        url: URL
         title: Titel / Text
         description: Beschreibung
       searchFields:
@@ -549,7 +553,8 @@ resources:
       label: API-Abruf
       parenthesis: Abruf von Daten von einer HTTP-API
       contentFields:
-        url: URL
+        queryString: URL Query String
+        body: Request Body
 
 corrections:
   heading: Korrekturnotizen für "{title}"

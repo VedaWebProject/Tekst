@@ -1282,7 +1282,10 @@ export interface components {
     };
     /** AnnotationGroup */
     AnnotationGroup: {
-      /** Key */
+      /**
+       * Key
+       * @description Key identifying this annotation group
+       */
       key: string;
       /**
        * Translations
@@ -1293,7 +1296,10 @@ export interface components {
     /** AnnotationGroupTranslation */
     AnnotationGroupTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Translation of an annotation group label
+       */
       translation: string;
     };
     /** ApiCallContentCreate */
@@ -1319,17 +1325,17 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
-       * Url
-       * @description URL to use for the HTTP (GET) call
+       * Query
+       * @description Query payload to use for the API call
        */
-      url: string;
+      query: string;
     };
     /** ApiCallContentRead */
     ApiCallContentRead: {
@@ -1359,17 +1365,17 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
-       * Url
-       * @description URL to use for the HTTP (GET) call
+       * Query
+       * @description Query payload to use for the API call
        */
-      url: string;
+      query: string;
     } & {
       [key: string]: unknown;
     };
@@ -1384,17 +1390,17 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
-       * Url
-       * @description URL to use for the HTTP (GET) call
+       * Query
+       * @description Query payload to use for the API call
        */
-      url?: string;
+      query?: string;
     };
     /** ApiCallResourceConfig */
     ApiCallResourceConfig: {
@@ -1410,6 +1416,14 @@ export interface components {
        *       "defaultCollapsed": false
        *     } */
       general: components['schemas']['GeneralApiCallResourceConfig'];
+      /** @default {
+       *       "endpoint": "https://api.example.com/v2/some/endpoint",
+       *       "method": "GET",
+       *       "contentType": "application/json",
+       *       "transformDeps": [],
+       *       "transformJs": ""
+       *     } */
+      apiCall: components['schemas']['ApiCallSpecificConfig'];
     };
     /** ApiCallResourceCreate */
     ApiCallResourceCreate: {
@@ -1449,7 +1463,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1472,6 +1486,13 @@ export interface components {
        *       },
        *       "general": {
        *         "defaultCollapsed": false
+       *       },
+       *       "apiCall": {
+       *         "contentType": "application/json",
+       *         "endpoint": "https://api.example.com/v2/some/endpoint",
+       *         "method": "GET",
+       *         "transformDeps": [],
+       *         "transformJs": ""
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1565,7 +1586,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1588,6 +1609,13 @@ export interface components {
        *       },
        *       "general": {
        *         "defaultCollapsed": false
+       *       },
+       *       "apiCall": {
+       *         "contentType": "application/json",
+       *         "endpoint": "https://api.example.com/v2/some/endpoint",
+       *         "method": "GET",
+       *         "transformDeps": [],
+       *         "transformJs": ""
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1637,7 +1665,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1649,6 +1677,38 @@ export interface components {
        */
       comment?: components['schemas']['ResourceCommentTranslation'][];
       config?: components['schemas']['ApiCallResourceConfig'];
+    };
+    /**
+     * ApiCallSpecificConfig
+     * @description Config properties specific to the API call resource type
+     */
+    ApiCallSpecificConfig: {
+      /**
+       * Endpoint
+       * @default https://api.example.com/v2/some/endpoint
+       */
+      endpoint: string;
+      /**
+       * Method
+       * @default GET
+       * @enum {string}
+       */
+      method: 'GET' | 'POST' | 'QUERY' | 'SEARCH';
+      /**
+       * Contenttype
+       * @default application/json
+       */
+      contentType: string;
+      /**
+       * Transformdeps
+       * @default []
+       */
+      transformDeps: string[];
+      /**
+       * Transformjs
+       * @default
+       */
+      transformJs: string;
     };
     /** AudioContentCreate */
     AudioContentCreate: {
@@ -1673,12 +1733,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Files
        * @description List of audio file objects
@@ -1713,12 +1773,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Files
        * @description List of audio file objects
@@ -1738,12 +1798,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Files
        * @description List of audio file objects
@@ -1761,12 +1821,12 @@ export interface components {
        * Sourceurl
        * @description URL of the source website of the image
        */
-      sourceUrl?: string | null;
+      sourceUrl?: null | string;
       /**
        * Caption
        * @description Caption of the audio file
        */
-      caption?: string | null;
+      caption?: null | string;
     };
     /** AudioResourceConfig */
     AudioResourceConfig: {
@@ -1821,7 +1881,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1937,7 +1997,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2009,7 +2069,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2120,7 +2180,7 @@ export interface components {
        * Comment
        * @description Comment associated with this bookmark
        */
-      comment?: string | null;
+      comment?: null | string;
     };
     /** BookmarkRead */
     BookmarkRead: {
@@ -2166,7 +2226,7 @@ export interface components {
        * Comment
        * @description Comment associated with this bookmark
        */
-      comment?: string | null;
+      comment?: null | string;
     } & {
       [key: string]: unknown;
     };
@@ -2190,7 +2250,7 @@ export interface components {
        * Title
        * @description Title of this segment
        */
-      title?: string | null;
+      title: string;
       /**
        * Html
        * @description HTML content of this segment
@@ -2235,7 +2295,7 @@ export interface components {
        * Title
        * @description Title of this segment
        */
-      title?: string | null;
+      title: string;
       /**
        * Html
        * @description HTML content of this segment
@@ -2262,7 +2322,7 @@ export interface components {
        * Title
        * @description Title of this segment
        */
-      title?: string | null;
+      title?: string;
       /**
        * Html
        * @description HTML content of this segment
@@ -2275,7 +2335,7 @@ export interface components {
        * Category
        * @description Resource category key
        */
-      category?: string | null;
+      category?: null | string;
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
@@ -2326,7 +2386,7 @@ export interface components {
       res: string;
       /**
        * Cmt
-       * @description Comment
+       * @description Comment search query
        * @default
        */
       cmt?: string;
@@ -2459,7 +2519,7 @@ export interface components {
       /** Key */
       key: string;
       /** Msg */
-      msg?: string | null;
+      msg?: null | string;
       /** Values */
       values?: {
         [key: string]: string | number | boolean;
@@ -2497,12 +2557,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Links
        * @description List of external reference link objects
@@ -2537,12 +2597,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Links
        * @description List of external reference link objects
@@ -2562,12 +2622,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Links
        * @description List of external reference link objects
@@ -2590,7 +2650,7 @@ export interface components {
        * Description
        * @description Description of the link
        */
-      description?: string | null;
+      description?: string;
     };
     /** ExternalReferencesResourceConfig */
     ExternalReferencesResourceConfig: {
@@ -2645,7 +2705,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2761,7 +2821,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2833,7 +2893,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2870,9 +2930,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** GeneralAudioResourceConfig */
     GeneralAudioResourceConfig: {
@@ -2884,9 +2944,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** GeneralExternalReferencesResourceConfig */
     GeneralExternalReferencesResourceConfig: {
@@ -2898,9 +2958,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** GeneralImagesResourceConfig */
     GeneralImagesResourceConfig: {
@@ -2912,9 +2972,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** GeneralPlainTextResourceConfig */
     GeneralPlainTextResourceConfig: {
@@ -2926,9 +2986,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
       /** @default {
        *       "singleLine": false,
        *       "singleLineDelimiter": " / "
@@ -2945,9 +3005,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -2977,9 +3037,9 @@ export interface components {
       defaultCollapsed: boolean;
       /**
        * Font
-       * @description Name of the font to use for this resource.
+       * @description Name of a font
        */
-      font?: string | null;
+      font?: null | string;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -2997,17 +3057,17 @@ export interface components {
        * Thumburl
        * @description URL of the image file thumbnail
        */
-      thumbUrl?: string | null;
+      thumbUrl?: null | string;
       /**
        * Sourceurl
        * @description URL of the source website of the image
        */
-      sourceUrl?: string | null;
+      sourceUrl?: null | string;
       /**
        * Caption
        * @description Caption of the image
        */
-      caption?: string | null;
+      caption?: null | string;
     };
     /** ImagesContentCreate */
     ImagesContentCreate: {
@@ -3032,12 +3092,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Files
        * @description List of image file objects
@@ -3072,12 +3132,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Files
        * @description List of image file objects
@@ -3097,12 +3157,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Files
        * @description List of image file objects
@@ -3162,7 +3222,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3278,7 +3338,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3350,7 +3410,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3372,6 +3432,7 @@ export interface components {
       type: 'images';
       /**
        * Caption
+       * @description Caption content search query
        * @default
        */
       caption?: string;
@@ -3567,14 +3628,17 @@ export interface components {
       /** Translation */
       translation: string;
     };
-    /** @enum {string} */
-    MaybePrivateUserField: 'name' | 'affiliation' | 'bio';
-    MaybePrivateUserFields: components['schemas']['MaybePrivateUserField'][];
     /** MetadataEntry */
     MetadataEntry: {
-      /** Key */
+      /**
+       * Key
+       * @description Key identifying this metadata entry
+       */
       key: string;
-      /** Value */
+      /**
+       * Value
+       * @description Value of this metadata entry
+       */
       value: string;
     };
     /** MoveLocationRequestBody */
@@ -3595,8 +3659,11 @@ export interface components {
       key: string;
       /** Name */
       name: string;
-      /** Font */
-      font?: string | null;
+      /**
+       * Font
+       * @description Name of a font
+       */
+      font?: null | string;
     };
     /** PaginationSettings */
     PaginationSettings: {
@@ -3643,12 +3710,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -3683,12 +3750,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -3708,12 +3775,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -3786,7 +3853,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3913,7 +3980,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3996,7 +4063,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4018,6 +4085,7 @@ export interface components {
       type: 'plainText';
       /**
        * Text
+       * @description Text content search query
        * @default
        */
       text?: string;
@@ -4213,9 +4281,9 @@ export interface components {
       indicesUpdatedAt?: string | null;
       /**
        * Dbversion
-       * @description Version of the database
+       * @description Version string of DB data
        */
-      dbVersion?: string | null;
+      dbVersion?: null | string;
     } & {
       [key: string]: unknown;
     };
@@ -4327,6 +4395,9 @@ export interface components {
       /** Texts */
       texts: components['schemas']['TextStats'][];
     };
+    /** @enum {string} */
+    PrivateUserProp: 'name' | 'affiliation' | 'bio';
+    PrivateUserProps: components['schemas']['PrivateUserProp'][];
     /** PublicUsersSearchResult */
     PublicUsersSearchResult: {
       /**
@@ -4411,7 +4482,10 @@ export interface components {
     };
     /** ResourceCategory */
     ResourceCategory: {
-      /** Key */
+      /**
+       * Key
+       * @description Key identifying this resource category
+       */
       key: string;
       /** Translations */
       translations: components['schemas']['ResourceCategoryTranslation'][];
@@ -4419,13 +4493,19 @@ export interface components {
     /** ResourceCategoryTranslation */
     ResourceCategoryTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Translation of a resource category
+       */
       translation: string;
     };
     /** ResourceCommentTranslation */
     ResourceCommentTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Comment translation for this resource
+       */
       translation: string;
     };
     /** ResourceCoverage */
@@ -4444,7 +4524,10 @@ export interface components {
     /** ResourceDescriptionTranslation */
     ResourceDescriptionTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Description translation for this resource
+       */
       translation: string;
     };
     /** ResourceSearchQuery */
@@ -4466,7 +4549,10 @@ export interface components {
     /** ResourceTitleTranslation */
     ResourceTitleTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Title translation for this resource
+       */
       translation: string;
     };
     /** RichTextContentCreate */
@@ -4492,12 +4578,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -4539,12 +4625,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -4571,12 +4657,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -4641,7 +4727,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4757,7 +4843,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4829,7 +4915,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4851,6 +4937,7 @@ export interface components {
       type: 'richText';
       /**
        * Html
+       * @description HTML text content search query
        * @default
        */
       html?: string;
@@ -4959,12 +5046,13 @@ export interface components {
        * Error
        * @description Error message if the task failed
        */
-      error?: string | null;
+      error?: null | string;
     } & {
       [key: string]: unknown;
     };
     /**
      * TaskType
+     * @description Task types with locking and artifact flags
      * @enum {string}
      */
     TaskType:
@@ -5003,12 +5091,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5043,12 +5131,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: null | string;
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5068,12 +5156,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string | null;
+      comment?: string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string | null;
+      notes?: string;
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5101,7 +5189,7 @@ export interface components {
        * V
        * @description Value of the annotation
        */
-      v?: string | null;
+      v?: null | string;
       /**
        * Wc
        * @description Whether to interpret wildcards in the annotation value query
@@ -5131,9 +5219,9 @@ export interface components {
       annotationGroups: components['schemas']['AnnotationGroup'][];
       /**
        * Displaytemplate
-       * @description Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)
+       * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
        */
-      displayTemplate?: string | null;
+      displayTemplate?: null | string;
       /**
        * Multivaluedelimiter
        * @description String used to delimit multiple values for an annotation
@@ -5179,7 +5267,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5297,7 +5385,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5371,7 +5459,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string | null;
+      citation?: string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5393,6 +5481,7 @@ export interface components {
       type: 'textAnnotation';
       /**
        * Token
+       * @description Token search query
        * @default
        */
       token?: string;
@@ -5503,7 +5592,10 @@ export interface components {
     /** TextLevelTranslation */
     TextLevelTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Translation of a text level label
+       */
       translation: string;
     };
     /** TextRead */
@@ -5608,7 +5700,10 @@ export interface components {
     /** TextSubtitleTranslation */
     TextSubtitleTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
+      /**
+       * Translation
+       * @description Subtitle translation for a text
+       */
       translation: string;
     };
     /** TextUpdate */
@@ -5698,19 +5793,35 @@ export interface components {
        * @default false
        */
       isVerified: boolean | null;
-      /** Username */
+      /**
+       * Username
+       * @description Public username of this user
+       */
       username: string;
-      /** Name */
+      /**
+       * Name
+       * @description Full name of this user
+       */
       name: string;
-      /** Affiliation */
+      /**
+       * Affiliation
+       * @description Affiliation info of this user
+       */
       affiliation: string;
+      /** @description Key of the locale used by this user */
       locale?: components['schemas']['LocaleKey'] | null;
-      /** Avatarurl */
-      avatarUrl?: string | null;
-      /** Bio */
-      bio?: string | null;
+      /**
+       * Avatarurl
+       * @description URL of this user's avatar picture
+       */
+      avatarUrl?: null | string;
+      /**
+       * Bio
+       * @description Biography of this user
+       */
+      bio?: null | string;
       /** @default [] */
-      publicFields: components['schemas']['MaybePrivateUserFields'];
+      publicFields: components['schemas']['PrivateUserProps'];
       /**
        * Usernotificationtriggers
        * @description Events that trigger notifications for this user
@@ -5837,19 +5948,35 @@ export interface components {
       isSuperuser: boolean;
       /** Isverified */
       isVerified: boolean;
-      /** Username */
+      /**
+       * Username
+       * @description Public username of this user
+       */
       username: string;
-      /** Name */
+      /**
+       * Name
+       * @description Full name of this user
+       */
       name: string;
-      /** Affiliation */
+      /**
+       * Affiliation
+       * @description Affiliation info of this user
+       */
       affiliation: string;
+      /** @description Key of the locale used by this user */
       locale?: components['schemas']['LocaleKey'] | null;
-      /** Avatarurl */
-      avatarUrl?: string | null;
-      /** Bio */
-      bio?: string | null;
+      /**
+       * Avatarurl
+       * @description URL of this user's avatar picture
+       */
+      avatarUrl?: null | string;
+      /**
+       * Bio
+       * @description Biography of this user
+       */
+      bio?: null | string;
       /** @default [] */
-      publicFields: components['schemas']['MaybePrivateUserFields'];
+      publicFields: components['schemas']['PrivateUserProps'];
       /**
        * Usernotificationtriggers
        * @description Events that trigger notifications for this user
@@ -5892,14 +6019,14 @@ export interface components {
       /** Affiliation */
       affiliation?: string | null;
       /** Avatarurl */
-      avatarUrl?: string | null;
+      avatarUrl?: null | string;
       /** Bio */
       bio?: string | null;
       /** Isactive */
       isActive: boolean;
       /** Issuperuser */
       isSuperuser: boolean;
-      publicFields: components['schemas']['MaybePrivateUserFields'];
+      publicFields: components['schemas']['PrivateUserProps'];
     };
     /** UserUpdate */
     UserUpdate: {
@@ -5913,18 +6040,34 @@ export interface components {
       isSuperuser?: boolean | null;
       /** Isverified */
       isVerified?: boolean | null;
-      /** Username */
+      /**
+       * Username
+       * @description Public username of this user
+       */
       username?: string;
-      /** Name */
+      /**
+       * Name
+       * @description Full name of this user
+       */
       name?: string;
-      /** Affiliation */
+      /**
+       * Affiliation
+       * @description Affiliation info of this user
+       */
       affiliation?: string;
+      /** @description Key of the locale used by this user */
       locale?: components['schemas']['LocaleKey'] | null;
-      /** Avatarurl */
-      avatarUrl?: string | null;
-      /** Bio */
-      bio?: string | null;
-      publicFields?: components['schemas']['MaybePrivateUserFields'];
+      /**
+       * Avatarurl
+       * @description URL of this user's avatar picture
+       */
+      avatarUrl?: string;
+      /**
+       * Bio
+       * @description Biography of this user
+       */
+      bio?: string;
+      publicFields?: components['schemas']['PrivateUserProps'];
       /**
        * Usernotificationtriggers
        * @description Events that trigger notifications for this user

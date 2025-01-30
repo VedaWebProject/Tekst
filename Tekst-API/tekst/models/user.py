@@ -8,28 +8,32 @@ from fastapi_users import (
 from fastapi_users_db_beanie import (
     BeanieBaseUser,
 )
-from pydantic import Field, StringConstraints, model_validator
+from pydantic import Field, model_validator
 from pymongo import IndexModel
 from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import LocaleKey, ModelBase, ModelFactoryMixin
+from tekst.i18n import LocaleKey
+from tekst.models.common import (
+    ModelBase,
+    ModelFactoryMixin,
+)
 from tekst.models.notifications import TemplateIdentifier
-from tekst.utils.validators import CleanupMultiline, CleanupOneline, EmptyStringToNone
+from tekst.types import ConStr, ConStrOrNone, HttpUrlOrNone
 
 
 _cfg: TekstConfig = get_config()
 
-MaybePrivateUserField = TypeAliasType(
-    "MaybePrivateUserField", Literal["name", "affiliation", "bio"]
+PrivateUserProp = TypeAliasType(
+    "PrivateUserProp", Literal["name", "affiliation", "bio"]
 )
-MaybePrivateUserFields = TypeAliasType(
-    "MaybePrivateUserFields",
+PrivateUserProps = TypeAliasType(
+    "PrivateUserProps",
     Annotated[
-        list[MaybePrivateUserField],
+        list[PrivateUserProp],
         Field(
-            description="Data fields set public by this user",
-            max_length=len(get_args(MaybePrivateUserField.__value__)),
+            description="Properties set to be private by this user",
+            max_length=len(get_args(PrivateUserProp.__value__)),
         ),
     ],
 )
@@ -73,15 +77,15 @@ class UserReadPublic(ModelBase):
     username: str
     name: str | None = None
     affiliation: str | None = None
-    avatar_url: str | None = None
+    avatar_url: HttpUrlOrNone = None
     bio: str | None = None
     is_active: bool
     is_superuser: bool
-    public_fields: MaybePrivateUserFields
+    public_fields: PrivateUserProps
 
     @model_validator(mode="after")
     def model_postprocess(self):
-        for pf in get_args(MaybePrivateUserField.__value__):
+        for pf in get_args(PrivateUserProp.__value__):
             if pf not in self.public_fields:
                 setattr(self, pf, None)
         return self
@@ -91,48 +95,55 @@ class User(ModelBase, ModelFactoryMixin):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
             min_length=4,
             max_length=16,
             pattern=r"[a-zA-Z0-9\-_]+",
-            strip_whitespace=True,
+        ),
+        Field(
+            description="Public username of this user",
         ),
     ]
     name: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=64,
+            cleanup="oneline",
         ),
-        CleanupOneline,
+        Field(
+            description="Full name of this user",
+        ),
     ]
     affiliation: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=180,
+            cleanup="oneline",
         ),
-        CleanupOneline,
+        Field(
+            description="Affiliation info of this user",
+        ),
     ]
-    locale: LocaleKey | None = None
-    avatar_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=1024,
+    locale: Annotated[
+        LocaleKey | None,
+        Field(
+            description="Key of the locale used by this user",
         ),
-        CleanupOneline,
-        EmptyStringToNone,
+    ] = None
+    avatar_url: Annotated[
+        HttpUrlOrNone,
+        Field(
+            description="URL of this user's avatar picture",
+        ),
     ] = None
     bio: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=2000,
+            cleanup="multiline",
         ),
-        CleanupMultiline,
-        EmptyStringToNone,
+        Field(
+            description="Biography of this user",
+        ),
     ] = None
-    public_fields: MaybePrivateUserFields = []
+    public_fields: PrivateUserProps = []
     user_notification_triggers: UserNotificationTriggers = list(
         get_args(UserNotificationTrigger.__value__)
     )

@@ -7,7 +7,6 @@ from pydantic import Field, conint
 
 from tekst import errors
 from tekst.auth import SuperuserDep
-from tekst.models.common import LocationAlias, LocationLevel, LocationPosition
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
     DeleteLocationResult,
@@ -20,8 +19,10 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import (
     MoveLocationRequestBody,
     TextDocument,
+    TextSlug,
 )
 from tekst.search import set_index_ood
+from tekst.types import LocationAlias, LocationLevel, LocationPosition
 
 
 router = APIRouter(
@@ -150,7 +151,7 @@ async def find_locations(
         ),
     ] = None,
     text_slug: Annotated[
-        str | None,
+        TextSlug | None,
         Query(
             alias="textSlug",
             description="Slug of text to find locations for",
@@ -274,7 +275,7 @@ async def get_path_options_by_head_id(
         Path(alias="id", description="Location ID"),
     ],
     by: Annotated[
-        Literal["root"] | Literal["head"],
+        Literal["root", "head"],
         Path(description="Wheter to handle the given location as path root or head"),
     ],
 ) -> list[list[LocationDocument]]:

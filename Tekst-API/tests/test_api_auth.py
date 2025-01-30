@@ -7,11 +7,11 @@ from httpx import AsyncClient
 async def test_register(
     insert_sample_data,
     test_client: AsyncClient,
-    get_fake_user,
+    get_mock_user,
     assert_status,
 ):
     await insert_sample_data()  # to have an admin to notify after registration
-    payload = get_fake_user()
+    payload = get_mock_user()
     resp = await test_client.post("/auth/register", json=payload)
     assert_status(201, resp)
     assert "id" in resp.json()
@@ -20,10 +20,10 @@ async def test_register(
 @pytest.mark.anyio
 async def test_register_invalid_pw(
     test_client: AsyncClient,
-    get_fake_user,
+    get_mock_user,
     assert_status,
 ):
-    payload = get_fake_user()
+    payload = get_mock_user()
 
     payload["password"] = f"aA1{payload['email']}0oO"
     resp = await test_client.post("/auth/register", json=payload)
@@ -58,10 +58,10 @@ async def test_register_invalid_pw(
 @pytest.mark.anyio
 async def test_register_username_exists(
     test_client: AsyncClient,
-    get_fake_user,
+    get_mock_user,
     assert_status,
 ):
-    payload = get_fake_user()
+    payload = get_mock_user()
 
     payload["username"] = "someuser"
     resp = await test_client.post("/auth/register", json=payload)
@@ -75,10 +75,10 @@ async def test_register_username_exists(
 @pytest.mark.anyio
 async def test_register_email_exists(
     test_client: AsyncClient,
-    get_fake_user,
+    get_mock_user,
     assert_status,
 ):
-    payload = get_fake_user()
+    payload = get_mock_user()
 
     payload["email"] = "first@tekst.dev"
     payload["username"] = "first"

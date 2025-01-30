@@ -10,6 +10,7 @@ from fastapi import APIRouter, Body, Request, status
 from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep, TekstConfig
+from tekst.i18n import pick_translation
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
     AdvancedSearchRequestBody,
@@ -19,7 +20,7 @@ from tekst.models.search import (
 )
 from tekst.models.text import TextDocument
 from tekst.state import get_state
-from tekst.utils import client_hash, pick_translation
+from tekst.utils import client_hash
 
 
 router = APIRouter(

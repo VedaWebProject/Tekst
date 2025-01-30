@@ -1139,7 +1139,7 @@ async def test_export_content(
             "to_loc_id": "664321104aa6341acd83fb05",
         },
         {
-            "res_id": "6791146a74030487c64fe55f",
+            "res_id": "679b5f25a993e4db9b1bd9f4",
             "from_loc_id": "664321104aa6341acd83fb05",
             "to_loc_id": "664321104aa6341acd83fb05",
         },

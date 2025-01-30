@@ -3,7 +3,7 @@ import re
 
 def cleanup_spaces_multiline(string: str | None) -> str | None:
     """Reduces excessive newline chars and whitespaces and strips whitespaces"""
-    if string is None:
+    if string is None:  # pragma: no cover
         return None
     string = str(string)
     string = re.sub(r"(\r\n|\r|\n)", "\n", string)  # normalize line breaks
@@ -15,7 +15,7 @@ def cleanup_spaces_multiline(string: str | None) -> str | None:
 
 def cleanup_spaces_oneline(string: str | None) -> str | None:
     """Replaces any number of newlines with one whitespace and strips whitespaces"""
-    if string is None:
+    if string is None:  # pragma: no cover
         return None
     # replace any sequence of spaces with one whitespace, return the result
     return re.sub(r"\s+", " ", str(string)).strip()

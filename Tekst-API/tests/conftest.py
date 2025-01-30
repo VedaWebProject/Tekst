@@ -181,8 +181,8 @@ async def use_indices(
 
 
 @pytest.fixture
-def get_fake_user() -> Callable:
-    def _get_fake_user(suffix: str = ""):
+def get_mock_user() -> Callable:
+    def _get_mock_user(suffix: str = ""):
         return dict(
             email=f"user{suffix}@foo.de",
             username=f"user{suffix}",
@@ -191,7 +191,7 @@ def get_fake_user() -> Callable:
             affiliation="Some Institution",
         )
 
-    return _get_fake_user
+    return _get_mock_user
 
 
 @pytest.fixture(autouse=True)
@@ -203,7 +203,7 @@ async def setup_teardown(database) -> Callable:
 
 
 @pytest.fixture
-async def register_test_user(get_fake_user) -> Callable:
+async def register_test_user(get_mock_user) -> Callable:
     async def _register_test_user(
         *,
         is_active: bool = True,
@@ -215,7 +215,7 @@ async def register_test_user(get_fake_user) -> Callable:
             f"{'v' if is_verified else 'x'}"
             f"{'s' if is_superuser else 'x'}"
         )
-        user_data = get_fake_user(suffix=suffix)
+        user_data = get_mock_user(suffix=suffix)
         user = UserCreate(**user_data)
         user.is_active = is_active
         user.is_verified = is_verified

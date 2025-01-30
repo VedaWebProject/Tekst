@@ -1536,7 +1536,11 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string"
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16,
+                  "pattern": "^[a-z0-9]+$",
+                  "description": "A short identifier for use in URLs and internal operations"
                 },
                 {
                   "type": "null"
@@ -1690,16 +1694,11 @@
             "in": "path",
             "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "const": "root",
-                  "type": "string"
-                },
-                {
-                  "const": "head",
-                  "type": "string"
-                }
+              "enum": [
+                "root",
+                "head"
               ],
+              "type": "string",
               "description": "Wheter to handle the given location as path root or head",
               "title": "By"
             },
@@ -6672,6 +6671,7 @@
             "required": false,
             "schema": {
               "type": "string",
+              "minLength": 0,
               "maxLength": 128,
               "description": "Query string to search in user data",
               "default": "",
@@ -7420,7 +7420,8 @@
             "type": "string",
             "maxLength": 16,
             "minLength": 1,
-            "title": "Key"
+            "title": "Key",
+            "description": "Key identifying this annotation group"
           },
           "translations": {
             "items": {
@@ -7448,7 +7449,8 @@
             "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Translation of an annotation group label"
           }
         },
         "type": "object",
@@ -7486,11 +7488,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -7499,22 +7502,21 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
-          "url": {
+          "query": {
             "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "title": "Url",
-            "description": "URL to use for the HTTP (GET) call"
+            "title": "Query",
+            "description": "Query payload to use for the API call"
           }
         },
         "type": "object",
@@ -7522,7 +7524,7 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "url"
+          "query"
         ],
         "title": "ApiCallContentCreate"
       },
@@ -7562,11 +7564,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -7575,22 +7578,21 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
           },
-          "url": {
+          "query": {
             "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "title": "Url",
-            "description": "URL to use for the HTTP (GET) call"
+            "title": "Query",
+            "description": "Query payload to use for the API call"
           }
         },
         "additionalProperties": true,
@@ -7600,7 +7602,7 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "url"
+          "query"
         ],
         "title": "ApiCallContentRead"
       },
@@ -7614,44 +7616,44 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
-          "url": {
+          "query": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2083,
-                "minLength": 1
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Url",
-            "description": "URL to use for the HTTP (GET) call",
+            "title": "Query",
+            "description": "Query payload to use for the API call",
             "optionalNullable": false
           }
         },
@@ -7677,6 +7679,16 @@
             "$ref": "#/components/schemas/GeneralApiCallResourceConfig",
             "default": {
               "defaultCollapsed": false
+            }
+          },
+          "apiCall": {
+            "$ref": "#/components/schemas/ApiCallSpecificConfig",
+            "default": {
+              "endpoint": "https://api.example.com/v2/some/endpoint",
+              "method": "GET",
+              "contentType": "application/json",
+              "transformDeps": [],
+              "transformJs": ""
             }
           }
         },
@@ -7744,11 +7756,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -7787,6 +7800,13 @@
               },
               "general": {
                 "defaultCollapsed": false
+              },
+              "apiCall": {
+                "contentType": "application/json",
+                "endpoint": "https://api.example.com/v2/some/endpoint",
+                "method": "GET",
+                "transformDeps": [],
+                "transformJs": ""
               }
             }
           }
@@ -7978,11 +7998,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -8021,6 +8042,13 @@
               },
               "general": {
                 "defaultCollapsed": false
+              },
+              "apiCall": {
+                "contentType": "application/json",
+                "endpoint": "https://api.example.com/v2/some/endpoint",
+                "method": "GET",
+                "transformDeps": [],
+                "transformJs": ""
               }
             }
           },
@@ -8147,16 +8175,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -8211,6 +8240,57 @@
         ],
         "title": "ApiCallResourceUpdate"
       },
+      "ApiCallSpecificConfig": {
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Endpoint",
+            "default": "https://api.example.com/v2/some/endpoint"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "QUERY",
+              "SEARCH"
+            ],
+            "title": "Method",
+            "default": "GET"
+          },
+          "contentType": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Contenttype",
+            "default": "application/json"
+          },
+          "transformDeps": {
+            "items": {
+              "type": "string",
+              "maxLength": 2083,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 0,
+            "title": "Transformdeps",
+            "default": []
+          },
+          "transformJs": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 0,
+            "title": "Transformjs",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "ApiCallSpecificConfig",
+        "description": "Config properties specific to the API call resource type"
+      },
       "AudioContentCreate": {
         "properties": {
           "resourceId": {
@@ -8239,11 +8319,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -8252,11 +8333,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -8318,11 +8400,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -8331,11 +8414,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -8373,30 +8457,32 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "files": {
             "anyOf": [
@@ -8435,11 +8521,12 @@
           "sourceUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2083
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
             "title": "Sourceurl",
@@ -8448,11 +8535,12 @@
           "caption": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 8192
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 8192,
+                "minLength": 1
               }
             ],
             "title": "Caption",
@@ -8548,11 +8636,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -8782,11 +8871,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -8951,16 +9041,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -9026,6 +9117,7 @@
           "caption": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Caption",
             "default": "",
             "optionalNullable": true
@@ -9212,11 +9304,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -9289,11 +9382,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -9338,15 +9432,9 @@
             "description": "Locale indicating the translation language of this segment"
           },
           "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
             "title": "Title",
             "description": "Title of this segment"
           },
@@ -9362,6 +9450,7 @@
         "required": [
           "key",
           "locale",
+          "title",
           "html"
         ],
         "title": "ClientSegmentCreate"
@@ -9436,15 +9525,9 @@
             "description": "Locale indicating the translation language of this segment"
           },
           "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
             "title": "Title",
             "description": "Title of this segment"
           },
@@ -9462,6 +9545,7 @@
           "id",
           "key",
           "locale",
+          "title",
           "html"
         ],
         "title": "ClientSegmentRead"
@@ -9517,7 +9601,8 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 32
+                "maxLength": 32,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -9525,7 +9610,7 @@
             ],
             "title": "Title",
             "description": "Title of this segment",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "html": {
             "anyOf": [
@@ -9551,11 +9636,12 @@
           "category": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 16
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
               }
             ],
             "title": "Category",
@@ -9637,8 +9723,9 @@
           "cmt": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Cmt",
-            "description": "Comment",
+            "description": "Comment search query",
             "default": "",
             "optionalNullable": true
           }
@@ -9849,10 +9936,11 @@
           "msg": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "minLength": 1
               }
             ],
             "title": "Msg"
@@ -9942,11 +10030,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -9955,11 +10044,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -10021,11 +10111,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -10034,11 +10125,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -10076,30 +10168,32 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "links": {
             "anyOf": [
@@ -10143,15 +10237,7 @@
             "description": "Title/text of the link"
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 4096
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Description",
             "description": "Description of the link"
           }
@@ -10246,11 +10332,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -10480,11 +10567,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -10649,16 +10737,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -10724,6 +10813,7 @@
           "text": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Text",
             "description": "Text to search for",
             "default": "",
@@ -10747,14 +10837,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10771,14 +10863,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10795,14 +10889,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10819,14 +10915,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10843,14 +10941,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           },
           "reducedView": {
             "$ref": "#/components/schemas/ReducedViewConfig",
@@ -10874,14 +10974,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10930,14 +11032,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
             "title": "Font",
-            "description": "Name of the font to use for this resource."
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -10968,11 +11072,12 @@
           "thumbUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2083
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
             "title": "Thumburl",
@@ -10981,11 +11086,12 @@
           "sourceUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2083
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
             "title": "Sourceurl",
@@ -10994,11 +11100,12 @@
           "caption": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 8192
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 8192,
+                "minLength": 1
               }
             ],
             "title": "Caption",
@@ -11039,11 +11146,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -11052,11 +11160,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -11118,11 +11227,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -11131,11 +11241,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -11173,30 +11284,32 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "files": {
             "anyOf": [
@@ -11306,11 +11419,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -11540,11 +11654,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -11709,16 +11824,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -11784,7 +11900,9 @@
           "caption": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Caption",
+            "description": "Caption content search query",
             "default": "",
             "optionalNullable": true
           }
@@ -12256,34 +12374,21 @@
         ],
         "title": "MainNavEntryTranslation"
       },
-      "MaybePrivateUserField": {
-        "type": "string",
-        "enum": [
-          "name",
-          "affiliation",
-          "bio"
-        ]
-      },
-      "MaybePrivateUserFields": {
-        "items": {
-          "$ref": "#/components/schemas/MaybePrivateUserField"
-        },
-        "type": "array",
-        "maxItems": 3
-      },
       "MetadataEntry": {
         "properties": {
           "key": {
             "type": "string",
             "maxLength": 16,
             "minLength": 1,
-            "title": "Key"
+            "title": "Key",
+            "description": "Key identifying this metadata entry"
           },
           "value": {
             "type": "string",
             "maxLength": 128,
             "minLength": 1,
-            "title": "Value"
+            "title": "Value",
+            "description": "Value of this metadata entry"
           }
         },
         "type": "object",
@@ -12345,14 +12450,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 32
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
               }
             ],
-            "title": "Font"
+            "title": "Font",
+            "description": "Name of a font"
           }
         },
         "type": "object",
@@ -12438,11 +12545,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -12451,11 +12559,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -12514,11 +12623,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -12527,11 +12637,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -12566,30 +12677,32 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "text": {
             "anyOf": [
@@ -12713,11 +12826,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -12958,11 +13072,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -13138,16 +13253,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -13213,7 +13329,9 @@
           "text": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Text",
+            "description": "Text content search query",
             "default": "",
             "optionalNullable": true
           }
@@ -13524,14 +13642,16 @@
           "dbVersion": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
               }
             ],
             "title": "Dbversion",
-            "description": "Version of the database"
+            "description": "Version string of DB data"
           }
         },
         "additionalProperties": true,
@@ -13856,6 +13976,21 @@
         "title": "PlatformStats",
         "description": "Platform statistics data"
       },
+      "PrivateUserProp": {
+        "type": "string",
+        "enum": [
+          "name",
+          "affiliation",
+          "bio"
+        ]
+      },
+      "PrivateUserProps": {
+        "items": {
+          "$ref": "#/components/schemas/PrivateUserProp"
+        },
+        "type": "array",
+        "maxItems": 3
+      },
       "PublicUsersSearchResult": {
         "properties": {
           "users": {
@@ -13889,6 +14024,7 @@
           "q": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Q",
             "description": "Query string",
             "default": "*",
@@ -13974,6 +14110,7 @@
             "type": "string",
             "maxLength": 3,
             "minLength": 1,
+            "pattern": "[^\\n\\r]+",
             "title": "Singlelinedelimiter",
             "description": "Delimiter used for single-line display in reduced reading mode"
           }
@@ -13991,7 +14128,8 @@
             "type": "string",
             "maxLength": 16,
             "minLength": 1,
-            "title": "Key"
+            "title": "Key",
+            "description": "Key identifying this resource category"
           },
           "translations": {
             "items": {
@@ -14016,7 +14154,10 @@
           },
           "translation": {
             "type": "string",
-            "title": "Translation"
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Translation",
+            "description": "Translation of a resource category"
           }
         },
         "type": "object",
@@ -14035,7 +14176,8 @@
             "type": "string",
             "maxLength": 2000,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Comment translation for this resource"
           }
         },
         "type": "object",
@@ -14096,7 +14238,8 @@
             "type": "string",
             "maxLength": 512,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Description translation for this resource"
           }
         },
         "type": "object",
@@ -14164,7 +14307,8 @@
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Title translation for this resource"
           }
         },
         "type": "object",
@@ -14202,11 +14346,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -14215,11 +14360,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -14228,6 +14374,7 @@
           "html": {
             "type": "string",
             "maxLength": 102400,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
           },
@@ -14287,11 +14434,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -14300,11 +14448,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -14313,6 +14462,7 @@
           "html": {
             "type": "string",
             "maxLength": 102400,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object"
           },
@@ -14348,36 +14498,39 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "html": {
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 102400
+                "maxLength": 102400,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -14494,11 +14647,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -14728,11 +14882,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -14897,16 +15052,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -14972,7 +15128,9 @@
           "html": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Html",
+            "description": "HTML text content search query",
             "default": "",
             "optionalNullable": true
           }
@@ -15131,10 +15289,11 @@
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "minLength": 1
               }
             ],
             "title": "Targetid",
@@ -15213,10 +15372,11 @@
           "error": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "minLength": 1
               }
             ],
             "title": "Error",
@@ -15247,7 +15407,8 @@
           "resource_maintenance_hook",
           "structure_update"
         ],
-        "title": "TaskType"
+        "title": "TaskType",
+        "description": "Task types with locking and artifact flags"
       },
       "TekstErrorModel": {
         "properties": {
@@ -15289,11 +15450,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -15302,11 +15464,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -15367,11 +15530,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
@@ -15380,11 +15544,12 @@
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
@@ -15421,30 +15586,32 @@
           "comment": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 50000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
               }
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "notes": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "tokens": {
             "anyOf": [
@@ -15503,11 +15670,12 @@
           "v": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 64
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 0
               }
             ],
             "title": "V",
@@ -15557,15 +15725,16 @@
           "displayTemplate": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2048
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
               }
             ],
             "title": "Displaytemplate",
-            "description": "Template string used for displaying the annotations in the web client (if missing, all annotations are displayed with key and value, separated by commas)"
+            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
           },
           "multiValueDelimiter": {
             "type": "string",
@@ -15640,11 +15809,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -15876,11 +16046,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
@@ -16047,16 +16218,17 @@
           "citation": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
               }
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "meta": {
             "anyOf": [
@@ -16122,7 +16294,9 @@
           "token": {
             "type": "string",
             "maxLength": 512,
+            "minLength": 0,
             "title": "Token",
+            "description": "Token search query",
             "default": "",
             "optionalNullable": true
           },
@@ -16251,6 +16425,7 @@
             "type": "string",
             "maxLength": 3,
             "minLength": 1,
+            "pattern": "[^\\n\\r]+",
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
             "default": ", "
@@ -16308,7 +16483,8 @@
             "type": "string",
             "maxLength": 32,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Translation of a text level label"
           }
         },
         "type": "object",
@@ -16379,6 +16555,7 @@
             "type": "string",
             "maxLength": 3,
             "minLength": 1,
+            "pattern": "[^\\n\\r]+",
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
             "default": ", "
@@ -16480,7 +16657,8 @@
             "type": "string",
             "maxLength": 128,
             "minLength": 1,
-            "title": "Translation"
+            "title": "Translation",
+            "description": "Subtitle translation for a text"
           }
         },
         "type": "object",
@@ -16582,7 +16760,8 @@
               {
                 "type": "string",
                 "maxLength": 3,
-                "minLength": 1
+                "minLength": 1,
+                "pattern": "[^\\n\\r]+"
               },
               {
                 "type": "null"
@@ -16719,19 +16898,22 @@
             "maxLength": 16,
             "minLength": 4,
             "pattern": "[a-zA-Z0-9\\-_]+",
-            "title": "Username"
+            "title": "Username",
+            "description": "Public username of this user"
           },
           "name": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "title": "Name"
+            "title": "Name",
+            "description": "Full name of this user"
           },
           "affiliation": {
             "type": "string",
             "maxLength": 180,
             "minLength": 1,
-            "title": "Affiliation"
+            "title": "Affiliation",
+            "description": "Affiliation info of this user"
           },
           "locale": {
             "anyOf": [
@@ -16741,34 +16923,39 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "description": "Key of the locale used by this user"
           },
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1024
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
-            "title": "Avatarurl"
+            "title": "Avatarurl",
+            "description": "URL of this user's avatar picture"
           },
           "bio": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2000,
+                "minLength": 1
               }
             ],
-            "title": "Bio"
+            "title": "Bio",
+            "description": "Biography of this user"
           },
           "publicFields": {
-            "$ref": "#/components/schemas/MaybePrivateUserFields",
+            "$ref": "#/components/schemas/PrivateUserProps",
             "default": []
           },
           "userNotificationTriggers": {
@@ -17035,19 +17222,22 @@
             "maxLength": 16,
             "minLength": 4,
             "pattern": "[a-zA-Z0-9\\-_]+",
-            "title": "Username"
+            "title": "Username",
+            "description": "Public username of this user"
           },
           "name": {
             "type": "string",
             "maxLength": 64,
             "minLength": 1,
-            "title": "Name"
+            "title": "Name",
+            "description": "Full name of this user"
           },
           "affiliation": {
             "type": "string",
             "maxLength": 180,
             "minLength": 1,
-            "title": "Affiliation"
+            "title": "Affiliation",
+            "description": "Affiliation info of this user"
           },
           "locale": {
             "anyOf": [
@@ -17057,34 +17247,39 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "description": "Key of the locale used by this user"
           },
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1024
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
-            "title": "Avatarurl"
+            "title": "Avatarurl",
+            "description": "URL of this user's avatar picture"
           },
           "bio": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2000,
+                "minLength": 1
               }
             ],
-            "title": "Bio"
+            "title": "Bio",
+            "description": "Biography of this user"
           },
           "publicFields": {
-            "$ref": "#/components/schemas/MaybePrivateUserFields",
+            "$ref": "#/components/schemas/PrivateUserProps",
             "default": []
           },
           "userNotificationTriggers": {
@@ -17186,10 +17381,12 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
             "title": "Avatarurl"
@@ -17214,7 +17411,7 @@
             "title": "Issuperuser"
           },
           "publicFields": {
-            "$ref": "#/components/schemas/MaybePrivateUserFields"
+            "$ref": "#/components/schemas/PrivateUserProps"
           }
         },
         "type": "object",
@@ -17298,6 +17495,7 @@
               }
             ],
             "title": "Username",
+            "description": "Public username of this user",
             "optionalNullable": false
           },
           "name": {
@@ -17312,6 +17510,7 @@
               }
             ],
             "title": "Name",
+            "description": "Full name of this user",
             "optionalNullable": false
           },
           "affiliation": {
@@ -17326,6 +17525,7 @@
               }
             ],
             "title": "Affiliation",
+            "description": "Affiliation info of this user",
             "optionalNullable": false
           },
           "locale": {
@@ -17337,38 +17537,43 @@
                 "type": "null"
               }
             ],
+            "description": "Key of the locale used by this user",
             "optionalNullable": true
           },
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 1024
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1
               }
             ],
             "title": "Avatarurl",
-            "optionalNullable": true
+            "description": "URL of this user's avatar picture",
+            "optionalNullable": false
           },
           "bio": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 2000
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 2000,
+                "minLength": 1
               }
             ],
             "title": "Bio",
-            "optionalNullable": true
+            "description": "Biography of this user",
+            "optionalNullable": false
           },
           "publicFields": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/MaybePrivateUserFields"
+                "$ref": "#/components/schemas/PrivateUserProps"
               },
               {
                 "type": "null"

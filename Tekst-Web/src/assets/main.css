@@ -321,6 +321,12 @@ pre > code {
   min-width: 0;
 }
 
+.codemirror-container {
+  width: 100%;
+  border: 1px solid rgb(224, 224, 230);
+  border-radius: var(--border-radius);
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override the default NUI styles in this hacky way

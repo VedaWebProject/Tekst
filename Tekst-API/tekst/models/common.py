@@ -1,14 +1,6 @@
 from datetime import datetime
 from types import UnionType
-from typing import (  # noqa: UP035
-    Annotated,
-    Any,
-    Literal,
-    TypeVar,
-    Union,
-    get_args,
-    get_origin,
-)
+from typing import Annotated, Any, Literal, Union, get_args, get_origin  # noqa: UP035
 
 from beanie import (
     Document,
@@ -19,83 +11,20 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
-    StringConstraints,
-    conint,
-    conlist,
-    constr,
     create_model,
 )
 from pydantic.aliases import PydanticUndefined
 from pydantic.fields import FieldInfo
-from typing_extensions import TypeAliasType, TypedDict
 
-
-# type alias for available locale/language setting identifiers
-_platform_locales = ("deDE", "enUS")
-LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
-TranslationLocaleKey = TypeAliasType(
-    "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
+from tekst.types import (
+    ConStr,
+    ExcludeFromModelVariants,
+    SchemaOptionalNonNullable,
+    SchemaOptionalNullable,
 )
 
 
-LocationLevel = conint(
-    ge=0,
-    le=32,
-)
-
-LocationPosition = conint(
-    ge=0,
-)
-
-LocationAlias = constr(
-    min_length=1,
-    max_length=32,
-    strip_whitespace=True,
-)
-
-ResourceTypeName = constr(
-    min_length=1,
-    max_length=32,
-    strip_whitespace=True,
-)
-
-
-class ExcludeFromModelVariants:
-    """
-    Class to be used as type annotation metadata for fields that
-    should not be included in certain model types
-    """
-
-    def __init__(
-        self,
-        *,
-        create: bool = False,
-        update: bool = False,
-    ):
-        self.create = create
-        self.update = update
-
-
-# These FieldInfo instances are to be used as type annotation metadata for fields
-# that should be marked as optional in the JSON schema. By default, any field
-# with a default value is "optional", but the generator we use to generate the
-# TypeScript types for the client is configured to transform fields with default
-# values as required to make working with response models easier. In turn, we have to
-# explicitly mark optional fields (especially for request models) as optinal in some way
-# for the generator to understand which fields to treat as optional/nullable.
-SchemaOptionalNullable = Field(json_schema_extra={"optionalNullable": True})
-SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
-
-
-class TranslationBase(TypedDict):
-    locale: TranslationLocaleKey
-
-
-T = TypeVar("T", bound=TranslationBase)
-Translations = conlist(
-    T,
-    max_length=len(get_args(TranslationLocaleKey.__value__)),
-)
+# MODEL BASE CLASSES
 
 
 class ModelBase(BaseModel):
@@ -207,6 +136,9 @@ class UpdateBase(BaseModel):
         cls.model_rebuild(force=True)
 
 
+# MODEL FACTORY MIXIN
+
+
 class ModelFactoryMixin:
     _document_model: type[DocumentBase] = None
     _create_model: type[ModelBase] = None
@@ -296,6 +228,9 @@ class ModelFactoryMixin:
         return cls._update_model
 
 
+# PRECOMPUTED DATA
+
+
 class PrecomputedDataDocument(ModelBase, DocumentBase):
     """Base model for precomputed data"""
 
@@ -314,11 +249,8 @@ class PrecomputedDataDocument(ModelBase, DocumentBase):
     ]
 
     precomputed_type: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
+        ConStr(
             max_length=64,
-            strip_whitespace=True,
         ),
         Field(
             description="String identifying the type of precomputed data",

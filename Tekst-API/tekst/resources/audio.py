@@ -3,9 +3,11 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, StringConstraints
+from pydantic import Field
 
-from tekst.models.common import ModelBase, SchemaOptionalNullable
+from tekst.models.common import (
+    ModelBase,
+)
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
@@ -13,13 +15,19 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    DefaultCollapsedConfigType,
-    FontConfigType,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
-from tekst.utils import validators as val
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    HttpUrl,
+    HttpUrlOrNone,
+    SchemaOptionalNullable,
+)
 
 
 class Audio(ResourceTypeABC):
@@ -139,8 +147,8 @@ class Audio(ResourceTypeABC):
 
 
 class GeneralAudioResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedConfigType = False
-    font: FontConfigType = None
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
 
 
 class AudioResourceConfig(ResourceConfigBase):
@@ -158,35 +166,22 @@ class AudioResource(ResourceBase):
 
 class AudioFile(ModelBase):
     url: Annotated[
-        str,
-        StringConstraints(
-            min_length=1,
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrl,
         Field(
             description="URL of the audio file",
         ),
     ]
     source_url: Annotated[
-        str | None,
-        StringConstraints(
-            max_length=2083,
-            strip_whitespace=True,
-        ),
-        val.CleanupOneline,
+        HttpUrlOrNone,
         Field(
             description="URL of the source website of the image",
         ),
     ] = None
     caption: Annotated[
-        str | None,
-        StringConstraints(
+        ConStrOrNone(
             max_length=8192,
-            strip_whitespace=True,
+            cleanup="multiline",
         ),
-        val.CleanupMultiline,
         Field(
             description="Caption of the audio file",
         ),
@@ -216,11 +211,10 @@ class AudioSearchQuery(ModelBase):
         ),
     ]
     caption: Annotated[
-        str,
-        StringConstraints(
+        ConStr(
+            min_length=0,
             max_length=512,
-            strip_whitespace=True,
+            cleanup="oneline",
         ),
-        val.CleanupOneline,
         SchemaOptionalNullable,
     ] = ""

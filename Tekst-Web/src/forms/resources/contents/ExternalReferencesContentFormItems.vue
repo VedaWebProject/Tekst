@@ -35,14 +35,14 @@ function handleUpdate(field: string, value: unknown) {
           <!-- URL -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.externalReferences.contentFields.url')"
+            :label="$t('general.url')"
             :path="`links[${index}].url`"
             :rule="contentFormRules.externalReferences.url"
             style="flex-grow: 2"
           >
             <n-input
               v-model:value="model.links[index].url"
-              :placeholder="$t('resources.types.externalReferences.contentFields.url')"
+              :placeholder="$t('general.url')"
               @keydown.enter.prevent
             />
           </n-form-item>
