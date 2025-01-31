@@ -2,21 +2,17 @@
 import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { HourglassIcon } from '@/icons';
+import { useScriptTag } from '@vueuse/core';
 import { NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 type ContentData = { query: ApiCallContentRead['query']; extra?: ApiCallContentRead['extra'] };
 type TransformationInput = { data: string; extra?: unknown };
 
-const props = withDefaults(
-  defineProps<{
-    resource: ApiCallResourceRead;
-    reduced?: boolean;
-  }>(),
-  {
-    reduced: false,
-  }
-);
+const props = defineProps<{
+  resource: ApiCallResourceRead;
+  reduced?: boolean;
+}>();
 
 const fontStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
@@ -58,7 +54,7 @@ function execTransformJs(
   }
 }
 
-async function performApiCalls(contents?: ContentData[]) {
+async function updateContent(contents?: ContentData[]) {
   if (!contents?.length) return;
   loading.value = true;
   html.value = Array(contents.length).fill(undefined);
@@ -89,14 +85,20 @@ watch(
     } else if (JSON.stringify(newContents) === JSON.stringify(oldContents)) {
       return;
     } else {
-      performApiCalls(newContents);
+      updateContent(newContents);
     }
   },
   { deep: true }
 );
 
-onMounted(() => {
-  nextTick().then(() => performApiCalls(contents.value));
+onMounted(async () => {
+  // load transform dependencies (if any)
+  for (const depUrl of props.resource.config.apiCall.transformDeps) {
+    const { load } = useScriptTag(depUrl, undefined, { manual: true });
+    await load(true);
+  }
+  // load and process contents
+  nextTick().then(() => updateContent(contents.value));
 });
 </script>
 
