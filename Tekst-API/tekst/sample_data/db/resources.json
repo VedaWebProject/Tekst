@@ -556,7 +556,7 @@
                 "method": "GET",
                 "contentType": "application/json",
                 "transformDeps": [],
-                "transformJs": "const texts = JSON.parse(this);\nconst intro = '<strong class=\"ui-font\">Look at all those texts:</strong>';\nreturn intro + texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");"
+                "transformJs": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst extraHtml = `<div class=\"text-mini\">${this.extra.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + extraHtml;"
             }
         },
         "contents_changed_at": { "$date": "2025-01-30T11:22:03.141Z" }
