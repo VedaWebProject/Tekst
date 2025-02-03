@@ -360,7 +360,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    denyResourceTypes: Resource types that can only be created by administrators
+    denyResourceTypes: Restrict creation of these resource types to administrators
     fonts: Additional fonts
     fontName: Name
     oskModes: On-screen Keyboards

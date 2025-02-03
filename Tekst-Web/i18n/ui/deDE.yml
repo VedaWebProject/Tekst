@@ -361,7 +361,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    denyResourceTypes: Nur von Administratoren erstellbare Ressourcentypen
+    denyResourceTypes: Erstellung dieser Ressourcentypen auf Administratoren beschränken
     fonts: Zusätzliche Schriftarten
     fontName: Name
     oskModes: Bildschirmtastaturen
