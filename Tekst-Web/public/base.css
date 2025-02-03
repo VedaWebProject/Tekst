@@ -18,10 +18,10 @@
   --font-weight-bold: 500;
 
   --font-size: 18px;
-  --font-size-mini: 14px;
-  --font-size-tiny: 15px;
-  --font-size-small: 16px;
-  --font-size-medium: 18px;
+  --font-size-mini: 12px;
+  --font-size-tiny: 13px;
+  --font-size-small: 14px;
+  --font-size-medium: 16px;
   --font-size-large: 20px;
   --font-size-huge: 24px;
   --font-size-gigantic: 26px;
@@ -40,7 +40,7 @@
     --font-size-mini: 14px;
     --font-size-tiny: 16px;
     --font-size-small: 18px;
-    --font-size-medium: 20px;
+    --font-size-medium: 18px;
     --font-size-large: 22px;
     --font-size-huge: 24px;
     --font-size-gigantic: 26px;
