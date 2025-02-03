@@ -5,6 +5,10 @@ async def migration(db: Database) -> None:
     # move plain text-specific config in to config sub-document
     await db.resources.update_many(
         {"resource_type": "plainText"},
+        {"$set": {"config.plain_text": {}}},
+    )
+    await db.resources.update_many(
+        {"resource_type": "plainText"},
         {
             "$rename": {
                 "config.deepl_links": "config.plain_text.deepl_links",
@@ -13,6 +17,11 @@ async def migration(db: Database) -> None:
         },
     )
     # move text annotation-specific config in to config sub-document
+
+    await db.resources.update_many(
+        {"resource_type": "textAnnotation"},
+        {"$set": {"config.text_annotation": {}}},
+    )
     await db.resources.update_many(
         {"resource_type": "textAnnotation"},
         {
