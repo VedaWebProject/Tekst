@@ -476,18 +476,20 @@ resources:
         heading: Reduzierte Leseansicht
         singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen
         singleLineDelimiter: Trennzeichen für einzeilige Anzeige in reduzierter Leseansicht
-      deeplLinks:
-        heading: DeepL-Übersetzungs-Links
-        sourceLanguage: Quellsprache
-      lineLabelling:
-        heading: Zeilenbeschriftung
-        numbersZeroBased: Zahlen (0-basiert)
-        numbersOneBased: Zahlen (1-basiert)
-        lettersLowercase: Buchstaben (klein)
-        lettersUppercase: Buchstaben (groß)
-      displayTemplate: Darstellungsvorlage
-      multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
-      annotationGroup: Annotations-Gruppe | Annotations-Gruppen
+      plainText:
+        deeplLinks:
+          heading: DeepL-Übersetzungs-Links
+          sourceLanguage: Quellsprache
+        lineLabelling:
+          heading: Zeilenbeschriftung
+          numbersZeroBased: Zahlen (0-basiert)
+          numbersOneBased: Zahlen (1-basiert)
+          lettersLowercase: Buchstaben (klein)
+          lettersUppercase: Buchstaben (groß)
+      textAnnotation:
+        displayTemplate: Darstellungsvorlage
+        multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
+        annotationGroup: Annotations-Gruppe | Annotations-Gruppen
       apiCall:
         endpoint: API-Endpoint
         method: HTTP-Anfrage-Methode

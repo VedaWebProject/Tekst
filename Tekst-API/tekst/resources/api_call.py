@@ -124,7 +124,7 @@ class GeneralApiCallResourceConfig(ModelBase):
     font: FontNameValueOrNone = None
 
 
-class ApiCallSpecificConfig(ModelBase):
+class ApiCallSpecialConfig(ModelBase):
     """Config properties specific to the API call resource type"""
 
     endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
@@ -179,7 +179,7 @@ class ApiCallResourceConfig(ResourceConfigBase):
     # override common resource config field of ResourceConfigBase
     common: ApiCallModifiedCommonResourceConfig = ApiCallModifiedCommonResourceConfig()
     general: GeneralApiCallResourceConfig = GeneralApiCallResourceConfig()
-    api_call: ApiCallSpecificConfig = ApiCallSpecificConfig()
+    api_call: ApiCallSpecialConfig = ApiCallSpecialConfig()
 
 
 class ApiCallResource(ResourceBase):

@@ -296,7 +296,10 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
   textAnnotation: {
     displayTemplate: [minMaxCharsRule(0, 4096, 'blur')],
     multiValueDelimiter: [
-      requiredStringRule(() => $t('resources.settings.config.multiValueDelimiter'), 'blur'),
+      requiredStringRule(
+        () => $t('resources.settings.config.textAnnotation.multiValueDelimiter'),
+        'blur'
+      ),
       minMaxCharsRule(1, 3, 'blur'),
     ],
     annotationGroupKey: [
@@ -304,7 +307,10 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
       minMaxCharsRule(1, 16, 'blur'),
     ],
     annotationGroupTranslation: [
-      requiredStringRule(() => $t('resources.settings.config.annotationGroup', 1), 'blur'),
+      requiredStringRule(
+        () => $t('resources.settings.config.textAnnotation.annotationGroup', 1),
+        'blur'
+      ),
       minMaxCharsRule(1, 32, 'blur'),
     ],
   },

@@ -51,7 +51,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            "plainText": {
+                "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            }
         }
     },
     {
@@ -99,7 +101,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": true, "sourceLanguage": "ja" }
+            "plainText": {
+                "deeplLinks": { "enabled": true, "sourceLanguage": "ja" }
+            }
         }
     },
     {
@@ -137,7 +141,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            "plainText": {
+                "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            }
         }
     },
     {
@@ -169,7 +175,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            "plainText": {
+                "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            }
         }
     },
     {
@@ -342,7 +350,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": true, "sourceLanguage": "en" }
+            "plainText": {
+                "deeplLinks": { "enabled": true, "sourceLanguage": "en" }
+            }
         }
     },
     {
@@ -397,7 +407,9 @@
                 "reducedViewOneline": true,
                 "font": null
             },
-            "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            "plainText": {
+                "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            }
         }
     },
     {
@@ -476,7 +488,7 @@
                 "showOnParentLevel": true
             },
             "general": { "defaultCollapsed": false, "font": null },
-            "displayTemplate": "{{_k:Entity_c:v_f:c}}"
+            "textAnnotation": { "displayTemplate": "{{_k:Entity_c:v_f:c}}" }
         }
     },
     {

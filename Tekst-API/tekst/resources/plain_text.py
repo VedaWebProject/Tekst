@@ -246,10 +246,16 @@ class GeneralPlainTextResourceConfig(ModelBase):
     )
 
 
-class PlainTextResourceConfig(ResourceConfigBase):
-    general: GeneralPlainTextResourceConfig = GeneralPlainTextResourceConfig()
+class PlainTextSpecialConfig(ModelBase):
+    """Config properties specific to the plain text resource type"""
+
     line_labelling: LineLabellingConfig = LineLabellingConfig()
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
+
+
+class PlainTextResourceConfig(ResourceConfigBase):
+    general: GeneralPlainTextResourceConfig = GeneralPlainTextResourceConfig()
+    plain_text: PlainTextSpecialConfig = PlainTextSpecialConfig()
 
 
 class PlainTextResource(ResourceBase):

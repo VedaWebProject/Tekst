@@ -467,18 +467,20 @@ resources:
         heading: Reduced Reading View
         singleLine: Show contents as single line of text in reduced reading view
         singleLineDelimiter: Delimiter for single-line display in reduced reading view
-      deeplLinks:
-        heading: DeepL Translation Links
-        sourceLanguage: Source language
-      lineLabelling:
-        heading: Line Labelling
-        numbersZeroBased: Numbers (0-based)
-        numbersOneBased: Numbers (1-based)
-        lettersLowercase: Letters (lowercase)
-        lettersUppercase: Letters (uppercase)
-      displayTemplate: Display template
-      multiValueDelimiter: Delimiter for multiple annotation values
-      annotationGroup: Annotation group | Annotation groups
+      plainText:
+        deeplLinks:
+          heading: DeepL Translation Links
+          sourceLanguage: Source language
+        lineLabelling:
+          heading: Line Labelling
+          numbersZeroBased: Numbers (0-based)
+          numbersOneBased: Numbers (1-based)
+          lettersLowercase: Letters (lowercase)
+          lettersUppercase: Letters (uppercase)
+      textAnnotation:
+        displayTemplate: Display template
+        multiValueDelimiter: Delimiter for multiple annotation values
+        annotationGroup: Annotation group | Annotation groups
       apiCall:
         endpoint: API endpoint
         method: HTTP request method

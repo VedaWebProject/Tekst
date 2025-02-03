@@ -7,7 +7,7 @@ import { javascript } from '@codemirror/lang-javascript';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
 import { Codemirror } from 'vue-codemirror';
 
-const model = defineModel<components['schemas']['ApiCallResourceConfig']['apiCall']>({
+const model = defineModel<components['schemas']['ApiCallSpecialConfig']>({
   required: true,
 });
 

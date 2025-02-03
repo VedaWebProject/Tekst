@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.3.0a0"
+    "version": "0.4.0a0"
   },
   "servers": [
     {
@@ -7808,7 +7808,7 @@
             }
           },
           "apiCall": {
-            "$ref": "#/components/schemas/ApiCallSpecificConfig",
+            "$ref": "#/components/schemas/ApiCallSpecialConfig",
             "default": {
               "endpoint": "https://api.example.com/v2/some/endpoint",
               "method": "GET",
@@ -8365,7 +8365,7 @@
         ],
         "title": "ApiCallResourceUpdate"
       },
-      "ApiCallSpecificConfig": {
+      "ApiCallSpecialConfig": {
         "properties": {
           "endpoint": {
             "type": "string",
@@ -8420,7 +8420,7 @@
           }
         },
         "type": "object",
-        "title": "ApiCallSpecificConfig",
+        "title": "ApiCallSpecialConfig",
         "description": "Config properties specific to the API call resource type"
       },
       "AudioContentCreate": {
@@ -12896,17 +12896,16 @@
               }
             }
           },
-          "lineLabelling": {
-            "$ref": "#/components/schemas/LineLabellingConfig",
+          "plainText": {
+            "$ref": "#/components/schemas/PlainTextSpecialConfig",
             "default": {
-              "enabled": false,
-              "labellingType": "numbersOneBased"
-            }
-          },
-          "deeplLinks": {
-            "$ref": "#/components/schemas/DeepLLinksConfig",
-            "default": {
-              "enabled": false
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
+              },
+              "deeplLinks": {
+                "enabled": false
+              }
             }
           }
         },
@@ -13024,12 +13023,14 @@
                   "singleLineDelimiter": " / "
                 }
               },
-              "lineLabelling": {
-                "enabled": false,
-                "labellingType": "numbersOneBased"
-              },
-              "deeplLinks": {
-                "enabled": false
+              "plainText": {
+                "deeplLinks": {
+                  "enabled": false
+                },
+                "lineLabelling": {
+                  "enabled": false,
+                  "labellingType": "numbersOneBased"
+                }
               }
             }
           }
@@ -13271,12 +13272,14 @@
                   "singleLineDelimiter": " / "
                 }
               },
-              "lineLabelling": {
-                "enabled": false,
-                "labellingType": "numbersOneBased"
-              },
-              "deeplLinks": {
-                "enabled": false
+              "plainText": {
+                "deeplLinks": {
+                  "enabled": false
+                },
+                "lineLabelling": {
+                  "enabled": false,
+                  "labellingType": "numbersOneBased"
+                }
               }
             }
           },
@@ -13491,6 +13494,26 @@
           "type"
         ],
         "title": "PlainTextSearchQuery"
+      },
+      "PlainTextSpecialConfig": {
+        "properties": {
+          "lineLabelling": {
+            "$ref": "#/components/schemas/LineLabellingConfig",
+            "default": {
+              "enabled": false,
+              "labellingType": "numbersOneBased"
+            }
+          },
+          "deeplLinks": {
+            "$ref": "#/components/schemas/DeepLLinksConfig",
+            "default": {
+              "enabled": false
+            }
+          }
+        },
+        "type": "object",
+        "title": "PlainTextSpecialConfig",
+        "description": "Config properties specific to the plain text resource type"
       },
       "PlatformData": {
         "properties": {
@@ -15866,37 +15889,12 @@
               "defaultCollapsed": false
             }
           },
-          "annotationGroups": {
-            "items": {
-              "$ref": "#/components/schemas/AnnotationGroup"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Annotationgroups",
-            "description": "Display groups to use for grouping annotations",
-            "default": []
-          },
-          "displayTemplate": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 4096,
-                "minLength": 1
-              }
-            ],
-            "title": "Displaytemplate",
-            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
-          },
-          "multiValueDelimiter": {
-            "type": "string",
-            "maxLength": 3,
-            "minLength": 1,
-            "title": "Multivaluedelimiter",
-            "description": "String used to delimit multiple values for an annotation",
-            "default": "/"
+          "textAnnotation": {
+            "$ref": "#/components/schemas/TextAnnotationSpecialConfig",
+            "default": {
+              "annotationGroups": [],
+              "multiValueDelimiter": "/"
+            }
           }
         },
         "type": "object",
@@ -16009,8 +16007,10 @@
               "general": {
                 "defaultCollapsed": false
               },
-              "annotationGroups": [],
-              "multiValueDelimiter": "/"
+              "textAnnotation": {
+                "annotationGroups": [],
+                "multiValueDelimiter": "/"
+              }
             }
           }
         },
@@ -16247,8 +16247,10 @@
               "general": {
                 "defaultCollapsed": false
               },
-              "annotationGroups": [],
-              "multiValueDelimiter": "/"
+              "textAnnotation": {
+                "annotationGroups": [],
+                "multiValueDelimiter": "/"
+              }
             }
           },
           "contentsChangedAt": {
@@ -16480,6 +16482,45 @@
           "type"
         ],
         "title": "TextAnnotationSearchQuery"
+      },
+      "TextAnnotationSpecialConfig": {
+        "properties": {
+          "annotationGroups": {
+            "items": {
+              "$ref": "#/components/schemas/AnnotationGroup"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Annotationgroups",
+            "description": "Display groups to use for grouping annotations",
+            "default": []
+          },
+          "displayTemplate": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Displaytemplate",
+            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
+          },
+          "multiValueDelimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Multivaluedelimiter",
+            "description": "String used to delimit multiple values for an annotation",
+            "default": "/"
+          }
+        },
+        "type": "object",
+        "title": "TextAnnotationSpecialConfig",
+        "description": "Config properties specific to the text annotation resource type"
       },
       "TextAnnotationToken": {
         "properties": {

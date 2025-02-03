@@ -83,6 +83,7 @@ function renderResourceTypeOptionLabel(o: SelectOption): VNodeChild {
 
 function handleResetClick() {
   model.value = getInitialModel();
+  formRef.value?.restoreValidation();
 }
 
 async function handleSaveClick() {

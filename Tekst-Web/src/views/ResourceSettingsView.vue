@@ -59,8 +59,8 @@ watch(
 );
 
 function handleResetClick() {
-  model.value = getInitialModel();
   reset();
+  formRef.value?.restoreValidation();
 }
 
 async function handleSaveClick() {

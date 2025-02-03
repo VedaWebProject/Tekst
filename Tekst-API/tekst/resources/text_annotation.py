@@ -353,8 +353,9 @@ class AnnotationGroup(TypedDict):
     ] = []
 
 
-class TextAnnotationResourceConfig(ResourceConfigBase):
-    general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
+class TextAnnotationSpecialConfig(ModelBase):
+    """Config properties specific to the text annotation resource type"""
+
     annotation_groups: Annotated[
         list[AnnotationGroup],
         Field(
@@ -384,6 +385,11 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
             description="String used to delimit multiple values for an annotation",
         ),
     ] = "/"
+
+
+class TextAnnotationResourceConfig(ResourceConfigBase):
+    general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
+    text_annotation: TextAnnotationSpecialConfig = TextAnnotationSpecialConfig()
 
 
 class AnnotationAggregation(ModelBase):

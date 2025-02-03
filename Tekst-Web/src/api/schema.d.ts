@@ -1486,7 +1486,7 @@ export interface components {
        *       "contentType": "application/json",
        *       "transformDeps": []
        *     } */
-      apiCall: components['schemas']['ApiCallSpecificConfig'];
+      apiCall: components['schemas']['ApiCallSpecialConfig'];
     };
     /** ApiCallResourceCreate */
     ApiCallResourceCreate: {
@@ -1742,10 +1742,10 @@ export interface components {
       config?: components['schemas']['ApiCallResourceConfig'];
     };
     /**
-     * ApiCallSpecificConfig
+     * ApiCallSpecialConfig
      * @description Config properties specific to the API call resource type
      */
-    ApiCallSpecificConfig: {
+    ApiCallSpecialConfig: {
       /**
        * Endpoint
        * @default https://api.example.com/v2/some/endpoint
@@ -3882,14 +3882,15 @@ export interface components {
        *     } */
       general: components['schemas']['GeneralPlainTextResourceConfig'];
       /** @default {
-       *       "enabled": false,
-       *       "labellingType": "numbersOneBased"
+       *       "lineLabelling": {
+       *         "enabled": false,
+       *         "labellingType": "numbersOneBased"
+       *       },
+       *       "deeplLinks": {
+       *         "enabled": false
+       *       }
        *     } */
-      lineLabelling: components['schemas']['LineLabellingConfig'];
-      /** @default {
-       *       "enabled": false
-       *     } */
-      deeplLinks: components['schemas']['DeepLLinksConfig'];
+      plainText: components['schemas']['PlainTextSpecialConfig'];
     };
     /** PlainTextResourceCreate */
     PlainTextResourceCreate: {
@@ -3958,12 +3959,14 @@ export interface components {
        *           "singleLineDelimiter": " / "
        *         }
        *       },
-       *       "lineLabelling": {
-       *         "enabled": false,
-       *         "labellingType": "numbersOneBased"
-       *       },
-       *       "deeplLinks": {
-       *         "enabled": false
+       *       "plainText": {
+       *         "deeplLinks": {
+       *           "enabled": false
+       *         },
+       *         "lineLabelling": {
+       *           "enabled": false,
+       *           "labellingType": "numbersOneBased"
+       *         }
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
@@ -4086,12 +4089,14 @@ export interface components {
        *           "singleLineDelimiter": " / "
        *         }
        *       },
-       *       "lineLabelling": {
-       *         "enabled": false,
-       *         "labellingType": "numbersOneBased"
-       *       },
-       *       "deeplLinks": {
-       *         "enabled": false
+       *       "plainText": {
+       *         "deeplLinks": {
+       *           "enabled": false
+       *         },
+       *         "lineLabelling": {
+       *           "enabled": false,
+       *           "labellingType": "numbersOneBased"
+       *         }
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
@@ -4167,6 +4172,21 @@ export interface components {
        * @default
        */
       text?: string;
+    };
+    /**
+     * PlainTextSpecialConfig
+     * @description Config properties specific to the plain text resource type
+     */
+    PlainTextSpecialConfig: {
+      /** @default {
+       *       "enabled": false,
+       *       "labellingType": "numbersOneBased"
+       *     } */
+      lineLabelling: components['schemas']['LineLabellingConfig'];
+      /** @default {
+       *       "enabled": false
+       *     } */
+      deeplLinks: components['schemas']['DeepLLinksConfig'];
     };
     /**
      * PlatformData
@@ -5293,23 +5313,11 @@ export interface components {
        *       "defaultCollapsed": false
        *     } */
       general: components['schemas']['GeneralTextAnnotationResourceConfig'];
-      /**
-       * Annotationgroups
-       * @description Display groups to use for grouping annotations
-       * @default []
-       */
-      annotationGroups: components['schemas']['AnnotationGroup'][];
-      /**
-       * Displaytemplate
-       * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
-       */
-      displayTemplate?: null | string;
-      /**
-       * Multivaluedelimiter
-       * @description String used to delimit multiple values for an annotation
-       * @default /
-       */
-      multiValueDelimiter: string;
+      /** @default {
+       *       "annotationGroups": [],
+       *       "multiValueDelimiter": "/"
+       *     } */
+      textAnnotation: components['schemas']['TextAnnotationSpecialConfig'];
     };
     /** TextAnnotationResourceCreate */
     TextAnnotationResourceCreate: {
@@ -5374,8 +5382,10 @@ export interface components {
        *       "general": {
        *         "defaultCollapsed": false
        *       },
-       *       "annotationGroups": [],
-       *       "multiValueDelimiter": "/"
+       *       "textAnnotation": {
+       *         "annotationGroups": [],
+       *         "multiValueDelimiter": "/"
+       *       }
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
     };
@@ -5493,8 +5503,10 @@ export interface components {
        *       "general": {
        *         "defaultCollapsed": false
        *       },
-       *       "annotationGroups": [],
-       *       "multiValueDelimiter": "/"
+       *       "textAnnotation": {
+       *         "annotationGroups": [],
+       *         "multiValueDelimiter": "/"
+       *       }
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
       /**
@@ -5581,6 +5593,29 @@ export interface components {
        * @default []
        */
       anno?: components['schemas']['TextAnnotationQueryEntry'][];
+    };
+    /**
+     * TextAnnotationSpecialConfig
+     * @description Config properties specific to the text annotation resource type
+     */
+    TextAnnotationSpecialConfig: {
+      /**
+       * Annotationgroups
+       * @description Display groups to use for grouping annotations
+       * @default []
+       */
+      annotationGroups: components['schemas']['AnnotationGroup'][];
+      /**
+       * Displaytemplate
+       * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
+       */
+      displayTemplate?: null | string;
+      /**
+       * Multivaluedelimiter
+       * @description String used to delimit multiple values for an annotation
+       * @default /
+       */
+      multiValueDelimiter: string;
     };
     /** TextAnnotationToken */
     TextAnnotationToken: {
