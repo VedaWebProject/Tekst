@@ -514,7 +514,6 @@
                 "sortOrder": 10,
                 "defaultActive": true,
                 "showOnParentLevel": false,
-                "quickSearchable": true,
                 "osk": null
             },
             "general": { "defaultCollapsed": true, "font": null }
@@ -546,7 +545,6 @@
                 "sortOrder": 10,
                 "defaultActive": false,
                 "showOnParentLevel": false,
-                "quickSearchable": false,
                 "rtl": false,
                 "osk": null
             },

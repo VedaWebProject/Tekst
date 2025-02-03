@@ -1417,16 +1417,65 @@ export interface components {
        */
       extra?: string;
     };
+    /** ApiCallModifiedCommonResourceConfig */
+    ApiCallModifiedCommonResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: null | string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive: boolean;
+      /**
+       * Showonparentlevel
+       * @description Show combined contents of this resource on the parent level
+       * @default false
+       */
+      showOnParentLevel: boolean;
+      /**
+       * Searchablequick
+       * @description Whether this resource should be included in quick search (always false as API call contents are not searchable)
+       * @default false
+       * @constant
+       */
+      searchableQuick: false;
+      /**
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search (always false as API call contents are not searchable)
+       * @default false
+       * @constant
+       */
+      searchableAdv: false;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl: boolean;
+      /** Osk */
+      osk?: string | null;
+    };
     /** ApiCallResourceConfig */
     ApiCallResourceConfig: {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": false,
+       *       "searchableQuick": false,
+       *       "searchableAdv": false,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
+      common: components['schemas']['ApiCallModifiedCommonResourceConfig'];
       /** @default {
        *       "defaultCollapsed": false
        *     } */
@@ -1493,8 +1542,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": false,
        *         "rtl": false,
+       *         "searchableAdv": false,
+       *         "searchableQuick": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -1615,8 +1665,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": false,
        *         "rtl": false,
+       *         "searchableAdv": false,
+       *         "searchableQuick": false,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -1843,7 +1894,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -1906,8 +1958,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2022,8 +2075,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2364,11 +2418,17 @@ export interface components {
        */
       showOnParentLevel: boolean;
       /**
-       * Quicksearchable
+       * Searchablequick
        * @description Whether this resource should be included in quick search
        * @default true
        */
-      quickSearchable: boolean;
+      searchableQuick: boolean;
+      /**
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search
+       * @default true
+       */
+      searchableAdv: boolean;
       /**
        * Rtl
        * @description Whether to display text contents in right-to-left direction
@@ -2667,7 +2727,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -2730,8 +2791,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -2846,8 +2908,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3184,7 +3247,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -3247,8 +3311,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3363,8 +3428,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -3802,7 +3868,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -3878,8 +3945,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4005,8 +4073,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4689,7 +4758,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -4752,8 +4822,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -4868,8 +4939,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -5212,7 +5284,8 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "showOnParentLevel": false,
-       *       "quickSearchable": true,
+       *       "searchableQuick": true,
+       *       "searchableAdv": true,
        *       "rtl": false
        *     } */
       common: components['schemas']['CommonResourceConfig'];
@@ -5292,8 +5365,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },
@@ -5410,8 +5484,9 @@ export interface components {
       /** @default {
        *       "common": {
        *         "defaultActive": true,
-       *         "quickSearchable": true,
        *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": true,
        *         "showOnParentLevel": false,
        *         "sortOrder": 10
        *       },

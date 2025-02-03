@@ -124,31 +124,38 @@ export const accentColorPresets = [
 export const resourceTypes = [
   {
     name: 'plainText',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'richText',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'textAnnotation',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'audio',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'images',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'externalReferences',
-    searchable: true,
+    searchableQuick: true,
+    searchableAdv: true,
   },
   {
     name: 'apiCall',
-    searchable: false,
+    searchableQuick: false,
+    searchableAdv: false,
   },
 ];
 

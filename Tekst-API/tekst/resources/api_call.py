@@ -154,10 +154,30 @@ class ApiCallSpecificConfig(ModelBase):
         return self
 
 
+class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
+    searchable_quick: Annotated[
+        Literal[False],
+        Field(
+            description=(
+                "Whether this resource should be included in quick search "
+                "(always false as API call contents are not searchable)"
+            ),
+        ),
+    ] = False
+    searchable_adv: Annotated[
+        Literal[False],
+        Field(
+            description=(
+                "Whether this resource should accessible via advanced search "
+                "(always false as API call contents are not searchable)"
+            ),
+        ),
+    ] = False
+
+
 class ApiCallResourceConfig(ResourceConfigBase):
     # override common resource config field of ResourceConfigBase
-    # to default quick_searchable to False
-    common: CommonResourceConfig = CommonResourceConfig(quick_searchable=False)
+    common: ApiCallModifiedCommonResourceConfig = ApiCallModifiedCommonResourceConfig()
     general: GeneralApiCallResourceConfig = GeneralApiCallResourceConfig()
     api_call: ApiCallSpecificConfig = ApiCallSpecificConfig()
 

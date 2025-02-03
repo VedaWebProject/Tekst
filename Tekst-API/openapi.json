@@ -7714,15 +7714,90 @@
         ],
         "title": "ApiCallContentUpdate"
       },
+      "ApiCallModifiedCommonResourceConfig": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true
+          },
+          "showOnParentLevel": {
+            "type": "boolean",
+            "title": "Showonparentlevel",
+            "description": "Show combined contents of this resource on the parent level",
+            "default": false
+          },
+          "searchableQuick": {
+            "type": "boolean",
+            "const": false,
+            "title": "Searchablequick",
+            "description": "Whether this resource should be included in quick search (always false as API call contents are not searchable)",
+            "default": false
+          },
+          "searchableAdv": {
+            "type": "boolean",
+            "const": false,
+            "title": "Searchableadv",
+            "description": "Whether this resource should accessible via advanced search (always false as API call contents are not searchable)",
+            "default": false
+          },
+          "rtl": {
+            "type": "boolean",
+            "title": "Rtl",
+            "description": "Whether to display text contents in right-to-left direction",
+            "default": false
+          },
+          "osk": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1,
+                "description": "Key identifying an OSK mode"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Osk"
+          }
+        },
+        "type": "object",
+        "title": "ApiCallModifiedCommonResourceConfig"
+      },
       "ApiCallResourceConfig": {
         "properties": {
           "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+            "$ref": "#/components/schemas/ApiCallModifiedCommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": false,
+              "searchableQuick": false,
+              "searchableAdv": false,
               "rtl": false
             }
           },
@@ -7843,8 +7918,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": false,
                 "rtl": false,
+                "searchableAdv": false,
+                "searchableQuick": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -8084,8 +8160,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": false,
                 "rtl": false,
+                "searchableAdv": false,
+                "searchableQuick": false,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -8616,7 +8693,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -8728,8 +8806,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -8963,8 +9042,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -9722,10 +9802,16 @@
             "description": "Show combined contents of this resource on the parent level",
             "default": false
           },
-          "quickSearchable": {
+          "searchableQuick": {
             "type": "boolean",
-            "title": "Quicksearchable",
+            "title": "Searchablequick",
             "description": "Whether this resource should be included in quick search",
+            "default": true
+          },
+          "searchableAdv": {
+            "type": "boolean",
+            "title": "Searchableadv",
+            "description": "Whether this resource should accessible via advanced search",
             "default": true
           },
           "rtl": {
@@ -10312,7 +10398,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -10424,8 +10511,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -10659,8 +10747,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -11399,7 +11488,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -11511,8 +11601,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -11746,8 +11837,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -12789,7 +12881,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -12918,8 +13011,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -13164,8 +13258,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -14627,7 +14722,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -14739,8 +14835,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -14974,8 +15071,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -15757,7 +15855,8 @@
               "sortOrder": 10,
               "defaultActive": true,
               "showOnParentLevel": false,
-              "quickSearchable": true,
+              "searchableQuick": true,
+              "searchableAdv": true,
               "rtl": false
             }
           },
@@ -15901,8 +16000,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },
@@ -16138,8 +16238,9 @@
             "default": {
               "common": {
                 "defaultActive": true,
-                "quickSearchable": true,
                 "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": true,
                 "showOnParentLevel": false,
                 "sortOrder": 10
               },

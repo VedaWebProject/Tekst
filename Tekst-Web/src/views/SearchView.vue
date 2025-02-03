@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  resourceTypes,
-  type AnyResourceRead,
-  type ResourceSearchQuery,
-  type SearchableResourceType,
-} from '@/api';
+import { type AnyResourceRead, type ResourceSearchQuery, type SearchableResourceType } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -77,14 +72,7 @@ const resourceOptions = computed(() => {
       ),
     key: tId,
     children: resources.all
-      .filter(
-        (r) =>
-          r.textId === tId &&
-          resourceTypes
-            .filter((rt) => rt.searchable)
-            .map((rt) => rt.name)
-            .includes(r.resourceType)
-      )
+      .filter((r) => r.config.common.searchableAdv)
       .sort((a, b) => {
         const categories =
           state.pf?.texts.find((t) => t.id === a.textId)?.resourceCategories?.map((c) => c.key) ||

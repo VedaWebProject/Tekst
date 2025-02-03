@@ -36,10 +36,16 @@ class CommonResourceConfig(ModelBase):
             description="Show combined contents of this resource on the parent level",
         ),
     ] = False
-    quick_searchable: Annotated[
+    searchable_quick: Annotated[
         bool,
         Field(
             description="Whether this resource should be included in quick search",
+        ),
+    ] = True
+    searchable_adv: Annotated[
+        bool,
+        Field(
+            description="Whether this resource should accessible via advanced search",
         ),
     ] = True
     rtl: Annotated[

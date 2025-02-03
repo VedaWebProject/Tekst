@@ -456,7 +456,8 @@ resources:
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
         showOnParentLevel: Enable viewing combined contents on the parent level
-        quickSearchable: Resource is searchable in quick search
+        searchableQuick: Searchable via Quick Search
+        searchableAdv: Searchable via Advanced search
         rtl: Display contents with right-to-left text direction
       general:
         heading: General

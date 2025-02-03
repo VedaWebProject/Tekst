@@ -101,15 +101,27 @@ function handleUpdate(field: string, value: unknown) {
       </n-flex>
       <!-- QUICK SEARCHABLE -->
       <labelled-switch
-        :model-value="model.quickSearchable"
-        :label="$t('resources.settings.config.common.quickSearchable')"
+        :model-value="model.searchableQuick"
+        :label="$t('resources.settings.config.common.searchableQuick')"
         :disabled="
           resourceTypes
-            .filter((rt) => !rt.searchable)
+            .filter((rt) => !rt.searchableQuick)
             .map((rt) => rt.name)
             .includes(resourceType)
         "
-        @update:model-value="(v) => handleUpdate('quickSearchable', v)"
+        @update:model-value="(v) => handleUpdate('searchableQuick', v)"
+      />
+      <!-- ADVANCED SEARCHABLE -->
+      <labelled-switch
+        :model-value="model.searchableAdv"
+        :label="$t('resources.settings.config.common.searchableAdv')"
+        :disabled="
+          resourceTypes
+            .filter((rt) => !rt.searchableAdv)
+            .map((rt) => rt.name)
+            .includes(resourceType)
+        "
+        @update:model-value="(v) => handleUpdate('searchableAdv', v)"
       />
       <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
       <labelled-switch

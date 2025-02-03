@@ -423,7 +423,7 @@ async def search_quick(
     field_pattern_suffix = ".strict" if settings_general.strict else ""
     fields = []
     for res_id, res in target_resources.items():
-        if res.config.common.quick_searchable:
+        if res.config.common.searchable_quick:
             for field in res.quick_search_fields():
                 fields.append(f"resources.{res_id}.{field}{field_pattern_suffix}")
 
@@ -492,8 +492,9 @@ async def search_advanced(
 
     # for each query block in the advanced search request...
     for query in queries:
-        if str(query.common.resource_id) not in target_resources:  # pragma: no cover
-            continue
+        res_doc = target_resources.get(str(query.common.resource_id))
+        if not res_doc or res_doc.config.common.searchable_adv is False:
+            continue  # pragma: no cover
         res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)
         txt_id = str(target_resources[str(query.common.resource_id)].text_id)
 
