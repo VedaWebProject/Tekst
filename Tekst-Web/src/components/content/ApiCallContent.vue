@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
-import { HourglassIcon } from '@/icons';
 import { useScriptTag } from '@vueuse/core';
-import { NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 type ContentData = { query: ApiCallContentRead['query']; extra?: ApiCallContentRead['extra'] };
@@ -57,22 +55,23 @@ function execTransformJs(
 async function updateContent(contents?: ContentData[]) {
   if (!contents?.length) return;
   loading.value = true;
-  html.value = Array(contents.length).fill(undefined);
+  const newHtml = Array(contents.length).fill(undefined);
   for (const [i, content] of contents.entries()) {
     if (!content) continue;
     try {
       const resp = await fetch(prepareRequest(content.query));
-      html.value[i] = resp.ok
+      newHtml[i] = resp.ok
         ? execTransformJs(props.resource.config.apiCall.transformJs, {
             data: await resp.text(),
             extra: !!content.extra ? JSON.parse(content.extra) : undefined,
           })
         : undefined;
     } catch (e) {
-      html.value[i] = undefined;
+      newHtml[i] = undefined;
       console.log(e);
     }
   }
+  html.value = newHtml;
   loading.value = false;
 }
 
@@ -106,17 +105,7 @@ onMounted(async () => {
   <div>
     <div v-for="(htmlPart, i) in html" :key="i">
       <template v-if="!reduced">
-        <n-flex
-          v-if="loading"
-          align="center"
-          size="small"
-          :wrap="false"
-          class="translucent text-small"
-        >
-          <n-icon :component="HourglassIcon" />
-          <span>{{ $t('general.loading') }}</span>
-        </n-flex>
-        <hydrated-html v-else-if="htmlPart !== undefined" :html="htmlPart" :style="fontStyle" />
+        <hydrated-html v-if="htmlPart !== undefined" :html="htmlPart" :style="fontStyle" />
         <div v-else class="translucent i ui-font">
           {{ $t('errors.notFound') }}
         </div>
