@@ -402,7 +402,22 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredStringRule(() => $t('resources.types.apiCall.contentFields.body'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
-    extra: [minMaxCharsRule(0, 10240, 'blur')],
+    extra: [
+      minMaxCharsRule(0, 10240, 'blur'),
+      {
+        validator: (_: FormItemRule, value: string) => {
+          try {
+            if (!value) return true;
+            JSON.parse(value);
+            return true;
+          } catch {
+            return false;
+          }
+        },
+        message: () => $t('resources.types.apiCall.contentFields.extraJsonError'),
+        trigger: 'blur',
+      },
+    ],
   },
 };
 
