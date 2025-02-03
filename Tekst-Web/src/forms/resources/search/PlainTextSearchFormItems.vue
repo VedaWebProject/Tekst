@@ -10,13 +10,6 @@ defineProps<{
 }>();
 
 const model = defineModel<PlainTextSearchQuery>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -27,11 +20,10 @@ function handleUpdate(field: string, value: unknown) {
     :rule="searchFormRules.plainText.text"
   >
     <n-input-osk
-      :model-value="model.text"
+      v-model="model.text"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.plainText.searchFields.text')"
-      @update:model-value="(v) => handleUpdate('text', v)"
     />
   </n-form-item>
 </template>

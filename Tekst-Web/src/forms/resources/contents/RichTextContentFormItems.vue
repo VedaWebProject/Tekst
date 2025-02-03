@@ -9,13 +9,6 @@ defineProps<{
 }>();
 
 const model = defineModel<RichTextContentCreate>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -26,14 +19,12 @@ function handleUpdate(field: string, value: unknown) {
     :rule="contentFormRules.richText.html"
   >
     <html-editor
-      :value="model.html"
-      :editor-mode="model.editorMode ?? 'wysiwyg'"
+      v-model:value="model.html"
+      v-model:editor-mode="model.editorMode"
       toolbar-size="medium"
       :max-chars="102400"
       :wysiwyg-font="resource.config.general.font || undefined"
       :rtl="resource.config.common.rtl"
-      @update:value="(v: string | null) => handleUpdate('html', v)"
-      @update:editor-mode="(v: string) => handleUpdate('editorMode', v)"
     />
   </n-form-item>
 </template>

@@ -91,22 +91,14 @@ const usersOptionsWrite = computed(() => {
   );
 });
 
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
-
-function handleSharesUpdate(field: string, value: string[]) {
+function onSharesUpdate(shares: string[]) {
   addedSharesUsersCache.value = [...addedSharesUsersCache.value, ...searchedUsers.value].filter(
     (u) =>
       model.value.sharedRead.includes(u.id) ||
       model.value.sharedWrite.includes(u.id) ||
-      value.includes(u.id)
+      shares.includes(u.id)
   );
   userSearchQuery.value = initialUserSearchQuery();
-  handleUpdate(field, value);
 }
 
 function handleUserSearch(query: string) {
@@ -172,9 +164,8 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     >
       <!-- RESOURCE COMMON CONFIG -->
       <special-resource-config-form-items
-        :model-value="model.config"
+        v-model="model.config"
         :resource-type="model.resourceType"
-        @update:model-value="(v: AnyResourceConfig) => handleUpdate('config', v)"
       />
     </n-tab-pane>
 
@@ -189,7 +180,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       </div>
       <n-form-item path="sharedRead" :label="$t('models.resource.sharedRead')">
         <n-select
-          :value="model.sharedRead"
+          v-model:value="model.sharedRead"
           multiple
           filterable
           clearable
@@ -203,13 +194,13 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           :status="errorUsers ? 'error' : undefined"
           :options="usersOptionsRead"
           :placeholder="$t('resources.phSearchUsers')"
-          @update:value="(v) => handleSharesUpdate('sharedRead', v)"
+          @update:value="(v) => onSharesUpdate(v)"
           @search="handleUserSearch"
         />
       </n-form-item>
       <n-form-item path="sharedWrite" :label="$t('models.resource.sharedWrite')">
         <n-select
-          :value="model.sharedWrite"
+          v-model:value="model.sharedWrite"
           multiple
           filterable
           clearable
@@ -223,7 +214,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           :status="errorUsers ? 'error' : undefined"
           :options="usersOptionsWrite"
           :placeholder="$t('resources.phSearchUsers')"
-          @update:value="(v) => handleSharesUpdate('sharedWrite', v)"
+          @update:value="(v) => onSharesUpdate(v)"
           @search="handleUserSearch"
         />
       </n-form-item>

@@ -70,13 +70,6 @@ function handleInsertToken(index: number) {
   return { token: undefined, annotations: [] };
 }
 
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
-
 onMounted(async () => {
   aggregations.value = await resources.getAggregations(props.resource.id);
 });
@@ -85,13 +78,7 @@ onMounted(async () => {
 <template>
   <!-- TOKENS -->
   <n-form-item :show-label="false" :show-feedback="false">
-    <n-dynamic-input
-      :value="model.tokens"
-      :min="1"
-      :max="1024"
-      @create="handleInsertToken"
-      @update:value="(value) => handleUpdate('tokens', value)"
-    >
+    <n-dynamic-input v-model:value="model.tokens" :min="1" :max="1024" @create="handleInsertToken">
       <template #default="{ value: tokenItem, index: tokenItemIndex }">
         <div
           style="

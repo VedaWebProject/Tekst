@@ -10,13 +10,6 @@ defineProps<{
 }>();
 
 const model = defineModel<AudioSearchQuery>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -27,11 +20,10 @@ function handleUpdate(field: string, value: unknown) {
     :rule="searchFormRules.audio.caption"
   >
     <n-input-osk
-      :model-value="model.caption"
+      v-model="model.caption"
       :placeholder="$t('general.caption')"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
-      @update:model-value="(v) => handleUpdate('caption', v)"
     />
   </n-form-item>
 </template>

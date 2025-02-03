@@ -9,13 +9,6 @@ defineProps<{
 }>();
 
 const model = defineModel<PlainTextContentCreate>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -26,13 +19,12 @@ function handleUpdate(field: string, value: unknown) {
     :rule="contentFormRules.plainText.text"
   >
     <n-input-osk
+      v-model="model.text"
       type="textarea"
       :rows="3"
-      :model-value="model.text"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
-      @update:model-value="(v) => handleUpdate('text', v)"
       :dir="resource.config.common.rtl ? 'rtl' : undefined"
     />
   </n-form-item>

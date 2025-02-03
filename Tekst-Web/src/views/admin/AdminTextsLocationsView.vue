@@ -314,7 +314,7 @@ async function handleImportClick() {
   });
 }
 
-async function handleUpdateClick() {
+async function handleUploadClick() {
   withSelectedFile(async (file: File | null) => {
     if (!file) return;
     loadingUpload.value = true;
@@ -481,7 +481,7 @@ onMounted(() => {
           secondary
           :title="$t('admin.text.locations.tipBtnUploadUpdates')"
           :disabled="loading"
-          @click="handleUpdateClick()"
+          @click="handleUploadClick()"
         >
           <template #icon>
             <n-icon :component="UploadIcon" />

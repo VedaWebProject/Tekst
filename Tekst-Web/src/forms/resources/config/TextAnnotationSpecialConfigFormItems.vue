@@ -9,13 +9,6 @@ import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>({
   required: true,
 });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -28,12 +21,11 @@ function handleUpdate(field: string, value: unknown) {
       </n-flex>
     </template>
     <n-dynamic-input
-      :value="model.annotationGroups"
+      v-model:value="model.annotationGroups"
       show-sort-button
       :min="0"
       :max="32"
       @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
-      @update:value="(v) => handleUpdate('annotationGroups', v)"
     >
       <template #default="{ index }">
         <n-flex align="flex-start" style="width: 100%">
@@ -92,11 +84,10 @@ function handleUpdate(field: string, value: unknown) {
       </n-flex>
     </template>
     <n-input
-      :value="model.displayTemplate"
+      v-model:value="model.displayTemplate"
       type="textarea"
       rows="3"
       style="font-family: monospace"
-      @update:value="(v) => handleUpdate('displayTemplate', v)"
     />
   </n-form-item>
 
@@ -106,9 +97,6 @@ function handleUpdate(field: string, value: unknown) {
     :rule="typeSpecificResourceConfigFormRules.textAnnotation.multiValueDelimiter"
     path="config.textAnnotation.multiValueDelimiter"
   >
-    <n-input
-      :value="model.multiValueDelimiter"
-      @update:value="(v) => handleUpdate('multiValueDelimiter', v)"
-    />
+    <n-input v-model:value="model.multiValueDelimiter" />
   </n-form-item>
 </template>

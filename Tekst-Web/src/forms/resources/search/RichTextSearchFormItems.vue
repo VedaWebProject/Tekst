@@ -10,13 +10,6 @@ defineProps<{
 }>();
 
 const model = defineModel<RichTextSearchQuery>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -27,11 +20,10 @@ function handleUpdate(field: string, value: unknown) {
     :rule="searchFormRules.richText.html"
   >
     <n-input-osk
-      :model-value="model.html"
+      v-model="model.html"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
       :placeholder="$t('resources.types.richText.searchFields.html')"
-      @update:model-value="(v) => handleUpdate('html', v)"
     />
   </n-form-item>
 </template>

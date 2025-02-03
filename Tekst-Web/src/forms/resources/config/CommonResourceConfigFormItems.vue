@@ -33,36 +33,22 @@ const oskOptions = computed(
       value: oskMode.key,
     })) || []
 );
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
   <!-- CATEGORY -->
   <n-form-item :label="$t('resources.settings.config.common.category')">
     <n-select
-      :value="model.category"
+      v-model:value="model.category"
       clearable
       :placeholder="$t('browse.uncategorized')"
       :options="categoryOptions"
-      @update:value="(v) => handleUpdate('category', v)"
     />
   </n-form-item>
 
   <!-- PREFERRED OSK MODE -->
   <n-form-item :label="$t('osk.label')">
-    <n-select
-      :value="model.osk"
-      clearable
-      placeholder="–"
-      :options="oskOptions"
-      @update:value="(v) => handleUpdate('osk', v)"
-    />
+    <n-select v-model:value="model.osk" clearable placeholder="–" :options="oskOptions" />
   </n-form-item>
 
   <!-- SORT ORDER -->
@@ -73,35 +59,27 @@ function handleUpdate(field: string, value: unknown) {
         <help-button-widget help-key="resourceSortOrder" />
       </n-flex>
     </template>
-    <n-input-number
-      :min="0"
-      :max="1000"
-      :value="model.sortOrder"
-      style="width: 100%"
-      @update:value="(v) => handleUpdate('sortOrder', v)"
-    />
+    <n-input-number v-model:value="model.sortOrder" :min="0" :max="1000" style="width: 100%" />
   </n-form-item>
 
   <n-form-item :show-label="false" :show-feedback="false">
     <n-flex vertical>
       <!-- DEFAULT ACTIVE -->
       <labelled-switch
-        :model-value="model.defaultActive"
+        v-model="model.defaultActive"
         :label="$t('resources.settings.config.common.defaultActive')"
-        @update:model-value="(v) => handleUpdate('defaultActive', v)"
       />
       <!-- SHOW ON PARENT LEVEL -->
       <n-flex :wrap="false" align="center">
         <labelled-switch
-          :model-value="model.showOnParentLevel"
+          v-model="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"
-          @update:model-value="(u) => handleUpdate('showOnParentLevel', u)"
         />
         <help-button-widget help-key="resourceConfigCombinedSiblings" />
       </n-flex>
       <!-- QUICK SEARCHABLE -->
       <labelled-switch
-        :model-value="model.searchableQuick"
+        v-model="model.searchableQuick"
         :label="$t('resources.settings.config.common.searchableQuick')"
         :disabled="
           resourceTypes
@@ -109,11 +87,10 @@ function handleUpdate(field: string, value: unknown) {
             .map((rt) => rt.name)
             .includes(resourceType)
         "
-        @update:model-value="(v) => handleUpdate('searchableQuick', v)"
       />
       <!-- ADVANCED SEARCHABLE -->
       <labelled-switch
-        :model-value="model.searchableAdv"
+        v-model="model.searchableAdv"
         :label="$t('resources.settings.config.common.searchableAdv')"
         :disabled="
           resourceTypes
@@ -121,14 +98,9 @@ function handleUpdate(field: string, value: unknown) {
             .map((rt) => rt.name)
             .includes(resourceType)
         "
-        @update:model-value="(v) => handleUpdate('searchableAdv', v)"
       />
       <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
-      <labelled-switch
-        :model-value="model.rtl"
-        :label="$t('resources.settings.config.common.rtl')"
-        @update:model-value="(v) => handleUpdate('rtl', v)"
-      />
+      <labelled-switch v-model="model.rtl" :label="$t('resources.settings.config.common.rtl')" />
     </n-flex>
   </n-form-item>
 </template>

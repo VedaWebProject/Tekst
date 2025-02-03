@@ -9,13 +9,6 @@ defineProps<{
 }>();
 
 const model = defineModel<AnyContentCreate>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -39,11 +32,10 @@ function handleUpdate(field: string, value: unknown) {
           :rule="contentFormRules.common.comment"
         >
           <n-input
+            v-model:value="model.comment"
             type="textarea"
             :rows="3"
-            :value="model.comment"
             :placeholder="$t('resources.types.common.contentFields.comment')"
-            @update:value="(v) => handleUpdate('comment', v)"
           />
         </n-form-item>
         <!-- NOTES -->
@@ -55,9 +47,8 @@ function handleUpdate(field: string, value: unknown) {
           <n-input
             type="textarea"
             :rows="2"
-            :value="model.notes"
+            v-model:value="model.notes"
             :placeholder="$t('resources.types.common.contentFields.notes')"
-            @update:value="(v) => handleUpdate('notes', v)"
           />
         </n-form-item>
       </n-collapse-item>

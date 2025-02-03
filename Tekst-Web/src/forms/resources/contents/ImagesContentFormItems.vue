@@ -16,13 +16,6 @@ const model = defineModel<ImagesContentCreate>({ required: true });
 const { message } = useMessages();
 const tuiTheme = useThemeVars();
 
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
-
 async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
   if (url && !(await checkUrl(url))) {
@@ -38,11 +31,10 @@ async function checkUrlInput(input: HTMLInputElement) {
   <!-- FILES -->
   <n-form-item :label="$t('resources.types.images.contentFields.files')" path="files">
     <n-dynamic-input
-      :value="model.files"
+      v-model:value="model.files"
       :min="1"
       :max="100"
       @create="() => ({ url: undefined, caption: undefined })"
-      @update:value="(value) => handleUpdate('files', value)"
     >
       <template #default="{ index }">
         <n-flex align="stretch" style="flex-grow: 2">

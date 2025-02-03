@@ -76,10 +76,7 @@ const fromChildLevel = computed(
     <div class="content-header mb-sm" :class="browse.reducedView ? 'reduced' : ''">
       <n-icon v-if="!hasContent && !fromChildLevel" :component="NoContentIcon" />
       <n-flex align="center" :wrap="false" :gap="12" style="flex-grow: 2">
-        <div
-          class="content-header-title"
-          :class="{ reduced: browse.reducedView }"
-        >
+        <div class="content-header-title" :class="{ reduced: browse.reducedView }">
           <span>
             <translation-display v-if="resource.title" :value="resource.title" />
           </span>

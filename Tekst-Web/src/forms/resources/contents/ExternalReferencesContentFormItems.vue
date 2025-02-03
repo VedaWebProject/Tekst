@@ -11,24 +11,16 @@ defineProps<{
 }>();
 
 const model = defineModel<ExternalReferencesContentCreate>({ required: true });
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
   <!-- FILES -->
   <n-form-item :label="$t('resources.types.externalReferences.contentFields.links')" path="links">
     <n-dynamic-input
-      :value="model.links"
+      v-model:value="model.links"
       :min="1"
       :max="100"
       @create="() => ({ url: undefined, title: undefined, description: undefined })"
-      @update:value="(value) => handleUpdate('links', value)"
     >
       <template #default="{ index }">
         <n-flex align="start" style="flex-grow: 2">

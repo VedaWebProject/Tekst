@@ -62,13 +62,6 @@ function getAnnoValueSelectStyle(value?: string) {
   return value ? annoValueStyle : undefined;
 }
 
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
-
 onMounted(async () => {
   aggregations.value = await resources.getAggregations(props.resource.id);
 });
@@ -85,11 +78,10 @@ onMounted(async () => {
       style="flex-grow: 2"
     >
       <n-input-osk
-        :model-value="model.token"
+        v-model="model.token"
         :font="resource.config.general.font || undefined"
         :osk-key="resource.config.common.osk || undefined"
         :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-        @update:model-value="(v) => handleUpdate('token', v)"
       />
     </n-form-item>
     <!-- TOKEN QUERY WILDCARDS -->
@@ -112,11 +104,7 @@ onMounted(async () => {
     :show-feedback="!model.anno?.length"
     style="flex-grow: 2; flex-basis: 400px"
   >
-    <n-dynamic-input
-      :value="model.anno"
-      @update-value="(v) => handleUpdate('anno', v)"
-      @create="() => ({ k: undefined, v: undefined })"
-    >
+    <n-dynamic-input v-model:value="model.anno" @create="() => ({ k: undefined, v: undefined })">
       <template #default="{ value: annotationItem, index: annotationItemIndex }">
         <n-flex wrap align="flex-start" style="flex-grow: 2">
           <!-- KEY -->

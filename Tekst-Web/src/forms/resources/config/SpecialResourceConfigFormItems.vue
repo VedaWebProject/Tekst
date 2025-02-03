@@ -8,42 +8,23 @@ defineProps<{
 }>();
 
 const model = defineModel<AnyResourceConfig>({ required: true });
-
-function handleUpdateGeneralConfig(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    general: {
-      ...model.value?.general,
-      [field]: value,
-    },
-  };
-}
-
-function handleUpdateSpecialConfig(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
-  <template v-for="(configValue, key) in model?.general" :key="key">
+  <template v-for="(_, key) in model.general" :key="key">
     <component
+      v-model="model.general[key]"
       :is="generalConfigFormItems[key]"
       v-if="key in generalConfigFormItems"
-      :model-value="configValue"
-      @update:model-value="(u: any) => handleUpdateGeneralConfig(key, u)"
     />
   </template>
 
   <!-- SPECIAL RESOURCE TYPE-SPECIFIC CONFIG -->
-  <template v-for="(configModel, key) in model" :key="key">
+  <template v-for="(_, key) in model" :key="key">
     <component
+      v-model="model[key]"
       :is="specialConfigFormItems[key]"
       v-if="key in specialConfigFormItems"
-      :model-value="configModel"
-      @update:model-value="(u: any) => handleUpdateSpecialConfig(key, u)"
     />
   </template>
 </template>

@@ -17,13 +17,6 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
   label: m,
   value: m,
 }));
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
@@ -34,21 +27,16 @@ function handleUpdate(field: string, value: unknown) {
     :rule="typeSpecificResourceConfigFormRules['apiCall'].endpoint"
   >
     <n-input
-      :value="model.endpoint"
+      v-model:value="model.endpoint"
       type="text"
       :placeholder="$t('resources.settings.config.apiCall.endpoint')"
       @keydown.enter.prevent
-      @update:value="(v) => handleUpdate('endpoint', v)"
     />
   </n-form-item>
 
   <!-- ENDPOINT URL -->
   <n-form-item path="config.apiCall.method" :label="$t('resources.settings.config.apiCall.method')">
-    <n-select
-      :value="model.method"
-      :options="methodOptions"
-      @update:value="(v) => handleUpdate('method', v)"
-    />
+    <n-select v-model::value="model.method" :options="methodOptions" />
   </n-form-item>
 
   <!-- REQUEST BODY CONTENT TYPE -->
@@ -58,12 +46,11 @@ function handleUpdate(field: string, value: unknown) {
     :rule="typeSpecificResourceConfigFormRules['apiCall'].contentType"
   >
     <n-input
-      :value="model.contentType"
+      v-model::value="model.contentType"
       type="text"
       :placeholder="$t('resources.settings.config.apiCall.contentType')"
       :disabled="model.method === 'GET'"
       @keydown.enter.prevent
-      @update:value="(v) => handleUpdate('contentType', v)"
     />
   </n-form-item>
 
@@ -76,12 +63,11 @@ function handleUpdate(field: string, value: unknown) {
       </n-flex>
     </template>
     <n-dynamic-input
-      :value="model.transformDeps"
+      v-model::value="model.transformDeps"
       show-sort-button
       :min="0"
       :max="32"
       @create="() => ''"
-      @update:value="(v) => handleUpdate('transformDeps', v)"
     >
       <template #default="{ index }">
         <n-form-item
@@ -122,12 +108,11 @@ function handleUpdate(field: string, value: unknown) {
     </template>
     <div class="codemirror-container">
       <codemirror
-        :model-value="model.transformJs"
+        v-model="model.transformJs"
         :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
         :indent-with-tab="true"
         :tab-size="2"
         :extensions="codeEditorExtensions"
-        @update:model-value="(v) => handleUpdate('transformJs', v)"
       />
     </div>
   </n-form-item>

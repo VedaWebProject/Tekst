@@ -21,68 +21,56 @@ const metadataKeysOptions = computed(() =>
     disabled: model.value.meta && !!model.value.meta.find((m) => m.key === k),
   }))
 );
-
-function handleUpdate(field: string, value: unknown) {
-  model.value = {
-    ...model.value,
-    [field]: value,
-  };
-}
 </script>
 
 <template>
   <!-- TITLE -->
   <translation-form-item
-    :model-value="model.title"
+    v-model="model.title"
     parent-form-path-prefix="title"
     :main-form-label="$t('models.resource.title')"
     :translation-form-label="$t('models.resource.title')"
     :translation-form-rule="resourceSettingsFormRules.titleTranslation"
     :min-items="1"
-    @update:model-value="(v) => handleUpdate('title', v)"
   />
 
   <!-- DESCRIPTION -->
   <translation-form-item
-    :model-value="model.description"
+    v-model="model.description"
     parent-form-path-prefix="description"
     :main-form-label="$t('models.resource.description')"
     :translation-form-label="$t('models.resource.description')"
     :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
-    @update:model-value="(v) => handleUpdate('description', v)"
   />
 
   <!-- CITATION -->
   <n-form-item path="citation" :label="$t('models.resource.citation')">
     <n-input
-      :value="model.citation"
+      v-model:value="model.citation"
       type="text"
       :placeholder="$t('models.resource.citation')"
       @keydown.enter.prevent
-      @update:value="(v) => handleUpdate('citation', v)"
     />
   </n-form-item>
 
   <!-- COMMENT -->
   <translation-form-item
-    :model-value="model.comment"
+    v-model="model.comment"
     parent-form-path-prefix="comment"
     multiline
     :max-translation-length="2000"
     :main-form-label="$t('general.comment')"
     :translation-form-label="$t('general.comment')"
     :translation-form-rule="resourceSettingsFormRules.commentTranslation"
-    @update:model-value="(v) => handleUpdate('comment', v)"
   />
 
   <!-- METADATA -->
   <n-form-item :label="$t('models.meta.modelLabel')" :show-feedback="false">
     <n-dynamic-input
-      :value="model.meta"
+      v-model:value="model.meta"
       :min="0"
       :max="64"
       @create="() => ({ key: '', value: '' })"
-      @update:value="(v) => handleUpdate('meta', v)"
     >
       <template #default="{ index, value: metaEntryValue }">
         <n-flex align="flex-start" wrap style="flex-grow: 2">
