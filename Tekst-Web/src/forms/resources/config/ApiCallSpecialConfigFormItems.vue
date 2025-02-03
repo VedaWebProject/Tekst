@@ -34,9 +34,9 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
     />
   </n-form-item>
 
-  <!-- ENDPOINT URL -->
+  <!-- HTTP METHOD -->
   <n-form-item path="config.apiCall.method" :label="$t('resources.settings.config.apiCall.method')">
-    <n-select v-model::value="model.method" :options="methodOptions" />
+    <n-select v-model:value="model.method" :options="methodOptions" />
   </n-form-item>
 
   <!-- REQUEST BODY CONTENT TYPE -->
