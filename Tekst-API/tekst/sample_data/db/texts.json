@@ -55,9 +55,16 @@
             {
                 "key": "links",
                 "translations": [{ "locale": "*", "translation": "Links" }]
+            },
+            {
+                "key": "poc",
+                "translations": [
+                    { "locale": "*", "translation": "Proof of Concept" }
+                ]
             }
         ],
-        "full_loc_label_as_hit_heading": true
+        "full_loc_label_as_hit_heading": true,
+        "index_utd": true
     },
     {
         "_id": { "$oid": "654ba1f3ec7833e469dde765" },
@@ -94,6 +101,7 @@
                 ]
             }
         ],
-        "full_loc_label_as_hit_heading": true
+        "full_loc_label_as_hit_heading": true,
+        "index_utd": true
     }
 ]

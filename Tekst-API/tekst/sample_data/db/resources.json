@@ -542,7 +542,7 @@
         "comment": [],
         "config": {
             "common": {
-                "category": null,
+                "category": "poc",
                 "sortOrder": 10,
                 "defaultActive": false,
                 "showOnParentLevel": false,
