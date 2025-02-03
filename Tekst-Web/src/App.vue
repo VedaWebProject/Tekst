@@ -47,33 +47,37 @@ useFavicon();
   >
     <n-loading-bar-provider>
       <n-dialog-provider>
-        <div id="app-container">
-          <n-flex v-if="state.init.error" justify="center" align="center" style="height: 100vh">
-            <huge-labelled-icon
-              :message="$t('init.error')"
-              :loading="!state.init.error && !state.init.initialized"
-              :icon="ErrorIcon"
-            />
-          </n-flex>
-
-          <template v-else-if="state.init.initialized">
-            <page-header />
-            <main>
-              <div id="main-content">
-                <router-view />
-              </div>
-            </main>
-            <page-footer />
-            <login-modal />
-            <messaging-modal />
-            <tasks-widget v-if="showTasksWidget" />
-            <n-back-top
-              v-model:show="state.backtopVisible"
-              :visibility-height="200"
-              style="z-index: 2"
-            />
-          </template>
-        </div>
+        <!-- app content when initialized -->
+        <template v-if="state.init.initialized && !state.init.error">
+          <page-header />
+          <main>
+            <div id="main-content">
+              <router-view />
+            </div>
+          </main>
+          <page-footer />
+          <login-modal />
+          <messaging-modal />
+          <tasks-widget v-if="showTasksWidget" />
+          <n-back-top
+            v-model:show="state.backtopVisible"
+            :visibility-height="200"
+            style="z-index: 2"
+          />
+        </template>
+        <!-- feedback on app init error -->
+        <n-flex
+          v-else-if="state.init.initialized && state.init.error"
+          justify="center"
+          align="center"
+          style="height: 100vh"
+        >
+          <huge-labelled-icon
+            :message="$t('init.error')"
+            :loading="!state.init.error && !state.init.initialized"
+            :icon="ErrorIcon"
+          />
+        </n-flex>
       </n-dialog-provider>
       <app-loading-feedback />
     </n-loading-bar-provider>

@@ -28,7 +28,6 @@ function handleLanguageSelect(localeCode: LocaleKey) {
     v-if="state.availableLocales.length > 1"
     v-model:value="state.locale"
     trigger="click"
-    to="#app-container"
     :options="options"
     @update:value="handleLanguageSelect"
   >

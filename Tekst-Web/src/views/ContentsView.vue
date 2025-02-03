@@ -455,7 +455,7 @@ whenever(ArrowRight, () => {
     <n-dropdown
       trigger="click"
       :options="compareResourceOptions"
-      to="#app-container"
+      placement="bottom-end"
       @select="handleSelectcompareResource"
     >
       <n-button

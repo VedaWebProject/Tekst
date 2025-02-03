@@ -231,8 +231,8 @@ function handleCorrectionsClick() {
           <resource-info-widget :resource="targetResource" />
           <n-dropdown
             :options="actionOptions"
-            to="#app-container"
             trigger="click"
+            placement="bottom-end"
             @select="(_, o) => handleActionSelect(o)"
           >
             <n-button quaternary circle :focusable="false">

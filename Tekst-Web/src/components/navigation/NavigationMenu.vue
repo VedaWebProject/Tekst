@@ -42,7 +42,6 @@ const menuStyle = computed(() => ({
       :dropdown-props="{
         showArrow: false,
         trigger: 'hover',
-        to: '#app-container',
       }"
       :mode="mode"
       :value="$route.name?.toString()"
