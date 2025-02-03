@@ -17,12 +17,12 @@
   --font-weight-normal: 400;
   --font-weight-bold: 500;
 
-  --font-size: 20px;
+  --font-size: 18px;
   --font-size-mini: 14px;
-  --font-size-tiny: 16px;
-  --font-size-small: 18px;
+  --font-size-tiny: 15px;
+  --font-size-small: 16px;
   --font-size-medium: 18px;
-  --font-size-large: 22px;
+  --font-size-large: 20px;
   --font-size-huge: 24px;
   --font-size-gigantic: 26px;
 
@@ -31,6 +31,20 @@
     0 5px 12px 4px rgba(0, 0, 0, 0.04);
   --fixed-box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.14), 0 3px 6px 0 rgba(0, 0, 0, 0.12),
     0 5px 12px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* For screens with a width of 900px and above, use slightly larger font sizes. */
+@media screen and (min-width: 900px) {
+  :root {
+    --font-size: 20px;
+    --font-size-mini: 14px;
+    --font-size-tiny: 16px;
+    --font-size-small: 18px;
+    --font-size-medium: 20px;
+    --font-size-large: 22px;
+    --font-size-huge: 24px;
+    --font-size-gigantic: 26px;
+  }
 }
 
 :focus-visible {
