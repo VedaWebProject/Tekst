@@ -78,9 +78,9 @@ const fromChildLevel = computed(
       <n-flex align="center" :wrap="false" :gap="12" style="flex-grow: 2">
         <div
           class="content-header-title"
-          :class="{ reduced: browse.reducedView, b: browse.reducedView }"
+          :class="{ reduced: browse.reducedView }"
         >
-          <span class="text-large">
+          <span>
             <translation-display v-if="resource.title" :value="resource.title" />
           </span>
           <n-icon
@@ -203,6 +203,7 @@ const fromChildLevel = computed(
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: var(--font-size-large);
 }
 
 .content-header-title > span {
@@ -211,6 +212,7 @@ const fromChildLevel = computed(
 
 .content-header-title.reduced {
   font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-bold);
   opacity: 0.8;
 }
 </style>
