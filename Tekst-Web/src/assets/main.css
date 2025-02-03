@@ -97,13 +97,13 @@ h2 {
 
 h3 {
   font-size: var(--font-size-large);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-normal);
   margin-top: 1rem;
   margin-bottom: 0.9rem;
 }
 
 h4 {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-normal);
   font-weight: var(--font-weight-normal);
   margin-top: 0.9rem;
   margin-bottom: 0.8rem;
