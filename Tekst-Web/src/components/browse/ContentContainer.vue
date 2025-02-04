@@ -85,6 +85,7 @@ const fromChildLevel = computed(
             :component="PublicOffIcon"
             :color="themeVars.textColorDisabled"
             :title="$t('resources.notPublic')"
+            class="text-small"
           />
         </div>
         <div class="text-small translucent" style="flex-grow: 2">
