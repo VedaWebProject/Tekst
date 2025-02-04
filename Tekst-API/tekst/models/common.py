@@ -40,7 +40,9 @@ class ModelBase(BaseModel):
 
     @classmethod
     def _field_excluded_from_model_variant(
-        cls, field_name: str, model_variant: Literal["create", "update"]
+        cls,
+        field_name: str,
+        model_variant: Literal["create", "update"],
     ) -> bool:
         """
         Returns `True` if the field with the given name should be excluded from the
@@ -68,6 +70,7 @@ class DocumentBase(Document):
         # we must do all we can to ensure data integrity so the application doesn't
         # break its own data :(
         validate_on_save = True
+        keep_nulls = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
