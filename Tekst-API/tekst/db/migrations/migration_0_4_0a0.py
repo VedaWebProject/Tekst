@@ -5,31 +5,30 @@ async def migration(db: Database) -> None:
     # move plain text-specific config in to config sub-document
     await db.resources.update_many(
         {"resource_type": "plainText"},
-        {"$set": {"config.plain_text": {}}},
+        {"$set": {"config.plainText": {}}},
     )
     await db.resources.update_many(
         {"resource_type": "plainText"},
         {
             "$rename": {
-                "config.deepl_links": "config.plain_text.deepl_links",
-                "config.line_labelling": "config.plain_text.line_labelling",
+                "config.deeplLinks": "config.plainText.deeplLinks",
+                "config.lineLabelling": "config.plainText.lineLabelling",
             }
         },
     )
     # move text annotation-specific config in to config sub-document
-
     await db.resources.update_many(
         {"resource_type": "textAnnotation"},
-        {"$set": {"config.text_annotation": {}}},
+        {"$set": {"config.textAnnotation": {}}},
     )
     await db.resources.update_many(
         {"resource_type": "textAnnotation"},
         {
             "$rename": {
-                "config.annotation_groups": "config.text_annotation.annotation_groups",
-                "config.display_template": "config.text_annotation.display_template",
-                "config.multi_value_delimiter": (
-                    "config.text_annotation.multi_value_delimiter"
+                "config.annotationGroups": "config.textAnnotation.annotationGroups",
+                "config.displayTemplate": "config.textAnnotation.displayTemplate",
+                "config.multiValueDelimiter": (
+                    "config.textAnnotation.multiValueDelimiter"
                 ),
             }
         },
