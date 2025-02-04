@@ -67,17 +67,12 @@ class DocumentBase(Document):
 
     class Settings:
         # this might be costly, but as we don't have transactions or anything like that
-        # we must do all we can to ensure data integrity so the application doesn't
-        # break its own data :(
+        # we must do all we can to make sure a bug doesn't break the data
         validate_on_save = True
         keep_nulls = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
-
-    async def insert(self, **kwargs):
-        self.id = None  # reset ID for new document in case one is already set
-        return await super().insert(**kwargs)
 
     async def apply_updates(
         self,

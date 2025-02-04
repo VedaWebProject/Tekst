@@ -147,7 +147,10 @@ async def trigger_resources_maintenance(
     ),
 )
 async def create_resource(
-    resource: AnyResourceCreate, user: UserDep, cfg: ConfigDep, state: StateDep
+    resource: AnyResourceCreate,
+    user: UserDep,
+    cfg: ConfigDep,
+    state: StateDep,
 ) -> AnyResourceRead:
     # check user resources limit
     if (
