@@ -9,7 +9,7 @@ import { computed } from 'vue';
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
 const props = defineProps<{
-  widgetConfig: DeepLLinksConfig;
+  config: DeepLLinksConfig;
   resource: AnyResourceRead;
   full?: boolean;
 }>();
@@ -33,12 +33,12 @@ const options = computed(() =>
   deeplTargetLanguages.map((l) => ({
     label: l,
     value: l,
-    url: `${DEEPL_TRANSLATOR_URL}#${props.widgetConfig.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
+    url: `${DEEPL_TRANSLATOR_URL}#${props.config.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
   }))
 );
 
 const show = computed(
-  () => props.widgetConfig.enabled && props.widgetConfig.sourceLanguage && contentsTextEncoded
+  () => props.config.enabled && props.config.sourceLanguage && contentsTextEncoded
 );
 
 function handleOptionSelect(_: string, option: SelectBaseOption) {
