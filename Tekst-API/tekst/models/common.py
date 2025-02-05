@@ -74,6 +74,10 @@ class DocumentBase(Document):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))
 
+    async def insert(self, **kwargs):
+        self.id = None  # prevent creating documents with a pre-existing ID
+        return await super().insert(**kwargs)
+
     async def apply_updates(
         self,
         updates_model: ModelBase,
