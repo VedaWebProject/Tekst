@@ -43,7 +43,7 @@ interface TokenDetails {
 
 type Token = TextAnnotationContentRead['tokens'][number];
 
-const PAT_TMPL_ITEM = /{{((?!}}).+?)}}/g;
+const PAT_TMPL_ITEM = /{{\s*((?!}}).+?)\s*}}/g;
 const PAT_TMPL_ITEM_PARTS = /_([kpcsfg]):(.*?)(?=_[kpcsfg]:|$)/g;
 const PAT_TMPL_LINE_BREAK = /^br$/g;
 
@@ -123,7 +123,8 @@ const fontFamilyStyle = computed(() => ({
 const annoLineNumbers = computed(() =>
   Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
 );
-const colorAnnoLines = ref(false);
+const colorAnnoLinesChoice = ref(true);
+const colorAnnoLines = computed(() => colorAnnoLinesChoice.value && annoGroups.value.length > 1);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.textAnnotation.displayTemplate) return [];
@@ -403,9 +404,15 @@ function generatePlaintextAnno(): string {
           </template>
           {{ pickTranslation(group.translations, state.locale) }}
         </n-button>
-        <n-button tertiary size="tiny" :focusable="false" @click="colorAnnoLines = !colorAnnoLines">
+        <n-button
+          v-if="annoGroups.length > 1"
+          tertiary
+          size="tiny"
+          :focusable="false"
+          @click="colorAnnoLinesChoice = !colorAnnoLinesChoice"
+        >
           <template #icon>
-            <n-icon :component="colorAnnoLines ? ColorOffIcon : ColorIcon" />
+            <n-icon :component="colorAnnoLinesChoice ? ColorOffIcon : ColorIcon" />
           </template>
         </n-button>
       </template>
