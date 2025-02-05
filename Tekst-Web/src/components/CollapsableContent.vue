@@ -10,13 +10,11 @@ const props = withDefaults(
     heightTreshPx?: number;
     collapseText?: string;
     expandText?: string;
-    scrollable?: boolean;
     showBtnText?: boolean;
   }>(),
   {
     collapsable: true,
     heightTreshPx: 150,
-    scrollable: true,
     showBtnText: true,
   }
 );
@@ -34,7 +32,7 @@ const isCollapsed = computed(() => isCollapsable.value && collapsed.value);
       :class="{ collapsed: isCollapsed }"
       :style="{
         maxHeight: isCollapsed ? `${heightTreshPx}px` : undefined,
-        overflow: scrollable || !isCollapsed ? 'scroll' : 'hidden',
+        overflow: 'hidden',
       }"
     >
       <div ref="contentRef">

@@ -114,7 +114,6 @@ const fromChildLevel = computed(
         v-if="hasContent"
         :collapsable="collapsable"
         :collapsed="collapsed"
-        :scrollable="!state.smallScreen"
         :height-tresh-px="200"
       >
         <!-- content-specific component (that displays the actual content data) -->

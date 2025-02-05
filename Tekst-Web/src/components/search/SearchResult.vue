@@ -50,7 +50,6 @@ const highlightsProcessed = computed<Record<string, string>>(() => {
     <collapsable-content
       :collapsable="props.smallScreen"
       :collapsed="smallScreen"
-      :scrollable="false"
       :height-tresh-px="250"
       :show-btn-text="!smallScreen"
       class="mb-sm"
