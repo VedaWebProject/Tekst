@@ -93,7 +93,7 @@ export const useSearchStore = defineStore('search', () => {
   ): string | undefined {
     if (!requestBody) return undefined;
     const req = cloneDeep(requestBody);
-    delete req.gen?.pgn;
+    delete req.gen?.pgn; // don't persist pagination state
     try {
       return Base64.encode(JSON.stringify(req), true);
     } catch {
@@ -180,7 +180,7 @@ export const useSearchStore = defineStore('search', () => {
   async function _search(req: SearchRequest) {
     loading.value = true;
     error.value = false;
-    currentRequest.value = req;
+    currentRequest.value = cloneDeep(req);
     // search
     const { data, error: e } = await POST('/search', {
       body: req,
