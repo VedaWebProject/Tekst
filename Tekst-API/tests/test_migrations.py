@@ -84,3 +84,18 @@ async def test_0_4_1a0(database, get_sample_data):
     assert "plain_text" in res["config"]
     assert "deepl_links" in res["config"]["plain_text"]
     assert "source_language" in res["config"]["plain_text"]["deepl_links"]
+
+
+@pytest.mark.anyio
+async def test_0_4_2a0(database, get_sample_data):
+    content = get_sample_data("migrations/0_4_2a0.json")
+    content_id = (await database.contents.insert_one(content)).inserted_id
+    assert content_id
+
+    # run migration
+    await migrations.migration_0_4_2a0.migration(database)
+    content = await database.contents.find_one({"_id": content_id})
+
+    # assert the data has been fixed by the migration
+    assert "extra" not in content
+    assert "transform_context" in content

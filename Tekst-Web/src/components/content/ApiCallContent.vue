@@ -4,8 +4,11 @@ import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { useScriptTag } from '@vueuse/core';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
-type ContentData = { query: ApiCallContentRead['query']; extra?: ApiCallContentRead['extra'] };
-type TransformationInput = { data: string; extra?: unknown };
+type ContentData = {
+  query: ApiCallContentRead['query'];
+  context: ApiCallContentRead['transformContext'];
+};
+type TransformationInput = { data: string; context?: unknown };
 
 const props = defineProps<{
   resource: ApiCallResourceRead;
@@ -17,7 +20,7 @@ const fontStyle = {
 };
 
 const contents = computed(() =>
-  props.resource.contents?.map((c) => ({ query: c.query, extra: c.extra }))
+  props.resource.contents?.map((c) => ({ query: c.query, context: c.transformContext }))
 );
 const html = ref<(string | undefined)[]>([]);
 const loading = ref(false);
@@ -63,7 +66,7 @@ async function updateContent(contents?: ContentData[]) {
       newHtml[i] = resp.ok
         ? execTransformJs(props.resource.config.apiCall.transformJs, {
             data: await resp.text(),
-            extra: !!content.extra ? JSON.parse(content.extra) : undefined,
+            context: !!content.context ? JSON.parse(content.context) : undefined,
           })
         : undefined;
     } catch (e) {

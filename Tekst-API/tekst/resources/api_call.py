@@ -206,14 +206,14 @@ class ApiCallContent(ContentBase):
             ),
         ),
     ]
-    extra: Annotated[
+    transform_context: Annotated[
         ConStrOrNone(
             max_length=10240,
         ),
         Field(
             description=(
-                "Extra data that should be made available "
-                "to the transformation script."
+                "Extra data that will be made available to the transformation script. "
+                "This has to be a valid, string-encoded JSON object."
             ),
         ),
         SchemaOptionalNonNullable,

@@ -420,7 +420,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
             return false;
           }
         },
-        message: () => $t('resources.types.apiCall.contentFields.extraJsonError'),
+        message: () => $t('resources.types.apiCall.contentFields.transformContextJsonError'),
         trigger: 'blur',
       },
     ],

@@ -48,17 +48,18 @@ const extraEditorExtensions = [json()];
 
   <!-- TRANSFORMATION EXTRA DATA -->
   <n-form-item
-    :label="$t('resources.types.apiCall.contentFields.extra')"
+    :label="$t('resources.types.apiCall.contentFields.transformContext')"
     path="extra"
     :rule="contentFormRules.apiCall.extra"
   >
     <div class="codemirror-container">
       <codemirror
-        v-model="model.extra"
+        v-model="model.transformContext"
         :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
         :indent-with-tab="true"
         :tab-size="2"
         :extensions="extraEditorExtensions"
+        @keydown.enter.stop.prevent
       />
     </div>
   </n-form-item>

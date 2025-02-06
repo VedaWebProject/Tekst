@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.4.1a0"
+    "version": "0.4.2a0"
   },
   "servers": [
     {
@@ -7520,7 +7520,7 @@
             "title": "Query",
             "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
           },
-          "extra": {
+          "transformContext": {
             "anyOf": [
               {
                 "type": "null"
@@ -7531,8 +7531,8 @@
                 "minLength": 1
               }
             ],
-            "title": "Extra",
-            "description": "Extra data that should be made available to the transformation script.",
+            "title": "Transformcontext",
+            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": false
           }
         },
@@ -7613,7 +7613,7 @@
             "title": "Query",
             "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
           },
-          "extra": {
+          "transformContext": {
             "anyOf": [
               {
                 "type": "null"
@@ -7624,8 +7624,8 @@
                 "minLength": 1
               }
             ],
-            "title": "Extra",
-            "description": "Extra data that should be made available to the transformation script.",
+            "title": "Transformcontext",
+            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": false
           }
         },
@@ -7692,7 +7692,7 @@
             "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.",
             "optionalNullable": false
           },
-          "extra": {
+          "transformContext": {
             "anyOf": [
               {
                 "type": "null"
@@ -7703,8 +7703,8 @@
                 "minLength": 1
               }
             ],
-            "title": "Extra",
-            "description": "Extra data that should be made available to the transformation script.",
+            "title": "Transformcontext",
+            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": false
           }
         },

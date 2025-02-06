@@ -1337,10 +1337,10 @@ export interface components {
        */
       query: string;
       /**
-       * Extra
-       * @description Extra data that should be made available to the transformation script.
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      extra?: string;
+      transformContext?: string;
     };
     /** ApiCallContentRead */
     ApiCallContentRead: {
@@ -1382,10 +1382,10 @@ export interface components {
        */
       query: string;
       /**
-       * Extra
-       * @description Extra data that should be made available to the transformation script.
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      extra?: string;
+      transformContext?: string;
     } & {
       [key: string]: unknown;
     };
@@ -1412,10 +1412,10 @@ export interface components {
        */
       query?: string;
       /**
-       * Extra
-       * @description Extra data that should be made available to the transformation script.
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      extra?: string;
+      transformContext?: string;
     };
     /** ApiCallModifiedCommonResourceConfig */
     ApiCallModifiedCommonResourceConfig: {

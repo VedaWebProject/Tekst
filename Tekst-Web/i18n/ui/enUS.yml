@@ -549,8 +549,8 @@ resources:
       contentFields:
         queryString: URL Query String
         body: Request Body
-        extra: Extra data for transformation function (JSON)
-        extraJsonError: Extra data must be a valid JSON
+        transformContext: Extra data for transformation function (JSON)
+        transformContextJsonError: Extra data must be a valid JSON
 
 corrections:
   heading: Correction Notes for "{title}"
