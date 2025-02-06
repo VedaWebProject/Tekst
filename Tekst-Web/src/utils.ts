@@ -70,7 +70,9 @@ export function isOverlayOpen() {
 
 export function isInputFocused() {
   return (
-    document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA'
+    document.activeElement?.tagName === 'INPUT' ||
+    document.activeElement?.tagName === 'TEXTAREA' ||
+    !!document.querySelector('.cm-editor.cm-focused')
   );
 }
 
