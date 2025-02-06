@@ -16,6 +16,10 @@ import { pickTranslation } from '@/utils';
 import { NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 
+type SpecialConfigs = {
+  deeplLinks?: DeepLLinksConfig;
+};
+
 const props = withDefaults(
   defineProps<{
     resource: AnyResourceRead;
@@ -33,9 +37,11 @@ const showWidgetsModal = ref(false);
 const closeModal = () => (showWidgetsModal.value = false);
 const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 
-const specialConfigs = computed<Record<string, unknown> | undefined>(
+const specialConfigs = computed(
   () =>
-    Object.entries(props.resource.config).find(([k, _]) => k === props.resource.resourceType)?.[1]
+    Object.entries(props.resource.config).find(
+      ([k, _]) => k === props.resource.resourceType
+    )?.[1] as SpecialConfigs | undefined
 );
 
 function handleSmallScreenWidgetsTriggered() {
@@ -52,13 +58,13 @@ function handleSmallScreenWidgetsTriggered() {
     class="content-header-widgets"
     :style="{ opacity }"
   >
-    <!-- resource-type-specific widgets -->
+    <!-- skip resource-type-specific widgets -->
     <deep-l-links-widget
       v-if="!!specialConfigs?.deeplLinks"
       :resource="resource"
-      :config="specialConfigs.deeplLinks as DeepLLinksConfig"
+      :config="specialConfigs.deeplLinks"
     />
-    <!-- generic content widgets -->
+    <!-- generic widgets -->
     <location-content-context-widget :resource="resource" />
     <content-comment-widget :resource="resource" />
     <correction-note-widget :resource="resource" />
@@ -103,7 +109,7 @@ function handleSmallScreenWidgetsTriggered() {
       <deep-l-links-widget
         v-if="!!specialConfigs?.deeplLinks"
         :resource="resource"
-        :config="specialConfigs.deeplLinks as DeepLLinksConfig"
+        :config="specialConfigs.deeplLinks"
       />
       <!-- generic content widgets -->
       <location-content-context-widget :resource="resource" full @done="closeModal" />
