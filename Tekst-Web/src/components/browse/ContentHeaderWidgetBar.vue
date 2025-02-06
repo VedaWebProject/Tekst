@@ -108,8 +108,10 @@ function handleSmallScreenWidgetsTriggered() {
       <!-- resource-type-specific widgets -->
       <deep-l-links-widget
         v-if="!!specialConfigs?.deeplLinks"
+        full
         :resource="resource"
         :config="specialConfigs.deeplLinks"
+        @done="closeModal"
       />
       <!-- generic content widgets -->
       <location-content-context-widget :resource="resource" full @done="closeModal" />
