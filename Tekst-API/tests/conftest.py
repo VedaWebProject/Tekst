@@ -45,14 +45,10 @@ def wrong_id() -> str:
 
 @pytest.fixture
 def get_sample_data_path(request) -> Callable[[str], Path]:
-    """
-    Returns a function to get the absolute
-    path to a file relative to tests/data
-    """
+    """Returns a function to get the path to a file relative to tests/data"""
 
     def _get_sample_data_path(rel_path: str) -> Path:
-        datadir = Path(request.config.rootdir) / "tekst/sample_data"
-        return datadir / rel_path
+        return Path(request.config.rootdir) / "tekst/sample_data" / rel_path
 
     return _get_sample_data_path
 

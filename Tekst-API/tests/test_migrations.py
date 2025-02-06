@@ -1,6 +1,5 @@
 import pytest
 
-from bson import ObjectId
 from tekst.db import migrations
 
 
@@ -32,19 +31,56 @@ async def test_0_2_1a0(database):
 @pytest.mark.anyio
 async def test_0_3_0a0(
     database,
-    insert_sample_data,
-    wrong_id,
+    get_sample_data,
 ):
-    resource_id = (await insert_sample_data())["resources"][0]
-    await database.corrections.insert_one(
-        {
-            "resource_id": ObjectId(resource_id),
-            "note": "foo",
-            "user_id": ObjectId(wrong_id),
-            "position": 0,
-        }
-    )
+    data = get_sample_data("migrations/0_3_0a0.json")
+    for coll_name in data:
+        await database[coll_name].insert_many(data[coll_name])
+
+    # run migration
     await migrations.migration_0_3_0a0.migration(database)
+
+    # assert the data has been fixed by the migration
     correction = await database.corrections.find_one({})
     assert correction
     assert "location_id" in correction
+    assert str(correction["location_id"]) == "654b825533ee5737b297f8e5"
+    assert not await database.precomputed.find_one({"precomputed_type": "coverage"})
+
+
+@pytest.mark.anyio
+async def test_0_4_0a0(
+    database,
+    get_sample_data,
+):
+    res = get_sample_data("migrations/0_4_0a0.json")
+    res_id = (await database.resources.insert_one(res)).inserted_id
+    assert res_id
+
+    # run migration
+    await migrations.migration_0_4_0a0.migration(database)
+    res = await database.resources.find_one({"_id": res_id})
+
+    # assert the data has been fixed by the migration
+    assert "config" in res
+    assert "deeplLinks" not in res["config"]
+    assert "plainText" in res["config"]
+    assert "deeplLinks" in res["config"]["plainText"]
+
+
+@pytest.mark.anyio
+async def test_0_4_1a0(database, get_sample_data):
+    res = get_sample_data("migrations/0_4_1a0.json")
+    res_id = (await database.resources.insert_one(res)).inserted_id
+    assert res_id
+
+    # run migration
+    await migrations.migration_0_4_1a0.migration(database)
+    res = await database.resources.find_one({"_id": res_id})
+
+    # assert the data has been fixed by the migration
+    assert "config" in res
+    assert "plainText" not in res["config"]
+    assert "plain_text" in res["config"]
+    assert "deepl_links" in res["config"]["plain_text"]
+    assert "source_language" in res["config"]["plain_text"]["deepl_links"]

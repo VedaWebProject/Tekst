@@ -2,7 +2,7 @@ from tekst.db import Database
 
 
 async def migration(db: Database) -> None:
-    # move plain text-specific config in to config sub-document
+    # move plain text-specific config into config sub-document
     await db.resources.update_many(
         {"resource_type": "plainText"},
         {"$set": {"config.plainText": {}}},
@@ -16,7 +16,7 @@ async def migration(db: Database) -> None:
             }
         },
     )
-    # move text annotation-specific config in to config sub-document
+    # move text annotation-specific config into config sub-document
     await db.resources.update_many(
         {"resource_type": "textAnnotation"},
         {"$set": {"config.textAnnotation": {}}},

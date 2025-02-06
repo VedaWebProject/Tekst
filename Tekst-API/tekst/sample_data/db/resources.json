@@ -42,17 +42,17 @@
         "config": {
             "common": {
                 "category": "versions",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "de" }
             }
         }
     },
@@ -92,17 +92,17 @@
         "config": {
             "common": {
                 "category": "versions",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": true, "sourceLanguage": "ja" }
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "ja" }
             }
         }
     },
@@ -132,17 +132,17 @@
         "config": {
             "common": {
                 "category": "translations",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            "plain_text": {
+                "deepl_links": { "enabled": false, "source_language": "en" }
             }
         }
     },
@@ -166,17 +166,17 @@
         "config": {
             "common": {
                 "category": "versions",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": false, "sourceLanguage": "en" }
+            "plain_text": {
+                "deepl_links": { "enabled": false, "source_language": "en" }
             }
         }
     },
@@ -212,11 +212,11 @@
         "config": {
             "common": {
                 "category": "multimedia",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": false
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false
             },
-            "general": { "defaultCollapsed": true, "font": null }
+            "general": { "default_collapsed": true, "font": null }
         }
     },
     {
@@ -251,11 +251,11 @@
         "config": {
             "common": {
                 "category": "links",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": false
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false
             },
-            "general": { "defaultCollapsed": false, "font": null }
+            "general": { "default_collapsed": false, "font": null }
         }
     },
     {
@@ -290,11 +290,11 @@
         "config": {
             "common": {
                 "category": "multimedia",
-                "sortOrder": 11,
-                "defaultActive": true,
-                "showOnParentLevel": false
+                "sort_order": 11,
+                "default_active": true,
+                "show_on_parent_level": false
             },
-            "general": { "defaultCollapsed": false, "font": null }
+            "general": { "default_collapsed": false, "font": null }
         }
     },
     {
@@ -341,17 +341,17 @@
         "config": {
             "common": {
                 "category": "translations",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": true, "sourceLanguage": "en" }
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "en" }
             }
         }
     },
@@ -398,17 +398,17 @@
         "config": {
             "common": {
                 "category": "versions",
-                "sortOrder": 9,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 9,
+                "default_active": true,
+                "show_on_parent_level": true
             },
             "general": {
-                "defaultCollapsed": false,
-                "reducedViewOneline": true,
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
                 "font": null
             },
-            "plainText": {
-                "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "de" }
             }
         }
     },
@@ -438,11 +438,11 @@
         "config": {
             "common": {
                 "category": "links",
-                "sortOrder": 15,
-                "defaultActive": true,
-                "showOnParentLevel": false
+                "sort_order": 15,
+                "default_active": true,
+                "show_on_parent_level": false
             },
-            "general": { "defaultCollapsed": false, "font": null }
+            "general": { "default_collapsed": false, "font": null }
         }
     },
     {
@@ -483,12 +483,12 @@
         "config": {
             "common": {
                 "category": "annotations",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": true
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
             },
-            "general": { "defaultCollapsed": false, "font": null },
-            "textAnnotation": { "displayTemplate": "{{_k:Entity_c:v_f:c}}" }
+            "general": { "default_collapsed": false, "font": null },
+            "text_annotation": { "display_template": "{{_k:Entity_c:v_f:c}}" }
         }
     },
     {
@@ -523,12 +523,12 @@
         "config": {
             "common": {
                 "category": "multimedia",
-                "sortOrder": 10,
-                "defaultActive": true,
-                "showOnParentLevel": false,
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false,
                 "osk": null
             },
-            "general": { "defaultCollapsed": true, "font": null }
+            "general": { "default_collapsed": true, "font": null }
         },
         "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
     },
@@ -554,19 +554,19 @@
         "config": {
             "common": {
                 "category": "poc",
-                "sortOrder": 10,
-                "defaultActive": false,
-                "showOnParentLevel": false,
+                "sort_order": 10,
+                "default_active": false,
+                "show_on_parent_level": false,
                 "rtl": false,
                 "osk": null
             },
-            "general": { "defaultCollapsed": false, "font": null },
-            "apiCall": {
+            "general": { "default_collapsed": false, "font": null },
+            "api_call": {
                 "endpoint": "/api/texts",
                 "method": "GET",
-                "contentType": "application/json",
-                "transformDeps": [],
-                "transformJs": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst extraHtml = `<div class=\"text-mini\">${this.extra.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + extraHtml;"
+                "content_type": "application/json",
+                "transform_deps": [],
+                "transform_js": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst extraHtml = `<div class=\"text-mini\">${this.extra.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + extraHtml;"
             }
         },
         "contents_changed_at": { "$date": "2025-01-30T11:22:03.141Z" }

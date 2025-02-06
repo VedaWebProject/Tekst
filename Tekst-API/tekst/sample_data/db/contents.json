@@ -199,20 +199,20 @@
         "files": [
             {
                 "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
-                "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/253px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
-                "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
+                "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/253px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
                 "caption": "Ernst Anschütz: Musikalisches Schulgesangbuch, Heft 1, Leipzig 1824, S. 38"
             },
             {
                 "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/206px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "sourceUrl": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+                "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/206px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+                "source_url": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
                 "caption": "Jugendmarke mit Zuschlag, 1958, Kinderlieder, Fuchs du hast die Gans gestohlen"
             },
             {
                 "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
-                "thumbUrl": "",
-                "sourceUrl": "https://www.metmuseum.org/art/collection/search/888603",
+                "thumb_url": "",
+                "source_url": "https://www.metmuseum.org/art/collection/search/888603",
                 "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
             }
         ]
@@ -254,17 +254,17 @@
         "files": [
             {
                 "url": "https://archive.org/download/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a/Fuchs%20du%20hast%20die%20Gans%20gestohlen.mp3",
-                "sourceUrl": "https://archive.org/details/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a",
+                "source_url": "https://archive.org/details/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a",
                 "caption": "Gesang mit Orchesterbegleitung, C7440, Merkur (M 497)"
             },
             {
                 "url": "https://archive.org/download/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.%20Fuchs%20Du%20Hast%20Die%20Gans%20Gestohlen.mp3",
-                "sourceUrl": "https://archive.org/details/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.+Fuchs+Du+Hast+Die+Gans+Gestohlen.mp3",
+                "source_url": "https://archive.org/details/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.+Fuchs+Du+Hast+Die+Gans+Gestohlen.mp3",
                 "caption": "Die Wiener Sängerknaben, Children's Songs, Epic (LC 3588)"
             },
             {
                 "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
-                "sourceUrl": "https://commons.wikimedia.org/wiki/File:Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
+                "source_url": "https://commons.wikimedia.org/wiki/File:Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
                 "caption": "Glockenspiel (Florian Schachner), https://creativecommons.org/licenses/by-sa/4.0/"
             }
         ]

@@ -1,11 +1,20 @@
+from collections.abc import Iterable
 from datetime import datetime
 from types import UnionType
-from typing import Annotated, Any, Literal, Union, get_args, get_origin  # noqa: UP035
+from typing import (
+    Annotated,
+    Any,
+    Literal,
+    Union,
+    get_args,
+    get_origin,
+)  # noqa: UP035
 
 from beanie import (
     Document,
     PydanticObjectId,
 )
+from beanie.odm.utils.encoder import Encoder
 from humps import camelize, decamelize
 from pydantic import (
     BaseModel,
@@ -62,6 +71,24 @@ class ModelBase(BaseModel):
         return False
 
 
+class NoAliasEncoder(Encoder):
+    """
+    A customized version of beanie.odm.utils.encoder.Encoder that ignores field aliases
+    and just uses the actual field name. We have to do this to prevent nested models
+    to appear in DB documents with their camelCased field aliases.
+    """
+
+    def _iter_model_items(self, obj: BaseModel) -> Iterable[tuple[str, Any]]:
+        exclude, keep_nulls = self.exclude, self.keep_nulls
+        for key, value in obj.__iter__():
+            if key not in exclude and (value is not None or keep_nulls):
+                # this is where we use "key" directly, without considering aliases
+                yield key, value
+
+
+_no_alias_encoder = NoAliasEncoder(to_db=True, keep_nulls=False).encode
+
+
 class DocumentBase(Document):
     """Base model for all Tekst ODMs"""
 
@@ -70,6 +97,10 @@ class DocumentBase(Document):
         # we must do all we can to make sure a bug doesn't break the data
         validate_on_save = True
         keep_nulls = False
+        bson_encoders = {
+            # see docstring of NoAliasEncoder for rationale!
+            BaseModel: _no_alias_encoder,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **decamelize(kwargs))

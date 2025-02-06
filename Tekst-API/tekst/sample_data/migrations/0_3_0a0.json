@@ -1,0 +1,232 @@
+{
+    "texts": [
+        {
+            "_id": { "$oid": "654b825533ee5737b297f8e3" },
+            "title": "Fuchs, du hast die Gans gestohlen",
+            "slug": "fdhdgg",
+            "subtitle": [
+                { "locale": "enUS", "translation": "An old German folk song" },
+                {
+                    "locale": "deDE",
+                    "translation": "Ein altdeutsches Volkslied"
+                }
+            ],
+            "levels": [
+                [
+                    { "locale": "enUS", "translation": "Song" },
+                    { "locale": "deDE", "translation": "Lied" }
+                ],
+                [
+                    { "locale": "enUS", "translation": "Stanza" },
+                    { "locale": "deDE", "translation": "Strophe" }
+                ],
+                [
+                    { "locale": "enUS", "translation": "Line" },
+                    { "locale": "deDE", "translation": "Vers" }
+                ]
+            ],
+            "default_level": 2,
+            "loc_delim": " > ",
+            "labeled_location": true,
+            "accent_color": "#38714b",
+            "is_active": true,
+            "resource_categories": [
+                {
+                    "key": "versions",
+                    "translations": [
+                        { "locale": "enUS", "translation": "Versions" },
+                        { "locale": "deDE", "translation": "Versionen" }
+                    ]
+                },
+                {
+                    "key": "translations",
+                    "translations": [
+                        { "locale": "enUS", "translation": "Translations" },
+                        { "locale": "deDE", "translation": "Übersetzungen" }
+                    ]
+                },
+                {
+                    "key": "annotations",
+                    "translations": [
+                        { "locale": "enUS", "translation": "Annotations" },
+                        { "locale": "deDE", "translation": "Annotationen" }
+                    ]
+                },
+                {
+                    "key": "multimedia",
+                    "translations": [
+                        { "locale": "*", "translation": "Multimedia" }
+                    ]
+                },
+                {
+                    "key": "links",
+                    "translations": [{ "locale": "*", "translation": "Links" }]
+                },
+                {
+                    "key": "poc",
+                    "translations": [
+                        { "locale": "*", "translation": "Proof of Concept" }
+                    ]
+                }
+            ],
+            "full_loc_label_as_hit_heading": true,
+            "index_utd": true
+        }
+    ],
+    "locations": [
+        {
+            "_id": { "$oid": "654b825533ee5737b297f8e5" },
+            "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+            "parent_id": { "$oid": "654b825533ee5737b297f8e4" },
+            "level": 2,
+            "position": 0,
+            "label": "1",
+            "aliases": ["1.1.1", "1,1,1"]
+        }
+    ],
+    "resources": [
+        {
+            "_id": { "$oid": "66471b68ba9e65342c8e495b" },
+            "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+            "title": [
+                {
+                    "locale": "*",
+                    "translation": "Fuchs, du hast die Gans gestohlen"
+                }
+            ],
+            "description": [
+                {
+                    "locale": "enUS",
+                    "translation": "The commonly known version of the children's song"
+                },
+                {
+                    "locale": "deDE",
+                    "translation": "Die allgemein bekannte Version des Kinderliedes"
+                }
+            ],
+            "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+            "level": 2,
+            "resource_type": "plainText",
+            "original_id": null,
+            "owner_id": null,
+            "shared_read": [],
+            "shared_write": [],
+            "public": true,
+            "proposed": false,
+            "citation": null,
+            "meta": [],
+            "comment": [
+                {
+                    "locale": "enUS",
+                    "translation": "The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks."
+                },
+                {
+                    "locale": "deDE",
+                    "translation": "Die allgemein gebräuchliche Version des Textes mit einer Abwandlung des dritten Verses gegenüger der Originalversion. Diese Version enthält Wiederholungszeichen."
+                }
+            ]
+        }
+    ],
+    "corrections": [
+        {
+            "_id": { "$oid": "67a487dfb7bc560ceb24aa53" },
+            "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+            "note": "Foo Bar!",
+            "user_id": { "$oid": "65c5fe0c691066aabd498239" },
+            "position": 0,
+            "date": { "$date": "2025-02-06T09:58:55.761Z" },
+            "location_labels": ["1", "1", "1"]
+        }
+    ],
+    "precomputed": [
+        {
+            "_id": { "$oid": "67a487c5681ef06d91eb3cbc" },
+            "created_at": { "$date": "2025-02-06T09:58:29.232Z" },
+            "data": {
+                "covered": 12,
+                "total": 12,
+                "ranges": [["1 > 1 > 1", "1 > 3 > 4"]],
+                "ranges_covered": true,
+                "details": [
+                    {
+                        "label": "1 > 1",
+                        "locations": [
+                            {
+                                "loc_id": "654b825533ee5737b297f8e5",
+                                "label": "1 > 1 > 1",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8e6",
+                                "label": "1 > 1 > 2",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8e7",
+                                "label": "1 > 1 > 3",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8e8",
+                                "label": "1 > 1 > 4",
+                                "covered": true
+                            }
+                        ]
+                    },
+                    {
+                        "label": "1 > 2",
+                        "locations": [
+                            {
+                                "loc_id": "654b825533ee5737b297f8ea",
+                                "label": "1 > 2 > 1",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8eb",
+                                "label": "1 > 2 > 2",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8ec",
+                                "label": "1 > 2 > 3",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8ed",
+                                "label": "1 > 2 > 4",
+                                "covered": true
+                            }
+                        ]
+                    },
+                    {
+                        "label": "1 > 3",
+                        "locations": [
+                            {
+                                "loc_id": "654b825533ee5737b297f8ef",
+                                "label": "1 > 3 > 1",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8f0",
+                                "label": "1 > 3 > 2",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8f1",
+                                "label": "1 > 3 > 3",
+                                "covered": true
+                            },
+                            {
+                                "loc_id": "654b825533ee5737b297f8f2",
+                                "label": "1 > 3 > 4",
+                                "covered": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "precomputed_type": "coverage",
+            "ref_id": { "$oid": "66471b68ba9e65342c8e495b" }
+        }
+    ]
+}
