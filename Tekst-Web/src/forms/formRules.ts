@@ -292,6 +292,19 @@ export const reducedViewConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
+export const searchReplacementsConfigFormRules: Record<string, FormItemRule[]> = {
+  pattern: [
+    requiredStringRule(
+      () => $t('resources.settings.config.general.searchReplacements.pattern'),
+      'blur'
+    ),
+    minMaxCharsRule(1, 64, 'blur'),
+  ],
+  replacement: [
+    minMaxCharsRule(0, 64, 'blur'),
+  ],
+};
+
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
     displayTemplate: [minMaxCharsRule(0, 4096, 'blur')],

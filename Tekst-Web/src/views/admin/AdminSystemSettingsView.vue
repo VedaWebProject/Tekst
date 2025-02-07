@@ -307,13 +307,13 @@ function resetForm() {
                   />
                 </n-form-item>
               </template>
-              <template #action="{ index: indexAction, create, remove }">
+              <template #action="{ index, create, remove }">
                 <dynamic-input-controls
                   top-offset
                   :movable="false"
                   :insert-disabled="(formModel.fonts.length || 0) >= 64"
-                  @remove="() => remove(indexAction)"
-                  @insert="() => create(indexAction)"
+                  @remove="() => remove(index)"
+                  @insert="() => create(index)"
                 />
               </template>
             </n-dynamic-input>
@@ -388,16 +388,16 @@ function resetForm() {
                   </n-form-item>
                 </div>
               </template>
-              <template #action="{ index: indexAction, create, remove, move }">
+              <template #action="{ index, create, remove, move }">
                 <dynamic-input-controls
                   top-offset
-                  :move-up-disabled="indexAction === 0"
-                  :move-down-disabled="indexAction === formModel.oskModes.length - 1"
+                  :move-up-disabled="index === 0"
+                  :move-down-disabled="index === formModel.oskModes.length - 1"
                   :insert-disabled="(formModel.fonts?.length || 0) >= 64"
-                  @move-up="() => move('up', indexAction)"
-                  @move-down="() => move('down', indexAction)"
-                  @remove="() => remove(indexAction)"
-                  @insert="() => create(indexAction)"
+                  @move-up="() => move('up', index)"
+                  @move-down="() => move('down', index)"
+                  @remove="() => remove(index)"
+                  @insert="() => create(index)"
                 />
               </template>
             </n-dynamic-input>

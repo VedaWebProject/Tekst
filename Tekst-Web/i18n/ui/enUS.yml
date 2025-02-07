@@ -463,6 +463,10 @@ resources:
         heading: General
         defaultCollapsed: Collapse contents by default
         font: Content font (will use default if not set)
+        searchReplacements:
+          heading: Search Query Replacements
+          pattern: Pattern (RegEx)
+          replacement: Replacement
       reducedView:
         heading: Reduced Reading View
         singleLine: Show contents as single line of text in reduced reading view

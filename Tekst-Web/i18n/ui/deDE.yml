@@ -472,6 +472,10 @@ resources:
         heading: Allgemein
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
         font: Schriftart für Inhalte (nutzt Standard wenn nicht festgelegt)
+        searchReplacements:
+          heading: Ersetzungen von Suchanfragen
+          pattern: Muster (RegEx)
+          replacement: Ersetzung
       reducedView:
         heading: Reduzierte Leseansicht
         singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen

@@ -47,7 +47,10 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def rtype_index_doc_props(
+        cls,
+        resource: ResourceBaseDocument,
+    ) -> dict[str, Any] | None:
         return {
             "tokens": {
                 "type": "nested",

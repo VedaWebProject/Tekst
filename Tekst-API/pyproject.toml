@@ -21,7 +21,7 @@ dependencies = [
     "pydantic-extra-types<3.0.0,>=2.0.0",
     "bleach<7.0.0,>=6.1.0",
     "jsonref<2.0.0,>=1.1.0",
-    "elasticsearch<9.0.0,>=8.15.1",
+    "elasticsearch<9.0.0,>=8.17.1",
     "fastapi[standard]>=0.115.6",
 ]
 keywords = [

@@ -150,7 +150,7 @@ class ResourceTypeABC(ABC):
         return camelize(cls.__name__)
 
     @classmethod
-    def index_doc_props(cls) -> dict[str, Any]:
+    def index_doc_props(cls, resource: ResourceBaseDocument) -> dict[str, Any]:
         """
         Returns the mappings properties for ES search index
         documents for contents of this resource type
@@ -161,7 +161,7 @@ class ResourceTypeABC(ABC):
                 "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
-            **(cls.rtype_index_doc_props() or {}),
+            **(cls.rtype_index_doc_props(resource) or {}),
         )
 
     @classmethod
@@ -355,10 +355,14 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def rtype_index_doc_props(
+        cls,
+        resource: ResourceBaseDocument,
+    ) -> dict[str, Any] | None:
         """
         Returns the mappings properties for ES search index
-        documents unique for this type of resource content
+        documents unique for this type of resource content, respecting any resource
+        configuration relevant to the resource's index mappings
         """
 
     @classmethod

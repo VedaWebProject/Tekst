@@ -44,7 +44,10 @@ class ApiCall(ResourceTypeABC):
         return None  # pragma: no cover
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def rtype_index_doc_props(
+        cls,
+        resource: ResourceBaseDocument,
+    ) -> dict[str, Any] | None:
         return None  # pragma: no cover
 
     @classmethod

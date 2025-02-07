@@ -46,7 +46,10 @@ class Audio(ResourceTypeABC):
         return AudioSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def rtype_index_doc_props(
+        cls,
+        resource: ResourceBaseDocument,
+    ) -> dict[str, Any] | None:
         return {
             "caption": {
                 "type": "text",

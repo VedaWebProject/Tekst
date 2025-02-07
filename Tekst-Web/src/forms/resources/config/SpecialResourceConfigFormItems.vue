@@ -11,6 +11,7 @@ const model = defineModel<AnyResourceConfig>({ required: true });
 </script>
 
 <template>
+  <!-- GENERAL CONFIG -->
   <template v-for="(_, key) in model.general" :key="key">
     <component
       v-model="model.general[key]"

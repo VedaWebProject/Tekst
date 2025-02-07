@@ -424,14 +424,14 @@ wheels = [
 
 [[package]]
 name = "elasticsearch"
-version = "8.16.0"
+version = "8.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "elastic-transport" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/04/56/9720d27888279f6aa1b436ff4b843ba4477a1cb088634a29786dffe52137/elasticsearch-8.16.0.tar.gz", hash = "sha256:d2aaa92f44ebea3c4147389aeba038c0b42a017f8c52ff35b1e7ebc34c49adb7", size = 433139 }
+sdist = { url = "https://files.pythonhosted.org/packages/f2/c2/408130a5e3b2dd7c13f9941df7886a35c7fdbb04757dec3e75f5f8b84184/elasticsearch-8.17.1.tar.gz", hash = "sha256:057ab44cae8b3acffbf826a31678e46eafc38f26fcffa91015352d973299cdf0", size = 540955 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/f4/5418be6b502e0260f8ee1c7eccf471ac8c01eea9bac8930d9931b7da7f1c/elasticsearch-8.16.0-py3-none-any.whl", hash = "sha256:83d9fe09e8e95880559da43e44976c1e11cc63fe96bc0c0592f3d64f371772bf", size = 543113 },
+    { url = "https://files.pythonhosted.org/packages/80/b6/f0923ed8edddd8e70a8b5271f017944e3f24804b6d115092b97f1e9f7f51/elasticsearch-8.17.1-py3-none-any.whl", hash = "sha256:f1de0a075f12cc0fa377668eb4fb2ce02185c060ebb50cf2c3889242f9a5130e", size = 653961 },
 ]
 
 [[package]]
@@ -1257,7 +1257,7 @@ requires-dist = [
     { name = "beanie", specifier = ">=1.21.0,<2.0.0" },
     { name = "bleach", specifier = ">=6.1.0,<7.0.0" },
     { name = "click", specifier = ">=8.1.6,<9.0.0" },
-    { name = "elasticsearch", specifier = ">=8.15.1,<9.0.0" },
+    { name = "elasticsearch", specifier = ">=8.17.1,<9.0.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.6" },
     { name = "fastapi-users", extras = ["beanie"], specifier = ">=14.0.0,<15.0.0" },
     { name = "jsonref", specifier = ">=1.1.0,<2.0.0" },

@@ -23,6 +23,7 @@ from tekst.types import (
     DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNullable,
+    SearchReplacements,
 )
 
 
@@ -42,14 +43,23 @@ class PlainText(ResourceTypeABC):
         return PlainTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def rtype_index_doc_props(
+        cls,
+        resource: ResourceBaseDocument,
+    ) -> dict[str, Any] | None:
+        analyzer = "standard_no_diacritics"
+        strict_analyzer = "standard"
+        if resource.config.general.search_replacements:
+            analyzer = f"{str(resource.id)}_no_diacritics"
+            strict_analyzer = f"{str(resource.id)}"
         return {
             "text": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
+                "analyzer": analyzer,
                 "fields": {
                     "strict": {
                         "type": "text",
+                        "analyzer": strict_analyzer,
                     }
                 },
                 "index_prefixes": {},
@@ -144,7 +154,7 @@ class ReducedViewConfig(ModelBase):
         Field(
             description="Show contents as single line of text when in reduced view",
         ),
-    ]
+    ] = False
     single_line_delimiter: Annotated[
         ConStr(
             min_length=1,
@@ -157,7 +167,7 @@ class ReducedViewConfig(ModelBase):
                 "Delimiter used for single-line display in reduced reading mode"
             ),
         ),
-    ]
+    ] = " / "
 
 
 class LineLabellingConfig(ModelBase):
@@ -240,10 +250,8 @@ class DeepLLinksConfig(ModelBase):
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = False
     font: FontNameValueOrNone = None
-    reduced_view: ReducedViewConfig = ReducedViewConfig(
-        single_line=False,
-        single_line_delimiter=" / ",
-    )
+    reduced_view: ReducedViewConfig = ReducedViewConfig()
+    search_replacements: SearchReplacements = []
 
 
 class PlainTextSpecialConfig(ModelBase):

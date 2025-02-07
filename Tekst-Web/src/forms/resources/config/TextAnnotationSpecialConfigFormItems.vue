@@ -57,16 +57,16 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
           />
         </n-flex>
       </template>
-      <template #action="{ index: indexAction, create, remove, move }">
+      <template #action="{ index, create, remove, move }">
         <dynamic-input-controls
           top-offset
-          :move-up-disabled="indexAction === 0"
-          :move-down-disabled="indexAction === model.annotationGroups.length - 1"
+          :move-up-disabled="index === 0"
+          :move-down-disabled="index === model.annotationGroups.length - 1"
           :insert-disabled="(model.annotationGroups.length || 0) >= 32"
-          @move-up="() => move('up', indexAction)"
-          @move-down="() => move('down', indexAction)"
-          @remove="() => remove(indexAction)"
-          @insert="() => create(indexAction)"
+          @move-up="() => move('up', index)"
+          @move-down="() => move('down', index)"
+          @remove="() => remove(index)"
+          @insert="() => create(index)"
         />
       </template>
     </n-dynamic-input>
