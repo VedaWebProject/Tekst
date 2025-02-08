@@ -126,36 +126,43 @@ export const resourceTypes = [
     name: 'plainText',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: true,
   },
   {
     name: 'richText',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: false,
   },
   {
     name: 'textAnnotation',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: true,
   },
   {
     name: 'audio',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: true,
   },
   {
     name: 'images',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: true,
   },
   {
     name: 'externalReferences',
     searchableQuick: true,
     searchableAdv: true,
+    contentContext: true,
   },
   {
     name: 'apiCall',
     searchableQuick: false,
     searchableAdv: false,
+    contentContext: false,
   },
 ];
 

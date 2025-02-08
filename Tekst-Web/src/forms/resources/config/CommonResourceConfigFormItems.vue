@@ -74,6 +74,12 @@ const oskOptions = computed(
         <labelled-switch
           v-model="model.showOnParentLevel"
           :label="$t('resources.settings.config.common.showOnParentLevel')"
+          :disabled="
+            resourceTypes
+              .filter((rt) => !rt.contentContext)
+              .map((rt) => rt.name)
+              .includes(resourceType)
+          "
         />
         <help-button-widget help-key="resourceConfigCombinedSiblings" />
       </n-flex>
