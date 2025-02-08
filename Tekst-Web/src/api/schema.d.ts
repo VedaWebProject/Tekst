@@ -3066,6 +3066,8 @@ export interface components {
        *       "singleLineDelimiter": " / "
        *     } */
       reducedView: components['schemas']['ReducedViewConfig'];
+      /** @default [] */
+      searchReplacements: components['schemas']['SearchReplacements'];
     };
     /** GeneralRichTextResourceConfig */
     GeneralRichTextResourceConfig: {
@@ -3080,6 +3082,8 @@ export interface components {
        * @description Name of a font
        */
       font?: null | string;
+      /** @default [] */
+      searchReplacements: components['schemas']['SearchReplacements'];
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -3878,7 +3882,8 @@ export interface components {
        *       "reducedView": {
        *         "singleLine": false,
        *         "singleLineDelimiter": " / "
-       *       }
+       *       },
+       *       "searchReplacements": []
        *     } */
       general: components['schemas']['GeneralPlainTextResourceConfig'];
       /** @default {
@@ -3957,7 +3962,8 @@ export interface components {
        *         "reducedView": {
        *           "singleLine": false,
        *           "singleLineDelimiter": " / "
-       *         }
+       *         },
+       *         "searchReplacements": []
        *       },
        *       "plainText": {
        *         "deeplLinks": {
@@ -4087,7 +4093,8 @@ export interface components {
        *         "reducedView": {
        *           "singleLine": false,
        *           "singleLineDelimiter": " / "
-       *         }
+       *         },
+       *         "searchReplacements": []
        *       },
        *       "plainText": {
        *         "deeplLinks": {
@@ -4570,11 +4577,13 @@ export interface components {
       /**
        * Singleline
        * @description Show contents as single line of text when in reduced view
+       * @default false
        */
       singleLine: boolean;
       /**
        * Singlelinedelimiter
        * @description Delimiter used for single-line display in reduced reading mode
+       * @default  /
        */
       singleLineDelimiter: string;
     };
@@ -4784,7 +4793,8 @@ export interface components {
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
-       *       "defaultCollapsed": true
+       *       "defaultCollapsed": true,
+       *       "searchReplacements": []
        *     } */
       general: components['schemas']['GeneralRichTextResourceConfig'];
     };
@@ -4849,7 +4859,8 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
-       *         "defaultCollapsed": true
+       *         "defaultCollapsed": true,
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['RichTextResourceConfig'];
@@ -4966,7 +4977,8 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
-       *         "defaultCollapsed": true
+       *         "defaultCollapsed": true,
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['RichTextResourceConfig'];
@@ -5073,6 +5085,20 @@ export interface components {
         [key: string]: string[];
       };
     };
+    /** SearchReplacement */
+    SearchReplacement: {
+      /**
+       * Pattern
+       * @description Regular expression to match (Java RegEx syntax)
+       */
+      pattern: string;
+      /**
+       * Replacement
+       * @description Replacement string
+       */
+      replacement: string;
+    };
+    SearchReplacements: components['schemas']['SearchReplacement'][];
     /** SearchResults */
     SearchResults: {
       /** Hits */

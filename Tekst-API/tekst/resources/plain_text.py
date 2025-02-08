@@ -23,6 +23,7 @@ from tekst.types import (
     DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNullable,
+    SearchReplacements,
 )
 
 
@@ -42,14 +43,19 @@ class PlainText(ResourceTypeABC):
         return PlainTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def _rtype_index_mappings(
+        cls,
+        lenient_analyzer: str,
+        strict_analyzer: str,
+    ) -> dict[str, Any] | None:
         return {
             "text": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
+                "analyzer": lenient_analyzer,
                 "fields": {
                     "strict": {
                         "type": "text",
+                        "analyzer": strict_analyzer,
                     }
                 },
                 "index_prefixes": {},
@@ -57,7 +63,7 @@ class PlainText(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "PlainTextContent",
     ) -> dict[str, Any] | None:
@@ -144,7 +150,7 @@ class ReducedViewConfig(ModelBase):
         Field(
             description="Show contents as single line of text when in reduced view",
         ),
-    ]
+    ] = False
     single_line_delimiter: Annotated[
         ConStr(
             min_length=1,
@@ -157,7 +163,7 @@ class ReducedViewConfig(ModelBase):
                 "Delimiter used for single-line display in reduced reading mode"
             ),
         ),
-    ]
+    ] = " / "
 
 
 class LineLabellingConfig(ModelBase):
@@ -240,10 +246,8 @@ class DeepLLinksConfig(ModelBase):
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = False
     font: FontNameValueOrNone = None
-    reduced_view: ReducedViewConfig = ReducedViewConfig(
-        single_line=False,
-        single_line_delimiter=" / ",
-    )
+    reduced_view: ReducedViewConfig = ReducedViewConfig()
+    search_replacements: SearchReplacements = []
 
 
 class PlainTextSpecialConfig(ModelBase):

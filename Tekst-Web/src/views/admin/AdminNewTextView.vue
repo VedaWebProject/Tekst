@@ -146,13 +146,13 @@ async function handleSave() {
               </n-form-item>
             </div>
           </template>
-          <template #action="{ index: indexAction, create, remove }">
+          <template #action="{ index, create, remove }">
             <dynamic-input-controls
               :movable="false"
               :remove-disabled="model.levels.length === 1"
               :insert-disabled="model.levels.length >= 32"
-              @remove="() => remove(indexAction)"
-              @insert="() => create(indexAction)"
+              @remove="() => remove(index)"
+              @insert="() => create(index)"
             />
           </template>
         </n-dynamic-input>

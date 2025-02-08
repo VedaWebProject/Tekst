@@ -5,8 +5,9 @@ from httpx import AsyncClient, Response
 
 def _assert_search_resp(
     resp: Response,
-    expected_status: int,
+    *,
     expected_hits: int,
+    expected_status: int = 200,
 ) -> None:
     assert resp.status_code == expected_status
     assert isinstance(resp.json(), dict)
@@ -70,7 +71,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=19,
     )
 
@@ -84,7 +84,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=2,
     )
 
@@ -103,7 +102,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=2,
     )
 
@@ -122,7 +120,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=0,
     )
 
@@ -136,7 +133,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=2,
     )
 
@@ -150,7 +146,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=2,
     )
 
@@ -164,7 +159,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=3,
     )
 
@@ -178,7 +172,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        200,
         expected_hits=6,
     )
 
@@ -192,7 +185,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": True, "txt": []},
             },
         ),
-        200,
         expected_hits=2,
     )
 
@@ -206,7 +198,6 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": ["654b825533ee5737b297f8e3"]},
             },
         ),
-        200,
         expected_hits=9,
     )
 
@@ -247,7 +238,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=12,
     )
 
@@ -270,7 +260,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -288,7 +277,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -306,7 +294,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=4,
     )
 
@@ -327,7 +314,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=10,
     )
 
@@ -348,7 +334,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=7,
     )
 
@@ -375,7 +360,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -396,7 +380,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=7,
     )
 
@@ -418,7 +401,6 @@ async def test_advanced_text_annotation(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -442,7 +424,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -460,7 +441,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -478,7 +458,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        200,
         expected_hits=18,
     )
 
@@ -496,7 +475,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        200,
         expected_hits=4,
     )
 
@@ -519,7 +497,6 @@ async def test_advanced_plain_text(
                 },
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -542,7 +519,6 @@ async def test_advanced_plain_text(
                 },
             },
         ),
-        200,
         expected_hits=0,
     )
 
@@ -564,7 +540,6 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -588,7 +563,6 @@ async def test_advanced_images(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
     # caption, wildcard
@@ -605,7 +579,6 @@ async def test_advanced_images(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -629,7 +602,6 @@ async def test_advanced_audio(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -647,7 +619,6 @@ async def test_advanced_audio(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -671,7 +642,6 @@ async def test_advanced_external_references(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -689,7 +659,6 @@ async def test_advanced_external_references(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -713,7 +682,6 @@ async def test_advanced_rich_text(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 
@@ -731,7 +699,6 @@ async def test_advanced_rich_text(
                 ],
             },
         ),
-        200,
         expected_hits=1,
     )
 

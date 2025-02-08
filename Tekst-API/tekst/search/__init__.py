@@ -38,6 +38,10 @@ from tekst.search.templates import (
     QUERY_SOURCE_INCLUDES,
     SORTING_PRESETS,
 )
+from tekst.search.utils import (
+    add_analysis_settings,
+    add_mappings,
+)
 from tekst.state import get_state, update_state
 
 
@@ -109,6 +113,7 @@ async def _setup_index_templates() -> None:
         index_patterns=IDX_NAME_PATTERN,
         template=IDX_TEMPLATE,
         priority=500,
+        create=True,
     )
 
 
@@ -116,7 +121,6 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
     op_id = log_op_start("Create search indices", level="INFO")
     await _wait_for_es()
     await _setup_index_templates()
-    state = await get_state()
 
     # get existing search indices
     client: Elasticsearch = await _get_es_client()
@@ -138,38 +142,32 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
                 utd_idxs.extend(old_txt_idxs)
                 continue
 
-        # generate new index name
-        new_idx_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
+        # collect special mappings and analysis settings for each target resource
+        mappings = {}
+        analysis = {}
+        for resource in await _get_resources(
+            text_ids=[text.id],
+            check_read_access=False,
+        ):
+            # add resource type-specific mappings
+            add_mappings(
+                for_resource=resource,
+                to_mappings=mappings,
+            )
+            # add resource-specific analysis settings
+            add_analysis_settings(
+                for_resource=resource,
+                to_analysis=analysis,
+            )
 
         # create index (index template will be applied!)
+        new_idx_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
         client.indices.create(
             index=new_idx_name,
             aliases={IDX_ALIAS: {}},
+            mappings={"properties": {"resources": {"properties": mappings}}},
+            settings={"index": {"analysis": analysis}},
         )
-
-        # extend index mappings adding one extra field for each target resource
-        extra_properties = {}
-        only_public_res = (
-            {}
-            if state.index_unpublished_resources
-            else Eq(ResourceBaseDocument.public, True)
-        )
-        for res in await ResourceBaseDocument.find(
-            ResourceBaseDocument.text_id == text.id,
-            only_public_res,
-            with_children=True,
-        ).to_list():
-            extra_properties[str(res.id)] = {
-                "properties": resource_types_mgr.get(
-                    res.resource_type
-                ).index_doc_props(),
-            }
-        resp = client.indices.put_mapping(
-            index=new_idx_name,
-            body={"properties": {"resources": {"properties": extra_properties}}},
-        )
-        if not resp or not resp.get("acknowledged"):  # pragma: no cover
-            raise RuntimeError("Failed to extend index mappings!")
 
         # populate newly created index
         populate_op_id = log_op_start(f"Index resources for text '{text.title}'")
@@ -243,19 +241,12 @@ async def _populate_index(
     bulk_index_max_size = 200
     bulk_index_body = []
     errors = False
-    state = await get_state()
-    only_public_res = (
-        {}
-        if state.index_unpublished_resources
-        else Eq(ResourceBaseDocument.public, True)
-    )
     target_resource_ids = [
         res.id
-        for res in await ResourceBaseDocument.find(
-            ResourceBaseDocument.text_id == text.id,
-            only_public_res,
-            with_children=True,
-        ).to_list()
+        for res in await _get_resources(
+            text_ids=[text.id],
+            check_read_access=False,
+        )
     ]
 
     # Initialize stack with all level 0 locations (sorted) of the current text.
@@ -298,7 +289,7 @@ async def _populate_index(
         ).to_list():
             # add resource content document to location index document
             location_index_doc["resources"][str(content.resource_id)] = (
-                resource_types_mgr.get(content.resource_type).index_doc_data(content)
+                resource_types_mgr.get(content.resource_type).index_doc(content)
             )
 
         # add index document to bulk index request body
@@ -381,30 +372,35 @@ async def get_indices_info() -> list[IndexInfo]:
         return []
 
 
-async def _get_target_resources(
+async def _get_resources(
     *,
     user: UserRead | None = None,
     text_ids: list[PydanticObjectId] | None = None,
-) -> dict[str, ResourceBaseDocument]:
+    check_read_access: bool = True,
+) -> list[ResourceBaseDocument]:
     """
     Returns a constrained list of target resources for a search request,
-    based on the requesting user's permissions, target texts and resource types.
+    based on the requesting user's permissions, target texts and publication status.
     """
     state = await get_state()
-    only_public_res = (
-        {}
-        if state.index_unpublished_resources
-        else Eq(ResourceBaseDocument.public, True)
+    # prepare DB query restrictions
+    texts_restr = In(ResourceBaseDocument.text_id, text_ids) if text_ids else {}
+    publication_restr = (
+        Eq(ResourceBaseDocument.public, True)
+        if not state.index_unpublished_resources
+        else {}
     )
-    return {
-        str(res.id): res
-        for res in await ResourceBaseDocument.find(
-            In(ResourceBaseDocument.text_id, text_ids) if text_ids else {},
-            only_public_res,
-            await ResourceBaseDocument.access_conditions_read(user),
-            with_children=True,
-        ).to_list()
-    }
+    access_restr = (
+        await ResourceBaseDocument.access_conditions_read(user)
+        if check_read_access
+        else {}
+    )
+    return await ResourceBaseDocument.find(
+        texts_restr,
+        publication_restr,
+        access_restr,
+        with_children=True,
+    ).to_list()
 
 
 async def search_quick(
@@ -414,7 +410,7 @@ async def search_quick(
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    target_resources = await _get_target_resources(
+    target_resources = await _get_resources(
         user=user,
         text_ids=settings_quick.texts,  # constrain target texts
     )
@@ -422,10 +418,10 @@ async def search_quick(
     # compose a list of target index fields based on the resources to search:
     field_pattern_suffix = ".strict" if settings_general.strict else ""
     fields = []
-    for res_id, res in target_resources.items():
+    for res in target_resources:
         if res.config.common.searchable_quick:
             for field in res.quick_search_fields():
-                fields.append(f"resources.{res_id}.{field}{field_pattern_suffix}")
+                fields.append(f"resources.{str(res.id)}.{field}{field_pattern_suffix}")
 
     # compose the query
     if not settings_quick.regexp or not query_string:
@@ -482,7 +478,9 @@ async def search_advanced(
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
-    target_resources = await _get_target_resources(user=user)
+    accessible_resources_by_id = {
+        str(res.id): res for res in await _get_resources(user=user)
+    }
 
     # construct all the sub-queries
     sub_queries_must = []
@@ -492,11 +490,12 @@ async def search_advanced(
 
     # for each query block in the advanced search request...
     for query in queries:
-        res_doc = target_resources.get(str(query.common.resource_id))
+        res_id = str(query.common.resource_id)
+        res_doc = accessible_resources_by_id.get(res_id)
         if not res_doc or res_doc.config.common.searchable_adv is False:
             continue  # pragma: no cover
         res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)
-        txt_id = str(target_resources[str(query.common.resource_id)].text_id)
+        txt_id = str(res_doc.text_id)
 
         # construct resource type-specific query
         res_es_query = {
@@ -515,7 +514,7 @@ async def search_advanced(
 
         # collect highlights generators for custom, resource-type-specific highlighting
         if (hl_gen := res_type.highlights_generator()) is not None:
-            highlights_generators[str(query.common.resource_id)] = hl_gen
+            highlights_generators[res_id] = hl_gen
 
         # add individual sub-queries to the root query based on the selected occurrence
         if query.common.occurrence == "must":

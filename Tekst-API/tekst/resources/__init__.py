@@ -150,28 +150,40 @@ class ResourceTypeABC(ABC):
         return camelize(cls.__name__)
 
     @classmethod
-    def index_doc_props(cls) -> dict[str, Any]:
+    def index_mappings(
+        cls,
+        lenient_analyzer: str,
+        strict_analyzer: str,
+    ) -> dict[str, Any]:
         """
         Returns the mappings properties for ES search index
         documents for contents of this resource type
         """
+        # get resource type-specific mappings
+        rtype_mappings = cls._rtype_index_mappings(
+            lenient_analyzer=lenient_analyzer,
+            strict_analyzer=strict_analyzer,
+        )
         return dict(
             comment={
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
                 "fields": {"strict": {"type": "text"}},
             },
-            **(cls.rtype_index_doc_props() or {}),
+            **(rtype_mappings or {}),
         )
 
     @classmethod
-    def index_doc_data(cls, content: ContentBase) -> dict[str, Any]:
+    def index_doc(
+        cls,
+        content: ContentBase,
+    ) -> dict[str, Any]:
         """
         Returns the content for the ES index document for this type of resource content
         """
         return dict(
             comment=content.comment,
-            **(cls.rtype_index_doc_data(content) or {}),
+            **(cls._rtype_index_doc(content) or {}),
         )
 
     @classmethod
@@ -355,15 +367,20 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def _rtype_index_mappings(
+        cls,
+        lenient_analyzer: str,
+        strict_analyzer: str,
+    ) -> dict[str, Any] | None:
         """
         Returns the mappings properties for ES search index
-        documents unique for this type of resource content
+        documents unique for this type of resource content, respecting any resource
+        configuration relevant to the resource's index mappings
         """
 
     @classmethod
     @abstractmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: ContentBase,
     ) -> dict[str, Any] | None:

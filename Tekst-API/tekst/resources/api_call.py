@@ -44,11 +44,15 @@ class ApiCall(ResourceTypeABC):
         return None  # pragma: no cover
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def _rtype_index_mappings(
+        cls,
+        lenient_analyzer: str,
+        strict_analyzer: str,
+    ) -> dict[str, Any] | None:
         return None  # pragma: no cover
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "ApiCallContent",
     ) -> dict[str, Any] | None:

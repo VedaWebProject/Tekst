@@ -106,15 +106,15 @@ const metadataKeysOptions = computed(() =>
           </n-form-item>
         </n-flex>
       </template>
-      <template #action="{ index: indexAction, create, remove, move }">
+      <template #action="{ index, create, remove, move }">
         <dynamic-input-controls
-          :move-up-disabled="indexAction === 0"
-          :move-down-disabled="indexAction === model.meta.length - 1"
+          :move-up-disabled="index === 0"
+          :move-down-disabled="index === model.meta.length - 1"
           :insert-disabled="model.meta.length >= 64"
-          @move-up="() => move('up', indexAction)"
-          @move-down="() => move('down', indexAction)"
-          @remove="() => remove(indexAction)"
-          @insert="() => create(indexAction)"
+          @move-up="() => move('up', index)"
+          @move-down="() => move('down', index)"
+          @remove="() => remove(index)"
+          @insert="() => create(index)"
         />
       </template>
     </n-dynamic-input>

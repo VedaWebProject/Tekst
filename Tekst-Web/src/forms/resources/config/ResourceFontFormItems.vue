@@ -3,8 +3,8 @@ import { useStateStore } from '@/stores';
 import { NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
 
-const state = useStateStore();
 const model = defineModel<string>();
+const state = useStateStore();
 
 const options = computed(() =>
   [...(state.pf?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({

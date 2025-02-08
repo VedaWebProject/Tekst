@@ -43,18 +43,27 @@ class ExternalReferences(ResourceTypeABC):
         return ExternalReferencesSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(cls) -> dict[str, Any] | None:
+    def _rtype_index_mappings(
+        cls,
+        lenient_analyzer: str,
+        strict_analyzer: str,
+    ) -> dict[str, Any] | None:
         return {
             "text": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
-                "fields": {"strict": {"type": "text"}},
+                "analyzer": lenient_analyzer,
+                "fields": {
+                    "strict": {
+                        "type": "text",
+                        "analyzer": strict_analyzer,
+                    }
+                },
                 "index_prefixes": {},
             },
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "ExternalReferencesContent",
     ) -> dict[str, Any] | None:

@@ -88,18 +88,18 @@ async function checkUrlInput(input: HTMLInputElement) {
           </n-form-item>
         </n-flex>
       </template>
-      <template #action="{ index: indexAction, create, remove, move }">
+      <template #action="{ index, create, remove, move }">
         <dynamic-input-controls
           top-offset
           movable
           :insert-disabled="(model.files.length || 0) >= 100"
           :remove-disabled="model.files.length <= 1"
-          :move-up-disabled="indexAction === 0"
-          :move-down-disabled="indexAction === model.files.length - 1"
-          @remove="() => remove(indexAction)"
-          @insert="() => create(indexAction)"
-          @move-up="move('up', indexAction)"
-          @move-down="move('down', indexAction)"
+          :move-up-disabled="index === 0"
+          :move-down-disabled="index === model.files.length - 1"
+          @remove="() => remove(index)"
+          @insert="() => create(index)"
+          @move-up="move('up', index)"
+          @move-down="move('down', index)"
         />
       </template>
     </n-dynamic-input>

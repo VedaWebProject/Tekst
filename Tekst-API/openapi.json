@@ -7885,7 +7885,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -8127,7 +8127,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -8304,7 +8304,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -8773,7 +8773,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -9009,7 +9009,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -9180,7 +9180,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -10478,7 +10478,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -10714,7 +10714,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -10885,7 +10885,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -11102,6 +11102,10 @@
               "singleLine": false,
               "singleLineDelimiter": " / "
             }
+          },
+          "searchReplacements": {
+            "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
           }
         },
         "type": "object",
@@ -11128,6 +11132,10 @@
             ],
             "title": "Font",
             "description": "Name of a font"
+          },
+          "searchReplacements": {
+            "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
           }
         },
         "type": "object",
@@ -11568,7 +11576,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -11804,7 +11812,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -11975,7 +11983,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -12893,7 +12901,8 @@
               "reducedView": {
                 "singleLine": false,
                 "singleLineDelimiter": " / "
-              }
+              },
+              "searchReplacements": []
             }
           },
           "plainText": {
@@ -12977,7 +12986,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -13021,7 +13030,8 @@
                 "reducedView": {
                   "singleLine": false,
                   "singleLineDelimiter": " / "
-                }
+                },
+                "searchReplacements": []
               },
               "plainText": {
                 "deeplLinks": {
@@ -13226,7 +13236,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -13270,7 +13280,8 @@
                 "reducedView": {
                   "singleLine": false,
                   "singleLineDelimiter": " / "
-                }
+                },
+                "searchReplacements": []
               },
               "plainText": {
                 "deeplLinks": {
@@ -13410,7 +13421,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -14277,7 +14288,8 @@
           "singleLine": {
             "type": "boolean",
             "title": "Singleline",
-            "description": "Show contents as single line of text when in reduced view"
+            "description": "Show contents as single line of text when in reduced view",
+            "default": false
           },
           "singleLineDelimiter": {
             "type": "string",
@@ -14285,14 +14297,11 @@
             "minLength": 1,
             "pattern": "[^\\n\\r]+",
             "title": "Singlelinedelimiter",
-            "description": "Delimiter used for single-line display in reduced reading mode"
+            "description": "Delimiter used for single-line display in reduced reading mode",
+            "default": " / "
           }
         },
         "type": "object",
-        "required": [
-          "singleLine",
-          "singleLineDelimiter"
-        ],
         "title": "ReducedViewConfig"
       },
       "ResourceCategory": {
@@ -14753,7 +14762,8 @@
           "general": {
             "$ref": "#/components/schemas/GeneralRichTextResourceConfig",
             "default": {
-              "defaultCollapsed": true
+              "defaultCollapsed": true,
+              "searchReplacements": []
             }
           }
         },
@@ -14825,7 +14835,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -14865,7 +14875,8 @@
                 "sortOrder": 10
               },
               "general": {
-                "defaultCollapsed": true
+                "defaultCollapsed": true,
+                "searchReplacements": []
               }
             }
           }
@@ -15061,7 +15072,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -15101,7 +15112,8 @@
                 "sortOrder": 10
               },
               "general": {
-                "defaultCollapsed": true
+                "defaultCollapsed": true,
+                "searchReplacements": []
               }
             }
           },
@@ -15232,7 +15244,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -15385,6 +15397,38 @@
           "score"
         ],
         "title": "SearchHit"
+      },
+      "SearchReplacement": {
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Pattern",
+            "description": "Regular expression to match (Java RegEx syntax)"
+          },
+          "replacement": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 0,
+            "title": "Replacement",
+            "description": "Replacement string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pattern",
+          "replacement"
+        ],
+        "title": "SearchReplacement"
+      },
+      "SearchReplacements": {
+        "items": {
+          "$ref": "#/components/schemas/SearchReplacement"
+        },
+        "type": "array",
+        "maxItems": 16,
+        "minItems": 0
       },
       "SearchResults": {
         "properties": {
@@ -15965,7 +16009,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -16205,7 +16249,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
@@ -16380,7 +16424,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 4096,
                 "minLength": 1
               }
             ],
