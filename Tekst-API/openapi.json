@@ -7746,23 +7746,27 @@
           },
           "showOnParentLevel": {
             "type": "boolean",
+            "const": false,
             "title": "Showonparentlevel",
-            "description": "Show combined contents of this resource on the parent level",
-            "default": false
+            "description": "Whether contents of this resource should be available for the parent level (always false for API call resources)",
+            "default": false,
+            "optionalNullable": false
           },
           "searchableQuick": {
             "type": "boolean",
             "const": false,
             "title": "Searchablequick",
             "description": "Whether this resource should be included in quick search (always false as API call contents are not searchable)",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "searchableAdv": {
             "type": "boolean",
             "const": false,
             "title": "Searchableadv",
             "description": "Whether this resource should accessible via advanced search (always false as API call contents are not searchable)",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "rtl": {
             "type": "boolean",

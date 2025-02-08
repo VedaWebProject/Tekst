@@ -22,6 +22,7 @@ from tekst.types import (
     ConStr,
     ConStrOrNone,
     DefaultCollapsedValue,
+    ExcludeFromModelVariants,
     FontNameValueOrNone,
     HttpUrl,
     SchemaOptionalNonNullable,
@@ -159,6 +160,20 @@ class ApiCallSpecialConfig(ModelBase):
 
 
 class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
+    show_on_parent_level: Annotated[
+        Literal[False],
+        Field(
+            description=(
+                "Whether contents of this resource should be available for the parent "
+                "level (always false for API call resources)"
+            ),
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+        SchemaOptionalNonNullable,
+    ] = False
     searchable_quick: Annotated[
         Literal[False],
         Field(
@@ -167,6 +182,11 @@ class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
                 "(always false as API call contents are not searchable)"
             ),
         ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+        SchemaOptionalNonNullable,
     ] = False
     searchable_adv: Annotated[
         Literal[False],
@@ -176,6 +196,11 @@ class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
                 "(always false as API call contents are not searchable)"
             ),
         ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+        SchemaOptionalNonNullable,
     ] = False
 
 

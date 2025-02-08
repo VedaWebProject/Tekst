@@ -1438,10 +1438,11 @@ export interface components {
       defaultActive: boolean;
       /**
        * Showonparentlevel
-       * @description Show combined contents of this resource on the parent level
+       * @description Whether contents of this resource should be available for the parent level (always false for API call resources)
        * @default false
+       * @constant
        */
-      showOnParentLevel: boolean;
+      showOnParentLevel: false;
       /**
        * Searchablequick
        * @description Whether this resource should be included in quick search (always false as API call contents are not searchable)
