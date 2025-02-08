@@ -20,6 +20,7 @@ from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
+    ContentCssProperties,
     DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNullable,
@@ -248,6 +249,7 @@ class GeneralPlainTextResourceConfig(ModelBase):
     font: FontNameValueOrNone = None
     reduced_view: ReducedViewConfig = ReducedViewConfig()
     search_replacements: SearchReplacements = []
+    content_css: ContentCssProperties = []
 
 
 class PlainTextSpecialConfig(ModelBase):

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { RichTextResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -12,9 +13,11 @@ const props = withDefaults(
   }
 );
 
-const fontStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
-};
+const fontStyle = { fontFamily: props.resource.config.general.font || 'Tekst Content Font' };
+const contentCss = computed(() =>
+  Object.fromEntries(props.resource.config.general.contentCss.map((c) => [c.prop, c.value]))
+);
+const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
 </script>
 
 <template>
@@ -26,7 +29,7 @@ const fontStyle = {
         'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
       }"
     >
-      <hydrated-html v-if="!reduced" :html="content.html" :style="fontStyle" />
+      <hydrated-html v-if="!reduced" :html="content.html" :style="cutomStyle" />
       <div v-else class="translucent i ui-font">
         {{ $t('contents.msgContentNoReducedView') }}
       </div>

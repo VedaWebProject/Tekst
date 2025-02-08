@@ -467,6 +467,10 @@ resources:
           heading: Search Query Replacements
           pattern: Pattern (RegEx)
           replacement: Replacement
+        contentCss:
+          heading: Content CSS Properties
+          prop: Property
+          value: Value
       reducedView:
         heading: Reduced Reading View
         singleLine: Show contents as single line of text in reduced reading view

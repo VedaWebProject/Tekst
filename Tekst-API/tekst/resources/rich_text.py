@@ -15,6 +15,7 @@ from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
+    ContentCssProperties,
     DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNullable,
@@ -149,6 +150,7 @@ class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = True
     font: FontNameValueOrNone = None
     search_replacements: SearchReplacements = []
+    content_css: ContentCssProperties = []
 
 
 class RichTextResourceConfig(ResourceConfigBase):

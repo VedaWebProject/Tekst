@@ -30,6 +30,7 @@
     "color2k": "^2.0.3",
     "js-base64": "^3.7.7",
     "js-cookie": "^3.0.5",
+    "known-css-properties": "^0.35.0",
     "normalize.css": "^8.0.1",
     "openapi-fetch": "^0.13.0",
     "pinia": "^2.2.2",

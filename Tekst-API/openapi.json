@@ -9881,6 +9881,38 @@
         ],
         "title": "CommonResourceSearchQueryData"
       },
+      "ContentCssProperties": {
+        "items": {
+          "$ref": "#/components/schemas/ContentCssProperty"
+        },
+        "type": "array",
+        "maxItems": 64,
+        "minItems": 0
+      },
+      "ContentCssProperty": {
+        "properties": {
+          "prop": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Prop",
+            "description": "A CSS property name"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Value",
+            "description": "A CSS property value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prop",
+          "value"
+        ],
+        "title": "ContentCssProperty"
+      },
       "CorrectionCreate": {
         "properties": {
           "resourceId": {
@@ -11110,6 +11142,10 @@
           "searchReplacements": {
             "$ref": "#/components/schemas/SearchReplacements",
             "default": []
+          },
+          "contentCss": {
+            "$ref": "#/components/schemas/ContentCssProperties",
+            "default": []
           }
         },
         "type": "object",
@@ -11139,6 +11175,10 @@
           },
           "searchReplacements": {
             "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
+          },
+          "contentCss": {
+            "$ref": "#/components/schemas/ContentCssProperties",
             "default": []
           }
         },
@@ -12906,7 +12946,8 @@
                 "singleLine": false,
                 "singleLineDelimiter": " / "
               },
-              "searchReplacements": []
+              "searchReplacements": [],
+              "contentCss": []
             }
           },
           "plainText": {
@@ -13030,6 +13071,7 @@
                 "sortOrder": 10
               },
               "general": {
+                "contentCss": [],
                 "defaultCollapsed": false,
                 "reducedView": {
                   "singleLine": false,
@@ -13280,6 +13322,7 @@
                 "sortOrder": 10
               },
               "general": {
+                "contentCss": [],
                 "defaultCollapsed": false,
                 "reducedView": {
                   "singleLine": false,
@@ -14767,7 +14810,8 @@
             "$ref": "#/components/schemas/GeneralRichTextResourceConfig",
             "default": {
               "defaultCollapsed": true,
-              "searchReplacements": []
+              "searchReplacements": [],
+              "contentCss": []
             }
           }
         },
@@ -14879,6 +14923,7 @@
                 "sortOrder": 10
               },
               "general": {
+                "contentCss": [],
                 "defaultCollapsed": true,
                 "searchReplacements": []
               }
@@ -15116,6 +15161,7 @@
                 "sortOrder": 10
               },
               "general": {
+                "contentCss": [],
                 "defaultCollapsed": true,
                 "searchReplacements": []
               }

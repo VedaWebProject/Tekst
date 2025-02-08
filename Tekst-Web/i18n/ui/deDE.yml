@@ -476,6 +476,10 @@ resources:
           heading: Ersetzungen von Suchanfragen
           pattern: Muster (RegEx)
           replacement: Ersetzung
+        contentCss:
+          heading: CSS-Eigenschaften für Inhalte
+          prop: Eigenschaft
+          value: Wert
       reducedView:
         heading: Reduzierte Leseansicht
         singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen

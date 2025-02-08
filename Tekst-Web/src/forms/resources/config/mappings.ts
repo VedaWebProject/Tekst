@@ -1,4 +1,5 @@
 import ApiCallSpecialConfigFormItems from '@/forms/resources/config/ApiCallSpecialConfigFormItems.vue';
+import ContentCssFormItems from '@/forms/resources/config/ContentCssFormItems.vue';
 import DefaultCollapsedFormItems from '@/forms/resources/config/DefaultCollapsedFormItems.vue';
 import PlainTextSpecialConfigFormItems from '@/forms/resources/config/PlainTextSpecialConfigFormItems.vue';
 import ReducedViewConfigFormItems from '@/forms/resources/config/ReducedViewConfigFormItems.vue';
@@ -12,6 +13,7 @@ export const generalConfigFormItems: Record<string, Component> = {
   reducedView: ReducedViewConfigFormItems,
   font: ResourceFontFormItems,
   searchReplacements: SearchReplacementsConfigFormItems,
+  contentCss: ContentCssFormItems,
 };
 
 export const specialConfigFormItems: Record<string, Component> = {

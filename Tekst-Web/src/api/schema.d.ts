@@ -2461,6 +2461,20 @@ export interface components {
        */
       cmt?: string;
     };
+    ContentCssProperties: components['schemas']['ContentCssProperty'][];
+    /** ContentCssProperty */
+    ContentCssProperty: {
+      /**
+       * Prop
+       * @description A CSS property name
+       */
+      prop: string;
+      /**
+       * Value
+       * @description A CSS property value
+       */
+      value: string;
+    };
     /** CorrectionCreate */
     CorrectionCreate: {
       /**
@@ -3069,6 +3083,8 @@ export interface components {
       reducedView: components['schemas']['ReducedViewConfig'];
       /** @default [] */
       searchReplacements: components['schemas']['SearchReplacements'];
+      /** @default [] */
+      contentCss: components['schemas']['ContentCssProperties'];
     };
     /** GeneralRichTextResourceConfig */
     GeneralRichTextResourceConfig: {
@@ -3085,6 +3101,8 @@ export interface components {
       font?: null | string;
       /** @default [] */
       searchReplacements: components['schemas']['SearchReplacements'];
+      /** @default [] */
+      contentCss: components['schemas']['ContentCssProperties'];
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -3884,7 +3902,8 @@ export interface components {
        *         "singleLine": false,
        *         "singleLineDelimiter": " / "
        *       },
-       *       "searchReplacements": []
+       *       "searchReplacements": [],
+       *       "contentCss": []
        *     } */
       general: components['schemas']['GeneralPlainTextResourceConfig'];
       /** @default {
@@ -3959,6 +3978,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
+       *         "contentCss": [],
        *         "defaultCollapsed": false,
        *         "reducedView": {
        *           "singleLine": false,
@@ -4090,6 +4110,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
+       *         "contentCss": [],
        *         "defaultCollapsed": false,
        *         "reducedView": {
        *           "singleLine": false,
@@ -4795,7 +4816,8 @@ export interface components {
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
        *       "defaultCollapsed": true,
-       *       "searchReplacements": []
+       *       "searchReplacements": [],
+       *       "contentCss": []
        *     } */
       general: components['schemas']['GeneralRichTextResourceConfig'];
     };
@@ -4860,6 +4882,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
+       *         "contentCss": [],
        *         "defaultCollapsed": true,
        *         "searchReplacements": []
        *       }
@@ -4978,6 +5001,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
+       *         "contentCss": [],
        *         "defaultCollapsed": true,
        *         "searchReplacements": []
        *       }

@@ -51,10 +51,15 @@ const contents = computed(() =>
 const fontStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
+
+const contentCss = computed(() =>
+  Object.fromEntries(props.resource.config.general.contentCss.map((c) => [c.prop, c.value]))
+);
+const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
 </script>
 
 <template>
-  <div :style="fontStyle">
+  <div :style="cutomStyle">
     <div
       v-for="content in contents"
       :key="content.id"

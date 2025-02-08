@@ -303,6 +303,17 @@ export const searchReplacementsConfigFormRules: Record<string, FormItemRule[]> =
   replacement: [minMaxCharsRule(0, 64, 'blur')],
 };
 
+export const contentCssConfigFormRules: Record<string, FormItemRule[]> = {
+  prop: [
+    requiredStringRule(() => $t('resources.settings.config.general.contentCss.prop'), 'blur'),
+    minMaxCharsRule(1, 256, 'blur'),
+  ],
+  value: [
+    requiredStringRule(() => $t('resources.settings.config.general.contentCss.value'), 'blur'),
+    minMaxCharsRule(1, 256, 'blur'),
+  ],
+};
+
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {
   textAnnotation: {
     displayTemplate: [minMaxCharsRule(0, 4096, 'blur')],

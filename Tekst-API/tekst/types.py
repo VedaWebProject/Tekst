@@ -152,6 +152,42 @@ FontNameValueOrNone = Annotated[
 ]
 
 
+class ContentCssProperty(TypedDict):
+    prop: Annotated[
+        ConStr(
+            max_length=256,
+            cleanup="oneline",
+        ),
+        Field(
+            description="A CSS property name",
+        ),
+    ]
+    value: Annotated[
+        ConStr(
+            max_length=256,
+            cleanup="oneline",
+        ),
+        Field(
+            description="A CSS property value",
+        ),
+    ]
+
+
+ContentCssProperties = TypeAliasType(
+    "ContentCssProperties",
+    Annotated[
+        list[ContentCssProperty],
+        Field(
+            description=(
+                "List of CSS properties to apply to the contents of this resource"
+            ),
+            min_length=0,
+            max_length=64,
+        ),
+    ],
+)
+
+
 class SearchReplacement(TypedDict):
     pattern: Annotated[
         ConStr(
