@@ -93,12 +93,11 @@ function handleTaskClick(id: string) {
             @click="handleTaskClick(task.id)"
           >
             <n-icon
-              class="task-item-icon"
-              size="20"
+              class="task-item-icon text-medium"
               :component="statusThemes[task.status].icon"
               :color="statusThemes[task.status].color"
             />
-            <div class="task-item-label ellipsis">
+            <div class="text-small ellipsis">
               {{ $t(`tasks.types.${task.type}`) }}
               ({{ $t(`tasks.statuses.${task.status}`) }})
             </div>
