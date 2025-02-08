@@ -47,9 +47,10 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(
+    def _rtype_index_mappings(
         cls,
-        resource: ResourceBaseDocument,
+        lenient_analyzer: str,
+        strict_analyzer: str,
     ) -> dict[str, Any] | None:
         return {
             "tokens": {
@@ -87,13 +88,18 @@ class TextAnnotation(ResourceTypeABC):
             },
             "tokens_concat": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
-                "fields": {"strict": {"type": "text"}},
+                "analyzer": lenient_analyzer,
+                "fields": {
+                    "strict": {
+                        "type": "text",
+                        "analyzer": strict_analyzer,
+                    }
+                },
             },
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "TextAnnotationContent",
     ) -> dict[str, Any] | None:

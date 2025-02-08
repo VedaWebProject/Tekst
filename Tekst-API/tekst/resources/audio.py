@@ -46,21 +46,27 @@ class Audio(ResourceTypeABC):
         return AudioSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(
+    def _rtype_index_mappings(
         cls,
-        resource: ResourceBaseDocument,
+        lenient_analyzer: str,
+        strict_analyzer: str,
     ) -> dict[str, Any] | None:
         return {
             "caption": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
-                "fields": {"strict": {"type": "text"}},
+                "analyzer": lenient_analyzer,
+                "fields": {
+                    "strict": {
+                        "type": "text",
+                        "analyzer": strict_analyzer,
+                    }
+                },
                 "index_prefixes": {},
             },
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "AudioContent",
     ) -> dict[str, Any] | None:

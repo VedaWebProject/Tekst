@@ -18,6 +18,7 @@ from tekst.types import (
     DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNullable,
+    SearchReplacements,
 )
 from tekst.utils.html import get_html_text, sanitize_html
 
@@ -38,17 +39,19 @@ class RichText(ResourceTypeABC):
         return RichTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(
+    def _rtype_index_mappings(
         cls,
-        resource: ResourceBaseDocument,
+        lenient_analyzer: str,
+        strict_analyzer: str,
     ) -> dict[str, Any] | None:
         return {
             "html": {
                 "type": "text",
-                "analyzer": "standard_no_diacritics",
+                "analyzer": lenient_analyzer,
                 "fields": {
                     "strict": {
                         "type": "text",
+                        "analyzer": strict_analyzer,
                     }
                 },
                 "index_prefixes": {},
@@ -56,7 +59,7 @@ class RichText(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "RichTextContent",
     ) -> dict[str, Any] | None:
@@ -145,6 +148,7 @@ class RichText(ResourceTypeABC):
 class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = True
     font: FontNameValueOrNone = None
+    search_replacements: SearchReplacements = []
 
 
 class RichTextResourceConfig(ResourceConfigBase):

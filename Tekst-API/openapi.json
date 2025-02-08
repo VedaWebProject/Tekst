@@ -11132,6 +11132,10 @@
             ],
             "title": "Font",
             "description": "Name of a font"
+          },
+          "searchReplacements": {
+            "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
           }
         },
         "type": "object",
@@ -14758,7 +14762,8 @@
           "general": {
             "$ref": "#/components/schemas/GeneralRichTextResourceConfig",
             "default": {
-              "defaultCollapsed": true
+              "defaultCollapsed": true,
+              "searchReplacements": []
             }
           }
         },
@@ -14870,7 +14875,8 @@
                 "sortOrder": 10
               },
               "general": {
-                "defaultCollapsed": true
+                "defaultCollapsed": true,
+                "searchReplacements": []
               }
             }
           }
@@ -15106,7 +15112,8 @@
                 "sortOrder": 10
               },
               "general": {
-                "defaultCollapsed": true
+                "defaultCollapsed": true,
+                "searchReplacements": []
               }
             }
           },

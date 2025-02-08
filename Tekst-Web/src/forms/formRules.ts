@@ -300,9 +300,7 @@ export const searchReplacementsConfigFormRules: Record<string, FormItemRule[]> =
     ),
     minMaxCharsRule(1, 64, 'blur'),
   ],
-  replacement: [
-    minMaxCharsRule(0, 64, 'blur'),
-  ],
+  replacement: [minMaxCharsRule(0, 64, 'blur')],
 };
 
 export const typeSpecificResourceConfigFormRules: Record<string, Record<string, FormItemRule[]>> = {

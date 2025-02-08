@@ -117,13 +117,10 @@
         "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
         "level": 0,
         "resource_type": "plainText",
-        "original_id": null,
-        "owner_id": null,
         "shared_read": [],
         "shared_write": [],
         "public": true,
         "proposed": false,
-        "citation": null,
         "meta": [
             { "key": "author", "value": "Robert Hass" },
             { "key": "language", "value": "EN" }
@@ -134,17 +131,30 @@
                 "category": "translations",
                 "sort_order": 10,
                 "default_active": true,
-                "show_on_parent_level": true
+                "show_on_parent_level": true,
+                "searchable_quick": true,
+                "searchable_adv": true,
+                "rtl": false
             },
             "general": {
                 "default_collapsed": false,
-                "reduced_view_oneline": true,
-                "font": null
+                "reduced_view": {
+                    "single_line": false,
+                    "single_line_delimiter": " / "
+                },
+                "search_replacements": [
+                    { "pattern": "[aeiou]", "replacement": "o" }
+                ]
             },
             "plain_text": {
+                "line_labelling": {
+                    "enabled": false,
+                    "labelling_type": "numbersOneBased"
+                },
                 "deepl_links": { "enabled": false, "source_language": "en" }
             }
-        }
+        },
+        "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
     },
     {
         "_id": { "$oid": "654ba678ec7833e469dde782" },

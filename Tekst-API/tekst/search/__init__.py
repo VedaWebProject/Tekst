@@ -289,7 +289,7 @@ async def _populate_index(
         ).to_list():
             # add resource content document to location index document
             location_index_doc["resources"][str(content.resource_id)] = (
-                resource_types_mgr.get(content.resource_type).index_doc_data(content)
+                resource_types_mgr.get(content.resource_type).index_doc(content)
             )
 
         # add index document to bulk index request body

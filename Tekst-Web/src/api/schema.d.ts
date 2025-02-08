@@ -3082,6 +3082,8 @@ export interface components {
        * @description Name of a font
        */
       font?: null | string;
+      /** @default [] */
+      searchReplacements: components['schemas']['SearchReplacements'];
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -4791,7 +4793,8 @@ export interface components {
        *     } */
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
-       *       "defaultCollapsed": true
+       *       "defaultCollapsed": true,
+       *       "searchReplacements": []
        *     } */
       general: components['schemas']['GeneralRichTextResourceConfig'];
     };
@@ -4856,7 +4859,8 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
-       *         "defaultCollapsed": true
+       *         "defaultCollapsed": true,
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['RichTextResourceConfig'];
@@ -4973,7 +4977,8 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "general": {
-       *         "defaultCollapsed": true
+       *         "defaultCollapsed": true,
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['RichTextResourceConfig'];

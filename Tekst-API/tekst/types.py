@@ -36,16 +36,7 @@ def _empty_str_to_none(v: str | None) -> None:
     raise ValueError("Value is not an empty string nor None")
 
 
-def _empty_list_to_none(v: list | None) -> None:
-    if v is None:
-        return None
-    if isinstance(v, list) and len(v) == 0:
-        return None
-    raise ValueError("Value is not an empty list nor None")
-
-
 _EmptyStrToNone: TypeAlias = Annotated[None, BeforeValidator(_empty_str_to_none)]
-_EmptyListToNone: TypeAlias = Annotated[None, BeforeValidator(_empty_list_to_none)]
 
 
 def ConStr(  # noqa: N802

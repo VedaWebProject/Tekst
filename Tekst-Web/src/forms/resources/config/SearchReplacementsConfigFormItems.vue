@@ -20,40 +20,39 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
       :min="0"
       :max="16"
       :show-sort-button="false"
-      @create="() => ({pattern: '', replacement: ''})"
+      @create="() => ({ pattern: '', replacement: '' })"
     >
       <template #default="{ value, index }">
         <n-flex align="flex-start" wrap style="flex-grow: 2">
-        <!-- PATTERN -->
-        <n-form-item
-          ignore-path-change
-          :label="$t('resources.settings.config.general.searchReplacements.pattern')"
-          :path="`config.general.searchReplacements[${index}].pattern`"
-          :rule="searchReplacementsConfigFormRules.pattern"
-
+          <!-- PATTERN -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.settings.config.general.searchReplacements.pattern')"
+            :path="`config.general.searchReplacements[${index}].pattern`"
+            :rule="searchReplacementsConfigFormRules.pattern"
             style="flex-grow: 1; flex-basis: 200px"
-        >
-          <n-input
-            v-model:value="value.pattern"
-            :placeholder="$t('resources.settings.config.general.searchReplacements.pattern')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-        <!-- REPLACEMENT -->
-        <n-form-item
-          ignore-path-change
-          :label="$t('resources.settings.config.general.searchReplacements.replacement')"
-          :path="`config.general.searchReplacements[${index}].replacement`"
-          :rule="searchReplacementsConfigFormRules.replacement"
+          >
+            <n-input
+              v-model:value="value.pattern"
+              :placeholder="$t('resources.settings.config.general.searchReplacements.pattern')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+          <!-- REPLACEMENT -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.settings.config.general.searchReplacements.replacement')"
+            :path="`config.general.searchReplacements[${index}].replacement`"
+            :rule="searchReplacementsConfigFormRules.replacement"
             style="flex-grow: 1; flex-basis: 200px"
-        >
-          <n-input
-            v-model:value="value.replacement"
-            :placeholder="$t('resources.settings.config.general.searchReplacements.replacement')"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-      </n-flex>
+          >
+            <n-input
+              v-model:value="value.replacement"
+              :placeholder="$t('resources.settings.config.general.searchReplacements.replacement')"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </n-flex>
       </template>
       <template #action="{ index, create, remove }">
         <dynamic-input-controls

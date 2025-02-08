@@ -43,19 +43,15 @@ class PlainText(ResourceTypeABC):
         return PlainTextSearchQuery
 
     @classmethod
-    def rtype_index_doc_props(
+    def _rtype_index_mappings(
         cls,
-        resource: ResourceBaseDocument,
+        lenient_analyzer: str,
+        strict_analyzer: str,
     ) -> dict[str, Any] | None:
-        analyzer = "standard_no_diacritics"
-        strict_analyzer = "standard"
-        if resource.config.general.search_replacements:
-            analyzer = f"{str(resource.id)}_no_diacritics"
-            strict_analyzer = f"{str(resource.id)}"
         return {
             "text": {
                 "type": "text",
-                "analyzer": analyzer,
+                "analyzer": lenient_analyzer,
                 "fields": {
                     "strict": {
                         "type": "text",
@@ -67,7 +63,7 @@ class PlainText(ResourceTypeABC):
         }
 
     @classmethod
-    def rtype_index_doc_data(
+    def _rtype_index_doc(
         cls,
         content: "PlainTextContent",
     ) -> dict[str, Any] | None:
