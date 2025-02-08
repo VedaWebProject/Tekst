@@ -30,8 +30,7 @@ const themeVars = useThemeVars();
 
 <style scoped>
 #current-text {
-  --current-text-height: 64px;
-  height: var(--current-text-height);
+  height: 64px;
   display: flex;
   column-gap: 24px;
   flex-wrap: wrap;

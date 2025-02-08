@@ -200,7 +200,6 @@ const fromChildLevel = computed(
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: var(--font-size-large);
 }
 
 .content-header-title > span {
