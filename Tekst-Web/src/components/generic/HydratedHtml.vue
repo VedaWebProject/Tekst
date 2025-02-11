@@ -145,6 +145,7 @@ watchEffect(() => {
 }
 
 :deep(a.internal-ref-link:hover) {
+  color: var(--accent-color);
   border-color: var(--accent-color);
 }
 </style>
