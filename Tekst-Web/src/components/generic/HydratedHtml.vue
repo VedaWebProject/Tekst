@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import { onMounted, ref, watch, type CSSProperties } from 'vue';
+import { ref, watchEffect, type CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
 
@@ -31,11 +31,12 @@ const emit = defineEmits(['clickLocationRef']);
 
 const router = useRouter();
 
-const contentRef = ref<HTMLElement | null>(null);
+const domParser = new DOMParser();
+const contentRef = ref<HTMLElement>();
 
-// modal
+// modal state and data
 const modalId = ref<string>();
-const modalHtml = ref<Record<string, string | undefined>>({});
+const modalHtml = ref<Record<string, string>>({});
 const modalTitles = ref<Record<string, string | undefined>>({});
 const showModal = ref(false);
 
@@ -55,29 +56,29 @@ function handleLocationRefClick(e: MouseEvent) {
   window.scrollTo(0, 0);
 }
 
-function hydrate() {
+function hydrate(html: string | undefined) {
+  if (!html) return undefined;
   // reset state
   modalHtml.value = {};
   modalTitles.value = {};
   modalId.value = undefined;
 
+  const dom = domParser.parseFromString(html, 'text/html');
+
   // MODALS: iterate modal triggers
-  contentRef.value?.querySelectorAll('[data-tekst-modal-trigger]').forEach((trigger) => {
+  dom.querySelectorAll('[data-tekst-modal-trigger]').forEach((trigger) => {
     if (!(trigger instanceof HTMLElement)) return;
     const currModalId = trigger.getAttribute('data-tekst-modal-trigger');
     if (!currModalId) return;
     // iterate modal content container elements
-    contentRef.value
-      ?.querySelectorAll(`[data-tekst-modal="${currModalId}"]`)
-      .forEach((modalContent) => {
-        // add modal HTML content to modal HTML collection
-        modalHtml.value[currModalId] =
-          (modalHtml.value[currModalId] || '') + modalContent.innerHTML;
-        // set modal title
-        modalTitles.value[currModalId] = modalContent.getAttribute('title') || undefined;
-        // remove original modal content element from DOM
-        modalContent.remove();
-      });
+    dom.querySelectorAll(`[data-tekst-modal="${currModalId}"]`).forEach((modalContent) => {
+      // add modal HTML content to modal HTML collection
+      modalHtml.value[currModalId] = (modalHtml.value[currModalId] || '') + modalContent.innerHTML;
+      // set modal title
+      modalTitles.value[currModalId] = modalContent.getAttribute('title') || undefined;
+      // remove original modal content element from DOM
+      modalContent.remove();
+    });
     trigger.addEventListener('click', () => {
       modalId.value = currModalId;
       showModal.value = true;
@@ -90,7 +91,7 @@ function hydrate() {
   });
 
   // INTERNAL LINKS/REFERENCES: iterate internal location links
-  contentRef.value?.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
+  dom.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
     if (!(el instanceof HTMLElement)) return;
     // remove href attr if this is an anchor element
     if (el instanceof HTMLAnchorElement) {
@@ -101,22 +102,26 @@ function hydrate() {
     el.classList.add('ui-font');
     el.addEventListener('click', handleLocationRefClick);
   });
+
+  // replace content
+  contentRef.value?.replaceChildren(...dom.body.children);
 }
 
-watch(() => props.html, hydrate);
-onMounted(hydrate);
+watchEffect(() => {
+  hydrate(props.html);
+});
 </script>
 
 <template>
-  <div ref="contentRef" v-bind="$attrs" v-html="html" :style="style"></div>
+  <div ref="contentRef" :style="style"></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
-    :title="modalId && modalTitles[modalId]"
+    :title="modalId ? modalTitles[modalId] : undefined"
     width="wide"
   >
     <hydrated-html
-      :html="modalId && modalHtml[modalId]"
+      :html="modalId ? modalHtml[modalId] : undefined"
       :style="style"
       @click-location-ref="showModal = false"
     />
@@ -126,11 +131,11 @@ onMounted(hydrate);
 <style scoped>
 :deep(.modal-trigger) {
   cursor: pointer;
-  border-radius: var(--border-radius);
-  transition: background-color 0.2s ease-in-out;
+  color: var(--accent-color);
+  transition: color 0.2s ease-in-out;
 }
 
 :deep(.modal-trigger:hover) {
-  background-color: var(--accent-color-fade5);
+  color: var(--accent-color-fade1);
 }
 </style>
