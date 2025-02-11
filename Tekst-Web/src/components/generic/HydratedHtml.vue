@@ -92,15 +92,11 @@ function hydrate(html: string | undefined) {
 
   // INTERNAL LINKS/REFERENCES: iterate internal location links
   dom.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
-    if (!(el instanceof HTMLElement)) return;
-    // remove href attr if this is an anchor element
-    if (el instanceof HTMLAnchorElement) {
-      el.removeAttribute('href');
-    }
-    el.style.cursor = 'pointer';
+    if (!(el instanceof HTMLAnchorElement)) return;
+    el.removeAttribute('href');
     el.setAttribute('title', $t('browse.location.goTo'));
-    el.classList.add('ui-font');
     el.addEventListener('click', handleLocationRefClick);
+    el.classList.add('internal-ref-link');
   });
 
   // replace content
@@ -137,5 +133,18 @@ watchEffect(() => {
 
 :deep(.modal-trigger:hover) {
   color: var(--accent-color-fade1);
+}
+
+:deep(a.internal-ref-link) {
+  padding: 0 0.2em;
+  cursor: pointer;
+  border: 1px solid var(--accent-color-fade4);
+  border-radius: var(--border-radius);
+  font-family: var(--font-family-ui);
+  transition: border-color 0.2s ease-in-out;
+}
+
+:deep(a.internal-ref-link:hover) {
+  border-color: var(--accent-color);
 }
 </style>
