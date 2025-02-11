@@ -552,13 +552,10 @@
         "text_id": { "$oid": "654b825533ee5737b297f8e3" },
         "level": 0,
         "resource_type": "apiCall",
-        "original_id": null,
-        "owner_id": null,
         "shared_read": [],
         "shared_write": [],
         "public": true,
         "proposed": false,
-        "citation": null,
         "meta": [],
         "comment": [],
         "config": {
@@ -567,18 +564,19 @@
                 "sort_order": 10,
                 "default_active": false,
                 "show_on_parent_level": false,
-                "rtl": false,
-                "osk": null
+                "searchable_quick": false,
+                "searchable_adv": false,
+                "rtl": false
             },
-            "general": { "default_collapsed": false, "font": null },
+            "general": { "default_collapsed": false },
             "api_call": {
                 "endpoint": "/api/texts",
                 "method": "GET",
                 "content_type": "application/json",
                 "transform_deps": [],
-                "transform_js": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst extraHtml = `<div class=\"text-mini\">${this.extra.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + extraHtml;"
+                "transform_js": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst contextHtml = `<div class=\"text-mini\">${this.context.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + contextHtml;"
             }
         },
-        "contents_changed_at": { "$date": "2025-01-30T11:22:03.141Z" }
+        "contents_changed_at": { "$date": "2025-02-11T07:21:03.998Z" }
     }
 ]
