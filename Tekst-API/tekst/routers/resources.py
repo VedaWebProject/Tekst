@@ -289,21 +289,38 @@ async def update_resource(
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
+
     # only allow shares modification for owner or superuser
     if not user.is_superuser and resource_doc.owner_id != user.id:
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
+
     # conditionally force certain updates
     if resource_doc.public:
         updates.shared_read = []
         updates.shared_write = []
+
     # if the updates contain user shares, check if they are valid
     if updates.shared_read or updates.shared_write:
         for user_id in (updates.shared_read or []) + (updates.shared_write or []):
             if not await UserDocument.find_one(UserDocument.id == user_id).exists():
                 raise errors.E_400_SHARED_WITH_USER_NON_EXISTENT
+
+    # mark  respective text's index as out-of-date if any indexing-relevant config
+    # will be changed by this update (this logic might have to find a new home
+    # in case there are more of these indexing-relevant configs in the future)
+    sr_before = resource_doc.attr_by_path("config.general.search_replacements")
+    sr_after = updates.attr_by_path("config.general.search_replacements")
+    print("sr_before:", sr_before, "sr_after:", sr_after)
+    if str(sr_before) != str(sr_after):
+        await set_index_ood(
+            text_id=resource_doc.text_id,
+            by_public_resource=resource_doc.public,
+        )
+
     # update document
     await resource_doc.apply_updates(updates)
+
     return await preprocess_resource_read(resource_doc, user)
 
 
@@ -362,7 +379,8 @@ async def find_resources(
         .limit(limit)
         .to_list()
     )
-    # return processed results
+
+    # return processed results, enrich with user-specific access flags etc.
     return [
         await preprocess_resource_read(resource_doc, user)
         for resource_doc in resource_docs

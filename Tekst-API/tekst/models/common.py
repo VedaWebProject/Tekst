@@ -43,6 +43,17 @@ class ModelBase(BaseModel):
         from_attributes=True,
     )
 
+    def attr_by_path(self, path: str) -> Any:
+        try:
+            v = self
+            for part in path.split("."):
+                v = getattr(v, part, None)
+                if v is None:
+                    return None
+            return v
+        except AttributeError:
+            return None  # pragma: no cover
+
     @classmethod
     def model_from(cls, obj: BaseModel) -> BaseModel:
         return cls.model_validate(obj, from_attributes=True)

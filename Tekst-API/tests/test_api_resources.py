@@ -303,7 +303,7 @@ async def test_update_resource(
     assert resource_data["ownerId"] == superuser.get("id")
     assert resource_data.get("public") is False
 
-    # update resource
+    # update resource title
     updates = {
         "title": [{"locale": "*", "translation": "This Title Changed"}],
         "resourceType": "plainText",
@@ -317,6 +317,21 @@ async def test_update_resource(
     assert "id" in resp.json()
     assert resp.json()["id"] == str(resource_data["id"])
     assert resp.json()["title"] == updates["title"]
+
+    # update resource config: search replacements
+    updates = {
+        "config": {
+            "general": {"searchReplacements": [{"pattern": "a", "replacement": "o"}]}
+        },
+        "resourceType": "plainText",
+    }
+    resp = await test_client.patch(
+        f"/resources/{resource_data['id']}",
+        json=updates,
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["config"]["general"]["searchReplacements"][0]["pattern"] == "a"
 
     # update resource w/ wrong ID
     updates = {
