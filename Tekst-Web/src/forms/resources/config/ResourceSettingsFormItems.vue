@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  type AnyResourceConfig,
   type AnyResourceRead,
   type PublicUserSearchFilters,
   type UserRead,
@@ -134,26 +133,14 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <n-tabs type="card" size="small" tab-style="font-size: var(--font-size-small)" pane-class="mt-md">
     <!-- GENERAL -->
     <n-tab-pane :tab="$t('general.general')" name="general">
-      <resource-settings-general-form-items
-        :model-value="model"
-        @update:model-value="
-          (v: AnyResourceRead) => {
-            model = v;
-          }
-        "
-      />
+      <resource-settings-general-form-items v-model="model" />
     </n-tab-pane>
 
     <!-- RESOURCE COMMON CONFIG -->
     <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
       <common-resource-config-form-items
-        :model-value="model.config.common"
+        v-model="model.config.common"
         :resource-type="model.resourceType"
-        @update:model-value="
-          (u: AnyResourceConfig['common']) => {
-            model.config.common = u;
-          }
-        "
       />
     </n-tab-pane>
 
