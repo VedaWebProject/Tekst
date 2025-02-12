@@ -473,7 +473,7 @@ resources:
         defaultCollapsed: Inhalte sind standardmäßig eingeklappt
         font: Schriftart für Inhalte (nutzt Standard wenn nicht festgelegt)
         searchReplacements:
-          heading: Ersetzungen von Suchanfragen
+          heading: Ersetzungen in Suchanfragen
           pattern: Muster (RegEx)
           replacement: Ersetzung
         contentCss:
