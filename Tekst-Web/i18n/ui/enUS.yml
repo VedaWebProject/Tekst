@@ -472,9 +472,8 @@ resources:
           prop: Property
           value: Value
       reducedView:
-        heading: Reduced Reading View
-        singleLine: Show contents as single line of text in reduced reading view
-        singleLineDelimiter: Delimiter for single-line display in reduced reading view
+        heading: Signle-line display in reduced reading view
+        lineDelimiter: Line delimiter
       plainText:
         deeplLinks:
           heading: DeepL Translation Links

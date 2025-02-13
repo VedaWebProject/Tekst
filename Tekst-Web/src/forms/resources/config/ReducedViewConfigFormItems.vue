@@ -13,12 +13,12 @@ const model = defineModel<components['schemas']['ReducedViewConfig']>({ required
   <n-form-item :show-label="false">
     <labelled-switch
       v-model="model.singleLine"
-      :label="$t('resources.settings.config.reducedView.singleLine')"
+      :label="$t('resources.settings.config.enabled')"
     />
   </n-form-item>
   <!-- SINGLE LINE DELIMITER -->
   <n-form-item
-    :label="$t('resources.settings.config.reducedView.singleLineDelimiter')"
+    :label="$t('resources.settings.config.reducedView.lineDelimiter')"
     :rule="reducedViewConfigFormRules.singleLineDelimiter"
     path="config.general.reducedView.singleLineDelimiter"
   >

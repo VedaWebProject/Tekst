@@ -481,9 +481,8 @@ resources:
           prop: Eigenschaft
           value: Wert
       reducedView:
-        heading: Reduzierte Leseansicht
-        singleLine: Inhalte in reduzierter Leseansicht in einer einzigen Zeile darstellen
-        singleLineDelimiter: Trennzeichen für einzeilige Anzeige in reduzierter Leseansicht
+        heading: Einzeilige Anzeige in reduzierter Leseansicht
+        lineDelimiter: Zeilen-Trennzeichen
       plainText:
         deeplLinks:
           heading: DeepL-Übersetzungs-Links
