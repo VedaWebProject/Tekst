@@ -106,7 +106,7 @@ services:
       - test
 
   docs:
-    image: squidfunk/mkdocs-material:9.6.3
+    image: squidfunk/mkdocs-material:9.6.4
     restart: unless-stopped
     volumes:
       - ../docs:/docs:ro
