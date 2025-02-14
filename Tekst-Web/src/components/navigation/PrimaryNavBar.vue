@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
@@ -81,7 +80,6 @@ const titleLinkTo = computed(() => {
     >
       <theme-mode-switcher />
       <locale-switcher />
-      <help-nav-button />
       <user-actions-button v-if="showUserActionsButton" />
     </n-flex>
 

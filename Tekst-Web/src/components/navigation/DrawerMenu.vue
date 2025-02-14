@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import HelpNavButton from '@/components/navigation/HelpNavButton.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import LogoutButton from '@/components/navigation/LogoutButton.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
@@ -80,7 +79,6 @@ const allMenuOptions = computed(() => [
         <n-flex justify="center">
           <theme-mode-switcher @click="() => (show = false)" />
           <locale-switcher />
-          <help-nav-button @click="() => (show = false)" />
           <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
           <logout-button v-if="auth.loggedIn" @click="() => (show = false)" />
         </n-flex>

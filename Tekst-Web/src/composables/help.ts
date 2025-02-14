@@ -11,7 +11,7 @@ const helpTexts: Record<string, Record<string, HelpText>> = {};
 export function useHelp() {
   const state = useStateStore();
 
-  async function getHelpTexts(locale: string = state.locale): Promise<Record<string, HelpText>> {
+  async function _getHelpTexts(locale: string = state.locale): Promise<Record<string, HelpText>> {
     if (!helpTexts[locale]) {
       if (helpTranslationsModules[locale]) {
         try {
@@ -29,7 +29,7 @@ export function useHelp() {
 
   async function getHelpText(helpKey: string): Promise<HelpText> {
     try {
-      return (await getHelpTexts())[helpKey];
+      return (await _getHelpTexts())[helpKey];
     } catch {
       console.error(
         `Could not load help text translation '${helpKey}' for locale '${state.locale}'.`
@@ -38,5 +38,5 @@ export function useHelp() {
     }
   }
 
-  return { getHelpText, getHelpTexts };
+  return { getHelpText };
 }

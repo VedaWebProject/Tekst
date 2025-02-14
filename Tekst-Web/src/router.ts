@@ -15,7 +15,6 @@ declare module 'vue-router' {
 }
 
 const UserView = () => import('@/views/UserView.vue');
-const HelpView = () => import('@/views/HelpView.vue');
 const BrowseView = () => import('@/views/BrowseView.vue');
 const SearchView = () => import('@/views/SearchView.vue');
 const SearchResultsView = () => import('@/views/SearchResultsView.vue');
@@ -125,11 +124,6 @@ const router = createRouter({
       path: '/search',
       name: 'searchResults',
       component: SearchResultsView,
-    },
-    {
-      path: '/help',
-      name: 'help',
-      component: HelpView,
     },
     {
       path: '/register',
