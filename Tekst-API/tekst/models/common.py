@@ -51,8 +51,8 @@ class ModelBase(BaseModel):
                 if v is None:
                     return None
             return v
-        except AttributeError:
-            return None  # pragma: no cover
+        except AttributeError:  # pragma: no cover
+            return None
 
     @classmethod
     def model_from(cls, obj: BaseModel) -> BaseModel:

@@ -64,6 +64,7 @@ async def preprocess_resource_read(
             **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
         )
     )
+
     # include writable flag
     resource.writable = bool(
         for_user
@@ -72,18 +73,20 @@ async def preprocess_resource_read(
             or (
                 (
                     for_user.id == resource.owner_id
-                    or for_user.id in resource.shared_write
+                    or for_user.id in resource_doc.shared_write
                 )
                 and not resource.public
                 and not resource.proposed
             )
         )
     )
+
     # include owner user data in each resource model (if an owner id is set)
     if resource.owner_id:
         resource.owner = UserReadPublic.model_from(
             await UserDocument.get(resource.owner_id)
         )
+
     # include shared-with user data in each resource model (if any)
     if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
         if resource.shared_read:
@@ -94,6 +97,7 @@ async def preprocess_resource_read(
             resource.shared_write_users = await UserDocument.find(
                 In(UserDocument.id, resource.shared_write)
             ).to_list()
+
     # include corrections count if user is owner of the resource
     # or, if resource has no owner, user is superuser
     if for_user and (
@@ -103,6 +107,7 @@ async def preprocess_resource_read(
         resource.corrections = await CorrectionDocument.find(
             CorrectionDocument.resource_id == resource.id
         ).count()
+
     return resource
 
 
