@@ -3,8 +3,10 @@ import type { components } from '@/api/schema';
 import { dialogProps } from '@/common';
 import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
 import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
 import { html } from '@codemirror/lang-html';
-import { NTabPane, NTabs, useDialog } from 'naive-ui';
+import { NTabPane, NTabs, type TabsInst, useDialog } from 'naive-ui';
+import { ref, watch } from 'vue';
 import { Codemirror } from 'vue-codemirror';
 
 type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
@@ -29,6 +31,9 @@ const value = defineModel<string>('value');
 const editorMode = defineModel<EditorMode>('editorMode', {
   default: 'wysiwyg',
 });
+
+const state = useStateStore();
+const tabsRef = ref<TabsInst>();
 
 const codeEditorExtensions = [html()];
 const dialog = useDialog();
@@ -58,12 +63,22 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
     });
   }
 }
+
+watch(
+  () => state.locale,
+  () => {
+    setTimeout(() => {
+      tabsRef.value?.syncBarPosition();
+    }, 100);
+  }
+);
 </script>
 
 <template>
   <n-tabs
+    ref="tabsRef"
     type="line"
-    size="large"
+    tab-style="font-size: var(--font-size-medium)"
     justify-content="start"
     :value="editorMode"
     @update:value="handleChangeTab"

@@ -8,7 +8,7 @@ import type {
 import { DELETE, POST } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
@@ -494,14 +494,14 @@ async function checkUrlInput(input: HTMLInputElement) {
       require-mark-placement="right-hanging"
     >
       <n-flex vertical>
-        <labelled-switch
+        <labeled-switch
           :model-value="true"
           disabled
           :focusable="false"
           :label="$t('models.user.username')"
         />
         <template v-for="(_, field) in publicFieldsFormModel" :key="field">
-          <labelled-switch
+          <labeled-switch
             v-model="publicFieldsFormModel[field]"
             :label="$t(`models.user.${field}`)"
             :disabled="loading"
@@ -544,7 +544,7 @@ async function checkUrlInput(input: HTMLInputElement) {
     >
       <n-flex vertical>
         <template v-for="(_, field) in userNotificationTriggersFormModel" :key="field">
-          <labelled-switch
+          <labeled-switch
             v-model="userNotificationTriggersFormModel[field]"
             :label="$t(`account.settings.userNotificationTriggers.${field}`)"
             :disabled="loading"
@@ -587,7 +587,7 @@ async function checkUrlInput(input: HTMLInputElement) {
     >
       <n-flex vertical>
         <template v-for="(_, field) in adminNotificationTriggersFormModel" :key="field">
-          <labelled-switch
+          <labeled-switch
             v-model="adminNotificationTriggersFormModel[field]"
             :label="$t(`account.settings.adminNotificationTriggers.${field}`)"
             :disabled="loading"

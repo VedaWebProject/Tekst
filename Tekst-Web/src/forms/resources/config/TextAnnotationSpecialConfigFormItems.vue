@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
@@ -12,6 +13,8 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
 </script>
 
 <template>
+  <form-section-heading :label="$t('resources.settings.config.textAnnotation.heading', 2)" />
+
   <!-- ANNOTATION DISPLAY GROUPS -->
   <n-form-item>
     <template #label>

@@ -41,7 +41,7 @@ import { pickTranslation, renderIcon } from '@/utils';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
-  targetResource: AnyResourceRead;
+  resource: AnyResourceRead;
   currentUser?: UserRead | null;
 }>();
 
@@ -63,13 +63,13 @@ const state = useStateStore();
 const router = useRouter();
 const resources = useResourcesStore();
 
-const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.targetResource.ownerId);
+const isOwner = computed(() => (props.currentUser?.id ?? 'noid') === props.resource.ownerId);
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.currentUser?.isSuperuser);
 
-const resourceTitle = computed(() => pickTranslation(props.targetResource.title, state.locale));
+const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 
 const actionOptions = computed(() => [
-  ...(props.targetResource.writable
+  ...(props.resource.writable
     ? [
         {
           type: 'group',
@@ -79,25 +79,25 @@ const actionOptions = computed(() => [
               label: $t('general.settings'),
               key: 'settings',
               icon: renderIcon(SettingsIcon),
-              action: () => emit('settingsClick', props.targetResource),
+              action: () => emit('settingsClick', props.resource),
             },
             {
               label: $t('resources.contentsAction'),
               key: 'contents',
               icon: renderIcon(EditIcon),
-              action: () => emit('contentsClick', props.targetResource),
+              action: () => emit('contentsClick', props.resource),
             },
             {
               label: $t('resources.downloadTemplateAction'),
               key: 'template',
               icon: renderIcon(DownloadIcon),
-              action: () => emit('downloadTemplateClick', props.targetResource),
+              action: () => emit('downloadTemplateClick', props.resource),
             },
             {
               label: $t('resources.importAction'),
               key: 'import',
               icon: renderIcon(UploadIcon),
-              action: () => emit('importClick', props.targetResource),
+              action: () => emit('importClick', props.resource),
             },
           ],
         },
@@ -109,51 +109,47 @@ const actionOptions = computed(() => [
           type: 'group',
           label: $t('general.status'),
           children: [
-            ...(!props.targetResource.proposed && !props.targetResource.public
+            ...(!props.resource.proposed && !props.resource.public
               ? [
                   {
                     label: $t('resources.proposeAction'),
                     key: 'propose',
-                    disabled: !!props.targetResource.originalId,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(ProposedIcon),
-                    action: () => emit('proposeClick', props.targetResource),
+                    action: () => emit('proposeClick', props.resource),
                   },
                 ]
               : []),
-            ...(props.targetResource.proposed && !props.targetResource.public
+            ...(props.resource.proposed && !props.resource.public
               ? [
                   {
                     label: $t('resources.unproposeAction'),
                     key: 'unpropose',
-                    disabled: !!props.targetResource.originalId,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(UnproposedIcon),
-                    action: () => emit('unproposeClick', props.targetResource),
+                    action: () => emit('unproposeClick', props.resource),
                   },
                 ]
               : []),
-            ...(props.currentUser?.isSuperuser &&
-            !props.targetResource.public &&
-            props.targetResource.proposed
+            ...(props.currentUser?.isSuperuser && !props.resource.public && props.resource.proposed
               ? [
                   {
                     label: $t('resources.publishAction'),
                     key: 'publish',
-                    disabled: !!props.targetResource.originalId,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(PublicIcon),
-                    action: () => emit('publishClick', props.targetResource),
+                    action: () => emit('publishClick', props.resource),
                   },
                 ]
               : []),
-            ...(props.currentUser?.isSuperuser &&
-            props.targetResource.public &&
-            !props.targetResource.proposed
+            ...(props.currentUser?.isSuperuser && props.resource.public && !props.resource.proposed
               ? [
                   {
                     label: $t('resources.unpublishAction'),
                     key: 'unpublish',
-                    disabled: !!props.targetResource.originalId,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(PublicOffIcon),
-                    action: () => emit('unpublishClick', props.targetResource),
+                    action: () => emit('unpublishClick', props.resource),
                   },
                 ]
               : []),
@@ -161,8 +157,8 @@ const actionOptions = computed(() => [
               label: $t('resources.transferAction'),
               key: 'transfer',
               icon: renderIcon(UserIcon),
-              disabled: props.targetResource.public || props.targetResource.proposed,
-              action: () => emit('transferClick', props.targetResource),
+              disabled: props.resource.public || props.resource.proposed,
+              action: () => emit('transferClick', props.resource),
             },
           ],
         },
@@ -176,8 +172,8 @@ const actionOptions = computed(() => [
         label: $t('resources.createVersionAction'),
         key: 'version',
         icon: renderIcon(VersionIcon),
-        disabled: !!props.targetResource.originalId,
-        action: () => emit('createVersionClick', props.targetResource),
+        disabled: !!props.resource.originalId,
+        action: () => emit('createVersionClick', props.resource),
       },
       ...(isOwnerOrAdmin.value
         ? [
@@ -185,8 +181,8 @@ const actionOptions = computed(() => [
               label: $t('general.deleteAction'),
               key: 'delete',
               icon: renderIcon(DeleteIcon),
-              disabled: props.targetResource.public || props.targetResource.proposed,
-              action: () => emit('deleteClick', props.targetResource),
+              disabled: props.resource.public || props.resource.proposed,
+              action: () => emit('deleteClick', props.resource),
             },
           ]
         : []),
@@ -201,7 +197,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 function handleCorrectionsClick() {
   router.push({
     name: 'resourceCorrections',
-    params: { textSlug: state.text?.slug, resId: props.targetResource.id },
+    params: { textSlug: state.text?.slug, resId: props.resource.id },
   });
 }
 </script>
@@ -217,8 +213,8 @@ function handleCorrectionsClick() {
       <template #header-extra>
         <n-flex>
           <n-badge
-            v-if="!!resources.correctionsCount[targetResource.id]"
-            :value="resources.correctionsCount[targetResource.id]"
+            v-if="!!resources.correctionsCount[resource.id]"
+            :value="resources.correctionsCount[resource.id]"
             :max="100"
           >
             <content-container-header-widget
@@ -227,8 +223,8 @@ function handleCorrectionsClick() {
               @click="handleCorrectionsClick()"
             />
           </n-badge>
-          <resource-export-widget :resource="targetResource" />
-          <resource-info-widget :resource="targetResource" />
+          <resource-export-widget :resource="resource" />
+          <resource-info-widget :resource="resource" />
           <n-dropdown
             :options="actionOptions"
             trigger="click"
@@ -245,25 +241,16 @@ function handleCorrectionsClick() {
       </template>
 
       <template #description>
-        <user-display
-          v-if="targetResource.owner"
-          :user="targetResource.owner"
-          size="tiny"
-          class="mb-lg"
-        />
+        <user-display v-if="resource.owner" :user="resource.owner" size="tiny" class="mb-lg" />
         <n-flex vertical>
-          <resource-publication-status :resource="targetResource" size="tiny" />
-          <resource-is-version-info
-            v-if="targetResource.originalId"
-            :resource="targetResource"
-            size="tiny"
-          />
+          <resource-publication-status :resource="resource" size="tiny" />
+          <resource-is-version-info v-if="resource.originalId" :resource="resource" size="tiny" />
         </n-flex>
       </template>
 
-      <template v-if="targetResource.description.length">
+      <template v-if="resource.description.length">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
-          <translation-display :value="targetResource.description" />
+          <translation-display :value="resource.description" />
         </n-ellipsis>
       </template>
     </n-thing>

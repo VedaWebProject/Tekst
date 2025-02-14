@@ -5,7 +5,7 @@ import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
 import { computed } from 'vue';
 
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 
 const show = defineModel<boolean>('show');
@@ -43,7 +43,7 @@ function toggleCategory(index: number, activate: boolean) {
         class="gray-box"
         style="margin-top: 0"
       >
-        <labelled-switch
+        <labeled-switch
           v-model="browse.showNonPublicResources"
           :label="$t('browse.resourceToggleDrawer.showNonPublicResources')"
           size="small"

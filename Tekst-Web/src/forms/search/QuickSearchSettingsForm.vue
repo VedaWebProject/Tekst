@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { InfoIcon } from '@/icons';
 import { useSearchStore, useStateStore } from '@/stores';
 import { NButton, NForm, NFormItem, NIcon, NSelect } from 'naive-ui';
@@ -41,19 +41,19 @@ const textOptions = computed(() => state.pf?.texts.map((t) => ({ label: t.title,
     </n-form-item>
 
     <!-- DEFAULT OPERATOR -->
-    <n-form-item path="op" :show-label="false" :show-feedback="false">
-      <labelled-switch
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
         v-model="search.settingsQuick.op"
-        checked-value="AND"
-        unchecked-value="OR"
+        on-value="AND"
+        off-value="OR"
         :label="$t('search.settings.quick.defaultOperator')"
         :disabled="search.settingsQuick.re"
       />
     </n-form-item>
 
     <!-- REGEXP -->
-    <n-form-item path="re" :show-label="false" :show-feedback="false">
-      <labelled-switch
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
         v-model="search.settingsQuick.re"
         :label="$t('search.settings.quick.regexp')"
         @update:model-value="(v) => v && (search.settingsQuick.op = 'OR')"

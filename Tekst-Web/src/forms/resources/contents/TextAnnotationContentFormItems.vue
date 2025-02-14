@@ -4,7 +4,7 @@ import type {
   TextAnnotationContentCreate,
   TextAnnotationResourceRead,
 } from '@/api';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
@@ -119,11 +119,12 @@ onMounted(async () => {
             </n-form-item>
             <!-- LINEBREAK -->
             <n-form-item ignore-path-change>
-              <labelled-switch
+              <labeled-switch
                 v-model="tokenItem.lb"
                 size="large"
                 :icon-on="KeyboardReturnIcon"
                 :icon-off="KeyboardReturnIcon"
+                :show-label="false"
                 :title="$t('resources.types.textAnnotation.contentFields.lb')"
               />
             </n-form-item>

@@ -6,7 +6,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceTypeOptionLabel from '@/components/resource/ResourceTypeOptionLabel.vue';
 import { useMessages } from '@/composables/messages';
 import { resourceSettingsFormRules } from '@/forms/formRules';
-import ResourceSettingsGeneralFormItems from '@/forms/resources/config/ResourceSettingsGeneralFormItems.vue';
+import ResourceSettingsPropertiesFormItems from '@/forms/resources/config/ResourceSettingsPropertiesFormItems.vue';
 import { $t } from '@/i18n';
 import { ArrowBackIcon, ResourceIcon, WarningIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
@@ -178,7 +178,7 @@ async function handleSaveClick() {
 
         <!-- COMMON RESOURCE FORM FIELDS -->
         <h3>{{ $t('general.general') }}</h3>
-        <resource-settings-general-form-items v-model="model" />
+        <resource-settings-properties-form-items v-model="model" />
       </n-form>
 
       <button-shelf top-gap>

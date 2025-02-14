@@ -1,6 +1,9 @@
 general:
   general: General
   default: default
+  enabled: Enabled
+  on: 'On'
+  off: 'Off'
   status: Status
   comment: Comment
   settings: Settings
@@ -322,12 +325,12 @@ models:
     description: Description
     level: Level
     resourceType: Resource Type
-    public: public
+    public: published
     proposed: proposed for publication
     citation: Citation
-    share: Share access
-    sharedRead: Share read access
-    sharedWrite: Share write access
+    share: Access
+    sharedRead: Read Access
+    sharedWrite: Write Access
     config: Configuration
   content:
     modelLabel: Content | Contents
@@ -391,7 +394,7 @@ resources:
   hasCorrections: has correction notes
   hasNoCorrections: has no correction notes
   public: '@:models.resource.public'
-  notPublic: private
+  notPublic: unpublished
   shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
@@ -445,11 +448,15 @@ resources:
     msgSaved: Your new resource "{title}" has been created.
   settings:
     heading: Resource Settings
-    onlyForPrivate: Only for unpublished and unproposed resources!
+    props: Properties
+    coreInfo: Core Information
+    integration: Integration
+    presentation: Presentation
+    unavailableWhenPublished: Access settings are unavailable for published resources.
+    sharingUnauthorized: You are not authorized to change access settings for this resource.
     msgSaved: Your changes to the resource "{title}" have been saved.
     config:
-      heading: Configuration
-      enabled: Enabled
+      heading: General Configuration
       common:
         category: Category
         catUnlabelled: unlabelled
@@ -458,11 +465,13 @@ resources:
         showOnParentLevel: Enable viewing combined contents on the parent level
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced search
-        rtl: Display contents with right-to-left text direction
+        rtl:
+          heading: Alternative Content Text Direction
+          ltr: Left-to-right
+          rtl: Right-to-left
       general:
-        heading: General
-        defaultCollapsed: Collapse contents by default
-        font: Content font (will use default if not set)
+        defaultCollapsed: Collapsible Contents
+        font: Content Font
         searchReplacements:
           heading: Search Query Replacements
           pattern: Pattern (RegEx)
@@ -472,7 +481,7 @@ resources:
           prop: Property
           value: Value
       reducedView:
-        heading: Signle-line display in reduced reading view
+        heading: Single-line Display in Reduced Reading View
         lineDelimiter: Line delimiter
       plainText:
         deeplLinks:
@@ -485,11 +494,14 @@ resources:
           lettersLowercase: Letters (lowercase)
           lettersUppercase: Letters (uppercase)
       textAnnotation:
+        heading: Annotation Display
         displayTemplate: Display template
         multiValueDelimiter: Delimiter for multiple annotation values
         annotationGroup: Annotation group | Annotation groups
       apiCall:
-        endpoint: API endpoint
+        headingApiRequest: API Request
+        headingResponseTransformation: Response Data Transformation
+        endpoint: URL (without query parameters)
         method: HTTP request method
         contentType: Request body content type
         transformDeps: Transformation function dependencies (URLs)
@@ -863,7 +875,6 @@ search:
     wc: Interpret wildcards (* and ?) for this field
   settings:
     general:
-      heading: '@:general.general'
       strict: Respect diacritics
     quick:
       defaultOperator: All terms must occur

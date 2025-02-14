@@ -5,7 +5,7 @@ import { dialogProps } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
@@ -183,7 +183,7 @@ onBeforeRouteUpdate((to, from) => {
       </n-form-item>
 
       <!-- ACTIVE -->
-      <labelled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+      <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
 
       <h3>{{ $t('general.presentation') }}</h3>
 
@@ -199,12 +199,12 @@ onBeforeRouteUpdate((to, from) => {
 
       <n-flex vertical class="mb-lg">
         <!-- LABELLED LOCATION -->
-        <labelled-switch
+        <labeled-switch
           v-model="model.labeledLocation"
           :label="$t('models.text.labeledLocation')"
         />
         <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
-        <labelled-switch
+        <labeled-switch
           v-model="model.fullLocLabelAsHitHeading"
           :label="$t('models.text.fullLocLabelAsHitHeading')"
         />

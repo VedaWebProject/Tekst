@@ -11,7 +11,7 @@ import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettings
 import { $t } from '@/i18n';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { cloneDeep } from 'lodash-es';
-import { NAlert, NButton, NDivider, NForm, NIcon, NSpin, type FormInst } from 'naive-ui';
+import { NAlert, NButton, NForm, NIcon, NSpin, type FormInst } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
 
@@ -54,11 +54,17 @@ watch(
     resource.value = newResources.find((l) => l.id === newId);
     model.value = getInitialModel();
     reset();
+
+    if (resource.value && !resource.value.writable) {
+      message.warning($t('errors.noAccess', { resource: resourceTitle.value }));
+      router.replace({ name: 'resources', params: { textSlug: props.textSlug } });
+    }
   },
   { immediate: true }
 );
 
 function handleResetClick() {
+  model.value = getInitialModel();
   reset();
   formRef.value?.restoreValidation();
 }
@@ -135,17 +141,10 @@ async function handleSaveClick() {
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <resource-settings-form-items
-          v-model="model"
-          :owner="resource?.owner"
-          :public="resource?.public"
-          :proposed="resource?.proposed"
-        />
+        <resource-settings-form-items v-model="model" />
       </n-form>
 
-      <n-divider />
-
-      <button-shelf>
+      <button-shelf top-gap>
         <n-button secondary :disabled="!changed" @click="handleResetClick">
           {{ $t('general.resetAction') }}
         </n-button>

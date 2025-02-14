@@ -10,7 +10,7 @@ import {
 } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import ResourceListItem from '@/components/resource/ResourceListItem.vue';
@@ -400,17 +400,17 @@ onMounted(() => {
               <n-icon :component="SearchIcon" />
             </template>
           </n-input>
-          <labelled-switch v-model="filters.public" :label="$t('resources.public')" />
-          <labelled-switch v-model="filters.notPublic" :label="$t('resources.notPublic')" />
-          <labelled-switch v-model="filters.proposed" :label="$t('resources.proposed')" />
-          <labelled-switch v-model="filters.notProposed" :label="$t('resources.notProposed')" />
-          <labelled-switch v-model="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
-          <labelled-switch v-model="filters.ownedByOthers" :label="$t('resources.ownedByOthers')" />
-          <labelled-switch
+          <labeled-switch v-model="filters.public" :label="$t('resources.public')" />
+          <labeled-switch v-model="filters.notPublic" :label="$t('resources.notPublic')" />
+          <labeled-switch v-model="filters.proposed" :label="$t('resources.proposed')" />
+          <labeled-switch v-model="filters.notProposed" :label="$t('resources.notProposed')" />
+          <labeled-switch v-model="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
+          <labeled-switch v-model="filters.ownedByOthers" :label="$t('resources.ownedByOthers')" />
+          <labeled-switch
             v-model="filters.hasCorrections"
             :label="$t('resources.hasCorrections')"
           />
-          <labelled-switch
+          <labeled-switch
             v-model="filters.hasNoCorrections"
             :label="$t('resources.hasNoCorrections')"
           />
@@ -455,7 +455,7 @@ onMounted(() => {
           <resource-list-item
             v-for="item in paginatedData"
             :key="item.id"
-            :target-resource="item"
+            :resource="item"
             :current-user="auth.user"
             @transfer-click="handleTransferClick"
             @propose-click="handleProposeClick"

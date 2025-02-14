@@ -10,8 +10,17 @@ import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import { NButton, NIcon, NTable, NTabPane, NTabs, NTime, useThemeVars } from 'naive-ui';
-import { onBeforeMount, ref } from 'vue';
+import {
+  NButton,
+  NIcon,
+  NTable,
+  NTabPane,
+  NTabs,
+  NTime,
+  useThemeVars,
+  type TabsInst,
+} from 'naive-ui';
+import { onBeforeMount, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const state = useStateStore();
@@ -20,6 +29,7 @@ const nuiTheme = useThemeVars();
 const { message } = useMessages();
 const { addTask, startTasksPolling } = useTasks();
 
+const tabsRef = ref<TabsInst>();
 const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
 const indicesInfoLoading = ref(false);
@@ -106,6 +116,15 @@ function getFieldMappingsStatus(fields: number) {
   }
 }
 
+watch(
+  () => state.locale,
+  () => {
+    setTimeout(() => {
+      tabsRef.value?.syncBarPosition();
+    }, 100);
+  }
+);
+
 onBeforeMount(() => {
   loadIndexInfo();
   updateAllTasksData();
@@ -120,9 +139,9 @@ onBeforeMount(() => {
 
   <div class="content-block">
     <n-tabs
-      type="card"
-      size="small"
-      tab-style="font-size: var(--font-size-small)"
+      ref="tabsRef"
+      type="bar"
+      tab-style="font-size: var(--font-size-medium)"
       pane-class="mt-md"
     >
       <!-- SEARCH INDICES -->

@@ -3,7 +3,7 @@ import { PATCH, resourceTypes, type PlatformSettingsUpdate } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
@@ -26,12 +26,15 @@ import {
   NTabPane,
   NTabs,
   type FormInst,
+  type TabsInst,
 } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
+
+const tabsRef = ref<TabsInst>();
 
 const getFormModel = (): PlatformSettingsUpdate =>
   cloneDeep(state.pf?.state || ({} as PlatformSettingsUpdate));
@@ -93,6 +96,15 @@ function resetForm() {
   reset();
   formRef.value?.restoreValidation();
 }
+
+watch(
+  () => state.locale,
+  () => {
+    setTimeout(() => {
+      tabsRef.value?.syncBarPosition();
+    }, 100);
+  }
+);
 </script>
 
 <template>
@@ -112,9 +124,9 @@ function resetForm() {
       require-mark-placement="right-hanging"
     >
       <n-tabs
-        type="card"
-        size="small"
-        tab-style="font-size: var(--font-size-small)"
+        ref="tabsRef"
+        type="bar"
+        tab-style="font-size: var(--font-size-medium)"
         pane-class="mt-md"
       >
         <!-- GENERAL -->
@@ -169,7 +181,7 @@ function resetForm() {
 
           <!-- INDEX UNPUBLISHED RESOURCES -->
           <n-flex vertical>
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.indexUnpublishedResources"
               :label="$t('models.platformSettings.indexUnpublishedResources')"
             />
@@ -180,12 +192,12 @@ function resetForm() {
         <n-tab-pane :tab="$t('admin.system.platformSettings.headingNav')" name="navigation">
           <n-flex vertical class="mb-lg">
             <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.alwaysShowTextInfo"
               :label="$t('models.platformSettings.alwaysShowTextInfo')"
             />
             <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.directJumpOnUniqueAliasSearch"
               :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
             />
@@ -226,17 +238,17 @@ function resetForm() {
         <n-tab-pane :tab="$t('admin.system.platformSettings.headingBrowseView')" name="browseView">
           <n-flex vertical>
             <!-- SHOW RESOURCE CATEGORY HEADINGS -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.showResourceCategoryHeadings"
               :label="$t('models.platformSettings.showResourceCategoryHeadings')"
             />
             <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.prioritizeBrowseLevelResources"
               :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
             />
             <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.showLocationAliases"
               :label="$t('models.platformSettings.showLocationAliases')"
             />
@@ -247,17 +259,17 @@ function resetForm() {
         <n-tab-pane :tab="$t('admin.system.platformSettings.headingBranding')" name="branding">
           <n-flex vertical class="mb-lg">
             <!-- SHOW LOGO ON LOADING SCREEN -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.showLogoOnLoadingScreen"
               :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
             />
             <!-- SHOW LOGO IN HEADER -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.showLogoInHeader"
               :label="$t('models.platformSettings.showLogoInHeader')"
             />
             <!-- SHOW TEKST FOOTER HINT -->
-            <labelled-switch
+            <labeled-switch
               v-model="formModel.showTekstFooterHint"
               :label="$t('models.platformSettings.showTekstFooterHint')"
             />

@@ -26,7 +26,7 @@ import type { Component, Ref } from 'vue';
 import { computed, h, onMounted, ref } from 'vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useTasks } from '@/composables/tasks';
 import {
   AddIcon,
@@ -434,7 +434,7 @@ onMounted(() => {
   </n-alert>
 
   <n-flex justify="space-between" size="large" class="mt-lg">
-    <labelled-switch
+    <labeled-switch
       v-if="treeData.length"
       v-model="showWarnings"
       :label="$t('admin.text.locations.checkShowWarnings')"

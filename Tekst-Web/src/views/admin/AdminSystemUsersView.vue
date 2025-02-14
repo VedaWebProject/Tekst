@@ -3,7 +3,7 @@ import type { UserRead, UserSearchFilters, UserUpdate } from '@/api';
 import { DELETE, PATCH, POST } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserListItem from '@/components/user/UserListItem.vue';
@@ -208,32 +208,32 @@ onMounted(() => {
           </template>
         </n-input>
 
-        <labelled-switch
+        <labeled-switch
           v-model="filters.active"
           :label="$t('models.user.isActive')"
           @update:model-value="resetPagination"
         />
-        <labelled-switch
+        <labeled-switch
           v-model="filters.inactive"
           :label="$t('models.user.isInactive')"
           @update:model-value="resetPagination"
         />
-        <labelled-switch
+        <labeled-switch
           v-model="filters.verified"
           :label="$t('models.user.isVerified')"
           @update:model-value="resetPagination"
         />
-        <labelled-switch
+        <labeled-switch
           v-model="filters.unverified"
           :label="$t('models.user.isUnverified')"
           @update:model-value="resetPagination"
         />
-        <labelled-switch
+        <labeled-switch
           v-model="filters.admin"
           :label="$t('models.user.isSuperuser')"
           @update:model-value="resetPagination"
         />
-        <labelled-switch
+        <labeled-switch
           v-model="filters.user"
           :label="$t('models.user.modelLabel')"
           @update:model-value="resetPagination"

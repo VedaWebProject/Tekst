@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
@@ -20,6 +21,8 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
 </script>
 
 <template>
+  <form-section-heading :label="$t('resources.settings.config.apiCall.headingApiRequest')" />
+
   <!-- ENDPOINT URL -->
   <n-form-item
     path="config.apiCall.endpoint"
@@ -53,6 +56,10 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
       @keydown.enter.prevent
     />
   </n-form-item>
+
+  <form-section-heading
+    :label="$t('resources.settings.config.apiCall.headingResponseTransformation')"
+  />
 
   <!-- TRANSFORM FN JS DEPENDENCIES -->
   <n-form-item>

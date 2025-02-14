@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PlainTextResourceConfig } from '@/api';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentCssConfigFormRules } from '@/forms/formRules';
 import { all as knownCssProperties } from 'known-css-properties';
@@ -13,10 +12,10 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
 </script>
 
 <template>
-  <icon-heading level="5">
-    <span>{{ $t('resources.settings.config.general.contentCss.heading') }}</span>
-    <help-button-widget help-key="contentCssConfig" />
-  </icon-heading>
+  <form-section-heading
+    :label="$t('resources.settings.config.general.contentCss.heading')"
+    help-key="contentCssConfig"
+  />
   <n-form-item :show-label="false">
     <n-dynamic-input
       v-model:value="model"

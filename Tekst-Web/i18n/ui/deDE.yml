@@ -1,6 +1,9 @@
 general:
   general: Allgemein
   default: standard
+  enabled: Aktiv
+  on: 'An'
+  off: 'Aus'
   status: Status
   comment: Kommentar
   settings: Einstellungen
@@ -323,12 +326,12 @@ models:
     description: Beschreibung
     level: Ebene
     resourceType: Ressourcentyp
-    public: öffentlich
+    public: veröffentlicht
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
-    share: Zugriff teilen
-    sharedRead: Lesezugriff teilen
-    sharedWrite: Schreibzugriff teilen
+    share: Zugriff
+    sharedRead: Lesezugriff
+    sharedWrite: Schreibzugriff
     config: Konfiguration
   content:
     modelLabel: Inhalt | Inhalte
@@ -393,7 +396,7 @@ resources:
   hasCorrections: hat Korrekturnotizen
   hasNoCorrections: hat keine Korrekturnotizen
   public: '@:models.resource.public'
-  notPublic: private
+  notPublic: unveröffentlicht
   shared: Zugriff mit {count} Benutzer geteilt | Zugriff mit {count} Benutzern geteilt
   proposed: '@:models.resource.proposed'
   notProposed: '@:general.not @:models.resource.proposed'
@@ -454,11 +457,15 @@ resources:
     msgSaved: Ihre neue Ressource "{title}" wurden erstellt.
   settings:
     heading: Ressourcen-Einstellungen
-    onlyForPrivate: Nur für nicht veröffentlichte und nicht vorgeschlagene Ressourcen!
+    props: Eigenschaften
+    coreInfo: Grundinformationen
+    integration: Integration
+    presentation: Darstellung
+    unavailableWhenPublished: Zugriffseinstellungen sind für veröffentlichte Ressourcen nicht verfügbar.
+    sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource zu vergeben.
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     config:
-      heading: Konfiguration
-      enabled: Aktiv
+      heading: Allgemeine Konfiguration
       common:
         category: Kategorie
         catUnlabelled: unbeschriftet
@@ -467,11 +474,13 @@ resources:
         showOnParentLevel: Ermögliche das Anzeigen von kombinierten Inhalten auf der übergeordneten Ebene
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
-        rtl: Stelle Inhalte mit Textrichtung rechts-nach-links dar
+        rtl:
+          heading: Alternative Textrichtung für Inhalte
+          ltr: von links nach rechts
+          rtl: von rechts nach links
       general:
-        heading: Allgemein
-        defaultCollapsed: Inhalte sind standardmäßig eingeklappt
-        font: Schriftart für Inhalte (nutzt Standard wenn nicht festgelegt)
+        defaultCollapsed: Ein-/Ausklappbare Inhalte
+        font: Schriftart für Inhalte
         searchReplacements:
           heading: Ersetzungen in Suchanfragen
           pattern: Muster (RegEx)
@@ -481,7 +490,7 @@ resources:
           prop: Eigenschaft
           value: Wert
       reducedView:
-        heading: Einzeilige Anzeige in reduzierter Leseansicht
+        heading: Einzeilige Anzeige in Reduzierter Leseansicht
         lineDelimiter: Zeilen-Trennzeichen
       plainText:
         deeplLinks:
@@ -494,11 +503,14 @@ resources:
           lettersLowercase: Buchstaben (klein)
           lettersUppercase: Buchstaben (groß)
       textAnnotation:
+        heading: Annotations-Darstellung
         displayTemplate: Darstellungsvorlage
         multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
       apiCall:
-        endpoint: API-Endpoint
+        headingApiRequest: API-Anfrage
+        headingResponseTransformation: Transformation der Antwort-Daten
+        endpoint: URL (ohne Query-Parameter)
         method: HTTP-Anfrage-Methode
         contentType: Content-Type der Anfrage
         transformDeps: Abhängigkeiten der Transformationsfunktion (URLs)
@@ -885,7 +897,6 @@ search:
     wc: Interpretiere Platzhalter (* und ?) für dieses Feld
   settings:
     general:
-      heading: '@:general.general'
       strict: Berücksichtige Diakritika
     quick:
       defaultOperator: Alle Begriffe müssen vorkommen

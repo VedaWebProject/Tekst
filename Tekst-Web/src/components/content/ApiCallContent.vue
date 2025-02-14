@@ -105,7 +105,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div :dir="resource.config.common.rtl ? 'rtl' : undefined">
     <div v-for="(htmlPart, i) in html" :key="i">
       <template v-if="!reduced">
         <hydrated-html v-if="htmlPart !== undefined" :html="htmlPart" :style="fontStyle" />

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchReplacementsConfigFormRules } from '@/forms/formRules';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
@@ -10,10 +9,10 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
 </script>
 
 <template>
-  <icon-heading level="5">
-    <span>{{ $t('resources.settings.config.general.searchReplacements.heading') }}</span>
-    <help-button-widget help-key="searchReplacements" />
-  </icon-heading>
+  <form-section-heading
+    :label="$t('resources.settings.config.general.searchReplacements.heading')"
+    help-key="searchReplacements"
+  />
   <n-form-item :show-label="false">
     <n-dynamic-input
       v-model:value="model"

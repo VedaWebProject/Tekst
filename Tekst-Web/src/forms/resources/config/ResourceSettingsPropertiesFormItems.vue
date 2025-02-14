@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -24,6 +25,8 @@ const metadataKeysOptions = computed(() =>
 </script>
 
 <template>
+  <form-section-heading :label="$t('resources.settings.coreInfo')" />
+
   <!-- TITLE -->
   <translation-form-item
     v-model="model.title"
@@ -65,7 +68,8 @@ const metadataKeysOptions = computed(() =>
   />
 
   <!-- METADATA -->
-  <n-form-item :label="$t('models.meta.modelLabel')" :show-feedback="false">
+  <form-section-heading :label="$t('models.meta.modelLabel')" />
+  <n-form-item :show-label="false">
     <n-dynamic-input
       v-model:value="model.meta"
       :min="0"

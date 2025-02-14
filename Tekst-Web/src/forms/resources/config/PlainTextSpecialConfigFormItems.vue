@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { deeplSourceLanguages } from '@/api';
 import type { components } from '@/api/schema';
-import LabelledSwitch from '@/components/LabelledSwitch.vue';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { $t } from '@/i18n';
 import { NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
@@ -23,16 +24,11 @@ const languageOptions = deeplSourceLanguages.map((l) => ({ label: l, value: l })
 <template>
   <!-- LINE LABELLING -->
 
-  <h5 style="margin-top: 0">
-    {{ $t('resources.settings.config.plainText.lineLabelling.heading') }}
-  </h5>
+  <form-section-heading :label="$t('resources.settings.config.plainText.lineLabelling.heading')" />
 
   <!-- enabled -->
   <n-form-item :show-label="false">
-    <labelled-switch
-      v-model="model.lineLabelling.enabled"
-      :label="$t('resources.settings.config.enabled')"
-    />
+    <labeled-switch v-model="model.lineLabelling.enabled" />
   </n-form-item>
 
   <!-- labelling type -->
@@ -46,16 +42,11 @@ const languageOptions = deeplSourceLanguages.map((l) => ({ label: l, value: l })
 
   <!-- DEEPL LINKS -->
 
-  <h5 style="margin-top: 0">
-    {{ $t('resources.settings.config.plainText.deeplLinks.heading') }}
-  </h5>
+  <form-section-heading :label="$t('resources.settings.config.plainText.deeplLinks.heading')" />
 
   <!-- enabled -->
   <n-form-item :show-label="false">
-    <labelled-switch
-      v-model="model.deeplLinks.enabled"
-      :label="$t('resources.settings.config.enabled')"
-    />
+    <labeled-switch v-model="model.deeplLinks.enabled" />
   </n-form-item>
 
   <!-- source language -->
