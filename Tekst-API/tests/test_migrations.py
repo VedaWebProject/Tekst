@@ -119,3 +119,16 @@ async def test_0_5_0a0(database, get_sample_data):
     assert "show_on_parent_level" not in res["config"]["common"]
     assert "enable_content_context" in res["config"]["common"]
     assert res["config"]["common"]["enable_content_context"] == conf_val
+
+
+@pytest.mark.anyio
+async def test_0_6_0a0(database, get_sample_data):
+    state = get_sample_data("migrations/0_6_0a0.json")
+    await database.state.insert_one(state)
+
+    # run migration
+    await migrations.migration_0_6_0a0.migration(database)
+    state = await database.state.find_one({})
+
+    # assert the data has been fixed by the migration
+    assert "always_show_text_info" not in state

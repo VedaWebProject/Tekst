@@ -93,16 +93,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = False
 
-    always_show_text_info: Annotated[
-        bool,
-        Field(
-            description=(
-                "Always show text info and selector in header, "
-                "even on non-text-specific pages"
-            ),
-        ),
-    ] = True
-
     direct_jump_on_unique_alias_search: Annotated[
         bool,
         Field(

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PATCH, resourceTypes, type PlatformSettingsUpdate } from '@/api';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -189,19 +190,18 @@ watch(
         </n-tab-pane>
 
         <!-- NAVIGATION -->
-        <n-tab-pane :tab="$t('admin.system.platformSettings.headingNav')" name="navigation">
-          <n-flex vertical class="mb-lg">
-            <!-- ALWAYS SHOW TEXT INFO, ALSO ON NON-TEXT-SPECIFIC PAGES? -->
-            <labeled-switch
-              v-model="formModel.alwaysShowTextInfo"
-              :label="$t('models.platformSettings.alwaysShowTextInfo')"
-            />
+        <n-tab-pane :tab="$t('admin.system.platformSettings.nav.heading')" name="navigation">
+          <form-section-heading :label="$t('admin.system.platformSettings.nav.aliasSearch')" />
+
+          <n-form-item :show-label="false">
             <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
             <labeled-switch
               v-model="formModel.directJumpOnUniqueAliasSearch"
               :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
             />
-          </n-flex>
+          </n-form-item>
+
+          <form-section-heading :label="$t('admin.system.platformSettings.nav.customNavLabels')" />
 
           <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
           <translation-form-item

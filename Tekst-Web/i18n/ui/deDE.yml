@@ -356,7 +356,6 @@ models:
     navSearchEntry: Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Einführungstext für Registrierungsseite
-    alwaysShowTextInfo: Zeige Textinformationen und -auswahl auf nicht-textspezifischen Seiten
     directJumpOnUniqueAliasSearch: Springe direkt zur Belegstelle bei Suche nach eindeutigem Alias
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
@@ -826,7 +825,10 @@ admin:
   system:
     heading: System
     platformSettings:
-      headingNav: Navigation
+      nav:
+        heading: Navigation
+        aliasSearch: Suche nach Belegstellen-Aliasen
+        customNavLabels: Benutzerdefinierte Navigations-Beschriftungen
       headingBrowseView: Lese-Ansicht
       headingBranding: Branding
       msgSaved: Plattform-Einstellungen gespeichert.

@@ -355,7 +355,6 @@ models:
     navSearchEntry: Label for "Search" in main navigation
     navInfoEntry: Label for "Info" in main navigation
     registerIntroText: Introduction text for register page
-    alwaysShowTextInfo: Show text info and selector in header on non-text-specific pages
     directJumpOnUniqueAliasSearch: Directly jump to location when searching for unambiguous alias
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
@@ -804,7 +803,10 @@ admin:
   system:
     heading: System
     platformSettings:
-      headingNav: Navigation
+      nav:
+        heading: Navigation
+        aliasSearch: Location Alias Search
+        customNavLabels: Custom Navigation Labels
       headingBrowseView: Browse View
       headingBranding: Branding
       msgSaved: Platform settings saved.

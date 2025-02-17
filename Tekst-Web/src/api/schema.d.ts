@@ -4316,12 +4316,6 @@ export interface components {
        */
       indexUnpublishedResources: boolean;
       /**
-       * Alwaysshowtextinfo
-       * @description Always show text info and selector in header, even on non-text-specific pages
-       * @default true
-       */
-      alwaysShowTextInfo: boolean;
-      /**
        * Directjumponuniquealiassearch
        * @description Directly jump to respective location when searching for unique location alias
        * @default true
@@ -4441,11 +4435,6 @@ export interface components {
        * @description Index unpublished resources
        */
       indexUnpublishedResources?: boolean;
-      /**
-       * Alwaysshowtextinfo
-       * @description Always show text info and selector in header, even on non-text-specific pages
-       */
-      alwaysShowTextInfo?: boolean;
       /**
        * Directjumponuniquealiassearch
        * @description Directly jump to respective location when searching for unique location alias

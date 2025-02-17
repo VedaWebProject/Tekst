@@ -10,7 +10,6 @@ import { createRouter, createWebHistory, type LocationQuery } from 'vue-router';
 declare module 'vue-router' {
   interface RouteMeta {
     restricted?: 'user' | 'superuser';
-    isTextSpecific?: boolean;
   }
 }
 
@@ -86,9 +85,6 @@ const router = createRouter({
       path: '/text/:textSlug?/browse/:locId?',
       name: 'browse',
       component: BrowseView,
-      meta: {
-        isTextSpecific: true,
-      },
       props: true,
     },
     {
@@ -186,7 +182,6 @@ const router = createRouter({
       name: 'resources',
       component: ResourcesView,
       meta: {
-        isTextSpecific: true,
         restricted: 'user',
       },
       props: true,
@@ -204,7 +199,6 @@ const router = createRouter({
       name: 'resourceSettings',
       component: ResourceSettingsView,
       meta: {
-        isTextSpecific: true,
         restricted: 'user',
       },
       props: true,
@@ -214,7 +208,6 @@ const router = createRouter({
       name: 'resourceCreate',
       component: ResourceCreateView,
       meta: {
-        isTextSpecific: true,
         restricted: 'user',
       },
       props: true,
@@ -224,7 +217,6 @@ const router = createRouter({
       name: 'resourceContents',
       component: ContentsView,
       meta: {
-        isTextSpecific: true,
         restricted: 'user',
       },
       props: true,
@@ -234,7 +226,6 @@ const router = createRouter({
       name: 'resourceCorrections',
       component: CorrectionsView,
       meta: {
-        isTextSpecific: true,
         restricted: 'user',
       },
       props: true,
@@ -284,9 +275,6 @@ const router = createRouter({
           name: 'adminTexts',
           redirect: { name: 'adminTextsSettings' },
           component: AdminTextsView,
-          meta: {
-            isTextSpecific: true,
-          },
           children: [
             {
               path: 'general',

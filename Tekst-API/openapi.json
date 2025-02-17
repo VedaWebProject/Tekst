@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.5.0a0"
+    "version": "0.6.0a0"
   },
   "servers": [
     {
@@ -13746,12 +13746,6 @@
             "description": "Index unpublished resources",
             "default": false
           },
-          "alwaysShowTextInfo": {
-            "type": "boolean",
-            "title": "Alwaysshowtextinfo",
-            "description": "Always show text info and selector in header, even on non-text-specific pages",
-            "default": true
-          },
           "directJumpOnUniqueAliasSearch": {
             "type": "boolean",
             "title": "Directjumponuniquealiassearch",
@@ -13972,19 +13966,6 @@
             ],
             "title": "Indexunpublishedresources",
             "description": "Index unpublished resources",
-            "optionalNullable": false
-          },
-          "alwaysShowTextInfo": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Alwaysshowtextinfo",
-            "description": "Always show text info and selector in header, even on non-text-specific pages",
             "optionalNullable": false
           },
           "directJumpOnUniqueAliasSearch": {
