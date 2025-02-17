@@ -462,7 +462,7 @@ resources:
         catUnlabelled: unlabelled
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
-        showOnParentLevel: Enable viewing combined contents on the parent level
+        enableContentContext: Enable viewing contents in context of parent level
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced search
         rtl:

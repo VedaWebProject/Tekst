@@ -99,3 +99,23 @@ async def test_0_4_2a0(database, get_sample_data):
     # assert the data has been fixed by the migration
     assert "extra" not in content
     assert "transform_context" in content
+
+
+@pytest.mark.anyio
+async def test_0_5_0a0(database, get_sample_data):
+    res = get_sample_data("migrations/0_5_0a0.json")
+    conf_val = res["config"]["common"]["show_on_parent_level"]
+    assert conf_val is not None
+    res_id = (await database.resources.insert_one(res)).inserted_id
+    assert res_id
+
+    # run migration
+    await migrations.migration_0_5_0a0.migration(database)
+    res = await database.resources.find_one({"_id": res_id})
+
+    # assert the data has been fixed by the migration
+    assert "config" in res
+    assert "common" in res["config"]
+    assert "show_on_parent_level" not in res["config"]["common"]
+    assert "enable_content_context" in res["config"]["common"]
+    assert res["config"]["common"]["enable_content_context"] == conf_val

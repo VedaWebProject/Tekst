@@ -30,7 +30,7 @@ class CommonResourceConfig(ModelBase):
             description="Whether this resource is active by default when public",
         ),
     ] = True
-    show_on_parent_level: Annotated[
+    enable_content_context: Annotated[
         bool,
         Field(
             description="Show combined contents of this resource on the parent level",
