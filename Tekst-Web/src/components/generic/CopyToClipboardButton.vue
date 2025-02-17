@@ -4,6 +4,7 @@ import { CopyIcon } from '@/icons';
 import { useClipboard } from '@vueuse/core';
 import { NButton, NIcon } from 'naive-ui';
 import type { Type } from 'naive-ui/es/button/src/interface';
+import { useAttrs } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -16,6 +17,7 @@ const props = withDefaults(
   }
 );
 
+const attrs: Record<string, unknown> = useAttrs();
 const { copy, copied, isSupported } = useClipboard({ copiedDuring: 1000 });
 
 function copyToClipboard() {
@@ -27,16 +29,13 @@ function copyToClipboard() {
 
 <template>
   <n-button
-    v-bind="$attrs"
-    :type="copied ? 'success' : ($attrs.type as Type | undefined)"
+    :type="copied ? 'success' : (attrs.type as Type | undefined)"
     :disabled="!isSupported || !text"
     @click="copyToClipboard"
     :title="title || $t('general.copyAction')"
-    :focusable="false"
   >
     <template #icon>
-      <slot v-if="$slots.icon" name="icon"></slot>
-      <n-icon v-else :component="CopyIcon" />
+      <n-icon :component="CopyIcon" />
     </template>
     <slot></slot>
   </n-button>
