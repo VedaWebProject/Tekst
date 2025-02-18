@@ -47,7 +47,7 @@ import FormatListNumberedOutlined from '@vicons/material/FormatListNumberedOutli
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
-import GroupsFilled from '@vicons/material/GroupsFilled';
+import GroupsOutlined from '@vicons/material/GroupsOutlined';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
@@ -74,7 +74,7 @@ import ManageAccountsFilled from '@vicons/material/ManageAccountsFilled';
 import ManageSearchOutlined from '@vicons/material/ManageSearchOutlined';
 import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
 import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
 import MenuOutlined from '@vicons/material/MenuOutlined';
 import MergeOutlined from '@vicons/material/MergeOutlined';
 import MessageOutlined from '@vicons/material/MessageOutlined';
@@ -129,7 +129,7 @@ export {
   BarChartOutlined as BarChartIcon,
   RemoveCircleFilled as BlockCircleIcon,
   BlockOutlined as BlockIcon,
-  MenuBookOutlined as BookIcon,
+  MenuBookTwotone as BookIcon,
   BookmarksFilled as BookmarksIcon,
   VerticalAlignBottomOutlined as BottomIcon,
   KeyboardCapslockOutlined as CapsLockIcon,
@@ -142,7 +142,7 @@ export {
   InvertColorsOutlined as ColorIcon,
   InvertColorsOffOutlined as ColorOffIcon,
   ChatBubbleOutlineOutlined as CommentIcon,
-  GroupsFilled as CommunityIcon,
+  GroupsOutlined as CommunityIcon,
   CompareArrowsOutlined as CompareIcon,
   CompressOutlined as CompressIcon,
   ContentCopyOutlined as CopyIcon,
@@ -236,5 +236,5 @@ export {
   SupervisorAccountRound as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
-  WarningAmberOutlined as WarningIcon,
+  WarningAmberOutlined as WarningIcon
 };
