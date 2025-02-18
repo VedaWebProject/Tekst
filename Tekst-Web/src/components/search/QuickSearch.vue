@@ -152,6 +152,7 @@ function quickSearch(q: string) {
         :placeholder="$t('search.quickSearch.title')"
         :max-length="512"
         :loading="loading"
+        :style="{backgroundColor: theme.dark ? '#393939' : undefined}"
         @input="showLocationSelect = false"
         @keydown.enter.stop.prevent="handleSearch"
       >
