@@ -74,7 +74,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     return pages.map((p) => ({
       label: renderLink(() => p.title || p.key, { name: 'info', params: { pageKey: p.key } }),
       key: `page_${p.key}`,
-      icon: (showIcons && renderIcon(InfoIcon)) || undefined,
+      icon: (showIcons && state.smallScreen && renderIcon(InfoIcon)) || undefined,
     }));
   });
 
@@ -101,6 +101,17 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
+    ...(auth.loggedIn
+      ? [
+          {
+            label: renderLink(() => $t('community.heading'), {
+              name: 'community',
+            }),
+            key: 'community',
+            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+          },
+        ]
+      : []),
     ...(state.smallScreen && auth.loggedIn
       ? [
           {
@@ -124,13 +135,6 @@ export function useMainMenuOptions(showIcons: boolean = true) {
             key: 'resources',
             icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
           },
-          {
-            label: renderLink(() => $t('community.heading'), {
-              name: 'community',
-            }),
-            key: 'community',
-            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
-          },
         ]
       : []),
     ...(infoPagesOptions.value.length
@@ -140,6 +144,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
               pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('nav.info'),
             key: 'info',
             children: infoPagesOptions.value,
+            icon: (showIcons && renderIcon(InfoIcon)) || undefined,
           },
         ]
       : []),
@@ -180,6 +185,10 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
     },
     ...(state.smallScreen
       ? [
+          {
+            key: 'logoutDivider',
+            type: 'divider',
+          },
           {
             label: renderLink(() => $t('account.logoutBtn'), { name: 'logout' }),
             key: 'logout',

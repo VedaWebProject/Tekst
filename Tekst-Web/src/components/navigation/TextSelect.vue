@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
+import { ExpandArrowDownIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NButton, NDropdown, NIcon, useThemeVars } from 'naive-ui';
+import { NButton, NDropdown, NFlex, NIcon, useThemeVars } from 'naive-ui';
 import { computed, h, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { ExpandArrowDownIcon } from '@/icons';
 
 const router = useRouter();
 const state = useStateStore();
@@ -15,13 +15,6 @@ const themeVars = useThemeVars();
 
 const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
 const textSelectDropdownRef = ref();
-
-const btnStyle = computed(() => ({
-  fontSize: 'inherit',
-  fontWeight: 'var(--font-weight-bold)',
-  cursor: !disabled.value ? 'pointer' : 'default',
-  maxWidth: '100%',
-}));
 
 const renderLabel = (t: TextRead) => {
   return () =>
@@ -73,29 +66,53 @@ function handleSelect(text: TextRead) {
     placement="bottom-start"
   >
     <n-button
+      v-bind="$attrs"
       text
       icon-placement="right"
       :color="themeVars.baseColor"
       :focusable="false"
       :keyboard="false"
       :title="$t('general.textSelect')"
-      :style="btnStyle"
+      class="text-select-btn"
+      :style="{ cursor: !disabled ? 'pointer' : 'default' }"
     >
-      <template v-if="!disabled" #icon>
-        <n-icon :component="ExpandArrowDownIcon" />
-      </template>
-      <div class="text-select-label">
-        {{ state.text.title }}
-      </div>
+      <n-flex
+        vertical
+        :size="0"
+        align="flex-start"
+        justify="center"
+        :wrap="false"
+        style="max-width: 100%"
+      >
+        <n-flex align="center" :wrap="false" style="max-width: 100%">
+          <b class="text-title ellipsis text-large">{{ state.text.title }}</b>
+          <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
+        </n-flex>
+        <div
+          v-if="!!state.text?.subtitle.length"
+          class="text-subtitle text-small translucent ellipsis"
+        >
+          <translation-display :value="state.text.subtitle" />
+        </div>
+      </n-flex>
     </n-button>
   </n-dropdown>
 </template>
 
 <style scoped>
-.text-select-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 200%;
+.text-select-btn {
+  max-width: 100%;
+  justify-content: flex-start;
+}
+
+.text-title {
+  line-height: 150%;
+  max-width: 100%;
+}
+
+.text-subtitle {
+  max-width: 100%;
+  line-height: 120%;
+  padding-bottom: 0.2em;
 }
 </style>

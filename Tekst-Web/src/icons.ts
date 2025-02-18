@@ -236,5 +236,5 @@ export {
   SupervisorAccountRound as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
-  WarningAmberOutlined as WarningIcon
+  WarningAmberOutlined as WarningIcon,
 };

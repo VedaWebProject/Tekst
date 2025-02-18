@@ -27,7 +27,7 @@ function handleLanguageSelect(localeCode: LocaleKey) {
   <n-popselect
     v-if="state.availableLocales.length > 1"
     v-model:value="state.locale"
-    trigger="click"
+    trigger="hover"
     :options="options"
     @update:value="handleLanguageSelect"
   >

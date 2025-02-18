@@ -4,7 +4,6 @@ import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
-import QuickSearch from '@/components/search/QuickSearch.vue';
 import { useLogo } from '@/composables/logo';
 import { usePlatformData } from '@/composables/platformData';
 import { CorrectionNoteIcon, HamburgerMenuIcon, MessageIcon } from '@/icons';
@@ -109,23 +108,11 @@ const titleLinkTo = computed(() => {
     </n-badge>
   </n-flex>
 
-  <n-flex
-    v-if="!state.smallScreen"
-    justify="space-between"
-    align="center"
-    :wrap="false"
-    class="navbar-menu"
-  >
+  <div v-if="!state.smallScreen" class="navbar-menu">
     <navigation-menu :options="mainMenuOptions" />
-    <quick-search />
-  </n-flex>
+  </div>
 
-  <template v-else>
-    <div class="navbar-menu">
-      <quick-search />
-    </div>
-    <drawer-menu v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
-  </template>
+  <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
 </template>
 
 <style scoped>
@@ -133,7 +120,6 @@ const titleLinkTo = computed(() => {
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--gap-lg);
-  font-size: var(--font-size-small);
 }
 
 .navbar-smallscreen {
@@ -162,7 +148,7 @@ const titleLinkTo = computed(() => {
 
 .navbar-menu {
   max-width: var(--max-app-width);
-  margin: 0 auto var(--gap-md) auto;
+  margin: 0 auto var(--gap-sm) auto;
   padding: 0 var(--gap-lg);
 }
 

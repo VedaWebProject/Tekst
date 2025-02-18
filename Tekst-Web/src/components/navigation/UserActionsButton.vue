@@ -3,7 +3,6 @@ import UserAvatar from '@/components/user/UserAvatar.vue';
 import { $t } from '@/i18n';
 import {
   AdminIcon,
-  CommunityIcon,
   CorrectionNoteIcon,
   LoginIcon,
   LogoutIcon,
@@ -73,13 +72,6 @@ const userOptions = computed(() => [
     key: 'resources',
     icon: renderIcon(ResourceIcon),
   },
-  {
-    label: renderLink(() => $t('community.heading'), {
-      name: 'community',
-    }),
-    key: 'community',
-    icon: renderIcon(CommunityIcon),
-  },
   ...(auth.user?.isSuperuser
     ? [
         {
@@ -130,7 +122,7 @@ function handleUserOptionSelect(key: string) {
   <n-dropdown
     v-if="auth.loggedIn && !state.smallScreen"
     :options="userOptions"
-    trigger="click"
+    trigger="hover"
     placement="bottom-end"
     @select="handleUserOptionSelect"
   >
