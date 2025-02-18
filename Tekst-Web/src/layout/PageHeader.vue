@@ -12,14 +12,20 @@ const state = useStateStore();
   <header>
     <primary-nav-bar />
     <div class="accent-color-bg" style="color: var(--base-color)">
-      <n-flex size="large" justify="space-between" align="center" :wrap="false" class="page-header-bottom text-large">
+      <n-flex
+        size="large"
+        justify="space-between"
+        align="center"
+        :wrap="false"
+        class="page-header-bottom text-large"
+      >
         <text-select />
         <div
           v-if="!state.smallScreen && state.text?.subtitle?.length"
           class="current-text-subtitle ellipsis"
         >
           <translation-display :value="state.text?.subtitle" />
-      </div>
+        </div>
       </n-flex>
     </div>
   </header>

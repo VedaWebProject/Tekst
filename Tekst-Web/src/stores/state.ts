@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n';
 import type { RouteLocationNormalized } from 'vue-router';
 import { useRoute } from 'vue-router';
 
-interface AppInitState {
+export interface AppInitState {
   progress: number;
   stepMsg: string;
   loading: boolean;

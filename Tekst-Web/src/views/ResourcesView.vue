@@ -489,7 +489,7 @@ onMounted(() => {
     :show="showTransferModal"
     :resource="transferTargetResource"
     :loading="actionsLoading"
-    @update:show="($event: boolean) => (showTransferModal = $event)"
+    @update:show="(v?: boolean) => (showTransferModal = !!v)"
     @submit="handleTransferResource"
   />
 </template>
