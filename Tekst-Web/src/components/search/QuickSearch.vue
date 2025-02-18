@@ -106,6 +106,9 @@ async function handleSearch() {
     quickSearch(searchInput.value);
   }
 
+  // reset quick search target texts
+  search.resetQuickSearchTexts();
+
   loading.value = false;
 
   if (!state.smallScreen) {
@@ -152,7 +155,7 @@ function quickSearch(q: string) {
         :placeholder="$t('search.quickSearch.title')"
         :max-length="512"
         :loading="loading"
-        :style="{backgroundColor: theme.dark ? '#424247' : undefined}"
+        :style="{ backgroundColor: theme.dark ? '#424247' : undefined }"
         @input="showLocationSelect = false"
         @keydown.enter.stop.prevent="handleSearch"
       >

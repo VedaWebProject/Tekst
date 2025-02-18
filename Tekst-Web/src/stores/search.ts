@@ -76,6 +76,10 @@ export const useSearchStore = defineStore('search', () => {
   const settingsAdvanced = ref<AdvancedSearchSettings>(getDefaultSettings().adv);
   const currentRequest = ref<SearchRequest>();
 
+  const resetQuickSearchTexts = (currTxtId?: string) => {
+    settingsQuick.value.txt = [currTxtId || state.text?.id].filter((t) => t != null);
+  };
+
   const loading = ref(false);
   const error = ref(false);
   const results = ref<SearchResults>();
@@ -260,8 +264,8 @@ export const useSearchStore = defineStore('search', () => {
   // set quick search settings text selection to all texts on working text change
   watch(
     () => state.text?.id,
-    () => {
-      settingsQuick.value.txt = state.pf?.texts.map((t) => t.id);
+    (newTextId) => {
+      resetQuickSearchTexts(newTextId);
     },
     { immediate: true }
   );
@@ -288,5 +292,6 @@ export const useSearchStore = defineStore('search', () => {
     browseHitResources,
     browseHitResourcesActive,
     browseSkipTo,
+    resetQuickSearchTexts,
   };
 });
