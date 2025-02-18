@@ -9,7 +9,6 @@ import {
   DeleteIcon,
   MoreIcon,
   UserDowngradeIcon,
-  UserPromoteIcon,
   VerifiedUserIcon,
 } from '@/icons';
 import { renderIcon, utcToLocalTime } from '@/utils';
@@ -109,7 +108,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setSuperuser'),
               key: 'setSuperuser',
-              icon: renderIcon(UserPromoteIcon, nuiTheme.value.infoColor),
+              icon: renderIcon(AdminIcon, nuiTheme.value.infoColor),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('setSuperuserClick', props.targetUser, true),
             },
