@@ -3,46 +3,38 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
 import { useStateStore } from '@/stores';
-import { useThemeVars } from 'naive-ui';
-import { useRoute } from 'vue-router';
+import { NFlex } from 'naive-ui';
 
 const state = useStateStore();
-const route = useRoute();
-const themeVars = useThemeVars();
 </script>
 
 <template>
   <header>
     <primary-nav-bar />
-    <div class="accent-color-bg" style="min-height: 12px" :style="{ color: themeVars.baseColor }">
-      <div v-if="route.meta.isTextSpecific || state.pf?.state.alwaysShowTextInfo" id="current-text">
+    <div class="accent-color-bg" style="color: var(--base-color)">
+      <n-flex size="large" justify="space-between" align="center" :wrap="false" class="page-header-bottom text-large">
         <text-select />
-        <span
+        <div
           v-if="!state.smallScreen && state.text?.subtitle?.length"
-          class="current-text-subtitle"
+          class="current-text-subtitle ellipsis"
         >
           <translation-display :value="state.text?.subtitle" />
-        </span>
       </div>
+      </n-flex>
     </div>
   </header>
 </template>
 
 <style scoped>
-#current-text {
+.page-header-bottom {
   height: 64px;
-  display: flex;
-  column-gap: 24px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
   padding: 0 var(--gap-lg);
   max-width: var(--max-app-width);
   margin: 0 auto;
-  font-size: var(--font-size-large);
 }
 
-#current-text .current-text-subtitle {
+.page-header-bottom > .current-text-subtitle {
   filter: opacity(0.6);
+  white-space: nowrap;
 }
 </style>

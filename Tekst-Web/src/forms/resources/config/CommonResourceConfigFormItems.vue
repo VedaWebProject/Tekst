@@ -77,8 +77,8 @@ const oskOptions = computed(
   <n-form-item :show-label="false" :show-feedback="false">
     <n-flex :wrap="false" align="center">
       <labeled-switch
-        v-model="model.showOnParentLevel"
-        :label="$t('resources.settings.config.common.showOnParentLevel')"
+        v-model="model.enableContentContext"
+        :label="$t('resources.settings.config.common.enableContentContext')"
         :disabled="
           resourceTypes
             .filter((rt) => !rt.contentContext)

@@ -61,7 +61,8 @@ const headerWidgetsOpacity = computed<number>(() =>
 const hasContent = computed(() => !!props.resource.contents?.length);
 const show = computed(() => props.resource.active && (hasContent.value || !browse.reducedView));
 const fromChildLevel = computed(
-  () => props.resource.level - 1 === browse.level && props.resource.config.common.showOnParentLevel
+  () =>
+    props.resource.level - 1 === browse.level && props.resource.config.common.enableContentContext
 );
 </script>
 

@@ -160,7 +160,7 @@ class ApiCallSpecialConfig(ModelBase):
 
 
 class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
-    show_on_parent_level: Annotated[
+    enable_content_context: Annotated[
         Literal[False],
         Field(
             description=(
