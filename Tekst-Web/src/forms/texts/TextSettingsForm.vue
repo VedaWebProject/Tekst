@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { TextCreate } from '@/api';
-import { DELETE, PATCH, accentColorPresets } from '@/api';
-import { dialogProps } from '@/common';
+import { PATCH, accentColorPresets } from '@/api';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -13,8 +11,6 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { textFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t } from '@/i18n';
-import { SettingsIcon } from '@/icons';
-import router from '@/router';
 import { useStateStore } from '@/stores';
 import { cloneDeep } from 'lodash-es';
 import {
@@ -26,7 +22,6 @@ import {
   NFormItem,
   NInput,
   NSelect,
-  useDialog,
   type FormInst,
 } from 'naive-ui';
 import { computed, ref } from 'vue';
@@ -35,7 +30,6 @@ import { onBeforeRouteUpdate } from 'vue-router';
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
-const dialog = useDialog();
 const loading = ref(false);
 
 const initialModel = () => cloneDeep(state.text);
@@ -57,15 +51,6 @@ const defaultLevelOptions = computed(() =>
   }))
 );
 
-const textCanBeDeleted = computed(() => {
-  if (!state.pf) return false;
-  if (state.text?.isActive) {
-    return state.pf.texts.filter((t) => t.isActive).length > 1;
-  } else {
-    return state.pf.texts.length > 1;
-  }
-});
-
 function resetForm() {
   model.value = initialModel();
   resetModelChanges();
@@ -85,7 +70,7 @@ function handleSave() {
         await loadPlatformData();
         state.text = updatedText;
         resetModelChanges();
-        message.success($t('admin.text.settings.msgSaved'));
+        message.success($t('texts.settings.msgSaved'));
       }
       loading.value = false;
     })
@@ -93,30 +78,6 @@ function handleSave() {
       message.error($t('errors.followFormRules'));
       loading.value = false;
     });
-}
-
-async function handleDelete() {
-  dialog.warning({
-    title: $t('general.warning'),
-    content: $t('admin.text.settings.warnDeleteText', { title: state.text?.title || '?' }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
-    closable: false,
-    ...dialogProps,
-    onPositiveClick: async () => {
-      loading.value = true;
-      const { error } = await DELETE('/texts/{id}', {
-        params: { path: { id: state.text?.id || '' } },
-      });
-      if (!error) {
-        message.success($t('admin.text.settings.msgDeleted', { title: state.text?.title || '?' }));
-        await loadPlatformData();
-        state.text = state.defaultText;
-        router.replace({ name: 'home' });
-      }
-      loading.value = false;
-    },
-  });
 }
 
 onBeforeRouteUpdate((to, from) => {
@@ -127,12 +88,7 @@ onBeforeRouteUpdate((to, from) => {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="SettingsIcon">
-    {{ $t('general.settings') }}
-    <help-button-widget help-key="adminTextsSettingsView" />
-  </icon-heading>
-
-  <div v-if="model" class="content-block">
+  <div v-if="model">
     <n-form
       ref="formRef"
       :model="model"
@@ -142,7 +98,7 @@ onBeforeRouteUpdate((to, from) => {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <h3>{{ $t('general.general') }}</h3>
+      <form-section-heading :label="$t('general.general')" />
 
       <!-- TITLE -->
       <n-form-item path="title" :label="$t('models.text.title')">
@@ -183,9 +139,11 @@ onBeforeRouteUpdate((to, from) => {
       </n-form-item>
 
       <!-- ACTIVE -->
-      <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+      <n-form-item :show-label="false">
+        <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+      </n-form-item>
 
-      <h3>{{ $t('general.presentation') }}</h3>
+      <form-section-heading :label="$t('general.presentation')" />
 
       <!-- LOCATION DELIMITER -->
       <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
@@ -211,7 +169,7 @@ onBeforeRouteUpdate((to, from) => {
       </n-flex>
 
       <!-- ACCENT COLOR -->
-      <n-form-item path="accentColor" :label="$t('models.text.accentColor')" :show-feedback="false">
+      <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
         <n-color-picker
           v-model:value="model.accentColor"
           :modes="['hex']"
@@ -221,7 +179,8 @@ onBeforeRouteUpdate((to, from) => {
       </n-form-item>
 
       <!-- RESOURCE CATEGORIES -->
-      <h3>{{ $t('models.text.resourceCategories') }}</h3>
+      <form-section-heading :label="$t('models.text.resourceCategories')" />
+
       <n-form-item v-if="model.resourceCategories" :show-label="false">
         <n-dynamic-input
           v-model:value="model.resourceCategories"
@@ -273,11 +232,6 @@ onBeforeRouteUpdate((to, from) => {
     </n-form>
 
     <button-shelf top-gap>
-      <template #start>
-        <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
-          {{ $t('general.deleteAction') }}
-        </n-button>
-      </template>
       <n-button secondary :disabled="loading || !modelChanged" @click="resetForm">
         {{ $t('general.resetAction') }}
       </n-button>

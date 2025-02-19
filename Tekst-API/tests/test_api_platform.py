@@ -15,21 +15,6 @@ async def test_platform_data(
 
 
 @pytest.mark.anyio
-async def test_get_stats(
-    test_client: AsyncClient,
-    assert_status,
-    login,
-    insert_sample_data,
-):
-    await insert_sample_data("texts", "locations", "resources", "contents")
-    await login(is_superuser=True)
-    resp = await test_client.get("/platform/stats")
-    assert_status(200, resp)
-    assert "usersCount" in resp.json()
-    assert resp.json()["usersCount"] == 1
-
-
-@pytest.mark.anyio
 async def test_update_platform_settings(
     test_client: AsyncClient,
     assert_status,

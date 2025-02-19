@@ -1,10 +1,4 @@
-import type {
-  PlatformStats,
-  PublicUserSearchFilters,
-  UserRead,
-  UserReadPublic,
-  UserSearchFilters,
-} from '@/api';
+import type { PublicUserSearchFilters, UserRead, UserReadPublic, UserSearchFilters } from '@/api';
 import { GET } from '@/api';
 import { STATIC_PATH } from '@/common';
 import { $t } from '@/i18n';
@@ -44,28 +38,6 @@ export function useProfile(
   }
 
   return { user, error };
-}
-
-export function useStats() {
-  const stats = ref<PlatformStats | null>(null);
-  const error = ref(false);
-
-  async function load() {
-    stats.value = null;
-    error.value = false;
-
-    const { data, error: err } = await GET('/platform/stats', {});
-
-    if (!err) {
-      stats.value = data;
-    } else {
-      error.value = true;
-    }
-  }
-
-  load();
-
-  return { stats, error, load };
 }
 
 export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {

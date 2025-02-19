@@ -33,15 +33,10 @@ const AccountMessagesView = () => import('@/views/account/AccountMessagesView.vu
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
 
+const TextView = () => import('@/views/admin/TextView.vue');
+const NewTextView = () => import('@/views/admin/NewTextView.vue');
 const AdminView = () => import('@/views/admin/AdminView.vue');
-const AdminStatisticsView = () => import('@/views/admin/AdminStatisticsView.vue');
 const AdminSystemUsersView = () => import('@/views/admin/AdminSystemUsersView.vue');
-const AdminTextsView = () => import('@/views/admin/AdminTextsView.vue');
-const AdminTextsSettingsView = () => import('@/views/admin/AdminTextsSettingsView.vue');
-const AdminTextsLevelsView = () => import('@/views/admin/AdminTextsLevelsView.vue');
-const AdminTextsLocationsView = () => import('@/views/admin/AdminTextsLocationsView.vue');
-const AdminNewTextView = () => import('@/views/admin/AdminNewTextView.vue');
-const AdminSystemView = () => import('@/views/admin/AdminSystemView.vue');
 const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsView.vue');
 const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMaintenanceView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
@@ -82,7 +77,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:textSlug?/browse/:locId?',
+      path: '/texts/:textSlug?/browse/:locId?',
       name: 'browse',
       component: BrowseView,
       props: true,
@@ -112,12 +107,12 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:textSlug?/search',
+      path: '/search',
       name: 'search',
       component: SearchView,
     },
     {
-      path: '/search',
+      path: '/found',
       name: 'searchResults',
       component: SearchResultsView,
     },
@@ -162,7 +157,7 @@ const router = createRouter({
       }),
     },
     {
-      path: '/user/:username',
+      path: '/users/:username',
       name: 'user',
       component: UserView,
       props: true,
@@ -178,7 +173,7 @@ const router = createRouter({
       component: ResetView,
     },
     {
-      path: '/text/:textSlug?/resources',
+      path: '/texts/:textSlug?/resources',
       name: 'resources',
       component: ResourcesView,
       meta: {
@@ -195,7 +190,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/text/:textSlug?/resources/:id/settings',
+      path: '/texts/:textSlug?/resources/:id/settings',
       name: 'resourceSettings',
       component: ResourceSettingsView,
       meta: {
@@ -204,7 +199,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/text/:textSlug?/resources/create',
+      path: '/texts/:textSlug?/resources/create',
       name: 'resourceCreate',
       component: ResourceCreateView,
       meta: {
@@ -213,7 +208,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/text/:textSlug?/resources/:resId/contents/:locId?',
+      path: '/texts/:textSlug?/resources/:resId/contents/:locId?',
       name: 'resourceContents',
       component: ContentsView,
       meta: {
@@ -222,7 +217,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/text/:textSlug?/resources/:resId/corrections',
+      path: '/texts/:textSlug?/resources/:resId/corrections',
       name: 'resourceCorrections',
       component: CorrectionsView,
       meta: {
@@ -257,79 +252,55 @@ const router = createRouter({
       ],
     },
     {
+      path: '/texts/:textSlug/settings',
+      name: 'textSettings',
+      component: TextView,
+      props: true,
+      meta: {
+        restricted: 'superuser',
+      },
+    },
+    {
+      path: '/texts/new',
+      name: 'newText',
+      component: NewTextView,
+      meta: {
+        restricted: 'superuser',
+      },
+    },
+    {
       path: '/admin',
       name: 'admin',
-      redirect: { name: 'adminStatistics' },
+      redirect: { name: 'adminSettings' },
       component: AdminView,
       meta: {
         restricted: 'superuser',
       },
       children: [
         {
-          path: 'statistics',
-          name: 'adminStatistics',
-          component: AdminStatisticsView,
+          path: 'settings',
+          name: 'adminSettings',
+          component: AdminSystemSettingsView,
         },
         {
-          path: 'texts/:textSlug',
-          name: 'adminTexts',
-          redirect: { name: 'adminTextsSettings' },
-          component: AdminTextsView,
-          children: [
-            {
-              path: 'general',
-              name: 'adminTextsSettings',
-              component: AdminTextsSettingsView,
-            },
-            {
-              path: 'levels',
-              name: 'adminTextsLevels',
-              component: AdminTextsLevelsView,
-            },
-            {
-              path: 'locations',
-              name: 'adminTextsLocations',
-              component: AdminTextsLocationsView,
-            },
-          ],
+          path: 'maintenance',
+          name: 'adminMaintenance',
+          component: AdminSystemMaintenanceView,
         },
         {
-          path: 'new-text',
-          name: 'adminNewText',
-          component: AdminNewTextView,
+          path: 'pages',
+          name: 'adminInfoPages',
+          component: AdminSystemInfoPagesView,
         },
         {
-          path: 'system',
-          name: 'adminSystem',
-          redirect: { name: 'adminSystemSettings' },
-          component: AdminSystemView,
-          children: [
-            {
-              path: 'settings',
-              name: 'adminSystemSettings',
-              component: AdminSystemSettingsView,
-            },
-            {
-              path: 'maintenance',
-              name: 'adminSystemMaintenance',
-              component: AdminSystemMaintenanceView,
-            },
-            {
-              path: 'pages',
-              name: 'adminSystemInfoPages',
-              component: AdminSystemInfoPagesView,
-            },
-            {
-              path: 'segments',
-              name: 'adminSystemSegments',
-              component: AdminSystemSegmentsView,
-            },
-            {
-              path: 'users',
-              name: 'adminSystemUsers',
-              component: AdminSystemUsersView,
-            },
-          ],
+          path: 'segments',
+          name: 'adminSegments',
+          component: AdminSystemSegmentsView,
+        },
+        {
+          path: 'users',
+          name: 'adminUsers',
+          component: AdminSystemUsersView,
         },
       ],
     },

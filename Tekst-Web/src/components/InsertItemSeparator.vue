@@ -16,6 +16,7 @@ defineEmits(['click']);
     <n-button
       secondary
       circle
+      size="small"
       :title="title"
       :disabled="disabled"
       :focusable="false"

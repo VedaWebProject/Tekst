@@ -34,10 +34,6 @@ interface AdvancedSearchFormModel {
   queries: AdvancedSearchFormModelItem[];
 }
 
-defineProps<{
-  textSlug?: string;
-}>();
-
 const state = useStateStore();
 const theme = useThemeStore();
 const search = useSearchStore();

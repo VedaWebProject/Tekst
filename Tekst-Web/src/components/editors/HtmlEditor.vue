@@ -78,7 +78,6 @@ watch(
   <n-tabs
     ref="tabsRef"
     type="line"
-    tab-style="font-size: var(--font-size-medium)"
     justify-content="start"
     :value="editorMode"
     @update:value="handleChangeTab"

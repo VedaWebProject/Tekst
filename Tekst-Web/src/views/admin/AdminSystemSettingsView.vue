@@ -78,7 +78,7 @@ async function handleSaveClick() {
         // If the current locale is invalid after updating the settings,
         // this call will fix it!
         await state.setLocale(state.locale);
-        message.success($t('admin.system.platformSettings.msgSaved'), undefined, 10);
+        message.success($t('admin.platformSettings.msgSaved'), undefined, 10);
       } else {
         resetForm();
       }
@@ -109,9 +109,9 @@ watch(
 </script>
 
 <template>
-  <icon-heading level="2" :icon="SettingsIcon">
+  <icon-heading level="1" :icon="SettingsIcon">
     {{ $t('general.settings') }}
-    <help-button-widget help-key="adminSystemSettingsView" />
+    <help-button-widget help-key="adminSettingsView" />
   </icon-heading>
 
   <div class="content-block">
@@ -126,12 +126,14 @@ watch(
     >
       <n-tabs
         ref="tabsRef"
-        type="bar"
-        tab-style="font-size: var(--font-size-medium)"
-        pane-class="mt-md"
+        type="line"
+        :placement="state.smallScreen ? 'top' : 'left'"
+        :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
       >
         <!-- GENERAL -->
         <n-tab-pane :tab="$t('general.general')" name="general">
+          <form-section-heading :label="$t('general.platform')" />
+
           <!-- PLATFORM TITLE -->
           <n-form-item path="platformName" :label="$t('models.platformSettings.platformName')">
             <n-input
@@ -152,6 +154,21 @@ watch(
             :translation-form-rule="platformSettingsFormRules.platformSubtitleTranslation"
           />
 
+          <!-- DEFAULT TEXT -->
+          <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
+            <n-select
+              v-model:value="formModel.defaultTextId"
+              clearable
+              :options="defaultTextOptions"
+              :placeholder="$t('admin.platformSettings.defaultTextPlaceholder')"
+              :consistent-menu-width="false"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+
+          <!-- INTERNATIONALIZATION -->
+          <form-section-heading :label="$t('admin.platformSettings.headingI18n')" />
+
           <!-- AVAILABLE LOCALES -->
           <n-form-item
             path="availableLocales"
@@ -167,33 +184,13 @@ watch(
               @keydown.enter.prevent
             />
           </n-form-item>
-
-          <!-- DEFAULT TEXT -->
-          <n-form-item path="defaultTextId" :label="$t('models.platformSettings.defaultText')">
-            <n-select
-              v-model:value="formModel.defaultTextId"
-              clearable
-              :options="defaultTextOptions"
-              :placeholder="$t('admin.system.platformSettings.defaultTextPlaceholder')"
-              :consistent-menu-width="false"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-
-          <!-- INDEX UNPUBLISHED RESOURCES -->
-          <n-flex vertical>
-            <labeled-switch
-              v-model="formModel.indexUnpublishedResources"
-              :label="$t('models.platformSettings.indexUnpublishedResources')"
-            />
-          </n-flex>
         </n-tab-pane>
 
         <!-- NAVIGATION -->
-        <n-tab-pane :tab="$t('admin.system.platformSettings.nav.heading')" name="navigation">
-          <form-section-heading :label="$t('admin.system.platformSettings.nav.aliasSearch')" />
+        <n-tab-pane :tab="$t('admin.platformSettings.nav.heading')" name="navigation">
+          <form-section-heading :label="$t('admin.platformSettings.nav.aliasSearch')" />
 
-          <n-form-item :show-label="false">
+          <n-form-item :show-label="false" :show-feedback="false">
             <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
             <labeled-switch
               v-model="formModel.directJumpOnUniqueAliasSearch"
@@ -201,7 +198,7 @@ watch(
             />
           </n-form-item>
 
-          <form-section-heading :label="$t('admin.system.platformSettings.nav.customNavLabels')" />
+          <form-section-heading :label="$t('admin.platformSettings.nav.customNavLabels')" />
 
           <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
           <translation-form-item
@@ -235,7 +232,8 @@ watch(
         </n-tab-pane>
 
         <!-- BROWSE VIEW -->
-        <n-tab-pane :tab="$t('admin.system.platformSettings.headingBrowseView')" name="browseView">
+        <n-tab-pane :tab="$t('admin.platformSettings.headingBrowseView')" name="browseView">
+          <form-section-heading :label="$t('admin.platformSettings.headingBrowseView')" />
           <n-flex vertical>
             <!-- SHOW RESOURCE CATEGORY HEADINGS -->
             <labeled-switch
@@ -255,30 +253,10 @@ watch(
           </n-flex>
         </n-tab-pane>
 
-        <!-- BRANDING -->
-        <n-tab-pane :tab="$t('admin.system.platformSettings.headingBranding')" name="branding">
-          <n-flex vertical class="mb-lg">
-            <!-- SHOW LOGO ON LOADING SCREEN -->
-            <labeled-switch
-              v-model="formModel.showLogoOnLoadingScreen"
-              :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
-            />
-            <!-- SHOW LOGO IN HEADER -->
-            <labeled-switch
-              v-model="formModel.showLogoInHeader"
-              :label="$t('models.platformSettings.showLogoInHeader')"
-            />
-            <!-- SHOW TEKST FOOTER HINT -->
-            <labeled-switch
-              v-model="formModel.showTekstFooterHint"
-              :label="$t('models.platformSettings.showTekstFooterHint')"
-            />
-          </n-flex>
-        </n-tab-pane>
-
         <!-- RESOURCES -->
         <n-tab-pane :tab="$t('resources.heading')" name="resources">
           <!-- DENY RESOURCE TYPES -->
+          <form-section-heading :label="$t('admin.platformSettings.headingRestrictedResTypes')" />
           <n-form-item :label="$t('models.platformSettings.denyResourceTypes')">
             <n-select
               v-model:value="formModel.denyResourceTypes"
@@ -290,13 +268,11 @@ watch(
           </n-form-item>
 
           <!-- ADDITIONAL FONTS -->
-          <n-form-item v-if="formModel.fonts">
-            <template #label>
-              <n-flex align="center" :wrap="false">
-                {{ $t('models.platformSettings.fonts') }}
-                <help-button-widget help-key="adminSystemSettingsResourceFonts" />
-              </n-flex>
-            </template>
+          <form-section-heading
+            :label="$t('models.platformSettings.fonts')"
+            help-key="adminSettingsResourceFonts"
+          />
+          <n-form-item v-if="formModel.fonts" :show-label="false">
             <n-dynamic-input
               v-model:value="formModel.fonts"
               show-sort-button
@@ -332,13 +308,11 @@ watch(
           </n-form-item>
 
           <!-- OSK -->
-          <n-form-item v-if="formModel.oskModes">
-            <template #label>
-              <n-flex align="center" :wrap="false">
-                {{ $t('models.platformSettings.oskModes') }}
-                <help-button-widget help-key="adminSystemSettingsOskModes" />
-              </n-flex>
-            </template>
+          <form-section-heading
+            :label="$t('models.platformSettings.oskModes')"
+            help-key="adminSettingsOskModes"
+          />
+          <n-form-item v-if="formModel.oskModes" :show-label="false">
             <n-dynamic-input
               v-model:value="formModel.oskModes"
               show-sort-button
@@ -414,6 +388,42 @@ watch(
               </template>
             </n-dynamic-input>
           </n-form-item>
+        </n-tab-pane>
+
+        <!-- SEARCH -->
+        <n-tab-pane :tab="$t('routes.pageTitle.search')" name="search">
+          <form-section-heading :label="$t('routes.pageTitle.search')" />
+
+          <!-- INDEX UNPUBLISHED RESOURCES -->
+          <n-form-item :show-label="false">
+            <labeled-switch
+              v-model="formModel.indexUnpublishedResources"
+              :label="$t('models.platformSettings.indexUnpublishedResources')"
+            />
+          </n-form-item>
+        </n-tab-pane>
+
+        <!-- BRANDING -->
+        <n-tab-pane :tab="$t('admin.platformSettings.headingBranding')" name="branding">
+          <form-section-heading :label="$t('admin.platformSettings.headingBranding')" />
+
+          <n-flex vertical class="mb-lg">
+            <!-- SHOW LOGO ON LOADING SCREEN -->
+            <labeled-switch
+              v-model="formModel.showLogoOnLoadingScreen"
+              :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
+            />
+            <!-- SHOW LOGO IN HEADER -->
+            <labeled-switch
+              v-model="formModel.showLogoInHeader"
+              :label="$t('models.platformSettings.showLogoInHeader')"
+            />
+            <!-- SHOW TEKST FOOTER HINT -->
+            <labeled-switch
+              v-model="formModel.showTekstFooterHint"
+              :label="$t('models.platformSettings.showTekstFooterHint')"
+            />
+          </n-flex>
         </n-tab-pane>
       </n-tabs>
     </n-form>
