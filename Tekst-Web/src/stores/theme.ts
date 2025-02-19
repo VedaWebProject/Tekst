@@ -32,6 +32,14 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   Thing: {
     titleFontWeight: 'var(--font-weight-bold)',
   },
+  Tabs: {
+    tabFontSizeSmall: 'var(--font-size-small)',
+    tabFontSizeMedium: 'var(--font-size-medium)',
+    tabFontSizeLarge: 'var(--font-size-large)',
+  },
+  Alert: {
+    fontSize: 'var(--font-size-medium)',
+  },
 };
 
 const _LIGHT_OVERRIDES: GlobalThemeOverrides = {

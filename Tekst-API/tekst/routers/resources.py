@@ -128,7 +128,7 @@ router = APIRouter(
         ]
     ),
 )
-async def trigger_resources_maintenance(
+async def trigger_precomputation(
     su: SuperuserDep,
 ) -> tasks.TaskDocument:
     return await tasks.create_task(

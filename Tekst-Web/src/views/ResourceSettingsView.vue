@@ -9,14 +9,13 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 import { $t } from '@/i18n';
+import { ArrowBackIcon, ResourceIcon, SettingsIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { cloneDeep } from 'lodash-es';
 import { NAlert, NButton, NForm, NIcon, NSpin, type FormInst } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
-
-import { ArrowBackIcon, ResourceIcon, SettingsIcon } from '@/icons';
-import { pickTranslation } from '@/utils';
 
 const { message } = useMessages();
 const router = useRouter();

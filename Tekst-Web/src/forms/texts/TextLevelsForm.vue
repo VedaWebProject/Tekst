@@ -2,17 +2,16 @@
 import type { Translation } from '@/api';
 import { DELETE, PATCH, POST } from '@/api';
 import { dialogProps } from '@/common';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { textFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t, getLocaleProfile } from '@/i18n';
-import { DeleteIcon, EditIcon, LevelsIcon } from '@/icons';
+import { DeleteIcon, EditIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { NAlert, NButton, NFlex, NForm, NIcon, useDialog, type FormInst } from 'naive-ui';
 import { computed, ref } from 'vue';
@@ -32,13 +31,13 @@ const editModalLevel = ref<number>(-1);
 const editModalAction = ref<'edit' | 'insert'>('edit');
 const editModalTitle = computed(() =>
   editModalAction.value === 'edit'
-    ? $t('admin.text.levels.tipEditLevel', {
+    ? $t('texts.levels.tipEditLevel', {
         levelLabel: getLevelLabel(levels.value[editModalLevel.value]),
       })
-    : $t('admin.text.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
+    : $t('texts.levels.tipInsertLevel', { n: editModalLevel.value + 1 })
 );
 const editModalWarning = computed(() =>
-  editModalAction.value === 'edit' ? undefined : $t('admin.text.levels.warnInsertLevel')
+  editModalAction.value === 'edit' ? undefined : $t('texts.levels.warnInsertLevel')
 );
 
 function handleInsertClick(level: number) {
@@ -64,7 +63,7 @@ function handleDeleteClick(level: number) {
   const targetLevelLabel = getLevelLabel(levels.value[level]);
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.text.levels.warnDeleteLevel', {
+    content: $t('texts.levels.warnDeleteLevel', {
       levelLabel: targetLevelLabel,
     }),
     positiveText: $t('general.deleteAction'),
@@ -79,7 +78,7 @@ function handleDeleteClick(level: number) {
       if (!error) {
         state.text = data;
         message.success(
-          $t('admin.text.levels.msgDeleteSuccess', {
+          $t('texts.levels.msgDeleteSuccess', {
             levelLabel: targetLevelLabel,
           })
         );
@@ -114,7 +113,7 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            $t('admin.text.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
+            $t('texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
           );
         }
       } else if (editModalAction.value === 'edit') {
@@ -134,7 +133,7 @@ async function handleModalSubmit() {
         if (!error) {
           state.text = data;
           message.success(
-            $t('admin.text.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
+            $t('texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
           );
         }
       }
@@ -149,15 +148,12 @@ async function handleModalSubmit() {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="LevelsIcon">
-    {{ $t('admin.text.levels.heading') }}
-    <help-button-widget help-key="adminTextsLevelsView" />
-  </icon-heading>
+  <div>
+    <form-section-heading :label="$t('texts.levels.heading')" help-key="textLevels" />
 
-  <div class="content-block">
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
       <insert-item-separator
-        :title="$t('admin.text.levels.tipInsertLevel', { n: lvlIndex + 1 })"
+        :title="$t('texts.levels.tipInsertLevel', { n: lvlIndex + 1 })"
         :disabled="levels.length >= 32"
         @click="() => handleInsertClick(lvlIndex)"
       />
@@ -173,7 +169,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="$t('admin.text.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
             :focusable="false"
             @click="() => handleEditClick(lvlIndex)"
           >
@@ -182,7 +178,7 @@ async function handleModalSubmit() {
           <n-button
             secondary
             circle
-            :title="$t('admin.text.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
+            :title="$t('texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
             :focusable="false"
             @click="() => handleDeleteClick(lvlIndex)"
           >
@@ -193,56 +189,56 @@ async function handleModalSubmit() {
     </div>
 
     <insert-item-separator
-      :title="$t('admin.text.levels.tipInsertLevel', { n: levels.length + 1 })"
+      :title="$t('texts.levels.tipInsertLevel', { n: levels.length + 1 })"
       :disabled="levels.length >= 32"
       @click="() => handleInsertClick(levels.length)"
     />
+
+    <generic-modal
+      v-model:show="showEditModal"
+      :title="editModalTitle"
+      :icon="EditIcon"
+      @after-leave="destroyEditModal"
+    >
+      <n-alert
+        v-if="editModalWarning"
+        closable
+        :title="$t('general.warning')"
+        type="warning"
+        class="mb-lg"
+      >
+        {{ editModalWarning }}
+      </n-alert>
+
+      <n-form
+        ref="formRef"
+        :model="formModel"
+        :disabled="loading"
+        label-placement="top"
+        label-width="auto"
+        require-mark-placement="right-hanging"
+      >
+        <!-- STRUCTURE LEVEL -->
+        <translation-form-item
+          v-model="formModel.translations"
+          parent-form-path-prefix="translations"
+          :loading="loading"
+          :main-form-label="$t('models.text.level')"
+          :translation-form-label="$t('models.text.level')"
+          :translation-form-rule="textFormRules.levelTranslation"
+        />
+      </n-form>
+
+      <button-shelf top-gap>
+        <n-button secondary :disabled="loading" @click="showEditModal = false">
+          {{ $t('general.cancelAction') }}
+        </n-button>
+        <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
+          {{ $t('general.saveAction') }}
+        </n-button>
+      </button-shelf>
+    </generic-modal>
   </div>
-
-  <generic-modal
-    v-model:show="showEditModal"
-    :title="editModalTitle"
-    :icon="EditIcon"
-    @after-leave="destroyEditModal"
-  >
-    <n-alert
-      v-if="editModalWarning"
-      closable
-      :title="$t('general.warning')"
-      type="warning"
-      class="mb-lg"
-    >
-      {{ editModalWarning }}
-    </n-alert>
-
-    <n-form
-      ref="formRef"
-      :model="formModel"
-      :disabled="loading"
-      label-placement="top"
-      label-width="auto"
-      require-mark-placement="right-hanging"
-    >
-      <!-- STRUCTURE LEVEL -->
-      <translation-form-item
-        v-model="formModel.translations"
-        parent-form-path-prefix="translations"
-        :loading="loading"
-        :main-form-label="$t('models.text.level')"
-        :translation-form-label="$t('models.text.level')"
-        :translation-form-rule="textFormRules.levelTranslation"
-      />
-    </n-form>
-
-    <button-shelf top-gap>
-      <n-button secondary :disabled="loading" @click="showEditModal = false">
-        {{ $t('general.cancelAction') }}
-      </n-button>
-      <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
-        {{ $t('general.saveAction') }}
-      </n-button>
-    </button-shelf>
-  </generic-modal>
 </template>
 
 <style scoped>

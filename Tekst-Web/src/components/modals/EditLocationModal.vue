@@ -67,7 +67,7 @@ defineExpose({ open });
 <template>
   <generic-modal
     v-model:show="show"
-    :title="$t('admin.text.locations.edit.heading')"
+    :title="$t('texts.locations.edit.heading')"
     :icon="EditIcon"
     @after-enter="
       () => {

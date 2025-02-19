@@ -1,4 +1,3 @@
-import AccountTreeFilled from '@vicons/material/AccountTreeFilled';
 import AddCircleOutlineOutlined from '@vicons/material/AddCircleOutlineOutlined';
 import AddOutlined from '@vicons/material/AddOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
@@ -8,7 +7,6 @@ import ArrowForwardOutlined from '@vicons/material/ArrowForwardOutlined';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
-import BarChartOutlined from '@vicons/material/BarChartOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
@@ -125,7 +123,6 @@ export {
   ArrowForwardOutlined as ArrowForwardIcon,
   ArrowUpwardOutlined as ArrowUpIcon,
   BackspaceOutlined as BackspaceIcon,
-  BarChartOutlined as BarChartIcon,
   RemoveCircleFilled as BlockCircleIcon,
   BlockOutlined as BlockIcon,
   MenuBookTwotone as BookIcon,
@@ -223,7 +220,6 @@ export {
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,
   TranslateOutlined as TranslateIcon,
-  AccountTreeFilled as TreeIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   UndoOutlined as UndoIcon,
   FlagOutlined as UnproposedIcon,

@@ -8,6 +8,7 @@ import {
   LogoutIcon,
   MessageIcon,
   ResourceIcon,
+  TextsIcon,
   UserIcon,
 } from '@/icons';
 import {
@@ -72,6 +73,20 @@ const userOptions = computed(() => [
     key: 'resources',
     icon: renderIcon(ResourceIcon),
   },
+  ...(!!auth.user?.isSuperuser
+    ? [
+        {
+          label: renderLink(() => $t('texts.heading'), {
+            name: 'textSettings',
+            params: {
+              textSlug: state.text?.slug || '',
+            },
+          }),
+          key: 'adminText',
+          icon: renderIcon(TextsIcon),
+        },
+      ]
+    : []),
   ...(auth.user?.isSuperuser
     ? [
         {

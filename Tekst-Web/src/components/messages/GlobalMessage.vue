@@ -16,7 +16,7 @@ defineProps<{
       :type="type === 'loading' ? 'default' : type"
       class="global-msg-alert"
     >
-      <div class="text-small" style="margin: -5px 0">
+      <div class="text-medium" style="margin: -5px 0">
         <slot></slot>
       </div>
     </n-alert>

@@ -27,7 +27,7 @@ general:
   moveDownAction: Move down
   refreshAction: Refresh
   exportAction: Export
-  precomputeAction: Precompute
+  precomputeAction: Run
   expandAction: Expand
   collapseAction: Collapse
   showAttachmentsAction: Show attached contents
@@ -114,10 +114,8 @@ errors:
   exportNotFound: The requested export could not be found.
 
 nav:
-  about: About
   browse: Browse
   search: Search
-  help: Help
   info: Info
 
 osk:
@@ -163,16 +161,13 @@ routes:
     community: Community
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
-    adminStatistics: Statistics
-    adminTextsSettings: '@:general.settings – {text}'
-    adminTextsLevels: Levels – {text}
-    adminTextsLocations: Locations – {text}
-    adminNewText: New Text
-    adminSystemSettings: '@:general.settings'
-    adminSystemUsers: Users
-    adminSystemSegments: Site Segments
-    adminSystemInfoPages: Info Pages
-    adminSystemMaintenance: '@:admin.system.maintenance.heading'
+    textSettings: Settings – {text}
+    newText: New Text
+    adminSettings: '@:general.settings'
+    adminUsers: Users
+    adminSegments: Site Segments
+    adminInfoPages: Info Pages
+    adminMaintenance: '@:admin.maintenance.heading'
     verify: Verification
     reset: Reset password
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
@@ -355,15 +350,15 @@ models:
     navSearchEntry: Label for "Search" in main navigation
     navInfoEntry: Label for "Info" in main navigation
     registerIntroText: Introduction text for register page
-    directJumpOnUniqueAliasSearch: Directly jump to location when searching for unambiguous alias
+    directJumpOnUniqueAliasSearch: Directly jump to location when an unambiguous alias is found
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
-    denyResourceTypes: Restrict creation of these resource types to administrators
-    fonts: Additional fonts
+    denyResourceTypes: Allow creation of these resource types for administrators only
+    fonts: Custom Content Fonts
     fontName: Name
     oskModes: On-screen Keyboards
     oskModeName: Name
@@ -682,6 +677,78 @@ account:
 community:
   heading: Community
 
+texts:
+  heading: Texts
+  settings:
+    msgSaved: Text settings saved.
+    warnDeleteText: |
+      Deleting this text ("{title}") will delete all data associated with it,
+      including its configured structure and all resources, regardless of the
+      user who created it. This cannot be undone. Are you sure?
+    msgDeleted: Text "{title}" deleted
+  levels:
+    heading: Levels
+    tipInsertLevel: Insert new level at position {n}
+    tipEditLevel: 'Edit label for level "{levelLabel}"'
+    tipDeleteLevel: Delete level "{levelLabel}"
+    msgInsertSuccess: Level inserted at position {position}
+    msgEditSuccess: Changes to level at position {position} saved
+    msgDeleteSuccess: Level "{levelLabel}" deleted
+    warnInsertLevel: |
+      Retroactively inserting a text level is an operation with serious
+      impact on the text's data model. The application will try its best to embed the
+      new level into the existing data structure, but you will have to adjust the
+      result to your needs using the text's locations settings afterwards.
+      Also, it is recommended to make a backup of the current state of your database
+      before performing this operation.
+    warnDeleteLevel: |
+      Deleting a text level has far-reaching consequences: All data associated
+      with this text level will be deleted with it. This includes all (!) resources
+      on this level, regardless of the user who created it!
+      The application will try its best to re-connect adjacent levels,
+      but you will have to adjust the result to your needs using the text's
+      locations settings afterwards. This cannot be undone.
+      Please make sure you know what you are doing and make a backup
+      of your database before doing this! Are you sure you want to delete the text
+      level "{levelLabel}"?
+  locations:
+    heading: Locations
+    add:
+      heading: Add Location to "{parentLabel}" on Level "{level}"
+      tooltip: Add location
+      msgSuccess: Added location "{label}" to "{parentLabel}"
+    lblBtnAddLocationFirstLevel: Add
+    tipBtnAddLocationFirstLevel: Add top-level location
+    lblBtnDownloadTemplate: Template for text structure
+    tipBtnDownloadTemplate: Download a template for text structure import data
+    lblBtnUploadStructure: Import text structure
+    tipBtnUploadStructure: Import prepared data for new text structure
+    lblBtnUploadUpdates: Import modifications
+    tipBtnUploadUpdates: Import modifications to location labels and aliases
+    infoNoLocations: |
+      This text does not have any locations, yet. Add locations to the text's
+      structure levels using the interface below or download a structure template
+      you can programmatically populate with your data and upload it here.
+    warnGeneral: |
+      Rearranging or deleting text locations has serious impact on the text's data model.
+      It is recommended to make a backup of the current state of your
+      database before making any changes, here.
+    warnDeleteLocation: |
+      If you delete this location, all data associated with it or its child locations will
+      be deleted with it. This may affect contents of multiple resources,
+      even ones created by other users. The location will not be available under its original ID anymore.
+      This cannot be undone. Are you sure you want to proceed?
+    tipDeleteLocation: Delete location "{location}"
+    infoDeletedLocation: Deleted location "{location}" (total of {locations} locations and {contents} contents)
+    infoMovedLocation: Moved location "{location}" to position {position} on level "{level}"
+    errorLocationLeftLevel: Text locations can only be moved on their original structure level!
+    checkShowWarnings: Show warnings before performing destructive operations
+    edit:
+      heading: Edit Location
+      msgSuccess: Location "{label}" saved
+    importSuccess: New text structure uploaded and processed successfully
+    updateInfo: Modified labels and aliases for locations are processed in the background. @:general.takeAWhile
+
 admin:
   heading: Administration
   optionGroupLabel: Administration
@@ -716,80 +783,7 @@ admin:
       setActive: '@:admin.users.confirmMsg.areYouSure activate the account of {username}?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure reset the email verification status of {username}?'
       setVerified: '@:admin.users.confirmMsg.areYouSure set the email address of {username} to verified?'
-      deleteUser: |
-        '@:admin.users.confirmMsg.areYouSure delete the user account
-        {username} and all the data associated with it?'
-  text:
-    heading: Text
-    settings:
-      msgSaved: Text settings saved.
-      warnDeleteText: |
-        Deleting this text ("{title}") will delete all data associated with it,
-        including its configured structure and all resources, regardless of the
-        user who created it. This cannot be undone. Are you sure?
-      msgDeleted: Text "{title}" deleted
-    levels:
-      heading: Levels
-      tipInsertLevel: Insert new level at position {n}
-      tipEditLevel: 'Edit label for level "{levelLabel}"'
-      tipDeleteLevel: Delete level "{levelLabel}"
-      msgInsertSuccess: Level inserted at position {position}
-      msgEditSuccess: Changes to level at position {position} saved
-      msgDeleteSuccess: Level "{levelLabel}" deleted
-      warnInsertLevel: |
-        Retroactively inserting a text level is an operation with serious
-        impact on the text's data model. The application will try its best to embed the
-        new level into the existing data structure, but you will have to adjust the
-        result to your needs using the text's locations settings afterwards.
-        Also, it is recommended to make a backup of the current state of your database
-        before performing this operation.
-      warnDeleteLevel: |
-        Deleting a text level has far-reaching consequences: All data associated
-        with this text level will be deleted with it. This includes all (!) resources
-        on this level, regardless of the user who created it!
-        The application will try its best to re-connect adjacent levels,
-        but you will have to adjust the result to your needs using the text's
-        locations settings afterwards. This cannot be undone.
-        Please make sure you know what you are doing and make a backup
-        of your database before doing this! Are you sure you want to delete the text
-        level "{levelLabel}"?
-    locations:
-      heading: Locations
-      add:
-        heading: Add Location to "{parentLabel}" on Level "{level}"
-        tooltip: Add location
-        msgSuccess: Added location "{label}" to "{parentLabel}"
-      lblBtnAddLocationFirstLevel: Add
-      tipBtnAddLocationFirstLevel: Add top-level location
-      lblBtnDownloadTemplate: Template for import data
-      tipBtnDownloadTemplate: Download a template for import data
-      lblBtnUploadStructure: Import new text structure
-      tipBtnUploadStructure: Import prepared data for new text structure
-      lblBtnUploadUpdates: Import modifications
-      tipBtnUploadUpdates: Import modifications to location labels and aliases
-      infoNoLocations: |
-        This text does not have any locations, yet. Add locations to the text's
-        structure levels using the interface below or download a structure template
-        you can programmatically populate with your data and upload it here.
-      warnGeneral: |
-        Rearranging or deleting text locations has serious impact on the text's data model.
-        It is recommended to make a backup of the current state of your
-        database before making any changes, here.
-      warnDeleteLocation: |
-        If you delete this location, all data associated with it or its child locations will
-        be deleted with it. This may affect contents of multiple resources,
-        even ones created by other users. The location will not be available under its original ID anymore.
-        This cannot be undone. Are you sure you want to proceed?
-      tipDeleteLocation: Delete location "{location}"
-      infoDeletedLocation: Deleted location "{location}" (total of {locations} locations and {contents} contents)
-      infoMovedLocation: Moved location "{location}" to position {position} on level "{level}"
-      errorLocationLeftLevel: Text locations can only be moved on their original structure level!
-      checkShowWarnings: Show warnings before performing destructive operations
-      edit:
-        heading: Edit Location
-        msgSuccess: Location "{label}" saved
-      importSuccess: New text structure uploaded and processed successfully
-      updateInfo: Modified labels and aliases for locations are processed in the background. @:general.takeAWhile
+      deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user account {username} and all the data associated with it?'
   newText:
     heading: New Text
     headerInfoAlert: |
@@ -800,66 +794,69 @@ admin:
     btnProceed: Proceed
     btnFinish: Finish
     msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
-  system:
-    heading: System
-    platformSettings:
-      nav:
-        heading: Navigation
-        aliasSearch: Location Alias Search
-        customNavLabels: Custom Navigation Labels
-      headingBrowseView: Browse View
-      headingBranding: Branding
-      msgSaved: Platform settings saved.
-      defaultTextPlaceholder: Automatic
-    maintenance:
-      heading: Maintenance
-      indices:
-        heading: Search Indices
-        documents: Documents
-        size: Size
-        searches: Searches
-        fields: Fields
-        utd: Up to date
-        ood: Out of date
-        actionCreate: Reindex
-        actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
-        actionCreateSuccess: Search indices have been updated
-      resourceMaintenance:
-        heading: Precomputed Resource Data
-        actionStarted: The update of precomputed resource data is performed in the background. @:general.takeAWhile
-      tasks:
-        noTasks: No active background tasks
-        started: Started
-        ended: Ended
-        duration: Duration
-        seconds: '{seconds} sec'
-        startedBy: Started by
-        actionDeleteSystem: Delete system tasks
-        actionDeleteAll: Delete all tasks
-        actionDeleteAllSuccess: All background tasks have been deleted
-    segments:
-      heading: Site Segments
-      systemKeys:
-        systemHome: Home page
-        systemHeadEnd: End of HTML head
-        systemBodyEnd: End of HTML body
-        systemFooter: Page footer
-        systemSiteNotice: Site notice
-        systemPrivacyPolicy: Privacy policy
-        systemRegisterIntro: Intro text on "Register" page
-      noSegment: Please select a segment or create a new one!
-      newSegment: New Segment
-      phSelectSegment: Select segment
-      msgUpdated: Updated "{title}".
-      msgCreated: Created "{title}".
-      msgDeleted: Deleted "{title}".
-      warnCancel: Any unsaved changes will be lost. Are you sure?
-      warnDelete: Are you sure you want to delete "{title}"?
-    infoPages:
-      heading: Info Pages
-      newPage: New Page
-      phSelectPage: Select page
-      noPage: Please select an info page or create a new one!
+  platformSettings:
+    nav:
+      heading: Navigation
+      aliasSearch: Location Alias Search
+      customNavLabels: Custom Navigation Labels
+    headingBrowseView: Browse View
+    headingBranding: Branding
+    headingI18n: Internationalization
+    headingRestrictedResTypes: Restricted Resource Types
+    msgSaved: Platform settings saved.
+    defaultTextPlaceholder: Automatic
+  maintenance:
+    heading: Maintenance
+    indices:
+      heading: Search Indices
+      documents: Documents
+      size: Size
+      searches: Searches
+      fields: Fields
+      utd: Up to date
+      ood: Out of date
+      actionCreate: Reindex
+      actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
+      actionCreateSuccess: Search indices have been updated
+    precomputed:
+      heading: Precomputed Data
+      description: |
+        This routine is part of the maintenance process, but can be run manually here.
+        The location coverage of all resources and resource type-specific data (if applicable) will be precomputed.
+      actionStarted: The generation of precomputed resource data is performed in the background. @:general.takeAWhile
+    tasks:
+      noTasks: No active background tasks
+      started: Started
+      ended: Ended
+      duration: Duration
+      seconds: '{seconds} sec'
+      startedBy: Started by
+      actionDeleteSystem: Delete system tasks
+      actionDeleteAll: Delete all tasks
+      actionDeleteAllSuccess: All background tasks have been deleted
+  segments:
+    heading: Site Segments
+    systemKeys:
+      systemHome: Home page
+      systemHeadEnd: End of HTML head
+      systemBodyEnd: End of HTML body
+      systemFooter: Page footer
+      systemSiteNotice: Site notice
+      systemPrivacyPolicy: Privacy policy
+      systemRegisterIntro: Intro text on "Register" page
+    noSegment: Please select a segment or create a new one!
+    newSegment: New Segment
+    phSelectSegment: Select segment
+    msgUpdated: Updated "{title}".
+    msgCreated: Created "{title}".
+    msgDeleted: Deleted "{title}".
+    warnCancel: Any unsaved changes will be lost. Are you sure?
+    warnDelete: Are you sure you want to delete "{title}"?
+  infoPages:
+    heading: Info Pages
+    newPage: New Page
+    phSelectPage: Select page
+    noPage: Please select an info page or create a new one!
 
 search:
   searchAction: Search

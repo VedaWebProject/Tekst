@@ -17,10 +17,10 @@ const privacyPolicy = computed(
     <segment-renderer segment-key="systemFooter" />
     <div v-if="siteNotice || privacyPolicy" id="legal-container">
       <router-link v-if="siteNotice" :to="{ name: 'siteNotice' }">
-        {{ $t('admin.system.segments.systemKeys.systemSiteNotice') }}
+        {{ $t('admin.segments.systemKeys.systemSiteNotice') }}
       </router-link>
       <router-link v-if="privacyPolicy" :to="{ name: 'privacyPolicy' }">
-        {{ $t('admin.system.segments.systemKeys.systemPrivacyPolicy') }}
+        {{ $t('admin.segments.systemKeys.systemPrivacyPolicy') }}
       </router-link>
     </div>
     <div v-if="state.pf?.state.showTekstFooterHint" class="text-tiny">
