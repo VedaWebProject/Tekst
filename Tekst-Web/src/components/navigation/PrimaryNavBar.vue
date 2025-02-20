@@ -112,7 +112,7 @@ const titleLinkTo = computed(() => {
   <n-flex align="center" class="navbar-menu">
     <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
     <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
-    <quick-search :class="{'my-sm': state.smallScreen}" style="flex: 1 1 300px" />
+    <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
   </n-flex>
 </template>
 
