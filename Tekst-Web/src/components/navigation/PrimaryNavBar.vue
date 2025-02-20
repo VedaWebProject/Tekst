@@ -149,7 +149,7 @@ const titleLinkTo = computed(() => {
 
 .navbar-menu {
   max-width: var(--max-app-width);
-  margin: 0 auto var(--gap-md) 0;
+  margin: 0 auto var(--gap-md) auto;
   padding: 0 var(--gap-lg);
 }
 
