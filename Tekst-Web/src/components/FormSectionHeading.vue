@@ -18,7 +18,8 @@ defineProps<{
 <style scoped>
 .form-section-heading {
   margin: var(--gap-md) 0;
-  border-bottom: 1px solid var(--accent-color-fade4);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--accent-color-fade3);
 }
 
 .form-section-heading:first-child {
