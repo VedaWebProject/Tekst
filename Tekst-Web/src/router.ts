@@ -332,11 +332,6 @@ router.beforeEach(async (to, _, next) => {
       return next({ name: 'home' });
     }
   }
-  // set current text in state store
-  if (!!to.params.textSlug) {
-    const state = useStateStore();
-    state.text = state.textBySlug(to.params.textSlug.toString()) || state.defaultText;
-  }
   // proceed to next hook in router pipeline
   next();
 });
