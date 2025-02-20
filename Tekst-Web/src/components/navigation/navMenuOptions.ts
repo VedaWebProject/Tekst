@@ -85,10 +85,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(
         () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search'),
-        {
-          name: 'search',
-          params: { textSlug: state.text?.slug },
-        }
+        { name: 'search' }
       ),
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
