@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import DrawerMenu from '@/components/navigation/DrawerMenu.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
+import { useMainMenuOptions } from '@/components/navigation/navMenuOptions';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
+import QuickSearch from '@/components/search/QuickSearch.vue';
 import { useLogo } from '@/composables/logo';
 import { usePlatformData } from '@/composables/platformData';
 import { CorrectionNoteIcon, HamburgerMenuIcon, MessageIcon } from '@/icons';
@@ -17,8 +20,6 @@ import {
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import DrawerMenu from './DrawerMenu.vue';
-import { useMainMenuOptions } from './navMenuOptions';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -108,11 +109,11 @@ const titleLinkTo = computed(() => {
     </n-badge>
   </n-flex>
 
-  <div v-if="!state.smallScreen" class="navbar-menu">
-    <navigation-menu :options="mainMenuOptions" />
-  </div>
-
-  <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
+  <n-flex align="center" class="navbar-menu">
+    <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
+    <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
+    <quick-search :class="{'my-sm': state.smallScreen}" style="flex: 1 1 300px" />
+  </n-flex>
 </template>
 
 <style scoped>
@@ -148,7 +149,7 @@ const titleLinkTo = computed(() => {
 
 .navbar-menu {
   max-width: var(--max-app-width);
-  margin: 0 auto var(--gap-sm) auto;
+  margin: 0 auto var(--gap-md) 0;
   padding: 0 var(--gap-lg);
 }
 

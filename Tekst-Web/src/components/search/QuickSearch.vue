@@ -28,6 +28,16 @@ const searchInput = ref<string>('');
 const loading = ref(false);
 const quickSearchInputRef = ref<InputInst | null>(null);
 
+const tooltip = computed(() => {
+  const targetTxtTitles = !!search.settingsQuick.txt?.length
+    ? state.pf?.texts
+        .filter((t) => search.settingsQuick.txt?.includes(t.id))
+        .map((t) => `"${t.title}"`)
+        .join(', ')
+    : $t('search.settings.quick.textsPlaceholder');
+  return `${$t('search.quickSearch.title')} ${$t('general.in')}: ${targetTxtTitles}`;
+});
+
 const locationSelectOptions = ref<SelectOption[]>([]);
 
 const searchableResources = computed(
@@ -106,9 +116,6 @@ async function handleSearch() {
     quickSearch(searchInput.value);
   }
 
-  // reset quick search target texts
-  search.resetQuickSearchTexts();
-
   loading.value = false;
 
   if (!state.smallScreen) {
@@ -153,9 +160,9 @@ function quickSearch(q: string) {
         v-model="searchInput"
         round
         :placeholder="$t('search.quickSearch.title')"
+        :title="tooltip"
         :max-length="512"
         :loading="loading"
-        :style="{ backgroundColor: theme.dark ? '#424247' : undefined }"
         @input="showLocationSelect = false"
         @keydown.enter.stop.prevent="handleSearch"
       >

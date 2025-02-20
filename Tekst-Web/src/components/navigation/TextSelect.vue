@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { ExpandArrowDownIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -76,24 +75,9 @@ function handleSelect(text: TextRead) {
       class="text-select-btn"
       :style="{ cursor: !disabled ? 'pointer' : 'default' }"
     >
-      <n-flex
-        vertical
-        :size="0"
-        align="flex-start"
-        justify="center"
-        :wrap="false"
-        style="max-width: 100%"
-      >
-        <n-flex align="center" :wrap="false" style="max-width: 100%">
-          <b class="text-title ellipsis text-large">{{ state.text.title }}</b>
-          <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
-        </n-flex>
-        <div
-          v-if="!!state.text?.subtitle.length"
-          class="text-subtitle text-small translucent ellipsis"
-        >
-          <translation-display :value="state.text.subtitle" />
-        </div>
+      <n-flex align="center" :wrap="false" style="max-width: 100%">
+        <b class="text-title ellipsis text-large">{{ state.text.title }}</b>
+        <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
       </n-flex>
     </n-button>
   </n-dropdown>

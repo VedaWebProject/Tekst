@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
-import QuickSearch from '@/components/search/QuickSearch.vue';
+import { useStateStore } from '@/stores';
 import { NFlex } from 'naive-ui';
+
+const state = useStateStore();
 </script>
 
 <template>
@@ -10,13 +13,19 @@ import { NFlex } from 'naive-ui';
     <primary-nav-bar />
     <div class="accent-color-bg" style="color: var(--base-color)">
       <n-flex
-        :size="[32, 12]"
+        size="large"
         justify="space-between"
         align="center"
-        class="page-header-bottom text-large"
+        :wrap="false"
+        class="page-header-bottom"
       >
-        <text-select style="flex: 6 1" />
-        <quick-search style="flex: 1 1 300px" />
+        <text-select />
+        <div
+          v-if="state.text?.subtitle && !state.smallScreen"
+          class="text-large i translucent ellipsis"
+        >
+          <translation-display :value="state.text?.subtitle" />
+        </div>
       </n-flex>
     </div>
   </header>

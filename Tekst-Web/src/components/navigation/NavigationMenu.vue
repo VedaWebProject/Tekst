@@ -62,4 +62,10 @@ const menuWrapperStyle = computed(() => ({
 :deep(.n-menu:not(.embed) > .n-menu-item:first-of-type .n-menu-item-content) {
   padding-left: 0px;
 }
+
+/* prevent menu item overflow as ellipsis */
+:deep(.n-menu:not(.n-menu--responsive) .n-menu-item-content-header) {
+  overflow: unset;
+  text-overflow: unset;
+}
 </style>

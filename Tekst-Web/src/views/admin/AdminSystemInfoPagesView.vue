@@ -14,16 +14,16 @@ import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
 import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import {
-    NButton,
-    NFlex,
-    NForm,
-    NFormItem,
-    NIcon,
-    NInput,
-    NSelect,
-    useDialog,
-    type FormInst,
-    type InputInst,
+  NButton,
+  NFlex,
+  NForm,
+  NFormItem,
+  NIcon,
+  NInput,
+  NSelect,
+  useDialog,
+  type FormInst,
+  type InputInst,
 } from 'naive-ui';
 import { computed, nextTick, ref } from 'vue';
 
