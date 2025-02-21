@@ -67,8 +67,8 @@ All the configuration related to app-level security
 | `TEKST_SECURITY__ENABLE_COOKIE_AUTH` | Enable cookie-based authentication (needed for the web client to work!) (Boolean – default: `true`) |
 | `TEKST_SECURITY__AUTH_COOKIE_NAME` | Cookie name (String – default: `tekstuserauth`) |
 | `TEKST_SECURITY__AUTH_COOKIE_DOMAIN` | Cookie domain (String – default: _none_) |
-| `TEKST_SECURITY__AUTH_COOKIE_LIFETIME` | Cookie lifetime in seconds (Integer – default: `43200`) |
-| `TEKST_SECURITY__ACCESS_TOKEN_LIFETIME` | Lifetime of access token in DB (should match `TEKST_SECURITY__AUTH_COOKIE_LIFETIME`) (Integer – default: `43200`) |
+| `TEKST_SECURITY__AUTH_COOKIE_LIFETIME` | Cookie lifetime in seconds – `0` produces session cookies (Integer – default: `43200`) |
+| `TEKST_SECURITY__ACCESS_TOKEN_LIFETIME` | Lifetime of access tokens in seconds; limits validity of cookies and must thus be greater than or equal to `TEKST_SECURITY__AUTH_COOKIE_LIFETIME` (Integer – default: `43200`, min.: `3600`) |
 | `TEKST_SECURITY__ENABLE_JWT_AUTH` | Enable JWT-based authentication (optional, useful for programmatic access to the API) (Boolean – default: `false`) |
 | `TEKST_SECURITY__AUTH_JWT_LIFETIME` | Lifetime of JWT used for authentication (Integer – default: `86400`) |
 | `TEKST_SECURITY__RESET_PW_TOKEN_LIFETIME` | Lifetime of password reset tokens (Integer – default: `3600`) |

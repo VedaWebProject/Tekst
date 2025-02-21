@@ -1,12 +1,12 @@
 import pytest
 
 from tekst.db import migrations
-from tekst.setup import app_setup
+from tekst.platform import app_setup
 
 
 @pytest.mark.anyio
 async def test_setup_tabula_rasa(config):
-    # run app setup – will insert sample data, run resource maintenance hooks, ...
+    # run app setup – will insert sample data, run precomputation hooks, ...
     await app_setup()
     # 2nd time to test setup attempt on already set-up instance DB
     await app_setup()

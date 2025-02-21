@@ -26,6 +26,7 @@ from tekst.models.segment import (
     ClientSegmentUpdate,
 )
 from tekst.models.user import UserDocument
+from tekst.platform import cleanup_task
 from tekst.routers.texts import get_all_texts
 from tekst.state import get_state, update_state
 
@@ -325,3 +326,23 @@ async def delete_task(
     su: SuperuserDep,
 ) -> None:
     await tasks.delete_task(await tasks.TaskDocument.get(task_id))
+
+
+@router.get(
+    "/cleanup",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=tasks.TaskRead,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def run_platform_cleanup(su: SuperuserDep) -> tasks.TaskDocument:
+    return await tasks.create_task(
+        cleanup_task,
+        tasks.TaskType.PLATFORM_CLEANUP,
+        target_id=tasks.TaskType.PLATFORM_CLEANUP.value,
+        user_id=su.id,
+    )

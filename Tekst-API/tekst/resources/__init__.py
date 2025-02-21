@@ -8,7 +8,6 @@ from collections.abc import Callable
 from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
-from time import perf_counter
 from typing import Annotated, Any, Literal, Union
 
 import jsonref
@@ -18,7 +17,7 @@ from fastapi import Body
 from humps import camelize
 from pydantic import Field
 
-from tekst.logs import log
+from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
@@ -53,10 +52,10 @@ def get_resource_template_readme() -> dict[str, str]:
     }
 
 
-async def call_resource_maintenance_hooks(
+async def call_resource_precompute_hooks(
     text_id: PydanticObjectId | None = None,
 ) -> dict[str, float]:
-    start_time = perf_counter()
+    op_id = log_op_start("Refresh precomputed cache for resource data", level="INFO")
     for resource in await ResourceBaseDocument.find(
         In(
             ResourceBaseDocument.text_id,
@@ -66,10 +65,10 @@ async def call_resource_maintenance_hooks(
         ),
         with_children=True,
     ).to_list():
-        await resource.resource_maintenance_hook()
+        await resource.resource_precompute_hook()
 
     return {
-        "took": round(perf_counter() - start_time, 2),
+        "took": round(log_op_end(op_id), 2),
     }
 
 

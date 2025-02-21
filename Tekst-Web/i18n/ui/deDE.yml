@@ -27,7 +27,7 @@ general:
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
   exportAction: Export
-  precomputeAction: Ausführen
+  runAction: Ausführen
   expandAction: Ausklappen
   collapseAction: Einklappen
   showAttachmentsAction: Angehängte Inhalte anzeigen
@@ -141,12 +141,15 @@ tasks:
     search_export: Suchergebnisse exportieren
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
-    resource_maintenance_hook: Automatische Wartung von Ressourcen-Daten
+    resource_precompute_hook: Generierung vorberechneter Ressourcen-Daten
     structure_update: Textstruktur aktualisieren
+    platform_cleanup: Bereinigung interner Plattformdaten
   results:
-    indices_create_update: Suchindizes erzeugt in {took} Sekunden.
-    resource_maintenance_hook: Die Wartung hat {took} Sekunden gedauert.
+    generic_duration_msg: Dies hat {took} Sekunden gedauert.
+    indices_create_update: '@:tasks.results.generic_duration_msg'
+    resource_precompute_hook: '@:tasks.results.generic_duration_msg'
     resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert.'
+    platform_cleanup: '@:tasks.results.generic_duration_msg'
 
 routes:
   pageTitle:
@@ -839,13 +842,18 @@ admin:
       ood: Veraltet
       actionCreate: Neuindexierung
       actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
-      actionCreateSuccess: Suchindizes wurden aktualisiert
     precomputed:
       heading: Vorberechnete Ressourcen-Daten
       description: |
         Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
         Es werden die Belegstellen-Abdeckung aller Ressourcen sowie weitere Ressourcentyp-spezifische Daten (falls zutreffend) vorberechnet.
       actionStarted: Die Generierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
+    cleanup:
+      heading: Interne Bereinigung
+      description: |
+        Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
+        Abgelaufene Zugangstokens und Benutzernachrichten werden gelöscht.
+      actionStarted: The internal cleanup is performed in the background. @:general.takeAWhile
     tasks:
       noTasks: Keine aktiven @:tasks.title
       started: Gestartet

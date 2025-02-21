@@ -3224,13 +3224,62 @@
         }
       }
     },
-    "/resources/maintenance": {
+    "/platform/cleanup": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Run platform cleanup",
+        "operationId": "runPlatformCleanup",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/resources/precompute": {
       "get": {
         "tags": [
           "resources"
         ],
-        "summary": "Trigger precomputation",
-        "operationId": "triggerPrecomputation",
+        "summary": "Trigger resource precomputation",
+        "operationId": "triggerResourcePrecomputation",
         "responses": {
           "202": {
             "description": "Successful Response",
@@ -15584,8 +15633,9 @@
           "search_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
-          "resource_maintenance_hook",
-          "structure_update"
+          "resource_precompute_hook",
+          "structure_update",
+          "platform_cleanup"
         ],
         "title": "TaskType",
         "description": "Task types with locking and artifact flags"
@@ -17259,17 +17309,11 @@
             "description": "Content of the message"
           },
           "time": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Time",
-            "description": "Time when the message was sent"
+            "description": "Time when the message was sent",
+            "default": "2025-02-21T14:36:31.161383"
           },
           "read": {
             "type": "boolean",

@@ -27,7 +27,7 @@ general:
   moveDownAction: Move down
   refreshAction: Refresh
   exportAction: Export
-  precomputeAction: Run
+  runAction: Run
   expandAction: Expand
   collapseAction: Collapse
   showAttachmentsAction: Show attached contents
@@ -138,12 +138,15 @@ tasks:
     search_export: Export search results data
     broadcast_user_ntfc: Broadcast user notifications
     broadcast_admin_ntfc: Broadcast admin notifications
-    resource_maintenance_hook: Automatic maintenance of resource data
+    resource_precompute_hook: Regeneration of precomputed resource data
     structure_update: Update text structure
+    platform_cleanup: Cleanup of internal platform data
   results:
-    indices_create_update: Search indices created in {took} seconds.
-    resource_maintenance_hook: Maintenance took {took} seconds.
+    generic_duration_msg: This took {took} seconds.
+    indices_create_update: '@:tasks.results.generic_duration_msg'
+    resource_precompute_hook: '@:tasks.results.generic_duration_msg'
     resource_import: Created {created} contents, updated {updated} contents.
+    platform_cleanup: '@:tasks.results.generic_duration_msg'
 
 routes:
   pageTitle:
@@ -817,13 +820,18 @@ admin:
       ood: Out of date
       actionCreate: Reindex
       actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
-      actionCreateSuccess: Search indices have been updated
     precomputed:
       heading: Precomputed Data
       description: |
         This routine is part of the maintenance process, but can be run manually here.
         The location coverage of all resources and resource type-specific data (if applicable) will be precomputed.
       actionStarted: The generation of precomputed resource data is performed in the background. @:general.takeAWhile
+    cleanup:
+      heading: Internal Cleanup
+      description: |
+        This routine is part of the maintenance process, but can be run manually here.
+        Outdated access tokens and user messages scheduled for removal will be deleted.
+      actionStarted: The internal cleanup is performed in the background. @:general.takeAWhile
     tasks:
       noTasks: No active background tasks
       started: Started

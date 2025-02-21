@@ -12,7 +12,6 @@ import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import {
-  NAlert,
   NButton,
   NIcon,
   NTable,
@@ -36,6 +35,7 @@ const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
 const indicesInfoLoading = ref(false);
 const precomputedLoading = ref(false);
+const cleanupLoading = ref(false);
 const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
@@ -58,13 +58,24 @@ async function createIndex() {
 
 async function triggerPrecomputation() {
   precomputedLoading.value = true;
-  const { data, error } = await GET('/resources/maintenance');
+  const { data, error } = await GET('/resources/precompute');
   if (!error) {
     addTask(data);
     message.info($t('admin.maintenance.precomputed.actionStarted'));
     startTasksPolling();
   }
   precomputedLoading.value = false;
+}
+
+async function triggerInternalCleanup() {
+  cleanupLoading.value = true;
+  const { data, error } = await GET('/platform/cleanup');
+  if (!error) {
+    addTask(data);
+    message.info($t('admin.maintenance.cleanup.actionStarted'));
+    startTasksPolling();
+  }
+  cleanupLoading.value = false;
 }
 
 async function deleteTask(id: string) {
@@ -147,7 +158,7 @@ onBeforeMount(() => {
       :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
     >
       <!-- SEARCH INDICES -->
-      <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="1">
+      <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="indices">
         <form-section-heading :label="$t('admin.maintenance.indices.heading')" />
         <button-shelf bottom-gap>
           <template #start>
@@ -228,30 +239,41 @@ onBeforeMount(() => {
       </n-tab-pane>
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
-      <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="2">
+      <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
         <form-section-heading :label="$t('admin.maintenance.precomputed.heading')" />
-        <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="precomputedLoading"
-              :loading="precomputedLoading"
-              @click="triggerPrecomputation"
-            >
-              <template #icon>
-                <n-icon :component="UpdateIcon" />
-              </template>
-              {{ $t('general.precomputeAction') }}
-            </n-button>
+        <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
+        <n-button
+          secondary
+          :disabled="precomputedLoading"
+          :loading="precomputedLoading"
+          @click="triggerPrecomputation"
+        >
+          <template #icon>
+            <n-icon :component="UpdateIcon" />
           </template>
-        </button-shelf>
-        <n-alert type="info" :title="$t('general.info')">
-          {{ $t('admin.maintenance.precomputed.description') }}
-        </n-alert>
+          {{ $t('general.runAction') }}
+        </n-button>
+      </n-tab-pane>
+
+      <!-- INTERNAL CLEANUP -->
+      <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
+        <form-section-heading :label="$t('admin.maintenance.cleanup.heading')" />
+        <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
+        <n-button
+          secondary
+          :disabled="cleanupLoading"
+          :loading="cleanupLoading"
+          @click="triggerInternalCleanup"
+        >
+          <template #icon>
+            <n-icon :component="UpdateIcon" />
+          </template>
+          {{ $t('general.runAction') }}
+        </n-button>
       </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
-      <n-tab-pane :tab="$t('tasks.title')" name="3">
+      <n-tab-pane :tab="$t('tasks.title')" name="tasks">
         <form-section-heading :label="$t('tasks.title')" />
         <button-shelf bottom-gap>
           <template #start>
