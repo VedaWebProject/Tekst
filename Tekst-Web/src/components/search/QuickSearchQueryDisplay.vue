@@ -23,7 +23,11 @@ const state = useStateStore();
 const theme = useThemeStore();
 
 const targetTexts = computed(() => {
-  return (state.pf?.texts.filter((t) => props.req.qck?.txt?.includes(t.id)) || []).map((t) => ({
+  return (
+    state.pf?.texts.filter((t) =>
+      !!props.req.qck?.txt?.length ? props.req.qck.txt.includes(t.id) : true
+    ) || []
+  ).map((t) => ({
     ...t,
     color: theme.getAccentColors(t.id).base,
     colorFade: theme.getAccentColors(t.id).fade3,
