@@ -132,3 +132,17 @@ async def test_0_6_0a0(database, get_sample_data):
 
     # assert the data has been fixed by the migration
     assert "always_show_text_info" not in state
+
+
+@pytest.mark.anyio
+async def test_0_7_0a0(database, get_sample_data):
+    msg = get_sample_data("migrations/0_7_0a0.json")
+    await database.messages.insert_one(msg)
+
+    # run migration
+    await migrations.migration_0_7_0a0.migration(database)
+    msg = await database.messages.find_one({})
+
+    # assert the data has been fixed by the migration
+    assert "time" not in msg
+    assert "created_at" in msg
