@@ -345,7 +345,10 @@ async def test_update_resource(
     assert_status(404, resp)
 
     # update resource's read shares
-    updates = {"sharedRead": [other_user["id"]], "resourceType": "plainText"}
+    updates = {
+        "sharedRead": [other_user["id"]],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -367,18 +370,44 @@ async def test_update_resource(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["sharedRead"]) == 0
+    assert len(resp.json()["sharedWrite"]) == 1
     assert resp.json()["sharedWrite"][0] == other_user["id"]
 
-    # update resource's write shares using wrong user ID
-    updates = {"sharedWrite": [wrong_id], "resourceType": "plainText"}
+    # update resource shares with write access but as non-owner/non-admin
+    await login(user=other_user)
+    updates = {
+        "sharedRead": [superuser["id"]],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
-    assert_status(400, resp)
+    assert_status(200, resp)
+    assert superuser["id"] not in resp.json()["sharedRead"]
 
-    # check if updating public/proposed has no effect (as intended)
-    updates = {"public": True, "proposed": True, "resourceType": "plainText"}
+    # update resource's write shares using wrong user ID (should be filtered out)
+
+    await login(user=superuser)
+    updates = {
+        "sharedWrite": [wrong_id],
+        "resourceType": "plainText",
+    }
+    resp = await test_client.patch(
+        f"/resources/{resource_data['id']}",
+        json=updates,
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["sharedWrite"]) == 0
+
+    # check if updating public/proposed fields has no effect (as intended)
+    await login(user=superuser)
+    updates = {
+        "public": True,
+        "proposed": True,
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
@@ -390,22 +419,43 @@ async def test_update_resource(
 
     # update resource unauthenticated
     await logout()
-    updates = {"title": "This Title Changed Again", "resourceType": "plainText"}
+    updates = {
+        "title": [{"locale": "*", "translation": "This Title Changed"}],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
     assert_status(401, resp)
 
-    # update resource shares as non-owner/non-admin
-    await login(user=other_user)
-    updates = {"sharedRead": [wrong_id], "resourceType": "plainText"}
+    # reset shares
+    await login(user=superuser)
+    updates = {
+        "sharedRead": [],
+        "sharedWrite": [],
+        "resourceType": "plainText",
+    }
     resp = await test_client.patch(
         f"/resources/{resource_data['id']}",
         json=updates,
     )
     assert_status(200, resp)
-    assert wrong_id not in resp.json()["sharedRead"]  # bc API should ignore the update!
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["public"] is False
+    assert resp.json()["proposed"] is False
+
+    # update shares without write access
+    await login(user=other_user)
+    updates = {
+        "title": [{"locale": "*", "translation": "This Title Changed"}],
+        "resourceType": "plainText",
+    }
+    resp = await test_client.patch(
+        f"/resources/{resource_data['id']}",
+        json=updates,
+    )
+    assert_status(404, resp)
 
 
 @pytest.mark.anyio

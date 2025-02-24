@@ -20,7 +20,7 @@ const auth = useAuthStore();
 
 const initialUserSearchQuery = (): PublicUserSearchFilters => ({
   pg: 1,
-  pgs: 9999,
+  pgs: 100,
   emptyOk: false,
 });
 const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());

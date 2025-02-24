@@ -327,6 +327,10 @@ pre > code {
   min-width: 0;
 }
 
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
 .codemirror-container {
   width: 100%;
   border: 1px solid rgb(224, 224, 230);
@@ -335,19 +339,10 @@ pre > code {
 
 /*
  * NUI overrides
- * Unfortunately, we need to override the default NUI styles in this hacky way
+ * Unfortunately, we need to override some default NUI styles in this hacky way
  */
 
-.n-drawer-header__main {
-  flex-grow: 2;
-}
-
-.n-tree-node-switcher,
-.n-tree-node-switcher--expanded {
-  align-self: center;
-}
-
-.n-thing-header__title {
+.n-thing .n-thing-main .n-thing-header .n-thing-header__title {
   font-size: var(--font-size) !important;
 }
 

@@ -2,8 +2,7 @@
 import type { AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { EditIcon } from '@/icons';
-import { useAuthStore, useBrowseStore } from '@/stores';
-import { computed } from 'vue';
+import { useBrowseStore } from '@/stores';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
@@ -12,18 +11,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['done']);
-
-const auth = useAuthStore();
 const router = useRouter();
 const browse = useBrowseStore();
-
-const show = computed(
-  () =>
-    auth.user?.id &&
-    (auth.user.id === props.resource.ownerId ||
-      props.resource.sharedWrite.includes(auth.user.id) ||
-      auth.user.isSuperuser)
-);
 
 function handleClick() {
   router.push({
@@ -40,7 +29,7 @@ function handleClick() {
 
 <template>
   <content-container-header-widget
-    v-if="show"
+    v-if="resource.writable"
     :full="full"
     :title="$t('browse.contents.widgets.contentEdit.title')"
     :icon-component="EditIcon"

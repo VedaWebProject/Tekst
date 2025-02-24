@@ -275,7 +275,6 @@ async def create_resource_version(
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_400_SHARED_WITH_USER_NON_EXISTENT,
         ]
     ),
 )
@@ -299,17 +298,41 @@ async def update_resource(
     if not user.is_superuser and resource_doc.owner_id != user.id:
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
-
-    # conditionally force certain updates
-    if resource_doc.public:
+    # prevent shares for published resources
+    elif resource_doc.public:
         updates.shared_read = []
         updates.shared_write = []
-
-    # if the updates contain user shares, check if they are valid
-    if updates.shared_read or updates.shared_write:
-        for user_id in (updates.shared_read or []) + (updates.shared_write or []):
-            if not await UserDocument.find_one(UserDocument.id == user_id).exists():
-                raise errors.E_400_SHARED_WITH_USER_NON_EXISTENT
+    # else, validate shares combination
+    else:
+        # make sure shares are set on updates
+        # so we can further validate them in one place
+        updates.shared_read = (
+            updates.shared_read
+            if updates.shared_read is not None
+            else resource_doc.shared_read
+        )
+        updates.shared_write = (
+            updates.shared_write
+            if updates.shared_write is not None
+            else resource_doc.shared_write
+        )
+        # exclude write shares from read shares as they are implicit
+        updates.shared_read = [
+            user_id
+            for user_id in updates.shared_read
+            if user_id not in updates.shared_write
+        ]
+        # remove invalid user IDs from shares
+        updates.shared_read = [
+            uid
+            for uid in updates.shared_read
+            if await UserDocument.find_one(UserDocument.id == uid).exists()
+        ]
+        updates.shared_write = [
+            uid
+            for uid in updates.shared_write
+            if await UserDocument.find_one(UserDocument.id == uid).exists()
+        ]
 
     # mark  respective text's index as out-of-date if any indexing-relevant config
     # will be changed by this update (this logic might have to find a new home

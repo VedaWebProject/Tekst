@@ -57,7 +57,7 @@ const showTransferModal = ref(false);
 
 const pagination = ref({
   page: 1,
-  pageSize: 10,
+  pageSize: 20,
 });
 
 const initialFilters = () => ({
@@ -377,7 +377,6 @@ onMounted(() => {
         v-model:page="pagination.page"
         :simple="state.smallScreen"
         :page-sizes="[10, 20, 50, 100]"
-        :default-page-size="10"
         :item-count="filteredData.length"
         size="medium"
         show-size-picker
@@ -449,7 +448,7 @@ onMounted(() => {
         <template #icon>
           <n-icon :component="AddIcon" />
         </template>
-        {{ $t('general.new') }}
+        {{ $t('resources.new') }}
       </n-button>
     </div>
 

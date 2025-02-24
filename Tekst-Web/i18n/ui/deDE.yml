@@ -43,7 +43,6 @@ general:
   presentation: Darstellung
   type: Typ
   not: nicht
-  new: New
   in: in
   for: für
   with: mit
@@ -215,7 +214,7 @@ browse:
     showCombinedContents: Um kombinierte Inhalte von Ebene "{level}" anzuzeigen, klicken Sie auf
     widgets:
       contentEdit:
-        title: Bearbeiten
+        title: Inhalte bearbeiten
       correctionNote:
         title: Korrektur vorschlagen
         info: |
@@ -268,7 +267,9 @@ register:
   switchToLogin: Mit bestehendem Konto anmelden
   heading: Registrieren
   success: Erfolgreich registriert.
-  activationNeededHint: Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde. Sie werden darüber per E-Mail benachrichtigt.
+  activationNeededHint: |
+    Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde.
+    Sie werden darüber per E-Mail benachrichtigt.
   activationNotNeededHint: Sie können sich jetzt anmelden.
   repeatPassword: '@:models.user.password wiederholen'
 
@@ -379,6 +380,7 @@ models:
 resources:
   heading: Ressourcen
   msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
+  new: Neue Ressource
   versionOf: Version von "{title}"
   unknownOriginal: Unbekannte Original-Ressource
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
@@ -399,7 +401,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
-  contentsAction: Inhalte
+  contents: Inhalte
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version dieser Ressource erstellen
@@ -459,7 +461,7 @@ resources:
     integration: Integration
     presentation: Darstellung
     unavailableWhenPublished: Zugriffseinstellungen sind für veröffentlichte Ressourcen nicht verfügbar.
-    sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource zu vergeben.
+    sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource einzusehen oder zu vergeben.
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     config:
       heading: Allgemeine Konfiguration

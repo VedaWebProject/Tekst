@@ -77,7 +77,7 @@ watchEffect(() => {
       </template>
 
       <template #default>
-        <p v-if="user.bio" style="white-space: pre-wrap">
+        <p v-if="user.bio" class="pre-wrap">
           {{ user.bio }}
         </p>
         <p v-else class="translucent text-small i">

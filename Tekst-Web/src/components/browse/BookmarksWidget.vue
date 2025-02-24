@@ -165,7 +165,7 @@ async function handleWidgetClick() {
             </n-flex>
           </template>
           <template v-if="bookmark.comment" #description>
-            <div style="white-space: pre-wrap">
+            <div class="pre-wrap">
               {{ bookmark.comment }}
             </div>
           </template>

@@ -2,8 +2,6 @@
 import type { AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { SettingsIcon } from '@/icons';
-import { useAuthStore } from '@/stores';
-import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
@@ -13,16 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['done']);
 
-const auth = useAuthStore();
 const router = useRouter();
-
-const show = computed(
-  () =>
-    auth.user &&
-    ((props.resource.ownerId && auth.user.id === props.resource.ownerId) ||
-      props.resource.sharedWrite.includes(auth.user.id) ||
-      auth.user.isSuperuser)
-);
 
 function handleClick() {
   router.push({
@@ -38,7 +27,7 @@ function handleClick() {
 
 <template>
   <content-container-header-widget
-    v-if="show"
+    v-if="resource.writable"
     :full="full"
     :title="$t('general.settings')"
     :icon-component="SettingsIcon"

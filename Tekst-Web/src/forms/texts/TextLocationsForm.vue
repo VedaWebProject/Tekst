@@ -534,4 +534,9 @@ onMounted(() => {
   row-gap: 4px;
   padding: 4px;
 }
+
+:deep(.n-tree-node-switcher),
+:deep(.n-tree-node-switcher--expanded) {
+  align-self: center;
+}
 </style>

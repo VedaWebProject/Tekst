@@ -21,6 +21,7 @@ import LocationLabel from '@/components/LocationLabel.vue';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
 import OtherCorrectionsListItem from '@/components/resource/OtherCorrectionsListItem.vue';
+import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -422,6 +423,8 @@ whenever(ArrowRight, () => {
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
   </icon-heading>
+
+  <resource-info-tags v-if="resource" :resource="resource" />
 
   <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="gray-box">
     <template #start>

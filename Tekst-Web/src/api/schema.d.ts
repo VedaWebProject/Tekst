@@ -8469,15 +8469,6 @@ export interface operations {
             | components['schemas']['TextAnnotationResourceRead'];
         };
       };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
       /** @description Not Found */
       404: {
         headers: {

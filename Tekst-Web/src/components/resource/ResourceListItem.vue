@@ -2,10 +2,11 @@
 import type { AnyResourceRead, UserRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
+import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
-import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
-import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
+import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
@@ -13,7 +14,6 @@ import {
   NBadge,
   NButton,
   NDropdown,
-  NEllipsis,
   NFlex,
   NIcon,
   NListItem,
@@ -26,12 +26,10 @@ import {
   CorrectionNoteIcon,
   DeleteIcon,
   DownloadIcon,
-  EditIcon,
   MoreIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
-  SettingsIcon,
   UnproposedIcon,
   UploadIcon,
   UserIcon,
@@ -73,20 +71,8 @@ const actionOptions = computed(() => [
     ? [
         {
           type: 'group',
-          label: $t('general.editAction'),
+          label: $t('resources.contents'),
           children: [
-            {
-              label: $t('general.settings'),
-              key: 'settings',
-              icon: renderIcon(SettingsIcon),
-              action: () => emit('settingsClick', props.resource),
-            },
-            {
-              label: $t('resources.contentsAction'),
-              key: 'contents',
-              icon: renderIcon(EditIcon),
-              action: () => emit('contentsClick', props.resource),
-            },
             {
               label: $t('resources.downloadTemplateAction'),
               key: 'template',
@@ -210,8 +196,9 @@ function handleCorrectionsClick() {
           {{ resourceTitle }}
         </span>
       </template>
+
       <template #header-extra>
-        <n-flex>
+        <n-flex :wrap="false">
           <n-badge
             v-if="!!resources.correctionsCount[resource.id]"
             :value="resources.correctionsCount[resource.id]"
@@ -223,11 +210,15 @@ function handleCorrectionsClick() {
               @click="handleCorrectionsClick()"
             />
           </n-badge>
+
+          <resource-settings-widget :resource="resource" />
+          <content-edit-widget :resource="resource" />
           <resource-export-widget :resource="resource" />
           <resource-info-widget :resource="resource" />
+
           <n-dropdown
             :options="actionOptions"
-            trigger="click"
+            trigger="hover"
             placement="bottom-end"
             @select="(_, o) => handleActionSelect(o)"
           >
@@ -241,23 +232,24 @@ function handleCorrectionsClick() {
       </template>
 
       <template #description>
-        <user-display v-if="resource.owner" :user="resource.owner" size="tiny" class="mb-lg" />
-        <n-flex vertical>
-          <resource-publication-status :resource="resource" size="tiny" />
-          <resource-is-version-info v-if="resource.originalId" :resource="resource" size="tiny" />
+        <n-flex justify="space-between" class="my-sm">
+          <user-display
+            :user="resource.owner || undefined"
+            size="small"
+            :system="!resource.owner"
+          />
+          <resource-info-tags :resource="resource" reverse />
         </n-flex>
       </template>
 
-      <template v-if="resource.description.length">
-        <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
-          <translation-display :value="resource.description" />
-        </n-ellipsis>
-      </template>
+      <div v-if="resource.description.length" class="ellipsis text-medium">
+        <translation-display :value="resource.description" />
+      </div>
     </n-thing>
   </n-list-item>
 </template>
 
-<style>
+<style scoped>
 .resource-list-item:first-child {
   padding-top: 0;
 }
@@ -266,7 +258,16 @@ function handleCorrectionsClick() {
   padding-bottom: 0;
 }
 
-.resource-list-item .n-thing-header__title {
-  color: var(--accent-color) !important;
+.resource-list-item :deep(.n-thing > .n-thing-main .n-thing-header__title) {
+  color: var(--accent-color);
+}
+
+.resource-list-item :deep(.n-thing > .n-thing-main) {
+  max-width: 100%;
+}
+
+.resource-list-item :deep(.n-thing > .n-thing-main .n-thing-header) {
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 </style>

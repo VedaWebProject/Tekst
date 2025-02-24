@@ -31,6 +31,7 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   },
   Thing: {
     titleFontWeight: 'var(--font-weight-bold)',
+    fontSize: 'var(--font-size)',
   },
   Tabs: {
     tabFontSizeSmall: 'var(--font-size-small)',

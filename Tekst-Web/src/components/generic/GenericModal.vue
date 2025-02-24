@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { NModal } from 'naive-ui';
-import { computed, type Component, type CSSProperties } from 'vue';
+import { type Component } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -22,17 +22,12 @@ const props = withDefaults(
 
 const show = defineModel<boolean>('show', { default: false });
 
-const modalStyle = computed<CSSProperties>(() => ({
-  maxWidth: '95%',
-  marginTop: 'var(--gap-lg)',
-  marginBottom: 'var(--gap-lg)',
-  width: {
-    narrow: '480px',
-    medium: '600px',
-    wide: '900px',
-    full: 'var(--max-app-width)',
-  }[props.width],
-}));
+const modalWidths = {
+  narrow: '480px',
+  medium: '600px',
+  wide: '900px',
+  full: 'var(--max-app-width)',
+};
 </script>
 
 <template>
@@ -42,7 +37,8 @@ const modalStyle = computed<CSSProperties>(() => ({
     display-directive="if"
     preset="card"
     :bordered="false"
-    :style="modalStyle"
+    :style="{ width: modalWidths[props.width], maxWidth: '95%' }"
+    class="mx-auto my-md"
   >
     <template #header>
       <slot name="header">

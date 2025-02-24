@@ -2,7 +2,9 @@
 import type { UserReadPublic } from '@/api';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
+import { useLogo } from '@/composables/logo';
 import { AdminIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 import { NFlex, NIcon } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 
@@ -10,8 +12,9 @@ withDefaults(
   defineProps<{
     user?: UserReadPublic & Record<string, unknown>;
     showAvatar?: boolean;
-    size?: 'large' | 'medium' | 'small' | 'tiny';
+    size?: 'large' | 'medium' | 'small';
     link?: boolean;
+    system?: boolean;
   }>(),
   {
     user: undefined,
@@ -22,22 +25,24 @@ withDefaults(
 );
 
 const iconSizes = {
-  large: 36,
-  medium: 32,
-  small: 28,
-  tiny: 24,
+  large: 34,
+  medium: 30,
+  small: 22,
 };
+
+const state = useStateStore();
+const { pageLogo } = useLogo();
 </script>
 
 <template>
   <n-flex align="center" :style="size ? `font-size: var(--font-size-${size})` : ''">
     <user-avatar
       v-if="showAvatar"
-      :avatar-url="user?.avatarUrl || undefined"
+      :avatar-url="!system ? user?.avatarUrl || undefined : pageLogo"
       :size="iconSizes[size]"
       style="flex-shrink: 0"
     />
-    <template v-if="user">
+    <template v-if="user && !system">
       <router-link v-if="link" :to="{ name: 'user', params: { username: user.username } }">
         <user-display-text :user="user" />
       </router-link>
@@ -49,6 +54,7 @@ const iconSizes = {
         :title="$t('models.user.isSuperuser')"
       />
     </template>
+    <span v-else-if="system">{{ state.pf?.state.platformName }}</span>
     <span v-else>–</span>
   </n-flex>
 </template>

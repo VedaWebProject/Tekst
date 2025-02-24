@@ -170,12 +170,6 @@ E_400_UNSUPPORTED_EXPORT_FORMAT = error_instance(
     msg="The requested export format is not supported by this type of resource",
 )
 
-E_400_SHARED_WITH_USER_NON_EXISTENT = error_instance(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    key="sharedWithUserNonExistent",
-    msg="Shared-with user doesn't exist",
-)
-
 E_400_RESOURCE_PUBLIC_DELETE = error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
     key="resourcePublicDelete",

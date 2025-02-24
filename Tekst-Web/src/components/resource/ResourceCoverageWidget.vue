@@ -166,7 +166,7 @@ onMounted(async () => {
       </n-collapse-item>
     </n-collapse>
     <n-spin v-else-if="coverageLoading" class="centered-spinner" />
-    <i v-else>{{ $t('errors.notFound') }}</i>
+    <i v-else class="translucent text-medium">{{ $t('errors.notFound') }}</i>
   </div>
 </template>
 

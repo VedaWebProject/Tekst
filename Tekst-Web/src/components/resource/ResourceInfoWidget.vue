@@ -7,8 +7,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
-import ResourceIsVersionInfo from '@/components/resource/ResourceIsVersionInfo.vue';
-import ResourcePublicationStatus from '@/components/resource/ResourcePublicationStatus.vue';
+import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import { CommentIcon, CoverageIcon, FormatQuoteIcon, InfoIcon, MetadataIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -44,25 +43,15 @@ const showInfoModal = ref(false);
   />
 
   <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="InfoIcon" width="wide">
-    <!-- USER -->
-    <user-display
-      v-if="auth.loggedIn && !!resource.owner"
-      :user="resource.owner"
-      size="tiny"
-      class="mb-lg"
-    />
-
-    <!-- PUBLICATION, VERSION -->
-    <div v-if="auth.loggedIn" class="gray-box">
-      <n-flex vertical>
-        <resource-publication-status :resource="resource" size="tiny" />
-        <resource-is-version-info v-if="resource.originalId" :resource="resource" size="tiny" />
-      </n-flex>
-    </div>
+    <n-flex v-if="auth.loggedIn" justify="space-between" class="mb-lg">
+      <user-display :user="resource.owner || undefined" size="small" :system="!resource.owner" />
+      <resource-info-tags :resource="resource" reverse />
+    </n-flex>
 
     <!-- DESCRIPTION -->
     <p v-if="resource.description.length">
       <translation-display :value="resource.description" />
+      <n-divider />
     </p>
 
     <!-- METADATA -->
@@ -90,7 +79,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="CommentIcon">
         {{ $t('general.comment') }}
       </icon-heading>
-      <div class="resource-comment">
+      <div class="pre-wrap">
         <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
           <translation-display :value="resource.comment" />
         </n-ellipsis>
@@ -111,9 +100,3 @@ const showInfoModal = ref(false);
     </button-shelf>
   </generic-modal>
 </template>
-
-<style scoped>
-.resource-comment {
-  white-space: pre-wrap;
-}
-</style>

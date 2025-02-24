@@ -133,7 +133,7 @@ onMounted(() => {
     </n-flex>
     <div
       v-if="caption && !compact"
-      class="caption text-tiny translucent"
+      class="pre-wrap text-tiny translucent"
       :class="{ translucent: error }"
       :style="fontStyle"
     >
@@ -145,9 +145,5 @@ onMounted(() => {
 <style scoped>
 .audio-player {
   padding: 8px 0;
-}
-
-.caption {
-  white-space: pre-wrap;
 }
 </style>

@@ -3865,16 +3865,6 @@
             },
             "description": "Not Found"
           },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Bad Request"
-          },
           "422": {
             "description": "Validation Error",
             "content": {

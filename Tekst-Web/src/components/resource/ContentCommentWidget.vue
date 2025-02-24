@@ -38,7 +38,7 @@ const showModal = ref(false);
     :title="$t('general.comment')"
     :icon="CommentIcon"
   >
-    <p v-if="resource.contents?.[0]?.comment" style="white-space: pre-wrap">
+    <p v-if="resource.contents?.[0]?.comment" class="pre-wrap">
       {{ resource.contents[0].comment }}
     </p>
     <button-shelf top-gap>

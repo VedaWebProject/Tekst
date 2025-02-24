@@ -3,6 +3,7 @@ import { PATCH, type AnyResourceRead, type AnyResourceUpdate } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -116,6 +117,8 @@ async function handleSaveClick() {
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
   </icon-heading>
+
+  <resource-info-tags v-if="resource" :resource="resource" />
 
   <template v-if="model">
     <div class="content-block">

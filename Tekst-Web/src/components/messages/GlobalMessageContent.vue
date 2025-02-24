@@ -7,7 +7,7 @@ import { NCollapse, NCollapseItem, NScrollbar } from 'naive-ui';
   <n-collapse v-if="$slots.details" class="mt-md">
     <n-collapse-item :title="$t('general.details')" name="details" class="text-mini m-0">
       <n-scrollbar class="details-scroll-container">
-        <pre class="details">
+        <pre class="details pre-wrap text-mini">
           <slot name="details"></slot>
         </pre>
       </n-scrollbar>
@@ -18,8 +18,6 @@ import { NCollapse, NCollapseItem, NScrollbar } from 'naive-ui';
 <style scoped>
 .details {
   font-family: monospace;
-  font-size: var(--font-size-mini);
-  white-space: pre-wrap;
   line-height: 1;
 }
 

@@ -43,7 +43,6 @@ general:
   presentation: Presentation
   type: Type
   not: not
-  new: New
   in: in
   for: for
   with: with
@@ -212,7 +211,7 @@ browse:
     showCombinedContents: To show combined contents from level "{level}", click on
     widgets:
       contentEdit:
-        title: Edit
+        title: Edit contents
       correctionNote:
         title: Suggest correction
         info: |
@@ -266,7 +265,7 @@ register:
   heading: Register
   success: Successfully registered.
   activationNeededHint: |
-    You will only be able to log in as soon as we activate your account.
+    You will only be able to log in after we activated your account.
     We will send you an email when that happens.
   activationNotNeededHint: You can now log in.
   repeatPassword: 'Repeat @:models.user.password'
@@ -378,6 +377,7 @@ models:
 resources:
   heading: Resources
   msgFoundCount: Found {count} resources ({total} total)
+  new: New Resource
   versionOf: Version of "{title}"
   unknownOriginal: Unknown original resource
   msgNotYourResourceTitle: This is not your resource!
@@ -397,7 +397,7 @@ resources:
   notProposed: '@:general.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes
   transferAction: Transfer to user
-  contentsAction: Contents
+  contents: Contents
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
   createVersionAction: Create version of this resource
@@ -450,7 +450,7 @@ resources:
     integration: Integration
     presentation: Presentation
     unavailableWhenPublished: Access settings are unavailable for published resources.
-    sharingUnauthorized: You are not authorized to change access settings for this resource.
+    sharingUnauthorized: You are not authorized to view or change access settings for this resource.
     msgSaved: Your changes to the resource "{title}" have been saved.
     config:
       heading: General Configuration

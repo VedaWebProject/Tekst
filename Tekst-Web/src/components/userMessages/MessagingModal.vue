@@ -93,12 +93,11 @@ whenever(ctrlEnter, () => {
         <div
           v-for="msg in messages"
           :key="msg.id"
-          class="message-content"
+          class="message-content pre-wrap"
           :class="{
             'from-me': msg.sender === auth.user?.id,
             'from-them': msg.sender !== auth.user?.id,
           }"
-          style="white-space: pre-wrap"
         >
           {{ msg.content }}
           <n-flex align="center" class="message-meta">
@@ -158,7 +157,6 @@ whenever(ctrlEnter, () => {
 <style>
 #messaging-modal .message-content {
   position: relative;
-  white-space: pre-wrap;
   border-radius: 24px;
   width: 80%;
   padding: 1.2rem;
