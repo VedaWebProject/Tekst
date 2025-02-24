@@ -38,7 +38,7 @@ tekst_util_usage() {
   printf "  %s   Restore DB backup (MongoDB service must be running)\n" "restore    "
   printf "  %s   Migrate DB data to newer version (MongoDB service must be running)\n" "migration  "
   printf "  %s   Create/update search index (MongoDB and ES services must be running)\n" "index      "
-  printf "  %s   Run resource maintenance routines (MongoDB service must be running)\n" "maintenance"
+  printf "  %s   Run all maintenance routines: index, precompute, cleanup (API, MongoDB and ES must be running)\n" "maintenance"
   echo
 
   # :command.long_usage
@@ -268,11 +268,11 @@ tekst_util_index_usage() {
 # :command.usage
 tekst_util_maintenance_usage() {
   if [[ -n $long_usage ]]; then
-    printf "tekst-util maintenance - Run resource maintenance routines (MongoDB service must be running)\n"
+    printf "tekst-util maintenance - Run all maintenance routines: index, precompute, cleanup (API, MongoDB and ES must be running)\n"
     echo
 
   else
-    printf "tekst-util maintenance - Run resource maintenance routines (MongoDB service must be running)\n"
+    printf "tekst-util maintenance - Run all maintenance routines: index, precompute, cleanup (API, MongoDB and ES must be running)\n"
     echo
 
   fi

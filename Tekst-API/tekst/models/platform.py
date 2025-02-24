@@ -263,19 +263,3 @@ class PlatformData(ModelBase):
     info_segments: list[ClientSegmentHead]
     tekst: dict[str, str]
     max_field_mappings: int
-
-
-class TextStats(ModelBase):
-    """Text statistics data"""
-
-    id: PydanticObjectId
-    locations_count: int
-    resources_count: int
-    resource_types: dict[str, int]
-
-
-class PlatformStats(ModelBase):
-    """Platform statistics data"""
-
-    users_count: int
-    texts: list[TextStats]

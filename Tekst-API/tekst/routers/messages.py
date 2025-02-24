@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import LT, And, Eq, In, Or, Set
+from beanie.operators import And, Eq, In, Or, Set
 from fastapi import APIRouter, Depends, Path, Query, status
 
 from tekst import errors
@@ -103,14 +103,6 @@ async def get_thread_messages(
     ] = None,
 ) -> list[UserMessageRead]:
     """Returns all messages belonging to the specified thread"""
-
-    # trigger housekeeping: delete old messages according to config (for all users!)
-    await UserMessageDocument.find(
-        LT(
-            UserMessageDocument.time,
-            datetime.utcnow() - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
-        ),
-    ).delete()
 
     # find messages belonging to this thread
     messages = (

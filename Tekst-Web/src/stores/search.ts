@@ -261,7 +261,7 @@ export const useSearchStore = defineStore('search', () => {
   watch(
     () => state.text?.id,
     () => {
-      settingsQuick.value.txt = state.pf?.texts.map((t) => t.id);
+      settingsQuick.value.txt = undefined;
     },
     { immediate: true }
   );

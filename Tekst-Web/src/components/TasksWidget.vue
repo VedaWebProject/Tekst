@@ -97,7 +97,7 @@ function handleTaskClick(id: string) {
               :component="statusThemes[task.status].icon"
               :color="statusThemes[task.status].color"
             />
-            <div class="text-small ellipsis">
+            <div class="text-medium ellipsis">
               {{ $t(`tasks.types.${task.type}`) }}
               ({{ $t(`tasks.statuses.${task.status}`) }})
             </div>

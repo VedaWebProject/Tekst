@@ -2947,55 +2947,6 @@
         ]
       }
     },
-    "/platform/stats": {
-      "get": {
-        "tags": [
-          "platform"
-        ],
-        "summary": "Get statistics",
-        "operationId": "getStatistics",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlatformStats"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/platform/tasks": {
       "get": {
         "tags": [
@@ -3273,13 +3224,62 @@
         }
       }
     },
-    "/resources/maintenance": {
+    "/platform/cleanup": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Run platform cleanup",
+        "operationId": "runPlatformCleanup",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/resources/precompute": {
       "get": {
         "tags": [
           "resources"
         ],
-        "summary": "Trigger resources maintenance",
-        "operationId": "triggerResourcesMaintenance",
+        "summary": "Trigger resource precomputation",
+        "operationId": "triggerResourcePrecomputation",
         "responses": {
           "202": {
             "description": "Successful Response",
@@ -14166,28 +14166,6 @@
         "type": "object",
         "title": "PlatformStateUpdate"
       },
-      "PlatformStats": {
-        "properties": {
-          "usersCount": {
-            "type": "integer",
-            "title": "Userscount"
-          },
-          "texts": {
-            "items": {
-              "$ref": "#/components/schemas/TextStats"
-            },
-            "type": "array",
-            "title": "Texts"
-          }
-        },
-        "type": "object",
-        "required": [
-          "usersCount",
-          "texts"
-        ],
-        "title": "PlatformStats",
-        "description": "Platform statistics data"
-      },
       "PrivateUserProp": {
         "type": "string",
         "enum": [
@@ -15655,8 +15633,9 @@
           "search_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
-          "resource_maintenance_hook",
-          "structure_update"
+          "resource_precompute_hook",
+          "structure_update",
+          "platform_cleanup"
         ],
         "title": "TaskType",
         "description": "Task types with locking and artifact flags"
@@ -16884,42 +16863,6 @@
         ],
         "title": "TextRead"
       },
-      "TextStats": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
-          },
-          "locationsCount": {
-            "type": "integer",
-            "title": "Locationscount"
-          },
-          "resourcesCount": {
-            "type": "integer",
-            "title": "Resourcescount"
-          },
-          "resourceTypes": {
-            "additionalProperties": {
-              "type": "integer"
-            },
-            "type": "object",
-            "title": "Resourcetypes"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "locationsCount",
-          "resourcesCount",
-          "resourceTypes"
-        ],
-        "title": "TextStats",
-        "description": "Text statistics data"
-      },
       "TextSubtitleTranslation": {
         "properties": {
           "locale": {
@@ -17366,17 +17309,11 @@
             "description": "Content of the message"
           },
           "time": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Time",
-            "description": "Time when the message was sent"
+            "description": "Time when the message was sent",
+            "default": "2025-02-21T14:36:31.161383"
           },
           "read": {
             "type": "boolean",

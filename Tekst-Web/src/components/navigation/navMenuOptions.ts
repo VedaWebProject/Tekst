@@ -13,13 +13,10 @@ import { computed, h } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 
 import {
-  AddCircleIcon,
-  BarChartIcon,
   BookIcon,
   CommunityIcon,
   EyeIcon,
   InfoIcon,
-  LevelsIcon,
   LogoutIcon,
   MaintenanceIcon,
   ManageAccountIcon,
@@ -28,9 +25,7 @@ import {
   SearchIcon,
   SegmentsIcon,
   SettingsIcon,
-  SystemIcon,
   TextsIcon,
-  TreeIcon,
   UsersIcon,
 } from '@/icons';
 
@@ -41,9 +36,6 @@ function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string,
       {
         ...props,
         to,
-        style: {
-          fontSize: 'var(--font-size)',
-        },
       },
       { default: label }
     );
@@ -74,7 +66,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     return pages.map((p) => ({
       label: renderLink(() => p.title || p.key, { name: 'info', params: { pageKey: p.key } }),
       key: `page_${p.key}`,
-      icon: (showIcons && renderIcon(InfoIcon)) || undefined,
+      icon: (showIcons && state.smallScreen && renderIcon(InfoIcon)) || undefined,
     }));
   });
 
@@ -93,14 +85,22 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(
         () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search'),
-        {
-          name: 'search',
-          params: { textSlug: state.text?.slug },
-        }
+        { name: 'search' }
       ),
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
+    ...(auth.loggedIn
+      ? [
+          {
+            label: renderLink(() => $t('community.heading'), {
+              name: 'community',
+            }),
+            key: 'community',
+            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+          },
+        ]
+      : []),
     ...(state.smallScreen && auth.loggedIn
       ? [
           {
@@ -124,12 +124,19 @@ export function useMainMenuOptions(showIcons: boolean = true) {
             key: 'resources',
             icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
           },
+        ]
+      : []),
+    ...(state.smallScreen && !!auth.user?.isSuperuser
+      ? [
           {
-            label: renderLink(() => $t('community.heading'), {
-              name: 'community',
+            label: renderLink(() => $t('texts.heading'), {
+              name: 'textSettings',
+              params: {
+                textSlug: state.text?.slug || '',
+              },
             }),
-            key: 'community',
-            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+            key: 'textSettings',
+            icon: (showIcons && renderIcon(TextsIcon)) || undefined,
           },
         ]
       : []),
@@ -140,6 +147,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
               pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('nav.info'),
             key: 'info',
             children: infoPagesOptions.value,
+            icon: (showIcons && renderIcon(InfoIcon)) || undefined,
           },
         ]
       : []),
@@ -181,6 +189,10 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
     ...(state.smallScreen
       ? [
           {
+            key: 'logoutDivider',
+            type: 'divider',
+          },
+          {
             label: renderLink(() => $t('account.logoutBtn'), { name: 'logout' }),
             key: 'logout',
             icon: (showIcons && renderIcon(LogoutIcon)) || undefined,
@@ -195,103 +207,39 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
 }
 
 export function useAdminMenuOptions(showIcons: boolean = true) {
-  const state = useStateStore();
-
   const menuOptions = computed<MenuOption[]>(() => [
     {
-      label: renderLink(() => $t('admin.statistics.heading'), { name: 'adminStatistics' }),
-      key: 'adminStatistics',
-      icon: (showIcons && renderIcon(BarChartIcon)) || undefined,
+      label: renderLink(() => $t('general.settings'), {
+        name: 'adminSettings',
+      }),
+      key: 'adminSettings',
+      icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
     },
     {
-      label: $t('admin.text.heading'),
-      key: 'adminText',
-      icon: (showIcons && renderIcon(TextsIcon)) || undefined,
-      children: [
-        {
-          key: 'currentTextGroup',
-          type: 'group',
-          label: state.text?.title || '',
-          children: [
-            {
-              label: renderLink(() => $t('general.settings'), {
-                name: 'adminTextsSettings',
-                params: { textSlug: state.text?.slug },
-              }),
-              key: 'adminTextsSettings',
-              icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
-            },
-            {
-              label: renderLink(() => $t('admin.text.levels.heading'), {
-                name: 'adminTextsLevels',
-                params: { textSlug: state.text?.slug },
-              }),
-              key: 'adminTextsLevels',
-              icon: (showIcons && renderIcon(LevelsIcon)) || undefined,
-            },
-            {
-              label: renderLink(() => $t('admin.text.locations.heading'), {
-                name: 'adminTextsLocations',
-                params: { textSlug: state.text?.slug },
-              }),
-              key: 'adminTextsLocations',
-              icon: (showIcons && renderIcon(TreeIcon)) || undefined,
-            },
-          ],
-        },
-        {
-          key: 'textGeneralGroup',
-          type: 'group',
-          label: $t('general.general'),
-          children: [
-            {
-              label: renderLink(() => $t('admin.newText.heading'), { name: 'adminNewText' }),
-              key: 'adminNewText',
-              icon: (showIcons && renderIcon(AddCircleIcon)) || undefined,
-            },
-          ],
-        },
-      ],
+      label: renderLink(() => $t('admin.infoPages.heading'), {
+        name: 'adminInfoPages',
+      }),
+      key: 'adminInfoPages',
+      icon: (showIcons && renderIcon(InfoIcon)) || undefined,
     },
     {
-      label: $t('admin.system.heading'),
-      key: 'adminSystem',
-      icon: (showIcons && renderIcon(SystemIcon)) || undefined,
-      children: [
-        {
-          label: renderLink(() => $t('general.settings'), {
-            name: 'adminSystemSettings',
-          }),
-          key: 'adminSystemSettings',
-          icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
-        },
-        {
-          label: renderLink(() => $t('admin.system.infoPages.heading'), {
-            name: 'adminSystemInfoPages',
-          }),
-          key: 'adminSystemInfoPages',
-          icon: (showIcons && renderIcon(InfoIcon)) || undefined,
-        },
-        {
-          label: renderLink(() => $t('admin.system.segments.heading'), {
-            name: 'adminSystemSegments',
-          }),
-          key: 'adminSystemSegments',
-          icon: (showIcons && renderIcon(SegmentsIcon)) || undefined,
-        },
-        {
-          label: renderLink(() => $t('admin.users.heading'), { name: 'adminSystemUsers' }),
-          key: 'adminSystemUsers',
-          icon: (showIcons && renderIcon(UsersIcon)) || undefined,
-        },
-        {
-          label: renderLink(() => $t('admin.system.maintenance.heading'), {
-            name: 'adminSystemMaintenance',
-          }),
-          key: 'adminSystemMaintenance',
-          icon: (showIcons && renderIcon(MaintenanceIcon)) || undefined,
-        },
-      ],
+      label: renderLink(() => $t('admin.segments.heading'), {
+        name: 'adminSegments',
+      }),
+      key: 'adminSegments',
+      icon: (showIcons && renderIcon(SegmentsIcon)) || undefined,
+    },
+    {
+      label: renderLink(() => $t('admin.users.heading'), { name: 'adminUsers' }),
+      key: 'adminUsers',
+      icon: (showIcons && renderIcon(UsersIcon)) || undefined,
+    },
+    {
+      label: renderLink(() => $t('admin.maintenance.heading'), {
+        name: 'adminMaintenance',
+      }),
+      key: 'adminMaintenance',
+      icon: (showIcons && renderIcon(MaintenanceIcon)) || undefined,
     },
   ]);
 

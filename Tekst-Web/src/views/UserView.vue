@@ -11,7 +11,7 @@ import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
 const props = defineProps<{
-  username: string;
+  username?: string;
 }>();
 
 const route = useRoute();

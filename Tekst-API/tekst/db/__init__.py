@@ -4,7 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
-from tekst.auth import AccessToken
+from tekst.auth import AccessTokenDocument
 from tekst.config import TekstConfig, get_config
 from tekst.logs import log
 from tekst.models.bookmark import BookmarkDocument
@@ -69,7 +69,7 @@ async def init_odm(db: Database = get_db()) -> None:
         UserDocument,
         UserMessageDocument,
         BookmarkDocument,
-        AccessToken,
+        AccessTokenDocument,
         TaskDocument,
         PrecomputedDataDocument,
     ]

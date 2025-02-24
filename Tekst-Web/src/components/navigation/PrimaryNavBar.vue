@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
+import DrawerMenu from '@/components/navigation/DrawerMenu.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
+import { useMainMenuOptions } from '@/components/navigation/navMenuOptions';
 import ThemeModeSwitcher from '@/components/navigation/ThemeModeSwitcher.vue';
 import UserActionsButton from '@/components/navigation/UserActionsButton.vue';
 import QuickSearch from '@/components/search/QuickSearch.vue';
@@ -18,8 +20,6 @@ import {
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import DrawerMenu from './DrawerMenu.vue';
-import { useMainMenuOptions } from './navMenuOptions';
 
 const { pfData, systemHome } = usePlatformData();
 const auth = useAuthStore();
@@ -109,23 +109,11 @@ const titleLinkTo = computed(() => {
     </n-badge>
   </n-flex>
 
-  <n-flex
-    v-if="!state.smallScreen"
-    justify="space-between"
-    align="center"
-    :wrap="false"
-    class="navbar-menu"
-  >
-    <navigation-menu :options="mainMenuOptions" />
-    <quick-search />
+  <n-flex align="center" class="navbar-menu">
+    <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
+    <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
+    <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
   </n-flex>
-
-  <template v-else>
-    <div class="navbar-menu">
-      <quick-search />
-    </div>
-    <drawer-menu v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
-  </template>
 </template>
 
 <style scoped>
@@ -133,7 +121,6 @@ const titleLinkTo = computed(() => {
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--gap-lg);
-  font-size: var(--font-size-small);
 }
 
 .navbar-smallscreen {

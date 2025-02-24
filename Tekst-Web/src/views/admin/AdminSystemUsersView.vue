@@ -10,7 +10,7 @@ import UserListItem from '@/components/user/UserListItem.vue';
 import { useUsersAdmin } from '@/composables/fetchers';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { ErrorIcon, NoContentIcon, SearchIcon, UndoIcon, UsersIcon } from '@/icons';
+import { ErrorIcon, FilterIcon, NoContentIcon, SearchIcon, UndoIcon, UsersIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { createReusableTemplate } from '@vueuse/core';
 import {
@@ -168,9 +168,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="UsersIcon">
+  <icon-heading level="1" :icon="UsersIcon">
     {{ $t('admin.users.heading') }}
-    <help-button-widget help-key="adminSystemUsersView" />
+    <help-button-widget help-key="adminUsersView" />
   </icon-heading>
 
   <define-template>
@@ -193,7 +193,13 @@ onMounted(() => {
 
   <!-- Filters -->
   <n-collapse class="mb-lg" @item-header-click="handleFilterCollapseItemClick">
-    <n-collapse-item :title="$t('general.filters')" name="filters">
+    <n-collapse-item name="filters">
+      <template #header>
+        <n-flex align="center" :wrap="false">
+          <n-icon :component="FilterIcon" class="translucent" />
+          <span>{{ $t('general.filters') }}</span>
+        </n-flex>
+      </template>
       <n-flex vertical class="gray-box" style="padding-left: var(--gap-lg)">
         <n-input
           v-model:value="filters.q"
@@ -239,7 +245,7 @@ onMounted(() => {
           @update:model-value="resetPagination"
         />
 
-        <n-button class="mt-md" @click="filters = initialFilters()">
+        <n-button secondary class="mt-md" @click="filters = initialFilters()">
           {{ $t('general.resetAction') }}
           <template #icon>
             <n-icon :component="UndoIcon" />

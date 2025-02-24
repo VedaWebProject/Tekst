@@ -301,12 +301,12 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         self.contents_changed_at = datetime.utcnow()
         await self.replace()
 
-    async def resource_maintenance_hook(self) -> None:
+    async def resource_precompute_hook(self) -> None:
         """
-        Will be called whenever the central resource maintenance procedures are run.
+        Will be called whenever the central resource precompute procedures are run.
         This may be overridden by concrete resource implementations to run arbitrary
-        maintenance procedures. Overriding implementations MUST
-        call `await super().resource_maintenance_hook()`!
+        data precomputation procedures. Overriding implementations MUST
+        call `await super().resource_precompute_hook()`!
         """
         op_id = log_op_start(f"Precompute coverage data for resource {self.id}")
         try:

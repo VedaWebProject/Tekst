@@ -27,7 +27,7 @@ general:
   moveDownAction: Nach unten bewegen
   refreshAction: Aktualisieren
   exportAction: Export
-  precomputeAction: Vorberechnen
+  runAction: Ausführen
   expandAction: Ausklappen
   collapseAction: Einklappen
   showAttachmentsAction: Angehängte Inhalte anzeigen
@@ -116,10 +116,8 @@ errors:
   exportNotFound: Der angefragte Export konnte nicht gefunden werden.
 
 nav:
-  about: Über
   browse: Lesen
   search: Suche
-  help: Hilfe
   info: Info
 
 osk:
@@ -143,12 +141,15 @@ tasks:
     search_export: Suchergebnisse exportieren
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
-    resource_maintenance_hook: Automatische Wartung von Ressourcen-Daten
+    resource_precompute_hook: Generierung vorberechneter Ressourcen-Daten
     structure_update: Textstruktur aktualisieren
+    platform_cleanup: Bereinigung interner Plattformdaten
   results:
-    indices_create_update: Suchindizes erzeugt in {took} Sekunden.
-    resource_maintenance_hook: Die Wartung hat {took} Sekunden gedauert.
+    generic_duration_msg: Dies hat {took} Sekunden gedauert.
+    indices_create_update: '@:tasks.results.generic_duration_msg'
+    resource_precompute_hook: '@:tasks.results.generic_duration_msg'
     resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert.'
+    platform_cleanup: '@:tasks.results.generic_duration_msg'
 
 routes:
   pageTitle:
@@ -166,16 +167,13 @@ routes:
     community: Gemeinschaft
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
-    adminStatistics: Statistiken
-    adminTextsSettings: '@:general.settings – {text}'
-    adminTextsLevels: Ebenen – {text}
-    adminTextsLocations: Belegstellen – {text}
-    adminNewText: Neuer Text
-    adminSystemSettings: '@:general.settings'
-    adminSystemUsers: Benutzer
-    adminSystemSegments: Segmente
-    adminSystemInfoPages: Info-Seiten
-    adminSystemMaintenance: '@:admin.system.maintenance.heading'
+    textSettings: Einstellungen – {text}
+    newText: Neuer Text
+    adminSettings: '@:general.settings'
+    adminUsers: Benutzer
+    adminSegments: Segmente
+    adminInfoPages: Info-Seiten
+    adminMaintenance: '@:admin.maintenance.heading'
     verify: Verifizierung
     reset: Passwort zurücksetzen
     siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
@@ -356,15 +354,15 @@ models:
     navSearchEntry: Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Einführungstext für Registrierungsseite
-    directJumpOnUniqueAliasSearch: Springe direkt zur Belegstelle bei Suche nach eindeutigem Alias
+    directJumpOnUniqueAliasSearch: Bei eindeutigem Treffer direkt zur Belegstelle springen
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    denyResourceTypes: Erstellung dieser Ressourcentypen auf Administratoren beschränken
-    fonts: Zusätzliche Schriftarten
+    denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
+    fonts: Benutzerdefinierte Schritarten für Inhalte
     fontName: Name
     oskModes: Bildschirmtastaturen
     oskModeName: Name
@@ -692,6 +690,90 @@ account:
 community:
   heading: Gemeinschaft
 
+texts:
+  heading: Texts
+  settings:
+    msgSaved: Text-Einstellungen gespeichert.
+    warnDeleteText: |
+      Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
+      beziehen, ebenfalls gelöscht. Dies schließt die Textstruktur sowie alle
+      Ressourcen mit ein – unabhängig von welchem User sie erstellt wurden.
+      Dies kann nicht rückgängig gemacht werden.
+      Sind Sie sich sicher?
+    msgDeleted: Text "{title}" gelöscht
+  levels:
+    heading: Ebenen
+    tipInsertLevel: Neue Ebene an Position {n} einfügen
+    tipEditLevel: Bezeichnung für Ebene "{levelLabel}" bearbeiten
+    tipDeleteLevel: Ebene "{levelLabel}" löschen
+    msgInsertSuccess: Ebene an Position {position} eingefügt
+    msgEditSuccess: Änerungen an Ebene auf Position {position} gespeichert
+    msgDeleteSuccess: Ebene "{levelLabel}" gelöscht
+    warnInsertLevel: |
+      Das nachträgliche Einfügen einer Textebene ist eine Operation mit
+      gravierenden Auswirkungen auf das Datenmodell des Textes.
+      Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
+      bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
+      anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
+      anpassen müssen.
+      Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
+      Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
+    warnDeleteLevel: |
+      Das Löschen einer Textebene hat weitreichende Folgen:
+      Alle Daten, die mit dieser Textebene verbunden sind,
+      werden mit ihr gelöscht. Dies betrifft alle (!) Ressourcen auf dieser
+      Ebene - egal, welcher Benutzer diese erstellt hat!
+      Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
+      zu verbinden, aber Sie werden das Ergebnis
+      anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
+      anpassen müssen.
+      Bitte machen Sie ein Backup Ihrer Datenbank, bevor Sie eine Ebene löschen!
+      Dies kann nicht rückgängig gemacht werden.
+      Sind Sie sich sicher, dass Sie die
+      Textebene "{levelLabel}" löschen möchten?
+  locations:
+    heading: Belegstellen
+    add:
+      heading: Belegstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
+      tooltip: Belegstelle hinzufügen
+      msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
+    lblBtnAddLocationFirstLevel: Hinzufügen
+    tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
+    lblBtnDownloadTemplate: Vorlage für Textstruktur
+    tipBtnDownloadTemplate: '@:admin.text.locations.lblBtnDownloadTemplate herunterladen'
+    lblBtnUploadStructure: Textstruktur importieren
+    tipBtnUploadStructure: Vorbereitete Daten für neue Textstruktur importieren
+    lblBtnUploadUpdates: Änderungen importieren
+    tipBtnUploadUpdates: Geänderte Beschriftungen und Aliase für Belegstellen importieren
+    infoNoLocations: |
+      Dieser Text hat noch keine Belegstellen.
+      Fügen Sie den Strukturebenen des Textes Belegstellen hinzu,
+      indem Sie die untenstehenden Werkzeuge verwenden,
+      oder laden Sie eine Strukturvorlage herunter,
+      die Sie programmatisch mit Ihren Daten füllen können,
+      und importieren Sie diese dann hier.
+    warnGeneral: |
+      Das Neuordnen oder Löschen von Belegstellen hat gravierende Auswirkungen auf das
+      Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
+      Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
+    warnDeleteLocation: |
+      Wenn Sie diese Belegstelle löschen, werden alle Daten, die mit ihr und allen
+      untergeordneten Belegstelle verbunden sind, ebenfalls gelöscht.
+      Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
+      die von anderen Benutzern angelegt wurden. Die Belegstelle wird danach nicht mehr
+      über ihre ursprüngliche ID adressierbar sein.
+      Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
+    tipDeleteLocation: Belegstelle "{location}" löschen
+    infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
+    infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben
+    errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
+    checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
+    edit:
+      heading: Belegstelle bearbeiten
+      msgSuccess: Belegstelle "{label}" gespeichert
+    importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
+    updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
+
 admin:
   heading: Administration
   optionGroupLabel: Administration
@@ -726,92 +808,7 @@ admin:
       setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Verifizierung von {username} zurücksetzen möchten?'
       setVerified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Adresse von {username} als verifiziert markieren möchten?'
-      deleteUser: |
-        '@:admin.users.confirmMsg.areYouSure den Benutzeraccount {username}
-         und alle damit verknüpften Daten löschen möchten?'
-  text:
-    heading: Text
-    settings:
-      msgSaved: Text-Einstellungen gespeichert.
-      warnDeleteText: |
-        Wenn Sie diesen Text ("{title}") löschen, werden alle Daten, die sich auf ihn
-        beziehen, ebenfalls gelöscht. Dies schließt die Textstruktur sowie alle
-        Ressourcen mit ein – unabhängig von welchem User sie erstellt wurden.
-        Dies kann nicht rückgängig gemacht werden.
-        Sind Sie sich sicher?
-      msgDeleted: Text "{title}" gelöscht
-    levels:
-      heading: Ebenen
-      tipInsertLevel: Neue Ebene an Position {n} einfügen
-      tipEditLevel: Bezeichnung für Ebene "{levelLabel}" bearbeiten
-      tipDeleteLevel: Ebene "{levelLabel}" löschen
-      msgInsertSuccess: Ebene an Position {position} eingefügt
-      msgEditSuccess: Änerungen an Ebene auf Position {position} gespeichert
-      msgDeleteSuccess: Ebene "{levelLabel}" gelöscht
-      warnInsertLevel: |
-        Das nachträgliche Einfügen einer Textebene ist eine Operation mit
-        gravierenden Auswirkungen auf das Datenmodell des Textes.
-        Die Anwendung wird ihr Bestes tun, um die neue Ebene in die
-        bestehende Datenstruktur einzubetten, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
-        anpassen müssen.
-        Es ist außerdem angeraten, ein Backup des aktuellen Zustands Ihrer
-        Datenbank zu erstellen, bevor Sie diesen Schritt durchführen.
-      warnDeleteLevel: |
-        Das Löschen einer Textebene hat weitreichende Folgen:
-        Alle Daten, die mit dieser Textebene verbunden sind,
-        werden mit ihr gelöscht. Dies betrifft alle (!) Ressourcen auf dieser
-        Ebene - egal, welcher Benutzer diese erstellt hat!
-        Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
-        zu verbinden, aber Sie werden das Ergebnis
-        anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
-        anpassen müssen.
-        Bitte machen Sie ein Backup Ihrer Datenbank, bevor Sie eine Ebene löschen!
-        Dies kann nicht rückgängig gemacht werden.
-        Sind Sie sich sicher, dass Sie die
-        Textebene "{levelLabel}" löschen möchten?
-    locations:
-      heading: Belegstellen
-      add:
-        heading: Belegstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
-        tooltip: Belegstelle hinzufügen
-        msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
-      lblBtnAddLocationFirstLevel: Hinzufügen
-      tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
-      lblBtnDownloadTemplate: Vorlage für Import-Daten
-      tipBtnDownloadTemplate: '@:admin.texts.locations.lblBtnDownloadTemplate herunterladen'
-      lblBtnUploadStructure: Neue Textstruktur importieren
-      tipBtnUploadStructure: Vorbereitete Daten für neue Textstruktur importieren
-      lblBtnUploadUpdates: Änderungen importieren
-      tipBtnUploadUpdates: Geänderte Beschriftungen und Aliase für Belegstellen importieren
-      infoNoLocations: |
-        Dieser Text hat noch keine Belegstellen.
-        Fügen Sie den Strukturebenen des Textes Belegstellen hinzu,
-        indem Sie die untenstehenden Werkzeuge verwenden,
-        oder laden Sie eine Strukturvorlage herunter,
-        die Sie programmatisch mit Ihren Daten füllen können,
-        und importieren Sie diese dann hier.
-      warnGeneral: |
-        Das Neuordnen oder Löschen von Belegstellen hat gravierende Auswirkungen auf das
-        Datenmodell des Textes. Es ist dringend empfohlen, ein Backup des aktuellen
-        Zustands der Datenbank zu erstellen, bevor Änderungen vorgenommen werden.
-      warnDeleteLocation: |
-        Wenn Sie diese Belegstelle löschen, werden alle Daten, die mit ihr und allen
-        untergeordneten Belegstelle verbunden sind, ebenfalls gelöscht.
-        Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
-        die von anderen Benutzern angelegt wurden. Die Belegstelle wird danach nicht mehr
-        über ihre ursprüngliche ID adressierbar sein.
-        Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
-      tipDeleteLocation: Belegstelle "{location}" löschen
-      infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
-      infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben
-      errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
-      checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
-      edit:
-        heading: Belegstelle bearbeiten
-        msgSuccess: Belegstelle "{label}" gespeichert
-      importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
-      updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
+      deleteUser: '@:admin.users.confirmMsg.areYouSure den Benutzeraccount {username} und alle damit verknüpften Daten löschen möchten?'
   newText:
     heading: Neuer Text
     headerInfoAlert: |
@@ -822,66 +819,74 @@ admin:
     btnProceed: Fortfahren
     btnFinish: Abschließen
     msgSaveSuccess: Der neue Text "{title}" wurde erfolgreich erstellt. Sie können jetzt Einstellungen dafür vornehmen.
-  system:
-    heading: System
-    platformSettings:
-      nav:
-        heading: Navigation
-        aliasSearch: Suche nach Belegstellen-Aliasen
-        customNavLabels: Benutzerdefinierte Navigations-Beschriftungen
-      headingBrowseView: Lese-Ansicht
-      headingBranding: Branding
-      msgSaved: Plattform-Einstellungen gespeichert.
-      defaultTextPlaceholder: Automatisch
-    maintenance:
-      heading: Wartung
-      indices:
-        heading: Suchindizes
-        documents: Dokumente
-        size: Größe
-        searches: Suchen
-        fields: Felder
-        utd: Aktuell
-        ood: Veraltet
-        actionCreate: Neuindexierung
-        actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
-        actionCreateSuccess: Suchindizes wurden aktualisiert
-      resourceMaintenance:
-        heading: Vorberechnete Ressourcen-Daten
-        actionStarted: Die Aktualisierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
-      tasks:
-        noTasks: Keine aktiven @:tasks.title
-        started: Gestartet
-        ended: Beendet
-        duration: Dauer
-        seconds: '{seconds} Sek.'
-        startedBy: Gestartet durch
-        actionDeleteSystem: Systemprozesse löschen
-        actionDeleteAll: Alle Prozesse löschen
-        actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
-    segments:
-      heading: Seitensegmente
-      systemKeys:
-        systemHome: Startseite
-        systemHeadEnd: Ende von HTML head
-        systemBodyEnd: Ende von HTML body
-        systemFooter: Fußzeile
-        systemSiteNotice: Impressum
-        systemPrivacyPolicy: Datenschutzerklärung
-        systemRegisterIntro: Einführungstext auf "Registrieren"-Seite
-      noSegment: Bitte wählen Sie ein Segment aus oder erstellen Sie ein neues!
-      newSegment: Neues Segment
-      phSelectSegment: Segment auswählen
-      msgUpdated: '"{title}" wurde aktualisiert.'
-      msgCreated: '"{title}" wurde erstellt.'
-      msgDeleted: '"{title}" wurde gelöscht.'
-      warnCancel: Alle ungespeicherten Änderungen gehen verloren. Sind sie sicher?
-      warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
-    infoPages:
-      heading: Info-Seiten
-      newPage: Neue Seite
-      phSelectPage: Seite auswählen
-      noPage: Bitte wählen Sie eine Info-Seite aus oder erstellen Sie eine neue!
+  platformSettings:
+    nav:
+      heading: Navigation
+      aliasSearch: Suche nach Belegstellen-Aliasen
+      customNavLabels: Benutzerdefinierte Navigations-Beschriftungen
+    headingBrowseView: Lese-Ansicht
+    headingBranding: Branding
+    headingI18n: Internationalisierung
+    headingRestrictedResTypes: Eingeschränkte Ressourcen-Typen
+    msgSaved: Plattform-Einstellungen gespeichert.
+    defaultTextPlaceholder: Automatisch
+  maintenance:
+    heading: Wartung
+    indices:
+      heading: Suchindizes
+      documents: Dokumente
+      size: Größe
+      searches: Suchen
+      fields: Felder
+      utd: Aktuell
+      ood: Veraltet
+      actionCreate: Neuindexierung
+      actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
+    precomputed:
+      heading: Vorberechnete Ressourcen-Daten
+      description: |
+        Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
+        Es werden die Belegstellen-Abdeckung aller Ressourcen sowie weitere Ressourcentyp-spezifische Daten (falls zutreffend) vorberechnet.
+      actionStarted: Die Generierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
+    cleanup:
+      heading: Interne Bereinigung
+      description: |
+        Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
+        Abgelaufene Zugangstokens und Benutzernachrichten werden gelöscht.
+      actionStarted: The internal cleanup is performed in the background. @:general.takeAWhile
+    tasks:
+      noTasks: Keine aktiven @:tasks.title
+      started: Gestartet
+      ended: Beendet
+      duration: Dauer
+      seconds: '{seconds} Sek.'
+      startedBy: Gestartet durch
+      actionDeleteSystem: Systemprozesse löschen
+      actionDeleteAll: Alle Prozesse löschen
+      actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
+  segments:
+    heading: Seitensegmente
+    systemKeys:
+      systemHome: Startseite
+      systemHeadEnd: Ende von HTML head
+      systemBodyEnd: Ende von HTML body
+      systemFooter: Fußzeile
+      systemSiteNotice: Impressum
+      systemPrivacyPolicy: Datenschutzerklärung
+      systemRegisterIntro: Einführungstext auf "Registrieren"-Seite
+    noSegment: Bitte wählen Sie ein Segment aus oder erstellen Sie ein neues!
+    newSegment: Neues Segment
+    phSelectSegment: Segment auswählen
+    msgUpdated: '"{title}" wurde aktualisiert.'
+    msgCreated: '"{title}" wurde erstellt.'
+    msgDeleted: '"{title}" wurde gelöscht.'
+    warnCancel: Alle ungespeicherten Änderungen gehen verloren. Sind sie sicher?
+    warnDelete: Sind Sie sicher, dass Sie "{title}" löschen möchten?
+  infoPages:
+    heading: Info-Seiten
+    newPage: Neue Seite
+    phSelectPage: Seite auswählen
+    noPage: Bitte wählen Sie eine Info-Seite aus oder erstellen Sie eine neue!
 
 search:
   searchAction: Suchen

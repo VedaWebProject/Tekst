@@ -58,7 +58,7 @@ from tekst.notifications import (
 _cfg: TekstConfig = get_config()
 
 
-class AccessToken(BeanieBaseAccessToken, Document):
+class AccessTokenDocument(BeanieBaseAccessToken, Document):
     class Settings(BeanieBaseAccessToken.Settings):
         name = "tokens"
 
@@ -93,14 +93,17 @@ async def get_user_db():
 
 
 async def get_access_token_db():
-    yield BeanieAccessTokenDatabase(AccessToken)
+    yield BeanieAccessTokenDatabase(AccessTokenDocument)
 
 
 def _get_database_strategy(
-    access_token_db: AccessTokenDatabase[AccessToken] = Depends(get_access_token_db),
+    access_token_db: AccessTokenDatabase[AccessTokenDocument] = Depends(
+        get_access_token_db
+    ),
 ) -> DatabaseStrategy:
     return DatabaseStrategy(
-        access_token_db, lifetime_seconds=_cfg.security.access_token_lifetime
+        access_token_db,
+        lifetime_seconds=_cfg.security.access_token_lifetime,
     )
 
 
@@ -237,7 +240,8 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         # find owned resources
         resources_docs = await ResourceBaseDocument.find(
-            ResourceBaseDocument.owner_id == user.id, with_children=True
+            ResourceBaseDocument.owner_id == user.id,
+            with_children=True,
         ).to_list()
         owned_resources_ids = [resource.id for resource in resources_docs]
 

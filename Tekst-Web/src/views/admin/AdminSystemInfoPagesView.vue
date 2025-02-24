@@ -137,7 +137,7 @@ async function updateSegment() {
   });
   if (!error) {
     message.success(
-      $t('admin.system.segments.msgUpdated', {
+      $t('admin.segments.msgUpdated', {
         title: segmentModel.value?.title || segmentModel.value?.key || '',
       })
     );
@@ -154,7 +154,7 @@ async function createSegment() {
   });
   if (!error) {
     message.success(
-      $t('admin.system.segments.msgCreated', {
+      $t('admin.segments.msgCreated', {
         title: segmentModel.value?.title || segmentModel.value?.key || '',
       })
     );
@@ -172,7 +172,7 @@ function handleCancelClick() {
   }
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.system.segments.warnCancel'),
+    content: $t('admin.segments.warnCancel'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     closable: false,
@@ -193,7 +193,7 @@ async function handleDeleteClick() {
 
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.system.segments.warnDelete', {
+    content: $t('admin.segments.warnDelete', {
       title: segmentModel.value?.title || segmentModel.value?.key || '',
     }),
     positiveText: $t('general.yesAction'),
@@ -206,7 +206,7 @@ async function handleDeleteClick() {
       });
       if (!error) {
         message.success(
-          $t('admin.system.segments.msgDeleted', {
+          $t('admin.segments.msgDeleted', {
             title: segmentModel.value?.title || segmentModel.value?.key || '',
           })
         );
@@ -219,9 +219,9 @@ async function handleDeleteClick() {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="InfoIcon">
-    {{ $t('admin.system.infoPages.heading') }}
-    <help-button-widget help-key="adminSystemInfoPagesView" />
+  <icon-heading level="1" :icon="InfoIcon">
+    {{ $t('admin.infoPages.heading') }}
+    <help-button-widget help-key="adminInfoPagesView" />
   </icon-heading>
 
   <n-flex :wrap="false">
@@ -232,9 +232,7 @@ async function handleDeleteClick() {
       :options="segmentOptions"
       :disabled="modelChanged"
       :placeholder="
-        modelChanged
-          ? $t('admin.system.infoPages.newPage')
-          : $t('admin.system.infoPages.phSelectPage')
+        modelChanged ? $t('admin.infoPages.newPage') : $t('admin.infoPages.phSelectPage')
       "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
@@ -318,5 +316,5 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <huge-labelled-icon v-else :message="$t('admin.system.infoPages.noPage')" :icon="FileOpenIcon" />
+  <huge-labelled-icon v-else :message="$t('admin.infoPages.noPage')" :icon="FileOpenIcon" />
 </template>

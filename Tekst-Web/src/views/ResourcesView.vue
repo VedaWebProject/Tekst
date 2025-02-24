@@ -17,7 +17,7 @@ import ResourceListItem from '@/components/resource/ResourceListItem.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import { AddIcon, ResourceIcon, SearchIcon, UndoIcon } from '@/icons';
+import { AddIcon, FilterIcon, ResourceIcon, SearchIcon, UndoIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { createReusableTemplate } from '@vueuse/core';
@@ -388,7 +388,14 @@ onMounted(() => {
   <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filters -->
     <n-collapse class="mb-lg" @item-header-click="handleFilterCollapseItemClick">
-      <n-collapse-item :title="$t('general.filters')" name="filters">
+      <n-collapse-item name="filters">
+        <template #header>
+          <n-flex align="center" :wrap="false">
+            <n-icon :component="FilterIcon" class="translucent" />
+            <span>{{ $t('general.filters') }}</span>
+          </n-flex>
+        </template>
+
         <n-flex vertical class="gray-box">
           <n-input
             v-model:value="filters.search"
@@ -414,7 +421,7 @@ onMounted(() => {
             v-model="filters.hasNoCorrections"
             :label="$t('resources.hasNoCorrections')"
           />
-          <n-button class="mt-md" @click="filters = initialFilters()">
+          <n-button secondary class="mt-md" @click="filters = initialFilters()">
             {{ $t('general.resetAction') }}
             <template #icon>
               <n-icon :component="UndoIcon" />

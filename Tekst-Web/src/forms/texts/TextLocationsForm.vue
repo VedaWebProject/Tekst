@@ -1,14 +1,25 @@
 <script setup lang="ts">
 import { DELETE, downloadData, GET, PATCH, POST, withSelectedFile } from '@/api';
 import { dialogProps } from '@/common';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import EditLocationModal, {
   type EditLocationModalData,
 } from '@/components/modals/EditLocationModal.vue';
 import { useMessages } from '@/composables/messages';
+import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
+import {
+  AddIcon,
+  DeleteIcon,
+  DownloadIcon,
+  EditIcon,
+  ExpandArrowRightIcon,
+  UploadIcon,
+} from '@/icons';
 import { useStateStore } from '@/stores';
+import { renderIcon } from '@/utils';
 import {
   NAlert,
   NButton,
@@ -24,20 +35,6 @@ import {
 } from 'naive-ui';
 import type { Component, Ref } from 'vue';
 import { computed, h, onMounted, ref } from 'vue';
-
-import IconHeading from '@/components/generic/IconHeading.vue';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import { useTasks } from '@/composables/tasks';
-import {
-  AddIcon,
-  DeleteIcon,
-  DownloadIcon,
-  EditIcon,
-  ExpandArrowRightIcon,
-  TreeIcon,
-  UploadIcon,
-} from '@/icons';
-import { renderIcon } from '@/utils';
 import { onBeforeRouteUpdate } from 'vue-router';
 
 export interface LocationTreeOption extends TreeOption {
@@ -151,7 +148,7 @@ async function moveLocation(dropData: TreeDropInfo) {
   });
   if (!error) {
     message.success(
-      $t('admin.text.locations.infoMovedLocation', {
+      $t('texts.locations.infoMovedLocation', {
         location: data.label,
         position: data.position,
         level: state.textLevelLabels[data.level],
@@ -175,7 +172,7 @@ async function moveLocation(dropData: TreeDropInfo) {
 async function handleDrop(dropData: TreeDropInfo) {
   loadingMove.value = true;
   if (dropData.dragNode.level !== dropData.node.level) {
-    message.error($t('admin.text.locations.errorLocationLeftLevel'));
+    message.error($t('texts.locations.errorLocationLeftLevel'));
   } else {
     await moveLocation(dropData);
   }
@@ -190,7 +187,7 @@ async function deleteLocation(location: TreeOption) {
   if (!error) {
     loadTreeData(getTreeLocationByKey(location.parentKey as string | null));
     message.success(
-      $t('admin.text.locations.infoDeletedLocation', {
+      $t('texts.locations.infoDeletedLocation', {
         location: location.label,
         locations: result.locations,
         contents: result.contents,
@@ -207,7 +204,7 @@ async function handleDeleteClick(location: LocationTreeOption) {
   }
   const d = dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.text.locations.warnDeleteLocation', { locationLabel: location.label }),
+    content: $t('texts.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('general.deleteAction'),
     ...dialogProps,
     onPositiveClick: async () => {
@@ -251,7 +248,7 @@ async function handleAddEditSubmit(addEditData: EditLocationModalData) {
     });
     if (!error) {
       message.success(
-        $t('admin.text.locations.add.msgSuccess', {
+        $t('texts.locations.add.msgSuccess', {
           label: data.label,
           parentLabel: parentLocation?.label || state.text?.title || '',
         })
@@ -270,7 +267,7 @@ async function handleAddEditSubmit(addEditData: EditLocationModalData) {
       },
     });
     if (!error) {
-      message.success($t('admin.text.locations.edit.msgSuccess', { label: data.label }));
+      message.success($t('texts.locations.edit.msgSuccess', { label: data.label }));
     }
     await loadTreeData(getTreeLocationByKey(location?.parentKey));
     loadingEdit.value = false;
@@ -307,7 +304,7 @@ async function handleImportClick() {
       },
     });
     if (!error) {
-      message.success($t('admin.text.locations.importSuccess'));
+      message.success($t('texts.locations.importSuccess'));
     }
     loadingUpload.value = false;
     loadTreeData();
@@ -331,7 +328,7 @@ async function handleUploadClick() {
     });
     if (!error) {
       addTask(data);
-      message.info($t('admin.text.locations.updateInfo'), undefined, 5);
+      message.info($t('texts.locations.updateInfo'), undefined, 5);
       startTasksPolling();
     }
     loadingUpload.value = false;
@@ -388,13 +385,13 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       () => {
         handleEditClick(info.option as LocationTreeOption);
       },
-      $t('admin.text.locations.edit.heading'),
+      $t('texts.locations.edit.heading'),
       loadingEdit
     ),
     renderSuffixButton(
       DeleteIcon,
       () => handleDeleteClick(info.option as LocationTreeOption),
-      $t('admin.text.locations.tipDeleteLocation', { location: info.option.label || '' }),
+      $t('texts.locations.tipDeleteLocation', { location: info.option.label || '' }),
       loadingDelete
     ),
     info.option.isLeaf
@@ -402,7 +399,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       : renderSuffixButton(
           AddIcon,
           () => handleAddClick(info.option as LocationTreeOption),
-          $t('admin.text.locations.add.tooltip'),
+          $t('texts.locations.add.tooltip'),
           loadingAdd
         ),
   ]);
@@ -420,102 +417,106 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="TreeIcon">
-    {{ $t('admin.text.locations.heading') }}
-    <help-button-widget help-key="adminTextsLocationsView" />
-  </icon-heading>
+  <div>
+    <form-section-heading :label="$t('texts.locations.heading')" help-key="textLocations" />
 
-  <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
-    {{ $t('admin.text.locations.warnGeneral') }}
-  </n-alert>
+    <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
+      {{ $t('texts.locations.warnGeneral') }}
+    </n-alert>
 
-  <n-alert v-if="!treeData.length && !loadingData" closable :title="$t('general.info')" type="info">
-    {{ $t('admin.text.locations.infoNoLocations') }}
-  </n-alert>
+    <n-alert
+      v-if="!treeData.length && !loadingData"
+      closable
+      :title="$t('general.info')"
+      type="info"
+    >
+      {{ $t('texts.locations.infoNoLocations') }}
+    </n-alert>
 
-  <n-flex justify="space-between" size="large" class="mt-lg">
-    <labeled-switch
-      v-if="treeData.length"
-      v-model="showWarnings"
-      :label="$t('admin.text.locations.checkShowWarnings')"
-    />
-    <button-shelf>
-      <template #start>
-        <n-button
-          type="primary"
-          :title="$t('admin.text.locations.tipBtnAddLocationFirstLevel')"
-          :disabled="loading"
-          @click="handleAddClick(null)"
-        >
-          <template #icon>
-            <n-icon :component="AddIcon" />
-          </template>
-          {{ $t('admin.text.locations.lblBtnAddLocationFirstLevel') }}
-        </n-button>
-        <n-button
-          secondary
-          :title="$t('admin.text.locations.tipBtnDownloadTemplate')"
-          :disabled="loading"
-          :loading="loadingTemplate"
-          @click="handleDownloadTemplateClick()"
-        >
-          <template #icon>
-            <n-icon :component="DownloadIcon" />
-          </template>
-          {{ $t('admin.text.locations.lblBtnDownloadTemplate') }}
-        </n-button>
-        <n-button
-          v-if="!treeData.length"
-          secondary
-          :title="$t('admin.text.locations.tipBtnUploadStructure')"
-          :disabled="loading"
-          @click="handleImportClick()"
-        >
-          <template #icon>
-            <n-icon :component="UploadIcon" />
-          </template>
-          {{ $t('admin.text.locations.lblBtnUploadStructure') }}
-        </n-button>
-        <n-button
-          v-else
-          secondary
-          :title="$t('admin.text.locations.tipBtnUploadUpdates')"
-          :disabled="loading"
-          @click="handleUploadClick()"
-        >
-          <template #icon>
-            <n-icon :component="UploadIcon" />
-          </template>
-          {{ $t('admin.text.locations.lblBtnUploadUpdates') }}
-        </n-button>
-      </template>
-    </button-shelf>
-  </n-flex>
-
-  <div v-if="treeData.length" class="content-block" style="position: relative">
-    <n-spin :show="loading" :delay="300">
-      <n-tree
-        id="locations-tree"
-        block-line
-        show-line
-        :draggable="!loading"
-        :selectable="!loading"
-        :data="treeData"
-        :on-load="loadTreeData"
-        :render-switcher-icon="renderSwitcherIcon"
-        :render-label="renderLabel"
-        :allow-drop="isDropAllowed"
-        :render-suffix="renderSuffix"
-        :style="loading ? { opacity: 0.3, pointerEvents: 'none' } : {}"
-        @dragstart="handleDragStart"
-        @dragend="handleDragEnd"
-        @drop="handleDrop"
+    <n-flex justify="space-between" size="large" class="my-lg">
+      <labeled-switch
+        v-if="treeData.length"
+        v-model="showWarnings"
+        :label="$t('texts.locations.checkShowWarnings')"
       />
-    </n-spin>
-  </div>
+      <button-shelf>
+        <template #start>
+          <n-button
+            type="primary"
+            :title="$t('texts.locations.tipBtnAddLocationFirstLevel')"
+            :disabled="loading"
+            @click="handleAddClick(null)"
+          >
+            <template #icon>
+              <n-icon :component="AddIcon" />
+            </template>
+            {{ $t('texts.locations.lblBtnAddLocationFirstLevel') }}
+          </n-button>
+          <n-button
+            secondary
+            :title="$t('texts.locations.tipBtnDownloadTemplate')"
+            :disabled="loading"
+            :loading="loadingTemplate"
+            @click="handleDownloadTemplateClick()"
+          >
+            <template #icon>
+              <n-icon :component="DownloadIcon" />
+            </template>
+            {{ $t('texts.locations.lblBtnDownloadTemplate') }}
+          </n-button>
+          <n-button
+            v-if="!treeData.length"
+            secondary
+            :title="$t('texts.locations.tipBtnUploadStructure')"
+            :disabled="loading"
+            @click="handleImportClick()"
+          >
+            <template #icon>
+              <n-icon :component="UploadIcon" />
+            </template>
+            {{ $t('texts.locations.lblBtnUploadStructure') }}
+          </n-button>
+          <n-button
+            v-else
+            secondary
+            :title="$t('texts.locations.tipBtnUploadUpdates')"
+            :disabled="loading"
+            @click="handleUploadClick()"
+          >
+            <template #icon>
+              <n-icon :component="UploadIcon" />
+            </template>
+            {{ $t('texts.locations.lblBtnUploadUpdates') }}
+          </n-button>
+        </template>
+      </button-shelf>
+    </n-flex>
 
-  <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
-  <edit-location-modal ref="editModalRef" @submit="handleAddEditSubmit" />
+    <div v-if="treeData.length" class="mb-sm" style="position: relative">
+      <n-spin :show="loading" :delay="300">
+        <n-tree
+          id="locations-tree"
+          block-line
+          show-line
+          :draggable="!loading"
+          :selectable="!loading"
+          :data="treeData"
+          :on-load="loadTreeData"
+          :render-switcher-icon="renderSwitcherIcon"
+          :render-label="renderLabel"
+          :allow-drop="isDropAllowed"
+          :render-suffix="renderSuffix"
+          :style="loading ? { opacity: 0.3, pointerEvents: 'none' } : {}"
+          @dragstart="handleDragStart"
+          @dragend="handleDragEnd"
+          @drop="handleDrop"
+        />
+      </n-spin>
+    </div>
+
+    <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+    <edit-location-modal ref="editModalRef" @submit="handleAddEditSubmit" />
+  </div>
 </template>
 
 <style scoped>

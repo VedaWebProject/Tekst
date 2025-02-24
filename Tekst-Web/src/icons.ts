@@ -1,4 +1,3 @@
-import AccountTreeFilled from '@vicons/material/AccountTreeFilled';
 import AddCircleOutlineOutlined from '@vicons/material/AddCircleOutlineOutlined';
 import AddOutlined from '@vicons/material/AddOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
@@ -8,9 +7,8 @@ import ArrowForwardOutlined from '@vicons/material/ArrowForwardOutlined';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
-import BarChartOutlined from '@vicons/material/BarChartOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
-import BookmarksFilled from '@vicons/material/BookmarksFilled';
+import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import CheckCircleOutlined from '@vicons/material/CheckCircleOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
@@ -47,7 +45,7 @@ import FormatListNumberedOutlined from '@vicons/material/FormatListNumberedOutli
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
-import GroupsFilled from '@vicons/material/GroupsFilled';
+import GroupsOutlined from '@vicons/material/GroupsOutlined';
 import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
@@ -64,17 +62,17 @@ import KeyboardReturnOutlined from '@vicons/material/KeyboardReturnOutlined';
 import KeyOffFilled from '@vicons/material/KeyOffFilled';
 import LabelOutlined from '@vicons/material/LabelOutlined';
 import LanguageOutlined from '@vicons/material/LanguageOutlined';
-import LayersFilled from '@vicons/material/LayersFilled';
+import LayersOutlined from '@vicons/material/LayersOutlined';
 import LibraryBooksOutlined from '@vicons/material/LibraryBooksOutlined';
 import LightModeOutlined from '@vicons/material/LightModeOutlined';
 import LinkOutlined from '@vicons/material/LinkOutlined';
 import LogInOutlined from '@vicons/material/LogInOutlined';
 import LogOutOutlined from '@vicons/material/LogOutOutlined';
-import ManageAccountsFilled from '@vicons/material/ManageAccountsFilled';
+import ManageAccountsOutlined from '@vicons/material/ManageAccountsOutlined';
 import ManageSearchOutlined from '@vicons/material/ManageSearchOutlined';
 import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
 import MarkChatUnreadRound from '@vicons/material/MarkChatUnreadRound';
-import MenuBookOutlined from '@vicons/material/MenuBookOutlined';
+import MenuBookTwotone from '@vicons/material/MenuBookTwotone';
 import MenuOutlined from '@vicons/material/MenuOutlined';
 import MergeOutlined from '@vicons/material/MergeOutlined';
 import MessageOutlined from '@vicons/material/MessageOutlined';
@@ -85,8 +83,7 @@ import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
 import PanToolAltOutlined from '@vicons/material/PanToolAltOutlined';
 import PauseFilled from '@vicons/material/PauseFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
-import PersonAddFilled from '@vicons/material/PersonAddFilled';
-import PersonFilled from '@vicons/material/PersonFilled';
+import PersonOutlined from '@vicons/material/PersonOutlined';
 import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
 import PlaylistAddCheckOutlined from '@vicons/material/PlaylistAddCheckOutlined';
@@ -98,7 +95,7 @@ import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
 import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
-import RemoveRedEyeFilled from '@vicons/material/RemoveRedEyeFilled';
+import RemoveRedEyeOutlined from '@vicons/material/RemoveRedEyeOutlined';
 import SearchOutlined from '@vicons/material/SearchOutlined';
 import SendFilled from '@vicons/material/SendFilled';
 import SettingsOutlined from '@vicons/material/SettingsOutlined';
@@ -126,11 +123,10 @@ export {
   ArrowForwardOutlined as ArrowForwardIcon,
   ArrowUpwardOutlined as ArrowUpIcon,
   BackspaceOutlined as BackspaceIcon,
-  BarChartOutlined as BarChartIcon,
   RemoveCircleFilled as BlockCircleIcon,
   BlockOutlined as BlockIcon,
-  MenuBookOutlined as BookIcon,
-  BookmarksFilled as BookmarksIcon,
+  MenuBookTwotone as BookIcon,
+  BookmarksOutlined as BookmarksIcon,
   VerticalAlignBottomOutlined as BottomIcon,
   KeyboardCapslockOutlined as CapsLockIcon,
   PlaylistAddCheckOutlined as CheckAllIcon,
@@ -142,7 +138,7 @@ export {
   InvertColorsOutlined as ColorIcon,
   InvertColorsOffOutlined as ColorOffIcon,
   ChatBubbleOutlineOutlined as CommentIcon,
-  GroupsFilled as CommunityIcon,
+  GroupsOutlined as CommunityIcon,
   CompareArrowsOutlined as CompareIcon,
   CompressOutlined as CompressIcon,
   ContentCopyOutlined as CopyIcon,
@@ -157,7 +153,7 @@ export {
   KeyboardArrowDownOutlined as ExpandArrowDownIcon,
   KeyboardArrowRightOutlined as ExpandArrowRightIcon,
   ExpandOutlined as ExpandIcon,
-  RemoveRedEyeFilled as EyeIcon,
+  RemoveRedEyeOutlined as EyeIcon,
   FileOpenOutlined as FileOpenIcon,
   FilterAltOutlined as FilterIcon,
   FormatAlignCenterOutlined as FormatAlignCenterIcon,
@@ -186,7 +182,7 @@ export {
   LogInOutlined as LoginIcon,
   LogOutOutlined as LogoutIcon,
   ConstructionOutlined as MaintenanceIcon,
-  ManageAccountsFilled as ManageAccountIcon,
+  ManageAccountsOutlined as ManageAccountIcon,
   MarkChatReadRound as MarkChatReadIcon,
   MarkChatUnreadRound as MarkChatUnreadIcon,
   MergeOutlined as MergeIcon,
@@ -207,7 +203,7 @@ export {
   QuestionMarkOutlined as QuestionMarkIcon,
   RedoOutlined as RedoIcon,
   RefreshOutlined as RefreshIcon,
-  LayersFilled as ResourceIcon,
+  LayersOutlined as ResourceIcon,
   SearchOutlined as SearchIcon,
   ManageSearchOutlined as SearchResultsIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,
@@ -224,15 +220,13 @@ export {
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,
   TranslateOutlined as TranslateIcon,
-  AccountTreeFilled as TreeIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   UndoOutlined as UndoIcon,
   FlagOutlined as UnproposedIcon,
   UpdateOutlined as UpdateIcon,
   FileUploadOutlined as UploadIcon,
   PersonRemoveFilled as UserDowngradeIcon,
-  PersonFilled as UserIcon,
-  PersonAddFilled as UserPromoteIcon,
+  PersonOutlined as UserIcon,
   SupervisorAccountRound as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,

@@ -29,9 +29,9 @@ watch(
 <template>
   <n-tabs
     ref="tabsRef"
-    type="bar"
-    tab-style="font-size: var(--font-size-medium)"
-    pane-class="mt-md"
+    type="line"
+    :placement="state.smallScreen ? 'top' : 'left'"
+    :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
   >
     <n-tab-pane :tab="$t('resources.settings.props')" name="properties">
       <!-- PROPERTIES -->

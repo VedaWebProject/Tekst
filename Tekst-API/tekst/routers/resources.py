@@ -41,7 +41,7 @@ from tekst.resources import (
     AnyResourceCreate,
     AnyResourceRead,
     AnyResourceUpdate,
-    call_resource_maintenance_hooks,
+    call_resource_precompute_hooks,
     get_resource_template_readme,
     resource_types_mgr,
 )
@@ -118,7 +118,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/maintenance",
+    "/precompute",
     status_code=status.HTTP_202_ACCEPTED,
     response_model=tasks.TaskRead,
     responses=errors.responses(
@@ -128,12 +128,12 @@ router = APIRouter(
         ]
     ),
 )
-async def trigger_resources_maintenance(
+async def trigger_resource_precomputation(
     su: SuperuserDep,
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
-        call_resource_maintenance_hooks,
-        tasks.TaskType.RESOURCE_MAINTENANCE_HOOK,
+        call_resource_precompute_hooks,
+        tasks.TaskType.RESOURCE_PRECOMPUTE_HOOK,
         user_id=su.id,
     )
 

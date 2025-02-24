@@ -5,9 +5,9 @@ import click
 from tekst.config import TekstConfig, get_config
 from tekst.db import init_odm, migrations
 from tekst.openapi import generate_openapi_schema
-from tekst.resources import call_resource_maintenance_hooks, init_resource_types_mgr
+from tekst.platform import app_setup, cleanup_task
+from tekst.resources import call_resource_precompute_hooks, init_resource_types_mgr
 from tekst.search import create_indices_task
-from tekst.setup import app_setup
 
 
 """
@@ -18,16 +18,31 @@ Command line interface to some utilities of Tekst-API
 _cfg: TekstConfig = get_config()
 
 
-async def _create_indices() -> None:
+async def _prepare_odm() -> None:
     init_resource_types_mgr()
     await init_odm()
+
+
+async def _create_indices() -> None:
+    await _prepare_odm()
     await create_indices_task()
 
 
-async def _run_resource_maintenance() -> None:
-    init_resource_types_mgr()
-    await init_odm()
-    await call_resource_maintenance_hooks()
+async def _refresh_precomputed_cache() -> None:
+    await _prepare_odm()
+    await call_resource_precompute_hooks()
+
+
+async def _cleanup() -> None:
+    await _prepare_odm()
+    await cleanup_task()
+
+
+async def _maintenance() -> None:
+    await _prepare_odm()
+    await call_resource_precompute_hooks()
+    await create_indices_task()
+    await cleanup_task()
 
 
 @click.command()
@@ -43,9 +58,23 @@ def index():
 
 
 @click.command()
+def precompute():
+    """Refreshes data that has to be precomputed and cached for performance"""
+    asyncio.run(_refresh_precomputed_cache())
+
+
+@click.command()
+def cleanup():
+    """Runs the internal cleanup routine for deleting outdated data"""
+    asyncio.run(_cleanup())
+
+
+@click.command()
 def maintenance():
-    """Runs the resource data maintenance procedure"""
-    asyncio.run(_run_resource_maintenance())
+    """
+    Runs all maintenance tasks: Indexing, data precomputation, internal cleanup
+    """
+    asyncio.run(_maintenance())
 
 
 @click.command()
@@ -140,6 +169,8 @@ def cli():
 # add individual commands to CLI app
 cli.add_command(setup)
 cli.add_command(index)
+cli.add_command(precompute)
+cli.add_command(cleanup)
 cli.add_command(maintenance)
 cli.add_command(migration)
 cli.add_command(schema)

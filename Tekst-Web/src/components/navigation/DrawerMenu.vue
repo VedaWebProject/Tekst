@@ -49,16 +49,6 @@ const allMenuOptions = computed(() => [
         },
       ]
     : []),
-  ...(auth.loggedIn
-    ? [
-        {
-          type: 'group',
-          key: 'account-group',
-          label: auth.user?.name || auth.user?.username,
-          children: accountMenuOptions,
-        },
-      ]
-    : []),
   ...(auth.loggedIn && auth.user?.isSuperuser
     ? [
         {
@@ -69,6 +59,16 @@ const allMenuOptions = computed(() => [
         },
       ]
     : []),
+  ...(auth.loggedIn
+    ? [
+        {
+          type: 'group',
+          key: 'account-group',
+          label: auth.user?.name || auth.user?.username,
+          children: accountMenuOptions,
+        },
+      ]
+    : []),
 ]);
 </script>
 
@@ -76,7 +76,7 @@ const allMenuOptions = computed(() => [
   <n-drawer v-model:show="show" :width="600" style="max-width: 90%">
     <n-drawer-content closable>
       <template #header>
-        <n-flex justify="center">
+        <n-flex :size="32" justify="center" :wrap="false">
           <theme-mode-switcher @click="() => (show = false)" />
           <locale-switcher />
           <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />

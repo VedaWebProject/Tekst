@@ -1241,7 +1241,7 @@ async def test_export_content(
 
 
 @pytest.mark.anyio
-async def test_trigger_maintenance(
+async def test_trigger_resource_precomputation(
     test_client: AsyncClient,
     insert_sample_data,
     assert_status,
@@ -1251,7 +1251,7 @@ async def test_trigger_maintenance(
     await insert_sample_data("texts", "locations", "resources")
     await login(is_superuser=True)
 
-    resp = await test_client.get("/resources/maintenance")
+    resp = await test_client.get("/resources/precompute")
     assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
@@ -1276,8 +1276,8 @@ async def test_get_aggregations(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
-    # run resource maintenance to generate aggregations
-    resp = await test_client.get("/resources/maintenance")
+    # run resource precompute hooks to generate aggregations
+    resp = await test_client.get("/resources/precompute")
     assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
@@ -1317,9 +1317,9 @@ async def test_get_resource_coverage_data(
     )
     assert_status(404, resp)
 
-    # run resource maintenance to generate coverage data
+    # run resource data precomputation to generate coverage data
     await login(is_superuser=True)
-    resp = await test_client.get("/resources/maintenance")
+    resp = await test_client.get("/resources/precompute")
     assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])

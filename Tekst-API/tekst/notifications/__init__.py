@@ -1,7 +1,6 @@
 import asyncio
 import smtplib
 
-from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from functools import lru_cache
@@ -125,7 +124,6 @@ async def send_notification(
         await UserMessageDocument(
             recipient=to_user.id,
             content=msg,
-            time=datetime.utcnow(),
         ).create()
 
 

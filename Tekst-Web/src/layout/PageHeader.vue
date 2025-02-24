@@ -17,12 +17,12 @@ const state = useStateStore();
         justify="space-between"
         align="center"
         :wrap="false"
-        class="page-header-bottom text-large"
+        class="page-header-bottom"
       >
         <text-select />
         <div
-          v-if="!state.smallScreen && state.text?.subtitle?.length"
-          class="current-text-subtitle ellipsis"
+          v-if="state.text?.subtitle && !state.smallScreen"
+          class="text-large i translucent ellipsis"
         >
           <translation-display :value="state.text?.subtitle" />
         </div>
@@ -33,14 +33,12 @@ const state = useStateStore();
 
 <style scoped>
 .page-header-bottom {
-  height: 64px;
-  padding: 0 var(--gap-lg);
+  padding: var(--gap-md) var(--gap-lg);
   max-width: var(--max-app-width);
   margin: 0 auto;
 }
 
-.page-header-bottom > .current-text-subtitle {
-  filter: opacity(0.6);
-  white-space: nowrap;
+.page-header-bottom > * {
+  max-width: 100%;
 }
 </style>

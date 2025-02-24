@@ -87,7 +87,7 @@ const systemSegmentKeys = [
 ];
 
 const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
-  label: () => $t(`admin.system.segments.systemKeys.${key}`),
+  label: () => $t(`admin.segments.systemKeys.${key}`),
   value: key,
 }));
 
@@ -149,7 +149,7 @@ async function updateSegment() {
   });
   if (!error) {
     message.success(
-      $t('admin.system.segments.msgUpdated', {
+      $t('admin.segments.msgUpdated', {
         title: segmentModel.value?.title || segmentModel.value?.key || '',
       })
     );
@@ -166,7 +166,7 @@ async function createSegment() {
   });
   if (!error) {
     message.success(
-      $t('admin.system.segments.msgCreated', {
+      $t('admin.segments.msgCreated', {
         title: segmentModel.value?.title || segmentModel.value?.key || '',
       })
     );
@@ -184,7 +184,7 @@ function handleCancelClick() {
   }
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.system.segments.warnCancel'),
+    content: $t('admin.segments.warnCancel'),
     positiveText: $t('general.yesAction'),
     negativeText: $t('general.noAction'),
     closable: false,
@@ -205,7 +205,7 @@ async function handleDeleteClick() {
 
   dialog.warning({
     title: $t('general.warning'),
-    content: $t('admin.system.segments.warnDelete', {
+    content: $t('admin.segments.warnDelete', {
       title: segmentModel.value?.title || segmentModel.value?.key || '',
     }),
     positiveText: $t('general.yesAction'),
@@ -218,7 +218,7 @@ async function handleDeleteClick() {
       });
       if (!error) {
         message.success(
-          $t('admin.system.segments.msgDeleted', {
+          $t('admin.segments.msgDeleted', {
             title: segmentModel.value?.title || segmentModel.value?.key || '',
           })
         );
@@ -231,9 +231,9 @@ async function handleDeleteClick() {
 </script>
 
 <template>
-  <icon-heading level="2" :icon="SegmentsIcon">
-    {{ $t('admin.system.segments.heading') }}
-    <help-button-widget help-key="adminSystemSegmentsView" />
+  <icon-heading level="1" :icon="SegmentsIcon">
+    {{ $t('admin.segments.heading') }}
+    <help-button-widget help-key="adminSegmentsView" />
   </icon-heading>
 
   <n-flex :wrap="false">
@@ -244,9 +244,7 @@ async function handleDeleteClick() {
       :disabled="modelChanged"
       :options="segmentOptions"
       :placeholder="
-        modelChanged
-          ? $t('admin.system.segments.newSegment')
-          : $t('admin.system.segments.phSelectSegment')
+        modelChanged ? $t('admin.segments.newSegment') : $t('admin.segments.phSelectSegment')
       "
       style="flex-grow: 2"
       @update:value="handleSelectSegment"
@@ -330,9 +328,5 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <huge-labelled-icon
-    v-else
-    :message="$t('admin.system.segments.noSegment')"
-    :icon="FileOpenIcon"
-  />
+  <huge-labelled-icon v-else :message="$t('admin.segments.noSegment')" :icon="FileOpenIcon" />
 </template>

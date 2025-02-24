@@ -30,8 +30,9 @@ class TaskType(Enum):
     SEARCH_EXPORT = "search_export", True, True
     BROADCAST_USER_NTFC = "broadcast_user_ntfc", False, False
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc", False, False
-    RESOURCE_MAINTENANCE_HOOK = "resource_maintenance_hook", True, False
+    RESOURCE_PRECOMPUTE_HOOK = "resource_precompute_hook", True, False
     STRUCTURE_UPDATE = "structure_update", True, False
+    PLATFORM_CLEANUP = "platform_cleanup", True, False
 
     def __new__(cls, *args, **kwargs):
         obj = object.__new__(cls)
@@ -283,8 +284,11 @@ async def cleanup_tasks() -> None:
         await delete_task(task)  # pragma: no cover
 
 
-async def _auto_delete_task_delayed_task(task_doc: TaskDocument) -> None:
-    cfg: TekstConfig = get_config()
+async def _auto_delete_task_delayed_task(
+    task_doc: TaskDocument,
+    *,
+    cfg: TekstConfig = get_config(),
+) -> None:
     await asyncio.sleep(cfg.misc.del_exports_after_minutes * 60)
     await delete_task(task_doc)  # pragma: no cover
 

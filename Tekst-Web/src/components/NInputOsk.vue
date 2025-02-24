@@ -205,6 +205,7 @@ whenever(Enter, () => {
                     :options="oskModeOptions"
                     style="flex-grow: 1; width: 200px"
                     :consistent-menu-width="false"
+                    :disabled="oskModeOptions.length <= 1"
                     @update:value="() => handleInput()"
                   />
                 </n-flex>

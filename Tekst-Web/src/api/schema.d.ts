@@ -478,23 +478,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/platform/stats': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get statistics */
-    get: operations['getStatistics'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/platform/tasks': {
     parameters: {
       query?: never;
@@ -564,15 +547,32 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/resources/maintenance': {
+  '/platform/cleanup': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Trigger resources maintenance */
-    get: operations['triggerResourcesMaintenance'];
+    /** Run platform cleanup */
+    get: operations['runPlatformCleanup'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/resources/precompute': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Trigger resource precomputation */
+    get: operations['triggerResourcePrecomputation'];
     put?: never;
     post?: never;
     delete?: never;
@@ -4501,16 +4501,6 @@ export interface components {
        */
       oskModes?: components['schemas']['OskMode'][];
     };
-    /**
-     * PlatformStats
-     * @description Platform statistics data
-     */
-    PlatformStats: {
-      /** Userscount */
-      usersCount: number;
-      /** Texts */
-      texts: components['schemas']['TextStats'][];
-    };
     /** @enum {string} */
     PrivateUserProp: 'name' | 'affiliation' | 'bio';
     PrivateUserProps: components['schemas']['PrivateUserProp'][];
@@ -5203,8 +5193,9 @@ export interface components {
       | 'search_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
-      | 'resource_maintenance_hook'
-      | 'structure_update';
+      | 'resource_precompute_hook'
+      | 'structure_update'
+      | 'platform_cleanup';
     /** TekstErrorModel */
     TekstErrorModel: {
       detail: components['schemas']['ErrorDetail'];
@@ -5837,25 +5828,6 @@ export interface components {
     } & {
       [key: string]: unknown;
     };
-    /**
-     * TextStats
-     * @description Text statistics data
-     */
-    TextStats: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /** Locationscount */
-      locationsCount: number;
-      /** Resourcescount */
-      resourcesCount: number;
-      /** Resourcetypes */
-      resourceTypes: {
-        [key: string]: number;
-      };
-    };
     /** TextSubtitleTranslation */
     TextSubtitleTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
@@ -6048,9 +6020,11 @@ export interface components {
       content: string;
       /**
        * Time
+       * Format: date-time
        * @description Time when the message was sent
+       * @default 2025-02-21T14:36:31.161383
        */
-      time?: string | null;
+      time: string;
       /**
        * Read
        * @description Whether the message has been read by the recipient
@@ -7892,44 +7866,6 @@ export interface operations {
       };
     };
   };
-  getStatistics: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['PlatformStats'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-    };
-  };
   getAllTasksStatus: {
     parameters: {
       query?: never;
@@ -8124,7 +8060,45 @@ export interface operations {
       };
     };
   };
-  triggerResourcesMaintenance: {
+  runPlatformCleanup: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TaskRead'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  triggerResourcePrecomputation: {
     parameters: {
       query?: never;
       header?: never;
