@@ -172,13 +172,13 @@ whenever(Enter, () => {
             <n-drawer-content closable>
               <template #header>
                 <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
-                  <n-flex align="center" :wrap="false" style="flex-grow: 4; width: 200px">
-                    <n-icon :component="KeyboardIcon" size="28" color="var(--accent-color)" />
+                  <n-flex align="center" :wrap="false" style="flex-grow: 4; flex-basis: 300px">
+                    <n-icon :component="KeyboardIcon" size="24" color="var(--accent-color)" />
                     <div
                       v-if="!!oskInput.length"
                       :style="fontStyle"
                       style="line-height: 1.5"
-                      :class="{ 'text-large': !state.smallScreen, 'text-small': state.smallScreen }"
+                      :class="{ 'text-large': !state.smallScreen }"
                       class="ellipsis"
                     >
                       {{ oskInputResult }}
