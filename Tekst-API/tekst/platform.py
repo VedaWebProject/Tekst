@@ -67,7 +67,7 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     log.debug("Deleting stale user messages...")
     await UserMessageDocument.find(
         LT(
-            UserMessageDocument.time,
+            UserMessageDocument.created_at,
             datetime.utcnow() - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
         ),
     ).delete()

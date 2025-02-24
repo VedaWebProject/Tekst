@@ -102,7 +102,7 @@ whenever(ctrlEnter, () => {
         >
           {{ msg.content }}
           <n-flex align="center" class="message-meta">
-            <n-time v-if="msg.time" :time="utcToLocalTime(msg.time)" type="datetime" />
+            <n-time v-if="msg.createdAt" :time="utcToLocalTime(msg.createdAt)" type="datetime" />
             <n-icon
               v-if="msg.sender === auth.user?.id"
               :component="msg.read ? MarkChatReadIcon : MarkChatUnreadIcon"

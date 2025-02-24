@@ -6019,12 +6019,11 @@ export interface components {
        */
       content: string;
       /**
-       * Time
+       * Createdat
        * Format: date-time
        * @description Time when the message was sent
-       * @default 2025-02-21T14:36:31.161383
        */
-      time: string;
+      createdAt: string;
       /**
        * Read
        * @description Whether the message has been read by the recipient

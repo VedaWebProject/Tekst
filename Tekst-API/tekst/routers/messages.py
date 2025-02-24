@@ -56,11 +56,13 @@ async def send_message(
         raise errors.E_404_USER_NOT_FOUND
 
     # create message
-    message_doc = UserMessageDocument.model_from(message)
+    message_doc = UserMessageDocument(
+        **message.model_dump(),
+        created_at=datetime.utcnow(),
+    )
 
-    # force some message values
+    # force sender id
     message_doc.sender = user.id
-    message_doc.time = datetime.utcnow()
 
     # create message object in DB
     await message_doc.create()
@@ -119,7 +121,7 @@ async def get_thread_messages(
             ),
             UserMessageDocument.deleted != user.id,
         )
-        .sort(+UserMessageDocument.time)
+        .sort(+UserMessageDocument.created_at)
         .to_list()
     )
 

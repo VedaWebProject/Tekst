@@ -36,13 +36,13 @@ class UserMessage(ModelBase, ModelFactoryMixin):
             description="Content of the message",
         ),
     ]
-    time: Annotated[
+    created_at: Annotated[
         datetime,
         Field(
             description="Time when the message was sent",
         ),
         ExcludeFromModelVariants(create=True),
-    ] = datetime.utcnow()
+    ]
     read: Annotated[
         bool,
         Field(
