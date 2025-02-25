@@ -47,14 +47,9 @@ const {
 const segmentOptions = computed(() =>
   [...new Set(state.pf?.systemSegments.map((s) => s.key))].map((key) => {
     const groupSegments = state.pf?.systemSegments.filter((s) => s.key === key) || [];
-    const currLocaleSegment =
-      groupSegments.find((s) => s.locale === state.locale) ||
-      groupSegments.find((s) => s.locale === '*') ||
-      groupSegments.find((s) => s.locale === 'enUS') ||
-      groupSegments[0];
     return {
       type: 'group',
-      label: currLocaleSegment.title || currLocaleSegment.key,
+      label: $t(`admin.segments.systemKeys.${key}`),
       key,
       children: groupSegments.map((s) => ({
         label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
