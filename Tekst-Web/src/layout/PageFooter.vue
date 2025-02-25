@@ -51,7 +51,7 @@ footer > * {
 }
 
 footer > *:first-child {
-  margin-top: 0;
+  margin-top: var(--gap-md);
 }
 
 footer > #legal-container {
