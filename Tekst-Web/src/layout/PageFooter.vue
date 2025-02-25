@@ -30,7 +30,7 @@ const privacyPolicy = computed(
         href="http://github.com/VedaWebProject/Tekst"
         target="_blank"
         rel="external nofollow"
-        style="font-weight: var(--font-weight-bold)"
+        class="b"
         :title="`${state.pf.tekst?.name} – ${state.pf.tekst?.description} (${state.pf.tekst?.version})`"
       >
         {{ state.pf.tekst?.name }}
@@ -41,17 +41,21 @@ const privacyPolicy = computed(
 
 <style scoped>
 footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gap-lg);
   padding: var(--gap-lg);
   font-size: var(--font-size-small);
 }
 
 footer > * {
   max-width: var(--max-app-width);
-  margin: 0 auto;
+  margin: var(--gap-md) auto;
+}
+
+footer > *:first-child {
+  margin-top: 0;
+}
+
+footer > *:last-child {
+  margin-bottom: 0;
 }
 
 footer > #legal-container {
