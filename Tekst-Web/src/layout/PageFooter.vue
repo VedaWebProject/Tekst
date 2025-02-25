@@ -24,7 +24,7 @@ const privacyPolicy = computed(
         {{ $t('admin.segments.systemKeys.systemPrivacyPolicy') }}
       </router-link>
     </div>
-    <div v-if="state.pf?.state.showTekstFooterHint" class="text-tiny">
+    <div v-if="state.pf?.state.showTekstFooterHint" class="tekst-hint text-tiny">
       {{ $t('general.tekstFooterHint') }}
       <a
         href="http://github.com/VedaWebProject/Tekst"
@@ -47,15 +47,11 @@ footer {
 
 footer > * {
   max-width: var(--max-app-width);
-  margin: var(--gap-md) auto;
+  margin: var(--gap-lg) auto 0 auto;
 }
 
 footer > *:first-child {
   margin-top: 0;
-}
-
-footer > *:last-child {
-  margin-bottom: 0;
 }
 
 footer > #legal-container {
@@ -65,5 +61,9 @@ footer > #legal-container {
   column-gap: 2rem;
   row-gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+footer .tekst-hint {
+  text-align: center;
 }
 </style>
