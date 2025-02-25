@@ -14,7 +14,8 @@ const privacyPolicy = computed(
 
 <template>
   <footer>
-    <segment-renderer segment-key="systemFooter" />
+    <segment-renderer segment-key="systemFooterUpper" />
+    <segment-renderer segment-key="systemFooterLower" />
     <div v-if="siteNotice || privacyPolicy" id="legal-container">
       <router-link v-if="siteNotice" :to="{ name: 'siteNotice' }">
         {{ $t('admin.segments.systemKeys.systemSiteNotice') }}

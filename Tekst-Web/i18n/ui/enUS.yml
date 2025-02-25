@@ -848,7 +848,8 @@ admin:
       systemHome: Home page
       systemHeadEnd: End of HTML head
       systemBodyEnd: End of HTML body
-      systemFooter: Page footer
+      systemFooterUpper: Page footer (upper part)
+      systemFooterLower: Page footer (lower part)
       systemSiteNotice: Site notice
       systemPrivacyPolicy: Privacy policy
       systemRegisterIntro: Intro text on "Register" page

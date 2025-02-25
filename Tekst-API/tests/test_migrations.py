@@ -146,3 +146,17 @@ async def test_0_7_0a0(database, get_sample_data):
     # assert the data has been fixed by the migration
     assert "time" not in msg
     assert "created_at" in msg
+
+
+@pytest.mark.anyio
+async def test_0_8_0a0(database, get_sample_data):
+    footer_segment = get_sample_data("migrations/0_8_0a0.json")
+    await database.segments.insert_one(footer_segment)
+
+    # run migration
+    await migrations.migration_0_8_0a0.migration(database)
+    footer_segment = await database.segments.find_one({})
+
+    # assert the data has been fixed by the migration
+    assert "key" in footer_segment
+    assert footer_segment["key"] == "systemFooterUpper"
