@@ -109,7 +109,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div ref="contentRef" :style="style"></div>
+  <div v-bind="$attrs" ref="contentRef" :style="style"></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
