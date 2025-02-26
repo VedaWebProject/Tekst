@@ -1,0 +1,33 @@
+[
+    {
+        "_id": { "$oid": "66223dee5d0407ae401d7422" },
+        "platform_name": "Tekst-Dev",
+        "platform_subtitle": [
+            {
+                "locale": "enUS",
+                "translation": "An online text research platform"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Eine Forschungsplattform für Texte"
+            }
+        ],
+        "default_text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+        "nav_browse_entry": [],
+        "nav_search_entry": [],
+        "nav_info_entry": [],
+        "fonts": [],
+        "show_resource_category_headings": true,
+        "prioritize_browse_level_resources": true,
+        "always_show_text_info": true,
+        "show_logo_on_loading_screen": true,
+        "show_logo_in_header": true,
+        "show_tekst_footer_hint": true,
+        "available_locales": ["deDE", "enUS"],
+        "osk_modes": [
+            { "key": "example", "name": "Example Keymap", "font": null },
+            { "key": "example2", "name": "Example 2 Keymap", "font": null }
+        ],
+        "indices_updated_at": { "$date": "2024-08-30T12:20:50.864Z" }
+    }
+]

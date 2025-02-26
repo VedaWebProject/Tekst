@@ -6,10 +6,10 @@ from httpx import AsyncClient
 @pytest.mark.anyio
 async def test_get_texts(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
 ):
-    await insert_sample_data("texts")
+    await insert_test_data("texts")
     resp = await test_client.get("/texts")
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -81,12 +81,12 @@ async def test_create_text_unauthenticated(
 @pytest.mark.anyio
 async def test_update_text(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data("texts")
+    await insert_test_data("texts")
 
     # get text from db
     resp = await test_client.get("/texts")
@@ -134,12 +134,12 @@ async def test_update_text(
 @pytest.mark.anyio
 async def test_delete_text(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_test_data("texts", "locations")
     text_id = inserted_ids["texts"][1]
 
     # log in as superuser
@@ -171,12 +171,12 @@ async def test_delete_text(
 @pytest.mark.anyio
 async def test_delete_default_text(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # delete default text
@@ -189,12 +189,12 @@ async def test_delete_default_text(
 @pytest.mark.anyio
 async def test_download_structure_template(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts")
+    inserted_ids = await insert_test_data("texts")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -207,7 +207,7 @@ async def test_download_structure_template(
     assert_status(200, resp)
 
     # insert sample locations
-    await insert_sample_data("locations")
+    await insert_test_data("locations")
 
     # download template with existing locations
     resp = await test_client.get(
@@ -225,12 +225,12 @@ async def test_download_structure_template(
 @pytest.mark.anyio
 async def test_insert_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations")
+    await insert_test_data("texts", "locations")
 
     # log in as superuser
     await login(is_superuser=True)
@@ -285,11 +285,11 @@ async def test_insert_level(
 @pytest.mark.anyio
 async def test_delete_top_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_test_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -306,11 +306,11 @@ async def test_delete_top_level(
 @pytest.mark.anyio
 async def test_delete_bottom_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_test_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -327,11 +327,11 @@ async def test_delete_bottom_level(
 @pytest.mark.anyio
 async def test_delete_middle_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_test_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -356,12 +356,12 @@ async def test_delete_middle_level(
 @pytest.mark.anyio
 async def test_fail_delete_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations")
+    inserted_ids = await insert_test_data("texts", "locations")
     text_id = inserted_ids["texts"][0]
 
     # log in as superuser
@@ -383,18 +383,18 @@ async def test_fail_delete_level(
 @pytest.mark.anyio
 async def test_import_text_structure(
     test_client: AsyncClient,
-    insert_sample_data,
-    get_sample_data_path,
+    insert_test_data,
+    get_test_data_path,
     assert_status,
     login,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts"))["texts"][0]
+    text_id = (await insert_test_data("texts"))["texts"][0]
     await login(is_superuser=True)
-    sample_data_path = get_sample_data_path("import/structure_fdhdgg.json")
+    test_data_path = get_test_data_path("import/structure_fdhdgg.json")
 
     # upload invalid structure definition file (give wrong MIME type)
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "text/plain")},
@@ -409,7 +409,7 @@ async def test_import_text_structure(
     assert_status(422, resp)
 
     # upload structure definition file for wrong text ID
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{wrong_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -417,7 +417,7 @@ async def test_import_text_structure(
         assert_status(404, resp)
 
     # upload valid structure definition file
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -425,7 +425,7 @@ async def test_import_text_structure(
         assert_status(201, resp)
 
     # try it again (should fail because text now already has locations)
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.post(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -436,19 +436,19 @@ async def test_import_text_structure(
 @pytest.mark.anyio
 async def test_update_text_structure(
     test_client: AsyncClient,
-    insert_sample_data,
-    get_sample_data_path,
+    insert_test_data,
+    get_test_data_path,
     assert_status,
     login,
     wrong_id,
     wait_for_task_success,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     await login(is_superuser=True)
-    sample_data_path = get_sample_data_path("import/structure_fdhdgg_updates.json")
+    test_data_path = get_test_data_path("import/structure_fdhdgg_updates.json")
 
     # upload w/ wrong MIME type
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.patch(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "text/plain")},
@@ -457,7 +457,7 @@ async def test_update_text_structure(
 
     # upload w/ invalid location ID
     with open(
-        get_sample_data_path("import/structure_fdhdgg_updates_invalid_loc_id.json"),
+        get_test_data_path("import/structure_fdhdgg_updates_invalid_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -469,7 +469,7 @@ async def test_update_text_structure(
 
     # upload w/ wrong location ID
     with open(
-        get_sample_data_path("import/structure_fdhdgg_updates_wrong_loc_id.json"),
+        get_test_data_path("import/structure_fdhdgg_updates_wrong_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -481,7 +481,7 @@ async def test_update_text_structure(
 
     # upload w/ location ID from different text
     with open(
-        get_sample_data_path("import/structure_fdhdgg_updates_alien_loc_id.json"),
+        get_test_data_path("import/structure_fdhdgg_updates_alien_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -493,7 +493,7 @@ async def test_update_text_structure(
 
     # upload w/ invalid label/alias data
     with open(
-        get_sample_data_path("import/structure_fdhdgg_updates_invalid_data.json"),
+        get_test_data_path("import/structure_fdhdgg_updates_invalid_data.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -518,7 +518,7 @@ async def test_update_text_structure(
     assert_status(422, resp)
 
     # upload locations updates file for wrong text ID
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.patch(
             f"/texts/{wrong_id}/structure",
             files={"file": (f.name, f, "application/json")},
@@ -526,7 +526,7 @@ async def test_update_text_structure(
         assert_status(404, resp)
 
     # upload valid locations updates file
-    with open(sample_data_path, "rb") as f:
+    with open(test_data_path, "rb") as f:
         resp = await test_client.patch(
             f"/texts/{text_id}/structure",
             files={"file": (f.name, f, "application/json")},

@@ -2,6 +2,7 @@ import os
 import re
 
 from functools import cache
+from os.path import realpath
 from pathlib import Path
 from secrets import token_hex
 from typing import Annotated, Any
@@ -296,6 +297,7 @@ class MiscConfig(ConfigSubSection):
     usrmsg_force_delete_after_days: int = 365
     max_resources_per_user: int = 10
     del_exports_after_minutes: int = 5
+    demo_data_path: DirectoryPath = Path(realpath(__file__)).parent.parent / "demo"
 
 
 class TekstConfig(BaseSettings):

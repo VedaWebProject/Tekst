@@ -7,12 +7,12 @@ from httpx import AsyncClient
 async def test_messages_crud(
     test_client: AsyncClient,
     assert_status,
-    insert_sample_data,
+    insert_test_data,
     register_test_user,
     login,
     wrong_id,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     su = await register_test_user(is_superuser=True)  # will be msg recipient
     u = await login()  # will be sending messages
 

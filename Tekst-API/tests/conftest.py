@@ -43,28 +43,28 @@ def wrong_id() -> str:
     return "badab001337d00d42b00b1e5"
 
 
-@pytest.fixture
-def get_sample_data_path(request) -> Callable[[str], Path]:
+@pytest.fixture(scope="session")
+def get_test_data_path(request) -> Callable[[str], Path]:
     """Returns a function to get the path to a file relative to tests/data"""
 
-    def _get_sample_data_path(rel_path: str) -> Path:
-        return Path(request.config.rootdir) / "tekst/sample_data" / rel_path
+    def _get_test_data_path(rel_path: str) -> Path:
+        return Path(request.config.rootdir) / "tests" / "test_data" / rel_path
 
-    return _get_sample_data_path
+    return _get_test_data_path
 
 
-@pytest.fixture
-def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
+@pytest.fixture(scope="session")
+def get_test_data(get_test_data_path) -> Callable[[str], Any]:
     """
     Returns a function to get the object representation
     of a JSON file relative to tests/data
     """
 
-    def _get_sample_data(
+    def _get_test_data(
         rel_path: str,
         for_http: bool = False,
     ) -> Any:
-        path = get_sample_data_path(rel_path)
+        path = get_test_data_path(rel_path)
         data = json_util.loads(path.read_text())
         if for_http:
             data = camelize(
@@ -75,7 +75,7 @@ def get_sample_data(get_sample_data_path) -> Callable[[str], Any]:
             )
         return data
 
-    return _get_sample_data
+    return _get_test_data
 
 
 @pytest.fixture(scope="session")
@@ -109,7 +109,7 @@ async def test_app(
     await db_client_override.drop_database(config.db.name)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def test_client(
     test_app,
     config,
@@ -129,17 +129,17 @@ async def test_client(
         yield client
 
 
-@pytest.fixture
-async def insert_sample_data(
+@pytest.fixture(scope="session")
+async def insert_test_data(
     database,
-    get_sample_data,
+    get_test_data,
 ) -> Callable:
     """
     Returns an asynchronous function to insert
     test data into their respective database collections
     """
 
-    async def _insert_sample_data(*collections: str) -> dict[str, list[str]]:
+    async def _insert_test_data(*collections: str) -> dict[str, list[str]]:
         ids = dict()
         collections = collections or [
             "contents",
@@ -150,33 +150,33 @@ async def insert_sample_data(
             "users",
         ]
         for collection in collections:
-            sample_data = get_sample_data(f"db/{collection}.json")
-            if not sample_data:
+            test_data = get_test_data(f"collections/{collection}.json")
+            if not test_data:
                 raise Exception(
                     f"Could not find sample data for collection '{collection}'"
                 )
-            result = await database[collection].insert_many(sample_data)
+            result = await database[collection].insert_many(test_data)
             if not result.acknowledged:
                 raise Exception(f"Failed to insert into test collection '{collection}'")
             ids[collection] = [str(id_) for id_ in result.inserted_ids]
         return ids
 
-    return _insert_sample_data
+    return _insert_test_data
 
 
 @pytest.fixture
 async def use_indices(
     config,
-    insert_sample_data,
+    insert_test_data,
 ) -> Iterator[None]:
-    await insert_sample_data()
+    await insert_test_data()
     await create_indices_task(force=True)
     yield
     for index in Elasticsearch(config.es.uri).indices.get(index=IDX_ALIAS).body:
         Elasticsearch(config.es.uri).indices.delete(index=index)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def get_mock_user() -> Callable:
     def _get_mock_user(suffix: str = ""):
         return dict(
@@ -198,7 +198,7 @@ async def setup_teardown(database) -> Callable:
         await database.drop_collection(collection)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def register_test_user(get_mock_user) -> Callable:
     async def _register_test_user(
         *,
@@ -222,7 +222,7 @@ async def register_test_user(get_mock_user) -> Callable:
     return _register_test_user
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def logout(
     config,
     test_client: AsyncClient,
@@ -234,7 +234,7 @@ async def logout(
     return _logout
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 async def login(
     config,
     test_client,

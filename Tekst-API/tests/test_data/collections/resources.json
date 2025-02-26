@@ -1,0 +1,582 @@
+[
+    {
+        "_id": { "$oid": "654b825533ee5737b297f8f3" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [{ "locale": "*", "translation": "Warnung (Anschütz)" }],
+        "description": [
+            {
+                "locale": "deDE",
+                "translation": "Der deutschsprachige Originaltext von 1824"
+            },
+            {
+                "locale": "enUS",
+                "translation": "The original German-language text from 1824"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 2,
+        "resource_type": "plainText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": "Anschütz, Ernst. Warnung. 1824.",
+        "meta": [
+            { "key": "author", "value": "Ernst Anschütz" },
+            { "key": "year", "value": "1824" },
+            { "key": "Original Title", "value": "Warnung" },
+            { "key": "language", "value": "DE" }
+        ],
+        "comment": [
+            {
+                "locale": "enUS",
+                "translation": "This version includes repetition markers."
+            },
+            {
+                "locale": "deDE",
+                "translation": "Diese Version enthält Wiederholungszeichen."
+            }
+        ],
+        "config": {
+            "common": {
+                "category": "versions",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
+                "font": null
+            },
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "de" }
+            }
+        }
+    },
+    {
+        "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Japanese Version" },
+            { "locale": "deDE", "translation": "Japanische Version" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "The original text in Japanese language"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Der Originaltext in japanischer Sprache"
+            }
+        ],
+        "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+        "level": 0,
+        "resource_type": "plainText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": "Bashō, Matsuo (1686)",
+        "meta": [
+            { "key": "author", "value": "Matsuo Bashō" },
+            { "key": "year", "value": "1686" },
+            { "key": "language", "value": "JA" }
+        ],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "versions",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
+                "font": null
+            },
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "ja" }
+            }
+        }
+    },
+    {
+        "_id": { "$oid": "654ba525ec7833e469dde77e" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "English Translation" },
+            { "locale": "deDE", "translation": "Englische Übersetzung" }
+        ],
+        "description": [],
+        "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+        "level": 0,
+        "resource_type": "plainText",
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "meta": [
+            { "key": "author", "value": "Robert Hass" },
+            { "key": "language", "value": "EN" }
+        ],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "translations",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true,
+                "searchable_quick": true,
+                "searchable_adv": true,
+                "rtl": false
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view": {
+                    "single_line": false,
+                    "single_line_delimiter": " / "
+                },
+                "search_replacements": [
+                    { "pattern": "[aeiou]", "replacement": "o" }
+                ]
+            },
+            "plain_text": {
+                "line_labelling": {
+                    "enabled": false,
+                    "labelling_type": "numbersOneBased"
+                },
+                "deepl_links": { "enabled": false, "source_language": "en" }
+            }
+        },
+        "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    },
+    {
+        "_id": { "$oid": "654ba678ec7833e469dde782" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [{ "locale": "*", "translation": "Transliteration" }],
+        "description": [],
+        "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+        "level": 0,
+        "resource_type": "plainText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [{ "key": "language", "value": "Hepburn romanization" }],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "versions",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
+                "font": null
+            },
+            "plain_text": {
+                "deepl_links": { "enabled": false, "source_language": "en" }
+            }
+        }
+    },
+    {
+        "_id": { "$oid": "6641ce24affa6cb96bc85a55" },
+        "_class_id": "ResourceBaseDocument.ImagesResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Relevant Images" },
+            { "locale": "deDE", "translation": "Relevante Bilder" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "Images related to the song and its historical context"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Bilder zu dem Lied und seinem historischen Kontext"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "images",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "multimedia",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false
+            },
+            "general": { "default_collapsed": true, "font": null }
+        }
+    },
+    {
+        "_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
+        "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Musical Resources" },
+            { "locale": "deDE", "translation": "Musikalische Ressourcen" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "Links to various musical resources"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Links zu verschiedenen musikalischen Ressourcen"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "externalReferences",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "links",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false
+            },
+            "general": { "default_collapsed": false, "font": null }
+        }
+    },
+    {
+        "_id": { "$oid": "6641d510affa6cb96bc85a5b" },
+        "_class_id": "ResourceBaseDocument.AudioResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Performances" },
+            { "locale": "deDE", "translation": "Aufführungen" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "Various audio recordings of performances of the song"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Verschiedene Audioaufnahmen von Aufführungen des Liedes"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "audio",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "multimedia",
+                "sort_order": 11,
+                "default_active": true,
+                "show_on_parent_level": false
+            },
+            "general": { "default_collapsed": false, "font": null }
+        }
+    },
+    {
+        "_id": { "$oid": "664717b0ba9e65342c8e4941" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "English translation" },
+            { "locale": "deDE", "translation": "Englische Übersetzung" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "A translation of the original text in English language"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Eine Übersetzung des Originaltextes in englischer Sprache"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 2,
+        "resource_type": "plainText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [
+            { "key": "year", "value": "2024" },
+            { "key": "language", "value": "EN" }
+        ],
+        "comment": [
+            {
+                "locale": "enUS",
+                "translation": "This translation was generated automatically and revised manually. This translation includes repetition markers."
+            },
+            {
+                "locale": "deDE",
+                "translation": "Diese Übersetzung wurde maschinell erzeugt und manuell überarbeitet. Diese Übersetzung enthält Wiederholungszeichen."
+            }
+        ],
+        "config": {
+            "common": {
+                "category": "translations",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
+                "font": null
+            },
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "en" }
+            }
+        }
+    },
+    {
+        "_id": { "$oid": "66471b68ba9e65342c8e495b" },
+        "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+        "title": [
+            {
+                "locale": "*",
+                "translation": "Fuchs, du hast die Gans gestohlen"
+            }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "The commonly known version of the children's song"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Die allgemein bekannte Version des Kinderliedes"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 2,
+        "resource_type": "plainText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [
+            {
+                "locale": "enUS",
+                "translation": "The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks."
+            },
+            {
+                "locale": "deDE",
+                "translation": "Die allgemein gebräuchliche Version des Textes mit einer Abwandlung des dritten Verses gegenüger der Originalversion. Diese Version enthält Wiederholungszeichen."
+            }
+        ],
+        "config": {
+            "common": {
+                "category": "versions",
+                "sort_order": 9,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": {
+                "default_collapsed": false,
+                "reduced_view_oneline": true,
+                "font": null
+            },
+            "plain_text": {
+                "deepl_links": { "enabled": true, "source_language": "de" }
+            }
+        }
+    },
+    {
+        "_id": { "$oid": "66471de0ba9e65342c8e4995" },
+        "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Various External Resources" },
+            {
+                "locale": "deDE",
+                "translation": "Verschiedene Externe Ressourcen"
+            }
+        ],
+        "description": [],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "externalReferences",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "links",
+                "sort_order": 15,
+                "default_active": true,
+                "show_on_parent_level": false
+            },
+            "general": { "default_collapsed": false, "font": null }
+        }
+    },
+    {
+        "_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+        "_class_id": "ResourceBaseDocument.TextAnnotationResourceDocument",
+        "title": [{ "locale": "*", "translation": "Named Entities" }],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "Annotation of Named Entities in the common version of the song"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Annotation von Named Entities in der allgemein bekannten Version des Liedes"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 2,
+        "resource_type": "textAnnotation",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [
+            {
+                "locale": "enUS",
+                "translation": "Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\"."
+            },
+            {
+                "locale": "deDE",
+                "translation": "Annotierte Entitäten sind \"Fox\" (Fuchs), \"Goose\" (Gans) \"Hunter\" (Jäger) und \"Mouse\" (Maus)."
+            }
+        ],
+        "config": {
+            "common": {
+                "category": "annotations",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": true
+            },
+            "general": { "default_collapsed": false, "font": null },
+            "text_annotation": { "display_template": "{{_k:Entity_c:v_f:c}}" }
+        }
+    },
+    {
+        "_id": { "$oid": "67472c393d0d7622956981c9" },
+        "_class_id": "ResourceBaseDocument.RichTextResourceDocument",
+        "title": [
+            { "locale": "enUS", "translation": "Chords" },
+            { "locale": "deDE", "translation": "Akkorde" }
+        ],
+        "description": [
+            {
+                "locale": "enUS",
+                "translation": "The chords of the song aligned with the song text"
+            },
+            {
+                "locale": "deDE",
+                "translation": "Die Akkorde des Liedes, am Text ausgerichtet"
+            }
+        ],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "richText",
+        "original_id": null,
+        "owner_id": null,
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "citation": null,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "multimedia",
+                "sort_order": 10,
+                "default_active": true,
+                "show_on_parent_level": false,
+                "osk": null
+            },
+            "general": { "default_collapsed": true, "font": null }
+        },
+        "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
+    },
+    {
+        "_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
+        "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
+        "title": [
+            { "locale": "*", "translation": "Example API Call Resource" }
+        ],
+        "description": [],
+        "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+        "level": 0,
+        "resource_type": "apiCall",
+        "shared_read": [],
+        "shared_write": [],
+        "public": true,
+        "proposed": false,
+        "meta": [],
+        "comment": [],
+        "config": {
+            "common": {
+                "category": "poc",
+                "sort_order": 10,
+                "default_active": false,
+                "show_on_parent_level": false,
+                "searchable_quick": false,
+                "searchable_adv": false,
+                "rtl": false
+            },
+            "general": { "default_collapsed": false },
+            "api_call": {
+                "endpoint": "/api/texts",
+                "method": "GET",
+                "content_type": "application/json",
+                "transform_deps": [],
+                "transform_js": "const texts = JSON.parse(this.data);\nconst introHtml = '<strong class=\"ui-font text-tiny\">Look at all those texts:</strong>';\nconst textsHtml = texts.map(t => `<div class=\"text-small\"><a data-tekst-text-id=\"${t.id}\" data-tekst-location-level=\"${t.defaultLevel}\" data-tekst-location-position=\"0\">${t.title}</a></div>`).join(\"\");\nconst contextHtml = `<div class=\"text-mini\">${this.context.helloWorld || ':('}</div>`;\nreturn introHtml + textsHtml + contextHtml;"
+            }
+        },
+        "contents_changed_at": { "$date": "2025-02-11T07:21:03.998Z" }
+    }
+]

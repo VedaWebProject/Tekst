@@ -9,12 +9,12 @@ from tekst.models.text import TextDocument
 @pytest.mark.anyio
 async def test_get_content_context(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
     login,
 ):
-    await insert_sample_data("texts", "locations", "resources", "contents")
+    await insert_test_data("texts", "locations", "resources", "contents")
     text = await TextDocument.find_one(TextDocument.slug == "pond")
     assert text
     resource = await ResourceBaseDocument.find_one(
@@ -57,13 +57,13 @@ async def test_get_content_context(
 @pytest.mark.anyio
 async def test_get_location_data(
     test_client: AsyncClient,
-    insert_sample_data,
-    get_sample_data,
+    insert_test_data,
+    get_test_data,
     assert_status,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations", "resources", "contents")
-    texts = get_sample_data("db/texts.json", for_http=True)
+    await insert_test_data("texts", "locations", "resources", "contents")
+    texts = get_test_data("collections/texts.json", for_http=True)
     text_id = next((txt for txt in texts if txt["slug"] == "fdhdgg"), {}).get("_id", "")
     assert len(text_id) > 0
 
@@ -105,12 +105,12 @@ async def test_get_location_data(
 @pytest.mark.anyio
 async def test_get_nearest_content_position(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
     login,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     resource = await ResourceBaseDocument.get(
         "654b825533ee5737b297f8f3",
         with_children=True,

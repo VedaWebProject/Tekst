@@ -19,12 +19,12 @@ def _assert_search_resp(
 @pytest.mark.anyio
 async def test_admin_create_search_index(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wait_for_task_success,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # create task to create index

@@ -31,9 +31,9 @@ async def test_0_2_1a0(database):
 @pytest.mark.anyio
 async def test_0_3_0a0(
     database,
-    get_sample_data,
+    get_test_data,
 ):
-    data = get_sample_data("migrations/0_3_0a0.json")
+    data = get_test_data("migrations/0_3_0a0.json")
     for coll_name in data:
         await database[coll_name].insert_many(data[coll_name])
 
@@ -51,9 +51,9 @@ async def test_0_3_0a0(
 @pytest.mark.anyio
 async def test_0_4_0a0(
     database,
-    get_sample_data,
+    get_test_data,
 ):
-    res = get_sample_data("migrations/0_4_0a0.json")
+    res = get_test_data("migrations/0_4_0a0.json")
     res_id = (await database.resources.insert_one(res)).inserted_id
     assert res_id
 
@@ -69,8 +69,8 @@ async def test_0_4_0a0(
 
 
 @pytest.mark.anyio
-async def test_0_4_1a0(database, get_sample_data):
-    res = get_sample_data("migrations/0_4_1a0.json")
+async def test_0_4_1a0(database, get_test_data):
+    res = get_test_data("migrations/0_4_1a0.json")
     res_id = (await database.resources.insert_one(res)).inserted_id
     assert res_id
 
@@ -87,8 +87,8 @@ async def test_0_4_1a0(database, get_sample_data):
 
 
 @pytest.mark.anyio
-async def test_0_4_2a0(database, get_sample_data):
-    content = get_sample_data("migrations/0_4_2a0.json")
+async def test_0_4_2a0(database, get_test_data):
+    content = get_test_data("migrations/0_4_2a0.json")
     content_id = (await database.contents.insert_one(content)).inserted_id
     assert content_id
 
@@ -102,8 +102,8 @@ async def test_0_4_2a0(database, get_sample_data):
 
 
 @pytest.mark.anyio
-async def test_0_5_0a0(database, get_sample_data):
-    res = get_sample_data("migrations/0_5_0a0.json")
+async def test_0_5_0a0(database, get_test_data):
+    res = get_test_data("migrations/0_5_0a0.json")
     conf_val = res["config"]["common"]["show_on_parent_level"]
     assert conf_val is not None
     res_id = (await database.resources.insert_one(res)).inserted_id
@@ -122,8 +122,8 @@ async def test_0_5_0a0(database, get_sample_data):
 
 
 @pytest.mark.anyio
-async def test_0_6_0a0(database, get_sample_data):
-    state = get_sample_data("migrations/0_6_0a0.json")
+async def test_0_6_0a0(database, get_test_data):
+    state = get_test_data("migrations/0_6_0a0.json")
     await database.state.insert_one(state)
 
     # run migration
@@ -135,8 +135,8 @@ async def test_0_6_0a0(database, get_sample_data):
 
 
 @pytest.mark.anyio
-async def test_0_7_0a0(database, get_sample_data):
-    msg = get_sample_data("migrations/0_7_0a0.json")
+async def test_0_7_0a0(database, get_test_data):
+    msg = get_test_data("migrations/0_7_0a0.json")
     await database.messages.insert_one(msg)
 
     # run migration
@@ -149,8 +149,8 @@ async def test_0_7_0a0(database, get_sample_data):
 
 
 @pytest.mark.anyio
-async def test_0_8_0a0(database, get_sample_data):
-    footer_segment = get_sample_data("migrations/0_8_0a0.json")
+async def test_0_8_0a0(database, get_test_data):
+    footer_segment = get_test_data("migrations/0_8_0a0.json")
     await database.segments.insert_one(footer_segment)
 
     # run migration

@@ -8,11 +8,11 @@ from tekst.auth import create_initial_superuser
 @pytest.mark.anyio
 async def test_admin_get_all_users(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     login,
     assert_status,
 ):
-    await insert_sample_data("users")
+    await insert_test_data("users")
     await login(is_superuser=True)
     resp = await test_client.get("/users")
     assert_status(200, resp)

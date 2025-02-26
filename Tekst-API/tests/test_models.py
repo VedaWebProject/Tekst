@@ -13,8 +13,8 @@ def test_basic_validation():
         assert "missing" in error.value
 
 
-def test_serialization(get_sample_data):
-    test_data = get_sample_data("db/texts.json")
+def test_serialization(get_test_data):
+    test_data = get_test_data("collections/texts.json")
     text = TextCreate(**test_data[0])
     text.loc_delim = None
     assert text.model_dump().get("title")
@@ -106,8 +106,8 @@ def test_user_read_public():
 
 
 @pytest.mark.anyio
-async def test_text_get_full_loc_labels_invalid_level(insert_sample_data):
-    text_id = (await insert_sample_data())["texts"][0]
+async def test_text_get_full_loc_labels_invalid_level(insert_test_data):
+    text_id = (await insert_test_data())["texts"][0]
     text_doc: TextDocument = await TextDocument.get(text_id)
     with pytest.raises(ValueError):
         await text_doc.full_location_labels(42)

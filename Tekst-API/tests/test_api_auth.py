@@ -5,12 +5,12 @@ from httpx import AsyncClient
 
 @pytest.mark.anyio
 async def test_register(
-    insert_sample_data,
+    insert_test_data,
     test_client: AsyncClient,
     get_mock_user,
     assert_status,
 ):
-    await insert_sample_data()  # to have an admin to notify after registration
+    await insert_test_data()  # to have an admin to notify after registration
     payload = get_mock_user()
     resp = await test_client.post("/auth/register", json=payload)
     assert_status(201, resp)

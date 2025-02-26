@@ -144,13 +144,13 @@ async def test_crud_segment(
 @pytest.mark.anyio
 async def test_platform_cleanup(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wait_for_task_success,
     config,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # start cleanup task (should work but do nothing)

@@ -8,12 +8,12 @@ from tekst.models.text import TextDocument
 @pytest.mark.anyio
 async def test_create_location(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts"))["texts"][0]
+    text_id = (await insert_test_data("texts"))["texts"][0]
     locations = [
         {"textId": text_id, "label": f"Location {n}", "level": 0, "position": n}
         for n in range(10)
@@ -57,11 +57,11 @@ async def test_create_location(
 @pytest.mark.anyio
 async def test_create_additional_location(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     await login(is_superuser=True)
 
     # get a parent location
@@ -88,11 +88,11 @@ async def test_create_additional_location(
 @pytest.mark.anyio
 async def test_create_additional_location_only_child(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     await login(is_superuser=True)
 
     # create new location on level 0
@@ -125,12 +125,12 @@ async def test_create_additional_location_only_child(
 @pytest.mark.anyio
 async def test_child_location_io(
     test_client: AsyncClient,
-    get_sample_data,
-    insert_sample_data,
+    get_test_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts"))["texts"][0]
+    text_id = (await insert_test_data("texts"))["texts"][0]
     location = {
         "text_id": text_id,
         "level": 0,
@@ -200,13 +200,13 @@ async def test_child_location_io(
 @pytest.mark.anyio
 async def test_create_location_invalid_text_fail(
     test_client: AsyncClient,
-    get_sample_data,
-    insert_sample_data,
+    get_test_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    await insert_sample_data("texts")
-    location = get_sample_data("db/locations.json", for_http=True)[0]
+    await insert_test_data("texts")
+    location = get_test_data("collections/locations.json", for_http=True)[0]
     location["textId"] = "5ed7cfba5e32eb7759a17565"
     await login(is_superuser=True)
 
@@ -220,13 +220,13 @@ async def test_create_location_invalid_text_fail(
 @pytest.mark.anyio
 async def test_find_locations(
     test_client: AsyncClient,
-    get_sample_data,
-    insert_sample_data,
+    get_test_data,
+    insert_test_data,
     assert_status,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
-    locations = get_sample_data("db/locations.json", for_http=True)
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
+    locations = get_test_data("collections/locations.json", for_http=True)
 
     # test results length limit
     resp = await test_client.get(
@@ -319,10 +319,10 @@ async def test_find_locations(
 @pytest.mark.anyio
 async def test_find_locations_by_alias(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     resp = await test_client.get(
         "/locations",
         params={
@@ -338,11 +338,11 @@ async def test_find_locations_by_alias(
 @pytest.mark.anyio
 async def test_get_first_and_last_locations_paths(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
 
     # find first and last locations
     resp = await test_client.get(
@@ -386,12 +386,12 @@ async def test_get_first_and_last_locations_paths(
 @pytest.mark.anyio
 async def test_update_location(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
 
     # get location from db
     resp = await test_client.get(
@@ -437,12 +437,12 @@ async def test_update_location(
 @pytest.mark.anyio
 async def test_delete_location(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
 
     # get location from db
     resp = await test_client.get(
@@ -503,11 +503,11 @@ async def test_delete_location(
 @pytest.mark.anyio
 async def test_move_location(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
 
     # log in as superuser
     await login(is_superuser=True)
@@ -544,7 +544,7 @@ async def test_move_location(
 @pytest.mark.anyio
 async def test_move_location_wrong_id(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
@@ -563,11 +563,11 @@ async def test_move_location_wrong_id(
 @pytest.mark.anyio
 async def test_move_location_lowest_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
 
     # log in as superuser
     await login(is_superuser=True)
@@ -599,11 +599,11 @@ async def test_move_location_lowest_level(
 @pytest.mark.anyio
 async def test_get_path_options_by_head(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations")
+    await insert_test_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
     location = await LocationDocument.find_one(
         LocationDocument.text_id == text.id, LocationDocument.level == 1
@@ -625,11 +625,11 @@ async def test_get_path_options_by_head(
 @pytest.mark.anyio
 async def test_get_path_options_by_root(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations")
+    await insert_test_data("texts", "locations")
     text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
     location = await LocationDocument.find_one(
         LocationDocument.text_id == text.id, LocationDocument.level == 0

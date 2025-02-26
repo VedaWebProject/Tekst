@@ -6,12 +6,12 @@ from httpx import AsyncClient
 @pytest.mark.anyio
 async def test_crud_bookmark(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
     login,
 ):
-    await insert_sample_data("texts", "locations", "resources")
+    await insert_test_data("texts", "locations", "resources")
     superuser = await login(is_superuser=True)
     location_id = "654b825533ee5737b297f8eb"  # hand-picked because we need a level 1 bm
 

@@ -12,11 +12,11 @@ from tekst.models.resource import ResourceBaseDocument
 @pytest.mark.anyio
 async def test_create_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     user = await login()
     payload = {
         "title": [{"locale": "*", "translation": "A test resource"}],
@@ -49,11 +49,11 @@ async def test_create_resource(
 @pytest.mark.anyio
 async def test_create_resource_w_invalid_type(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     login,
     assert_status,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     user = await login()
     payload = {
         "title": [{"locale": "*", "translation": "A test resource"}],
@@ -79,11 +79,11 @@ async def test_create_resource_w_invalid_type(
 @pytest.mark.anyio
 async def test_create_too_many_resources(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     user = await login()
 
     error = None
@@ -108,11 +108,11 @@ async def test_create_too_many_resources(
 @pytest.mark.anyio
 async def test_create_resource_w_invalid_level(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     user = await login()
     resp = await test_client.post(
         "/resources",
@@ -136,12 +136,12 @@ async def test_create_resource_w_invalid_level(
 @pytest.mark.anyio
 async def test_create_resource_w_wrong_text_id(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations")
+    await insert_test_data("texts", "locations")
     await login()
 
     payload = {
@@ -161,11 +161,11 @@ async def test_create_resource_w_wrong_text_id(
 @pytest.mark.anyio
 async def test_create_resource_with_forged_owner_id(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    text_id = (await insert_sample_data("texts", "locations"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     await login()
 
     # create new resource with made up owner ID
@@ -187,11 +187,11 @@ async def test_create_resource_with_forged_owner_id(
 @pytest.mark.anyio
 async def test_create_resource_with_denied_type(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     login,
     assert_status,
 ):
-    text_id = (await insert_sample_data())["texts"][0]
+    text_id = (await insert_test_data())["texts"][0]
     await PlatformStateDocument.find().update(
         Set({PlatformStateDocument.deny_resource_types: ["plainText"]})
     )
@@ -213,12 +213,12 @@ async def test_create_resource_with_denied_type(
 @pytest.mark.anyio
 async def test_create_resource_version(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
+    resource_id = (await insert_test_data("texts", "locations", "resources"))[
         "resources"
     ][0]
     user = await login()
@@ -249,11 +249,11 @@ async def test_create_resource_version(
 @pytest.mark.anyio
 async def test_create_too_many_resource_versions(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
+    resource_id = (await insert_test_data("texts", "locations", "resources"))[
         "resources"
     ][0]
     await login()
@@ -273,14 +273,14 @@ async def test_create_too_many_resource_versions(
 @pytest.mark.anyio
 async def test_update_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     register_test_user,
     wrong_id,
     logout,
 ):
-    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
     superuser = await login(is_superuser=True)
     other_user = await register_test_user()
 
@@ -461,13 +461,13 @@ async def test_update_resource(
 @pytest.mark.anyio
 async def test_set_shares_for_public_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     register_test_user,
     wrong_id,
 ):
-    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
+    resource_id = (await insert_test_data("texts", "locations", "resources"))[
         "resources"
     ][0]
     await login(is_superuser=True)
@@ -491,12 +491,12 @@ async def test_set_shares_for_public_resource(
 @pytest.mark.anyio
 async def test_get_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     wrong_id,
     login,
     assert_status,
 ):
-    resource_id = (await insert_sample_data("texts", "locations", "resources"))[
+    resource_id = (await insert_test_data("texts", "locations", "resources"))[
         "resources"
     ][0]
 
@@ -524,12 +524,12 @@ async def test_get_resource(
 @pytest.mark.anyio
 async def test_access_private_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     logout,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     text_id = inserted_ids["texts"][0]
     resource_id = inserted_ids["resources"][0]
 
@@ -559,10 +559,10 @@ async def test_access_private_resource(
 @pytest.mark.anyio
 async def test_get_resources(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
 ):
-    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
         params={"txt": text_id, "lvl": 2, "type": "plainText"},
@@ -588,12 +588,12 @@ async def test_get_resources(
 @pytest.mark.anyio
 async def test_propose_unpropose_publish_unpublish_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     login,
     wrong_id,
     assert_status,
 ):
-    text_id = (await insert_sample_data("texts", "locations", "resources"))["texts"][0]
+    text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
     owner = await login(is_superuser=True)
 
     # create new resource (because only owner can update(write))
@@ -759,12 +759,12 @@ async def test_propose_unpropose_publish_unpublish_resource(
 @pytest.mark.anyio
 async def test_delete_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     text_id = inserted_ids["texts"][0]
     resource_id = inserted_ids["resources"][0]
 
@@ -816,11 +816,11 @@ async def test_delete_resource(
 @pytest.mark.anyio
 async def test_delete_public_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
     await login(is_superuser=True)
 
@@ -843,11 +843,11 @@ async def test_delete_public_resource(
 @pytest.mark.anyio
 async def test_delete_proposed_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
     await login(is_superuser=True)
 
@@ -871,13 +871,13 @@ async def test_delete_proposed_resource(
 @pytest.mark.anyio
 async def test_transfer_resource(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     register_test_user,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
 
     # register regular test user
@@ -943,12 +943,12 @@ async def test_transfer_resource(
 @pytest.mark.anyio
 async def test_get_resource_template(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data("texts", "locations", "resources")
+    inserted_ids = await insert_test_data("texts", "locations", "resources")
     resource_id = inserted_ids["resources"][0]
 
     # try to get resource template (only for users with write permission)
@@ -976,16 +976,14 @@ async def test_get_resource_template(
 @pytest.mark.anyio
 async def test_import_resource_contents(
     test_client: AsyncClient,
-    insert_sample_data,
-    get_sample_data_path,
+    insert_test_data,
+    get_test_data_path,
     assert_status,
     login,
     wrong_id,
     wait_for_task_success,
 ):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
-    )
+    inserted_ids = await insert_test_data("texts", "locations", "resources", "contents")
     text_id = inserted_ids["texts"][1]
     superuser = await login(is_superuser=True)
 
@@ -1000,7 +998,7 @@ async def test_import_resource_contents(
 
     # define sample data
     resource_id = "654ba525ec7833e469dde77e"
-    sample_data = {
+    import_sample = {
         "contents": [
             {"locationId": "654ba282ec7833e469dde766", "text": "FOO"},
             {"locationId": "654ba288ec7833e469dde768", "text": "BAR"},
@@ -1008,7 +1006,7 @@ async def test_import_resource_contents(
         ],
         "resourceId": resource_id,
     }
-    sample_data_string = json.dumps(sample_data)
+    import_sample_string = json.dumps(import_sample)
 
     # upload invalid resource data file (invalid JSON)
     resp = await test_client.post(
@@ -1022,14 +1020,14 @@ async def test_import_resource_contents(
     # fail to upload with wrong mime type
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", sample_data_string, "text/plain")},
+        files={"file": ("foo.json", import_sample_string, "text/plain")},
     )
     assert_status(400, resp)
 
     # fail to upload resource data file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
-        files={"file": ("foo.json", sample_data_string, "application/json")},
+        files={"file": ("foo.json", import_sample_string, "application/json")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1109,7 +1107,7 @@ async def test_import_resource_contents(
     # upload valid resource data file
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", sample_data_string, "application/json")},
+        files={"file": ("foo.json", import_sample_string, "application/json")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1119,7 +1117,7 @@ async def test_import_resource_contents(
     await login()
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", sample_data_string, "application/json")},
+        files={"file": ("foo.json", import_sample_string, "application/json")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1127,12 +1125,12 @@ async def test_import_resource_contents(
     await login(user=superuser)
 
     # upload incomplete content data (one content without location ID)
-    invalid_sample_data = sample_data.copy()
-    del invalid_sample_data["contents"][0]["locationId"]
+    invalid_import_sample = import_sample.copy()
+    del invalid_import_sample["contents"][0]["locationId"]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
-            "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
+            "file": ("foo.json", json.dumps(invalid_import_sample), "application/json")
         },
     )
     assert_status(202, resp)
@@ -1140,12 +1138,12 @@ async def test_import_resource_contents(
     assert not await wait_for_task_success(resp.json()["id"])
 
     # upload invalid content data (text is list[int])
-    invalid_sample_data = sample_data.copy()
-    invalid_sample_data["contents"][0]["text"] = [1, 2, 3]
+    invalid_import_sample = import_sample.copy()
+    invalid_import_sample["contents"][0]["text"] = [1, 2, 3]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
-            "file": ("foo.json", json.dumps(invalid_sample_data), "application/json")
+            "file": ("foo.json", json.dumps(invalid_import_sample), "application/json")
         },
     )
     assert_status(202, resp)
@@ -1156,7 +1154,7 @@ async def test_import_resource_contents(
 @pytest.mark.anyio
 async def test_export_content(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     logout,
@@ -1164,7 +1162,7 @@ async def test_export_content(
     wrong_id,
     config,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login()
 
     formats = [
@@ -1293,12 +1291,12 @@ async def test_export_content(
 @pytest.mark.anyio
 async def test_trigger_resource_precomputation(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wait_for_task_success,
 ):
-    await insert_sample_data("texts", "locations", "resources")
+    await insert_test_data("texts", "locations", "resources")
     await login(is_superuser=True)
 
     resp = await test_client.get("/resources/precompute")
@@ -1310,13 +1308,13 @@ async def test_trigger_resource_precomputation(
 @pytest.mark.anyio
 async def test_get_aggregations(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wait_for_task_success,
     wrong_id,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # fail to get aggregations (none yet, expect empty array)
@@ -1352,13 +1350,13 @@ async def test_get_aggregations(
 @pytest.mark.anyio
 async def test_get_resource_coverage_data(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wrong_id,
     login,
     wait_for_task_success,
 ):
-    inserted_ids = await insert_sample_data()
+    inserted_ids = await insert_test_data()
     resource_id = inserted_ids["resources"][0]
 
     # get coverage data (none yet)

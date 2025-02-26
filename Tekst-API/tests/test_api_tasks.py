@@ -13,9 +13,9 @@ async def test_get_non_user_tasks(
     test_client: AsyncClient,
     assert_status,
     wait_for_task_success,
-    insert_sample_data,
+    insert_test_data,
 ):
-    await insert_sample_data()
+    await insert_test_data()
 
     # get (non-)user tasks (none, no pickup keys)
     resp = await test_client.get("/platform/tasks/user")
@@ -80,9 +80,9 @@ async def test_get_user_tasks(
     assert_status,
     login,
     wait_for_task_success,
-    insert_sample_data,
+    insert_test_data,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # get user tasks (none yet)
@@ -138,11 +138,11 @@ async def test_get_all_tasks(
 async def test_download_artifact(
     config,
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wait_for_task_success,
 ):
-    await insert_sample_data()
+    await insert_test_data()
 
     # request resource export
     resp = await test_client.get(
@@ -178,12 +178,12 @@ async def test_download_artifact(
 async def test_delete_tasks(
     config,
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     wait_for_task_success,
     login,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
 
     # start index creation task (to have a task to work with)
@@ -237,11 +237,11 @@ async def test_tasks_locking(
     config,
     test_client: AsyncClient,
     assert_status,
-    insert_sample_data,
+    insert_test_data,
     login,
     wait_for_task_success,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     await login(is_superuser=True)
     resp1 = await test_client.get("/search/index/create")
     resp2 = await test_client.get("/search/index/create")

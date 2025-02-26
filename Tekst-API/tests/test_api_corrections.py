@@ -9,12 +9,12 @@ from tekst.models.resource import ResourceBaseDocument
 @pytest.mark.anyio
 async def test_corrections_crud(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data()
+    await insert_test_data()
     resource = await ResourceBaseDocument.find_one(with_children=True)
     location = await LocationDocument.find_one(
         LocationDocument.level == resource.level,

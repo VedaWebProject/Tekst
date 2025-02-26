@@ -9,11 +9,11 @@ from tekst.models.resource import ResourceBaseDocument
 @pytest.mark.anyio
 async def test_create_content(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
 ):
-    await insert_sample_data("texts", "locations", "resources")
+    await insert_test_data("texts", "locations", "resources")
     resource = await ResourceBaseDocument.find_one(with_children=True)
     assert resource.resource_type == "plainText"
     location = await LocationDocument.find_one(LocationDocument.level == resource.level)
@@ -77,14 +77,12 @@ async def test_create_content(
 @pytest.mark.anyio
 async def test_get_content(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
-    )
+    inserted_ids = await insert_test_data("texts", "locations", "resources", "contents")
     content_id = inserted_ids["contents"][0]
     await login(is_superuser=True)
 
@@ -107,13 +105,13 @@ async def test_get_content(
 @pytest.mark.anyio
 async def test_find_contents(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
     resource_id = (
-        await insert_sample_data("texts", "locations", "resources", "contents")
+        await insert_test_data("texts", "locations", "resources", "contents")
     )["resources"][0]
     await login(is_superuser=True)
 
@@ -139,12 +137,12 @@ async def test_find_contents(
 @pytest.mark.anyio
 async def test_update_content(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    await insert_sample_data("texts", "locations", "resources", "contents")
+    await insert_test_data("texts", "locations", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
     content = await ContentBaseDocument.find_one(
         ContentBaseDocument.resource_id == resource.id, with_children=True
@@ -197,14 +195,12 @@ async def test_update_content(
 @pytest.mark.anyio
 async def test_delete_content(
     test_client: AsyncClient,
-    insert_sample_data,
+    insert_test_data,
     assert_status,
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_sample_data(
-        "texts", "locations", "resources", "contents"
-    )
+    inserted_ids = await insert_test_data("texts", "locations", "resources", "contents")
     content_id = inserted_ids["contents"][0]
     superuser = await login(is_superuser=True)
 
