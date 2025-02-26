@@ -44,6 +44,7 @@ useFavicon();
     :theme-overrides="theme.nuiThemeOverrides"
     :locale="nUiLangLocale"
     :date-locale="nUiDateLocale"
+    :class="{dark: theme.dark}"
   >
     <n-loading-bar-provider>
       <n-dialog-provider>
