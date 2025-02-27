@@ -125,7 +125,7 @@ async def send_notification(
         await UserMessageDocument(
             recipient=to_user.id,
             content=msg,
-            time=datetime.utcnow(),
+            created_at=datetime.utcnow(),
         ).create()
 
 
