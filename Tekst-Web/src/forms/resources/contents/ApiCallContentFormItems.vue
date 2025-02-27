@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import type { ApiCallContentCreate, ApiCallResourceRead } from '@/api';
+import CodeEditor from '@/components/generic/CodeEditor.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { json } from '@codemirror/lang-json';
 import { NFormItem, NInput } from 'naive-ui';
-import { Codemirror } from 'vue-codemirror';
 
 defineProps<{
   resource: ApiCallResourceRead;
 }>();
 
 const model = defineModel<ApiCallContentCreate>({ required: true });
-const extraEditorExtensions = [json()];
 </script>
 
 <template>
@@ -37,12 +36,7 @@ const extraEditorExtensions = [json()];
     :rule="contentFormRules.apiCall.body"
   >
     <div class="codemirror-container">
-      <codemirror
-        v-model="model.query"
-        :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
-        :indent-with-tab="true"
-        :tab-size="2"
-      />
+      <code-editor v-model="model.query" />
     </div>
   </n-form-item>
 
@@ -53,14 +47,7 @@ const extraEditorExtensions = [json()];
     :rule="contentFormRules.apiCall.extra"
   >
     <div class="codemirror-container">
-      <codemirror
-        v-model="model.transformContext"
-        :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
-        :indent-with-tab="true"
-        :tab-size="2"
-        :extensions="extraEditorExtensions"
-        @keydown.enter.stop.prevent
-      />
+      <code-editor v-model="model.transformContext" :language="json" />
     </div>
   </n-form-item>
 </template>

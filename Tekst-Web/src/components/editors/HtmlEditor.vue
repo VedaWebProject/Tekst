@@ -2,12 +2,12 @@
 import type { components } from '@/api/schema';
 import { dialogProps } from '@/common';
 import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
+import CodeEditor from '@/components/generic/CodeEditor.vue';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { html } from '@codemirror/lang-html';
 import { NTabPane, NTabs, type TabsInst, useDialog } from 'naive-ui';
 import { ref, watch } from 'vue';
-import { Codemirror } from 'vue-codemirror';
 
 type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
 
@@ -33,10 +33,9 @@ const editorMode = defineModel<EditorMode>('editorMode', {
 });
 
 const state = useStateStore();
-const tabsRef = ref<TabsInst>();
-
-const codeEditorExtensions = [html()];
 const dialog = useDialog();
+
+const tabsRef = ref<TabsInst>();
 
 function handleChangeTab(value: 'wysiwyg' | 'html') {
   if (value === 'html') {
@@ -95,16 +94,7 @@ watch(
     </n-tab-pane>
     <n-tab-pane name="html" :tab="$t('htmlEditor.html')">
       <div class="codemirror-container">
-        <codemirror
-          v-model="value"
-          :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
-          :indent-with-tab="true"
-          :tab-size="4"
-          :extensions="codeEditorExtensions"
-          @change="emit('input')"
-          @focus="emit('focus')"
-          @blur="emit('blur')"
-        />
+        <code-editor v-model="value" :language="html" :indent-size="4" />
       </div>
     </n-tab-pane>
   </n-tabs>

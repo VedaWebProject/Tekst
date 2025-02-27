@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import CodeEditor from '@/components/generic/CodeEditor.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import { javascript } from '@codemirror/lang-javascript';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
-import { Codemirror } from 'vue-codemirror';
 
 const model = defineModel<components['schemas']['ApiCallSpecialConfig']>({
   required: true,
 });
-
-const codeEditorExtensions = [javascript()];
 
 const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
   label: m,
@@ -114,13 +112,7 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
       </n-flex>
     </template>
     <div class="codemirror-container">
-      <codemirror
-        v-model="model.transformJs"
-        :style="{ height: '400px', fontSize: 'var(--font-size-small)' }"
-        :indent-with-tab="true"
-        :tab-size="2"
-        :extensions="codeEditorExtensions"
-      />
+      <code-editor v-model="model.transformJs" :language="javascript" />
     </div>
   </n-form-item>
 </template>
