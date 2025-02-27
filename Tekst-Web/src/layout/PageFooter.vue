@@ -47,7 +47,7 @@ footer {
 
 footer > * {
   max-width: var(--max-app-width);
-  margin: var(--gap-lg) auto 0 auto;
+  margin: var(--gap-lg) auto;
 }
 
 footer > *:first-child {
