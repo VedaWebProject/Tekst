@@ -173,7 +173,7 @@ async def _run_task(
         except Exception:  # pragma: no cover
             task_doc.error = str(e)
         # write to error log if the exception is not an HTTPException
-        if not isinstance(e, HTTPException):
+        if not isinstance(e, HTTPException):  # pragma: no cover
             log.error(str(e))
     finally:
         task_doc.end_time = datetime.utcnow()

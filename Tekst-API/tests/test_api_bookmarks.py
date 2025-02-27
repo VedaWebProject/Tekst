@@ -13,7 +13,7 @@ async def test_crud_bookmark(
 ):
     await insert_test_data("texts", "locations", "resources")
     superuser = await login(is_superuser=True)
-    location_id = "654b825533ee5737b297f8eb"  # hand-picked because we need a level 1 bm
+    location_id = "67c040a0906e79b9062e22e8"  # hand-picked because we need a level 1 bm
 
     # fail to create bookmark with wrong location ID
     resp = await test_client.post(

@@ -1,11 +1,11 @@
 {
-    "_id": { "$oid": "679b60dba993e4db9b1bd9f5" },
-    "_class_id": "ContentBaseDocument.ApiCallContentDocument",
-    "resource_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
-    "resource_type": "apiCall",
-    "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "comment": null,
-    "notes": null,
-    "query": "foo=bar",
-    "extra": "{\n  \"helloWorld\": \"On a side note: Hello World!\"\n}"
+  "_id": { "$oid": "679b60dba993e4db9b1bd9f5" },
+  "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+  "resource_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
+  "resource_type": "apiCall",
+  "location_id": { "$oid": "664321104aa6341acd83fb05" },
+  "comment": null,
+  "notes": null,
+  "query": "foo=bar",
+  "extra": "{\n  \"helloWorld\": \"On a side note: Hello World!\"\n}"
 }

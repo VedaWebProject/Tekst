@@ -15,20 +15,28 @@ async def test_get_content_context(
     login,
 ):
     await insert_test_data("texts", "locations", "resources", "contents")
-    text = await TextDocument.find_one(TextDocument.slug == "pond")
+    text = await TextDocument.find_one(TextDocument.slug == "foo")
     assert text
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.text_id == text.id, with_children=True
     )
     assert resource
+    location = await LocationDocument.find_one(
+        LocationDocument.level == resource.level,
+        LocationDocument.text_id == resource.text_id,
+    )
+    assert location
 
     resp = await test_client.get(
         "/browse/context",
-        params={"res": str(resource.id)},
+        params={
+            "res": str(resource.id),
+            "parent": str(location.parent_id),
+        },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 3
+    assert len(resp.json()) == 2
 
     # wrong resource ID
     resp = await test_client.get(
@@ -47,24 +55,24 @@ async def test_get_content_context(
     version_id = resp.json()["id"]
     resp = await test_client.get(
         "/browse/context",
-        params={"res": version_id},
+        params={
+            "res": version_id,
+            "parent": str(location.parent_id),
+        },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
-    assert len(resp.json()) == 3
+    assert len(resp.json()) == 2
 
 
 @pytest.mark.anyio
 async def test_get_location_data(
     test_client: AsyncClient,
     insert_test_data,
-    get_test_data,
     assert_status,
     wrong_id,
 ):
-    await insert_test_data("texts", "locations", "resources", "contents")
-    texts = get_test_data("collections/texts.json", for_http=True)
-    text_id = next((txt for txt in texts if txt["slug"] == "fdhdgg"), {}).get("_id", "")
+    text_id = (await insert_test_data())["texts"][0]
     assert len(text_id) > 0
 
     # get level 0 path and contents
@@ -75,12 +83,12 @@ async def test_get_location_data(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
-    assert len(resp.json()["contents"]) > 0
+    assert len(resp.json()["contents"]) == 0
 
     # higher level
     resp = await test_client.get(
         "/browse",
-        params={"txt": text_id, "lvl": 2, "pos": 0},
+        params={"txt": text_id, "lvl": 1, "pos": 0},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
@@ -112,7 +120,7 @@ async def test_get_nearest_content_position(
 ):
     await insert_test_data()
     resource = await ResourceBaseDocument.get(
-        "654b825533ee5737b297f8f3",
+        "67c043c0906e79b9062e22f4",
         with_children=True,
     )
     location = (

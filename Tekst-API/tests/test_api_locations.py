@@ -237,17 +237,17 @@ async def test_find_locations(
     assert len(resp.json()) == 2
 
     # test empty results with status 200
-    resp = await test_client.get("/locations", params={"textId": wrong_id, "lvl": 1})
+    resp = await test_client.get("/locations", params={"textId": wrong_id, "lvl": 0})
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 0
 
     # test results contain all locations of level 1
-    resp = await test_client.get("/locations", params={"textId": text_id, "lvl": 1})
+    resp = await test_client.get("/locations", params={"textId": text_id, "lvl": 0})
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == len(
-        [n for n in locations if n["textId"] == text_id and n["level"] == 1]
+        [n for n in locations if n["textId"] == text_id and n["level"] == 0]
     )
     assert "id" in resp.json()[0]
     location_id = resp.json()[0]["id"]
@@ -279,14 +279,14 @@ async def test_find_locations(
     assert len(resp.json()) == 0
 
     # test find locations by text slug
-    resp = await test_client.get("/locations", params={"textSlug": "fdhdgg"})
+    resp = await test_client.get("/locations", params={"textSlug": "foo"})
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 1
 
     # test find locations by text slug and request full location labels
     resp = await test_client.get(
-        "/locations", params={"textSlug": "fdhdgg", "fullLabels": True}
+        "/locations", params={"textSlug": "foo", "fullLabels": True}
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -327,7 +327,7 @@ async def test_find_locations_by_alias(
         "/locations",
         params={
             "textId": text_id,
-            "alias": "1.1.2",
+            "alias": "1-2",
         },
     )
     assert_status(200, resp)
@@ -349,14 +349,14 @@ async def test_get_first_and_last_locations_paths(
         "/locations/first-last-paths",
         params={
             "txt": text_id,
-            "lvl": 2,
+            "lvl": 1,
         },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert len(resp.json()) == 2
-    assert len(resp.json()[0]) == 3
-    assert len(resp.json()[1]) == 3
+    assert len(resp.json()[0]) == 2
+    assert len(resp.json()[1]) == 2
     first_loc = resp.json()[0][-1]
     last_loc = resp.json()[1][-1]
     assert first_loc["position"] == 0
@@ -367,7 +367,7 @@ async def test_get_first_and_last_locations_paths(
         "/locations/first-last-paths",
         params={
             "txt": wrong_id,
-            "lvl": 2,
+            "lvl": 1,
         },
     )
     assert_status(404, resp)
@@ -591,7 +591,7 @@ async def test_move_location_lowest_level(
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["label"] == "1"
+    assert resp.json()["label"] == "One"
     assert resp.json()["level"] == 1
     assert resp.json()["position"] == 1
 
@@ -604,7 +604,7 @@ async def test_get_path_options_by_head(
     wrong_id,
 ):
     await insert_test_data("texts", "locations")
-    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    text = await TextDocument.find_one(TextDocument.slug == "foo")
     location = await LocationDocument.find_one(
         LocationDocument.text_id == text.id, LocationDocument.level == 1
     )
@@ -630,7 +630,7 @@ async def test_get_path_options_by_root(
     wrong_id,
 ):
     await insert_test_data("texts", "locations")
-    text = await TextDocument.find_one(TextDocument.slug == "fdhdgg")
+    text = await TextDocument.find_one(TextDocument.slug == "foo")
     location = await LocationDocument.find_one(
         LocationDocument.text_id == text.id, LocationDocument.level == 0
     )

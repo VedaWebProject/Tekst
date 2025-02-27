@@ -565,7 +565,7 @@ async def test_get_resources(
     text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
     resp = await test_client.get(
         "/resources",
-        params={"txt": text_id, "lvl": 2, "type": "plainText"},
+        params={"txt": text_id, "lvl": 1, "type": "plainText"},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -984,25 +984,32 @@ async def test_import_resource_contents(
     wait_for_task_success,
 ):
     inserted_ids = await insert_test_data("texts", "locations", "resources", "contents")
-    text_id = inserted_ids["texts"][1]
+    text_id = inserted_ids["texts"][0]
     superuser = await login(is_superuser=True)
 
     # create an additional location (so we can import new content for it and
     # don't only have updates to existing content)
     resp = await test_client.post(
         "/locations",
-        json={"textId": text_id, "label": "Location!!", "level": 0, "position": 3},
+        json={
+            "textId": text_id,
+            "label": "Three",
+            "aliases": ["two-three", "2-3"],
+            "level": 1,
+            "position": 4,
+            "parentId": "67c0406f906e79b9062e22e7",
+        },
     )
     assert_status(201, resp)
     additional_location_id = resp.json()["id"]
 
     # define sample data
-    resource_id = "654ba525ec7833e469dde77e"
+    resource_id = "67c043c0906e79b9062e22f4"
     import_sample = {
         "contents": [
-            {"locationId": "654ba282ec7833e469dde766", "text": "FOO"},
-            {"locationId": "654ba288ec7833e469dde768", "text": "BAR"},
-            {"locationId": additional_location_id, "text": "BAZ"},
+            {"locationId": "67c040a0906e79b9062e22e8", "text": "FOO"},
+            {"locationId": "67c040bb906e79b9062e22e9", "text": "BAR"},
+            {"locationId": additional_location_id, "text": "QUUX"},
         ],
         "resourceId": resource_id,
     }
@@ -1042,7 +1049,7 @@ async def test_import_resource_contents(
                 json.dumps(
                     {
                         "contents": [
-                            {"locationId": "654ba282ec7833e469dde766", "text": "FOO"},
+                            {"locationId": "67c040a0906e79b9062e22e8", "text": "FOO"},
                             {"locationId": wrong_id, "text": "BAR"},
                             {"locationId": additional_location_id, "text": "BAZ"},
                         ],
@@ -1057,7 +1064,7 @@ async def test_import_resource_contents(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # fail to upload w/ invalid content object
+    # fail to upload w/ invalid content field value
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
@@ -1066,8 +1073,8 @@ async def test_import_resource_contents(
                 json.dumps(
                     {
                         "contents": [
-                            {"locationId": "654ba282ec7833e469dde766", "text": 1},
-                            {"locationId": "654ba288ec7833e469dde768", "text": True},
+                            {"locationId": "67c040a0906e79b9062e22e8", "text": 1},
+                            {"locationId": "67c040a0906e79b9062e22e9", "text": True},
                             {
                                 "locationId": additional_location_id,
                                 "text": ["foo", "bar"],
@@ -1170,53 +1177,28 @@ async def test_export_content(
         "csv",
         "tekst-json",
     ]
-    targets = [
-        {
-            "res_id": "66471b68ba9e65342c8e495b",
-            "from_loc_id": "654b825533ee5737b297f8e5",
-            "to_loc_id": "654b825533ee5737b297f8f2",
-        },
-        {
-            "res_id": "6656cc7b81a66322c1bffb24",
-            "from_loc_id": "654b825533ee5737b297f8e5",
-            "to_loc_id": "654b825533ee5737b297f8f2",
-        },
-        {
-            "res_id": "6641ce24affa6cb96bc85a55",
-            "from_loc_id": "664321104aa6341acd83fb05",
-            "to_loc_id": "664321104aa6341acd83fb05",
-        },
-        {
-            "res_id": "6641d510affa6cb96bc85a5b",
-            "from_loc_id": "664321104aa6341acd83fb05",
-            "to_loc_id": "664321104aa6341acd83fb05",
-        },
-        {
-            "res_id": "6641d2bfaffa6cb96bc85a58",
-            "from_loc_id": "664321104aa6341acd83fb05",
-            "to_loc_id": "664321104aa6341acd83fb05",
-        },
-        {
-            "res_id": "67472c393d0d7622956981c9",
-            "from_loc_id": "664321104aa6341acd83fb05",
-            "to_loc_id": "664321104aa6341acd83fb05",
-        },
-        {
-            "res_id": "679b5f25a993e4db9b1bd9f4",
-            "from_loc_id": "664321104aa6341acd83fb05",
-            "to_loc_id": "664321104aa6341acd83fb05",
-        },
+    target_res_ids = [
+        "67c043c0906e79b9062e22f4",
+        "67c04415906e79b9062e22f5",
+        "67c0442e906e79b9062e22f6",
+        "67c04445906e79b9062e22f7",
+        "67c0444e906e79b9062e22f8",
+        "67c0445b906e79b9062e22f9",
+        "67c04473906e79b9062e22fa",
     ]
 
+    from_loc_id = "67c040a0906e79b9062e22e8"
+    to_loc_id = "67c042cf906e79b9062e22ed"
+
     for fmt in formats:
-        for target in targets:
+        for target_res_id in target_res_ids:
             # create export
             resp = await test_client.get(
-                f"/resources/{target['res_id']}/export",
+                f"/resources/{target_res_id}/export",
                 params={
                     "format": fmt,
-                    "from": target["from_loc_id"],
-                    "to": target["to_loc_id"],
+                    "from": from_loc_id,
+                    "to": to_loc_id,
                 },
             )
             assert_status(202, resp)
@@ -1237,8 +1219,8 @@ async def test_export_content(
         f"/resources/{wrong_id}/export",
         params={
             "format": "csv",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+            "from": from_loc_id,
+            "to": to_loc_id,
         },
     )
     assert_status(202, resp)
@@ -1247,22 +1229,22 @@ async def test_export_content(
 
     # fail to export tekst-json as non-user
     resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
+        f"/resources/{target_res_ids[0]}/export",
         params={
             "format": "tekst-json",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+            "from": from_loc_id,
+            "to": to_loc_id,
         },
     )
     assert_status(403, resp)
 
     # fail to export w/ invalid location range
     resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
+        f"/resources/{target_res_ids[0]}/export",
         params={
             "format": "csv",
-            "from": "654b825533ee5737b297f8e5",  # this location is on level 2
-            "to": "654b825533ee5737b297f8e4",  # this location is on level 1
+            "from": from_loc_id,  # this location is on level 1
+            "to": "67c0406f906e79b9062e22e7",  # this location is on level 0
         },
     )
     assert_status(202, resp)
@@ -1272,16 +1254,16 @@ async def test_export_content(
     # fail to export without read permissions...
     # set public = False on resource
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == PydanticObjectId("66471b68ba9e65342c8e495b"),
+        ResourceBaseDocument.id == PydanticObjectId(target_res_ids[0]),
         with_children=True,
     ).update(Set({ResourceBaseDocument.public: False}))
     # request export
     resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
+        f"/resources/{target_res_ids[0]}/export",
         params={
             "format": "csv",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+            "from": from_loc_id,
+            "to": to_loc_id,
         },
     )
     assert_status(202, resp)
@@ -1318,7 +1300,7 @@ async def test_get_aggregations(
     await login(is_superuser=True)
 
     # fail to get aggregations (none yet, expect empty array)
-    res_id = "6656cc7b81a66322c1bffb24"
+    res_id = "67c0442e906e79b9062e22f6"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -1331,7 +1313,7 @@ async def test_get_aggregations(
     assert await wait_for_task_success(resp.json()["id"])
 
     # get aggregations
-    res_id = "6656cc7b81a66322c1bffb24"
+    res_id = "67c0442e906e79b9062e22f6"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
@@ -1342,7 +1324,7 @@ async def test_get_aggregations(
     assert_status(404, resp)
 
     # fail to get aggregations for non-annotation resource
-    res_id = "66471de0ba9e65342c8e4995"
+    res_id = "67c04415906e79b9062e22f5"
     resp = await test_client.get(f"/resources/{res_id}/aggregations")
     assert_status(400, resp)
 

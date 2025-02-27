@@ -174,14 +174,13 @@ async def test_delete_default_text(
     insert_test_data,
     assert_status,
     login,
-    wrong_id,
 ):
     await insert_test_data()
     await login(is_superuser=True)
 
     # delete default text
     resp = await test_client.delete(
-        "/texts/654ba1f3ec7833e469dde765",
+        "/texts/67c03aed5dbf06b9624fd57e",
     )
     assert_status(204, resp)
 
@@ -241,7 +240,7 @@ async def test_insert_level(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
     text = resp.json()[0]
-    assert len(text["levels"]) == 3
+    assert len(text["levels"]) == 2
 
     # prepare new level data
     level_data = [
@@ -256,7 +255,7 @@ async def test_insert_level(
     )
     assert_status(200, resp)
     assert "id" in resp.json()
-    assert len(resp.json()["levels"]) == 4
+    assert len(resp.json()["levels"]) == 3
 
     # insert new level 1
     resp = await test_client.post(
@@ -265,7 +264,7 @@ async def test_insert_level(
     )
     assert_status(200, resp)
     assert "id" in resp.json()
-    assert len(resp.json()["levels"]) == 5
+    assert len(resp.json()["levels"]) == 4
 
     # insert new level for wrong text ID
     resp = await test_client.post(
@@ -391,7 +390,7 @@ async def test_import_text_structure(
 ):
     text_id = (await insert_test_data("texts"))["texts"][0]
     await login(is_superuser=True)
-    test_data_path = get_test_data_path("import/structure_fdhdgg.json")
+    test_data_path = get_test_data_path("import/structure_foo.json")
 
     # upload invalid structure definition file (give wrong MIME type)
     with open(test_data_path, "rb") as f:
@@ -404,7 +403,7 @@ async def test_import_text_structure(
     # upload invalid structure definition file (invalid JSON)
     resp = await test_client.post(
         f"/texts/{text_id}/structure",
-        files={"file": ("fdhdgg.json", r"{foo: bar}", "application/json")},
+        files={"file": ("foo.json", r"{foo: bar}", "application/json")},
     )
     assert_status(422, resp)
 
@@ -445,7 +444,7 @@ async def test_update_text_structure(
 ):
     text_id = (await insert_test_data("texts", "locations"))["texts"][0]
     await login(is_superuser=True)
-    test_data_path = get_test_data_path("import/structure_fdhdgg_updates.json")
+    test_data_path = get_test_data_path("import/structure_foo_updates.json")
 
     # upload w/ wrong MIME type
     with open(test_data_path, "rb") as f:
@@ -457,7 +456,7 @@ async def test_update_text_structure(
 
     # upload w/ invalid location ID
     with open(
-        get_test_data_path("import/structure_fdhdgg_updates_invalid_loc_id.json"),
+        get_test_data_path("import/structure_foo_updates_invalid_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -469,7 +468,7 @@ async def test_update_text_structure(
 
     # upload w/ wrong location ID
     with open(
-        get_test_data_path("import/structure_fdhdgg_updates_wrong_loc_id.json"),
+        get_test_data_path("import/structure_foo_updates_wrong_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -481,7 +480,7 @@ async def test_update_text_structure(
 
     # upload w/ location ID from different text
     with open(
-        get_test_data_path("import/structure_fdhdgg_updates_alien_loc_id.json"),
+        get_test_data_path("import/structure_foo_updates_alien_loc_id.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -493,7 +492,7 @@ async def test_update_text_structure(
 
     # upload w/ invalid label/alias data
     with open(
-        get_test_data_path("import/structure_fdhdgg_updates_invalid_data.json"),
+        get_test_data_path("import/structure_foo_updates_invalid_data.json"),
         "rb",
     ) as f:
         resp = await test_client.patch(
@@ -506,14 +505,14 @@ async def test_update_text_structure(
     # upload invalid locations updates file (invalid JSON)
     resp = await test_client.patch(
         f"/texts/{text_id}/structure",
-        files={"file": ("fdhdgg.json", r"{foo: bar}", "application/json")},
+        files={"file": ("foo.json", r"{foo: bar}", "application/json")},
     )
     assert_status(400, resp)
 
     # upload invalid locations updates file (not a list/array)
     resp = await test_client.patch(
         f"/texts/{text_id}/structure",
-        files={"file": ("fdhdgg.json", '{"foo": "bar"}', "application/json")},
+        files={"file": ("foo.json", '{"foo": "bar"}', "application/json")},
     )
     assert_status(422, resp)
 

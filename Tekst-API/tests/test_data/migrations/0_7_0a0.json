@@ -1,8 +1,8 @@
 {
-    "_id": { "$oid": "67bc7eac03785eff612922fd" },
-    "sender": { "$oid": "65c5fe0c691066aabd498239" },
-    "recipient": { "$oid": "65c5fe0c691066aabd498238" },
-    "content": "Foo!\n\nBar!",
-    "time": { "$date": "2025-02-24T14:14:04.261Z" },
-    "read": false
+  "_id": { "$oid": "67bc7eac03785eff612922fd" },
+  "sender": { "$oid": "65c5fe0c691066aabd498239" },
+  "recipient": { "$oid": "65c5fe0c691066aabd498238" },
+  "content": "Foo!\n\nBar!",
+  "time": { "$date": "2025-02-24T14:14:04.261Z" },
+  "read": false
 }

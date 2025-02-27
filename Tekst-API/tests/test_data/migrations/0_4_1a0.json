@@ -1,35 +1,35 @@
 {
-    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "title": [{ "locale": "*", "translation": "Foo" }],
-    "description": [
-        {
-            "locale": "*",
-            "translation": "Foo"
-        }
-    ],
-    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
-    "level": 2,
-    "resource_type": "plainText",
-    "original_id": null,
-    "owner_id": null,
-    "shared_read": [],
-    "shared_write": [],
-    "public": true,
-    "proposed": false,
-    "config": {
-        "common": {
-            "category": "versions",
-            "sortOrder": 10,
-            "defaultActive": true,
-            "showOnParentLevel": true
-        },
-        "general": {
-            "defaultCollapsed": false,
-            "reducedViewOneline": true,
-            "font": null
-        },
-        "plainText": {
-            "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
-        }
+  "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+  "title": [{ "locale": "*", "translation": "Foo" }],
+  "description": [
+    {
+      "locale": "*",
+      "translation": "Foo"
     }
+  ],
+  "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+  "level": 2,
+  "resource_type": "plainText",
+  "original_id": null,
+  "owner_id": null,
+  "shared_read": [],
+  "shared_write": [],
+  "public": true,
+  "proposed": false,
+  "config": {
+    "common": {
+      "category": "versions",
+      "sortOrder": 10,
+      "defaultActive": true,
+      "showOnParentLevel": true
+    },
+    "general": {
+      "defaultCollapsed": false,
+      "reducedViewOneline": true,
+      "font": null
+    },
+    "plainText": {
+      "deeplLinks": { "enabled": true, "sourceLanguage": "de" }
+    }
+  }
 }

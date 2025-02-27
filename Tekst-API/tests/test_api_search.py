@@ -71,7 +71,7 @@ async def test_quick(
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=19,
+        expected_hits=12,
     )
 
     # simple without wildcards or regexes
@@ -80,7 +80,7 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "jäger",
+                "q": "foo",
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
@@ -93,7 +93,25 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "jäger",
+                "q": "foö",
+                "gen": {
+                    "pgn": {"pg": 1, "pgs": 10},
+                    "sort": "relevance",
+                    "strict": True,
+                },
+                "qck": {"op": "OR", "re": False, "txt": []},
+            },
+        ),
+        expected_hits=1,
+    )
+
+    # simple without wildcards or regexes, strict, no diacritics
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "quick",
+                "q": "foo",
                 "gen": {
                     "pgn": {"pg": 1, "pgs": 10},
                     "sort": "relevance",
@@ -103,24 +121,6 @@ async def test_quick(
             },
         ),
         expected_hits=2,
-    )
-
-    # simple without wildcards or regexes, strict, wrong diacritics
-    _assert_search_resp(
-        await test_client.post(
-            "/search",
-            json={
-                "type": "quick",
-                "q": "jager",
-                "gen": {
-                    "pgn": {"pg": 1, "pgs": 10},
-                    "sort": "relevance",
-                    "strict": True,
-                },
-                "qck": {"op": "OR", "re": False, "txt": []},
-            },
-        ),
-        expected_hits=0,
     )
 
     # wildcards
@@ -129,11 +129,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "mau*",
+                "q": "b*",
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=2,
+        expected_hits=4,
     )
 
     # phrase
@@ -142,11 +142,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": '"mit der"',
+                "q": '"foo foo"',
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=2,
+        expected_hits=1,
     )
 
     # phrase slop
@@ -155,11 +155,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": '"you the"~6',
+                "q": '"foö word"~6',
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=3,
+        expected_hits=1,
     )
 
     # fuzzy
@@ -168,11 +168,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "maus~",
+                "q": "fuo~",
                 "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=6,
+        expected_hits=4,
     )
 
     # regex
@@ -181,11 +181,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "mau.*",
+                "q": "b.*",
                 "qck": {"op": "OR", "re": True, "txt": []},
             },
         ),
-        expected_hits=2,
+        expected_hits=4,
     )
 
     # wildcards on specific text
@@ -194,11 +194,11 @@ async def test_quick(
             "/search",
             json={
                 "type": "quick",
-                "q": "s*",
-                "qck": {"op": "OR", "re": False, "txt": ["654b825533ee5737b297f8e3"]},
+                "q": "b*",
+                "qck": {"op": "OR", "re": False, "txt": ["67c03aed5dbf06b9624fd57e"]},
             },
         ),
-        expected_hits=9,
+        expected_hits=2,
     )
 
     # request too many results
@@ -206,7 +206,7 @@ async def test_quick(
         "/search",
         json={
             "type": "quick",
-            "q": "s*",
+            "q": "f*",
             "gen": {
                 "pgn": {"pg": 1, "pgs": 10001},
                 "sort": "relevance",
@@ -231,14 +231,14 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         # this counts as "empty"
                         "rts": {"type": "textAnnotation", "token": "    *        "},
                     }
                 ],
             },
         ),
-        expected_hits=12,
+        expected_hits=4,
     )
 
     # search for location comment
@@ -251,9 +251,9 @@ async def test_advanced_text_annotation(
                 "q": [
                     {
                         "cmn": {
-                            "res": "6656cc7b81a66322c1bffb24",
+                            "res": "67c0442e906e79b9062e22f6",
                             "occ": "should",
-                            "cmt": "m*",
+                            "cmt": "this",
                         },
                         "rts": {"type": "textAnnotation", "anno": []},
                     }
@@ -271,8 +271,8 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
-                        "rts": {"type": "textAnnotation", "token": "fuchs"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {"type": "textAnnotation", "token": "foo"},
                     }
                 ],
             },
@@ -288,13 +288,13 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
-                        "rts": {"type": "textAnnotation", "token": "f*", "twc": True},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {"type": "textAnnotation", "token": "b*", "twc": True},
                     }
                 ],
             },
         ),
-        expected_hits=4,
+        expected_hits=2,
     )
 
     # annotation key only (key exists)
@@ -305,16 +305,16 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
-                            "anno": [{"k": "Entity", "v": ""}],
+                            "anno": [{"k": "type", "v": ""}],
                         },
                     }
                 ],
             },
         ),
-        expected_hits=10,
+        expected_hits=4,
     )
 
     # annotation key and value
@@ -325,16 +325,16 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
-                            "anno": [{"k": "Entity", "v": "fox"}],
+                            "anno": [{"k": "type", "v": "token"}],
                         },
                     }
                 ],
             },
         ),
-        expected_hits=7,
+        expected_hits=4,
     )
 
     # special "comment" annotation
@@ -345,7 +345,7 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
                             "anno": [
@@ -371,16 +371,16 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
-                            "anno": [{"k": "Entity", "v": "f*", "wc": True}],
+                            "anno": [{"k": "type", "v": "t*", "wc": True}],
                         },
                     }
                 ],
             },
         ),
-        expected_hits=7,
+        expected_hits=4,
     )
 
     # token, annotation key and value
@@ -391,11 +391,11 @@ async def test_advanced_text_annotation(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6656cc7b81a66322c1bffb24", "occ": "should"},
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
-                            "token": "fuchs",
-                            "anno": [{"k": "Entity", "v": "Fox"}],
+                            "token": "foo",
+                            "anno": [{"k": "type", "v": "token"}],
                         },
                     }
                 ],
@@ -418,8 +418,13 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "should"},
-                        "rts": {"type": "plainText", "text": "gans"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "should"},
+                        "rts": {
+                            "type": "plainText",
+                            # this also tests the search replacement config as "o"
+                            # is replaced by "a" and the original text is "Foö"
+                            "text": "faö",
+                        },
                     }
                 ],
             },
@@ -435,8 +440,8 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "must"},
-                        "rts": {"type": "plainText", "text": "gans"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "must"},
+                        "rts": {"type": "plainText", "text": "bar"},
                     }
                 ],
             },
@@ -452,13 +457,13 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "not"},
-                        "rts": {"type": "plainText", "text": "gans"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "not"},
+                        "rts": {"type": "plainText", "text": "bar"},
                     }
                 ],
             },
         ),
-        expected_hits=18,
+        expected_hits=11,
     )
 
     # text with wildcard
@@ -469,13 +474,13 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "should"},
-                        "rts": {"type": "plainText", "text": "g*"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "should"},
+                        "rts": {"type": "plainText", "text": "b*"},
                     }
                 ],
             },
         ),
-        expected_hits=4,
+        expected_hits=2,
     )
 
     # text, simple term, strict, correct diacritics
@@ -486,8 +491,8 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "should"},
-                        "rts": {"type": "plainText", "text": "jäger"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "should"},
+                        "rts": {"type": "plainText", "text": "faö"},
                     }
                 ],
                 "gen": {
@@ -508,8 +513,8 @@ async def test_advanced_plain_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "654b825533ee5737b297f8f3", "occ": "should"},
-                        "rts": {"type": "plainText", "text": "jager"},
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "should"},
+                        "rts": {"type": "plainText", "text": "fao"},
                     }
                 ],
                 "gen": {
@@ -531,9 +536,9 @@ async def test_advanced_plain_text(
                 "q": [
                     {
                         "cmn": {
-                            "res": "66471b68ba9e65342c8e495b",
+                            "res": "67c043c0906e79b9062e22f4",
                             "occ": "should",
-                            "cmt": "s*",
+                            "cmt": "com*",
                         },
                         "rts": {"type": "plainText"},
                     }
@@ -557,13 +562,13 @@ async def test_advanced_images(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6641ce24affa6cb96bc85a55", "occ": "should"},
+                        "cmn": {"res": "67c0444e906e79b9062e22f8", "occ": "should"},
                         "rts": {"type": "images", "caption": "*"},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=4,
     )
     # caption, wildcard
     _assert_search_resp(
@@ -573,13 +578,13 @@ async def test_advanced_images(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6641ce24affa6cb96bc85a55", "occ": "should"},
-                        "rts": {"type": "images", "caption": "musikalisch*"},
+                        "cmn": {"res": "67c0444e906e79b9062e22f8", "occ": "should"},
+                        "rts": {"type": "images", "caption": "b*"},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=2,
     )
 
 
@@ -596,13 +601,13 @@ async def test_advanced_audio(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6641d510affa6cb96bc85a5b", "occ": "should"},
+                        "cmn": {"res": "67c04445906e79b9062e22f7", "occ": "should"},
                         "rts": {"type": "audio", "caption": "*"},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=4,
     )
 
     # caption, wildcard
@@ -613,8 +618,8 @@ async def test_advanced_audio(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "6641d510affa6cb96bc85a5b", "occ": "should"},
-                        "rts": {"type": "audio", "caption": "g*"},
+                        "cmn": {"res": "67c04445906e79b9062e22f7", "occ": "should"},
+                        "rts": {"type": "audio", "caption": "f*"},
                     }
                 ],
             },
@@ -636,13 +641,13 @@ async def test_advanced_external_references(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "66471de0ba9e65342c8e4995", "occ": "should"},
+                        "cmn": {"res": "67c0445b906e79b9062e22f9", "occ": "should"},
                         "rts": {"type": "externalReferences", "text": "*"},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=4,
     )
 
     # description, wildcard
@@ -653,13 +658,13 @@ async def test_advanced_external_references(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "66471de0ba9e65342c8e4995", "occ": "should"},
-                        "rts": {"type": "externalReferences", "text": "kurzfilm*"},
+                        "cmn": {"res": "67c0445b906e79b9062e22f9", "occ": "should"},
+                        "rts": {"type": "externalReferences", "text": "b*"},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=2,
     )
 
 
@@ -676,13 +681,13 @@ async def test_advanced_rich_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "67472c393d0d7622956981c9", "occ": "should"},
+                        "cmn": {"res": "67c04415906e79b9062e22f5", "occ": "should"},
                         "rts": {"type": "richText", "html": "*   "},
                     }
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=4,
     )
 
     # phrase
@@ -693,8 +698,8 @@ async def test_advanced_rich_text(
                 "type": "advanced",
                 "q": [
                     {
-                        "cmn": {"res": "67472c393d0d7622956981c9", "occ": "should"},
-                        "rts": {"type": "richText", "html": '"c g c g"'},
+                        "cmn": {"res": "67c04415906e79b9062e22f5", "occ": "should"},
+                        "rts": {"type": "richText", "html": '"foo foo"'},
                     }
                 ],
             },

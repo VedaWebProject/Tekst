@@ -18,7 +18,7 @@ async def test_admin_get_all_users(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "users" in resp.json()
-    assert len(resp.json()["users"]) == 5
+    assert len(resp.json()["users"]) == 3
 
 
 @pytest.mark.anyio

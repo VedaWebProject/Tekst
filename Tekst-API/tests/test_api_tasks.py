@@ -25,11 +25,11 @@ async def test_get_non_user_tasks(
 
     # request resource export
     resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
+        "/resources/67c043c0906e79b9062e22f4/export",
         params={
             "format": "csv",
-            "from": "654b825533ee5737b297f8e5",
-            "to": "654b825533ee5737b297f8f2",
+            "from": "67c040a0906e79b9062e22e8",
+            "to": "67c042cf906e79b9062e22ed",
         },
     )
     assert_status(202, resp)
@@ -146,7 +146,7 @@ async def test_download_artifact(
 
     # request resource export
     resp = await test_client.get(
-        "/resources/66471b68ba9e65342c8e495b/export",
+        "/resources/67c043c0906e79b9062e22f4/export",
         params={
             "format": "csv",
             "from": "654b825533ee5737b297f8e5",
