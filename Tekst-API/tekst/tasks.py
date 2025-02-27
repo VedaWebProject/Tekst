@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from beanie import PydanticObjectId
 from beanie.operators import LT, NE, Eq, In
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import Field
 
@@ -171,6 +172,9 @@ async def _run_task(
             task_doc.error = e.detail.detail.key
         except Exception:  # pragma: no cover
             task_doc.error = str(e)
+        # write to error log if the exception is not an HTTPException
+        if not isinstance(e, HTTPException):
+            log.error(str(e))
     finally:
         task_doc.end_time = datetime.utcnow()
         task_doc.duration_seconds = (
