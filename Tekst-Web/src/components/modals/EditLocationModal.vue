@@ -67,7 +67,11 @@ defineExpose({ open });
 <template>
   <generic-modal
     v-model:show="show"
-    :title="$t('texts.locations.edit.heading')"
+    :title="
+      data.action === 'add'
+        ? $t('texts.locations.editOrAdd.headingAdd')
+        : $t('texts.locations.editOrAdd.headingEdit')
+    "
     :icon="EditIcon"
     @after-enter="
       () => {

@@ -406,7 +406,7 @@ resources:
   importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version dieser Ressource erstellen
   proposeAction: Für Veröffentlichung vorschlagen
-  unproposeAction: Veröffentlichungsvorschlag zurücknehmen
+  unproposeAction: Veröffentlichungsvorschlag widerrufen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
   warnTransfer: |
@@ -420,7 +420,7 @@ resources:
     Veröffentlichungsvorschlags verstehen.
   warnUnpropose: |
     Sind Sie sicher, dass Sie Ihren Veröffentlichungsvorschlag
-    für diese Ressource zurückziehen wollen?
+    für diese Ressource widerrufen wollen?
   warnPublish: |
     Sie sind im Begriff, diese Ressource für die Öffentlichkeit
     (nicht registrierte Benutzer) zu veröffentlichen. Es ist sehr wichtig,
@@ -428,7 +428,7 @@ resources:
     von Ressourcen im Klaren sind.
   warnUnpublish: |
     Sind Sie sicher, dass Sie die Veröffentlichung dieser
-    Ressource zurückziehen wollen?
+    Ressource widerrufen wollen?
   warnDelete: |
     Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
@@ -442,7 +442,7 @@ resources:
     Möchten Sie fortfahren?
   msgTransferred: Die Ressource "{title}" wurde an den Benutzer "{username}" übertragen.
   msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
-  msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde zurückgezogen.
+  msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde widerrufen.
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
@@ -737,7 +737,6 @@ texts:
     heading: Belegstellen
     add:
       heading: Belegstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
-      tooltip: Belegstelle hinzufügen
       msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
     lblBtnAddLocationFirstLevel: Hinzufügen
     tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
@@ -770,9 +769,10 @@ texts:
     infoMovedLocation: Belegstelle "{location}" auf position {position} von Ebene "{level}" verschoben
     errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
     checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
-    edit:
-      heading: Belegstelle bearbeiten
-      msgSuccess: Belegstelle "{label}" gespeichert
+    editOrAdd:
+      headingEdit: '@:models.location.modelLabel bearbeiten'
+      headingAdd: '@:models.location.modelLabel hinzufügen'
+      msgSuccess: '@:models.location.modelLabel "{label}" gespeichert'
     importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
     updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
 

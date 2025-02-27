@@ -64,7 +64,11 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       ) || [])
     );
     return pages.map((p) => ({
-      label: renderLink(() => p.title || p.key, { name: 'info', params: { pageKey: p.key } }, {style: {fontSize: 'var(--font-size-medium)'}}),
+      label: renderLink(
+        () => p.title || p.key,
+        { name: 'info', params: { pageKey: p.key } },
+        { style: { fontSize: 'var(--font-size-medium)' } }
+      ),
       key: `page_${p.key}`,
       icon: (showIcons && state.smallScreen && renderIcon(InfoIcon)) || undefined,
     }));

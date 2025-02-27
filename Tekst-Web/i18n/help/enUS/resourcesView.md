@@ -6,4 +6,4 @@ Resources that are proposed for publication cannot be edited. Also, all shared a
 
 If a resource is published, the platform administrators gain exclusive control over this resource to prevent any unwanted changes. You can still propose changes to the data of the resource later, but those will have to be approved separately.
 
-A publication proposal can be withdrawn as long as the resource has not been published.
+A publication proposal can be revoked as long as the resource has not been published.

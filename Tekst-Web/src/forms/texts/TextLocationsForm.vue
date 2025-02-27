@@ -240,6 +240,7 @@ async function handleAddEditSubmit(addEditData: EditLocationModalData) {
     const { data, error } = await POST('/locations', {
       body: {
         label: addEditData.label || '',
+        aliases: addEditData.aliases || undefined,
         level: parentLocation ? parentLocation.level + 1 : 0,
         position: Number.MAX_SAFE_INTEGER,
         textId: state.text?.id || '',
@@ -267,7 +268,7 @@ async function handleAddEditSubmit(addEditData: EditLocationModalData) {
       },
     });
     if (!error) {
-      message.success($t('texts.locations.edit.msgSuccess', { label: data.label }));
+      message.success($t('texts.locations.editOrAdd.msgSuccess', { label: data.label }));
     }
     await loadTreeData(getTreeLocationByKey(location?.parentKey));
     loadingEdit.value = false;
@@ -385,7 +386,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       () => {
         handleEditClick(info.option as LocationTreeOption);
       },
-      $t('texts.locations.edit.heading'),
+      $t('texts.locations.editOrAdd.headingAdd'),
       loadingEdit
     ),
     renderSuffixButton(
@@ -399,7 +400,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
       : renderSuffixButton(
           AddIcon,
           () => handleAddClick(info.option as LocationTreeOption),
-          $t('texts.locations.add.tooltip'),
+          $t('texts.locations.editOrAdd.headingAdd'),
           loadingAdd
         ),
   ]);
