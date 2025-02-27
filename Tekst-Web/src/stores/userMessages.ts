@@ -20,7 +20,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
         message.info($t('account.messages.msgUnreadCount', { count: unreadCount.value }));
       }
     },
-    30 * 1000, // 30 seconds
+    60 * 1000, // 1 minute
     { immediate: false, immediateCallback: true }
   );
 
