@@ -76,6 +76,7 @@ function handleDeleteClick(level: number) {
         params: { path: { id: state.text?.id || '', lvl: level } },
       });
       if (!error) {
+        loadPlatformData();
         state.text = data;
         message.success(
           $t('texts.levels.msgDeleteSuccess', {
@@ -111,6 +112,7 @@ async function handleModalSubmit() {
           body: formModel.value.translations,
         });
         if (!error) {
+          loadPlatformData();
           state.text = data;
           message.success(
             $t('texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
@@ -131,6 +133,7 @@ async function handleModalSubmit() {
           body: textUpdates,
         });
         if (!error) {
+          loadPlatformData();
           state.text = data;
           message.success(
             $t('texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
