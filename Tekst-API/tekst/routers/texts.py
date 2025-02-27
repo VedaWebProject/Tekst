@@ -75,6 +75,7 @@ async def create_text(su: SuperuserDep, text: TextCreate) -> TextRead:
         Or({"title": text.title}, {"slug": text.slug})
     ).exists():
         raise errors.E_409_TEXT_SAME_TITLE_OR_SLUG
+    text.default_level = len(text.levels) - 1
     return await TextDocument.model_from(text).create()
 
 
