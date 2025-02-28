@@ -5,7 +5,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
-import { useUsersSearch } from '@/composables/fetchers';
+import { usePublicUserSearch } from '@/composables/publicUserSearch';
 import { $t } from '@/i18n';
 import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useStateStore } from '@/stores';
@@ -28,7 +28,7 @@ const initialFilters = (): PublicUserSearchFilters => ({
 });
 
 const filters = ref<PublicUserSearchFilters>(initialFilters());
-const { users, total, error, loading } = useUsersSearch(filters);
+const { users, total, error, loading } = usePublicUserSearch(filters);
 
 function resetPagination() {
   filters.value.pg = defaultPage;

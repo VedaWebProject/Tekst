@@ -2,7 +2,7 @@
 import { type AnyResourceRead, type PublicUserSearchFilters, type UserReadPublic } from '@/api';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import { useUsersSearch } from '@/composables/fetchers';
+import { usePublicUserSearch } from '@/composables/publicUserSearch';
 import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import { useAuthStore } from '@/stores';
@@ -29,7 +29,7 @@ const {
   users: searchedUsers,
   loading: loadingUsers,
   error: errorUsers,
-} = useUsersSearch(userSearchQuery);
+} = usePublicUserSearch(userSearchQuery);
 
 const addedSharesUsersCache = ref<UserReadPublic[]>([]);
 

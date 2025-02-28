@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useOskLayout } from '@/composables/fetchers';
+import { useOskLayout } from '@/composables/oskLayout';
 import { BackspaceIcon, CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useMagicKeys, whenever } from '@vueuse/core';

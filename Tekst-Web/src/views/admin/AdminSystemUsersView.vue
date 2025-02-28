@@ -7,7 +7,7 @@ import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserListItem from '@/components/user/UserListItem.vue';
-import { useUsersAdmin } from '@/composables/fetchers';
+import { useAdminUserSearch } from '@/composables/adminUserSearch';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { ErrorIcon, FilterIcon, NoContentIcon, SearchIcon, UndoIcon, UsersIcon } from '@/icons';
@@ -51,7 +51,7 @@ const initialFilters = (): UserSearchFilters => ({
 });
 
 const filters = ref<UserSearchFilters>(initialFilters());
-const { users, total, error, loading } = useUsersAdmin(filters);
+const { users, total, error, loading } = useAdminUserSearch(filters);
 
 function resetPagination() {
   filters.value.pg = defaultPage;

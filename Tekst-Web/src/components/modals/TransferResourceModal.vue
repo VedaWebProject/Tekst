@@ -3,8 +3,8 @@ import type { AnyResourceRead, PublicUserSearchFilters, UserReadPublic } from '@
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import { useUsersSearch } from '@/composables/fetchers';
 import { useMessages } from '@/composables/messages';
+import { usePublicUserSearch } from '@/composables/publicUserSearch';
 import { $t } from '@/i18n';
 import { UserIcon } from '@/icons';
 import { useStateStore } from '@/stores';
@@ -38,7 +38,7 @@ const resourceTitle = computed(() => pickTranslation(props.resource?.title, stat
 const formModel = ref<{ userId: string | undefined }>({ userId: undefined });
 const formRef = ref<FormInst | null>(null);
 const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());
-const { users, loading: loadingSearch, error } = useUsersSearch(userSearchQuery);
+const { users, loading: loadingSearch, error } = usePublicUserSearch(userSearchQuery);
 
 const usersOptions = computed(() => users.value.map((u) => ({ value: u.id, user: u })));
 
