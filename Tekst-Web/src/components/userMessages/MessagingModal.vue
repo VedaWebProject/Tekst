@@ -23,8 +23,8 @@ const loadingSend = ref(false);
 
 const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
   async () => {
-    const loadedMessages = await userMessages.loadMessages();
-    if (loadedMessages?.length && loadedMessages.length !== messages.value?.length) {
+    const loadedMessages = await userMessages.loadMessages() || [];
+    if (loadedMessages.length !== messages.value?.length) {
       messages.value = loadedMessages;
     }
   },
@@ -148,7 +148,7 @@ whenever(ctrlEnter, () => {
         </n-button>
       </n-flex>
       <div class="messaging-status text-tiny translucent mt-md">
-        <template v-if="messages?.length == null">
+        <template v-if="userMessages.loading && !messages">
           {{ $t('general.loading') }}
         </template>
         <template v-else>
