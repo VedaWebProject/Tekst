@@ -23,11 +23,21 @@ const loadingSend = ref(false);
 
 const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
   async () => {
-    messages.value = await userMessages.loadMessages();
+    const loadedMessages = await userMessages.loadMessages();
+    if (loadedMessages?.length && loadedMessages.length !== messages.value?.length) {
+      messages.value = processMsgsContents(loadedMessages);
+    }
   },
   10 * 1000, // 10 seconds
   { immediate: false, immediateCallback: true }
 );
+
+function processMsgsContents(msgs: UserMessageRead[]): UserMessageRead[] {
+  return msgs.map((msg) => ({
+    ...msg,
+    content: msg.content.replace(/^> (.*?)$/gm, '<q>$1</q>').replace(/[\n\r]/g, '<br>'),
+  }));
+}
 
 async function handleSendMessage() {
   if (!messageInput.value || loadingSend.value) return;
@@ -37,7 +47,7 @@ async function handleSendMessage() {
     sender: auth.user?.id,
     recipient: userMessages.openThread?.contact?.id || '',
   });
-  if (msg) messages.value?.push(msg);
+  if (msg) messages.value?.push(processMsgsContents([msg])[0]);
   messageInput.value = '';
   await scrollDownMessageContainer(300);
   loadingSend.value = false;
@@ -45,6 +55,8 @@ async function handleSendMessage() {
 }
 
 async function handleModalEnter() {
+  messageInput.value = userMessages.preparedMsgContent;
+  userMessages.preparedMsgContent = undefined;
   messageInputRef.value?.focus();
   startMessagesPolling();
   await scrollDownMessageContainer(300);
@@ -93,13 +105,13 @@ whenever(ctrlEnter, () => {
         <div
           v-for="msg in messages"
           :key="msg.id"
-          class="message-content pre-wrap"
+          class="message-bubble pre-wrap"
           :class="{
             'from-me': msg.sender === auth.user?.id,
             'from-them': msg.sender !== auth.user?.id,
           }"
         >
-          {{ msg.content }}
+          <div v-html="msg.content"></div>
           <n-flex align="center" class="message-meta">
             <n-time v-if="msg.createdAt" :time="utcToLocalTime(msg.createdAt)" type="datetime" />
             <n-icon
@@ -155,31 +167,45 @@ whenever(ctrlEnter, () => {
 </template>
 
 <style>
-#messaging-modal .message-content {
+#messaging-modal .message-bubble {
   position: relative;
   border-radius: 24px;
   width: 80%;
   padding: 1.2rem;
 }
 
-#messaging-modal .message-content.from-me {
+#messaging-modal .message-bubble.from-me {
   margin-left: auto;
   border-bottom-right-radius: 0px;
   background-color: var(--accent-color-fade4);
 }
 
-#messaging-modal .message-content.from-them {
+#messaging-modal .message-bubble.from-them {
   margin-right: auto;
   border-bottom-left-radius: 0px;
   background-color: var(--main-bg-color);
 }
 
-#messaging-modal .message-content > .message-meta {
+#messaging-modal .message-bubble > .message-meta {
   position: absolute;
   bottom: 8px;
   right: 16px;
   font-size: var(--font-size-tiny);
   opacity: 0.75;
+}
+
+#messaging-modal .message-bubble q {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+#messaging-modal .message-bubble q::before {
+  content: '\00BB';
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-huge);
+  margin-right: var(--gap-sm);
+  color: var(--accent-color);
+  line-height: 1;
 }
 
 #messaging-modal .messaging-status {

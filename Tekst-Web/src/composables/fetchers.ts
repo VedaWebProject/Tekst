@@ -3,42 +3,8 @@ import { GET } from '@/api';
 import { STATIC_PATH } from '@/common';
 import { $t } from '@/i18n';
 import { useDebounceFn } from '@vueuse/core';
-import { isRef, ref, unref, watch, watchEffect, type Ref } from 'vue';
+import { ref, unref, watch, watchEffect, type Ref } from 'vue';
 import { useMessages } from './messages';
-
-export function useProfile(
-  usernameOrId: string | Ref<string>,
-  active: boolean | Ref<boolean> = true
-) {
-  const user = ref<UserReadPublic | null>(null);
-  const error = ref(false);
-
-  async function fetchProfileData() {
-    if (!unref(active)) return;
-    user.value = null;
-    error.value = false;
-    const unoid = unref(usernameOrId);
-    if (!unoid) return;
-
-    const { data, error: err } = await GET('/users/public/{user}', {
-      params: { path: { user: unoid } },
-    });
-
-    if (!err) {
-      user.value = data;
-    } else {
-      error.value = true;
-    }
-  }
-
-  if (isRef(usernameOrId) || isRef(active)) {
-    watchEffect(fetchProfileData);
-  } else {
-    fetchProfileData();
-  }
-
-  return { user, error };
-}
 
 export function useUsersAdmin(filtersRef: Ref<UserSearchFilters>) {
   const users = ref<Array<UserRead>>([]);

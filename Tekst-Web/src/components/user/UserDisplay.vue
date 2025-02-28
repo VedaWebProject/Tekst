@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router';
 
 withDefaults(
   defineProps<{
-    user?: UserReadPublic & Record<string, unknown>;
+    user?: UserReadPublic;
     showAvatar?: boolean;
     size?: 'large' | 'medium' | 'small';
     link?: boolean;
@@ -35,7 +35,7 @@ const { pageLogo } = useLogo();
 </script>
 
 <template>
-  <n-flex align="center" :style="size ? `font-size: var(--font-size-${size})` : ''">
+  <n-flex align="center" :size="size" :style="size ? `font-size: var(--font-size-${size})` : ''">
     <user-avatar
       v-if="showAvatar"
       :avatar-url="!system ? user?.avatarUrl || undefined : pageLogo"
@@ -43,7 +43,11 @@ const { pageLogo } = useLogo();
       style="flex-shrink: 0"
     />
     <template v-if="user && !system">
-      <router-link v-if="link" :to="{ name: 'user', params: { username: user.username } }">
+      <router-link
+        v-if="link"
+        :to="{ name: 'user', params: { username: user.username } }"
+        @click.stop.prevent
+      >
         <user-display-text :user="user" />
       </router-link>
       <user-display-text v-else :user="user" />

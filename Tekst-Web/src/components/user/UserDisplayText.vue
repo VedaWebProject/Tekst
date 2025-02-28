@@ -2,7 +2,7 @@
 import type { UserReadPublic } from '@/api';
 
 defineProps<{
-  user: UserReadPublic & { [key: string]: unknown };
+  user: UserReadPublic;
 }>();
 </script>
 

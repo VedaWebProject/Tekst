@@ -2,13 +2,15 @@
 import { DELETE, type AnyResourceRead, type CorrectionRead } from '@/api';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useMessages } from '@/composables/messages';
+import { useUser } from '@/composables/user';
 import { $t } from '@/i18n';
-import { CorrectionNoteIcon, DeleteIcon, UserIcon } from '@/icons';
-import { useResourcesStore, useStateStore } from '@/stores';
-import { utcToLocalTime } from '@/utils';
-import { NAlert, NButton, NFlex, NIcon, NListItem, NThing, NTime } from 'naive-ui';
+import { CorrectionNoteIcon, DeleteIcon, MessageIcon } from '@/icons';
+import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { getFullLocationLabel, pickTranslation, utcToLocalTime } from '@/utils';
+import { NButton, NFlex, NIcon, NListItem, NThing, NTime } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import UserDisplay from '../user/UserDisplay.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -23,9 +25,12 @@ const props = withDefaults(
 );
 
 const state = useStateStore();
+const auth = useAuthStore();
 const router = useRouter();
 const resources = useResourcesStore();
 const { message } = useMessages();
+const { user } = useUser(props.correction.userId);
+const userMessages = useUserMessagesStore();
 
 const loading = ref(false);
 
@@ -61,8 +66,22 @@ async function deleteCorrection(correctionId: string) {
   loading.value = false;
 }
 
-function gotoUserProfile(userId: string) {
-  router.push({ name: 'user', params: { username: userId } });
+function handleMessageClick() {
+  if (!user.value) return;
+  const resTitle = pickTranslation(props.resource.title, state.locale);
+  const locationLabel = getFullLocationLabel(
+    props.correction.locationLabels.map((ll, i) => ({
+      level: i,
+      id: '',
+      label: ll,
+      position: 0,
+      textId: state.text?.id || '',
+    })),
+    state.textLevelLabels,
+    state.text
+  );
+  const prepMsg = `> ${resTitle}\n> ${locationLabel}\n> ${props.correction.note}\n`;
+  userMessages.openConversation(user.value, prepMsg);
 }
 </script>
 
@@ -83,19 +102,22 @@ function gotoUserProfile(userId: string) {
       </template>
       <template #header-extra>
         <n-flex align="center" :wrap="false" style="height: 100%">
+          <!-- open user message conversation -->
           <n-button
+            v-if="user?.isActive && user.id !== auth.user?.id"
             secondary
             size="small"
             :focusable="false"
             :disabled="loading"
             :loading="loading"
-            :title="$t('models.user.modelLabel')"
-            @click.stop.prevent="gotoUserProfile(correction.userId)"
+            :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
+            @click.stop.prevent="handleMessageClick"
           >
             <template #icon>
-              <n-icon :component="UserIcon" />
+              <n-icon :component="MessageIcon" />
             </template>
           </n-button>
+          <!-- delete correction note -->
           <n-button
             secondary
             size="small"
@@ -113,23 +135,24 @@ function gotoUserProfile(userId: string) {
         </n-flex>
       </template>
       <template #description>
-        <n-time
-          class="translucent text-tiny"
-          :time="utcToLocalTime(correction.date)"
-          type="datetime"
-        />
+        <n-flex align="center">
+          <user-display link :user="user || undefined" size="small" />
+          <n-time
+            class="translucent text-tiny"
+            :time="utcToLocalTime(correction.date)"
+            type="datetime"
+          />
+        </n-flex>
       </template>
       <template #default>
-        <n-alert
-          :show-icon="false"
+        <div
+          class="pre-wrap"
           :style="{
-            'white-space': 'pre-wrap',
             'font-family': resource.config.general.font || 'Tekst Content Font',
           }"
-          :dir="resource.config.common.rtl ? 'rtl' : undefined"
         >
           {{ correction.note }}
-        </n-alert>
+        </div>
       </template>
     </n-thing>
   </n-list-item>

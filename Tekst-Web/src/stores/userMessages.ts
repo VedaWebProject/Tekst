@@ -1,4 +1,10 @@
-import type { UserMessageCreate, UserMessageRead, UserMessageThread } from '@/api';
+import type {
+  UserMessageCreate,
+  UserMessageRead,
+  UserMessageThread,
+  UserRead,
+  UserReadPublic,
+} from '@/api';
 import { DELETE, GET, POST } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
@@ -28,6 +34,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
   const loading = ref(false);
   const openThread = ref<UserMessageThread>();
   const showMessagingModal = ref(false);
+  const preparedMsgContent = ref<string>();
 
   const unreadCount = computed<number>(() =>
     threads.value.map((t) => t.unread).reduce((a, b) => a + b, 0)
@@ -95,12 +102,27 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     loading.value = false;
   }
 
+  function openConversation(withUser: UserRead | UserReadPublic, msgContent?: string) {
+    preparedMsgContent.value = msgContent;
+    const thread: UserMessageThread = threads.value.find(
+      (t) => withUser && t.id === withUser.id
+    ) || {
+      id: withUser.id,
+      contact: withUser,
+      unread: 0,
+    };
+    openThread.value = thread;
+    showMessagingModal.value = true;
+  }
+
   return {
     threads,
     openThread,
     loading,
     unreadCount,
     showMessagingModal,
+    preparedMsgContent,
+    openConversation,
     loadThreads,
     loadMessages,
     send,

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { UserMessageThread } from '@/api';
+import type { UserReadPublic } from '@/api';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
-import { useProfile } from '@/composables/fetchers';
+import { useUser } from '@/composables/user';
 import { MessageIcon, UserIcon } from '@/icons';
 import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { NButton, NIcon, NSpin, NThing } from 'naive-ui';
@@ -27,20 +27,7 @@ const usernameOrId = computed(() => {
   }
   return '';
 });
-const { user, error } = useProfile(usernameOrId);
-
-function handleSendUserMessage() {
-  if (!user.value || !auth.loggedIn) return;
-  const thread: UserMessageThread = userMessages.threads.find(
-    (t) => user.value && t.id === user.value.id
-  ) || {
-    id: user.value.id,
-    contact: user.value,
-    unread: 0,
-  };
-  userMessages.openThread = thread;
-  userMessages.showMessagingModal = true;
-}
+const { user, error } = useUser(usernameOrId);
 
 watchEffect(() => {
   state.setPageTitle(route, { username: usernameOrId.value });
@@ -68,7 +55,7 @@ watchEffect(() => {
           circle
           size="large"
           :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
-          @click="handleSendUserMessage"
+          @click="() => userMessages.openConversation(user as UserReadPublic)"
         >
           <template #icon>
             <n-icon :component="MessageIcon" />
