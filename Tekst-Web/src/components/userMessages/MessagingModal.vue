@@ -25,19 +25,12 @@ const { pause: stopMessagesPolling, resume: startMessagesPolling } = useInterval
   async () => {
     const loadedMessages = await userMessages.loadMessages();
     if (loadedMessages?.length && loadedMessages.length !== messages.value?.length) {
-      messages.value = processMsgsContents(loadedMessages);
+      messages.value = loadedMessages;
     }
   },
   10 * 1000, // 10 seconds
   { immediate: false, immediateCallback: true }
 );
-
-function processMsgsContents(msgs: UserMessageRead[]): UserMessageRead[] {
-  return msgs.map((msg) => ({
-    ...msg,
-    content: msg.content.replace(/^> (.*?)$/gm, '<q>$1</q>').replace(/[\n\r]/g, '<br>'),
-  }));
-}
 
 async function handleSendMessage() {
   if (!messageInput.value || loadingSend.value) return;
@@ -47,7 +40,7 @@ async function handleSendMessage() {
     sender: auth.user?.id,
     recipient: userMessages.openThread?.contact?.id || '',
   });
-  if (msg) messages.value?.push(processMsgsContents([msg])[0]);
+  if (msg) messages.value?.push(msg);
   messageInput.value = '';
   await scrollDownMessageContainer(300);
   loadingSend.value = false;
@@ -105,13 +98,13 @@ whenever(ctrlEnter, () => {
         <div
           v-for="msg in messages"
           :key="msg.id"
-          class="message-bubble pre-wrap"
+          class="message-bubble"
           :class="{
             'from-me': msg.sender === auth.user?.id,
             'from-them': msg.sender !== auth.user?.id,
           }"
         >
-          <div v-html="msg.content"></div>
+          <div class="text-medium pre-wrap">{{ msg.content }}</div>
           <n-flex align="center" class="message-meta">
             <n-time v-if="msg.createdAt" :time="utcToLocalTime(msg.createdAt)" type="datetime" />
             <n-icon

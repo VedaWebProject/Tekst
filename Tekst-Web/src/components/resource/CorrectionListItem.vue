@@ -80,7 +80,7 @@ function handleMessageClick() {
     state.textLevelLabels,
     state.text
   );
-  const prepMsg = `> ${resTitle}\n> ${locationLabel}\n> ${props.correction.note}\n`;
+  const prepMsg = `> ${resTitle}\n> ${locationLabel}\n> ${props.correction.note}\n\n`;
   userMessages.openConversation(user.value, prepMsg);
 }
 </script>
