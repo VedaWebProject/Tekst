@@ -8,7 +8,7 @@ import { $t } from '@/i18n';
 import { HourglassIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { useElementHover } from '@vueuse/core';
-import { NFlex, NIcon, NSpin, useThemeVars } from 'naive-ui';
+import { NFlex, NIcon, NSpin, NTag, useThemeVars } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -40,17 +40,6 @@ watch(
   },
   { immediate: true }
 );
-
-const headerExtraText = computed(() => {
-  if (!browse.loadingResources && props.resource.level !== browse.level) {
-    const level = state.textLevelLabels[props.resource.level];
-    return level
-      ? `(${$t('browse.location.level')}: ${state.textLevelLabels[props.resource.level]})`
-      : '';
-  } else {
-    return '';
-  }
-});
 
 const contentContainerTitle = computed(() =>
   !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
@@ -90,7 +79,9 @@ const fromChildLevel = computed(
           />
         </div>
         <div class="text-small translucent" style="flex-grow: 2">
-          {{ headerExtraText }}
+          <n-tag v-if="!browse.reducedView && props.resource.level !== browse.level" size="small">
+            {{ state.textLevelLabels[props.resource.level] }}
+          </n-tag>
           <n-flex
             v-if="loading && !hasContent"
             align="center"
