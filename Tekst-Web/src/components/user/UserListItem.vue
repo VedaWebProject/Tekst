@@ -135,7 +135,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
 
 <template>
   <n-list-item class="user-list-item">
-    <n-thing description-style="font-size: var(--font-size-tiny);" content-indented>
+    <n-thing content-indented>
       <template #avatar>
         <user-avatar :avatar-url="targetUser.avatarUrl || undefined" :size="64" />
       </template>
@@ -144,41 +144,48 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           <router-link :to="{ name: 'user', params: { username: targetUser.username } }" class="b">
             {{ targetUser.name }}
           </router-link>
-          <n-badge
-            :color="targetUser.isActive ? nuiTheme.successColor : nuiTheme.errorColor"
-            :processing="!targetUser.isActive"
-            :title="targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive')"
-            :offset="[12, -2]"
-          >
-            <template #value>
-              <n-icon
-                :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon"
-                :color="nuiTheme.baseColor"
-              />
-            </template>
-          </n-badge>
-          <n-badge
-            :color="targetUser.isVerified ? nuiTheme.successColor : nuiTheme.warningColor"
-            :processing="!targetUser.isVerified"
-            :title="
-              targetUser.isVerified ? $t('models.user.isVerified') : $t('models.user.isUnverified')
-            "
-            :offset="[12, -2]"
-          >
-            <template #value>
-              <n-icon :component="VerifiedUserIcon" :color="nuiTheme.baseColor" />
-            </template>
-          </n-badge>
-          <n-badge
-            v-if="targetUser.isSuperuser"
-            :color="nuiTheme.infoColor"
-            :title="$t('models.user.isSuperuser')"
-            :offset="[12, -2]"
-          >
-            <template #value>
-              <n-icon :component="AdminIcon" :color="nuiTheme.baseColor" />
-            </template>
-          </n-badge>
+          <span class="translucent text-small"> @{{ targetUser.username }} </span>
+          <n-flex size="small" :wrap="false">
+            <n-badge
+              :color="targetUser.isActive ? nuiTheme.successColor : nuiTheme.errorColor"
+              :processing="!targetUser.isActive"
+              :title="
+                targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive')
+              "
+              :offset="[12, -2]"
+            >
+              <template #value>
+                <n-icon
+                  :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon"
+                  :color="nuiTheme.baseColor"
+                />
+              </template>
+            </n-badge>
+            <n-badge
+              :color="targetUser.isVerified ? nuiTheme.successColor : nuiTheme.warningColor"
+              :processing="!targetUser.isVerified"
+              :title="
+                targetUser.isVerified
+                  ? $t('models.user.isVerified')
+                  : $t('models.user.isUnverified')
+              "
+              :offset="[12, -2]"
+            >
+              <template #value>
+                <n-icon :component="VerifiedUserIcon" :color="nuiTheme.baseColor" />
+              </template>
+            </n-badge>
+            <n-badge
+              v-if="targetUser.isSuperuser"
+              :color="nuiTheme.infoColor"
+              :title="$t('models.user.isSuperuser')"
+              :offset="[12, -2]"
+            >
+              <template #value>
+                <n-icon :component="AdminIcon" :color="nuiTheme.baseColor" />
+              </template>
+            </n-badge>
+          </n-flex>
         </n-flex>
       </template>
       <template #header-extra>
@@ -198,22 +205,21 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
         </n-flex>
       </template>
       <template #description>
-        <span class="translucent"> @{{ targetUser.username }} </span>
-      </template>
-      <template #default>
-        <div class="text-small">
-          {{ targetUser.affiliation }}
-          –
+        <n-flex class="text-small" size="small">
           <a
             :href="emailLink"
             :title="$t('admin.users.mailtoLinkTitle', { username: targetUser.username })"
           >
             {{ targetUser.email }}
           </a>
-          –
-          {{ $t('admin.users.registeredAt') }}
-          <n-time :time="utcToLocalTime(targetUser.createdAt)" type="datetime" />
-        </div>
+          <span class="translucent">&bull;</span>
+          <span>{{ targetUser.affiliation }}</span>
+          <span class="translucent">&bull;</span>
+          <span class="translucent">
+            {{ $t('admin.users.registeredAt') }}
+            <n-time :time="utcToLocalTime(targetUser.createdAt)" type="datetime" />
+          </span>
+        </n-flex>
       </template>
     </n-thing>
   </n-list-item>
