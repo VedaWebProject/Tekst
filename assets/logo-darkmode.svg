@@ -58,93 +58,6 @@
        filltype-this="from-curve"
        filter=""
        filltype-operand="from-curve" />
-    <filter
-       style="color-interpolation-filters:sRGB;"
-       inkscape:label="Color Shift"
-       id="filter21075"
-       x="-1.564883e-08"
-       y="-7.9791268e-09"
-       width="1"
-       height="1">
-      <feColorMatrix
-         values="1 0 0 0.177311 -0 0 1 0 0.177311 -0 0 0 1 0.177311 -0 0 0 0 1 0"
-         id="feColorMatrix21073"
-         result="fbSourceGraphic" />
-      <feColorMatrix
-         result="fbSourceGraphicAlpha"
-         in="fbSourceGraphic"
-         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
-         id="feColorMatrix21427" />
-      <feColorMatrix
-         id="feColorMatrix21429"
-         type="hueRotate"
-         values="0"
-         result="color1"
-         in="fbSourceGraphic" />
-      <feColorMatrix
-         id="feColorMatrix21431"
-         type="saturate"
-         values="0.892376"
-         result="color2" />
-    </filter>
-    <filter
-       style="color-interpolation-filters:sRGB;"
-       inkscape:label="Color Shift"
-       id="filter21079"
-       x="-1.5648833e-08"
-       y="-7.9791267e-09"
-       width="1"
-       height="1">
-      <feColorMatrix
-         values="1 0 0 0.177311 -0 0 1 0 0.177311 -0 0 0 1 0.177311 -0 0 0 0 1 0"
-         id="feColorMatrix21077"
-         result="fbSourceGraphic" />
-      <feColorMatrix
-         result="fbSourceGraphicAlpha"
-         in="fbSourceGraphic"
-         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
-         id="feColorMatrix21433" />
-      <feColorMatrix
-         id="feColorMatrix21435"
-         type="hueRotate"
-         values="0"
-         result="color1"
-         in="fbSourceGraphic" />
-      <feColorMatrix
-         id="feColorMatrix21437"
-         type="saturate"
-         values="0.892376"
-         result="color2" />
-    </filter>
-    <filter
-       style="color-interpolation-filters:sRGB;"
-       inkscape:label="Color Shift"
-       id="filter21083"
-       x="-1.5648826e-08"
-       y="-4.3087284e-09"
-       width="1"
-       height="1">
-      <feColorMatrix
-         values="1 0 0 0.177311 -0 0 1 0 0.177311 -0 0 0 1 0.177311 -0 0 0 0 1 0"
-         id="feColorMatrix21081"
-         result="fbSourceGraphic" />
-      <feColorMatrix
-         result="fbSourceGraphicAlpha"
-         in="fbSourceGraphic"
-         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
-         id="feColorMatrix21439" />
-      <feColorMatrix
-         id="feColorMatrix21441"
-         type="hueRotate"
-         values="0"
-         result="color1"
-         in="fbSourceGraphic" />
-      <feColorMatrix
-         id="feColorMatrix21443"
-         type="saturate"
-         values="0.892376"
-         result="color2" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="namedview16"
@@ -158,8 +71,8 @@
      objecttolerance="10"
      borderopacity="1"
      inkscape:current-layer="svg2932"
-     inkscape:cx="41.888676"
-     inkscape:cy="61.420346"
+     inkscape:cx="31.692898"
+     inkscape:cy="61.420345"
      inkscape:window-y="0"
      inkscape:window-x="0"
      inkscape:window-width="1920"
@@ -196,26 +109,26 @@
   </metadata>
   <path
      id="rect11507-9"
-     style="fill:#c3002e;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round;filter:url(#filter21083)"
-     d="M 44.024363,1.9782433 H 75.975641 V 118.02176 l -15.97564,-12.30999 -15.975638,12.30999 z"
+     style="fill:#cc6669;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round"
+     d="M 46.233056,9.9999905 H 73.766935 V 110.00001 L 59.999995,99.39192 46.233056,110.00001 Z"
      sodipodi:nodetypes="cccccc"
-     inkscape:export-filename="/home/bkis/Code/Tekst/docs/content/assets/logo.png"
+     inkscape:export-filename="/home/bkis/Code/Tekst/Tekst-Web/src/assets/logo.png"
      inkscape:export-xdpi="96"
      inkscape:export-ydpi="96" />
   <path
      id="rect11507-9-6"
-     style="fill:#007bc3;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round;filter:url(#filter21079)"
-     d="M 86.070485,20.545206 H 118.02175 V 83.208705 L 102.04612,70.898732 86.070485,83.208705 Z"
+     style="fill:#668ccc;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round"
+     d="M 86.233072,25.999992 H 108.23307 V 79.999998 L 97.233071,69.391931 86.233072,79.999998 Z"
      sodipodi:nodetypes="cccccc"
-     inkscape:export-filename="/home/bkis/Code/Tekst/docs/content/assets/logo.png"
+     inkscape:export-filename="/home/bkis/Code/Tekst/Tekst-Web/src/assets/logo.png"
      inkscape:export-xdpi="96"
      inkscape:export-ydpi="96" />
   <path
      id="rect11507-9-6-3"
-     style="fill:#00c373;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round;filter:url(#filter21075)"
-     d="M 1.9782476,38.746662 H 33.929519 V 101.41016 L 17.953884,89.100188 1.9782476,101.41016 Z"
+     style="fill:#66cc92;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:round"
+     d="m 11.766927,43.68502 h 21.999999 v 54.000005 l -11,-10.608066 -10.999999,10.608066 z"
      sodipodi:nodetypes="cccccc"
-     inkscape:export-filename="/home/bkis/Code/Tekst/docs/content/assets/logo.png"
+     inkscape:export-filename="/home/bkis/Code/Tekst/Tekst-Web/src/assets/logo.png"
      inkscape:export-xdpi="96"
      inkscape:export-ydpi="96" />
 </svg>
