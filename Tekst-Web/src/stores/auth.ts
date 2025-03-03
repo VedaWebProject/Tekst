@@ -9,18 +9,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 
-const SESSION_POLL_INTERVAL_S = 60; // check session expiry every n seconds
-const SESSION_EXPIRY_OFFSET_S = 10; // assume session expired n seconds early
-const SESSION_WARN_AHEAD_S = 600; // start showing warnings n seconds before expiry
-
-const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
-  () => {
-    const { checkSession } = useAuthStore();
-    checkSession();
-  },
-  SESSION_POLL_INTERVAL_S * 1000,
-  { immediate: true, immediateCallback: false }
-);
+const _SES_CHK_INTV_S = 60; // check session expiry every n seconds
+const _SES_EXP_OFF_S = 10; // assume session expired n seconds early
+const _SES_WARN_AHEAD_S = 600; // start showing warnings n seconds before expiry
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
@@ -38,6 +29,15 @@ export const useAuthStore = defineStore('auth', () => {
 
   const sessionExpiryTsSec = useStorage('sessionExpiryS', Number.MAX_SAFE_INTEGER);
 
+  const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
+    async () => {
+      const { checkSession } = useAuthStore();
+      await checkSession();
+    },
+    _SES_CHK_INTV_S * 1000,
+    { immediate: true, immediateCallback: false }
+  );
+
   async function loadExistingSession() {
     if (loggedIn.value) {
       await _loadUserData();
@@ -46,18 +46,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
-      Date.now() / 1000 + (state.pf?.security.authCookieLifetime || 0) - SESSION_EXPIRY_OFFSET_S;
+      Date.now() / 1000 + (state.pf?.security.authCookieLifetime || 0) - _SES_EXP_OFF_S;
   }
 
   function _unsetCookieExpiry() {
     sessionExpiryTsSec.value = Number.MAX_SAFE_INTEGER;
-  }
-
-  async function _renewExpiredSession() {
-    message.warning($t('account.sessionExpired'));
-    const currRoute = router.currentRoute.value;
-    await logout();
-    showLoginModal($t('account.renewLogin'), currRoute, false);
   }
 
   function _cleanupSession() {
@@ -73,12 +66,14 @@ export const useAuthStore = defineStore('auth', () => {
     return sessionExpiryTsSec.value ? sessionExpiryTsSec.value - Date.now() / 1000 : 0;
   }
 
-  function checkSession() {
+  async function checkSession() {
     const timeLeftS = _sessionExpiresInS();
     if (timeLeftS <= 0) {
-      _renewExpiredSession();
-      return;
-    } else if (timeLeftS <= SESSION_WARN_AHEAD_S) {
+      message.warning($t('account.sessionExpired'));
+      const currRoute = router.currentRoute.value;
+      await logout();
+      showLoginModal($t('account.renewLogin'), currRoute, false);
+    } else if (timeLeftS <= _SES_WARN_AHEAD_S) {
       const minutes = Math.floor(timeLeftS / 60);
       const seconds = Math.round(timeLeftS % 60);
       message.warning($t('account.autoLogout', { minutes, seconds }), undefined, 30);
