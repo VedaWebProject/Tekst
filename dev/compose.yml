@@ -88,7 +88,7 @@ services:
       - dev
 
   mailpit:
-    image: axllent/mailpit:v1.22
+    image: axllent/mailpit:v1.23
     restart: unless-stopped
     init: true
     volumes:
