@@ -3,6 +3,7 @@ import UserAvatar from '@/components/user/UserAvatar.vue';
 import { $t } from '@/i18n';
 import {
   AdminIcon,
+  CommunityIcon,
   CorrectionNoteIcon,
   LoginIcon,
   LogoutIcon,
@@ -53,6 +54,13 @@ const userOptions = computed(() => [
     icon: renderIcon(UserIcon),
   },
   {
+    label: renderLink(() => $t('community.heading'), {
+      name: 'community',
+    }),
+    key: 'community',
+    icon: renderIcon(CommunityIcon) || undefined,
+  },
+  {
     label: renderLink(
       () =>
         h('div', null, [
@@ -87,7 +95,7 @@ const userOptions = computed(() => [
         },
       ]
     : []),
-  ...(auth.user?.isSuperuser
+  ...(!!auth.user?.isSuperuser
     ? [
         {
           label: renderLink(() => $t('admin.optionGroupLabel'), {

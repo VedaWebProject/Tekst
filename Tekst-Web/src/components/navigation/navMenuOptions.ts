@@ -94,17 +94,6 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
-    ...(auth.loggedIn
-      ? [
-          {
-            label: renderLink(() => $t('community.heading'), {
-              name: 'community',
-            }),
-            key: 'community',
-            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
-          },
-        ]
-      : []),
     ...(state.smallScreen && auth.loggedIn
       ? [
           {
@@ -141,6 +130,17 @@ export function useMainMenuOptions(showIcons: boolean = true) {
             }),
             key: 'textSettings',
             icon: (showIcons && renderIcon(TextsIcon)) || undefined,
+          },
+        ]
+      : []),
+    ...(state.smallScreen && auth.loggedIn
+      ? [
+          {
+            label: renderLink(() => $t('community.heading'), {
+              name: 'community',
+            }),
+            key: 'community',
+            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
           },
         ]
       : []),

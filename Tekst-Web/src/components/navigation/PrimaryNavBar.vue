@@ -28,7 +28,7 @@ const browse = useBrowseStore();
 const userMessages = useUserMessagesStore();
 const resources = useResourcesStore();
 
-const { menuOptions: mainMenuOptions } = useMainMenuOptions(false);
+const { menuOptions: mainMenuOptions } = useMainMenuOptions(true);
 const menuOpen = ref(false);
 const showUserActionsButton = computed(
   () => pfData.value?.security.closedMode === false || auth.loggedIn
