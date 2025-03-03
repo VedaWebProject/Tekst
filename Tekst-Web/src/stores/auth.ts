@@ -55,8 +55,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function _renewExpiredSession() {
     message.warning($t('account.sessionExpired'));
-    _cleanupSession();
-    showLoginModal($t('account.renewLogin'), router.currentRoute.value, false);
+    const currRoute = router.currentRoute.value;
+    await logout();
+    showLoginModal($t('account.renewLogin'), currRoute, false);
   }
 
   function _cleanupSession() {
@@ -84,7 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function showLoginModal(
+  function showLoginModal(
     message?: string,
     nextRoute: RouteLocationRaw = { name: 'home' },
     showRegisterLink: boolean = true
