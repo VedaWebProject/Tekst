@@ -1,6 +1,6 @@
 # Tekst <!-- omit in toc -->
 
-<img width="64" height="64" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px; z-index: 9" src="docs/content/assets/logo.png" alt="Tekst logo"/>
+<img width="64" height="64" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px; z-index: 9" src="Tekst-Web/src/assets/logo.png" alt="Tekst logo"/>
 
 A collaborative, web-based research platform for aligning, linking, publishing, exploring and enriching resources on natural language texts.
 

@@ -23,7 +23,7 @@ const loadingSend = ref(false);
 
 const { pause: stopMessagesPolling, resume: startMessagesPolling } = useIntervalFn(
   async () => {
-    const loadedMessages = await userMessages.loadMessages() || [];
+    const loadedMessages = (await userMessages.loadMessages()) || [];
     if (loadedMessages.length !== messages.value?.length) {
       messages.value = loadedMessages;
     }
