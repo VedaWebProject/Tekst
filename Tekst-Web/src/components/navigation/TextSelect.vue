@@ -13,7 +13,7 @@ const browse = useBrowseStore();
 const themeVars = useThemeVars();
 
 const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
-const textSelectDropdownRef = ref();
+const dropdownRef = ref();
 
 const renderLabel = (t: TextRead) => {
   return () =>
@@ -37,28 +37,28 @@ const options = computed(
 
 function handleSelect(text: TextRead) {
   if (state.text?.id === text.id) return;
-  textSelectDropdownRef.value.doUpdateShow(false);
+  dropdownRef.value.doUpdateShow(false);
   browse.locationPath = [];
 
-  router.push({
-    name: router.currentRoute.value.params.hasOwnProperty('textSlug')
-      ? router.currentRoute.value.name
-      : 'browse',
-    params: {
-      ...router.currentRoute.value.params,
-      textSlug: text.slug,
-      locId: undefined,
-    },
-  });
-
-  state.text = state.textById(text.id);
+  if (router.currentRoute.value.params.hasOwnProperty('textSlug')) {
+    router.push({
+      name: router.currentRoute.value.name,
+      params: {
+        ...router.currentRoute.value.params,
+        textSlug: text.slug,
+        locId: undefined,
+      },
+    });
+  } else {
+    state.text = state.textById(text.id);
+  }
 }
 </script>
 
 <template>
   <n-dropdown
     v-if="state.text"
-    ref="textSelectDropdownRef"
+    ref="dropdownRef"
     trigger="click"
     :options="options"
     :disabled="disabled"
