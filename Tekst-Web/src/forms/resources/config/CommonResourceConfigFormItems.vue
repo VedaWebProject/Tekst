@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type CommonResourceConfig, resourceTypes } from '@/api';
+import { type AnyResourceRead, type CommonResourceConfig, resourceTypes } from '@/api';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
@@ -10,8 +10,8 @@ import { pickTranslation } from '@/utils';
 import { NFlex, NFormItem, NInputNumber, NSelect } from 'naive-ui';
 import { computed } from 'vue';
 
-defineProps<{
-  resourceType: string;
+const props = defineProps<{
+  resource: AnyResourceRead;
 }>();
 
 const model = defineModel<CommonResourceConfig>({ default: {} });
@@ -25,6 +25,27 @@ const categoryOptions = computed(
         `${c.key} (${$t('resources.settings.config.common.catUnlabelled')})`,
       value: c.key,
     })) || []
+);
+
+const preventContentContext = computed(() =>
+  resourceTypes
+    .filter((rt) => !rt.contentContext)
+    .map((rt) => rt.name)
+    .includes(props.resource.resourceType)
+);
+
+const preventQuickSearchable = computed(() =>
+  resourceTypes
+    .filter((rt) => !rt.searchableQuick)
+    .map((rt) => rt.name)
+    .includes(props.resource.resourceType)
+);
+
+const preventAdvSearchable = computed(() =>
+  resourceTypes
+    .filter((rt) => !rt.searchableAdv)
+    .map((rt) => rt.name)
+    .includes(props.resource.resourceType)
 );
 
 const oskOptions = computed(
@@ -73,18 +94,13 @@ const oskOptions = computed(
     />
   </n-form-item>
 
-  <!-- SHOW ON PARENT LEVEL -->
+  <!-- ENABLE CONTENT CONTEXT -->
   <n-form-item :show-label="false" :show-feedback="false">
     <n-flex :wrap="false" align="center">
       <labeled-switch
         v-model="model.enableContentContext"
         :label="$t('resources.settings.config.common.enableContentContext')"
-        :disabled="
-          resourceTypes
-            .filter((rt) => !rt.contentContext)
-            .map((rt) => rt.name)
-            .includes(resourceType)
-        "
+        :disabled="preventContentContext"
       />
       <help-button-widget help-key="resourceConfigCombinedSiblings" />
     </n-flex>
@@ -95,12 +111,7 @@ const oskOptions = computed(
     <labeled-switch
       v-model="model.searchableQuick"
       :label="$t('resources.settings.config.common.searchableQuick')"
-      :disabled="
-        resourceTypes
-          .filter((rt) => !rt.searchableQuick)
-          .map((rt) => rt.name)
-          .includes(resourceType)
-      "
+      :disabled="preventQuickSearchable"
     />
   </n-form-item>
 
@@ -109,12 +120,7 @@ const oskOptions = computed(
     <labeled-switch
       v-model="model.searchableAdv"
       :label="$t('resources.settings.config.common.searchableAdv')"
-      :disabled="
-        resourceTypes
-          .filter((rt) => !rt.searchableAdv)
-          .map((rt) => rt.name)
-          .includes(resourceType)
-      "
+      :disabled="preventAdvSearchable"
     />
   </n-form-item>
 

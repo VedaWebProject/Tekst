@@ -40,10 +40,7 @@ watch(
 
     <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
       <!-- COMMON CONFIG -->
-      <common-resource-config-form-items
-        v-model="model.config.common"
-        :resource-type="model.resourceType"
-      />
+      <common-resource-config-form-items v-model="model.config.common" :resource="model" />
     </n-tab-pane>
 
     <n-tab-pane

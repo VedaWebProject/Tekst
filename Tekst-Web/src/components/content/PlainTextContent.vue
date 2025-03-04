@@ -28,10 +28,13 @@ const getLineLabel = (index: number, labellingType: LineLabellingConfig['labelli
   }
 };
 
+const multiContents = computed(() => (props.resource.contents?.length || 0) > 1);
+
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
-    lines: (props.reduced && props.resource.config.general.reducedView.singleLine
+    lines: (props.reduced &&
+    (props.resource.config.general.reducedView.singleLine || multiContents.value)
       ? [
           c.text.replace(
             /(\r\n|\r|\n)+/g,
@@ -61,9 +64,9 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
 <template>
   <div :style="cutomStyle">
     <div
-      v-for="content in contents"
+      v-for="(content, contentIndex) in contents"
       :key="content.id"
-      class="plain-text-content mt-md"
+      :class="{ 'mt-md': !reduced && contentIndex > 0 }"
       :title="content.comment || undefined"
     >
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
@@ -78,9 +81,3 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
     </div>
   </div>
 </template>
-
-<style scoped>
-.plain-text-content:first-child {
-  margin-top: inherit;
-}
-</style>

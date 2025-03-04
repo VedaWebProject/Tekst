@@ -1,107 +1,101 @@
 [
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8e3" },
-        "title": "Fuchs, du hast die Gans gestohlen",
-        "slug": "fdhdgg",
-        "subtitle": [
-            { "locale": "enUS", "translation": "An old German folk song" },
-            { "locale": "deDE", "translation": "Ein altdeutsches Volkslied" }
-        ],
-        "levels": [
-            [
-                { "locale": "enUS", "translation": "Song" },
-                { "locale": "deDE", "translation": "Lied" }
-            ],
-            [
-                { "locale": "enUS", "translation": "Stanza" },
-                { "locale": "deDE", "translation": "Strophe" }
-            ],
-            [
-                { "locale": "enUS", "translation": "Line" },
-                { "locale": "deDE", "translation": "Vers" }
-            ]
-        ],
-        "default_level": 2,
-        "loc_delim": " > ",
-        "labeled_location": true,
-        "accent_color": "#38714b",
-        "is_active": true,
-        "resource_categories": [
-            {
-                "key": "versions",
-                "translations": [
-                    { "locale": "enUS", "translation": "Versions" },
-                    { "locale": "deDE", "translation": "Versionen" }
-                ]
-            },
-            {
-                "key": "translations",
-                "translations": [
-                    { "locale": "enUS", "translation": "Translations" },
-                    { "locale": "deDE", "translation": "Übersetzungen" }
-                ]
-            },
-            {
-                "key": "annotations",
-                "translations": [
-                    { "locale": "enUS", "translation": "Annotations" },
-                    { "locale": "deDE", "translation": "Annotationen" }
-                ]
-            },
-            {
-                "key": "multimedia",
-                "translations": [{ "locale": "*", "translation": "Multimedia" }]
-            },
-            {
-                "key": "links",
-                "translations": [{ "locale": "*", "translation": "Links" }]
-            },
-            {
-                "key": "poc",
-                "translations": [
-                    { "locale": "*", "translation": "Proof of Concept" }
-                ]
-            }
-        ],
-        "full_loc_label_as_hit_heading": true,
-        "index_utd": true
-    },
-    {
-        "_id": { "$oid": "654ba1f3ec7833e469dde765" },
-        "title": "The Old Pond",
-        "slug": "pond",
-        "subtitle": [
-            { "locale": "enUS", "translation": "A Haiku by Matsuo Bashō" },
-            { "locale": "deDE", "translation": "Ein Haiku von Matsuo Bashō" }
-        ],
-        "levels": [
-            [
-                { "locale": "enUS", "translation": "Phrase" },
-                { "locale": "deDE", "translation": "Wortgruppe" }
-            ]
-        ],
-        "default_level": 0,
-        "loc_delim": "/",
-        "labeled_location": true,
-        "accent_color": "#384a71",
-        "is_active": true,
-        "resource_categories": [
-            {
-                "key": "versions",
-                "translations": [
-                    { "locale": "enUS", "translation": "Versions" },
-                    { "locale": "deDE", "translation": "Versionen" }
-                ]
-            },
-            {
-                "key": "translations",
-                "translations": [
-                    { "locale": "enUS", "translation": "Translations" },
-                    { "locale": "deDE", "translation": "Übersetzungen" }
-                ]
-            }
-        ],
-        "full_loc_label_as_hit_heading": true,
-        "index_utd": true
-    }
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "title": "Fuchs, du hast die Gans gestohlen",
+    "slug": "fdhdgg",
+    "subtitle": [
+      { "locale": "enUS", "translation": "An old German folk song" },
+      { "locale": "deDE", "translation": "Ein altdeutsches Volkslied" }
+    ],
+    "levels": [
+      [
+        { "locale": "enUS", "translation": "Song" },
+        { "locale": "deDE", "translation": "Lied" }
+      ],
+      [
+        { "locale": "enUS", "translation": "Stanza" },
+        { "locale": "deDE", "translation": "Strophe" }
+      ],
+      [
+        { "locale": "enUS", "translation": "Line" },
+        { "locale": "deDE", "translation": "Vers" }
+      ]
+    ],
+    "default_level": 2,
+    "loc_delim": " > ",
+    "labeled_location": true,
+    "accent_color": "#38714b",
+    "is_active": true,
+    "resource_categories": [
+      {
+        "key": "versions",
+        "translations": [
+          { "locale": "enUS", "translation": "Versions" },
+          { "locale": "deDE", "translation": "Versionen" }
+        ]
+      },
+      {
+        "key": "translations",
+        "translations": [
+          { "locale": "enUS", "translation": "Translations" },
+          { "locale": "deDE", "translation": "Übersetzungen" }
+        ]
+      },
+      {
+        "key": "annotations",
+        "translations": [
+          { "locale": "enUS", "translation": "Annotations" },
+          { "locale": "deDE", "translation": "Annotationen" }
+        ]
+      },
+      {
+        "key": "multimedia",
+        "translations": [{ "locale": "*", "translation": "Multimedia" }]
+      },
+      {
+        "key": "links",
+        "translations": [{ "locale": "*", "translation": "Links" }]
+      }
+    ],
+    "full_loc_label_as_hit_heading": true,
+    "index_utd": false
+  },
+  {
+    "_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "title": "The Old Pond",
+    "slug": "pond",
+    "subtitle": [
+      { "locale": "enUS", "translation": "A Haiku by Matsuo Bashō" },
+      { "locale": "deDE", "translation": "Ein Haiku von Matsuo Bashō" }
+    ],
+    "levels": [
+      [
+        { "locale": "enUS", "translation": "Phrase" },
+        { "locale": "deDE", "translation": "Wortgruppe" }
+      ]
+    ],
+    "default_level": 0,
+    "loc_delim": "/",
+    "labeled_location": true,
+    "accent_color": "#384a71",
+    "is_active": true,
+    "resource_categories": [
+      {
+        "key": "versions",
+        "translations": [
+          { "locale": "enUS", "translation": "Versions" },
+          { "locale": "deDE", "translation": "Versionen" }
+        ]
+      },
+      {
+        "key": "translations",
+        "translations": [
+          { "locale": "enUS", "translation": "Translations" },
+          { "locale": "deDE", "translation": "Übersetzungen" }
+        ]
+      }
+    ],
+    "full_loc_label_as_hit_heading": true,
+    "index_utd": true
+  }
 ]

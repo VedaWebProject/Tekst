@@ -286,7 +286,7 @@ watch(
                   :label="$t('models.platformSettings.fontName')"
                   :path="`fonts[${index}]`"
                   :rule="platformSettingsFormRules.fontName"
-                  style="flex-grow: 2"
+                  style="flex: 2"
                 >
                   <n-input
                     v-model:value="formModel.fonts[index]"
@@ -348,7 +348,7 @@ watch(
                     :label="$t('models.platformSettings.oskModeName')"
                     :path="`oskModes[${index}].name`"
                     :rule="platformSettingsFormRules.oskModeName"
-                    style="flex-grow: 2"
+                    style="flex: 2"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].name"

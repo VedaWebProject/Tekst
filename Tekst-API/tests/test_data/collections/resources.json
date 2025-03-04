@@ -18,7 +18,7 @@
       "common": {
         "sort_order": 10,
         "default_active": true,
-        "enable_content_context": false,
+        "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false

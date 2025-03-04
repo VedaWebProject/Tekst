@@ -384,7 +384,7 @@ function generatePlaintextAnno(): string {
 
 <template>
   <div>
-    <n-flex class="mb-md">
+    <n-flex v-if="!reduced" class="mb-md">
       <!-- ANNOTATION GROUP TOGGLES -->
       <template v-if="!!annoGroups.length">
         <n-button
@@ -426,10 +426,11 @@ function generatePlaintextAnno(): string {
     </n-flex>
 
     <!-- CONTENT -->
-    <div
+    <n-flex
+      :size="0"
       v-for="(c, cIndex) in contents"
       :key="c.id"
-      class="content-container mb-sm"
+      class="content-container"
       :class="{ reduced }"
     >
       <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
@@ -476,7 +477,7 @@ function generatePlaintextAnno(): string {
         </div>
         <hr v-if="t.lb" class="token-lb" />
       </template>
-    </div>
+    </n-flex>
 
     <generic-modal
       v-model:show="showDetailsModal"
@@ -541,20 +542,9 @@ function generatePlaintextAnno(): string {
 </template>
 
 <style scoped>
-.content-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px;
-}
-
 .content-container:not(:last-child) {
-  padding-bottom: var(--gap-lg);
-  margin-bottom: var(--gap-lg);
-  border-bottom: 1px solid var(--main-bg-color);
-}
-
-.reduced .content-container {
-  column-gap: 6px;
+  padding-bottom: v-bind('reduced ? `var(--gap-sm)` : `var(--gap-md)`');
+  margin-bottom: v-bind('reduced ? `var(--gap-sm)` : `var(--gap-md)`');
 }
 
 .token-container {

@@ -105,7 +105,7 @@ onMounted(async () => {
               :path="`tokens[${tokenItemIndex}].token`"
               :rule="contentFormRules.textAnnotation.token"
               ignore-path-change
-              style="flex-grow: 2"
+              style="flex: 2"
             >
               <n-input-osk
                 :ref="

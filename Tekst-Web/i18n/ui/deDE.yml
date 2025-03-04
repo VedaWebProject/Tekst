@@ -212,7 +212,8 @@ browse:
   showAllResources: alle anzeigen
   contents:
     resOnLevel: '"{resource}" auf Ebene "{level}"'
-    showCombinedContents: Um kombinierte Inhalte von Ebene "{level}" anzuzeigen, klicken Sie auf
+    isContentContext: Es werden kombinierte Inhalte von Ebene "{level}" angezeigt
+    cannotShowContext: Diese Ressource enthält möglicherweise Inhalte für untergeordnete Belegstellen, die hier nicht angezeigt werden können.
     widgets:
       contentEdit:
         title: Inhalte bearbeiten
@@ -240,7 +241,7 @@ browse:
         title: Ausblenden
       contextWidget:
         title: Zeige Kontext
-        noContext: Es existieren keine Inhalte für diesen Kontext.
+        noContext: Es existieren keine Inhalte für diese oder untergeordnete Belegstellen.
       exportWidget:
         title: Export
         format: Format

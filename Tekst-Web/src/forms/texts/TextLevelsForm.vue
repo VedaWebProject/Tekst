@@ -162,7 +162,7 @@ async function handleModalSubmit() {
       />
       <n-flex align="center" :wrap="false" class="level">
         <div class="level-index">{{ lvlIndex + 1 }}.</div>
-        <n-flex vertical :wrap="false" style="flex-grow: 2">
+        <n-flex vertical :wrap="false" style="flex: 2">
           <n-flex v-for="lvlTranslation in lvl" :key="lvlTranslation.locale" :wrap="false">
             <span>{{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}</span>
             <span>{{ lvlTranslation.translation }}</span>

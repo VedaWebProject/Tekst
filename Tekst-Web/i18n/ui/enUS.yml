@@ -209,7 +209,8 @@ browse:
   showAllResources: show all
   contents:
     resOnLevel: '"{resource}" on level "{level}"'
-    showCombinedContents: To show combined contents from level "{level}", click on
+    isContentContext: You are shown combined contents from level "{level}"
+    cannotShowContext: This resource might contain contents for subordinate locations that cannot be displayed here.
     widgets:
       contentEdit:
         title: Edit contents
@@ -237,7 +238,7 @@ browse:
         title: Hide
       contextWidget:
         title: Show context
-        noContext: There are no contents for this context.
+        noContext: There are no contents for this location nor any subordinate locations.
       exportWidget:
         title: Export
         format: Format

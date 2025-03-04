@@ -30,7 +30,7 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
       }"
     >
       <hydrated-html v-if="!reduced" :html="content.html" :style="cutomStyle" />
-      <div v-else class="translucent i ui-font">
+      <div v-else class="translucent i ui-font text-small">
         {{ $t('contents.msgContentNoReducedView') }}
       </div>
     </div>

@@ -37,9 +37,6 @@ router = APIRouter(
 )
 
 
-# ROUTES DEFINITIONS...
-
-
 @router.get(
     "",
     response_model=PlatformData,

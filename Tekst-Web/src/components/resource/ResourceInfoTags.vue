@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import type { AnyResourceRead, TranslationLocaleKey } from '@/api';
+import type { AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
-import { CommunityIcon, ProposedIcon, PublicIcon, PublicOffIcon, VersionIcon } from '@/icons';
-import { useResourcesStore } from '@/stores';
+import {
+  CommunityIcon,
+  LevelsIcon,
+  ProposedIcon,
+  PublicIcon,
+  PublicOffIcon,
+  VersionIcon,
+} from '@/icons';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon, NTag } from 'naive-ui';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const props = withDefaults(
   defineProps<{
@@ -19,12 +25,12 @@ const props = withDefaults(
   }
 );
 
-const { locale } = useI18n({ useScope: 'global' });
+const state = useStateStore();
 const resources = useResourcesStore();
 
 const originalTitle = pickTranslation(
   resources.ofText.find((r) => r.id == props.resource.originalId)?.title,
-  locale.value as TranslationLocaleKey
+  state.locale
 );
 
 const publicationStatusType = computed(() =>
@@ -80,6 +86,15 @@ const accessSharesTip = computed(() => {
       {{
         $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })
       }}
+    </n-tag>
+    <n-tag
+      :size="size"
+      :title="`${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`"
+    >
+      <template #icon>
+        <n-icon :component="LevelsIcon" />
+      </template>
+      {{ state.textLevelLabels[props.resource.level] }}
     </n-tag>
   </n-flex>
 </template>

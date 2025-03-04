@@ -23,14 +23,14 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
       @create="() => ({ url: undefined, title: undefined, description: undefined })"
     >
       <template #default="{ index }">
-        <n-flex align="start" style="flex-grow: 2">
+        <n-flex align="start" style="flex: 2">
           <!-- URL -->
           <n-form-item
             ignore-path-change
             :label="$t('general.url')"
             :path="`links[${index}].url`"
             :rule="contentFormRules.externalReferences.url"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input
               v-model:value="model.links[index].url"
@@ -44,7 +44,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             :label="$t('resources.types.externalReferences.contentFields.title')"
             :path="`links[${index}].title`"
             :rule="contentFormRules.externalReferences.title"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input-osk
               v-model="model.links[index].title"
@@ -61,7 +61,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             :label="$t('resources.types.externalReferences.contentFields.description')"
             :path="`links[${index}].description`"
             :rule="contentFormRules.externalReferences.description"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input-osk
               v-model="model.links[index].description"

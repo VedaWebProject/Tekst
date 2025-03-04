@@ -113,7 +113,7 @@ onMounted(async () => {
           {{ $t('errors.notFound') }}
         </div>
       </template>
-      <div v-else class="translucent i ui-font">
+      <div v-else class="translucent i ui-font text-small">
         {{ $t('contents.msgContentNoReducedView') }}
       </div>
     </div>

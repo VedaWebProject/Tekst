@@ -19,11 +19,58 @@ from tekst.models.text import TextDocument
 from tekst.resources import AnyContentRead
 
 
-# initialize content router
 router = APIRouter(
     prefix="/browse",
     tags=["browse"],
 )
+
+
+async def _get_content_context(
+    resource: ResourceBaseDocument,
+    parent_location_id: PydanticObjectId | None,
+) -> list[ContentBaseDocument]:
+    """
+    Returns a list of all resource contents belonging to locations that are children
+    of the given parent location, sorted by reference location position.
+    """
+    # find IDs of all locations that are children of the requested parent
+    location_ids = [
+        location.id
+        for location in await LocationDocument.find(
+            LocationDocument.text_id == resource.text_id,
+            LocationDocument.level == resource.level,
+            LocationDocument.parent_id == parent_location_id,
+        )
+        .sort(+LocationDocument.position)
+        .to_list()
+    ]
+
+    # find direct contents of the requested resource for the requested locations
+    content_docs = await ContentBaseDocument.find(
+        ContentBaseDocument.resource_id == resource.id,
+        In(ContentBaseDocument.location_id, location_ids),
+        with_children=True,
+    ).to_list()
+
+    # if the resource is a version, we also have to find the original's contents
+    # that are missing in the requested resource version
+    if resource.original_id:
+        original_content_docs = await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource.original_id,
+            In(ContentBaseDocument.location_id, location_ids),
+            NotIn(
+                ContentBaseDocument.location_id, [u.location_id for u in content_docs]
+            ),
+            with_children=True,
+        ).to_list()
+    else:
+        original_content_docs = []
+
+    # combine contents lists, sort by reference location position, return
+    content_docs.extend(original_content_docs)
+    content_docs.sort(key=lambda c: location_ids.index(c.location_id))
+
+    return content_docs
 
 
 @router.get(
@@ -57,9 +104,6 @@ async def get_content_context(
     Returns a list of all resource contents belonging to the resource
     with the given ID, associated to locations that are children of the parent location
     with the given ID.
-
-    As the resulting list may contain contents of arbitrary type, the
-    returned content objects cannot be typed to their precise resource content type.
     """
 
     resource = await ResourceBaseDocument.find_one(
@@ -71,41 +115,7 @@ async def get_content_context(
     if not resource:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    location_ids = [
-        location.id
-        for location in await LocationDocument.find(
-            LocationDocument.text_id == resource.text_id,
-            LocationDocument.level == resource.level,
-            LocationDocument.parent_id == parent_location_id,
-        )
-        .sort(+LocationDocument.position)
-        .to_list()
-    ]
-
-    content_docs = await ContentBaseDocument.find(
-        ContentBaseDocument.resource_id == resource_id,
-        In(ContentBaseDocument.location_id, location_ids),
-        with_children=True,
-    ).to_list()
-
-    # if the resource is a version, we also have to find the original's contents
-    # that are missing in the requested resource version
-    if resource.original_id:
-        original_content_docs = await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == resource.original_id,
-            In(ContentBaseDocument.location_id, location_ids),
-            NotIn(
-                ContentBaseDocument.location_id, [u.location_id for u in content_docs]
-            ),
-            with_children=True,
-        ).to_list()
-    else:
-        original_content_docs = []
-
-    # combine contents lists, sort by reference location position, return
-    content_docs.extend(original_content_docs)
-    content_docs.sort(key=lambda u: location_ids.index(u.location_id))
-    return content_docs
+    return await _get_content_context(resource, parent_location_id)
 
 
 @router.get(
@@ -158,7 +168,10 @@ async def get_location_data(
         list[PydanticObjectId],
         Query(
             alias="res",
-            description="ID (or list of IDs) of resource(s) to return contents for",
+            description=(
+                "List of IDs of resources to return contents for "
+                "(assumes all if none are given)"
+            ),
         ),
     ] = [],
     only_head_contents: Annotated[
@@ -168,12 +181,6 @@ async def get_location_data(
             description="Only return contents for the head location of the path",
         ),
     ] = False,
-    limit: Annotated[
-        int,
-        Query(
-            description="Return at most <limit> contents",
-        ),
-    ] = 4096,
 ) -> LocationData:
     """
     Returns the location path from the location with the given ID or text/level/position
@@ -181,6 +188,10 @@ async def get_location_data(
     on structure level 0 as the first element of an array as well as all contents
     for the given resource(s) referencing the locations in the location path.
     """
+    # limit for number of contents fetched from DB per request
+    # (internal constant to conveniently adjust it later if needed)
+    contents_fetch_limit = 512
+
     # find target location
     location_doc = None
     if location_id:
@@ -210,27 +221,36 @@ async def get_location_data(
         else [location_path[-1].id]
     )
 
-    # collect contents
-    readable_resources = await ResourceBaseDocument.find(
+    # collect contents for target resources belonging to locations present in
+    # the location path (resource.level <= location_doc.level)
+    target_resources = await ResourceBaseDocument.find(
+        In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
         await ResourceBaseDocument.access_conditions_read(user),
         with_children=True,
     ).to_list()
     content_docs = (
         await ContentBaseDocument.find(
-            In(ContentBaseDocument.resource_id, resource_ids) if resource_ids else {},
             In(ContentBaseDocument.location_id, location_ids) if location_ids else {},
             In(
                 ContentBaseDocument.resource_id,
-                [resource.id for resource in readable_resources],
+                [resource.id for resource in target_resources],
             ),
             with_children=True,
         )
-        .limit(limit)
+        .limit(contents_fetch_limit)
         .to_list()
     )
+    # add combined contents (content context) of resources that are on the subordinate
+    # level of the target location (if the resources are configured to support this!)
+    for res in [
+        res
+        for res in target_resources
+        if res.level == location_doc.level + 1
+        and res.config.common.enable_content_context
+    ]:
+        content_docs.extend(await _get_content_context(res, location_doc.id))
 
-    # return combined data as LocationData,
-    # including IDs of preceding and subsequent locations
+    # find IDs of previous and next location on same level
     prev_loc = (
         await LocationDocument.find_one(
             LocationDocument.text_id == location_doc.text_id,
@@ -258,6 +278,9 @@ async def get_location_data(
             LocationDocument.position == 0,
         )
     )
+
+    # return location path, adjacent locations' IDs
+    # and requested contents as combined LocationData
     return LocationData(
         location_path=location_path,
         previous_loc_id=prev_loc.id if prev_loc else None,

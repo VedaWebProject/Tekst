@@ -208,7 +208,7 @@ onBeforeRouteUpdate((to, from) => {
                 ignore-path-change
                 secondary
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
-                style="flex-grow: 2"
+                style="flex: 2"
                 :main-form-label="$t('general.label')"
                 :translation-form-label="$t('general.label')"
                 :translation-form-rule="textFormRules.resourceCategoryTranslation"

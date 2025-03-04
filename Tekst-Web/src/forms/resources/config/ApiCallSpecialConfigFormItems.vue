@@ -80,7 +80,7 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
           :show-label="false"
           :path="`config.apiCall.transformDeps[${index}]`"
           :rule="typeSpecificResourceConfigFormRules.apiCall.transformDep"
-          style="flex-grow: 2"
+          style="flex: 2"
         >
           <n-input
             v-model:value="model.transformDeps[index]"

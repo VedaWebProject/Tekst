@@ -49,7 +49,7 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
             ignore-path-change
             secondary
             :parent-form-path-prefix="`config.textAnnotation.annotationGroups[${index}].translations`"
-            style="flex-grow: 2"
+            style="flex: 2"
             :main-form-label="$t('resources.settings.config.textAnnotation.annotationGroup', 1)"
             :translation-form-label="
               $t('resources.settings.config.textAnnotation.annotationGroup', 1)

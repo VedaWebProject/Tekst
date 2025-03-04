@@ -31,9 +31,6 @@ router = APIRouter(
 )
 
 
-# ROUTES DEFINITIONS...
-
-
 @router.post(
     "",
     response_model=LocationRead,

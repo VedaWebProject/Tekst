@@ -83,7 +83,7 @@ async def test_get_location_data(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
-    assert len(resp.json()["contents"]) == 0
+    assert len(resp.json()["contents"]) == 2  # because enable_content_context=True
 
     # higher level
     resp = await test_client.get(
@@ -93,7 +93,7 @@ async def test_get_location_data(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert len(resp.json()["locationPath"]) > 0
-    assert len(resp.json()["contents"]) > 0
+    assert len(resp.json()["contents"]) > 2
 
     # fail w/ invalid text ID
     resp = await test_client.get(

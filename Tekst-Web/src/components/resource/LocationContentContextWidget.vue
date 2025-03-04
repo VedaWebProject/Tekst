@@ -55,10 +55,7 @@ async function handleClick() {
 
 <template>
   <content-container-header-widget
-    v-if="
-      resource.config.common.enableContentContext &&
-      (browse.level == resource.level || browse.level == resource.level - 1)
-    "
+    v-if="resource.config.common.enableContentContext && browse.level == resource.level"
     :title="$t('browse.contents.widgets.contextWidget.title')"
     :icon-component="MergeIcon"
     :full="full"

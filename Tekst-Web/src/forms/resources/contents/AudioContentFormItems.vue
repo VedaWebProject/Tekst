@@ -37,14 +37,14 @@ async function checkUrlInput(input: HTMLInputElement) {
       @create="() => ({ url: undefined, caption: undefined })"
     >
       <template #default="{ index }">
-        <n-flex align="start" style="flex-grow: 2">
+        <n-flex align="start" style="flex: 2">
           <!-- URL -->
           <n-form-item
             ignore-path-change
             :label="$t('general.url')"
             :path="`files[${index}].url`"
             :rule="contentFormRules.audio.url"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input
               v-model:value="model.files[index].url"
@@ -59,7 +59,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             :label="$t('resources.types.audio.contentFields.sourceUrl')"
             :path="`files[${index}].sourceUrl`"
             :rule="contentFormRules.common.optionalUrl"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input
               v-model:value="model.files[index].sourceUrl"
@@ -73,7 +73,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             :label="$t('general.caption')"
             :path="`files[${index}].caption`"
             :rule="contentFormRules.audio.caption"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input-osk
               v-model="model.files[index].caption"

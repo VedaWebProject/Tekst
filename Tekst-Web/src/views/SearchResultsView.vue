@@ -132,7 +132,7 @@ onBeforeMount(() => {
       :took="search.results?.took"
       :error="search.error"
       :loading="search.loading"
-      style="flex-grow: 2"
+      style="flex: 2"
     />
     <n-flex :wrap="false">
       <search-results-sort-widget

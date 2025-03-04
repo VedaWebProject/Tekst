@@ -1,793 +1,784 @@
 [
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f4" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-        "meta": null,
-        "text": "Fuchs, du hast die Gans gestohlen,"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f5" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-        "meta": null,
-        "text": "|: gib sie wieder her! :|"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f6" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-        "meta": null,
-        "text": "|: Sonst wird sie der Jäger holen"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f7" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-        "meta": null,
-        "text": "mit dem Schießgewehr. :|"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f8" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-        "meta": null,
-        "text": "Seine große, lange Flinte"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8f9" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-        "meta": null,
-        "text": "|: schießt auf dich den Schrot, :|"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8fa" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-        "meta": null,
-        "text": "|: dass dich färbt die rote Tinte"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8fb" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-        "meta": null,
-        "text": "und dann bist du tot. :|"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8fc" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-        "meta": null,
-        "text": "Liebes Füchslein, lass dir raten,"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8fd" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-        "meta": null,
-        "text": "|: sei doch nur kein Dieb; :|"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8fe" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-        "resource_type": "plainText",
-        "meta": null,
-        "text": "|: nimm, du brauchst nicht Gänsebraten,"
-    },
-    {
-        "_id": { "$oid": "654b825533ee5737b297f8ff" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-        "meta": null,
-        "text": "mit der Maus vorlieb. :|"
-    },
-    {
-        "_id": { "$oid": "654ba432ec7833e469dde77b" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba282ec7833e469dde766" },
-        "meta": null,
-        "text": "古池や"
-    },
-    {
-        "_id": { "$oid": "654ba486ec7833e469dde77c" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba287ec7833e469dde767" },
-        "meta": null,
-        "text": "蛙飛び込む"
-    },
-    {
-        "_id": { "$oid": "654ba49eec7833e469dde77d" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba288ec7833e469dde768" },
-        "meta": null,
-        "text": "水の音"
-    },
-    {
-        "_id": { "$oid": "654ba553ec7833e469dde77f" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba288ec7833e469dde768" },
-        "meta": null,
-        "text": "sound of water."
-    },
-    {
-        "_id": { "$oid": "654ba570ec7833e469dde780" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba287ec7833e469dde767" },
-        "meta": null,
-        "text": "a frog jumps in,"
-    },
-    {
-        "_id": { "$oid": "654ba587ec7833e469dde781" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba282ec7833e469dde766" },
-        "meta": null,
-        "text": "The old pond-"
-    },
-    {
-        "_id": { "$oid": "654ba68eec7833e469dde783" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba678ec7833e469dde782" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba282ec7833e469dde766" },
-        "meta": null,
-        "text": "Furu ike ya"
-    },
-    {
-        "_id": { "$oid": "654ba6a7ec7833e469dde784" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba678ec7833e469dde782" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba287ec7833e469dde767" },
-        "meta": null,
-        "text": "kawazu tobikomu"
-    },
-    {
-        "_id": { "$oid": "654ba6b9ec7833e469dde785" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "654ba678ec7833e469dde782" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654ba288ec7833e469dde768" },
-        "meta": null,
-        "text": "mizu no oto"
-    },
-    {
-        "_id": { "$oid": "6641cfceaffa6cb96bc85a57" },
-        "_class_id": "ContentBaseDocument.ImagesContentDocument",
-        "resource_id": { "$oid": "6641ce24affa6cb96bc85a55" },
-        "resource_type": "images",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": null,
-        "notes": null,
-        "files": [
-            {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
-                "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/253px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
-                "source_url": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
-                "caption": "Ernst Anschütz: Musikalisches Schulgesangbuch, Heft 1, Leipzig 1824, S. 38"
-            },
-            {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/206px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "source_url": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "caption": "Jugendmarke mit Zuschlag, 1958, Kinderlieder, Fuchs du hast die Gans gestohlen"
-            },
-            {
-                "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
-                "thumb_url": "",
-                "source_url": "https://www.metmuseum.org/art/collection/search/888603",
-                "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
-            }
-        ]
-    },
-    {
-        "_id": { "$oid": "6641d3dbaffa6cb96bc85a5a" },
-        "_class_id": "ContentBaseDocument.ExternalReferencesContentDocument",
-        "resource_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
-        "resource_type": "externalReferences",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": null,
-        "notes": null,
-        "links": [
-            {
-                "url": "https://upload.wikimedia.org/score/o/k/oki67jic10ff1lnlz2s8fve28mcf0q6/oki67jic.midi",
-                "title": "Fuchs, du hast die Gans gestohlen",
-                "description": "Melodie, MIDI"
-            },
-            {
-                "url": "https://archive.org/details/unserliederbuchd01merc/page/12/mode/1up",
-                "title": "Unser Liederbuch: Die beliebtesten Kinderlieder",
-                "description": "Merck, Friederike; Volbach, Fritz, 1861-1940; Zumbusch, Ludwig von"
-            },
-            {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Fuchs_du_hast_die_Gans_gestohlen.jpg",
-                "title": "Sheet music",
-                "description": "JPG; Wikimedia Commons user BiografieFuzzi, https://creativecommons.org/licenses/by-sa/3.0/"
-            }
-        ]
-    },
-    {
-        "_id": { "$oid": "6641d613affa6cb96bc85a5d" },
-        "_class_id": "ContentBaseDocument.AudioContentDocument",
-        "resource_id": { "$oid": "6641d510affa6cb96bc85a5b" },
-        "resource_type": "audio",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": null,
-        "notes": null,
-        "files": [
-            {
-                "url": "https://archive.org/download/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a/Fuchs%20du%20hast%20die%20Gans%20gestohlen.mp3",
-                "source_url": "https://archive.org/details/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a",
-                "caption": "Gesang mit Orchesterbegleitung, C7440, Merkur (M 497)"
-            },
-            {
-                "url": "https://archive.org/download/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.%20Fuchs%20Du%20Hast%20Die%20Gans%20Gestohlen.mp3",
-                "source_url": "https://archive.org/details/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.+Fuchs+Du+Hast+Die+Gans+Gestohlen.mp3",
-                "caption": "Die Wiener Sängerknaben, Children's Songs, Epic (LC 3588)"
-            },
-            {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
-                "source_url": "https://commons.wikimedia.org/wiki/File:Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
-                "caption": "Glockenspiel (Florian Schachner), https://creativecommons.org/licenses/by-sa/4.0/"
-            }
-        ]
-    },
-    {
-        "_id": { "$oid": "664717c6ba9e65342c8e4943" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-        "comment": null,
-        "notes": null,
-        "text": "Fox, you stole the goose,"
-    },
-    {
-        "_id": { "$oid": "664717cdba9e65342c8e4945" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-        "comment": null,
-        "notes": null,
-        "text": "|: Give it back! :|"
-    },
-    {
-        "_id": { "$oid": "664717d4ba9e65342c8e4947" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-        "comment": null,
-        "notes": null,
-        "text": "|: Otherwise the hunter will get it,"
-    },
-    {
-        "_id": { "$oid": "664717dbba9e65342c8e4949" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-        "comment": null,
-        "notes": null,
-        "text": "with the rifle. :|"
-    },
-    {
-        "_id": { "$oid": "664717e9ba9e65342c8e494d" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-        "comment": null,
-        "notes": null,
-        "text": "|: shoots the buckshot at you, :|"
-    },
-    {
-        "_id": { "$oid": "664717f0ba9e65342c8e494f" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-        "comment": null,
-        "notes": null,
-        "text": "|: so that the ink will stain you red"
-    },
-    {
-        "_id": { "$oid": "664717f6ba9e65342c8e4951" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-        "comment": null,
-        "notes": null,
-        "text": "and then you are dead. :|"
-    },
-    {
-        "_id": { "$oid": "664717fdba9e65342c8e4953" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-        "comment": null,
-        "notes": null,
-        "text": "Dear little vixen, take it from me,"
-    },
-    {
-        "_id": { "$oid": "66471804ba9e65342c8e4955" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-        "comment": null,
-        "notes": null,
-        "text": "|: Don't be a thief; :|"
-    },
-    {
-        "_id": { "$oid": "6647180bba9e65342c8e4957" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-        "comment": null,
-        "notes": null,
-        "text": "|: You don't need roast goose,"
-    },
-    {
-        "_id": { "$oid": "66471812ba9e65342c8e4959" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-        "comment": null,
-        "notes": null,
-        "text": "make do with the mouse. :|"
-    },
-    {
-        "_id": { "$oid": "66471b7fba9e65342c8e4963" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-        "comment": null,
-        "notes": null,
-        "text": "Fuchs, du hast die Gans gestohlen,"
-    },
-    {
-        "_id": { "$oid": "66471b86ba9e65342c8e4965" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-        "comment": null,
-        "notes": null,
-        "text": "|: gib sie wieder her! :|"
-    },
-    {
-        "_id": { "$oid": "66471b8dba9e65342c8e4967" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-        "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
-        "notes": null,
-        "text": "|: Sonst wird dich der Jäger holen,"
-    },
-    {
-        "_id": { "$oid": "66471b96ba9e65342c8e496a" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-        "comment": null,
-        "notes": null,
-        "text": "mit dem Schießgewehr. :|"
-    },
-    {
-        "_id": { "$oid": "66471bdbba9e65342c8e496f" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-        "comment": null,
-        "notes": null,
-        "text": "Seine große, lange Flinte"
-    },
-    {
-        "_id": { "$oid": "66471be2ba9e65342c8e4971" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-        "comment": null,
-        "notes": null,
-        "text": "|: schießt auf dich den Schrot, :|"
-    },
-    {
-        "_id": { "$oid": "66471beaba9e65342c8e4974" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-        "comment": null,
-        "notes": null,
-        "text": "|: dass dich färbt die rote Tinte"
-    },
-    {
-        "_id": { "$oid": "66471bf0ba9e65342c8e4976" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-        "comment": null,
-        "notes": null,
-        "text": "und dann bist du tot. :|"
-    },
-    {
-        "_id": { "$oid": "66471bf6ba9e65342c8e4978" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-        "comment": null,
-        "notes": null,
-        "text": "Liebes Füchslein, lass dir raten,"
-    },
-    {
-        "_id": { "$oid": "66471bfcba9e65342c8e497a" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-        "comment": null,
-        "notes": null,
-        "text": "|: sei doch nur kein Dieb; :|"
-    },
-    {
-        "_id": { "$oid": "66471c02ba9e65342c8e497c" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-        "comment": null,
-        "notes": null,
-        "text": "|: nimm, du brauchst nicht Gänsebraten,"
-    },
-    {
-        "_id": { "$oid": "66471c0dba9e65342c8e497f" },
-        "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-        "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-        "resource_type": "plainText",
-        "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-        "comment": null,
-        "notes": null,
-        "text": "mit der Maus vorlieb. :|"
-    },
-    {
-        "_id": { "$oid": "66471ef0ba9e65342c8e49a0" },
-        "_class_id": "ContentBaseDocument.ExternalReferencesContentDocument",
-        "resource_id": { "$oid": "66471de0ba9e65342c8e4995" },
-        "resource_type": "externalReferences",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": null,
-        "notes": null,
-        "links": [
-            {
-                "url": "https://diglib.hab.de/drucke/un-17-1b/start.htm?image=00048",
-                "title": "Digitalisat \"Musikalisches Schulgesangbuch\"",
-                "description": "Ernst Anschütz: Musikalisches Schulgesangbuch. Heft 1. Reclam, Leipzig 1824, S. 38 – Herzog August Bibliothek"
-            },
-            {
-                "url": "https://web.archive.org/web/20070926234000/http://www.murnau-stiftung.de/de/suchergebnis.asp?ID=4501",
-                "title": "Fuchs, du hast die Gans gestohlen (Kurzspielfilm)",
-                "description": "Kurzfilm, Alfred Stöger, 1936 – Filmarchiv der Friedrich-Wilhelm-Murnau-Stiftung"
-            },
-            {
-                "url": "https://de.wikipedia.org/wiki/G%C3%A4nsedieb_(Spiel)#Spielablauf",
-                "title": "Gänsedieb",
-                "description": "Altes Kinderspiel, das auf der Melodie des selben Volksliedes beruht – Wikipedia"
-            }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656cdd681a66322c1bffb26" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            {
-                "token": "Fuchs",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            {
-                "token": "du",
-                "annotations": [
-                    { "key": "Entity", "value": ["Fox"] },
-                    { "key": "comment", "value": ["This is a comment."] }
-                ],
-                "lb": false
-            },
-            { "token": "hast", "annotations": [], "lb": false },
-            { "token": "die", "annotations": [], "lb": false },
-            {
-                "token": "Gans",
-                "annotations": [{ "key": "Entity", "value": ["Goose"] }],
-                "lb": false
-            },
-            { "token": "gestohlen", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656ce6881a66322c1bffb28" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "gib", "annotations": [], "lb": false },
-            {
-                "token": "sie",
-                "annotations": [{ "key": "Entity", "value": ["Goose"] }],
-                "lb": false
-            },
-            { "token": "wieder", "annotations": [], "lb": false },
-            { "token": "her", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656cea581a66322c1bffb2a" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "sonst", "annotations": [], "lb": false },
-            { "token": "wird", "annotations": [], "lb": false },
-            {
-                "token": "dich",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "der", "annotations": [], "lb": false },
-            {
-                "token": "Jäger",
-                "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
-                "lb": false
-            },
-            { "token": "holen", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656ced381a66322c1bffb2d" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "mit", "annotations": [], "lb": false },
-            { "token": "dem", "annotations": [], "lb": false },
-            { "token": "Schießgewehr", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656cf0781a66322c1bffb30" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            {
-                "token": "Seine",
-                "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
-                "lb": false
-            },
-            { "token": "große", "annotations": [], "lb": false },
-            { "token": "lange", "annotations": [], "lb": false },
-            { "token": "Flinte", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656cfac81a66322c1bffb33" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "schießt", "annotations": [], "lb": false },
-            { "token": "auf", "annotations": [], "lb": false },
-            {
-                "token": "dich",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "den", "annotations": [], "lb": false },
-            { "token": "Schrot", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d00681a66322c1bffb35" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "dass", "annotations": [], "lb": false },
-            {
-                "token": "dich",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "färbt", "annotations": [], "lb": false },
-            { "token": "die", "annotations": [], "lb": false },
-            { "token": "rote", "annotations": [], "lb": false },
-            { "token": "Tinte", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d02081a66322c1bffb37" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "und", "annotations": [], "lb": false },
-            { "token": "dann", "annotations": [], "lb": false },
-            { "token": "bist", "annotations": [], "lb": false },
-            {
-                "token": "du",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "tot", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d04081a66322c1bffb39" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "Liebes", "annotations": [], "lb": false },
-            {
-                "token": "Füchslein",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "lass", "annotations": [], "lb": false },
-            { "token": "dir", "annotations": [], "lb": false },
-            { "token": "raten", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d05881a66322c1bffb3b" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "sei", "annotations": [], "lb": false },
-            { "token": "doch", "annotations": [], "lb": false },
-            { "token": "nur", "annotations": [], "lb": false },
-            { "token": "kein", "annotations": [], "lb": false },
-            { "token": "Dieb", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d07181a66322c1bffb3d" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-        "comment": null,
-        "notes": null,
-        "tokens": [
-            { "token": "nimm", "annotations": [], "lb": false },
-            {
-                "token": "du",
-                "annotations": [{ "key": "Entity", "value": ["Fox"] }],
-                "lb": false
-            },
-            { "token": "brauchst", "annotations": [], "lb": false },
-            { "token": "nicht", "annotations": [], "lb": false },
-            { "token": "Gänsebraten", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "6656d09c81a66322c1bffb3f" },
-        "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
-        "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
-        "resource_type": "textAnnotation",
-        "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-        "comment": "This is the only occurrence of the entity \"Mouse\"!",
-        "notes": null,
-        "tokens": [
-            { "token": "mit", "annotations": [], "lb": false },
-            { "token": "der", "annotations": [], "lb": false },
-            {
-                "token": "Maus",
-                "annotations": [{ "key": "Entity", "value": ["Mouse"] }],
-                "lb": false
-            },
-            { "token": "vorlieb", "annotations": [], "lb": false }
-        ]
-    },
-    {
-        "_id": { "$oid": "67472cd03d0d7622956981ca" },
-        "_class_id": "ContentBaseDocument.RichTextContentDocument",
-        "resource_id": { "$oid": "67472c393d0d7622956981c9" },
-        "resource_type": "richText",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "comment": null,
-        "notes": null,
-        "html": "<pre><code>G                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n\nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n\nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb</code></pre>",
-        "editor_mode": "html"
-    },
-    {
-        "_id": { "$oid": "679b60dba993e4db9b1bd9f5" },
-        "_class_id": "ContentBaseDocument.ApiCallContentDocument",
-        "resource_id": { "$oid": "679b5f25a993e4db9b1bd9f4" },
-        "resource_type": "apiCall",
-        "location_id": { "$oid": "664321104aa6341acd83fb05" },
-        "query": "foo=bar",
-        "transform_context": "{\n  \"helloWorld\": \"On a side note: Hello World!\"\n}"
-    }
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f4" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "meta": null,
+    "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f5" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "meta": null,
+    "text": "|: gib sie wieder her! :|"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f6" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "meta": null,
+    "text": "|: Sonst wird sie der Jäger holen"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f7" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "meta": null,
+    "text": "mit dem Schießgewehr. :|"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f8" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "meta": null,
+    "text": "Seine große, lange Flinte"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f9" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "meta": null,
+    "text": "|: schießt auf dich den Schrot, :|"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8fa" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "meta": null,
+    "text": "|: dass dich färbt die rote Tinte"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8fb" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "meta": null,
+    "text": "und dann bist du tot. :|"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8fc" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "meta": null,
+    "text": "Liebes Füchslein, lass dir raten,"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8fd" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "meta": null,
+    "text": "|: sei doch nur kein Dieb; :|"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8fe" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "resource_type": "plainText",
+    "meta": null,
+    "text": "|: nimm, du brauchst nicht Gänsebraten,"
+  },
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8ff" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "meta": null,
+    "text": "mit der Maus vorlieb. :|"
+  },
+  {
+    "_id": { "$oid": "654ba432ec7833e469dde77b" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
+    "meta": null,
+    "text": "古池や"
+  },
+  {
+    "_id": { "$oid": "654ba486ec7833e469dde77c" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
+    "meta": null,
+    "text": "蛙飛び込む"
+  },
+  {
+    "_id": { "$oid": "654ba49eec7833e469dde77d" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
+    "meta": null,
+    "text": "水の音"
+  },
+  {
+    "_id": { "$oid": "654ba553ec7833e469dde77f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
+    "meta": null,
+    "text": "sound of water."
+  },
+  {
+    "_id": { "$oid": "654ba570ec7833e469dde780" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
+    "meta": null,
+    "text": "a frog jumps in,"
+  },
+  {
+    "_id": { "$oid": "654ba587ec7833e469dde781" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba525ec7833e469dde77e" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
+    "meta": null,
+    "text": "The old pond-"
+  },
+  {
+    "_id": { "$oid": "654ba68eec7833e469dde783" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba678ec7833e469dde782" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba282ec7833e469dde766" },
+    "meta": null,
+    "text": "Furu ike ya"
+  },
+  {
+    "_id": { "$oid": "654ba6a7ec7833e469dde784" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba678ec7833e469dde782" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba287ec7833e469dde767" },
+    "meta": null,
+    "text": "kawazu tobikomu"
+  },
+  {
+    "_id": { "$oid": "654ba6b9ec7833e469dde785" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "654ba678ec7833e469dde782" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654ba288ec7833e469dde768" },
+    "meta": null,
+    "text": "mizu no oto"
+  },
+  {
+    "_id": { "$oid": "6641cfceaffa6cb96bc85a57" },
+    "_class_id": "ContentBaseDocument.ImagesContentDocument",
+    "resource_id": { "$oid": "6641ce24affa6cb96bc85a55" },
+    "resource_type": "images",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "files": [
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
+        "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/253px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
+        "caption": "Ernst Anschütz: Musikalisches Schulgesangbuch, Heft 1, Leipzig 1824, S. 38"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/206px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "caption": "Jugendmarke mit Zuschlag, 1958, Kinderlieder, Fuchs du hast die Gans gestohlen"
+      },
+      {
+        "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
+        "thumb_url": "",
+        "source_url": "https://www.metmuseum.org/art/collection/search/888603",
+        "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "6641d3dbaffa6cb96bc85a5a" },
+    "_class_id": "ContentBaseDocument.ExternalReferencesContentDocument",
+    "resource_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
+    "resource_type": "externalReferences",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "links": [
+      {
+        "url": "https://upload.wikimedia.org/score/o/k/oki67jic10ff1lnlz2s8fve28mcf0q6/oki67jic.midi",
+        "title": "Fuchs, du hast die Gans gestohlen",
+        "description": "Melodie, MIDI"
+      },
+      {
+        "url": "https://archive.org/details/unserliederbuchd01merc/page/12/mode/1up",
+        "title": "Unser Liederbuch: Die beliebtesten Kinderlieder",
+        "description": "Merck, Friederike; Volbach, Fritz, 1861-1940; Zumbusch, Ludwig von"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "title": "Sheet music",
+        "description": "JPG; Wikimedia Commons user BiografieFuzzi, https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "6641d613affa6cb96bc85a5d" },
+    "_class_id": "ContentBaseDocument.AudioContentDocument",
+    "resource_id": { "$oid": "6641d510affa6cb96bc85a5b" },
+    "resource_type": "audio",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "files": [
+      {
+        "url": "https://archive.org/download/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a/Fuchs%20du%20hast%20die%20Gans%20gestohlen.mp3",
+        "source_url": "https://archive.org/details/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a",
+        "caption": "Gesang mit Orchesterbegleitung, C7440, Merkur (M 497)"
+      },
+      {
+        "url": "https://archive.org/download/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.%20Fuchs%20Du%20Hast%20Die%20Gans%20Gestohlen.mp3",
+        "source_url": "https://archive.org/details/lp_childrens-songs_die-wiener-sangerknaben/disc1/01.01.+Fuchs+Du+Hast+Die+Gans+Gestohlen.mp3",
+        "caption": "Die Wiener Sängerknaben, Children's Songs, Epic (LC 3588)"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
+        "caption": "Glockenspiel (Florian Schachner), https://creativecommons.org/licenses/by-sa/4.0/"
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "664717c6ba9e65342c8e4943" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": null,
+    "notes": null,
+    "text": "Fox, you stole the goose,"
+  },
+  {
+    "_id": { "$oid": "664717cdba9e65342c8e4945" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Give it back! :|"
+  },
+  {
+    "_id": { "$oid": "664717d4ba9e65342c8e4947" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Otherwise the hunter will get it,"
+  },
+  {
+    "_id": { "$oid": "664717dbba9e65342c8e4949" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "comment": null,
+    "notes": null,
+    "text": "with the rifle. :|"
+  },
+  {
+    "_id": { "$oid": "664717e9ba9e65342c8e494d" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "comment": null,
+    "notes": null,
+    "text": "|: shoots the buckshot at you, :|"
+  },
+  {
+    "_id": { "$oid": "664717f0ba9e65342c8e494f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "comment": null,
+    "notes": null,
+    "text": "|: so that the ink will stain you red"
+  },
+  {
+    "_id": { "$oid": "664717f6ba9e65342c8e4951" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "comment": null,
+    "notes": null,
+    "text": "and then you are dead. :|"
+  },
+  {
+    "_id": { "$oid": "664717fdba9e65342c8e4953" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "comment": null,
+    "notes": null,
+    "text": "Dear little vixen, take it from me,"
+  },
+  {
+    "_id": { "$oid": "66471804ba9e65342c8e4955" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "comment": null,
+    "notes": null,
+    "text": "|: Don't be a thief; :|"
+  },
+  {
+    "_id": { "$oid": "6647180bba9e65342c8e4957" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "comment": null,
+    "notes": null,
+    "text": "|: You don't need roast goose,"
+  },
+  {
+    "_id": { "$oid": "66471812ba9e65342c8e4959" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "comment": null,
+    "notes": null,
+    "text": "make do with the mouse. :|"
+  },
+  {
+    "_id": { "$oid": "66471b7fba9e65342c8e4963" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": null,
+    "notes": null,
+    "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "66471b86ba9e65342c8e4965" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": null,
+    "notes": null,
+    "text": "|: gib sie wieder her! :|"
+  },
+  {
+    "_id": { "$oid": "66471b8dba9e65342c8e4967" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
+    "notes": null,
+    "text": "|: Sonst wird dich der Jäger holen,"
+  },
+  {
+    "_id": { "$oid": "66471b96ba9e65342c8e496a" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "comment": null,
+    "notes": null,
+    "text": "mit dem Schießgewehr. :|"
+  },
+  {
+    "_id": { "$oid": "66471bdbba9e65342c8e496f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "comment": null,
+    "notes": null,
+    "text": "Seine große, lange Flinte"
+  },
+  {
+    "_id": { "$oid": "66471be2ba9e65342c8e4971" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "comment": null,
+    "notes": null,
+    "text": "|: schießt auf dich den Schrot, :|"
+  },
+  {
+    "_id": { "$oid": "66471beaba9e65342c8e4974" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "comment": null,
+    "notes": null,
+    "text": "|: dass dich färbt die rote Tinte"
+  },
+  {
+    "_id": { "$oid": "66471bf0ba9e65342c8e4976" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "comment": null,
+    "notes": null,
+    "text": "und dann bist du tot. :|"
+  },
+  {
+    "_id": { "$oid": "66471bf6ba9e65342c8e4978" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "comment": null,
+    "notes": null,
+    "text": "Liebes Füchslein, lass dir raten,"
+  },
+  {
+    "_id": { "$oid": "66471bfcba9e65342c8e497a" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "comment": null,
+    "notes": null,
+    "text": "|: sei doch nur kein Dieb; :|"
+  },
+  {
+    "_id": { "$oid": "66471c02ba9e65342c8e497c" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "comment": null,
+    "notes": null,
+    "text": "|: nimm, du brauchst nicht Gänsebraten,"
+  },
+  {
+    "_id": { "$oid": "66471c0dba9e65342c8e497f" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "comment": null,
+    "notes": null,
+    "text": "mit der Maus vorlieb. :|"
+  },
+  {
+    "_id": { "$oid": "66471ef0ba9e65342c8e49a0" },
+    "_class_id": "ContentBaseDocument.ExternalReferencesContentDocument",
+    "resource_id": { "$oid": "66471de0ba9e65342c8e4995" },
+    "resource_type": "externalReferences",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "links": [
+      {
+        "url": "https://diglib.hab.de/drucke/un-17-1b/start.htm?image=00048",
+        "title": "Digitalisat \"Musikalisches Schulgesangbuch\"",
+        "description": "Ernst Anschütz: Musikalisches Schulgesangbuch. Heft 1. Reclam, Leipzig 1824, S. 38 – Herzog August Bibliothek"
+      },
+      {
+        "url": "https://web.archive.org/web/20070926234000/http://www.murnau-stiftung.de/de/suchergebnis.asp?ID=4501",
+        "title": "Fuchs, du hast die Gans gestohlen (Kurzspielfilm)",
+        "description": "Kurzfilm, Alfred Stöger, 1936 – Filmarchiv der Friedrich-Wilhelm-Murnau-Stiftung"
+      },
+      {
+        "url": "https://de.wikipedia.org/wiki/G%C3%A4nsedieb_(Spiel)#Spielablauf",
+        "title": "Gänsedieb",
+        "description": "Altes Kinderspiel, das auf der Melodie des selben Volksliedes beruht – Wikipedia"
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656cdd681a66322c1bffb26" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      {
+        "token": "Fuchs",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      {
+        "token": "du",
+        "annotations": [
+          { "key": "Entity", "value": ["Fox"] },
+          { "key": "comment", "value": ["This is a comment."] }
+        ],
+        "lb": false
+      },
+      { "token": "hast", "annotations": [], "lb": false },
+      { "token": "die", "annotations": [], "lb": false },
+      {
+        "token": "Gans",
+        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
+        "lb": false
+      },
+      { "token": "gestohlen", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656ce6881a66322c1bffb28" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "gib", "annotations": [], "lb": false },
+      {
+        "token": "sie",
+        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
+        "lb": false
+      },
+      { "token": "wieder", "annotations": [], "lb": false },
+      { "token": "her", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656cea581a66322c1bffb2a" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "sonst", "annotations": [], "lb": false },
+      { "token": "wird", "annotations": [], "lb": false },
+      {
+        "token": "dich",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "der", "annotations": [], "lb": false },
+      {
+        "token": "Jäger",
+        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
+        "lb": false
+      },
+      { "token": "holen", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656ced381a66322c1bffb2d" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "mit", "annotations": [], "lb": false },
+      { "token": "dem", "annotations": [], "lb": false },
+      { "token": "Schießgewehr", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656cf0781a66322c1bffb30" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      {
+        "token": "Seine",
+        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
+        "lb": false
+      },
+      { "token": "große", "annotations": [], "lb": false },
+      { "token": "lange", "annotations": [], "lb": false },
+      { "token": "Flinte", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656cfac81a66322c1bffb33" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "schießt", "annotations": [], "lb": false },
+      { "token": "auf", "annotations": [], "lb": false },
+      {
+        "token": "dich",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "den", "annotations": [], "lb": false },
+      { "token": "Schrot", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d00681a66322c1bffb35" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "dass", "annotations": [], "lb": false },
+      {
+        "token": "dich",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "färbt", "annotations": [], "lb": false },
+      { "token": "die", "annotations": [], "lb": false },
+      { "token": "rote", "annotations": [], "lb": false },
+      { "token": "Tinte", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d02081a66322c1bffb37" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "und", "annotations": [], "lb": false },
+      { "token": "dann", "annotations": [], "lb": false },
+      { "token": "bist", "annotations": [], "lb": false },
+      {
+        "token": "du",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "tot", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d04081a66322c1bffb39" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "Liebes", "annotations": [], "lb": false },
+      {
+        "token": "Füchslein",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "lass", "annotations": [], "lb": false },
+      { "token": "dir", "annotations": [], "lb": false },
+      { "token": "raten", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d05881a66322c1bffb3b" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "sei", "annotations": [], "lb": false },
+      { "token": "doch", "annotations": [], "lb": false },
+      { "token": "nur", "annotations": [], "lb": false },
+      { "token": "kein", "annotations": [], "lb": false },
+      { "token": "Dieb", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d07181a66322c1bffb3d" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+    "comment": null,
+    "notes": null,
+    "tokens": [
+      { "token": "nimm", "annotations": [], "lb": false },
+      {
+        "token": "du",
+        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "lb": false
+      },
+      { "token": "brauchst", "annotations": [], "lb": false },
+      { "token": "nicht", "annotations": [], "lb": false },
+      { "token": "Gänsebraten", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656d09c81a66322c1bffb3f" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "comment": "This is the only occurrence of the entity \"Mouse\"!",
+    "notes": null,
+    "tokens": [
+      { "token": "mit", "annotations": [], "lb": false },
+      { "token": "der", "annotations": [], "lb": false },
+      {
+        "token": "Maus",
+        "annotations": [{ "key": "Entity", "value": ["Mouse"] }],
+        "lb": false
+      },
+      { "token": "vorlieb", "annotations": [], "lb": false }
+    ]
+  },
+  {
+    "_id": { "$oid": "67472cd03d0d7622956981ca" },
+    "_class_id": "ContentBaseDocument.RichTextContentDocument",
+    "resource_id": { "$oid": "67472c393d0d7622956981c9" },
+    "resource_type": "richText",
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "comment": null,
+    "notes": null,
+    "html": "<pre><code>G                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n\nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n\nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb</code></pre>",
+    "editor_mode": "html"
+  }
 ]

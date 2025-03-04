@@ -186,7 +186,7 @@ whenever(Enter, () => {
                     <div v-else class="text-large translucent ellipsis">
                       {{ $t('osk.inputPlaceholder') }}
                     </div>
-                    <div style="flex-grow: 2"></div>
+                    <div style="flex: 2"></div>
                     <n-button
                       secondary
                       type="primary"

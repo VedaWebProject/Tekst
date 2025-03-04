@@ -168,15 +168,15 @@ async function loadLocationData() {
   loadingData.value = true;
   // define part of query that will determine the target location
   const locQuery: LocationDataQuery = {
-    id: props.locId,
+    ...(props.locId
+      ? { id: props.locId }
+      : // if no location ID is provided, use the current text ID and resource level
+        // (will default to first location on the specified level)
+        {
+          txt: state.text?.id,
+          lvl: resource.value.level,
+        }),
   };
-  if (!locQuery.id) {
-    // if no location ID is provided, use the current text ID and resource level
-    // (will default to first location on level)
-    locQuery.txt = state.text?.id;
-    locQuery.lvl = resource.value.level;
-    delete locQuery.id;
-  }
   // request location data
   const { data: locationData, error } = await GET('/browse', {
     params: {

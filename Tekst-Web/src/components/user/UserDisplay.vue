@@ -35,7 +35,7 @@ const { pageLogo } = useLogo();
 </script>
 
 <template>
-  <n-flex align="center" :size="size" :style="size ? `font-size: var(--font-size-${size})` : ''">
+  <n-flex align="center" :size="size" :style="`font-size: var(--font-size-${size})`">
     <user-avatar
       v-if="showAvatar"
       :avatar-url="!system ? user?.avatarUrl || undefined : pageLogo"

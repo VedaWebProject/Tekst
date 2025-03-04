@@ -45,9 +45,6 @@ router = APIRouter(
 )
 
 
-# ROUTES DEFINITIONS...
-
-
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
 async def get_all_texts(ou: OptionalUserDep, limit: int = 128) -> list[TextRead]:
     """

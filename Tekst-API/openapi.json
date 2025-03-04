@@ -187,7 +187,7 @@
           "browse"
         ],
         "summary": "Get content context",
-        "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.\n\nAs the resulting list may contain contents of arbitrary type, the\nreturned content objects cannot be typed to their precise resource content type.",
+        "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.",
         "operationId": "getContentContext",
         "security": [
           {
@@ -412,11 +412,11 @@
                 "pattern": "^[0-9a-f]{24}$",
                 "example": "5eb7cf5a86d9755df3a6c593"
               },
-              "description": "ID (or list of IDs) of resource(s) to return contents for",
+              "description": "List of IDs of resources to return contents for (assumes all if none are given)",
               "default": [],
               "title": "Res"
             },
-            "description": "ID (or list of IDs) of resource(s) to return contents for"
+            "description": "List of IDs of resources to return contents for (assumes all if none are given)"
           },
           {
             "name": "head",
@@ -429,18 +429,6 @@
               "title": "Head"
             },
             "description": "Only return contents for the head location of the path"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Return at most <limit> contents",
-              "default": 4096,
-              "title": "Limit"
-            },
-            "description": "Return at most <limit> contents"
           }
         ],
         "responses": {

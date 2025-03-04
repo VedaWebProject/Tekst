@@ -18,7 +18,6 @@ from tekst.resources import (
 from tekst.search import set_index_ood
 
 
-# initialize content router
 router = APIRouter(
     prefix="/contents",
     tags=["contents"],

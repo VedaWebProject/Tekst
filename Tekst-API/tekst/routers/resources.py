@@ -52,7 +52,7 @@ from tekst.types import ResourceTypeName
 from tekst.utils import client_hash
 
 
-async def preprocess_resource_read(
+async def _preprocess_res_read(
     resource_doc: ResourceBaseDocument,
     for_user: UserRead | None = None,
 ) -> AnyResourceRead:
@@ -186,7 +186,7 @@ async def create_resource(
     resource_doc.owner_id = user.id  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.post(
@@ -265,7 +265,7 @@ async def create_resource_version(
         )
         .create()
     )
-    return await preprocess_resource_read(version_doc, user)
+    return await _preprocess_res_read(version_doc, user)
 
 
 @router.patch(
@@ -349,7 +349,7 @@ async def update_resource(
     # update document
     await resource_doc.apply_updates(updates)
 
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.get(
@@ -410,8 +410,7 @@ async def find_resources(
 
     # return processed results, enrich with user-specific access flags etc.
     return [
-        await preprocess_resource_read(resource_doc, user)
-        for resource_doc in resource_docs
+        await _preprocess_res_read(resource_doc, user) for resource_doc in resource_docs
     ]
 
 
@@ -436,7 +435,7 @@ async def get_resource(
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.delete(
@@ -539,7 +538,7 @@ async def transfer_resource(
 
     # if the target user is already the owner, return the resource
     if target_user_id == resource_doc.owner_id:
-        return await preprocess_resource_read(resource_doc, user)
+        return await _preprocess_res_read(resource_doc, user)
 
     # check user resources limit
     if (
@@ -565,7 +564,7 @@ async def transfer_resource(
             ],
         }
     )
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.post(
@@ -593,7 +592,7 @@ async def propose_resource(
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise errors.E_403_FORBIDDEN
     if resource_doc.proposed:
-        return await preprocess_resource_read(resource_doc, user)
+        return await _preprocess_res_read(resource_doc, user)
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PROPOSE_PUBLIC
     if resource_doc.original_id:
@@ -612,7 +611,7 @@ async def propose_resource(
         username=user.name if "name" in user.public_fields else user.username,
         resource_title=pick_translation(resource_doc.title),
     )
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.post(
@@ -645,7 +644,7 @@ async def unpropose_resource(
             ResourceBaseDocument.public: False,
         }
     )
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.post(
@@ -670,7 +669,7 @@ async def publish_resource(
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
     if resource_doc.public:
-        return await preprocess_resource_read(resource_doc, user)
+        return await _preprocess_res_read(resource_doc, user)
     if not resource_doc.proposed:
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
@@ -699,7 +698,7 @@ async def publish_resource(
         resource_title=pick_translation(resource_doc.title),
     )
 
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.post(
@@ -739,7 +738,7 @@ async def unpublish_resource(
         by_public_resource=True,  # act as if resource public, to force ood status
     )
 
-    return await preprocess_resource_read(resource_doc, user)
+    return await _preprocess_res_read(resource_doc, user)
 
 
 @router.get(

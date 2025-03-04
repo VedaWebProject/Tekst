@@ -63,7 +63,7 @@ const localeOptions = computed(() =>
       "
     >
       <template #default="{ value: translationValue, index: translationIndex }">
-        <n-flex align="flex-start" wrap style="flex-grow: 2">
+        <n-flex align="flex-start" wrap style="flex: 2">
           <!-- LOCALE -->
           <n-form-item
             v-if="model"
@@ -90,7 +90,7 @@ const localeOptions = computed(() =>
             :show-label="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].translation`"
             :rule="translationFormRule"
-            style="flex-grow: 2"
+            style="flex: 2"
           >
             <n-input
               v-model:value="translationValue.translation"

@@ -16,7 +16,6 @@ from tekst.models.user import UserDocument
 from tekst.notifications import broadcast_admin_notification, send_notification
 
 
-# initialize corrections router
 router = APIRouter(
     prefix="/corrections",
     tags=["corrections"],

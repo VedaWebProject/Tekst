@@ -20,8 +20,11 @@ function handleDeleteClick() {
   <n-list-item>
     <n-flex align="center">
       <n-badge :value="thread.unread" :offset="[10, 0]">
-        <user-display v-if="thread.contact" :user="thread.contact" :link="false" />
-        <span v-else>???</span>
+        <user-display
+          :user="thread.contact || undefined"
+          :link="false"
+          :system="!thread.contact || thread.contact.username === 'system'"
+        />
       </n-badge>
     </n-flex>
 

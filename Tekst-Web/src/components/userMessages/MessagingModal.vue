@@ -89,6 +89,10 @@ whenever(ctrlEnter, () => {
       <user-display
         :user="userMessages.openThread?.contact || undefined"
         :link="false"
+        :system="
+          !userMessages.openThread?.contact ||
+          userMessages.openThread?.contact.username === 'system'
+        "
         size="large"
       />
     </template>
@@ -128,10 +132,9 @@ whenever(ctrlEnter, () => {
           :resizable="false"
           :autosize="{ minRows: 1, maxRows: 3 }"
           show-count
-          :maxlength="1000"
           :disabled="!userMessages.openThread?.id"
           :allow-input="(v) => v.length == 0 || v.replace(/[\s\n\t]+/g, '').length > 0"
-          style="flex-grow: 2"
+          style="flex: 2"
         />
         <n-button
           type="primary"

@@ -76,7 +76,7 @@ watch(
     <icon-heading level="1" :icon="TextsIcon" style="margin-bottom: 0">
       {{ state.text?.title || $t('texts.heading') }}
     </icon-heading>
-    <n-flex :wrap="false" justify="flex-end" style="flex-grow: 2">
+    <n-flex :wrap="false" justify="flex-end" style="flex: 2">
       <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
         <template #icon>
           <n-icon :component="DeleteIcon" />

@@ -25,7 +25,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
       @create="() => ({ prop: undefined, value: undefined })"
     >
       <template #default="{ value, index }">
-        <n-flex align="flex-start" wrap style="flex-grow: 2">
+        <n-flex align="flex-start" wrap style="flex: 2">
           <!-- PROPERTY NAME -->
           <n-form-item
             ignore-path-change

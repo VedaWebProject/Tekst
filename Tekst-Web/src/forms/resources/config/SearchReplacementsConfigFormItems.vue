@@ -22,7 +22,7 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
       @create="() => ({ pattern: '', replacement: '' })"
     >
       <template #default="{ value, index }">
-        <n-flex align="flex-start" wrap style="flex-grow: 2">
+        <n-flex align="flex-start" wrap style="flex: 2">
           <!-- PATTERN -->
           <n-form-item
             ignore-path-change

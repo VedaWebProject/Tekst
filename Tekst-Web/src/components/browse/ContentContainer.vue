@@ -4,7 +4,15 @@ import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.v
 import CollapsableContent from '@/components/CollapsableContent.vue';
 import contentComponents from '@/components/content/mappings';
 import { $t } from '@/i18n';
-import { HourglassIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
+import {
+  HourglassIcon,
+  LevelsIcon,
+  MergeIcon,
+  NoContentIcon,
+  ProposedIcon,
+  PublicOffIcon,
+  WarningIcon,
+} from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useElementHover } from '@vueuse/core';
@@ -20,17 +28,27 @@ const browse = useBrowseStore();
 const state = useStateStore();
 const themeVars = useThemeVars();
 
+const contentsLoaded = computed(() => !!props.resource.contents?.length);
+const onChildLevel = computed(() => props.resource.level - 1 === browse.level);
+const contentContextLoaded = computed(() => contentsLoaded.value && onChildLevel.value);
+
+const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
+const contentContainerTitle = computed(() =>
+  !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
+);
+
 const contentContainerRef = ref();
 const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayEnter: 0,
   delayLeave: 0,
 });
+const headerWidgetsOpacity = computed<number>(() =>
+  isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
+);
 
 const collapsable = computed(
   () =>
-    !!props.resource.config.general.defaultCollapsed &&
-    !browse.reducedView &&
-    !!props.resource.contents?.length
+    !browse.reducedView && contentsLoaded.value && !!props.resource.config.general.defaultCollapsed
 );
 const collapsed = ref(!!props.resource.config.general.defaultCollapsed);
 watch(
@@ -40,85 +58,112 @@ watch(
   },
   { immediate: true }
 );
-
-const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
-const contentContainerTitle = computed(() =>
-  !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
-);
-const headerWidgetsOpacity = computed<number>(() =>
-  isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
-);
-const hasContent = computed(() => !!props.resource.contents?.length);
-const show = computed(() => props.resource.active && (hasContent.value || !browse.reducedView));
-const fromChildLevel = computed(
-  () =>
-    props.resource.level - 1 === browse.level && props.resource.config.common.enableContentContext
-);
 </script>
 
 <template>
   <div
-    v-if="show"
+    v-if="resource.active && (contentsLoaded || !browse.reducedView)"
     ref="contentContainerRef"
     class="content-block content-container"
-    :class="{ reduced: browse.reducedView, empty: !hasContent && !fromChildLevel }"
+    :class="{ reduced: browse.reducedView, empty: !contentsLoaded }"
     :title="contentContainerTitle"
   >
-    <div class="content-header mb-sm" :class="browse.reducedView ? 'reduced' : ''">
-      <n-icon v-if="!hasContent && !fromChildLevel" :component="NoContentIcon" />
-      <n-flex align="center" :wrap="false" :gap="12" style="flex-grow: 2">
-        <div class="content-header-title" :class="{ reduced: browse.reducedView }">
-          <span>
-            {{ resourceTitle }}
-          </span>
-          <n-icon
-            v-if="!resource.public"
-            :component="PublicOffIcon"
-            :color="themeVars.textColorDisabled"
-            :title="$t('resources.notPublic')"
-            class="text-small"
-          />
+    <n-flex
+      align="center"
+      :wrap="false"
+      :size="[12, 0]"
+      class="content-header mb-sm"
+      :class="{ 'mb-0': browse.reducedView || !contentsLoaded }"
+    >
+      <n-flex align="center" :gap="12" :class="{ translucent: !contentsLoaded }" style="flex: 2">
+        <div
+          class="text-color-accent"
+          :class="{ 'text-small': browse.reducedView, b: browse.reducedView }"
+        >
+          {{ resourceTitle }}
         </div>
-        <div class="text-small translucent" style="flex-grow: 2">
-          <n-tag
-            v-if="!browse.reducedView && props.resource.level !== browse.level"
-            size="small"
+        <n-flex v-if="!browse.reducedView" align="center" :wrap="false">
+          <!-- icon hint: publication status -->
+          <n-icon
+            v-if="!resource.public && !resource.proposed"
+            :component="PublicOffIcon"
+            :color="themeVars.errorColor"
+            :title="$t('resources.notPublic')"
+            size="medium"
+          />
+          <n-icon
+            v-else-if="resource.proposed"
+            :component="ProposedIcon"
+            :color="themeVars.warningColor"
+            :title="$t('resources.proposed')"
+            size="medium"
+          />
+          <!-- icon hint: this is combined content (context) from original level -->
+          <n-icon
+            v-if="contentContextLoaded"
+            :component="MergeIcon"
+            size="medium"
             :title="
-              $t('browse.contents.resOnLevel', {
-                resource: resourceTitle,
+              $t('browse.contents.isContentContext', {
                 level: state.textLevelLabels[props.resource.level],
               })
             "
+          />
+          <!-- icon hint: no content -->
+          <n-icon
+            v-else-if="
+              !contentsLoaded &&
+              (resource.level === browse.level ||
+                (onChildLevel && resource.config.common.enableContentContext))
+            "
+            :component="NoContentIcon"
+            size="medium"
+          />
+          <!-- icon hint: cannot display possible content from original level -->
+          <n-icon
+            v-else-if="!contentsLoaded"
+            :component="WarningIcon"
+            size="medium"
+            :title="$t('browse.contents.cannotShowContext')"
+          />
+          <n-tag
+            v-if="!browse.reducedView && props.resource.level !== browse.level"
+            size="small"
+            :title="`${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`"
           >
+            <template #icon>
+              <n-icon :component="LevelsIcon" />
+            </template>
             {{ state.textLevelLabels[props.resource.level] }}
           </n-tag>
-          <n-flex
-            v-if="loading && !hasContent"
-            align="center"
-            size="small"
-            :wrap="false"
-            class="mx-lg translucent"
-          >
-            <n-icon :component="HourglassIcon" />
-            <span>{{ $t('general.loading') }}</span>
-          </n-flex>
-        </div>
+        </n-flex>
+        <n-flex
+          v-if="loading && !contentsLoaded && !browse.reducedView"
+          align="center"
+          size="small"
+          :wrap="false"
+          class="mx-lg text-small translucent"
+          style="flex: 2"
+        >
+          <n-icon :component="HourglassIcon" />
+          <span>{{ $t('general.loading') }}</span>
+        </n-flex>
       </n-flex>
       <content-header-widget-bar
         :resource="resource"
         :opacity="headerWidgetsOpacity"
         :small-screen="state.smallScreen"
       />
-    </div>
+    </n-flex>
 
-    <n-spin :show="loading && hasContent" size="small" :delay="200">
+    <n-spin :show="loading && contentsLoaded" size="small" :delay="200">
       <collapsable-content
-        v-if="hasContent"
-        :collapsable="collapsable"
+        v-if="contentsLoaded"
+        :collapsable="collapsable || contentContextLoaded"
         :collapsed="collapsed"
-        :height-tresh-px="200"
+        :height-tresh-px="320"
       >
-        <!-- content-specific component (that displays the actual content data) -->
+        <!-- content-specific component (that displays the actual content) -->
         <component
           :is="contentComponents[resource.resourceType]"
           :resource="resource"
@@ -126,14 +171,6 @@ const fromChildLevel = computed(
           :dir="resource.config.common.rtl ? 'rtl' : undefined"
         />
       </collapsable-content>
-      <n-flex v-else-if="fromChildLevel" align="center" size="small" class="translucent text-tiny">
-        {{
-          $t('browse.contents.showCombinedContents', {
-            level: state.textLevelLabels[resource.level],
-          })
-        }}
-        <n-icon :component="MergeIcon" />
-      </n-flex>
     </n-spin>
   </div>
 </template>
@@ -175,42 +212,5 @@ const fromChildLevel = computed(
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;
   padding: 12px var(--gap-lg);
-}
-
-.content-container.empty > .content-header {
-  margin-bottom: 0;
-  opacity: 0.6;
-}
-
-.content-header {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  column-gap: 12px;
-  row-gap: 0px;
-}
-
-.content-header.reduced {
-  margin-bottom: 0;
-}
-
-.content-header-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--accent-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.content-header-title > span {
-  white-space: wrap;
-}
-
-.content-header-title.reduced {
-  font-size: var(--font-size-tiny);
-  font-weight: var(--font-weight-bold);
-  opacity: 0.8;
 }
 </style>

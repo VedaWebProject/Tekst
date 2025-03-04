@@ -75,7 +75,7 @@ onMounted(async () => {
       ignore-path-change
       :path="`queries[${queryIndex}].rts.token`"
       :rule="searchFormRules.textAnnotation.token"
-      style="flex-grow: 2"
+      style="flex: 2"
     >
       <n-input-osk
         v-model="model.token"
@@ -106,7 +106,7 @@ onMounted(async () => {
   >
     <n-dynamic-input v-model:value="model.anno" @create="() => ({ k: undefined, v: undefined })">
       <template #default="{ value: annotationItem, index: annotationItemIndex }">
-        <n-flex wrap align="flex-start" style="flex-grow: 2">
+        <n-flex wrap align="flex-start" style="flex: 2">
           <!-- KEY -->
           <n-form-item
             style="flex-grow: 2; flex-basis: 200px"

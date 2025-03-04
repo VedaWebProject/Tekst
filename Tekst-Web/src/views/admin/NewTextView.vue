@@ -128,14 +128,14 @@ async function handleSave() {
         >
           <template #default="{ index: levelIndex }">
             <div style="padding-right: 12px">{{ levelIndex + 1 }}.</div>
-            <div style="flex-grow: 2">
+            <div style="flex: 2">
               <!-- STRUCTURE LEVEL LABEL -->
               <n-form-item
                 ignore-path-change
                 :show-label="false"
                 :path="`levels[${levelIndex}][0].translation`"
                 :rule="textFormRules.levelTranslation"
-                style="flex-grow: 2"
+                style="flex: 2"
               >
                 <n-input
                   v-model:value="model.levels[levelIndex][0].translation"

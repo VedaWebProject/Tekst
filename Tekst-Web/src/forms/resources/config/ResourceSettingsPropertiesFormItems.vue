@@ -77,7 +77,7 @@ const metadataKeysOptions = computed(() =>
       @create="() => ({ key: '', value: '' })"
     >
       <template #default="{ index, value: metaEntryValue }">
-        <n-flex align="flex-start" wrap style="flex-grow: 2">
+        <n-flex align="flex-start" wrap style="flex: 2">
           <n-form-item
             ignore-path-change
             :show-label="false"

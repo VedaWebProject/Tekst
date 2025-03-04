@@ -206,7 +206,7 @@ whenever(ctrlEnter, () => {
             class="search-item-header p"
             :style="{ backgroundColor: resourceColors[query.cmn.res].colors.fade3 }"
           >
-            <n-flex align="flex-start" style="flex-grow: 2">
+            <n-flex align="flex-start" style="flex: 2">
               <n-form-item
                 :show-label="false"
                 :show-feedback="false"

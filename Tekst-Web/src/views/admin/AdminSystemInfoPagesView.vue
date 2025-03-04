@@ -234,7 +234,7 @@ async function handleDeleteClick() {
       :placeholder="
         modelChanged ? $t('admin.infoPages.newPage') : $t('admin.infoPages.phSelectPage')
       "
-      style="flex-grow: 2"
+      style="flex: 2"
       @update:value="handleSelectSegment"
     />
     <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">

@@ -52,9 +52,6 @@ export interface paths {
      * @description Returns a list of all resource contents belonging to the resource
      *     with the given ID, associated to locations that are children of the parent location
      *     with the given ID.
-     *
-     *     As the resulting list may contain contents of arbitrary type, the
-     *     returned content objects cannot be typed to their precise resource content type.
      */
     get: operations['getContentContext'];
     put?: never;
@@ -6426,12 +6423,10 @@ export interface operations {
         lvl?: number | null;
         /** @description Location position (only used if no location ID is given) */
         pos?: number;
-        /** @description ID (or list of IDs) of resource(s) to return contents for */
+        /** @description List of IDs of resources to return contents for (assumes all if none are given) */
         res?: string[];
         /** @description Only return contents for the head location of the path */
         head?: boolean;
-        /** @description Return at most <limit> contents */
-        limit?: number;
       };
       header?: never;
       path?: never;
