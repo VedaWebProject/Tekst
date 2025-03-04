@@ -68,6 +68,7 @@ const resourceOptions = computed(() => {
       ),
     key: tId,
     children: resources.all
+      .filter((r) => r.textId === tId)
       .filter((r) => r.config.common.searchableAdv)
       .sort((a, b) => {
         const categories =
