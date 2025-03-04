@@ -3,10 +3,10 @@ import type { AnyResourceRead } from '@/api';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
 import CollapsableContent from '@/components/CollapsableContent.vue';
 import contentComponents from '@/components/content/mappings';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { $t } from '@/i18n';
 import { HourglassIcon, MergeIcon, NoContentIcon, PublicOffIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { useElementHover } from '@vueuse/core';
 import { NFlex, NIcon, NSpin, NTag, useThemeVars } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
@@ -41,6 +41,7 @@ watch(
   { immediate: true }
 );
 
+const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 const contentContainerTitle = computed(() =>
   !props.resource.contents?.length ? $t('browse.locationResourceNoData') : undefined
 );
@@ -68,7 +69,7 @@ const fromChildLevel = computed(
       <n-flex align="center" :wrap="false" :gap="12" style="flex-grow: 2">
         <div class="content-header-title" :class="{ reduced: browse.reducedView }">
           <span>
-            <translation-display v-if="resource.title" :value="resource.title" />
+            {{ resourceTitle }}
           </span>
           <n-icon
             v-if="!resource.public"
@@ -79,7 +80,16 @@ const fromChildLevel = computed(
           />
         </div>
         <div class="text-small translucent" style="flex-grow: 2">
-          <n-tag v-if="!browse.reducedView && props.resource.level !== browse.level" size="small">
+          <n-tag
+            v-if="!browse.reducedView && props.resource.level !== browse.level"
+            size="small"
+            :title="
+              $t('browse.contents.resOnLevel', {
+                resource: resourceTitle,
+                level: state.textLevelLabels[props.resource.level],
+              })
+            "
+          >
             {{ state.textLevelLabels[props.resource.level] }}
           </n-tag>
           <n-flex

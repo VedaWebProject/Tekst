@@ -211,6 +211,7 @@ browse:
   locationNoData: Die ausgewählten Ressourcen enthalten keine Daten für diese Ebene und Belegstelle. Wählen Sie eine andere Belegstelle oder aktivieren Sie mehr Ressourcen.
   showAllResources: alle anzeigen
   contents:
+    resOnLevel: '"{resource}" auf Ebene "{level}"'
     showCombinedContents: Um kombinierte Inhalte von Ebene "{level}" anzuzeigen, klicken Sie auf
     widgets:
       contentEdit:
@@ -340,7 +341,6 @@ models:
     year: Jahr
     language: Sprache
     resourceType: '@:models.resource.resourceType'
-    onLevel: auf Ebene "{level}"
   platformSettings:
     platformName: Plattform-Name
     platformSubtitle: Plattform-Untertitel

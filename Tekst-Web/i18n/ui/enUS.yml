@@ -180,7 +180,7 @@ browse:
     modalHeading: Location
     level: Level
     goTo: Go to location
-    aliasesTip: Search for one of these location aliases in the quick search to directly jump to this location.
+    aliasesTip: Search for one of these location aliases in the Quick Search to directly jump to this location.
     copyId: Copy location ID
   toolbar:
     tipSelectLocation: Select location
@@ -208,6 +208,7 @@ browse:
   locationNoData: The selected resources contain no data for this text level and location. Try choosing a different location or activating more resources.
   showAllResources: show all
   contents:
+    resOnLevel: '"{resource}" on level "{level}"'
     showCombinedContents: To show combined contents from level "{level}", click on
     widgets:
       contentEdit:
@@ -337,7 +338,6 @@ models:
     year: Year
     language: Language
     resourceType: '@:models.resource.resourceType'
-    onLevel: on level "{level}"
   platformSettings:
     platformName: Platform Name
     platformSubtitle: Platform Subtitle
