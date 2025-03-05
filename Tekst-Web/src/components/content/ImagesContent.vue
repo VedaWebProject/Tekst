@@ -9,17 +9,17 @@ import { computed, type CSSProperties } from 'vue';
 const props = withDefaults(
   defineProps<{
     resource: ImagesResourceRead;
-    reduced?: boolean;
+    focusView?: boolean;
   }>(),
   {
-    reduced: false,
+    focusView: false,
   }
 );
 
 const state = useStateStore();
 
 const imageSize = computed(() =>
-  state.smallScreen ? (props.reduced ? '60px' : '80px') : props.reduced ? '60px' : '200px'
+  state.smallScreen ? (props.focusView ? '60px' : '80px') : props.focusView ? '60px' : '200px'
 );
 const fontStyle: CSSProperties = {
   fontFamily: props.resource.config.general.font || 'Tekst UI Font',
@@ -48,13 +48,8 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
       class="images-content"
     >
       <n-image-group :render-toolbar="renderToolbar">
-        <n-flex :vertical="!reduced">
-          <figure
-            v-for="(image, index) in content.files"
-            :key="index"
-            class="image-container"
-            :class="{ reduced }"
-          >
+        <n-flex :vertical="!focusView">
+          <figure v-for="(image, index) in content.files" :key="index" class="image-container">
             <n-flex :wrap="state.smallScreen" :size="[18, 0]">
               <div>
                 <n-image
@@ -63,15 +58,15 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                   :preview-src="image.url"
                   :alt="image.caption || undefined"
                   :title="image.caption"
-                  :width="reduced ? undefined : imageSize"
-                  :height="reduced ? imageSize : undefined"
+                  :width="focusView ? undefined : imageSize"
+                  :height="focusView ? imageSize : undefined"
                 >
                   <template #placeholder>
                     {{ $t('general.loading') }}
                   </template>
                 </n-image>
               </div>
-              <figcaption v-if="!reduced" class="caption" :style="fontStyle">
+              <figcaption v-if="!focusView" class="caption" :style="fontStyle">
                 <span class="text-tiny translucent">{{ image.caption }}</span>
                 <a
                   v-if="image.sourceUrl"
@@ -115,7 +110,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
   border-top: 1px solid var(--main-bg-color);
 }
 
-.image-container.reduced {
+.focus-view .image-container {
   padding-top: 0;
   border: none;
 }

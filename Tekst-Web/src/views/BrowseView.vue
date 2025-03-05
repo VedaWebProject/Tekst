@@ -91,15 +91,14 @@ onMounted(() => {
 
   <div
     v-if="browse.resourcesCategorized.length"
-    class="content-container-container"
-    :class="browse.reducedView ? 'reduced' : ''"
+    :class="{ 'focus-view': browse.focusView, 'box-shadow': browse.focusView }"
   >
     <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
       <n-flex
         v-if="
           state.pf?.state.showResourceCategoryHeadings &&
           !!category.resources.length &&
-          !browse.reducedView &&
+          !browse.focusView &&
           !!category.category.translation
         "
         align="baseline"
@@ -154,9 +153,5 @@ onMounted(() => {
 <style scoped>
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
-}
-
-.content-container-container.reduced {
-  box-shadow: var(--block-box-shadow);
 }
 </style>

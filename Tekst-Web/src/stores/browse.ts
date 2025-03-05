@@ -18,7 +18,7 @@ export const useBrowseStore = defineStore('browse', () => {
 
   const showResourceToggleDrawer = ref(false);
   const showNonPublicResources = ref(true);
-  const reducedView = ref(false);
+  const focusView = ref(false);
   const loadingLocationData = ref(true); // this is intentional!
   const loadingResources = computed(() => resources.loading);
   const loading = computed(() => loadingLocationData.value || resources.loading);
@@ -130,7 +130,7 @@ export const useBrowseStore = defineStore('browse', () => {
 
   return {
     showResourceToggleDrawer,
-    reducedView,
+    focusView,
     showNonPublicResources,
     loadingLocationData,
     loadingResources,

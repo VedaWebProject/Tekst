@@ -2,7 +2,7 @@
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
+import { ResourceIcon, FocusViewOnIcon, FocusViewOffIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
@@ -63,18 +63,18 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge dot :offset="[0, 5]" :show="browse.reducedView">
+        <n-badge dot :offset="[0, 5]" :show="browse.focusView">
           <n-button
             type="primary"
             :size="buttonSize"
-            :title="$t('browse.toolbar.tipReducedView')"
+            :title="$t('browse.toolbar.tipFocusView')"
             :focusable="false"
-            :color="browse.reducedView ? '#fff5' : undefined"
+            :color="browse.focusView ? '#fff5' : undefined"
             :bordered="false"
-            @click="browse.reducedView = !browse.reducedView"
+            @click="browse.focusView = !browse.focusView"
           >
             <template #icon>
-              <n-icon :component="browse.reducedView ? ExpandIcon : CompressIcon" />
+              <n-icon :component="browse.focusView ? FocusViewOnIcon : FocusViewOffIcon" />
             </template>
           </n-button>
         </n-badge>

@@ -1,6 +1,6 @@
 [project]
 name = "tekst"
-version = "0.8.0a0"
+version = "0.9.0a0"
 description = "An online text research platform"
 readme = "README.md"
 authors = [
@@ -39,8 +39,9 @@ classifiers = [
     "Intended Audience :: Education",
     "Intended Audience :: System Administrators",
     "Intended Audience :: Developers",
+    # Topic
     "Topic :: Text Processing :: Linguistic",
-    # supported Python versions
+    # Supported Python versions
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",

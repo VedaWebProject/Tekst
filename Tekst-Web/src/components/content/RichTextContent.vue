@@ -6,10 +6,10 @@ import { computed } from 'vue';
 const props = withDefaults(
   defineProps<{
     resource: RichTextResourceRead;
-    reduced?: boolean;
+    focusView?: boolean;
   }>(),
   {
-    reduced: false,
+    focusView: false,
   }
 );
 
@@ -29,9 +29,9 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
         'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
       }"
     >
-      <hydrated-html v-if="!reduced" :html="content.html" :style="cutomStyle" />
+      <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
       <div v-else class="translucent i ui-font text-small">
-        {{ $t('contents.msgContentNoReducedView') }}
+        {{ $t('contents.msgContentNoFocusView') }}
       </div>
     </div>
   </div>

@@ -145,14 +145,14 @@ class PlainText(ResourceTypeABC):
                 )
 
 
-class ReducedViewConfig(ModelBase):
+class FocusViewConfig(ModelBase):
     single_line: Annotated[
         bool,
         Field(
-            description="Show contents as single line of text when in reduced view",
+            description="Show contents as single line of text when in focus view",
         ),
-    ] = False
-    single_line_delimiter: Annotated[
+    ] = True
+    delimiter: Annotated[
         ConStr(
             min_length=1,
             max_length=3,
@@ -160,9 +160,7 @@ class ReducedViewConfig(ModelBase):
             pattern=r"[^\n\r]+",
         ),
         Field(
-            description=(
-                "Delimiter used for single-line display in reduced reading mode"
-            ),
+            description=("Delimiter used for single-line display in focus view"),
         ),
     ] = " / "
 
@@ -247,7 +245,7 @@ class DeepLLinksConfig(ModelBase):
 class GeneralPlainTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = False
     font: FontNameValueOrNone = None
-    reduced_view: ReducedViewConfig = ReducedViewConfig()
+    focus_view: FocusViewConfig = FocusViewConfig()
     search_replacements: SearchReplacements = []
     content_css: ContentCssProperties = []
 

@@ -1,0 +1,88 @@
+[
+  {
+    "_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [{ "locale": "*", "translation": "Plain Text" }],
+    "description": [],
+    "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
+    "level": 1,
+    "resource_type": "plainText",
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": true,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "general": {
+        "default_collapsed": false,
+        "reduced_view": {
+          "single_line": true,
+          "single_line_delimiter": " / "
+        },
+        "search_replacements": [{ "pattern": "o", "replacement": "a" }],
+        "content_css": []
+      },
+      "plain_text": {
+        "line_labelling": {
+          "enabled": false,
+          "labelling_type": "numbersOneBased"
+        },
+        "deepl_links": { "enabled": false }
+      }
+    },
+    "contents_changed_at": { "$date": "2025-02-27T10:56:06.171Z" }
+  },
+  {
+    "_id": { "$oid": "67c04781906e79b9062e2342" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [{ "locale": "*", "translation": "Plain Text" }],
+    "description": [],
+    "text_id": { "$oid": "67c03b085dbf06b9624fd57f" },
+    "level": 1,
+    "resource_type": "plainText",
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": false,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "general": {
+        "default_collapsed": false,
+        "reduced_view": {
+          "single_line": true,
+          "single_line_delimiter": " / "
+        },
+        "search_replacements": [],
+        "content_css": []
+      },
+      "plain_text": {
+        "line_labelling": {
+          "enabled": false,
+          "labelling_type": "numbersOneBased"
+        },
+        "deepl_links": { "enabled": false }
+      }
+    },
+    "contents_changed_at": { "$date": "2025-02-27T11:08:21.204Z" }
+  }
+]

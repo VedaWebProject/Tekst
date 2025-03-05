@@ -189,7 +189,7 @@ browse:
     tipSelectLocation: Belegstelle auswählen
     tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene
     tipNextLocation: Nächste Belegstelle auf dieser Ebene
-    tipReducedView: Reduzierte Leseansicht umschalten
+    tipFocusView: Fokus-Ansicht umschalten
     tipOpenResourceList: Anzuzeigende Ressourcen auswählen
     tipNotOnDefaultLevel: Sie befinden sich nicht auf der Standard-Ebene dieses Textes!
   bookmarks:
@@ -489,9 +489,9 @@ resources:
           heading: CSS-Eigenschaften für Inhalte
           prop: Eigenschaft
           value: Wert
-      reducedView:
-        heading: Einzeilige Anzeige in Reduzierter Leseansicht
-        lineDelimiter: Zeilen-Trennzeichen
+      focusView:
+        heading: Einzeilige Anzeige in Fokus-Ansicht
+        delimiter: Zeilen-Trennzeichen
       plainText:
         deeplLinks:
           heading: DeepL-Übersetzungs-Links
@@ -606,7 +606,7 @@ contents:
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Belegstelle.
     Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
-  msgContentNoReducedView: Dieser Inhalt kann in der reduzierten Leseansicht nicht angezeigt werden.
+  msgContentNoFocusView: Dieser Inhalt kann in der Fokus-Ansicht nicht angezeigt werden.
   warnUrlInvalid: 'Die eingegebene URL scheint ungültig zu sein: {url}'
   corrections:
     notes: Korrekturnotizen

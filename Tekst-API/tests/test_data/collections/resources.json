@@ -25,9 +25,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [{ "pattern": "o", "replacement": "a" }],
         "content_css": []
@@ -250,9 +250,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [],
         "content_css": []

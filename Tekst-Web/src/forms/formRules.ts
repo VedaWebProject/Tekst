@@ -282,9 +282,9 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const reducedViewConfigFormRules: Record<string, FormItemRule[]> = {
-  singleLineDelimiter: [
-    requiredStringRule(() => $t('resources.settings.config.reducedView.lineDelimiter'), 'blur'),
+export const focusViewConfigFormRules: Record<string, FormItemRule[]> = {
+  delimiter: [
+    requiredStringRule(() => $t('resources.settings.config.focusView.delimiter'), 'blur'),
     minMaxCharsRule(1, 3, 'blur'),
   ],
 };

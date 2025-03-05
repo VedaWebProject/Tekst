@@ -186,7 +186,7 @@ browse:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level
     tipNextLocation: Next location on this level
-    tipReducedView: Toggle reduced reading view
+    tipFocusView: Toggle focus view
     tipOpenResourceList: Select resources to show
     tipNotOnDefaultLevel: You are not on this text's default level!
   bookmarks:
@@ -478,9 +478,9 @@ resources:
           heading: Content CSS Properties
           prop: Property
           value: Value
-      reducedView:
-        heading: Single-line Display in Reduced Reading View
-        lineDelimiter: Line delimiter
+      focusView:
+        heading: Single-line display in focus view
+        delimiter: Line delimiter
       plainText:
         deeplLinks:
           heading: DeepL Translation Links
@@ -595,7 +595,7 @@ contents:
     This version of "{originalResourceTitle}" has no own content for this location.
     You are shown content from the original resource. You may copy it
     or make changes and save them as content of this resource version.
-  msgContentNoReducedView: This content cannot be displayed in reduced reading view.
+  msgContentNoFocusView: This content cannot be displayed in focus view.
   warnUrlInvalid: 'The URL seems to be invalid: {url}'
   corrections:
     notes: Correction Notes

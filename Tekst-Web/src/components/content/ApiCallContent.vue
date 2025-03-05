@@ -12,7 +12,7 @@ type TransformationInput = { data: string; context?: unknown };
 
 const props = defineProps<{
   resource: ApiCallResourceRead;
-  reduced?: boolean;
+  focusView?: boolean;
 }>();
 
 const fontStyle = {
@@ -107,14 +107,14 @@ onMounted(async () => {
 <template>
   <div :dir="resource.config.common.rtl ? 'rtl' : undefined">
     <div v-for="(htmlPart, i) in html" :key="i">
-      <template v-if="!reduced">
+      <template v-if="!focusView">
         <hydrated-html v-if="htmlPart !== undefined" :html="htmlPart" :style="fontStyle" />
         <div v-else class="translucent i ui-font">
           {{ $t('errors.notFound') }}
         </div>
       </template>
       <div v-else class="translucent i ui-font text-small">
-        {{ $t('contents.msgContentNoReducedView') }}
+        {{ $t('contents.msgContentNoFocusView') }}
       </div>
     </div>
   </div>

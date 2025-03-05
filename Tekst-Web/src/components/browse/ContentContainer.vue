@@ -43,18 +43,18 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
   delayLeave: 0,
 });
 const headerWidgetsOpacity = computed<number>(() =>
-  isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.reducedView ? 0 : 0.2
+  isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.focusView ? 0 : 0.2
 );
 
 const collapsable = computed(
   () =>
-    !browse.reducedView && contentsLoaded.value && !!props.resource.config.general.defaultCollapsed
+    !browse.focusView && contentsLoaded.value && !!props.resource.config.general.defaultCollapsed
 );
 const collapsed = ref(!!props.resource.config.general.defaultCollapsed);
 watch(
-  () => browse.reducedView,
-  (reduced) => {
-    collapsed.value = !reduced && !!props.resource.config.general.defaultCollapsed;
+  () => browse.focusView,
+  (focusView) => {
+    collapsed.value = !focusView && !!props.resource.config.general.defaultCollapsed;
   },
   { immediate: true }
 );
@@ -62,10 +62,10 @@ watch(
 
 <template>
   <div
-    v-if="resource.active && (contentsLoaded || !browse.reducedView)"
+    v-if="resource.active && (contentsLoaded || !browse.focusView)"
     ref="contentContainerRef"
     class="content-block content-container"
-    :class="{ reduced: browse.reducedView, empty: !contentsLoaded }"
+    :class="{ empty: !contentsLoaded }"
     :title="contentContainerTitle"
   >
     <n-flex
@@ -73,16 +73,16 @@ watch(
       :wrap="false"
       :size="[12, 0]"
       class="content-header mb-sm"
-      :class="{ 'mb-0': browse.reducedView || !contentsLoaded }"
+      :class="{ 'mb-0': browse.focusView || !contentsLoaded }"
     >
       <n-flex align="center" :gap="12" :class="{ translucent: !contentsLoaded }" style="flex: 2">
         <div
           class="text-color-accent"
-          :class="{ 'text-small': browse.reducedView, b: browse.reducedView }"
+          :class="{ 'text-small': browse.focusView, b: browse.focusView }"
         >
           {{ resourceTitle }}
         </div>
-        <n-flex v-if="!browse.reducedView" align="center" :wrap="false">
+        <n-flex v-if="!browse.focusView" align="center" :wrap="false">
           <!-- icon hint: publication status -->
           <n-icon
             v-if="!resource.public && !resource.proposed"
@@ -127,7 +127,7 @@ watch(
             :title="$t('browse.contents.cannotShowContext')"
           />
           <n-tag
-            v-if="!browse.reducedView && props.resource.level !== browse.level"
+            v-if="!browse.focusView && props.resource.level !== browse.level"
             size="small"
             :title="`${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`"
           >
@@ -138,7 +138,7 @@ watch(
           </n-tag>
         </n-flex>
         <n-flex
-          v-if="loading && !contentsLoaded && !browse.reducedView"
+          v-if="loading && !contentsLoaded && !browse.focusView"
           align="center"
           size="small"
           :wrap="false"
@@ -167,7 +167,7 @@ watch(
         <component
           :is="contentComponents[resource.resourceType]"
           :resource="resource"
-          :reduced="browse.reducedView"
+          :focus-view="browse.focusView"
           :dir="resource.config.common.rtl ? 'rtl' : undefined"
         />
       </collapsable-content>
@@ -182,7 +182,7 @@ watch(
   font-size: var(--font-size);
 }
 
-.content-container.reduced {
+.focus-view .content-container {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   margin: 0;
@@ -190,19 +190,19 @@ watch(
   border-radius: 0;
 }
 
-.content-container.reduced:first-child {
+.focus-view .content-container:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   margin-top: var(--gap-lg);
 }
 
-.content-container.reduced:last-child {
+.focus-view .content-container:last-child {
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
   margin-bottom: var(--gap-lg);
 }
 
-.content-container.reduced:not(:first-child) {
+.focus-view .content-container:not(:first-child) {
   border-top: 1px solid var(--main-bg-color);
   margin-bottom: 0;
 }

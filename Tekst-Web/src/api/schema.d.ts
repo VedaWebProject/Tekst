@@ -3004,6 +3004,21 @@ export interface components {
        */
       text?: string;
     };
+    /** FocusViewConfig */
+    FocusViewConfig: {
+      /**
+       * Singleline
+       * @description Show contents as single line of text when in focus view
+       * @default true
+       */
+      singleLine: boolean;
+      /**
+       * Delimiter
+       * @description Delimiter used for single-line display in focus view
+       * @default  /
+       */
+      delimiter: string;
+    };
     /** GeneralApiCallResourceConfig */
     GeneralApiCallResourceConfig: {
       /**
@@ -3074,10 +3089,10 @@ export interface components {
        */
       font?: null | string;
       /** @default {
-       *       "singleLine": false,
-       *       "singleLineDelimiter": " / "
+       *       "singleLine": true,
+       *       "delimiter": " / "
        *     } */
-      reducedView: components['schemas']['ReducedViewConfig'];
+      focusView: components['schemas']['FocusViewConfig'];
       /** @default [] */
       searchReplacements: components['schemas']['SearchReplacements'];
       /** @default [] */
@@ -3895,9 +3910,9 @@ export interface components {
       common: components['schemas']['CommonResourceConfig'];
       /** @default {
        *       "defaultCollapsed": false,
-       *       "reducedView": {
-       *         "singleLine": false,
-       *         "singleLineDelimiter": " / "
+       *       "focusView": {
+       *         "delimiter": " / ",
+       *         "singleLine": true
        *       },
        *       "searchReplacements": [],
        *       "contentCss": []
@@ -3977,9 +3992,9 @@ export interface components {
        *       "general": {
        *         "contentCss": [],
        *         "defaultCollapsed": false,
-       *         "reducedView": {
-       *           "singleLine": false,
-       *           "singleLineDelimiter": " / "
+       *         "focusView": {
+       *           "delimiter": " / ",
+       *           "singleLine": true
        *         },
        *         "searchReplacements": []
        *       },
@@ -4109,9 +4124,9 @@ export interface components {
        *       "general": {
        *         "contentCss": [],
        *         "defaultCollapsed": false,
-       *         "reducedView": {
-       *           "singleLine": false,
-       *           "singleLineDelimiter": " / "
+       *         "focusView": {
+       *           "delimiter": " / ",
+       *           "singleLine": true
        *         },
        *         "searchReplacements": []
        *       },
@@ -4569,21 +4584,6 @@ export interface components {
        * @description IDs of texts to search in
        */
       txt?: string[] | null;
-    };
-    /** ReducedViewConfig */
-    ReducedViewConfig: {
-      /**
-       * Singleline
-       * @description Show contents as single line of text when in reduced view
-       * @default false
-       */
-      singleLine: boolean;
-      /**
-       * Singlelinedelimiter
-       * @description Delimiter used for single-line display in reduced reading mode
-       * @default  /
-       */
-      singleLineDelimiter: string;
     };
     /** ResourceCategory */
     ResourceCategory: {

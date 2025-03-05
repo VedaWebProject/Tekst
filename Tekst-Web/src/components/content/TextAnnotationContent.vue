@@ -50,10 +50,10 @@ const PAT_TMPL_LINE_BREAK = /^br$/g;
 const props = withDefaults(
   defineProps<{
     resource: TextAnnotationResourceRead;
-    reduced?: boolean;
+    focusView?: boolean;
   }>(),
   {
-    reduced: false,
+    focusView: false,
   }
 );
 
@@ -384,7 +384,7 @@ function generatePlaintextAnno(): string {
 
 <template>
   <div>
-    <n-flex v-if="!reduced" class="mb-md">
+    <n-flex v-if="!focusView" class="mb-md">
       <!-- ANNOTATION GROUP TOGGLES -->
       <template v-if="!!annoGroups.length">
         <n-button
@@ -426,13 +426,7 @@ function generatePlaintextAnno(): string {
     </n-flex>
 
     <!-- CONTENT -->
-    <n-flex
-      :size="0"
-      v-for="(c, cIndex) in contents"
-      :key="c.id"
-      class="content-container"
-      :class="{ reduced }"
-    >
+    <n-flex :size="0" v-for="(c, cIndex) in contents" :key="c.id" class="anno-content">
       <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
         <div
           class="token-container"
@@ -542,9 +536,9 @@ function generatePlaintextAnno(): string {
 </template>
 
 <style scoped>
-.content-container:not(:last-child) {
-  padding-bottom: v-bind('reduced ? `var(--gap-sm)` : `var(--gap-md)`');
-  margin-bottom: v-bind('reduced ? `var(--gap-sm)` : `var(--gap-md)`');
+.anno-content:not(:last-child) {
+  padding-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
+  margin-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
 }
 
 .token-container {
@@ -579,7 +573,7 @@ function generatePlaintextAnno(): string {
   outline: 2px dashed var(--accent-color-fade2);
 }
 
-.reduced .token-container {
+.focus-view .token-container {
   padding-left: 4px;
 }
 
@@ -590,7 +584,7 @@ function generatePlaintextAnno(): string {
   margin: 4px 0;
 }
 
-.reduced .token-lb {
+.focus-view .token-lb {
   display: none;
 }
 
@@ -599,7 +593,7 @@ function generatePlaintextAnno(): string {
   font-size: var(--font-size-small);
 }
 
-.reduced .annotations {
+.focus-view .annotations {
   font-size: var(--font-size-tiny);
   opacity: 0.75;
 }

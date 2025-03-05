@@ -6,10 +6,10 @@ import { computed } from 'vue';
 const props = withDefaults(
   defineProps<{
     resource: PlainTextResourceRead;
-    reduced?: boolean;
+    focusView?: boolean;
   }>(),
   {
-    reduced: false,
+    focusView: false,
   }
 );
 
@@ -33,17 +33,12 @@ const multiContents = computed(() => (props.resource.contents?.length || 0) > 1)
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
-    lines: (props.reduced &&
-    (props.resource.config.general.reducedView.singleLine || multiContents.value)
-      ? [
-          c.text.replace(
-            /(\r\n|\r|\n)+/g,
-            props.resource.config.general.reducedView.singleLineDelimiter || ' '
-          ),
-        ]
+    lines: (props.focusView &&
+    (props.resource.config.general.focusView.singleLine || multiContents.value)
+      ? [c.text.replace(/(\r\n|\r|\n)+/g, props.resource.config.general.focusView.delimiter || ' ')]
       : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
     ).map((l, i) => ({
-      label: !props.reduced
+      label: !props.focusView
         ? getLineLabel(i, props.resource.config.plainText.lineLabelling.labellingType)
         : null,
       text: l,
@@ -66,7 +61,7 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
     <div
       v-for="(content, contentIndex) in contents"
       :key="content.id"
-      :class="{ 'mt-md': !reduced && contentIndex > 0 }"
+      :class="{ 'mt-md': !focusView && contentIndex > 0 }"
       :title="content.comment || undefined"
     >
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">

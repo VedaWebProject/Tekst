@@ -49,9 +49,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [],
         "content_css": []
@@ -108,7 +108,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view_oneline": true,
+        "focus_view_oneline": true,
         "font": null
       },
       "plain_text": {
@@ -148,9 +148,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [{ "pattern": "[aeiou]", "replacement": "o" }]
       },
@@ -190,7 +190,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view_oneline": true,
+        "focus_view_oneline": true,
         "font": null
       },
       "plain_text": {
@@ -362,9 +362,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [],
         "content_css": []
@@ -425,9 +425,9 @@
       },
       "general": {
         "default_collapsed": false,
-        "reduced_view": {
+        "focus_view": {
           "single_line": false,
-          "single_line_delimiter": " / "
+          "delimiter": " / "
         },
         "search_replacements": [],
         "content_css": []

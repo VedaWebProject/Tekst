@@ -22,7 +22,6 @@
     "deny_resource_types": ["apiCall"],
     "fonts": [],
     "osk_modes": [],
-    "indices_updated_at": { "$date": "2025-02-27T11:20:31.004Z" },
-    "db_version": "0.8.0a0"
+    "indices_updated_at": { "$date": "2025-02-27T11:20:31.004Z" }
   }
 ]

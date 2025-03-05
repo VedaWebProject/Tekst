@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.8.0a0"
+    "version": "0.9.0a0"
   },
   "servers": [
     {
@@ -10984,6 +10984,27 @@
         ],
         "title": "ExternalReferencesSearchQuery"
       },
+      "FocusViewConfig": {
+        "properties": {
+          "singleLine": {
+            "type": "boolean",
+            "title": "Singleline",
+            "description": "Show contents as single line of text when in focus view",
+            "default": true
+          },
+          "delimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "pattern": "[^\\n\\r]+",
+            "title": "Delimiter",
+            "description": "Delimiter used for single-line display in focus view",
+            "default": " / "
+          }
+        },
+        "type": "object",
+        "title": "FocusViewConfig"
+      },
       "GeneralApiCallResourceConfig": {
         "properties": {
           "defaultCollapsed": {
@@ -11110,11 +11131,11 @@
             "title": "Font",
             "description": "Name of a font"
           },
-          "reducedView": {
-            "$ref": "#/components/schemas/ReducedViewConfig",
+          "focusView": {
+            "$ref": "#/components/schemas/FocusViewConfig",
             "default": {
-              "singleLine": false,
-              "singleLineDelimiter": " / "
+              "singleLine": true,
+              "delimiter": " / "
             }
           },
           "searchReplacements": {
@@ -12920,9 +12941,9 @@
             "$ref": "#/components/schemas/GeneralPlainTextResourceConfig",
             "default": {
               "defaultCollapsed": false,
-              "reducedView": {
-                "singleLine": false,
-                "singleLineDelimiter": " / "
+              "focusView": {
+                "delimiter": " / ",
+                "singleLine": true
               },
               "searchReplacements": [],
               "contentCss": []
@@ -13051,9 +13072,9 @@
               "general": {
                 "contentCss": [],
                 "defaultCollapsed": false,
-                "reducedView": {
-                  "singleLine": false,
-                  "singleLineDelimiter": " / "
+                "focusView": {
+                  "delimiter": " / ",
+                  "singleLine": true
                 },
                 "searchReplacements": []
               },
@@ -13302,9 +13323,9 @@
               "general": {
                 "contentCss": [],
                 "defaultCollapsed": false,
-                "reducedView": {
-                  "singleLine": false,
-                  "singleLineDelimiter": " / "
+                "focusView": {
+                  "delimiter": " / ",
+                  "singleLine": true
                 },
                 "searchReplacements": []
               },
@@ -14266,27 +14287,6 @@
         },
         "type": "object",
         "title": "QuickSearchSettings"
-      },
-      "ReducedViewConfig": {
-        "properties": {
-          "singleLine": {
-            "type": "boolean",
-            "title": "Singleline",
-            "description": "Show contents as single line of text when in reduced view",
-            "default": false
-          },
-          "singleLineDelimiter": {
-            "type": "string",
-            "maxLength": 3,
-            "minLength": 1,
-            "pattern": "[^\\n\\r]+",
-            "title": "Singlelinedelimiter",
-            "description": "Delimiter used for single-line display in reduced reading mode",
-            "default": " / "
-          }
-        },
-        "type": "object",
-        "title": "ReducedViewConfig"
       },
       "ResourceCategory": {
         "properties": {

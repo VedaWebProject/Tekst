@@ -15,7 +15,6 @@ import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import {
   BookIcon,
   CommunityIcon,
-  EyeIcon,
   InfoIcon,
   LogoutIcon,
   MaintenanceIcon,
@@ -26,6 +25,7 @@ import {
   SegmentsIcon,
   SettingsIcon,
   TextsIcon,
+  UserIcon,
   UsersIcon,
 } from '@/icons';
 
@@ -169,7 +169,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
     {
       label: renderLink(() => $t('account.profile'), { name: 'accountProfile' }),
       key: 'accountProfile',
-      icon: (showIcons && renderIcon(EyeIcon)) || undefined,
+      icon: (showIcons && renderIcon(UserIcon)) || undefined,
     },
     {
       label: renderLink(() => $t('account.account'), { name: 'accountSettings' }),

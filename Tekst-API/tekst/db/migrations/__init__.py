@@ -51,7 +51,10 @@ async def check_db_version(db_version: str, auto_migrate: bool = False) -> None:
             log.critical(
                 "Found pending DB migrations. "
                 "The data in your database might not be compatible with "
-                "the currently running version of Tekst. Please run the DB migrations!"
+                "the currently running version of Tekst. "
+                "Please run the DB migrations now and keep this process running – "
+                "it will check the DB again every minute for one hour and resume "
+                "startup if migrations are complete."
             )
             for i in range(60):
                 if await _is_migration_pending(db_version):

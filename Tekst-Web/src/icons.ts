@@ -95,6 +95,7 @@ import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
 import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
+import RemoveRedEyeFilled from '@vicons/material/RemoveRedEyeFilled';
 import RemoveRedEyeOutlined from '@vicons/material/RemoveRedEyeOutlined';
 import SearchOutlined from '@vicons/material/SearchOutlined';
 import SendFilled from '@vicons/material/SendFilled';
@@ -153,9 +154,10 @@ export {
   KeyboardArrowDownOutlined as ExpandArrowDownIcon,
   KeyboardArrowRightOutlined as ExpandArrowRightIcon,
   ExpandOutlined as ExpandIcon,
-  RemoveRedEyeOutlined as EyeIcon,
   FileOpenOutlined as FileOpenIcon,
   FilterAltOutlined as FilterIcon,
+  RemoveRedEyeOutlined as FocusViewOffIcon,
+  RemoveRedEyeFilled as FocusViewOnIcon,
   FormatAlignCenterOutlined as FormatAlignCenterIcon,
   FormatAlignJustifyOutlined as FormatAlignJustifyIcon,
   FormatAlignLeftOutlined as FormatAlignLeftIcon,

@@ -7,10 +7,10 @@ import { onBeforeUpdate, ref, type CSSProperties } from 'vue';
 const props = withDefaults(
   defineProps<{
     resource: AudioResourceRead;
-    reduced?: boolean;
+    focusView?: boolean;
   }>(),
   {
-    reduced: false,
+    focusView: false,
   }
 );
 
@@ -56,7 +56,7 @@ onBeforeUpdate(() => {
         :key="fileIndex"
         :src="file.url"
         :external-link="file.sourceUrl || undefined"
-        :compact="reduced"
+        :compact="focusView"
         :caption="file.caption || undefined"
         :font-style="fontStyle"
         @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
