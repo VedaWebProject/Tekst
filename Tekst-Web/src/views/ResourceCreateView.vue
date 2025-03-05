@@ -62,7 +62,7 @@ const resourceTypeOptions = availableResourceTypes.map((rt) => ({
 
 const levelOptions = computed(() =>
   state.textLevelLabels.map((label, i) => ({
-    label,
+    label: label + (state.text?.defaultLevel === i ? ` (${$t('general.default')})` : ''),
     value: i,
   }))
 );

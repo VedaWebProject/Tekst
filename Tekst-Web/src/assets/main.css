@@ -337,6 +337,12 @@ pre > code {
   border-radius: var(--border-radius);
 }
 
+.content-loading {
+  cursor: wait;
+  opacity: 0.75;
+  filter: blur(2px);
+}
+
 /*
  * NUI overrides
  * Unfortunately, we need to override some default NUI styles in this hacky way

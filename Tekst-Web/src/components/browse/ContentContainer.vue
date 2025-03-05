@@ -156,12 +156,13 @@ watch(
       />
     </n-flex>
 
-    <n-spin :show="loading && contentsLoaded" size="small" :delay="200">
+    <n-spin :show="loading && contentsLoaded" size="small" :delay="500">
       <collapsable-content
         v-if="contentsLoaded"
         :collapsable="collapsable || contentContextLoaded"
         :collapsed="collapsed"
         :height-tresh-px="320"
+        :class="{ 'content-loading': loading }"
       >
         <!-- content-specific component (that displays the actual content) -->
         <component

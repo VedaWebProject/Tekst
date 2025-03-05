@@ -53,7 +53,7 @@ const localeOptions = computed(() =>
       v-model:value="model"
       :min="minItems"
       :max="localeOptions.length"
-      item-class="mb-0"
+      :item-class="state.smallScreen ? undefined : 'mb-0'"
       :default-value="[]"
       @create="
         () => ({
@@ -72,7 +72,7 @@ const localeOptions = computed(() =>
             :show-feedback="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].locale`"
             :rule="translationFormRules.locale"
-            style="flex-grow: 1; flex-basis: 200px"
+            style="flex: 1 200px"
           >
             <n-select
               v-model:value="translationValue.locale"
@@ -90,7 +90,7 @@ const localeOptions = computed(() =>
             :show-label="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].translation`"
             :rule="translationFormRule"
-            style="flex: 2"
+            style="flex: 2 200px"
           >
             <n-input
               v-model:value="translationValue.translation"
