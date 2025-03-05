@@ -91,6 +91,7 @@ onMounted(() => {
 
   <div
     v-if="browse.resourcesCategorized.length"
+    class="content-blocks-wrapper"
     :class="{ 'focus-view': browse.focusView, 'box-shadow': browse.focusView }"
   >
     <template v-for="category in browse.resourcesCategorized" :key="category.category.key">
@@ -153,5 +154,9 @@ onMounted(() => {
 <style scoped>
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
+}
+
+.content-blocks-wrapper {
+  border-radius: var(--border-radius);
 }
 </style>

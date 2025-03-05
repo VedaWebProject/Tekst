@@ -64,7 +64,7 @@ watch(
   <div
     v-if="resource.active && (contentsLoaded || !browse.focusView)"
     ref="contentContainerRef"
-    class="content-block content-container"
+    class="content-block"
     :class="{ empty: !contentsLoaded }"
     :title="contentContainerTitle"
   >
@@ -77,8 +77,8 @@ watch(
     >
       <n-flex align="center" :gap="12" :class="{ translucent: !contentsLoaded }" style="flex: 2">
         <div
-          class="text-color-accent"
-          :class="{ 'text-small': browse.focusView, b: browse.focusView }"
+          class="text-color-accent b"
+          :class="{ 'text-medium': !browse.focusView, 'text-small': browse.focusView }"
         >
           {{ resourceTitle }}
         </div>
@@ -178,38 +178,35 @@ watch(
 </template>
 
 <style scoped>
-.content-container {
-  padding-top: var(--gap-md);
-  padding-bottom: var(--gap-md);
-  font-size: var(--font-size);
+.content-block {
+  padding-right: var(--gap-md);
 }
 
-.focus-view .content-container {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+.focus-view .content-block {
+  padding-right: var(--gap-sm);
   margin: 0;
   box-shadow: none;
   border-radius: 0;
 }
 
-.focus-view .content-container:first-child {
+.focus-view .content-block:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   margin-top: var(--gap-lg);
 }
 
-.focus-view .content-container:last-child {
+.focus-view .content-block:last-child {
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
   margin-bottom: var(--gap-lg);
 }
 
-.focus-view .content-container:not(:first-child) {
+.focus-view .content-block:not(:first-child) {
   border-top: 1px solid var(--main-bg-color);
   margin-bottom: 0;
 }
 
-.content-container.empty {
+.content-block.empty {
   background-color: var(--main-bg-color);
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;

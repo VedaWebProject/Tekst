@@ -265,10 +265,14 @@ pre > code {
 .content-block {
   max-width: 100%;
   margin: var(--gap-lg) 0;
-  padding: 1rem;
+  padding: var(--gap-md) var(--gap-lg);
   border-radius: var(--border-radius);
   background-color: var(--content-bg-color);
   box-shadow: var(--block-box-shadow);
+}
+
+.focus-view .content-block {
+  padding: var(--gap-sm) var(--gap-md);
 }
 
 .accent-color-bg {
