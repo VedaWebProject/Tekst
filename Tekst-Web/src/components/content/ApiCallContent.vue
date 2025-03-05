@@ -10,6 +10,8 @@ type ContentData = {
 };
 type TransformationInput = { data: string; context?: unknown };
 
+const AsyncFunction = async function () {}.constructor;
+
 const props = defineProps<{
   resource: ApiCallResourceRead;
   focusView?: boolean;
@@ -40,13 +42,13 @@ function prepareRequest(query: string): Request {
   }
 }
 
-function execTransformJs(
+async function execTransformJs(
   transformFnBody?: string | null,
   input: TransformationInput = { data: '' }
-): string {
+): Promise<string> {
   if (!transformFnBody) return input.data;
   try {
-    return Function(
+    return await AsyncFunction(
       `"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`
     ).bind(input)();
   } catch (e) {
@@ -64,7 +66,7 @@ async function updateContent(contents?: ContentData[]) {
     try {
       const resp = await fetch(prepareRequest(content.query));
       newHtml[i] = resp.ok
-        ? execTransformJs(props.resource.config.apiCall.transformJs, {
+        ? await execTransformJs(props.resource.config.apiCall.transformJs, {
             data: await resp.text(),
             context: !!content.context ? JSON.parse(content.context) : undefined,
           })
@@ -108,7 +110,13 @@ onMounted(async () => {
   <div :dir="resource.config.common.rtl ? 'rtl' : undefined">
     <div v-for="(htmlPart, i) in html" :key="i">
       <template v-if="!focusView">
-        <hydrated-html v-if="htmlPart !== undefined" :html="htmlPart" :style="fontStyle" />
+        <div
+          v-if="htmlPart !== undefined"
+          :class="{ 'content-loading': loading }"
+          :style="fontStyle"
+        >
+          <hydrated-html :html="htmlPart" />
+        </div>
         <div v-else class="translucent i ui-font">
           {{ $t('errors.notFound') }}
         </div>
