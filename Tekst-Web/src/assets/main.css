@@ -337,10 +337,13 @@ pre > code {
   border-radius: var(--border-radius);
 }
 
+.content-loadable {
+  transition: filter 0.3s ease;
+}
+
 .content-loading {
   cursor: wait;
-  opacity: 0.75;
-  filter: blur(2px);
+  filter: blur(2px) opacity(0.5);
 }
 
 /*

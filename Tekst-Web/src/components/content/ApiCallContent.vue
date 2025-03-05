@@ -112,6 +112,7 @@ onMounted(async () => {
       <template v-if="!focusView">
         <div
           v-if="htmlPart !== undefined"
+          class="content-loadable"
           :class="{ 'content-loading': loading }"
           :style="fontStyle"
         >

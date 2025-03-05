@@ -162,6 +162,7 @@ watch(
         :collapsable="collapsable || contentContextLoaded"
         :collapsed="collapsed"
         :height-tresh-px="320"
+        class="content-loadable"
         :class="{ 'content-loading': loading }"
       >
         <!-- content-specific component (that displays the actual content) -->
