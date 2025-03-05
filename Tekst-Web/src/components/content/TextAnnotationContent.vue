@@ -426,7 +426,7 @@ function generatePlaintextAnno(): string {
     </n-flex>
 
     <!-- CONTENT -->
-    <n-flex :size="0" v-for="(c, cIndex) in contents" :key="c.id" class="anno-content">
+    <n-flex :size="4" v-for="(c, cIndex) in contents" :key="c.id" class="anno-content">
       <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
         <div
           class="token-container"
@@ -542,7 +542,6 @@ function generatePlaintextAnno(): string {
 }
 
 .token-container {
-  margin-right: 4px;
   position: relative;
   display: flex;
   flex-direction: column;
