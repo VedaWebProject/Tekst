@@ -198,14 +198,14 @@ function handleWidgetClick() {
         name="fromLocation"
         :disabled="!fromLocationPath.length"
       >
-        <location-select-form v-model="fromLocationPath" :show-level-select="false" />
+        <location-select-form v-model="fromLocationPath" :allow-level-change="false" />
       </n-collapse-item>
       <n-collapse-item
         :title="toLocationTitle"
         name="toLocation"
         :disabled="!toLocationPath.length"
       >
-        <location-select-form v-model="toLocationPath" :show-level-select="false" />
+        <location-select-form v-model="toLocationPath" :allow-level-change="false" />
       </n-collapse-item>
     </n-collapse>
 

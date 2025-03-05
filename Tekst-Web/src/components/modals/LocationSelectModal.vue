@@ -15,10 +15,10 @@ import { watch } from 'vue';
 const props = withDefaults(
   defineProps<{
     currentLocationPath: LocationRead[];
-    showLevelSelect?: boolean;
+    allowLevelChange?: boolean;
   }>(),
   {
-    showLevelSelect: true,
+    allowLevelChange: true,
   }
 );
 
@@ -49,7 +49,7 @@ function submit() {
       </icon-heading>
     </template>
 
-    <location-select-form v-model="locationPath" :show-level-select="showLevelSelect" />
+    <location-select-form v-model="locationPath" :allow-level-change="allowLevelChange" />
 
     <button-shelf top-gap>
       <n-button type="primary" :disabled="!locationPath.length" @click="submit">

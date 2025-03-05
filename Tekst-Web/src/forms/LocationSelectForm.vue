@@ -9,10 +9,10 @@ import { computed, onMounted, ref, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    showLevelSelect?: boolean;
+    allowLevelChange?: boolean;
   }>(),
   {
-    showLevelSelect: true,
+    allowLevelChange: true,
   }
 );
 
@@ -25,7 +25,7 @@ const lvl = ref(Math.max(0, model.value.length - 1));
 const lvlOptions = computed(() =>
   state.textLevelLabels.map((l, i) => ({
     value: i,
-    label: l,
+    label: l + (state.text?.defaultLevel === i ? ` (${$t('general.default')})` : ''),
   }))
 );
 // react to level selection changes
@@ -64,7 +64,7 @@ function getEmptyModels(text: TextRead | undefined = state.text): LocationSelect
       selected: null,
       locations: [],
       options: [],
-      disabled: props.showLevelSelect && i > lvl.value,
+      disabled: props.allowLevelChange && i > lvl.value,
     })) || []
   );
 }
@@ -114,7 +114,7 @@ async function updateSelectModels(fromLvl: number = 0) {
 
 function applyBrowseLevel() {
   locationSelectModels.value.forEach((lsm, i) => {
-    lsm.disabled = props.showLevelSelect && i > lvl.value;
+    lsm.disabled = props.allowLevelChange && i > lvl.value;
     lsm.locations = lsm.disabled ? [] : lsm.locations;
     lsm.selected = lsm.disabled ? null : lsm.selected;
   });
@@ -175,7 +175,7 @@ onMounted(() => {
     :show-feedback="false"
     :show-require-mark="false"
   >
-    <template v-if="props.showLevelSelect">
+    <template v-if="props.allowLevelChange">
       <n-form-item :label="$t('browse.location.level')">
         <n-select
           v-model:value="lvl"

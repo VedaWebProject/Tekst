@@ -675,7 +675,7 @@ whenever(ArrowRight, () => {
     v-if="resource && locationPath"
     v-model:show="showJumpToModal"
     :current-location-path="locationPath"
-    :show-level-select="false"
+    :allow-level-change="false"
     @submit="(locPath) => gotoLocation(locPath[locPath.length - 1].id)"
   />
 </template>

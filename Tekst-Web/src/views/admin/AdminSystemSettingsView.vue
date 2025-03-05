@@ -178,6 +178,7 @@ watch(
             <n-select
               v-model:value="formModel.availableLocales"
               multiple
+              max-tag-count="responsive"
               :options="localeOptions"
               :placeholder="$t('models.platformSettings.availableLocales')"
               :consistent-menu-width="false"
@@ -262,6 +263,7 @@ watch(
               v-model:value="formModel.denyResourceTypes"
               multiple
               clearable
+              max-tag-count="responsive"
               :options="resourceTypeOptions"
               placeholder="–"
             />

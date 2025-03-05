@@ -139,7 +139,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         remote
         clear-filter-after-select
         :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
-        :max-tag-count="64"
+        max-tag-count="responsive"
         :render-label="renderUserSelectLabel"
         :render-tag="renderUserSelectTag"
         :loading="loadingUsers"
@@ -162,7 +162,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
         remote
         clear-filter-after-select
         :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
-        :max-tag-count="64"
+        max-tag-count="responsive"
         :render-label="renderUserSelectLabel"
         :render-tag="renderUserSelectTag"
         :loading="loadingUsers"

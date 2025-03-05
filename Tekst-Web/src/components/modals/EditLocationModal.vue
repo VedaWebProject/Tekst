@@ -104,6 +104,7 @@ defineExpose({ open });
           tag
           filterable
           multiple
+          max-tag-count="responsive"
         />
       </n-form-item>
     </n-form>
