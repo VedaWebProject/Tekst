@@ -10,7 +10,7 @@ import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceS
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import { $t } from '@/i18n';
-import { AddIcon, ClearIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { AddIcon, ClearIcon, LevelsIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
@@ -22,10 +22,11 @@ import {
   NFormItem,
   NIcon,
   NSelect,
+  NTag,
   type FormInst,
 } from 'naive-ui';
-import type { SelectMixedOption } from 'naive-ui/es/select/src/interface';
-import { computed, h, ref, watch } from 'vue';
+import type { SelectMixedOption, SelectOption } from 'naive-ui/es/select/src/interface';
+import { computed, h, ref, watch, type VNodeChild } from 'vue';
 
 interface AdvancedSearchFormModelItem extends ResourceSearchQuery {
   resource?: AnyResourceRead;
@@ -58,7 +59,7 @@ const resourceOptions = computed(() => {
       h(
         'div',
         {
-          class: 'text-tiny b',
+          class: 'text-small b',
           style: {
             color: theme.getAccentColors(tId).base,
             padding: '8px',
@@ -89,6 +90,7 @@ const resourceOptions = computed(() => {
         value: r.id,
         resourceType: r.resourceType,
         textColor: theme.getAccentColors(tId).base,
+        level: r.level,
       })),
   }));
 });
@@ -96,6 +98,20 @@ const resourceOptions = computed(() => {
 const resourceColors = computed(() =>
   Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getAccentColors(r.textId) }]))
 );
+
+function renderResourceOptionLabel(option: SelectOption): VNodeChild {
+  return h(NFlex, { align: 'center', justify: 'space-between', class: 'mr-lg' }, () => [
+    h('span', { style: 'white-space: nowrap' }, option.label as string),
+    h(
+      NTag,
+      { size: 'small', style: 'cursor: pointer; font-weight: normal' },
+      {
+        default: () => state.textLevelLabels[option.level as number],
+        icon: () => h(NIcon, { component: LevelsIcon }),
+      }
+    ),
+  ]);
+}
 
 function handleResourceChange(
   resQueryIndex: number,
@@ -218,6 +234,7 @@ whenever(ctrlEnter, () => {
                   :options="resourceOptions"
                   :consistent-menu-width="false"
                   :menu-props="{ class: 'search-resource-select-menu' }"
+                  :render-label="renderResourceOptionLabel"
                   @update:value="
                     (v, o: SelectMixedOption) =>
                       handleResourceChange(queryIndex, v, o.resourceType as SearchableResourceType)
@@ -307,10 +324,6 @@ whenever(ctrlEnter, () => {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }
-
-.search-resource-select :deep(.n-base-selection .n-base-selection-label .n-base-selection-input) {
-  color: inherit;
-}
 </style>
 
 <style>
@@ -321,5 +334,9 @@ whenever(ctrlEnter, () => {
   .n-base-select-option__check {
   color: unset;
   font-weight: var(--font-weight-bold);
+}
+
+.search-resource-select-menu .n-base-select-option .n-base-select-option__content {
+  width: 100%;
 }
 </style>
