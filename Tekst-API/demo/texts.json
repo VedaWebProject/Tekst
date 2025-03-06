@@ -55,10 +55,14 @@
       {
         "key": "links",
         "translations": [{ "locale": "*", "translation": "Links" }]
+      },
+      {
+        "key": "demo",
+        "translations": [{ "locale": "*", "translation": "Demo" }]
       }
     ],
     "full_loc_label_as_hit_heading": true,
-    "index_utd": false
+    "index_utd": true
   },
   {
     "_id": { "$oid": "654ba1f3ec7833e469dde765" },

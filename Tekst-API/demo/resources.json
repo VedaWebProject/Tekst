@@ -49,10 +49,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "focus_view": {
-          "single_line": false,
-          "delimiter": " / "
-        },
+        "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
         "content_css": []
       },
@@ -148,10 +145,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "focus_view": {
-          "single_line": false,
-          "delimiter": " / "
-        },
+        "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [{ "pattern": "[aeiou]", "replacement": "o" }]
       },
       "plain_text": {
@@ -362,10 +356,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "focus_view": {
-          "single_line": false,
-          "delimiter": " / "
-        },
+        "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
         "content_css": []
       },
@@ -425,10 +416,7 @@
       },
       "general": {
         "default_collapsed": false,
-        "focus_view": {
-          "single_line": false,
-          "delimiter": " / "
-        },
+        "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
         "content_css": []
       },
@@ -563,5 +551,47 @@
       "general": { "default_collapsed": true, "font": null }
     },
     "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
+  },
+  {
+    "_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+    "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Unrelated Demo API Call" },
+      {
+        "locale": "deDE",
+        "translation": "Demo API-Anfragen ohne Bezug zum Thema"
+      }
+    ],
+    "description": [],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 2,
+    "resource_type": "apiCall",
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "demo",
+        "sort_order": 10,
+        "default_active": false,
+        "enable_content_context": false,
+        "searchable_quick": false,
+        "searchable_adv": false,
+        "rtl": false
+      },
+      "general": { "default_collapsed": false },
+      "api_call": {
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "transform_deps": [],
+        "transform_js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+      }
+    },
+    "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
   }
 ]
