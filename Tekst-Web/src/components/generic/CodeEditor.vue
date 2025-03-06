@@ -39,10 +39,10 @@ const codeEditorExtensions = computed<Extension[]>(() => [
 
 <style scoped>
 .code-editor :deep(.cm-selectionBackground) {
-  background: var(--accent-color) !important;
+  background: var(--text-color) !important;
 }
 
 .code-editor :deep(.cm-activeLine) {
-  background: var(--accent-color-fade4) !important;
+  background: var(--main-bg-color) !important;
 }
 </style>
