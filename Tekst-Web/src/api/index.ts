@@ -300,8 +300,7 @@ export type LocationData = components['schemas']['LocationData'];
 // platform
 
 export type PlatformData = components['schemas']['PlatformData'];
-export type PlatformSettingsRead = components['schemas']['PlatformStateRead'];
-export type PlatformSettingsUpdate = components['schemas']['PlatformStateUpdate'];
+export type PlatformStateUpdate = components['schemas']['PlatformStateUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
 
 // client segments

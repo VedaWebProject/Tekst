@@ -422,7 +422,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/platform/settings': {
+  '/platform/state': {
     parameters: {
       query?: never;
       header?: never;
@@ -435,8 +435,8 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    /** Update platform settings */
-    patch: operations['updatePlatformSettings'];
+    /** Update platform state */
+    patch: operations['updatePlatformState'];
     trace?: never;
   };
   '/platform/segments/{id}': {
@@ -7591,7 +7591,7 @@ export interface operations {
       };
     };
   };
-  updatePlatformSettings: {
+  updatePlatformState: {
     parameters: {
       query?: never;
       header?: never;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PATCH, resourceTypes, type PlatformSettingsUpdate } from '@/api';
+import { PATCH, resourceTypes, type PlatformStateUpdate } from '@/api';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -37,12 +37,12 @@ const { message } = useMessages();
 
 const tabsRef = ref<TabsInst>();
 
-const getFormModel = (): PlatformSettingsUpdate =>
-  cloneDeep(state.pf?.state || ({} as PlatformSettingsUpdate));
+const getFormModel = (): PlatformStateUpdate =>
+  cloneDeep(state.pf?.state || ({} as PlatformStateUpdate));
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
-const formModel = ref<PlatformSettingsUpdate>(getFormModel());
+const formModel = ref<PlatformStateUpdate>(getFormModel());
 
 const { changed, reset, getChanges } = useModelChanges(formModel);
 
@@ -70,8 +70,8 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
-      const { error } = await PATCH('/platform/settings', {
-        body: getChanges() as PlatformSettingsUpdate,
+      const { error } = await PATCH('/platform/state', {
+        body: getChanges() as PlatformStateUpdate,
       });
       if (!error) {
         await loadPlatformData();

@@ -2564,13 +2564,13 @@
         ]
       }
     },
-    "/platform/settings": {
+    "/platform/state": {
       "patch": {
         "tags": [
           "platform"
         ],
-        "summary": "Update platform settings",
-        "operationId": "updatePlatformSettings",
+        "summary": "Update platform state",
+        "operationId": "updatePlatformState",
         "requestBody": {
           "content": {
             "application/json": {

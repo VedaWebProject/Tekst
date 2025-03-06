@@ -69,7 +69,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
 
 
 @router.patch(
-    "/settings",
+    "/state",
     response_model=PlatformStateRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
@@ -79,7 +79,7 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
         ]
     ),
 )
-async def update_platform_settings(
+async def update_platform_state(
     su: SuperuserDep,
     updates: PlatformStateUpdate,
 ) -> PlatformStateDocument:

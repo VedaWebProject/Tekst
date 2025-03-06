@@ -20,14 +20,14 @@ async def test_platform_data(
 
 
 @pytest.mark.anyio
-async def test_update_platform_settings(
+async def test_update_platform_state(
     test_client: AsyncClient,
     assert_status,
     login,
 ):
     await login(is_superuser=True)
     resp = await test_client.patch(
-        "/platform/settings",
+        "/platform/state",
         json={"availableLocales": ["enUS"]},
     )
     assert_status(200, resp)
@@ -38,14 +38,14 @@ async def test_update_platform_settings(
 
 
 @pytest.mark.anyio
-async def test_update_pf_settings_invalid_denied_res_type(
+async def test_update_pf_state_invalid_denied_res_type(
     test_client: AsyncClient,
     login,
     assert_status,
 ):
     await login(is_superuser=True)
     resp = await test_client.patch(
-        "/platform/settings",
+        "/platform/state",
         json={"denyResourceTypes": ["foo"]},
     )
     assert_status(422, resp)
