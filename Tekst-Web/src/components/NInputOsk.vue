@@ -172,7 +172,7 @@ whenever(Enter, () => {
             <n-drawer-content closable>
               <template #header>
                 <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
-                  <n-flex align="center" :wrap="false" style="flex-grow: 4; flex-basis: 300px">
+                  <n-flex align="center" :wrap="false" style="flex: 4 300px">
                     <n-icon :component="KeyboardIcon" size="24" color="var(--accent-color)" />
                     <div
                       v-if="!!oskInput.length"
@@ -203,7 +203,7 @@ whenever(Enter, () => {
                     ref="oskModeSelectRef"
                     v-model:value="oskKey"
                     :options="oskModeOptions"
-                    style="flex-grow: 1; width: 200px"
+                    style="flex: 1 200px"
                     :consistent-menu-width="false"
                     :disabled="oskModeOptions.length <= 1"
                     @update:value="() => handleInput()"

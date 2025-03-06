@@ -90,12 +90,7 @@ onMounted(() => {
         </template>
       </n-button>
       <div v-if="!compact" class="text-tiny">{{ currentTimeString }} / {{ durationString }}</div>
-      <n-flex
-        v-if="!compact"
-        align="center"
-        :wrap="false"
-        style="width: auto; flex-grow: 2; flex-basis: 200px"
-      >
+      <n-flex v-if="!compact" align="center" :wrap="false" style="width: auto; flex: 2 200px">
         <n-slider
           v-model:value="currentTime"
           :step="1"
@@ -103,7 +98,7 @@ onMounted(() => {
           :max="duration"
           :format-tooltip="(seconds) => secondsToTimeString(seconds)"
           :disabled="error"
-          style="width: auto; flex-grow: 2; flex-basis: 200px"
+          style="width: auto; flex: 2 200px"
         />
         <n-button
           v-if="externalLink"

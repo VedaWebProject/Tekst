@@ -195,7 +195,7 @@ onMounted(() => {
 }
 
 .bsr-toolbar-middle {
-  flex-grow: 2;
+  flex: 2;
 }
 
 :deep(.n-badge > .n-badge-sup) {

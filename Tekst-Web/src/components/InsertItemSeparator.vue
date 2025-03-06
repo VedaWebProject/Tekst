@@ -39,7 +39,7 @@ defineEmits(['click']);
 }
 
 .add-level-separator {
-  flex-grow: 2;
+  flex: 2;
   height: 0;
   border-bottom: 1px dashed #888;
   opacity: 0.25;

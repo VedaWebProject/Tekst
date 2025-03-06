@@ -11,7 +11,7 @@ import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { KeyboardReturnIcon } from '@/icons';
 import { useResourcesStore } from '@/stores';
-import { NDynamicInput, NFormItem, NSelect, type SelectOption } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NSelect, type SelectOption } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -80,25 +80,8 @@ onMounted(async () => {
   <n-form-item :show-label="false" :show-feedback="false">
     <n-dynamic-input v-model:value="model.tokens" :min="1" :max="1024" @create="handleInsertToken">
       <template #default="{ value: tokenItem, index: tokenItemIndex }">
-        <div
-          style="
-            display: flex;
-            align-items: flex-start;
-            gap: var(--gap-md);
-            flex-grow: 2;
-            flex-wrap: wrap;
-          "
-        >
-          <div
-            style="
-              flex-grow: 1;
-              flex-basis: 250px;
-              display: flex;
-              align-items: flex-start;
-              gap: var(--gap-md);
-              flex-wrap: nowrap;
-            "
-          >
+        <n-flex align="flex-start" style="flex: 2">
+          <n-flex align="flex-start" :wrap="false" style="flex: 1 250px">
             <!-- TOKEN -->
             <n-form-item
               :label="$t('resources.types.textAnnotation.contentFields.token')"
@@ -128,13 +111,13 @@ onMounted(async () => {
                 :title="$t('resources.types.textAnnotation.contentFields.lb')"
               />
             </n-form-item>
-          </div>
+          </n-flex>
           <!-- ANNOTATIONS -->
           <n-form-item
             :label="$t('resources.types.textAnnotation.contentFields.annotations')"
             :show-feedback="false"
             :path="`tokens[${tokenItemIndex}].annotations`"
-            style="flex-grow: 2; flex-basis: 400px"
+            style="flex: 2 400px"
           >
             <n-dynamic-input
               v-model:value="tokenItem.annotations"
@@ -145,13 +128,13 @@ onMounted(async () => {
                   style="
                     display: flex;
                     flex-wrap: nowrap;
-                    flex-grow: 2;
+                    flex: 2;
                     gap: var(--gap-md);
                     align-items: flex-start;
                   "
                 >
                   <n-form-item
-                    style="flex-grow: 2; flex-basis: 100px"
+                    style="flex: 2 100px"
                     :show-label="false"
                     :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].key`"
                     :rule="contentFormRules.textAnnotation.annotationKey"
@@ -170,7 +153,7 @@ onMounted(async () => {
                     />
                   </n-form-item>
                   <n-form-item
-                    style="flex-grow: 2; flex-basis: 100px"
+                    style="flex: 2 100px"
                     :show-label="false"
                     :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].value`"
                     :rule="contentFormRules.textAnnotation.annotationValue"
@@ -208,7 +191,7 @@ onMounted(async () => {
               </template>
             </n-dynamic-input>
           </n-form-item>
-        </div>
+        </n-flex>
       </template>
       <template
         #action="{

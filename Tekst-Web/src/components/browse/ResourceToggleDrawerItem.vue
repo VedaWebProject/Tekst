@@ -52,7 +52,7 @@ const infoTooltip = computed(() =>
 <style scoped>
 .item > .item-main {
   min-width: 1px;
-  flex-grow: 2;
+  flex: 2;
 }
 
 .item.disabled > .item-main {

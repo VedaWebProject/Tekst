@@ -29,7 +29,7 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
             :label="$t('resources.settings.config.general.searchReplacements.pattern')"
             :path="`config.general.searchReplacements[${index}].pattern`"
             :rule="searchReplacementsConfigFormRules.pattern"
-            style="flex-grow: 1; flex-basis: 200px"
+            style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.pattern"
@@ -43,7 +43,7 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
             :label="$t('resources.settings.config.general.searchReplacements.replacement')"
             :path="`config.general.searchReplacements[${index}].replacement`"
             :rule="searchReplacementsConfigFormRules.replacement"
-            style="flex-grow: 1; flex-basis: 200px"
+            style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.replacement"

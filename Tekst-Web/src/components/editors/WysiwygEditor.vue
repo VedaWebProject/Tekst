@@ -271,7 +271,7 @@ onUnmounted(() => {
         :consistent-menu-width="false"
         status="success"
         :render-label="renderBlockTypeLabel"
-        style="width: auto; min-width: 320px; flex-grow: 2"
+        style="width: auto; min-width: 320px; flex: 2"
         @update:value="handleSelectBlockType"
       />
       <div class="toolbar-group">

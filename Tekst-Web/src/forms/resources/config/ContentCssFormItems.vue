@@ -32,7 +32,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
             :label="$t('resources.settings.config.general.contentCss.prop')"
             :path="`config.general.contentCss[${index}].prop`"
             :rule="contentCssConfigFormRules.prop"
-            style="flex-grow: 1; flex-basis: 200px"
+            style="flex: 1 200px"
           >
             <n-select
               v-model:value="value.prop"
@@ -47,7 +47,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
             :label="$t('resources.settings.config.general.contentCss.value')"
             :path="`config.general.contentCss[${index}].value`"
             :rule="contentCssConfigFormRules.value"
-            style="flex-grow: 1; flex-basis: 200px"
+            style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.value"

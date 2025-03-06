@@ -83,7 +83,7 @@ const metadataKeysOptions = computed(() =>
             :show-label="false"
             :path="`meta[${index}].key`"
             :rule="resourceSettingsFormRules.metaKey"
-            style="flex-grow: 1; min-width: 100px"
+            style="flex: 1 100px"
             required
           >
             <n-select
@@ -99,7 +99,7 @@ const metadataKeysOptions = computed(() =>
             :show-label="false"
             :path="`meta[${index}].value`"
             :rule="resourceSettingsFormRules.metaValue"
-            style="flex-grow: 2; min-width: 100px"
+            style="flex: 2; min-width: 100px"
             required
           >
             <n-input

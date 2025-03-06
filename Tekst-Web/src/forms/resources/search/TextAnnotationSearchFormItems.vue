@@ -68,7 +68,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-flex :wrap="false" align="center" style="flex-grow: 1; flex-basis: 248px">
+  <n-flex :wrap="false" align="center" style="flex: 1 248px">
     <!-- TOKEN -->
     <n-form-item
       :label="$t('resources.types.textAnnotation.contentFields.token')"
@@ -102,14 +102,14 @@ onMounted(async () => {
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.annotations')"
     :show-feedback="!model.anno?.length"
-    style="flex-grow: 2; flex-basis: 400px"
+    style="flex: 2 400px"
   >
     <n-dynamic-input v-model:value="model.anno" @create="() => ({ k: undefined, v: undefined })">
       <template #default="{ value: annotationItem, index: annotationItemIndex }">
         <n-flex wrap align="flex-start" style="flex: 2">
           <!-- KEY -->
           <n-form-item
-            style="flex-grow: 2; flex-basis: 200px"
+            style="flex: 2 200px"
             :show-label="false"
             ignore-path-change
             :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].k`"
@@ -125,14 +125,14 @@ onMounted(async () => {
             />
           </n-form-item>
 
-          <n-flex :wrap="false" align="center" style="flex-grow: 2; flex-basis: 248px">
+          <n-flex :wrap="false" align="center" style="flex: 2 248px">
             <!-- VALUE -->
             <n-form-item
               :show-label="false"
               ignore-path-change
               :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].v`"
               :rule="searchFormRules.textAnnotation.annotationValue"
-              style="flex-grow: 2; flex-basis: 200px"
+              style="flex: 2 200px"
             >
               <n-select
                 v-model:value="annotationItem.v"

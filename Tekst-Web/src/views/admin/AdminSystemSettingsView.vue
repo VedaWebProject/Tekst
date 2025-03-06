@@ -328,7 +328,7 @@ watch(
                     display: flex;
                     align-items: flex-start;
                     gap: 12px;
-                    flex-grow: 2;
+                    flex: 2;
                     flex-wrap: wrap;
                   "
                 >
@@ -337,7 +337,6 @@ watch(
                     :label="$t('general.key')"
                     :path="`oskModes[${index}].key`"
                     :rule="platformSettingsFormRules.oskModeKey"
-                    style="flex-grow: 1"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].key"

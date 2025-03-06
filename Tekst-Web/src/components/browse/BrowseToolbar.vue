@@ -2,7 +2,7 @@
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { ResourceIcon, FocusViewOnIcon, FocusViewOffIcon } from '@/icons';
+import { FocusViewOffIcon, FocusViewOnIcon, ResourceIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
@@ -147,7 +147,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 }
 
 .browse-toolbar-middle {
-  flex-grow: 2;
+  flex: 2;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;

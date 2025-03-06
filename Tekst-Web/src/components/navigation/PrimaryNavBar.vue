@@ -65,10 +65,10 @@ const titleLinkTo = computed(() => {
     />
     <div class="navbar-title">
       <router-link :to="titleLinkTo">
-        <div class="text-gigantic">{{ pfData?.state.platformName }}</div>
+        <div class="text-gigantic" style="line-height: 120%">{{ pfData?.state.platformName }}</div>
       </router-link>
-      <div v-if="pfData?.state.platformSubtitle.length" class="translucent text-tiny">
-        <translation-display :value="pfData?.state.platformSubtitle" />
+      <div v-if="!!pfData?.state.platformSubtitle.length" class="translucent text-tiny">
+        <translation-display :value="pfData.state.platformSubtitle" />
       </div>
     </div>
 
@@ -76,7 +76,7 @@ const titleLinkTo = computed(() => {
       v-if="!state.smallScreen"
       justify="end"
       align="flex-start"
-      style="flex-grow: 2; align-self: stretch"
+      style="flex: 2; align-self: stretch"
     >
       <theme-mode-switcher />
       <locale-switcher />
@@ -141,7 +141,7 @@ const titleLinkTo = computed(() => {
 }
 
 .navbar-title {
-  flex-grow: 2;
+  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -155,11 +155,11 @@ const titleLinkTo = computed(() => {
 
 .navbar-menu-divider {
   height: 0px;
-  flex-grow: 2;
+  flex: 2;
 }
 
 .navbar-smallscreen .navbar-menu-divider {
-  flex-grow: 1;
+  flex: 1;
   width: 100%;
   margin: 0;
 }
