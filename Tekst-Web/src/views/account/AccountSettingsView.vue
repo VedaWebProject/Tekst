@@ -281,6 +281,9 @@ async function handleDeleteAccount() {
       }
       loading.value = false;
     },
+    onAfterLeave: () => {
+      deleteAccountSafetyInput.value = '';
+    },
   });
 }
 
