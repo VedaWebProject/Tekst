@@ -275,6 +275,21 @@ pre > code {
   padding: var(--gap-sm) var(--gap-md);
 }
 
+.content-loadable {
+  transition: filter 0.3s ease;
+  transition-delay: 0.3s;
+}
+
+.content-loading {
+  cursor: wait;
+  filter: blur(2px) grayscale(100%) opacity(50%);
+}
+
+.content-loading > * {
+  pointer-events: none;
+  user-select: none;
+}
+
 .accent-color-bg {
   background-color: var(--accent-color);
   color: #fff;
@@ -339,15 +354,6 @@ pre > code {
   width: 100%;
   border: 1px solid rgb(224, 224, 230);
   border-radius: var(--border-radius);
-}
-
-.content-loadable {
-  transition: filter 0.3s ease;
-}
-
-.content-loading {
-  cursor: wait;
-  filter: blur(2px) opacity(0.5);
 }
 
 /*

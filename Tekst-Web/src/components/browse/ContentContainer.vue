@@ -156,7 +156,7 @@ watch(
       />
     </n-flex>
 
-    <n-spin :show="loading && contentsLoaded" size="small" :delay="500">
+    <n-spin :show="loading && contentsLoaded" size="small" :delay="1000">
       <collapsable-content
         v-if="contentsLoaded"
         :collapsable="collapsable || contentContextLoaded"
@@ -211,5 +211,11 @@ watch(
   border: 2px dashed var(--main-bg-color);
   box-shadow: none;
   padding: 12px var(--gap-lg);
+}
+
+:deep(.n-spin-content.n-spin-content--spinning) {
+  opacity: 1;
+  pointer-events: inherit;
+  cursor: wait;
 }
 </style>
