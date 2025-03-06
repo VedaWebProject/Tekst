@@ -135,7 +135,7 @@ function handleTaskClick(id: string) {
   padding: 8px 16px;
   margin: 0px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
   color: var(--text-color);
 }
 

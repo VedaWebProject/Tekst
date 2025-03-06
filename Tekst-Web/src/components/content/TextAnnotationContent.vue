@@ -550,7 +550,7 @@ function generatePlaintextAnno(): string {
   border-radius: var(--border-radius);
   padding: 0 8px;
   outline-color: transparent;
-  transition: outline-color 0.3s ease-in-out;
+  transition: outline-color 0.2s ease-in-out;
 }
 
 .token-container.token-with-annos {
