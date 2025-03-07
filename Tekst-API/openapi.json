@@ -14236,7 +14236,8 @@
             "description": "Quick search settings",
             "default": {
               "op": "OR",
-              "re": false
+              "re": false,
+              "strtg": "native"
             },
             "optionalNullable": true
           }
@@ -14282,6 +14283,18 @@
             ],
             "title": "Txt",
             "description": "IDs of texts to search in",
+            "optionalNullable": true
+          },
+          "strtg": {
+            "type": "string",
+            "enum": [
+              "native",
+              "defaultLevel",
+              "both"
+            ],
+            "title": "Strtg",
+            "description": "Quick Search strategy",
+            "default": "native",
             "optionalNullable": true
           }
         },

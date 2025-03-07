@@ -164,6 +164,14 @@ class QuickSearchSettings(ModelBase):
         ),
         SchemaOptionalNullable,
     ] = None
+    strategy: Annotated[
+        Literal["native", "defaultLevel", "both"],
+        Field(
+            alias="strtg",
+            description="Quick Search strategy",
+        ),
+        SchemaOptionalNullable,
+    ] = "native"
 
     @field_validator("default_operator", mode="before")
     @classmethod

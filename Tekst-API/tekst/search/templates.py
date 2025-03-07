@@ -55,7 +55,7 @@ IDX_TEMPLATE = {
         "properties": {
             "resources": {"type": "object"},
             "text_id": {"type": "keyword"},
-            "level": {"type": "short"},
+            "level": {"type": "byte"},
             "position": {"type": "integer"},
         },
     },

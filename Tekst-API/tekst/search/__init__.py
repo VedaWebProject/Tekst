@@ -41,6 +41,10 @@ from tekst.search.templates import (
 from tekst.search.utils import (
     add_analysis_settings,
     add_mappings,
+    quick_qstr_query,
+    quick_qstr_query_native,
+    quick_regexp_query,
+    quick_regexp_query_native,
 )
 from tekst.state import get_state, update_state
 
@@ -241,6 +245,7 @@ async def _populate_index(
     bulk_index_max_size = 200
     bulk_index_body = []
     errors = False
+
     target_resource_ids = [
         res.id
         for res in await _get_resources(
@@ -250,10 +255,11 @@ async def _populate_index(
     ]
 
     # Initialize stack with all level 0 locations (sorted) of the current text.
-    # Each item on the stack is a tuple containing (1) the location labels from the
-    # root level up to the current location and (2) the location itself.
+    # Each item on the stack is a tuple containing
+    # (0) the location itself as LocationDocument
+    # (1) location labels from the root level up to the current location as list[str],
     stack = [
-        ([location.label], location)
+        (location, [location.label])
         for location in await LocationDocument.find(
             LocationDocument.text_id == text.id,
             LocationDocument.level == 0,
@@ -265,38 +271,58 @@ async def _populate_index(
     # abort if initial stack is empty
     if not stack:  # pragma: no cover
         return
+
+    # cache mapping of location IDs to index doc contents
+    # for re-use in child location index docs
+    parent_idx_contents: dict[str, dict[str, Any]] = {}
+
+    # keep track of number of bulk index requests
     bulk_req_count = 0
 
-    while stack:
-        labels, location = stack.pop(0)
-        full_label = text.loc_delim.join(labels)
+    while len(stack):
+        loc, labels = stack.pop(0)
+        loc_id_str = str(loc.id)
 
         # create index document for this location
-        location_index_doc = {
-            "label": location.label,
-            "full_label": full_label,
-            "text_id": str(location.text_id),
-            "level": location.level,
-            "position": location.position,
+        loc_idx_doc = {
+            "label": loc.label,
+            "full_label": text.loc_delim.join(labels),
+            "text_id": str(loc.text_id),
+            "level": loc.level,
+            "position": loc.position,
             "resources": {},
         }
 
+        # add parent contents
+        if str(loc.parent_id) in parent_idx_contents:
+            loc_idx_doc["resources"].update(parent_idx_contents[str(loc.parent_id)])
+
         # add data for each content for this location
         for content in await ContentBaseDocument.find(
-            Eq(ContentBaseDocument.location_id, location.id),
+            Eq(ContentBaseDocument.location_id, loc.id),
             In(ContentBaseDocument.resource_id, target_resource_ids),
             with_children=True,
         ).to_list():
-            # add resource content document to location index document
-            location_index_doc["resources"][str(content.resource_id)] = (
-                resource_types_mgr.get(content.resource_type).index_doc(content)
-            )
+            # add resource level and content to location index document
+            loc_idx_doc["resources"][str(content.resource_id)] = resource_types_mgr.get(
+                content.resource_type
+            ).index_doc(content=content, native=True)
+
+        # add location contents to cached parent contents
+        # (only if the current location's level is < max level,
+        # otherwise there won't be any child locations we need that content for)
+        # but set "native" to False, as these contents aren't native to child locations
+        if loc.level < len(text.levels) - 1:
+            parent_idx_contents[loc_id_str] = {}
+            for res_id in loc_idx_doc["resources"]:
+                parent_idx_contents[loc_id_str][res_id] = {
+                    **loc_idx_doc["resources"][res_id],
+                    "native": False,
+                }
 
         # add index document to bulk index request body
-        bulk_index_body.append(
-            {"index": {"_index": index_name, "_id": str(location.id)}}
-        )
-        bulk_index_body.append(location_index_doc)
+        bulk_index_body.append({"index": {"_index": index_name, "_id": loc_id_str}})
+        bulk_index_body.append(loc_idx_doc)
 
         # check bulk request body size, fire bulk request if necessary
         if len(bulk_index_body) / 2 >= bulk_index_max_size:  # pragma: no cover
@@ -304,12 +330,15 @@ async def _populate_index(
             errors |= not _bulk_index(bulk_index_body, bulk_req_count)
             bulk_index_body = []
 
-        # add all child locations to the stack
+        # add all child locations to the processing stack
         stack.extend(
             [
-                (labels + [child.label], child)
+                (
+                    child,  # the target location document
+                    labels + [child.label],  # all the labels
+                )
                 for child in await LocationDocument.find(
-                    LocationDocument.parent_id == location.id,
+                    LocationDocument.parent_id == loc.id,
                 )
                 .sort(+LocationDocument.position)
                 .to_list()
@@ -405,48 +434,102 @@ async def _get_resources(
 
 async def search_quick(
     user: UserRead | None,
-    query_string: str | None = None,
+    user_query: str | None = None,
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
     client: Elasticsearch = _es_client
+
+    # get (pre-)selection of target resources
     target_resources = await _get_resources(
         user=user,
         text_ids=settings_quick.texts,  # constrain target texts
     )
 
+    # remove resources that aren't quick-searchable
+    target_resources = [
+        res for res in target_resources if res.config.common.searchable_quick
+    ]
+
     # compose a list of target index fields based on the resources to search:
     field_pattern_suffix = ".strict" if settings_general.strict else ""
-    fields = []
+    fields = []  # list of tuples of (res_id, field_path)
     for res in target_resources:
-        if res.config.common.searchable_quick:
-            for field in res.quick_search_fields():
-                fields.append(f"resources.{str(res.id)}.{field}{field_pattern_suffix}")
+        for field in res.quick_search_fields():
+            fields.append(
+                (
+                    str(res.id),
+                    f"resources.{str(res.id)}.{field}{field_pattern_suffix}",
+                )
+            )
 
-    # compose the query
-    if not settings_quick.regexp or not query_string:
-        es_query = {
-            "simple_query_string": {
-                "query": query_string or "*",  # fall back to '*' if empty
-                "fields": fields,
-                "default_operator": settings_quick.default_operator,
-                "analyze_wildcard": True,
-            }
-        }
+    # create ES content query
+    if not settings_quick.regexp or not user_query:
+        # use q query string query
+        if settings_quick.strategy in ("native", "both"):
+            es_query = quick_qstr_query_native(
+                user_query,
+                fields,
+                default_op=settings_quick.default_operator,
+            )
+        else:
+            es_query = quick_qstr_query(
+                user_query,
+                fields,
+                default_op=settings_quick.default_operator,
+            )
     else:
+        # use regexp query
+        if settings_quick.strategy in ("native", "both"):
+            es_query = quick_regexp_query_native(
+                user_query,
+                fields,
+            )
+        else:
+            es_query = quick_regexp_query(
+                user_query,
+                fields,
+            )
+
+    # apply quick search strategy "defaultLevel":
+    # modify ES query toonly find locations on their text's default level
+    if settings_quick.strategy in ("defaultLevel", "both"):
+        # get target texts (mapped by text ID)
+        texts = await TextDocument.find(
+            In(TextDocument.id, settings_quick.texts) if settings_quick.texts else {}
+        ).to_list()
+        # construct query
         es_query = {
             "bool": {
-                "should": [
+                "must": [
+                    es_query,  # original query from above
                     {
-                        "regexp": {
-                            field: {
-                                "value": query_string,
-                                "flags": "ALL",
-                                "case_insensitive": True,
-                            }
+                        "bool": {
+                            "should": [
+                                {
+                                    "bool": {
+                                        "filter": [
+                                            {
+                                                "term": {
+                                                    "text_id": {
+                                                        "value": str(text.id),
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "term": {
+                                                    "level": {
+                                                        "value": text.default_level,
+                                                    }
+                                                }
+                                            },
+                                        ]
+                                    }
+                                }
+                                for text in texts
+                            ]
                         }
-                    }
-                    for field in fields
+                    },
                 ]
             }
         }
@@ -459,7 +542,7 @@ async def search_quick(
             index=IDX_ALIAS,
             query=es_query,
             highlight={
-                "fields": [{field: {}} for field in fields],
+                "fields": [{field_path: {}} for _, field_path in fields],
             },
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),

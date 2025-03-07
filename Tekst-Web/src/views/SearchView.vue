@@ -223,11 +223,7 @@ whenever(ctrlEnter, () => {
             :style="{ backgroundColor: resourceColors[query.cmn.res].colors.fade3 }"
           >
             <n-flex align="flex-start" style="flex: 2">
-              <n-form-item
-                :show-label="false"
-                :show-feedback="false"
-                style="flex-basis: 400px; flex-grow: 6"
-              >
+              <n-form-item :show-label="false" :show-feedback="false" style="flex: 6 400px">
                 <n-select
                   class="search-resource-select b"
                   :value="query.cmn.res"
@@ -244,7 +240,7 @@ whenever(ctrlEnter, () => {
               <search-occurrence-selector
                 v-model:occurrence="query.cmn.occ"
                 :query-index="queryIndex"
-                style="flex-basis: 180px; flex-grow: 1"
+                style="flex: 1 180px"
               />
             </n-flex>
             <n-button

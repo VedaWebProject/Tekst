@@ -57,7 +57,7 @@ async def perform_search(
     if body.search_type == "quick":
         return await search.search_quick(
             user=user,
-            query_string=body.query,
+            user_query=body.query,
             settings_general=body.settings_general,
             settings_quick=body.settings_quick,
         )

@@ -904,6 +904,7 @@ search:
     browseStop: Close search results navigation
     indexCreationTime: Last update of search data
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
+    higherLvlHit: Search hit from higher level "{level}"
     sortingPresets:
       title: Sort
       relevance: Relevance
