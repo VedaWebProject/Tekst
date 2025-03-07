@@ -51,15 +51,10 @@ const settings = computed(() => [
   <n-flex align="center" class="text-tiny" :size="[4, 8]">
     <template v-if="!loading && total != null && totalRelation">
       <span>
+        {{ searchLabel }}:
         {{ totalRelation === 'eq' ? '' : '≥' }}
-        {{
-          $t('search.results.count', {
-            count: total,
-          })
-        }}
-        {{ $t('general.for') }}
+        <b>{{ $t('search.results.count', { count: total }) }}</b>
       </span>
-      <span class="b">{{ searchLabel }}</span>
     </template>
     <span v-else>
       {{ $t('search.results.searching') }}

@@ -45,12 +45,9 @@ const settings = computed(() => [
 <template>
   <n-flex align="center" class="text-tiny" :size="[4, 8]">
     <span v-if="!loading && total != null && totalRelation">
+      {{ $t('search.quickSearch.title') }}:
       {{ totalRelation === 'eq' ? '' : '≥' }}
-      {{
-        $t('search.results.count', {
-          count: total,
-        })
-      }}
+      <b>{{ $t('search.results.count', { count: total }) }}</b>
       {{ $t('general.for') }}
     </span>
     <span v-else>
