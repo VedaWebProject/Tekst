@@ -1250,7 +1250,7 @@ export interface components {
        * @description Resource-specific queries
        * @default []
        */
-      q: components['schemas']['ResourceSearchQuery'][];
+      q?: components['schemas']['ResourceSearchQuery'][];
       /**
        * @description General search settings
        * @default {
@@ -1432,34 +1432,34 @@ export interface components {
        * @description Whether this resource is active by default when public
        * @default true
        */
-      defaultActive: boolean;
+      defaultActive?: boolean;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for API call resources)
        * @default false
        * @constant
        */
-      enableContentContext: false;
+      enableContentContext?: false;
       /**
        * Searchablequick
        * @description Whether this resource should be included in quick search (always false as API call contents are not searchable)
        * @default false
        * @constant
        */
-      searchableQuick: false;
+      searchableQuick?: false;
       /**
        * Searchableadv
        * @description Whether this resource should accessible via advanced search (always false as API call contents are not searchable)
        * @default false
        * @constant
        */
-      searchableAdv: false;
+      searchableAdv?: false;
       /**
        * Rtl
        * @description Whether to display text contents in right-to-left direction
        * @default false
        */
-      rtl: boolean;
+      rtl?: boolean;
       /** Osk */
       osk?: string | null;
     };
@@ -2408,31 +2408,31 @@ export interface components {
        * @description Whether this resource is active by default when public
        * @default true
        */
-      defaultActive: boolean;
+      defaultActive?: boolean;
       /**
        * Enablecontentcontext
        * @description Show combined contents of this resource on the parent level
        * @default false
        */
-      enableContentContext: boolean;
+      enableContentContext?: boolean;
       /**
        * Searchablequick
        * @description Whether this resource should be included in quick search
        * @default true
        */
-      searchableQuick: boolean;
+      searchableQuick?: boolean;
       /**
        * Searchableadv
        * @description Whether this resource should accessible via advanced search
        * @default true
        */
-      searchableAdv: boolean;
+      searchableAdv?: boolean;
       /**
        * Rtl
        * @description Whether to display text contents in right-to-left direction
        * @default false
        */
-      rtl: boolean;
+      rtl?: boolean;
       /** Osk */
       osk?: string | null;
     };
@@ -3127,7 +3127,7 @@ export interface components {
        */
       pgn?: components['schemas']['PaginationSettings'];
       /** @description Sorting preset */
-      sort?: components['schemas']['SortingPreset'] | null;
+      sort?: components['schemas']['SortingPreset'];
       /**
        * Strict
        * @default false
@@ -4559,7 +4559,9 @@ export interface components {
        * @description Quick search settings
        * @default {
        *       "op": "OR",
-       *       "re": false
+       *       "re": false,
+       *       "inh": false,
+       *       "allLvls": false
        *     }
        */
       qck?: components['schemas']['QuickSearchSettings'];
@@ -4579,6 +4581,18 @@ export interface components {
        * @default false
        */
       re?: boolean;
+      /**
+       * Inh
+       * @description Whether to match contents inherited from higher-level locations
+       * @default false
+       */
+      inh?: boolean;
+      /**
+       * Alllvls
+       * @description Whether to find locations from all levels, as opposed to only finding locations from the respective text's default level
+       * @default false
+       */
+      allLvls?: boolean;
       /**
        * Txt
        * @description IDs of texts to search in

@@ -25,6 +25,8 @@ type GeneralSearchSettings = {
 type QuickSearchSettings = {
   op: 'OR' | 'AND';
   re: boolean;
+  inh: boolean;
+  allLvls: boolean;
   txt?: string[];
 };
 
@@ -55,6 +57,8 @@ const getDefaultSettings = () => ({
   qck: {
     op: 'OR',
     re: false,
+    inh: false,
+    allLvls: false,
   } as QuickSearchSettings,
   adv: {} as AdvancedSearchSettings,
 });
@@ -71,6 +75,8 @@ export const useSearchStore = defineStore('search', () => {
   const router = useRouter();
   const { message } = useMessages();
 
+  const queryQuick = ref('');
+  const queryAdvanced = ref<ResourceSearchQuery[]>([]);
   const settingsGeneral = ref<GeneralSearchSettings>(getDefaultSettings().gen);
   const settingsQuick = ref<QuickSearchSettings>(getDefaultSettings().qck);
   const settingsAdvanced = ref<AdvancedSearchSettings>(getDefaultSettings().adv);
@@ -110,8 +116,10 @@ export const useSearchStore = defineStore('search', () => {
       settingsGeneral.value = decoded.gen || getDefaultSettings().gen;
       settingsGeneral.value.pgn = settingsGeneral.value.pgn || getDefaultSettings().gen.pgn;
       if (decoded.type === 'quick') {
+        queryQuick.value = decoded.q;
         settingsQuick.value = decoded.qck || getDefaultSettings().qck;
       } else if (decoded.type === 'advanced') {
+        queryAdvanced.value = decoded.q;
         settingsAdvanced.value = decoded.adv || getDefaultSettings().adv;
       } else {
         return DEFAULT_SEARCH_REQUEST_BODY;
@@ -267,6 +275,8 @@ export const useSearchStore = defineStore('search', () => {
   );
 
   return {
+    queryQuick,
+    queryAdvanced,
     settingsGeneral,
     settingsQuick,
     settingsAdvanced,

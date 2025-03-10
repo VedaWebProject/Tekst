@@ -411,8 +411,10 @@ export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
 
 export type SearchResults = components['schemas']['SearchResults'];
 export type SearchHit = components['schemas']['SearchHit'];
-export type QuickSearchRequestBody = components['schemas']['QuickSearchRequestBody'];
-export type AdvancedSearchRequestBody = components['schemas']['AdvancedSearchRequestBody'];
+export type QuickSearchRequestBody = Required<components['schemas']['QuickSearchRequestBody']>;
+export type AdvancedSearchRequestBody = Required<
+  components['schemas']['AdvancedSearchRequestBody']
+>;
 export type SortingPreset = components['schemas']['SortingPreset'];
 export type SearchPagination = { pg: number; pgs: number };
 export type ResourceSearchQuery = components['schemas']['ResourceSearchQuery'];

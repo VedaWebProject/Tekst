@@ -143,7 +143,8 @@ def log_op_end(
     global _running_ops
     op_entry = _running_ops.pop(op_id, None)
     if op_entry is None:  # pragma: no cover
-        raise RuntimeError(f"Operation {op_id} not found in running operations dict")
+        log.error(f"Operation {op_id} not found in running operations dict")
+        return -1
     label, start_t, level_code, use_proc_t = op_entry
     dur = (process_time() if use_proc_t else perf_counter()) - start_t
     if not failed:

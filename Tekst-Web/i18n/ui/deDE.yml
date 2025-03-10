@@ -912,6 +912,8 @@ search:
     quick:
       defaultOperator: Alle Begriffe müssen vorkommen
       regexp: Interpretiere Reguläre Ausdrücke
+      inheritedContents: Beziehe Inhalte übergeordneter Fundstellen ein
+      allLevels: Finde Fundstellen aller Ebenen
       texts: Texte
       textsPlaceholder: Alle Texte
       targetResources: Einbezogene Ressourcen auflisten
@@ -928,6 +930,8 @@ search:
     browseStop: Suchergebnis-Navigation schließen
     indexCreationTime: Letztes update der Suchdaten
     msgInvalidRequest: Ungültige Suchanfrage. Haben Sie vielleicht einen Link zu dieser Seite kopiert und dabei ein paar Zeichen übersehen?
+    higherLvlHit: Suchtreffer von übergeordneter Ebene "{level}"
+    allTexts: allen Texten
     sortingPresets:
       title: Sortieren
       relevance: Relevanz

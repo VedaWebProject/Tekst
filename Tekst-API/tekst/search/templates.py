@@ -51,12 +51,14 @@ IDX_TEMPLATE = {
         },
     },
     "mappings": {
-        "dynamic": False,
+        "dynamic": "strict",
         "properties": {
             "resources": {"type": "object"},
             "text_id": {"type": "keyword"},
-            "level": {"type": "short"},
+            "level": {"type": "byte"},
             "position": {"type": "integer"},
+            "label": {"type": "keyword", "index": False},
+            "full_label": {"type": "keyword", "index": False},
         },
     },
 }

@@ -164,6 +164,9 @@ class ResourceTypeABC(ABC):
             strict_analyzer=strict_analyzer,
         )
         return dict(
+            native={
+                "type": "boolean",
+            },
             comment={
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
@@ -176,11 +179,14 @@ class ResourceTypeABC(ABC):
     def index_doc(
         cls,
         content: ContentBase,
+        *,
+        native: bool = True,
     ) -> dict[str, Any]:
         """
         Returns the content for the ES index document for this type of resource content
         """
         return dict(
+            native=native,
             comment=content.comment,
             **(cls._rtype_index_doc(content) or {}),
         )

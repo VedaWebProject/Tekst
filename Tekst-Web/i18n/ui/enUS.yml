@@ -888,6 +888,8 @@ search:
     quick:
       defaultOperator: All terms must occur
       regexp: Interpret Regular Expressions
+      inheritedContents: Include contents from higher-level locations
+      allLevels: Find locations from all levels
       texts: Texts
       textsPlaceholder: All texts
       targetResources: List included resources
@@ -904,6 +906,8 @@ search:
     browseStop: Close search results navigation
     indexCreationTime: Last update of search data
     msgInvalidRequest: Invalid search request. Maybe you copied a link to this page and missed some characters?
+    higherLvlHit: Search hit from higher level "{level}"
+    allTexts: all texts
     sortingPresets:
       title: Sort
       relevance: Relevance

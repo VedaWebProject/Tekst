@@ -7348,13 +7348,13 @@
               },
               "strict": false
             },
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "adv": {
             "$ref": "#/components/schemas/AdvancedSearchSettings",
             "description": "Advanced search settings",
             "default": {},
-            "optionalNullable": true
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -7720,7 +7720,8 @@
             "type": "boolean",
             "title": "Defaultactive",
             "description": "Whether this resource is active by default when public",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "enableContentContext": {
             "type": "boolean",
@@ -7750,7 +7751,8 @@
             "type": "boolean",
             "title": "Rtl",
             "description": "Whether to display text contents in right-to-left direction",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "osk": {
             "anyOf": [
@@ -9776,31 +9778,36 @@
             "type": "boolean",
             "title": "Defaultactive",
             "description": "Whether this resource is active by default when public",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "enableContentContext": {
             "type": "boolean",
             "title": "Enablecontentcontext",
             "description": "Show combined contents of this resource on the parent level",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "searchableQuick": {
             "type": "boolean",
             "title": "Searchablequick",
             "description": "Whether this resource should be included in quick search",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "searchableAdv": {
             "type": "boolean",
             "title": "Searchableadv",
             "description": "Whether this resource should accessible via advanced search",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "rtl": {
             "type": "boolean",
             "title": "Rtl",
             "description": "Whether to display text contents in right-to-left direction",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "osk": {
             "anyOf": [
@@ -11193,7 +11200,7 @@
               "pg": 1,
               "pgs": 10
             },
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "sort": {
             "anyOf": [
@@ -11205,7 +11212,7 @@
               }
             ],
             "description": "Sorting preset",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "strict": {
             "type": "boolean",
@@ -12674,14 +12681,14 @@
             "title": "Pg",
             "description": "Page number",
             "default": 1,
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "pgs": {
             "type": "integer",
             "title": "Pgs",
             "description": "Page size",
             "default": 10,
-            "optionalNullable": true
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -14229,16 +14236,18 @@
               },
               "strict": false
             },
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "qck": {
             "$ref": "#/components/schemas/QuickSearchSettings",
             "description": "Quick search settings",
             "default": {
               "op": "OR",
-              "re": false
+              "re": false,
+              "inh": false,
+              "allLvls": false
             },
-            "optionalNullable": true
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -14255,14 +14264,28 @@
             "title": "Op",
             "description": "Default operator",
             "default": "OR",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "re": {
             "type": "boolean",
             "title": "Re",
             "description": "Whether to use regular expressions",
             "default": false,
-            "optionalNullable": true
+            "optionalNullable": false
+          },
+          "inh": {
+            "type": "boolean",
+            "title": "Inh",
+            "description": "Whether to match contents inherited from higher-level locations",
+            "default": false,
+            "optionalNullable": false
+          },
+          "allLvls": {
+            "type": "boolean",
+            "title": "Alllvls",
+            "description": "Whether to find locations from all levels, as opposed to only finding locations from the respective text's default level",
+            "default": false,
+            "optionalNullable": false
           },
           "txt": {
             "anyOf": [

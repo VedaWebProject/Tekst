@@ -79,3 +79,87 @@ def add_mappings(
             strict_analyzer=strict_analyzer,
         ),
     }
+
+
+def quick_qstr_query(
+    user_query: str,
+    fields: list[tuple[str, str]],
+    *,
+    default_op: str = "OR",
+    inherited_contents: bool = False,
+) -> dict[str, Any]:
+    """
+    Returns a simple query string query for all fields in `fields`.
+    `fields` is a list of tuples of (res_id, field_path).
+    """
+    return {
+        "bool": {
+            "should": [
+                {
+                    "bool": {
+                        "should" if inherited_contents else "must": [
+                            {
+                                "simple_query_string": {
+                                    "query": user_query or "*",
+                                    "fields": [field_path],
+                                    "default_operator": default_op,
+                                    "analyze_wildcard": True,
+                                }
+                            },
+                            {
+                                "term": {
+                                    f"resources.{res_id}.native": {
+                                        "value": True,
+                                        "boost": 2,
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                }
+                for res_id, field_path in fields
+            ]
+        }
+    }
+
+
+def quick_regexp_query(
+    user_query: str,
+    fields: list[tuple[str, str]],
+    *,
+    inherited_contents: bool = False,
+) -> dict[str, Any]:
+    """
+    Returns a regexp query for all fields in `fields`.
+    `fields` is a list of tuples of (res_id, field_path).
+    """
+    return {
+        "bool": {
+            "should": [
+                {
+                    "bool": {
+                        "should" if inherited_contents else "must": [
+                            {
+                                "regexp": {
+                                    field_path: {
+                                        "value": user_query,
+                                        "flags": "ALL",
+                                        "case_insensitive": True,
+                                    }
+                                }
+                            },
+                            {
+                                "term": {
+                                    f"resources.{res_id}.native": {
+                                        "value": True,
+                                        "boost": 2,
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                }
+                for res_id, field_path in fields
+            ]
+        }
+    }

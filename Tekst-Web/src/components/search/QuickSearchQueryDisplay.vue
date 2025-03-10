@@ -23,21 +23,21 @@ const state = useStateStore();
 const theme = useThemeStore();
 
 const targetTexts = computed(() => {
-  return (
-    state.pf?.texts.filter((t) =>
-      !!props.req.qck?.txt?.length ? props.req.qck.txt.includes(t.id) : true
-    ) || []
-  ).map((t) => ({
-    ...t,
-    color: theme.getAccentColors(t.id).base,
-    colorFade: theme.getAccentColors(t.id).fade3,
-  }));
+  return state.pf?.texts
+    .filter((t) => props.req.qck.txt?.includes(t.id))
+    ?.map((t) => ({
+      ...t,
+      color: theme.getAccentColors(t.id).base,
+      colorFade: theme.getAccentColors(t.id).fade3,
+    }));
 });
 const settings = computed(() => [
   ...(props.req.qck?.op?.toLowerCase() === 'and'
     ? [$t('search.settings.quick.defaultOperator')]
     : []),
   ...(props.req.qck?.re ? [$t('search.settings.quick.regexp')] : []),
+  ...(props.req.qck?.inh ? [$t('search.settings.quick.inheritedContents')] : []),
+  ...(props.req.qck?.allLvls ? [$t('search.settings.quick.allLevels')] : []),
   ...(props.req.gen?.strict ? [$t('search.settings.general.strict')] : []),
 ]);
 </script>
@@ -65,17 +65,20 @@ const settings = computed(() => [
       {{ $t('general.in') }}
     </span>
 
-    <n-tag
-      v-for="text in targetTexts"
-      :key="text.id"
-      :color="{ borderColor: text.colorFade, textColor: text.color }"
-      size="small"
-    >
-      <template #icon>
-        <n-icon class="translucent" :component="TextsIcon" />
-      </template>
-      {{ text.title }}
-    </n-tag>
+    <template v-if="!!targetTexts?.length">
+      <n-tag
+        v-for="text in targetTexts"
+        :key="text.id"
+        :color="{ borderColor: text.colorFade, textColor: text.color }"
+        size="small"
+      >
+        <template #icon>
+          <n-icon class="translucent" :component="TextsIcon" />
+        </template>
+        {{ text.title }}
+      </n-tag>
+    </template>
+    <b v-else>{{ $t('search.results.allTexts') }}</b>
 
     <span v-if="!!settings.length">{{ $t('general.with') }}</span>
 

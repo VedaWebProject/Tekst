@@ -10,14 +10,13 @@ import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
-import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import { NButton, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
 import { computed, onBeforeMount, ref } from 'vue';
 
 const state = useStateStore();
-const resources = useResourcesStore();
 const search = useSearchStore();
 const theme = useThemeStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
@@ -51,7 +50,6 @@ const results = computed<SearchResultProps[]>(
             : undefined,
         highlight: r.highlight,
         smallScreen: state.smallScreen,
-        resourceTitles: resources.resourceTitles,
       };
     }) || []
 );
