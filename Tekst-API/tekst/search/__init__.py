@@ -238,7 +238,7 @@ async def _populate_index(
             timeout=f"{_cfg.es.timeout_general_s}s",
             refresh="wait_for",
         )
-        if resp.get("errors", False):
+        if resp.get("errors", False):  # pragma: no cover
             for error in resp["items"]:
                 log.error(str(error))
             raise RuntimeError(f"Failed to index documents for text '{text.title}'.")
@@ -469,19 +469,19 @@ async def search_quick(
             user_query,
             fields,
             default_op=settings_quick.default_operator,
-            native_only=settings_quick.native_only,
+            inherited_contents=settings_quick.inherited_contents,
         )
     else:
         # use regexp query
         es_query = quick_regexp_query(
             user_query,
             fields,
-            native_only=settings_quick.native_only,
+            inherited_contents=settings_quick.inherited_contents,
         )
 
-    # if "default_level_only" is set, modify ES query to
+    # if "all_levels" is set to `False`, modify ES query to
     # only find locations on their text's default level
-    if settings_quick.default_level_only:
+    if not settings_quick.all_levels:
         # get target texts (mapped by text ID)
         texts = await TextDocument.find(
             In(TextDocument.id, settings_quick.texts) if settings_quick.texts else {}

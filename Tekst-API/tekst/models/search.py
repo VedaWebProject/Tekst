@@ -94,7 +94,7 @@ class PaginationSettings(ModelBase):
             alias="pg",
             description="Page number",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = 1
     page_size: Annotated[
         int,
@@ -103,7 +103,7 @@ class PaginationSettings(ModelBase):
             alias="pgs",
             description="Page size",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = 10
 
     def es_from(self) -> int:
@@ -126,7 +126,7 @@ class GeneralSearchSettings(ModelBase):
             alias="pgn",
             description="Pagination settings",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = PaginationSettings()
     sorting_preset: Annotated[
         SortingPreset | None,
@@ -134,7 +134,7 @@ class GeneralSearchSettings(ModelBase):
             alias="sort",
             description="Sorting preset",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = None
     strict: bool = False
 
@@ -156,27 +156,27 @@ class QuickSearchSettings(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = False
-    native_only: Annotated[
+    inherited_contents: Annotated[
         bool,
         Field(
-            alias="nat",
+            alias="inh",
             description=(
-                "Whether to only match contents that are native to each location "
-                "(as opposed to inherited from parent locations)"
+                "Whether to match contents inherited from higher-level locations"
             ),
         ),
         SchemaOptionalNonNullable,
     ] = False
-    default_level_only: Annotated[
+    all_levels: Annotated[
         bool,
         Field(
-            alias="def",
+            alias="allLvls",
             description=(
-                "Whether to only find locations on the respective text's default level"
+                "Whether to find locations from all levels, as opposed to only finding "
+                "locations from the respective text's default level"
             ),
         ),
         SchemaOptionalNonNullable,
-    ] = True
+    ] = False
     texts: Annotated[
         list[PydanticObjectId] | None,
         Field(
@@ -222,7 +222,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = GeneralSearchSettings()
     settings_quick: Annotated[
         QuickSearchSettings,
@@ -230,7 +230,7 @@ class QuickSearchRequestBody(ModelBase):
             alias="qck",
             description="Quick search settings",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = QuickSearchSettings()
 
 
@@ -258,7 +258,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="gen",
             description="General search settings",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = GeneralSearchSettings()
     settings_advanced: Annotated[
         AdvancedSearchSettings,
@@ -266,7 +266,7 @@ class AdvancedSearchRequestBody(ModelBase):
             alias="adv",
             description="Advanced search settings",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = AdvancedSearchSettings()
 
 

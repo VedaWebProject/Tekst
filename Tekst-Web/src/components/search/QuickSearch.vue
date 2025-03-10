@@ -24,7 +24,6 @@ const router = useRouter();
 const showLocationSelect = ref(false);
 const showSettingsModal = ref(false);
 const showTargetResourcesModal = ref(false);
-const searchInput = ref<string>('');
 const loading = ref(false);
 const quickSearchInputRef = ref<InputInst | null>(null);
 
@@ -61,7 +60,7 @@ async function handleSearch() {
     params: {
       query: {
         textId: state.text?.id || '',
-        alias: searchInput.value,
+        alias: search.queryQuick,
         limit: matchesToShow,
       },
     },
@@ -103,8 +102,8 @@ async function handleSearch() {
           children: [
             {
               type: 'search',
-              label: searchInput.value,
-              value: searchInput.value,
+              label: search.queryQuick,
+              value: search.queryQuick,
             },
           ],
         },
@@ -113,7 +112,7 @@ async function handleSearch() {
     }
   } else {
     // there is no matching location alias, so we perform a quick search using the input
-    quickSearch(searchInput.value);
+    quickSearch(search.queryQuick);
   }
 
   loading.value = false;
@@ -131,7 +130,7 @@ function handleSelect(value: string, option: SelectOption) {
       name: 'browse',
       params: { textSlug: state.text?.slug || '', locId: option.value },
     });
-    emit('submit', searchInput.value);
+    emit('submit', search.queryQuick);
   } else if (option.type === 'search') {
     quickSearch(value);
   }
@@ -141,7 +140,7 @@ function handleSelect(value: string, option: SelectOption) {
 
 function quickSearch(q: string) {
   search.searchQuick(q);
-  emit('submit', searchInput.value);
+  emit('submit', search.queryQuick);
 }
 </script>
 
@@ -157,7 +156,7 @@ function quickSearch(q: string) {
     >
       <n-input-osk
         ref="quickSearchInputRef"
-        v-model="searchInput"
+        v-model="search.queryQuick"
         round
         :placeholder="$t('search.quickSearch.title')"
         :title="tooltip"
@@ -196,8 +195,8 @@ function quickSearch(q: string) {
     :title="`${$t('search.quickSearch.title')}: ${$t('general.settings')}`"
     :icon="SettingsIcon"
   >
-    <quick-search-settings-form @target-resources-click="showTargetResourcesModal = true" />
     <general-search-settings-form />
+    <quick-search-settings-form @target-resources-click="showTargetResourcesModal = true" />
 
     <button-shelf>
       <n-button type="primary" @click="showSettingsModal = false">

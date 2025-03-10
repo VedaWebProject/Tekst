@@ -61,27 +61,25 @@ async def test_quick(
     use_indices,
     assert_status,
 ):
-    # find everything
+    # find everything, default settings
     _assert_search_resp(
         await test_client.post(
             "/search",
             json={
                 "type": "quick",
                 "q": "*",
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
-        expected_hits=12,
+        expected_hits=8,
     )
 
-    # simple without wildcards or regexes
+    # simple without wildcards or regexes, default settings
     _assert_search_resp(
         await test_client.post(
             "/search",
             json={
                 "type": "quick",
                 "q": "foo",
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=2,
@@ -99,7 +97,6 @@ async def test_quick(
                     "sort": "relevance",
                     "strict": True,
                 },
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=1,
@@ -117,7 +114,6 @@ async def test_quick(
                     "sort": "relevance",
                     "strict": True,
                 },
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=2,
@@ -130,7 +126,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "b*",
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=4,
@@ -143,7 +138,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": '"foo foo"',
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=1,
@@ -156,7 +150,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": '"foö word"~6',
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=1,
@@ -169,7 +162,6 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "fuo~",
-                "qck": {"op": "OR", "re": False, "txt": []},
             },
         ),
         expected_hits=4,
@@ -182,7 +174,7 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "b.*",
-                "qck": {"op": "OR", "re": True, "txt": []},
+                "qck": {"re": True},
             },
         ),
         expected_hits=4,
@@ -195,10 +187,36 @@ async def test_quick(
             json={
                 "type": "quick",
                 "q": "b*",
-                "qck": {"op": "OR", "re": False, "txt": ["67c03aed5dbf06b9624fd57e"]},
+                "qck": {"txt": ["67c03aed5dbf06b9624fd57e"]},
             },
         ),
         expected_hits=2,
+    )
+
+    # include inherited higher-level contents
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "quick",
+                "q": "*",
+                "qck": {"inh": True},
+            },
+        ),
+        expected_hits=8,
+    )
+
+    # find locations on all levels
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "quick",
+                "q": "*",
+                "qck": {"allLvls": True},
+            },
+        ),
+        expected_hits=8,
     )
 
     # request too many results
@@ -212,7 +230,6 @@ async def test_quick(
                 "sort": "relevance",
                 "strict": False,
             },
-            "qck": {"op": "OR", "re": False, "txt": []},
         },
     )
     assert_status(400, resp)

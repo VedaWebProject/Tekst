@@ -86,7 +86,7 @@ def quick_qstr_query(
     fields: list[tuple[str, str]],
     *,
     default_op: str = "OR",
-    native_only: bool = False,
+    inherited_contents: bool = False,
 ) -> dict[str, Any]:
     """
     Returns a simple query string query for all fields in `fields`.
@@ -97,7 +97,7 @@ def quick_qstr_query(
             "should": [
                 {
                     "bool": {
-                        "must" if native_only else "should": [
+                        "should" if inherited_contents else "must": [
                             {
                                 "simple_query_string": {
                                     "query": user_query or "*",
@@ -127,7 +127,7 @@ def quick_regexp_query(
     user_query: str,
     fields: list[tuple[str, str]],
     *,
-    native_only: bool = False,
+    inherited_contents: bool = False,
 ) -> dict[str, Any]:
     """
     Returns a regexp query for all fields in `fields`.
@@ -138,7 +138,7 @@ def quick_regexp_query(
             "should": [
                 {
                     "bool": {
-                        "must" if native_only else "should": [
+                        "should" if inherited_contents else "must": [
                             {
                                 "regexp": {
                                     field_path: {

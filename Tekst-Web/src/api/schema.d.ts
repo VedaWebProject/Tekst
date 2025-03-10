@@ -3127,7 +3127,7 @@ export interface components {
        */
       pgn?: components['schemas']['PaginationSettings'];
       /** @description Sorting preset */
-      sort?: components['schemas']['SortingPreset'] | null;
+      sort?: components['schemas']['SortingPreset'];
       /**
        * Strict
        * @default false
@@ -4560,8 +4560,8 @@ export interface components {
        * @default {
        *       "op": "OR",
        *       "re": false,
-       *       "nat": false,
-       *       "def": true
+       *       "inh": false,
+       *       "allLvls": false
        *     }
        */
       qck?: components['schemas']['QuickSearchSettings'];
@@ -4582,17 +4582,17 @@ export interface components {
        */
       re?: boolean;
       /**
-       * Nat
-       * @description Whether to only match contents that are native to each location (as opposed to inherited from parent locations)
+       * Inh
+       * @description Whether to match contents inherited from higher-level locations
        * @default false
        */
-      nat?: boolean;
+      inh?: boolean;
       /**
-       * Def
-       * @description Whether to only find locations on the respective text's default level
-       * @default true
+       * Alllvls
+       * @description Whether to find locations from all levels, as opposed to only finding locations from the respective text's default level
+       * @default false
        */
-      def?: boolean;
+      allLvls?: boolean;
       /**
        * Txt
        * @description IDs of texts to search in
