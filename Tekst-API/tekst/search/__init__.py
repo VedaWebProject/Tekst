@@ -42,9 +42,7 @@ from tekst.search.utils import (
     add_analysis_settings,
     add_mappings,
     quick_qstr_query,
-    quick_qstr_query_native,
     quick_regexp_query,
-    quick_regexp_query_native,
 )
 from tekst.state import get_state, update_state
 
@@ -179,6 +177,8 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
             await _populate_index(new_idx_name, text)
         except Exception as e:  # pragma: no cover
             log_op_end(populate_op_id, failed=True, failed_msg=str(e))
+            client.indices.delete(index=new_idx_name)  # delete broken/unfinished index
+            raise e
 
         utd_idxs.append(new_idx_name)  # mark created index as "up to date"
         text.index_utd = True
@@ -232,19 +232,21 @@ async def _populate_index(
     def _bulk_index(
         reqest_body: dict[str, Any],
         req_no: int = None,
-    ) -> bool:
+    ) -> None:
         resp = client.bulk(
             body=reqest_body,
             timeout=f"{_cfg.es.timeout_general_s}s",
             refresh="wait_for",
         )
+        if resp.get("errors", False):
+            for error in resp["items"]:
+                log.error(str(error))
+            raise RuntimeError(f"Failed to index documents for text '{text.title}'.")
         req_no_str = f"#{req_no} " if req_no is not None else ""
         log.debug(f"Bulk index request {req_no_str}took: {resp.get('took', '???')}ms")
-        return bool(resp) and not resp.get("errors", False)
 
     bulk_index_max_size = 200
     bulk_index_body = []
-    errors = False
 
     target_resource_ids = [
         res.id
@@ -327,7 +329,7 @@ async def _populate_index(
         # check bulk request body size, fire bulk request if necessary
         if len(bulk_index_body) / 2 >= bulk_index_max_size:  # pragma: no cover
             bulk_req_count += 1
-            errors |= not _bulk_index(bulk_index_body, bulk_req_count)
+            _bulk_index(bulk_index_body, bulk_req_count)
             bulk_index_body = []
 
         # add all child locations to the processing stack
@@ -346,11 +348,8 @@ async def _populate_index(
         )
 
     # index the remaining documents
-    errors |= not _bulk_index(bulk_index_body, bulk_req_count + 1)
+    _bulk_index(bulk_index_body, bulk_req_count + 1)
     bulk_index_body = []
-
-    if errors:  # pragma: no cover
-        raise RuntimeError(f"Failed to index some documents for text '{text.title}'.")
 
 
 async def _get_mapped_fields_count(index: str) -> int:
@@ -466,34 +465,23 @@ async def search_quick(
     # create ES content query
     if not settings_quick.regexp or not user_query:
         # use q query string query
-        if settings_quick.strategy in ("native", "both"):
-            es_query = quick_qstr_query_native(
-                user_query,
-                fields,
-                default_op=settings_quick.default_operator,
-            )
-        else:
-            es_query = quick_qstr_query(
-                user_query,
-                fields,
-                default_op=settings_quick.default_operator,
-            )
+        es_query = quick_qstr_query(
+            user_query,
+            fields,
+            default_op=settings_quick.default_operator,
+            native_only=settings_quick.native_only,
+        )
     else:
         # use regexp query
-        if settings_quick.strategy in ("native", "both"):
-            es_query = quick_regexp_query_native(
-                user_query,
-                fields,
-            )
-        else:
-            es_query = quick_regexp_query(
-                user_query,
-                fields,
-            )
+        es_query = quick_regexp_query(
+            user_query,
+            fields,
+            native_only=settings_quick.native_only,
+        )
 
-    # apply quick search strategy "defaultLevel":
-    # modify ES query toonly find locations on their text's default level
-    if settings_quick.strategy in ("defaultLevel", "both"):
+    # if "default_level_only" is set, modify ES query to
+    # only find locations on their text's default level
+    if settings_quick.default_level_only:
         # get target texts (mapped by text ID)
         texts = await TextDocument.find(
             In(TextDocument.id, settings_quick.texts) if settings_quick.texts else {}

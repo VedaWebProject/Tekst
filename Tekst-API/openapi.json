@@ -7720,7 +7720,8 @@
             "type": "boolean",
             "title": "Defaultactive",
             "description": "Whether this resource is active by default when public",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "enableContentContext": {
             "type": "boolean",
@@ -7750,7 +7751,8 @@
             "type": "boolean",
             "title": "Rtl",
             "description": "Whether to display text contents in right-to-left direction",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "osk": {
             "anyOf": [
@@ -9776,31 +9778,36 @@
             "type": "boolean",
             "title": "Defaultactive",
             "description": "Whether this resource is active by default when public",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "enableContentContext": {
             "type": "boolean",
             "title": "Enablecontentcontext",
             "description": "Show combined contents of this resource on the parent level",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "searchableQuick": {
             "type": "boolean",
             "title": "Searchablequick",
             "description": "Whether this resource should be included in quick search",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "searchableAdv": {
             "type": "boolean",
             "title": "Searchableadv",
             "description": "Whether this resource should accessible via advanced search",
-            "default": true
+            "default": true,
+            "optionalNullable": false
           },
           "rtl": {
             "type": "boolean",
             "title": "Rtl",
             "description": "Whether to display text contents in right-to-left direction",
-            "default": false
+            "default": false,
+            "optionalNullable": false
           },
           "osk": {
             "anyOf": [
@@ -14237,7 +14244,8 @@
             "default": {
               "op": "OR",
               "re": false,
-              "strtg": "native"
+              "nat": false,
+              "def": true
             },
             "optionalNullable": true
           }
@@ -14256,14 +14264,28 @@
             "title": "Op",
             "description": "Default operator",
             "default": "OR",
-            "optionalNullable": true
+            "optionalNullable": false
           },
           "re": {
             "type": "boolean",
             "title": "Re",
             "description": "Whether to use regular expressions",
             "default": false,
-            "optionalNullable": true
+            "optionalNullable": false
+          },
+          "nat": {
+            "type": "boolean",
+            "title": "Nat",
+            "description": "Whether to only match contents that are native to each location (as opposed to inherited from parent locations)",
+            "default": false,
+            "optionalNullable": false
+          },
+          "def": {
+            "type": "boolean",
+            "title": "Def",
+            "description": "Whether to only find locations on the respective text's default level",
+            "default": true,
+            "optionalNullable": false
           },
           "txt": {
             "anyOf": [
@@ -14283,18 +14305,6 @@
             ],
             "title": "Txt",
             "description": "IDs of texts to search in",
-            "optionalNullable": true
-          },
-          "strtg": {
-            "type": "string",
-            "enum": [
-              "native",
-              "defaultLevel",
-              "both"
-            ],
-            "title": "Strtg",
-            "description": "Quick Search strategy",
-            "default": "native",
             "optionalNullable": true
           }
         },

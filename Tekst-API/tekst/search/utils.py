@@ -86,29 +86,18 @@ def quick_qstr_query(
     fields: list[tuple[str, str]],
     *,
     default_op: str = "OR",
+    native_only: bool = False,
 ) -> dict[str, Any]:
-    return {
-        "simple_query_string": {
-            "query": user_query or "*",  # fall back to '*' if empty
-            "fields": [field_path for _, field_path in fields],
-            "default_operator": default_op,
-            "analyze_wildcard": True,
-        }
-    }
-
-
-def quick_qstr_query_native(
-    user_query: str,
-    fields: list[tuple[str, str]],
-    *,
-    default_op: str = "OR",
-) -> dict[str, Any]:
+    """
+    Returns a simple query string query for all fields in `fields`.
+    `fields` is a list of tuples of (res_id, field_path).
+    """
     return {
         "bool": {
             "should": [
                 {
                     "bool": {
-                        "must": [
+                        "must" if native_only else "should": [
                             {
                                 "simple_query_string": {
                                     "query": user_query or "*",
@@ -121,6 +110,7 @@ def quick_qstr_query_native(
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
+                                        "boost": 2,
                                     }
                                 }
                             },
@@ -136,35 +126,19 @@ def quick_qstr_query_native(
 def quick_regexp_query(
     user_query: str,
     fields: list[tuple[str, str]],
+    *,
+    native_only: bool = False,
 ) -> dict[str, Any]:
-    return {
-        "bool": {
-            "should": [
-                {
-                    "regexp": {
-                        field_path: {
-                            "value": user_query,
-                            "flags": "ALL",
-                            "case_insensitive": True,
-                        }
-                    }
-                }
-                for res_id, field_path in fields
-            ]
-        }
-    }
-
-
-def quick_regexp_query_native(
-    user_query: str,
-    fields: list[tuple[str, str]],
-) -> dict[str, Any]:
+    """
+    Returns a regexp query for all fields in `fields`.
+    `fields` is a list of tuples of (res_id, field_path).
+    """
     return {
         "bool": {
             "should": [
                 {
                     "bool": {
-                        "must": [
+                        "must" if native_only else "should": [
                             {
                                 "regexp": {
                                     field_path: {
@@ -178,6 +152,7 @@ def quick_regexp_query_native(
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
+                                        "boost": 2,
                                     }
                                 }
                             },

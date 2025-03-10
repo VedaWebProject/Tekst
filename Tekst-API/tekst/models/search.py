@@ -146,7 +146,7 @@ class QuickSearchSettings(ModelBase):
             alias="op",
             description="Default operator",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = "OR"
     regexp: Annotated[
         bool,
@@ -154,8 +154,29 @@ class QuickSearchSettings(ModelBase):
             alias="re",
             description="Whether to use regular expressions",
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = False
+    native_only: Annotated[
+        bool,
+        Field(
+            alias="nat",
+            description=(
+                "Whether to only match contents that are native to each location "
+                "(as opposed to inherited from parent locations)"
+            ),
+        ),
+        SchemaOptionalNonNullable,
+    ] = False
+    default_level_only: Annotated[
+        bool,
+        Field(
+            alias="def",
+            description=(
+                "Whether to only find locations on the respective text's default level"
+            ),
+        ),
+        SchemaOptionalNonNullable,
+    ] = True
     texts: Annotated[
         list[PydanticObjectId] | None,
         Field(
@@ -164,14 +185,6 @@ class QuickSearchSettings(ModelBase):
         ),
         SchemaOptionalNullable,
     ] = None
-    strategy: Annotated[
-        Literal["native", "defaultLevel", "both"],
-        Field(
-            alias="strtg",
-            description="Quick Search strategy",
-        ),
-        SchemaOptionalNullable,
-    ] = "native"
 
     @field_validator("default_operator", mode="before")
     @classmethod
