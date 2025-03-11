@@ -100,17 +100,22 @@ const resourceColors = computed(() =>
 );
 
 function renderResourceOptionLabel(option: SelectOption): VNodeChild {
-  return h(NFlex, { align: 'center', justify: 'space-between', class: 'mr-lg' }, () => [
-    h('span', { style: 'white-space: nowrap' }, option.label as string),
-    h(
-      NTag,
-      { size: 'small', style: 'cursor: pointer; font-weight: normal' },
-      {
-        default: () => state.textLevelLabels[option.level as number],
-        icon: () => h(NIcon, { component: LevelsIcon }),
-      }
-    ),
-  ]);
+  return h(
+    NFlex,
+    { align: 'center', justify: 'space-between', wrap: false, class: 'mr-lg' },
+    () => [
+      h('span', { style: 'white-space: nowrap' }, option.label as string),
+      !state.smallScreen &&
+        h(
+          NTag,
+          { size: 'small', style: 'cursor: pointer; font-weight: normal' },
+          {
+            default: () => state.textLevelLabels[option.level as number],
+            icon: () => h(NIcon, { component: LevelsIcon }),
+          }
+        ),
+    ]
+  );
 }
 
 function handleResourceChange(
