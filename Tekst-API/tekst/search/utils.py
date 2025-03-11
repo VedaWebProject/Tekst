@@ -110,7 +110,6 @@ def quick_qstr_query(
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
-                                        "boost": 2,
                                     }
                                 }
                             },
@@ -152,7 +151,6 @@ def quick_regexp_query(
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
-                                        "boost": 2,
                                     }
                                 }
                             },
