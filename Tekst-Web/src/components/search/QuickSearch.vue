@@ -30,9 +30,9 @@ const quickSearchInputRef = ref<InputInst | null>(null);
 const tooltip = computed(() => {
   const targetTxtTitles = !!search.settingsQuick.txt?.length
     ? state.pf?.texts
-        .filter((t) => search.settingsQuick.txt?.includes(t.id))
-        .map((t) => `"${t.title}"`)
-        .join(', ')
+      .filter((t) => search.settingsQuick.txt?.includes(t.id))
+      .map((t) => `"${t.title}"`)
+      .join(', ')
     : $t('search.settings.quick.textsPlaceholder');
   return `${$t('search.quickSearch.title')} ${$t('general.in')}: ${targetTxtTitles}`;
 });
@@ -52,6 +52,12 @@ const searchableResources = computed(
 );
 
 async function handleSearch() {
+  // skip this for empty queries
+  if (!search.queryQuick.trim()) {
+    quickSearch(search.queryQuick);
+    return;
+  };
+
   loading.value = true;
   const matchesToShow = 10;
 
@@ -87,12 +93,12 @@ async function handleSearch() {
             })),
             ...(data.length === matchesToShow
               ? [
-                  {
-                    label: '...',
-                    value: '...',
-                    disabled: true,
-                  },
-                ]
+                {
+                  label: '...',
+                  value: '...',
+                  disabled: true,
+                },
+              ]
               : []),
           ],
         },
@@ -141,6 +147,11 @@ function handleSelect(value: string, option: SelectOption) {
 function quickSearch(q: string) {
   search.searchQuick(q);
   emit('submit', search.queryQuick);
+}
+
+function handleSettingsSubmit() {
+  showSettingsModal.value = false;
+  handleSearch();
 }
 </script>
 
@@ -199,7 +210,7 @@ function quickSearch(q: string) {
     <quick-search-settings-form @target-resources-click="showTargetResourcesModal = true" />
 
     <button-shelf>
-      <n-button type="primary" @click="showSettingsModal = false">
+      <n-button type="primary" @click="handleSettingsSubmit">
         {{ $t('general.okAction') }}
       </n-button>
     </button-shelf>
