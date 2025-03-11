@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchReplacementsConfigFormRules } from '@/forms/formRules';
@@ -19,6 +20,7 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
       :min="0"
       :max="16"
       :show-sort-button="false"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ pattern: '', replacement: '' })"
     >
       <template #default="{ value, index }">
@@ -61,6 +63,9 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
           @remove="() => remove(index)"
           @insert="() => create(index)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

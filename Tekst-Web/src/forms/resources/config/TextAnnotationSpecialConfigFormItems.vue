@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -28,6 +29,7 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
       show-sort-button
       :min="0"
       :max="32"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
     >
       <template #default="{ index }">
@@ -71,6 +73,9 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
           @remove="() => remove(index)"
           @insert="() => create(index)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

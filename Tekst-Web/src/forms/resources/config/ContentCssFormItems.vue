@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PlainTextResourceConfig } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentCssConfigFormRules } from '@/forms/formRules';
@@ -22,6 +23,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
       :min="0"
       :max="64"
       :show-sort-button="false"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ prop: undefined, value: undefined })"
     >
       <template #default="{ value, index }">
@@ -65,6 +67,9 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
           @remove="() => remove(index)"
           @insert="() => create(index)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

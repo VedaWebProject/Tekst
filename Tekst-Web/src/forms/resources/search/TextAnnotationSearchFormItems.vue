@@ -4,6 +4,7 @@ import type {
   TextAnnotationResourceRead,
   TextAnnotationSearchQuery,
 } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import NInputOsk from '@/components/NInputOsk.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
@@ -104,7 +105,11 @@ onMounted(async () => {
     :show-feedback="!model.anno?.length"
     style="flex: 2 400px"
   >
-    <n-dynamic-input v-model:value="model.anno" @create="() => ({ k: undefined, v: undefined })">
+    <n-dynamic-input
+      v-model:value="model.anno"
+      :create-button-props="dynInputCreateBtnProps"
+      @create="() => ({ k: undefined, v: undefined })"
+    >
       <template #default="{ value: annotationItem, index: annotationItemIndex }">
         <n-flex wrap align="flex-start" style="flex: 2">
           <!-- KEY -->

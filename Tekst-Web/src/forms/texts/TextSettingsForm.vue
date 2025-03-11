@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TextCreate } from '@/api';
 import { PATCH, accentColorPresets } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
@@ -187,6 +188,7 @@ onBeforeRouteUpdate((to, from) => {
           show-sort-button
           :min="0"
           :max="32"
+          :create-button-props="dynInputCreateBtnProps"
           @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
         >
           <template #default="{ index }">
@@ -226,6 +228,9 @@ onBeforeRouteUpdate((to, from) => {
               @remove="() => remove(index)"
               @insert="() => create(index)"
             />
+          </template>
+          <template #create-button-default>
+            {{ $t('general.addAction') }}
           </template>
         </n-dynamic-input>
       </n-form-item>

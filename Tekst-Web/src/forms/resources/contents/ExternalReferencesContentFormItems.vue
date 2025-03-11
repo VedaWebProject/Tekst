@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ExternalReferencesContentCreate, ExternalReferencesResourceRead } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import NInputOsk from '@/components/NInputOsk.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
@@ -20,6 +21,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
       v-model:value="model.links"
       :min="1"
       :max="100"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ url: undefined, title: undefined, description: undefined })"
     >
       <template #default="{ index }">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type ResourceSearchQuery, type SearchableResourceType } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
@@ -217,6 +218,7 @@ whenever(ctrlEnter, () => {
       :min="1"
       :max="32"
       item-class="search-item my-md"
+      :create-button-props="dynInputCreateBtnProps"
       @create="getNewSearchItem"
     >
       <!-- SEARCH ITEM -->

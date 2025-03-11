@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PATCH, resourceTypes, type PlatformStateUpdate } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -280,6 +281,7 @@ watch(
               show-sort-button
               :min="0"
               :max="64"
+              :create-button-props="dynInputCreateBtnProps"
               @create="() => ''"
             >
               <template #default="{ index }">
@@ -306,6 +308,9 @@ watch(
                   @insert="() => create(index)"
                 />
               </template>
+              <template #create-button-default>
+                {{ $t('general.addAction') }}
+              </template>
             </n-dynamic-input>
           </n-form-item>
 
@@ -320,6 +325,7 @@ watch(
               show-sort-button
               :min="0"
               :max="64"
+              :create-button-props="dynInputCreateBtnProps"
               @create="() => ({ key: '', name: '', font: '' })"
             >
               <template #default="{ index }">
@@ -386,6 +392,9 @@ watch(
                   @remove="() => remove(index)"
                   @insert="() => create(index)"
                 />
+              </template>
+              <template #create-button-default>
+                {{ $t('general.addAction') }}
               </template>
             </n-dynamic-input>
           </n-form-item>

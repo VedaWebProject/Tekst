@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TextCreate } from '@/api';
 import { POST } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -124,6 +125,7 @@ async function handleSave() {
           :min="1"
           :max="32"
           item-class="mb-0"
+          :create-button-props="dynInputCreateBtnProps"
           @create="() => [{ locale: '*', translation: '' }]"
         >
           <template #default="{ index: levelIndex }">

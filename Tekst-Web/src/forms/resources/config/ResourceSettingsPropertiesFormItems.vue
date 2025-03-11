@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
@@ -74,6 +75,7 @@ const metadataKeysOptions = computed(() =>
       v-model:value="model.meta"
       :min="0"
       :max="64"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ key: '', value: '' })"
     >
       <template #default="{ index, value: metaEntryValue }">
@@ -120,6 +122,9 @@ const metadataKeysOptions = computed(() =>
           @remove="() => remove(index)"
           @insert="() => create(index)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

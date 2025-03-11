@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LocaleKey, Translation } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { translationFormRules } from '@/forms/formRules';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
@@ -55,6 +56,7 @@ const localeOptions = computed(() =>
       :max="localeOptions.length"
       :item-class="state.smallScreen ? undefined : 'mb-0'"
       :default-value="[]"
+      :create-button-props="dynInputCreateBtnProps"
       @create="
         () => ({
           locale: localeOptions.find((o) => !model?.find((t) => t.locale === o.value))?.value,
@@ -113,6 +115,9 @@ const localeOptions = computed(() =>
           @remove="() => remove(actionIndex)"
           @insert="() => create(actionIndex)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

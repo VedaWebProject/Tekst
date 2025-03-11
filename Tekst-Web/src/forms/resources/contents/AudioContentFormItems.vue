@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AudioContentCreate, AudioResourceRead } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import NInputOsk from '@/components/NInputOsk.vue';
 import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -34,6 +35,7 @@ async function checkUrlInput(input: HTMLInputElement) {
       v-model:value="model.files"
       :min="1"
       :max="100"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ({ url: undefined, caption: undefined })"
     >
       <template #default="{ index }">

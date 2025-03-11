@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
+import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import CodeEditor from '@/components/generic/CodeEditor.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -72,6 +73,7 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
       show-sort-button
       :min="0"
       :max="32"
+      :create-button-props="dynInputCreateBtnProps"
       @create="() => ''"
     >
       <template #default="{ index }">
@@ -96,6 +98,9 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
           @remove="() => remove(index)"
           @insert="() => create(index)"
         />
+      </template>
+      <template #create-button-default>
+        {{ $t('general.addAction') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

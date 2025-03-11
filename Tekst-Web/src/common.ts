@@ -23,3 +23,5 @@ export const dialogProps = {
   positiveButtonProps: dialogButtonPropsPositive,
   negativeButtonProps: dialogButtonPropsNegative,
 };
+
+export const dynInputCreateBtnProps: ButtonProps = { dashed: false, ghost: false, secondary: true };

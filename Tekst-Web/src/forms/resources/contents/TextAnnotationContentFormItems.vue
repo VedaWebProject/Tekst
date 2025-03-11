@@ -4,6 +4,7 @@ import type {
   TextAnnotationContentCreate,
   TextAnnotationResourceRead,
 } from '@/api';
+import { dynInputCreateBtnProps } from '@/common';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import NInputOsk from '@/components/NInputOsk.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -78,7 +79,13 @@ onMounted(async () => {
 <template>
   <!-- TOKENS -->
   <n-form-item :show-label="false" :show-feedback="false">
-    <n-dynamic-input v-model:value="model.tokens" :min="1" :max="1024" @create="handleInsertToken">
+    <n-dynamic-input
+      v-model:value="model.tokens"
+      :min="1"
+      :max="1024"
+      :create-button-props="dynInputCreateBtnProps"
+      @create="handleInsertToken"
+    >
       <template #default="{ value: tokenItem, index: tokenItemIndex }">
         <n-flex align="flex-start" style="flex: 2">
           <n-flex align="flex-start" :wrap="false" style="flex: 1 250px">
@@ -121,6 +128,7 @@ onMounted(async () => {
           >
             <n-dynamic-input
               v-model:value="tokenItem.annotations"
+              :create-button-props="dynInputCreateBtnProps"
               @create="() => ({ key: undefined, value: undefined })"
             >
               <template #default="{ value: annotationItem, index: annotationItemIndex }">
@@ -188,6 +196,9 @@ onMounted(async () => {
                   @remove="() => removeAnnotation(annotationActionIndex)"
                   @insert="() => createAnnotation(annotationActionIndex)"
                 />
+              </template>
+              <template #create-button-default>
+                {{ $t('general.addAction') }}
               </template>
             </n-dynamic-input>
           </n-form-item>
