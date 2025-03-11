@@ -20,11 +20,12 @@ withDefaults(
 </script>
 
 <template>
-  <div v-if="error" class="text-tiny">
+  <div v-if="error" v-bind="$attrs" class="text-tiny">
     {{ $t('errors.unexpected') }}
   </div>
   <quick-search-query-display
     v-else-if="req?.type === 'quick'"
+    v-bind="$attrs"
     :req="req"
     :total="total"
     :total-relation="totalRelation"
@@ -32,6 +33,7 @@ withDefaults(
   />
   <advanced-search-query-display
     v-else-if="req?.type === 'advanced'"
+    v-bind="$attrs"
     :req="req"
     :total="total"
     :total-relation="totalRelation"

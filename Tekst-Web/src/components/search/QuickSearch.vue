@@ -30,9 +30,9 @@ const quickSearchInputRef = ref<InputInst | null>(null);
 const tooltip = computed(() => {
   const targetTxtTitles = !!search.settingsQuick.txt?.length
     ? state.pf?.texts
-      .filter((t) => search.settingsQuick.txt?.includes(t.id))
-      .map((t) => `"${t.title}"`)
-      .join(', ')
+        .filter((t) => search.settingsQuick.txt?.includes(t.id))
+        .map((t) => `"${t.title}"`)
+        .join(', ')
     : $t('search.settings.quick.textsPlaceholder');
   return `${$t('search.quickSearch.title')} ${$t('general.in')}: ${targetTxtTitles}`;
 });
@@ -56,7 +56,7 @@ async function handleSearch() {
   if (!search.queryQuick.trim()) {
     quickSearch(search.queryQuick);
     return;
-  };
+  }
 
   loading.value = true;
   const matchesToShow = 10;
@@ -93,12 +93,12 @@ async function handleSearch() {
             })),
             ...(data.length === matchesToShow
               ? [
-                {
-                  label: '...',
-                  value: '...',
-                  disabled: true,
-                },
-              ]
+                  {
+                    label: '...',
+                    value: '...',
+                    disabled: true,
+                  },
+                ]
               : []),
           ],
         },

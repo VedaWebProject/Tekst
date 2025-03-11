@@ -111,10 +111,29 @@ onBeforeMount(() => {
         :item-count="search.results.totalHits"
         :disabled="search.loading"
         show-size-picker
-        size="medium"
         @update:page="() => afterPaginate()"
         @update:page-size="() => afterPaginate()"
+        class="sr-pagination"
       />
+      <n-flex align="center" :wrap="false">
+        <search-results-sort-widget
+          v-model="search.settingsGeneral.sort"
+          :disabled="!results.length || search.loading"
+          @update:model-value="() => search.searchSecondary()"
+        />
+        <n-button
+          size="small"
+          :title="$t('tasks.types.search_export')"
+          :focusable="false"
+          :disabled="!results.length || !search.currentRequest || search.loading || loadingExport"
+          :loading="loadingExport"
+          @click="() => exportResults()"
+        >
+          <template #icon>
+            <n-icon :component="DownloadIcon" />
+          </template>
+        </n-button>
+      </n-flex>
     </n-flex>
   </define-template>
 
@@ -122,37 +141,14 @@ onBeforeMount(() => {
     {{ $t('search.results.heading') }}
   </icon-heading>
 
-  <n-flex justify="flex-end" align="center" style="gap: var(--gap-lg)" class="mb-lg">
-    <search-query-display
-      :req="search.currentRequest"
-      :total="search.results?.totalHits"
-      :total-relation="search.results?.totalHitsRelation"
-      :took="search.results?.took"
-      :error="search.error"
-      :loading="search.loading"
-      style="flex: 2"
-    />
-    <n-flex :wrap="false">
-      <search-results-sort-widget
-        v-model="search.settingsGeneral.sort"
-        :disabled="!results.length || search.loading"
-        @update:model-value="() => search.searchSecondary()"
-      />
-      <n-button
-        secondary
-        :title="$t('tasks.types.search_export')"
-        :focusable="false"
-        :disabled="!results.length || !search.currentRequest || search.loading || loadingExport"
-        :loading="loadingExport"
-        @click="() => exportResults()"
-      >
-        <template #icon>
-          <n-icon :component="DownloadIcon" />
-        </template>
-        {{ $t('general.exportAction') }}
-      </n-button>
-    </n-flex>
-  </n-flex>
+  <search-query-display
+    :req="search.currentRequest"
+    :total="search.results?.totalHits"
+    :total-relation="search.results?.totalHitsRelation"
+    :took="search.results?.took"
+    :error="search.error"
+    :loading="search.loading"
+  />
 
   <div ref="resultsContainer" class="content-block">
     <reuse-template />
@@ -202,5 +198,12 @@ onBeforeMount(() => {
 
 .pagination-container:last-child {
   margin-top: var(--gap-lg);
+}
+
+.sr-pagination {
+  flex: 2;
+  justify-content: flex-end;
+  flex-wrap: none;
+  white-space: nowrap;
 }
 </style>

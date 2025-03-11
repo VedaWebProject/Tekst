@@ -933,7 +933,7 @@ search:
     higherLvlHit: Suchtreffer von übergeordneter Ebene "{level}"
     allTexts: allen Texten
     sortingPresets:
-      title: Sortieren
+      title: Sortieren nach
       relevance: Relevanz
       textLevelPosition: Text / Ebene / Position
       textLevelRelevance: Text / Ebene / Relevanz

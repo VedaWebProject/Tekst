@@ -909,7 +909,7 @@ search:
     higherLvlHit: Search hit from higher level "{level}"
     allTexts: all texts
     sortingPresets:
-      title: Sort
+      title: Sort by
       relevance: Relevance
       textLevelPosition: Text / Level / Position
       textLevelRelevance: Text / Level / Relevance
