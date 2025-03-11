@@ -22,7 +22,7 @@ from tekst.models.text import (
     TextSlug,
 )
 from tekst.search import set_index_ood
-from tekst.types import LocationAlias, LocationLevel, LocationPosition
+from tekst.types import ConStrOrNone, LocationLevel, LocationPosition
 
 
 router = APIRouter(
@@ -169,7 +169,11 @@ async def find_locations(
         ),
     ] = None,
     alias: Annotated[
-        LocationAlias | None,
+        ConStrOrNone(
+            min_length=0,
+            max_length=32,
+            cleanup="oneline",
+        ),
         Query(
             description="Alias of location(s) to find",
         ),

@@ -1585,12 +1585,12 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 32
+                  "type": "null"
                 },
                 {
-                  "type": "null"
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 32
                 }
               ],
               "description": "Alias of location(s) to find",

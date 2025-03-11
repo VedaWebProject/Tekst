@@ -6955,7 +6955,7 @@ export interface operations {
         /** @description Position value of locations to find */
         pos?: number | null;
         /** @description Alias of location(s) to find */
-        alias?: string | null;
+        alias?: null | string;
         /** @description Add full combined label to each location */
         fullLabels?: boolean;
         /** @description Return at most <limit> locations */
