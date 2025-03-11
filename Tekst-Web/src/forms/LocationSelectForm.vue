@@ -176,7 +176,7 @@ onMounted(() => {
     :show-require-mark="false"
   >
     <template v-if="props.allowLevelChange">
-      <n-form-item :label="$t('browse.location.level')">
+      <n-form-item :label="$t('models.text.level')">
         <n-select
           v-model:value="lvl"
           :options="lvlOptions"

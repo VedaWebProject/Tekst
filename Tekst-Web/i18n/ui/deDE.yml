@@ -181,7 +181,6 @@ routes:
 browse:
   location:
     modalHeading: Belegstelle
-    level: Ebene
     goTo: Gehe zu Belegstelle
     aliasesTip: Suchen Sie nach einem dieser Belegstellen-Aliase in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
     copyId: Fundstellen-ID kopieren
@@ -325,7 +324,6 @@ models:
     modelLabel: Ressource | Ressourcen
     title: Titel
     description: Beschreibung
-    level: Ebene
     resourceType: Ressourcentyp
     public: veröffentlicht
     proposed: vorgeschlagen für Veröffentlichung
@@ -705,7 +703,6 @@ texts:
       Sind Sie sich sicher?
     msgDeleted: Text "{title}" gelöscht
   levels:
-    heading: Ebenen
     tipInsertLevel: Neue Ebene an Position {n} einfügen
     tipEditLevel: Bezeichnung für Ebene "{levelLabel}" bearbeiten
     tipDeleteLevel: Ebene "{levelLabel}" löschen
@@ -734,6 +731,7 @@ texts:
       Dies kann nicht rückgängig gemacht werden.
       Sind Sie sich sicher, dass Sie die
       Textebene "{levelLabel}" löschen möchten?
+    noResources: Keine Ressourcen auf dieser Ebene
   locations:
     heading: Belegstellen
     add:

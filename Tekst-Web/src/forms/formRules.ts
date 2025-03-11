@@ -255,7 +255,7 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
       type: 'number',
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('models.resource.level'),
+          x: $t('models.text.level'),
         }),
       trigger: 'blur',
     },

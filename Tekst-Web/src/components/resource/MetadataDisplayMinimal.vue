@@ -23,7 +23,7 @@ const meta = computed<string>(() => {
   if (props.resource.resourceType)
     m.push($t(`resources.types.${props.resource.resourceType}.label`));
   // level
-  const levelLabel = ` – ${$t('browse.location.level')}: ${state.textLevelLabels[props.resource.level]}`;
+  const levelLabel = ` – ${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`;
   // join metadata to string
   return m.join(', ') + levelLabel;
 });

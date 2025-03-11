@@ -152,7 +152,7 @@ async function handleModalSubmit() {
 
 <template>
   <div>
-    <form-section-heading :label="$t('texts.levels.heading')" help-key="textLevels" />
+    <form-section-heading :label="$t('models.text.level', 2)" help-key="textLevels" />
 
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
       <insert-item-separator

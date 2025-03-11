@@ -9,7 +9,14 @@ import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
-import { CommentIcon, CoverageIcon, FormatQuoteIcon, InfoIcon, MetadataIcon } from '@/icons';
+import {
+  CommentIcon,
+  CoverageIcon,
+  FormatQuoteIcon,
+  InfoIcon,
+  MetadataIcon,
+  ResourceIcon,
+} from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NButton, NDivider, NEllipsis, NFlex } from 'naive-ui';
@@ -42,7 +49,12 @@ const showInfoModal = ref(false);
     "
   />
 
-  <generic-modal v-model:show="showInfoModal" :title="resourceTitle" :icon="InfoIcon" width="wide">
+  <generic-modal
+    v-model:show="showInfoModal"
+    :title="resourceTitle"
+    :icon="ResourceIcon"
+    width="wide"
+  >
     <n-flex v-if="auth.loggedIn" justify="space-between" class="mb-lg">
       <user-display :user="resource.owner || undefined" size="small" :system="!resource.owner" />
       <resource-info-tags :resource="resource" reverse />

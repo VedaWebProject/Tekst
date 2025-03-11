@@ -178,7 +178,6 @@ routes:
 browse:
   location:
     modalHeading: Location
-    level: Level
     goTo: Go to location
     aliasesTip: Search for one of these location aliases in the Quick Search to directly jump to this location.
     copyId: Copy location ID
@@ -322,7 +321,6 @@ models:
     modelLabel: Resource | Resources
     title: Title
     description: Description
-    level: Level
     resourceType: Resource Type
     public: published
     proposed: proposed for publication
@@ -691,7 +689,6 @@ texts:
       user who created it. This cannot be undone. Are you sure?
     msgDeleted: Text "{title}" deleted
   levels:
-    heading: Levels
     tipInsertLevel: Insert new level at position {n}
     tipEditLevel: 'Edit label for level "{levelLabel}"'
     tipDeleteLevel: Delete level "{levelLabel}"
@@ -715,6 +712,7 @@ texts:
       Please make sure you know what you are doing and make a backup
       of your database before doing this! Are you sure you want to delete the text
       level "{levelLabel}"?
+    noResources: No resources on this level
   locations:
     heading: Locations
     add:

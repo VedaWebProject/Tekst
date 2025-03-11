@@ -167,10 +167,10 @@ async function handleSaveClick() {
             />
           </n-form-item>
           <!-- STRUCTURE LEVEL -->
-          <n-form-item :label="$t('models.resource.level')" path="level">
+          <n-form-item :label="$t('models.text.level')" path="level">
             <n-select
               v-model:value="model.level"
-              :placeholder="$t('models.resource.level')"
+              :placeholder="$t('models.text.level')"
               :options="levelOptions"
             />
           </n-form-item>

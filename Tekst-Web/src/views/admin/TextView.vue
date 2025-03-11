@@ -105,7 +105,7 @@ watch(
       </n-tab-pane>
 
       <!-- LEVELS -->
-      <n-tab-pane :tab="$t('texts.levels.heading')" name="levels">
+      <n-tab-pane :tab="$t('models.text.level', 2)" name="levels">
         <text-levels-form />
       </n-tab-pane>
 
