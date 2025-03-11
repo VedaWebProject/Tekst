@@ -57,6 +57,7 @@ IDX_TEMPLATE = {
             "text_id": {"type": "keyword"},
             "level": {"type": "byte"},
             "position": {"type": "integer"},
+            "default_level": {"type": "boolean"},
             "label": {"type": "keyword", "index": False},
             "full_label": {"type": "keyword", "index": False},
         },

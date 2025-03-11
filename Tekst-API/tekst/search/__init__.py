@@ -292,6 +292,7 @@ async def _populate_index(
             "text_id": str(loc.text_id),
             "level": loc.level,
             "position": loc.position,
+            "default_level": loc.level == text.default_level,
             "resources": {},
         }
 
@@ -482,43 +483,21 @@ async def search_quick(
     # if "all_levels" is set to `False`, modify ES query to
     # only find locations on their text's default level
     if not settings_quick.all_levels:
-        # get target texts (mapped by text ID)
-        texts = await TextDocument.find(
-            In(TextDocument.id, settings_quick.texts) if settings_quick.texts else {}
-        ).to_list()
-        # construct query
+        # wrap in new query
         es_query = {
             "bool": {
                 "must": [
-                    es_query,  # original query from above
+                    es_query,  # original content query from above
+                ],
+                "filter": [
                     {
-                        "bool": {
-                            "should": [
-                                {
-                                    "bool": {
-                                        "filter": [
-                                            {
-                                                "term": {
-                                                    "text_id": {
-                                                        "value": str(text.id),
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "term": {
-                                                    "level": {
-                                                        "value": text.default_level,
-                                                    }
-                                                }
-                                            },
-                                        ]
-                                    }
-                                }
-                                for text in texts
-                            ]
+                        "term": {
+                            "default_level": {
+                                "value": True,
+                            }
                         }
-                    },
-                ]
+                    }
+                ],
             }
         }
 
