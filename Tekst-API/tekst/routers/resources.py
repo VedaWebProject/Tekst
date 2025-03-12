@@ -339,7 +339,6 @@ async def update_resource(
     # in case there are more of these indexing-relevant configs in the future)
     sr_before = resource_doc.attr_by_path("config.general.search_replacements")
     sr_after = updates.attr_by_path("config.general.search_replacements")
-    print("sr_before:", sr_before, "sr_after:", sr_after)
     if str(sr_before) != str(sr_after):
         await set_index_ood(
             text_id=resource_doc.text_id,
