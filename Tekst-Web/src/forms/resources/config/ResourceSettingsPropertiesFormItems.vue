@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
+import CollapsableContent from '@/components/CollapsableContent.vue';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
@@ -48,7 +49,8 @@ const metadataKeysOptions = computed(() =>
   />
 
   <!-- CITATION -->
-  <n-form-item path="citation" :label="$t('models.resource.citation')">
+  <form-section-heading :label="$t('models.resource.citation')" />
+  <n-form-item path="citation" :show-label="false">
     <n-input
       v-model:value="model.citation"
       type="text"
@@ -58,15 +60,17 @@ const metadataKeysOptions = computed(() =>
   </n-form-item>
 
   <!-- COMMENT -->
-  <translation-form-item
-    v-model="model.comment"
-    parent-form-path-prefix="comment"
-    multiline
-    :max-translation-length="2000"
-    :main-form-label="$t('general.comment')"
-    :translation-form-label="$t('general.comment')"
-    :translation-form-rule="resourceSettingsFormRules.commentTranslation"
-  />
+  <form-section-heading :label="$t('general.comment')" />
+  <collapsable-content :height-tresh-px="240">
+    <translation-form-item
+      v-model="model.comment"
+      input-type="html"
+      parent-form-path-prefix="comment"
+      :max-translation-length="102400"
+      :translation-form-label="$t('general.comment')"
+      :translation-form-rule="resourceSettingsFormRules.commentTranslation"
+    />
+  </collapsable-content>
 
   <!-- METADATA -->
   <form-section-heading :label="$t('models.meta.modelLabel')" />

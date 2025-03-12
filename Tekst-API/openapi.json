@@ -14358,10 +14358,10 @@
           },
           "translation": {
             "type": "string",
-            "maxLength": 2000,
+            "maxLength": 102400,
             "minLength": 1,
             "title": "Translation",
-            "description": "Comment translation for this resource"
+            "description": "Comment translation HTML for this resource"
           }
         },
         "type": "object",

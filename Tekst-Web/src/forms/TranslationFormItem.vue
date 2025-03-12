@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { LocaleKey, Translation } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
+import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { translationFormRules } from '@/forms/formRules';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
@@ -14,7 +15,7 @@ withDefaults(
     mainFormLabel?: string;
     translationFormLabel?: string;
     translationFormRule?: FormItemRule[];
-    multiline?: boolean;
+    inputType?: 'input' | 'textarea' | 'html';
     maxTranslationLength?: number;
     minItems?: number;
     secondary?: boolean;
@@ -24,6 +25,7 @@ withDefaults(
     mainFormLabel: undefined,
     translationFormLabel: undefined,
     translationFormRule: undefined,
+    inputType: 'input',
     multiline: false,
     maxTranslationLength: undefined,
     minItems: 0,
@@ -65,7 +67,12 @@ const localeOptions = computed(() =>
       "
     >
       <template #default="{ value: translationValue, index: translationIndex }">
-        <n-flex align="flex-start" wrap style="flex: 2">
+        <n-flex
+          :vertical="inputType === 'html'"
+          align="flex-start"
+          :wrap="inputType !== 'html'"
+          style="flex: 2"
+        >
           <!-- LOCALE -->
           <n-form-item
             v-if="model"
@@ -74,7 +81,10 @@ const localeOptions = computed(() =>
             :show-feedback="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].locale`"
             :rule="translationFormRules.locale"
-            style="flex: 1 200px"
+            :style="{
+              flex: inputType !== 'html' ? '1 200px' : undefined,
+              width: inputType !== 'html' ? undefined : '100%',
+            }"
           >
             <n-select
               v-model:value="translationValue.locale"
@@ -95,11 +105,18 @@ const localeOptions = computed(() =>
             style="flex: 2 200px"
           >
             <n-input
+              v-if="inputType === 'input' || inputType === 'textarea'"
               v-model:value="translationValue.translation"
-              :type="multiline ? 'textarea' : 'text'"
-              :show-count="multiline && !!maxTranslationLength"
+              :type="inputType === 'textarea' ? 'textarea' : 'text'"
+              :show-count="inputType === 'textarea' && !!maxTranslationLength"
               :maxlength="maxTranslationLength"
               :placeholder="translationFormLabel"
+            />
+            <html-editor
+              v-else-if="inputType === 'html'"
+              v-model:value="translationValue.translation"
+              toolbar-size="medium"
+              :max-chars="maxTranslationLength"
             />
           </n-form-item>
         </n-flex>

@@ -4,6 +4,7 @@ import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHe
 import CollapsableContent from '@/components/CollapsableContent.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
@@ -33,7 +34,8 @@ const emit = defineEmits(['done']);
 const auth = useAuthStore();
 const state = useStateStore();
 
-const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
+const title = computed(() => pickTranslation(props.resource.title, state.locale));
+const commentHtml = computed(() => pickTranslation(props.resource.comment, state.locale));
 const showInfoModal = ref(false);
 </script>
 
@@ -50,12 +52,7 @@ const showInfoModal = ref(false);
     "
   />
 
-  <generic-modal
-    v-model:show="showInfoModal"
-    :title="resourceTitle"
-    :icon="ResourceIcon"
-    width="wide"
-  >
+  <generic-modal v-model:show="showInfoModal" :title="title" :icon="ResourceIcon" width="wide">
     <n-flex v-if="auth.loggedIn" justify="space-between" class="mb-lg">
       <user-display :user="resource.owner || undefined" size="small" :system="!resource.owner" />
       <resource-info-tags :resource="resource" reverse />
@@ -88,14 +85,12 @@ const showInfoModal = ref(false);
     </template>
 
     <!-- COMMENT -->
-    <template v-if="resource.comment.length">
+    <template v-if="!!commentHtml">
       <icon-heading level="3" :icon="CommentIcon">
         {{ $t('general.comment') }}
       </icon-heading>
       <collapsable-content>
-        <div class="pre-wrap">
-          <translation-display :value="resource.comment" />
-        </div>
+        <hydrated-html :html="commentHtml" />
       </collapsable-content>
       <n-divider />
     </template>

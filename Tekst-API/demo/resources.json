@@ -30,11 +30,11 @@
     "comment": [
       {
         "locale": "enUS",
-        "translation": "This version includes repetition markers."
+        "translation": "<p>This version includes repetition markers.</p>"
       },
       {
         "locale": "deDE",
-        "translation": "Diese Version enthält Wiederholungszeichen."
+        "translation": "<p>Diese Version enthält Wiederholungszeichen.</p>"
       }
     ],
     "config": {
@@ -337,11 +337,11 @@
     "comment": [
       {
         "locale": "enUS",
-        "translation": "This translation was generated automatically and revised manually. This translation includes repetition markers."
+        "translation": "<p>This translation was generated automatically and revised manually. This translation includes repetition markers.</p>"
       },
       {
         "locale": "deDE",
-        "translation": "Diese Übersetzung wurde maschinell erzeugt und manuell überarbeitet. Diese Übersetzung enthält Wiederholungszeichen."
+        "translation": "<p>Diese Übersetzung wurde maschinell erzeugt und manuell überarbeitet. Diese Übersetzung enthält Wiederholungszeichen.</p>"
       }
     ],
     "config": {
@@ -397,11 +397,11 @@
     "comment": [
       {
         "locale": "enUS",
-        "translation": "The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks."
+        "translation": "<p>The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks.</p>"
       },
       {
         "locale": "deDE",
-        "translation": "Die allgemein gebräuchliche Version des Textes mit einer Abwandlung des dritten Verses gegenüger der Originalversion. Diese Version enthält Wiederholungszeichen."
+        "translation": "<p>Die allgemein gebräuchliche Version des Textes mit einer Abwandlung des dritten Verses gegenüger der Originalversion. Diese Version enthält Wiederholungszeichen.</p>"
       }
     ],
     "config": {
@@ -485,11 +485,11 @@
     "comment": [
       {
         "locale": "enUS",
-        "translation": "Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\"."
+        "translation": "<p>Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\".</p>"
       },
       {
         "locale": "deDE",
-        "translation": "Annotierte Entitäten sind \"Fox\" (Fuchs), \"Goose\" (Gans) \"Hunter\" (Jäger) und \"Mouse\" (Maus)."
+        "translation": "<p>Annotierte Entitäten sind \"Fox\" (Fuchs), \"Goose\" (Gans) \"Hunter\" (Jäger) und \"Mouse\" (Maus).</p>"
       }
     ],
     "config": {

@@ -29,7 +29,7 @@ import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { NButton, NIcon, NSelect, type SelectOption } from 'naive-ui';
+import { NButton, NFlex, NIcon, NSelect, type SelectOption } from 'naive-ui';
 import 'prosemirror-view/style/prosemirror.css';
 import { computed, h, onUnmounted, ref, watch, type Component, type CSSProperties } from 'vue';
 
@@ -263,7 +263,7 @@ onUnmounted(() => {
 
 <template>
   <div v-if="editor" style="width: 100%">
-    <div class="toolbar">
+    <n-flex align="flex-end" size="large" class="mt-sm">
       <n-select
         :value="currentBlockType"
         :options="blockTypeOptions"
@@ -274,7 +274,7 @@ onUnmounted(() => {
         style="width: auto; min-width: 320px; flex: 2"
         @update:value="handleSelectBlockType"
       />
-      <div class="toolbar-group">
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -295,8 +295,8 @@ onUnmounted(() => {
           :focusable="false"
           @click="editor.chain().focus().toggleItalic().run()"
         />
-      </div>
-      <div class="toolbar-group">
+      </n-flex>
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -316,8 +316,8 @@ onUnmounted(() => {
           :focusable="false"
           @click="editor.chain().focus().toggleCode().run()"
         />
-      </div>
-      <div class="toolbar-group">
+      </n-flex>
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -331,8 +331,8 @@ onUnmounted(() => {
             }
           "
         />
-      </div>
-      <div class="toolbar-group">
+      </n-flex>
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -369,8 +369,8 @@ onUnmounted(() => {
           :focusable="false"
           @click="editor.chain().focus().setTextAlign('justify').run()"
         />
-      </div>
-      <div class="toolbar-group">
+      </n-flex>
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -395,8 +395,8 @@ onUnmounted(() => {
           :focusable="false"
           @click="editor.chain().focus().setHardBreak().run()"
         />
-      </div>
-      <div class="toolbar-group">
+      </n-flex>
+      <n-flex size="small" :wrap="false">
         <n-button
           :style="toolbarStyles"
           :size="toolbarSize"
@@ -415,8 +415,8 @@ onUnmounted(() => {
           :focusable="false"
           @click="editor.chain().focus().redo().run()"
         />
-      </div>
-    </div>
+      </n-flex>
+    </n-flex>
     <div id="wysiwyg-container">
       <editor-content
         :editor="editor"
@@ -437,20 +437,6 @@ onUnmounted(() => {
   border-radius: var(--border-radius);
   max-height: 50vh;
   overflow-y: scroll;
-}
-
-.toolbar {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.toolbar > .toolbar-group {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.4rem;
 }
 
 .character-count {

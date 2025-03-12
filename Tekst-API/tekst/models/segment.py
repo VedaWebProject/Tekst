@@ -1,10 +1,9 @@
-from typing import Annotated, Any, Literal
+from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from pydantic import (
     BaseModel,
     Field,
-    field_validator,
 )
 
 from tekst.i18n import TranslationLocaleKey
@@ -57,11 +56,6 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             description="HTML content of this segment",
         ),
     ]
-
-    @field_validator("title", mode="before")
-    @classmethod
-    def force_unset_empty_title(cls, v: Any) -> str | None:
-        return v if v else None
 
 
 class ClientSegmentDocument(ClientSegment, DocumentBase):

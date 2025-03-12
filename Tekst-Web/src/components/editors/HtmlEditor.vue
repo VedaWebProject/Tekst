@@ -78,6 +78,7 @@ watch(
     ref="tabsRef"
     type="line"
     justify-content="start"
+    pane-class="p-0"
     :value="editorMode"
     @update:value="handleChangeTab"
   >

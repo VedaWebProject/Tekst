@@ -25,6 +25,7 @@ from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.types import ConStr, ConStrOrNone, ResourceTypeName
+from tekst.utils.html import sanitize_html
 from tekst.utils.strings import cleanup_spaces_multiline
 
 
@@ -77,13 +78,19 @@ class ResourceDescriptionTranslation(TranslationBase):
 class ResourceCommentTranslation(TranslationBase):
     translation: Annotated[
         ConStr(
-            max_length=2000,
+            min_length=1,
+            max_length=102400,
             cleanup="multiline",
         ),
         Field(
-            description="Comment translation for this resource",
+            description="Comment translation HTML for this resource",
         ),
     ]
+
+    @field_validator("translation", mode="after")
+    @classmethod
+    def validate_comment_html(cls, value) -> str:
+        return sanitize_html(value)
 
 
 class ResourceBase(ModelBase, ModelFactoryMixin):

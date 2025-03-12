@@ -4621,7 +4621,7 @@ export interface components {
       locale: components['schemas']['TranslationLocaleKey'];
       /**
        * Translation
-       * @description Comment translation for this resource
+       * @description Comment translation HTML for this resource
        */
       translation: string;
     };

@@ -13,7 +13,16 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "comment": [
+      {
+        "locale": "enUS",
+        "translation": "<p>This is a test!</p>"
+      },
+      {
+        "locale": "deDE",
+        "translation": "<p>Dies ist ein Test!</p>"
+      }
+    ],
     "config": {
       "common": {
         "sort_order": 10,

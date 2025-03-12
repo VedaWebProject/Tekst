@@ -232,7 +232,7 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   citation: [minMaxCharsRule(0, 4096, 'blur')],
   commentTranslation: [
     requiredStringRule(() => $t('general.comment'), 'blur'),
-    minMaxCharsRule(1, 2000, 'blur'),
+    minMaxCharsRule(1, 102400, 'blur'),
   ],
   metaKey: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 16, 'blur')],
   metaValue: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 128, 'blur')],
