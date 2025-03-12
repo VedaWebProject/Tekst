@@ -109,7 +109,6 @@ function handleSelect(text: TextRead) {
       v-model:show="showInfoModal"
       :title="state.text?.title || $t('general.info')"
       :icon="TextsIcon"
-      width="wide"
     >
       <h3>{{ $t('models.resource.modelLabel', 2) }} / {{ $t('models.text.level') }}</h3>
       <template
