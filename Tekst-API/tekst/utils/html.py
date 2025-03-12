@@ -61,10 +61,13 @@ def get_html_text(html: str | None = None) -> str | None:
 def sanitize_html(html: str | None = None) -> str | None:
     if html is None:
         return None
-    return bleach.clean(
-        html,
-        tags=_ALLOWED_TAGS,
-        attributes=_ALLOWED_ATTRIBUTES,
-        strip=True,
-        strip_comments=False,
+    return (
+        bleach.clean(
+            html,
+            tags=_ALLOWED_TAGS,
+            attributes=_ALLOWED_ATTRIBUTES,
+            strip=True,
+            strip_comments=False,
+        )
+        or "<!-- no content after sanitization -->"
     )
