@@ -141,7 +141,6 @@ class ElasticsearchConfig(ConfigSubSection):
     timeout_init_s: int = 240
     timeout_general_s: int = 30
     timeout_search_s: str = "30s"
-    max_field_mappings: int = 1000
 
     @field_validator("host", mode="before")
     @classmethod

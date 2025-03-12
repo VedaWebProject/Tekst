@@ -13,6 +13,7 @@ import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import {
   NButton,
+  NFlex,
   NIcon,
   NTable,
   NTabPane,
@@ -23,6 +24,8 @@ import {
 } from 'naive-ui';
 import { onBeforeMount, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
+
+const SANE_IDX_FIELDS_LIMIT = 1000;
 
 const state = useStateStore();
 const theme = useThemeStore();
@@ -119,10 +122,9 @@ async function loadIndexInfo() {
 }
 
 function getFieldMappingsStatus(fields: number) {
-  const maxFieldMappings = state.pf?.maxFieldMappings || 0;
-  if (fields > maxFieldMappings * 0.9) {
+  if (fields > SANE_IDX_FIELDS_LIMIT * 0.9) {
     return 'over';
-  } else if (fields > maxFieldMappings * 0.75) {
+  } else if (fields > SANE_IDX_FIELDS_LIMIT * 0.75) {
     return 'near';
   } else {
     return 'ok';
@@ -182,66 +184,63 @@ onBeforeMount(() => {
           </template>
         </button-shelf>
 
-        <n-table
-          v-for="(indexInfo, i) in indicesInfo"
-          :key="`${i}_${indexInfo.textId}`"
-          size="small"
-          style="table-layout: fixed"
-          :bordered="false"
-          class="mb-lg"
-        >
-          <thead>
+        <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
+          <template v-for="(indexInfo, i) in indicesInfo" :key="`${i}_${indexInfo.textId}`">
             <tr>
               <th
                 colspan="2"
                 :style="{
                   backgroundColor: theme.getAccentColors(indexInfo.textId).fade4,
+                  color: theme.getAccentColors(indexInfo.textId).base,
                 }"
               >
                 {{ state.textById(indexInfo.textId)?.title || '???' }}
               </th>
             </tr>
-          </thead>
-          <tbody>
             <template v-for="(value, key) in indexInfo" :key="key">
               <tr v-if="!['textId', 'fields', 'upToDate'].includes(key)">
-                <th style="font-weight: var(--font-weight-normal)">
+                <th>
                   {{ $t(`admin.maintenance.indices.${key}`) }}
                 </th>
                 <td>{{ value }}</td>
               </tr>
             </template>
             <tr>
-              <th style="font-weight: var(--font-weight-normal)">
+              <th>
                 {{ $t(`admin.maintenance.indices.fields`) }}
               </th>
-              <td :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
-                {{ indexInfo.fields }} / {{ state.pf?.maxFieldMappings || '???' }}
+              <td>
+                <n-flex align="center">
+                  <span :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
+                    {{ indexInfo.fields }} / {{ SANE_IDX_FIELDS_LIMIT }}
+                  </span>
+                  <help-button-widget help-key="maxIndexFields" />
+                </n-flex>
               </td>
             </tr>
             <tr>
-              <th style="font-weight: var(--font-weight-normal)">
+              <th>
                 {{ $t(`general.status`) }}
               </th>
               <td>
                 <span
                   :class="{ 'index-ood': !indexInfo.upToDate, 'index-utd': indexInfo.upToDate }"
-                  >{{
+                >
+                  {{
                     indexInfo.upToDate
                       ? $t('admin.maintenance.indices.utd')
                       : $t('admin.maintenance.indices.ood')
-                  }}</span
-                >
+                  }}
+                </span>
               </td>
             </tr>
-          </tbody>
+          </template>
         </n-table>
       </n-tab-pane>
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
         <form-section-heading :label="$t('admin.maintenance.precomputed.heading')" />
-        <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
         <n-button
           secondary
           :disabled="precomputedLoading"
@@ -253,12 +252,12 @@ onBeforeMount(() => {
           </template>
           {{ $t('general.runAction') }}
         </n-button>
+        <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
       </n-tab-pane>
 
       <!-- INTERNAL CLEANUP -->
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
         <form-section-heading :label="$t('admin.maintenance.cleanup.heading')" />
-        <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
         <n-button
           secondary
           :disabled="cleanupLoading"
@@ -270,6 +269,7 @@ onBeforeMount(() => {
           </template>
           {{ $t('general.runAction') }}
         </n-button>
+        <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
       </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
@@ -401,9 +401,21 @@ onBeforeMount(() => {
   white-space: nowrap;
 }
 
+.max-fields-warn-ok {
+  color: v-bind('nuiTheme.successColor');
+}
+
+.max-fields-warn-ok::after {
+  content: ' ✔';
+}
+
 .max-fields-warn-near {
   color: v-bind('nuiTheme.warningColor');
   font-weight: var(--font-weight-bold);
+}
+
+.max-fields-warn-near::after {
+  content: ' ⚠';
 }
 
 .max-fields-warn-over {
@@ -411,12 +423,24 @@ onBeforeMount(() => {
   font-weight: var(--font-weight-bold);
 }
 
+.max-fields-warn-over::after {
+  content: ' ⚠ ⚠ ⚠';
+}
+
 .index-ood {
   color: v-bind('nuiTheme.errorColor');
   font-weight: var(--font-weight-bold);
 }
 
+.index-ood::after {
+  content: ' ⚠';
+}
+
 .index-utd {
   color: v-bind('nuiTheme.successColor');
+}
+
+.index-utd::after {
+  content: ' ✔';
 }
 </style>

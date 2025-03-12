@@ -262,4 +262,3 @@ class PlatformData(ModelBase):
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
     tekst: dict[str, str]
-    max_field_mappings: int

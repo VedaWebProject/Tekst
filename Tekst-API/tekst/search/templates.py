@@ -20,8 +20,8 @@ IDX_TEMPLATE = {
             "number_of_replicas": 0,
             "mapping": {
                 "total_fields": {
-                    "limit": _cfg.es.max_field_mappings,
-                    "ignore_dynamic_beyond_limit": True,
+                    "limit": 3000,
+                    "ignore_dynamic_beyond_limit": False,
                 }
             },
         },
