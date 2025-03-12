@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
+import CollapsableContent from '@/components/CollapsableContent.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -19,7 +20,7 @@ import {
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NButton, NDivider, NEllipsis, NFlex } from 'naive-ui';
+import { NButton, NDivider, NFlex } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
@@ -91,11 +92,11 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="CommentIcon">
         {{ $t('general.comment') }}
       </icon-heading>
-      <div class="pre-wrap">
-        <n-ellipsis :tooltip="false" :line-clamp="2" expand-trigger="click">
+      <collapsable-content>
+        <div class="pre-wrap">
           <translation-display :value="resource.comment" />
-        </n-ellipsis>
-      </div>
+        </div>
+      </collapsable-content>
       <n-divider />
     </template>
 
