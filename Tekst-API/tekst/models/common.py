@@ -138,7 +138,7 @@ class DocumentBase(Document):
             # make sure we ignore None values that sneaked in because
             # the update models allow them but the original model does not
             if getattr(updates_model, field) is None and not isinstance(
-                None, self.model_fields[field].annotation
+                None, type(self).model_fields[field].annotation
             ):
                 continue
             # set attribute
