@@ -258,6 +258,9 @@
                         "$ref": "#/components/schemas/ImagesContentRead"
                       },
                       {
+                        "$ref": "#/components/schemas/LocationMetadataContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
@@ -274,6 +277,7 @@
                         "audio": "#/components/schemas/AudioContentRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
+                        "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -607,6 +611,9 @@
                     "$ref": "#/components/schemas/ImagesContentCreate"
                   },
                   {
+                    "$ref": "#/components/schemas/LocationMetadataContentCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextContentCreate"
                   },
                   {
@@ -623,6 +630,7 @@
                     "audio": "#/components/schemas/AudioContentCreate",
                     "externalReferences": "#/components/schemas/ExternalReferencesContentCreate",
                     "images": "#/components/schemas/ImagesContentCreate",
+                    "locationMetadata": "#/components/schemas/LocationMetadataContentCreate",
                     "plainText": "#/components/schemas/PlainTextContentCreate",
                     "richText": "#/components/schemas/RichTextContentCreate",
                     "textAnnotation": "#/components/schemas/TextAnnotationContentCreate"
@@ -653,6 +661,9 @@
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -669,6 +680,7 @@
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -810,6 +822,9 @@
                         "$ref": "#/components/schemas/ImagesContentRead"
                       },
                       {
+                        "$ref": "#/components/schemas/LocationMetadataContentRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextContentRead"
                       },
                       {
@@ -826,6 +841,7 @@
                         "audio": "#/components/schemas/AudioContentRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                         "images": "#/components/schemas/ImagesContentRead",
+                        "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -901,6 +917,9 @@
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -917,6 +936,7 @@
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -997,6 +1017,9 @@
                     "$ref": "#/components/schemas/ImagesContentUpdate"
                   },
                   {
+                    "$ref": "#/components/schemas/LocationMetadataContentUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextContentUpdate"
                   },
                   {
@@ -1013,6 +1036,7 @@
                     "audio": "#/components/schemas/AudioContentUpdate",
                     "externalReferences": "#/components/schemas/ExternalReferencesContentUpdate",
                     "images": "#/components/schemas/ImagesContentUpdate",
+                    "locationMetadata": "#/components/schemas/LocationMetadataContentUpdate",
                     "plainText": "#/components/schemas/PlainTextContentUpdate",
                     "richText": "#/components/schemas/RichTextContentUpdate",
                     "textAnnotation": "#/components/schemas/TextAnnotationContentUpdate"
@@ -1043,6 +1067,9 @@
                       "$ref": "#/components/schemas/ImagesContentRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextContentRead"
                     },
                     {
@@ -1059,6 +1086,7 @@
                       "audio": "#/components/schemas/AudioContentRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                       "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                       "plainText": "#/components/schemas/PlainTextContentRead",
                       "richText": "#/components/schemas/RichTextContentRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -3344,6 +3372,9 @@
                     "$ref": "#/components/schemas/ImagesResourceCreate"
                   },
                   {
+                    "$ref": "#/components/schemas/LocationMetadataResourceCreate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextResourceCreate"
                   },
                   {
@@ -3360,6 +3391,7 @@
                     "audio": "#/components/schemas/AudioResourceCreate",
                     "externalReferences": "#/components/schemas/ExternalReferencesResourceCreate",
                     "images": "#/components/schemas/ImagesResourceCreate",
+                    "locationMetadata": "#/components/schemas/LocationMetadataResourceCreate",
                     "plainText": "#/components/schemas/PlainTextResourceCreate",
                     "richText": "#/components/schemas/RichTextResourceCreate",
                     "textAnnotation": "#/components/schemas/TextAnnotationResourceCreate"
@@ -3390,6 +3422,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3406,6 +3441,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3563,6 +3599,9 @@
                         "$ref": "#/components/schemas/ImagesResourceRead"
                       },
                       {
+                        "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                      },
+                      {
                         "$ref": "#/components/schemas/PlainTextResourceRead"
                       },
                       {
@@ -3579,6 +3618,7 @@
                         "audio": "#/components/schemas/AudioResourceRead",
                         "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                         "images": "#/components/schemas/ImagesResourceRead",
+                        "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                         "plainText": "#/components/schemas/PlainTextResourceRead",
                         "richText": "#/components/schemas/RichTextResourceRead",
                         "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3653,6 +3693,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3669,6 +3712,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3771,6 +3815,9 @@
                     "$ref": "#/components/schemas/ImagesResourceUpdate"
                   },
                   {
+                    "$ref": "#/components/schemas/LocationMetadataResourceUpdate"
+                  },
+                  {
                     "$ref": "#/components/schemas/PlainTextResourceUpdate"
                   },
                   {
@@ -3787,6 +3834,7 @@
                     "audio": "#/components/schemas/AudioResourceUpdate",
                     "externalReferences": "#/components/schemas/ExternalReferencesResourceUpdate",
                     "images": "#/components/schemas/ImagesResourceUpdate",
+                    "locationMetadata": "#/components/schemas/LocationMetadataResourceUpdate",
                     "plainText": "#/components/schemas/PlainTextResourceUpdate",
                     "richText": "#/components/schemas/RichTextResourceUpdate",
                     "textAnnotation": "#/components/schemas/TextAnnotationResourceUpdate"
@@ -3817,6 +3865,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3833,6 +3884,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -3914,6 +3966,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -3930,6 +3985,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -4103,6 +4159,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -4119,6 +4178,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -4232,6 +4292,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -4248,6 +4311,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -4351,6 +4415,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -4367,6 +4434,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -4460,6 +4528,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -4476,6 +4547,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -4589,6 +4661,9 @@
                       "$ref": "#/components/schemas/ImagesResourceRead"
                     },
                     {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
                       "$ref": "#/components/schemas/PlainTextResourceRead"
                     },
                     {
@@ -4605,6 +4680,7 @@
                       "audio": "#/components/schemas/AudioResourceRead",
                       "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
                       "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
                       "plainText": "#/components/schemas/PlainTextResourceRead",
                       "richText": "#/components/schemas/RichTextResourceRead",
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
@@ -12356,6 +12432,9 @@
                   "$ref": "#/components/schemas/ImagesContentRead"
                 },
                 {
+                  "$ref": "#/components/schemas/LocationMetadataContentRead"
+                },
+                {
                   "$ref": "#/components/schemas/PlainTextContentRead"
                 },
                 {
@@ -12372,6 +12451,7 @@
                   "audio": "#/components/schemas/AudioContentRead",
                   "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
                   "images": "#/components/schemas/ImagesContentRead",
+                  "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                   "plainText": "#/components/schemas/PlainTextContentRead",
                   "richText": "#/components/schemas/RichTextContentRead",
                   "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
@@ -12386,6 +12466,967 @@
         },
         "type": "object",
         "title": "LocationData"
+      },
+      "LocationMetadataContentCreate": {
+        "properties": {
+          "resourceId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LocationMetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Entries",
+            "description": "List of metadata entries for a certain location"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "entries"
+        ],
+        "title": "LocationMetadataContentCreate"
+      },
+      "LocationMetadataContentRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Resourceid",
+            "description": "Resource ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Locationid",
+            "description": "Text location ID",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LocationMetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Entries",
+            "description": "List of metadata entries for a certain location"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "entries"
+        ],
+        "title": "LocationMetadataContentRead"
+      },
+      "LocationMetadataContentUpdate": {
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 50000,
+                "minLength": 1
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "optionalNullable": false
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              }
+            ],
+            "title": "Notes",
+            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "optionalNullable": false
+          },
+          "entries": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/LocationMetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 128,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entries",
+            "description": "List of metadata entries for a certain location",
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "LocationMetadataContentUpdate"
+      },
+      "LocationMetadataEntry": {
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__1"
+          },
+          "value": {
+            "items": {
+              "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__2"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "LocationMetadataEntry"
+      },
+      "LocationMetadataModifiedCommonResourceConfig": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true,
+            "optionalNullable": false
+          },
+          "enableContentContext": {
+            "type": "boolean",
+            "const": false,
+            "title": "Enablecontentcontext",
+            "description": "Whether contents of this resource should be available for the parent level (always false for location metadata resources)",
+            "default": false,
+            "optionalNullable": false
+          },
+          "searchableQuick": {
+            "type": "boolean",
+            "title": "Searchablequick",
+            "description": "Whether this resource should be included in quick search (default false for location metadata resources)",
+            "default": false,
+            "optionalNullable": false
+          },
+          "searchableAdv": {
+            "type": "boolean",
+            "title": "Searchableadv",
+            "description": "Whether this resource should accessible via advanced search",
+            "default": true,
+            "optionalNullable": false
+          },
+          "rtl": {
+            "type": "boolean",
+            "title": "Rtl",
+            "description": "Whether to display text contents in right-to-left direction",
+            "default": false,
+            "optionalNullable": false
+          },
+          "osk": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1,
+                "description": "Key identifying an OSK mode"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Osk"
+          }
+        },
+        "type": "object",
+        "title": "LocationMetadataModifiedCommonResourceConfig"
+      },
+      "LocationMetadataQueryEntry": {
+        "properties": {
+          "k": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "K",
+            "description": "Metadata entry key query"
+          },
+          "v": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 0
+              }
+            ],
+            "title": "V",
+            "description": "Metadata entry value query"
+          },
+          "wc": {
+            "type": "boolean",
+            "title": "Wc",
+            "description": "Whether to interpret wildcards in the metadata value query",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "k"
+        ],
+        "title": "LocationMetadataQueryEntry"
+      },
+      "LocationMetadataResourceConfig": {
+        "properties": {
+          "common": {
+            "$ref": "#/components/schemas/LocationMetadataModifiedCommonResourceConfig",
+            "default": {
+              "sortOrder": 10,
+              "defaultActive": true,
+              "enableContentContext": false,
+              "searchableQuick": false,
+              "searchableAdv": true,
+              "rtl": false
+            }
+          },
+          "locationMetadata": {
+            "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
+            "default": {
+              "keyTranslations": []
+            }
+          }
+        },
+        "type": "object",
+        "title": "LocationMetadataResourceConfig"
+      },
+      "LocationMetadataResourceCreate": {
+        "properties": {
+          "title": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "$ref": "#/components/schemas/LocationMetadataResourceConfig",
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "enableContentContext": false,
+                "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": false,
+                "sortOrder": 10
+              },
+              "locationMetadata": {
+                "keyTranslations": []
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "LocationMetadataResourceCreate"
+      },
+      "LocationMetadataResourceRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Id",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "writable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writable",
+            "description": "Whether this resource is writable for the requesting user"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserReadPublic"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Public user data for user owning this resource"
+          },
+          "sharedReadUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedreadusers",
+            "description": "Public user data for users allowed to read this resource"
+          },
+          "sharedWriteUsers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwriteusers",
+            "description": "Public user data for users allowed to write this resource"
+          },
+          "title": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Title",
+            "description": "Title of this resource"
+          },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "default": []
+          },
+          "textId": {
+            "type": "string",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^[0-9a-f]{24}$",
+            "title": "Textid",
+            "description": "ID of the text this resource belongs to",
+            "example": "5eb7cf5a86d9755df3a6c593"
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Level",
+            "description": "Text level this resource belongs to"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original"
+          },
+          "ownerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ownerid",
+            "description": "User owning this resource"
+          },
+          "sharedRead": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "default": []
+          },
+          "sharedWrite": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "default": []
+          },
+          "public": {
+            "type": "boolean",
+            "title": "Public",
+            "description": "Publication status of this resource",
+            "default": false
+          },
+          "proposed": {
+            "type": "boolean",
+            "title": "Proposed",
+            "description": "Whether this resource has been proposed for publication",
+            "default": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource"
+          },
+          "meta": {
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 0,
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "default": []
+          },
+          "comment": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCommentTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "default": []
+          },
+          "config": {
+            "$ref": "#/components/schemas/LocationMetadataResourceConfig",
+            "default": {
+              "common": {
+                "defaultActive": true,
+                "enableContentContext": false,
+                "rtl": false,
+                "searchableAdv": true,
+                "searchableQuick": false,
+                "sortOrder": 10
+              },
+              "locationMetadata": {
+                "keyTranslations": []
+              }
+            }
+          },
+          "contentsChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Contentschangedat",
+            "description": "The last time contents of this resource changed",
+            "default": "1970-01-02T00:00:00"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "textId",
+          "level",
+          "resourceType"
+        ],
+        "title": "LocationMetadataResourceRead"
+      },
+      "LocationMetadataResourceUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceTitleTranslation"
+                },
+                "type": "array",
+                "maxItems": 3,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Title of this resource",
+            "optionalNullable": false
+          },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Short, concise description of this resource",
+            "optionalNullable": false
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Resourcetype"
+          },
+          "originalId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalid",
+            "description": "If this is a version of another resource, this ID references the original",
+            "optionalNullable": true
+          },
+          "sharedRead": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedread",
+            "description": "Users with shared read access to this resource",
+            "optionalNullable": false
+          },
+          "sharedWrite": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sharedwrite",
+            "description": "Users with shared write access to this resource",
+            "optionalNullable": false
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Citation",
+            "description": "Citation details for this resource",
+            "optionalNullable": false
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetadataEntry"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta",
+            "description": "Arbitrary metadata",
+            "optionalNullable": false
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Plain text, potentially multiline comment on this resource",
+            "optionalNullable": false
+          },
+          "config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocationMetadataResourceConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceType"
+        ],
+        "title": "LocationMetadataResourceUpdate"
+      },
+      "LocationMetadataSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LocationMetadataQueryEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Entries",
+            "description": "List of metadata queries",
+            "default": [],
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "LocationMetadataSearchQuery"
+      },
+      "LocationMetadataSpecialConfig": {
+        "properties": {
+          "keyTranslations": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/MetadataKeyTranslation"
+              },
+              "type": "array",
+              "maxItems": 3
+            },
+            "propertyNames": {
+              "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__1"
+            },
+            "type": "object",
+            "maxProperties": 512,
+            "minProperties": 1,
+            "title": "Keytranslations",
+            "description": "Structure levels of this text and their label translations",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "LocationMetadataSpecialConfig",
+        "description": "Config properties specific to the location metadata resource type"
       },
       "LocationRead": {
         "properties": {
@@ -12602,6 +13643,26 @@
           "value"
         ],
         "title": "MetadataEntry"
+      },
+      "MetadataKeyTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Translation",
+            "description": "Translation of a metadata entry key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "MetadataKeyTranslation"
       },
       "MoveLocationRequestBody": {
         "properties": {
@@ -14451,6 +15512,9 @@
                 "$ref": "#/components/schemas/ImagesSearchQuery"
               },
               {
+                "$ref": "#/components/schemas/LocationMetadataSearchQuery"
+              },
+              {
                 "$ref": "#/components/schemas/PlainTextSearchQuery"
               },
               {
@@ -14468,6 +15532,7 @@
                 "audio": "#/components/schemas/AudioSearchQuery",
                 "externalReferences": "#/components/schemas/ExternalReferencesSearchQuery",
                 "images": "#/components/schemas/ImagesSearchQuery",
+                "locationMetadata": "#/components/schemas/LocationMetadataSearchQuery",
                 "plainText": "#/components/schemas/PlainTextSearchQuery",
                 "richText": "#/components/schemas/RichTextSearchQuery",
                 "textAnnotation": "#/components/schemas/TextAnnotationSearchQuery"
@@ -15873,8 +16938,14 @@
             "description": "Key of the annotation"
           },
           "value": {
-            "$ref": "#/components/schemas/TextAnnotationValues",
-            "description": "Value(s) of the annotation"
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationValue"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Value",
+            "description": "List of values of an annotation"
           }
         },
         "type": "object",
@@ -15900,7 +16971,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 64,
+                "maxLength": 256,
                 "minLength": 0
               }
             ],
@@ -16607,17 +17678,7 @@
       "TextAnnotationValue": {
         "type": "string",
         "maxLength": 256,
-        "minLength": 1,
-        "description": "Value of an annotation"
-      },
-      "TextAnnotationValues": {
-        "items": {
-          "$ref": "#/components/schemas/TextAnnotationValue"
-        },
-        "type": "array",
-        "maxItems": 64,
-        "minItems": 1,
-        "description": "List of values of an annotation"
+        "minLength": 1
       },
       "TextCreate": {
         "properties": {
@@ -17889,6 +18950,16 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "tekst__resources__location_metadata__LocationMetadataEntryValue__1": {
+        "type": "string",
+        "maxLength": 32,
+        "minLength": 1
+      },
+      "tekst__resources__location_metadata__LocationMetadataEntryValue__2": {
+        "type": "string",
+        "maxLength": 256,
+        "minLength": 1
       }
     },
     "securitySchemes": {

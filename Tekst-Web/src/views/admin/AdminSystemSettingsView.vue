@@ -62,7 +62,7 @@ const oskFontOptions = computed(
 
 const resourceTypeOptions = computed(
   () =>
-    resourceTypes.map((f) => ({ label: $t(`resources.types.${f.name}.label`), value: f.name })) ||
+    resourceTypes.map((rt) => ({ label: $t(`resources.types.${rt.name}.label`), value: rt.name })) ||
     []
 );
 

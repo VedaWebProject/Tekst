@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
-from pydantic import BeforeValidator, Field, field_validator
+from pydantic import BeforeValidator, Field
 from typing_extensions import TypeAliasType, TypedDict
 
 from tekst.i18n import TranslationBase, Translations
@@ -552,21 +552,6 @@ TextAnnotationValue = TypeAliasType(
         Field(
             description="Value of an annotation",
         ),
-        # stringify, but avoid "None" string
-        BeforeValidator(lambda v: str(v) if v is not None else None),
-    ],
-)
-
-TextAnnotationValues = TypeAliasType(
-    "TextAnnotationValues",
-    Annotated[
-        list[TextAnnotationValue],
-        Field(
-            description="List of values of an annotation",
-            min_length=1,
-            max_length=64,
-        ),
-        BeforeValidator(lambda v: [v] if isinstance(v, str) else v),
     ],
 )
 
@@ -580,50 +565,16 @@ class TextAnnotationEntry(ModelBase):
         Field(
             description="Key of the annotation",
         ),
-        BeforeValidator(lambda v: str(v) if v is not None else None),
     ]
     value: Annotated[
-        TextAnnotationValues,
+        list[TextAnnotationValue],
         Field(
-            description="Value(s) of the annotation",
-        ),
-    ]
-
-
-class TextAnnotationQueryEntry(ModelBase):
-    key: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            alias="k",
-            description="Key of the annotation",
-        ),
-    ]
-    value: Annotated[
-        ConStrOrNone(
-            min_length=0,
+            description="List of values of an annotation",
+            min_length=1,
             max_length=64,
-            cleanup="oneline",
         ),
-        Field(
-            alias="v",
-            description="Value of the annotation",
-        ),
-    ] = None
-    wildcards: Annotated[
-        bool,
-        Field(
-            alias="wc",
-            description="Whether to interpret wildcards in the annotation value query",
-        ),
-    ] = False
-
-    @field_validator("key", "value", mode="before")
-    @classmethod
-    def strip_whitespace(cls, v) -> str:
-        return str(v) if v else ""
+        BeforeValidator(lambda v: [v] if isinstance(v, str) else v),
+    ]
 
 
 class TextAnnotationToken(ModelBase):
@@ -660,6 +611,37 @@ class TextAnnotationContent(ContentBase):
             max_length=1024,
         ),
     ]
+
+
+class TextAnnotationQueryEntry(ModelBase):
+    key: Annotated[
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
+        Field(
+            alias="k",
+            description="Key of the annotation",
+        ),
+    ]
+    value: Annotated[
+        ConStrOrNone(
+            min_length=0,
+            max_length=256,
+            cleanup="oneline",
+        ),
+        Field(
+            alias="v",
+            description="Value of the annotation",
+        ),
+    ] = None
+    wildcards: Annotated[
+        bool,
+        Field(
+            alias="wc",
+            description="Whether to interpret wildcards in the annotation value query",
+        ),
+    ] = False
 
 
 class TextAnnotationSearchQuery(ModelBase):

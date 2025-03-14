@@ -141,6 +141,12 @@ export const resourceTypes = [
     contentContext: true,
   },
   {
+    name: 'locationMetadata',
+    searchableQuick: true,
+    searchableAdv: true,
+    contentContext: false,
+  },
+  {
     name: 'audio',
     searchableQuick: true,
     searchableAdv: true,
@@ -344,6 +350,14 @@ export type TextAnnotationResourceRead = components['schemas']['TextAnnotationRe
   };
 export type AnnotationAggregation = components['schemas']['AnnotationAggregation'];
 
+export type LocationMetadataContentRead = components['schemas']['LocationMetadataContentRead'];
+export type LocationMetadataContentCreate = components['schemas']['LocationMetadataContentCreate'];
+export type LocationMetadataResourceCreate = components['schemas']['LocationMetadataResourceCreate'];
+export type LocationMetadataResourceRead = components['schemas']['LocationMetadataResourceRead'] &
+  ResourceReadExtras & {
+    contents?: LocationMetadataContentRead[];
+  };
+
 export type AudioContentRead = components['schemas']['AudioContentRead'];
 export type AudioContentCreate = components['schemas']['AudioContentCreate'];
 export type AudioResourceCreate = components['schemas']['AudioResourceCreate'];
@@ -398,10 +412,6 @@ export type AnyResourceUpdate =
 
 // resource config types
 
-export type PlainTextResourceConfig = components['schemas']['PlainTextResourceConfig'];
-export type RichTextResourceConfig = components['schemas']['RichTextResourceConfig'];
-export type TextAnnotationResourceConfig = components['schemas']['TextAnnotationResourceConfig'];
-
 export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
 export type AnyResourceConfig = AnyResourceRead['config'];
 export type LineLabellingConfig = components['schemas']['LineLabellingConfig'];
@@ -422,6 +432,7 @@ export type ResourceSearchQuery = components['schemas']['ResourceSearchQuery'];
 export type PlainTextSearchQuery = components['schemas']['PlainTextSearchQuery'];
 export type RichTextSearchQuery = components['schemas']['RichTextSearchQuery'];
 export type TextAnnotationSearchQuery = components['schemas']['TextAnnotationSearchQuery'];
+export type LocationMetadataSearchQuery = components['schemas']['LocationMetadataSearchQuery'];
 export type AudioSearchQuery = components['schemas']['AudioSearchQuery'];
 export type ImagesSearchQuery = components['schemas']['ImagesSearchQuery'];
 export type ExternalReferencesSearchQuery = components['schemas']['ExternalReferencesSearchQuery'];

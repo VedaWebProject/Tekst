@@ -401,6 +401,37 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       },
     ],
   },
+  locationMetadata: {
+    key: [
+      requiredStringRule(
+        () => $t('general.key'),
+        'blur'
+      ),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    value: [
+      {
+        validator: (_: FormItemRule, value: string[]) => !!value && Array.isArray(value),
+        message: () =>
+          $t('forms.rulesFeedback.isRequired', {
+            x: $t('general.value'),
+          }),
+        trigger: 'change',
+      },
+      {
+        validator: (_: FormItemRule, value: string[]) =>
+          !!value && value.length >= 1 && value.length <= 64,
+        message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
+        trigger: 'change',
+      },
+      {
+        validator: (_: FormItemRule, value: string[]) =>
+          !!value && value.every((item) => item.length >= 1 && item.length <= 256),
+        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
+        trigger: 'change',
+      },
+    ],
+  },
   audio: {
     url: [requiredStringRule(() => $t('general.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
   },
@@ -465,7 +496,17 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
       ),
       minMaxCharsRule(1, 32, 'blur'),
     ],
-    annotationValue: [minMaxCharsRule(0, 64, 'blur')],
+    annotationValue: [minMaxCharsRule(0, 256, 'blur')],
+  },
+  locationMetadata: {
+    key: [
+      requiredStringRule(
+        () => $t('general.key'),
+        'blur'
+      ),
+      minMaxCharsRule(1, 32, 'blur'),
+    ],
+    value: [minMaxCharsRule(0, 256, 'blur')],
   },
   audio: {
     caption: [minMaxCharsRule(0, 512, 'blur')],

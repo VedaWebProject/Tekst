@@ -124,41 +124,6 @@ class ApiCall(ResourceTypeABC):
                 )
 
 
-class GeneralApiCallResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
-
-
-class ApiCallSpecialConfig(ModelBase):
-    """Config properties specific to the API call resource type"""
-
-    endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
-    method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
-    content_type: ConStr(
-        max_length=64,
-    ) = "application/json"
-    transform_deps: Annotated[
-        list[HttpUrl],
-        Field(
-            min_length=0,
-            max_length=32,
-        ),
-    ] = []
-    transform_js: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=102400,
-        ),
-        SchemaOptionalNonNullable,
-    ] = None
-
-    @model_validator(mode="after")
-    def validate_config(self):
-        if self.transform_deps and not self.transform_js:  # pragma: no cover
-            self.transform_deps = []
-        return self
-
-
 class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
     enable_content_context: Annotated[
         Literal[False],
@@ -202,6 +167,41 @@ class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
         ),
         SchemaOptionalNonNullable,
     ] = False
+
+
+class GeneralApiCallResourceConfig(ModelBase):
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
+
+
+class ApiCallSpecialConfig(ModelBase):
+    """Config properties specific to the API call resource type"""
+
+    endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
+    method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
+    content_type: ConStr(
+        max_length=64,
+    ) = "application/json"
+    transform_deps: Annotated[
+        list[HttpUrl],
+        Field(
+            min_length=0,
+            max_length=32,
+        ),
+    ] = []
+    transform_js: Annotated[
+        ConStrOrNone(
+            min_length=0,
+            max_length=102400,
+        ),
+        SchemaOptionalNonNullable,
+    ] = None
+
+    @model_validator(mode="after")
+    def validate_config(self):
+        if self.transform_deps and not self.transform_js:  # pragma: no cover
+            self.transform_deps = []
+        return self
 
 
 class ApiCallResourceConfig(ResourceConfigBase):
