@@ -1,16 +1,19 @@
 import csv
 
+from datetime import datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field
-from typing_extensions import TypeAliasType, TypedDict
+from typing_extensions import TypeAliasType
 
 from tekst.i18n import TranslationBase, Translations
+from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
+    PrecomputedDataDocument,
 )
-from tekst.models.content import ContentBase
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -25,9 +28,10 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
+    DefaultCollapsedValue,
     ExcludeFromModelVariants,
+    FontNameValueOrNone,
     SchemaOptionalNonNullable,
-    SchemaOptionalNullable,
 )
 
 
@@ -234,6 +238,11 @@ class LocationMetadataModifiedCommonResourceConfig(CommonResourceConfig):
     ] = False
 
 
+class GeneralTextAnnotationResourceConfig(ModelBase):
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
+
+
 LocationMetadataEntryKey = TypeAliasType(
     "LocationMetadataEntryValue",
     Annotated[
@@ -283,16 +292,16 @@ class LocationMetadataSpecialConfig(ModelBase):
             description=(
                 "Translations for the keys used in this location metadata resource"
             ),
-            min_length=1,
             max_length=512,
         ),
-    ] = []
+    ] = {}
 
 
 class LocationMetadataResourceConfig(ResourceConfigBase):
     common: LocationMetadataModifiedCommonResourceConfig = (
         LocationMetadataModifiedCommonResourceConfig()
     )
+    general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
     location_metadata: LocationMetadataSpecialConfig = LocationMetadataSpecialConfig()
 
 
@@ -304,8 +313,134 @@ class LocationMetadataResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["entries_concat"]
 
+    async def _update_aggregations(self) -> None:
+        max_values_per_key = 250
+        # get precomputed resource aggregations data, if present
+        precomp_doc = await PrecomputedDataDocument.find_one(
+            PrecomputedDataDocument.ref_id == self.id,
+            PrecomputedDataDocument.precomputed_type == "aggregations",
+        )
+        if precomp_doc:
+            if precomp_doc.created_at > self.contents_changed_at:
+                log.debug(
+                    f"Aggregations for resource {str(self.id)} up-to-date. Skipping."
+                )
+                return
+        else:
+            # create new aggregations document
+            precomp_doc = PrecomputedDataDocument(
+                ref_id=self.id,
+                precomputed_type="aggregations",
+            )
 
-class LocationMetadataEntry(TypedDict):
+        # aggregate distinct location metadata keys and values
+        precomp_doc.data = (
+            await ContentBaseDocument.find(
+                ContentBaseDocument.resource_id == self.id,
+                with_children=True,
+            )
+            .aggregate(
+                [
+                    {"$project": {"entries": 1}},
+                    {"$unwind": {"path": "$entries"}},
+                    {"$unwind": {"path": "$entries.value"}},
+                    # create one document for each metadata key,
+                    # collecting all values and the key occurrence count
+                    {
+                        "$group": {
+                            "_id": "$entries.key",
+                            "values": {"$push": "$entries.value"},
+                            "keyOcc": {"$sum": 1},
+                        }
+                    },
+                    # count per-key value occurrences on "values" field
+                    {
+                        "$set": {
+                            "values": {
+                                "$map": {
+                                    "input": {"$setUnion": "$values"},
+                                    "as": "v",
+                                    "in": {
+                                        "value": "$$v",
+                                        "count": {
+                                            "$size": {
+                                                "$filter": {
+                                                    "input": "$values",
+                                                    "cond": {"$eq": ["$$this", "$$v"]},
+                                                }
+                                            }
+                                        },
+                                    },
+                                }
+                            }
+                        }
+                    },
+                    # remove values array if it contains more than n items
+                    {
+                        "$set": {
+                            "values": {
+                                "$cond": {
+                                    "if": {
+                                        "$gt": [
+                                            {"$size": "$values"},
+                                            max_values_per_key,
+                                        ]
+                                    },
+                                    "then": "$$REMOVE",
+                                    "else": "$values",
+                                }
+                            }
+                        }
+                    },
+                    # sort values array by count
+                    {
+                        "$set": {
+                            "values": {
+                                "$sortArray": {
+                                    "input": "$values",
+                                    "sortBy": {"count": -1},
+                                }
+                            }
+                        }
+                    },
+                    # sort docs by key occurrence
+                    {"$sort": {"keyOcc": -1}},
+                    # project to final doc format,
+                    # with values array only containing the values
+                    {
+                        "$project": {
+                            "_id": 0,
+                            "key": "$_id",
+                            "values": {
+                                "$map": {
+                                    "input": "$values",
+                                    "as": "v",
+                                    "in": "$$v.value",
+                                }
+                            },
+                        }
+                    },
+                ]
+            )
+            .to_list()
+        )
+
+        # update aggregations in DB
+        precomp_doc.created_at = datetime.utcnow()
+        await precomp_doc.save()
+
+    async def resource_precompute_hook(self) -> None:
+        await super().resource_precompute_hook()
+        op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
+        try:
+            await self._update_aggregations()
+        except Exception as e:  # pragma: no cover
+            log_op_end(op_id, failed=True)
+            raise e
+        log_op_end(op_id)
+
+
+class LocationMetadataEntry(ModelBase):
     key: LocationMetadataEntryKey
     value: Annotated[
         list[LocationMetadataEntryValue],
@@ -376,5 +511,5 @@ class LocationMetadataSearchQuery(ModelBase):
             description="List of metadata queries",
             max_length=64,
         ),
-        SchemaOptionalNullable,
+        SchemaOptionalNonNullable,
     ] = []

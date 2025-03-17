@@ -8,13 +8,13 @@ import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
-const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>({
+const model = defineModel<components['schemas']['LocationMetadataSpecialConfig']>({
   required: true,
 });
 </script>
 
 <template>
-  <form-section-heading :label="$t('resources.settings.config.textAnnotation.annoDisplayHeading', 2)" />
+  <form-section-heading :label="$t('resources.settings.config.locationMetadata.metaGroupsHeading')" />
 
   <!-- ANNOTATION DISPLAY GROUPS -->
   <n-form-item>

@@ -43,8 +43,9 @@ export const defaultContentModels = {
     ...common,
     files: [
       {
-        url: undefined,
+        url: '',
         thumbUrl: undefined,
+        sourceUrl: undefined,
         caption: undefined,
       },
     ],

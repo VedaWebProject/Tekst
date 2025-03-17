@@ -781,8 +781,8 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get annotation aggregations */
-    get: operations['getAnnotationAggregations'];
+    /** Get aggregations */
+    get: operations['getAggregations'];
     put?: never;
     post?: never;
     delete?: never;
@@ -1270,13 +1270,6 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
-    /** AnnotationAggregation */
-    AnnotationAggregation: {
-      /** Key */
-      key: string;
-      /** Values */
-      values?: string[] | null;
-    };
     /** AnnotationGroup */
     AnnotationGroup: {
       /**
@@ -3848,7 +3841,11 @@ export interface components {
        *     } */
       common: components['schemas']['LocationMetadataModifiedCommonResourceConfig'];
       /** @default {
-       *       "keyTranslations": []
+       *       "defaultCollapsed": false
+       *     } */
+      general: components['schemas']['GeneralTextAnnotationResourceConfig'];
+      /** @default {
+       *       "keyTranslations": {}
        *     } */
       locationMetadata: components['schemas']['LocationMetadataSpecialConfig'];
     };
@@ -3912,8 +3909,11 @@ export interface components {
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       },
        *       "locationMetadata": {
-       *         "keyTranslations": []
+       *         "keyTranslations": {}
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4029,8 +4029,11 @@ export interface components {
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       },
        *       "locationMetadata": {
-       *         "keyTranslations": []
+       *         "keyTranslations": {}
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4114,8 +4117,8 @@ export interface components {
     LocationMetadataSpecialConfig: {
       /**
        * Keytranslations
-       * @description Structure levels of this text and their label translations
-       * @default []
+       * @description Translations for the keys used in this location metadata resource
+       * @default {}
        */
       keyTranslations: {
         [key: string]: components['schemas']['MetadataKeyTranslation'][];
@@ -5259,6 +5262,53 @@ export interface components {
        */
       editorMode?: 'wysiwyg' | 'html';
     };
+    /** RichTextModifiedCommonResourceConfig */
+    RichTextModifiedCommonResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: null | string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
+       * Enablecontentcontext
+       * @description Whether contents of this resource should be available for the parent level (always false for rich text resources)
+       * @default false
+       * @constant
+       */
+      enableContentContext?: false;
+      /**
+       * Searchablequick
+       * @description Whether this resource should be included in quick search
+       * @default true
+       */
+      searchableQuick?: boolean;
+      /**
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search
+       * @default true
+       */
+      searchableAdv?: boolean;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl?: boolean;
+      /** Osk */
+      osk?: string | null;
+    };
     /** RichTextResourceConfig */
     RichTextResourceConfig: {
       /** @default {
@@ -5269,7 +5319,7 @@ export interface components {
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
+      common: components['schemas']['RichTextModifiedCommonResourceConfig'];
       /** @default {
        *       "defaultCollapsed": true,
        *       "searchReplacements": [],
@@ -9473,7 +9523,7 @@ export interface operations {
       };
     };
   };
-  getAnnotationAggregations: {
+  getAggregations: {
     parameters: {
       query?: never;
       header?: never;
@@ -9490,16 +9540,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['AnnotationAggregation'][];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
+          'application/json': unknown[];
         };
       };
       /** @description Not Found */

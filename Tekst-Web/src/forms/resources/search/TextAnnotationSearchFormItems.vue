@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {
-  AnnotationAggregation,
+  KeyValueAggregations,
   TextAnnotationResourceRead,
   TextAnnotationSearchQuery,
 } from '@/api';
@@ -25,7 +25,7 @@ const annoValueStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
-const aggregations = ref<AnnotationAggregation[]>([]);
+const aggregations = ref<KeyValueAggregations>([]);
 const annoOptions = computed(() => {
   const keysOptions = aggregations.value.map((agg) => ({ label: agg.key, value: agg.key }));
   const anyValueOption = {

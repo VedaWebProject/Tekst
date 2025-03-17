@@ -9,8 +9,8 @@ from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
-    ResourceConfigBase,
     CommonResourceConfig,
+    ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
@@ -18,11 +18,11 @@ from tekst.types import (
     ConStr,
     ContentCssProperties,
     DefaultCollapsedValue,
+    ExcludeFromModelVariants,
     FontNameValueOrNone,
+    SchemaOptionalNonNullable,
     SchemaOptionalNullable,
     SearchReplacements,
-    ExcludeFromModelVariants,
-    SchemaOptionalNonNullable,
 )
 from tekst.utils.html import get_html_text, sanitize_html
 

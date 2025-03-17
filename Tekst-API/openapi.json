@@ -5022,8 +5022,8 @@
         "tags": [
           "resources"
         ],
-        "summary": "Get annotation aggregations",
-        "operationId": "getAnnotationAggregations",
+        "summary": "Get aggregations",
+        "operationId": "getAggregations",
         "security": [
           {
             "APIKeyCookie": []
@@ -5054,10 +5054,8 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AnnotationAggregation"
-                  },
-                  "title": "Response Get Annotation Aggregations Resources  Id  Aggregations Get"
+                  "items": {},
+                  "title": "Response Get Aggregations Resources  Id  Aggregations Get"
                 }
               }
             }
@@ -5071,16 +5069,6 @@
               }
             },
             "description": "Not Found"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -7440,33 +7428,6 @@
         "properties": {},
         "type": "object",
         "title": "AdvancedSearchSettings"
-      },
-      "AnnotationAggregation": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "title": "Key"
-          },
-          "values": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Values"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key"
-        ],
-        "title": "AnnotationAggregation"
       },
       "AnnotationGroup": {
         "properties": {
@@ -12834,10 +12795,16 @@
               "rtl": false
             }
           },
+          "general": {
+            "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig",
+            "default": {
+              "defaultCollapsed": false
+            }
+          },
           "locationMetadata": {
             "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
             "default": {
-              "keyTranslations": []
+              "keyTranslations": {}
             }
           }
         },
@@ -12948,8 +12915,11 @@
                 "searchableQuick": false,
                 "sortOrder": 10
               },
+              "general": {
+                "defaultCollapsed": false
+              },
               "locationMetadata": {
-                "keyTranslations": []
+                "keyTranslations": {}
               }
             }
           }
@@ -13184,8 +13154,11 @@
                 "searchableQuick": false,
                 "sortOrder": 10
               },
+              "general": {
+                "defaultCollapsed": false
+              },
               "locationMetadata": {
-                "keyTranslations": []
+                "keyTranslations": {}
               }
             }
           },
@@ -13394,7 +13367,7 @@
             "title": "Entries",
             "description": "List of metadata queries",
             "default": [],
-            "optionalNullable": true
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -13418,10 +13391,9 @@
             },
             "type": "object",
             "maxProperties": 512,
-            "minProperties": 1,
             "title": "Keytranslations",
-            "description": "Structure levels of this text and their label translations",
-            "default": []
+            "description": "Translations for the keys used in this location metadata resource",
+            "default": {}
           }
         },
         "type": "object",
@@ -15813,10 +15785,88 @@
         ],
         "title": "RichTextContentUpdate"
       },
+      "RichTextModifiedCommonResourceConfig": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
+              }
+            ],
+            "title": "Category",
+            "description": "Resource category key"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
+          },
+          "defaultActive": {
+            "type": "boolean",
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true,
+            "optionalNullable": false
+          },
+          "enableContentContext": {
+            "type": "boolean",
+            "const": false,
+            "title": "Enablecontentcontext",
+            "description": "Whether contents of this resource should be available for the parent level (always false for rich text resources)",
+            "default": false,
+            "optionalNullable": false
+          },
+          "searchableQuick": {
+            "type": "boolean",
+            "title": "Searchablequick",
+            "description": "Whether this resource should be included in quick search",
+            "default": true,
+            "optionalNullable": false
+          },
+          "searchableAdv": {
+            "type": "boolean",
+            "title": "Searchableadv",
+            "description": "Whether this resource should accessible via advanced search",
+            "default": true,
+            "optionalNullable": false
+          },
+          "rtl": {
+            "type": "boolean",
+            "title": "Rtl",
+            "description": "Whether to display text contents in right-to-left direction",
+            "default": false,
+            "optionalNullable": false
+          },
+          "osk": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1,
+                "description": "Key identifying an OSK mode"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Osk"
+          }
+        },
+        "type": "object",
+        "title": "RichTextModifiedCommonResourceConfig"
+      },
       "RichTextResourceConfig": {
         "properties": {
           "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+            "$ref": "#/components/schemas/RichTextModifiedCommonResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,

@@ -7,7 +7,9 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { checkUrl } from '@/utils';
+import { cloneDeep } from 'lodash-es';
 import { NDynamicInput, NFlex, NFormItem, NInput, useThemeVars } from 'naive-ui';
+import { defaultContentModels } from './defaultContentModels';
 
 defineProps<{
   resource: ImagesResourceRead;
@@ -36,7 +38,7 @@ async function checkUrlInput(input: HTMLInputElement) {
       :min="1"
       :max="100"
       :create-button-props="dynInputCreateBtnProps"
-      @create="() => ({ url: undefined, caption: undefined })"
+      @create="() => cloneDeep(defaultContentModels.images.files[0])"
     >
       <template #default="{ index }">
         <n-flex align="stretch" style="flex: 2">

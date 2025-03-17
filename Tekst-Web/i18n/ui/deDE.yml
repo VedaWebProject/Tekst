@@ -160,6 +160,7 @@ routes:
     login: Anmeldung
     register: '@:register.heading'
     resources: Ressourcen – {text}
+    resourceContents: '@:contents.heading'
     resourcesCorrections: Korrekturnotizen
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
@@ -501,10 +502,12 @@ resources:
           lettersLowercase: Buchstaben (klein)
           lettersUppercase: Buchstaben (groß)
       textAnnotation:
-        heading: Annotations-Darstellung
+        annoDisplayHeading: Annotations-Darstellung
         displayTemplate: Darstellungsvorlage
         multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
+      locationMetadata:
+        metaGroupsHeading: Metadaten-Gruppierung
       apiCall:
         headingApiRequest: API-Anfrage
         headingResponseTransformation: Transformation der Antwort-Daten
@@ -547,6 +550,13 @@ resources:
       copyTokenFullAction: Token und Annotationen kopieren
       copyHintTip: Rechtsklick order halten zum Kopieren
       copyAnnosPlainAction: Alle sichtbaren Annotationen als einfachen Text kopieren
+    locationMetadata:
+      label: Fundstellen-Metadaten
+      parenthesis: Metadaten als Schlüssel-Wert-Paare
+      contentFields:
+        entries: Einträge
+      searchFields:
+        any: '[beliebiger Wert]'
     audio:
       label: Audio
       parenthesis: Audiowiedergabe

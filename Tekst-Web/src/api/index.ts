@@ -348,11 +348,11 @@ export type TextAnnotationResourceRead = components['schemas']['TextAnnotationRe
   ResourceReadExtras & {
     contents?: TextAnnotationContentRead[];
   };
-export type AnnotationAggregation = components['schemas']['AnnotationAggregation'];
 
 export type LocationMetadataContentRead = components['schemas']['LocationMetadataContentRead'];
 export type LocationMetadataContentCreate = components['schemas']['LocationMetadataContentCreate'];
-export type LocationMetadataResourceCreate = components['schemas']['LocationMetadataResourceCreate'];
+export type LocationMetadataResourceCreate =
+  components['schemas']['LocationMetadataResourceCreate'];
 export type LocationMetadataResourceRead = components['schemas']['LocationMetadataResourceRead'] &
   ResourceReadExtras & {
     contents?: LocationMetadataContentRead[];
@@ -416,6 +416,10 @@ export type CommonResourceConfig = components['schemas']['CommonResourceConfig']
 export type AnyResourceConfig = AnyResourceRead['config'];
 export type LineLabellingConfig = components['schemas']['LineLabellingConfig'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
+
+// resource aggregations
+
+export type KeyValueAggregations = { key: string; values: string[] }[];
 
 // search
 

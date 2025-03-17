@@ -402,13 +402,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     ],
   },
   locationMetadata: {
-    key: [
-      requiredStringRule(
-        () => $t('general.key'),
-        'blur'
-      ),
-      minMaxCharsRule(1, 32, 'blur'),
-    ],
+    key: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
     value: [
       {
         validator: (_: FormItemRule, value: string[]) => !!value && Array.isArray(value),
@@ -499,13 +493,7 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
     annotationValue: [minMaxCharsRule(0, 256, 'blur')],
   },
   locationMetadata: {
-    key: [
-      requiredStringRule(
-        () => $t('general.key'),
-        'blur'
-      ),
-      minMaxCharsRule(1, 32, 'blur'),
-    ],
+    key: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
     value: [minMaxCharsRule(0, 256, 'blur')],
   },
   audio: {

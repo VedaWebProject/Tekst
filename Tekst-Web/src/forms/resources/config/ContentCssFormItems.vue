@@ -7,7 +7,9 @@ import { contentCssConfigFormRules } from '@/forms/formRules';
 import { all as knownCssProperties } from 'known-css-properties';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
 
-const model = defineModel<PlainTextResourceRead['config']['general']['contentCss']>({ required: true });
+const model = defineModel<PlainTextResourceRead['config']['general']['contentCss']>({
+  required: true,
+});
 
 const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
 </script>

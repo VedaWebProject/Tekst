@@ -401,11 +401,6 @@ class TextAnnotationResourceConfig(ResourceConfigBase):
     text_annotation: TextAnnotationSpecialConfig = TextAnnotationSpecialConfig()
 
 
-class AnnotationAggregation(ModelBase):
-    key: str
-    values: list[str] | None = None
-
-
 class TextAnnotationResource(ResourceBase):
     resource_type: Literal["textAnnotation"]  # camelCased resource type classname
     config: TextAnnotationResourceConfig = TextAnnotationResourceConfig()
