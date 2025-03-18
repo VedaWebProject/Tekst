@@ -3555,6 +3555,36 @@ export interface components {
       /** Uptodate */
       upToDate: boolean;
     };
+    /** ItemDisplayProps */
+    ItemDisplayProps: {
+      name: components['schemas']['ItemName'];
+      /**
+       * Translations
+       * @description Translations for the name of the item
+       */
+      translations: components['schemas']['ItemsDisplayTranslation'][];
+      group: components['schemas']['ItemGroupName'];
+    };
+    /** ItemGroup */
+    ItemGroup: {
+      name: components['schemas']['ItemGroupName'];
+      /**
+       * Translations
+       * @description Translations for the name of the item group
+       */
+      translations: components['schemas']['ItemsDisplayTranslation'][];
+    };
+    ItemGroupName: string;
+    ItemName: string;
+    /** ItemsDisplayTranslation */
+    ItemsDisplayTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /**
+       * Translation
+       * @description Translation of an item or item group name
+       */
+      translation: string;
+    };
     /** LineLabellingConfig */
     LineLabellingConfig: {
       /**
@@ -3845,7 +3875,8 @@ export interface components {
        *     } */
       general: components['schemas']['GeneralTextAnnotationResourceConfig'];
       /** @default {
-       *       "keyTranslations": {}
+       *       "groups": [],
+       *       "displayProps": []
        *     } */
       locationMetadata: components['schemas']['LocationMetadataSpecialConfig'];
     };
@@ -3913,7 +3944,8 @@ export interface components {
        *         "defaultCollapsed": false
        *       },
        *       "locationMetadata": {
-       *         "keyTranslations": {}
+       *         "displayProps": [],
+       *         "groups": []
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4033,7 +4065,8 @@ export interface components {
        *         "defaultCollapsed": false
        *       },
        *       "locationMetadata": {
-       *         "keyTranslations": {}
+       *         "displayProps": [],
+       *         "groups": []
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4116,13 +4149,17 @@ export interface components {
      */
     LocationMetadataSpecialConfig: {
       /**
-       * Keytranslations
-       * @description Translations for the keys used in this location metadata resource
-       * @default {}
+       * Groups
+       * @description Item display groups
+       * @default []
        */
-      keyTranslations: {
-        [key: string]: components['schemas']['MetadataKeyTranslation'][];
-      };
+      groups: components['schemas']['ItemGroup'][];
+      /**
+       * Displayprops
+       * @description Item display properties
+       * @default []
+       */
+      displayProps: components['schemas']['ItemDisplayProps'][];
     };
     /** LocationRead */
     LocationRead: {
@@ -4211,15 +4248,6 @@ export interface components {
        * @description Value of this metadata entry
        */
       value: string;
-    };
-    /** MetadataKeyTranslation */
-    MetadataKeyTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /**
-       * Translation
-       * @description Translation of a metadata entry key
-       */
-      translation: string;
     };
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {

@@ -50,6 +50,9 @@ general:
   value: Wert
   label: Beschriftung
   caption: Beschriftung
+  group: Gruppe | Gruppen
+  name: Name
+  translation: Übersetzung | Übersetzungen
   system: System
   details: Details
   loading: Lade...
@@ -364,9 +367,7 @@ models:
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
     fonts: Benutzerdefinierte Schritarten für Inhalte
-    fontName: Name
     oskModes: Bildschirmtastaturen
-    oskModeName: Name
     oskModeFont: Tastatur-Schriftart
   segment:
     modelLabel: Segment
@@ -507,7 +508,8 @@ resources:
         multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
       locationMetadata:
-        metaGroupsHeading: Metadaten-Gruppierung
+        itemGroups: Metadaten-Gruppen
+        itemDisplay: Übersetzung, Reihenfolge und Gruppierung
       apiCall:
         headingApiRequest: API-Anfrage
         headingResponseTransformation: Transformation der Antwort-Daten

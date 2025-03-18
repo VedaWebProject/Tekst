@@ -1,12 +1,13 @@
-import ApiCallSpecialConfigFormItems from '@/forms/resources/config/ApiCallSpecialConfigFormItems.vue';
-import ContentCssFormItems from '@/forms/resources/config/ContentCssFormItems.vue';
-import DefaultCollapsedFormItems from '@/forms/resources/config/DefaultCollapsedFormItems.vue';
-import FocusViewConfigFormItems from '@/forms/resources/config/FocusViewConfigFormItems.vue';
-import PlainTextSpecialConfigFormItems from '@/forms/resources/config/PlainTextSpecialConfigFormItems.vue';
-import ResourceFontFormItems from '@/forms/resources/config/ResourceFontFormItems.vue';
-import SearchReplacementsConfigFormItems from '@/forms/resources/config/SearchReplacementsConfigFormItems.vue';
-import TextAnnotationSpecialConfigFormItems from '@/forms/resources/config/TextAnnotationSpecialConfigFormItems.vue';
 import { type Component } from 'vue';
+import ApiCallSpecialConfigFormItems from './ApiCallSpecialConfigFormItems.vue';
+import ContentCssFormItems from './ContentCssFormItems.vue';
+import DefaultCollapsedFormItems from './DefaultCollapsedFormItems.vue';
+import FocusViewConfigFormItems from './FocusViewConfigFormItems.vue';
+import LocationMetadataSpecialConfigFormItems from './LocationMetadataSpecialConfigFormItems.vue';
+import PlainTextSpecialConfigFormItems from './PlainTextSpecialConfigFormItems.vue';
+import ResourceFontFormItems from './ResourceFontFormItems.vue';
+import SearchReplacementsConfigFormItems from './SearchReplacementsConfigFormItems.vue';
+import TextAnnotationSpecialConfigFormItems from './TextAnnotationSpecialConfigFormItems.vue';
 
 export const generalConfigFormItems: Record<string, Component> = {
   defaultCollapsed: DefaultCollapsedFormItems,
@@ -19,5 +20,6 @@ export const generalConfigFormItems: Record<string, Component> = {
 export const specialConfigFormItems: Record<string, Component> = {
   plainText: PlainTextSpecialConfigFormItems,
   textAnnotation: TextAnnotationSpecialConfigFormItems,
+  locationMetadata: LocationMetadataSpecialConfigFormItems,
   apiCall: ApiCallSpecialConfigFormItems,
 };

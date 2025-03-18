@@ -1,10 +1,12 @@
 from typing import Annotated
 
 from pydantic import Field
+from typing_extensions import TypeAliasType, TypedDict
 
+from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
-from tekst.types import ConStrOrNone, SchemaOptionalNonNullable
+from tekst.types import ConStr, ConStrOrNone, SchemaOptionalNonNullable
 
 
 class CommonResourceConfig(ModelBase):
@@ -64,3 +66,55 @@ class CommonResourceConfig(ModelBase):
 
 class ResourceConfigBase(ModelBase):
     common: CommonResourceConfig = CommonResourceConfig()
+
+
+# GENERIC RESOURCE CONFIG: ITEM DISPLAY (ORDER, GROUPING AND TRANSLATIONS)
+
+
+class ItemsDisplayTranslation(TranslationBase):
+    translation: Annotated[
+        ConStr(
+            max_length=128,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Translation of an item or item group name",
+        ),
+    ]
+
+
+_ItemName = ConStr(
+    max_length=32,
+    cleanup="oneline",
+)
+ItemName = TypeAliasType(
+    "ItemName",
+    Annotated[
+        _ItemName,
+        Field(description="Name of an item"),
+    ],
+)
+ItemGroupName = TypeAliasType(
+    "ItemGroupName",
+    Annotated[
+        _ItemName,
+        Field(description="Name of an item group"),
+    ],
+)
+
+
+class ItemGroup(TypedDict):
+    name: ItemGroupName
+    translations: Annotated[
+        Translations[ItemsDisplayTranslation],
+        Field(description="Translations for the name of the item group"),
+    ]
+
+
+class ItemDisplayProps(TypedDict):
+    name: ItemName
+    translations: Annotated[
+        Translations[ItemsDisplayTranslation],
+        Field(description="Translations for the name of the item"),
+    ]
+    group: ItemGroupName

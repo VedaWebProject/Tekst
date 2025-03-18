@@ -50,6 +50,9 @@ general:
   value: Value
   label: Label
   caption: Caption
+  group: Group | Groups
+  name: Name
+  translation: Translation | Translations
   system: System
   details: Details
   loading: Loading...
@@ -361,9 +364,7 @@ models:
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Content Fonts
-    fontName: Name
     oskModes: On-screen Keyboards
-    oskModeName: Name
     oskModeFont: Keyboard font
   segment:
     modelLabel: Segment
@@ -496,7 +497,8 @@ resources:
         multiValueDelimiter: Delimiter for multiple annotation values
         annotationGroup: Annotation group | Annotation groups
       locationMetadata:
-        metaGroupsHeading: Metadata Grouping
+        itemGroups: Metadata Groups
+        itemDisplay: Item Translation, Order and Grouping
       apiCall:
         headingApiRequest: API Request
         headingResponseTransformation: Response Data Transformation

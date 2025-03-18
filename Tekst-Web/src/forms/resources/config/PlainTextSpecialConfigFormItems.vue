@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { deeplSourceLanguages } from '@/api';
+import { deeplSourceLanguages, type PlainTextResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { $t } from '@/i18n';
 import { NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
+
+defineProps<{ resource: PlainTextResourceRead }>();
 
 const model = defineModel<components['schemas']['PlainTextSpecialConfig']>({
   required: true,

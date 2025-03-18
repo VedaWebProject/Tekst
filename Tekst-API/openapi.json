@@ -12204,6 +12204,84 @@
         ],
         "title": "IndexInfo"
       },
+      "ItemDisplayProps": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ItemName"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ItemsDisplayTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations",
+            "description": "Translations for the name of the item"
+          },
+          "group": {
+            "$ref": "#/components/schemas/ItemGroupName"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "translations",
+          "group"
+        ],
+        "title": "ItemDisplayProps"
+      },
+      "ItemGroup": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ItemGroupName"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ItemsDisplayTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations",
+            "description": "Translations for the name of the item group"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "translations"
+        ],
+        "title": "ItemGroup"
+      },
+      "ItemGroupName": {
+        "type": "string",
+        "maxLength": 32,
+        "minLength": 1
+      },
+      "ItemName": {
+        "type": "string",
+        "maxLength": 32,
+        "minLength": 1
+      },
+      "ItemsDisplayTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Translation",
+            "description": "Translation of an item or item group name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ItemsDisplayTranslation"
+      },
       "LineLabellingConfig": {
         "properties": {
           "enabled": {
@@ -12804,7 +12882,8 @@
           "locationMetadata": {
             "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
             "default": {
-              "keyTranslations": {}
+              "groups": [],
+              "displayProps": []
             }
           }
         },
@@ -12919,7 +12998,8 @@
                 "defaultCollapsed": false
               },
               "locationMetadata": {
-                "keyTranslations": {}
+                "displayProps": [],
+                "groups": []
               }
             }
           }
@@ -13158,7 +13238,8 @@
                 "defaultCollapsed": false
               },
               "locationMetadata": {
-                "keyTranslations": {}
+                "displayProps": [],
+                "groups": []
               }
             }
           },
@@ -13378,22 +13459,25 @@
       },
       "LocationMetadataSpecialConfig": {
         "properties": {
-          "keyTranslations": {
-            "additionalProperties": {
-              "items": {
-                "$ref": "#/components/schemas/MetadataKeyTranslation"
-              },
-              "type": "array",
-              "maxItems": 3
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/ItemGroup"
             },
-            "propertyNames": {
-              "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__1"
+            "type": "array",
+            "maxItems": 64,
+            "title": "Groups",
+            "description": "Item display groups",
+            "default": []
+          },
+          "displayProps": {
+            "items": {
+              "$ref": "#/components/schemas/ItemDisplayProps"
             },
-            "type": "object",
-            "maxProperties": 512,
-            "title": "Keytranslations",
-            "description": "Translations for the keys used in this location metadata resource",
-            "default": {}
+            "type": "array",
+            "maxItems": 128,
+            "title": "Displayprops",
+            "description": "Item display properties",
+            "default": []
           }
         },
         "type": "object",
@@ -13615,26 +13699,6 @@
           "value"
         ],
         "title": "MetadataEntry"
-      },
-      "MetadataKeyTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Translation",
-            "description": "Translation of a metadata entry key"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "MetadataKeyTranslation"
       },
       "MoveLocationRequestBody": {
         "properties": {

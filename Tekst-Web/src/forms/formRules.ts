@@ -29,7 +29,7 @@ function minMaxCharsRule(
   };
 }
 
-export const translationFormRules: Record<string, FormItemRule[]> = {
+export const commonFormRules: Record<string, FormItemRule[]> = {
   locale: [requiredStringRule(() => $t('models.locale.modelLabel'), 'blur')],
 };
 
@@ -211,13 +211,10 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
   registerIntroTextTranslation: [minMaxCharsRule(1, 5000, 'blur')],
   oskModeKey: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
   oskModeName: [
-    requiredStringRule(() => $t('models.platformSettings.oskModeName'), 'blur'),
+    requiredStringRule(() => $t('general.name'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
-  fontName: [
-    requiredStringRule(() => $t('models.platformSettings.fontName'), 'blur'),
-    minMaxCharsRule(1, 32, 'blur'),
-  ],
+  fontName: [requiredStringRule(() => $t('general.name'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
 };
 
 export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
@@ -279,6 +276,12 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
       message: '0-1000',
       trigger: 'blur',
     },
+  ],
+  itemName: [requiredStringRule(() => $t('general.name')), minMaxCharsRule(1, 32, 'blur')],
+  itemGroupName: [requiredStringRule(() => $t('general.group')), minMaxCharsRule(1, 32, 'blur')],
+  itemsDisplayTranslation: [
+    requiredStringRule(() => $t('general.translation')),
+    minMaxCharsRule(1, 128, 'blur'),
   ],
 };
 

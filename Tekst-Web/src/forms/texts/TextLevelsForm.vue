@@ -228,7 +228,7 @@ async function handleModalSubmit() {
           :loading="loading"
           :main-form-label="$t('models.text.level')"
           :translation-form-label="$t('models.text.level')"
-          :translation-form-rule="textFormRules.levelTranslation"
+          :translation-form-rules="textFormRules.levelTranslation"
         />
       </n-form>
 

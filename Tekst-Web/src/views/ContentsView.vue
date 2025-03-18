@@ -423,7 +423,7 @@ whenever(ArrowRight, () => {
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags
-      v-if="resource"
+       v-if="!state.smallScreen"
       :resource="resource"
       reverse
       style="flex: 2; justify-content: end"

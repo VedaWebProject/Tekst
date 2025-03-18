@@ -35,7 +35,7 @@ const metadataKeysOptions = computed(() =>
     parent-form-path-prefix="title"
     :main-form-label="$t('models.resource.title')"
     :translation-form-label="$t('models.resource.title')"
-    :translation-form-rule="resourceSettingsFormRules.titleTranslation"
+    :translation-form-rules="resourceSettingsFormRules.titleTranslation"
     :min-items="1"
   />
 
@@ -45,7 +45,7 @@ const metadataKeysOptions = computed(() =>
     parent-form-path-prefix="description"
     :main-form-label="$t('models.resource.description')"
     :translation-form-label="$t('models.resource.description')"
-    :translation-form-rule="resourceSettingsFormRules.descriptionTranslation"
+    :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
   />
 
   <!-- CITATION -->
@@ -68,7 +68,7 @@ const metadataKeysOptions = computed(() =>
       parent-form-path-prefix="comment"
       :max-translation-length="102400"
       :translation-form-label="$t('general.comment')"
-      :translation-form-rule="resourceSettingsFormRules.commentTranslation"
+      :translation-form-rules="resourceSettingsFormRules.commentTranslation"
     />
   </collapsable-content>
 

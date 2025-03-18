@@ -7,7 +7,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BeforeValidator, Field
 from typing_extensions import TypeAliasType
 
-from tekst.i18n import TranslationBase, Translations
+from tekst.i18n import TranslationBase
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
@@ -21,6 +21,8 @@ from tekst.models.resource import (
 )
 from tekst.models.resource_configs import (
     CommonResourceConfig,
+    ItemGroup,
+    ItemDisplayProps,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -286,15 +288,20 @@ class MetadataKeyTranslation(TranslationBase):
 class LocationMetadataSpecialConfig(ModelBase):
     """Config properties specific to the location metadata resource type"""
 
-    key_translations: Annotated[
-        dict[LocationMetadataEntryKey, Translations[MetadataKeyTranslation]],
+    groups: Annotated[
+        list[ItemGroup],
         Field(
-            description=(
-                "Translations for the keys used in this location metadata resource"
-            ),
-            max_length=512,
+            description="Item display groups",
+            max_length=64,
         ),
-    ] = {}
+    ] = []
+    display_props: Annotated[
+        list[ItemDisplayProps],
+        Field(
+            description="Item display properties",
+            max_length=128,
+        ),
+    ] = []
 
 
 class LocationMetadataResourceConfig(ResourceConfigBase):

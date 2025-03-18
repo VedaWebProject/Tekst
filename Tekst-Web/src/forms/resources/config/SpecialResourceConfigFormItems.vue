@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AnyResourceConfig } from '@/api';
+import type { AnyResourceConfig, AnyResourceRead } from '@/api';
 import { specialConfigFormItems } from '@/forms/resources/config/mappings';
 
 defineProps<{
-  resourceType: string;
+  resource: AnyResourceRead;
 }>();
 
 const model = defineModel<AnyResourceConfig>({ required: true });
@@ -16,6 +16,7 @@ const model = defineModel<AnyResourceConfig>({ required: true });
       v-model="model[key]"
       :is="specialConfigFormItems[key]"
       v-if="key in specialConfigFormItems"
+      :resource="resource"
     />
   </template>
 </template>

@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <n-flex align="center" :wrap="false" class="form-section-heading">
+  <n-flex v-if="label" align="center" :wrap="false" class="form-section-heading">
     <b class="text-medium text-color-accent">{{ label }}</b>
     <help-button-widget v-if="helpKey" :help-key="helpKey" />
   </n-flex>

@@ -154,7 +154,7 @@ watch(
             :loading="loading"
             :main-form-label="$t('models.platformSettings.platformSubtitle')"
             :translation-form-label="$t('models.platformSettings.platformSubtitle')"
-            :translation-form-rule="platformSettingsFormRules.platformSubtitleTranslation"
+            :translation-form-rules="platformSettingsFormRules.platformSubtitleTranslation"
           />
 
           <!-- DEFAULT TEXT -->
@@ -211,7 +211,7 @@ watch(
             :loading="loading"
             :main-form-label="$t('models.platformSettings.navBrowseEntry')"
             :translation-form-label="$t('models.platformSettings.navBrowseEntry')"
-            :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+            :translation-form-rules="platformSettingsFormRules.navEntryTranslation"
           />
 
           <!-- CUSTOM MAIN NAV SEARCH ENTRY -->
@@ -221,7 +221,7 @@ watch(
             :loading="loading"
             :main-form-label="$t('models.platformSettings.navSearchEntry')"
             :translation-form-label="$t('models.platformSettings.navSearchEntry')"
-            :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+            :translation-form-rules="platformSettingsFormRules.navEntryTranslation"
           />
 
           <!-- CUSTOM MAIN NAV INFO ENTRY -->
@@ -231,7 +231,7 @@ watch(
             :loading="loading"
             :main-form-label="$t('models.platformSettings.navInfoEntry')"
             :translation-form-label="$t('models.platformSettings.navInfoEntry')"
-            :translation-form-rule="platformSettingsFormRules.navEntryTranslation"
+            :translation-form-rules="platformSettingsFormRules.navEntryTranslation"
           />
         </n-tab-pane>
 
@@ -289,14 +289,14 @@ watch(
               <template #default="{ index }">
                 <n-form-item
                   ignore-path-change
-                  :label="$t('models.platformSettings.fontName')"
+                  :label="$t('general.name')"
                   :path="`fonts[${index}]`"
                   :rule="platformSettingsFormRules.fontName"
                   style="flex: 2"
                 >
                   <n-input
                     v-model:value="formModel.fonts[index]"
-                    :placeholder="$t('models.platformSettings.fontName')"
+                    :placeholder="$t('general.name')"
                     @keydown.enter.prevent
                   />
                 </n-form-item>
@@ -354,14 +354,14 @@ watch(
                   </n-form-item>
                   <n-form-item
                     ignore-path-change
-                    :label="$t('models.platformSettings.oskModeName')"
+                    :label="$t('general.name')"
                     :path="`oskModes[${index}].name`"
                     :rule="platformSettingsFormRules.oskModeName"
                     style="flex: 2"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].name"
-                      :placeholder="$t('models.platformSettings.oskModeName')"
+                      :placeholder="$t('general.name')"
                       @keydown.enter.prevent
                     />
                   </n-form-item>
