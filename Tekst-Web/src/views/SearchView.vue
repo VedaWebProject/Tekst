@@ -273,7 +273,7 @@ whenever(ctrlEnter, () => {
         </div>
         <n-button
           v-if="formModel.queries.length < 32 && queryIndex === formModel.queries.length - 1"
-          dashed
+          secondary
           :title="$t('general.insertAction')"
           :focusable="false"
           class="mt-lg"
