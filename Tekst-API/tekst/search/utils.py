@@ -97,7 +97,7 @@ def quick_qstr_query(
             "should": [
                 {
                     "bool": {
-                        "should" if inherited_contents else "must": [
+                        "must": [
                             {
                                 "simple_query_string": {
                                     "query": user_query or "*",
@@ -105,15 +105,17 @@ def quick_qstr_query(
                                     "default_operator": default_op,
                                     "analyze_wildcard": True,
                                 }
-                            },
+                            }
+                        ],
+                        "should" if inherited_contents else "filter": [
                             {
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
                                     }
                                 }
-                            },
-                        ]
+                            }
+                        ],
                     }
                 }
                 for res_id, field_path in fields
@@ -137,7 +139,7 @@ def quick_regexp_query(
             "should": [
                 {
                     "bool": {
-                        "should" if inherited_contents else "must": [
+                        "must": [
                             {
                                 "regexp": {
                                     field_path: {
@@ -147,14 +149,16 @@ def quick_regexp_query(
                                     }
                                 }
                             },
+                        ],
+                        "should" if inherited_contents else "filter": [
                             {
                                 "term": {
                                     f"resources.{res_id}.native": {
                                         "value": True,
                                     }
                                 }
-                            },
-                        ]
+                            }
+                        ],
                     }
                 }
                 for res_id, field_path in fields
