@@ -3789,10 +3789,12 @@ export interface components {
     };
     /** LocationMetadataEntry */
     LocationMetadataEntry: {
-      key: components['schemas']['tekst__resources__location_metadata__LocationMetadataEntryValue__1'];
+      key: components['schemas']['LocationMetadataEntryKey'];
       /** Value */
-      value: components['schemas']['tekst__resources__location_metadata__LocationMetadataEntryValue__2'][];
+      value: components['schemas']['LocationMetadataEntryValue'][];
     };
+    LocationMetadataEntryKey: string;
+    LocationMetadataEntryValue: string;
     /** LocationMetadataModifiedCommonResourceConfig */
     LocationMetadataModifiedCommonResourceConfig: {
       /**
@@ -6792,8 +6794,6 @@ export interface components {
       /** Error Type */
       type: string;
     };
-    tekst__resources__location_metadata__LocationMetadataEntryValue__1: string;
-    tekst__resources__location_metadata__LocationMetadataEntryValue__2: string;
   };
   responses: never;
   parameters: never;

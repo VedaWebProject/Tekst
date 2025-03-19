@@ -12727,11 +12727,11 @@
       "LocationMetadataEntry": {
         "properties": {
           "key": {
-            "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__1"
+            "$ref": "#/components/schemas/LocationMetadataEntryKey"
           },
           "value": {
             "items": {
-              "$ref": "#/components/schemas/tekst__resources__location_metadata__LocationMetadataEntryValue__2"
+              "$ref": "#/components/schemas/LocationMetadataEntryValue"
             },
             "type": "array",
             "maxItems": 64,
@@ -12745,6 +12745,16 @@
           "value"
         ],
         "title": "LocationMetadataEntry"
+      },
+      "LocationMetadataEntryKey": {
+        "type": "string",
+        "maxLength": 32,
+        "minLength": 1
+      },
+      "LocationMetadataEntryValue": {
+        "type": "string",
+        "maxLength": 256,
+        "minLength": 1
       },
       "LocationMetadataModifiedCommonResourceConfig": {
         "properties": {
@@ -19064,16 +19074,6 @@
           "type"
         ],
         "title": "ValidationError"
-      },
-      "tekst__resources__location_metadata__LocationMetadataEntryValue__1": {
-        "type": "string",
-        "maxLength": 32,
-        "minLength": 1
-      },
-      "tekst__resources__location_metadata__LocationMetadataEntryValue__2": {
-        "type": "string",
-        "maxLength": 256,
-        "minLength": 1
       }
     },
     "securitySchemes": {

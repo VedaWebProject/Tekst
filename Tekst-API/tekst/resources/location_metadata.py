@@ -246,7 +246,7 @@ class GeneralTextAnnotationResourceConfig(ModelBase):
 
 
 LocationMetadataEntryKey = TypeAliasType(
-    "LocationMetadataEntryValue",
+    "LocationMetadataEntryKey",
     Annotated[
         ConStr(
             max_length=32,
