@@ -83,7 +83,6 @@ async function handleSaveClick() {
           $t('resources.settings.msgSaved', { title: pickTranslation(data.title, state.locale) })
         );
         resources.replace(data);
-        router.push({ name: 'resources', params: { textSlug: props.textSlug } });
       }
       loadingSave.value = false;
     })
