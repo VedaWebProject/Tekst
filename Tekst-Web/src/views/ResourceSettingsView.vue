@@ -116,10 +116,13 @@ async function handleSaveClick() {
   <icon-heading v-if="resource" level="2" :icon="ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
-    <resource-info-tags v-if="!state.smallScreen" :resource="resource" reverse
-    style="flex: 2; justify-content: end" />
+    <resource-info-tags
+      v-if="!state.smallScreen"
+      :resource="resource"
+      reverse
+      style="flex: 2; justify-content: end"
+    />
   </icon-heading>
-
 
   <template v-if="model">
     <div class="content-block">

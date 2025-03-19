@@ -21,8 +21,8 @@ from tekst.models.resource import (
 )
 from tekst.models.resource_configs import (
     CommonResourceConfig,
-    ItemGroup,
     ItemDisplayProps,
+    ItemGroup,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
