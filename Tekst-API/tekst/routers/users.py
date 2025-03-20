@@ -202,18 +202,14 @@ async def find_users(
 )
 async def get_public_user(
     username_or_id: Annotated[
-        str | PydanticObjectId, Path(alias="user", description="Username or ID")
+        PydanticObjectId | str, Path(alias="user", description="Username or ID")
     ],
 ) -> dict:
     """Returns public information on the user with the specified username or ID"""
-    if PydanticObjectId.is_valid(username_or_id):
-        username_or_id = PydanticObjectId(username_or_id)
-    user = await UserDocument.find_one(
-        Or(
-            UserDocument.id == username_or_id,
-            UserDocument.username == username_or_id,
-        )
-    )
+    if type(username_or_id) is PydanticObjectId:
+        user = await UserDocument.get(username_or_id)
+    else:
+        user = await UserDocument.find_one(UserDocument.username == username_or_id)
     if not user:
         raise errors.E_404_USER_NOT_FOUND
     return UserReadPublic(**user.model_dump())
