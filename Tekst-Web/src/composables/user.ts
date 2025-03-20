@@ -6,17 +6,26 @@ const _cache = new Map<string, UserReadPublic>();
 export function useUser(usernameOrId: string | Ref<string>) {
   const user = ref<UserReadPublic | null>(null);
   const error = ref(false);
+  const loading = ref(false);
 
   async function fetchUserData() {
+    loading.value = true;
     error.value = false;
     const unoid = unref(usernameOrId);
     if (!unoid) {
       error.value = true;
+      loading.value = false;
       return;
     }
-    user.value = _cache.get(unoid) || null;
-    if (!!user.value) return;
 
+    // get from cache
+    user.value = _cache.get(unoid) || null;
+    if (!!user.value) {
+      loading.value = false;
+      return;
+    }
+
+    // get from api
     const { data, error: err } = await GET('/users/public/{user}', {
       params: { path: { user: unoid } },
     });
@@ -27,6 +36,7 @@ export function useUser(usernameOrId: string | Ref<string>) {
     } else {
       error.value = true;
     }
+    loading.value = false;
   }
 
   if (isRef(usernameOrId)) {
@@ -35,5 +45,5 @@ export function useUser(usernameOrId: string | Ref<string>) {
     fetchUserData();
   }
 
-  return { user, error };
+  return { user, loading, error };
 }
