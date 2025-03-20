@@ -52,6 +52,7 @@ general:
   caption: Caption
   group: Group | Groups
   name: Name
+  other: Other
   translation: Translation | Translations
   system: System
   details: Details
@@ -498,7 +499,7 @@ resources:
         annotationGroup: Annotation group | Annotation groups
       locationMetadata:
         itemGroups: Metadata Groups
-        itemDisplay: Item Translation, Order and Grouping
+        itemDisplay: Key Translation, Order and Grouping
       apiCall:
         headingApiRequest: API Request
         headingResponseTransformation: Response Data Transformation
@@ -621,7 +622,7 @@ account:
   logoutBtn: Logout
   profile: Profile
   profileHeading: Public Profile
-  profileNotFound: The user profile "{username}" could not be found.
+  profileNotFound: The user profile "{usernameOrId}" could not be found.
   profileNoBio: User didn't set a public profile bio.
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}

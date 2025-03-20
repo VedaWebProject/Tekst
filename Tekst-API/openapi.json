@@ -6640,14 +6640,14 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string"
-                },
-                {
                   "type": "string",
                   "minLength": 24,
                   "maxLength": 24,
                   "pattern": "^[0-9a-f]{24}$",
                   "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "string"
                 }
               ],
               "description": "Username or ID",
@@ -12219,7 +12219,14 @@
             "description": "Translations for the name of the item"
           },
           "group": {
-            "$ref": "#/components/schemas/ItemGroupName"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ItemGroupName"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -16714,13 +16721,20 @@
             "description": "ID of the target of the task or None if there is no target"
           },
           "userId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 24,
+                "minLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Userid",
-            "description": "ID of user who created this task",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "description": "ID of user who created this task (or none if this is a system task)"
           },
           "pickupKey": {
             "type": "string",
@@ -16802,7 +16816,6 @@
         "required": [
           "id",
           "type",
-          "userId",
           "pickupKey",
           "status",
           "startTime"

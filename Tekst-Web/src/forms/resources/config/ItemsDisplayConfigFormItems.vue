@@ -5,7 +5,7 @@ import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import { NDynamicInput, NFlex, NFormItem, NSelect, type FormItemRule } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type FormItemRule } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -21,12 +21,12 @@ const props = defineProps<{
   existingItemNames?: string[];
   groupsHeading?: string;
   displayPropsHeading?: string;
+  itemGroupingRequired?: boolean;
 }>();
 
 const groups = defineModel<ItemGroup[]>('groups', { required: true });
 const displayProps = defineModel<ItemDisplayProps[]>('displayProps', { required: true });
 
-const groupNameOptions = groups.value.map((g) => ({ label: g.name, value: g.name }));
 const itemNameOptions = computed(() =>
   props.existingItemNames?.map((n) => ({ label: n, value: n }))
 );
@@ -53,15 +53,10 @@ const itemGroupOptions = computed(() =>
             ignore-path-change
             :label="groupNameLabel || $t('general.name')"
             :path="`${groupsModelPath}[${index}].name`"
-            :rule="commonResourceConfigFormRules.itemGroupName"
+            :rule="commonResourceConfigFormRules.itemGroupNameRequired"
             style="flex: 1 200px"
           >
-            <n-select
-              v-model:value="groups[index].name"
-              tag
-              filterable
-              :options="groupNameOptions"
-            />
+            <n-input v-model:value="groups[index].name" />
           </n-form-item>
           <!-- GROUP TRANSLATION -->
           <translation-form-item
@@ -145,8 +140,11 @@ const itemGroupOptions = computed(() =>
             ignore-path-change
             :label="$t('general.group')"
             :path="`${displayPropsModelPath}[${index}].group`"
-            :rule="commonResourceConfigFormRules.itemGroupName"
-            :required="false"
+            :rule="
+              itemGroupingRequired
+                ? commonResourceConfigFormRules.itemGroupNameRequired
+                : commonResourceConfigFormRules.itemGroupName
+            "
             style="flex: 2 100%"
           >
             <n-select

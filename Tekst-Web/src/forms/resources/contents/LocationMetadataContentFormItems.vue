@@ -70,47 +70,46 @@ onMounted(async () => {
   <n-form-item
     :label="$t('resources.types.locationMetadata.contentFields.entries')"
     :show-feedback="false"
-    path="entries"
   >
     <n-dynamic-input
       v-model:value="model.entries"
       :create-button-props="dynInputCreateBtnProps"
       @create="() => cloneDeep(defaultContentModels.locationMetadata.entries[0])"
     >
-      <template #default="{ value: entryItem, index: entryItemIndex }">
+      <template #default="{ index }">
         <n-flex align="flex-start" :wrap="false" style="flex: 2">
           <n-form-item
             style="flex: 2 100px"
             :show-label="false"
-            :path="`entries[${entryItemIndex}].key`"
+            :path="`entries[${index}].key`"
             :rule="contentFormRules.locationMetadata.key"
             ignore-path-change
           >
             <n-select
-              v-model:value="entryItem.key"
+              v-model:value="model.entries[index].key"
               filterable
               tag
               clearable
-              :options="entriesOptions[entryItemIndex].keysOptions"
+              :options="entriesOptions[index].keysOptions"
               :placeholder="$t('general.key')"
-              @update:value="() => (entryItem.value = undefined)"
+              @update:value="() => (model.entries[index].value = [])"
             />
           </n-form-item>
           <n-form-item
             style="flex: 2 100px"
             :show-label="false"
-            :path="`entries[${entryItemIndex}].value`"
+            :path="`entries[${index}].value`"
             :rule="contentFormRules.locationMetadata.value"
             ignore-path-change
           >
             <n-select
-              v-model:value="entryItem.value"
+              v-model:value="model.entries[index].value"
               multiple
               filterable
               tag
               clearable
-              :disabled="!entryItem.key"
-              :options="entriesOptions[entryItemIndex].valuesOptions"
+              :disabled="!model.entries[index].key"
+              :options="entriesOptions[index].valuesOptions"
               :placeholder="$t('general.value')"
               :style="metaValueStyle"
               :render-label="renderValueLabel"

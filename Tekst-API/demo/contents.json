@@ -876,5 +876,41 @@
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
     "query": "limit=1&skip=11"
+  },
+  {
+    "_id": { "$oid": "67dbc8fc2e51e7949ae22722" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67dbc7432e51e7949ae22714" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "654b825533ee5737b297f8e4" },
+    "entries": [
+      { "key": "stanza_no_num", "value": ["1"] },
+      { "key": "stanza_no_word", "value": ["one"] },
+      { "key": "something", "value": ["something"] }
+    ]
+  },
+  {
+    "_id": { "$oid": "67dbca3e2e51e7949ae2272a" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67dbc7432e51e7949ae22714" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "654b825533ee5737b297f8e9" },
+    "entries": [
+      { "key": "stanza_no_num", "value": ["2"] },
+      { "key": "stanza_no_word", "value": ["two"] },
+      { "key": "something", "value": ["something else"] }
+    ]
+  },
+  {
+    "_id": { "$oid": "67dbca622e51e7949ae2272b" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67dbc7432e51e7949ae22714" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "654b825533ee5737b297f8ee" },
+    "entries": [
+      { "key": "stanza_no_num", "value": ["3"] },
+      { "key": "stanza_no_word", "value": ["three"] },
+      { "key": "something", "value": ["something completely different"] }
+    ]
   }
 ]

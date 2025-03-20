@@ -8,7 +8,8 @@ import { dynInputCreateBtnProps } from '@/common';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useResourcesStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
@@ -18,6 +19,7 @@ const props = defineProps<{
 }>();
 const model = defineModel<LocationMetadataSearchQuery>({ required: true });
 
+const state = useStateStore();
 const resources = useResourcesStore();
 
 const metaValueStyle = {
@@ -32,7 +34,15 @@ const entryOptions = computed(() => {
   };
   return (
     model.value.entries?.map((entry) => ({
-      keysOptions: aggregations.value.map((agg) => ({ label: agg.key, value: agg.key })),
+      keysOptions: aggregations.value.map((agg) => ({
+        label:
+          pickTranslation(
+            props.resource.config.locationMetadata.displayProps.find((dp) => dp.name === agg.key)
+              ?.translations,
+            state.locale
+          ) || agg.key,
+        value: agg.key,
+      })),
       valuesOptions: [
         anyValueOption,
         ...(aggregations.value

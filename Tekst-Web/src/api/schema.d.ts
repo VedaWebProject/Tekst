@@ -3563,7 +3563,7 @@ export interface components {
        * @description Translations for the name of the item
        */
       translations: components['schemas']['ItemsDisplayTranslation'][];
-      group: components['schemas']['ItemGroupName'];
+      group: components['schemas']['ItemGroupName'] | null;
     };
     /** ItemGroup */
     ItemGroup: {
@@ -5694,10 +5694,9 @@ export interface components {
       targetId?: string | null;
       /**
        * Userid
-       * @description ID of user who created this task
-       * @example 5eb7cf5a86d9755df3a6c593
+       * @description ID of user who created this task (or none if this is a system task)
        */
-      userId: string;
+      userId?: string | null;
       /**
        * Pickupkey
        * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user

@@ -52,6 +52,7 @@ general:
   caption: Beschriftung
   group: Gruppe | Gruppen
   name: Name
+  other: Andere
   translation: Übersetzung | Übersetzungen
   system: System
   details: Details
@@ -509,7 +510,7 @@ resources:
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
       locationMetadata:
         itemGroups: Metadaten-Gruppen
-        itemDisplay: Übersetzung, Reihenfolge und Gruppierung
+        itemDisplay: Schlüssel-Übersetzung, -Reihenfolge und -Gruppierung
       apiCall:
         headingApiRequest: API-Anfrage
         headingResponseTransformation: Transformation der Antwort-Daten
@@ -632,7 +633,7 @@ account:
   logoutBtn: Abmelden
   profile: Profil
   profileHeading: Öffentliches Profil
-  profileNotFound: Das Benutzerprofil "{username}" konnte nicht gefunden werden.
+  profileNotFound: Das Benutzerprofil "{usernameOrId}" konnte nicht gefunden werden.
   profileNoBio: Benutzer hat keine Biographie angegeben
   logoutSuccessful: Sie sind jetzt ausgeloggt.
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen

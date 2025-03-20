@@ -102,7 +102,9 @@ class LocationMetadata(ResourceTypeABC):
                 }
                 for entry in content.entries
             ],
-            "entries_concat": "; ".join(str(entry.value) for entry in content.entries),
+            "entries_concat": "; ".join(
+                str(", ".join(entry.value)) for entry in content.entries
+            ),
         }
 
     @classmethod
@@ -199,18 +201,33 @@ class LocationMetadata(ResourceTypeABC):
                 dialect="excel",
                 quoting=csv.QUOTE_ALL,
             )
+            aggs = await PrecomputedDataDocument.find_one(
+                PrecomputedDataDocument.ref_id == resource.id,
+                PrecomputedDataDocument.precomputed_type == "aggregations",
+            )
+            # get sorted items keys based on resource config
+            keys = ItemDisplayProps.sort_items_keys(
+                [agg["key"] for agg in aggs.data] if aggs and aggs.data else [],
+                item_groups=resource.config.location_metadata.groups,
+                item_display_props=resource.config.location_metadata.display_props,
+            )
             csv_writer.writerow(
-                ["LOCATION"]
-                + [entry.key for entry in contents.entries]
-                + ["LOCATION_COMMENT"]
+                [
+                    "LOCATION",
+                    *keys,
+                    "LOCATION_COMMENT",
+                ]
             )
             for content in contents:
-                for audio_file in content.files:
-                    csv_writer.writerow(
-                        [full_location_labels.get(str(content.location_id), "")]
-                        + [entry.value for entry in contents.entries]
-                        + [content.comment]
-                    )
+                entries_map = {entry.key: entry.value for entry in content.entries}
+                values = [";".join(entries_map.get(key, "")) for key in keys]
+                csv_writer.writerow(
+                    [
+                        full_location_labels.get(str(content.location_id), ""),
+                        *values,
+                        content.comment,
+                    ]
+                )
 
 
 class LocationMetadataModifiedCommonResourceConfig(CommonResourceConfig):

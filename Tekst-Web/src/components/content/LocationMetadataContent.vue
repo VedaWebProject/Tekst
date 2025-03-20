@@ -31,38 +31,67 @@ const contents = computed(
   () => props.resource.contents?.map((c) => ({ id: c.id, groups: groupAndSort(c.entries) })) || []
 );
 
+function compareEntries(
+  a: LocationMetadataContentRead['entries'][number],
+  b: LocationMetadataContentRead['entries'][number]
+): number {
+  const comp =
+    (displayProps[a.key] ? displayProps[a.key].index : Number.MAX_SAFE_INTEGER) -
+    (displayProps[b.key] ? displayProps[b.key].index : Number.MAX_SAFE_INTEGER);
+  if (comp !== 0) return comp;
+  return a.key.localeCompare(b.key);
+}
+
 function groupAndSort(entries: LocationMetadataContentRead['entries']): {
-  groupName: string;
-  groupLabel: string;
+  name?: string;
+  label?: string;
   entries: { key: string; value: string }[];
 }[] {
-  return groups.map((g) => ({
-    groupName: g.name,
-    groupLabel: g.label,
+  const grouped = groups.map((g) => ({
+    name: g.name,
+    label: g.label,
     entries: entries
-      .filter((e) => displayProps[e.key].group === g.name)
-      .sort(
-        (a, b) =>
-          (displayProps[a.key].index || Number.MAX_SAFE_INTEGER) -
-          (displayProps[b.key].index || Number.MAX_SAFE_INTEGER)
-      )
-      .map((e) => ({ key: displayProps[e.key].label, value: e.value.join(', ') })),
+      .filter((e) => !!displayProps[e.key] && displayProps[e.key].group === g.name)
+      .sort(compareEntries)
+      .map((e) => ({
+        key: displayProps[e.key]?.label || e.key,
+        value: e.value.join(', '),
+      })),
   }));
+  const ungrouped = [
+    {
+      name: undefined,
+      label: undefined,
+      entries: entries
+        .filter(
+          (e) =>
+            !displayProps[e.key] ||
+            !displayProps[e.key].group ||
+            !groups.map((g) => g.name).includes(displayProps[e.key].group as string)
+        )
+        .sort(compareEntries)
+        .map((e) => ({
+          key: displayProps[e.key]?.label || e.key,
+          value: e.value.join(', '),
+        })),
+    },
+  ];
+  return [...grouped, ...ungrouped];
 }
 </script>
 
 <template>
   <div>
     <table :size="4" v-for="c in contents" :key="c.id">
-      <template v-for="group in c.groups" :key="group.groupName">
+      <template v-for="group in c.groups" :key="group.name">
         <tr>
-          <td colspan="2" class="group-header text-color-accent text-small b">
-            {{ group.groupLabel || group.groupName }}
+          <td colspan="2" class="group-header text-small b">
+            {{ group.label || group.name || $t('general.other') }}
           </td>
         </tr>
         <tr v-for="entry in group.entries" :key="entry.key">
-          <th class="b">{{ entry.key }}</th>
-          <td :style="{ fontFamily: resource.config.general.font || undefined }">
+          <td style="padding-right: var(--gap-sm)">{{ entry.key }}:</td>
+          <td :style="{ fontFamily: resource.config.general.font || 'Tekst Content Font' }">
             {{ entry.value }}
           </td>
         </tr>

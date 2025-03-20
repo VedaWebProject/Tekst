@@ -117,4 +117,34 @@ class ItemDisplayProps(TypedDict):
         Translations[ItemsDisplayTranslation],
         Field(description="Translations for the name of the item"),
     ]
-    group: ItemGroupName
+    group: ItemGroupName | None = None
+
+    @classmethod
+    def sort_items_keys(
+        cls,
+        item_keys: list[ItemName],
+        *,
+        item_groups: list[ItemGroup] = [],
+        item_display_props: list["ItemDisplayProps"] = [],
+    ) -> list[ItemName]:
+        # get order of metadata groups from config
+        groups_order = [g.get("name") for g in item_groups]
+        # get general order of metadata keys from config
+        keys_order = [dp.get("name") for dp in item_display_props]
+        # sort keys based on groups order, then general keys order
+        keys_order = sorted(
+            keys_order,
+            key=lambda k: (
+                groups_order.index(k) if k in groups_order else len(groups_order),
+                keys_order.index(k),
+            ),
+        )
+        # create final sorted list of metadata keys, including keys
+        # that are not present in the item_display_props
+        return sorted(
+            item_keys,
+            key=lambda k: (
+                keys_order.index(k) if k in keys_order else len(keys_order),
+                k,  # alphabetical secondary sorting
+            ),
+        )

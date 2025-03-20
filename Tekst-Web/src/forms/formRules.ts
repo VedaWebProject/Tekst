@@ -278,7 +278,11 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
     },
   ],
   itemName: [requiredStringRule(() => $t('general.name')), minMaxCharsRule(1, 32, 'blur')],
-  itemGroupName: [requiredStringRule(() => $t('general.group')), minMaxCharsRule(1, 32, 'blur')],
+  itemGroupNameRequired: [
+    requiredStringRule(() => $t('general.group')),
+    minMaxCharsRule(1, 32, 'blur'),
+  ],
+  itemGroupName: [minMaxCharsRule(0, 32, 'blur')],
   itemsDisplayTranslation: [
     requiredStringRule(() => $t('general.translation')),
     minMaxCharsRule(1, 128, 'blur'),
