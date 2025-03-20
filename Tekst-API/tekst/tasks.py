@@ -72,11 +72,13 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     user_id: Annotated[
-        PydanticObjectId,
+        PydanticObjectId | None,
         Field(
-            description="ID of user who created this task",
+            description=(
+                "ID of user who created this task (or none if this is a system task)"
+            ),
         ),
-    ]
+    ] = None
     pickup_key: Annotated[
         ConStr(
             max_length=64,

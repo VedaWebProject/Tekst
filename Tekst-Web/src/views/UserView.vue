@@ -27,7 +27,7 @@ const usernameOrId = computed(() => {
   }
   return '';
 });
-const { user, error } = useUser(usernameOrId);
+const { user, loading, error } = useUser(usernameOrId);
 
 watchEffect(() => {
   state.setPageTitle(route, { username: usernameOrId.value });
@@ -39,7 +39,14 @@ watchEffect(() => {
     {{ $t('account.profileHeading') }}
   </icon-heading>
 
-  <div v-if="user && !error" class="content-block">
+  <n-spin v-if="loading" :description="$t('general.loading')" class="centered-spinner" />
+
+  <div v-else-if="error" class="content-block">
+    <h1>Oops... {{ $t('errors.error') }}!</h1>
+    <i class="translucent">{{ $t('account.profileNotFound', { usernameOrId }) }}</i>
+  </div>
+
+  <div v-else-if="user && !error" class="content-block">
     <n-thing :content-indented="!state.smallScreen">
       <template #avatar>
         <user-avatar :avatar-url="user.avatarUrl || undefined" :size="64" />
@@ -72,12 +79,5 @@ watchEffect(() => {
         </p>
       </template>
     </n-thing>
-  </div>
-
-  <n-spin v-else-if="!error" :description="$t('general.loading')" class="centered-spinner" />
-
-  <div v-else class="content-block">
-    <h1>Oops... {{ $t('errors.error') }}!</h1>
-    {{ $t('account.profileNotFound', { usernameOrId }) }}
   </div>
 </template>
