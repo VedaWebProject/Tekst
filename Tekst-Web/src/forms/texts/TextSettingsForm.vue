@@ -117,7 +117,7 @@ onBeforeRouteUpdate((to, from) => {
         parent-form-path-prefix="subtitle"
         :main-form-label="$t('models.text.subtitle')"
         :translation-form-label="$t('models.text.subtitle')"
-        :translation-form-rule="textFormRules.subtitleTranslation"
+        :translation-form-rules="textFormRules.subtitleTranslation"
       />
 
       <!-- SLUG -->
@@ -213,7 +213,7 @@ onBeforeRouteUpdate((to, from) => {
                 style="flex: 2"
                 :main-form-label="$t('general.label')"
                 :translation-form-label="$t('general.label')"
-                :translation-form-rule="textFormRules.resourceCategoryTranslation"
+                :translation-form-rules="textFormRules.resourceCategoryTranslation"
               />
             </n-flex>
           </template>

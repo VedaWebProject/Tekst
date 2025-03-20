@@ -3,7 +3,7 @@ import type { LocaleKey, Translation } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
-import { translationFormRules } from '@/forms/formRules';
+import { commonFormRules } from '@/forms/formRules';
 import { $t, renderLanguageOptionLabel } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type FormItemRule } from 'naive-ui';
@@ -14,7 +14,7 @@ withDefaults(
     parentFormPathPrefix: string;
     mainFormLabel?: string;
     translationFormLabel?: string;
-    translationFormRule?: FormItemRule[];
+    translationFormRules?: FormItemRule[];
     inputType?: 'input' | 'textarea' | 'html';
     maxTranslationLength?: number;
     minItems?: number;
@@ -80,7 +80,7 @@ const localeOptions = computed(() =>
             :show-label="false"
             :show-feedback="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].locale`"
-            :rule="translationFormRules.locale"
+            :rule="commonFormRules.locale"
             :style="{
               flex: inputType !== 'html' ? '1 200px' : undefined,
               width: inputType !== 'html' ? undefined : '100%',
@@ -101,7 +101,7 @@ const localeOptions = computed(() =>
             ignore-path-change
             :show-label="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].translation`"
-            :rule="translationFormRule"
+            :rule="translationFormRules"
             style="flex: 2 200px"
           >
             <n-input

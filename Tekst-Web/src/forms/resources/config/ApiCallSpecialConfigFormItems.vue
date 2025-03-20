@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ApiCallResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
@@ -8,6 +9,8 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import { javascript } from '@codemirror/lang-javascript';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
+
+defineProps<{ resource: ApiCallResourceRead }>();
 
 const model = defineModel<components['schemas']['ApiCallSpecialConfig']>({
   required: true,

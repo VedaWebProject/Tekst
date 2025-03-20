@@ -422,9 +422,13 @@ whenever(ArrowRight, () => {
   <icon-heading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
+    <resource-info-tags
+      v-if="!state.smallScreen"
+      :resource="resource"
+      reverse
+      style="flex: 2; justify-content: end"
+    />
   </icon-heading>
-
-  <resource-info-tags v-if="resource" :resource="resource" />
 
   <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="gray-box">
     <template #start>

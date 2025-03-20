@@ -26,7 +26,6 @@ from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.types import ConStr, ConStrOrNone, ResourceTypeName
 from tekst.utils.html import sanitize_html
-from tekst.utils.strings import cleanup_spaces_multiline
 
 
 # class for one arbitrary metadate
@@ -86,11 +85,6 @@ class ResourceCommentTranslation(TranslationBase):
             description="Comment translation HTML for this resource",
         ),
     ]
-
-    @field_validator("translation", mode="after")
-    @classmethod
-    def validate_comment_html(cls, value) -> str:
-        return sanitize_html(value)
 
 
 class ResourceBase(ModelBase, ModelFactoryMixin):
@@ -274,9 +268,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     @field_validator("comment", mode="after")
     @classmethod
-    def format_comment(cls, v):
-        for comment in v:
-            comment["translation"] = cleanup_spaces_multiline(comment["translation"])
+    def sanitize_comment(cls, v):
+        for translation in v:
+            translation["translation"] = sanitize_html(translation["translation"])
         return v
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:

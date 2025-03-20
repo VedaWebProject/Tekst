@@ -1,9 +1,9 @@
 import {
   GET,
-  type AnnotationAggregation,
   type AnyContentRead,
   type AnyResourceRead,
   type CorrectionRead,
+  type KeyValueAggregations,
   type ResourceCoverage,
 } from '@/api';
 import { useStateStore } from '@/stores';
@@ -23,7 +23,7 @@ export const useResourcesStore = defineStore('resources', () => {
       resourcesAll.value.map((r) => [r.id, pickTranslation(r.title, state.locale)])
     )
   );
-  const aggregations = ref<Record<string, AnnotationAggregation[]>>({});
+  const aggregations = ref<Record<string, KeyValueAggregations>>({});
   const coverage = ref<Record<string, ResourceCoverage>>({});
   const corrections = ref<Record<string, CorrectionRead[]>>({});
   const correctionsCount = computed<Record<string, number>>(() =>
@@ -101,7 +101,7 @@ export const useResourcesStore = defineStore('resources', () => {
     resourcesAll.value = resourcesAll.value.filter((r) => r.id !== resourceId);
   }
 
-  async function getAggregations(resourceId: string): Promise<AnnotationAggregation[]> {
+  async function getAggregations(resourceId: string): Promise<KeyValueAggregations> {
     if (!resourcesAll.value.find((r) => r.id === resourceId)) return [];
     const agg = aggregations.value[resourceId];
     if (agg) return agg;
@@ -109,8 +109,8 @@ export const useResourcesStore = defineStore('resources', () => {
       params: { path: { id: resourceId } },
     });
     if (!error && !!data) {
-      aggregations.value[resourceId] = data;
-      return data;
+      aggregations.value[resourceId] = data as KeyValueAggregations;
+      return data as KeyValueAggregations;
     } else {
       aggregations.value[resourceId] = [];
       return [];

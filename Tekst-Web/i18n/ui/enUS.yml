@@ -50,6 +50,10 @@ general:
   value: Value
   label: Label
   caption: Caption
+  group: Group | Groups
+  name: Name
+  other: Other
+  translation: Translation | Translations
   system: System
   details: Details
   loading: Loading...
@@ -157,6 +161,7 @@ routes:
     login: Login
     register: '@:register.heading'
     resources: Resources – {text}
+    resourceContents: '@:contents.heading'
     resourceSettings: '@:resources.settings.heading'
     resourcesCorrections: Correction notes
     user: Profile of {username}
@@ -360,9 +365,7 @@ models:
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Content Fonts
-    fontName: Name
     oskModes: On-screen Keyboards
-    oskModeName: Name
     oskModeFont: Keyboard font
   segment:
     modelLabel: Segment
@@ -490,10 +493,13 @@ resources:
           lettersLowercase: Letters (lowercase)
           lettersUppercase: Letters (uppercase)
       textAnnotation:
-        heading: Annotation Display
+        annoDisplayHeading: Annotation Display
         displayTemplate: Display template
         multiValueDelimiter: Delimiter for multiple annotation values
         annotationGroup: Annotation group | Annotation groups
+      locationMetadata:
+        itemGroups: Metadata Groups
+        itemDisplay: Key Translation, Order and Grouping
       apiCall:
         headingApiRequest: API Request
         headingResponseTransformation: Response Data Transformation
@@ -536,6 +542,13 @@ resources:
       copyTokenFullAction: Copy token and annotations
       copyHintTip: Right click or long press to copy
       copyAnnosPlainAction: Copy all visible annotations as plain text
+    locationMetadata:
+      label: Location Metadata
+      parenthesis: Metadata as key-value pairs
+      contentFields:
+        entries: Entries
+      searchFields:
+        any: '[any value]'
     audio:
       label: Audio
       parenthesis: audio playback
@@ -609,7 +622,7 @@ account:
   logoutBtn: Logout
   profile: Profile
   profileHeading: Public Profile
-  profileNotFound: The user profile "{username}" could not be found.
+  profileNotFound: The user profile "{usernameOrId}" could not be found.
   profileNoBio: User didn't set a public profile bio.
   logoutSuccessful: You are now logged out.
   tipUserBtn: Show user actions for {username}

@@ -83,7 +83,6 @@ async function handleSaveClick() {
           $t('resources.settings.msgSaved', { title: pickTranslation(data.title, state.locale) })
         );
         resources.replace(data);
-        router.push({ name: 'resources', params: { textSlug: props.textSlug } });
       }
       loadingSave.value = false;
     })
@@ -116,9 +115,13 @@ async function handleSaveClick() {
   <icon-heading v-if="resource" level="2" :icon="ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
+    <resource-info-tags
+      v-if="!state.smallScreen"
+      :resource="resource"
+      reverse
+      style="flex: 2; justify-content: end"
+    />
   </icon-heading>
-
-  <resource-info-tags v-if="resource" :resource="resource" />
 
   <template v-if="model">
     <div class="content-block">

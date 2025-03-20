@@ -129,6 +129,50 @@
     ]
   },
   {
+    "_id": { "$oid": "67dbc8fc2e51e7949ae22722" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67c04473906e79b9062e22fb" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
+    "entries": [
+      { "key": "word", "value": ["foo"] },
+      { "key": "something", "value": ["something"] }
+    ]
+  },
+  {
+    "_id": { "$oid": "67dbc8fc2e51e7949ae22723" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67c04473906e79b9062e22fb" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
+    "entries": [
+      { "key": "word", "value": ["bar"] },
+      { "key": "something", "value": ["something else"] }
+    ]
+  },
+  {
+    "_id": { "$oid": "67dbc8fc2e51e7949ae22724" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67c04473906e79b9062e22fb" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
+    "entries": [
+      { "key": "word", "value": ["baz"] },
+      { "key": "something", "value": ["something completely different"] }
+    ]
+  },
+  {
+    "_id": { "$oid": "67dbc8fc2e51e7949ae22725" },
+    "_class_id": "ContentBaseDocument.LocationMetadataContentDocument",
+    "resource_id": { "$oid": "67c04473906e79b9062e22fb" },
+    "resource_type": "locationMetadata",
+    "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
+    "entries": [
+      { "key": "word", "value": ["qux"] },
+      { "key": "something", "value": ["something else entirely"] }
+    ]
+  },
+  {
     "_id": { "$oid": "67c045ad906e79b9062e2307" },
     "_class_id": "ContentBaseDocument.AudioContentDocument",
     "resource_id": { "$oid": "67c04445906e79b9062e22f7" },

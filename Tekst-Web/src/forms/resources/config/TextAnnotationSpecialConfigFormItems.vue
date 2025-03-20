@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TextAnnotationResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
@@ -8,13 +9,17 @@ import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
+defineProps<{ resource: TextAnnotationResourceRead }>();
+
 const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>({
   required: true,
 });
 </script>
 
 <template>
-  <form-section-heading :label="$t('resources.settings.config.textAnnotation.heading', 2)" />
+  <form-section-heading
+    :label="$t('resources.settings.config.textAnnotation.annoDisplayHeading', 2)"
+  />
 
   <!-- ANNOTATION DISPLAY GROUPS -->
   <n-form-item>
@@ -56,7 +61,7 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
             :translation-form-label="
               $t('resources.settings.config.textAnnotation.annotationGroup', 1)
             "
-            :translation-form-rule="
+            :translation-form-rules="
               typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupTranslation
             "
           />

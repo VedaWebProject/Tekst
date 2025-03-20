@@ -423,6 +423,72 @@ async def test_advanced_text_annotation(
 
 
 @pytest.mark.anyio
+async def test_advanced_location_metadata(
+    test_client: AsyncClient,
+    use_indices,
+):
+    # search for key and value
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c04473906e79b9062e22fb", "occ": "should"},
+                        "rts": {
+                            "type": "locationMetadata",
+                            "entries": [{"k": "word", "v": "foo"}],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=1,
+    )
+
+    # search for key and value with wildcards
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c04473906e79b9062e22fb", "occ": "should"},
+                        "rts": {
+                            "type": "locationMetadata",
+                            "entries": [{"k": "word", "v": "b*", "wc": True}],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=2,
+    )
+
+    # search for key only
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c04473906e79b9062e22fb", "occ": "should"},
+                        "rts": {
+                            "type": "locationMetadata",
+                            "entries": [{"k": "word"}],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=4,
+    )
+
+
+@pytest.mark.anyio
 async def test_advanced_plain_text(
     test_client: AsyncClient,
     use_indices,

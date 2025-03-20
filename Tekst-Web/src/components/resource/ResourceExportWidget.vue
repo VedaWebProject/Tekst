@@ -31,16 +31,6 @@ const allFormatOptions: { label: string; value: ResourceExportFormat; [key: stri
   },
 ];
 
-const supportedExportFormats: Record<AnyResourceRead['resourceType'], ResourceExportFormat[]> = {
-  plainText: ['json', 'tekst-json', 'csv'],
-  richText: ['json', 'tekst-json', 'csv'],
-  textAnnotation: ['json', 'tekst-json', 'csv'],
-  audio: ['json', 'tekst-json', 'csv'],
-  images: ['json', 'tekst-json', 'csv'],
-  externalReferences: ['json', 'tekst-json', 'csv'],
-  apiCall: ['json', 'tekst-json', 'csv'],
-};
-
 const props = defineProps<{
   resource: AnyResourceRead;
   full?: boolean;
@@ -60,11 +50,7 @@ const resourceTitle = ref('');
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() =>
-  allFormatOptions.filter(
-    (o) =>
-      supportedExportFormats[props.resource.resourceType].includes(o.value) &&
-      (!o.restricted || auth.loggedIn)
-  )
+  allFormatOptions.filter((o) => !o.restricted || auth.loggedIn)
 );
 const formatInfoTitle = computed(
   () => allFormatOptions.find((o) => o.value === format.value)?.label

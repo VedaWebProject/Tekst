@@ -45,7 +45,6 @@ from tekst.resources import (
     get_resource_template_readme,
     resource_types_mgr,
 )
-from tekst.resources.text_annotation import AnnotationAggregation
 from tekst.search import set_index_ood
 from tekst.state import StateDep
 from tekst.types import ResourceTypeName
@@ -1159,15 +1158,14 @@ async def export_resource_contents(
 @router.get(
     "/{id}/aggregations",
     status_code=status.HTTP_200_OK,
-    response_model=list[AnnotationAggregation],
+    response_model=list[Any],
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_400_INVALID_REQUEST_DATA,
         ]
     ),
 )
-async def get_annotation_aggregations(
+async def get_aggregations(
     user: OptionalUserDep,
     resource_id: Annotated[
         PydanticObjectId,
@@ -1175,7 +1173,7 @@ async def get_annotation_aggregations(
             alias="id",
         ),
     ],
-) -> list[AnnotationAggregation]:
+) -> list[Any]:
     # try to get resource doc to check if access is allowed for user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -1184,8 +1182,6 @@ async def get_annotation_aggregations(
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    if not resource_doc.resource_type == "textAnnotation":
-        raise errors.E_400_INVALID_REQUEST_DATA
     # find requested precomputed data
     precomp_doc = await PrecomputedDataDocument.find_one(
         PrecomputedDataDocument.ref_id == resource_doc.id,

@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 
 from collections.abc import Awaitable
 from datetime import datetime, timedelta
@@ -72,11 +73,13 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     user_id: Annotated[
-        PydanticObjectId,
+        PydanticObjectId | None,
         Field(
-            description="ID of user who created this task",
+            description=(
+                "ID of user who created this task (or none if this is a system task)"
+            ),
         ),
-    ]
+    ] = None
     pickup_key: Annotated[
         ConStr(
             max_length=64,
@@ -174,7 +177,7 @@ async def _run_task(
             task_doc.error = str(e)
         # write to error log if the exception is not an HTTPException
         if not isinstance(e, HTTPException):  # pragma: no cover
-            log.error(str(e))
+            log.error(str(e) + "\n" + traceback.format_exc())
     finally:
         task_doc.end_time = datetime.utcnow()
         task_doc.duration_seconds = (

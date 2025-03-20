@@ -98,6 +98,7 @@ function handleSelect(text: TextRead) {
       :focusable="false"
       :keyboard="false"
       :title="$t('general.info')"
+      class="text-info-btn"
       @click="showInfoModal = true"
     >
       <template #icon>
@@ -157,5 +158,13 @@ ul {
   max-width: 100%;
   line-height: 120%;
   padding-bottom: 0.2em;
+}
+
+.text-info-btn {
+  opacity: 0.6;
+}
+
+.text-info-btn:hover {
+  opacity: 1;
 }
 </style>

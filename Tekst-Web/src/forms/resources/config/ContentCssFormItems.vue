@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PlainTextResourceConfig } from '@/api';
+import type { PlainTextResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -7,7 +7,9 @@ import { contentCssConfigFormRules } from '@/forms/formRules';
 import { all as knownCssProperties } from 'known-css-properties';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
 
-const model = defineModel<PlainTextResourceConfig['general']['contentCss']>({ required: true });
+const model = defineModel<PlainTextResourceRead['config']['general']['contentCss']>({
+  required: true,
+});
 
 const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
 </script>

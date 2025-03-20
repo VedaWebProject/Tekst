@@ -53,10 +53,7 @@ watch(
         :resource-type="model.resourceType"
       />
       <!-- RESOURCE SPECIAL CONFIG -->
-      <special-resource-config-form-items
-        v-model="model.config"
-        :resource-type="model.resourceType"
-      />
+      <special-resource-config-form-items v-model="model.config" :resource="model" />
     </n-tab-pane>
 
     <!-- ACCESS SHARES -->

@@ -21,6 +21,15 @@ export const defaultContentModels = {
       },
     ],
   },
+  locationMetadata: {
+    ...common,
+    entries: [
+      {
+        key: undefined,
+        value: undefined,
+      },
+    ],
+  },
   audio: {
     ...common,
     files: [
@@ -34,8 +43,9 @@ export const defaultContentModels = {
     ...common,
     files: [
       {
-        url: undefined,
+        url: '',
         thumbUrl: undefined,
+        sourceUrl: undefined,
         caption: undefined,
       },
     ],

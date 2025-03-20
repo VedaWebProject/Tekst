@@ -9,6 +9,7 @@ from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase, ResourceExportFormat
 from tekst.models.resource_configs import (
+    CommonResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -17,7 +18,9 @@ from tekst.types import (
     ConStr,
     ContentCssProperties,
     DefaultCollapsedValue,
+    ExcludeFromModelVariants,
     FontNameValueOrNone,
+    SchemaOptionalNonNullable,
     SchemaOptionalNullable,
     SearchReplacements,
 )
@@ -146,6 +149,23 @@ class RichText(ResourceTypeABC):
                 )
 
 
+class RichTextModifiedCommonResourceConfig(CommonResourceConfig):
+    enable_content_context: Annotated[
+        Literal[False],
+        Field(
+            description=(
+                "Whether contents of this resource should be available for the parent "
+                "level (always false for rich text resources)"
+            ),
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+        SchemaOptionalNonNullable,
+    ] = False
+
+
 class GeneralRichTextResourceConfig(ModelBase):
     default_collapsed: DefaultCollapsedValue = True
     font: FontNameValueOrNone = None
@@ -154,6 +174,9 @@ class GeneralRichTextResourceConfig(ModelBase):
 
 
 class RichTextResourceConfig(ResourceConfigBase):
+    common: RichTextModifiedCommonResourceConfig = (
+        RichTextModifiedCommonResourceConfig()
+    )
     general: GeneralRichTextResourceConfig = GeneralRichTextResourceConfig()
 
 

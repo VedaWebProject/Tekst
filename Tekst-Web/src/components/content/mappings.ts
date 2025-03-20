@@ -6,6 +6,9 @@ const contentComponents: Record<string, Component> = {
   textAnnotation: defineAsyncComponent(
     () => import('@/components/content/TextAnnotationContent.vue')
   ),
+  locationMetadata: defineAsyncComponent(
+    () => import('@/components/content/LocationMetadataContent.vue')
+  ),
   audio: defineAsyncComponent(() => import('@/components/content/AudioContent.vue')),
   images: defineAsyncComponent(() => import('@/components/content/ImagesContent.vue')),
   externalReferences: defineAsyncComponent(

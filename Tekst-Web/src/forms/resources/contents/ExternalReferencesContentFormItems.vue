@@ -5,7 +5,9 @@ import NInputOsk from '@/components/NInputOsk.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { cloneDeep } from 'lodash-es';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
+import { defaultContentModels } from './defaultContentModels';
 
 defineProps<{
   resource: ExternalReferencesResourceRead;
@@ -15,14 +17,14 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
 </script>
 
 <template>
-  <!-- FILES -->
+  <!-- LINKS -->
   <n-form-item :label="$t('resources.types.externalReferences.contentFields.links')" path="links">
     <n-dynamic-input
       v-model:value="model.links"
       :min="1"
       :max="100"
       :create-button-props="dynInputCreateBtnProps"
-      @create="() => ({ url: undefined, title: undefined, description: undefined })"
+      @create="() => cloneDeep(defaultContentModels.externalReferences.links[0])"
     >
       <template #default="{ index }">
         <n-flex align="start" style="flex: 2">

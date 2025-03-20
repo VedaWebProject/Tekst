@@ -593,5 +593,65 @@
       }
     },
     "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
+  },
+  {
+    "_id": { "$oid": "67dbc7432e51e7949ae22714" },
+    "_class_id": "ResourceBaseDocument.LocationMetadataResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Demo Stanza Metadata" },
+      { "locale": "deDE", "translation": "Demo Strophen-Metadaten" }
+    ],
+    "description": [],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 1,
+    "resource_type": "locationMetadata",
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "category": "demo",
+        "sort_order": 10,
+        "default_active": false,
+        "enable_content_context": false,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "general": { "default_collapsed": false },
+      "location_metadata": {
+        "groups": [
+          {
+            "name": "stanza_no",
+            "translations": [
+              { "locale": "enUS", "translation": "Stanza Number" },
+              { "locale": "deDE", "translation": "Strophen-Nummer" }
+            ]
+          }
+        ],
+        "display_props": [
+          {
+            "name": "stanza_no_num",
+            "translations": [
+              { "locale": "enUS", "translation": "# in numbers" },
+              { "locale": "deDE", "translation": "# in Zahlen" }
+            ],
+            "group": "stanza_no"
+          },
+          {
+            "name": "stanza_no_word",
+            "translations": [
+              { "locale": "enUS", "translation": "# in words" },
+              { "locale": "deDE", "translation": "# in Worten" }
+            ],
+            "group": "stanza_no"
+          }
+        ]
+      }
+    },
+    "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }
   }
 ]

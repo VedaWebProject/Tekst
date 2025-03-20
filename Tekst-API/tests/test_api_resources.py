@@ -1185,6 +1185,7 @@ async def test_export_content(
         "67c0444e906e79b9062e22f8",
         "67c0445b906e79b9062e22f9",
         "67c04473906e79b9062e22fa",
+        "67c04473906e79b9062e22fb",
     ]
 
     from_loc_id = "67c040a0906e79b9062e22e8"
@@ -1322,11 +1323,6 @@ async def test_get_aggregations(
     # fail to get aggregations for wrong resource ID
     resp = await test_client.get(f"/resources/{wrong_id}/aggregations")
     assert_status(404, resp)
-
-    # fail to get aggregations for non-annotation resource
-    res_id = "67c04415906e79b9062e22f5"
-    resp = await test_client.get(f"/resources/{res_id}/aggregations")
-    assert_status(400, resp)
 
 
 @pytest.mark.anyio

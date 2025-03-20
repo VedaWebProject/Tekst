@@ -781,8 +781,8 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get annotation aggregations */
-    get: operations['getAnnotationAggregations'];
+    /** Get aggregations */
+    get: operations['getAggregations'];
     put?: never;
     post?: never;
     delete?: never;
@@ -1270,13 +1270,6 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
-    /** AnnotationAggregation */
-    AnnotationAggregation: {
-      /** Key */
-      key: string;
-      /** Values */
-      values?: string[] | null;
-    };
     /** AnnotationGroup */
     AnnotationGroup: {
       /**
@@ -3562,6 +3555,36 @@ export interface components {
       /** Uptodate */
       upToDate: boolean;
     };
+    /** ItemDisplayProps */
+    ItemDisplayProps: {
+      name: components['schemas']['ItemName'];
+      /**
+       * Translations
+       * @description Translations for the name of the item
+       */
+      translations: components['schemas']['ItemsDisplayTranslation'][];
+      group: components['schemas']['ItemGroupName'] | null;
+    };
+    /** ItemGroup */
+    ItemGroup: {
+      name: components['schemas']['ItemGroupName'];
+      /**
+       * Translations
+       * @description Translations for the name of the item group
+       */
+      translations: components['schemas']['ItemsDisplayTranslation'][];
+    };
+    ItemGroupName: string;
+    ItemName: string;
+    /** ItemsDisplayTranslation */
+    ItemsDisplayTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /**
+       * Translation
+       * @description Translation of an item or item group name
+       */
+      translation: string;
+    };
     /** LineLabellingConfig */
     LineLabellingConfig: {
       /**
@@ -3658,10 +3681,487 @@ export interface components {
         | components['schemas']['AudioContentRead']
         | components['schemas']['ExternalReferencesContentRead']
         | components['schemas']['ImagesContentRead']
+        | components['schemas']['LocationMetadataContentRead']
         | components['schemas']['PlainTextContentRead']
         | components['schemas']['RichTextContentRead']
         | components['schemas']['TextAnnotationContentRead']
       )[];
+    };
+    /** LocationMetadataContentCreate */
+    LocationMetadataContentCreate: {
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: null | string;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: null | string;
+      /**
+       * Entries
+       * @description List of metadata entries for a certain location
+       */
+      entries: components['schemas']['LocationMetadataEntry'][];
+    };
+    /** LocationMetadataContentRead */
+    LocationMetadataContentRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Resourceid
+       * @description Resource ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      resourceId: string;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Locationid
+       * @description Text location ID
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      locationId: string;
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: null | string;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: null | string;
+      /**
+       * Entries
+       * @description List of metadata entries for a certain location
+       */
+      entries: components['schemas']['LocationMetadataEntry'][];
+    } & {
+      [key: string]: unknown;
+    };
+    /** LocationMetadataContentUpdate */
+    LocationMetadataContentUpdate: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment that will be displayed with the content
+       */
+      comment?: string;
+      /**
+       * Notes
+       * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
+       */
+      notes?: string;
+      /**
+       * Entries
+       * @description List of metadata entries for a certain location
+       */
+      entries?: components['schemas']['LocationMetadataEntry'][];
+    };
+    /** LocationMetadataEntry */
+    LocationMetadataEntry: {
+      key: components['schemas']['LocationMetadataEntryKey'];
+      /** Value */
+      value: components['schemas']['LocationMetadataEntryValue'][];
+    };
+    LocationMetadataEntryKey: string;
+    LocationMetadataEntryValue: string;
+    /** LocationMetadataModifiedCommonResourceConfig */
+    LocationMetadataModifiedCommonResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: null | string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
+       * Enablecontentcontext
+       * @description Whether contents of this resource should be available for the parent level (always false for location metadata resources)
+       * @default false
+       * @constant
+       */
+      enableContentContext?: false;
+      /**
+       * Searchablequick
+       * @description Whether this resource should be included in quick search (default false for location metadata resources)
+       * @default false
+       */
+      searchableQuick?: boolean;
+      /**
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search
+       * @default true
+       */
+      searchableAdv?: boolean;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl?: boolean;
+      /** Osk */
+      osk?: string | null;
+    };
+    /** LocationMetadataQueryEntry */
+    LocationMetadataQueryEntry: {
+      /**
+       * K
+       * @description Metadata entry key query
+       */
+      k: string;
+      /**
+       * V
+       * @description Metadata entry value query
+       */
+      v?: null | string;
+      /**
+       * Wc
+       * @description Whether to interpret wildcards in the metadata value query
+       * @default false
+       */
+      wc: boolean;
+    };
+    /** LocationMetadataResourceConfig */
+    LocationMetadataResourceConfig: {
+      /** @default {
+       *       "sortOrder": 10,
+       *       "defaultActive": true,
+       *       "enableContentContext": false,
+       *       "searchableQuick": false,
+       *       "searchableAdv": true,
+       *       "rtl": false
+       *     } */
+      common: components['schemas']['LocationMetadataModifiedCommonResourceConfig'];
+      /** @default {
+       *       "defaultCollapsed": false
+       *     } */
+      general: components['schemas']['GeneralTextAnnotationResourceConfig'];
+      /** @default {
+       *       "groups": [],
+       *       "displayProps": []
+       *     } */
+      locationMetadata: components['schemas']['LocationMetadataSpecialConfig'];
+    };
+    /** LocationMetadataResourceCreate */
+    LocationMetadataResourceCreate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment: components['schemas']['ResourceCommentTranslation'][];
+      /** @default {
+       *       "common": {
+       *         "defaultActive": true,
+       *         "enableContentContext": false,
+       *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": false,
+       *         "sortOrder": 10
+       *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       },
+       *       "locationMetadata": {
+       *         "displayProps": [],
+       *         "groups": []
+       *       }
+       *     } */
+      config: components['schemas']['LocationMetadataResourceConfig'];
+    };
+    /** LocationMetadataResourceRead */
+    LocationMetadataResourceRead: {
+      /**
+       * Id
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      id: string;
+      /**
+       * Writable
+       * @description Whether this resource is writable for the requesting user
+       */
+      writable?: boolean | null;
+      /** @description Public user data for user owning this resource */
+      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Sharedreadusers
+       * @description Public user data for users allowed to read this resource
+       */
+      sharedReadUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Sharedwriteusers
+       * @description Public user data for users allowed to write this resource
+       */
+      sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       * @default []
+       */
+      description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * Textid
+       * @description ID of the text this resource belongs to
+       * @example 5eb7cf5a86d9755df3a6c593
+       */
+      textId: string;
+      /**
+       * Level
+       * @description Text level this resource belongs to
+       */
+      level: number;
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Ownerid
+       * @description User owning this resource
+       */
+      ownerId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       * @default []
+       */
+      sharedRead: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       * @default []
+       */
+      sharedWrite: string[];
+      /**
+       * Public
+       * @description Publication status of this resource
+       * @default false
+       */
+      public: boolean;
+      /**
+       * Proposed
+       * @description Whether this resource has been proposed for publication
+       * @default false
+       */
+      proposed: boolean;
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       * @default []
+       */
+      comment: components['schemas']['ResourceCommentTranslation'][];
+      /** @default {
+       *       "common": {
+       *         "defaultActive": true,
+       *         "enableContentContext": false,
+       *         "rtl": false,
+       *         "searchableAdv": true,
+       *         "searchableQuick": false,
+       *         "sortOrder": 10
+       *       },
+       *       "general": {
+       *         "defaultCollapsed": false
+       *       },
+       *       "locationMetadata": {
+       *         "displayProps": [],
+       *         "groups": []
+       *       }
+       *     } */
+      config: components['schemas']['LocationMetadataResourceConfig'];
+      /**
+       * Contentschangedat
+       * Format: date-time
+       * @description The last time contents of this resource changed
+       * @default 1970-01-02T00:00:00
+       */
+      contentsChangedAt: string;
+    } & {
+      [key: string]: unknown;
+    };
+    /** LocationMetadataResourceUpdate */
+    LocationMetadataResourceUpdate: {
+      /**
+       * Title
+       * @description Title of this resource
+       */
+      title?: components['schemas']['ResourceTitleTranslation'][];
+      /**
+       * Description
+       * @description Short, concise description of this resource
+       */
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'locationMetadata';
+      /**
+       * Originalid
+       * @description If this is a version of another resource, this ID references the original
+       */
+      originalId?: string | null;
+      /**
+       * Sharedread
+       * @description Users with shared read access to this resource
+       */
+      sharedRead?: string[];
+      /**
+       * Sharedwrite
+       * @description Users with shared write access to this resource
+       */
+      sharedWrite?: string[];
+      /**
+       * Citation
+       * @description Citation details for this resource
+       */
+      citation?: string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
+      /**
+       * Comment
+       * @description Plain text, potentially multiline comment on this resource
+       */
+      comment?: components['schemas']['ResourceCommentTranslation'][];
+      config?: components['schemas']['LocationMetadataResourceConfig'];
+    };
+    /** LocationMetadataSearchQuery */
+    LocationMetadataSearchQuery: {
+      /**
+       * @description Type of the resource to search in (enum property replaced by openapi-typescript)
+       * @enum {string}
+       */
+      type: 'locationMetadata';
+      /**
+       * Entries
+       * @description List of metadata queries
+       * @default []
+       */
+      entries?: components['schemas']['LocationMetadataQueryEntry'][];
+    };
+    /**
+     * LocationMetadataSpecialConfig
+     * @description Config properties specific to the location metadata resource type
+     */
+    LocationMetadataSpecialConfig: {
+      /**
+       * Groups
+       * @description Item display groups
+       * @default []
+       */
+      groups: components['schemas']['ItemGroup'][];
+      /**
+       * Displayprops
+       * @description Item display properties
+       * @default []
+       */
+      displayProps: components['schemas']['ItemDisplayProps'][];
     };
     /** LocationRead */
     LocationRead: {
@@ -4659,6 +5159,7 @@ export interface components {
         | components['schemas']['AudioSearchQuery']
         | components['schemas']['ExternalReferencesSearchQuery']
         | components['schemas']['ImagesSearchQuery']
+        | components['schemas']['LocationMetadataSearchQuery']
         | components['schemas']['PlainTextSearchQuery']
         | components['schemas']['RichTextSearchQuery']
         | components['schemas']['TextAnnotationSearchQuery'];
@@ -4791,6 +5292,53 @@ export interface components {
        */
       editorMode?: 'wysiwyg' | 'html';
     };
+    /** RichTextModifiedCommonResourceConfig */
+    RichTextModifiedCommonResourceConfig: {
+      /**
+       * Category
+       * @description Resource category key
+       */
+      category?: null | string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
+       * Defaultactive
+       * @description Whether this resource is active by default when public
+       * @default true
+       */
+      defaultActive?: boolean;
+      /**
+       * Enablecontentcontext
+       * @description Whether contents of this resource should be available for the parent level (always false for rich text resources)
+       * @default false
+       * @constant
+       */
+      enableContentContext?: false;
+      /**
+       * Searchablequick
+       * @description Whether this resource should be included in quick search
+       * @default true
+       */
+      searchableQuick?: boolean;
+      /**
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search
+       * @default true
+       */
+      searchableAdv?: boolean;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl?: boolean;
+      /** Osk */
+      osk?: string | null;
+    };
     /** RichTextResourceConfig */
     RichTextResourceConfig: {
       /** @default {
@@ -4801,7 +5349,7 @@ export interface components {
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
+      common: components['schemas']['RichTextModifiedCommonResourceConfig'];
       /** @default {
        *       "defaultCollapsed": true,
        *       "searchReplacements": [],
@@ -5146,10 +5694,9 @@ export interface components {
       targetId?: string | null;
       /**
        * Userid
-       * @description ID of user who created this task
-       * @example 5eb7cf5a86d9755df3a6c593
+       * @description ID of user who created this task (or none if this is a system task)
        */
-      userId: string;
+      userId?: string | null;
       /**
        * Pickupkey
        * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user
@@ -5316,8 +5863,11 @@ export interface components {
        * @description Key of the annotation
        */
       key: string;
-      /** @description Value(s) of the annotation */
-      value: components['schemas']['TextAnnotationValues'];
+      /**
+       * Value
+       * @description List of values of an annotation
+       */
+      value: components['schemas']['TextAnnotationValue'][];
     };
     /** TextAnnotationQueryEntry */
     TextAnnotationQueryEntry: {
@@ -5677,10 +6227,7 @@ export interface components {
        */
       lb: boolean;
     };
-    /** @description Value of an annotation */
     TextAnnotationValue: string;
-    /** @description List of values of an annotation */
-    TextAnnotationValues: components['schemas']['TextAnnotationValue'][];
     /** TextCreate */
     TextCreate: {
       /**
@@ -6398,6 +6945,7 @@ export interface operations {
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -6556,6 +7104,7 @@ export interface operations {
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
@@ -6587,6 +7136,7 @@ export interface operations {
           | components['schemas']['AudioContentCreate']
           | components['schemas']['ExternalReferencesContentCreate']
           | components['schemas']['ImagesContentCreate']
+          | components['schemas']['LocationMetadataContentCreate']
           | components['schemas']['PlainTextContentCreate']
           | components['schemas']['RichTextContentCreate']
           | components['schemas']['TextAnnotationContentCreate'];
@@ -6604,6 +7154,7 @@ export interface operations {
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -6669,6 +7220,7 @@ export interface operations {
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -6757,6 +7309,7 @@ export interface operations {
           | components['schemas']['AudioContentUpdate']
           | components['schemas']['ExternalReferencesContentUpdate']
           | components['schemas']['ImagesContentUpdate']
+          | components['schemas']['LocationMetadataContentUpdate']
           | components['schemas']['PlainTextContentUpdate']
           | components['schemas']['RichTextContentUpdate']
           | components['schemas']['TextAnnotationContentUpdate'];
@@ -6774,6 +7327,7 @@ export interface operations {
             | components['schemas']['AudioContentRead']
             | components['schemas']['ExternalReferencesContentRead']
             | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
@@ -8170,6 +8724,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead']
@@ -8201,6 +8756,7 @@ export interface operations {
           | components['schemas']['AudioResourceCreate']
           | components['schemas']['ExternalReferencesResourceCreate']
           | components['schemas']['ImagesResourceCreate']
+          | components['schemas']['LocationMetadataResourceCreate']
           | components['schemas']['PlainTextResourceCreate']
           | components['schemas']['RichTextResourceCreate']
           | components['schemas']['TextAnnotationResourceCreate'];
@@ -8218,6 +8774,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8292,6 +8849,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8357,6 +8915,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8454,6 +9013,7 @@ export interface operations {
           | components['schemas']['AudioResourceUpdate']
           | components['schemas']['ExternalReferencesResourceUpdate']
           | components['schemas']['ImagesResourceUpdate']
+          | components['schemas']['LocationMetadataResourceUpdate']
           | components['schemas']['PlainTextResourceUpdate']
           | components['schemas']['RichTextResourceUpdate']
           | components['schemas']['TextAnnotationResourceUpdate'];
@@ -8471,6 +9031,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8522,6 +9083,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8596,6 +9158,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8661,6 +9224,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8717,6 +9281,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8791,6 +9356,7 @@ export interface operations {
             | components['schemas']['AudioResourceRead']
             | components['schemas']['ExternalReferencesResourceRead']
             | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
             | components['schemas']['PlainTextResourceRead']
             | components['schemas']['RichTextResourceRead']
             | components['schemas']['TextAnnotationResourceRead'];
@@ -8984,7 +9550,7 @@ export interface operations {
       };
     };
   };
-  getAnnotationAggregations: {
+  getAggregations: {
     parameters: {
       query?: never;
       header?: never;
@@ -9001,16 +9567,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['AnnotationAggregation'][];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
+          'application/json': unknown[];
         };
       };
       /** @description Not Found */

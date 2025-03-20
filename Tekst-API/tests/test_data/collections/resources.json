@@ -234,6 +234,55 @@
     "contents_changed_at": { "$date": "2025-02-27T11:03:49.743Z" }
   },
   {
+    "_id": { "$oid": "67c04473906e79b9062e22fb" },
+    "_class_id": "ResourceBaseDocument.LocationMetadataResourceDocument",
+    "title": [{ "locale": "*", "translation": "Location Metadata" }],
+    "description": [],
+    "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
+    "level": 1,
+    "resource_type": "locationMetadata",
+    "owner_id": null,
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [],
+    "comment": [],
+    "config": {
+      "common": {
+        "sort_order": 10,
+        "default_active": false,
+        "enable_content_context": false,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "general": { "default_collapsed": false },
+      "location_metadata": {
+        "groups": [
+          {
+            "name": "word",
+            "translations": [
+              { "locale": "enUS", "translation": "Word Group" },
+              { "locale": "deDE", "translation": "Wort-Gruppe" }
+            ]
+          }
+        ],
+        "display_props": [
+          {
+            "name": "word",
+            "translations": [
+              { "locale": "enUS", "translation": "Word" },
+              { "locale": "deDE", "translation": "Wort" }
+            ],
+            "group": "word"
+          }
+        ]
+      }
+    },
+    "contents_changed_at": { "$date": "2025-02-27T10:58:44.854Z" }
+  },
+  {
     "_id": { "$oid": "67c04781906e79b9062e2342" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Plain Text" }],

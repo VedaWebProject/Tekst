@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {
-  AnnotationAggregation,
+  KeyValueAggregations,
   TextAnnotationContentCreate,
   TextAnnotationResourceRead,
 } from '@/api';
@@ -27,7 +27,7 @@ const annoValueStyle = {
   fontFamily: props.resource.config.general.font || 'Tekst Content Font',
 };
 
-const aggregations = ref<AnnotationAggregation[]>([]);
+const aggregations = ref<KeyValueAggregations>([]);
 const annoOptions = computed(() => {
   // all possible keys, containing unique keys collected in
   // aggregations and from the current model state
@@ -132,15 +132,7 @@ onMounted(async () => {
               @create="() => ({ key: undefined, value: undefined })"
             >
               <template #default="{ value: annotationItem, index: annotationItemIndex }">
-                <div
-                  style="
-                    display: flex;
-                    flex-wrap: nowrap;
-                    flex: 2;
-                    gap: var(--gap-md);
-                    align-items: flex-start;
-                  "
-                >
+                <n-flex align="flex-start" :wrap="false" style="flex: 2">
                   <n-form-item
                     style="flex: 2 100px"
                     :show-label="false"
@@ -180,7 +172,7 @@ onMounted(async () => {
                       :render-label="renderValueLabel"
                     />
                   </n-form-item>
-                </div>
+                </n-flex>
               </template>
               <template
                 #action="{
@@ -192,7 +184,7 @@ onMounted(async () => {
                 <dynamic-input-controls
                   secondary
                   :movable="false"
-                  :insert-disabled="annotationActionIndex >= 127"
+                  :insert-disabled="tokenItem.annotations.length >= 128"
                   @remove="() => removeAnnotation(annotationActionIndex)"
                   @insert="() => createAnnotation(annotationActionIndex)"
                 />
