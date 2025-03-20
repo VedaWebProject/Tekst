@@ -73,7 +73,7 @@ services:
       - dev
 
   elasticvue:
-    image: cars10/elasticvue:1.4.0
+    image: cars10/elasticvue:1.5.0
     restart: unless-stopped
     init: true
     depends_on:
@@ -106,7 +106,7 @@ services:
       - test
 
   docs:
-    image: squidfunk/mkdocs-material:9.6.8
+    image: squidfunk/mkdocs-material:9.6.9
     restart: unless-stopped
     volumes:
       - ../docs:/docs:ro
