@@ -107,8 +107,21 @@ const paginatedData = computed(() => {
   const start = (pagination.value.page - 1) * pagination.value.pageSize;
   const end = start + pagination.value.pageSize;
   return filteredData.value
-    .slice(start, end)
-    .sort((a, b) => (b.corrections || 0) - (a.corrections || 0));
+    .filter((r) => !!r) // just to prevent side effects of sort()
+    .sort((a, b) => {
+      // resource has correction notes
+      let diff = (b.corrections || 0) - (a.corrections || 0);
+      if (diff !== 0) return diff;
+      // resource is not published
+      diff = (!b.public ? 1 : 0) - (!a.public ? 1 : 0);
+      if (diff !== 0) return diff;
+      // resource is owned by me
+      diff = (b.ownerId === auth.user?.id ? 1 : 0) - (a.ownerId === auth.user?.id ? 1 : 0);
+      if (diff !== 0) return diff;
+      // otherwise, sort by ID (age ascending, effectively)
+      return b.id.localeCompare(a.id);
+    })
+    .slice(start, end);
 });
 
 async function handleTransferClick(resource: AnyResourceRead) {
