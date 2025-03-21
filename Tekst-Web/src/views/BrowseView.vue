@@ -4,7 +4,6 @@ import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
-import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
@@ -76,15 +75,6 @@ onMounted(() => {
     <n-tag v-for="alias in browse.locationPathHead?.aliases" :key="alias" size="small">
       {{ alias }}
     </n-tag>
-    <copy-to-clipboard-button
-      v-if="auth.loggedIn"
-      tertiary
-      size="tiny"
-      :text="browse.locationPathHead?.id"
-      :title="$t('browse.location.copyId')"
-    >
-      {{ $t('browse.location.copyId') }}
-    </copy-to-clipboard-button>
   </n-flex>
 
   <browse-toolbar v-if="browse.locationPath.length" />

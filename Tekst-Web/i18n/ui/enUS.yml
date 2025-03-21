@@ -185,7 +185,6 @@ browse:
     modalHeading: Location
     goTo: Go to location
     aliasesTip: Search for one of these location aliases in the Quick Search to directly jump to this location.
-    copyId: Copy location ID
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level
