@@ -59,7 +59,7 @@ const showInfoModal = ref(false);
     </n-flex>
 
     <!-- DESCRIPTION -->
-    <p v-if="resource.description.length">
+    <p v-if="resource.description.length" class="content-font">
       <translation-display :value="resource.description" />
       <n-divider />
     </p>
@@ -78,7 +78,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
-      <div>
+      <div class="content-font">
         {{ resource.citation }}
       </div>
       <n-divider />
@@ -90,7 +90,7 @@ const showInfoModal = ref(false);
         {{ $t('general.comment') }}
       </icon-heading>
       <collapsable-content>
-        <hydrated-html :html="commentHtml" />
+        <hydrated-html :html="commentHtml" class="content-font" />
       </collapsable-content>
       <n-divider />
     </template>
