@@ -25,7 +25,7 @@ from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.types import ConStr, ConStrOrNone, ResourceTypeName
-from tekst.utils.html import sanitize_html
+from tekst.utils.html import force_html, sanitize_html
 
 
 # class for one arbitrary metadate
@@ -270,7 +270,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     @classmethod
     def sanitize_comment(cls, v):
         for translation in v:
-            translation["translation"] = sanitize_html(translation["translation"])
+            translation["translation"] = sanitize_html(
+                force_html(translation["translation"])
+            )
         return v
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:

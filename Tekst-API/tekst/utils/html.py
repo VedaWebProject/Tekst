@@ -71,3 +71,12 @@ def sanitize_html(html: str | None = None) -> str | None:
         )
         or "<!-- no content after sanitization -->"
     )
+
+
+def force_html(html: str | None = None) -> str | None:
+    if html is None:
+        return None
+    html = html.strip()
+    if not html.startswith("<") or not html.endswith(">"):
+        return f"<p>{html}</p>"
+    return html
