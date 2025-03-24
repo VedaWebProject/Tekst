@@ -85,7 +85,8 @@ services:
     networks:
       - devstack
     profiles:
-      - dev
+#      - dev
+      - disabled
 
   mailpit:
     image: axllent/mailpit:v1.23
