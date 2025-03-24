@@ -112,6 +112,7 @@ watch(
           <!-- icon hint: no content -->
           <n-icon
             v-else-if="
+              !loading &&
               !contentsLoaded &&
               (resource.level === browse.level ||
                 (onChildLevel && resource.config.common.enableContentContext))
@@ -121,7 +122,7 @@ watch(
           />
           <!-- icon hint: cannot display possible content from original level -->
           <n-icon
-            v-else-if="!contentsLoaded"
+            v-else-if="!loading && !contentsLoaded"
             :component="WarningIcon"
             size="medium"
             :title="$t('browse.contents.cannotShowContext')"

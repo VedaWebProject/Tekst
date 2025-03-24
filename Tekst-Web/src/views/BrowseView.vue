@@ -8,7 +8,7 @@ import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useSearchStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
@@ -19,7 +19,6 @@ const props = defineProps<{
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
-const search = useSearchStore();
 const state = useStateStore();
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
@@ -118,7 +117,7 @@ onMounted(() => {
       <content-container
         v-for="resource in category.resources"
         :key="resource.id"
-        :loading="browse.loading || search.loading"
+        :loading="browse.loading"
         :resource="resource"
       />
     </template>
