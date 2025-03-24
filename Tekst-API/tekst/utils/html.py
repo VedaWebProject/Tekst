@@ -78,5 +78,5 @@ def force_html(html: str | None = None) -> str | None:
         return None
     html = html.strip()
     if not html.startswith("<") or not html.endswith(">"):
-        return f"<p>{html}</p>"
+        return f"<div>{html}</div>"
     return html
