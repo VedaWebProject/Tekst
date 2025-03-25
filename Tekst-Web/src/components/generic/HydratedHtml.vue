@@ -84,10 +84,7 @@ function hydrate(html: string | undefined) {
       showModal.value = true;
     });
     trigger.classList.add('modal-trigger');
-    trigger.setAttribute(
-      'title',
-      trigger.getAttribute('title') || $t('general.showAttachmentsAction')
-    );
+    trigger.setAttribute('title', trigger.getAttribute('title') || $t('common.showAttachments'));
   });
 
   // INTERNAL LINKS/REFERENCES: iterate internal location links

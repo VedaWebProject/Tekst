@@ -62,7 +62,7 @@ const resourceTypeOptions = availableResourceTypes.map((rt) => ({
 
 const levelOptions = computed(() =>
   state.textLevelLabels.map((label, i) => ({
-    label: label + (state.text?.defaultLevel === i ? ` (${$t('general.default')})` : ''),
+    label: label + (state.text?.defaultLevel === i ? ` (${$t('common.default')})` : ''),
     value: i,
   }))
 );
@@ -167,23 +167,23 @@ async function handleSaveClick() {
             />
           </n-form-item>
           <!-- STRUCTURE LEVEL -->
-          <n-form-item :label="$t('models.text.level')" path="level">
+          <n-form-item :label="$t('common.level')" path="level">
             <n-select
               v-model:value="model.level"
-              :placeholder="$t('models.text.level')"
+              :placeholder="$t('common.level')"
               :options="levelOptions"
             />
           </n-form-item>
         </n-alert>
 
         <!-- COMMON RESOURCE FORM FIELDS -->
-        <h3>{{ $t('general.general') }}</h3>
+        <h3>{{ $t('common.general') }}</h3>
         <resource-settings-properties-form-items v-model="model" />
       </n-form>
 
       <button-shelf top-gap>
-        <n-button secondary @click="handleResetClick">{{ $t('general.resetAction') }}</n-button>
-        <n-button type="primary" @click="handleSaveClick">{{ $t('general.saveAction') }}</n-button>
+        <n-button secondary @click="handleResetClick">{{ $t('common.reset') }}</n-button>
+        <n-button type="primary" @click="handleSaveClick">{{ $t('common.save') }}</n-button>
       </button-shelf>
     </div>
   </template>

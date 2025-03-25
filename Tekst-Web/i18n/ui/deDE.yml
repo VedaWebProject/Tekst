@@ -1,4 +1,4 @@
-general:
+common:
   general: Allgemein
   default: standard
   enabled: Aktiv
@@ -10,40 +10,53 @@ general:
   description: Beschreibung
   comment: Kommentar
   settings: Einstellungen
-  tipThemeToggleLight: Zu hellem Farbschema wechseln
-  tipThemeToggleDark: Zu dunklem Farbschema wechseln
-  yesAction: 'Ja'
-  noAction: 'Nein'
-  okAction: OK
-  selectAction: Auswählen
-  cancelAction: Abbrechen
-  saveAction: Speichern
-  closeAction: Schließen
-  resetAction: Zurücksetzen
-  addAction: Hinzufügen
-  insertAction: Einfügen
-  removeAction: Entfernen
-  deleteAction: Löschen
-  editAction: Bearbeiten
-  copyAction: Copy
-  moveUpAction: Nach oben bewegen
-  moveDownAction: Nach unten bewegen
-  refreshAction: Aktualisieren
-  exportAction: Export
-  runAction: Ausführen
-  expandAction: Ausklappen
-  collapseAction: Einklappen
-  showAttachmentsAction: Angehängte Inhalte anzeigen
+  switchThemeLight: Zu hellem Farbschema wechseln
+  switchThemeDark: Zu dunklem Farbschema wechseln
+  yes: 'Ja'
+  no: 'Nein'
+  ok: OK
+  select: Auswählen
+  cancel: Abbrechen
+  save: Speichern
+  close: Schließen
+  reset: Zurücksetzen
+  add: Hinzufügen
+  insert: Einfügen
+  remove: Entfernen
+  delete: Löschen
+  copy: Copy
+  moveUp: Nach oben bewegen
+  moveDown: Nach unten bewegen
+  refresh: Aktualisieren
+  export: Export
+  run: Ausführen
+  expand: Ausklappen
+  collapse: Einklappen
+  showAttachments: Angehängte Inhalte anzeigen
   textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
-  info: Information
+  info: Info
+  information: Information
   warning: Warnung
   error: Fehler
   important: Wichtig
   filters: Filter
   selected: ausgewählt
-  language: Sprache
+  language: Sprache | Sprachen
+  text: Text | Texte
+  location: Belegstelle | Belegstellen
+  level: Ebene | Ebenen
+  content: Inhalt | Inhalte
+  meta: Meta
+  browse: Lesen
   platform: Plattform
+  community: Gemeinschaft
+  search: Suche | Suchen
+  searchAction: Suchen
   presentation: Darstellung
+  help: Hilfe
+  register: Registrieren
+  login: Anmelden
+  logout: Abmelden
   type: Typ
   not: nicht
   in: in
@@ -51,7 +64,7 @@ general:
   with: mit
   key: Schlüssel
   value: Wert
-  label: Beschriftung
+  label: Bezeichnung
   caption: Beschriftung
   group: Gruppe | Gruppen
   name: Name
@@ -121,11 +134,6 @@ errors:
   locked: Es läuft bereits ein aktiver Hintergrundprozess für diese Operation.
   exportNotFound: Der angefragte Export konnte nicht gefunden werden.
 
-nav:
-  browse: Lesen
-  search: Suche
-  info: Info
-
 osk:
   label: Bildschirmtastatur
   inputPlaceholder: Tippen Sie auf der Bildschirmtastatur und drücken Sie Enter, um Ihre Eingabe einzufügen...
@@ -161,22 +169,22 @@ routes:
   pageTitle:
     home: Startseite
     browse: '{text}'
-    search: Suche
+    search: '@:common.search'
     searchResults: '@:search.results.heading'
-    help: Hilfe
-    login: Anmeldung
+    help: '@:common.help'
+    login: '@:common.login'
     register: '@:register.heading'
     resources: Ressourcen – {text}
     resourceContents: '@:contents.heading'
     resourcesCorrections: Korrekturnotizen
     resourceSettings: '@:resources.settings.heading'
     user: Profil von {username}
-    community: Gemeinschaft
+    community: '@:common.community'
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     textSettings: Einstellungen – {text}
     newText: Neuer Text
-    adminSettings: '@:general.settings'
+    adminSettings: '@:common.settings'
     adminUsers: Benutzer
     adminSegments: Segmente
     adminInfoPages: Info-Seiten
@@ -188,7 +196,6 @@ routes:
 
 browse:
   location:
-    modalHeading: Belegstelle
     goTo: Gehe zu Belegstelle
     aliasesTip: Suchen Sie nach einem dieser Belegstellen-Aliase in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
   toolbar:
@@ -234,7 +241,6 @@ browse:
       deeplTranslate:
         title: Übersetzen mit DeepL
       infoWidget:
-        title: Informationen
         citeAs: Zitieren als
         coverage: Abdeckung
         coverageOverview: Übersicht
@@ -249,7 +255,6 @@ browse:
         title: Zeige Kontext
         noContext: Es existieren keine Inhalte für diese oder untergeordnete Belegstellen.
       exportWidget:
-        title: Export
         format: Format
         from: Von
         to: Bis
@@ -271,9 +276,7 @@ forms:
     mustBeOneOf: '{x} muss einer der folgenden Werte sein: {values}'
 
 register:
-  register: Registrieren
   switchToLogin: Mit bestehendem Konto anmelden
-  heading: Registrieren
   success: Erfolgreich registriert.
   activationNeededHint: |
     Sie werden sich erst anmelden können, wenn Ihr Konto von uns aktiviert wurde.
@@ -283,14 +286,12 @@ register:
 
 models:
   locale:
-    modelLabel: Sprache | Sprachen
     allLanguages: Alle Sprachen
   user:
     modelLabel: Benutzer | Benutzer
     email: E-Mail-Adresse
     username: Benutzername
     password: Passwort
-    name: Name
     affiliation: Zugehörigkeit
     avatarUrl: Avatar-Grafik-URL (64-512 Pixel Breite/Höhe empfohlen!)
     bio: Biographie
@@ -306,10 +307,7 @@ models:
       passwordRepReq: Passwort muss wiederholt werden
       passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
-    modelLabel: Text | Texte
     slug: Identifikator
-    level: Ebene | Ebenen
-    levelLabel: Bezeichnung
     defaultLevel: Standardebene
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
@@ -322,8 +320,6 @@ models:
       slugChars: 'Erlaubte Zeichen: a-z und 0-9'
       defaultLevelRange: 0 oder höher
   location:
-    modelLabel: Belegstelle | Belegstellen
-    label: Bezeichnung
     aliases: Aliase
   resource:
     modelLabel: Ressource | Ressourcen
@@ -335,13 +331,10 @@ models:
     sharedRead: Lesezugriff
     sharedWrite: Schreibzugriff
     config: Konfiguration
-  content:
-    modelLabel: Inhalt | Inhalte
   meta:
     modelLabel: Metadaten
     author: Autor
     year: Jahr
-    language: Sprache
     resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Plattform-Name
@@ -370,8 +363,6 @@ models:
     oskModeFont: Tastatur-Schriftart
   segment:
     modelLabel: Segment
-    locale: Sprache
-    html: Inhalt
     formRulesFeedback:
       keyChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9, -, _'
       systemPrefixReserved: Schlüssel-Praefix "system" ist reserviert für Systemsegmente
@@ -397,10 +388,9 @@ resources:
   notPublic: unveröffentlicht
   shared: Zugriff mit {count} Benutzer geteilt | Zugriff mit {count} Benutzern geteilt
   proposed: '@:models.resource.proposed'
-  notProposed: '@:general.not @:models.resource.proposed'
+  notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
-  contents: Inhalte
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version dieser Ressource erstellen
@@ -486,7 +476,6 @@ resources:
         contentCss:
           heading: CSS-Eigenschaften für Inhalte
           prop: Eigenschaft
-          value: Wert
       focusView:
         heading: Einzeilige Anzeige in Fokus-Ansicht
         delimiter: Zeilen-Trennzeichen
@@ -518,24 +507,18 @@ resources:
         transformJs: Transformations-Funktionskörper (JavaScript)
   types:
     common:
-      label: Meta
       contentFields:
-        comment: Kommentar
         notes: Arbeitsnotizen
     plainText:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text
       contentFields:
         text: Einfacher Text
-      searchFields:
-        text: Text
     richText:
       label: Formatierter Text
       parenthesis: gestalteter, formatierter Text
       contentFields:
         html: Formatierter Text
-      searchFields:
-        text: Text
     textAnnotation:
       label: Text-Annotation
       parenthesis: tokenisierter, annotierter Text
@@ -595,7 +578,6 @@ contents:
   heading: Ressourcen-Inhalte bearbeiten
   lblBtnCompare: Vergleichen
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
-  lblBtnCopyOriginal: Kopieren
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
   tipBtnApplyChanges: Inhalt für diese Fundstelle übernehmen
   tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt springen
@@ -605,7 +587,7 @@ contents:
   btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Belegstelle wurde gespeichert.
   msgDeleted: Der Inhalt für diese Belegstelle wurde gelöscht.
-  msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:general.takeAWhile
+  msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:common.takeAWhile
   msgNoNearest: Es gibt keine weiteren Belegstellen mit Inhalt in dieser Richtung.
   confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle löschen möchten?
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Belegstelle!
@@ -625,8 +607,6 @@ contents:
 account:
   account: Konto
   session: Sitzung
-  loginBtn: Anmelden
-  logoutBtn: Abmelden
   profile: Profil
   profileHeading: Öffentliches Profil
   profileNotFound: Das Benutzerprofil "{usernameOrId}" konnte nicht gefunden werden.
@@ -646,8 +626,6 @@ account:
     heading: Neues Passwort
     success: Ihr neues Passwort wurde gespeichert. Sie können sich jetzt einloggen.
     badToken: Der benutzte Passwort-Zurücksetzen-Link ist entweder ungültig oder bereits abgelaufen.
-  login:
-    heading: Anmelden
   autoLogout: Ihre Sitzung endet automatisch in {minutes} Minuten und {seconds} Sekunden. Melden Sie sich ab und wieder an, um Ihre Sitzung jetzt zu erneuern.
   sessionExpired: Ihre Sitzung ist abgelaufen. Bitte melden Sie sich wieder an, um ihr Konto zu benutzen.
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
@@ -697,11 +675,7 @@ account:
     Konto-Einstellungen zu besuchen, Ihr Profil zu vervollständigen und persönliche
     Einstellungen vorzunehmen!
 
-community:
-  heading: Gemeinschaft
-
 texts:
-  heading: Texts
   settings:
     msgSaved: Text-Einstellungen gespeichert.
     warnDeleteText: |
@@ -742,7 +716,6 @@ texts:
       Textebene "{levelLabel}" löschen möchten?
     noResources: Keine Ressourcen auf dieser Ebene
   locations:
-    heading: Belegstellen
     add:
       heading: Belegstelle zu "{parentLabel}" auf Ebene "{level}" hinzufügen
       msgSuccess: Belegstelle "{label}" zu "{parentLabel}" hinzugefügt
@@ -782,16 +755,11 @@ texts:
       headingAdd: '@:models.location.modelLabel hinzufügen'
       msgSuccess: '@:models.location.modelLabel "{label}" gespeichert'
     importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
-    updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
+    updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:common.takeAWhile
 
 admin:
   heading: Administration
   optionGroupLabel: Administration
-  statistics:
-    heading: Statistiken
-    globalHeading: Global
-    resourceTypesHeading: Ressourcen-Typen
-    textsHeading: Texte
   users:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
@@ -846,24 +814,23 @@ admin:
       heading: Suchindizes
       documents: Dokumente
       size: Größe
-      searches: Suchen
       fields: Felder
       utd: Aktuell
       ood: Veraltet
       actionCreate: Neuindexierung
-      actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:general.takeAWhile
+      actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:common.takeAWhile
     precomputed:
       heading: Vorberechnete Ressourcen-Daten
       description: |
         Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
         Es werden die Belegstellen-Abdeckung aller Ressourcen sowie weitere Ressourcentyp-spezifische Daten (falls zutreffend) vorberechnet.
-      actionStarted: Die Generierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:general.takeAWhile
+      actionStarted: Die Generierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:common.takeAWhile
     cleanup:
       heading: Interne Bereinigung
       description: |
         Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
         Abgelaufene Zugangstokens und Benutzernachrichten werden gelöscht.
-      actionStarted: The internal cleanup is performed in the background. @:general.takeAWhile
+      actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
       noTasks: Keine aktiven @:tasks.title
       started: Gestartet
@@ -900,7 +867,6 @@ admin:
     noPage: Bitte wählen Sie eine Info-Seite aus oder erstellen Sie eine neue!
 
 search:
-  searchAction: Suchen
   quickSearch:
     title: Schnellsuche
     gotoAdvancedSearch: Gehe zur Erweiterten Suche
@@ -921,7 +887,6 @@ search:
       regexp: Interpretiere Reguläre Ausdrücke
       inheritedContents: Beziehe Inhalte übergeordneter Fundstellen ein
       allLevels: Finde Fundstellen aller Ebenen
-      texts: Texte
       textsPlaceholder: Alle Texte
       targetResources: Einbezogene Ressourcen auflisten
   results:
@@ -947,7 +912,6 @@ search:
   nothingFound: Nichts gefunden
 
 help:
-  help: Hilfe
   tipHelpButton: Hilfe anzeigen
   msgFoundCount: '{count} Einträge gefunden'
   errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.

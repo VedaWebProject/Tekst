@@ -103,7 +103,7 @@ onMounted(async () => {
               filterable
               clearable
               :options="entryOptions[index].keysOptions"
-              :placeholder="$t('general.key')"
+              :placeholder="$t('common.key')"
               @update:value="() => (value.v = '')"
             />
           </n-form-item>
@@ -125,7 +125,7 @@ onMounted(async () => {
                 :disabled="!value.k"
                 :style="getEntryValueSelectStyle(value.v)"
                 :options="entryOptions[index].valuesOptions"
-                :placeholder="$t('general.value')"
+                :placeholder="$t('common.value')"
               />
             </n-form-item>
 
@@ -153,7 +153,7 @@ onMounted(async () => {
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.selectAction') }}
+        {{ $t('common.select') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

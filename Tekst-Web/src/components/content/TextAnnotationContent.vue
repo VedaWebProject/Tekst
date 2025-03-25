@@ -488,7 +488,7 @@ function generatePlaintextAnno(): string {
         v-if="tokenDetails?.comment"
         type="default"
         :show-icon="false"
-        :title="$t('general.comment')"
+        :title="$t('common.comment')"
         class="mb-lg"
       >
         <div class="content-font text-small" style="white-space: pre-line">
@@ -504,7 +504,7 @@ function generatePlaintextAnno(): string {
         <thead>
           <tr>
             <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
-            <th>{{ $t('general.value') }}</th>
+            <th>{{ $t('common.value') }}</th>
           </tr>
         </thead>
         <tbody>

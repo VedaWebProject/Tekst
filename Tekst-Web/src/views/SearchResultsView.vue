@@ -55,7 +55,7 @@ const results = computed<SearchResultProps[]>(
 );
 
 const browseViewLabel = computed(
-  () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('nav.browse')
+  () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('common.browse')
 );
 
 async function afterPaginate() {
@@ -74,7 +74,7 @@ async function exportResults() {
   });
   if (!error) {
     addTask(data);
-    message.info($t('general.msgExportStarted'));
+    message.info($t('common.msgExportStarted'));
     startTasksPolling();
   }
   loadingExport.value = false;

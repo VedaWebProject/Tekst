@@ -41,13 +41,13 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
         <n-flex align="flex-start" style="width: 100%">
           <n-form-item
             ignore-path-change
-            :label="$t('general.key')"
+            :label="$t('common.key')"
             :path="`config.textAnnotation.annotationGroups[${index}].key`"
             :rule="typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupKey"
           >
             <n-input
               v-model:value="model.annotationGroups[index].key"
-              :placeholder="$t('general.key')"
+              :placeholder="$t('common.key')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -80,7 +80,7 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

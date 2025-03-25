@@ -113,7 +113,7 @@ watch(
 
 <template>
   <icon-heading level="1" :icon="SettingsIcon">
-    {{ $t('general.settings') }}
+    {{ $t('common.settings') }}
     <help-button-widget help-key="adminSettingsView" />
   </icon-heading>
 
@@ -134,8 +134,8 @@ watch(
         :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
       >
         <!-- GENERAL -->
-        <n-tab-pane :tab="$t('general.general')" name="general">
-          <form-section-heading :label="$t('general.platform')" />
+        <n-tab-pane :tab="$t('common.general')" name="general">
+          <form-section-heading :label="$t('common.platform')" />
 
           <!-- PLATFORM TITLE -->
           <n-form-item path="platformName" :label="$t('models.platformSettings.platformName')">
@@ -289,14 +289,14 @@ watch(
               <template #default="{ index }">
                 <n-form-item
                   ignore-path-change
-                  :label="$t('general.name')"
+                  :label="$t('common.name')"
                   :path="`fonts[${index}]`"
                   :rule="platformSettingsFormRules.fontName"
                   style="flex: 2"
                 >
                   <n-input
                     v-model:value="formModel.fonts[index]"
-                    :placeholder="$t('general.name')"
+                    :placeholder="$t('common.name')"
                     @keydown.enter.prevent
                   />
                 </n-form-item>
@@ -311,7 +311,7 @@ watch(
                 />
               </template>
               <template #create-button-default>
-                {{ $t('general.addAction') }}
+                {{ $t('common.add') }}
               </template>
             </n-dynamic-input>
           </n-form-item>
@@ -342,26 +342,26 @@ watch(
                 >
                   <n-form-item
                     ignore-path-change
-                    :label="$t('general.key')"
+                    :label="$t('common.key')"
                     :path="`oskModes[${index}].key`"
                     :rule="platformSettingsFormRules.oskModeKey"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].key"
-                      :placeholder="$t('general.key')"
+                      :placeholder="$t('common.key')"
                       @keydown.enter.prevent
                     />
                   </n-form-item>
                   <n-form-item
                     ignore-path-change
-                    :label="$t('general.name')"
+                    :label="$t('common.name')"
                     :path="`oskModes[${index}].name`"
                     :rule="platformSettingsFormRules.oskModeName"
                     style="flex: 2"
                   >
                     <n-input
                       v-model:value="formModel.oskModes[index].name"
-                      :placeholder="$t('general.name')"
+                      :placeholder="$t('common.name')"
                       @keydown.enter.prevent
                     />
                   </n-form-item>
@@ -375,7 +375,7 @@ watch(
                       v-model:value="formModel.oskModes[index].font"
                       clearable
                       :options="oskFontOptions"
-                      :placeholder="$t('general.default')"
+                      :placeholder="$t('common.default')"
                       :consistent-menu-width="false"
                       style="min-width: 200px"
                       @keydown.enter.prevent
@@ -396,7 +396,7 @@ watch(
                 />
               </template>
               <template #create-button-default>
-                {{ $t('general.addAction') }}
+                {{ $t('common.add') }}
               </template>
             </n-dynamic-input>
           </n-form-item>
@@ -444,10 +444,10 @@ watch(
 
     <button-shelf>
       <n-button secondary :disabled="!changed" @click="resetForm">{{
-        $t('general.resetAction')
+        $t('common.reset')
       }}</n-button>
       <n-button type="primary" :disabled="!changed" @click="handleSaveClick">{{
-        $t('general.saveAction')
+        $t('common.save')
       }}</n-button>
     </button-shelf>
   </div>

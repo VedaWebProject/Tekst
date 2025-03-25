@@ -11,7 +11,7 @@ const emit = defineEmits(['click']);
     type="primary"
     circle
     size="large"
-    :title="$t('account.logoutBtn')"
+    :title="$t('common.logout')"
     :focusable="false"
     @click="
       () => {

@@ -31,7 +31,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <n-spin v-if="loading" :description="$t('general.loading')" class="centered-spinner" />
+  <n-spin v-if="loading" :description="$t('common.loading')" class="centered-spinner" />
   <template v-else-if="page">
     <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}

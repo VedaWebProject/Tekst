@@ -41,10 +41,10 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
   if (value === 'html') {
     // show info about HTML sanitization when switching to HTML mode
     dialog.warning({
-      title: $t('general.warning'),
+      title: $t('common.warning'),
       content: $t('htmlEditor.warnSwitchToHTML'),
-      positiveText: $t('general.okAction'),
-      negativeText: $t('general.cancelAction'),
+      positiveText: $t('common.ok'),
+      negativeText: $t('common.cancel'),
       closable: false,
       ...dialogProps,
       onPositiveClick: () => (editorMode.value = value),
@@ -52,10 +52,10 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
   } else {
     // switching to WYSIWYG is a potentially destructive operation
     dialog.warning({
-      title: $t('general.warning'),
+      title: $t('common.warning'),
       content: $t('htmlEditor.warnSwitchToWysiwyg'),
-      positiveText: $t('general.yesAction'),
-      negativeText: $t('general.noAction'),
+      positiveText: $t('common.yes'),
+      negativeText: $t('common.no'),
       closable: false,
       ...dialogProps,
       onPositiveClick: () => (editorMode.value = value),

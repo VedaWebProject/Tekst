@@ -53,9 +53,7 @@ const isCollapsed = computed(() => isCollapsable.value && collapsed.value);
       </template>
       <template v-if="showBtnText">
         {{
-          isCollapsed
-            ? expandText || $t('general.expandAction')
-            : collapseText || $t('general.collapseAction')
+          isCollapsed ? expandText || $t('common.expand') : collapseText || $t('common.collapse')
         }}
       </template>
     </n-button>

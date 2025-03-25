@@ -22,12 +22,12 @@ const model = defineModel<AnyContentCreate>({ required: true });
       <n-collapse-item name="meta">
         <template #header>
           <n-badge value="!" :show="!!model.comment || !!model.notes" :offset="[10, 2]">
-            {{ $t('resources.types.common.label') }}
+            {{ $t('common.meta') }}
           </n-badge>
         </template>
         <!-- COMMENT -->
         <n-form-item
-          :label="$t('resources.types.common.contentFields.comment')"
+          :label="$t('common.comment')"
           path="comment"
           :rule="contentFormRules.common.comment"
         >
@@ -35,7 +35,7 @@ const model = defineModel<AnyContentCreate>({ required: true });
             v-model:value="model.comment"
             type="textarea"
             :rows="3"
-            :placeholder="$t('resources.types.common.contentFields.comment')"
+            :placeholder="$t('common.comment')"
           />
         </n-form-item>
         <!-- NOTES -->

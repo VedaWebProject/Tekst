@@ -25,7 +25,7 @@ const privacyPolicy = computed(
       </router-link>
     </div>
     <div v-if="state.pf?.state.showTekstFooterHint" class="tekst-hint text-tiny">
-      {{ $t('general.tekstFooterHint') }}
+      {{ $t('common.tekstFooterHint') }}
       <a
         href="http://github.com/VedaWebProject/Tekst"
         target="_blank"

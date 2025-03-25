@@ -110,7 +110,7 @@ onMounted(() => {
       </n-form>
       <button-shelf top-gap>
         <n-button type="primary" :loading="loading" :disabled="loading" @click="handlePasswordSave">
-          {{ $t('general.saveAction') }}
+          {{ $t('common.save') }}
         </n-button>
       </button-shelf>
     </div>

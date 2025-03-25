@@ -86,7 +86,7 @@ function groupAndSort(entries: LocationMetadataContentRead['entries']): {
       <template v-for="group in c.groups" :key="group.name">
         <tr>
           <td colspan="2" class="group-header text-small b">
-            {{ group.label || group.name || $t('general.other') }}
+            {{ group.label || group.name || $t('common.other') }}
           </td>
         </tr>
         <tr v-for="entry in group.entries" :key="entry.key">

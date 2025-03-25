@@ -106,7 +106,7 @@ async function handleWidgetClick() {
   >
     <n-input
       v-model:value="filterString"
-      :placeholder="$t('search.searchAction')"
+      :placeholder="$t('common.searchAction')"
       round
       clearable
       class="my-md"
@@ -155,7 +155,7 @@ async function handleWidgetClick() {
                 :focusable="false"
                 :disabled="loading"
                 :loading="loading"
-                :title="$t('general.deleteAction')"
+                :title="$t('common.delete')"
                 @click.stop.prevent="handleDeleteBookmark(bookmark.id)"
               >
                 <template #icon>

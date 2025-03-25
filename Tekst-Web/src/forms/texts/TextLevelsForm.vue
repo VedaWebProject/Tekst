@@ -62,12 +62,12 @@ function handleEditClick(level: number) {
 function handleDeleteClick(level: number) {
   const targetLevelLabel = getLevelLabel(levels.value[level]);
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('texts.levels.warnDeleteLevel', {
       levelLabel: targetLevelLabel,
     }),
-    positiveText: $t('general.deleteAction'),
-    negativeText: $t('general.cancelAction'),
+    positiveText: $t('common.delete'),
+    negativeText: $t('common.cancel'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -152,7 +152,7 @@ async function handleModalSubmit() {
 
 <template>
   <div>
-    <form-section-heading :label="$t('models.text.level', 2)" help-key="textLevels" />
+    <form-section-heading :label="$t('common.level', 2)" help-key="textLevels" />
 
     <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
       <insert-item-separator
@@ -206,7 +206,7 @@ async function handleModalSubmit() {
       <n-alert
         v-if="editModalWarning"
         closable
-        :title="$t('general.warning')"
+        :title="$t('common.warning')"
         type="warning"
         class="mb-lg"
       >
@@ -226,18 +226,18 @@ async function handleModalSubmit() {
           v-model="formModel.translations"
           parent-form-path-prefix="translations"
           :loading="loading"
-          :main-form-label="$t('models.text.level')"
-          :translation-form-label="$t('models.text.level')"
+          :main-form-label="$t('common.level')"
+          :translation-form-label="$t('common.level')"
           :translation-form-rules="textFormRules.levelTranslation"
         />
       </n-form>
 
       <button-shelf top-gap>
         <n-button secondary :disabled="loading" @click="showEditModal = false">
-          {{ $t('general.cancelAction') }}
+          {{ $t('common.cancel') }}
         </n-button>
         <n-button type="primary" :loading="loading" :disabled="loading" @click="handleModalSubmit">
-          {{ $t('general.saveAction') }}
+          {{ $t('common.save') }}
         </n-button>
       </button-shelf>
     </generic-modal>

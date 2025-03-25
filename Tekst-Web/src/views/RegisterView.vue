@@ -126,7 +126,7 @@ onMounted(() => {
 <template>
   <div :class="{ 'form-container': !introTextPresent }">
     <icon-heading level="1" :icon="UserIcon">
-      {{ $t('register.heading') }}
+      {{ $t('common.register') }}
     </icon-heading>
 
     <div class="content-block">
@@ -186,11 +186,11 @@ onMounted(() => {
               @keydown.enter.prevent
             />
           </n-form-item>
-          <n-form-item path="name" :label="$t('models.user.name')">
+          <n-form-item path="name" :label="$t('common.name')">
             <n-input
               v-model:value="formModel.name"
               type="text"
-              :placeholder="$t('models.user.name')"
+              :placeholder="$t('common.name')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -212,7 +212,7 @@ onMounted(() => {
             :disabled="loading"
             @click="handleRegisterClick"
           >
-            {{ $t('register.register') }}
+            {{ $t('common.register') }}
           </n-button>
           <n-button secondary block @click="switchToLogin">
             {{ $t('register.switchToLogin') }}

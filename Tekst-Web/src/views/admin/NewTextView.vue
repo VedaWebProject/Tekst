@@ -83,7 +83,7 @@ async function handleSave() {
     <help-button-widget help-key="adminNewTextView" />
   </icon-heading>
 
-  <n-alert :title="$t('general.info')" type="info" closable>
+  <n-alert :title="$t('common.information')" type="info" closable>
     {{ $t('admin.newText.headerInfoAlert') }}
   </n-alert>
 
@@ -98,11 +98,11 @@ async function handleSave() {
       require-mark-placement="right-hanging"
     >
       <!-- TITLE -->
-      <n-form-item path="title" :label="$t('general.title')">
+      <n-form-item path="title" :label="$t('common.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="$t('general.title')"
+          :placeholder="$t('common.title')"
           @keydown.enter.prevent
           @input="handleTitleChange"
         />
@@ -119,7 +119,7 @@ async function handleSave() {
       </n-form-item>
 
       <!-- STRUCTURE LEVELS -->
-      <n-form-item :label="$t('models.text.level', 2)" path="levels" required>
+      <n-form-item :label="$t('common.level', 2)" path="levels" required>
         <n-dynamic-input
           v-model:value="model.levels"
           :min="1"
@@ -142,7 +142,7 @@ async function handleSave() {
                 <n-input
                   v-model:value="model.levels[levelIndex][0].translation"
                   type="text"
-                  :placeholder="$t('models.text.levelLabel')"
+                  :placeholder="$t('common.label')"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -163,7 +163,7 @@ async function handleSave() {
 
     <button-shelf top-gap>
       <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>

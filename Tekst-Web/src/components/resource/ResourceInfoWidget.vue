@@ -42,7 +42,7 @@ const showInfoModal = ref(false);
 <template>
   <content-container-header-widget
     :full="full"
-    :title="$t('browse.contents.widgets.infoWidget.title')"
+    :title="$t('common.information')"
     :icon-component="InfoIcon"
     @click="
       () => {
@@ -87,7 +87,7 @@ const showInfoModal = ref(false);
     <!-- DESCRIPTION -->
     <template v-if="!!descriptionHtml">
       <icon-heading level="3" :icon="DescIcon">
-        {{ $t('general.description') }}
+        {{ $t('common.description') }}
       </icon-heading>
       <collapsable-content>
         <hydrated-html :html="descriptionHtml" class="content-font" />
@@ -103,7 +103,7 @@ const showInfoModal = ref(false);
 
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">
-        {{ $t('general.closeAction') }}
+        {{ $t('common.close') }}
       </n-button>
     </button-shelf>
   </generic-modal>

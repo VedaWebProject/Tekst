@@ -88,7 +88,7 @@ async function handleClick() {
 
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showModal = false)">
-        {{ $t('general.closeAction') }}
+        {{ $t('common.close') }}
       </n-button>
     </button-shelf>
   </generic-modal>

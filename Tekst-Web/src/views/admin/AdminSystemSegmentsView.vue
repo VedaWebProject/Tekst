@@ -179,10 +179,10 @@ function handleCancelClick() {
     return;
   }
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('admin.segments.warnCancel'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: resetForm,
@@ -200,12 +200,12 @@ async function handleDeleteClick() {
   if (!selectedSegmentId.value) return;
 
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('admin.segments.warnDelete', {
       title: segmentModel.value?.title || segmentModel.value?.key || '',
     }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -264,17 +264,17 @@ async function handleDeleteClick() {
         require-mark-placement="right-hanging"
       >
         <!-- TITLE -->
-        <n-form-item path="title" :label="$t('general.title')">
+        <n-form-item path="title" :label="$t('common.title')">
           <n-input
             ref="firstInputRef"
             v-model:value="segmentModel.title"
             type="text"
-            :placeholder="$t('general.title')"
+            :placeholder="$t('common.title')"
             @keydown.enter.prevent
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('general.type')">
+        <n-form-item path="key" :label="$t('common.type')">
           <n-select
             v-model:value="segmentModel.key"
             :options="systemSegmentKeyOptions"
@@ -284,11 +284,11 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- LOCALE -->
-        <n-form-item path="locale" :label="$t('models.segment.locale')">
+        <n-form-item path="locale" :label="$t('common.language')">
           <n-select
             v-model:value="segmentModel.locale"
             :options="localeOptions"
-            :placeholder="$t('general.language')"
+            :placeholder="$t('common.language')"
             :consistent-menu-width="false"
             :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
             style="min-width: 200px"
@@ -296,7 +296,7 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- HTML -->
-        <n-form-item path="html" :label="$t('models.segment.html')">
+        <n-form-item path="html" :label="$t('common.content')">
           <html-editor
             v-model:value="segmentModel.html"
             v-model:editor-mode="segmentModel.editorMode"
@@ -309,16 +309,16 @@ async function handleDeleteClick() {
       <button-shelf top-gap>
         <template #start>
           <n-button v-if="selectedSegmentId" secondary type="error" @click="handleDeleteClick">
-            {{ $t('general.deleteAction') }}
+            {{ $t('common.delete') }}
           </n-button>
         </template>
-        <n-button secondary @click="handleCancelClick">{{ $t('general.cancelAction') }}</n-button>
+        <n-button secondary @click="handleCancelClick">{{ $t('common.cancel') }}</n-button>
         <n-button
           type="primary"
           :loading="loading"
           :disabled="!modelChanged"
           @click="handleSaveClick"
-          >{{ $t('general.saveAction') }}</n-button
+          >{{ $t('common.save') }}</n-button
         >
       </button-shelf>
     </div>

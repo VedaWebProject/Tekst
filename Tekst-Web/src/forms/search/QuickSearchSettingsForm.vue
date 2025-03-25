@@ -55,7 +55,7 @@ const textOptions = computed(() => state.pf?.texts.map((t) => ({ label: t.title,
     <n-form-item
       v-if="(state.pf?.texts.length || 0) > 1"
       path="txt"
-      :label="$t('search.settings.quick.texts')"
+      :label="$t('common.text', 2)"
       class="mt-lg"
     >
       <n-select

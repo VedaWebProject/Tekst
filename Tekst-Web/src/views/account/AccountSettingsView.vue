@@ -160,10 +160,10 @@ function handleEmailSave() {
           updateEmail();
         } else {
           dialog.warning({
-            title: $t('general.warning'),
+            title: $t('common.warning'),
             content: $t('account.settings.msgEmailChangeWarning'),
-            positiveText: $t('general.saveAction'),
-            negativeText: $t('general.cancelAction'),
+            positiveText: $t('common.save'),
+            negativeText: $t('common.cancel'),
             closable: false,
             ...dialogProps,
             onPositiveClick: updateEmail,
@@ -181,10 +181,10 @@ async function handlePasswordSave() {
     ?.validate(async (errors) => {
       if (errors) return;
       dialog.warning({
-        title: $t('general.warning'),
+        title: $t('common.warning'),
         content: $t('account.settings.msgPasswordChangeWarning'),
-        positiveText: $t('general.saveAction'),
-        negativeText: $t('general.cancelAction'),
+        positiveText: $t('common.save'),
+        negativeText: $t('common.cancel'),
         closable: false,
         ...dialogProps,
         onPositiveClick: async () => {
@@ -266,10 +266,10 @@ async function handlePublicFieldsSave() {
 
 async function handleDeleteAccount() {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('account.settings.msgDeleteAccountWarning'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     positiveButtonProps: { ...dialogProps.positiveButtonProps, type: 'error' },
     negativeButtonProps: { ...dialogProps.negativeButtonProps, type: 'success' },
@@ -326,11 +326,11 @@ async function checkUrlInput(input: HTMLInputElement) {
         />
       </n-form-item>
       <!-- NAME -->
-      <n-form-item path="name" :label="$t('models.user.name')">
+      <n-form-item path="name" :label="$t('common.name')">
         <n-input
           v-model:value="userDataFormModel.name"
           type="text"
-          :placeholder="$t('models.user.name')"
+          :placeholder="$t('common.name')"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -373,7 +373,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !userDataModelChanged"
         @click="() => (userDataFormModel = initialUserDataModel())"
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -381,7 +381,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !userDataModelChanged"
         @click="handleUserDataSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>
@@ -414,7 +414,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !emailModelChanged"
         @click="() => (emailFormModel = initialEmailModel())"
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -422,7 +422,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !emailModelChanged"
         @click="handleEmailSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
 
@@ -470,7 +470,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !passwordModelChanged"
         @click="() => (passwordFormModel = initialPasswordModel())"
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -478,7 +478,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !passwordModelChanged"
         @click="handlePasswordSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>
@@ -519,7 +519,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !publicFieldsModelChanged"
         @click="() => (publicFieldsFormModel = initialPublicFieldsModel())"
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -527,7 +527,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !publicFieldsModelChanged"
         @click="handlePublicFieldsSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>
@@ -562,7 +562,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !userNotificationTriggersModelChanged"
         @click="() => (userNotificationTriggersFormModel = initialUserNotificationTriggersModel())"
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -570,7 +570,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !userNotificationTriggersModelChanged"
         @click="handleUserNotificationTriggersSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>
@@ -607,7 +607,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           () => (adminNotificationTriggersFormModel = initialAdminNotificationTriggersModel())
         "
       >
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -615,7 +615,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         :disabled="loading || !adminNotificationTriggersModelChanged"
         @click="handleAdminNotificationTriggersSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>

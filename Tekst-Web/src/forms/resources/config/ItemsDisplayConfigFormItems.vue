@@ -51,7 +51,7 @@ const itemGroupOptions = computed(() =>
           <!-- GROUP NAME -->
           <n-form-item
             ignore-path-change
-            :label="groupNameLabel || $t('general.name')"
+            :label="groupNameLabel || $t('common.name')"
             :path="`${groupsModelPath}[${index}].name`"
             :rule="commonResourceConfigFormRules.itemGroupNameRequired"
             style="flex: 1 200px"
@@ -65,8 +65,8 @@ const itemGroupOptions = computed(() =>
             secondary
             :parent-form-path-prefix="`${groupsModelPath}[${index}].translations`"
             style="flex: 2 100%"
-            :main-form-label="$t('general.translation')"
-            :translation-form-label="$t('general.translation', 2)"
+            :main-form-label="$t('common.translation')"
+            :translation-form-label="$t('common.translation', 2)"
             :translation-form-rules="commonResourceConfigFormRules.itemsDisplayTranslation"
           />
         </n-flex>
@@ -85,7 +85,7 @@ const itemGroupOptions = computed(() =>
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>
@@ -111,7 +111,7 @@ const itemGroupOptions = computed(() =>
           <!-- ITEM NAME -->
           <n-form-item
             ignore-path-change
-            :label="itemNameLabel || $t('general.key')"
+            :label="itemNameLabel || $t('common.key')"
             :path="`${displayPropsModelPath}[${index}].name`"
             :rule="commonResourceConfigFormRules.itemName"
             style="flex: 1 200px"
@@ -130,15 +130,15 @@ const itemGroupOptions = computed(() =>
             secondary
             :parent-form-path-prefix="`${displayPropsModelPath}[${index}].translations`"
             style="flex: 2 100%"
-            :main-form-label="$t('general.translation', 2)"
-            :translation-form-label="$t('general.translation')"
+            :main-form-label="$t('common.translation', 2)"
+            :translation-form-label="$t('common.translation')"
             :translation-form-rules="commonResourceConfigFormRules.itemsDisplayTranslation"
           />
 
           <!-- ITEM GROUP -->
           <n-form-item
             ignore-path-change
-            :label="$t('general.group')"
+            :label="$t('common.group')"
             :path="`${displayPropsModelPath}[${index}].group`"
             :rule="
               itemGroupingRequired
@@ -170,7 +170,7 @@ const itemGroupOptions = computed(() =>
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

@@ -85,7 +85,7 @@ async function handleOkClick() {
     :icon="UserIcon"
     @update:show="(v) => (show = v)"
   >
-    <n-alert type="warning" :title="$t('general.warning')" class="mb-lg">
+    <n-alert type="warning" :title="$t('common.warning')" class="mb-lg">
       {{ $t('resources.warnTransfer') }}
     </n-alert>
     <div class="mb-lg">{{ resourceTitle }} – {{ $t('resources.transferAction') }}:</div>
@@ -116,7 +116,7 @@ async function handleOkClick() {
     </n-form>
     <button-shelf top-gap>
       <n-button secondary :disabled="loading" @click="show = false">
-        {{ $t('general.cancelAction') }}
+        {{ $t('common.cancel') }}
       </n-button>
       <n-button
         type="primary"
@@ -124,7 +124,7 @@ async function handleOkClick() {
         :loading="loading"
         @click="handleOkClick"
       >
-        {{ $t('general.okAction') }}
+        {{ $t('common.ok') }}
       </n-button>
     </button-shelf>
   </generic-modal>

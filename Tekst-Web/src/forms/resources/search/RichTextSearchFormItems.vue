@@ -15,7 +15,7 @@ const model = defineModel<RichTextSearchQuery>({ required: true });
 <template>
   <n-form-item
     ignore-path-change
-    :label="$t('resources.types.richText.searchFields.html')"
+    :label="$t('common.text')"
     :path="`queries[${queryIndex}].rts.html`"
     :rule="searchFormRules.richText.html"
   >
@@ -23,7 +23,7 @@ const model = defineModel<RichTextSearchQuery>({ required: true });
       v-model="model.html"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
-      :placeholder="$t('resources.types.richText.searchFields.html')"
+      :placeholder="$t('common.text')"
     />
   </n-form-item>
 </template>

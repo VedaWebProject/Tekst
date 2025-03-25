@@ -130,7 +130,7 @@ watch(
           <n-tag
             v-if="!browse.focusView && props.resource.level !== browse.level"
             size="small"
-            :title="`${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`"
+            :title="`${$t('common.level')}: ${state.textLevelLabels[props.resource.level]}`"
           >
             <template #icon>
               <n-icon :component="LevelsIcon" />
@@ -147,7 +147,7 @@ watch(
           style="flex: 2"
         >
           <n-icon :component="HourglassIcon" />
-          <span>{{ $t('general.loading') }}</span>
+          <span>{{ $t('common.loading') }}</span>
         </n-flex>
       </n-flex>
       <content-header-widget-bar

@@ -42,20 +42,20 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
               v-model:value="value.prop"
               filterable
               :options="propertyOptions"
-              :placeholder="$t('general.selectAction')"
+              :placeholder="$t('common.select')"
             />
           </n-form-item>
           <!-- PROPERTY VALUE -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.settings.config.general.contentCss.value')"
+            :label="$t('common.value')"
             :path="`config.general.contentCss[${index}].value`"
             :rule="contentCssConfigFormRules.value"
             style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.value"
-              :placeholder="$t('resources.settings.config.general.contentCss.value')"
+              :placeholder="$t('common.value')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -71,7 +71,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

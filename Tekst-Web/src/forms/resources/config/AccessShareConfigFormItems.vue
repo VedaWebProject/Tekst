@@ -116,13 +116,13 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
 
 <template>
   <div>
-    <n-alert v-if="!sharingAuthorized" type="warning" :title="$t('general.warning')" class="mb-lg">
+    <n-alert v-if="!sharingAuthorized" type="warning" :title="$t('common.warning')" class="mb-lg">
       {{ $t('resources.settings.sharingUnauthorized') }}
     </n-alert>
     <n-alert
       v-else-if="props.resource.public || props.resource.proposed"
       type="warning"
-      :title="$t('general.important')"
+      :title="$t('common.important')"
       class="mb-lg"
     >
       {{ $t('resources.settings.unavailableWhenPublished') }}

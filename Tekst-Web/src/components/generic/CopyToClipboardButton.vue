@@ -32,7 +32,7 @@ function copyToClipboard() {
     :type="copied ? 'success' : (attrs.type as Type | undefined)"
     :disabled="!isSupported || !text"
     @click="copyToClipboard"
-    :title="title || $t('general.copyAction')"
+    :title="title || $t('common.copy')"
   >
     <template #icon>
       <n-icon :component="CopyIcon" />

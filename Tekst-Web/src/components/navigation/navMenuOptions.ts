@@ -77,7 +77,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const menuOptions = computed<MenuOption[]>(() => [
     {
       label: renderLink(
-        () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('nav.browse'),
+        () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('common.browse'),
         {
           name: 'browse',
           params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
@@ -88,7 +88,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     },
     {
       label: renderLink(
-        () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search'),
+        () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search'),
         { name: 'search' }
       ),
       key: 'search',
@@ -122,7 +122,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     ...(state.smallScreen && !!auth.user?.isSuperuser
       ? [
           {
-            label: renderLink(() => $t('texts.heading'), {
+            label: renderLink(() => $t('common.text', 2), {
               name: 'textSettings',
               params: {
                 textSlug: state.text?.slug || '',
@@ -136,7 +136,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     ...(state.smallScreen && auth.loggedIn
       ? [
           {
-            label: renderLink(() => $t('community.heading'), {
+            label: renderLink(() => $t('common.community'), {
               name: 'community',
             }),
             key: 'community',
@@ -148,7 +148,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       ? [
           {
             label: () =>
-              pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('nav.info'),
+              pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('common.info'),
             key: 'info',
             children: infoPagesOptions.value,
             icon: (showIcons && renderIcon(InfoIcon)) || undefined,
@@ -197,7 +197,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
             type: 'divider',
           },
           {
-            label: renderLink(() => $t('account.logoutBtn'), { name: 'logout' }),
+            label: renderLink(() => $t('common.logout'), { name: 'logout' }),
             key: 'logout',
             icon: (showIcons && renderIcon(LogoutIcon)) || undefined,
           },
@@ -213,7 +213,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
 export function useAdminMenuOptions(showIcons: boolean = true) {
   const menuOptions = computed<MenuOption[]>(() => [
     {
-      label: renderLink(() => $t('general.settings'), {
+      label: renderLink(() => $t('common.settings'), {
         name: 'adminSettings',
       }),
       key: 'adminSettings',

@@ -21,7 +21,7 @@ const showModal = ref(false);
   <n-badge v-if="!!resource.contents?.[0]?.comment" show dot :offset="[-5, 10]">
     <content-container-header-widget
       :full="full"
-      :title="$t('general.comment')"
+      :title="$t('common.comment')"
       :icon-component="CommentIcon"
       @click="
         () => {
@@ -35,7 +35,7 @@ const showModal = ref(false);
   <generic-modal
     v-model:show="showModal"
     width="wide"
-    :title="$t('general.comment')"
+    :title="$t('common.comment')"
     :icon="CommentIcon"
   >
     <p v-if="resource.contents?.[0]?.comment" class="pre-wrap">
@@ -43,7 +43,7 @@ const showModal = ref(false);
     </p>
     <button-shelf top-gap>
       <n-button type="primary" @click="showModal = false">
-        {{ $t('general.closeAction') }}
+        {{ $t('common.close') }}
       </n-button>
     </button-shelf>
   </generic-modal>

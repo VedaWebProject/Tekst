@@ -34,7 +34,7 @@ const languageOptions = deeplSourceLanguages.map((l) => ({ label: l, value: l })
   </n-form-item>
 
   <!-- labelling type -->
-  <n-form-item :label="$t('general.type')">
+  <n-form-item :label="$t('common.type')">
     <n-select
       v-model:value="model.lineLabelling.labellingType"
       :disabled="!model.lineLabelling.enabled"

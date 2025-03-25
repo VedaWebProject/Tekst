@@ -307,10 +307,10 @@ async function deleteContent() {
 async function handleDeleteContentClick() {
   if (!contentModel.value) return;
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('contents.confirmDelete'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: deleteContent,
@@ -538,7 +538,7 @@ whenever(ArrowRight, () => {
           />
           <div v-if="compareResource.contents[0]?.comment" class="text-small translucent">
             <n-divider />
-            <strong>{{ $t('resources.types.common.contentFields.comment') }}:</strong>
+            <strong>{{ $t('common.comment') }}:</strong>
             {{ compareResource.contents[0].comment }}
           </div>
         </template>
@@ -632,11 +632,11 @@ whenever(ArrowRight, () => {
               :loading="loadingDelete"
               @click="handleDeleteContentClick"
             >
-              {{ $t('general.deleteAction') }}
+              {{ $t('common.delete') }}
             </n-button>
           </template>
           <n-button secondary :disabled="!changed || loading" @click="resetForm">
-            {{ $t('general.resetAction') }}
+            {{ $t('common.reset') }}
           </n-button>
           <n-button
             v-if="!changed && resource.originalId && contentModel.resourceId == resource.originalId"
@@ -645,7 +645,7 @@ whenever(ArrowRight, () => {
             :disabled="loading"
             @click="handleSaveClick"
           >
-            {{ $t('contents.lblBtnCopyOriginal') }}
+            {{ $t('common.copy') }}
           </n-button>
           <n-button
             v-else
@@ -654,7 +654,7 @@ whenever(ArrowRight, () => {
             :loading="loadingSave"
             @click="handleSaveClick"
           >
-            {{ $t('general.saveAction') }}
+            {{ $t('common.save') }}
           </n-button>
         </button-shelf>
       </template>

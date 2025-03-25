@@ -288,11 +288,11 @@ whenever(Enter, () => {
                 <button-shelf style="width: 100%">
                   <template #start>
                     <n-button secondary :focusable="false" @click="oskInput = []">
-                      {{ $t('general.resetAction') }}
+                      {{ $t('common.reset') }}
                     </n-button>
                   </template>
                   <n-button secondary :focusable="false" @click="handleClose">
-                    {{ $t('general.cancelAction') }}
+                    {{ $t('common.cancel') }}
                   </n-button>
                   <n-button
                     type="primary"
@@ -300,7 +300,7 @@ whenever(Enter, () => {
                     :disabled="loading || error"
                     @click.stop.prevent="handleSubmit"
                   >
-                    {{ $t('general.insertAction') }}
+                    {{ $t('common.insert') }}
                   </n-button>
                 </button-shelf>
               </template>

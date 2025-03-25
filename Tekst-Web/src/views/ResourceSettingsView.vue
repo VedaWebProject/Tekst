@@ -151,10 +151,10 @@ async function handleSaveClick() {
 
       <button-shelf top-gap>
         <n-button secondary :disabled="!changed" @click="handleResetClick">
-          {{ $t('general.resetAction') }}
+          {{ $t('common.reset') }}
         </n-button>
         <n-button type="primary" :disabled="!changed" @click="handleSaveClick">
-          {{ $t('general.saveAction') }}
+          {{ $t('common.save') }}
         </n-button>
       </button-shelf>
     </div>

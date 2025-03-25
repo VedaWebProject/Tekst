@@ -99,14 +99,14 @@ onBeforeRouteUpdate((to, from) => {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <form-section-heading :label="$t('general.general')" />
+      <form-section-heading :label="$t('common.general')" />
 
       <!-- TITLE -->
-      <n-form-item path="title" :label="$t('general.title')">
+      <n-form-item path="title" :label="$t('common.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="$t('general.title')"
+          :placeholder="$t('common.title')"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -115,8 +115,8 @@ onBeforeRouteUpdate((to, from) => {
       <translation-form-item
         v-model="model.subtitle"
         parent-form-path-prefix="subtitle"
-        :main-form-label="$t('general.subtitle')"
-        :translation-form-label="$t('general.subtitle')"
+        :main-form-label="$t('common.subtitle')"
+        :translation-form-label="$t('common.subtitle')"
         :translation-form-rules="textFormRules.subtitleTranslation"
       />
 
@@ -144,7 +144,7 @@ onBeforeRouteUpdate((to, from) => {
         <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
       </n-form-item>
 
-      <form-section-heading :label="$t('general.presentation')" />
+      <form-section-heading :label="$t('common.presentation')" />
 
       <!-- LOCATION DELIMITER -->
       <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
@@ -195,13 +195,13 @@ onBeforeRouteUpdate((to, from) => {
             <n-flex align="flex-start" style="width: 100%">
               <n-form-item
                 ignore-path-change
-                :label="$t('general.key')"
+                :label="$t('common.key')"
                 :path="`resourceCategories[${index}].key`"
                 :rule="textFormRules.resourceCategoryKey"
               >
                 <n-input
                   v-model:value="model.resourceCategories[index].key"
-                  :placeholder="$t('general.key')"
+                  :placeholder="$t('common.key')"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -211,8 +211,8 @@ onBeforeRouteUpdate((to, from) => {
                 secondary
                 :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                 style="flex: 2"
-                :main-form-label="$t('general.label')"
-                :translation-form-label="$t('general.label')"
+                :main-form-label="$t('common.label')"
+                :translation-form-label="$t('common.label')"
                 :translation-form-rules="textFormRules.resourceCategoryTranslation"
               />
             </n-flex>
@@ -230,7 +230,7 @@ onBeforeRouteUpdate((to, from) => {
             />
           </template>
           <template #create-button-default>
-            {{ $t('general.addAction') }}
+            {{ $t('common.add') }}
           </template>
         </n-dynamic-input>
       </n-form-item>
@@ -238,7 +238,7 @@ onBeforeRouteUpdate((to, from) => {
 
     <button-shelf top-gap>
       <n-button secondary :disabled="loading || !modelChanged" @click="resetForm">
-        {{ $t('general.resetAction') }}
+        {{ $t('common.reset') }}
       </n-button>
       <n-button
         type="primary"
@@ -246,7 +246,7 @@ onBeforeRouteUpdate((to, from) => {
         :disabled="loading || !modelChanged"
         @click="handleSave"
       >
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </div>

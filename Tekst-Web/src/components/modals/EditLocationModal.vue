@@ -87,7 +87,7 @@ defineExpose({ open });
       require-mark-placement="right-hanging"
       :rules="locationFormRules"
     >
-      <n-form-item :label="$t('models.location.label')" path="label">
+      <n-form-item :label="$t('common.label')" path="label">
         <n-input
           ref="labelInputRef"
           v-model:value="data.label"
@@ -100,7 +100,7 @@ defineExpose({ open });
         <n-select
           v-model:value="data.aliases"
           :options="aliasesOptions"
-          :placeholder="$t('general.addAction')"
+          :placeholder="$t('common.add')"
           tag
           filterable
           multiple
@@ -110,10 +110,10 @@ defineExpose({ open });
     </n-form>
     <button-shelf top-gap>
       <n-button secondary @click="show = false">
-        {{ $t('general.cancelAction') }}
+        {{ $t('common.cancel') }}
       </n-button>
       <n-button type="primary" :disabled="!data.label" @click.stop.prevent="handleSubmit">
-        {{ $t('general.saveAction') }}
+        {{ $t('common.save') }}
       </n-button>
     </button-shelf>
   </generic-modal>

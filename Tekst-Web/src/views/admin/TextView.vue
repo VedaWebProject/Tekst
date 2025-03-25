@@ -39,10 +39,10 @@ const textCanBeDeleted = computed(() => {
 
 async function handleDelete() {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('texts.settings.warnDeleteText', { title: state.text?.title || '?' }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -74,14 +74,14 @@ watch(
 <template>
   <n-flex align="center">
     <icon-heading level="1" :icon="TextsIcon" style="margin-bottom: 0">
-      {{ state.text?.title || $t('texts.heading') }}
+      {{ state.text?.title || $t('common.text') }}
     </icon-heading>
     <n-flex :wrap="false" justify="flex-end" style="flex: 2">
       <n-button secondary type="error" :disabled="!textCanBeDeleted" @click="handleDelete">
         <template #icon>
           <n-icon :component="DeleteIcon" />
         </template>
-        {{ $t('general.deleteAction') }}
+        {{ $t('common.delete') }}
       </n-button>
       <n-button type="primary" @click="router.push({ name: 'newText' })">
         <template #icon>
@@ -100,17 +100,17 @@ watch(
       :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
     >
       <!-- SETTINGS -->
-      <n-tab-pane :tab="$t('general.settings')" name="settings">
+      <n-tab-pane :tab="$t('common.settings')" name="settings">
         <text-settings-form />
       </n-tab-pane>
 
       <!-- LEVELS -->
-      <n-tab-pane :tab="$t('models.text.level', 2)" name="levels">
+      <n-tab-pane :tab="$t('common.level', 2)" name="levels">
         <text-levels-form />
       </n-tab-pane>
 
       <!-- LOCATIONS -->
-      <n-tab-pane :tab="$t('texts.locations.heading')" name="locations">
+      <n-tab-pane :tab="$t('common.location', 2)" name="locations">
         <text-locations-form />
       </n-tab-pane>
     </n-tabs>

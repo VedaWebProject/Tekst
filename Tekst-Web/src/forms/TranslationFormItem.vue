@@ -89,7 +89,7 @@ const localeOptions = computed(() =>
             <n-select
               v-model:value="translationValue.locale"
               :options="localeOptions"
-              :placeholder="$t('general.language')"
+              :placeholder="$t('common.language')"
               :consistent-menu-width="false"
               :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
               @keydown.enter.prevent
@@ -134,7 +134,7 @@ const localeOptions = computed(() =>
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

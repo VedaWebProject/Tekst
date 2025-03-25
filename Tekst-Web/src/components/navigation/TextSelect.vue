@@ -79,7 +79,7 @@ function handleSelect(text: TextRead) {
         :color="themeVars.baseColor"
         :focusable="false"
         :keyboard="false"
-        :title="$t('general.textSelect')"
+        :title="$t('common.textSelect')"
         class="text-select-btn"
         :style="{ cursor: !disabled ? 'pointer' : 'default' }"
       >
@@ -97,7 +97,7 @@ function handleSelect(text: TextRead) {
       color="var(--base-color)"
       :focusable="false"
       :keyboard="false"
-      :title="$t('general.info')"
+      :title="$t('common.information')"
       class="text-info-btn"
       @click="showInfoModal = true"
     >
@@ -108,10 +108,10 @@ function handleSelect(text: TextRead) {
 
     <generic-modal
       v-model:show="showInfoModal"
-      :title="state.text?.title || $t('general.info')"
+      :title="state.text?.title || $t('common.information')"
       :icon="TextsIcon"
     >
-      <h3>{{ $t('models.resource.modelLabel', 2) }} / {{ $t('models.text.level') }}</h3>
+      <h3>{{ $t('models.resource.modelLabel', 2) }} / {{ $t('common.level') }}</h3>
       <template
         v-for="(levelLabel, levelIndex) in state.textLevelLabels"
         :key="`level-${levelIndex}`"

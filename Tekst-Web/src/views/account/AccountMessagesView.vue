@@ -48,7 +48,7 @@ onMounted(() => {
 
   <n-spin
     v-else-if="userMessages.loading"
-    :description="$t('general.loading')"
+    :description="$t('common.loading')"
     class="centered-spinner"
   />
 

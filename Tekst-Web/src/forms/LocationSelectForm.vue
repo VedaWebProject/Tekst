@@ -25,7 +25,7 @@ const lvl = ref(Math.max(0, model.value.length - 1));
 const lvlOptions = computed(() =>
   state.textLevelLabels.map((l, i) => ({
     value: i,
-    label: l + (state.text?.defaultLevel === i ? ` (${$t('general.default')})` : ''),
+    label: l + (state.text?.defaultLevel === i ? ` (${$t('common.default')})` : ''),
   }))
 );
 // react to level selection changes
@@ -176,7 +176,7 @@ onMounted(() => {
     :show-require-mark="false"
   >
     <template v-if="props.allowLevelChange">
-      <n-form-item :label="$t('models.text.level')">
+      <n-form-item :label="$t('common.level')">
         <n-select
           v-model:value="lvl"
           :options="lvlOptions"

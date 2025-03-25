@@ -143,7 +143,7 @@ onMounted(() => {
         </n-flex>
         <n-flex v-else align="center" :wrap="false" class="translucent">
           <n-icon :component="RefreshIcon" />
-          {{ $t('general.loading') }}
+          {{ $t('common.loading') }}
         </n-flex>
       </n-flex>
 

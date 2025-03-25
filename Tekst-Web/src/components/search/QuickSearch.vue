@@ -34,7 +34,7 @@ const tooltip = computed(() => {
         .map((t) => `"${t.title}"`)
         .join(', ')
     : $t('search.settings.quick.textsPlaceholder');
-  return `${$t('search.quickSearch.title')} ${$t('general.in')}: ${targetTxtTitles}`;
+  return `${$t('search.quickSearch.title')} ${$t('common.in')}: ${targetTxtTitles}`;
 });
 
 const locationSelectOptions = ref<SelectOption[]>([]);
@@ -104,7 +104,7 @@ async function handleSearch() {
         },
         {
           type: 'group',
-          label: $t('search.searchAction'),
+          label: $t('common.searchAction'),
           children: [
             {
               type: 'search',
@@ -182,7 +182,7 @@ function handleSettingsSubmit() {
         <template #suffix>
           <n-button
             text
-            :title="$t('general.settings')"
+            :title="$t('common.settings')"
             :focusable="false"
             @click.stop.prevent="
               () => {
@@ -203,7 +203,7 @@ function handleSettingsSubmit() {
 
   <generic-modal
     v-model:show="showSettingsModal"
-    :title="`${$t('search.quickSearch.title')}: ${$t('general.settings')}`"
+    :title="`${$t('search.quickSearch.title')}: ${$t('common.settings')}`"
     :icon="SettingsIcon"
   >
     <general-search-settings-form />
@@ -211,7 +211,7 @@ function handleSettingsSubmit() {
 
     <button-shelf>
       <n-button type="primary" @click="handleSettingsSubmit">
-        {{ $t('general.okAction') }}
+        {{ $t('common.ok') }}
       </n-button>
     </button-shelf>
   </generic-modal>

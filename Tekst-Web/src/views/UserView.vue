@@ -39,7 +39,7 @@ watchEffect(() => {
     {{ $t('account.profileHeading') }}
   </icon-heading>
 
-  <n-spin v-if="loading" :description="$t('general.loading')" class="centered-spinner" />
+  <n-spin v-if="loading" :description="$t('common.loading')" class="centered-spinner" />
 
   <div v-else-if="error" class="content-block">
     <h1>Oops... {{ $t('errors.error') }}!</h1>

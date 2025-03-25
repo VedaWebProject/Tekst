@@ -91,7 +91,7 @@ onMounted(async () => {
               tag
               clearable
               :options="entriesOptions[index].keysOptions"
-              :placeholder="$t('general.key')"
+              :placeholder="$t('common.key')"
               @update:value="() => (model.entries[index].value = [])"
             />
           </n-form-item>
@@ -110,7 +110,7 @@ onMounted(async () => {
               clearable
               :disabled="!model.entries[index].key"
               :options="entriesOptions[index].valuesOptions"
-              :placeholder="$t('general.value')"
+              :placeholder="$t('common.value')"
               :style="metaValueStyle"
               :render-label="renderValueLabel"
             />
@@ -128,7 +128,7 @@ onMounted(async () => {
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

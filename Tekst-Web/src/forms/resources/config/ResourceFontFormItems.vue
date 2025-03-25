@@ -22,7 +22,7 @@ const options = computed(() =>
       v-model:value="model"
       clearable
       :options="options"
-      :placeholder="$t('general.default')"
+      :placeholder="$t('common.default')"
     />
   </n-form-item>
 </template>

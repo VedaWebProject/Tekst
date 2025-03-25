@@ -44,7 +44,7 @@ function submit() {
   <generic-modal v-model:show="show">
     <template #header>
       <icon-heading level="2" :icon="BookIcon" class="m-0">
-        {{ $t('browse.location.modalHeading') }}
+        {{ $t('common.location') }}
         <help-button-widget help-key="browseLocationControls" />
       </icon-heading>
     </template>

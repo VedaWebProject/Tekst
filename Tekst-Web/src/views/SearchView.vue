@@ -46,7 +46,7 @@ const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
 const searchHeading = computed(
-  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search')
+  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search')
 );
 
 const resourceOptions = computed(() => {
@@ -253,7 +253,7 @@ whenever(ctrlEnter, () => {
             <n-button
               v-if="formModel.queries.length > 1"
               secondary
-              :title="$t('general.removeAction')"
+              :title="$t('common.remove')"
               :focusable="false"
               class="action-button-remove"
               @click="removeSearchItem(queryIndex)"
@@ -274,7 +274,7 @@ whenever(ctrlEnter, () => {
         <n-button
           v-if="formModel.queries.length < 32 && queryIndex === formModel.queries.length - 1"
           secondary
-          :title="$t('general.insertAction')"
+          :title="$t('common.insert')"
           :focusable="false"
           class="mt-lg"
           @click="addSearchItem(queryIndex)"
@@ -303,11 +303,11 @@ whenever(ctrlEnter, () => {
   <button-shelf v-if="!!resources.all.length" top-gap>
     <n-button
       type="primary"
-      :title="`${$t('search.searchAction')} (${$t('general.ctrlEnter')})`"
+      :title="`${$t('common.searchAction')} (${$t('common.ctrlEnter')})`"
       :disabled="!formModel.queries.length"
       @click.stop.prevent="handleSearch"
     >
-      {{ $t('search.searchAction') }}
+      {{ $t('common.searchAction') }}
     </n-button>
   </button-shelf>
 </template>

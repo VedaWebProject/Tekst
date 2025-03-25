@@ -125,7 +125,7 @@ onMounted(() => {
 
   <huge-labelled-icon
     v-else-if="browse.loading"
-    :message="$t('general.loading')"
+    :message="$t('common.loading')"
     :icon="HourglassIcon"
   />
 

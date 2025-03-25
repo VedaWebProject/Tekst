@@ -54,7 +54,7 @@ const userOptions = computed(() => [
     icon: renderIcon(UserIcon),
   },
   {
-    label: renderLink(() => $t('community.heading'), {
+    label: renderLink(() => $t('common.community'), {
       name: 'community',
     }),
     key: 'community',
@@ -84,7 +84,7 @@ const userOptions = computed(() => [
   ...(!!auth.user?.isSuperuser
     ? [
         {
-          label: renderLink(() => $t('texts.heading'), {
+          label: renderLink(() => $t('common.text', 2), {
             name: 'textSettings',
             params: {
               textSlug: state.text?.slug || '',
@@ -111,7 +111,7 @@ const userOptions = computed(() => [
     key: 'divider',
   },
   {
-    label: $t('account.logoutBtn'),
+    label: $t('common.logout'),
     key: 'logout',
     icon: renderIcon(LogoutIcon),
   },

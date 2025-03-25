@@ -10,7 +10,7 @@ const theme = useThemeStore();
 
 const icon = computed(() => (theme.dark ? LightModeIcon : DarkModeIcon));
 const title = computed(() =>
-  theme.dark ? $t('general.tipThemeToggleLight') : $t('general.tipThemeToggleDark')
+  theme.dark ? $t('common.switchThemeLight') : $t('common.switchThemeDark')
 );
 </script>
 

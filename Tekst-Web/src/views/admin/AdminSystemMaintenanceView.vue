@@ -173,7 +173,7 @@ onBeforeMount(() => {
               <template #icon>
                 <n-icon :component="RefreshIcon" />
               </template>
-              {{ $t('general.refreshAction') }}
+              {{ $t('common.refresh') }}
             </n-button>
             <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
               <template #icon>
@@ -220,7 +220,7 @@ onBeforeMount(() => {
             </tr>
             <tr>
               <th>
-                {{ $t(`general.status`) }}
+                {{ $t('common.status') }}
               </th>
               <td>
                 <span
@@ -250,7 +250,7 @@ onBeforeMount(() => {
           <template #icon>
             <n-icon :component="UpdateIcon" />
           </template>
-          {{ $t('general.runAction') }}
+          {{ $t('common.run') }}
         </n-button>
         <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
       </n-tab-pane>
@@ -267,7 +267,7 @@ onBeforeMount(() => {
           <template #icon>
             <n-icon :component="UpdateIcon" />
           </template>
-          {{ $t('general.runAction') }}
+          {{ $t('common.run') }}
         </n-button>
         <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
       </n-tab-pane>
@@ -286,7 +286,7 @@ onBeforeMount(() => {
               <template #icon>
                 <n-icon :component="RefreshIcon" />
               </template>
-              {{ $t('general.refreshAction') }}
+              {{ $t('common.refresh') }}
             </n-button>
             <n-button
               secondary
@@ -306,8 +306,8 @@ onBeforeMount(() => {
         <n-table size="small" style="table-layout: fixed">
           <thead>
             <tr>
-              <th>{{ $t('general.type') }}</th>
-              <th>{{ $t('general.status') }}</th>
+              <th>{{ $t('common.type') }}</th>
+              <th>{{ $t('common.status') }}</th>
               <th>{{ $t('admin.maintenance.tasks.started') }}</th>
               <th>{{ $t('admin.maintenance.tasks.ended') }}</th>
               <th>{{ $t('admin.maintenance.tasks.duration') }}</th>
@@ -350,14 +350,14 @@ onBeforeMount(() => {
                   {{ $t('models.user.modelLabel') }}
                 </router-link>
                 <span v-else>
-                  {{ $t('general.system') }}
+                  {{ $t('common.system') }}
                 </span>
               </td>
               <td class="nowrap">
                 <n-button
                   secondary
                   size="small"
-                  :title="$t('general.deleteAction')"
+                  :title="$t('common.delete')"
                   :disabled="tasksLoading"
                   :loading="tasksLoading"
                   @click="deleteTask(task.id)"

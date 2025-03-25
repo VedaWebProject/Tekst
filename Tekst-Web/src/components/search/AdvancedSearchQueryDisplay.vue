@@ -39,7 +39,7 @@ const searchedResources = computed(() => {
 });
 
 const searchLabel = computed(
-  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('nav.search')
+  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search')
 );
 
 const settings = computed(() => [
@@ -60,7 +60,7 @@ const settings = computed(() => [
       {{ $t('search.results.searching') }}
     </span>
 
-    <span>{{ $t('general.in') }}</span>
+    <span>{{ $t('common.in') }}</span>
 
     <n-tag
       v-for="(r, index) in searchedResources"
@@ -74,7 +74,7 @@ const settings = computed(() => [
       {{ r.label }}
     </n-tag>
 
-    <span v-if="!!settings.length">{{ $t('general.with') }}</span>
+    <span v-if="!!settings.length">{{ $t('common.with') }}</span>
 
     <n-tag v-for="setting in settings" :key="setting" size="small">
       <template #icon>

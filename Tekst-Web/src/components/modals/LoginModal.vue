@@ -76,7 +76,7 @@ async function handleForgotPasswordClick() {
   <generic-modal
     v-model:show="auth.loginModalState.show"
     width="narrow"
-    :title="$t('account.login.heading')"
+    :title="$t('common.login')"
     :icon="LoginIcon"
     @close="auth.closeLoginModal(false)"
     @mask-click="auth.closeLoginModal(false)"
@@ -148,7 +148,7 @@ async function handleForgotPasswordClick() {
         :disabled="auth.loginModalState.loading"
         @click="handleLoginClick"
       >
-        {{ $t('account.loginBtn') }}
+        {{ $t('common.login') }}
       </n-button>
     </button-shelf>
   </generic-modal>

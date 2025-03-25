@@ -89,7 +89,7 @@ const accessSharesTip = computed(() => {
     </n-tag>
     <n-tag
       :size="size"
-      :title="`${$t('models.text.level')}: ${state.textLevelLabels[props.resource.level]}`"
+      :title="`${$t('common.level')}: ${state.textLevelLabels[props.resource.level]}`"
     >
       <template #icon>
         <n-icon :component="LevelsIcon" />

@@ -25,10 +25,10 @@ const props = withDefaults(
   }>(),
   {
     movable: true,
-    moveUpTitle: $t('general.moveUpAction'),
-    moveDownTitle: $t('general.moveDownAction'),
-    removeTitle: $t('general.removeAction'),
-    insertTitle: $t('general.insertAction'),
+    moveUpTitle: $t('common.moveUp'),
+    moveDownTitle: $t('common.moveDown'),
+    removeTitle: $t('common.remove'),
+    insertTitle: $t('common.insert'),
   }
 );
 

@@ -125,7 +125,7 @@ function handleMessageClick() {
             :focusable="false"
             :disabled="loading"
             :loading="loading"
-            :title="$t('general.deleteAction')"
+            :title="$t('common.delete')"
             @click.stop.prevent="deleteCorrection(correction.id)"
           >
             <template #icon>

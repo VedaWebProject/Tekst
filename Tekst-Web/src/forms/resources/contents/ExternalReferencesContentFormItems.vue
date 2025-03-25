@@ -31,14 +31,14 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
           <!-- URL -->
           <n-form-item
             ignore-path-change
-            :label="$t('general.url')"
+            :label="$t('common.url')"
             :path="`links[${index}].url`"
             :rule="contentFormRules.externalReferences.url"
             style="flex: 2"
           >
             <n-input
               v-model:value="model.links[index].url"
-              :placeholder="$t('general.url')"
+              :placeholder="$t('common.url')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -62,7 +62,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
           <!-- DESCRIPTION -->
           <n-form-item
             ignore-path-change
-            :label="$t('general.description')"
+            :label="$t('common.description')"
             :path="`links[${index}].description`"
             :rule="contentFormRules.externalReferences.description"
             style="flex: 2"
@@ -74,7 +74,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
               :osk-key="resource.config.common.osk || undefined"
               :rows="2"
               :max-length="4096"
-              :placeholder="$t('general.description')"
+              :placeholder="$t('common.description')"
               :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>

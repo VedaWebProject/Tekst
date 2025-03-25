@@ -36,7 +36,7 @@ const allMenuOptions = computed(() => [
   {
     type: 'group',
     key: 'general-group',
-    label: state.pf?.state.platformName || $t('general.platform'),
+    label: state.pf?.state.platformName || $t('common.platform'),
     children: mainMenuOptions.value.filter((o) => o.key !== 'info'),
   },
   ...(mainMenuOptions.value.find((o) => o.key === 'info')?.children?.length

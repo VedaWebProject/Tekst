@@ -89,7 +89,7 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
         >
           <n-input
             v-model:value="model.transformDeps[index]"
-            :placeholder="$t('general.url')"
+            :placeholder="$t('common.url')"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -103,7 +103,7 @@ const methodOptions = ['GET', 'POST', 'QUERY', 'SEARCH'].map((m) => ({
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

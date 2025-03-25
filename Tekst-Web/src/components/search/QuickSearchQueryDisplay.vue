@@ -48,7 +48,7 @@ const settings = computed(() => [
       {{ $t('search.quickSearch.title') }}:
       {{ totalRelation === 'eq' ? '' : '≥' }}
       <b>{{ $t('search.results.count', { count: total }) }}</b>
-      {{ $t('general.for') }}
+      {{ $t('common.for') }}
     </span>
     <span v-else>
       {{ $t('search.results.searching') }}
@@ -62,7 +62,7 @@ const settings = computed(() => [
     </n-tag>
 
     <span>
-      {{ $t('general.in') }}
+      {{ $t('common.in') }}
     </span>
 
     <template v-if="!!targetTexts?.length">
@@ -80,7 +80,7 @@ const settings = computed(() => [
     </template>
     <b v-else>{{ $t('search.results.allTexts') }}</b>
 
-    <span v-if="!!settings.length">{{ $t('general.with') }}</span>
+    <span v-if="!!settings.length">{{ $t('common.with') }}</span>
 
     <template v-for="setting in settings" :key="setting">
       <n-tag size="small">

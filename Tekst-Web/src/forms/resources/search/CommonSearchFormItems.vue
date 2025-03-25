@@ -15,13 +15,10 @@ const comment =
 
 <template>
   <n-form-item
-    :label="$t('resources.types.common.contentFields.comment')"
+    :label="$t('common.comment')"
     :path="`queries[${queryIndex}].cmn.cmt`"
     :rule="searchFormRules.common.comment"
   >
-    <n-input-osk
-      v-model="comment"
-      :placeholder="$t('resources.types.common.contentFields.comment')"
-    />
+    <n-input-osk v-model="comment" :placeholder="$t('common.comment')" />
   </n-form-item>
 </template>

@@ -5,7 +5,7 @@ import { NCollapse, NCollapseItem, NScrollbar } from 'naive-ui';
 <template>
   <slot></slot>
   <n-collapse v-if="$slots.details" class="mt-md">
-    <n-collapse-item :title="$t('general.details')" name="details" class="text-mini m-0">
+    <n-collapse-item :title="$t('common.details')" name="details" class="text-mini m-0">
       <n-scrollbar class="details-scroll-container">
         <pre class="details pre-wrap text-mini">
           <slot name="details"></slot>

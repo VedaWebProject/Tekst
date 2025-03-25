@@ -153,10 +153,10 @@ async function handleTransferResource(resource?: AnyResourceRead, user?: UserRea
 
 function handleProposeClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.warning'),
-    content: $t('resources.warnPropose') + ' ' + $t('general.areYouSureHelpTextHint'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    title: $t('common.warning'),
+    content: $t('resources.warnPropose') + ' ' + $t('common.areYouSureHelpTextHint'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -178,10 +178,10 @@ function handleProposeClick(resource: AnyResourceRead) {
 
 function handleUnproposeClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('resources.warnUnpropose'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -203,10 +203,10 @@ function handleUnproposeClick(resource: AnyResourceRead) {
 
 function handlePublishClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.warning'),
-    content: $t('resources.warnPublish') + ' ' + $t('general.areYouSureHelpTextHint'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    title: $t('common.warning'),
+    content: $t('resources.warnPublish') + ' ' + $t('common.areYouSureHelpTextHint'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -228,10 +228,10 @@ function handlePublishClick(resource: AnyResourceRead) {
 
 function handleUnpublishClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('resources.warnUnpublish'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -267,12 +267,12 @@ function handleContentsClick(resource: AnyResourceRead) {
 
 function handleCreateVersionClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.info'),
+    title: $t('common.information'),
     content: $t('resources.infoCreateVersion', {
       title: pickTranslation(resource.title, state.locale),
     }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -295,10 +295,10 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
 
 function handleDeleteClick(resource: AnyResourceRead) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('resources.warnDelete'),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -329,7 +329,7 @@ async function handleDownloadTemplateClick(resource: AnyResourceRead) {
       .trim()
       .replace(/\W+/g, '_');
     const filename = `${resSaveName}_${resource.id}_template.json`.toLowerCase();
-    message.info($t('general.downloadSaved', { filename }));
+    message.info($t('common.downloadSaved', { filename }));
     downloadData(data, filename);
   }
   actionsLoading.value = false;
@@ -404,14 +404,14 @@ onMounted(() => {
         <template #header>
           <n-flex align="center" :wrap="false">
             <n-icon :component="FilterIcon" class="translucent" />
-            <span>{{ $t('general.filters') }}</span>
+            <span>{{ $t('common.filters') }}</span>
           </n-flex>
         </template>
 
         <n-flex vertical class="gray-box">
           <n-input
             v-model:value="filters.search"
-            :placeholder="$t('search.searchAction')"
+            :placeholder="$t('common.searchAction')"
             class="mb-md"
             round
           >
@@ -434,7 +434,7 @@ onMounted(() => {
             :label="$t('resources.hasNoCorrections')"
           />
           <n-button secondary class="mt-md" @click="filters = initialFilters()">
-            {{ $t('general.resetAction') }}
+            {{ $t('common.reset') }}
             <template #icon>
               <n-icon :component="UndoIcon" />
             </template>
@@ -498,7 +498,7 @@ onMounted(() => {
     </div>
   </template>
 
-  <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+  <n-spin v-else-if="loading" class="centered-spinner" :description="$t('common.loading')" />
 
   <div v-else>
     {{ $t('errors.error') }}

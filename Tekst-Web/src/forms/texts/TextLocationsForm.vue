@@ -203,9 +203,9 @@ async function handleDeleteClick(location: LocationTreeOption) {
     return;
   }
   const d = dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('texts.locations.warnDeleteLocation', { locationLabel: location.label }),
-    positiveText: $t('general.deleteAction'),
+    positiveText: $t('common.delete'),
     ...dialogProps,
     onPositiveClick: async () => {
       d.loading = true;
@@ -283,7 +283,7 @@ async function handleDownloadTemplateClick() {
   });
   if (!error) {
     const filename = `${state.text?.slug}_structure_template.json`.toLowerCase();
-    message.info($t('general.downloadSaved', { filename }));
+    message.info($t('common.downloadSaved', { filename }));
     downloadData(data, filename);
   }
   loadingTemplate.value = false;
@@ -419,16 +419,16 @@ onMounted(() => {
 
 <template>
   <div>
-    <form-section-heading :label="$t('texts.locations.heading')" help-key="textLocations" />
+    <form-section-heading :label="$t('common.location', 2)" help-key="textLocations" />
 
-    <n-alert v-if="treeData.length" closable :title="$t('general.warning')" type="warning">
+    <n-alert v-if="treeData.length" closable :title="$t('common.warning')" type="warning">
       {{ $t('texts.locations.warnGeneral') }}
     </n-alert>
 
     <n-alert
       v-if="!treeData.length && !loadingData"
       closable
-      :title="$t('general.info')"
+      :title="$t('common.information')"
       type="info"
     >
       {{ $t('texts.locations.infoNoLocations') }}
@@ -515,7 +515,7 @@ onMounted(() => {
       </n-spin>
     </div>
 
-    <n-spin v-else-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+    <n-spin v-else-if="loading" class="centered-spinner" :description="$t('common.loading')" />
     <edit-location-modal ref="editModalRef" @submit="handleAddEditSubmit" />
   </div>
 </template>

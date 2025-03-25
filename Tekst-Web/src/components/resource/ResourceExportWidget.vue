@@ -115,7 +115,7 @@ async function startExport() {
   });
   if (!error) {
     addTask(data);
-    message.info($t('general.msgExportStarted'));
+    message.info($t('common.msgExportStarted'));
     startTasksPolling();
   }
   loadingExport.value = false;
@@ -158,14 +158,14 @@ function handleWidgetClick() {
 <template>
   <content-container-header-widget
     :full="full"
-    :title="$t('browse.contents.widgets.exportWidget.title')"
+    :title="$t('common.export')"
     :icon-component="DownloadIcon"
     @click="handleWidgetClick"
   />
 
   <generic-modal
     v-model:show="showExportModal"
-    :title="`${$t('browse.contents.widgets.exportWidget.title')}: ${resourceTitle}`"
+    :title="`${$t('common.export')}: ${resourceTitle}`"
     :icon="DownloadIcon"
     @after-enter="handleModalEnter"
     @after-leave="handleModalLeave"
@@ -198,7 +198,7 @@ function handleWidgetClick() {
     <n-alert
       v-if="!isLocationRangeValid"
       type="error"
-      :title="$t('general.error')"
+      :title="$t('common.error')"
       :closable="false"
       class="mt-lg"
     >
@@ -231,7 +231,7 @@ function handleWidgetClick() {
         "
         @click="startExport"
       >
-        {{ $t('general.exportAction') }}
+        {{ $t('common.export') }}
       </n-button>
     </button-shelf>
   </generic-modal>

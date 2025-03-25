@@ -167,7 +167,7 @@ onMounted(async () => {
                       clearable
                       :disabled="!annotationItem.key"
                       :options="annoOptions[tokenItemIndex][annotationItemIndex].valuesOptions"
-                      :placeholder="$t('general.value')"
+                      :placeholder="$t('common.value')"
                       :style="annoValueStyle"
                       :render-label="renderValueLabel"
                     />
@@ -190,7 +190,7 @@ onMounted(async () => {
                 />
               </template>
               <template #create-button-default>
-                {{ $t('general.addAction') }}
+                {{ $t('common.add') }}
               </template>
             </n-dynamic-input>
           </n-form-item>

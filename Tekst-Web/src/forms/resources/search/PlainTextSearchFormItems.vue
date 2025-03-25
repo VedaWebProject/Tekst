@@ -15,7 +15,7 @@ const model = defineModel<PlainTextSearchQuery>({ required: true });
 <template>
   <n-form-item
     ignore-path-change
-    :label="$t('resources.types.plainText.searchFields.text')"
+    :label="$t('common.text')"
     :path="`queries[${queryIndex}].rts.text`"
     :rule="searchFormRules.plainText.text"
   >
@@ -23,7 +23,7 @@ const model = defineModel<PlainTextSearchQuery>({ required: true });
       v-model="model.text"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
-      :placeholder="$t('resources.types.plainText.searchFields.text')"
+      :placeholder="$t('common.text')"
     />
   </n-form-item>
 </template>

@@ -15,13 +15,13 @@ const model = defineModel<AudioSearchQuery>({ required: true });
 <template>
   <n-form-item
     ignore-path-change
-    :label="$t('general.caption')"
+    :label="$t('common.caption')"
     :path="`queries[${queryIndex}].rts.caption`"
     :rule="searchFormRules.audio.caption"
   >
     <n-input-osk
       v-model="model.caption"
-      :placeholder="$t('general.caption')"
+      :placeholder="$t('common.caption')"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
     />

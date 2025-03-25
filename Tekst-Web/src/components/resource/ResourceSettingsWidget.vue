@@ -29,7 +29,7 @@ function handleClick() {
   <content-container-header-widget
     v-if="resource.writable"
     :full="full"
-    :title="$t('general.settings')"
+    :title="$t('common.settings')"
     :icon-component="SettingsIcon"
     @click="handleClick"
   />

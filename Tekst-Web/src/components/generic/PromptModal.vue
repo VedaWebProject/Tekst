@@ -140,14 +140,14 @@ function handleInputReturn() {
     </n-form>
     <button-shelf top-gap>
       <n-button secondary @click="close">
-        {{ $t('general.cancelAction') }}
+        {{ $t('common.cancel') }}
       </n-button>
       <n-button
         type="primary"
         :disabled="liveProps.disableOkWhenNoValue && !formModel.input"
         @click="handleSubmit"
       >
-        {{ $t('general.okAction') }}
+        {{ $t('common.ok') }}
       </n-button>
     </button-shelf>
   </generic-modal>

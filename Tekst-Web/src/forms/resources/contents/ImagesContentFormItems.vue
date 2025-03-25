@@ -46,13 +46,13 @@ async function checkUrlInput(input: HTMLInputElement) {
             <!-- URL -->
             <n-form-item
               ignore-path-change
-              :label="$t('general.url')"
+              :label="$t('common.url')"
               :path="`files[${index}].url`"
               :rule="contentFormRules.images.url"
             >
               <n-input
                 v-model:value="model.files[index].url"
-                :placeholder="$t('general.url')"
+                :placeholder="$t('common.url')"
                 @input-blur="checkUrlInput($event.target as HTMLInputElement)"
                 @keydown.enter.prevent
               />
@@ -88,7 +88,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           <!-- CAPTION -->
           <n-form-item
             ignore-path-change
-            :label="$t('general.caption')"
+            :label="$t('common.caption')"
             :path="`files[${index}].caption`"
             :rule="contentFormRules.images.caption"
             style="flex: 2"
@@ -101,7 +101,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               :osk-key="resource.config.common.osk || undefined"
               style="height: 100%"
               :max-length="512"
-              :placeholder="$t('general.caption')"
+              :placeholder="$t('common.caption')"
               :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>

@@ -83,7 +83,7 @@ async function handleHelpButtonClick() {
     <n-spin
       :show="loading"
       :delay="100"
-      :description="$t('general.loading')"
+      :description="$t('common.loading')"
       content-style="width: 100%;"
       class="centered-spinner"
       style="padding: 0"

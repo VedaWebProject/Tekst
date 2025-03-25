@@ -62,7 +62,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                   :height="focusView ? imageSize : undefined"
                 >
                   <template #placeholder>
-                    {{ $t('general.loading') }}
+                    {{ $t('common.loading') }}
                   </template>
                 </n-image>
               </div>

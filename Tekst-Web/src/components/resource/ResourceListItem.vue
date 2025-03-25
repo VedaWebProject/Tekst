@@ -71,7 +71,7 @@ const actionOptions = computed(() => [
     ? [
         {
           type: 'group',
-          label: $t('resources.contents'),
+          label: $t('common.content', 2),
           children: [
             {
               label: $t('resources.downloadTemplateAction'),
@@ -93,7 +93,7 @@ const actionOptions = computed(() => [
     ? [
         {
           type: 'group',
-          label: $t('general.status'),
+          label: $t('common.status'),
           children: [
             ...(!props.resource.proposed && !props.resource.public
               ? [
@@ -152,7 +152,7 @@ const actionOptions = computed(() => [
     : []),
   {
     type: 'group',
-    label: $t('general.general'),
+    label: $t('common.general'),
     children: [
       {
         label: $t('resources.createVersionAction'),
@@ -164,7 +164,7 @@ const actionOptions = computed(() => [
       ...(isOwnerOrAdmin.value
         ? [
             {
-              label: $t('general.deleteAction'),
+              label: $t('common.delete'),
               key: 'delete',
               icon: renderIcon(DeleteIcon),
               disabled: props.resource.public || props.resource.proposed,

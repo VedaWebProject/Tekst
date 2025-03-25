@@ -37,7 +37,7 @@ function resetPagination() {
 
 <template>
   <icon-heading level="1" :icon="CommunityIcon">
-    {{ $t('community.heading') }}
+    {{ $t('common.community') }}
     <help-button-widget help-key="communityView" />
   </icon-heading>
 
@@ -63,7 +63,7 @@ function resetPagination() {
     v-model:value="filters.q"
     round
     clearable
-    :placeholder="$t('search.searchAction')"
+    :placeholder="$t('common.searchAction')"
     class="mb-md"
     @update:value="resetPagination"
   >
@@ -72,7 +72,7 @@ function resetPagination() {
     </template>
   </n-input>
 
-  <n-spin v-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+  <n-spin v-if="loading" class="centered-spinner" :description="$t('common.loading')" />
 
   <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
 

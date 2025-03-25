@@ -33,8 +33,8 @@ const metadataKeysOptions = computed(() =>
   <translation-form-item
     v-model="model.title"
     parent-form-path-prefix="title"
-    :main-form-label="$t('general.title')"
-    :translation-form-label="$t('general.title')"
+    :main-form-label="$t('common.title')"
+    :translation-form-label="$t('common.title')"
     :translation-form-rules="resourceSettingsFormRules.titleTranslation"
     :min-items="1"
   />
@@ -43,8 +43,8 @@ const metadataKeysOptions = computed(() =>
   <translation-form-item
     v-model="model.subtitle"
     parent-form-path-prefix="subtitle"
-    :main-form-label="$t('general.subtitle')"
-    :translation-form-label="$t('general.subtitle')"
+    :main-form-label="$t('common.subtitle')"
+    :translation-form-label="$t('common.subtitle')"
     :translation-form-rules="resourceSettingsFormRules.subtitleTranslation"
   />
 
@@ -60,14 +60,14 @@ const metadataKeysOptions = computed(() =>
   </n-form-item>
 
   <!-- DESCRIPTION -->
-  <form-section-heading :label="$t('general.description')" />
+  <form-section-heading :label="$t('common.description')" />
   <collapsable-content :height-tresh-px="240">
     <translation-form-item
       v-model="model.description"
       input-type="html"
       parent-form-path-prefix="description"
       :max-translation-length="102400"
-      :translation-form-label="$t('general.description')"
+      :translation-form-label="$t('common.description')"
       :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
     />
   </collapsable-content>
@@ -110,7 +110,7 @@ const metadataKeysOptions = computed(() =>
           >
             <n-input
               v-model:value="metaEntryValue.value"
-              :placeholder="$t('general.key')"
+              :placeholder="$t('common.key')"
               @keydown.enter.prevent
             />
           </n-form-item>
@@ -128,7 +128,7 @@ const metadataKeysOptions = computed(() =>
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

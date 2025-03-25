@@ -71,12 +71,12 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
 
 function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: user.isSuperuser
       ? $t('admin.users.confirmMsg.setUser', { username: user.username })
       : $t('admin.users.confirmMsg.setSuperuser', { username: user.username }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: () => updateUser(user, { isSuperuser: setSuperuser }),
@@ -85,12 +85,12 @@ function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
 
 function handleActiveClick(user: UserRead, setActive: boolean) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: user.isActive
       ? $t('admin.users.confirmMsg.setInactive', { username: user.username })
       : $t('admin.users.confirmMsg.setActive', { username: user.username }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -112,12 +112,12 @@ function handleActiveClick(user: UserRead, setActive: boolean) {
 
 function handleVerifiedClick(user: UserRead, setVerified: boolean) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: user.isVerified
       ? $t('admin.users.confirmMsg.setUnverified', { username: user.username })
       : $t('admin.users.confirmMsg.setVerified', { username: user.username }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -138,10 +138,10 @@ function handleVerifiedClick(user: UserRead, setVerified: boolean) {
 
 function handleDeleteClick(user: UserRead) {
   dialog.warning({
-    title: $t('general.warning'),
+    title: $t('common.warning'),
     content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
-    positiveText: $t('general.yesAction'),
-    negativeText: $t('general.noAction'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
     onPositiveClick: async () => {
@@ -197,13 +197,13 @@ onMounted(() => {
       <template #header>
         <n-flex align="center" :wrap="false">
           <n-icon :component="FilterIcon" class="translucent" />
-          <span>{{ $t('general.filters') }}</span>
+          <span>{{ $t('common.filters') }}</span>
         </n-flex>
       </template>
       <n-flex vertical class="gray-box" style="padding-left: var(--gap-lg)">
         <n-input
           v-model:value="filters.q"
-          :placeholder="$t('search.searchAction')"
+          :placeholder="$t('common.searchAction')"
           class="mb-md"
           round
           clearable
@@ -246,7 +246,7 @@ onMounted(() => {
         />
 
         <n-button secondary class="mt-md" @click="filters = initialFilters()">
-          {{ $t('general.resetAction') }}
+          {{ $t('common.reset') }}
           <template #icon>
             <n-icon :component="UndoIcon" />
           </template>
@@ -255,7 +255,7 @@ onMounted(() => {
     </n-collapse-item>
   </n-collapse>
 
-  <n-spin v-if="loading" class="centered-spinner" :description="$t('general.loading')" />
+  <n-spin v-if="loading" class="centered-spinner" :description="$t('common.loading')" />
 
   <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
 

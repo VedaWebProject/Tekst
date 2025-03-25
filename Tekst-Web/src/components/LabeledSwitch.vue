@@ -33,8 +33,8 @@ const effectiveLabel = computed(() =>
     : props.label
       ? props.label
       : model.value == (props.onValue !== undefined ? props.onValue : true)
-        ? props.onLabel || $t('general.on')
-        : props.offLabel || $t('general.off')
+        ? props.onLabel || $t('common.on')
+        : props.offLabel || $t('common.off')
 );
 </script>
 

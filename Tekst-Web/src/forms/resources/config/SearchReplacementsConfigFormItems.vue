@@ -65,7 +65,7 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
         />
       </template>
       <template #create-button-default>
-        {{ $t('general.addAction') }}
+        {{ $t('common.add') }}
       </template>
     </n-dynamic-input>
   </n-form-item>

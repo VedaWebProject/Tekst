@@ -1,4 +1,4 @@
-general:
+common:
   general: General
   default: default
   enabled: Enabled
@@ -10,40 +10,53 @@ general:
   description: Description
   comment: Comment
   settings: Settings
-  tipThemeToggleLight: Switch to light mode
-  tipThemeToggleDark: Switch to dark mode
-  yesAction: 'Yes'
-  noAction: 'No'
-  okAction: OK
-  selectAction: Select
-  cancelAction: Cancel
-  saveAction: Save
-  closeAction: Close
-  resetAction: Reset
-  addAction: Add
-  insertAction: Insert
-  removeAction: Remove
-  deleteAction: Delete
-  copyAction: Copy
-  editAction: Edit
-  moveUpAction: Move up
-  moveDownAction: Move down
-  refreshAction: Refresh
-  exportAction: Export
-  runAction: Run
-  expandAction: Expand
-  collapseAction: Collapse
-  showAttachmentsAction: Show attached contents
+  switchThemeLight: Switch to light mode
+  switchThemeDark: Switch to dark mode
+  yes: 'Yes'
+  no: 'No'
+  ok: OK
+  select: Select
+  cancel: Cancel
+  save: Save
+  close: Close
+  reset: Reset
+  add: Add
+  insert: Insert
+  remove: Remove
+  delete: Delete
+  copy: Copy
+  moveUp: Move up
+  moveDown: Move down
+  refresh: Refresh
+  export: Export
+  run: Run
+  expand: Expand
+  collapse: Collapse
+  showAttachments: Show attached contents
   textSelect: Select the text you want to work with
-  info: Information
+  info: Info
+  information: Information
   warning: Warning
   error: Error
   important: Important
   filters: Filters
   selected: selected
-  language: Language
+  language: Language | Languages
+  text: Text | Texts
+  location: Location | Locations
+  level: Level | Levels
+  content: Content | Contents
+  meta: Meta
+  browse: Browse
   platform: Platform
+  community: Community
+  search: Search | Searches
+  searchAction: Search
   presentation: Presentation
+  help: Help
+  register: Register
+  login: Login
+  logout: Logout
   type: Type
   not: not
   in: in
@@ -119,11 +132,6 @@ errors:
   locked: There is already an active background task for this operation.
   exportNotFound: The requested export could not be found.
 
-nav:
-  browse: Browse
-  search: Search
-  info: Info
-
 osk:
   label: On-screen keyboard
   inputPlaceholder: Type on the on-screen keyboard and press Enter to insert your input...
@@ -158,22 +166,22 @@ routes:
   pageTitle:
     home: Home
     browse: '{text}'
-    search: Search
+    search: '@:common.search'
     searchResults: '@:search.results.heading'
-    help: Help
-    login: Login
+    help: '@:common.help'
+    login: '@:common.login'
     register: '@:register.heading'
     resources: Resources – {text}
     resourceContents: '@:contents.heading'
     resourceSettings: '@:resources.settings.heading'
     resourcesCorrections: Correction notes
     user: Profile of {username}
-    community: Community
+    community: '@:common.community'
     accountProfile: '@:account.profileHeading'
     accountSettings: '@:account.settings.heading'
     textSettings: Settings – {text}
     newText: New Text
-    adminSettings: '@:general.settings'
+    adminSettings: '@:common.settings'
     adminUsers: Users
     adminSegments: Site Segments
     adminInfoPages: Info Pages
@@ -185,7 +193,6 @@ routes:
 
 browse:
   location:
-    modalHeading: Location
     goTo: Go to location
     aliasesTip: Search for one of these location aliases in the Quick Search to directly jump to this location.
   toolbar:
@@ -231,7 +238,6 @@ browse:
       deeplTranslate:
         title: Translate with DeepL
       infoWidget:
-        title: Information
         citeAs: Cite as
         coverage: Coverage
         coverageOverview: Overview
@@ -246,7 +252,6 @@ browse:
         title: Show context
         noContext: There are no contents for this location nor any subordinate locations.
       exportWidget:
-        title: Export
         format: Format
         from: From
         to: To
@@ -268,9 +273,7 @@ forms:
     mustBeOneOf: '{x} must be one of the following values: {values}'
 
 register:
-  register: Register
   switchToLogin: Log into existing account
-  heading: Register
   success: Successfully registered.
   activationNeededHint: |
     You will only be able to log in after we activated your account.
@@ -280,14 +283,12 @@ register:
 
 models:
   locale:
-    modelLabel: Language | Languages
     allLanguages: All languages
   user:
     modelLabel: User | Users
     email: Email
     username: Username
     password: Password
-    name: Name
     affiliation: Affiliation
     avatarUrl: Avatar Image URL (64-512 pixels width/height recommended!)
     bio: Biography
@@ -303,10 +304,7 @@ models:
       passwordRepReq: Password repetition is required
       passwordRepNoMatch: Passwords don't match
   text:
-    modelLabel: Text | Texts
     slug: Identifier
-    level: Level | Levels
-    levelLabel: Label
     defaultLevel: Default level
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)
@@ -319,8 +317,6 @@ models:
       slugChars: 'Allowed characters: a-z and 0-9'
       defaultLevelRange: 0 or greater
   location:
-    modelLabel: Location | Locations
-    label: Label
     aliases: Aliases
   resource:
     modelLabel: Resource | Resources
@@ -332,13 +328,10 @@ models:
     sharedRead: Read Access
     sharedWrite: Write Access
     config: Configuration
-  content:
-    modelLabel: Content | Contents
   meta:
     modelLabel: Metadata
     author: Author
     year: Year
-    language: Language
     resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Platform Name
@@ -367,8 +360,6 @@ models:
     oskModeFont: Keyboard font
   segment:
     modelLabel: Segment
-    locale: Language
-    html: Content
     formRulesFeedback:
       keyChars: 'Allowed characters: a-z, A-Z, 0-9, -, _'
       systemPrefixReserved: Key prefix "system" is reserved for system site segments
@@ -393,10 +384,9 @@ resources:
   notPublic: unpublished
   shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
-  notProposed: '@:general.not @:models.resource.proposed'
+  notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes
   transferAction: Transfer to user
-  contents: Contents
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
   createVersionAction: Create version of this resource
@@ -475,7 +465,6 @@ resources:
         contentCss:
           heading: Content CSS Properties
           prop: Property
-          value: Value
       focusView:
         heading: Single-line display in focus view
         delimiter: Line delimiter
@@ -507,24 +496,18 @@ resources:
         transformJs: Transformation function body (JavaScript)
   types:
     common:
-      label: Meta
       contentFields:
-        comment: Comment
         notes: Working Notes
     plainText:
       label: Plain Text
       parenthesis: unstyled plain text content
       contentFields:
         text: Plain Text
-      searchFields:
-        text: Text
     richText:
       label: Formatted Text
       parenthesis: styled, formatted text
       contentFields:
         html: Formatted Text
-      searchFields:
-        html: Text
     textAnnotation:
       label: Text Annotation
       parenthesis: tokenized, annotated text
@@ -584,7 +567,6 @@ contents:
   heading: Edit Resource Content
   lblBtnCompare: Compare
   tipBtnCompare: Select other resource to compare with
-  lblBtnCopyOriginal: Copy
   tipBtnCopyOriginal: Copy from original resource
   tipBtnApplyChanges: Copy content for this location
   tipBtnPrevChange: Skip to nearest preceding content
@@ -594,7 +576,7 @@ contents:
   btnAddContent: Add content
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
-  msgImportInfo: The import will be processed in the background. @:general.takeAWhile
+  msgImportInfo: The import will be processed in the background. @:common.takeAWhile
   msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
@@ -614,8 +596,6 @@ contents:
 account:
   account: Account
   session: Session
-  loginBtn: Login
-  logoutBtn: Logout
   profile: Profile
   profileHeading: Public Profile
   profileNotFound: The user profile "{usernameOrId}" could not be found.
@@ -635,8 +615,6 @@ account:
     heading: New Password
     success: Your new password has been saved. You can now log in.
     badToken: The used password reset link is either invalid or already expired.
-  login:
-    heading: Login
   autoLogout: Your session will automatically end in {minutes} minutes and {seconds} seconds. You can log out and log back in to renew your session now.
   sessionExpired: Your session has expired. Please log in again to use your account.
   renewLogin: Log in again to renew your session.
@@ -685,11 +663,7 @@ account:
     Welcome, {name}! You are here for the first time – a good time to visit your
     account settings to complete your profile and personal settings!
 
-community:
-  heading: Community
-
 texts:
-  heading: Texts
   settings:
     msgSaved: Text settings saved.
     warnDeleteText: |
@@ -723,7 +697,6 @@ texts:
       level "{levelLabel}"?
     noResources: No resources on this level
   locations:
-    heading: Locations
     add:
       heading: Add Location to "{parentLabel}" on Level "{level}"
       msgSuccess: Added location "{label}" to "{parentLabel}"
@@ -758,16 +731,11 @@ texts:
       headingAdd: Add @:models.location.modelLabel
       msgSuccess: '@:models.location.modelLabel "{label}" saved'
     importSuccess: New text structure uploaded and processed successfully
-    updateInfo: Modified labels and aliases for locations are processed in the background. @:general.takeAWhile
+    updateInfo: Modified labels and aliases for locations are processed in the background. @:common.takeAWhile
 
 admin:
   heading: Administration
   optionGroupLabel: Administration
-  statistics:
-    heading: Statistics
-    globalHeading: Global
-    resourceTypesHeading: Resource Types
-    textsHeading: Texts
   users:
     heading: Users
     save: Saved user "{username}"
@@ -822,24 +790,23 @@ admin:
       heading: Search Indices
       documents: Documents
       size: Size
-      searches: Searches
       fields: Fields
       utd: Up to date
       ood: Out of date
       actionCreate: Reindex
-      actionCreateStarted: The search indices will be updated in the background. @:general.takeAWhile
+      actionCreateStarted: The search indices will be updated in the background. @:common.takeAWhile
     precomputed:
       heading: Precomputed Data
       description: |
         This routine is part of the maintenance process, but can be run manually here.
         The location coverage of all resources and resource type-specific data (if applicable) will be precomputed.
-      actionStarted: The generation of precomputed resource data is performed in the background. @:general.takeAWhile
+      actionStarted: The generation of precomputed resource data is performed in the background. @:common.takeAWhile
     cleanup:
       heading: Internal Cleanup
       description: |
         This routine is part of the maintenance process, but can be run manually here.
         Outdated access tokens and user messages scheduled for removal will be deleted.
-      actionStarted: The internal cleanup is performed in the background. @:general.takeAWhile
+      actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
       noTasks: No active background tasks
       started: Started
@@ -876,7 +843,6 @@ admin:
     noPage: Please select an info page or create a new one!
 
 search:
-  searchAction: Search
   quickSearch:
     title: Quick Search
     gotoAdvancedSearch: Go to Advanced Search
@@ -897,7 +863,6 @@ search:
       regexp: Interpret Regular Expressions
       inheritedContents: Include contents from higher-level locations
       allLevels: Find locations from all levels
-      texts: Texts
       textsPlaceholder: All texts
       targetResources: List included resources
   results:
@@ -923,7 +888,6 @@ search:
   nothingFound: Nothing found
 
 help:
-  help: Help
   tipHelpButton: Show help
   msgFoundCount: Found {count} entries
   errorNotFound: This help text entry could not be loaded.

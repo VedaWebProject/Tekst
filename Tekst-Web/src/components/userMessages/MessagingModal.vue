@@ -138,7 +138,7 @@ whenever(ctrlEnter, () => {
         />
         <n-button
           type="primary"
-          :title="`${$t('account.messages.btnSend')} (${$t('general.ctrlEnter')})`"
+          :title="`${$t('account.messages.btnSend')} (${$t('common.ctrlEnter')})`"
           :loading="loadingSend"
           :disabled="
             loadingSend || !messageInput || messageInput.length < 1 || !userMessages.openThread?.id
@@ -152,7 +152,7 @@ whenever(ctrlEnter, () => {
       </n-flex>
       <div class="messaging-status text-tiny translucent mt-md">
         <template v-if="userMessages.loading && !messages">
-          {{ $t('general.loading') }}
+          {{ $t('common.loading') }}
         </template>
         <template v-else>
           {{ $t('account.messages.msgCount', { count: messages?.length || 0 }) }}
