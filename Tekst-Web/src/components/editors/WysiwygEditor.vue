@@ -98,7 +98,7 @@ const editor = useEditor({
   },
   editorProps: {
     attributes: {
-      style: 'outline: 0;',
+      style: 'outline: 0; min-height: 240px; max-height: 60vh;',
     },
   },
 });
@@ -435,7 +435,6 @@ onUnmounted(() => {
   padding: 4px var(--gap-md);
   border: 1px solid rgb(224, 224, 230);
   border-radius: var(--border-radius);
-  max-height: 50vh;
   overflow-y: scroll;
 }
 
