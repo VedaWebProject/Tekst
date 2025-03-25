@@ -53,6 +53,7 @@ table td {
 }
 
 table td.metadata-category {
+  white-space: nowrap;
   text-transform: capitalize;
   padding-right: var(--gap-sm);
 }
