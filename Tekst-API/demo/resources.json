@@ -3,7 +3,7 @@
     "_id": { "$oid": "654b825533ee5737b297f8f3" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Warnung (Anschütz)" }],
-    "description": [
+    "subtitle": [
       {
         "locale": "deDE",
         "translation": "Der deutschsprachige Originaltext von 1824"
@@ -27,7 +27,7 @@
       { "key": "Original Title", "value": "Warnung" },
       { "key": "language", "value": "DE" }
     ],
-    "comment": [
+    "description": [
       {
         "locale": "enUS",
         "translation": "<p>This version includes repetition markers.</p>"
@@ -70,7 +70,7 @@
       { "locale": "enUS", "translation": "Japanese Version" },
       { "locale": "deDE", "translation": "Japanische Version" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "The original text in Japanese language"
@@ -95,7 +95,7 @@
       { "key": "year", "value": "1686" },
       { "key": "language", "value": "JA" }
     ],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "versions",
@@ -120,7 +120,7 @@
       { "locale": "enUS", "translation": "English Translation" },
       { "locale": "deDE", "translation": "Englische Übersetzung" }
     ],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plainText",
@@ -132,7 +132,7 @@
       { "key": "author", "value": "Robert Hass" },
       { "key": "language", "value": "EN" }
     ],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "translations",
@@ -162,7 +162,7 @@
     "_id": { "$oid": "654ba678ec7833e469dde782" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Transliteration" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
     "level": 0,
     "resource_type": "plainText",
@@ -174,7 +174,7 @@
     "proposed": false,
     "citation": null,
     "meta": [{ "key": "language", "value": "Hepburn romanization" }],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "versions",
@@ -199,7 +199,7 @@
       { "locale": "enUS", "translation": "Relevant Images" },
       { "locale": "deDE", "translation": "Relevante Bilder" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "Images related to the song and its historical context"
@@ -220,7 +220,7 @@
     "proposed": false,
     "citation": null,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "multimedia",
@@ -238,7 +238,7 @@
       { "locale": "enUS", "translation": "Musical Resources" },
       { "locale": "deDE", "translation": "Musikalische Ressourcen" }
     ],
-    "description": [
+    "subtitle": [
       { "locale": "enUS", "translation": "Links to various musical resources" },
       {
         "locale": "deDE",
@@ -256,7 +256,7 @@
     "proposed": false,
     "citation": null,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "links",
@@ -274,7 +274,7 @@
       { "locale": "enUS", "translation": "Performances" },
       { "locale": "deDE", "translation": "Aufführungen" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "Various audio recordings of performances of the song"
@@ -295,7 +295,7 @@
     "proposed": false,
     "citation": null,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "multimedia",
@@ -313,7 +313,7 @@
       { "locale": "enUS", "translation": "English translation" },
       { "locale": "deDE", "translation": "Englische Übersetzung" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "A translation of the original text in English language"
@@ -334,7 +334,7 @@
       { "key": "year", "value": "2024" },
       { "key": "language", "value": "EN" }
     ],
-    "comment": [
+    "description": [
       {
         "locale": "enUS",
         "translation": "<p>This translation was generated automatically and revised manually. This translation includes repetition markers.</p>"
@@ -376,7 +376,7 @@
     "title": [
       { "locale": "*", "translation": "Fuchs, du hast die Gans gestohlen" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "The commonly known version of the children's song"
@@ -394,7 +394,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [
+    "description": [
       {
         "locale": "enUS",
         "translation": "<p>The commonly used version of the text with a modification of the third verse compared to the original version. This version contains repetition marks.</p>"
@@ -437,7 +437,7 @@
       { "locale": "enUS", "translation": "Various External Resources" },
       { "locale": "deDE", "translation": "Verschiedene Externe Ressourcen" }
     ],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "externalReferences",
@@ -449,7 +449,7 @@
     "proposed": false,
     "citation": null,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "links",
@@ -464,7 +464,7 @@
     "_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "_class_id": "ResourceBaseDocument.TextAnnotationResourceDocument",
     "title": [{ "locale": "*", "translation": "Named Entities" }],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "Annotation of Named Entities in the common version of the song"
@@ -482,7 +482,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [
+    "description": [
       {
         "locale": "enUS",
         "translation": "<p>Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\".</p>"
@@ -518,7 +518,7 @@
       { "locale": "enUS", "translation": "Chords" },
       { "locale": "deDE", "translation": "Akkorde" }
     ],
-    "description": [
+    "subtitle": [
       {
         "locale": "enUS",
         "translation": "The chords of the song aligned with the song text"
@@ -539,7 +539,7 @@
     "proposed": false,
     "citation": null,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "multimedia",
@@ -562,7 +562,7 @@
         "translation": "Demo API-Anfragen ohne Bezug zum Thema"
       }
     ],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 2,
     "resource_type": "apiCall",
@@ -572,7 +572,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "demo",
@@ -601,7 +601,7 @@
       { "locale": "enUS", "translation": "Demo Stanza Metadata" },
       { "locale": "deDE", "translation": "Demo Strophen-Metadaten" }
     ],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 1,
     "resource_type": "locationMetadata",
@@ -610,7 +610,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "category": "demo",

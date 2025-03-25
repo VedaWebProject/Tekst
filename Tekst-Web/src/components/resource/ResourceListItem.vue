@@ -242,8 +242,8 @@ function handleCorrectionsClick() {
         </n-flex>
       </template>
 
-      <div v-if="resource.description.length" class="ellipsis text-medium">
-        <translation-display :value="resource.description" />
+      <div v-if="resource.subtitle.length" class="ellipsis text-medium">
+        <translation-display :value="resource.subtitle" />
       </div>
     </n-thing>
   </n-list-item>

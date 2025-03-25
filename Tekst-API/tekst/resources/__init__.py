@@ -298,11 +298,11 @@ class ResourceTypeABC(ABC):
             resource.model_dump(
                 include={
                     "title",
-                    "description",
+                    "subtitle",
                     "level",
                     "citation",
                     "meta",
-                    "comment",
+                    "description",
                 },
                 exclude_none=True,
                 exclude_unset=True,
@@ -312,16 +312,17 @@ class ResourceTypeABC(ABC):
             title_trans["locale"]: title_trans["translation"]
             for title_trans in res["title"]
         }
-        res["description"] = {
-            desc_trans["locale"]: desc_trans["translation"]
-            for desc_trans in res["description"]
+        res["subtitle"] = {
+            sub_trans["locale"]: sub_trans["translation"]
+            for sub_trans in res["subtitle"]
         }
         res["level"] = {
             lvl_trans["locale"]: lvl_trans["translation"]
             for lvl_trans in text.levels[res["level"]]
         }
-        res["comment"] = {
-            comment["locale"]: comment["translation"] for comment in res["comment"]
+        res["description"] = {
+            description["locale"]: description["translation"]
+            for description in res["description"]
         }
         res["meta"] = {meta["key"]: meta["value"] for meta in res["meta"]}
 

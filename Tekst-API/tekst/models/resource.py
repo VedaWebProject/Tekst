@@ -62,19 +62,19 @@ class ResourceTitleTranslation(TranslationBase):
     ]
 
 
-class ResourceDescriptionTranslation(TranslationBase):
+class ResourceSubtitleTranslation(TranslationBase):
     translation: Annotated[
         ConStr(
             max_length=512,
             cleanup="oneline",
         ),
         Field(
-            description="Description translation for this resource",
+            description="Subtitle translation for this resource",
         ),
     ]
 
 
-class ResourceCommentTranslation(TranslationBase):
+class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
         ConStr(
             min_length=1,
@@ -82,7 +82,7 @@ class ResourceCommentTranslation(TranslationBase):
             cleanup="multiline",
         ),
         Field(
-            description="Comment translation HTML for this resource",
+            description="Description translation HTML for this resource",
         ),
     ]
 
@@ -98,10 +98,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ]
 
-    description: Annotated[
-        Translations[ResourceDescriptionTranslation],
+    subtitle: Annotated[
+        Translations[ResourceSubtitleTranslation],
         Field(
-            description="Short, concise description of this resource",
+            description="Short, concise subtitle of this resource",
         ),
     ] = []
 
@@ -220,10 +220,12 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ] = []
 
-    comment: Annotated[
-        Translations[ResourceCommentTranslation],
+    description: Annotated[
+        Translations[ResourceDescriptionTranslation],
         Field(
-            description="Plain text, potentially multiline comment on this resource",
+            description=(
+                "Plain text, potentially multiline description on this resource"
+            ),
         ),
     ] = []
 
@@ -240,9 +242,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ] = datetime.utcfromtimestamp(86400)
 
-    @field_validator("description", mode="after")
+    @field_validator("subtitle", mode="after")
     @classmethod
-    def handle_whitespaces_in_description(cls, v):
+    def handle_whitespaces_in_subtitle(cls, v):
         for desc_trans in v:
             desc_trans["translation"] = re.sub(
                 r"[\s\n\r]+", " ", desc_trans["translation"]
@@ -266,9 +268,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             )
         return v
 
-    @field_validator("comment", mode="after")
+    @field_validator("description", mode="after")
     @classmethod
-    def sanitize_comment(cls, v):
+    def sanitize_description(cls, v):
         for translation in v:
             translation["translation"] = sanitize_html(
                 force_html(translation["translation"])

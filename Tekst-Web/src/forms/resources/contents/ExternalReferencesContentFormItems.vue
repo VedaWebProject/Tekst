@@ -62,7 +62,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
           <!-- DESCRIPTION -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.types.externalReferences.contentFields.description')"
+            :label="$t('general.description')"
             :path="`links[${index}].description`"
             :rule="contentFormRules.externalReferences.description"
             style="flex: 2"
@@ -74,7 +74,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
               :osk-key="resource.config.common.osk || undefined"
               :rows="2"
               :max-length="4096"
-              :placeholder="$t('resources.types.externalReferences.contentFields.description')"
+              :placeholder="$t('general.description')"
               :dir="resource.config.common.rtl ? 'rtl' : undefined"
             />
           </n-form-item>

@@ -80,9 +80,9 @@ function filterData(resourcesData: AnyResourceRead[]) {
     const resourceStringContent = filters.value.search
       ? [
           r.title.map((t) => t.translation).join(' '),
-          r.description.map((d) => d.translation).join(' ') || '',
+          r.subtitle.map((s) => s.translation).join(' ') || '',
           r.ownerId,
-          r.comment.map((c) => c.translation).join(' ') || '',
+          r.description.map((d) => d.translation).join(' ') || '',
           r.citation,
           JSON.stringify(r.meta),
         ]

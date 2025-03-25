@@ -84,12 +84,9 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const textFormRules: Record<string, FormItemRule[]> = {
-  title: [
-    requiredStringRule(() => $t('models.text.title'), 'blur'),
-    minMaxCharsRule(1, 64, 'blur'),
-  ],
+  title: [requiredStringRule(() => $t('general.title'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
   subtitleTranslation: [
-    requiredStringRule(() => $t('models.text.subtitle'), 'blur'),
+    requiredStringRule(() => $t('general.subtitle'), 'blur'),
     minMaxCharsRule(1, 128, 'blur'),
   ],
   subtitleLocale: [requiredStringRule(() => $t('general.language'), 'blur')],
@@ -158,10 +155,7 @@ export const correctionFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
-  title: [
-    requiredStringRule(() => $t('models.segment.title'), 'blur'),
-    minMaxCharsRule(0, 32, 'blur'),
-  ],
+  title: [requiredStringRule(() => $t('general.title'), 'blur'), minMaxCharsRule(0, 32, 'blur')],
   key: [requiredStringRule(() => $t('general.key'), 'blur')],
   locale: [requiredStringRule(() => $t('models.segment.locale'), 'blur')],
   html: [
@@ -219,16 +213,16 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
 
 export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   titleTranslation: [
-    requiredStringRule(() => $t('models.resource.title'), 'blur'),
+    requiredStringRule(() => $t('general.title'), 'blur'),
     minMaxCharsRule(1, 64, 'blur'),
   ],
-  descriptionTranslation: [
-    requiredStringRule(() => $t('models.resource.description'), 'blur'),
+  subtitleTranslation: [
+    requiredStringRule(() => $t('general.subtitle'), 'blur'),
     minMaxCharsRule(1, 512, 'blur'),
   ],
   citation: [minMaxCharsRule(0, 4096, 'blur')],
-  commentTranslation: [
-    requiredStringRule(() => $t('general.comment'), 'blur'),
+  descriptionTranslation: [
+    requiredStringRule(() => $t('general.description'), 'blur'),
     minMaxCharsRule(1, 102400, 'blur'),
   ],
   metaKey: [requiredStringRule(() => $t('general.key'), 'blur'), minMaxCharsRule(1, 16, 'blur')],

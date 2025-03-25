@@ -102,11 +102,11 @@ onBeforeRouteUpdate((to, from) => {
       <form-section-heading :label="$t('general.general')" />
 
       <!-- TITLE -->
-      <n-form-item path="title" :label="$t('models.text.title')">
+      <n-form-item path="title" :label="$t('general.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="$t('models.text.title')"
+          :placeholder="$t('general.title')"
           @keydown.enter.prevent
         />
       </n-form-item>
@@ -115,8 +115,8 @@ onBeforeRouteUpdate((to, from) => {
       <translation-form-item
         v-model="model.subtitle"
         parent-form-path-prefix="subtitle"
-        :main-form-label="$t('models.text.subtitle')"
-        :translation-form-label="$t('models.text.subtitle')"
+        :main-form-label="$t('general.subtitle')"
+        :translation-form-label="$t('general.subtitle')"
         :translation-form-rules="textFormRules.subtitleTranslation"
       />
 

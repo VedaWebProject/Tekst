@@ -65,20 +65,28 @@ def test_model_field_casing():
     assert t.loc_delim == "bar"
 
 
-def test_resource_description_validator():
+def test_resource_subtitle_validator():
     # desc with arbitrary whitespaces
     from tekst.resources.plain_text import PlainTextResource
 
     resource = PlainTextResource(
-        title=[{"locale": "*", "translation": "foo"}],
+        title=[
+            {
+                "locale": "*",
+                "translation": "foo",
+            }
+        ],
         text_id="5eb7cfb05e32e07750a1756a",
         level=0,
         resource_type="plainText",
-        description=[
-            {"locale": "enUS", "translation": "foo      bar\t\t   baz\n \ttest"}
+        subtitle=[
+            {
+                "locale": "enUS",
+                "translation": "foo      bar\t\t   baz\n \ttest",
+            }
         ],
     )
-    assert resource.description[0]["translation"] == "foo bar baz test"
+    assert resource.subtitle[0]["translation"] == "foo bar baz test"
     # desc = None
     resource = PlainTextResource(
         title=[{"locale": "*", "translation": "foo"}],
@@ -86,8 +94,8 @@ def test_resource_description_validator():
         level=0,
         resource_type="plainText",
     )
-    assert isinstance(resource.description, list)
-    assert len(resource.description) == 0
+    assert isinstance(resource.subtitle, list)
+    assert len(resource.subtitle) == 0
 
 
 def test_user_read_public():

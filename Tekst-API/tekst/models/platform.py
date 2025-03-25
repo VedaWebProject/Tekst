@@ -20,7 +20,7 @@ from tekst.types import ConStr, ConStrOrNone, FontNameValueOrNone
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
-class PlatformDescriptionTranslation(TranslationBase):
+class PlatformSubtitleTranslation(TranslationBase):
     translation: ConStr(max_length=128)
 
 
@@ -59,9 +59,11 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = _cfg.api_doc.title or "Tekst"
 
     platform_subtitle: Annotated[
-        Translations[PlatformDescriptionTranslation],
+        Translations[PlatformSubtitleTranslation],
         Field(
-            description="Short description of the platform, in multiple languages",
+            description=(
+                "Short descriptive subtitle of the platform, in multiple languages"
+            ),
         ),
     ] = [
         {

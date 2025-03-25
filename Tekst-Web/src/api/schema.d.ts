@@ -1487,11 +1487,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -1525,11 +1525,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -1581,11 +1581,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -1648,11 +1648,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -1691,10 +1691,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -1726,10 +1726,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['ApiCallResourceConfig'];
     };
     /**
@@ -1903,11 +1903,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -1941,11 +1941,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -1991,11 +1991,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -2058,11 +2058,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -2095,10 +2095,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -2130,10 +2130,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['AudioResourceConfig'];
     };
     /** AudioSearchQuery */
@@ -2750,11 +2750,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -2788,11 +2788,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -2838,11 +2838,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -2905,11 +2905,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -2942,10 +2942,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -2977,10 +2977,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['ExternalReferencesResourceConfig'];
     };
     /** ExternalReferencesSearchQuery */
@@ -3293,11 +3293,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -3331,11 +3331,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -3381,11 +3381,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -3448,11 +3448,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -3485,10 +3485,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -3520,10 +3520,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['ImagesResourceConfig'];
     };
     /** ImagesSearchQuery */
@@ -3890,11 +3890,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -3928,11 +3928,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -3982,11 +3982,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -4049,11 +4049,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -4090,10 +4090,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -4125,10 +4125,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['LocationMetadataResourceConfig'];
     };
     /** LocationMetadataSearchQuery */
@@ -4437,11 +4437,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -4475,11 +4475,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -4540,11 +4540,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -4607,11 +4607,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -4659,10 +4659,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -4694,10 +4694,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['PlainTextResourceConfig'];
     };
     /** PlainTextSearchQuery */
@@ -4747,12 +4747,6 @@ export interface components {
         [key: string]: string;
       };
     };
-    /** PlatformDescriptionTranslation */
-    PlatformDescriptionTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
-      translation: string;
-    };
     /** PlatformSecurityInfo */
     PlatformSecurityInfo: {
       /**
@@ -4796,7 +4790,7 @@ export interface components {
       platformName: string;
       /**
        * Platformsubtitle
-       * @description Short description of the platform, in multiple languages
+       * @description Short descriptive subtitle of the platform, in multiple languages
        * @default [
        *       {
        *         "locale": "*",
@@ -4804,7 +4798,7 @@ export interface components {
        *       }
        *     ]
        */
-      platformSubtitle: components['schemas']['PlatformDescriptionTranslation'][];
+      platformSubtitle: components['schemas']['PlatformSubtitleTranslation'][];
       /**
        * Availablelocales
        * @description Locales available for use in platform client
@@ -4927,9 +4921,9 @@ export interface components {
       platformName?: string;
       /**
        * Platformsubtitle
-       * @description Short description of the platform, in multiple languages
+       * @description Short descriptive subtitle of the platform, in multiple languages
        */
-      platformSubtitle?: components['schemas']['PlatformDescriptionTranslation'][];
+      platformSubtitle?: components['schemas']['PlatformSubtitleTranslation'][];
       /**
        * Availablelocales
        * @description Locales available for use in platform client
@@ -5010,6 +5004,12 @@ export interface components {
        * @description OSK modes available for use in platform client
        */
       oskModes?: components['schemas']['OskMode'][];
+    };
+    /** PlatformSubtitleTranslation */
+    PlatformSubtitleTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
     };
     /** @enum {string} */
     PrivateUserProp: 'name' | 'affiliation' | 'bio';
@@ -5116,15 +5116,6 @@ export interface components {
        */
       translation: string;
     };
-    /** ResourceCommentTranslation */
-    ResourceCommentTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /**
-       * Translation
-       * @description Comment translation HTML for this resource
-       */
-      translation: string;
-    };
     /** ResourceCoverage */
     ResourceCoverage: {
       /** Covered */
@@ -5143,7 +5134,7 @@ export interface components {
       locale: components['schemas']['TranslationLocaleKey'];
       /**
        * Translation
-       * @description Description translation for this resource
+       * @description Description translation HTML for this resource
        */
       translation: string;
     };
@@ -5163,6 +5154,15 @@ export interface components {
         | components['schemas']['PlainTextSearchQuery']
         | components['schemas']['RichTextSearchQuery']
         | components['schemas']['TextAnnotationSearchQuery'];
+    };
+    /** ResourceSubtitleTranslation */
+    ResourceSubtitleTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /**
+       * Translation
+       * @description Subtitle translation for this resource
+       */
+      translation: string;
     };
     /** ResourceTitleTranslation */
     ResourceTitleTranslation: {
@@ -5365,11 +5365,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -5403,11 +5403,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -5455,11 +5455,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -5522,11 +5522,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -5561,10 +5561,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -5596,10 +5596,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['RichTextResourceConfig'];
     };
     /** RichTextSearchQuery */
@@ -5917,11 +5917,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -5955,11 +5955,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -6009,11 +6009,11 @@ export interface components {
        */
       title: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        * @default []
        */
-      description: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * Textid
        * @description ID of the text this resource belongs to
@@ -6076,11 +6076,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        * @default []
        */
-      comment: components['schemas']['ResourceCommentTranslation'][];
+      description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "common": {
        *         "defaultActive": true,
@@ -6117,10 +6117,10 @@ export interface components {
        */
       title?: components['schemas']['ResourceTitleTranslation'][];
       /**
-       * Description
-       * @description Short, concise description of this resource
+       * Subtitle
+       * @description Short, concise subtitle of this resource
        */
-      description?: components['schemas']['ResourceDescriptionTranslation'][];
+      subtitle?: components['schemas']['ResourceSubtitleTranslation'][];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
@@ -6152,10 +6152,10 @@ export interface components {
        */
       meta?: components['schemas']['MetadataEntry'][];
       /**
-       * Comment
-       * @description Plain text, potentially multiline comment on this resource
+       * Description
+       * @description Plain text, potentially multiline description on this resource
        */
-      comment?: components['schemas']['ResourceCommentTranslation'][];
+      description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['TextAnnotationResourceConfig'];
     };
     /** TextAnnotationSearchQuery */

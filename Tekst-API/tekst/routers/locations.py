@@ -273,11 +273,16 @@ async def find_locations(
 async def get_path_options_by_head_id(
     location_id: Annotated[
         PydanticObjectId,
-        Path(alias="id", description="Location ID"),
+        Path(
+            alias="id",
+            description="Location ID",
+        ),
     ],
     by: Annotated[
         Literal["root", "head"],
-        Path(description="Wheter to handle the given location as path root or head"),
+        Path(
+            description="Wheter to handle the given location as path root or head",
+        ),
     ],
 ) -> list[list[LocationDocument]]:
     """

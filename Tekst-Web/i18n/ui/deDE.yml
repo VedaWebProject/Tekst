@@ -5,6 +5,9 @@ general:
   on: 'An'
   off: 'Aus'
   status: Status
+  title: Titel
+  subtitle: Untertitel
+  description: Beschreibung
   comment: Kommentar
   settings: Einstellungen
   tipThemeToggleLight: Zu hellem Farbschema wechseln
@@ -304,9 +307,7 @@ models:
       passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
     modelLabel: Text | Texte
-    title: Titel
     slug: Identifikator
-    subtitle: Untertitel
     level: Ebene | Ebenen
     levelLabel: Bezeichnung
     defaultLevel: Standardebene
@@ -326,8 +327,6 @@ models:
     aliases: Aliase
   resource:
     modelLabel: Ressource | Ressourcen
-    title: Titel
-    description: Beschreibung
     resourceType: Ressourcentyp
     public: veröffentlicht
     proposed: vorgeschlagen für Veröffentlichung
@@ -371,7 +370,6 @@ models:
     oskModeFont: Tastatur-Schriftart
   segment:
     modelLabel: Segment
-    title: Titel
     locale: Sprache
     html: Inhalt
     formRulesFeedback:
@@ -578,7 +576,6 @@ resources:
       contentFields:
         links: Links
         title: Titel / Text
-        description: Beschreibung
       searchFields:
         text: Titel / Beschreibung
     apiCall:

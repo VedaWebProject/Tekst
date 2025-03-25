@@ -390,11 +390,18 @@ async def insert_level(
     text_id: Annotated[PydanticObjectId, Path(alias="id")],
     index: Annotated[
         int,
-        Path(ge=0, lt=32, description="Index to insert the level at"),
+        Path(
+            ge=0,
+            lt=32,
+            description="Index to insert the level at",
+        ),
     ],
     translations: Annotated[
         Translations[TextLevelTranslation],
-        Body(description="Label translations for this level", min_length=1),
+        Body(
+            description="Label translations for this level",
+            min_length=1,
+        ),
     ],
 ) -> TextRead:
     text_doc: TextDocument = await TextDocument.get(text_id)

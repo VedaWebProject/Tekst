@@ -33,19 +33,19 @@ const metadataKeysOptions = computed(() =>
   <translation-form-item
     v-model="model.title"
     parent-form-path-prefix="title"
-    :main-form-label="$t('models.resource.title')"
-    :translation-form-label="$t('models.resource.title')"
+    :main-form-label="$t('general.title')"
+    :translation-form-label="$t('general.title')"
     :translation-form-rules="resourceSettingsFormRules.titleTranslation"
     :min-items="1"
   />
 
-  <!-- DESCRIPTION -->
+  <!-- SUBTITLE -->
   <translation-form-item
-    v-model="model.description"
-    parent-form-path-prefix="description"
-    :main-form-label="$t('models.resource.description')"
-    :translation-form-label="$t('models.resource.description')"
-    :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
+    v-model="model.subtitle"
+    parent-form-path-prefix="subtitle"
+    :main-form-label="$t('general.subtitle')"
+    :translation-form-label="$t('general.subtitle')"
+    :translation-form-rules="resourceSettingsFormRules.subtitleTranslation"
   />
 
   <!-- CITATION -->
@@ -59,16 +59,16 @@ const metadataKeysOptions = computed(() =>
     />
   </n-form-item>
 
-  <!-- COMMENT -->
-  <form-section-heading :label="$t('general.comment')" />
+  <!-- DESCRIPTION -->
+  <form-section-heading :label="$t('general.description')" />
   <collapsable-content :height-tresh-px="240">
     <translation-form-item
-      v-model="model.comment"
+      v-model="model.description"
       input-type="html"
-      parent-form-path-prefix="comment"
+      parent-form-path-prefix="description"
       :max-translation-length="102400"
-      :translation-form-label="$t('general.comment')"
-      :translation-form-rules="resourceSettingsFormRules.commentTranslation"
+      :translation-form-label="$t('general.description')"
+      :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
     />
   </collapsable-content>
 

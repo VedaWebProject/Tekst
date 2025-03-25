@@ -264,12 +264,12 @@ async function handleDeleteClick() {
         require-mark-placement="right-hanging"
       >
         <!-- TITLE -->
-        <n-form-item path="title" :label="$t('models.segment.title')">
+        <n-form-item path="title" :label="$t('general.title')">
           <n-input
             ref="firstInputRef"
             v-model:value="segmentModel.title"
             type="text"
-            :placeholder="$t('models.segment.title')"
+            :placeholder="$t('general.title')"
             @keydown.enter.prevent
           />
         </n-form-item>

@@ -12,8 +12,8 @@ import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import {
-  CommentIcon,
   CoverageIcon,
+  DescIcon,
   FormatQuoteIcon,
   InfoIcon,
   MetadataIcon,
@@ -35,7 +35,7 @@ const auth = useAuthStore();
 const state = useStateStore();
 
 const title = computed(() => pickTranslation(props.resource.title, state.locale));
-const commentHtml = computed(() => pickTranslation(props.resource.comment, state.locale));
+const descriptionHtml = computed(() => pickTranslation(props.resource.description, state.locale));
 const showInfoModal = ref(false);
 </script>
 
@@ -58,9 +58,9 @@ const showInfoModal = ref(false);
       <resource-info-tags :resource="resource" reverse />
     </n-flex>
 
-    <!-- DESCRIPTION -->
-    <p v-if="resource.description.length" class="content-font">
-      <translation-display :value="resource.description" />
+    <!-- SUBTITLE -->
+    <p v-if="resource.subtitle.length" class="content-font">
+      <translation-display :value="resource.subtitle" />
       <n-divider />
     </p>
 
@@ -84,13 +84,13 @@ const showInfoModal = ref(false);
       <n-divider />
     </template>
 
-    <!-- COMMENT -->
-    <template v-if="!!commentHtml">
-      <icon-heading level="3" :icon="CommentIcon">
-        {{ $t('general.comment') }}
+    <!-- DESCRIPTION -->
+    <template v-if="!!descriptionHtml">
+      <icon-heading level="3" :icon="DescIcon">
+        {{ $t('general.description') }}
       </icon-heading>
       <collapsable-content>
-        <hydrated-html :html="commentHtml" class="content-font" />
+        <hydrated-html :html="descriptionHtml" class="content-font" />
       </collapsable-content>
       <n-divider />
     </template>

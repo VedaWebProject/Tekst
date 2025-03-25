@@ -21,6 +21,7 @@ import ConstructionOutlined from '@vicons/material/ConstructionOutlined';
 import ContentCopyOutlined from '@vicons/material/ContentCopyOutlined';
 import DarkModeOutlined from '@vicons/material/DarkModeOutlined';
 import DeleteFilled from '@vicons/material/DeleteFilled';
+import DescriptionOutlined from '@vicons/material/DescriptionOutlined';
 import DisabledVisibleRound from '@vicons/material/DisabledVisibleRound';
 import EditOutlined from '@vicons/material/EditOutlined';
 import ErrorOutlineOutlined from '@vicons/material/ErrorOutlineOutlined';
@@ -147,6 +148,7 @@ export {
   PercentOutlined as CoverageIcon,
   DarkModeOutlined as DarkModeIcon,
   DeleteFilled as DeleteIcon,
+  DescriptionOutlined as DescIcon,
   DisabledVisibleRound as DisabledVisibleIcon,
   FileDownloadOutlined as DownloadIcon,
   EditOutlined as EditIcon,

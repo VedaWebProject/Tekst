@@ -3,7 +3,7 @@
     "_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Plain Text" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "plainText",
@@ -13,7 +13,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [
+    "description": [
       {
         "locale": "enUS",
         "translation": "<p>This is a test!</p>"
@@ -55,7 +55,7 @@
     "_id": { "$oid": "67c04415906e79b9062e22f5" },
     "_class_id": "ResourceBaseDocument.RichTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Formatted Text" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "richText",
@@ -65,7 +65,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -87,7 +87,7 @@
     "_id": { "$oid": "67c0442e906e79b9062e22f6" },
     "_class_id": "ResourceBaseDocument.TextAnnotationResourceDocument",
     "title": [{ "locale": "*", "translation": "Text Annotation" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "textAnnotation",
@@ -97,7 +97,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -119,7 +119,7 @@
     "_id": { "$oid": "67c04445906e79b9062e22f7" },
     "_class_id": "ResourceBaseDocument.AudioResourceDocument",
     "title": [{ "locale": "*", "translation": "Audio" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "audio",
@@ -129,7 +129,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -147,7 +147,7 @@
     "_id": { "$oid": "67c0444e906e79b9062e22f8" },
     "_class_id": "ResourceBaseDocument.ImagesResourceDocument",
     "title": [{ "locale": "*", "translation": "Images" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "images",
@@ -157,7 +157,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -175,7 +175,7 @@
     "_id": { "$oid": "67c0445b906e79b9062e22f9" },
     "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
     "title": [{ "locale": "*", "translation": "External References" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "externalReferences",
@@ -185,7 +185,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -203,7 +203,7 @@
     "_id": { "$oid": "67c04473906e79b9062e22fa" },
     "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
     "title": [{ "locale": "*", "translation": "API Call" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "apiCall",
@@ -213,7 +213,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -237,7 +237,7 @@
     "_id": { "$oid": "67c04473906e79b9062e22fb" },
     "_class_id": "ResourceBaseDocument.LocationMetadataResourceDocument",
     "title": [{ "locale": "*", "translation": "Location Metadata" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
     "level": 1,
     "resource_type": "locationMetadata",
@@ -247,7 +247,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,
@@ -286,7 +286,7 @@
     "_id": { "$oid": "67c04781906e79b9062e2342" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Plain Text" }],
-    "description": [],
+    "subtitle": [],
     "text_id": { "$oid": "67c03b085dbf06b9624fd57f" },
     "level": 1,
     "resource_type": "plainText",
@@ -296,7 +296,7 @@
     "public": true,
     "proposed": false,
     "meta": [],
-    "comment": [],
+    "description": [],
     "config": {
       "common": {
         "sort_order": 10,

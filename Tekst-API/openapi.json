@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.9.0a0"
+    "version": "0.10.0a0"
   },
   "servers": [
     {
@@ -7853,14 +7853,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -7924,14 +7924,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -8039,14 +8039,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -8166,14 +8166,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -8237,11 +8237,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -8250,8 +8250,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -8351,11 +8351,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -8364,8 +8364,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -8741,14 +8741,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -8812,14 +8812,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -8921,14 +8921,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -9048,14 +9048,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -9113,11 +9113,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -9126,8 +9126,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -9227,11 +9227,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -9240,8 +9240,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -10483,14 +10483,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -10554,14 +10554,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -10663,14 +10663,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -10790,14 +10790,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -10855,11 +10855,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -10868,8 +10868,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -10969,11 +10969,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -10982,8 +10982,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -11610,14 +11610,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -11681,14 +11681,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -11790,14 +11790,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -11917,14 +11917,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -11982,11 +11982,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -11995,8 +11995,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -12096,11 +12096,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -12109,8 +12109,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -12919,14 +12919,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -12990,14 +12990,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -13103,14 +13103,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -13230,14 +13230,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -13299,11 +13299,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -13312,8 +13312,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -13413,11 +13413,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -13426,8 +13426,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -14098,14 +14098,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -14169,14 +14169,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -14293,14 +14293,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -14420,14 +14420,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -14500,11 +14500,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -14513,8 +14513,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -14614,11 +14614,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -14627,8 +14627,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -14742,25 +14742,6 @@
         "title": "PlatformData",
         "description": "Platform data used by the web client"
       },
-      "PlatformDescriptionTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 128,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "PlatformDescriptionTranslation"
-      },
       "PlatformSecurityInfo": {
         "properties": {
           "closedMode": {
@@ -14812,12 +14793,12 @@
           },
           "platformSubtitle": {
             "items": {
-              "$ref": "#/components/schemas/PlatformDescriptionTranslation"
+              "$ref": "#/components/schemas/PlatformSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
             "title": "Platformsubtitle",
-            "description": "Short description of the platform, in multiple languages",
+            "description": "Short descriptive subtitle of the platform, in multiple languages",
             "default": [
               {
                 "locale": "*",
@@ -15022,7 +15003,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/PlatformDescriptionTranslation"
+                  "$ref": "#/components/schemas/PlatformSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -15032,7 +15013,7 @@
               }
             ],
             "title": "Platformsubtitle",
-            "description": "Short description of the platform, in multiple languages",
+            "description": "Short descriptive subtitle of the platform, in multiple languages",
             "optionalNullable": false
           },
           "availableLocales": {
@@ -15281,6 +15262,25 @@
         "type": "object",
         "title": "PlatformStateUpdate"
       },
+      "PlatformSubtitleTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "PlatformSubtitleTranslation"
+      },
       "PrivateUserProp": {
         "type": "string",
         "enum": [
@@ -15465,26 +15465,6 @@
         ],
         "title": "ResourceCategoryTranslation"
       },
-      "ResourceCommentTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 102400,
-            "minLength": 1,
-            "title": "Translation",
-            "description": "Comment translation HTML for this resource"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "ResourceCommentTranslation"
-      },
       "ResourceCoverage": {
         "properties": {
           "covered": {
@@ -15534,10 +15514,10 @@
           },
           "translation": {
             "type": "string",
-            "maxLength": 512,
+            "maxLength": 102400,
             "minLength": 1,
             "title": "Translation",
-            "description": "Description translation for this resource"
+            "description": "Description translation HTML for this resource"
           }
         },
         "type": "object",
@@ -15599,6 +15579,26 @@
           "rts"
         ],
         "title": "ResourceSearchQuery"
+      },
+      "ResourceSubtitleTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Translation",
+            "description": "Subtitle translation for this resource"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceSubtitleTranslation"
       },
       "ResourceTitleTranslation": {
         "properties": {
@@ -15981,14 +15981,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -16052,14 +16052,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -16163,14 +16163,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -16290,14 +16290,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -16357,11 +16357,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -16370,8 +16370,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -16471,11 +16471,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -16484,8 +16484,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -17170,14 +17170,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -17241,14 +17241,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -17354,14 +17354,14 @@
             "title": "Title",
             "description": "Title of this resource"
           },
-          "description": {
+          "subtitle": {
             "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "default": []
           },
           "textId": {
@@ -17481,14 +17481,14 @@
             "description": "Arbitrary metadata",
             "default": []
           },
-          "comment": {
+          "description": {
             "items": {
-              "$ref": "#/components/schemas/ResourceCommentTranslation"
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
             },
             "type": "array",
             "maxItems": 3,
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -17550,11 +17550,11 @@
             "description": "Title of this resource",
             "optionalNullable": false
           },
-          "description": {
+          "subtitle": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -17563,8 +17563,8 @@
                 "type": "null"
               }
             ],
-            "title": "Description",
-            "description": "Short, concise description of this resource",
+            "title": "Subtitle",
+            "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
           },
           "resourceType": {
@@ -17664,11 +17664,11 @@
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
-          "comment": {
+          "description": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/ResourceCommentTranslation"
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
                 },
                 "type": "array",
                 "maxItems": 3
@@ -17677,8 +17677,8 @@
                 "type": "null"
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment on this resource",
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {

@@ -5,6 +5,9 @@ general:
   on: 'On'
   off: 'Off'
   status: Status
+  title: Title
+  subtitle: Subtitle
+  description: Description
   comment: Comment
   settings: Settings
   tipThemeToggleLight: Switch to light mode
@@ -301,9 +304,7 @@ models:
       passwordRepNoMatch: Passwords don't match
   text:
     modelLabel: Text | Texts
-    title: Title
     slug: Identifier
-    subtitle: Subtitle
     level: Level | Levels
     levelLabel: Label
     defaultLevel: Default level
@@ -323,8 +324,6 @@ models:
     aliases: Aliases
   resource:
     modelLabel: Resource | Resources
-    title: Title
-    description: Description
     resourceType: Resource Type
     public: published
     proposed: proposed for publication
@@ -368,7 +367,6 @@ models:
     oskModeFont: Keyboard font
   segment:
     modelLabel: Segment
-    title: Title
     locale: Language
     html: Content
     formRulesFeedback:
@@ -567,7 +565,6 @@ resources:
       contentFields:
         links: Links
         title: Title / Text
-        description: Description
       searchFields:
         text: Title / Description
     apiCall:

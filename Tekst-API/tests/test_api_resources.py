@@ -20,7 +20,7 @@ async def test_create_resource(
     user = await login()
     payload = {
         "title": [{"locale": "*", "translation": "A test resource"}],
-        "description": [
+        "subtitle": [
             {
                 "locale": "*",
                 "translation": "This is     a string with \n some space    chars",
@@ -40,7 +40,7 @@ async def test_create_resource(
     assert "id" in resp.json()
     assert resp.json()["title"][0]["translation"] == "A test resource"
     assert (
-        resp.json()["description"][0]["translation"]
+        resp.json()["subtitle"][0]["translation"]
         == "This is a string with some space chars"
     )
     assert resp.json()["ownerId"] == user.get("id")
@@ -57,7 +57,7 @@ async def test_create_resource_w_invalid_type(
     user = await login()
     payload = {
         "title": [{"locale": "*", "translation": "A test resource"}],
-        "description": [
+        "subtitle": [
             {
                 "locale": "*",
                 "translation": "This is     a string with \n some space    chars",
@@ -118,7 +118,7 @@ async def test_create_resource_w_invalid_level(
         "/resources",
         json={
             "title": [{"locale": "*", "translation": "A test resource"}],
-            "description": [
+            "subtitle": [
                 {
                     "locale": "*",
                     "translation": "This is     a string with \n some space    chars",

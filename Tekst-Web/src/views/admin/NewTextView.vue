@@ -98,11 +98,11 @@ async function handleSave() {
       require-mark-placement="right-hanging"
     >
       <!-- TITLE -->
-      <n-form-item path="title" :label="$t('models.text.title')">
+      <n-form-item path="title" :label="$t('general.title')">
         <n-input
           v-model:value="model.title"
           type="text"
-          :placeholder="$t('models.text.title')"
+          :placeholder="$t('general.title')"
           @keydown.enter.prevent
           @input="handleTitleChange"
         />
