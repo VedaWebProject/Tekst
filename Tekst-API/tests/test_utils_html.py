@@ -23,6 +23,6 @@ def test_sanitize_html():
 def test_force_html():
     assert html.force_html() is None
     html_str = "foo"
-    assert html.force_html(html_str) == f"<div>{html_str}</div>"
+    assert html.force_html(html_str) == f"<p>{html_str}</p>"
     html_str = html.force_html(html_str)
     assert html.force_html(html_str) == html_str
