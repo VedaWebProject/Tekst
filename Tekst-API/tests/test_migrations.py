@@ -201,6 +201,6 @@ async def test_0_10_0a0(
     for res in resources:
         assert "comment" not in res
         assert "subtitle" in res
-        assert res["subtitle"] == "DESCRIPTION"
+        assert res["subtitle"][0]["translation"] == "DESCRIPTION"
         assert "description" in res
-        assert res["description"] == "COMMENT"
+        assert res["description"][0]["translation"] == "COMMENT"
