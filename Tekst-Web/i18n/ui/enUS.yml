@@ -332,6 +332,7 @@ models:
     modelLabel: Metadata
     author: Author
     year: Year
+    language: '@:common.language'
     resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Platform Name
@@ -888,7 +889,6 @@ search:
   nothingFound: Nothing found
 
 help:
-  tipHelpButton: Show help
   msgFoundCount: Found {count} entries
   errorNotFound: This help text entry could not be loaded.
   msgNoHelpTextsFound: No help entries could be found.

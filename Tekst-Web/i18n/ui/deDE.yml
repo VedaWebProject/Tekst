@@ -335,6 +335,7 @@ models:
     modelLabel: Metadaten
     author: Autor
     year: Jahr
+    language: '@:common.language'
     resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Plattform-Name
@@ -912,7 +913,6 @@ search:
   nothingFound: Nichts gefunden
 
 help:
-  tipHelpButton: Hilfe anzeigen
   msgFoundCount: '{count} Einträge gefunden'
   errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.
   msgNoHelpTextsFound: Es konnten keine Hilfe-Einträge gefunden werden.

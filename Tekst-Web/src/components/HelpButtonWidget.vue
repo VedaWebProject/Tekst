@@ -62,7 +62,7 @@ async function handleHelpButtonClick() {
     circle
     color="var(--accent-color)"
     :size="size"
-    :title="$t('help.tipHelpButton')"
+    :title="$t('common.help')"
     :focusable="false"
     :style="buttonStyle"
     @click.stop.prevent="handleHelpButtonClick"
@@ -75,7 +75,7 @@ async function handleHelpButtonClick() {
   <generic-modal
     v-model:show="showModal"
     width="wide"
-    :title="$t('help.help')"
+    :title="$t('common.help')"
     :icon="QuestionMarkIcon"
     heading-level="3"
     @after-leave="handleClose"
