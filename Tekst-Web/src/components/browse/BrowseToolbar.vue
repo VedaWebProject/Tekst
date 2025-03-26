@@ -165,7 +165,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 .browse-toolbar .browse-location-label {
   display: none;
   color: var(--base-color);
-  font-weight: var(--font-weight-bold);
 }
 
 .browse-toolbar-container.affixed .browse-location-label {

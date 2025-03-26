@@ -84,7 +84,7 @@ function handleSelect(text: TextRead) {
         :style="{ cursor: !disabled ? 'pointer' : 'default' }"
       >
         <n-flex align="center" :wrap="false" style="max-width: 100%">
-          <b class="text-title ellipsis text-large">{{ state.text.title }}</b>
+          <span class="text-title ellipsis text-large">{{ state.text.title }}</span>
           <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
         </n-flex>
       </n-button>
@@ -156,7 +156,7 @@ ul {
 
 .text-subtitle {
   max-width: 100%;
-  line-height: 120%;
+  line-height: 150%;
   padding-bottom: 0.2em;
 }
 
