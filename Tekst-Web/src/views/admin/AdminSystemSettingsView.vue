@@ -298,6 +298,9 @@ watch(
                     v-model:value="formModel.fonts[index]"
                     :placeholder="$t('common.name')"
                     @keydown.enter.prevent
+                    :style="{
+                      fontFamily: `'${formModel.fonts[index]}', 'Tekst Content Font', serif`,
+                    }"
                   />
                 </n-form-item>
               </template>

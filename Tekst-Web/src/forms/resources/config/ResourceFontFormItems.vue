@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import { useStateStore } from '@/stores';
-import { NFormItem, NSelect } from 'naive-ui';
-import { computed } from 'vue';
+import { NFormItem, NSelect, type SelectOption } from 'naive-ui';
+import { computed, h } from 'vue';
 
 const model = defineModel<string>();
 const state = useStateStore();
@@ -13,6 +13,16 @@ const options = computed(() =>
     value: f,
   }))
 );
+
+function renderLabel(option: SelectOption) {
+  return h(
+    'div',
+    {
+      style: `font-family: '${option.value}', 'Tekst Content Font', serif;`,
+    },
+    option.label as string
+  );
+}
 </script>
 
 <template>
@@ -23,6 +33,7 @@ const options = computed(() =>
       clearable
       :options="options"
       :placeholder="$t('common.default')"
+      :render-label="renderLabel"
     />
   </n-form-item>
 </template>
