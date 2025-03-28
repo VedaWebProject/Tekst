@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PlainTextContentCreate, PlainTextResourceRead } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { NFormItem } from 'naive-ui';
 
@@ -18,7 +18,7 @@ const model = defineModel<PlainTextContentCreate>({ required: true });
     path="text"
     :rule="contentFormRules.plainText.text"
   >
-    <n-input-osk
+    <osk-input
       v-model="model.text"
       type="textarea"
       :rows="3"

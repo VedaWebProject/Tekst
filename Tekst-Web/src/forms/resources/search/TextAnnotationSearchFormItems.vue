@@ -5,7 +5,7 @@ import type {
   TextAnnotationSearchQuery,
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -78,7 +78,7 @@ onMounted(async () => {
       :rule="searchFormRules.textAnnotation.token"
       style="flex: 2"
     >
-      <n-input-osk
+      <osk-input
         v-model="model.token"
         :font="resource.config.general.font || undefined"
         :osk-key="resource.config.common.osk || undefined"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ImagesContentCreate, ImagesResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
@@ -93,7 +93,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             :rule="contentFormRules.images.caption"
             style="flex: 2"
           >
-            <n-input-osk
+            <osk-input
               v-model="model.files[index].caption"
               type="textarea"
               class="caption-textarea"

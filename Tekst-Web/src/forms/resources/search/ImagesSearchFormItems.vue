@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImagesResourceRead, ImagesSearchQuery } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { NFormItem } from 'naive-ui';
 
@@ -19,7 +19,7 @@ const model = defineModel<ImagesSearchQuery>({ required: true });
     :path="`queries[${queryIndex}].rts.caption`"
     :rule="searchFormRules.images.caption"
   >
-    <n-input-osk
+    <osk-input
       v-model="model.caption"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AdvancedSearchRequestBody } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { NFormItem } from 'naive-ui';
@@ -19,6 +19,6 @@ const comment =
     :path="`queries[${queryIndex}].cmn.cmt`"
     :rule="searchFormRules.common.comment"
   >
-    <n-input-osk v-model="comment" :placeholder="$t('common.comment')" />
+    <osk-input v-model="comment" :placeholder="$t('common.comment')" />
   </n-form-item>
 </template>

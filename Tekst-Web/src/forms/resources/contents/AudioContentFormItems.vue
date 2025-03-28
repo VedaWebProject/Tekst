@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AudioContentCreate, AudioResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
@@ -79,7 +79,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             :rule="contentFormRules.audio.caption"
             style="flex: 2"
           >
-            <n-input-osk
+            <osk-input
               v-model="model.files[index].caption"
               type="textarea"
               :font="resource.config.general.font || undefined"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ExternalReferencesContentCreate, ExternalReferencesResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -50,7 +50,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             :rule="contentFormRules.externalReferences.title"
             style="flex: 2"
           >
-            <n-input-osk
+            <osk-input
               v-model="model.links[index].title"
               :font="resource.config.general.font || undefined"
               :osk-key="resource.config.common.osk || undefined"
@@ -67,7 +67,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             :rule="contentFormRules.externalReferences.description"
             style="flex: 2"
           >
-            <n-input-osk
+            <osk-input
               v-model="model.links[index].description"
               type="textarea"
               :font="resource.config.general.font || undefined"

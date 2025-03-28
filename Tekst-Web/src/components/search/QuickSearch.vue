@@ -3,7 +3,7 @@ import { GET } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { $t } from '@/i18n';
@@ -165,7 +165,7 @@ function handleSettingsSubmit() {
       @update:value="handleSelect"
       @clickoutside="showLocationSelect = false"
     >
-      <n-input-osk
+      <osk-input
         ref="quickSearchInputRef"
         v-model="search.queryQuick"
         round
@@ -197,7 +197,7 @@ function handleSettingsSubmit() {
           </n-button>
           <help-button-widget help-key="quickSearch" @click="quickSearchInputRef?.blur()" />
         </template>
-      </n-input-osk>
+      </osk-input>
     </n-popselect>
   </div>
 

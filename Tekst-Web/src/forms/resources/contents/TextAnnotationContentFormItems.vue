@@ -6,7 +6,7 @@ import type {
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -19,7 +19,7 @@ const props = defineProps<{
   resource: TextAnnotationResourceRead;
 }>();
 const model = defineModel<TextAnnotationContentCreate>({ required: true });
-const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof NInputOsk> }>({});
+const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof OskInput> }>({});
 
 const resources = useResourcesStore();
 
@@ -97,9 +97,9 @@ onMounted(async () => {
               ignore-path-change
               style="flex: 2"
             >
-              <n-input-osk
+              <osk-input
                 :ref="
-                  (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof NInputOsk>)
+                  (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof OskInput>)
                 "
                 v-model="tokenItem.token"
                 :font="resource.config.general.font || undefined"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import {
@@ -124,7 +124,7 @@ function handleInputReturn() {
           :placeholder="liveProps.placeholder"
           @keydown.enter="handleInputReturn"
         />
-        <n-input-osk
+        <osk-input
           v-else-if="liveProps.type === 'input-osk' || liveProps.type === 'textarea-osk'"
           ref="inputRef"
           v-model:value="formModel.input"

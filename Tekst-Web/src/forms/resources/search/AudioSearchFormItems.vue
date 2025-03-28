@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AudioResourceRead, AudioSearchQuery } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { NFormItem } from 'naive-ui';
 
@@ -19,7 +19,7 @@ const model = defineModel<AudioSearchQuery>({ required: true });
     :path="`queries[${queryIndex}].rts.caption`"
     :rule="searchFormRules.audio.caption"
   >
-    <n-input-osk
+    <osk-input
       v-model="model.caption"
       :placeholder="$t('common.caption')"
       :font="resource.config.general.font || undefined"

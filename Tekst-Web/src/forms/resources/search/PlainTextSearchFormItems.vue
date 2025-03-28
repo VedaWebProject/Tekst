@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PlainTextResourceRead, PlainTextSearchQuery } from '@/api';
-import NInputOsk from '@/components/NInputOsk.vue';
+import OskInput from '@/components/OskInput.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { NFormItem } from 'naive-ui';
 
@@ -19,7 +19,7 @@ const model = defineModel<PlainTextSearchQuery>({ required: true });
     :path="`queries[${queryIndex}].rts.text`"
     :rule="searchFormRules.plainText.text"
   >
-    <n-input-osk
+    <osk-input
       v-model="model.text"
       :font="resource.config.general.font || undefined"
       :osk-key="resource.config.common.osk || undefined"
