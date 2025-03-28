@@ -69,6 +69,11 @@ export const useResourcesStore = defineStore('resources', () => {
     loading.value = false;
   }
 
+  function addCorrection(resourceId: string, correction: CorrectionRead) {
+    corrections.value[resourceId] = corrections.value[resourceId] ?? [];
+    corrections.value[resourceId].unshift(correction);
+  }
+
   async function loadCorrections(resourceId: string) {
     const { data, error } = await GET('/corrections/{resourceId}', {
       params: { path: { resourceId } },
@@ -177,6 +182,7 @@ export const useResourcesStore = defineStore('resources', () => {
     correctionsCountTotal,
     corrections,
     loadCorrections,
+    addCorrection,
     dataHash,
     error,
     loading,

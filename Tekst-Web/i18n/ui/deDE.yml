@@ -231,7 +231,7 @@ browse:
       contentEdit:
         title: Inhalte bearbeiten
       correctionNote:
-        title: Korrektur vorschlagen
+        title: Korrekturnotiz erstellen
         info: |
           Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
           Hier können Sie eine Korrekturnotiz verfassen. Die Person,
@@ -289,6 +289,7 @@ models:
     allLanguages: Alle Sprachen
   user:
     modelLabel: Benutzer | Benutzer
+    name: '@:common.name'
     email: E-Mail-Adresse
     username: Benutzername
     password: Passwort
@@ -600,8 +601,8 @@ contents:
   warnUrlInvalid: 'Die eingegebene URL scheint ungültig zu sein: {url}'
   corrections:
     notes: Korrekturnotizen
-    otherTitle: Weitere Belegstellen
-    otherMsg: – | Es gibt eine Korrekturnotiz für weitere Belegstellen | Es gibt {count} Korrekturnotizen für weitere Belegstellen
+    otherTitle: Andere Belegstellen
+    otherMsg: – | Es gibt eine Korrekturnotiz für eine andere Belegstelle | Es gibt {count} Korrekturnotizen für andere Belegstellen
     otherGotoPrev: Gehe zur nächsten vorhergehenden Belegstelle mit Korrekturnotizen
     otherGotoNext: Gehe zur nächsten nachfolgenden Belegstelle mit Korrekturnotizen
 
@@ -669,7 +670,7 @@ account:
     unread: Nachricht ist ungelesen
     btnSend: Senden
     msgNoMessages: Sie haben keine Nachrichten gesendet oder erhalten.
-    btnSendMessageToUser: Nachricht an {'@'}{username} senden
+    btnSendMessageToUser: Nachricht an {username} senden
   welcome: Willkommen, {name}!
   welcomeFirstTime: |
     Willkommen, {name}! Sie sind zum ersten mal hier – ein guter Zeitpunkt, um Ihre

@@ -20,6 +20,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
+import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
 import OtherCorrectionsListItem from '@/components/resource/OtherCorrectionsListItem.vue';
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
@@ -62,7 +63,7 @@ import {
   NList,
   useDialog,
 } from 'naive-ui';
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 
 type ContentFormModel = AnyContentCreate & { id: string };
@@ -388,6 +389,10 @@ watch(
   { immediate: true }
 );
 
+onBeforeMount(async () => {
+  await resources.loadCorrections(props.resId);
+});
+
 // go to resource overview if text changes
 onBeforeRouteUpdate((to, from) => {
   if (to.params.textSlug !== from.params.textSlug) {
@@ -580,9 +585,12 @@ whenever(ArrowRight, () => {
       <n-collapse v-if="resource && !!corrections.length" class="corrections mb-lg">
         <n-collapse-item name="corrections">
           <template #header>
-            <n-badge :offset="[15, 4]">
+            <n-badge :offset="[20, 5]">
               <template #value>
-                <n-icon :component="CorrectionNoteIcon" />
+                <n-flex :size="2" align="center" :wrap="false">
+                  <n-icon :component="CorrectionNoteIcon" />
+                  {{ corrections.length }}
+                </n-flex>
               </template>
               <div>{{ $t('contents.corrections.notes') }}</div>
             </n-badge>
@@ -610,6 +618,16 @@ whenever(ArrowRight, () => {
           </n-list>
         </n-collapse-item>
       </n-collapse>
+      <correction-note-widget
+        v-if="location"
+        :quaternary="false"
+        dashed
+        :resource="resource"
+        :location-id="location.id"
+        full
+        class="mb-lg"
+        style="justify-content: center"
+      />
 
       <template v-if="contentModel">
         <n-form

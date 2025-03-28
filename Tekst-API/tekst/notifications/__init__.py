@@ -9,7 +9,8 @@ from os.path import exists, realpath
 from pathlib import Path
 from urllib.parse import urljoin
 
-from beanie.operators import Eq
+from beanie import PydanticObjectId
+from beanie.operators import Eq, NotIn
 from humps import decamelize
 
 from tekst import tasks
@@ -167,11 +168,13 @@ async def broadcast_user_notification(
 
 async def _broadcast_admin_notification(
     template_id: TemplateIdentifier,
+    exclude_users: list[PydanticObjectId] = [],
     **kwargs,
 ) -> None:
     for admin in await UserDocument.find(
         Eq(UserDocument.is_superuser, True),
         Eq(UserDocument.admin_notification_triggers, template_id.value),
+        NotIn(UserDocument.id, exclude_users),
     ).to_list():
         await asyncio.sleep(5)
         await send_notification(
@@ -183,6 +186,8 @@ async def _broadcast_admin_notification(
 
 async def broadcast_admin_notification(
     template_id: TemplateIdentifier,
+    *,
+    exclude_users: list[PydanticObjectId] = [],
     **kwargs,
 ):
     await tasks.create_task(
@@ -190,6 +195,7 @@ async def broadcast_admin_notification(
         tasks.TaskType.BROADCAST_ADMIN_NTFC,
         task_kwargs={
             "template_id": template_id,
+            "exclude_users": exclude_users,
             **kwargs,
         },
     )

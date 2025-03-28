@@ -53,13 +53,13 @@ async function deleteCorrection(correctionId: string) {
   });
   if (!error) {
     message.success($t('corrections.msgDeleted'));
-    if (props.resource.corrections) {
+    if (resources.corrections[props.resource.id]) {
       resources.corrections[props.resource.id] = resources.corrections[props.resource.id].filter(
         (c) => c.id !== correctionId
       );
       const res = resources.all.find((r) => r.id === props.resource.id);
       if (res) {
-        res.corrections = res.corrections != null ? res.corrections - 1 : 0;
+        res.corrections = (res.corrections ?? 1) - 1;
       }
     }
   }
@@ -110,7 +110,11 @@ function handleMessageClick() {
             :focusable="false"
             :disabled="loading"
             :loading="loading"
-            :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
+            :title="
+              $t('account.messages.btnSendMessageToUser', {
+                username: user.name || `@${user.username}`,
+              })
+            "
             @click.stop.prevent="handleMessageClick"
           >
             <template #icon>

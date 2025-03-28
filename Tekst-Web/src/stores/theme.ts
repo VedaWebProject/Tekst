@@ -30,7 +30,7 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
     color: '#cc3d39',
   },
   Thing: {
-    titleFontWeight: 'var(--font-weight-bold)',
+    titleFontWeight: 'var(--font-weight-normal)',
     fontSize: 'var(--font-size)',
   },
   Tabs: {

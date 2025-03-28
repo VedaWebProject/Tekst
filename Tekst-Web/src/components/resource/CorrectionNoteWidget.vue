@@ -11,6 +11,7 @@ import { ref } from 'vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
+  locationId?: string;
   full?: boolean;
 }>();
 
@@ -29,12 +30,18 @@ function handleClick() {
 }
 
 async function handleModalSubmit(note: string) {
+  const locId = props.locationId || browse.locationPathHead?.id;
+  if (!locId) {
+    console.error('No location ID provided for correction note!');
+    return;
+  }
+
   const correction: CorrectionCreate = {
     resourceId: props.resource.id,
-    locationId: browse.locationPathHead?.id || '',
+    locationId: locId,
     note,
   };
-  const { error } = await POST('/corrections', {
+  const { data, error } = await POST('/corrections', {
     body: correction,
   });
   if (!error) {
@@ -44,10 +51,13 @@ async function handleModalSubmit(note: string) {
     ) {
       const res = resources.all.find((r) => r.id === props.resource.id);
       if (!res) return;
+      // increate resource correction counter
       resources.all = [
         ...resources.all.filter((r) => r.id !== props.resource.id),
-        { ...res, corrections: res.corrections ? res.corrections + 1 : 1 },
+        { ...res, corrections: (res.corrections ?? 0) + 1 },
       ];
+      // add correction to resource corrections list
+      resources.addCorrection(props.resource.id, data);
     }
     message.success($t('browse.contents.widgets.correctionNote.msgSuccess'));
   }
@@ -57,6 +67,7 @@ async function handleModalSubmit(note: string) {
 <template>
   <content-container-header-widget
     v-if="auth.loggedIn"
+    v-bind="$attrs"
     :full="full"
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon-component="CorrectionNoteIcon"

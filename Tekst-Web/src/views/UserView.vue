@@ -61,7 +61,11 @@ watchEffect(() => {
           type="primary"
           circle
           size="large"
-          :title="$t('account.messages.btnSendMessageToUser', { username: user.username })"
+          :title="
+            $t('account.messages.btnSendMessageToUser', {
+              username: user.name || `@${user.username}`,
+            })
+          "
           @click="() => userMessages.openConversation(user as UserReadPublic)"
         >
           <template #icon>

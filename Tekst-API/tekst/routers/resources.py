@@ -86,6 +86,17 @@ async def _preprocess_res_read(
             await UserDocument.get(resource.owner_id)
         )
 
+    # include corrections count if user is owner of the resource
+    # or, if resource has no owner, user is superuser
+    if for_user and (
+        for_user.is_superuser
+        or (resource.owner_id and for_user.id == resource.owner_id)
+        or for_user.id in resource.shared_write
+    ):
+        resource.corrections = await CorrectionDocument.find(
+            CorrectionDocument.resource_id == resource.id
+        ).count()
+
     # include shared-with user data in each resource model (if any)
     if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
         if resource.shared_read:
@@ -96,16 +107,9 @@ async def _preprocess_res_read(
             resource.shared_write_users = await UserDocument.find(
                 In(UserDocument.id, resource.shared_write)
             ).to_list()
-
-    # include corrections count if user is owner of the resource
-    # or, if resource has no owner, user is superuser
-    if for_user and (
-        (resource.owner_id and for_user.id == resource.owner_id)
-        or (not resource.owner_id and for_user.is_superuser)
-    ):
-        resource.corrections = await CorrectionDocument.find(
-            CorrectionDocument.resource_id == resource.id
-        ).count()
+    else:
+        resource.shared_read = []
+        resource.shared_write = []
 
     return resource
 

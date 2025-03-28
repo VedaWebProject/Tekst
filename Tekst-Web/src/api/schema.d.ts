@@ -6524,8 +6524,7 @@ export interface components {
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
-       *       "userAwaitsActivation",
-       *       "newCorrection"
+       *       "userAwaitsActivation"
        *     ]
        */
       adminNotificationTriggers: components['schemas']['AdminNotificationTrigger'][];
@@ -6680,8 +6679,7 @@ export interface components {
        * Adminnotificationtriggers
        * @description Events that trigger admin notifications for this user
        * @default [
-       *       "userAwaitsActivation",
-       *       "newCorrection"
+       *       "userAwaitsActivation"
        *     ]
        */
       adminNotificationTriggers: components['schemas']['AdminNotificationTrigger'][];

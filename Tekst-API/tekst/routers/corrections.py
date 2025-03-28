@@ -67,6 +67,17 @@ async def create_correction(
         location_labels.insert(0, parent_location.label)
         parent_location_id = parent_location.parent_id
 
+    # create correction
+    correction_doc = await CorrectionDocument(
+        resource_id=correction.resource_id,
+        location_id=correction.location_id,
+        position=location_doc.position,
+        note=correction.note,
+        user_id=user.id,
+        date=datetime.utcnow(),
+        location_labels=location_labels,
+    ).create()
+
     # notify the resource's owner (or admins if it's public) of the new correction
     msg_specific_attrs = {
         "from_user_name": user.name if "name" in user.public_fields else user.username,
@@ -76,34 +87,27 @@ async def create_correction(
         "resource_title": pick_translation(resource_doc.title),
     }
     if not resource_doc.public and resource_doc.owner_id:
-        to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
-        if (
-            to_user
-            and to_user.id != user.id
-            and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
-            in to_user.user_notification_triggers
-        ):
-            await send_notification(
-                to_user,
-                TemplateIdentifier.EMAIL_NEW_CORRECTION,
-                **msg_specific_attrs,
-            )
+        if user.id != resource_doc.owner_id:
+            to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
+            if (
+                to_user
+                and to_user.id != user.id
+                and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
+                in to_user.user_notification_triggers
+            ):
+                await send_notification(
+                    to_user,
+                    TemplateIdentifier.EMAIL_NEW_CORRECTION,
+                    **msg_specific_attrs,
+                )
     else:
         await broadcast_admin_notification(
             TemplateIdentifier.EMAIL_NEW_CORRECTION,
+            exclude_users=[user.id],
             **msg_specific_attrs,
         )
 
-    # create correction
-    return await CorrectionDocument(
-        resource_id=correction.resource_id,
-        location_id=correction.location_id,
-        position=location_doc.position,
-        note=correction.note,
-        user_id=user.id,
-        date=datetime.utcnow(),
-        location_labels=location_labels,
-    ).create()
+    return correction_doc
 
 
 @router.get(

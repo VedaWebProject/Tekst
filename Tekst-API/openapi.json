@@ -18391,8 +18391,7 @@
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "default": [
-              "userAwaitsActivation",
-              "newCorrection"
+              "userAwaitsActivation"
             ]
           },
           "seen": {
@@ -18709,8 +18708,7 @@
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "default": [
-              "userAwaitsActivation",
-              "newCorrection"
+              "userAwaitsActivation"
             ]
           },
           "seen": {

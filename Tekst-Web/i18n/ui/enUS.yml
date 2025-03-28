@@ -228,7 +228,7 @@ browse:
       contentEdit:
         title: Edit contents
       correctionNote:
-        title: Suggest correction
+        title: Create correction note
         info: |
           Do you have a short comment or correction to this content?
           You can write a correction note here. The person
@@ -286,6 +286,7 @@ models:
     allLanguages: All languages
   user:
     modelLabel: User | Users
+    name: '@:common.name'
     email: Email
     username: Username
     password: Password
@@ -589,8 +590,8 @@ contents:
   warnUrlInvalid: 'The URL seems to be invalid: {url}'
   corrections:
     notes: Correction Notes
-    otherTitle: Further locations
-    otherMsg: – | There is one correction note for further locations | There are {count} correction notes for further locations
+    otherTitle: Other locations
+    otherMsg: – | There is a correction note for another locations | There are {count} correction notes for other locations
     otherGotoPrev: Go to nearest preceding location with correction notes
     otherGotoNext: Go to nearest subsequent location with correction notes
 
@@ -658,7 +659,7 @@ account:
     unread: Message is unread
     btnSend: Send
     msgNoMessages: You haven't sent or received any messages.
-    btnSendMessageToUser: Send message to {'@'}{username}
+    btnSendMessageToUser: Send message to {username}
   welcome: Welcome, {name}!
   welcomeFirstTime: |
     Welcome, {name}! You are here for the first time – a good time to visit your
