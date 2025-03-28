@@ -169,7 +169,11 @@ whenever(Enter, () => {
             @esc="handleClose"
             @update:show="focusTargetInput"
           >
-            <n-drawer-content closable>
+            <n-drawer-content
+              closable
+              header-style="font-weight: normal"
+              body-style="background-color: var(--main-bg-color)"
+            >
               <template #header>
                 <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
                   <n-flex align="center" :wrap="false" style="flex: 4 300px">
@@ -183,7 +187,7 @@ whenever(Enter, () => {
                     >
                       {{ oskInputResult }}
                     </div>
-                    <div v-else class="text-large translucent ellipsis">
+                    <div v-else class="translucent ellipsis">
                       {{ $t('osk.inputPlaceholder') }}
                     </div>
                     <div style="flex: 2"></div>
@@ -232,11 +236,9 @@ whenever(Enter, () => {
                           v-if="!!key.char"
                           :key="keyIndex"
                           :focusable="false"
-                          secondary
                           :size="state.smallScreen ? undefined : 'large'"
                           :style="fontStyle"
-                          style="border: 1px solid #ddd"
-                          class="box-shadow"
+                          class="key box-shadow"
                           @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
                         >
                           {{ shiftActive && key.shift ? key.shift : key.char }}
@@ -248,10 +250,11 @@ whenever(Enter, () => {
                   <!-- SHIFT / CAPSLOCK -->
                   <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
                     <n-button
-                      type="primary"
+                      :type="capsLock ? 'primary' : undefined"
                       :size="state.smallScreen ? undefined : 'large'"
-                      :secondary="!capsLock"
                       :focusable="false"
+                      class="key box-shadow"
+                      :class="{ locked: capsLock }"
                       @click="capsLock = !capsLock"
                     >
                       <template #icon>
@@ -259,11 +262,12 @@ whenever(Enter, () => {
                       </template>
                     </n-button>
                     <n-button
-                      type="primary"
+                      :type="shift ? 'primary' : undefined"
                       :size="state.smallScreen ? undefined : 'large'"
-                      :secondary="!shift"
                       :focusable="false"
                       :disabled="capsLock"
+                      class="key box-shadow"
+                      :class="{ locked: shift }"
                       @click="shift = !shift"
                     >
                       <template #icon>
@@ -312,3 +316,9 @@ whenever(Enter, () => {
     </template>
   </n-input>
 </template>
+
+<style scoped>
+.key:not(.locked) {
+  background-color: var(--content-bg-color);
+}
+</style>
