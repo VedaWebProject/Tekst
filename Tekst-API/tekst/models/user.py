@@ -144,12 +144,15 @@ class User(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     public_fields: PrivateUserProps = []
-    user_notification_triggers: UserNotificationTriggers = list(
-        get_args(UserNotificationTrigger.__value__)
-    )
-    admin_notification_triggers: AdminNotificationTriggers = list(
-        get_args(AdminNotificationTrigger.__value__)
-    )
+    user_notification_triggers: UserNotificationTriggers = [
+        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
+        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+        TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
+        TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
+    ]
+    admin_notification_triggers: AdminNotificationTriggers = [
+        TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
+    ]
     seen: bool | None = None
 
 
