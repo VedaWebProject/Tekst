@@ -166,6 +166,15 @@ pre > code {
   padding: 0.75rem 1rem;
 }
 
+table {
+  border-spacing: 12px;
+  border-collapse: separate;
+}
+
+table th {
+  text-align: left;
+}
+
 .m-0 {
   margin: 0;
 }
