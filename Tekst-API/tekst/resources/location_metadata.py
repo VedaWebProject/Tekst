@@ -20,7 +20,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    CommonResourceConfig,
+    GeneralResourceConfig,
     ItemDisplayProps,
     ItemGroup,
     ResourceConfigBase,
@@ -30,9 +30,7 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
     ExcludeFromModelVariants,
-    FontNameValueOrNone,
     SchemaOptionalNonNullable,
 )
 
@@ -208,8 +206,8 @@ class LocationMetadata(ResourceTypeABC):
             # get sorted items keys based on resource config
             keys = ItemDisplayProps.sort_items_keys(
                 [agg["key"] for agg in aggs.data] if aggs and aggs.data else [],
-                item_groups=resource.config.location_metadata.groups,
-                item_display_props=resource.config.location_metadata.display_props,
+                item_groups=resource.config.special.groups,
+                item_display_props=resource.config.special.display_props,
             )
             csv_writer.writerow(
                 [
@@ -230,7 +228,7 @@ class LocationMetadata(ResourceTypeABC):
                 )
 
 
-class LocationMetadataModifiedCommonResourceConfig(CommonResourceConfig):
+class LocationMetadataModGeneralConfig(GeneralResourceConfig):
     enable_content_context: Annotated[
         Literal[False],
         Field(
@@ -255,11 +253,6 @@ class LocationMetadataModifiedCommonResourceConfig(CommonResourceConfig):
         ),
         SchemaOptionalNonNullable,
     ] = False
-
-
-class GeneralTextAnnotationResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
 
 
 LocationMetadataEntryKey = TypeAliasType(
@@ -322,11 +315,8 @@ class LocationMetadataSpecialConfig(ModelBase):
 
 
 class LocationMetadataResourceConfig(ResourceConfigBase):
-    common: LocationMetadataModifiedCommonResourceConfig = (
-        LocationMetadataModifiedCommonResourceConfig()
-    )
-    general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
-    location_metadata: LocationMetadataSpecialConfig = LocationMetadataSpecialConfig()
+    general: LocationMetadataModGeneralConfig = LocationMetadataModGeneralConfig()
+    special: LocationMetadataSpecialConfig = LocationMetadataSpecialConfig()
 
 
 class LocationMetadataResource(ResourceBase):

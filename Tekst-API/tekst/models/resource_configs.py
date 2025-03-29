@@ -6,10 +6,16 @@ from typing_extensions import TypeAliasType, TypedDict
 from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
-from tekst.types import ConStr, ConStrOrNone, SchemaOptionalNonNullable
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    DefaultCollapsedValue,
+    FontNameValueOrNone,
+    SchemaOptionalNonNullable,
+)
 
 
-class CommonResourceConfig(ModelBase):
+class GeneralResourceConfig(ModelBase):
     category: Annotated[
         ConStrOrNone(
             max_length=16,
@@ -33,6 +39,8 @@ class CommonResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = True
+    default_collapsed: DefaultCollapsedValue = False
+    font: FontNameValueOrNone = None
     enable_content_context: Annotated[
         bool,
         Field(
@@ -65,7 +73,7 @@ class CommonResourceConfig(ModelBase):
 
 
 class ResourceConfigBase(ModelBase):
-    common: CommonResourceConfig = CommonResourceConfig()
+    general: GeneralResourceConfig = GeneralResourceConfig()
 
 
 # GENERIC RESOURCE CONFIG: ITEM DISPLAY (ORDER, GROUPING AND TRANSLATIONS)

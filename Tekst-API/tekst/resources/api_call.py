@@ -13,7 +13,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
-    CommonResourceConfig,
+    GeneralResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -21,9 +21,7 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
     ExcludeFromModelVariants,
-    FontNameValueOrNone,
     HttpUrl,
     SchemaOptionalNonNullable,
 )
@@ -115,16 +113,16 @@ class ApiCall(ResourceTypeABC):
                 csv_writer.writerow(
                     [
                         full_location_labels.get(str(content.location_id), ""),
-                        resource.config.api_call.endpoint,
-                        resource.config.api_call.method,
-                        resource.config.api_call.content_type,
+                        resource.config.special.endpoint,
+                        resource.config.special.method,
+                        resource.config.special.content_type,
                         content.query,
                         content.comment,
                     ]
                 )
 
 
-class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
+class ApiCallModGeneralConfig(GeneralResourceConfig):
     enable_content_context: Annotated[
         Literal[False],
         Field(
@@ -169,14 +167,12 @@ class ApiCallModifiedCommonResourceConfig(CommonResourceConfig):
     ] = False
 
 
-class GeneralApiCallResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
-
-
 class ApiCallSpecialConfig(ModelBase):
     """Config properties specific to the API call resource type"""
 
+    # generic config items
+
+    # resource type-specific config items
     endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
     method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
     content_type: ConStr(
@@ -206,9 +202,8 @@ class ApiCallSpecialConfig(ModelBase):
 
 class ApiCallResourceConfig(ResourceConfigBase):
     # override common resource config field of ResourceConfigBase
-    common: ApiCallModifiedCommonResourceConfig = ApiCallModifiedCommonResourceConfig()
-    general: GeneralApiCallResourceConfig = GeneralApiCallResourceConfig()
-    api_call: ApiCallSpecialConfig = ApiCallSpecialConfig()
+    general: ApiCallModGeneralConfig = ApiCallModGeneralConfig()
+    special: ApiCallSpecialConfig = ApiCallSpecialConfig()
 
 
 class ApiCallResource(ResourceBase):

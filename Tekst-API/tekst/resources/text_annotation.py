@@ -25,8 +25,6 @@ from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceT
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
-    FontNameValueOrNone,
     SchemaOptionalNullable,
 )
 
@@ -311,7 +309,7 @@ class TextAnnotation(ResourceTypeABC):
                         anno.key: anno.value for anno in token.annotations or []
                     }
                     csv_annos = [
-                        resource.config.text_annotation.multi_value_delimiter.join(
+                        resource.config.special.multi_value_delimiter.join(
                             token_annos.get(anno_key, [])
                         )
                         for anno_key in anno_keys
@@ -325,11 +323,6 @@ class TextAnnotation(ResourceTypeABC):
                             content.comment,
                         ]
                     )
-
-
-class GeneralTextAnnotationResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
 
 
 class AnnotationGroupTranslation(TranslationBase):
@@ -365,6 +358,7 @@ class AnnotationGroup(TypedDict):
 class TextAnnotationSpecialConfig(ModelBase):
     """Config properties specific to the text annotation resource type"""
 
+    # resource type-specific config items
     annotation_groups: Annotated[
         list[AnnotationGroup],
         Field(
@@ -397,8 +391,7 @@ class TextAnnotationSpecialConfig(ModelBase):
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):
-    general: GeneralTextAnnotationResourceConfig = GeneralTextAnnotationResourceConfig()
-    text_annotation: TextAnnotationSpecialConfig = TextAnnotationSpecialConfig()
+    special: TextAnnotationSpecialConfig = TextAnnotationSpecialConfig()
 
 
 class TextAnnotationResource(ResourceBase):

@@ -337,11 +337,11 @@ async def update_resource(
             if await UserDocument.find_one(UserDocument.id == uid).exists()
         ]
 
-    # mark  respective text's index as out-of-date if any indexing-relevant config
+    # mark respective text's index as out-of-date if any indexing-relevant config
     # will be changed by this update (this logic might have to find a new home
     # in case there are more of these indexing-relevant configs in the future)
-    sr_before = resource_doc.attr_by_path("config.general.search_replacements")
-    sr_after = updates.attr_by_path("config.general.search_replacements")
+    sr_before = resource_doc.attr_by_path("config.special.search_replacements")
+    sr_after = updates.attr_by_path("config.special.search_replacements")
     if str(sr_before) != str(sr_after):
         await set_index_ood(
             text_id=resource_doc.text_id,
@@ -1029,7 +1029,7 @@ async def _export_resource_contents_task(
         raise errors.E_400_LOCATION_RANGE_INVALID
 
     text = await TextDocument.get(resource.text_id)
-    target_resource_type = resource_types_mgr.get(resource.resource_type)
+    target_res_type = resource_types_mgr.get(resource.resource_type)
 
     # get target location IDs from range
     target_loc_id_pos_map = {
@@ -1045,7 +1045,7 @@ async def _export_resource_contents_task(
     }
 
     # get target contents
-    content_doc_model = target_resource_type.content_model().document_model()
+    content_doc_model = target_res_type.content_model().document_model()
     contents = await content_doc_model.find(
         content_doc_model.resource_id == resource.id,
         In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
@@ -1062,20 +1062,20 @@ async def _export_resource_contents_task(
 
     # create export data
     if export_format == "tekst-json":
-        await target_resource_type.export_tekst_json(
+        await target_res_type.export_tekst_json(
             resource=resource,
             contents=contents,
             file_path=tempfile_path,
         )
     elif export_format == "json":
-        await target_resource_type.export_universal_json(
+        await target_res_type.export_universal_json(
             resource=resource,
             contents=contents,
             file_path=tempfile_path,
         )
     else:
         try:
-            await target_resource_type.export(
+            await target_res_type.export(
                 resource=resource,
                 contents=contents,
                 export_format=export_format,

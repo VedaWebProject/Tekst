@@ -204,3 +204,28 @@ async def test_0_10_0a0(
         assert res["subtitle"][0]["translation"] == "DESCRIPTION"
         assert "description" in res
         assert res["description"][0]["translation"] == "COMMENT"
+
+
+@pytest.mark.anyio
+async def test_0_11_0a0(
+    database,
+    get_test_data,
+):
+    resources = get_test_data("migrations/0_11_0a0.json")
+    await database.resources.insert_many(resources)
+
+    # run migration
+    await migrations.migration_0_11_0a0.migration(database)
+    resources = await database.resources.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "common" not in res["config"]
+        assert "general" in res["config"]
+        assert "special" in res["config"]
+        assert "default_active" in res["config"]["general"]
+        assert "sort_order" in res["config"]["general"]
+        assert "default_collapsed" not in res["config"]["special"]
+        assert "default_collapsed" in res["config"]["general"]

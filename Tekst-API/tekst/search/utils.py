@@ -18,7 +18,7 @@ def add_analysis_settings(
     # extended/modified to create a normalizer instead of an analyzer!)
 
     try:
-        has_search_replacements = bool(for_resource.config.general.search_replacements)
+        has_search_replacements = bool(for_resource.config.special.search_replacements)
     except AttributeError:
         has_search_replacements = False
 
@@ -28,7 +28,7 @@ def add_analysis_settings(
         if "analyzer" not in to_analysis:
             to_analysis["analyzer"] = {}
         for index, search_replacement in enumerate(
-            for_resource.config.general.search_replacements
+            for_resource.config.special.search_replacements
         ):
             filter_name = f"{res_id_str}_search_replacements_{index}"
             to_analysis["char_filter"][filter_name] = {
@@ -63,7 +63,7 @@ def add_mappings(
 ) -> None:
     # determine analyzer names
     try:
-        use_special_analyzers = bool(for_resource.config.general.search_replacements)
+        use_special_analyzers = bool(for_resource.config.special.search_replacements)
     except AttributeError:
         use_special_analyzers = False
     lenient_analyzer = (

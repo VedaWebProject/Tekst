@@ -22,8 +22,6 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
-    FontNameValueOrNone,
     HttpUrl,
     HttpUrlOrNone,
     SchemaOptionalNullable,
@@ -157,13 +155,8 @@ class Images(ResourceTypeABC):
                     )
 
 
-class GeneralImagesResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = True
-    font: FontNameValueOrNone = None
-
-
 class ImagesResourceConfig(ResourceConfigBase):
-    general: GeneralImagesResourceConfig = GeneralImagesResourceConfig()
+    pass
 
 
 class ImagesResource(ResourceBase):

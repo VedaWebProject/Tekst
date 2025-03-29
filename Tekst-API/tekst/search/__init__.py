@@ -448,7 +448,7 @@ async def search_quick(
 
     # remove resources that aren't quick-searchable
     target_resources = [
-        res for res in target_resources if res.config.common.searchable_quick
+        res for res in target_resources if res.config.general.searchable_quick
     ]
 
     # compose a list of target index fields based on the resources to search:
@@ -542,7 +542,7 @@ async def search_advanced(
     for query in queries:
         res_id = str(query.common.resource_id)
         res_doc = accessible_resources_by_id.get(res_id)
-        if not res_doc or res_doc.config.common.searchable_adv is False:
+        if not res_doc or res_doc.config.general.searchable_adv is False:
             continue  # pragma: no cover
         res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)
         txt_id = str(res_doc.text_id)
