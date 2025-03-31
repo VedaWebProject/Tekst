@@ -171,7 +171,8 @@ table {
   border-collapse: separate;
 }
 
-table th, table td {
+table th,
+table td {
   text-align: left;
   vertical-align: top;
 }

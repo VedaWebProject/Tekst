@@ -113,9 +113,9 @@ class ApiCall(ResourceTypeABC):
                 csv_writer.writerow(
                     [
                         full_location_labels.get(str(content.location_id), ""),
-                        resource.config.special.endpoint,
-                        resource.config.special.method,
-                        resource.config.special.content_type,
+                        resource.config.special.api_call.endpoint,
+                        resource.config.special.api_call.method,
+                        resource.config.special.api_call.content_type,
                         content.query,
                         content.comment,
                     ]
@@ -167,25 +167,23 @@ class ApiCallModGeneralConfig(GeneralResourceConfig):
     ] = False
 
 
-class ApiCallSpecialConfig(ModelBase):
-    """Config properties specific to the API call resource type"""
-
-    # generic config items
-
-    # resource type-specific config items
+class ApiCallConfig(ModelBase):
     endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
     method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
     content_type: ConStr(
         max_length=64,
     ) = "application/json"
-    transform_deps: Annotated[
+
+
+class ContentTransformConfig(ModelBase):
+    deps: Annotated[
         list[HttpUrl],
         Field(
             min_length=0,
             max_length=32,
         ),
     ] = []
-    transform_js: Annotated[
+    js: Annotated[
         ConStrOrNone(
             min_length=0,
             max_length=102400,
@@ -195,9 +193,14 @@ class ApiCallSpecialConfig(ModelBase):
 
     @model_validator(mode="after")
     def validate_config(self):
-        if self.transform_deps and not self.transform_js:  # pragma: no cover
-            self.transform_deps = []
+        if self.deps and not self.js:  # pragma: no cover
+            self.deps = []
         return self
+
+
+class ApiCallSpecialConfig(ModelBase):
+    api_call: ApiCallConfig = ApiCallConfig()
+    transform: ContentTransformConfig = ContentTransformConfig()
 
 
 class ApiCallResourceConfig(ResourceConfigBase):

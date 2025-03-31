@@ -16,7 +16,7 @@ const model = defineModel<ApiCallContentCreate>({ required: true });
 <template>
   <!-- QUERY STRING (if method is GET) -->
   <n-form-item
-    v-if="resource.config.apiCall.method === 'GET'"
+    v-if="resource.config.special.apiCall.method === 'GET'"
     :label="$t('resources.types.apiCall.contentFields.queryString')"
     path="query"
     :rule="contentFormRules.apiCall.queryString"

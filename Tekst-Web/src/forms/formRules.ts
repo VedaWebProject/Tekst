@@ -257,7 +257,7 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
       type: 'number',
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('resources.settings.config.common.sortOrder'),
+          x: $t('resources.settings.config.general.sortOrder'),
         }),
       trigger: 'blur',
     },
@@ -289,10 +289,7 @@ export const focusViewConfigFormRules: Record<string, FormItemRule[]> = {
 
 export const searchReplacementsConfigFormRules: Record<string, FormItemRule[]> = {
   pattern: [
-    requiredStringRule(
-      () => $t('resources.settings.config.general.searchReplacements.pattern'),
-      'blur'
-    ),
+    requiredStringRule(() => $t('resources.settings.config.searchReplacements.pattern'), 'blur'),
     minMaxCharsRule(1, 64, 'blur'),
   ],
   replacement: [minMaxCharsRule(0, 64, 'blur')],
@@ -300,7 +297,7 @@ export const searchReplacementsConfigFormRules: Record<string, FormItemRule[]> =
 
 export const contentCssConfigFormRules: Record<string, FormItemRule[]> = {
   prop: [
-    requiredStringRule(() => $t('resources.settings.config.general.contentCss.prop'), 'blur'),
+    requiredStringRule(() => $t('resources.settings.config.contentCss.prop'), 'blur'),
     minMaxCharsRule(1, 256, 'blur'),
   ],
   value: [requiredStringRule(() => $t('common.value'), 'blur'), minMaxCharsRule(1, 256, 'blur')],
@@ -311,7 +308,7 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
     displayTemplate: [minMaxCharsRule(0, 4096, 'blur')],
     multiValueDelimiter: [
       requiredStringRule(
-        () => $t('resources.settings.config.textAnnotation.multiValueDelimiter'),
+        () => $t('resources.settings.config.annotations.multiValueDelimiter'),
         'blur'
       ),
       minMaxCharsRule(1, 3, 'blur'),
@@ -322,7 +319,7 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
     ],
     annotationGroupTranslation: [
       requiredStringRule(
-        () => $t('resources.settings.config.textAnnotation.annotationGroup', 1),
+        () => $t('resources.settings.config.annotations.annotationGroup', 1),
         'blur'
       ),
       minMaxCharsRule(1, 32, 'blur'),
@@ -334,11 +331,8 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
       minMaxCharsRule(1, 2083, 'blur'),
     ],
     contentType: [minMaxCharsRule(0, 64, 'blur')],
-    transformDep: [
-      requiredStringRule(() => $t('common.url'), 'blur'),
-      minMaxCharsRule(1, 2083, 'blur'),
-    ],
-    transformJs: [minMaxCharsRule(0, 102400, 'blur')],
+    dep: [requiredStringRule(() => $t('common.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
+    js: [minMaxCharsRule(0, 102400, 'blur')],
   },
 };
 

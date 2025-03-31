@@ -412,7 +412,7 @@ export type AnyResourceUpdate =
 
 // resource config types
 
-export type CommonResourceConfig = components['schemas']['CommonResourceConfig'];
+export type GeneralResourceConfig = components['schemas']['GeneralResourceConfig'];
 export type AnyResourceConfig = AnyResourceRead['config'];
 export type LineLabellingConfig = components['schemas']['LineLabellingConfig'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];

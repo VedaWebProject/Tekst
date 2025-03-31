@@ -7475,6 +7475,75 @@
         ],
         "title": "AnnotationGroupTranslation"
       },
+      "AnnotationsConfig": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/AnnotationGroup"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Groups",
+            "description": "Display groups to use for grouping annotations",
+            "default": []
+          },
+          "displayTemplate": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Displaytemplate",
+            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
+          },
+          "multiValueDelimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Multivaluedelimiter",
+            "description": "String used to delimit multiple values for an annotation",
+            "default": "/"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationsConfig"
+      },
+      "ApiCallConfig": {
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Endpoint",
+            "default": "https://api.example.com/v2/some/endpoint"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "QUERY",
+              "SEARCH"
+            ],
+            "title": "Method",
+            "default": "GET"
+          },
+          "contentType": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Contenttype",
+            "default": "application/json"
+          }
+        },
+        "type": "object",
+        "title": "ApiCallConfig"
+      },
       "ApiCallContentCreate": {
         "properties": {
           "resourceId": {
@@ -7846,10 +7915,14 @@
           "special": {
             "$ref": "#/components/schemas/ApiCallSpecialConfig",
             "default": {
-              "endpoint": "https://api.example.com/v2/some/endpoint",
-              "method": "GET",
-              "contentType": "application/json",
-              "transformDeps": []
+              "apiCall": {
+                "contentType": "application/json",
+                "endpoint": "https://api.example.com/v2/some/endpoint",
+                "method": "GET"
+              },
+              "transform": {
+                "deps": []
+              }
             }
           }
         },
@@ -7962,10 +8035,14 @@
                 "sortOrder": 10
               },
               "special": {
-                "contentType": "application/json",
-                "endpoint": "https://api.example.com/v2/some/endpoint",
-                "method": "GET",
-                "transformDeps": []
+                "apiCall": {
+                  "contentType": "application/json",
+                  "endpoint": "https://api.example.com/v2/some/endpoint",
+                  "method": "GET"
+                },
+                "transform": {
+                  "deps": []
+                }
               }
             }
           }
@@ -8202,10 +8279,14 @@
                 "sortOrder": 10
               },
               "special": {
-                "contentType": "application/json",
-                "endpoint": "https://api.example.com/v2/some/endpoint",
-                "method": "GET",
-                "transformDeps": []
+                "apiCall": {
+                  "contentType": "application/json",
+                  "endpoint": "https://api.example.com/v2/some/endpoint",
+                  "method": "GET"
+                },
+                "transform": {
+                  "deps": []
+                }
               }
             }
           },
@@ -8399,61 +8480,23 @@
       },
       "ApiCallSpecialConfig": {
         "properties": {
-          "endpoint": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "title": "Endpoint",
-            "default": "https://api.example.com/v2/some/endpoint"
+          "apiCall": {
+            "$ref": "#/components/schemas/ApiCallConfig",
+            "default": {
+              "endpoint": "https://api.example.com/v2/some/endpoint",
+              "method": "GET",
+              "contentType": "application/json"
+            }
           },
-          "method": {
-            "type": "string",
-            "enum": [
-              "GET",
-              "POST",
-              "QUERY",
-              "SEARCH"
-            ],
-            "title": "Method",
-            "default": "GET"
-          },
-          "contentType": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Contenttype",
-            "default": "application/json"
-          },
-          "transformDeps": {
-            "items": {
-              "type": "string",
-              "maxLength": 2083,
-              "minLength": 1
-            },
-            "type": "array",
-            "maxItems": 32,
-            "minItems": 0,
-            "title": "Transformdeps",
-            "default": []
-          },
-          "transformJs": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 0
-              }
-            ],
-            "title": "Transformjs",
-            "optionalNullable": false
+          "transform": {
+            "$ref": "#/components/schemas/ContentTransformConfig",
+            "default": {
+              "deps": []
+            }
           }
         },
         "type": "object",
-        "title": "ApiCallSpecialConfig",
-        "description": "Config properties specific to the API call resource type"
+        "title": "ApiCallSpecialConfig"
       },
       "AudioContentCreate": {
         "properties": {
@@ -8730,6 +8773,16 @@
               "searchableAdv": true,
               "rtl": false
             }
+          },
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -9860,6 +9913,38 @@
         ],
         "title": "ContentCssProperty"
       },
+      "ContentTransformConfig": {
+        "properties": {
+          "deps": {
+            "items": {
+              "type": "string",
+              "maxLength": 2083,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 0,
+            "title": "Deps",
+            "default": []
+          },
+          "js": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 0
+              }
+            ],
+            "title": "Js",
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "title": "ContentTransformConfig"
+      },
       "CorrectionCreate": {
         "properties": {
           "resourceId": {
@@ -10386,6 +10471,16 @@
               "searchableAdv": true,
               "rtl": false
             }
+          },
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -11396,6 +11491,16 @@
               "searchableAdv": true,
               "rtl": false
             }
+          },
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -12002,6 +12107,32 @@
           "upToDate"
         ],
         "title": "IndexInfo"
+      },
+      "ItemDisplayConfig": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/ItemGroup"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Groups",
+            "description": "Item display groups",
+            "default": []
+          },
+          "displayProps": {
+            "items": {
+              "$ref": "#/components/schemas/ItemDisplayProps"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "title": "Displayprops",
+            "description": "Item display properties",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "ItemDisplayConfig"
       },
       "ItemDisplayProps": {
         "properties": {
@@ -12713,8 +12844,10 @@
           "special": {
             "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
             "default": {
-              "groups": [],
-              "displayProps": []
+              "itemDisplay": {
+                "displayProps": [],
+                "groups": []
+              }
             }
           }
         },
@@ -12827,8 +12960,10 @@
                 "sortOrder": 10
               },
               "special": {
-                "displayProps": [],
-                "groups": []
+                "itemDisplay": {
+                  "displayProps": [],
+                  "groups": []
+                }
               }
             }
           }
@@ -13065,8 +13200,10 @@
                 "sortOrder": 10
               },
               "special": {
-                "displayProps": [],
-                "groups": []
+                "itemDisplay": {
+                  "displayProps": [],
+                  "groups": []
+                }
               }
             }
           },
@@ -13286,30 +13423,16 @@
       },
       "LocationMetadataSpecialConfig": {
         "properties": {
-          "groups": {
-            "items": {
-              "$ref": "#/components/schemas/ItemGroup"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Groups",
-            "description": "Item display groups",
-            "default": []
-          },
-          "displayProps": {
-            "items": {
-              "$ref": "#/components/schemas/ItemDisplayProps"
-            },
-            "type": "array",
-            "maxItems": 128,
-            "title": "Displayprops",
-            "description": "Item display properties",
-            "default": []
+          "itemDisplay": {
+            "$ref": "#/components/schemas/ItemDisplayConfig",
+            "default": {
+              "groups": [],
+              "displayProps": []
+            }
           }
         },
         "type": "object",
-        "title": "LocationMetadataSpecialConfig",
-        "description": "Config properties specific to the location metadata resource type"
+        "title": "LocationMetadataSpecialConfig"
       },
       "LocationRead": {
         "properties": {
@@ -13526,6 +13649,11 @@
           "value"
         ],
         "title": "MetadataEntry"
+      },
+      "ModelBase": {
+        "properties": {},
+        "type": "object",
+        "title": "ModelBase"
       },
       "MoveLocationRequestBody": {
         "properties": {
@@ -16995,8 +17123,10 @@
           "special": {
             "$ref": "#/components/schemas/TextAnnotationSpecialConfig",
             "default": {
-              "annotationGroups": [],
-              "multiValueDelimiter": "/"
+              "annotations": {
+                "groups": [],
+                "multiValueDelimiter": "/"
+              }
             }
           }
         },
@@ -17109,8 +17239,10 @@
                 "sortOrder": 10
               },
               "special": {
-                "annotationGroups": [],
-                "multiValueDelimiter": "/"
+                "annotations": {
+                  "groups": [],
+                  "multiValueDelimiter": "/"
+                }
               }
             }
           }
@@ -17347,8 +17479,10 @@
                 "sortOrder": 10
               },
               "special": {
-                "annotationGroups": [],
-                "multiValueDelimiter": "/"
+                "annotations": {
+                  "groups": [],
+                  "multiValueDelimiter": "/"
+                }
               }
             }
           },
@@ -17584,42 +17718,16 @@
       },
       "TextAnnotationSpecialConfig": {
         "properties": {
-          "annotationGroups": {
-            "items": {
-              "$ref": "#/components/schemas/AnnotationGroup"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Annotationgroups",
-            "description": "Display groups to use for grouping annotations",
-            "default": []
-          },
-          "displayTemplate": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 4096,
-                "minLength": 1
-              }
-            ],
-            "title": "Displaytemplate",
-            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
-          },
-          "multiValueDelimiter": {
-            "type": "string",
-            "maxLength": 3,
-            "minLength": 1,
-            "title": "Multivaluedelimiter",
-            "description": "String used to delimit multiple values for an annotation",
-            "default": "/"
+          "annotations": {
+            "$ref": "#/components/schemas/AnnotationsConfig",
+            "default": {
+              "groups": [],
+              "multiValueDelimiter": "/"
+            }
           }
         },
         "type": "object",
-        "title": "TextAnnotationSpecialConfig",
-        "description": "Config properties specific to the text annotation resource type"
+        "title": "TextAnnotationSpecialConfig"
       },
       "TextAnnotationToken": {
         "properties": {

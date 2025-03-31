@@ -21,8 +21,8 @@ from tekst.models.resource import (
 )
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
+    ItemDisplayConfig,
     ItemDisplayProps,
-    ItemGroup,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -206,8 +206,8 @@ class LocationMetadata(ResourceTypeABC):
             # get sorted items keys based on resource config
             keys = ItemDisplayProps.sort_items_keys(
                 [agg["key"] for agg in aggs.data] if aggs and aggs.data else [],
-                item_groups=resource.config.special.groups,
-                item_display_props=resource.config.special.display_props,
+                item_groups=resource.config.special.item_display.groups,
+                item_display_props=resource.config.special.item_display.display_props,
             )
             csv_writer.writerow(
                 [
@@ -296,22 +296,7 @@ class MetadataKeyTranslation(TranslationBase):
 
 
 class LocationMetadataSpecialConfig(ModelBase):
-    """Config properties specific to the location metadata resource type"""
-
-    groups: Annotated[
-        list[ItemGroup],
-        Field(
-            description="Item display groups",
-            max_length=64,
-        ),
-    ] = []
-    display_props: Annotated[
-        list[ItemDisplayProps],
-        Field(
-            description="Item display properties",
-            max_length=128,
-        ),
-    ] = []
+    item_display: ItemDisplayConfig = ItemDisplayConfig()
 
 
 class LocationMetadataResourceConfig(ResourceConfigBase):

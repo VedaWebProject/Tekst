@@ -309,7 +309,7 @@ class TextAnnotation(ResourceTypeABC):
                         anno.key: anno.value for anno in token.annotations or []
                     }
                     csv_annos = [
-                        resource.config.special.multi_value_delimiter.join(
+                        resource.config.special.annotations.multi_value_delimiter.join(
                             token_annos.get(anno_key, [])
                         )
                         for anno_key in anno_keys
@@ -355,11 +355,8 @@ class AnnotationGroup(TypedDict):
     ] = []
 
 
-class TextAnnotationSpecialConfig(ModelBase):
-    """Config properties specific to the text annotation resource type"""
-
-    # resource type-specific config items
-    annotation_groups: Annotated[
+class AnnotationsConfig(ModelBase):
+    groups: Annotated[
         list[AnnotationGroup],
         Field(
             description="Display groups to use for grouping annotations",
@@ -388,6 +385,10 @@ class TextAnnotationSpecialConfig(ModelBase):
             description="String used to delimit multiple values for an annotation",
         ),
     ] = "/"
+
+
+class TextAnnotationSpecialConfig(ModelBase):
+    annotations: AnnotationsConfig = AnnotationsConfig()
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):

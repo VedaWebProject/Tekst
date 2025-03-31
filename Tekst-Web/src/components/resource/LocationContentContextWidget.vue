@@ -55,7 +55,7 @@ async function handleClick() {
 
 <template>
   <content-container-header-widget
-    v-if="resource.config.common.enableContentContext && browse.level == resource.level"
+    v-if="resource.config.general.enableContentContext && browse.level == resource.level"
     :title="$t('browse.contents.widgets.contextWidget.title')"
     :icon-component="MergeIcon"
     :full="full"
@@ -75,7 +75,7 @@ async function handleClick() {
 
     <n-spin v-if="loading" class="centered-spinner" />
 
-    <div v-else-if="contents.length" :dir="resource.config.common.rtl ? 'rtl' : undefined">
+    <div v-else-if="contents.length" :dir="resource.config.general.rtl ? 'rtl' : undefined">
       <component
         :is="contentComponents[resource.resourceType]"
         :resource="{ ...resource, contents: contents }"

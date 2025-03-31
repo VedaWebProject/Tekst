@@ -16,13 +16,13 @@ const props = withDefaults(
 
 const state = useStateStore();
 
-const groups = props.resource.config.locationMetadata.groups.map((g, i) => ({
+const groups = props.resource.config.special.itemDisplay.groups.map((g, i) => ({
   name: g.name,
   index: i,
   label: pickTranslation(g.translations, state.locale),
 }));
 const displayProps = Object.fromEntries(
-  props.resource.config.locationMetadata.displayProps.map((d, i) => [
+  props.resource.config.special.itemDisplay.displayProps.map((d, i) => [
     d.name,
     { index: i, label: pickTranslation(d.translations, state.locale), group: d.group },
   ])

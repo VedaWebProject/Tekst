@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { focusViewConfigFormRules } from '@/forms/formRules';
 import { NFormItem, NInput } from 'naive-ui';
 
+defineProps<{ resource: AnyResourceRead }>();
 const model = defineModel<components['schemas']['FocusViewConfig']>({ required: true });
 </script>
 
@@ -18,7 +20,7 @@ const model = defineModel<components['schemas']['FocusViewConfig']>({ required: 
   <n-form-item
     :label="$t('resources.settings.config.focusView.delimiter')"
     :rule="focusViewConfigFormRules.delimiter"
-    path="config.general.focusView.delimiter"
+    path="config.special.focusView.delimiter"
   >
     <n-input v-model:value="model.delimiter" :disabled="!model.singleLine" />
   </n-form-item>

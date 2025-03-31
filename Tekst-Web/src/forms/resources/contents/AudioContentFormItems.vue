@@ -83,11 +83,11 @@ async function checkUrlInput(input: HTMLInputElement) {
               v-model="model.files[index].caption"
               type="textarea"
               :font="resource.config.general.font || undefined"
-              :osk-key="resource.config.common.osk || undefined"
+              :osk-key="resource.config.general.osk || undefined"
               :rows="2"
               :max-length="512"
               :placeholder="$t('common.caption')"
-              :dir="resource.config.common.rtl ? 'rtl' : undefined"
+              :dir="resource.config.general.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
         </n-flex>

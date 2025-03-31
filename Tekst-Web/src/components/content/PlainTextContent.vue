@@ -34,12 +34,12 @@ const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     ...c,
     lines: (props.focusView &&
-    (props.resource.config.general.focusView.singleLine || multiContents.value)
-      ? [c.text.replace(/(\r\n|\r|\n)+/g, props.resource.config.general.focusView.delimiter || ' ')]
+    (props.resource.config.special.focusView.singleLine || multiContents.value)
+      ? [c.text.replace(/(\r\n|\r|\n)+/g, props.resource.config.special.focusView.delimiter || ' ')]
       : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
     ).map((l, i) => ({
       label: !props.focusView
-        ? getLineLabel(i, props.resource.config.plainText.lineLabelling.labellingType)
+        ? getLineLabel(i, props.resource.config.special.lineLabelling.labellingType)
         : null,
       text: l,
     })),
@@ -51,7 +51,7 @@ const fontStyle = {
 };
 
 const contentCss = computed(() =>
-  Object.fromEntries(props.resource.config.general.contentCss.map((c) => [c.prop, c.value]))
+  Object.fromEntries(props.resource.config.special.contentCss.map((c) => [c.prop, c.value]))
 );
 const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
 </script>
@@ -66,7 +66,7 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
     >
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
         <div
-          v-if="resource.config.plainText.lineLabelling.enabled && line.label != null"
+          v-if="resource.config.special.lineLabelling.enabled && line.label != null"
           class="text-color-accent ui-font text-small"
         >
           {{ line.label }}

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
@@ -6,12 +7,13 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchReplacementsConfigFormRules } from '@/forms/formRules';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
+defineProps<{ resource: AnyResourceRead }>();
 const model = defineModel<components['schemas']['SearchReplacements']>({ required: true });
 </script>
 
 <template>
   <form-section-heading
-    :label="$t('resources.settings.config.general.searchReplacements.heading')"
+    :label="$t('resources.settings.config.searchReplacements.heading')"
     help-key="searchReplacements"
   />
   <n-form-item :show-label="false">
@@ -28,28 +30,28 @@ const model = defineModel<components['schemas']['SearchReplacements']>({ require
           <!-- PATTERN -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.settings.config.general.searchReplacements.pattern')"
-            :path="`config.general.searchReplacements[${index}].pattern`"
+            :label="$t('resources.settings.config.searchReplacements.pattern')"
+            :path="`config.special.searchReplacements[${index}].pattern`"
             :rule="searchReplacementsConfigFormRules.pattern"
             style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.pattern"
-              :placeholder="$t('resources.settings.config.general.searchReplacements.pattern')"
+              :placeholder="$t('resources.settings.config.searchReplacements.pattern')"
               @keydown.enter.prevent
             />
           </n-form-item>
           <!-- REPLACEMENT -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.settings.config.general.searchReplacements.replacement')"
-            :path="`config.general.searchReplacements[${index}].replacement`"
+            :label="$t('resources.settings.config.searchReplacements.replacement')"
+            :path="`config.special.searchReplacements[${index}].replacement`"
             :rule="searchReplacementsConfigFormRules.replacement"
             style="flex: 1 200px"
           >
             <n-input
               v-model:value="value.replacement"
-              :placeholder="$t('resources.settings.config.general.searchReplacements.replacement')"
+              :placeholder="$t('resources.settings.config.searchReplacements.replacement')"
               @keydown.enter.prevent
             />
           </n-form-item>

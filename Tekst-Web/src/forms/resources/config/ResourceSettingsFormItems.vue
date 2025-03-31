@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { type AnyResourceRead } from '@/api';
 import AccessShareConfigFormItems from '@/forms/resources/config/AccessShareConfigFormItems.vue';
-import CommonResourceConfigFormItems from '@/forms/resources/config/CommonResourceConfigFormItems.vue';
 import GeneralResourceConfigFormItems from '@/forms/resources/config/GeneralResourceConfigFormItems.vue';
 import ResourceSettingsPropertiesFormItems from '@/forms/resources/config/ResourceSettingsPropertiesFormItems.vue';
 import SpecialResourceConfigFormItems from '@/forms/resources/config/SpecialResourceConfigFormItems.vue';
@@ -38,22 +37,18 @@ watch(
       <resource-settings-properties-form-items v-model="model" />
     </n-tab-pane>
 
-    <n-tab-pane :tab="$t('resources.settings.config.heading')" name="configCommon">
-      <!-- COMMON CONFIG -->
-      <common-resource-config-form-items v-model="model.config.common" :resource="model" />
+    <n-tab-pane :tab="$t('common.general')" name="configCommon">
+      <!-- GENERAL CONFIG -->
+      <general-resource-config-form-items v-model="model.config.general" :resource="model" />
     </n-tab-pane>
 
     <n-tab-pane
+      v-if="'special' in model.config && !!model.config.special"
       :tab="$t('resources.types.' + model.resourceType + '.label')"
       name="configTypeSpecific"
     >
-      <!-- GENERAL CONFIG -->
-      <general-resource-config-form-items
-        v-model="model.config.general"
-        :resource-type="model.resourceType"
-      />
-      <!-- RESOURCE SPECIAL CONFIG -->
-      <special-resource-config-form-items v-model="model.config" :resource="model" />
+      <!-- SPECIAL RESOURCE CONFIG ITEMS (GENERIC AND TYPE-SPECIFIC) -->
+      <special-resource-config-form-items v-model="model.config.special" :resource="model" />
     </n-tab-pane>
 
     <!-- ACCESS SHARES -->

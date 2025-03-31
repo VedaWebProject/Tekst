@@ -6,17 +6,18 @@ defineProps<{
   resource: AnyResourceRead;
 }>();
 
-const model = defineModel<AnyResourceConfig>({ required: true });
+const model = defineModel<AnyResourceConfig['special']>({ required: true });
 </script>
 
 <template>
-  <!-- SPECIAL RESOURCE TYPE-SPECIFIC CONFIG -->
-  <template v-for="(_, key) in model" :key="key">
-    <component
-      v-model="model[key]"
-      :is="specialConfigFormItems[key]"
-      v-if="key in specialConfigFormItems"
-      :resource="resource"
-    />
+  <template v-if="!!model">
+    <template v-for="(_, key) in model" :key="key">
+      <component
+        v-if="key in specialConfigFormItems"
+        v-model="model[key]"
+        :is="specialConfigFormItems[key]"
+        :resource="resource"
+      />
+    </template>
   </template>
 </template>

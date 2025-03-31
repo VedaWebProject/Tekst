@@ -22,7 +22,7 @@ const model = defineModel<ImagesSearchQuery>({ required: true });
     <osk-input
       v-model="model.caption"
       :font="resource.config.general.font || undefined"
-      :osk-key="resource.config.common.osk || undefined"
+      :osk-key="resource.config.general.osk || undefined"
       :placeholder="$t('common.caption')"
     />
   </n-form-item>

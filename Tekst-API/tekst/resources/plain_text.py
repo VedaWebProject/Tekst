@@ -243,7 +243,7 @@ class DeepLLinksConfig(ModelBase):
 class PlainTextSpecialConfig(ModelBase):
     """Config properties specific to the plain text resource type"""
 
-    # generic config items
+    # generic special config items
     search_replacements: SearchReplacements = []
     content_css: ContentCssProperties = []
 

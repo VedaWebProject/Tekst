@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { PlainTextResourceRead } from '@/api';
+import type { AnyResourceRead } from '@/api';
+import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
@@ -7,7 +8,8 @@ import { contentCssConfigFormRules } from '@/forms/formRules';
 import { all as knownCssProperties } from 'known-css-properties';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect } from 'naive-ui';
 
-const model = defineModel<PlainTextResourceRead['config']['general']['contentCss']>({
+defineProps<{ resource: AnyResourceRead }>();
+const model = defineModel<components['schemas']['ContentCssProperties']>({
   required: true,
 });
 
@@ -16,7 +18,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
 
 <template>
   <form-section-heading
-    :label="$t('resources.settings.config.general.contentCss.heading')"
+    :label="$t('resources.settings.config.contentCss.heading')"
     help-key="contentCssConfig"
   />
   <n-form-item :show-label="false">
@@ -33,8 +35,8 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
           <!-- PROPERTY NAME -->
           <n-form-item
             ignore-path-change
-            :label="$t('resources.settings.config.general.contentCss.prop')"
-            :path="`config.general.contentCss[${index}].prop`"
+            :label="$t('resources.settings.config.contentCss.prop')"
+            :path="`config.special.contentCss[${index}].prop`"
             :rule="contentCssConfigFormRules.prop"
             style="flex: 1 200px"
           >
@@ -49,7 +51,7 @@ const propertyOptions = knownCssProperties.map((p) => ({ label: p, value: p }));
           <n-form-item
             ignore-path-change
             :label="$t('common.value')"
-            :path="`config.general.contentCss[${index}].value`"
+            :path="`config.special.contentCss[${index}].value`"
             :rule="contentCssConfigFormRules.value"
             style="flex: 1 200px"
           >

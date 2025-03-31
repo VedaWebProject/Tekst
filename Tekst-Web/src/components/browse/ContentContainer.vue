@@ -119,7 +119,7 @@ watch(
               !loading &&
               !contentsLoaded &&
               (resource.level === browse.level ||
-                (onChildLevel && resource.config.common.enableContentContext))
+                (onChildLevel && resource.config.general.enableContentContext))
             "
             :component="NoContentIcon"
             size="medium"
@@ -175,7 +175,7 @@ watch(
           :is="contentComponents[resource.resourceType]"
           :resource="resource"
           :focus-view="browse.focusView"
-          :dir="resource.config.common.rtl ? 'rtl' : undefined"
+          :dir="resource.config.general.rtl ? 'rtl' : undefined"
         />
       </collapsable-content>
     </n-spin>

@@ -53,10 +53,10 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             <osk-input
               v-model="model.links[index].title"
               :font="resource.config.general.font || undefined"
-              :osk-key="resource.config.common.osk || undefined"
+              :osk-key="resource.config.general.osk || undefined"
               :max-length="128"
               :placeholder="$t('resources.types.externalReferences.contentFields.title')"
-              :dir="resource.config.common.rtl ? 'rtl' : undefined"
+              :dir="resource.config.general.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
           <!-- DESCRIPTION -->
@@ -71,11 +71,11 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
               v-model="model.links[index].description"
               type="textarea"
               :font="resource.config.general.font || undefined"
-              :osk-key="resource.config.common.osk || undefined"
+              :osk-key="resource.config.general.osk || undefined"
               :rows="2"
               :max-length="4096"
               :placeholder="$t('common.description')"
-              :dir="resource.config.common.rtl ? 'rtl' : undefined"
+              :dir="resource.config.general.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
         </n-flex>

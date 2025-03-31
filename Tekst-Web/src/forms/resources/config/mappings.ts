@@ -1,25 +1,22 @@
 import { type Component } from 'vue';
-import ApiCallSpecialConfigFormItems from './ApiCallSpecialConfigFormItems.vue';
+import AnnotationsConfigFormItems from './AnnotationsConfigFormItems.vue';
+import ApiCallConfigFormItems from './ApiCallConfigFormItems.vue';
 import ContentCssFormItems from './ContentCssFormItems.vue';
-import DefaultCollapsedFormItems from './DefaultCollapsedFormItems.vue';
+import ContentTransformationConfigFormItems from './ContentTransformationConfigFormItems.vue';
+import DeepLLinksConfigFormItems from './DeepLLinksConfigFormItems.vue';
 import FocusViewConfigFormItems from './FocusViewConfigFormItems.vue';
-import LocationMetadataSpecialConfigFormItems from './LocationMetadataSpecialConfigFormItems.vue';
-import PlainTextSpecialConfigFormItems from './PlainTextSpecialConfigFormItems.vue';
-import ResourceFontFormItems from './ResourceFontFormItems.vue';
+import ItemDisplayConfigFormItems from './ItemDisplayConfigFormItems.vue';
+import LineLabellingConfigFormItems from './LineLabellingConfigFormItems.vue';
 import SearchReplacementsConfigFormItems from './SearchReplacementsConfigFormItems.vue';
-import TextAnnotationSpecialConfigFormItems from './TextAnnotationSpecialConfigFormItems.vue';
-
-export const generalConfigFormItems: Record<string, Component> = {
-  defaultCollapsed: DefaultCollapsedFormItems,
-  focusView: FocusViewConfigFormItems,
-  font: ResourceFontFormItems,
-  searchReplacements: SearchReplacementsConfigFormItems,
-  contentCss: ContentCssFormItems,
-};
 
 export const specialConfigFormItems: Record<string, Component> = {
-  plainText: PlainTextSpecialConfigFormItems,
-  textAnnotation: TextAnnotationSpecialConfigFormItems,
-  locationMetadata: LocationMetadataSpecialConfigFormItems,
-  apiCall: ApiCallSpecialConfigFormItems,
+  focusView: FocusViewConfigFormItems,
+  searchReplacements: SearchReplacementsConfigFormItems,
+  contentCss: ContentCssFormItems,
+  lineLabelling: LineLabellingConfigFormItems,
+  deeplLinks: DeepLLinksConfigFormItems,
+  annotations: AnnotationsConfigFormItems,
+  itemDisplay: ItemDisplayConfigFormItems,
+  apiCall: ApiCallConfigFormItems,
+  transform: ContentTransformationConfigFormItems,
 };

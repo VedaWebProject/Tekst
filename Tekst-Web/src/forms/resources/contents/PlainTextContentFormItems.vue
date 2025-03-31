@@ -23,9 +23,9 @@ const model = defineModel<PlainTextContentCreate>({ required: true });
       type="textarea"
       :rows="3"
       :font="resource.config.general.font || undefined"
-      :osk-key="resource.config.common.osk || undefined"
+      :osk-key="resource.config.general.osk || undefined"
       :placeholder="$t('resources.types.plainText.contentFields.text')"
-      :dir="resource.config.common.rtl ? 'rtl' : undefined"
+      :dir="resource.config.general.rtl ? 'rtl' : undefined"
     />
   </n-form-item>
 </template>

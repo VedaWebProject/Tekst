@@ -438,14 +438,12 @@ resources:
     heading: Resource Settings
     props: Properties
     coreInfo: Core Information
-    integration: Integration
     presentation: Presentation
     unavailableWhenPublished: Access settings are unavailable for published resources.
     sharingUnauthorized: You are not authorized to view or change access settings for this resource.
     msgSaved: Your changes to the resource "{title}" have been saved.
     config:
-      heading: General Configuration
-      common:
+      general:
         category: Category
         catUnlabelled: unlabelled
         sortOrder: Sort order
@@ -453,20 +451,16 @@ resources:
         enableContentContext: Enable viewing contents in context of parent level
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced search
-        rtl:
-          heading: Alternative Content Text Direction
-          ltr: Left-to-right
-          rtl: Right-to-left
-      general:
-        defaultCollapsed: Collapsible Contents
+        rtl: Right-to-left content text direction
+        defaultCollapsed: Collapsible contents
         font: Content Font
-        searchReplacements:
-          heading: Search Query Replacements
-          pattern: Pattern (RegEx)
-          replacement: Replacement
-        contentCss:
-          heading: Content CSS Properties
-          prop: Property
+      searchReplacements:
+        heading: Search Query Replacements
+        pattern: Pattern (RegEx)
+        replacement: Replacement
+      contentCss:
+        heading: Content CSS Properties
+        prop: Property
       focusView:
         heading: Single-line display in focus view
         delimiter: Line delimiter
@@ -480,22 +474,23 @@ resources:
           numbersOneBased: Numbers (1-based)
           lettersLowercase: Letters (lowercase)
           lettersUppercase: Letters (uppercase)
-      textAnnotation:
+      annotations:
         annoDisplayHeading: Annotation Display
         displayTemplate: Display template
         multiValueDelimiter: Delimiter for multiple annotation values
         annotationGroup: Annotation group | Annotation groups
-      locationMetadata:
-        itemGroups: Metadata Groups
-        itemDisplay: Key Translation, Order and Grouping
+      itemDisplay:
+        groups: Metadata Groups
+        displayProps: Key Translation, Order and Grouping
       apiCall:
-        headingApiRequest: API Request
-        headingResponseTransformation: Response Data Transformation
+        heading: API Request
         endpoint: URL (without query parameters)
         method: HTTP request method
         contentType: Request body content type
-        transformDeps: Transformation function dependencies (URLs)
-        transformJs: Transformation function body (JavaScript)
+      transformation:
+        heading: Transformation
+        deps: Transformation function dependencies (URLs)
+        js: Transformation function body (JavaScript)
   types:
     common:
       contentFields:

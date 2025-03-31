@@ -107,8 +107,10 @@
         "rtl": false
       },
       "special": {
-        "annotation_groups": [],
-        "multi_value_delimiter": "/"
+        "annotations": {
+          "groups": [],
+          "multi_value_delimiter": "/"
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T10:58:44.854Z" }
@@ -223,10 +225,14 @@
         "rtl": false
       },
       "special": {
-        "endpoint": "https://api.example.com/v2/some/endpoint",
-        "method": "GET",
-        "content_type": "application/json",
-        "transform_deps": []
+        "api_call": {
+          "endpoint": "https://api.example.com/v2/some/endpoint",
+          "method": "GET",
+          "content_type": "application/json"
+        },
+        "transform": {
+          "transform_deps": []
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:03:49.743Z" }
@@ -257,25 +263,27 @@
         "rtl": false
       },
       "special": {
-        "groups": [
-          {
-            "name": "word",
-            "translations": [
-              { "locale": "enUS", "translation": "Word Group" },
-              { "locale": "deDE", "translation": "Wort-Gruppe" }
-            ]
-          }
-        ],
-        "display_props": [
-          {
-            "name": "word",
-            "translations": [
-              { "locale": "enUS", "translation": "Word" },
-              { "locale": "deDE", "translation": "Wort" }
-            ],
-            "group": "word"
-          }
-        ]
+        "item_display": {
+          "groups": [
+            {
+              "name": "word",
+              "translations": [
+                { "locale": "enUS", "translation": "Word Group" },
+                { "locale": "deDE", "translation": "Wort-Gruppe" }
+              ]
+            }
+          ],
+          "display_props": [
+            {
+              "name": "word",
+              "translations": [
+                { "locale": "enUS", "translation": "Word" },
+                { "locale": "deDE", "translation": "Wort" }
+              ],
+              "group": "word"
+            }
+          ]
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T10:58:44.854Z" }

@@ -496,9 +496,11 @@
         "rtl": false
       },
       "special": {
-        "annotation_groups": [],
-        "display_template": "{{_k:Entity_c:v_f:c}}",
-        "multi_value_delimiter": "/"
+        "annotations": {
+          "groups": [],
+          "display_template": "{{_k:Entity_c:v_f:c}}",
+          "multi_value_delimiter": "/"
+        }
       }
     },
     "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
@@ -578,11 +580,15 @@
         "rtl": false
       },
       "special": {
-        "endpoint": "https://dummyjson.com/quotes",
-        "method": "GET",
-        "content_type": "application/json",
-        "transform_deps": [],
-        "transform_js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+        "api_call": {
+          "endpoint": "https://dummyjson.com/quotes",
+          "method": "GET",
+          "content_type": "application/json"
+        },
+        "transform": {
+          "deps": [],
+          "js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
@@ -616,33 +622,35 @@
         "rtl": false
       },
       "special": {
-        "groups": [
-          {
-            "name": "stanza_no",
-            "translations": [
-              { "locale": "enUS", "translation": "Stanza Number" },
-              { "locale": "deDE", "translation": "Strophen-Nummer" }
-            ]
-          }
-        ],
-        "display_props": [
-          {
-            "name": "stanza_no_num",
-            "translations": [
-              { "locale": "enUS", "translation": "# in numbers" },
-              { "locale": "deDE", "translation": "# in Zahlen" }
-            ],
-            "group": "stanza_no"
-          },
-          {
-            "name": "stanza_no_word",
-            "translations": [
-              { "locale": "enUS", "translation": "# in words" },
-              { "locale": "deDE", "translation": "# in Worten" }
-            ],
-            "group": "stanza_no"
-          }
-        ]
+        "item_display": {
+          "groups": [
+            {
+              "name": "stanza_no",
+              "translations": [
+                { "locale": "enUS", "translation": "Stanza Number" },
+                { "locale": "deDE", "translation": "Strophen-Nummer" }
+              ]
+            }
+          ],
+          "display_props": [
+            {
+              "name": "stanza_no_num",
+              "translations": [
+                { "locale": "enUS", "translation": "# in numbers" },
+                { "locale": "deDE", "translation": "# in Zahlen" }
+              ],
+              "group": "stanza_no"
+            },
+            {
+              "name": "stanza_no_word",
+              "translations": [
+                { "locale": "enUS", "translation": "# in words" },
+                { "locale": "deDE", "translation": "# in Worten" }
+              ],
+              "group": "stanza_no"
+            }
+          ]
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }
