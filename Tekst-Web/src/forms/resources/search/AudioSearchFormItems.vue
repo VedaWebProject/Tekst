@@ -23,7 +23,7 @@ const model = defineModel<AudioSearchQuery>({ required: true });
       v-model="model.caption"
       :placeholder="$t('common.caption')"
       :font="resource.config.general.font || undefined"
-      :osk-key="resource.config.common.osk || undefined"
+      :osk-key="resource.config.general.osk || undefined"
     />
   </n-form-item>
 </template>

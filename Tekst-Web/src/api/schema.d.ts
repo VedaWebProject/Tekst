@@ -1292,6 +1292,45 @@ export interface components {
        */
       translation: string;
     };
+    /** AnnotationsConfig */
+    AnnotationsConfig: {
+      /**
+       * Groups
+       * @description Display groups to use for grouping annotations
+       * @default []
+       */
+      groups: components['schemas']['AnnotationGroup'][];
+      /**
+       * Displaytemplate
+       * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
+       */
+      displayTemplate?: null | string;
+      /**
+       * Multivaluedelimiter
+       * @description String used to delimit multiple values for an annotation
+       * @default /
+       */
+      multiValueDelimiter: string;
+    };
+    /** ApiCallConfig */
+    ApiCallConfig: {
+      /**
+       * Endpoint
+       * @default https://api.example.com/v2/some/endpoint
+       */
+      endpoint: string;
+      /**
+       * Method
+       * @default GET
+       * @enum {string}
+       */
+      method: 'GET' | 'POST' | 'QUERY' | 'SEARCH';
+      /**
+       * Contenttype
+       * @default application/json
+       */
+      contentType: string;
+    };
     /** ApiCallContentCreate */
     ApiCallContentCreate: {
       /**
@@ -1407,8 +1446,8 @@ export interface components {
        */
       transformContext?: string;
     };
-    /** ApiCallModifiedCommonResourceConfig */
-    ApiCallModifiedCommonResourceConfig: {
+    /** ApiCallModGeneralConfig */
+    ApiCallModGeneralConfig: {
       /**
        * Category
        * @description Resource category key
@@ -1426,6 +1465,17 @@ export interface components {
        * @default true
        */
       defaultActive?: boolean;
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed: boolean;
+      /**
+       * Font
+       * @description Name of a font
+       */
+      font?: null | string;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for API call resources)
@@ -1461,23 +1511,24 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": false,
        *       "searchableAdv": false,
        *       "rtl": false
        *     } */
-      common: components['schemas']['ApiCallModifiedCommonResourceConfig'];
+      general: components['schemas']['ApiCallModGeneralConfig'];
       /** @default {
-       *       "defaultCollapsed": false
+       *       "apiCall": {
+       *         "contentType": "application/json",
+       *         "endpoint": "https://api.example.com/v2/some/endpoint",
+       *         "method": "GET"
+       *       },
+       *       "transform": {
+       *         "deps": []
+       *       }
        *     } */
-      general: components['schemas']['GeneralApiCallResourceConfig'];
-      /** @default {
-       *       "endpoint": "https://api.example.com/v2/some/endpoint",
-       *       "method": "GET",
-       *       "contentType": "application/json",
-       *       "transformDeps": []
-       *     } */
-      apiCall: components['schemas']['ApiCallSpecialConfig'];
+      special: components['schemas']['ApiCallSpecialConfig'];
     };
     /** ApiCallResourceCreate */
     ApiCallResourceCreate: {
@@ -1531,22 +1582,24 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "apiCall": {
-       *         "contentType": "application/json",
-       *         "endpoint": "https://api.example.com/v2/some/endpoint",
-       *         "method": "GET",
-       *         "transformDeps": []
+       *       "special": {
+       *         "apiCall": {
+       *           "contentType": "application/json",
+       *           "endpoint": "https://api.example.com/v2/some/endpoint",
+       *           "method": "GET"
+       *         },
+       *         "transform": {
+       *           "deps": []
+       *         }
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1654,22 +1707,24 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "apiCall": {
-       *         "contentType": "application/json",
-       *         "endpoint": "https://api.example.com/v2/some/endpoint",
-       *         "method": "GET",
-       *         "transformDeps": []
+       *       "special": {
+       *         "apiCall": {
+       *           "contentType": "application/json",
+       *           "endpoint": "https://api.example.com/v2/some/endpoint",
+       *           "method": "GET"
+       *         },
+       *         "transform": {
+       *           "deps": []
+       *         }
        *       }
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
@@ -1732,34 +1787,18 @@ export interface components {
       description?: components['schemas']['ResourceDescriptionTranslation'][];
       config?: components['schemas']['ApiCallResourceConfig'];
     };
-    /**
-     * ApiCallSpecialConfig
-     * @description Config properties specific to the API call resource type
-     */
+    /** ApiCallSpecialConfig */
     ApiCallSpecialConfig: {
-      /**
-       * Endpoint
-       * @default https://api.example.com/v2/some/endpoint
-       */
-      endpoint: string;
-      /**
-       * Method
-       * @default GET
-       * @enum {string}
-       */
-      method: 'GET' | 'POST' | 'QUERY' | 'SEARCH';
-      /**
-       * Contenttype
-       * @default application/json
-       */
-      contentType: string;
-      /**
-       * Transformdeps
-       * @default []
-       */
-      transformDeps: string[];
-      /** Transformjs */
-      transformJs?: string;
+      /** @default {
+       *       "endpoint": "https://api.example.com/v2/some/endpoint",
+       *       "method": "GET",
+       *       "contentType": "application/json"
+       *     } */
+      apiCall: components['schemas']['ApiCallConfig'];
+      /** @default {
+       *       "deps": []
+       *     } */
+      transform: components['schemas']['ContentTransformConfig'];
     };
     /** AudioContentCreate */
     AudioContentCreate: {
@@ -1884,16 +1923,14 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
-      /** @default {
-       *       "defaultCollapsed": false
-       *     } */
-      general: components['schemas']['GeneralAudioResourceConfig'];
+      general: components['schemas']['GeneralResourceConfig'];
+      special?: components['schemas']['ModelBase'] | null;
     };
     /** AudioResourceCreate */
     AudioResourceCreate: {
@@ -1947,16 +1984,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": false
        *       }
        *     } */
       config: components['schemas']['AudioResourceConfig'];
@@ -2064,16 +2099,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": false
        *       }
        *     } */
       config: components['schemas']['AudioResourceConfig'];
@@ -2383,52 +2416,6 @@ export interface components {
        */
       html?: string;
     };
-    /** CommonResourceConfig */
-    CommonResourceConfig: {
-      /**
-       * Category
-       * @description Resource category key
-       */
-      category?: null | string;
-      /**
-       * Sortorder
-       * @description Sort order for displaying this resource among others
-       * @default 10
-       */
-      sortOrder: number;
-      /**
-       * Defaultactive
-       * @description Whether this resource is active by default when public
-       * @default true
-       */
-      defaultActive?: boolean;
-      /**
-       * Enablecontentcontext
-       * @description Show combined contents of this resource on the parent level
-       * @default false
-       */
-      enableContentContext?: boolean;
-      /**
-       * Searchablequick
-       * @description Whether this resource should be included in quick search
-       * @default true
-       */
-      searchableQuick?: boolean;
-      /**
-       * Searchableadv
-       * @description Whether this resource should accessible via advanced search
-       * @default true
-       */
-      searchableAdv?: boolean;
-      /**
-       * Rtl
-       * @description Whether to display text contents in right-to-left direction
-       * @default false
-       */
-      rtl?: boolean;
-      /** Osk */
-      osk?: string | null;
-    };
     /** CommonResourceSearchQueryData */
     CommonResourceSearchQueryData: {
       /**
@@ -2464,6 +2451,16 @@ export interface components {
        * @description A CSS property value
        */
       value: string;
+    };
+    /** ContentTransformConfig */
+    ContentTransformConfig: {
+      /**
+       * Deps
+       * @default []
+       */
+      deps: string[];
+      /** Js */
+      js?: string;
     };
     /** CorrectionCreate */
     CorrectionCreate: {
@@ -2731,16 +2728,14 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
-      /** @default {
-       *       "defaultCollapsed": false
-       *     } */
-      general: components['schemas']['GeneralExternalReferencesResourceConfig'];
+      general: components['schemas']['GeneralResourceConfig'];
+      special?: components['schemas']['ModelBase'] | null;
     };
     /** ExternalReferencesResourceCreate */
     ExternalReferencesResourceCreate: {
@@ -2794,16 +2789,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": false
        *       }
        *     } */
       config: components['schemas']['ExternalReferencesResourceConfig'];
@@ -2911,16 +2904,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": false
        *       }
        *     } */
       config: components['schemas']['ExternalReferencesResourceConfig'];
@@ -3012,64 +3003,25 @@ export interface components {
        */
       delimiter: string;
     };
-    /** GeneralApiCallResourceConfig */
-    GeneralApiCallResourceConfig: {
+    /** GeneralResourceConfig */
+    GeneralResourceConfig: {
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
+       * Category
+       * @description Resource category key
        */
-      defaultCollapsed: boolean;
+      category?: null | string;
       /**
-       * Font
-       * @description Name of a font
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
        */
-      font?: null | string;
-    };
-    /** GeneralAudioResourceConfig */
-    GeneralAudioResourceConfig: {
+      sortOrder: number;
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
-       */
-      defaultCollapsed: boolean;
-      /**
-       * Font
-       * @description Name of a font
-       */
-      font?: null | string;
-    };
-    /** GeneralExternalReferencesResourceConfig */
-    GeneralExternalReferencesResourceConfig: {
-      /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
-       */
-      defaultCollapsed: boolean;
-      /**
-       * Font
-       * @description Name of a font
-       */
-      font?: null | string;
-    };
-    /** GeneralImagesResourceConfig */
-    GeneralImagesResourceConfig: {
-      /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
+       * Defaultactive
+       * @description Whether this resource is active by default when public
        * @default true
        */
-      defaultCollapsed: boolean;
-      /**
-       * Font
-       * @description Name of a font
-       */
-      font?: null | string;
-    };
-    /** GeneralPlainTextResourceConfig */
-    GeneralPlainTextResourceConfig: {
+      defaultActive?: boolean;
       /**
        * Defaultcollapsed
        * @description Whether contents of this resource should be collapsed by default
@@ -3081,33 +3033,32 @@ export interface components {
        * @description Name of a font
        */
       font?: null | string;
-      /** @default {
-       *       "singleLine": true,
-       *       "delimiter": " / "
-       *     } */
-      focusView: components['schemas']['FocusViewConfig'];
-      /** @default [] */
-      searchReplacements: components['schemas']['SearchReplacements'];
-      /** @default [] */
-      contentCss: components['schemas']['ContentCssProperties'];
-    };
-    /** GeneralRichTextResourceConfig */
-    GeneralRichTextResourceConfig: {
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
+       * Enablecontentcontext
+       * @description Show combined contents of this resource on the parent level
+       * @default false
+       */
+      enableContentContext?: boolean;
+      /**
+       * Searchablequick
+       * @description Whether this resource should be included in quick search
        * @default true
        */
-      defaultCollapsed: boolean;
+      searchableQuick?: boolean;
       /**
-       * Font
-       * @description Name of a font
+       * Searchableadv
+       * @description Whether this resource should accessible via advanced search
+       * @default true
        */
-      font?: null | string;
-      /** @default [] */
-      searchReplacements: components['schemas']['SearchReplacements'];
-      /** @default [] */
-      contentCss: components['schemas']['ContentCssProperties'];
+      searchableAdv?: boolean;
+      /**
+       * Rtl
+       * @description Whether to display text contents in right-to-left direction
+       * @default false
+       */
+      rtl?: boolean;
+      /** Osk */
+      osk?: string | null;
     };
     /** GeneralSearchSettings */
     GeneralSearchSettings: {
@@ -3126,20 +3077,6 @@ export interface components {
        * @default false
        */
       strict: boolean;
-    };
-    /** GeneralTextAnnotationResourceConfig */
-    GeneralTextAnnotationResourceConfig: {
-      /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
-       */
-      defaultCollapsed: boolean;
-      /**
-       * Font
-       * @description Name of a font
-       */
-      font?: null | string;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -3274,16 +3211,14 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
-      /** @default {
-       *       "defaultCollapsed": true
-       *     } */
-      general: components['schemas']['GeneralImagesResourceConfig'];
+      general: components['schemas']['GeneralResourceConfig'];
+      special?: components['schemas']['ModelBase'] | null;
     };
     /** ImagesResourceCreate */
     ImagesResourceCreate: {
@@ -3337,16 +3272,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": true
        *       }
        *     } */
       config: components['schemas']['ImagesResourceConfig'];
@@ -3454,16 +3387,14 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
-       *       },
-       *       "general": {
-       *         "defaultCollapsed": true
        *       }
        *     } */
       config: components['schemas']['ImagesResourceConfig'];
@@ -3554,6 +3485,21 @@ export interface components {
       fields: number;
       /** Uptodate */
       upToDate: boolean;
+    };
+    /** ItemDisplayConfig */
+    ItemDisplayConfig: {
+      /**
+       * Groups
+       * @description Item display groups
+       * @default []
+       */
+      groups: components['schemas']['ItemGroup'][];
+      /**
+       * Displayprops
+       * @description Item display properties
+       * @default []
+       */
+      displayProps: components['schemas']['ItemDisplayProps'][];
     };
     /** ItemDisplayProps */
     ItemDisplayProps: {
@@ -3795,8 +3741,8 @@ export interface components {
     };
     LocationMetadataEntryKey: string;
     LocationMetadataEntryValue: string;
-    /** LocationMetadataModifiedCommonResourceConfig */
-    LocationMetadataModifiedCommonResourceConfig: {
+    /** LocationMetadataModGeneralConfig */
+    LocationMetadataModGeneralConfig: {
       /**
        * Category
        * @description Resource category key
@@ -3814,6 +3760,17 @@ export interface components {
        * @default true
        */
       defaultActive?: boolean;
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default false
+       */
+      defaultCollapsed: boolean;
+      /**
+       * Font
+       * @description Name of a font
+       */
+      font?: null | string;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for location metadata resources)
@@ -3866,21 +3823,20 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": false,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['LocationMetadataModifiedCommonResourceConfig'];
+      general: components['schemas']['LocationMetadataModGeneralConfig'];
       /** @default {
-       *       "defaultCollapsed": false
+       *       "itemDisplay": {
+       *         "displayProps": [],
+       *         "groups": []
+       *       }
        *     } */
-      general: components['schemas']['GeneralTextAnnotationResourceConfig'];
-      /** @default {
-       *       "groups": [],
-       *       "displayProps": []
-       *     } */
-      locationMetadata: components['schemas']['LocationMetadataSpecialConfig'];
+      special: components['schemas']['LocationMetadataSpecialConfig'];
     };
     /** LocationMetadataResourceCreate */
     LocationMetadataResourceCreate: {
@@ -3934,20 +3890,20 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "locationMetadata": {
-       *         "displayProps": [],
-       *         "groups": []
+       *       "special": {
+       *         "itemDisplay": {
+       *           "displayProps": [],
+       *           "groups": []
+       *         }
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4055,20 +4011,20 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": false,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "locationMetadata": {
-       *         "displayProps": [],
-       *         "groups": []
+       *       "special": {
+       *         "itemDisplay": {
+       *           "displayProps": [],
+       *           "groups": []
+       *         }
        *       }
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
@@ -4145,23 +4101,13 @@ export interface components {
        */
       entries?: components['schemas']['LocationMetadataQueryEntry'][];
     };
-    /**
-     * LocationMetadataSpecialConfig
-     * @description Config properties specific to the location metadata resource type
-     */
+    /** LocationMetadataSpecialConfig */
     LocationMetadataSpecialConfig: {
-      /**
-       * Groups
-       * @description Item display groups
-       * @default []
-       */
-      groups: components['schemas']['ItemGroup'][];
-      /**
-       * Displayprops
-       * @description Item display properties
-       * @default []
-       */
-      displayProps: components['schemas']['ItemDisplayProps'][];
+      /** @default {
+       *       "groups": [],
+       *       "displayProps": []
+       *     } */
+      itemDisplay: components['schemas']['ItemDisplayConfig'];
     };
     /** LocationRead */
     LocationRead: {
@@ -4251,6 +4197,8 @@ export interface components {
        */
       value: string;
     };
+    /** ModelBase */
+    ModelBase: Record<string, never>;
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {
       /** Position */
@@ -4402,23 +4350,20 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
+      general: components['schemas']['GeneralResourceConfig'];
       /** @default {
-       *       "defaultCollapsed": false,
+       *       "searchReplacements": [],
+       *       "contentCss": [],
        *       "focusView": {
        *         "delimiter": " / ",
        *         "singleLine": true
        *       },
-       *       "searchReplacements": [],
-       *       "contentCss": []
-       *     } */
-      general: components['schemas']['GeneralPlainTextResourceConfig'];
-      /** @default {
        *       "lineLabelling": {
        *         "enabled": false,
        *         "labellingType": "numbersOneBased"
@@ -4427,7 +4372,7 @@ export interface components {
        *         "enabled": false
        *       }
        *     } */
-      plainText: components['schemas']['PlainTextSpecialConfig'];
+      special: components['schemas']['PlainTextSpecialConfig'];
     };
     /** PlainTextResourceCreate */
     PlainTextResourceCreate: {
@@ -4481,31 +4426,29 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
+       *       "special": {
        *         "contentCss": [],
-       *         "defaultCollapsed": false,
+       *         "deeplLinks": {
+       *           "enabled": false
+       *         },
        *         "focusView": {
        *           "delimiter": " / ",
        *           "singleLine": true
        *         },
-       *         "searchReplacements": []
-       *       },
-       *       "plainText": {
-       *         "deeplLinks": {
-       *           "enabled": false
-       *         },
        *         "lineLabelling": {
        *           "enabled": false,
        *           "labellingType": "numbersOneBased"
-       *         }
+       *         },
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
@@ -4613,31 +4556,29 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
+       *       "special": {
        *         "contentCss": [],
-       *         "defaultCollapsed": false,
+       *         "deeplLinks": {
+       *           "enabled": false
+       *         },
        *         "focusView": {
        *           "delimiter": " / ",
        *           "singleLine": true
        *         },
-       *         "searchReplacements": []
-       *       },
-       *       "plainText": {
-       *         "deeplLinks": {
-       *           "enabled": false
-       *         },
        *         "lineLabelling": {
        *           "enabled": false,
        *           "labellingType": "numbersOneBased"
-       *         }
+       *         },
+       *         "searchReplacements": []
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
@@ -4719,6 +4660,15 @@ export interface components {
      * @description Config properties specific to the plain text resource type
      */
     PlainTextSpecialConfig: {
+      /** @default [] */
+      searchReplacements: components['schemas']['SearchReplacements'];
+      /** @default [] */
+      contentCss: components['schemas']['ContentCssProperties'];
+      /** @default {
+       *       "singleLine": true,
+       *       "delimiter": " / "
+       *     } */
+      focusView: components['schemas']['FocusViewConfig'];
       /** @default {
        *       "enabled": false,
        *       "labellingType": "numbersOneBased"
@@ -5292,8 +5242,8 @@ export interface components {
        */
       editorMode?: 'wysiwyg' | 'html';
     };
-    /** RichTextModifiedCommonResourceConfig */
-    RichTextModifiedCommonResourceConfig: {
+    /** RichTextModGeneralConfig */
+    RichTextModGeneralConfig: {
       /**
        * Category
        * @description Resource category key
@@ -5311,6 +5261,17 @@ export interface components {
        * @default true
        */
       defaultActive?: boolean;
+      /**
+       * Defaultcollapsed
+       * @description Whether contents of this resource should be collapsed by default
+       * @default true
+       */
+      defaultCollapsed: boolean;
+      /**
+       * Font
+       * @description Name of a font
+       */
+      font?: null | string;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for rich text resources)
@@ -5344,18 +5305,18 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": true,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['RichTextModifiedCommonResourceConfig'];
+      general: components['schemas']['RichTextModGeneralConfig'];
       /** @default {
-       *       "defaultCollapsed": true,
        *       "searchReplacements": [],
        *       "contentCss": []
        *     } */
-      general: components['schemas']['GeneralRichTextResourceConfig'];
+      special: components['schemas']['RichTextSpecialConfig'];
     };
     /** RichTextResourceCreate */
     RichTextResourceCreate: {
@@ -5409,17 +5370,17 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": true,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
+       *       "special": {
        *         "contentCss": [],
-       *         "defaultCollapsed": true,
        *         "searchReplacements": []
        *       }
        *     } */
@@ -5528,17 +5489,17 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": true,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
+       *       "special": {
        *         "contentCss": [],
-       *         "defaultCollapsed": true,
        *         "searchReplacements": []
        *       }
        *     } */
@@ -5615,6 +5576,13 @@ export interface components {
        * @default
        */
       html?: string;
+    };
+    /** RichTextSpecialConfig */
+    RichTextSpecialConfig: {
+      /** @default [] */
+      searchReplacements: components['schemas']['SearchReplacements'];
+      /** @default [] */
+      contentCss: components['schemas']['ContentCssProperties'];
     };
     /** SearchHit */
     SearchHit: {
@@ -5893,21 +5861,20 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
+       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
        *     } */
-      common: components['schemas']['CommonResourceConfig'];
+      general: components['schemas']['GeneralResourceConfig'];
       /** @default {
-       *       "defaultCollapsed": false
+       *       "annotations": {
+       *         "groups": [],
+       *         "multiValueDelimiter": "/"
+       *       }
        *     } */
-      general: components['schemas']['GeneralTextAnnotationResourceConfig'];
-      /** @default {
-       *       "annotationGroups": [],
-       *       "multiValueDelimiter": "/"
-       *     } */
-      textAnnotation: components['schemas']['TextAnnotationSpecialConfig'];
+      special: components['schemas']['TextAnnotationSpecialConfig'];
     };
     /** TextAnnotationResourceCreate */
     TextAnnotationResourceCreate: {
@@ -5961,20 +5928,20 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "textAnnotation": {
-       *         "annotationGroups": [],
-       *         "multiValueDelimiter": "/"
+       *       "special": {
+       *         "annotations": {
+       *           "groups": [],
+       *           "multiValueDelimiter": "/"
+       *         }
        *       }
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
@@ -6082,20 +6049,20 @@ export interface components {
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
-       *       "common": {
+       *       "general": {
        *         "defaultActive": true,
+       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
        *         "sortOrder": 10
        *       },
-       *       "general": {
-       *         "defaultCollapsed": false
-       *       },
-       *       "textAnnotation": {
-       *         "annotationGroups": [],
-       *         "multiValueDelimiter": "/"
+       *       "special": {
+       *         "annotations": {
+       *           "groups": [],
+       *           "multiValueDelimiter": "/"
+       *         }
        *       }
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
@@ -6184,28 +6151,13 @@ export interface components {
        */
       anno?: components['schemas']['TextAnnotationQueryEntry'][];
     };
-    /**
-     * TextAnnotationSpecialConfig
-     * @description Config properties specific to the text annotation resource type
-     */
+    /** TextAnnotationSpecialConfig */
     TextAnnotationSpecialConfig: {
-      /**
-       * Annotationgroups
-       * @description Display groups to use for grouping annotations
-       * @default []
-       */
-      annotationGroups: components['schemas']['AnnotationGroup'][];
-      /**
-       * Displaytemplate
-       * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
-       */
-      displayTemplate?: null | string;
-      /**
-       * Multivaluedelimiter
-       * @description String used to delimit multiple values for an annotation
-       * @default /
-       */
-      multiValueDelimiter: string;
+      /** @default {
+       *       "groups": [],
+       *       "multiValueDelimiter": "/"
+       *     } */
+      annotations: components['schemas']['AnnotationsConfig'];
     };
     /** TextAnnotationToken */
     TextAnnotationToken: {

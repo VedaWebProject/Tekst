@@ -449,14 +449,12 @@ resources:
     heading: Ressourcen-Einstellungen
     props: Eigenschaften
     coreInfo: Grundinformationen
-    integration: Integration
     presentation: Darstellung
     unavailableWhenPublished: Zugriffseinstellungen sind für veröffentlichte Ressourcen nicht verfügbar.
     sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource einzusehen oder zu vergeben.
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     config:
-      heading: Allgemeine Konfiguration
-      common:
+      general:
         category: Kategorie
         catUnlabelled: unbeschriftet
         sortOrder: Sortierreihenfolge
@@ -464,20 +462,16 @@ resources:
         enableContentContext: Ermögliche Anzeige von Inhalten im Kontext übergeordneter Ebene
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
-        rtl:
-          heading: Alternative Textrichtung für Inhalte
-          ltr: von links nach rechts
-          rtl: von rechts nach links
-      general:
+        rtl: Rechts-nach-links Textrichtung für Inhalte
         defaultCollapsed: Ein-/Ausklappbare Inhalte
         font: Schriftart für Inhalte
-        searchReplacements:
-          heading: Ersetzungen in Suchanfragen
-          pattern: Muster (RegEx)
-          replacement: Ersetzung
-        contentCss:
-          heading: CSS-Eigenschaften für Inhalte
-          prop: Eigenschaft
+      searchReplacements:
+        heading: Ersetzungen in Suchanfragen
+        pattern: Muster (RegEx)
+        replacement: Ersetzung
+      contentCss:
+        heading: CSS-Eigenschaften für Inhalte
+        prop: Eigenschaft
       focusView:
         heading: Einzeilige Anzeige in Fokus-Ansicht
         delimiter: Zeilen-Trennzeichen
@@ -491,22 +485,23 @@ resources:
           numbersOneBased: Zahlen (1-basiert)
           lettersLowercase: Buchstaben (klein)
           lettersUppercase: Buchstaben (groß)
-      textAnnotation:
+      annotations:
         annoDisplayHeading: Annotations-Darstellung
         displayTemplate: Darstellungsvorlage
         multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
-      locationMetadata:
-        itemGroups: Metadaten-Gruppen
-        itemDisplay: Schlüssel-Übersetzung, -Reihenfolge und -Gruppierung
+      itemDisplay:
+        groups: Metadaten-Gruppen
+        displayProps: Schlüssel-Übersetzung, -Reihenfolge und -Gruppierung
       apiCall:
-        headingApiRequest: API-Anfrage
-        headingResponseTransformation: Transformation der Antwort-Daten
+        heading: API-Anfrage
         endpoint: URL (ohne Query-Parameter)
         method: HTTP-Anfrage-Methode
         contentType: Content-Type der Anfrage
-        transformDeps: Abhängigkeiten der Transformationsfunktion (URLs)
-        transformJs: Transformations-Funktionskörper (JavaScript)
+      transformation:
+        heading: Transformation
+        deps: Abhängigkeiten der Transformationsfunktion (URLs)
+        js: Transformations-Funktionskörper (JavaScript)
   types:
     common:
       contentFields:

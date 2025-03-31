@@ -24,7 +24,7 @@ const model = defineModel<RichTextContentCreate>({ required: true });
       toolbar-size="medium"
       :max-chars="102400"
       :wysiwyg-font="resource.config.general.font || undefined"
-      :rtl="resource.config.common.rtl"
+      :rtl="resource.config.general.rtl"
     />
   </n-form-item>
 </template>

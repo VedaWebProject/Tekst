@@ -1,6 +1,7 @@
 import pytest
 
 from tekst.db import migrations
+from tekst.resources import resource_types_mgr
 
 
 @pytest.mark.anyio
@@ -204,3 +205,52 @@ async def test_0_10_0a0(
         assert res["subtitle"][0]["translation"] == "DESCRIPTION"
         assert "description" in res
         assert res["description"][0]["translation"] == "COMMENT"
+
+
+@pytest.mark.anyio
+async def test_0_11_0a0(
+    database,
+    get_test_data,
+):
+    resources = get_test_data("migrations/0_11_0a0.json")
+    await database.resources.insert_many(resources)
+
+    # run migration
+    await migrations.migration_0_11_0a0.migration(database)
+    resources = await database.resources.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "common" not in res["config"]
+        assert "general" in res["config"]
+        assert "default_active" in res["config"]["general"]
+        assert "sort_order" in res["config"]["general"]
+        assert "default_collapsed" not in res["config"].get("special", {})
+        assert "default_collapsed" in res["config"]["general"]
+
+        for res_type_name in resource_types_mgr.list_names():
+            assert res_type_name not in res["config"]
+
+        # test "textAnnotation" type resource config structure
+        if res["resource_type"] == "textAnnotation":
+            assert "annotations" in res["config"]["special"]
+            assert "groups" in res["config"]["special"]["annotations"]
+            assert "display_template" in res["config"]["special"]["annotations"]
+            assert "multi_value_delimiter" in res["config"]["special"]["annotations"]
+
+        # test "locationMetadata" type resource config structure
+        if res["resource_type"] == "locationMetadata":
+            assert "item_display" in res["config"]["special"]
+            assert "groups" in res["config"]["special"]["item_display"]
+            assert "display_props" in res["config"]["special"]["item_display"]
+
+        # test "apiCall" type resource config structure
+        if res["resource_type"] == "apiCall":
+            assert "api_call" in res["config"]["special"]
+            assert "endpoint" in res["config"]["special"]["api_call"]
+            assert "method" in res["config"]["special"]["api_call"]
+            assert "content_type" in res["config"]["special"]["api_call"]
+            assert "transform" in res["config"]["special"]
+            assert "deps" in res["config"]["special"]["transform"]

@@ -15,7 +15,7 @@ const props = withDefaults(
 
 const fontStyle = { fontFamily: props.resource.config.general.font || 'Tekst Content Font' };
 const contentCss = computed(() =>
-  Object.fromEntries(props.resource.config.general.contentCss.map((c) => [c.prop, c.value]))
+  Object.fromEntries(props.resource.config.special.contentCss.map((c) => [c.prop, c.value]))
 );
 const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
 </script>

@@ -22,8 +22,6 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
-    FontNameValueOrNone,
     HttpUrl,
     HttpUrlOrNone,
     SchemaOptionalNullable,
@@ -155,13 +153,8 @@ class Audio(ResourceTypeABC):
                     )
 
 
-class GeneralAudioResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
-
-
 class AudioResourceConfig(ResourceConfigBase):
-    general: GeneralAudioResourceConfig = GeneralAudioResourceConfig()
+    pass
 
 
 class AudioResource(ResourceBase):

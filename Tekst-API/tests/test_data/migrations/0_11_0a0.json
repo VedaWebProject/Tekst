@@ -38,20 +38,22 @@
       }
     ],
     "config": {
-      "general": {
+      "common": {
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
-        "content_css": [],
+        "content_css": []
+      },
+      "plain_text": {
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -95,16 +97,18 @@
     ],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
-        "font": null,
         "show_on_parent_level": true
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view_oneline": true,
+        "font": null
+      },
+      "plain_text": {
         "deepl_links": { "enabled": true, "source_language": "ja" }
       }
     }
@@ -130,19 +134,21 @@
     ],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "translations",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "show_on_parent_level": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view": { "single_line": false, "delimiter": " / " },
-        "search_replacements": [{ "pattern": "[aeiou]", "replacement": "o" }],
+        "search_replacements": [{ "pattern": "[aeiou]", "replacement": "o" }]
+      },
+      "plain_text": {
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -170,16 +176,18 @@
     "meta": [{ "key": "language", "value": "Hepburn romanization" }],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
-        "font": null,
         "show_on_parent_level": true
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view_oneline": true,
+        "font": null
+      },
+      "plain_text": {
         "deepl_links": { "enabled": false, "source_language": "en" }
       }
     }
@@ -214,14 +222,13 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": true,
-        "font": null,
         "show_on_parent_level": false
-      }
+      },
+      "general": { "default_collapsed": true, "font": null }
     }
   },
   {
@@ -251,14 +258,13 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "links",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
-        "font": null,
         "show_on_parent_level": false
-      }
+      },
+      "general": { "default_collapsed": false, "font": null }
     }
   },
   {
@@ -291,14 +297,13 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "multimedia",
         "sort_order": 11,
         "default_active": true,
-        "default_collapsed": false,
-        "font": null,
         "show_on_parent_level": false
-      }
+      },
+      "general": { "default_collapsed": false, "font": null }
     }
   },
   {
@@ -340,20 +345,22 @@
       }
     ],
     "config": {
-      "general": {
+      "common": {
         "category": "translations",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
-        "content_css": [],
+        "content_css": []
+      },
+      "plain_text": {
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -398,20 +405,22 @@
       }
     ],
     "config": {
-      "general": {
+      "common": {
         "category": "versions",
         "sort_order": 9,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
+      "general": {
+        "default_collapsed": false,
         "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
-        "content_css": [],
+        "content_css": []
+      },
+      "plain_text": {
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -442,14 +451,13 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "links",
         "sort_order": 15,
         "default_active": true,
-        "default_collapsed": false,
-        "font": null,
         "show_on_parent_level": false
-      }
+      },
+      "general": { "default_collapsed": false, "font": null }
     }
   },
   {
@@ -485,22 +493,20 @@
       }
     ],
     "config": {
-      "general": {
+      "common": {
         "category": "annotations",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
-        "annotations": {
-          "groups": [],
-          "display_template": "{{_k:Entity_c:v_f:c}}",
-          "multi_value_delimiter": "/"
-        }
+      "general": { "default_collapsed": false },
+      "text_annotation": {
+        "annotation_groups": [],
+        "display_template": "{{_k:Entity_c:v_f:c}}",
+        "multi_value_delimiter": "/"
       }
     },
     "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
@@ -535,15 +541,14 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": true,
-        "font": null,
         "show_on_parent_level": false,
         "osk": null
-      }
+      },
+      "general": { "default_collapsed": true, "font": null }
     },
     "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
   },
@@ -569,26 +574,22 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "demo",
         "sort_order": 10,
         "default_active": false,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": false,
         "searchable_adv": false,
         "rtl": false
       },
-      "special": {
-        "api_call": {
-          "endpoint": "https://dummyjson.com/quotes",
-          "method": "GET",
-          "content_type": "application/json"
-        },
-        "transform": {
-          "deps": [],
-          "js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
-        }
+      "general": { "default_collapsed": false },
+      "api_call": {
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "transform_deps": [],
+        "transform_js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
       }
     },
     "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
@@ -611,46 +612,44 @@
     "meta": [],
     "description": [],
     "config": {
-      "general": {
+      "common": {
         "category": "demo",
         "sort_order": 10,
         "default_active": false,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "special": {
-        "item_display": {
-          "groups": [
-            {
-              "name": "stanza_no",
-              "translations": [
-                { "locale": "enUS", "translation": "Stanza Number" },
-                { "locale": "deDE", "translation": "Strophen-Nummer" }
-              ]
-            }
-          ],
-          "display_props": [
-            {
-              "name": "stanza_no_num",
-              "translations": [
-                { "locale": "enUS", "translation": "# in numbers" },
-                { "locale": "deDE", "translation": "# in Zahlen" }
-              ],
-              "group": "stanza_no"
-            },
-            {
-              "name": "stanza_no_word",
-              "translations": [
-                { "locale": "enUS", "translation": "# in words" },
-                { "locale": "deDE", "translation": "# in Worten" }
-              ],
-              "group": "stanza_no"
-            }
-          ]
-        }
+      "general": { "default_collapsed": false },
+      "location_metadata": {
+        "groups": [
+          {
+            "name": "stanza_no",
+            "translations": [
+              { "locale": "enUS", "translation": "Stanza Number" },
+              { "locale": "deDE", "translation": "Strophen-Nummer" }
+            ]
+          }
+        ],
+        "display_props": [
+          {
+            "name": "stanza_no_num",
+            "translations": [
+              { "locale": "enUS", "translation": "# in numbers" },
+              { "locale": "deDE", "translation": "# in Zahlen" }
+            ],
+            "group": "stanza_no"
+          },
+          {
+            "name": "stanza_no_word",
+            "translations": [
+              { "locale": "enUS", "translation": "# in words" },
+              { "locale": "deDE", "translation": "# in Worten" }
+            ],
+            "group": "stanza_no"
+          }
+        ]
       }
     },
     "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }

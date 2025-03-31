@@ -24,24 +24,22 @@
       }
     ],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "general": {
-        "default_collapsed": false,
+      "special": {
         "focus_view": {
           "single_line": false,
           "delimiter": " / "
         },
         "search_replacements": [{ "pattern": "o", "replacement": "a" }],
-        "content_css": []
-      },
-      "plain_text": {
+        "content_css": [],
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -67,16 +65,16 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": true,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "general": {
-        "default_collapsed": true,
+      "special": {
         "search_replacements": [],
         "content_css": []
       }
@@ -99,18 +97,20 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "general": { "default_collapsed": false },
-      "text_annotation": {
-        "annotation_groups": [],
-        "multi_value_delimiter": "/"
+      "special": {
+        "annotations": {
+          "groups": [],
+          "multi_value_delimiter": "/"
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T10:58:44.854Z" }
@@ -131,15 +131,15 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
-      },
-      "general": { "default_collapsed": false }
+      }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:00:44.609Z" }
   },
@@ -159,15 +159,15 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": true,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
-      },
-      "general": { "default_collapsed": true }
+      }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:02:03.929Z" }
   },
@@ -187,15 +187,15 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
-      },
-      "general": { "default_collapsed": false }
+      }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:02:55.977Z" }
   },
@@ -215,20 +215,24 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": false,
         "searchable_adv": false,
         "rtl": false
       },
-      "general": { "default_collapsed": false },
-      "api_call": {
-        "endpoint": "https://api.example.com/v2/some/endpoint",
-        "method": "GET",
-        "content_type": "application/json",
-        "transform_deps": []
+      "special": {
+        "api_call": {
+          "endpoint": "https://api.example.com/v2/some/endpoint",
+          "method": "GET",
+          "content_type": "application/json"
+        },
+        "transform": {
+          "transform_deps": []
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:03:49.743Z" }
@@ -249,35 +253,37 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": false,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "general": { "default_collapsed": false },
-      "location_metadata": {
-        "groups": [
-          {
-            "name": "word",
-            "translations": [
-              { "locale": "enUS", "translation": "Word Group" },
-              { "locale": "deDE", "translation": "Wort-Gruppe" }
-            ]
-          }
-        ],
-        "display_props": [
-          {
-            "name": "word",
-            "translations": [
-              { "locale": "enUS", "translation": "Word" },
-              { "locale": "deDE", "translation": "Wort" }
-            ],
-            "group": "word"
-          }
-        ]
+      "special": {
+        "item_display": {
+          "groups": [
+            {
+              "name": "word",
+              "translations": [
+                { "locale": "enUS", "translation": "Word Group" },
+                { "locale": "deDE", "translation": "Wort-Gruppe" }
+              ]
+            }
+          ],
+          "display_props": [
+            {
+              "name": "word",
+              "translations": [
+                { "locale": "enUS", "translation": "Word" },
+                { "locale": "deDE", "translation": "Wort" }
+              ],
+              "group": "word"
+            }
+          ]
+        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T10:58:44.854Z" }
@@ -298,24 +304,22 @@
     "meta": [],
     "description": [],
     "config": {
-      "common": {
+      "general": {
         "sort_order": 10,
         "default_active": true,
+        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
-      "general": {
-        "default_collapsed": false,
+      "special": {
         "focus_view": {
           "single_line": false,
           "delimiter": " / "
         },
         "search_replacements": [],
-        "content_css": []
-      },
-      "plain_text": {
+        "content_css": [],
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"

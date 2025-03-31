@@ -37,7 +37,7 @@ const entryOptions = computed(() => {
       keysOptions: aggregations.value.map((agg) => ({
         label:
           pickTranslation(
-            props.resource.config.locationMetadata.displayProps.find((dp) => dp.name === agg.key)
+            props.resource.config.special.itemDisplay.displayProps.find((dp) => dp.name === agg.key)
               ?.translations,
             state.locale
           ) || agg.key,

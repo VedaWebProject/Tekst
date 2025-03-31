@@ -20,8 +20,6 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
-    FontNameValueOrNone,
     HttpUrl,
     SchemaOptionalNullable,
 )
@@ -154,15 +152,8 @@ class ExternalReferences(ResourceTypeABC):
                     )
 
 
-class GeneralExternalReferencesResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
-
-
 class ExternalReferencesResourceConfig(ResourceConfigBase):
-    general: GeneralExternalReferencesResourceConfig = (
-        GeneralExternalReferencesResourceConfig()
-    )
+    pass
 
 
 class ExternalReferencesResource(ResourceBase):

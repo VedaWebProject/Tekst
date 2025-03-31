@@ -22,7 +22,7 @@ const model = defineModel<ExternalReferencesSearchQuery>({ required: true });
     <osk-input
       v-model="model.text"
       :font="resource.config.general.font || undefined"
-      :osk-key="resource.config.common.osk || undefined"
+      :osk-key="resource.config.general.osk || undefined"
       :placeholder="$t('resources.types.externalReferences.searchFields.text')"
     />
   </n-form-item>

@@ -64,10 +64,8 @@ const nuiTheme = useThemeVars();
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
 
-const annoGroups = computed(() => props.resource.config.textAnnotation.annotationGroups);
-const activeAnnoGroups = ref(
-  props.resource.config.textAnnotation.annotationGroups.map((g) => g.key)
-);
+const annoGroups = computed(() => props.resource.config.special.annotations.groups);
+const activeAnnoGroups = ref(props.resource.config.special.annotations.groups.map((g) => g.key));
 const groupColors = computed<Record<string, string>>(() =>
   Object.fromEntries(
     annoGroups.value.map((g, i) => [
@@ -127,10 +125,12 @@ const colorAnnoLinesChoice = ref(true);
 const colorAnnoLines = computed(() => colorAnnoLinesChoice.value && annoGroups.value.length > 1);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
-  if (!props.resource.config.textAnnotation.displayTemplate) return [];
+  if (!props.resource.config.special.annotations.displayTemplate) return [];
   const out: AnnotationDisplayTemplate[] = [];
   // iterate over template items
-  const items = [...props.resource.config.textAnnotation.displayTemplate.matchAll(PAT_TMPL_ITEM)];
+  const items = [
+    ...props.resource.config.special.annotations.displayTemplate.matchAll(PAT_TMPL_ITEM),
+  ];
   items.forEach((a) => {
     const item: AnnotationDisplayTemplate = {
       // check if template item is a line break marker
@@ -218,7 +218,7 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
           /v/g,
           anno.data?.value
             // join the values with the delimiter set in the resource config
-            .join(props.resource.config.textAnnotation.multiValueDelimiter || '/') || ''
+            .join(props.resource.config.special.annotations.multiValueDelimiter || '/') || ''
         ) || '';
       const prefix = i > 0 ? anno.template.prefix || '' : '';
       const suffix = i < annos.length - 1 ? anno.template.suffix || '' : '';
@@ -318,7 +318,7 @@ function handleTokenContextMenuSelect(key: string | number) {
     copyTokenContent(tokenDetails.value.token);
   } else if (key === 'copyFull') {
     const token = tokenDetails.value?.token ? tokenDetails.value.token : '???';
-    const delim = props.resource.config.textAnnotation.multiValueDelimiter;
+    const delim = props.resource.config.special.annotations.multiValueDelimiter;
     const annos = tokenDetails.value?.annotations
       ? tokenDetails.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
@@ -453,7 +453,7 @@ function generatePlaintextAnno(): string {
                 <span
                   v-if="
                     !anno.group ||
-                    !resource.config.textAnnotation.annotationGroups.length ||
+                    !resource.config.special.annotations.groups.length ||
                     activeAnnoGroups.includes(anno.group)
                   "
                   :style="{
@@ -513,7 +513,9 @@ function generatePlaintextAnno(): string {
               <td>{{ annotation.key }}</td>
               <td class="content-font">
                 {{
-                  annotation.value.join(resource.config.textAnnotation.multiValueDelimiter || '/')
+                  annotation.value.join(
+                    resource.config.special.annotations.multiValueDelimiter || '/'
+                  )
                 }}
               </td>
             </tr>

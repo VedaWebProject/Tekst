@@ -155,7 +155,7 @@ img {
 code {
   padding: 0 3px;
   border-radius: var(--border-radius);
-  background-color: #8881;
+  background-color: #8883;
   font-weight: var(--font-weight-normal);
   font-family: monospace;
   font-size: 0.86em !important;
@@ -164,6 +164,17 @@ code {
 pre > code {
   display: block;
   padding: 0.75rem 1rem;
+}
+
+table {
+  border-spacing: 12px;
+  border-collapse: separate;
+}
+
+table th,
+table td {
+  text-align: left;
+  vertical-align: top;
 }
 
 .m-0 {

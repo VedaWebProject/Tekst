@@ -71,19 +71,19 @@ const resourceOptions = computed(() => {
     key: tId,
     children: resources.all
       .filter((r) => r.textId === tId)
-      .filter((r) => r.config.common.searchableAdv)
+      .filter((r) => r.config.general.searchableAdv)
       .sort((a, b) => {
         const categories =
           state.pf?.texts.find((t) => t.id === a.textId)?.resourceCategories?.map((c) => c.key) ||
           [];
-        const catA = categories.includes(a.config.common.category || '')
-          ? categories.indexOf(a.config.common.category || '')
+        const catA = categories.includes(a.config.general.category || '')
+          ? categories.indexOf(a.config.general.category || '')
           : 99;
-        const catB = categories.includes(b.config.common.category || '')
-          ? categories.indexOf(b.config.common.category || '')
+        const catB = categories.includes(b.config.general.category || '')
+          ? categories.indexOf(b.config.general.category || '')
           : 99;
-        const soA = a.config.common.sortOrder || 99;
-        const soB = b.config.common.sortOrder || 99;
+        const soA = a.config.general.sortOrder || 99;
+        const soB = b.config.general.sortOrder || 99;
         return catA * 100 + soA - (catB * 100 + soB);
       })
       .map((r) => ({

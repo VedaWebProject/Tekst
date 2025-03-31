@@ -28,7 +28,7 @@ const html = ref<(string | undefined)[]>([]);
 const loading = ref(false);
 
 function prepareRequest(query: string): Request {
-  const cfg = props.resource.config.apiCall;
+  const cfg = props.resource.config.special.apiCall;
   if (cfg.method === 'GET') {
     return new Request(`${cfg.endpoint}?${query}`, { method: 'GET' });
   } else {
@@ -66,7 +66,7 @@ async function updateContent(contents?: ContentData[]) {
     try {
       const resp = await fetch(prepareRequest(content.query));
       newHtml[i] = resp.ok
-        ? await execTransformJs(props.resource.config.apiCall.transformJs, {
+        ? await execTransformJs(props.resource.config.special.transform.js, {
             data: await resp.text(),
             context: !!content.context ? JSON.parse(content.context) : undefined,
           })
@@ -97,7 +97,7 @@ watch(
 
 onMounted(async () => {
   // load transform dependencies (if any)
-  for (const depUrl of props.resource.config.apiCall.transformDeps) {
+  for (const depUrl of props.resource.config.special.transform.deps) {
     const { load } = useScriptTag(depUrl, undefined, { manual: true });
     await load(true);
   }
@@ -107,7 +107,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div :dir="resource.config.common.rtl ? 'rtl' : undefined">
+  <div :dir="resource.config.general.rtl ? 'rtl' : undefined">
     <div v-for="(htmlPart, i) in html" :key="i">
       <template v-if="!focusView">
         <div

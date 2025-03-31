@@ -321,7 +321,7 @@ async def test_update_resource(
     # update resource config: search replacements
     updates = {
         "config": {
-            "general": {"searchReplacements": [{"pattern": "a", "replacement": "o"}]}
+            "special": {"searchReplacements": [{"pattern": "a", "replacement": "o"}]}
         },
         "resourceType": "plainText",
     }
@@ -331,7 +331,7 @@ async def test_update_resource(
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["config"]["general"]["searchReplacements"][0]["pattern"] == "a"
+    assert resp.json()["config"]["special"]["searchReplacements"][0]["pattern"] == "a"
 
     # update resource w/ wrong ID
     updates = {

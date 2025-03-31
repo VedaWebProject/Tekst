@@ -538,7 +538,7 @@ whenever(ArrowRight, () => {
           <component
             :is="contentComponents[compareResource.resourceType]"
             :resource="compareResource"
-            :dir="resource.config.common.rtl ? 'rtl' : undefined"
+            :dir="resource.config.general.rtl ? 'rtl' : undefined"
             class="mt-md"
           />
           <div v-if="compareResource.contents[0]?.comment" class="text-small translucent">

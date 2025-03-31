@@ -246,7 +246,7 @@ async def get_location_data(
         res
         for res in target_resources
         if res.level == location_doc.level + 1
-        and res.config.common.enable_content_context
+        and res.config.general.enable_content_context
     ]:
         content_docs.extend(await _get_content_context(res, location_doc.id))
 

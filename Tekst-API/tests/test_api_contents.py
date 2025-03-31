@@ -160,6 +160,26 @@ async def test_update_content(
     assert resp.json()["id"] == str(content.id)
     assert resp.json()["text"] == "FOO BAR"
 
+    # update content w/ empty comment and note strings
+    resp = await test_client.patch(
+        f"/contents/{str(content.id)}",
+        json={"resourceType": "plainText", "comment": "", "notes": ""},
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["comment"] is None
+    assert resp.json()["notes"] is None
+
+    # update content w/ None as comment and note
+    resp = await test_client.patch(
+        f"/contents/{str(content.id)}",
+        json={"resourceType": "plainText", "comment": None, "notes": None},
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["comment"] is None
+    assert resp.json()["notes"] is None
+
     # fail to update content with wrong ID
     resp = await test_client.patch(
         f"/contents/{wrong_id}",

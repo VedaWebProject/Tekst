@@ -7475,6 +7475,75 @@
         ],
         "title": "AnnotationGroupTranslation"
       },
+      "AnnotationsConfig": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/AnnotationGroup"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Groups",
+            "description": "Display groups to use for grouping annotations",
+            "default": []
+          },
+          "displayTemplate": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
+            "title": "Displaytemplate",
+            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
+          },
+          "multiValueDelimiter": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 1,
+            "title": "Multivaluedelimiter",
+            "description": "String used to delimit multiple values for an annotation",
+            "default": "/"
+          }
+        },
+        "type": "object",
+        "title": "AnnotationsConfig"
+      },
+      "ApiCallConfig": {
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Endpoint",
+            "default": "https://api.example.com/v2/some/endpoint"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "QUERY",
+              "SEARCH"
+            ],
+            "title": "Method",
+            "default": "GET"
+          },
+          "contentType": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Contenttype",
+            "default": "application/json"
+          }
+        },
+        "type": "object",
+        "title": "ApiCallConfig"
+      },
       "ApiCallContentCreate": {
         "properties": {
           "resourceId": {
@@ -7729,7 +7798,7 @@
         ],
         "title": "ApiCallContentUpdate"
       },
-      "ApiCallModifiedCommonResourceConfig": {
+      "ApiCallModGeneralConfig": {
         "properties": {
           "category": {
             "anyOf": [
@@ -7759,6 +7828,26 @@
             "description": "Whether this resource is active by default when public",
             "default": true,
             "optionalNullable": false
+          },
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Font",
+            "description": "Name of a font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -7807,34 +7896,33 @@
           }
         },
         "type": "object",
-        "title": "ApiCallModifiedCommonResourceConfig"
+        "title": "ApiCallModGeneralConfig"
       },
       "ApiCallResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/ApiCallModifiedCommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/ApiCallModGeneralConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": false,
               "searchableAdv": false,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralApiCallResourceConfig",
-            "default": {
-              "defaultCollapsed": false
-            }
-          },
-          "apiCall": {
+          "special": {
             "$ref": "#/components/schemas/ApiCallSpecialConfig",
             "default": {
-              "endpoint": "https://api.example.com/v2/some/endpoint",
-              "method": "GET",
-              "contentType": "application/json",
-              "transformDeps": []
+              "apiCall": {
+                "contentType": "application/json",
+                "endpoint": "https://api.example.com/v2/some/endpoint",
+                "method": "GET"
+              },
+              "transform": {
+                "deps": []
+              }
             }
           }
         },
@@ -7937,22 +8025,24 @@
           "config": {
             "$ref": "#/components/schemas/ApiCallResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "apiCall": {
-                "contentType": "application/json",
-                "endpoint": "https://api.example.com/v2/some/endpoint",
-                "method": "GET",
-                "transformDeps": []
+              "special": {
+                "apiCall": {
+                  "contentType": "application/json",
+                  "endpoint": "https://api.example.com/v2/some/endpoint",
+                  "method": "GET"
+                },
+                "transform": {
+                  "deps": []
+                }
               }
             }
           }
@@ -8179,22 +8269,24 @@
           "config": {
             "$ref": "#/components/schemas/ApiCallResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "apiCall": {
-                "contentType": "application/json",
-                "endpoint": "https://api.example.com/v2/some/endpoint",
-                "method": "GET",
-                "transformDeps": []
+              "special": {
+                "apiCall": {
+                  "contentType": "application/json",
+                  "endpoint": "https://api.example.com/v2/some/endpoint",
+                  "method": "GET"
+                },
+                "transform": {
+                  "deps": []
+                }
               }
             }
           },
@@ -8388,61 +8480,23 @@
       },
       "ApiCallSpecialConfig": {
         "properties": {
-          "endpoint": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "title": "Endpoint",
-            "default": "https://api.example.com/v2/some/endpoint"
+          "apiCall": {
+            "$ref": "#/components/schemas/ApiCallConfig",
+            "default": {
+              "endpoint": "https://api.example.com/v2/some/endpoint",
+              "method": "GET",
+              "contentType": "application/json"
+            }
           },
-          "method": {
-            "type": "string",
-            "enum": [
-              "GET",
-              "POST",
-              "QUERY",
-              "SEARCH"
-            ],
-            "title": "Method",
-            "default": "GET"
-          },
-          "contentType": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Contenttype",
-            "default": "application/json"
-          },
-          "transformDeps": {
-            "items": {
-              "type": "string",
-              "maxLength": 2083,
-              "minLength": 1
-            },
-            "type": "array",
-            "maxItems": 32,
-            "minItems": 0,
-            "title": "Transformdeps",
-            "default": []
-          },
-          "transformJs": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 0
-              }
-            ],
-            "title": "Transformjs",
-            "optionalNullable": false
+          "transform": {
+            "$ref": "#/components/schemas/ContentTransformConfig",
+            "default": {
+              "deps": []
+            }
           }
         },
         "type": "object",
-        "title": "ApiCallSpecialConfig",
-        "description": "Config properties specific to the API call resource type"
+        "title": "ApiCallSpecialConfig"
       },
       "AudioContentCreate": {
         "properties": {
@@ -8708,22 +8762,27 @@
       },
       "AudioResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/GeneralResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralAudioResourceConfig",
-            "default": {
-              "defaultCollapsed": false
-            }
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -8825,16 +8884,14 @@
           "config": {
             "$ref": "#/components/schemas/AudioResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": false
               }
             }
           }
@@ -9061,16 +9118,14 @@
           "config": {
             "$ref": "#/components/schemas/AudioResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": false
               }
             }
           },
@@ -9787,83 +9842,6 @@
         "type": "object",
         "title": "ClientSegmentUpdate"
       },
-      "CommonResourceConfig": {
-        "properties": {
-          "category": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1
-              }
-            ],
-            "title": "Category",
-            "description": "Resource category key"
-          },
-          "sortOrder": {
-            "type": "integer",
-            "maximum": 1000.0,
-            "minimum": 0.0,
-            "title": "Sortorder",
-            "description": "Sort order for displaying this resource among others",
-            "default": 10
-          },
-          "defaultActive": {
-            "type": "boolean",
-            "title": "Defaultactive",
-            "description": "Whether this resource is active by default when public",
-            "default": true,
-            "optionalNullable": false
-          },
-          "enableContentContext": {
-            "type": "boolean",
-            "title": "Enablecontentcontext",
-            "description": "Show combined contents of this resource on the parent level",
-            "default": false,
-            "optionalNullable": false
-          },
-          "searchableQuick": {
-            "type": "boolean",
-            "title": "Searchablequick",
-            "description": "Whether this resource should be included in quick search",
-            "default": true,
-            "optionalNullable": false
-          },
-          "searchableAdv": {
-            "type": "boolean",
-            "title": "Searchableadv",
-            "description": "Whether this resource should accessible via advanced search",
-            "default": true,
-            "optionalNullable": false
-          },
-          "rtl": {
-            "type": "boolean",
-            "title": "Rtl",
-            "description": "Whether to display text contents in right-to-left direction",
-            "default": false,
-            "optionalNullable": false
-          },
-          "osk": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1,
-                "description": "Key identifying an OSK mode"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Osk"
-          }
-        },
-        "type": "object",
-        "title": "CommonResourceConfig"
-      },
       "CommonResourceSearchQueryData": {
         "properties": {
           "occ": {
@@ -9934,6 +9912,38 @@
           "value"
         ],
         "title": "ContentCssProperty"
+      },
+      "ContentTransformConfig": {
+        "properties": {
+          "deps": {
+            "items": {
+              "type": "string",
+              "maxLength": 2083,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 0,
+            "title": "Deps",
+            "default": []
+          },
+          "js": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 0
+              }
+            ],
+            "title": "Js",
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "title": "ContentTransformConfig"
       },
       "CorrectionCreate": {
         "properties": {
@@ -10450,22 +10460,27 @@
       },
       "ExternalReferencesResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/GeneralResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralExternalReferencesResourceConfig",
-            "default": {
-              "defaultCollapsed": false
-            }
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -10567,16 +10582,14 @@
           "config": {
             "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": false
               }
             }
           }
@@ -10803,16 +10816,14 @@
           "config": {
             "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": false
               }
             }
           },
@@ -11049,112 +11060,37 @@
         "type": "object",
         "title": "FocusViewConfig"
       },
-      "GeneralApiCallResourceConfig": {
+      "GeneralResourceConfig": {
         "properties": {
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
-          },
-          "font": {
+          "category": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 32,
+                "maxLength": 16,
                 "minLength": 1
               }
             ],
-            "title": "Font",
-            "description": "Name of a font"
-          }
-        },
-        "type": "object",
-        "title": "GeneralApiCallResourceConfig"
-      },
-      "GeneralAudioResourceConfig": {
-        "properties": {
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
+            "title": "Category",
+            "description": "Resource category key"
           },
-          "font": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              }
-            ],
-            "title": "Font",
-            "description": "Name of a font"
-          }
-        },
-        "type": "object",
-        "title": "GeneralAudioResourceConfig"
-      },
-      "GeneralExternalReferencesResourceConfig": {
-        "properties": {
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
           },
-          "font": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              }
-            ],
-            "title": "Font",
-            "description": "Name of a font"
-          }
-        },
-        "type": "object",
-        "title": "GeneralExternalReferencesResourceConfig"
-      },
-      "GeneralImagesResourceConfig": {
-        "properties": {
-          "defaultCollapsed": {
+          "defaultActive": {
             "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": true
+            "title": "Defaultactive",
+            "description": "Whether this resource is active by default when public",
+            "default": true,
+            "optionalNullable": false
           },
-          "font": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              }
-            ],
-            "title": "Font",
-            "description": "Name of a font"
-          }
-        },
-        "type": "object",
-        "title": "GeneralImagesResourceConfig"
-      },
-      "GeneralPlainTextResourceConfig": {
-        "properties": {
           "defaultCollapsed": {
             "type": "boolean",
             "title": "Defaultcollapsed",
@@ -11175,58 +11111,51 @@
             "title": "Font",
             "description": "Name of a font"
           },
-          "focusView": {
-            "$ref": "#/components/schemas/FocusViewConfig",
-            "default": {
-              "singleLine": true,
-              "delimiter": " / "
-            }
-          },
-          "searchReplacements": {
-            "$ref": "#/components/schemas/SearchReplacements",
-            "default": []
-          },
-          "contentCss": {
-            "$ref": "#/components/schemas/ContentCssProperties",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "GeneralPlainTextResourceConfig"
-      },
-      "GeneralRichTextResourceConfig": {
-        "properties": {
-          "defaultCollapsed": {
+          "enableContentContext": {
             "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": true
+            "title": "Enablecontentcontext",
+            "description": "Show combined contents of this resource on the parent level",
+            "default": false,
+            "optionalNullable": false
           },
-          "font": {
+          "searchableQuick": {
+            "type": "boolean",
+            "title": "Searchablequick",
+            "description": "Whether this resource should be included in quick search",
+            "default": true,
+            "optionalNullable": false
+          },
+          "searchableAdv": {
+            "type": "boolean",
+            "title": "Searchableadv",
+            "description": "Whether this resource should accessible via advanced search",
+            "default": true,
+            "optionalNullable": false
+          },
+          "rtl": {
+            "type": "boolean",
+            "title": "Rtl",
+            "description": "Whether to display text contents in right-to-left direction",
+            "default": false,
+            "optionalNullable": false
+          },
+          "osk": {
             "anyOf": [
-              {
-                "type": "null"
-              },
               {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Key identifying an OSK mode"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font"
-          },
-          "searchReplacements": {
-            "$ref": "#/components/schemas/SearchReplacements",
-            "default": []
-          },
-          "contentCss": {
-            "$ref": "#/components/schemas/ContentCssProperties",
-            "default": []
+            "title": "Osk"
           }
         },
         "type": "object",
-        "title": "GeneralRichTextResourceConfig"
+        "title": "GeneralResourceConfig"
       },
       "GeneralSearchSettings": {
         "properties": {
@@ -11259,32 +11188,6 @@
         },
         "type": "object",
         "title": "GeneralSearchSettings"
-      },
-      "GeneralTextAnnotationResourceConfig": {
-        "properties": {
-          "defaultCollapsed": {
-            "type": "boolean",
-            "title": "Defaultcollapsed",
-            "description": "Whether contents of this resource should be collapsed by default",
-            "default": false
-          },
-          "font": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              }
-            ],
-            "title": "Font",
-            "description": "Name of a font"
-          }
-        },
-        "type": "object",
-        "title": "GeneralTextAnnotationResourceConfig"
       },
       "HTTPValidationError": {
         "properties": {
@@ -11577,22 +11480,27 @@
       },
       "ImagesResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/GeneralResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralImagesResourceConfig",
-            "default": {
-              "defaultCollapsed": true
-            }
+          "special": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelBase"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -11694,16 +11602,14 @@
           "config": {
             "$ref": "#/components/schemas/ImagesResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": true
               }
             }
           }
@@ -11930,16 +11836,14 @@
           "config": {
             "$ref": "#/components/schemas/ImagesResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
-              },
-              "general": {
-                "defaultCollapsed": true
               }
             }
           },
@@ -12203,6 +12107,32 @@
           "upToDate"
         ],
         "title": "IndexInfo"
+      },
+      "ItemDisplayConfig": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/ItemGroup"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Groups",
+            "description": "Item display groups",
+            "default": []
+          },
+          "displayProps": {
+            "items": {
+              "$ref": "#/components/schemas/ItemDisplayProps"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "title": "Displayprops",
+            "description": "Item display properties",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "ItemDisplayConfig"
       },
       "ItemDisplayProps": {
         "properties": {
@@ -12763,7 +12693,7 @@
         "maxLength": 256,
         "minLength": 1
       },
-      "LocationMetadataModifiedCommonResourceConfig": {
+      "LocationMetadataModGeneralConfig": {
         "properties": {
           "category": {
             "anyOf": [
@@ -12793,6 +12723,26 @@
             "description": "Whether this resource is active by default when public",
             "default": true,
             "optionalNullable": false
+          },
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": false
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Font",
+            "description": "Name of a font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -12839,7 +12789,7 @@
           }
         },
         "type": "object",
-        "title": "LocationMetadataModifiedCommonResourceConfig"
+        "title": "LocationMetadataModGeneralConfig"
       },
       "LocationMetadataQueryEntry": {
         "properties": {
@@ -12879,28 +12829,25 @@
       },
       "LocationMetadataResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/LocationMetadataModifiedCommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/LocationMetadataModGeneralConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": false,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig",
-            "default": {
-              "defaultCollapsed": false
-            }
-          },
-          "locationMetadata": {
+          "special": {
             "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
             "default": {
-              "groups": [],
-              "displayProps": []
+              "itemDisplay": {
+                "displayProps": [],
+                "groups": []
+              }
             }
           }
         },
@@ -13003,20 +12950,20 @@
           "config": {
             "$ref": "#/components/schemas/LocationMetadataResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "locationMetadata": {
-                "displayProps": [],
-                "groups": []
+              "special": {
+                "itemDisplay": {
+                  "displayProps": [],
+                  "groups": []
+                }
               }
             }
           }
@@ -13243,20 +13190,20 @@
           "config": {
             "$ref": "#/components/schemas/LocationMetadataResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "locationMetadata": {
-                "displayProps": [],
-                "groups": []
+              "special": {
+                "itemDisplay": {
+                  "displayProps": [],
+                  "groups": []
+                }
               }
             }
           },
@@ -13476,30 +13423,16 @@
       },
       "LocationMetadataSpecialConfig": {
         "properties": {
-          "groups": {
-            "items": {
-              "$ref": "#/components/schemas/ItemGroup"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Groups",
-            "description": "Item display groups",
-            "default": []
-          },
-          "displayProps": {
-            "items": {
-              "$ref": "#/components/schemas/ItemDisplayProps"
-            },
-            "type": "array",
-            "maxItems": 128,
-            "title": "Displayprops",
-            "description": "Item display properties",
-            "default": []
+          "itemDisplay": {
+            "$ref": "#/components/schemas/ItemDisplayConfig",
+            "default": {
+              "groups": [],
+              "displayProps": []
+            }
           }
         },
         "type": "object",
-        "title": "LocationMetadataSpecialConfig",
-        "description": "Config properties specific to the location metadata resource type"
+        "title": "LocationMetadataSpecialConfig"
       },
       "LocationRead": {
         "properties": {
@@ -13716,6 +13649,11 @@
           "value"
         ],
         "title": "MetadataEntry"
+      },
+      "ModelBase": {
+        "properties": {},
+        "type": "object",
+        "title": "ModelBase"
       },
       "MoveLocationRequestBody": {
         "properties": {
@@ -14047,32 +13985,27 @@
       },
       "PlainTextResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/GeneralResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralPlainTextResourceConfig",
+          "special": {
+            "$ref": "#/components/schemas/PlainTextSpecialConfig",
             "default": {
-              "defaultCollapsed": false,
+              "searchReplacements": [],
+              "contentCss": [],
               "focusView": {
                 "delimiter": " / ",
                 "singleLine": true
               },
-              "searchReplacements": [],
-              "contentCss": []
-            }
-          },
-          "plainText": {
-            "$ref": "#/components/schemas/PlainTextSpecialConfig",
-            "default": {
               "lineLabelling": {
                 "enabled": false,
                 "labellingType": "numbersOneBased"
@@ -14182,31 +14115,29 @@
           "config": {
             "$ref": "#/components/schemas/PlainTextResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
+              "special": {
                 "contentCss": [],
-                "defaultCollapsed": false,
+                "deeplLinks": {
+                  "enabled": false
+                },
                 "focusView": {
                   "delimiter": " / ",
                   "singleLine": true
                 },
-                "searchReplacements": []
-              },
-              "plainText": {
-                "deeplLinks": {
-                  "enabled": false
-                },
                 "lineLabelling": {
                   "enabled": false,
                   "labellingType": "numbersOneBased"
-                }
+                },
+                "searchReplacements": []
               }
             }
           }
@@ -14433,31 +14364,29 @@
           "config": {
             "$ref": "#/components/schemas/PlainTextResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
+              "special": {
                 "contentCss": [],
-                "defaultCollapsed": false,
+                "deeplLinks": {
+                  "enabled": false
+                },
                 "focusView": {
                   "delimiter": " / ",
                   "singleLine": true
                 },
-                "searchReplacements": []
-              },
-              "plainText": {
-                "deeplLinks": {
-                  "enabled": false
-                },
                 "lineLabelling": {
                   "enabled": false,
                   "labellingType": "numbersOneBased"
-                }
+                },
+                "searchReplacements": []
               }
             }
           },
@@ -14675,6 +14604,21 @@
       },
       "PlainTextSpecialConfig": {
         "properties": {
+          "searchReplacements": {
+            "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
+          },
+          "contentCss": {
+            "$ref": "#/components/schemas/ContentCssProperties",
+            "default": []
+          },
+          "focusView": {
+            "$ref": "#/components/schemas/FocusViewConfig",
+            "default": {
+              "singleLine": true,
+              "delimiter": " / "
+            }
+          },
           "lineLabelling": {
             "$ref": "#/components/schemas/LineLabellingConfig",
             "default": {
@@ -15866,7 +15810,7 @@
         ],
         "title": "RichTextContentUpdate"
       },
-      "RichTextModifiedCommonResourceConfig": {
+      "RichTextModGeneralConfig": {
         "properties": {
           "category": {
             "anyOf": [
@@ -15896,6 +15840,26 @@
             "description": "Whether this resource is active by default when public",
             "default": true,
             "optionalNullable": false
+          },
+          "defaultCollapsed": {
+            "type": "boolean",
+            "title": "Defaultcollapsed",
+            "description": "Whether contents of this resource should be collapsed by default",
+            "default": true
+          },
+          "font": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Font",
+            "description": "Name of a font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -15942,25 +15906,25 @@
           }
         },
         "type": "object",
-        "title": "RichTextModifiedCommonResourceConfig"
+        "title": "RichTextModGeneralConfig"
       },
       "RichTextResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/RichTextModifiedCommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/RichTextModGeneralConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": true,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralRichTextResourceConfig",
+          "special": {
+            "$ref": "#/components/schemas/RichTextSpecialConfig",
             "default": {
-              "defaultCollapsed": true,
               "searchReplacements": [],
               "contentCss": []
             }
@@ -16065,17 +16029,17 @@
           "config": {
             "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": true,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
+              "special": {
                 "contentCss": [],
-                "defaultCollapsed": true,
                 "searchReplacements": []
               }
             }
@@ -16303,17 +16267,17 @@
           "config": {
             "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": true,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
+              "special": {
                 "contentCss": [],
-                "defaultCollapsed": true,
                 "searchReplacements": []
               }
             }
@@ -16529,6 +16493,20 @@
           "type"
         ],
         "title": "RichTextSearchQuery"
+      },
+      "RichTextSpecialConfig": {
+        "properties": {
+          "searchReplacements": {
+            "$ref": "#/components/schemas/SearchReplacements",
+            "default": []
+          },
+          "contentCss": {
+            "$ref": "#/components/schemas/ContentCssProperties",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "RichTextSpecialConfig"
       },
       "SearchHit": {
         "properties": {
@@ -17130,28 +17108,25 @@
       },
       "TextAnnotationResourceConfig": {
         "properties": {
-          "common": {
-            "$ref": "#/components/schemas/CommonResourceConfig",
+          "general": {
+            "$ref": "#/components/schemas/GeneralResourceConfig",
             "default": {
               "sortOrder": 10,
               "defaultActive": true,
+              "defaultCollapsed": false,
               "enableContentContext": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
             }
           },
-          "general": {
-            "$ref": "#/components/schemas/GeneralTextAnnotationResourceConfig",
-            "default": {
-              "defaultCollapsed": false
-            }
-          },
-          "textAnnotation": {
+          "special": {
             "$ref": "#/components/schemas/TextAnnotationSpecialConfig",
             "default": {
-              "annotationGroups": [],
-              "multiValueDelimiter": "/"
+              "annotations": {
+                "groups": [],
+                "multiValueDelimiter": "/"
+              }
             }
           }
         },
@@ -17254,20 +17229,20 @@
           "config": {
             "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "textAnnotation": {
-                "annotationGroups": [],
-                "multiValueDelimiter": "/"
+              "special": {
+                "annotations": {
+                  "groups": [],
+                  "multiValueDelimiter": "/"
+                }
               }
             }
           }
@@ -17494,20 +17469,20 @@
           "config": {
             "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "default": {
-              "common": {
+              "general": {
                 "defaultActive": true,
+                "defaultCollapsed": false,
                 "enableContentContext": false,
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
                 "sortOrder": 10
               },
-              "general": {
-                "defaultCollapsed": false
-              },
-              "textAnnotation": {
-                "annotationGroups": [],
-                "multiValueDelimiter": "/"
+              "special": {
+                "annotations": {
+                  "groups": [],
+                  "multiValueDelimiter": "/"
+                }
               }
             }
           },
@@ -17743,42 +17718,16 @@
       },
       "TextAnnotationSpecialConfig": {
         "properties": {
-          "annotationGroups": {
-            "items": {
-              "$ref": "#/components/schemas/AnnotationGroup"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Annotationgroups",
-            "description": "Display groups to use for grouping annotations",
-            "default": []
-          },
-          "displayTemplate": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 4096,
-                "minLength": 1
-              }
-            ],
-            "title": "Displaytemplate",
-            "description": "Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)"
-          },
-          "multiValueDelimiter": {
-            "type": "string",
-            "maxLength": 3,
-            "minLength": 1,
-            "title": "Multivaluedelimiter",
-            "description": "String used to delimit multiple values for an annotation",
-            "default": "/"
+          "annotations": {
+            "$ref": "#/components/schemas/AnnotationsConfig",
+            "default": {
+              "groups": [],
+              "multiValueDelimiter": "/"
+            }
           }
         },
         "type": "object",
-        "title": "TextAnnotationSpecialConfig",
-        "description": "Config properties specific to the text annotation resource type"
+        "title": "TextAnnotationSpecialConfig"
       },
       "TextAnnotationToken": {
         "properties": {

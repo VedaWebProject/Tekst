@@ -38,7 +38,9 @@ export const useResourcesStore = defineStore('resources', () => {
   const loading = ref(false);
 
   function sortResources(res: AnyResourceRead[]) {
-    return res.sort((a, b) => (a.config.common.sortOrder ?? 0) - (b.config.common.sortOrder ?? 0));
+    return res.sort(
+      (a, b) => (a.config.general.sortOrder ?? 0) - (b.config.general.sortOrder ?? 0)
+    );
   }
 
   async function load() {
@@ -56,7 +58,7 @@ export const useResourcesStore = defineStore('resources', () => {
           const existingResource = resourcesAll.value.find((re) => re.id === r.id);
           return {
             ...r,
-            active: !!existingResource?.active || !!r.config.common.defaultActive,
+            active: !!existingResource?.active || !!r.config.general.defaultActive,
             contents: existingResource?.contents ?? [],
           };
         })
@@ -98,7 +100,7 @@ export const useResourcesStore = defineStore('resources', () => {
   }
 
   function add(resource: AnyResourceRead) {
-    resource.active = resource.config.common.defaultActive;
+    resource.active = resource.config.general.defaultActive;
     resourcesAll.value = sortResources(resourcesAll.value.concat([resource]));
   }
 
@@ -155,7 +157,7 @@ export const useResourcesStore = defineStore('resources', () => {
   ) {
     const targetResourceIds = !!resourceIds?.length
       ? resourceIds
-      : resourcesAll.value.filter((r) => r.config.common.defaultActive).map((r) => r.id);
+      : resourcesAll.value.filter((r) => r.config.general.defaultActive).map((r) => r.id);
     resourcesAll.value = resourcesAll.value.map((r) => {
       if (targetResourceIds.includes(r.id)) {
         return {

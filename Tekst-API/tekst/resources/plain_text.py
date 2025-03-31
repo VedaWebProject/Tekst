@@ -21,8 +21,6 @@ from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
     ContentCssProperties,
-    DefaultCollapsedValue,
-    FontNameValueOrNone,
     SchemaOptionalNullable,
     SearchReplacements,
 )
@@ -242,24 +240,21 @@ class DeepLLinksConfig(ModelBase):
     ] = None
 
 
-class GeneralPlainTextResourceConfig(ModelBase):
-    default_collapsed: DefaultCollapsedValue = False
-    font: FontNameValueOrNone = None
-    focus_view: FocusViewConfig = FocusViewConfig()
-    search_replacements: SearchReplacements = []
-    content_css: ContentCssProperties = []
-
-
 class PlainTextSpecialConfig(ModelBase):
     """Config properties specific to the plain text resource type"""
 
+    # generic special config items
+    search_replacements: SearchReplacements = []
+    content_css: ContentCssProperties = []
+
+    # resource type-specific config items
+    focus_view: FocusViewConfig = FocusViewConfig()
     line_labelling: LineLabellingConfig = LineLabellingConfig()
     deepl_links: DeepLLinksConfig = DeepLLinksConfig()
 
 
 class PlainTextResourceConfig(ResourceConfigBase):
-    general: GeneralPlainTextResourceConfig = GeneralPlainTextResourceConfig()
-    plain_text: PlainTextSpecialConfig = PlainTextSpecialConfig()
+    special: PlainTextSpecialConfig = PlainTextSpecialConfig()
 
 
 class PlainTextResource(ResourceBase):

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TextAnnotationResourceRead } from '@/api';
+import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
@@ -9,28 +9,27 @@ import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 
-defineProps<{ resource: TextAnnotationResourceRead }>();
-
-const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>({
+defineProps<{ resource: AnyResourceRead }>();
+const model = defineModel<components['schemas']['AnnotationsConfig']>({
   required: true,
 });
 </script>
 
 <template>
   <form-section-heading
-    :label="$t('resources.settings.config.textAnnotation.annoDisplayHeading', 2)"
+    :label="$t('resources.settings.config.annotations.annoDisplayHeading', 2)"
   />
 
   <!-- ANNOTATION DISPLAY GROUPS -->
   <n-form-item>
     <template #label>
       <n-flex align="center">
-        {{ $t('resources.settings.config.textAnnotation.annotationGroup', 2) }}
+        {{ $t('resources.settings.config.annotations.annotationGroup', 2) }}
         <help-button-widget help-key="textAnnotationGroups" />
       </n-flex>
     </template>
     <n-dynamic-input
-      v-model:value="model.annotationGroups"
+      v-model:value="model.groups"
       show-sort-button
       :min="0"
       :max="32"
@@ -42,25 +41,23 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
           <n-form-item
             ignore-path-change
             :label="$t('common.key')"
-            :path="`config.textAnnotation.annotationGroups[${index}].key`"
+            :path="`config.special.annotations.groups[${index}].key`"
             :rule="typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupKey"
           >
             <n-input
-              v-model:value="model.annotationGroups[index].key"
+              v-model:value="model.groups[index].key"
               :placeholder="$t('common.key')"
               @keydown.enter.prevent
             />
           </n-form-item>
           <translation-form-item
-            v-model="model.annotationGroups[index].translations"
+            v-model="model.groups[index].translations"
             ignore-path-change
             secondary
-            :parent-form-path-prefix="`config.textAnnotation.annotationGroups[${index}].translations`"
+            :parent-form-path-prefix="`config.special.annotations.groups[${index}].translations`"
             style="flex: 2"
-            :main-form-label="$t('resources.settings.config.textAnnotation.annotationGroup', 1)"
-            :translation-form-label="
-              $t('resources.settings.config.textAnnotation.annotationGroup', 1)
-            "
+            :main-form-label="$t('resources.settings.config.annotations.annotationGroup', 1)"
+            :translation-form-label="$t('resources.settings.config.annotations.annotationGroup', 1)"
             :translation-form-rules="
               typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupTranslation
             "
@@ -71,8 +68,8 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
         <dynamic-input-controls
           top-offset
           :move-up-disabled="index === 0"
-          :move-down-disabled="index === model.annotationGroups.length - 1"
-          :insert-disabled="(model.annotationGroups.length || 0) >= 32"
+          :move-down-disabled="index === model.groups.length - 1"
+          :insert-disabled="(model.groups.length || 0) >= 32"
           @move-up="() => move('up', index)"
           @move-down="() => move('down', index)"
           @remove="() => remove(index)"
@@ -88,11 +85,11 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
   <!-- ANNOTATION DISPLAY TEMPLATE -->
   <n-form-item
     :rule="typeSpecificResourceConfigFormRules.textAnnotation.displayTemplate"
-    path="config.textAnnotation.displayTemplate"
+    path="config.special.annotations.displayTemplate"
   >
     <template #label>
       <n-flex align="center">
-        {{ $t('resources.settings.config.textAnnotation.displayTemplate', 2) }}
+        {{ $t('resources.settings.config.annotations.displayTemplate', 2) }}
         <help-button-widget help-key="textAnnotationDisplayTemplate" />
       </n-flex>
     </template>
@@ -106,9 +103,9 @@ const model = defineModel<components['schemas']['TextAnnotationSpecialConfig']>(
 
   <!-- MULTI VALUE DELIMITER -->
   <n-form-item
-    :label="$t('resources.settings.config.textAnnotation.multiValueDelimiter')"
+    :label="$t('resources.settings.config.annotations.multiValueDelimiter')"
     :rule="typeSpecificResourceConfigFormRules.textAnnotation.multiValueDelimiter"
-    path="config.textAnnotation.multiValueDelimiter"
+    path="config.special.annotations.multiValueDelimiter"
   >
     <n-input v-model:value="model.multiValueDelimiter" />
   </n-form-item>
