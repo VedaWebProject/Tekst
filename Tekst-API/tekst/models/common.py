@@ -20,6 +20,8 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    TypeAdapter,
+    ValidationError,
     create_model,
 )
 from pydantic.aliases import PydanticUndefined
@@ -137,9 +139,9 @@ class DocumentBase(Document):
                 continue
             # make sure we ignore None values that sneaked in because
             # the update models allow them but the original model does not
-            if getattr(updates_model, field) is None and not isinstance(
-                None, type(self).model_fields[field].annotation
-            ):
+            if getattr(
+                updates_model, field
+            ) is None and not self._validate_against_field(field, None):
                 continue
             # set attribute
             setattr(self, field, getattr(updates_model, field))
@@ -148,6 +150,19 @@ class DocumentBase(Document):
             return await self.replace()
         else:
             return self
+
+    @classmethod
+    def _validate_against_field(
+        cls,
+        field_name: str,
+        value: Any,
+    ) -> bool:
+        field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
+        try:
+            field_adapter.validate_python(value)
+            return True
+        except ValidationError:
+            return False
 
 
 class CreateBase(BaseModel):
