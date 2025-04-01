@@ -135,6 +135,11 @@ export const useThemeStore = defineStore('theme', () => {
       '--base-color': nuiBaseTheme.value.common.baseColor,
       '--text-color': nuiBaseTheme.value.common.textColor1,
 
+      '--success-color': nuiBaseTheme.value.common.successColor,
+      '--info-color': nuiBaseTheme.value.common.infoColor,
+      '--warning-color': nuiBaseTheme.value.common.warningColor,
+      '--error-color': nuiBaseTheme.value.common.errorColor,
+
       '--accent-color': custom.value.accent.base,
       '--accent-color-fade1': custom.value.accent.fade1,
       '--accent-color-fade2': custom.value.accent.fade2,

@@ -9,7 +9,6 @@ import {
   NSpin,
   NThing,
   NVirtualList,
-  useThemeVars,
 } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -21,7 +20,6 @@ const props = defineProps<{
 const emit = defineEmits(['navigate']);
 
 const state = useStateStore();
-const nuiTheme = useThemeVars();
 const router = useRouter();
 const route = useRoute();
 const resources = useResourcesStore();
@@ -96,11 +94,11 @@ onMounted(async () => {
         <div
           v-if="coverage.rangesCovered"
           class="text-small mb-sm"
-          :style="{ color: nuiTheme.successColor }"
+          :style="{ color: 'var(--success-color)' }"
         >
           {{ $t('browse.contents.widgets.infoWidget.coverageRangesPresent') }}
         </div>
-        <div v-else class="text-small mb-sm" :style="{ color: nuiTheme.errorColor }">
+        <div v-else class="text-small mb-sm" :style="{ color: 'var(--error-color)' }">
           {{ $t('browse.contents.widgets.infoWidget.coverageRangesMissing') }}
         </div>
         <div class="gray-box">
@@ -151,8 +149,8 @@ onMounted(async () => {
                       class="cov-box"
                       :style="{
                         backgroundColor: location.covered
-                          ? nuiTheme.successColor
-                          : nuiTheme.errorColor,
+                          ? 'var(--success-color)'
+                          : 'var(--error-color)',
                       }"
                       :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
                       @click="() => handleDetailsLocationClick(location.locId)"

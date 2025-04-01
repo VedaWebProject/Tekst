@@ -34,6 +34,7 @@ import {
   ArrowBackIcon,
   ArrowForwardIcon,
   BookIcon,
+  ClearIcon,
   CompareIcon,
   CorrectionNoteIcon,
   EditIcon,
@@ -465,7 +466,7 @@ whenever(ArrowRight, () => {
     </template>
 
     <n-dropdown
-      trigger="click"
+      trigger="hover"
       :options="compareResourceOptions"
       placement="bottom-end"
       @select="handleSelectcompareResource"
@@ -525,15 +526,17 @@ whenever(ArrowRight, () => {
       <!-- COMPARISON WITH OTHER RESOURCE -->
       <n-alert
         v-if="compareResource"
-        closable
-        type="default"
-        :title="compareResourceTitle"
+        :show-icon="false"
         class="mb-lg"
         @after-leave="compareResourceId = undefined"
       >
-        <template #icon>
-          <n-icon :component="CompareIcon" />
+        <template #header>
+          <n-flex align="center">
+            <n-icon :component="CompareIcon" size="24" />
+            <span>{{ compareResourceTitle }}</span>
+          </n-flex>
         </template>
+
         <template v-if="compareResource.contents?.length">
           <component
             :is="contentComponents[compareResource.resourceType]"
@@ -549,9 +552,10 @@ whenever(ArrowRight, () => {
         </template>
         <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
 
-        <button-shelf v-if="compareResource.resourceType == resource.resourceType">
+        <button-shelf>
           <n-button
             secondary
+            type="primary"
             :title="$t('contents.tipBtnPrevChange')"
             @click="() => handleNearestChangeClick('before')"
           >
@@ -560,7 +564,9 @@ whenever(ArrowRight, () => {
             </template>
           </n-button>
           <n-button
+            v-if="compareResource.resourceType == resource.resourceType"
             secondary
+            type="primary"
             :title="$t('contents.tipBtnApplyChanges')"
             :disabled="!compareResource.contents?.length"
             @click="copyFromComparison"
@@ -571,6 +577,7 @@ whenever(ArrowRight, () => {
           </n-button>
           <n-button
             secondary
+            type="primary"
             :title="$t('contents.tipBtnNextChange')"
             @click="() => handleNearestChangeClick('after')"
           >
@@ -578,46 +585,53 @@ whenever(ArrowRight, () => {
               <n-icon :component="SkipNextIcon" />
             </template>
           </n-button>
+          <n-button secondary :title="$t('common.close')" @click="compareResourceId = undefined">
+            <template #icon>
+              <n-icon :component="ClearIcon" />
+            </template>
+          </n-button>
         </button-shelf>
       </n-alert>
 
       <!-- CORRECTION NOTES -->
-      <n-collapse v-if="resource && !!corrections.length" class="corrections mb-lg">
-        <n-collapse-item name="corrections">
-          <template #header>
-            <n-badge :offset="[20, 5]">
-              <template #value>
-                <n-flex :size="2" align="center" :wrap="false">
-                  <n-icon :component="CorrectionNoteIcon" />
-                  {{ corrections.length }}
-                </n-flex>
-              </template>
-              <div>{{ $t('contents.corrections.notes') }}</div>
-            </n-badge>
-          </template>
-          <n-list style="background-color: transparent">
-            <correction-list-item
-              v-for="correction in locCorrections"
-              :key="correction.id"
-              :resource="resource"
-              :correction="correction"
-              :clickable="false"
-              indent
-            />
-            <other-corrections-list-item
-              v-if="otherCorrectionsCount"
-              :other-count="otherCorrectionsCount"
-              :loading="loading"
-              :small-screen="state.smallScreen"
-              :prev-disabled="!prevCorrection"
-              :next-disabled="!nextCorrection"
-              indent
-              @prev-click="() => gotoLocation(prevCorrection?.locationId)"
-              @next-click="() => gotoLocation(nextCorrection?.locationId)"
-            />
-          </n-list>
-        </n-collapse-item>
-      </n-collapse>
+      <n-alert v-if="resource && !!corrections.length" :show-icon="false" class="mb-lg">
+        <n-collapse class="corrections">
+          <n-collapse-item name="corrections">
+            <template #arrow>
+              <n-icon :component="CorrectionNoteIcon" color="var(--error-color)" size="24" />
+            </template>
+            <template #header>
+              <n-flex align="center">
+                <b class="text-small ml-sm">{{ $t('contents.corrections.notes') }}</b>
+                <n-badge
+                  :value="`${corrections.length - otherCorrectionsCount}/${corrections.length}`"
+                />
+              </n-flex>
+            </template>
+            <n-list style="background-color: transparent">
+              <correction-list-item
+                v-for="correction in locCorrections"
+                :key="correction.id"
+                :resource="resource"
+                :correction="correction"
+                :clickable="false"
+              />
+              <other-corrections-list-item
+                v-if="otherCorrectionsCount"
+                :other-count="otherCorrectionsCount"
+                :loading="loading"
+                :small-screen="state.smallScreen"
+                :prev-disabled="!prevCorrection"
+                :next-disabled="!nextCorrection"
+                @prev-click="() => gotoLocation(prevCorrection?.locationId)"
+                @next-click="() => gotoLocation(nextCorrection?.locationId)"
+              />
+            </n-list>
+          </n-collapse-item>
+        </n-collapse>
+      </n-alert>
+
+      <!-- ADD NEW CORRECTION NOTE -->
       <correction-note-widget
         v-if="location"
         :quaternary="false"
@@ -629,6 +643,7 @@ whenever(ArrowRight, () => {
         style="justify-content: center"
       />
 
+      <!-- CONTENT FORM -->
       <template v-if="contentModel">
         <n-form
           ref="formRef"

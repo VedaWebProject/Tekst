@@ -4,7 +4,7 @@ import LocationLabel from '@/components/LocationLabel.vue';
 import { useMessages } from '@/composables/messages';
 import { useUser } from '@/composables/user';
 import { $t } from '@/i18n';
-import { CorrectionNoteIcon, DeleteIcon, MessageIcon } from '@/icons';
+import { DeleteIcon, MessageIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { getFullLocationLabel, pickTranslation, utcToLocalTime } from '@/utils';
 import { NButton, NFlex, NIcon, NListItem, NThing, NTime } from 'naive-ui';
@@ -94,9 +94,6 @@ function handleMessageClick() {
       :content-indented="!state.smallScreen"
       description-style="font-size: var(--font-size-tiny)"
     >
-      <template #avatar>
-        <n-icon :component="CorrectionNoteIcon" size="large" />
-      </template>
       <template #header>
         <location-label :location-labels="correction.locationLabels" />
       </template>

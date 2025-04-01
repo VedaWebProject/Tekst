@@ -16,7 +16,7 @@ import {
 import { useBrowseStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useElementHover } from '@vueuse/core';
-import { NFlex, NIcon, NSpin, NTag, useThemeVars } from 'naive-ui';
+import { NFlex, NIcon, NSpin, NTag } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -26,7 +26,6 @@ const props = defineProps<{
 
 const browse = useBrowseStore();
 const state = useStateStore();
-const themeVars = useThemeVars();
 
 const contentsLoaded = computed(() => !!props.resource.contents?.length);
 const onChildLevel = computed(() => props.resource.level - 1 === browse.level);
@@ -91,14 +90,14 @@ watch(
           <n-icon
             v-if="!resource.public && !resource.proposed"
             :component="PublicOffIcon"
-            :color="themeVars.errorColor"
+            color="var(--error-color)"
             :title="$t('resources.notPublic')"
             size="medium"
           />
           <n-icon
             v-else-if="resource.proposed"
             :component="ProposedIcon"
-            :color="themeVars.warningColor"
+            color="var(--warning-color)"
             :title="$t('resources.proposed')"
             size="medium"
           />

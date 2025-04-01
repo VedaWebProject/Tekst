@@ -8,7 +8,7 @@ import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { checkUrl } from '@/utils';
 import { cloneDeep } from 'lodash-es';
-import { NDynamicInput, NFlex, NFormItem, NInput, useThemeVars } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 import { defaultContentModels } from './defaultContentModels';
 
 defineProps<{
@@ -17,15 +17,14 @@ defineProps<{
 
 const model = defineModel<AudioContentCreate>({ required: true });
 const { message } = useMessages();
-const tuiTheme = useThemeVars();
 
 async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
   if (url && !(await checkUrl(url))) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.style.color = tuiTheme.value.errorColor;
+    input.style.color = 'var(--error-color)';
   } else {
-    input.style.color = tuiTheme.value.successColor;
+    input.style.color = 'var(--success-color)';
   }
 }
 </script>

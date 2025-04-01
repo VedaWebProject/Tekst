@@ -11,17 +11,7 @@ import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import {
-  NButton,
-  NFlex,
-  NIcon,
-  NTable,
-  NTabPane,
-  NTabs,
-  NTime,
-  useThemeVars,
-  type TabsInst,
-} from 'naive-ui';
+import { NButton, NFlex, NIcon, NTable, NTabPane, NTabs, NTime, type TabsInst } from 'naive-ui';
 import { onBeforeMount, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 
@@ -29,7 +19,6 @@ const SANE_IDX_FIELDS_LIMIT = 1000;
 
 const state = useStateStore();
 const theme = useThemeStore();
-const nuiTheme = useThemeVars();
 const { message } = useMessages();
 const { addTask, startTasksPolling } = useTasks();
 
@@ -43,9 +32,9 @@ const tasksLoading = ref(false);
 
 const statusColors: Record<string, string> = {
   waiting: 'inherit',
-  running: nuiTheme.value.infoColor,
-  done: nuiTheme.value.successColor,
-  failed: nuiTheme.value.errorColor,
+  running: 'var(--info-color)',
+  done: 'var(--success-color)',
+  failed: 'var(--error-color)',
 };
 
 async function createIndex() {
@@ -190,8 +179,7 @@ onBeforeMount(() => {
               <th
                 colspan="2"
                 :style="{
-                  backgroundColor: theme.getAccentColors(indexInfo.textId).fade4,
-                  color: theme.getAccentColors(indexInfo.textId).base,
+                  backgroundColor: theme.getAccentColors(indexInfo.textId).fade5,
                 }"
               >
                 {{ state.textById(indexInfo.textId)?.title || '???' }}
@@ -402,7 +390,7 @@ onBeforeMount(() => {
 }
 
 .max-fields-warn-ok {
-  color: v-bind('nuiTheme.successColor');
+  color: var(--success-color);
 }
 
 .max-fields-warn-ok::after {
@@ -410,7 +398,7 @@ onBeforeMount(() => {
 }
 
 .max-fields-warn-near {
-  color: v-bind('nuiTheme.warningColor');
+  color: var(--warning-color);
   font-weight: var(--font-weight-bold);
 }
 
@@ -419,7 +407,7 @@ onBeforeMount(() => {
 }
 
 .max-fields-warn-over {
-  color: v-bind('nuiTheme.errorColor');
+  color: var(--error-color);
   font-weight: var(--font-weight-bold);
 }
 
@@ -428,7 +416,7 @@ onBeforeMount(() => {
 }
 
 .index-ood {
-  color: v-bind('nuiTheme.errorColor');
+  color: var(--error-color);
   font-weight: var(--font-weight-bold);
 }
 
@@ -437,7 +425,7 @@ onBeforeMount(() => {
 }
 
 .index-utd {
-  color: v-bind('nuiTheme.successColor');
+  color: var(--success-color);
 }
 
 .index-utd::after {

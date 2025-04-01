@@ -11,13 +11,11 @@ import {
   NIcon,
   NScrollbar,
   useDialog,
-  useThemeVars,
   type DialogOptions,
 } from 'naive-ui';
 import { computed, type Component } from 'vue';
 
 const state = useStateStore();
-const nuiTheme = useThemeVars();
 const { tasks, removeTask, showTasksList } = useTasks();
 const dialog = useDialog();
 
@@ -25,10 +23,10 @@ const statusThemes: Record<
   string,
   { icon: Component; color: string; dialogType: DialogOptions['type'] }
 > = {
-  done: { icon: CheckCircleIcon, color: nuiTheme.value.successColor, dialogType: 'success' },
-  failed: { icon: ErrorIcon, color: nuiTheme.value.errorColor, dialogType: 'error' },
-  running: { icon: HourglassIcon, color: nuiTheme.value.infoColor, dialogType: 'info' },
-  waiting: { icon: HourglassIcon, color: nuiTheme.value.infoColor, dialogType: 'default' },
+  done: { icon: CheckCircleIcon, color: 'var(--success-color)', dialogType: 'success' },
+  failed: { icon: ErrorIcon, color: 'var(--error-color)', dialogType: 'error' },
+  running: { icon: HourglassIcon, color: 'var(--info-color)', dialogType: 'info' },
+  waiting: { icon: HourglassIcon, color: 'var(--info-color)', dialogType: 'default' },
 };
 
 const hasSuccessfulTasks = computed(() => tasks.value.some((t) => t.status === 'done'));

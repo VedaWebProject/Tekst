@@ -20,14 +20,13 @@ import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { checkUrl } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NFlex, NForm, NFormItem, NInput, useDialog, useThemeVars } from 'naive-ui';
+import { NButton, NFlex, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 
 const dialog = useDialog();
 const state = useStateStore();
 const auth = useAuthStore();
 const { message } = useMessages();
-const tuiTheme = useThemeVars();
 
 const initialEmailModel = () => ({
   email: auth.user?.email || null,
@@ -291,9 +290,9 @@ async function checkUrlInput(input: HTMLInputElement) {
   const url = input.value;
   if (url && !(await checkUrl(url))) {
     message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.style.color = tuiTheme.value.errorColor;
+    input.style.color = 'var(--error-color)';
   } else {
-    input.style.color = tuiTheme.value.successColor;
+    input.style.color = 'var(--success-color)';
   }
 }
 </script>

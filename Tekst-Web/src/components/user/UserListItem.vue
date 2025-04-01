@@ -21,7 +21,6 @@ import {
   NListItem,
   NThing,
   NTime,
-  useThemeVars,
   type DropdownOption,
 } from 'naive-ui';
 import { computed } from 'vue';
@@ -41,8 +40,6 @@ const emit = defineEmits([
   'deleteClick',
 ]);
 
-const nuiTheme = useThemeVars();
-
 const targetUserIsCurrentUser = computed(() => props.targetUser.id === props.currentUser?.id);
 const emailLink = computed(
   () =>
@@ -61,7 +58,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setInactive'),
               key: 'setInactive',
-              icon: renderIcon(BlockCircleIcon, nuiTheme.value.errorColor),
+              icon: renderIcon(BlockCircleIcon, 'var(--error-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('activateClick', props.targetUser, false),
             },
@@ -70,7 +67,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setActive'),
               key: 'setActive',
-              icon: renderIcon(CheckCircleIcon, nuiTheme.value.successColor),
+              icon: renderIcon(CheckCircleIcon, 'var(--success-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('activateClick', props.targetUser, true),
             },
@@ -80,7 +77,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setUnverified'),
               key: 'setUnverified',
-              icon: renderIcon(VerifiedUserIcon, nuiTheme.value.warningColor),
+              icon: renderIcon(VerifiedUserIcon, 'var(--warning-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('verifyClick', props.targetUser, false),
             },
@@ -89,7 +86,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setVerified'),
               key: 'setVerified',
-              icon: renderIcon(VerifiedUserIcon, nuiTheme.value.successColor),
+              icon: renderIcon(VerifiedUserIcon, 'var(--success-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('verifyClick', props.targetUser, true),
             },
@@ -99,7 +96,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.unsetSuperuser'),
               key: 'setUser',
-              icon: renderIcon(UserDowngradeIcon, nuiTheme.value.errorColor),
+              icon: renderIcon(UserDowngradeIcon, 'var(--error-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('setSuperuserClick', props.targetUser, false),
             },
@@ -108,7 +105,7 @@ const actionOptions = computed(() => [
             {
               label: $t('admin.users.userItemActions.setSuperuser'),
               key: 'setSuperuser',
-              icon: renderIcon(AdminIcon, nuiTheme.value.infoColor),
+              icon: renderIcon(AdminIcon, 'var(--info-color)'),
               disabled: targetUserIsCurrentUser.value,
               action: () => emit('setSuperuserClick', props.targetUser, true),
             },
@@ -147,7 +144,7 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
           <span class="translucent text-small"> @{{ targetUser.username }} </span>
           <n-flex size="small" :wrap="false">
             <n-badge
-              :color="targetUser.isActive ? nuiTheme.successColor : nuiTheme.errorColor"
+              :color="targetUser.isActive ? 'var(--success-color)' : 'var(--error-color)'"
               :processing="!targetUser.isActive"
               :title="
                 targetUser.isActive ? $t('models.user.isActive') : $t('models.user.isInactive')
@@ -157,12 +154,12 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               <template #value>
                 <n-icon
                   :component="targetUser.isActive ? CheckCircleIcon : BlockCircleIcon"
-                  :color="nuiTheme.baseColor"
+                  color="var(--base-color)"
                 />
               </template>
             </n-badge>
             <n-badge
-              :color="targetUser.isVerified ? nuiTheme.successColor : nuiTheme.warningColor"
+              :color="targetUser.isVerified ? 'var(--success-color)' : 'var(--warning-color)'"
               :processing="!targetUser.isVerified"
               :title="
                 targetUser.isVerified
@@ -172,17 +169,17 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
               :offset="[12, -2]"
             >
               <template #value>
-                <n-icon :component="VerifiedUserIcon" :color="nuiTheme.baseColor" />
+                <n-icon :component="VerifiedUserIcon" color="var(--base-color)" />
               </template>
             </n-badge>
             <n-badge
               v-if="targetUser.isSuperuser"
-              :color="nuiTheme.infoColor"
+              color="var(--info-color)"
               :title="$t('models.user.isSuperuser')"
               :offset="[12, -2]"
             >
               <template #value>
-                <n-icon :component="AdminIcon" :color="nuiTheme.baseColor" />
+                <n-icon :component="AdminIcon" color="var(--base-color)" />
               </template>
             </n-badge>
           </n-flex>

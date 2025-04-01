@@ -586,7 +586,7 @@ contents:
   corrections:
     notes: Correction Notes
     otherTitle: Other locations
-    otherMsg: – | There is a correction note for another locations | There are {count} correction notes for other locations
+    otherMsg: – | There is a correction note for a different location | There are {count} correction notes for other locations
     otherGotoPrev: Go to nearest preceding location with correction notes
     otherGotoNext: Go to nearest subsequent location with correction notes
 
@@ -787,6 +787,7 @@ admin:
       heading: Search Indices
       documents: Documents
       size: Size
+      searches: Searches
       fields: Fields
       utd: Up to date
       ood: Out of date

@@ -811,6 +811,7 @@ admin:
       heading: Suchindizes
       documents: Dokumente
       size: Größe
+      searches: Suchen
       fields: Felder
       utd: Aktuell
       ood: Veraltet
