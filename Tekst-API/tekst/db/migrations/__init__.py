@@ -54,19 +54,21 @@ async def check_db_version(
 
     if len(pending):
         if auto_migrate:
-            log.warning("Found pending DB migrations.")
+            log.info("Found pending DB migrations.")
             await migrate()
-        elif not wait_for_migrations:  # pragma: no cover
-            log.critical(
+        else:
+            log.warning(
                 "Found pending DB migrations. "
                 "The data in your database might not be compatible with "
                 "the currently running version of Tekst."
             )
+
+        if not wait_for_migrations:  # pragma: no cover
             exit(1)
         else:  # pragma: no cover
             # log a critical message and check again every minute for one hour to
             # give time to run the migrations in the background, then repeat
-            log.critical(
+            log.warning(
                 "Please run the DB migrations now and keep this process running – "
                 "it will check the DB again every minute for one hour and resume "
                 "startup if migrations are complete."
