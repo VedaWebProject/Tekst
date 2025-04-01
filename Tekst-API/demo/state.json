@@ -25,7 +25,6 @@
       { "key": "example", "name": "Example Keymap" },
       { "key": "example2", "name": "Example 2 Keymap" }
     ],
-    "indices_updated_at": { "$date": "2025-03-06T07:19:43.020Z" },
-    "db_version": "0.11.0a0"
+    "indices_updated_at": { "$date": "2025-03-06T07:19:43.020Z" }
   }
 ]

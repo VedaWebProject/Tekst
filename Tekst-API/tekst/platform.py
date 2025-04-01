@@ -55,19 +55,16 @@ async def _insert_demo_data() -> bool:
 
 async def app_setup(cfg: TekstConfig = get_config()):
     log.info("Running Tekst pre-launch app setup...")
-
     # register all resource types
     init_resource_types_mgr()
-
     # init DB and ODM
     await db.init_odm()
-
     # insert sample data if DB collections are empty
-    inserted_demo_data: bool = await _insert_demo_data()
+    await _insert_demo_data()
 
     # check for pending migrations
     state: PlatformStateDocument = await get_state()
-    if state.db_version and not inserted_demo_data:
+    if state.db_version:
         await migrations.check_db_version(
             db_version=state.db_version,
             auto_migrate=cfg.auto_migrate,
@@ -78,14 +75,11 @@ async def app_setup(cfg: TekstConfig = get_config()):
 
     # call resource precompute hooks (coverage, aggregations, ...)
     await call_resource_precompute_hooks()
-
     # create initial superuser (only when not in DEV mode)
     await create_initial_superuser()
-
     # create search indices (will skip up-to-date indices)
     if not cfg.dev_mode or cfg.dev.use_es:
         await create_indices_task()
-
     log.info("Finished Tekst pre-launch app setup.")
 
 

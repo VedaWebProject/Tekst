@@ -1,18 +1,23 @@
+from importlib import import_module
+
 import pytest
 
-from tekst.db import migrations
 from tekst.resources import resource_types_mgr
+
+
+def _migration_fn(migration_name):
+    return import_module(f"tekst.db.migrations.migration_{migration_name}").migration
 
 
 @pytest.mark.anyio
 async def test_0_1_0a0(database):
-    await migrations.migration_0_1_0a0.migration(database)  # no-op
+    await _migration_fn("0_1_0a0")(database)  # no-op
 
 
 @pytest.mark.anyio
 async def test_0_2_0a0(database):
     await database.state.insert_one({"custom_fonts": ["foo", "bar"]})
-    await migrations.migration_0_2_0a0.migration(database)
+    await _migration_fn("0_2_0a0")(database)
     state = await database.state.find_one({})
     assert "fonts" in state
     assert "custom_fonts" not in state
@@ -22,7 +27,7 @@ async def test_0_2_0a0(database):
 @pytest.mark.anyio
 async def test_0_2_1a0(database):
     await database.state.insert_one({"register_intro_text": ["foo", "bar"]})
-    await migrations.migration_0_2_1a0.migration(database)
+    await _migration_fn("0_2_1a0")(database)
     state = await database.state.find_one({})
     assert "register_intro_text" not in state
     assert len(state.keys()) == 1
@@ -39,7 +44,7 @@ async def test_0_3_0a0(
         await database[coll_name].insert_many(data[coll_name])
 
     # run migration
-    await migrations.migration_0_3_0a0.migration(database)
+    await _migration_fn("0_3_0a0")(database)
 
     # assert the data has been fixed by the migration
     correction = await database.corrections.find_one({})
@@ -59,7 +64,7 @@ async def test_0_4_0a0(
     assert res_id
 
     # run migration
-    await migrations.migration_0_4_0a0.migration(database)
+    await _migration_fn("0_4_0a0")(database)
     res = await database.resources.find_one({"_id": res_id})
 
     # assert the data has been fixed by the migration
@@ -76,7 +81,7 @@ async def test_0_4_1a0(database, get_test_data):
     assert res_id
 
     # run migration
-    await migrations.migration_0_4_1a0.migration(database)
+    await _migration_fn("0_4_1a0")(database)
     res = await database.resources.find_one({"_id": res_id})
 
     # assert the data has been fixed by the migration
@@ -94,7 +99,7 @@ async def test_0_4_2a0(database, get_test_data):
     assert content_id
 
     # run migration
-    await migrations.migration_0_4_2a0.migration(database)
+    await _migration_fn("0_4_2a0")(database)
     content = await database.contents.find_one({"_id": content_id})
 
     # assert the data has been fixed by the migration
@@ -111,7 +116,7 @@ async def test_0_5_0a0(database, get_test_data):
     assert res_id
 
     # run migration
-    await migrations.migration_0_5_0a0.migration(database)
+    await _migration_fn("0_5_0a0")(database)
     res = await database.resources.find_one({"_id": res_id})
 
     # assert the data has been fixed by the migration
@@ -128,7 +133,7 @@ async def test_0_6_0a0(database, get_test_data):
     await database.state.insert_one(state)
 
     # run migration
-    await migrations.migration_0_6_0a0.migration(database)
+    await _migration_fn("0_6_0a0")(database)
     state = await database.state.find_one({})
 
     # assert the data has been fixed by the migration
@@ -141,7 +146,7 @@ async def test_0_7_0a0(database, get_test_data):
     await database.messages.insert_one(msg)
 
     # run migration
-    await migrations.migration_0_7_0a0.migration(database)
+    await _migration_fn("0_7_0a0")(database)
     msg = await database.messages.find_one({})
 
     # assert the data has been fixed by the migration
@@ -155,7 +160,7 @@ async def test_0_8_0a0(database, get_test_data):
     await database.segments.insert_one(footer_segment)
 
     # run migration
-    await migrations.migration_0_8_0a0.migration(database)
+    await _migration_fn("0_8_0a0")(database)
     footer_segment = await database.segments.find_one({})
 
     # assert the data has been fixed by the migration
@@ -172,7 +177,7 @@ async def test_0_9_0a0(
     await database.resources.insert_many(resources)
 
     # run migration
-    await migrations.migration_0_9_0a0.migration(database)
+    await _migration_fn("0_9_0a0")(database)
     resources = await database.resources.find({"resource_type": "plainText"}).to_list()
 
     # assert the data has been fixed by the migration
@@ -194,7 +199,7 @@ async def test_0_10_0a0(
     await database.resources.insert_many(resources)
 
     # run migration
-    await migrations.migration_0_10_0a0.migration(database)
+    await _migration_fn("0_10_0a0")(database)
     resources = await database.resources.find({}).to_list()
 
     # assert the data has been fixed by the migration
@@ -216,7 +221,7 @@ async def test_0_11_0a0(
     await database.resources.insert_many(resources)
 
     # run migration
-    await migrations.migration_0_11_0a0.migration(database)
+    await _migration_fn("0_11_0a0")(database)
     resources = await database.resources.find({}).to_list()
 
     # assert the data has been fixed by the migration

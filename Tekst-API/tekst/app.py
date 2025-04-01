@@ -33,7 +33,8 @@ async def startup_routine(app: FastAPI) -> None:
         state = await get_state()
         await migrations.check_db_version(
             db_version=state.db_version,
-            auto_migrate=_cfg.auto_migrate,
+            auto_migrate=False,
+            wait_for_migrations=False,
         )
     else:  # pragma: no cover
         state = PlatformState()
