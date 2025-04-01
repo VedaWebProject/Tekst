@@ -65,7 +65,7 @@ class ResourceTitleTranslation(TranslationBase):
 class ResourceSubtitleTranslation(TranslationBase):
     translation: Annotated[
         ConStr(
-            max_length=2048,
+            max_length=512,
             cleanup="oneline",
         ),
         Field(

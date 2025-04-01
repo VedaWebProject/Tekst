@@ -87,7 +87,7 @@ export const textFormRules: Record<string, FormItemRule[]> = {
   title: [requiredStringRule(() => $t('common.title'), 'blur'), minMaxCharsRule(1, 64, 'blur')],
   subtitleTranslation: [
     requiredStringRule(() => $t('common.subtitle'), 'blur'),
-    minMaxCharsRule(1, 2048, 'blur'),
+    minMaxCharsRule(1, 512, 'blur'),
   ],
   subtitleLocale: [requiredStringRule(() => $t('common.language'), 'blur')],
   slug: [
