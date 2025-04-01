@@ -435,7 +435,7 @@ whenever(ArrowRight, () => {
     />
   </icon-heading>
 
-  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="gray-box">
+  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="toolbar accent-color-bg">
     <template #start>
       <n-button
         type="primary"
@@ -471,7 +471,7 @@ whenever(ArrowRight, () => {
       @select="handleSelectcompareResource"
     >
       <n-button
-        secondary
+        type="primary"
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('contents.tipBtnCompare')"
@@ -703,6 +703,11 @@ whenever(ArrowRight, () => {
 </template>
 
 <style scoped>
+.toolbar {
+  padding: var(--gap-sm);
+  border-radius: var(--border-radius);
+}
+
 :deep(.corrections > .n-collapse-item .n-collapse-item__content-inner) {
   padding-top: 0;
 }
