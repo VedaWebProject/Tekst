@@ -41,7 +41,7 @@ async function checkUrlInput(input: HTMLInputElement) {
     >
       <template #default="{ index }">
         <n-flex align="stretch" style="flex: 2">
-          <n-flex vertical style="flex: 2">
+          <n-flex vertical style="flex: 2 240px">
             <!-- URL -->
             <n-form-item
               ignore-path-change
@@ -90,7 +90,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             :label="$t('common.caption')"
             :path="`files[${index}].caption`"
             :rule="contentFormRules.images.caption"
-            style="flex: 2"
+            style="flex: 2 240px"
           >
             <osk-input
               v-model="model.files[index].caption"
