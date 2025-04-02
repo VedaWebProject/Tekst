@@ -26,6 +26,10 @@ import {
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
@@ -82,6 +86,10 @@ const editor = useEditor({
       limit: props.maxChars,
       mode: 'textSize',
     }),
+    Table.configure(),
+    TableRow.configure(),
+    TableHeader.configure(),
+    TableCell.configure(),
   ],
   injectCSS: false,
   onUpdate: () => {
@@ -271,7 +279,7 @@ onUnmounted(() => {
         :consistent-menu-width="false"
         status="success"
         :render-label="renderBlockTypeLabel"
-        style="width: auto; min-width: 320px; flex: 2"
+        style="flex: 2 220px"
         @update:value="handleSelectBlockType"
       />
       <n-flex size="small" :wrap="false">
