@@ -6,14 +6,14 @@ import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    collapsable?: boolean;
+    collapsible?: boolean;
     heightTreshPx?: number;
     collapseText?: string;
     expandText?: string;
     showBtnText?: boolean;
   }>(),
   {
-    collapsable: true,
+    collapsible: true,
     heightTreshPx: 150,
     showBtnText: true,
   }
@@ -22,8 +22,8 @@ const props = withDefaults(
 const contentRef = ref<HTMLElement>();
 const { height } = useElementSize(contentRef);
 const collapsed = defineModel<boolean>({ required: false, default: true });
-const isCollapsable = computed(() => props.collapsable && height.value > props.heightTreshPx);
-const isCollapsed = computed(() => isCollapsable.value && collapsed.value);
+const isCollapsible = computed(() => props.collapsible && height.value > props.heightTreshPx);
+const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
 </script>
 
 <template>
@@ -40,7 +40,7 @@ const isCollapsed = computed(() => isCollapsable.value && collapsed.value);
       </div>
     </div>
     <n-button
-      v-if="isCollapsable"
+      v-if="isCollapsible"
       text
       block
       class="mt-sm"

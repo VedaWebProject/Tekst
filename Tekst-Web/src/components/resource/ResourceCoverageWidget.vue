@@ -2,14 +2,7 @@
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import {
-  NCollapse,
-  NCollapseItem,
-  NProgress,
-  NSpin,
-  NThing,
-  NVirtualList,
-} from 'naive-ui';
+import { NCollapse, NCollapseItem, NProgress, NSpin, NThing, NVirtualList } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

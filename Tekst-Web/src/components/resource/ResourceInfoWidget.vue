@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import CollapsableContent from '@/components/CollapsableContent.vue';
+import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
@@ -89,9 +89,9 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="DescIcon">
         {{ $t('common.description') }}
       </icon-heading>
-      <collapsable-content>
+      <collapsible-content>
         <hydrated-html :html="descriptionHtml" class="content-font" />
-      </collapsable-content>
+      </collapsible-content>
       <n-divider />
     </template>
 

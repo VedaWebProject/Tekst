@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import CollapsableContent from '@/components/CollapsableContent.vue';
+import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
@@ -61,7 +61,7 @@ const metadataKeysOptions = computed(() =>
 
   <!-- DESCRIPTION -->
   <form-section-heading :label="$t('common.description')" />
-  <collapsable-content :height-tresh-px="240">
+  <collapsible-content :height-tresh-px="240">
     <translation-form-item
       v-model="model.description"
       input-type="html"
@@ -70,7 +70,7 @@ const metadataKeysOptions = computed(() =>
       :translation-form-label="$t('common.description')"
       :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
     />
-  </collapsable-content>
+  </collapsible-content>
 
   <!-- METADATA -->
   <form-section-heading :label="$t('models.meta.modelLabel')" />

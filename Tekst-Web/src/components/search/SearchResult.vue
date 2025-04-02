@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SearchHit, TextRead } from '@/api';
-import CollapsableContent from '@/components/CollapsableContent.vue';
+import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import { $t } from '@/i18n';
 import { BookIcon, LevelsIcon, StarHalfIcon, TextsIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
@@ -75,7 +75,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
 
 <template>
   <n-list-item style="padding: 0">
-    <collapsable-content
+    <collapsible-content
       :height-tresh-px="smallScreen ? 250 : 420"
       :show-btn-text="!smallScreen"
       class="mb-sm"
@@ -125,7 +125,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
           </div>
         </div>
       </n-flex>
-    </collapsable-content>
+    </collapsible-content>
   </n-list-item>
 </template>
 

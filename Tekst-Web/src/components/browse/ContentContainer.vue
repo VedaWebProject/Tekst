@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
-import CollapsableContent from '@/components/CollapsableContent.vue';
+import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import contentComponents from '@/components/content/mappings';
 import { $t } from '@/i18n';
 import {
@@ -45,7 +45,7 @@ const headerWidgetsOpacity = computed<number>(() =>
   isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.focusView ? 0 : 0.2
 );
 
-const collapsable = computed(
+const collapsible = computed(
   () =>
     !browse.focusView && contentsLoaded.value && !!props.resource.config.general.defaultCollapsed
 );
@@ -161,9 +161,9 @@ watch(
     </n-flex>
 
     <n-spin :show="loading && contentsLoaded" size="small" :delay="1000">
-      <collapsable-content
+      <collapsible-content
         v-if="contentsLoaded"
-        :collapsable="collapsable || contentContextLoaded"
+        :collapsible="collapsible || contentContextLoaded"
         :collapsed="collapsed"
         :height-tresh-px="320"
         class="content-loadable"
@@ -176,7 +176,7 @@ watch(
           :focus-view="browse.focusView"
           :dir="resource.config.general.rtl ? 'rtl' : undefined"
         />
-      </collapsable-content>
+      </collapsible-content>
     </n-spin>
   </div>
 </template>
