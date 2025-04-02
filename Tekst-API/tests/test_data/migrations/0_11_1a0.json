@@ -100,7 +100,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "special": {
         "focus_view_oneline": true,
@@ -134,7 +134,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": true,
+        "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
@@ -174,7 +174,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "special": {
         "focus_view_oneline": true,
@@ -217,7 +217,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -253,7 +253,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -292,7 +292,7 @@
         "sort_order": 11,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -442,7 +442,7 @@
         "sort_order": 15,
         "default_active": true,
         "default_collapsed": false,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -534,7 +534,7 @@
         "sort_order": 10,
         "default_active": true,
         "default_collapsed": true,
-        "show_on_parent_level": false,
+        "enable_content_context": false,
         "osk": null
       }
     },

@@ -67,7 +67,7 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "collapsible_contents": 400,
+        "collapsible_contents": 200,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -159,7 +159,7 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "collapsible_contents": 400,
+        "collapsible_contents": 200,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,

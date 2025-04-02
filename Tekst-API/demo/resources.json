@@ -98,7 +98,7 @@
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "special": {
         "focus_view_oneline": true,
@@ -131,7 +131,7 @@
         "category": "translations",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true,
+        "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
@@ -170,7 +170,7 @@
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "special": {
         "focus_view_oneline": true,
@@ -198,13 +198,10 @@
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "images",
-    "original_id": null,
-    "owner_id": null,
     "shared_read": [],
     "shared_write": [],
     "public": true,
     "proposed": false,
-    "citation": null,
     "meta": [],
     "description": [],
     "config": {
@@ -212,10 +209,14 @@
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "collapsible_contents": 400,
-        "show_on_parent_level": false
+        "collapsible_contents": 200,
+        "enable_content_context": false,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
       }
-    }
+    },
+    "contents_changed_at": { "$date": "2025-04-02T13:04:29.126Z" }
   },
   {
     "_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
@@ -248,7 +249,7 @@
         "category": "links",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -286,7 +287,7 @@
         "category": "multimedia",
         "sort_order": 11,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -433,7 +434,7 @@
         "category": "links",
         "sort_order": 15,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       }
     }
   },
@@ -509,13 +510,10 @@
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 0,
     "resource_type": "richText",
-    "original_id": null,
-    "owner_id": null,
     "shared_read": [],
     "shared_write": [],
     "public": true,
     "proposed": false,
-    "citation": null,
     "meta": [],
     "description": [],
     "config": {
@@ -523,10 +521,13 @@
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "collapsible_contents": 400,
-        "show_on_parent_level": false,
-        "osk": null
-      }
+        "collapsible_contents": 200,
+        "enable_content_context": false,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "special": { "search_replacements": [], "content_css": [] }
     },
     "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
   },

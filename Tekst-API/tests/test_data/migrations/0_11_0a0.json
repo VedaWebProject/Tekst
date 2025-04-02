@@ -101,7 +101,7 @@
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "general": {
         "default_collapsed": false,
@@ -138,7 +138,7 @@
         "category": "translations",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true,
+        "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
@@ -180,7 +180,7 @@
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": true
+        "enable_content_context": true
       },
       "general": {
         "default_collapsed": false,
@@ -226,7 +226,7 @@
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       },
       "general": { "default_collapsed": true, "font": null }
     }
@@ -262,7 +262,7 @@
         "category": "links",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       },
       "general": { "default_collapsed": false, "font": null }
     }
@@ -301,7 +301,7 @@
         "category": "multimedia",
         "sort_order": 11,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       },
       "general": { "default_collapsed": false, "font": null }
     }
@@ -455,7 +455,7 @@
         "category": "links",
         "sort_order": 15,
         "default_active": true,
-        "show_on_parent_level": false
+        "enable_content_context": false
       },
       "general": { "default_collapsed": false, "font": null }
     }
@@ -545,7 +545,7 @@
         "category": "multimedia",
         "sort_order": 10,
         "default_active": true,
-        "show_on_parent_level": false,
+        "enable_content_context": false,
         "osk": null
       },
       "general": { "default_collapsed": true, "font": null }
