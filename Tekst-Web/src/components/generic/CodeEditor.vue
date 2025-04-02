@@ -24,11 +24,16 @@ const codeEditorExtensions = computed<Extension[]>(() => [
 
 <template>
   <codemirror
-    class="code-editor"
+    class="text-small"
     v-model="model"
     :indent-with-tab="true"
     :tab-size="indentSize || 2"
     :extensions="codeEditorExtensions"
+    :style="{
+      width: '100%',
+      minHeight: '200px',
+      maxHeight: '768px',
+    }"
     @change="emit('input')"
     @focus="emit('focus')"
     @blur="emit('blur')"
@@ -37,12 +42,6 @@ const codeEditorExtensions = computed<Extension[]>(() => [
 </template>
 
 <style scoped>
-.code-editor {
-  width: 100%;
-  height: 400px;
-  font-size: var(--font-size-small);
-}
-
 .code-editor :deep(.cm-selectionBackground) {
   background: var(--text-color) !important;
 }
