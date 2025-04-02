@@ -59,7 +59,7 @@ tasks:
     env:
       TEKST_DEV_MODE: true
     cmds:
-      - uv run python3 -m tekst setup
+      - uv run python3 -m tekst bootstrap
       - task: print-dev-uris
       - uv run fastapi dev tekst/app.py
 
@@ -76,9 +76,7 @@ tasks:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
       TEKST_DEV_MODE: true
-      TEKST_DEV__USE_DB: false
-      TEKST_DEV__USE_ES: false
-      TEKST_LOG_LEVEL: ERROR
+      TEKST_LOG_LEVEL: INFO
     cmds:
       - uv run python3 -m tekst schema -f
 

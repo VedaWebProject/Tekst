@@ -2,10 +2,11 @@ import asyncio
 
 import click
 
-from tekst.config import TekstConfig, get_config
+from tekst.config import get_config
 from tekst.db import init_odm, migrations
-from tekst.openapi import generate_openapi_schema
-from tekst.platform import app_setup, cleanup_task
+from tekst.openapi import generate_openapi_json
+from tekst.platform import bootstrap as app_bootstrap
+from tekst.platform import cleanup_task
 from tekst.resources import call_resource_precompute_hooks, init_resource_types_mgr
 from tekst.search import create_indices_task
 
@@ -13,9 +14,6 @@ from tekst.search import create_indices_task
 """
 Command line interface to some utilities of Tekst-API
 """
-
-
-_cfg: TekstConfig = get_config()
 
 
 async def _prepare_odm() -> None:
@@ -46,9 +44,9 @@ async def _maintenance() -> None:
 
 
 @click.command()
-def setup():
-    """Runs the Tekst initial setup procedure"""
-    asyncio.run(app_setup())
+def bootstrap():
+    """Runs the Tekst initial bootstrap procedure"""
+    asyncio.run(app_bootstrap())
 
 
 @click.command()
@@ -84,10 +82,13 @@ def maintenance():
     is_flag=True,
     help="Answer safety prompts with yes automatically",
 )
-def migration(yes: bool):
+def migrate(yes: bool):
     """Runs the database migration procedure"""
     if not yes and not click.confirm(
-        "Are you sure you want to run DB migrations?",
+        (
+            "You should defenitely back up your database before migrating. "
+            "Are you sure you want to run database migrations now?"
+        ),
         default=False,
         abort=True,
     ):
@@ -141,9 +142,8 @@ def schema(
 
     Important: The active Tekst environment variables might influence the schema!
     """
-    cfg: TekstConfig = get_config()
-    schema = asyncio.run(
-        generate_openapi_schema(
+    schema_str = asyncio.run(
+        generate_openapi_json(
             to_file=to_file,
             output_file=output_file,
             indent=indent,
@@ -153,11 +153,11 @@ def schema(
     if to_file and not quiet:
         click.echo(
             f"Saved Tekst "
-            f"({'development' if cfg.dev_mode else 'production'} mode)"
+            f"({'DEVELOPMENT' if get_config().dev_mode else 'PRODUCTION'} mode)"
             f" OpenAPI schema to {output_file}."
         )
     if not to_file:
-        click.echo(schema)
+        click.echo(schema_str)
 
 
 @click.group()
@@ -167,12 +167,12 @@ def cli():
 
 
 # add individual commands to CLI app
-cli.add_command(setup)
+cli.add_command(bootstrap)
 cli.add_command(index)
 cli.add_command(precompute)
 cli.add_command(cleanup)
 cli.add_command(maintenance)
-cli.add_command(migration)
+cli.add_command(migrate)
 cli.add_command(schema)
 
 

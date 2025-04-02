@@ -21,7 +21,8 @@ Basic configuration, URL, paths, ...
 | `TEKST_WEB_STATIC_DIR` | Local path to static web files directory (String – default: `/var/www/tekst/static/`) |
 | `TEKST_DEV_MODE` | Development mode – only use for development! (Boolean – default: `false`) |
 | `TEKST_LOG_LEVEL` | API log level (`DEBUG` | `INFO` | `WARNING` | `ERROR` | `CRITICAL` – default: `WARNING`) |
-| `TEKST_AUTO_MIGRATE` | If `false` (default) and there are pending DB migrations that should be run, the API as well as the setup routine will (on startup) log a critical message about this, block further execution, check again for pending migrations every minute for an hour, then repeat. This gives you the chance to make a DB backup and run the migrations manually (see the Tekst CLI). If `true`, pending migrations will be automatically run by the API/setup on startup. (Boolean – default: `false`) |
+| `TEKST_AUTO_MIGRATE` | If `false` (default) and there are pending DB migrations that should be run, the bootstrap routine will fail with a critical log message (as the API itself will always do). If `true`, pending migrations will be run as part of the bootstrap routine. (Boolean – default: `false`) |
+| `TEKST_XSRF` | Enables/disables [XSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) protection enforced by the API. (Boolean – default: `true`) |
 | `TEKST_TEMP_FILES_DIR` | Absolute path to local temporary directory to use (String – default: `/tmp/tekst_tmp`) |
 
 

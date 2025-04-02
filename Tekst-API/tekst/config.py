@@ -81,17 +81,6 @@ def _select_env_files() -> list[str]:
     return env_files
 
 
-class DevelopmentModeConfig(ConfigSubSection):
-    """
-    Development mode config sub section model
-    (these values are all used exclusively internally)
-    """
-
-    use_xsrf_protection: bool = True
-    use_db: bool = True
-    use_es: bool = True
-
-
 class MongoDBConfig(ConfigSubSection):
     """Database config sub section model"""
 
@@ -321,11 +310,11 @@ class TekstConfig(BaseSettings):
     dev_mode: bool = False
     log_level: str = "warning"
     auto_migrate: bool = False
+    xsrf: bool = True
 
     temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
 
     # config sub sections
-    dev: DevelopmentModeConfig = DevelopmentModeConfig()  # dev mode-related config
     db: MongoDBConfig = MongoDBConfig()  # MongoDB-related config
     es: ElasticsearchConfig = ElasticsearchConfig()  # Elasticsearch-related config
     security: SecurityConfig = SecurityConfig()  # security-related config
@@ -333,6 +322,11 @@ class TekstConfig(BaseSettings):
     api_doc: ApiDocConfig = ApiDocConfig()  # API documentation-related config
     cors: CORSConfig = CORSConfig()  # CORS-related config
     misc: MiscConfig = MiscConfig()  # misc config
+
+    @computed_field
+    @property
+    def tekst(self) -> dict[str, str]:
+        return dict(name="Tekst", **package_metadata)
 
     @field_validator("dev_mode", mode="before")
     @classmethod
@@ -360,11 +354,6 @@ class TekstConfig(BaseSettings):
                 f"Temporary directoy is not valid or writable: {path}"
             ) from e
         return path
-
-    @computed_field
-    @property
-    def tekst(self) -> dict[str, str]:
-        return dict(name="Tekst", **package_metadata)
 
 
 @cache

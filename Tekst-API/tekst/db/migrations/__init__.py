@@ -1,5 +1,3 @@
-import asyncio
-
 from collections.abc import Callable
 from importlib import import_module
 from pkgutil import iter_modules
@@ -32,57 +30,41 @@ def pending_migrations(db_version: str) -> MigrationsDict:
     return {v: all_migrations[v] for v in all_migrations if v > Version(db_version)}
 
 
-async def check_db_version(
-    db_version: str,
+async def check_for_migrations(
+    db_version: str | None,
     *,
     auto_migrate: bool = False,
-    wait_for_migrations: bool = True,
 ) -> None:
     if db_version is None:  # pragma: no cover
-        log.warning("No DB version found. Has setup been run?")
-        return
+        log.critical("No DB version found. Has bootstrap routine been run?")
+        exit(1)
     sys_ver = Version(tekst_meta["version"])
     db_ver = Version(db_version)
     pending = pending_migrations(db_version)
     latest_mig_ver = max(pending.keys()) if pending else Version(db_version)
 
     log.info("Checking system/DB compatibility...")
-    log.debug(f"  Tekst version: {str(sys_ver)}")
-    log.debug(f"  DB version: {str(db_ver)}")
-    log.debug(f"  Latest migration version: {str(latest_mig_ver)}")
-    log.debug(f"  Pending migrations: {', '.join([str(p) for p in pending]) or 'None'}")
+    log.debug(f"* Tekst version: {str(sys_ver)}")
+    log.debug(f"* DB version: {str(db_ver)}")
+    log.debug(f"* Latest migration version: {str(latest_mig_ver)}")
+    log.debug(f"* Pending migrations: {', '.join([str(p) for p in pending]) or 'None'}")
 
-    if len(pending):
-        if auto_migrate:
-            log.info("Found pending DB migrations.")
-            await migrate()
-        else:
-            log.warning(
-                "Found pending DB migrations. "
-                "The data in your database might not be compatible with "
-                "the currently running version of Tekst."
-            )
-
-        if not wait_for_migrations:  # pragma: no cover
-            exit(1)
-        else:  # pragma: no cover
-            # log a critical message and check again every minute for one hour to
-            # give time to run the migrations in the background, then repeat
-            log.warning(
-                "Please run the DB migrations now and keep this process running – "
-                "it will check the DB again every minute for one hour and resume "
-                "startup if migrations are complete."
-            )
-            for i in range(60):
-                pending = pending_migrations(db_version)
-                if len(pending):
-                    await asyncio.sleep(60)
-                else:
-                    break
-            else:
-                await check_db_version(db_version, auto_migrate=auto_migrate)
-    else:
+    if not len(pending):
         log.info("No pending DB migrations found.")
+        return
+
+    if auto_migrate:
+        log.info("Auto-migration is enabled. Running DB migrations now...")
+        await migrate()
+        return
+
+    log.critical(
+        "Found pending DB migrations. "
+        "The data in your database might not be compatible with "
+        "the currently running version of Tekst."
+        "Please run the DB migrations before starting Tekst."
+    )  # pragma: no cover
+    exit(1)  # pragma: no cover
 
 
 async def migrate() -> None:
@@ -90,28 +72,34 @@ async def migrate() -> None:
 
     db = get_db()
     if db is None:  # pragma: no cover
-        log.critical("DB client could not be initialized. Is MongoDB running?")
+        log.critical(
+            "DB client could not be initialized. Is MongoDB running? "
+            "Is the DB connection properly configured? Aborting migration."
+        )
         return
 
     state_coll = db.get_collection("state")
     state = await state_coll.find_one()
     if state is None:
-        log.critical("No state document found. Has setup been run? Aborting migration.")
-        return
-
-    db_version_before: str | None = state.get("db_version")
-    log.debug(f"DB version before migrations: {db_version_before}")
-
-    if db_version_before is None:  # pragma: no cover
         log.critical(
-            "`db_version` not found in state document."
-            "Has setup been run? Aborting migration."
+            "No state document found in DB. Has the bootstrap routine been run? "
+            "Aborting migration."
         )
         return
 
+    db_version_before: str | None = state.get("db_version")
+    if not db_version_before:  # pragma: no cover
+        log.critical(
+            "db_version not found in state document."
+            "Has bootstrap routine been run? Aborting migration."
+        )
+        return
+    log.debug(f"DB version before migrations: {db_version_before}")
+
+    # check for pending migrations
     pending = pending_migrations(db_version_before)
     if not len(pending):
-        log.info("No pending DB migrations.")
+        log.info("No pending DB migrations. Done.")
         return
 
     # run pending migrations

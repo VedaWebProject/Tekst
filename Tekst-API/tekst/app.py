@@ -2,6 +2,7 @@ import gc
 import re
 
 from contextlib import asynccontextmanager
+from os import getenv
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exception_handlers import http_exception_handler
@@ -21,6 +22,7 @@ from tekst.routers import setup_routes
 from tekst.state import get_state
 
 
+_NO_SERVICES = getenv("TEKST_NO_SERVICES", False)
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
@@ -28,19 +30,21 @@ async def startup_routine(app: FastAPI) -> None:
     init_resource_types_mgr()
     setup_routes(app)
 
-    if not _cfg.dev_mode or _cfg.dev.use_db:
+    if not _NO_SERVICES:
+        # init DB connection and ODM
         await db.init_odm()
+        # get platform state from DB
         state = await get_state()
-        await migrations.check_db_version(
-            db_version=state.db_version,
-            auto_migrate=False,
-            wait_for_migrations=False,
-        )
+        # check for pending migrations, exit (non-0) if any are found
+        if not _cfg.dev_mode:  # pragma: no cover
+            await migrations.check_for_migrations(
+                db_version=state.db_version,
+                auto_migrate=False,
+            )
+        # init ES client
+        await search.init_es_client()
     else:  # pragma: no cover
         state = PlatformState()
-
-    if not _cfg.dev_mode or _cfg.dev.use_es:
-        await search.init_es_client()
 
     customize_openapi(app=app, state=state)
 
@@ -57,9 +61,8 @@ async def startup_routine(app: FastAPI) -> None:
 
 async def shutdown_routine(app: FastAPI) -> None:
     log.info(f"{_cfg.tekst['name']} cleaning up and shutting down...")
-    if not _cfg.dev_mode or _cfg.dev.use_db:
+    if not _NO_SERVICES:
         db.close()
-    if not _cfg.dev_mode or _cfg.dev.use_es:
         search.close()
 
 
@@ -81,7 +84,7 @@ app = FastAPI(
 )
 
 # add and configure XSRF/CSRF middleware
-if not _cfg.dev_mode or _cfg.dev.use_xsrf_protection:  # pragma: no cover
+if not _cfg.dev_mode or _cfg.xsrf:  # pragma: no cover
     app.add_middleware(
         CSRFMiddleware,
         secret=_cfg.security.secret,

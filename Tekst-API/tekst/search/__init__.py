@@ -100,7 +100,7 @@ def close() -> None:
 
 
 async def _setup_index_templates() -> None:
-    """This is called by the setup routine and when re-indexing"""
+    """This is called internally when re-indexing"""
     client: Elasticsearch = await _get_es_client()
     log.debug(
         f'Setting up index template "{IDX_TEMPLATE_NAME}" '

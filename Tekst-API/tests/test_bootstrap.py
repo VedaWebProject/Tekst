@@ -1,30 +1,30 @@
 import pytest
 
 from tekst.db import migrations
-from tekst.platform import app_setup
+from tekst.platform import bootstrap
 
 
 @pytest.mark.anyio
-async def test_setup_tabula_rasa(config):
-    # run app setup – will insert sample data, run precomputation hooks, ...
-    await app_setup()
-    # 2nd time to test setup attempt on already set-up instance DB
-    await app_setup()
+async def test_bootstrap_tabula_rasa(config):
+    # run app bootstrap – will insert sample data, run precomputation hooks, ...
+    await bootstrap()
+    # 2nd time to test bootstrap attempt on already set-up instance DB
+    await bootstrap()
 
 
 @pytest.mark.anyio
-async def test_setup_auto_migrate_no_pending(
+async def test_bootstrap_auto_migrate_no_pending(
     config,
     insert_test_data,
 ):
     await insert_test_data()  # need sample data, as an empty DB will not be migrated
-    # run app setup with auto_migrate == True (with no pending migrations)
+    # run app bootstrap with auto_migrate == True (with no pending migrations)
     config.auto_migrate = True
-    await app_setup(config)
+    await bootstrap(config)
 
 
 @pytest.mark.anyio
-async def test_setup_auto_migrate_pending(
+async def test_bootstrap_auto_migrate_pending(
     config,
     database,
     insert_test_data,
@@ -32,9 +32,9 @@ async def test_setup_auto_migrate_pending(
     await insert_test_data()  # need sample data, as an empty DB will not be migrated
     # set bugus DB data version to 0.0.0
     await database["state"].update_one({}, {"$set": {"db_version": "0.0.0"}})
-    # run app setup with auto_migrate == True (with no pending migrations)
+    # run app bootstrap with auto_migrate == True (with no pending migrations)
     config.auto_migrate = True
-    await app_setup(config)
+    await bootstrap(config)
 
 
 @pytest.mark.anyio
@@ -53,5 +53,5 @@ async def test_migrate_none_pending(
     config,
     insert_test_data,
 ):
-    await app_setup()
+    await bootstrap()
     await migrations.migrate()  # no pending migrations

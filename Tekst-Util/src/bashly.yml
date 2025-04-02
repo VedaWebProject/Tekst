@@ -52,21 +52,6 @@ commands:
       - tekst-util restore -c tekst-mongo -f /home/user/tekst-something.backup
       - tekst-util restore -m mongodb://usr:pwd@db.foo.com:27017/?authSource=admin
 
-  - name: migration
-    help: Migrate DB data to newer version (MongoDB service must be running)
-    flags:
-      - long: --container-name
-        short: -c
-        help: Tekst-API Docker container name (if using Docker)
-        arg: container
-      - long: --dev
-        short: -d
-        help: Whether Tekst is running in development mode (sets TEKST_DEV_MODE env var)
-    examples:
-      - tekst-util migration
-      - tekst-util migration -c tekst-api-1
-      - tekst-util migration -c tekst-api-1 --dev
-
   - name: index
     help: Create/update search index (MongoDB and ES services must be running)
     flags:
