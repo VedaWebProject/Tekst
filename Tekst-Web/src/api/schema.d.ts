@@ -1466,11 +1466,10 @@ export interface components {
        */
       defaultActive?: boolean;
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
+       * Collapsiblecontents
+       * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
-      defaultCollapsed: boolean;
+      collapsibleContents?: number | null;
       /**
        * Font
        * @description Name of a font
@@ -1511,7 +1510,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": false,
        *       "searchableAdv": false,
@@ -1584,7 +1582,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": false,
@@ -1709,7 +1706,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": false,
@@ -1923,7 +1919,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -1986,7 +1981,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -2101,7 +2095,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -2728,7 +2721,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -2791,7 +2783,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -2906,7 +2897,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -3023,11 +3013,10 @@ export interface components {
        */
       defaultActive?: boolean;
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
+       * Collapsiblecontents
+       * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
-      defaultCollapsed: boolean;
+      collapsibleContents?: number | null;
       /**
        * Font
        * @description Name of a font
@@ -3211,7 +3200,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -3274,7 +3262,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -3389,7 +3376,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -3761,11 +3747,10 @@ export interface components {
        */
       defaultActive?: boolean;
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default false
+       * Collapsiblecontents
+       * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
-      defaultCollapsed: boolean;
+      collapsibleContents?: number | null;
       /**
        * Font
        * @description Name of a font
@@ -3823,7 +3808,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": false,
        *       "searchableAdv": true,
@@ -3892,7 +3876,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -4013,7 +3996,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -4350,7 +4332,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -4428,7 +4409,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -4558,7 +4538,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -5262,11 +5241,11 @@ export interface components {
        */
       defaultActive?: boolean;
       /**
-       * Defaultcollapsed
-       * @description Whether contents of this resource should be collapsed by default
-       * @default true
+       * Collapsiblecontents
+       * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
+       * @default 400
        */
-      defaultCollapsed: boolean;
+      collapsibleContents: number | null;
       /**
        * Font
        * @description Name of a font
@@ -5305,7 +5284,7 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": true,
+       *       "collapsibleContents": 400,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -5371,8 +5350,8 @@ export interface components {
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "general": {
+       *         "collapsibleContents": 400,
        *         "defaultActive": true,
-       *         "defaultCollapsed": true,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -5490,8 +5469,8 @@ export interface components {
       description: components['schemas']['ResourceDescriptionTranslation'][];
       /** @default {
        *       "general": {
+       *         "collapsibleContents": 400,
        *         "defaultActive": true,
-       *         "defaultCollapsed": true,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -5861,7 +5840,6 @@ export interface components {
       /** @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
-       *       "defaultCollapsed": false,
        *       "enableContentContext": false,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
@@ -5930,7 +5908,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,
@@ -6051,7 +6028,6 @@ export interface components {
       /** @default {
        *       "general": {
        *         "defaultActive": true,
-       *         "defaultCollapsed": false,
        *         "enableContentContext": false,
        *         "rtl": false,
        *         "searchableAdv": true,

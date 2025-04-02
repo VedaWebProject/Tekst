@@ -122,12 +122,15 @@ ResourceTypeName = constr(
 # TYPE ANNOTATIONS FOR FIELD THAT CAN BE PART OF
 # THE GENERAL TYPE-SPECIFIC RESOURCE CONFIGURATION
 
-DefaultCollapsedValue = Annotated[
-    bool,
+CollapsibleContentsConfigValue = Annotated[
+    int | None,
     Field(
         description=(
-            "Whether contents of this resource should be collapsed by default"
+            "Minimum height in pixels from which contents should be collapsible "
+            "(unsetting this will disable collapsibility)"
         ),
+        ge=100,
+        le=800,
     ),
 ]
 

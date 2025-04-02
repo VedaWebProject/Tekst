@@ -7,7 +7,7 @@ import { commonResourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NFlex, NFormItem, NInputNumber, NSelect, type SelectOption } from 'naive-ui';
+import { NFlex, NFormItem, NInputNumber, NSelect, NSlider, type SelectOption } from 'naive-ui';
 import { computed, h } from 'vue';
 
 const props = defineProps<{
@@ -63,6 +63,14 @@ const fontOptions = computed(() =>
   }))
 );
 
+const cCMarks = {
+  0: () => renderCCMark(0),
+  200: () => renderCCMark(200),
+  400: () => renderCCMark(400),
+  600: () => renderCCMark(600),
+  800: () => renderCCMark(800),
+};
+
 function renderFontLabel(option: SelectOption) {
   return h(
     'div',
@@ -70,6 +78,14 @@ function renderFontLabel(option: SelectOption) {
       style: `font-family: '${option.value}', 'Tekst Content Font', serif;`,
     },
     option.label as string
+  );
+}
+
+function renderCCMark(value: number) {
+  return h(
+    'span',
+    { class: { 'text-tiny': true, b: value === 0 } },
+    value > 0 ? `${value}px` : $t('common.off')
   );
 }
 </script>
@@ -93,7 +109,7 @@ function renderFontLabel(option: SelectOption) {
   </n-form-item>
 
   <!-- SORT ORDER -->
-  <n-form-item path="config.common.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
+  <n-form-item path="config.general.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
     <template #label>
       <n-flex align="center" :wrap="false">
         {{ $t('resources.settings.config.general.sortOrder') }}
@@ -152,16 +168,22 @@ function renderFontLabel(option: SelectOption) {
     />
   </n-form-item>
 
-  <!-- COLLAPSIBLE CONTENTS -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch
-      v-model="model.defaultCollapsed"
-      :label="$t('resources.settings.config.general.defaultCollapsed')"
-    />
+  <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
+  <n-form-item :show-label="false">
+    <labeled-switch v-model="model.rtl" :label="$t('resources.settings.config.general.rtl')" />
   </n-form-item>
 
-  <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch v-model="model.rtl" :label="$t('resources.settings.config.general.rtl')" />
+  <!-- COLLAPSIBLE CONTENTS -->
+  <n-form-item :label="$t('resources.settings.config.general.collapsibleContents')">
+    <n-slider
+      :value="model.collapsibleContents || 0"
+      :marks="cCMarks"
+      step="mark"
+      :min="0"
+      :max="800"
+      :format-tooltip="(v) => (v > 0 ? `${v}px` : $t('common.off'))"
+      style="width: 98%"
+      @update:value="(v) => (model.collapsibleContents = v > 0 ? v : null)"
+    />
   </n-form-item>
 </template>

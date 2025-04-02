@@ -15,9 +15,9 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
+    CollapsibleContentsConfigValue,
     ConStr,
     ContentCssProperties,
-    DefaultCollapsedValue,
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
     SchemaOptionalNullable,
@@ -149,7 +149,7 @@ class RichText(ResourceTypeABC):
 
 
 class RichTextModGeneralConfig(GeneralResourceConfig):
-    default_collapsed: DefaultCollapsedValue = True
+    collapsible_contents: CollapsibleContentsConfigValue = 400
     enable_content_context: Annotated[
         Literal[False],
         Field(

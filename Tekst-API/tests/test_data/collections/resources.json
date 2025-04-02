@@ -27,7 +27,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": true,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -68,7 +67,7 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": true,
+        "collapsible_contents": 400,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -100,7 +99,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -134,7 +132,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -162,7 +159,7 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": true,
+        "collapsible_contents": 400,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -190,7 +187,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -218,7 +214,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": false,
         "searchable_adv": false,
@@ -256,7 +251,6 @@
       "general": {
         "sort_order": 10,
         "default_active": false,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,
@@ -307,7 +301,6 @@
       "general": {
         "sort_order": 10,
         "default_active": true,
-        "default_collapsed": false,
         "enable_content_context": false,
         "searchable_quick": true,
         "searchable_adv": true,

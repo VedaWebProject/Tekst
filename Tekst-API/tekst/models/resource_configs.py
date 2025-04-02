@@ -7,9 +7,9 @@ from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
 from tekst.types import (
+    CollapsibleContentsConfigValue,
     ConStr,
     ConStrOrNone,
-    DefaultCollapsedValue,
     FontNameValueOrNone,
     SchemaOptionalNonNullable,
 )
@@ -39,7 +39,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = True
-    default_collapsed: DefaultCollapsedValue = False
+    collapsible_contents: CollapsibleContentsConfigValue = None
     font: FontNameValueOrNone = None
     enable_content_context: Annotated[
         bool,

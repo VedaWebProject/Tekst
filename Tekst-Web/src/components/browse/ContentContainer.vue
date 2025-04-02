@@ -47,13 +47,13 @@ const headerWidgetsOpacity = computed<number>(() =>
 
 const collapsible = computed(
   () =>
-    !browse.focusView && contentsLoaded.value && !!props.resource.config.general.defaultCollapsed
+    !browse.focusView && contentsLoaded.value && !!props.resource.config.general.collapsibleContents
 );
-const collapsed = ref(!!props.resource.config.general.defaultCollapsed);
+const collapsed = ref(!!props.resource.config.general.collapsibleContents);
 watch(
   () => browse.focusView,
   (focusView) => {
-    collapsed.value = !focusView && !!props.resource.config.general.defaultCollapsed;
+    collapsed.value = !focusView && !!props.resource.config.general.collapsibleContents;
   },
   { immediate: true }
 );
@@ -165,7 +165,7 @@ watch(
         v-if="contentsLoaded"
         :collapsible="collapsible || contentContextLoaded"
         :collapsed="collapsed"
-        :height-tresh-px="320"
+        :height-tresh-px="resource.config.general.collapsibleContents || undefined"
         class="content-loadable"
         :class="{ 'content-loading': loading }"
       >

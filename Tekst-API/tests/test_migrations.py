@@ -259,3 +259,25 @@ async def test_0_11_0a0(
             assert "content_type" in res["config"]["special"]["api_call"]
             assert "transform" in res["config"]["special"]
             assert "deps" in res["config"]["special"]["transform"]
+
+
+@pytest.mark.anyio
+async def test_0_11_1a0(
+    database,
+    get_test_data,
+):
+    resources = get_test_data("migrations/0_11_1a0.json")
+    await database.resources.insert_many(resources)
+
+    # run migration
+    await _migration_fn("0_11_1a0")(database)
+    resources = await database.resources.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "general" in res["config"]
+        assert "default_collapsed" not in res["config"]["general"]
+        if "collapsible_contents" in res["config"]["general"]:
+            assert isinstance(res["config"]["general"]["collapsible_contents"], int)
