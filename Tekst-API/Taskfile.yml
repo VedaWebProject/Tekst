@@ -76,7 +76,7 @@ tasks:
     desc: Export (development) OpenAPI schema to file openapi.json
     env:
       TEKST_DEV_MODE: true
-      TEKST_LOG_LEVEL: INFO
+      TEKST_LOG_LEVEL: WARNING
     cmds:
       - uv run python3 -m tekst schema -f
 
