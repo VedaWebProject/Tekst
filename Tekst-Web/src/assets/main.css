@@ -332,10 +332,6 @@ table td {
   font-family: var(--font-family-ui);
 }
 
-.content-font {
-  font-family: var(--font-family-content);
-}
-
 .centered-spinner {
   width: 100%;
   display: flex;

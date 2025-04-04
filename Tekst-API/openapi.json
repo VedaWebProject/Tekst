@@ -7744,7 +7744,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -7759,7 +7759,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "query": {
             "anyOf": [
@@ -7789,7 +7789,7 @@
             ],
             "title": "Transformcontext",
             "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
-            "optionalNullable": false
+            "optionalNullable": true
           }
         },
         "type": "object",
@@ -7855,7 +7855,7 @@
               }
             ],
             "title": "Font",
-            "description": "Name of a font"
+            "description": "Name of a font family"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -8428,7 +8428,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -8679,7 +8679,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -8694,7 +8694,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "files": {
             "anyOf": [
@@ -9264,7 +9264,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -10389,7 +10389,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -10404,7 +10404,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "links": {
             "anyOf": [
@@ -10959,7 +10959,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -11116,7 +11116,7 @@
               }
             ],
             "title": "Font",
-            "description": "Name of a font"
+            "description": "Name of a font family"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -11443,7 +11443,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -11458,7 +11458,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "files": {
             "anyOf": [
@@ -11984,7 +11984,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -12623,7 +12623,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -12638,7 +12638,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "entries": {
             "anyOf": [
@@ -12754,7 +12754,7 @@
               }
             ],
             "title": "Font",
-            "description": "Name of a font"
+            "description": "Name of a font family"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -13349,7 +13349,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -13725,7 +13725,7 @@
               }
             ],
             "title": "Font",
-            "description": "Name of a font"
+            "description": "Name of a font family"
           }
         },
         "type": "object",
@@ -13953,7 +13953,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -13968,7 +13968,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "text": {
             "anyOf": [
@@ -14529,7 +14529,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -14770,6 +14770,33 @@
               "enUS"
             ]
           },
+          "fonts": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1,
+              "description": "Name of a font family"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Fonts",
+            "description": "CSS font family names for custom fonts",
+            "default": []
+          },
+          "uiFont": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Uifont",
+            "description": "Font family used for the UI (default font used if not set)"
+          },
           "defaultTextId": {
             "anyOf": [
               {
@@ -14876,18 +14903,6 @@
               "apiCall"
             ]
           },
-          "fonts": {
-            "items": {
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 1
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Fonts",
-            "description": "CSS font family names for use in resources",
-            "default": []
-          },
           "oskModes": {
             "items": {
               "$ref": "#/components/schemas/OskMode"
@@ -14983,6 +14998,41 @@
             "title": "Availablelocales",
             "description": "Locales available for use in platform client",
             "optionalNullable": false
+          },
+          "fonts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 1,
+                  "description": "Name of a font family"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fonts",
+            "description": "CSS font family names for custom fonts",
+            "optionalNullable": false
+          },
+          "uiFont": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Uifont",
+            "description": "Font family used for the UI (default font used if not set)",
+            "optionalNullable": true
           },
           "defaultTextId": {
             "anyOf": [
@@ -15171,25 +15221,6 @@
             ],
             "title": "Denyresourcetypes",
             "description": "Resource types regular users are not allowed to create",
-            "optionalNullable": false
-          },
-          "fonts": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "maxLength": 32,
-                  "minLength": 1
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Fonts",
-            "description": "CSS font family names for use in resources",
             "optionalNullable": false
           },
           "oskModes": {
@@ -15760,7 +15791,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -15775,7 +15806,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "html": {
             "anyOf": [
@@ -15874,7 +15905,7 @@
               }
             ],
             "title": "Font",
-            "description": "Name of a font"
+            "description": "Name of a font family"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -16430,7 +16461,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -17017,7 +17048,7 @@
             ],
             "title": "Comment",
             "description": "Plain text, potentially multiline comment that will be displayed with the content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "notes": {
             "anyOf": [
@@ -17032,7 +17063,7 @@
             ],
             "title": "Notes",
             "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "tokens": {
             "anyOf": [
@@ -17631,7 +17662,7 @@
             ],
             "title": "Citation",
             "description": "Citation details for this resource",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "meta": {
             "anyOf": [
@@ -18915,7 +18946,7 @@
             ],
             "title": "Avatarurl",
             "description": "URL of this user's avatar picture",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "bio": {
             "anyOf": [
@@ -18930,7 +18961,7 @@
             ],
             "title": "Bio",
             "description": "Biography of this user",
-            "optionalNullable": false
+            "optionalNullable": true
           },
           "publicFields": {
             "anyOf": [

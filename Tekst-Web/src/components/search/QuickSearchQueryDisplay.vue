@@ -54,7 +54,7 @@ const settings = computed(() => [
       {{ $t('search.results.searching') }}
     </span>
 
-    <n-tag class="b content-font" size="small">
+    <n-tag class="b" size="small" style="font-family: var(--font-family-content)">
       <template #icon>
         <n-icon class="translucent" :component="SearchIcon" />
       </template>

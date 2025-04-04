@@ -491,7 +491,10 @@ function generatePlaintextAnno(): string {
         :title="$t('common.comment')"
         class="mb-lg"
       >
-        <div class="content-font text-small" style="white-space: pre-line">
+        <div
+          class="text-small"
+          :style="{ fontFamily: resource.contentFont, whiteSpace: 'pre-line' }"
+        >
           {{ tokenDetails.comment }}
         </div>
       </n-alert>
@@ -511,7 +514,7 @@ function generatePlaintextAnno(): string {
           <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
             <tr v-if="annotation.key !== 'comment'">
               <td>{{ annotation.key }}</td>
-              <td class="content-font">
+              <td :style="{ fontFamily: resource.contentFont }">
                 {{
                   annotation.value.join(
                     resource.config.special.annotations.multiValueDelimiter || '/'

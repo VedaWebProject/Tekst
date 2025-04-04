@@ -28,9 +28,10 @@ import {
   NTabPane,
   NTabs,
   type FormInst,
+  type SelectOption,
   type TabsInst,
 } from 'naive-ui';
-import { computed, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
@@ -67,6 +68,23 @@ const resourceTypeOptions = computed(
       value: rt.name,
     })) || []
 );
+
+const fontOptions = computed(() =>
+  (formModel.value.fonts || []).map((f) => ({
+    label: f,
+    value: f,
+  }))
+);
+
+function renderFontLabel(option: SelectOption) {
+  return h(
+    'div',
+    {
+      style: `font-family: '${option.value}', 'Tekst UI Font', sans-serif;`,
+    },
+    option.label as string
+  );
+}
 
 async function handleSaveClick() {
   loading.value = true;
@@ -188,6 +206,66 @@ watch(
               @keydown.enter.prevent
             />
           </n-form-item>
+
+          <!-- CUSTOM FONTS -->
+          <form-section-heading
+            :label="$t('models.platformSettings.fonts')"
+            help-key="adminSettingsCustomFonts"
+          />
+          <n-form-item v-if="formModel.fonts" :show-label="false" :show-feedback="false">
+            <n-dynamic-input
+              v-model:value="formModel.fonts"
+              show-sort-button
+              :min="0"
+              :max="64"
+              :create-button-props="dynInputCreateBtnProps"
+              @create="() => ''"
+            >
+              <template #default="{ index }">
+                <n-form-item
+                  ignore-path-change
+                  :label="$t('common.name')"
+                  :path="`fonts[${index}]`"
+                  :rule="platformSettingsFormRules.fontName"
+                  style="flex: 2"
+                >
+                  <n-input
+                    v-model:value="formModel.fonts[index]"
+                    :placeholder="$t('common.name')"
+                    @keydown.enter.prevent
+                    :style="{
+                      fontFamily: `'${formModel.fonts[index]}', 'Tekst Content Font', serif`,
+                    }"
+                  />
+                </n-form-item>
+              </template>
+              <template #action="{ index, create, remove }">
+                <dynamic-input-controls
+                  top-offset
+                  :movable="false"
+                  :insert-disabled="(formModel.fonts.length || 0) >= 64"
+                  @remove="() => remove(index)"
+                  @insert="() => create(index)"
+                />
+              </template>
+              <template #create-button-default>
+                {{ $t('common.add') }}
+              </template>
+            </n-dynamic-input>
+          </n-form-item>
+
+          <!-- UI FONT -->
+          <form-section-heading :label="$t('models.platformSettings.uiFont')" />
+          <n-form-item path="uiFont" :show-label="false">
+            <n-select
+              v-model:value="formModel.uiFont"
+              clearable
+              :options="fontOptions"
+              :placeholder="$t('common.default')"
+              :render-label="renderFontLabel"
+              :disabled="!formModel.fonts?.length"
+            />
+          </n-form-item>
         </n-tab-pane>
 
         <!-- NAVIGATION -->
@@ -270,53 +348,6 @@ watch(
               :options="resourceTypeOptions"
               placeholder="–"
             />
-          </n-form-item>
-
-          <!-- ADDITIONAL FONTS -->
-          <form-section-heading
-            :label="$t('models.platformSettings.fonts')"
-            help-key="adminSettingsResourceFonts"
-          />
-          <n-form-item v-if="formModel.fonts" :show-label="false">
-            <n-dynamic-input
-              v-model:value="formModel.fonts"
-              show-sort-button
-              :min="0"
-              :max="64"
-              :create-button-props="dynInputCreateBtnProps"
-              @create="() => ''"
-            >
-              <template #default="{ index }">
-                <n-form-item
-                  ignore-path-change
-                  :label="$t('common.name')"
-                  :path="`fonts[${index}]`"
-                  :rule="platformSettingsFormRules.fontName"
-                  style="flex: 2"
-                >
-                  <n-input
-                    v-model:value="formModel.fonts[index]"
-                    :placeholder="$t('common.name')"
-                    @keydown.enter.prevent
-                    :style="{
-                      fontFamily: `'${formModel.fonts[index]}', 'Tekst Content Font', serif`,
-                    }"
-                  />
-                </n-form-item>
-              </template>
-              <template #action="{ index, create, remove }">
-                <dynamic-input-controls
-                  top-offset
-                  :movable="false"
-                  :insert-disabled="(formModel.fonts.length || 0) >= 64"
-                  @remove="() => remove(index)"
-                  @insert="() => create(index)"
-                />
-              </template>
-              <template #create-button-default>
-                {{ $t('common.add') }}
-              </template>
-            </n-dynamic-input>
           </n-form-item>
 
           <!-- OSK -->

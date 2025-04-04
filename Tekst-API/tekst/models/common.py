@@ -252,32 +252,33 @@ class ModelFactoryMixin:
         if not cls._update_model or not cls._is_origin_cls("_update_model"):
             field_overrides = {}
             for name, field in cls.model_fields.items():
-                if not str(name).endswith("_type"):
-                    type_annos = (
-                        (field.annotation,)
-                        if get_origin(field.annotation) not in (Union, UnionType)
-                        else get_args(field.annotation)
-                    )
-                    extra_field_infos = []
-                    if not (None in type_annos or type(None) in type_annos):
-                        # None isn't present in the type annotation, so we add it
-                        type_annos += (type(None),)
-                        # mark that this prop wasn't originally nullable
-                        extra_field_infos.append(SchemaOptionalNonNullable)
-                    else:
-                        # mark that this prop was originally nullable
-                        extra_field_infos.append(SchemaOptionalNullable)
-                    # merge with original field info
-                    fi = FieldInfo.merge_field_infos(
-                        field,
-                        *extra_field_infos,
-                        # set the type annotation to a union of the composed types
-                        annotation=Union[type_annos],  # noqa: UP007
-                        # we always default to None on these update model fields
-                        default=None,
-                    )
-                    # add to field overrides
-                    field_overrides[name] = (fi.annotation, fi)
+                if name.endswith("_type"):
+                    continue  # don't make fields optional that end on "_type"
+                type_annos = (
+                    (field.annotation,)
+                    if get_origin(field.annotation) not in (Union, UnionType)
+                    else get_args(field.annotation)
+                )
+                extra_field_infos = []
+                if not cls._validate_against_field(name, None):
+                    # None isn't a valid value for this field yet, so we add it to types
+                    type_annos += (type(None),)
+                    # mark that this prop wasn't originally nullable
+                    extra_field_infos.append(SchemaOptionalNonNullable)
+                else:
+                    # mark that this prop was originally nullable
+                    extra_field_infos.append(SchemaOptionalNullable)
+                # merge with original field info
+                fi = FieldInfo.merge_field_infos(
+                    field,
+                    *extra_field_infos,
+                    # set the type annotation to a union of the composed types
+                    annotation=Union[type_annos],  # noqa: UP007
+                    # we always default to None on these update model fields
+                    default=None,
+                )
+                # add to field overrides
+                field_overrides[name] = (fi.annotation, fi)
             cls._update_model = create_model(
                 f"{cls.__name__}Update",
                 __base__=(cls, *cls._to_bases_tuple(bases)),
@@ -285,6 +286,19 @@ class ModelFactoryMixin:
                 **field_overrides,
             )
         return cls._update_model
+
+    @classmethod
+    def _validate_against_field(
+        cls,
+        field_name: str,
+        value: Any,
+    ) -> bool:
+        field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
+        try:
+            field_adapter.validate_python(value)
+            return True
+        except ValidationError:
+            return False
 
 
 # PRECOMPUTED DATA

@@ -152,6 +152,10 @@ export const useThemeStore = defineStore('theme', () => {
 
       '--main-bg-color': custom.value.mainBgColor,
       '--content-bg-color': custom.value.contentBgColor,
+
+      '--font-family-ui': [state.pf?.state.uiFont, `'Tekst UI Font'`, 'sans-serif']
+        .filter((f) => !!f)
+        .join(', '),
     };
     Object.entries(vars).forEach(([k, v]) => {
       document.documentElement.style.setProperty(k, v);

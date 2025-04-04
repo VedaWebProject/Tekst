@@ -10,7 +10,7 @@ from tekst.types import (
     CollapsibleContentsConfigValue,
     ConStr,
     ConStrOrNone,
-    FontNameValueOrNone,
+    FontFamilyValueOrNone,
     SchemaOptionalNonNullable,
 )
 
@@ -40,7 +40,7 @@ class GeneralResourceConfig(ModelBase):
         SchemaOptionalNonNullable,
     ] = True
     collapsible_contents: CollapsibleContentsConfigValue = None
-    font: FontNameValueOrNone = None
+    font: FontFamilyValueOrNone = None
     enable_content_context: Annotated[
         bool,
         Field(

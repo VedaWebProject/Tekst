@@ -360,7 +360,8 @@ models:
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
-    fonts: Benutzerdefinierte Schritarten für Inhalte
+    fonts: Benutzerdefinierte Schritarten
+    uiFont: Benutzeroberflächen-Schriftart
     oskModes: Bildschirmtastaturen
     oskModeFont: Tastatur-Schriftart
   segment:

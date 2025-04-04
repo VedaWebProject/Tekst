@@ -357,7 +357,8 @@ models:
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
-    fonts: Custom Content Fonts
+    fonts: Custom Fonts
+    uiFont: User Interface Font
     oskModes: On-screen Keyboards
     oskModeFont: Keyboard font
   segment:

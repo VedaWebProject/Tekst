@@ -37,9 +37,23 @@ export const useResourcesStore = defineStore('resources', () => {
 
   const loading = ref(false);
 
-  function sortResources(res: AnyResourceRead[]) {
-    return res.sort(
-      (a, b) => (a.config.general.sortOrder ?? 0) - (b.config.general.sortOrder ?? 0)
+  function processResources(resources: AnyResourceRead[]) {
+    return (
+      resources
+        // sort resources by configured sort order
+        .sort((a, b) => (a.config.general.sortOrder ?? 0) - (b.config.general.sortOrder ?? 0))
+        // add additional props for quick use throughout the client
+        .map((r) => {
+          const existingResource = resourcesAll.value.find((re) => re.id === r.id);
+          return {
+            ...r,
+            active: !!existingResource?.active || !!r.config.general.defaultActive,
+            contents: existingResource?.contents ?? [],
+            contentFont: [r.config.general.font, `'Tekst Content Font'`, 'serif']
+              .filter((f) => !!f)
+              .join(', '),
+          };
+        })
     );
   }
 
@@ -53,16 +67,7 @@ export const useResourcesStore = defineStore('resources', () => {
     const { data, error: err } = await GET('/resources'); // fetch ALL resources
 
     if (!err) {
-      resourcesAll.value = sortResources(
-        data.map((r) => {
-          const existingResource = resourcesAll.value.find((re) => re.id === r.id);
-          return {
-            ...r,
-            active: !!existingResource?.active || !!r.config.general.defaultActive,
-            contents: existingResource?.contents ?? [],
-          };
-        })
-      );
+      resourcesAll.value = processResources(data);
       error.value = false;
     } else {
       error.value = true;
@@ -89,7 +94,7 @@ export const useResourcesStore = defineStore('resources', () => {
 
   function replace(resource: AnyResourceRead) {
     if (resourcesAll.value.find((re) => re.id === resource.id)) {
-      resourcesAll.value = sortResources(
+      resourcesAll.value = processResources(
         resourcesAll.value.map((r) =>
           r.id === resource.id ? { ...resource, active: r.active, contents: r.contents } : r
         )
@@ -101,7 +106,7 @@ export const useResourcesStore = defineStore('resources', () => {
 
   function add(resource: AnyResourceRead) {
     resource.active = resource.config.general.defaultActive;
-    resourcesAll.value = sortResources(resourcesAll.value.concat([resource]));
+    resourcesAll.value = processResources(resourcesAll.value.concat([resource]));
   }
 
   function remove(resourceId: string) {

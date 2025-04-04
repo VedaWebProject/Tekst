@@ -14,7 +14,12 @@ from tekst.models.common import (
 )
 from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.text import TextRead
-from tekst.types import ConStr, ConStrOrNone, FontNameValueOrNone
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    FontFamilyValue,
+    FontFamilyValueOrNone,
+)
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -43,7 +48,7 @@ class OskMode(ModelBase):
     name: ConStr(
         max_length=32,
     )
-    font: FontNameValueOrNone = None
+    font: FontFamilyValueOrNone = None
 
 
 class PlatformState(ModelBase, ModelFactoryMixin):
@@ -80,6 +85,21 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             min_length=1,
         ),
     ] = list(get_args(LocaleKey.__value__))
+
+    fonts: Annotated[
+        list[FontFamilyValue],
+        Field(
+            description="CSS font family names for custom fonts",
+            max_length=64,
+        ),
+    ] = []
+
+    ui_font: Annotated[
+        FontFamilyValueOrNone,
+        Field(
+            description="Font family used for the UI (default font used if not set)",
+        ),
+    ] = None
 
     default_text_id: Annotated[
         PydanticObjectId | None,
@@ -177,19 +197,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             max_length=64,
         ),
     ] = ["apiCall"]
-
-    fonts: Annotated[
-        list[
-            ConStr(
-                max_length=32,
-                cleanup="oneline",
-            )
-        ],
-        Field(
-            description="CSS font family names for use in resources",
-            max_length=64,
-        ),
-    ] = []
 
     osk_modes: Annotated[
         list[OskMode],

@@ -14,6 +14,7 @@ type HighlightDisplayData = {
   title: string;
   hl: string;
   tip?: string;
+  font?: string;
 };
 
 const props = defineProps<{
@@ -56,7 +57,9 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
   if (!props.highlight) return [];
   return Object.entries(props.highlight)
     .map(([id, hl]) => {
-      const level = resources.all.find((r) => r.id === id)?.level || 0;
+      const res = resources.all.find((r) => r.id === id);
+      if (!res) return;
+      const level = res.level || 0;
       const title = resources.resourceTitles[id];
       return {
         id,
@@ -67,8 +70,10 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
           level < props.level
             ? $t('search.results.higherLvlHit', { level: state.textLevelLabels[level] })
             : undefined,
+        font: res.contentFont,
       };
     })
+    .filter((hl) => !!hl)
     .sort((a, b) => b.level - a.level);
 });
 </script>
@@ -121,7 +126,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
             :class="{ translucent: hl.level < level }"
           >
             <span class="b" :style="{ color: textColor }">{{ hl.title }}: </span>
-            <span class="content-font" v-html="hl.hl"></span>
+            <span :style="{ fontFamily: hl.font }" v-html="hl.hl"></span>
           </div>
         </div>
       </n-flex>

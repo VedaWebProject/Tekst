@@ -1429,12 +1429,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Query
        * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
@@ -1444,7 +1444,7 @@ export interface components {
        * Transformcontext
        * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      transformContext?: string;
+      transformContext?: null | string;
     };
     /** ApiCallModGeneralConfig */
     ApiCallModGeneralConfig: {
@@ -1472,7 +1472,7 @@ export interface components {
       collapsibleContents?: number | null;
       /**
        * Font
-       * @description Name of a font
+       * @description Name of a font family
        */
       font?: null | string;
       /**
@@ -1770,7 +1770,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1884,12 +1884,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Files
        * @description List of audio file objects
@@ -2149,7 +2149,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2686,12 +2686,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Links
        * @description List of external reference link objects
@@ -2951,7 +2951,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3019,7 +3019,7 @@ export interface components {
       collapsibleContents?: number | null;
       /**
        * Font
-       * @description Name of a font
+       * @description Name of a font family
        */
       font?: null | string;
       /**
@@ -3183,12 +3183,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Files
        * @description List of image file objects
@@ -3430,7 +3430,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3707,12 +3707,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3753,7 +3753,7 @@ export interface components {
       collapsibleContents?: number | null;
       /**
        * Font
-       * @description Name of a font
+       * @description Name of a font family
        */
       font?: null | string;
       /**
@@ -4056,7 +4056,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4201,7 +4201,7 @@ export interface components {
       name: string;
       /**
        * Font
-       * @description Name of a font
+       * @description Name of a font family
        */
       font?: null | string;
     };
@@ -4315,12 +4315,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -4607,7 +4607,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4738,6 +4738,17 @@ export interface components {
        */
       availableLocales: components['schemas']['LocaleKey'][];
       /**
+       * Fonts
+       * @description CSS font family names for custom fonts
+       * @default []
+       */
+      fonts: string[];
+      /**
+       * Uifont
+       * @description Font family used for the UI (default font used if not set)
+       */
+      uiFont?: null | string;
+      /**
        * Defaulttextid
        * @description Default text to load in UI
        */
@@ -4817,12 +4828,6 @@ export interface components {
        */
       denyResourceTypes: string[];
       /**
-       * Fonts
-       * @description CSS font family names for use in resources
-       * @default []
-       */
-      fonts: string[];
-      /**
        * Oskmodes
        * @description OSK modes available for use in platform client
        * @default []
@@ -4858,6 +4863,16 @@ export interface components {
        * @description Locales available for use in platform client
        */
       availableLocales?: components['schemas']['LocaleKey'][];
+      /**
+       * Fonts
+       * @description CSS font family names for custom fonts
+       */
+      fonts?: string[];
+      /**
+       * Uifont
+       * @description Font family used for the UI (default font used if not set)
+       */
+      uiFont?: null | string;
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -4923,11 +4938,6 @@ export interface components {
        * @description Resource types regular users are not allowed to create
        */
       denyResourceTypes?: string[];
-      /**
-       * Fonts
-       * @description CSS font family names for use in resources
-       */
-      fonts?: string[];
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
@@ -5204,12 +5214,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5248,7 +5258,7 @@ export interface components {
       collapsibleContents: number | null;
       /**
        * Font
-       * @description Name of a font
+       * @description Name of a font family
        */
       font?: null | string;
       /**
@@ -5529,7 +5539,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5791,12 +5801,12 @@ export interface components {
        * Comment
        * @description Plain text, potentially multiline comment that will be displayed with the content
        */
-      comment?: string;
+      comment?: null | string;
       /**
        * Notes
        * @description Plain text, potentially multiline working notes on this content meant as an aid for people editing this content
        */
-      notes?: string;
+      notes?: null | string;
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -6088,7 +6098,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: string;
+      citation?: null | string;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -6675,12 +6685,12 @@ export interface components {
        * Avatarurl
        * @description URL of this user's avatar picture
        */
-      avatarUrl?: string;
+      avatarUrl?: null | string;
       /**
        * Bio
        * @description Biography of this user
        */
-      bio?: string;
+      bio?: null | string;
       publicFields?: components['schemas']['PrivateUserProps'];
       /**
        * Usernotificationtriggers

@@ -46,7 +46,7 @@ def ConStr(  # noqa: N802
     cleanup: Literal["oneline", "multiline"] | None = None,
     pattern: str | Pattern[str] | None = None,
 ) -> TypeAlias:
-    return Annotated[
+    annotations = (
         str,
         StringConstraints(
             min_length=min_length,
@@ -56,7 +56,9 @@ def ConStr(  # noqa: N802
         ),
         _CleanupOneline if cleanup == "oneline" else None,
         _CleanupMultiline if cleanup == "multiline" else None,
-    ]
+    )
+    annotations = tuple([a for a in annotations if a is not None])
+    return Annotated[annotations]
 
 
 def ConStrOrNone(  # noqa: N802
@@ -75,15 +77,11 @@ def ConStrOrNone(  # noqa: N802
     )
 
 
-HttpUrl = Annotated[
-    str,
-    StringConstraints(
-        min_length=1,
-        max_length=2083,
-        strip_whitespace=True,
-    ),
-]
-
+HttpUrl = ConStr(
+    min_length=1,
+    max_length=2083,
+    cleanup="oneline",
+)
 HttpUrlOrNone = _EmptyStrToNone | HttpUrl
 
 
@@ -134,23 +132,23 @@ CollapsibleContentsConfigValue = Annotated[
     ),
 ]
 
-FontNameValue = Annotated[
+FontFamilyValue = Annotated[
     ConStr(
         max_length=32,
         cleanup="oneline",
     ),
     Field(
-        description="Name of a font",
+        description="Name of a font family",
     ),
 ]
 
-FontNameValueOrNone = Annotated[
+FontFamilyValueOrNone = Annotated[
     ConStrOrNone(
         max_length=32,
         cleanup="oneline",
     ),
     Field(
-        description="Name of a font",
+        description="Name of a font family",
     ),
 ]
 

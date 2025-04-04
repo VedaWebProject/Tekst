@@ -59,7 +59,7 @@ const showInfoModal = ref(false);
     </n-flex>
 
     <!-- SUBTITLE -->
-    <p v-if="resource.subtitle.length" class="content-font">
+    <p v-if="resource.subtitle.length" :style="{ fontFamily: resource.contentFont }">
       <translation-display :value="resource.subtitle" />
       <n-divider />
     </p>
@@ -69,7 +69,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
       </icon-heading>
-      <metadata-display :data="resource.meta" />
+      <metadata-display :data="resource.meta" :content-font="resource.contentFont" />
       <n-divider />
     </template>
 
@@ -78,7 +78,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
-      <div class="content-font">
+      <div :style="{ fontFamily: resource.contentFont }">
         {{ resource.citation }}
       </div>
       <n-divider />
@@ -90,7 +90,7 @@ const showInfoModal = ref(false);
         {{ $t('common.description') }}
       </icon-heading>
       <collapsible-content>
-        <hydrated-html :html="descriptionHtml" class="content-font" />
+        <hydrated-html :html="descriptionHtml" :style="{ fontFamily: resource.contentFont }" />
       </collapsible-content>
       <n-divider />
     </template>

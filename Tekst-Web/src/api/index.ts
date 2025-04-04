@@ -323,6 +323,7 @@ export type SearchableResourceType = Exclude<ResourceType, 'apiCall'>;
 type ResourceReadExtras = {
   active?: boolean;
   corrections?: number;
+  contentFont?: string;
 };
 
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];
