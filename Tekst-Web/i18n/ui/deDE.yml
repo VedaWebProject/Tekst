@@ -362,6 +362,7 @@ models:
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
     fonts: Benutzerdefinierte Schritarten
     uiFont: Benutzeroberflächen-Schriftart
+    contentFont: Standard-Schriftart für Inhalte
     oskModes: Bildschirmtastaturen
     oskModeFont: Tastatur-Schriftart
   segment:
@@ -801,6 +802,8 @@ admin:
       aliasSearch: Suche nach Belegstellen-Aliasen
       customNavLabels: Benutzerdefinierte Navigations-Beschriftungen
     headingBrowseView: Lese-Ansicht
+    headingAppearance: Aussehen
+    headingFonts: Schriftarten
     headingBranding: Branding
     headingI18n: Internationalisierung
     headingRestrictedResTypes: Eingeschränkte Ressourcen-Typen

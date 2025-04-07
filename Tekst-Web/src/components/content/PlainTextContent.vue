@@ -47,7 +47,7 @@ const contents = computed(() =>
 );
 
 const fontStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
 const contentCss = computed(() =>
@@ -67,7 +67,7 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
       <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
         <div
           v-if="resource.config.special.lineLabelling.enabled && line.label != null"
-          class="text-color-accent ui-font text-small"
+          class="text-color-accent font-ui text-small"
         >
           {{ line.label }}
         </div>

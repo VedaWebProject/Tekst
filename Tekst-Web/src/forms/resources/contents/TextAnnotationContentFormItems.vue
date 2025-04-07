@@ -24,7 +24,7 @@ const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof OskInput> }>({})
 const resources = useResourcesStore();
 
 const annoValueStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
 const aggregations = ref<KeyValueAggregations>([]);
@@ -102,11 +102,12 @@ onMounted(async () => {
                   (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof OskInput>)
                 "
                 v-model="tokenItem.token"
-                :font="resource.config.general.font || undefined"
+                :font="resource.config.general.font || 'var(--font-family-content)'"
                 :osk-key="resource.config.general.osk || undefined"
                 :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
               />
             </n-form-item>
+
             <!-- LINEBREAK -->
             <n-form-item ignore-path-change>
               <labeled-switch
@@ -119,6 +120,7 @@ onMounted(async () => {
               />
             </n-form-item>
           </n-flex>
+
           <!-- ANNOTATIONS -->
           <n-form-item
             :label="$t('resources.types.textAnnotation.contentFields.annotations')"

@@ -4745,9 +4745,14 @@ export interface components {
       fonts: string[];
       /**
        * Uifont
-       * @description Font family used for the UI (default font used if not set)
+       * @description Font family used for non-content UI (Tekst default UI font used if not set)
        */
       uiFont?: null | string;
+      /**
+       * Contentfont
+       * @description Default font family used for content (Tekst default content font used if not set)
+       */
+      contentFont?: null | string;
       /**
        * Defaulttextid
        * @description Default text to load in UI
@@ -4870,9 +4875,14 @@ export interface components {
       fonts?: string[];
       /**
        * Uifont
-       * @description Font family used for the UI (default font used if not set)
+       * @description Font family used for non-content UI (Tekst default UI font used if not set)
        */
       uiFont?: null | string;
+      /**
+       * Contentfont
+       * @description Default font family used for content (Tekst default content font used if not set)
+       */
+      contentFont?: null | string;
       /**
        * Defaulttextid
        * @description Default text to load in UI

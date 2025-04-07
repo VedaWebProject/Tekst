@@ -328,8 +328,12 @@ table td {
   opacity: 0.7;
 }
 
-.ui-font {
+.font-ui {
   font-family: var(--font-family-ui);
+}
+
+.font-content {
+  font-family: var(--font-family-content);
 }
 
 .centered-spinner {

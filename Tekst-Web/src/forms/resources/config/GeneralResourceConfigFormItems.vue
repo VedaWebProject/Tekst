@@ -57,10 +57,12 @@ const oskOptions = computed(
 );
 
 const fontOptions = computed(() =>
-  [...(state.pf?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']?.map((f) => ({
-    label: f,
-    value: f,
-  }))
+  [...(state.pf?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']
+    .filter((f) => !!f)
+    .map((f) => ({
+      label: f,
+      value: f,
+    }))
 );
 
 const cCMarks = {

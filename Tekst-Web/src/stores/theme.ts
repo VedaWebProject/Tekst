@@ -156,6 +156,9 @@ export const useThemeStore = defineStore('theme', () => {
       '--font-family-ui': [state.pf?.state.uiFont, `'Tekst UI Font'`, 'sans-serif']
         .filter((f) => !!f)
         .join(', '),
+      '--font-family-content': [state.pf?.state.contentFont, `'Tekst Content Font'`, 'serif']
+        .filter((f) => !!f)
+        .join(', '),
     };
     Object.entries(vars).forEach(([k, v]) => {
       document.documentElement.style.setProperty(k, v);

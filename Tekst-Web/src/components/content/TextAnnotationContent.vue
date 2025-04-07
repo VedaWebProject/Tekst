@@ -115,7 +115,7 @@ const tokenContextMenuOptions = computed(() => [
 ]);
 
 const fontFamilyStyle = computed(() => ({
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 }));
 
 const annoLineNumbers = computed(() =>
@@ -479,7 +479,7 @@ function generatePlaintextAnno(): string {
       :icon="MetadataIcon"
       heading-level="3"
       :header-style="{
-        'font-family': resource.config.general.font || 'Tekst Content Font',
+        'font-family': resource.config.general.font || 'var(--font-family-content)',
         'font-style': 'italic',
       }"
       @after-leave="() => (tokenDetails = undefined)"
@@ -506,15 +506,17 @@ function generatePlaintextAnno(): string {
       >
         <thead>
           <tr>
-            <th>{{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}</th>
-            <th>{{ $t('common.value') }}</th>
+            <th class="b">
+              {{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}
+            </th>
+            <th class="b">{{ $t('common.value') }}</th>
           </tr>
         </thead>
         <tbody>
           <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
             <tr v-if="annotation.key !== 'comment'">
               <td>{{ annotation.key }}</td>
-              <td :style="{ fontFamily: resource.contentFont }">
+              <td class="font-ui">
                 {{
                   annotation.value.join(
                     resource.config.special.annotations.multiValueDelimiter || '/'

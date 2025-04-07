@@ -80,7 +80,7 @@ function renderFontLabel(option: SelectOption) {
   return h(
     'div',
     {
-      style: `font-family: '${option.value}', 'Tekst UI Font', sans-serif;`,
+      style: { fontFamily: [option.value, 'var(--font-family-ui)'].filter((f) => !!f).join(', ') },
     },
     option.label as string
   );
@@ -204,66 +204,6 @@ watch(
               :placeholder="$t('models.platformSettings.availableLocales')"
               :consistent-menu-width="false"
               @keydown.enter.prevent
-            />
-          </n-form-item>
-
-          <!-- CUSTOM FONTS -->
-          <form-section-heading
-            :label="$t('models.platformSettings.fonts')"
-            help-key="adminSettingsCustomFonts"
-          />
-          <n-form-item v-if="formModel.fonts" :show-label="false" :show-feedback="false">
-            <n-dynamic-input
-              v-model:value="formModel.fonts"
-              show-sort-button
-              :min="0"
-              :max="64"
-              :create-button-props="dynInputCreateBtnProps"
-              @create="() => ''"
-            >
-              <template #default="{ index }">
-                <n-form-item
-                  ignore-path-change
-                  :label="$t('common.name')"
-                  :path="`fonts[${index}]`"
-                  :rule="platformSettingsFormRules.fontName"
-                  style="flex: 2"
-                >
-                  <n-input
-                    v-model:value="formModel.fonts[index]"
-                    :placeholder="$t('common.name')"
-                    @keydown.enter.prevent
-                    :style="{
-                      fontFamily: `'${formModel.fonts[index]}', 'Tekst Content Font', serif`,
-                    }"
-                  />
-                </n-form-item>
-              </template>
-              <template #action="{ index, create, remove }">
-                <dynamic-input-controls
-                  top-offset
-                  :movable="false"
-                  :insert-disabled="(formModel.fonts.length || 0) >= 64"
-                  @remove="() => remove(index)"
-                  @insert="() => create(index)"
-                />
-              </template>
-              <template #create-button-default>
-                {{ $t('common.add') }}
-              </template>
-            </n-dynamic-input>
-          </n-form-item>
-
-          <!-- UI FONT -->
-          <form-section-heading :label="$t('models.platformSettings.uiFont')" />
-          <n-form-item path="uiFont" :show-label="false">
-            <n-select
-              v-model:value="formModel.uiFont"
-              clearable
-              :options="fontOptions"
-              :placeholder="$t('common.default')"
-              :render-label="renderFontLabel"
-              :disabled="!formModel.fonts?.length"
             />
           </n-form-item>
         </n-tab-pane>
@@ -449,8 +389,84 @@ watch(
           </n-form-item>
         </n-tab-pane>
 
-        <!-- BRANDING -->
-        <n-tab-pane :tab="$t('admin.platformSettings.headingBranding')" name="branding">
+        <!-- STYLING -->
+        <n-tab-pane :tab="$t('admin.platformSettings.headingAppearance')" name="appearance">
+          <!-- FONTS -->
+          <form-section-heading
+            :label="$t('admin.platformSettings.headingFonts')"
+            help-key="adminSettingsCustomFonts"
+          />
+
+          <!-- custom fonts -->
+          <n-form-item v-if="formModel.fonts" :label="$t('models.platformSettings.fonts')">
+            <n-dynamic-input
+              v-model:value="formModel.fonts"
+              show-sort-button
+              :min="0"
+              :max="64"
+              :create-button-props="dynInputCreateBtnProps"
+              @create="() => ''"
+            >
+              <template #default="{ index }">
+                <n-form-item
+                  ignore-path-change
+                  :label="$t('common.name')"
+                  :path="`fonts[${index}]`"
+                  :rule="platformSettingsFormRules.fontName"
+                  style="flex: 2"
+                >
+                  <n-input
+                    v-model:value="formModel.fonts[index]"
+                    :placeholder="$t('common.name')"
+                    @keydown.enter.prevent
+                    :style="{
+                      fontFamily: [formModel.fonts[index], 'var(--font-family-ui)']
+                        .filter((f) => !!f)
+                        .join(', '),
+                    }"
+                  />
+                </n-form-item>
+              </template>
+              <template #action="{ index, create, remove }">
+                <dynamic-input-controls
+                  top-offset
+                  :movable="false"
+                  :insert-disabled="(formModel.fonts.length || 0) >= 64"
+                  @remove="() => remove(index)"
+                  @insert="() => create(index)"
+                />
+              </template>
+              <template #create-button-default>
+                {{ $t('common.add') }}
+              </template>
+            </n-dynamic-input>
+          </n-form-item>
+
+          <!-- ui font -->
+          <n-form-item path="uiFont" :label="$t('models.platformSettings.uiFont')">
+            <n-select
+              v-model:value="formModel.uiFont"
+              clearable
+              :options="fontOptions"
+              :placeholder="$t('common.default')"
+              :render-label="renderFontLabel"
+              :disabled="!formModel.fonts?.length"
+            />
+          </n-form-item>
+
+          <!-- default content font -->
+          <n-form-item path="contentFont" :label="$t('models.platformSettings.contentFont')">
+            <n-select
+              v-model:value="formModel.contentFont"
+              clearable
+              :options="fontOptions"
+              :placeholder="$t('common.default')"
+              :render-label="renderFontLabel"
+              :disabled="!formModel.fonts?.length"
+            />
+          </n-form-item>
+
+          <!-- BRANDING -->
           <form-section-heading :label="$t('admin.platformSettings.headingBranding')" />
 
           <n-flex vertical class="mb-lg">

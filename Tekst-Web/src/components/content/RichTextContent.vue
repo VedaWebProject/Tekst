@@ -13,7 +13,9 @@ const props = withDefaults(
   }
 );
 
-const fontStyle = { fontFamily: props.resource.config.general.font || 'Tekst Content Font' };
+const fontStyle = {
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
+};
 const contentCss = computed(() =>
   Object.fromEntries(props.resource.config.special.contentCss.map((c) => [c.prop, c.value]))
 );
@@ -30,7 +32,7 @@ const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
       }"
     >
       <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
-      <div v-else class="translucent i ui-font text-small">
+      <div v-else class="translucent i font-ui text-small">
         {{ $t('contents.msgContentNoFocusView') }}
       </div>
     </div>

@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const fontStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
 const contents = computed(() =>
@@ -114,15 +114,14 @@ onMounted(async () => {
           v-if="htmlPart !== undefined"
           class="content-loadable"
           :class="{ 'content-loading': loading }"
-          :style="fontStyle"
         >
-          <hydrated-html :html="htmlPart" />
+          <hydrated-html :html="htmlPart" :style="fontStyle" />
         </div>
-        <div v-else class="translucent i ui-font">
+        <div v-else class="translucent i font-ui">
           {{ $t('errors.notFound') }}
         </div>
       </template>
-      <div v-else class="translucent i ui-font text-small">
+      <div v-else class="translucent i font-ui text-small">
         {{ $t('contents.msgContentNoFocusView') }}
       </div>
     </div>

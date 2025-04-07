@@ -149,7 +149,7 @@ function handleMessageClick() {
         <div
           class="pre-wrap"
           :style="{
-            'font-family': resource.config.general.font || 'Tekst Content Font',
+            'font-family': resource.config.general.font || 'var(--font-family-content)',
           }"
         >
           {{ correction.note }}

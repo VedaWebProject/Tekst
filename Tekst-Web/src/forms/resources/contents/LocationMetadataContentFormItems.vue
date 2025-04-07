@@ -22,7 +22,7 @@ const model = defineModel<LocationMetadataContentCreate>({ required: true });
 const resources = useResourcesStore();
 
 const metaValueStyle = {
-  fontFamily: props.resource.config.general.font || 'Tekst Content Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
 const aggregations = ref<KeyValueAggregations>([]);

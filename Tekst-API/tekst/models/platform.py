@@ -97,7 +97,20 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ui_font: Annotated[
         FontFamilyValueOrNone,
         Field(
-            description="Font family used for the UI (default font used if not set)",
+            description=(
+                "Font family used for non-content UI "
+                "(Tekst default UI font used if not set)"
+            ),
+        ),
+    ] = None
+
+    content_font: Annotated[
+        FontFamilyValueOrNone,
+        Field(
+            description=(
+                "Default font family used for content "
+                "(Tekst default content font used if not set)"
+            ),
         ),
     ] = None
 

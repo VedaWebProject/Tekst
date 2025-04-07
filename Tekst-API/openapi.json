@@ -14795,7 +14795,21 @@
               }
             ],
             "title": "Uifont",
-            "description": "Font family used for the UI (default font used if not set)"
+            "description": "Font family used for non-content UI (Tekst default UI font used if not set)"
+          },
+          "contentFont": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Contentfont",
+            "description": "Default font family used for content (Tekst default content font used if not set)"
           },
           "defaultTextId": {
             "anyOf": [
@@ -15031,7 +15045,22 @@
               }
             ],
             "title": "Uifont",
-            "description": "Font family used for the UI (default font used if not set)",
+            "description": "Font family used for non-content UI (Tekst default UI font used if not set)",
+            "optionalNullable": true
+          },
+          "contentFont": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 1
+              }
+            ],
+            "title": "Contentfont",
+            "description": "Default font family used for content (Tekst default content font used if not set)",
             "optionalNullable": true
           },
           "defaultTextId": {

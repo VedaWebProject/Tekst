@@ -15,7 +15,7 @@ const props = withDefaults(
 );
 
 const fontStyle: CSSProperties = {
-  fontFamily: props.resource.config.general.font || 'Tekst UI Font',
+  fontFamily: props.resource.config.general.font || 'var(--font-family-ui)',
 };
 </script>
 

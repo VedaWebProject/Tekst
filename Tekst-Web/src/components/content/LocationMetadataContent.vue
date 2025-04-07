@@ -91,7 +91,7 @@ function groupAndSort(entries: LocationMetadataContentRead['entries']): {
         </tr>
         <tr v-for="entry in group.entries" :key="entry.key">
           <td style="padding-right: var(--gap-sm)">{{ entry.key }}:</td>
-          <td :style="{ fontFamily: resource.config.general.font || 'Tekst Content Font' }">
+          <td :style="{ fontFamily: resource.config.general.font || 'var(--font-family-content)' }">
             {{ entry.value }}
           </td>
         </tr>

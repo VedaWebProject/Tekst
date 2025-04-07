@@ -49,7 +49,7 @@ export const useResourcesStore = defineStore('resources', () => {
             ...r,
             active: !!existingResource?.active || !!r.config.general.defaultActive,
             contents: existingResource?.contents ?? [],
-            contentFont: [r.config.general.font, `'Tekst Content Font'`, 'serif']
+            contentFont: [r.config.general.font, state.pf?.state.contentFont, 'serif']
               .filter((f) => !!f)
               .join(', '),
           };

@@ -359,6 +359,7 @@ models:
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Fonts
     uiFont: User Interface Font
+    contentFont: Default Content Font
     oskModes: On-screen Keyboards
     oskModeFont: Keyboard font
   segment:
@@ -777,6 +778,8 @@ admin:
       aliasSearch: Location Alias Search
       customNavLabels: Custom Navigation Labels
     headingBrowseView: Browse View
+    headingAppearance: Appearance
+    headingFonts: Fonts
     headingBranding: Branding
     headingI18n: Internationalization
     headingRestrictedResTypes: Restricted Resource Types
