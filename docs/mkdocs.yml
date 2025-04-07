@@ -15,7 +15,10 @@ nav:
   - User Guide:
       - usage/resources.md
   - Administration:
-      - administration/index.md
+      - administration/maintenance.md
+      - administration/cli.md
+      - administration/backups.md
+      - administration/upgrades.md
 
 plugins:
   - search

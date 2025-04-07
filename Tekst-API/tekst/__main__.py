@@ -38,8 +38,8 @@ async def _cleanup() -> None:
 
 async def _maintenance() -> None:
     await _prepare_odm()
-    await call_resource_precompute_hooks()
     await create_indices_task()
+    await call_resource_precompute_hooks()
     await cleanup_task()
 
 
@@ -128,7 +128,7 @@ def migrate(yes: bool):
     "--quiet",
     "-q",
     is_flag=True,
-    help="Don't output anything (only effective if --to-file flag is not set)",
+    help="Don't output anything (only effective if --to-file is also set)",
 )
 def schema(
     to_file: bool,
