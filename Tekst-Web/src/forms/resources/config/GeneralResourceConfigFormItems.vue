@@ -74,10 +74,13 @@ const cCMarks = {
 };
 
 function renderFontLabel(option: SelectOption) {
+  const fontIsValid = !!option.value && !!state.pf?.state.fonts?.includes(option.value as string);
   return h(
     'div',
     {
-      style: `font-family: '${option.value}', 'Tekst Content Font', serif;`,
+      style: {fontFamily: [option.value, 'var(--font-family-content)'].filter((f) => !!f).join(', '),
+      color: !fontIsValid ? 'var(--error-color)' : undefined,
+      textDecoration: !fontIsValid ? 'line-through' : undefined,}
     },
     option.label as string
   );

@@ -77,10 +77,15 @@ const fontOptions = computed(() =>
 );
 
 function renderFontLabel(option: SelectOption) {
+  const fontIsValid = !!option.value && !!formModel.value.fonts?.includes(option.value as string);
   return h(
     'div',
     {
-      style: { fontFamily: [option.value, 'var(--font-family-ui)'].filter((f) => !!f).join(', ') },
+      style: {
+        fontFamily: [option.value, 'var(--font-family-ui)'].filter((f) => !!f).join(', '),
+        color: !fontIsValid ? 'var(--error-color)' : undefined,
+        textDecoration: !fontIsValid ? 'line-through' : undefined,
+      },
     },
     option.label as string
   );
@@ -450,7 +455,6 @@ watch(
               :options="fontOptions"
               :placeholder="$t('common.default')"
               :render-label="renderFontLabel"
-              :disabled="!formModel.fonts?.length"
             />
           </n-form-item>
 
@@ -462,7 +466,6 @@ watch(
               :options="fontOptions"
               :placeholder="$t('common.default')"
               :render-label="renderFontLabel"
-              :disabled="!formModel.fonts?.length"
             />
           </n-form-item>
 
