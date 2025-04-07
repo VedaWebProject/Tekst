@@ -3,7 +3,7 @@
 @font-face {
   font-family: 'Tekst UI Font';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 600;
   font-display: swap;
   ascent-override: 95%;
   src: url('fonts/Noto-Sans/Noto-Sans-300.eot'); /* IE9 */
@@ -17,7 +17,7 @@
 @font-face {
   font-family: 'Tekst UI Font';
   font-style: italic;
-  font-weight: 400;
+  font-weight: 100 600;
   font-display: swap;
   ascent-override: 95%;
   src: url('fonts/Noto-Sans/Noto-Sans-300italic.eot'); /* IE9 */
@@ -31,7 +31,7 @@
 @font-face {
   font-family: 'Tekst UI Font';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700 900;
   font-display: swap;
   ascent-override: 95%;
   src: url('fonts/Noto-Sans/Noto-Sans-500.eot'); /* IE9 */
@@ -48,7 +48,7 @@
 @font-face {
   font-family: 'Tekst Content Font';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 600;
   font-display: swap;
   src: url('fonts/Noto-Serif/Noto-Serif-Regular.eot'); /* IE9 */
   src:
@@ -62,7 +62,7 @@
 @font-face {
   font-family: 'Tekst Content Font';
   font-style: italic;
-  font-weight: 400;
+  font-weight: 100 600;
   font-display: swap;
   src: url('fonts/Noto-Serif/Noto-Serif-Italic.eot'); /* IE9 */
   src:
@@ -76,7 +76,7 @@
 @font-face {
   font-family: 'Tekst Content Font';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700 900;
   font-display: swap;
   src: url('fonts/Noto-Serif/Noto-Serif-500.eot'); /* IE9 */
   src:

@@ -9,7 +9,7 @@ import { computed, watchEffect } from 'vue';
 const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   common: {
     fontFamily: 'var(--font-family-ui)',
-    fontWeight: 'var(--font-weight-normal)',
+    fontWeight: 'normal',
     fontSize: 'var(--font-size)',
     fontSizeMini: 'var(--font-size-mini)',
     fontSizeTiny: 'var(--font-size-tiny)',
@@ -23,14 +23,14 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
     feedbackHeightSmall: '18px',
     feedbackHeightMedium: '18px',
     feedbackHeightLarge: '20px',
-    labelFontWeight: 'var(--font-weight-bold)',
+    labelFontWeight: 'bold',
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
     color: '#cc3d39',
   },
   Thing: {
-    titleFontWeight: 'var(--font-weight-normal)',
+    titleFontWeight: 'normal',
     fontSize: 'var(--font-size)',
   },
   Tabs: {

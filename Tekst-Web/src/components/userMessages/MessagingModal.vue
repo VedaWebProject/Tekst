@@ -196,7 +196,7 @@ whenever(ctrlEnter, () => {
 
 #messaging-modal .message-bubble q::before {
   content: '\00BB';
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
   font-size: var(--font-size-huge);
   margin-right: var(--gap-sm);
   color: var(--accent-color);

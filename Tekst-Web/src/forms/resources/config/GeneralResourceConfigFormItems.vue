@@ -78,9 +78,11 @@ function renderFontLabel(option: SelectOption) {
   return h(
     'div',
     {
-      style: {fontFamily: [option.value, 'var(--font-family-content)'].filter((f) => !!f).join(', '),
-      color: !fontIsValid ? 'var(--error-color)' : undefined,
-      textDecoration: !fontIsValid ? 'line-through' : undefined,}
+      style: {
+        fontFamily: [option.value, 'var(--font-family-content)'].filter((f) => !!f).join(', '),
+        color: !fontIsValid ? 'var(--error-color)' : undefined,
+        textDecoration: !fontIsValid ? 'line-through' : undefined,
+      },
     },
     option.label as string
   );

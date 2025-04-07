@@ -127,7 +127,7 @@ onMounted(async () => {
             <template #default="{ item }">
               <n-thing>
                 <template #header>
-                  <span style="font-weight: var(--font-weight-normal)">
+                  <span class="n">
                     {{ item.title }}
                   </span>
                 </template>

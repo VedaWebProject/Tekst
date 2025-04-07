@@ -253,7 +253,7 @@ async function handleModalSubmit() {
   min-width: 28px;
   align-self: stretch;
   color: var(--accent-color);
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
   border-right: 2px solid var(--accent-color);
 }
 

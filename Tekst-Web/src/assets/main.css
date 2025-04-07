@@ -67,13 +67,13 @@ p {
 }
 
 .n {
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
 }
 
 b,
 strong,
 .b {
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
 }
 
 em,
@@ -83,35 +83,35 @@ em,
 
 h1 {
   font-size: var(--font-size-gigantic);
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
   margin-top: 1.2rem;
   margin-bottom: 1.25rem;
 }
 
 h2 {
   font-size: var(--font-size-huge);
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
   margin-top: 1.1rem;
   margin-bottom: 1rem;
 }
 
 h3 {
   font-size: var(--font-size-large);
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
   margin-top: 1rem;
   margin-bottom: 0.9rem;
 }
 
 h4 {
   font-size: var(--font-size-normal);
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
   margin-top: 0.9rem;
   margin-bottom: 0.8rem;
 }
 
 h5 {
   font-size: var(--font-size-medium);
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
   margin-top: 0.8rem;
   margin-bottom: 0.5rem;
 }
@@ -156,7 +156,7 @@ code {
   padding: 0 3px;
   border-radius: var(--border-radius);
   background-color: #8883;
-  font-weight: var(--font-weight-normal);
+  font-weight: normal;
   font-family: monospace;
   font-size: 0.86em !important;
 }
@@ -392,8 +392,7 @@ table td {
   margin-bottom: 0;
 }
 
-
 .n-dynamic-input .n-dynamic-input-item .n-form-item-label > .n-form-item-label__text {
-  font-size: .95em;
+  font-size: 0.95em;
   font-style: italic;
 }

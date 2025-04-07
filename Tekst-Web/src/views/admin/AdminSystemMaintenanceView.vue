@@ -399,7 +399,7 @@ onBeforeMount(() => {
 
 .max-fields-warn-near {
   color: var(--warning-color);
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
 }
 
 .max-fields-warn-near::after {
@@ -408,7 +408,7 @@ onBeforeMount(() => {
 
 .max-fields-warn-over {
   color: var(--error-color);
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
 }
 
 .max-fields-warn-over::after {
@@ -417,7 +417,7 @@ onBeforeMount(() => {
 
 .index-ood {
   color: var(--error-color);
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
 }
 
 .index-ood::after {

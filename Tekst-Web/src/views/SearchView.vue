@@ -336,7 +336,7 @@ whenever(ctrlEnter, () => {
   .n-base-select-option.n-base-select-option--selected
   .n-base-select-option__check {
   color: unset;
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
 }
 
 .search-resource-select-menu .n-base-select-option .n-base-select-option__content {
