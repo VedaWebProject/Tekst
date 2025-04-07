@@ -80,7 +80,7 @@ const metadataKeysOptions = computed(() =>
       :min="0"
       :max="64"
       :create-button-props="dynInputCreateBtnProps"
-      @create="() => ({ key: '', value: '' })"
+      @create="() => ({ key: undefined, value: undefined })"
     >
       <template #default="{ index, value: metaEntryValue }">
         <n-flex align="flex-start" wrap style="flex: 2">
@@ -97,6 +97,7 @@ const metadataKeysOptions = computed(() =>
               filterable
               tag
               clearable
+              :placeholder="$t('common.key')"
               :options="metadataKeysOptions"
             />
           </n-form-item>
@@ -110,7 +111,7 @@ const metadataKeysOptions = computed(() =>
           >
             <n-input
               v-model:value="metaEntryValue.value"
-              :placeholder="$t('common.key')"
+              :placeholder="$t('common.value')"
               @keydown.enter.prevent
             />
           </n-form-item>
