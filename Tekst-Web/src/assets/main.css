@@ -387,3 +387,13 @@ table td {
 .n-list-item__main {
   min-width: 0;
 }
+
+.n-dynamic-input .n-dynamic-input-item {
+  margin-bottom: 0;
+}
+
+
+.n-dynamic-input .n-dynamic-input-item .n-form-item-label > .n-form-item-label__text {
+  font-size: .95em;
+  font-style: italic;
+}
