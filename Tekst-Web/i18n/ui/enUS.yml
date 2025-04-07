@@ -454,7 +454,7 @@ resources:
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced search
         rtl: Right-to-left content text direction
-        collapsibleContents: Collapsible contents if higher than...
+        collapsibleContents: Collapsible contents if height greater than...
         font: Content Font
       searchReplacements:
         heading: Search Query Replacements

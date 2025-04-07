@@ -465,7 +465,7 @@ resources:
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
         rtl: Rechts-nach-links Textrichtung für Inhalte
-        collapsibleContents: Ein-/Ausklappbare Inhalte wenn höher als...
+        collapsibleContents: Ein-/Ausklappbare Inhalte wenn Höhe größer als...
         font: Schriftart für Inhalte
       searchReplacements:
         heading: Ersetzungen in Suchanfragen
