@@ -5,6 +5,8 @@ import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type FormItemRule } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -24,6 +26,8 @@ const props = defineProps<{
   itemGroupingRequired?: boolean;
 }>();
 
+const state = useStateStore();
+
 const groups = defineModel<ItemGroup[]>('groups', { required: true });
 const displayProps = defineModel<ItemDisplayProps[]>('displayProps', { required: true });
 
@@ -31,7 +35,10 @@ const itemNameOptions = computed(() =>
   props.existingItemNames?.map((n) => ({ label: n, value: n }))
 );
 const itemGroupOptions = computed(() =>
-  groups.value.map((g) => ({ label: g.name, value: g.name }))
+  groups.value.map((g) => ({
+    label: `${g.name} (${pickTranslation(g.translations, state.locale)})`,
+    value: g.name,
+  }))
 );
 </script>
 
@@ -64,7 +71,7 @@ const itemGroupOptions = computed(() =>
             ignore-path-change
             secondary
             :parent-form-path-prefix="`${groupsModelPath}[${index}].translations`"
-            style="flex: 2 100%"
+            style="flex: 2 300px"
             :main-form-label="$t('common.translation')"
             :translation-form-label="$t('common.translation', 2)"
             :translation-form-rules="commonResourceConfigFormRules.itemsDisplayTranslation"
