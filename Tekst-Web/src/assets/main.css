@@ -264,7 +264,7 @@ table td {
 }
 
 .p {
-  padding: 1rem;
+  padding: var(--gap-md) var(--gap-lg) var(--gap-md) var(--gap-lg) ;
 }
 
 .p-0 {

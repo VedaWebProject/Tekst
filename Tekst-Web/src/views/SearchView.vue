@@ -252,7 +252,8 @@ whenever(ctrlEnter, () => {
             </n-flex>
             <n-button
               v-if="formModel.queries.length > 1"
-              secondary
+              quaternary
+              circle
               :title="$t('common.remove')"
               :focusable="false"
               class="action-button-remove"
