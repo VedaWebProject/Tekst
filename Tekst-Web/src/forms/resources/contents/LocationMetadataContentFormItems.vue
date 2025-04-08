@@ -67,10 +67,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-form-item
-    :label="$t('resources.types.locationMetadata.contentFields.entries')"
-    :show-feedback="false"
-  >
+  <n-form-item :show-label="false" :show-feedback="false">
     <n-dynamic-input
       v-model:value="model.entries"
       :create-button-props="dynInputCreateBtnProps"
@@ -80,7 +77,7 @@ onMounted(async () => {
         <n-flex align="flex-start" :wrap="false" style="flex: 2">
           <n-form-item
             style="flex: 2 100px"
-            :show-label="false"
+            :label="$t('common.key')"
             :path="`entries[${index}].key`"
             :rule="contentFormRules.locationMetadata.key"
             ignore-path-change
@@ -97,7 +94,7 @@ onMounted(async () => {
           </n-form-item>
           <n-form-item
             style="flex: 2 100px"
-            :show-label="false"
+            :label="$t('common.value')"
             :path="`entries[${index}].value`"
             :rule="contentFormRules.locationMetadata.value"
             ignore-path-change
@@ -119,6 +116,7 @@ onMounted(async () => {
       </template>
       <template #action="{ index, create, remove }">
         <dynamic-input-controls
+          top-offset
           secondary
           :movable="false"
           :insert-disabled="model.entries.length >= 128"

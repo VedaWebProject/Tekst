@@ -31,7 +31,7 @@ async function checkUrlInput(input: HTMLInputElement) {
 
 <template>
   <!-- FILES -->
-  <n-form-item :label="$t('resources.types.images.contentFields.files')" path="files">
+  <n-form-item :show-label="false" path="files">
     <n-dynamic-input
       v-model:value="model.files"
       :min="1"
@@ -45,7 +45,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             <!-- URL -->
             <n-form-item
               ignore-path-change
-              :label="$t('common.url')"
+              :label="$t('resources.types.images.contentFields.imageUrl')"
               :path="`files[${index}].url`"
               :rule="contentFormRules.images.url"
             >
@@ -65,7 +65,7 @@ async function checkUrlInput(input: HTMLInputElement) {
             >
               <n-input
                 v-model:value="model.files[index].thumbUrl"
-                :placeholder="$t('resources.types.images.contentFields.thumbUrl')"
+                :placeholder="$t('common.url')"
                 @input-blur="checkUrlInput($event.target as HTMLInputElement)"
                 @keydown.enter.prevent
               />

@@ -543,20 +543,19 @@ resources:
       label: Audio
       parenthesis: Audiowiedergabe
       contentFields:
-        files: Audio-Dateien
+        audioUrl: Audiodatei-URL
         sourceUrl: URL der Quellen-Website
     images:
       label: Bilder
       parenthesis: Bildergalerie
       contentFields:
-        files: Bild-Dateien
+        imageUrl: Bild-URL
         thumbUrl: Miniatur-URL
         sourceUrl: URL der Quellen-Website
     externalReferences:
       label: Externe Referenzen
       parenthesis: Links zu externen Ressourcen
       contentFields:
-        links: Links
         title: Titel / Text
       searchFields:
         text: Titel / Beschreibung

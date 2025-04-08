@@ -532,20 +532,19 @@ resources:
       label: Audio
       parenthesis: audio playback
       contentFields:
-        files: Audio Files
+        audioUrl: Audio File URL
         sourceUrl: URL of source website
     images:
       label: Images
       parenthesis: image gallery
       contentFields:
-        files: Image Files
+        imageUrl: Image URL
         thumbUrl: Thumbnail URL
         sourceUrl: URL of source website
     externalReferences:
       label: External References
       parenthesis: links to external resources
       contentFields:
-        links: Links
         title: Title / Text
       searchFields:
         text: Title / Description

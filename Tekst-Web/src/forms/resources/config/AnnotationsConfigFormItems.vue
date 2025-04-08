@@ -21,7 +21,7 @@ const model = defineModel<components['schemas']['AnnotationsConfig']>({
   />
 
   <!-- ANNOTATION DISPLAY GROUPS -->
-  <n-form-item>
+  <n-form-item class="parent-form-item">
     <template #label>
       <n-flex align="center">
         {{ $t('resources.settings.config.annotations.annotationGroup', 2) }}
@@ -56,8 +56,8 @@ const model = defineModel<components['schemas']['AnnotationsConfig']>({
             secondary
             :parent-form-path-prefix="`config.special.annotations.groups[${index}].translations`"
             style="flex: 2"
-            :main-form-label="$t('resources.settings.config.annotations.annotationGroup', 1)"
-            :translation-form-label="$t('resources.settings.config.annotations.annotationGroup', 1)"
+            :main-form-label="$t('common.label')"
+            :translation-form-label="$t('common.translation')"
             :translation-form-rules="
               typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupTranslation
             "

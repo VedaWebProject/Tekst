@@ -20,7 +20,7 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
   <form-section-heading :label="$t('resources.settings.config.transformation.heading')" />
 
   <!-- TRANSFORM FN JS DEPENDENCIES -->
-  <n-form-item>
+  <n-form-item class="parent-form-item">
     <template #label>
       <n-flex align="center">
         {{ $t('resources.settings.config.transformation.deps') }}
@@ -38,7 +38,7 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
       <template #default="{ index }">
         <n-form-item
           ignore-path-change
-          :show-label="false"
+          :label="$t('common.url')"
           :path="`config.special.transform.deps[${index}]`"
           :rule="typeSpecificResourceConfigFormRules.apiCall.dep"
           style="flex: 2"
@@ -52,6 +52,7 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
       </template>
       <template #action="{ index, create, remove }">
         <dynamic-input-controls
+          top-offset
           :movable="false"
           :insert-disabled="(model.deps.length || 0) >= 32"
           @remove="() => remove(index)"

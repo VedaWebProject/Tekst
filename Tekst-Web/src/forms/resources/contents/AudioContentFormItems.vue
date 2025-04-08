@@ -31,7 +31,7 @@ async function checkUrlInput(input: HTMLInputElement) {
 
 <template>
   <!-- FILES -->
-  <n-form-item :label="$t('resources.types.audio.contentFields.files')" path="files">
+  <n-form-item :show-label="false" path="files">
     <n-dynamic-input
       v-model:value="model.files"
       :min="1"
@@ -44,7 +44,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           <!-- URL -->
           <n-form-item
             ignore-path-change
-            :label="$t('common.url')"
+            :label="$t('resources.types.audio.contentFields.audioUrl')"
             :path="`files[${index}].url`"
             :rule="contentFormRules.audio.url"
             style="flex: 2"
@@ -66,7 +66,7 @@ async function checkUrlInput(input: HTMLInputElement) {
           >
             <n-input
               v-model:value="model.files[index].sourceUrl"
-              :placeholder="$t('resources.types.audio.contentFields.sourceUrl')"
+              :placeholder="$t('common.url')"
               @keydown.enter.prevent
             />
           </n-form-item>

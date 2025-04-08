@@ -18,7 +18,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
 
 <template>
   <!-- LINKS -->
-  <n-form-item :label="$t('resources.types.externalReferences.contentFields.links')" path="links">
+  <n-form-item :show-label="false" path="links">
     <n-dynamic-input
       v-model:value="model.links"
       :min="1"

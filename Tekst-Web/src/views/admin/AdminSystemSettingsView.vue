@@ -394,7 +394,7 @@ watch(
           </n-form-item>
         </n-tab-pane>
 
-        <!-- STYLING -->
+        <!-- APPEARANCE -->
         <n-tab-pane :tab="$t('admin.platformSettings.headingAppearance')" name="appearance">
           <!-- FONTS -->
           <form-section-heading
@@ -403,7 +403,11 @@ watch(
           />
 
           <!-- custom fonts -->
-          <n-form-item v-if="formModel.fonts" :label="$t('models.platformSettings.fonts')">
+          <n-form-item
+            v-if="formModel.fonts"
+            :label="$t('models.platformSettings.fonts')"
+            class="parent-form-item"
+          >
             <n-dynamic-input
               v-model:value="formModel.fonts"
               show-sort-button
