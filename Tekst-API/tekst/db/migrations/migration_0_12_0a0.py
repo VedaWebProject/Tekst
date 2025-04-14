@@ -83,13 +83,13 @@ async def migration(db: Database) -> None:
             groups = []
 
         # delete "config.special.annotations.groups"
-        db.resources.update_one(
+        await db.resources.update_one(
             {"_id": res["_id"]},
             {"$unset": {"config.special.annotations.groups": ""}},
         )
 
         # if groups field actually held data, transform it
-        db.resources.update_one(
+        await db.resources.update_one(
             {"_id": res["_id"]},
             {
                 "$set": {
@@ -111,7 +111,7 @@ async def migration(db: Database) -> None:
         aggs = aggs.get("data", []) if aggs else []
 
         # generate dummy item_props from aggregations
-        db.resources.update_one(
+        await db.resources.update_one(
             {"_id": res["_id"]},
             {
                 "$set": {
