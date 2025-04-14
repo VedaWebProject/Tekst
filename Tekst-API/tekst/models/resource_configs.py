@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from pydantic import Field
-from typing_extensions import TypeAliasType, TypedDict
+from typing_extensions import TypeAliasType
 
 from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
@@ -92,64 +92,85 @@ class ItemsDisplayTranslation(TranslationBase):
     ]
 
 
-_ItemName = ConStr(
-    max_length=32,
-    cleanup="oneline",
-)
-ItemName = TypeAliasType(
-    "ItemName",
+ItemKey = TypeAliasType(
+    "ItemKey",
     Annotated[
-        _ItemName,
-        Field(description="Name of an item"),
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
+        Field(description="Key of an item"),
     ],
 )
-ItemGroupName = TypeAliasType(
-    "ItemGroupName",
+
+ItemGroupKey = TypeAliasType(
+    "ItemGroupKey",
     Annotated[
-        _ItemName,
-        Field(description="Name of an item group"),
+        ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
+        Field(description="Key of an item group"),
     ],
 )
 
 
-class ItemGroup(TypedDict):
-    name: ItemGroupName
+class ItemGroup(ModelBase):
+    key: ItemGroupKey
     translations: Annotated[
         Translations[ItemsDisplayTranslation],
         Field(description="Translations for the name of the item group"),
     ]
 
 
-class ItemDisplayProps(TypedDict):
-    name: ItemName
+class ItemProps(ModelBase):
+    key: ItemKey
     translations: Annotated[
         Translations[ItemsDisplayTranslation],
         Field(description="Translations for the name of the item"),
     ]
-    group: ItemGroupName | None = None
+    group: ItemGroupKey | None = None
 
-    @classmethod
-    def sort_items_keys(
-        cls,
-        item_keys: list[ItemName],
-        *,
-        item_groups: list[ItemGroup] = [],
-        item_display_props: list["ItemDisplayProps"] = [],
-    ) -> list[ItemName]:
+
+class ItemIntegrationConfig(ModelBase):
+    """Config for item ordering, grouping and translation"""
+
+    groups: Annotated[
+        list[ItemGroup],
+        Field(
+            description="Item groups",
+            max_length=64,
+        ),
+    ] = []
+    item_props: Annotated[
+        list[ItemProps],
+        Field(
+            description="Item properties",
+            max_length=128,
+        ),
+    ] = []
+
+    def sorted_item_keys(
+        self,
+        item_keys: list[ItemKey] | None = None,
+    ) -> list[ItemKey]:
+        if item_keys is None:
+            item_keys = [props.key for props in self.item_props]
         # get order of metadata groups from config
-        groups_order = [g.get("name") for g in item_groups]
-        # get general order of metadata keys from config
-        keys_order = [dp.get("name") for dp in item_display_props]
+        groups_order = [g.key for g in self.groups]
         # sort keys based on groups order, then general keys order
         keys_order = sorted(
-            keys_order,
+            self.item_props,
             key=lambda k: (
-                groups_order.index(k) if k in groups_order else len(groups_order),
-                keys_order.index(k),
+                groups_order.index(k.group)
+                if k.group in groups_order
+                else len(groups_order),
+                self.item_props.index(k),
             ),
         )
+        keys_order = [k.key for k in keys_order]
         # create final sorted list of metadata keys, including keys
-        # that are not present in the item_display_props
+        # that are not present in the item_props
         return sorted(
             item_keys,
             key=lambda k: (
@@ -157,20 +178,3 @@ class ItemDisplayProps(TypedDict):
                 k,  # alphabetical secondary sorting
             ),
         )
-
-
-class ItemDisplayConfig(ModelBase):
-    groups: Annotated[
-        list[ItemGroup],
-        Field(
-            description="Item display groups",
-            max_length=64,
-        ),
-    ] = []
-    display_props: Annotated[
-        list[ItemDisplayProps],
-        Field(
-            description="Item display properties",
-            max_length=128,
-        ),
-    ] = []

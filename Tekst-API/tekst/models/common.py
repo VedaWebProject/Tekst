@@ -1,8 +1,6 @@
 from collections.abc import Iterable
-from datetime import datetime
 from types import UnionType
 from typing import (
-    Annotated,
     Any,
     Literal,
     Union,
@@ -10,16 +8,12 @@ from typing import (
     get_origin,
 )  # noqa: UP035
 
-from beanie import (
-    Document,
-    PydanticObjectId,
-)
+from beanie import Document, PydanticObjectId
 from beanie.odm.utils.encoder import Encoder
 from humps import camelize, decamelize
 from pydantic import (
     BaseModel,
     ConfigDict,
-    Field,
     TypeAdapter,
     ValidationError,
     create_model,
@@ -28,7 +22,6 @@ from pydantic.aliases import PydanticUndefined
 from pydantic.fields import FieldInfo
 
 from tekst.types import (
-    ConStr,
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
     SchemaOptionalNullable,
@@ -299,47 +292,3 @@ class ModelFactoryMixin:
             return True
         except ValidationError:
             return False
-
-
-# PRECOMPUTED DATA
-
-
-class PrecomputedDataDocument(ModelBase, DocumentBase):
-    """Base model for precomputed data"""
-
-    class Settings(DocumentBase.Settings):
-        name = "precomputed"
-        indexes = [
-            "precomputed_type",
-            "ref_id",
-        ]
-
-    ref_id: Annotated[
-        PydanticObjectId,
-        Field(
-            description="ID of the resource this precomputed data refers to",
-        ),
-    ]
-
-    precomputed_type: Annotated[
-        ConStr(
-            max_length=64,
-        ),
-        Field(
-            description="String identifying the type of precomputed data",
-        ),
-    ]
-
-    created_at: Annotated[
-        datetime,
-        Field(
-            description="The time this data was created",
-        ),
-    ] = datetime.utcfromtimestamp(86400)
-
-    data: Annotated[
-        Any | None,
-        Field(
-            description="The precomputed data",
-        ),
-    ] = None

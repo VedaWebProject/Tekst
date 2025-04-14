@@ -531,30 +531,50 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "comment": null,
-    "notes": null,
     "tokens": [
       {
         "token": "Fuchs",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["5"] }
+        ],
         "lb": false
       },
       {
         "token": "du",
         "annotations": [
-          { "key": "Entity", "value": ["Fox"] },
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["2"] },
           { "key": "comment", "value": ["This is a comment."] }
         ],
         "lb": false
       },
-      { "token": "hast", "annotations": [], "lb": false },
-      { "token": "die", "annotations": [], "lb": false },
       {
-        "token": "Gans",
-        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
+        "token": "hast",
+        "annotations": [{ "key": "len", "value": ["4"] }],
         "lb": false
       },
-      { "token": "gestohlen", "annotations": [], "lb": false }
+      {
+        "token": "die",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "Gans",
+        "annotations": [
+          { "key": "ne", "value": ["Goose"] },
+          { "key": "ne_deu", "value": ["Gans"] },
+          { "key": "len", "value": ["4"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "gestohlen",
+        "annotations": [{ "key": "len", "value": ["9"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -563,17 +583,31 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "gib", "annotations": [], "lb": false },
       {
-        "token": "sie",
-        "annotations": [{ "key": "Entity", "value": ["Goose"] }],
+        "token": "gib",
+        "annotations": [{ "key": "len", "value": ["3"] }],
         "lb": false
       },
-      { "token": "wieder", "annotations": [], "lb": false },
-      { "token": "her", "annotations": [], "lb": false }
+      {
+        "token": "sie",
+        "annotations": [
+          { "key": "ne", "value": ["Goose"] },
+          { "key": "ne_deu", "value": ["Gans"] },
+          { "key": "len", "value": ["3"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "wieder",
+        "annotations": [{ "key": "len", "value": ["6"] }],
+        "lb": false
+      },
+      {
+        "token": "her",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -582,23 +616,45 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "sonst", "annotations": [], "lb": false },
-      { "token": "wird", "annotations": [], "lb": false },
+      {
+        "token": "sonst",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      },
+      {
+        "token": "wird",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
       {
         "token": "dich",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["4"] }
+        ],
         "lb": false
       },
-      { "token": "der", "annotations": [], "lb": false },
+      {
+        "token": "der",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
       {
         "token": "Jäger",
-        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
+        "annotations": [
+          { "key": "ne", "value": ["Hunter"] },
+          { "key": "ne_deu", "value": ["Jäger"] },
+          { "key": "len", "value": ["5"] }
+        ],
         "lb": false
       },
-      { "token": "holen", "annotations": [], "lb": false }
+      {
+        "token": "holen",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -607,12 +663,22 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "mit", "annotations": [], "lb": false },
-      { "token": "dem", "annotations": [], "lb": false },
-      { "token": "Schießgewehr", "annotations": [], "lb": false }
+      {
+        "token": "mit",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "dem",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "Schießgewehr",
+        "annotations": [{ "key": "len", "value": ["12"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -621,17 +687,31 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-    "comment": null,
-    "notes": null,
     "tokens": [
       {
         "token": "Seine",
-        "annotations": [{ "key": "Entity", "value": ["Hunter"] }],
+        "annotations": [
+          { "key": "ne", "value": ["Hunter"] },
+          { "key": "ne_deu", "value": ["Jäger"] },
+          { "key": "len", "value": ["5"] }
+        ],
         "lb": false
       },
-      { "token": "große", "annotations": [], "lb": false },
-      { "token": "lange", "annotations": [], "lb": false },
-      { "token": "Flinte", "annotations": [], "lb": false }
+      {
+        "token": "große",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      },
+      {
+        "token": "lange",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      },
+      {
+        "token": "Flinte",
+        "annotations": [{ "key": "len", "value": ["6"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -640,18 +720,36 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "schießt", "annotations": [], "lb": false },
-      { "token": "auf", "annotations": [], "lb": false },
       {
-        "token": "dich",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "token": "schießt",
+        "annotations": [{ "key": "len", "value": ["7"] }],
         "lb": false
       },
-      { "token": "den", "annotations": [], "lb": false },
-      { "token": "Schrot", "annotations": [], "lb": false }
+      {
+        "token": "auf",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "dich",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["4"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "den",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "Schrot",
+        "annotations": [{ "key": "len", "value": ["6"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -660,19 +758,41 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "dass", "annotations": [], "lb": false },
       {
-        "token": "dich",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "token": "dass",
+        "annotations": [{ "key": "len", "value": ["4"] }],
         "lb": false
       },
-      { "token": "färbt", "annotations": [], "lb": false },
-      { "token": "die", "annotations": [], "lb": false },
-      { "token": "rote", "annotations": [], "lb": false },
-      { "token": "Tinte", "annotations": [], "lb": false }
+      {
+        "token": "dich",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["4"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "färbt",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      },
+      {
+        "token": "die",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "rote",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "Tinte",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -681,18 +801,36 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "und", "annotations": [], "lb": false },
-      { "token": "dann", "annotations": [], "lb": false },
-      { "token": "bist", "annotations": [], "lb": false },
       {
-        "token": "du",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "token": "und",
+        "annotations": [{ "key": "len", "value": ["3"] }],
         "lb": false
       },
-      { "token": "tot", "annotations": [], "lb": false }
+      {
+        "token": "dann",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "bist",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "du",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["2"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "tot",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -701,18 +839,40 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "Liebes", "annotations": [], "lb": false },
       {
-        "token": "Füchslein",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "token": "Liebes",
+        "annotations": [{ "key": "len", "value": ["6"] }],
         "lb": false
       },
-      { "token": "lass", "annotations": [], "lb": false },
-      { "token": "dir", "annotations": [], "lb": false },
-      { "token": "raten", "annotations": [], "lb": false }
+      {
+        "token": "Füchslein",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["9"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "lass",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "dir",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["3"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "raten",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -721,14 +881,32 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "sei", "annotations": [], "lb": false },
-      { "token": "doch", "annotations": [], "lb": false },
-      { "token": "nur", "annotations": [], "lb": false },
-      { "token": "kein", "annotations": [], "lb": false },
-      { "token": "Dieb", "annotations": [], "lb": false }
+      {
+        "token": "sei",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "doch",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "nur",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "kein",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "Dieb",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -737,18 +915,36 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "comment": null,
-    "notes": null,
     "tokens": [
-      { "token": "nimm", "annotations": [], "lb": false },
       {
-        "token": "du",
-        "annotations": [{ "key": "Entity", "value": ["Fox"] }],
+        "token": "nimm",
+        "annotations": [{ "key": "len", "value": ["4"] }],
         "lb": false
       },
-      { "token": "brauchst", "annotations": [], "lb": false },
-      { "token": "nicht", "annotations": [], "lb": false },
-      { "token": "Gänsebraten", "annotations": [], "lb": false }
+      {
+        "token": "du",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["2"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "brauchst",
+        "annotations": [{ "key": "len", "value": ["8"] }],
+        "lb": false
+      },
+      {
+        "token": "nicht",
+        "annotations": [{ "key": "len", "value": ["5"] }],
+        "lb": false
+      },
+      {
+        "token": "Gänsebraten",
+        "annotations": [{ "key": "len", "value": ["11"] }],
+        "lb": false
+      }
     ]
   },
   {
@@ -758,16 +954,31 @@
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
     "comment": "This is the only occurrence of the entity \"Mouse\"!",
-    "notes": null,
     "tokens": [
-      { "token": "mit", "annotations": [], "lb": false },
-      { "token": "der", "annotations": [], "lb": false },
       {
-        "token": "Maus",
-        "annotations": [{ "key": "Entity", "value": ["Mouse"] }],
+        "token": "mit",
+        "annotations": [{ "key": "len", "value": ["3"] }],
         "lb": false
       },
-      { "token": "vorlieb", "annotations": [], "lb": false }
+      {
+        "token": "der",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "Maus",
+        "annotations": [
+          { "key": "ne", "value": ["Mouse"] },
+          { "key": "ne_deu", "value": ["Maus"] },
+          { "key": "len", "value": ["4"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "vorlieb",
+        "annotations": [{ "key": "len", "value": ["7"] }],
+        "lb": false
+      }
     ]
   },
   {

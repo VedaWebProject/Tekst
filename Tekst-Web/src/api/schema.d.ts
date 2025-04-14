@@ -1270,36 +1270,8 @@ export interface components {
     };
     /** AdvancedSearchSettings */
     AdvancedSearchSettings: Record<string, never>;
-    /** AnnotationGroup */
-    AnnotationGroup: {
-      /**
-       * Key
-       * @description Key identifying this annotation group
-       */
-      key: string;
-      /**
-       * Translations
-       * @description Translation for the label of an annotation group
-       */
-      translations: components['schemas']['AnnotationGroupTranslation'][];
-    };
-    /** AnnotationGroupTranslation */
-    AnnotationGroupTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /**
-       * Translation
-       * @description Translation of an annotation group label
-       */
-      translation: string;
-    };
     /** AnnotationsConfig */
     AnnotationsConfig: {
-      /**
-       * Groups
-       * @description Display groups to use for grouping annotations
-       * @default []
-       */
-      groups: components['schemas']['AnnotationGroup'][];
       /**
        * Displaytemplate
        * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
@@ -1311,6 +1283,11 @@ export interface components {
        * @default /
        */
       multiValueDelimiter: string;
+      /** @default {
+       *       "groups": [],
+       *       "itemProps": []
+       *     } */
+      annoIntegration: components['schemas']['ItemIntegrationConfig'];
     };
     /** ApiCallConfig */
     ApiCallConfig: {
@@ -3472,42 +3449,45 @@ export interface components {
       /** Uptodate */
       upToDate: boolean;
     };
-    /** ItemDisplayConfig */
-    ItemDisplayConfig: {
-      /**
-       * Groups
-       * @description Item display groups
-       * @default []
-       */
-      groups: components['schemas']['ItemGroup'][];
-      /**
-       * Displayprops
-       * @description Item display properties
-       * @default []
-       */
-      displayProps: components['schemas']['ItemDisplayProps'][];
-    };
-    /** ItemDisplayProps */
-    ItemDisplayProps: {
-      name: components['schemas']['ItemName'];
-      /**
-       * Translations
-       * @description Translations for the name of the item
-       */
-      translations: components['schemas']['ItemsDisplayTranslation'][];
-      group: components['schemas']['ItemGroupName'] | null;
-    };
     /** ItemGroup */
     ItemGroup: {
-      name: components['schemas']['ItemGroupName'];
+      key: components['schemas']['ItemGroupKey'];
       /**
        * Translations
        * @description Translations for the name of the item group
        */
       translations: components['schemas']['ItemsDisplayTranslation'][];
     };
-    ItemGroupName: string;
-    ItemName: string;
+    ItemGroupKey: string;
+    /**
+     * ItemIntegrationConfig
+     * @description Config for item ordering, grouping and translation
+     */
+    ItemIntegrationConfig: {
+      /**
+       * Groups
+       * @description Item groups
+       * @default []
+       */
+      groups: components['schemas']['ItemGroup'][];
+      /**
+       * Itemprops
+       * @description Item properties
+       * @default []
+       */
+      itemProps: components['schemas']['ItemProps'][];
+    };
+    ItemKey: string;
+    /** ItemProps */
+    ItemProps: {
+      key: components['schemas']['ItemKey'];
+      /**
+       * Translations
+       * @description Translations for the name of the item
+       */
+      translations: components['schemas']['ItemsDisplayTranslation'][];
+      group?: components['schemas']['ItemGroupKey'] | null;
+    };
     /** ItemsDisplayTranslation */
     ItemsDisplayTranslation: {
       locale: components['schemas']['TranslationLocaleKey'];
@@ -3815,9 +3795,9 @@ export interface components {
        *     } */
       general: components['schemas']['LocationMetadataModGeneralConfig'];
       /** @default {
-       *       "itemDisplay": {
-       *         "displayProps": [],
-       *         "groups": []
+       *       "entriesIntegration": {
+       *         "groups": [],
+       *         "itemProps": []
        *       }
        *     } */
       special: components['schemas']['LocationMetadataSpecialConfig'];
@@ -3883,9 +3863,9 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
-       *         "itemDisplay": {
-       *           "displayProps": [],
-       *           "groups": []
+       *         "entriesIntegration": {
+       *           "groups": [],
+       *           "itemProps": []
        *         }
        *       }
        *     } */
@@ -4003,9 +3983,9 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
-       *         "itemDisplay": {
-       *           "displayProps": [],
-       *           "groups": []
+       *         "entriesIntegration": {
+       *           "groups": [],
+       *           "itemProps": []
        *         }
        *       }
        *     } */
@@ -4087,9 +4067,9 @@ export interface components {
     LocationMetadataSpecialConfig: {
       /** @default {
        *       "groups": [],
-       *       "displayProps": []
+       *       "itemProps": []
        *     } */
-      itemDisplay: components['schemas']['ItemDisplayConfig'];
+      entriesIntegration: components['schemas']['ItemIntegrationConfig'];
     };
     /** LocationRead */
     LocationRead: {
@@ -5868,7 +5848,10 @@ export interface components {
       general: components['schemas']['GeneralResourceConfig'];
       /** @default {
        *       "annotations": {
-       *         "groups": [],
+       *         "annoIntegration": {
+       *           "groups": [],
+       *           "itemProps": []
+       *         },
        *         "multiValueDelimiter": "/"
        *       }
        *     } */
@@ -5936,7 +5919,10 @@ export interface components {
        *       },
        *       "special": {
        *         "annotations": {
-       *           "groups": [],
+       *           "annoIntegration": {
+       *             "groups": [],
+       *             "itemProps": []
+       *           },
        *           "multiValueDelimiter": "/"
        *         }
        *       }
@@ -6056,7 +6042,10 @@ export interface components {
        *       },
        *       "special": {
        *         "annotations": {
-       *           "groups": [],
+       *           "annoIntegration": {
+       *             "groups": [],
+       *             "itemProps": []
+       *           },
        *           "multiValueDelimiter": "/"
        *         }
        *       }
@@ -6150,8 +6139,11 @@ export interface components {
     /** TextAnnotationSpecialConfig */
     TextAnnotationSpecialConfig: {
       /** @default {
-       *       "groups": [],
-       *       "multiValueDelimiter": "/"
+       *       "multiValueDelimiter": "/",
+       *       "annoIntegration": {
+       *         "groups": [],
+       *         "itemProps": []
+       *       }
        *     } */
       annotations: components['schemas']['AnnotationsConfig'];
     };

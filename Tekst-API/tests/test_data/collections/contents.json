@@ -78,6 +78,7 @@
       {
         "token": "Foo",
         "annotations": [
+          { "key": "vowels", "value": ["two"] },
           { "key": "type", "value": ["Token"] },
           { "key": "comment", "value": ["This is a comment!"] }
         ],
@@ -95,7 +96,10 @@
     "tokens": [
       {
         "token": "Bar",
-        "annotations": [{ "key": "type", "value": ["Token"] }],
+        "annotations": [
+          { "key": "type", "value": ["Token"] },
+          { "key": "vowels", "value": ["one"] }
+        ],
         "lb": false
       }
     ]
@@ -109,7 +113,10 @@
     "tokens": [
       {
         "token": "Baz",
-        "annotations": [{ "key": "type", "value": ["Token"] }],
+        "annotations": [
+          { "key": "type", "value": ["Token"] },
+          { "key": "vowels", "value": ["one"] }
+        ],
         "lb": false
       }
     ]
@@ -123,7 +130,10 @@
     "tokens": [
       {
         "token": "Qux",
-        "annotations": [{ "key": "type", "value": ["Token"] }],
+        "annotations": [
+          { "key": "type", "value": ["Token"] },
+          { "key": "vowels", "value": ["one"] }
+        ],
         "lb": false
       }
     ]

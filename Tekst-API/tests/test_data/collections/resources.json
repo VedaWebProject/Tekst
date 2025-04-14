@@ -106,8 +106,35 @@
       },
       "special": {
         "annotations": {
-          "groups": [],
-          "multi_value_delimiter": "/"
+          "multi_value_delimiter": "/",
+          "anno_integration": {
+            "groups": [
+              {
+                "key": "foo",
+                "translations": [
+                  { "locale": "enUS", "translation": "Foo" },
+                  { "locale": "deDE", "translation": "Föö" }
+                ]
+              }
+            ],
+            "item_props": [
+              {
+                "key": "type",
+                "translations": [
+                  { "locale": "enUS", "translation": "Typ" },
+                  { "locale": "deDE", "translation": "Typ" }
+                ],
+                "group": "foo"
+              },
+              {
+                "key": "vowels",
+                "translations": [
+                  { "locale": "enUS", "translation": "Vowels Count" },
+                  { "locale": "deDE", "translation": "Anzahl Vokale" }
+                ]
+              }
+            ]
+          }
         }
       }
     },
@@ -257,19 +284,19 @@
         "rtl": false
       },
       "special": {
-        "item_display": {
+        "entries_integration": {
           "groups": [
             {
-              "name": "word",
+              "key": "word",
               "translations": [
                 { "locale": "enUS", "translation": "Word Group" },
                 { "locale": "deDE", "translation": "Wort-Gruppe" }
               ]
             }
           ],
-          "display_props": [
+          "item_props": [
             {
-              "name": "word",
+              "key": "word",
               "translations": [
                 { "locale": "enUS", "translation": "Word" },
                 { "locale": "deDE", "translation": "Wort" }

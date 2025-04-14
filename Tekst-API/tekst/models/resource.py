@@ -18,9 +18,9 @@ from tekst.models.common import (
     ExcludeFromModelVariants,
     ModelBase,
     ModelFactoryMixin,
-    PrecomputedDataDocument,
 )
 from tekst.models.location import LocationDocument
+from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic

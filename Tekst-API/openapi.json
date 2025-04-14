@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.11.1a0"
+    "version": "0.12.0a0"
   },
   "servers": [
     {
@@ -7429,64 +7429,8 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
-      "AnnotationGroup": {
-        "properties": {
-          "key": {
-            "type": "string",
-            "maxLength": 16,
-            "minLength": 1,
-            "title": "Key",
-            "description": "Key identifying this annotation group"
-          },
-          "translations": {
-            "items": {
-              "$ref": "#/components/schemas/AnnotationGroupTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Translations",
-            "description": "Translation for the label of an annotation group"
-          }
-        },
-        "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
-        "title": "AnnotationGroup"
-      },
-      "AnnotationGroupTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
-            "title": "Translation",
-            "description": "Translation of an annotation group label"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "AnnotationGroupTranslation"
-      },
       "AnnotationsConfig": {
         "properties": {
-          "groups": {
-            "items": {
-              "$ref": "#/components/schemas/AnnotationGroup"
-            },
-            "type": "array",
-            "maxItems": 32,
-            "title": "Groups",
-            "description": "Display groups to use for grouping annotations",
-            "default": []
-          },
           "displayTemplate": {
             "anyOf": [
               {
@@ -7508,6 +7452,13 @@
             "title": "Multivaluedelimiter",
             "description": "String used to delimit multiple values for an annotation",
             "default": "/"
+          },
+          "annoIntegration": {
+            "$ref": "#/components/schemas/ItemIntegrationConfig",
+            "default": {
+              "groups": [],
+              "itemProps": []
+            }
           }
         },
         "type": "object",
@@ -12112,69 +12063,10 @@
         ],
         "title": "IndexInfo"
       },
-      "ItemDisplayConfig": {
-        "properties": {
-          "groups": {
-            "items": {
-              "$ref": "#/components/schemas/ItemGroup"
-            },
-            "type": "array",
-            "maxItems": 64,
-            "title": "Groups",
-            "description": "Item display groups",
-            "default": []
-          },
-          "displayProps": {
-            "items": {
-              "$ref": "#/components/schemas/ItemDisplayProps"
-            },
-            "type": "array",
-            "maxItems": 128,
-            "title": "Displayprops",
-            "description": "Item display properties",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "ItemDisplayConfig"
-      },
-      "ItemDisplayProps": {
-        "properties": {
-          "name": {
-            "$ref": "#/components/schemas/ItemName"
-          },
-          "translations": {
-            "items": {
-              "$ref": "#/components/schemas/ItemsDisplayTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Translations",
-            "description": "Translations for the name of the item"
-          },
-          "group": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ItemGroupName"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "translations",
-          "group"
-        ],
-        "title": "ItemDisplayProps"
-      },
       "ItemGroup": {
         "properties": {
-          "name": {
-            "$ref": "#/components/schemas/ItemGroupName"
+          "key": {
+            "$ref": "#/components/schemas/ItemGroupKey"
           },
           "translations": {
             "items": {
@@ -12188,20 +12080,79 @@
         },
         "type": "object",
         "required": [
-          "name",
+          "key",
           "translations"
         ],
         "title": "ItemGroup"
       },
-      "ItemGroupName": {
+      "ItemGroupKey": {
         "type": "string",
         "maxLength": 32,
         "minLength": 1
       },
-      "ItemName": {
+      "ItemIntegrationConfig": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/ItemGroup"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Groups",
+            "description": "Item groups",
+            "default": []
+          },
+          "itemProps": {
+            "items": {
+              "$ref": "#/components/schemas/ItemProps"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "title": "Itemprops",
+            "description": "Item properties",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "ItemIntegrationConfig",
+        "description": "Config for item ordering, grouping and translation"
+      },
+      "ItemKey": {
         "type": "string",
         "maxLength": 32,
         "minLength": 1
+      },
+      "ItemProps": {
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/ItemKey"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ItemsDisplayTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations",
+            "description": "Translations for the name of the item"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ItemGroupKey"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "ItemProps"
       },
       "ItemsDisplayTranslation": {
         "properties": {
@@ -12855,9 +12806,9 @@
           "special": {
             "$ref": "#/components/schemas/LocationMetadataSpecialConfig",
             "default": {
-              "itemDisplay": {
-                "displayProps": [],
-                "groups": []
+              "entriesIntegration": {
+                "groups": [],
+                "itemProps": []
               }
             }
           }
@@ -12970,9 +12921,9 @@
                 "sortOrder": 10
               },
               "special": {
-                "itemDisplay": {
-                  "displayProps": [],
-                  "groups": []
+                "entriesIntegration": {
+                  "groups": [],
+                  "itemProps": []
                 }
               }
             }
@@ -13209,9 +13160,9 @@
                 "sortOrder": 10
               },
               "special": {
-                "itemDisplay": {
-                  "displayProps": [],
-                  "groups": []
+                "entriesIntegration": {
+                  "groups": [],
+                  "itemProps": []
                 }
               }
             }
@@ -13432,11 +13383,11 @@
       },
       "LocationMetadataSpecialConfig": {
         "properties": {
-          "itemDisplay": {
-            "$ref": "#/components/schemas/ItemDisplayConfig",
+          "entriesIntegration": {
+            "$ref": "#/components/schemas/ItemIntegrationConfig",
             "default": {
               "groups": [],
-              "displayProps": []
+              "itemProps": []
             }
           }
         },
@@ -17198,7 +17149,10 @@
             "$ref": "#/components/schemas/TextAnnotationSpecialConfig",
             "default": {
               "annotations": {
-                "groups": [],
+                "annoIntegration": {
+                  "groups": [],
+                  "itemProps": []
+                },
                 "multiValueDelimiter": "/"
               }
             }
@@ -17313,7 +17267,10 @@
               },
               "special": {
                 "annotations": {
-                  "groups": [],
+                  "annoIntegration": {
+                    "groups": [],
+                    "itemProps": []
+                  },
                   "multiValueDelimiter": "/"
                 }
               }
@@ -17552,7 +17509,10 @@
               },
               "special": {
                 "annotations": {
-                  "groups": [],
+                  "annoIntegration": {
+                    "groups": [],
+                    "itemProps": []
+                  },
                   "multiValueDelimiter": "/"
                 }
               }
@@ -17793,8 +17753,11 @@
           "annotations": {
             "$ref": "#/components/schemas/AnnotationsConfig",
             "default": {
-              "groups": [],
-              "multiValueDelimiter": "/"
+              "multiValueDelimiter": "/",
+              "annoIntegration": {
+                "groups": [],
+                "itemProps": []
+              }
             }
           }
         },

@@ -7,17 +7,18 @@ from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from pydantic import BeforeValidator, Field
-from typing_extensions import TypeAliasType, TypedDict
+from typing_extensions import TypeAliasType
 
-from tekst.i18n import TranslationBase, Translations
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import ModelBase, PrecomputedDataDocument
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase, ContentBaseDocument
+from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
+    ItemIntegrationConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -292,8 +293,12 @@ class TextAnnotation(ResourceTypeABC):
                 PrecomputedDataDocument.ref_id == resource.id,
                 PrecomputedDataDocument.precomputed_type == "aggregations",
             )
-            annos = annos.data if annos and annos.data else []
-            anno_keys = sorted([anno["key"] for anno in annos])
+            # get sorted items keys based on resource config
+            anno_keys = (
+                resource.config.special.annotations.anno_integration.sorted_item_keys(
+                    [anno["key"] for anno in annos.data] if annos and annos.data else []
+                )
+            )
             csv_writer.writerow(
                 [
                     "LOCATION",
@@ -325,44 +330,7 @@ class TextAnnotation(ResourceTypeABC):
                     )
 
 
-class AnnotationGroupTranslation(TranslationBase):
-    translation: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Translation of an annotation group label",
-        ),
-    ]
-
-
-class AnnotationGroup(TypedDict):
-    key: Annotated[
-        ConStr(
-            max_length=16,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key identifying this annotation group",
-        ),
-    ]
-    translations: Annotated[
-        Translations[AnnotationGroupTranslation],
-        Field(
-            description="Translation for the label of an annotation group",
-        ),
-    ] = []
-
-
 class AnnotationsConfig(ModelBase):
-    groups: Annotated[
-        list[AnnotationGroup],
-        Field(
-            description="Display groups to use for grouping annotations",
-            max_length=32,
-        ),
-    ] = []
     display_template: Annotated[
         ConStrOrNone(
             max_length=4096,
@@ -385,6 +353,7 @@ class AnnotationsConfig(ModelBase):
             description="String used to delimit multiple values for an annotation",
         ),
     ] = "/"
+    anno_integration: ItemIntegrationConfig = ItemIntegrationConfig()
 
 
 class TextAnnotationSpecialConfig(ModelBase):

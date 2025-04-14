@@ -1,0 +1,142 @@
+{
+  "resources": [
+    {
+      "_id": { "$oid": "67dbc7432e51e7949ae22714" },
+      "_class_id": "ResourceBaseDocument.LocationMetadataResourceDocument",
+      "title": [
+        { "locale": "enUS", "translation": "Demo Stanza Metadata" },
+        { "locale": "deDE", "translation": "Demo Strophen-Metadaten" }
+      ],
+      "subtitle": [],
+      "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+      "level": 1,
+      "resource_type": "locationMetadata",
+      "shared_read": [],
+      "shared_write": [],
+      "public": true,
+      "proposed": false,
+      "meta": [],
+      "description": [],
+      "config": {
+        "general": {
+          "category": "demo",
+          "sort_order": 10,
+          "default_active": false,
+          "enable_content_context": false,
+          "searchable_quick": true,
+          "searchable_adv": true,
+          "rtl": false
+        },
+        "special": {
+          "item_display": {
+            "groups": [
+              {
+                "name": "stanza_no",
+                "translations": [
+                  { "locale": "enUS", "translation": "Stanza Number" },
+                  { "locale": "deDE", "translation": "Strophen-Nummer" }
+                ]
+              }
+            ],
+            "display_props": [
+              {
+                "name": "stanza_no_num",
+                "translations": [
+                  { "locale": "enUS", "translation": "# in numbers" },
+                  { "locale": "deDE", "translation": "# in Zahlen" }
+                ],
+                "group": "stanza_no"
+              },
+              {
+                "name": "stanza_no_word",
+                "translations": [
+                  { "locale": "enUS", "translation": "# in words" },
+                  { "locale": "deDE", "translation": "# in Worten" }
+                ],
+                "group": "stanza_no"
+              }
+            ]
+          }
+        }
+      },
+      "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }
+    },
+    {
+      "_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+      "_class_id": "ResourceBaseDocument.TextAnnotationResourceDocument",
+      "title": [{ "locale": "*", "translation": "Named Entities" }],
+      "subtitle": [
+        {
+          "locale": "enUS",
+          "translation": "Annotation of Named Entities in the common version of the song"
+        },
+        {
+          "locale": "deDE",
+          "translation": "Annotation von Named Entities in der allgemein bekannten Version des Liedes"
+        }
+      ],
+      "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+      "level": 2,
+      "resource_type": "textAnnotation",
+      "shared_read": [],
+      "shared_write": [],
+      "public": true,
+      "proposed": false,
+      "meta": [],
+      "description": [
+        {
+          "locale": "enUS",
+          "translation": "<p>Annotated entities are \"Fox\", \"Goose\", \"Hunter\" and \"Mouse\".</p>"
+        },
+        {
+          "locale": "deDE",
+          "translation": "<p>Annotierte Entitäten sind \"Fox\" (Fuchs), \"Goose\" (Gans) \"Hunter\" (Jäger) und \"Mouse\" (Maus).</p>"
+        }
+      ],
+      "config": {
+        "general": {
+          "category": "annotations",
+          "sort_order": 10,
+          "default_active": true,
+          "enable_content_context": true,
+          "searchable_quick": true,
+          "searchable_adv": true,
+          "rtl": false
+        },
+        "special": {
+          "annotations": {
+            "groups": [
+              {
+                "key": "entity",
+                "translations": [
+                  { "locale": "enUS", "translation": "Entity" },
+                  { "locale": "deDE", "translation": "Entität" }
+                ]
+              }
+            ],
+            "display_template": "{{_k:Entity_c:v_f:c}}",
+            "multi_value_delimiter": "/"
+          }
+        }
+      },
+      "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    }
+  ],
+  "precomputed": [
+    {
+      "_id": { "$oid": "6656cc7b71a66222c1bafb21" },
+      "ref_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+      "precomputed_type": "aggregations",
+      "data": [
+        {
+          "key": "foo",
+          "values": ["one", "two"]
+        },
+        {
+          "key": "bar",
+          "values": ["one", "two", "three"]
+        }
+      ]
+    }
+  ]
+}

@@ -492,9 +492,9 @@ resources:
         displayTemplate: Darstellungsvorlage
         multiValueDelimiter: Trennzeichen für mehrfache Annotations-Werte
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
-      itemDisplay:
-        groups: Metadaten-Gruppen
-        displayProps: Schlüssel-Übersetzung, -Reihenfolge und -Gruppierung
+      itemIntegration:
+        itemProps: Übersetzung, -Reihenfolge und -Gruppierung
+        generateProps: Aus bekannten Daten generieren
       apiCall:
         heading: API-Anfrage
         endpoint: URL (ohne Query-Parameter)
