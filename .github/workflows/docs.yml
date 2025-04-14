@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'docs/**'
-      - 'Tekst-Web/i18n/help/**'
-      - '.github/workflows/docs.yml'
+      - "docs/**"
+      - "Tekst-Web/i18n/help/**"
+      - ".github/workflows/docs.yml"
   workflow_dispatch:
 
 permissions:
