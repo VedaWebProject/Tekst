@@ -1,52 +1,77 @@
 <script setup lang="ts">
-import type { ItemDisplayProps, ItemGroup } from '@/api';
+import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
+import { $t } from '@/i18n';
+import { WandIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type FormItemRule } from 'naive-ui';
+import {
+  NButton,
+  NDynamicInput,
+  NFlex,
+  NFormItem,
+  NIcon,
+  NInput,
+  NSelect,
+  type FormItemRule,
+} from 'naive-ui';
 import { computed } from 'vue';
 
-const props = defineProps<{
-  groupsModelPath?: string;
-  minGroups?: number;
-  maxGroups?: number;
-  displayPropsModelPath?: string;
-  minDisplayProps?: number;
-  maxDisplayProps?: number;
-  itemNameRules?: FormItemRule[];
-  groupNameLabel?: string;
-  itemNameLabel?: string;
-  existingItemNames?: string[];
-  groupsHeading?: string;
-  displayPropsHeading?: string;
-  itemGroupingRequired?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    groupsModelPath?: string;
+    minGroups?: number;
+    maxGroups?: number;
+    itemPropsModelPath?: string;
+    minItemProps?: number;
+    maxItemProps?: number;
+    itemNameRules?: FormItemRule[];
+    groupNameLabel?: string;
+    itemNameLabel?: string;
+    existingItemKeys?: string[];
+    groupsHeading?: string;
+    itemPropsHeading?: string | null;
+    itemGroupingRequired?: boolean;
+  }>(),
+  {
+    maxGroups: 64,
+    maxItemProps: 128,
+    itemPropsHeading: $t('resources.settings.config.itemIntegration.itemProps'),
+  }
+);
 
+const model = defineModel<components['schemas']['ItemIntegrationConfig']>({ required: true });
 const state = useStateStore();
 
-const groups = defineModel<ItemGroup[]>('groups', { required: true });
-const displayProps = defineModel<ItemDisplayProps[]>('displayProps', { required: true });
-
 const itemNameOptions = computed(() =>
-  props.existingItemNames?.map((n) => ({ label: n, value: n }))
+  props.existingItemKeys?.map((n) => ({ label: n, value: n }))
 );
 const itemGroupOptions = computed(() =>
-  groups.value.map((g) => ({
-    label: `${g.name} (${pickTranslation(g.translations, state.locale)})`,
-    value: g.name,
+  model.value.groups.map((g) => ({
+    label: `${g.key} (${pickTranslation(g.translations, state.locale)})`,
+    value: g.key,
   }))
 );
+
+function generateItemProps() {
+  if (!props.existingItemKeys?.length || !!model.value.itemProps.length) return;
+  model.value.itemProps = props.existingItemKeys.map((k) => ({
+    key: k,
+    translations: [{ locale: '*', translation: k }],
+  }));
+}
 </script>
 
 <template>
+  <!-- GROUPS -->
   <form-section-heading :label="groupsHeading" />
   <n-form-item :show-label="false" :show-feedback="!!minGroups">
     <n-dynamic-input
-      v-model:value="groups"
+      v-model:value="model.groups"
       show-sort-button
       :min="minGroups"
       :max="maxGroups"
@@ -59,15 +84,15 @@ const itemGroupOptions = computed(() =>
           <n-form-item
             ignore-path-change
             :label="groupNameLabel || $t('common.name')"
-            :path="`${groupsModelPath}[${index}].name`"
+            :path="`${groupsModelPath}[${index}].key`"
             :rule="commonResourceConfigFormRules.itemGroupNameRequired"
             style="flex: 1 200px"
           >
-            <n-input v-model:value="groups[index].name" />
+            <n-input v-model:value="model.groups[index].key" />
           </n-form-item>
           <!-- GROUP TRANSLATION -->
           <translation-form-item
-            v-model="groups[index].translations"
+            v-model="model.groups[index].translations"
             ignore-path-change
             secondary
             :parent-form-path-prefix="`${groupsModelPath}[${index}].translations`"
@@ -82,9 +107,9 @@ const itemGroupOptions = computed(() =>
         <dynamic-input-controls
           top-offset
           :move-up-disabled="index === 0"
-          :move-down-disabled="index === groups.length - 1"
-          :insert-disabled="!!maxGroups && groups.length >= maxGroups"
-          :remove-disabled="groups.length <= (minGroups || 0)"
+          :move-down-disabled="index === model.groups.length - 1"
+          :insert-disabled="!!maxGroups && model.groups.length >= maxGroups"
+          :remove-disabled="model.groups.length <= (minGroups || 0)"
           @move-up="() => move('up', index)"
           @move-down="() => move('down', index)"
           @remove="() => remove(index)"
@@ -97,13 +122,30 @@ const itemGroupOptions = computed(() =>
     </n-dynamic-input>
   </n-form-item>
 
-  <form-section-heading :label="displayPropsHeading" />
-  <n-form-item :show-label="false" :show-feedback="!!minDisplayProps">
+  <!-- ITEM PROPS -->
+  <form-section-heading
+    :show-label="itemPropsHeading !== null"
+    :label="itemPropsHeading || undefined"
+  />
+  <!-- generate from existing item names -->
+  <n-button
+    v-if="!!existingItemKeys?.length && !model.itemProps.length"
+    secondary
+    block
+    class="mb-sm"
+    @click="generateItemProps"
+  >
+    <template #icon>
+      <n-icon :component="WandIcon" />
+    </template>
+    {{ $t('resources.settings.config.itemIntegration.generateProps') }}
+  </n-button>
+  <n-form-item :show-label="false" :show-feedback="!!minItemProps">
     <n-dynamic-input
-      v-model:value="displayProps"
+      v-model:value="model.itemProps"
       show-sort-button
-      :min="minDisplayProps"
-      :max="maxDisplayProps"
+      :min="minItemProps"
+      :max="maxItemProps"
       :create-button-props="dynInputCreateBtnProps"
       @create="
         () => ({
@@ -119,12 +161,12 @@ const itemGroupOptions = computed(() =>
           <n-form-item
             ignore-path-change
             :label="itemNameLabel || $t('common.key')"
-            :path="`${displayPropsModelPath}[${index}].name`"
+            :path="`${itemPropsModelPath}[${index}].key`"
             :rule="commonResourceConfigFormRules.itemName"
             style="flex: 1 200px"
           >
             <n-select
-              v-model:value="displayProps[index].name"
+              v-model:value="model.itemProps[index].key"
               tag
               filterable
               :options="itemNameOptions"
@@ -132,10 +174,10 @@ const itemGroupOptions = computed(() =>
           </n-form-item>
           <!-- ITEM TRANSLATION -->
           <translation-form-item
-            v-model="displayProps[index].translations"
+            v-model="model.itemProps[index].translations"
             ignore-path-change
             secondary
-            :parent-form-path-prefix="`${displayPropsModelPath}[${index}].translations`"
+            :parent-form-path-prefix="`${itemPropsModelPath}[${index}].translations`"
             style="flex: 2 100%"
             :main-form-label="$t('common.translation', 2)"
             :translation-form-label="$t('common.translation')"
@@ -146,7 +188,7 @@ const itemGroupOptions = computed(() =>
           <n-form-item
             ignore-path-change
             :label="$t('common.group')"
-            :path="`${displayPropsModelPath}[${index}].group`"
+            :path="`${itemPropsModelPath}[${index}].group`"
             :rule="
               itemGroupingRequired
                 ? commonResourceConfigFormRules.itemGroupNameRequired
@@ -155,7 +197,7 @@ const itemGroupOptions = computed(() =>
             style="flex: 2 100%"
           >
             <n-select
-              v-model:value="displayProps[index].group"
+              v-model:value="model.itemProps[index].group"
               tag
               filterable
               :options="itemGroupOptions"
@@ -167,9 +209,9 @@ const itemGroupOptions = computed(() =>
         <dynamic-input-controls
           top-offset
           :move-up-disabled="index === 0"
-          :move-down-disabled="index === displayProps.length - 1"
-          :insert-disabled="!!maxDisplayProps && displayProps.length >= maxDisplayProps"
-          :remove-disabled="displayProps.length <= (minDisplayProps || 0)"
+          :move-down-disabled="index === model.itemProps.length - 1"
+          :insert-disabled="!!maxItemProps && model.itemProps.length >= maxItemProps"
+          :remove-disabled="model.itemProps.length <= (minItemProps || 0)"
           @move-up="() => move('up', index)"
           @move-down="() => move('down', index)"
           @remove="() => remove(index)"

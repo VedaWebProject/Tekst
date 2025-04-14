@@ -6,6 +6,7 @@ import ArrowDownwardOutlined from '@vicons/material/ArrowDownwardOutlined';
 import ArrowForwardOutlined from '@vicons/material/ArrowForwardOutlined';
 import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
+import AutoFixHighOutlined from '@vicons/material/AutoFixHighOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
@@ -234,5 +235,6 @@ export {
   SupervisorAccountRound as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
+  AutoFixHighOutlined as WandIcon,
   WarningAmberOutlined as WarningIcon,
 };

@@ -40,6 +40,10 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   },
   Alert: {
     fontSize: 'var(--font-size-medium)',
+    titleFontWeight: 'bold',
+  },
+  Table: {
+    thFontWeight: 'bold',
   },
 };
 

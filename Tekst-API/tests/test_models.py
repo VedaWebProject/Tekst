@@ -3,6 +3,7 @@ import pytest
 from pydantic import ValidationError
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
+from tekst.models.resource_configs import ItemIntegrationConfig
 from tekst.models.text import Text, TextCreate, TextDocument, TextRead, TextUpdate
 from tekst.models.user import UserReadPublic
 
@@ -176,3 +177,38 @@ async def test_apply_updates(test_app):
     text_read = TextRead.model_from(text_doc)
     assert text_read.slug == "bar"
     assert text_read.id
+
+
+def test_item_integration_config():
+    ii_cfg = ItemIntegrationConfig(
+        groups=[
+            {"key": "foo", "translations": [{"locale": "*", "translation": "Foo"}]},
+            {"key": "bar", "translations": [{"locale": "*", "translation": "Bar"}]},
+        ],
+        item_props=[
+            {
+                "key": "one",
+                "translations": [{"locale": "*", "translation": "One"}],
+                "group": "bar",
+            },
+            {
+                "key": "two",
+                "translations": [{"locale": "*", "translation": "Two"}],
+                "group": "bar",
+            },
+            {
+                "key": "three",
+                "translations": [{"locale": "*", "translation": "Three"}],
+                "group": "foo",
+            },
+            {
+                "key": "four",
+                "translations": [{"locale": "*", "translation": "Four"}],
+                "group": "foo",
+            },
+        ],
+    )
+
+    sorted_keys = ii_cfg.sorted_item_keys(["three", "four", "one"])
+    assert str(sorted_keys) == str(["three", "four", "one"])
+    assert str(ii_cfg.sorted_item_keys()) == str(["three", "four", "one", "two"])

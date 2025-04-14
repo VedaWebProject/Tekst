@@ -1,17 +1,30 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
-import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import DynamicInputControls from '@/forms/DynamicInputControls.vue';
-import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
-import TranslationFormItem from '@/forms/TranslationFormItem.vue';
-import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
+import {
+  commonResourceConfigFormRules,
+  typeSpecificResourceConfigFormRules,
+} from '@/forms/formRules';
+import ItemIntegrationConfigFormItems from '@/forms/resources/config/ItemIntegrationConfigFormItems.vue';
+import { useResourcesStore } from '@/stores';
+import { NFlex, NFormItem, NInput } from 'naive-ui';
+import { onMounted, ref } from 'vue';
 
-defineProps<{ resource: AnyResourceRead }>();
+const props = defineProps<{ resource: AnyResourceRead }>();
+
 const model = defineModel<components['schemas']['AnnotationsConfig']>({
   required: true,
+});
+
+const resources = useResourcesStore();
+const existingItemKeys = ref<string[]>([]);
+
+onMounted(async () => {
+  existingItemKeys.value = (await resources.getAggregations(props.resource.id)).map(
+    (agg) => agg.key
+  );
 });
 </script>
 
@@ -19,68 +32,6 @@ const model = defineModel<components['schemas']['AnnotationsConfig']>({
   <form-section-heading
     :label="$t('resources.settings.config.annotations.annoDisplayHeading', 2)"
   />
-
-  <!-- ANNOTATION DISPLAY GROUPS -->
-  <n-form-item class="parent-form-item">
-    <template #label>
-      <n-flex align="center">
-        {{ $t('resources.settings.config.annotations.annotationGroup', 2) }}
-        <help-button-widget help-key="textAnnotationGroups" />
-      </n-flex>
-    </template>
-    <n-dynamic-input
-      v-model:value="model.groups"
-      show-sort-button
-      :min="0"
-      :max="32"
-      :create-button-props="dynInputCreateBtnProps"
-      @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
-    >
-      <template #default="{ index }">
-        <n-flex align="flex-start" style="width: 100%">
-          <n-form-item
-            ignore-path-change
-            :label="$t('common.key')"
-            :path="`config.special.annotations.groups[${index}].key`"
-            :rule="typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupKey"
-          >
-            <n-input
-              v-model:value="model.groups[index].key"
-              :placeholder="$t('common.key')"
-              @keydown.enter.prevent
-            />
-          </n-form-item>
-          <translation-form-item
-            v-model="model.groups[index].translations"
-            ignore-path-change
-            secondary
-            :parent-form-path-prefix="`config.special.annotations.groups[${index}].translations`"
-            style="flex: 2"
-            :main-form-label="$t('common.label')"
-            :translation-form-label="$t('common.translation')"
-            :translation-form-rules="
-              typeSpecificResourceConfigFormRules.textAnnotation.annotationGroupTranslation
-            "
-          />
-        </n-flex>
-      </template>
-      <template #action="{ index, create, remove, move }">
-        <dynamic-input-controls
-          top-offset
-          :move-up-disabled="index === 0"
-          :move-down-disabled="index === model.groups.length - 1"
-          :insert-disabled="(model.groups.length || 0) >= 32"
-          @move-up="() => move('up', index)"
-          @move-down="() => move('down', index)"
-          @remove="() => remove(index)"
-          @insert="() => create(index)"
-        />
-      </template>
-      <template #create-button-default>
-        {{ $t('common.add') }}
-      </template>
-    </n-dynamic-input>
-  </n-form-item>
 
   <!-- ANNOTATION DISPLAY TEMPLATE -->
   <n-form-item
@@ -109,4 +60,16 @@ const model = defineModel<components['schemas']['AnnotationsConfig']>({
   >
     <n-input v-model:value="model.multiValueDelimiter" />
   </n-form-item>
+
+  <!-- ANNOTATION INTEGRATION -->
+  <item-integration-config-form-items
+    v-model="model.annoIntegration"
+    groups-model-path="config.special.annotations.annoIntegration.groups"
+    item-props-model-path="config.special.annotations.annoIntegration.itemProps"
+    :item-name-rules="commonResourceConfigFormRules.itemName"
+    :group-name-label="$t('common.key')"
+    :item-name-label="$t('common.key')"
+    :existing-item-keys="existingItemKeys"
+    :groups-heading="$t('common.group', 2)"
+  />
 </template>

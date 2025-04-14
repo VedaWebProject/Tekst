@@ -25,10 +25,10 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.i18n import pick_translation
 from tekst.logs import log
-from tekst.models.common import PrecomputedDataDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
+from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceCoverage,

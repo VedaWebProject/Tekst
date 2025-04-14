@@ -3,9 +3,17 @@ import type { TextAnnotationContentRead, TextAnnotationResourceRead } from '@/ap
 import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
-import { CheckIcon, ClearIcon, ColorIcon, ColorOffIcon, CopyIcon, MetadataIcon } from '@/icons';
+import {
+  CheckIcon,
+  ClearIcon,
+  ColorIcon,
+  ColorOffIcon,
+  CommentIcon,
+  CopyIcon,
+  MetadataIcon,
+} from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
-import { getFullLocationLabel, pickTranslation, renderIcon } from '@/utils';
+import { getFullLocationLabel, groupAndSortItems, pickTranslation, renderIcon } from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
 import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
@@ -38,13 +46,16 @@ interface AnnotationDisplay {
 interface TokenDetails {
   token: string;
   comment?: string;
-  annotations?: TextAnnotationContentRead['tokens'][number]['annotations'];
+  annotations?: {
+    group?: string;
+    items: TextAnnotationContentRead['tokens'][number]['annotations'];
+  }[];
 }
 
 type Token = TextAnnotationContentRead['tokens'][number];
 
 const PAT_TMPL_ITEM = /{{\s*((?!}}).+?)\s*}}/g;
-const PAT_TMPL_ITEM_PARTS = /_([kpcsfg]):(.*?)(?=_[kpcsfg]:|$)/g;
+const PAT_TMPL_ITEM_PARTS = /_([kpcsf]):(.*?)(?=_[kpcsf]:|$)/g;
 const PAT_TMPL_LINE_BREAK = /^br$/g;
 
 const props = withDefaults(
@@ -63,9 +74,12 @@ const nuiTheme = useThemeVars();
 
 const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
+const tokenData = ref<Token>();
 
-const annoGroups = computed(() => props.resource.config.special.annotations.groups);
-const activeAnnoGroups = ref(props.resource.config.special.annotations.groups.map((g) => g.key));
+const annoGroups = computed(() => props.resource.config.special.annotations.annoIntegration.groups);
+const activeAnnoGroups = ref(
+  props.resource.config.special.annotations.annoIntegration.groups.map((g) => g.key)
+);
 const groupColors = computed<Record<string, string>>(() =>
   Object.fromEntries(
     annoGroups.value.map((g, i) => [
@@ -102,7 +116,7 @@ const tokenContextMenuOptions = computed(() => [
     disabled: !isTokenCopySupported.value,
     icon: renderIcon(CopyIcon),
   },
-  ...(tokenDetails.value?.annotations?.length
+  ...(tokenData.value?.annotations?.length
     ? [
         {
           label: () => $t('resources.types.textAnnotation.copyTokenFullAction'),
@@ -142,6 +156,10 @@ const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
         switch (p[1]) {
           case 'k':
             item.key = p[2];
+            item.group =
+              props.resource.config.special.annotations.annoIntegration.itemProps.find(
+                (props) => props.key === item.key
+              )?.group || undefined;
             break;
           case 'p':
             item.prefix = p[2];
@@ -159,9 +177,6 @@ const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
               caps: p[2].toLowerCase().includes('c'),
               font: p[2].toLowerCase().includes('f'),
             };
-            break;
-          case 'g':
-            item.group = p[2];
             break;
         }
       });
@@ -182,6 +197,10 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
             ({
               type: 'anno',
               content: `${a.key}:${a.value}` + (i < t.annotations.length - 1 ? '; ' : ''),
+              group:
+                props.resource.config.special.annotations.annoIntegration.itemProps.find(
+                  (props) => props.key === a.key
+                )?.group || undefined,
             }) as AnnotationDisplay
         ) || [],
       ];
@@ -214,14 +233,17 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
       }
       // compose the content, prefix and suffix from the template and the data
       const content =
-        anno.template.content?.replace(/k/g, anno.data?.key || '').replace(
-          /v/g,
+        anno.template.content?.replace(/\\k/g, anno.data?.key || '').replace(
+          /\\v/g,
           anno.data?.value
             // join the values with the delimiter set in the resource config
             .join(props.resource.config.special.annotations.multiValueDelimiter || '/') || ''
         ) || '';
       const prefix = i > 0 ? anno.template.prefix || '' : '';
-      const suffix = i < annos.length - 1 ? anno.template.suffix || '' : '';
+      const suffix =
+        i < annos.length - 1 && annos[i + 1].template.type !== 'br'
+          ? anno.template.suffix || ''
+          : '';
       lines[lines.length - 1].push({
         content: `${prefix}${content}${suffix}`,
         style: getAnnotationStyle(anno.template.format),
@@ -292,7 +314,29 @@ function handleTokenClick(token: Token) {
   tokenDetails.value = {
     token: token.token,
     comment: token.annotations.find((a) => a.key === 'comment')?.value.join('\n'),
-    annotations: annos.length ? annos : undefined,
+    annotations: groupAndSortItems(
+      annos,
+      props.resource.config.special.annotations.annoIntegration.groups,
+      props.resource.config.special.annotations.annoIntegration.itemProps
+    ).map((g) => ({
+      group:
+        pickTranslation(
+          props.resource.config.special.annotations.annoIntegration.groups.find(
+            (gg) => gg.key === g.group
+          )?.translations,
+          state.locale
+        ) || g.group,
+      items: g.items.map((i) => ({
+        key:
+          pickTranslation(
+            props.resource.config.special.annotations.annoIntegration.itemProps.find(
+              (props) => props.key === i.key
+            )?.translations,
+            state.locale
+          ) || i.key,
+        value: i.value,
+      })),
+    })),
   };
   showDetailsModal.value = true;
 }
@@ -300,7 +344,7 @@ function handleTokenClick(token: Token) {
 function handleTokenRightClick(e: MouseEvent, token: Token, tokenId: string) {
   showTokenContextMenu.value = false;
   if (!isTokenCopySupported.value) return;
-  tokenDetails.value = token;
+  tokenData.value = token;
   tokenContextIndex.value = tokenId;
   nextTick().then(() => {
     tokenContextMenuPos.value = { x: e.clientX, y: e.clientY };
@@ -314,13 +358,13 @@ function handleTokenContextMenuClickOutside() {
 
 function handleTokenContextMenuSelect(key: string | number) {
   showTokenContextMenu.value = false;
-  if (key === 'copyToken' && tokenDetails.value?.token) {
-    copyTokenContent(tokenDetails.value.token);
+  if (key === 'copyToken' && tokenData.value?.token) {
+    copyTokenContent(tokenData.value.token);
   } else if (key === 'copyFull') {
-    const token = tokenDetails.value?.token ? tokenDetails.value.token : '???';
+    const token = tokenData.value?.token ? tokenData.value.token : '???';
     const delim = props.resource.config.special.annotations.multiValueDelimiter;
-    const annos = tokenDetails.value?.annotations
-      ? tokenDetails.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
+    const annos = tokenData.value?.annotations
+      ? tokenData.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
     copyTokenContent(token + (annos ? ` (${annos})` : ''));
   }
@@ -451,11 +495,7 @@ function generatePlaintextAnno(): string {
             >
               <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
                 <span
-                  v-if="
-                    !anno.group ||
-                    !resource.config.special.annotations.groups.length ||
-                    activeAnnoGroups.includes(anno.group)
-                  "
+                  v-if="!anno.group || !annoGroups.length || activeAnnoGroups.includes(anno.group)"
                   :style="{
                     ...anno.style,
                     transition: 'background-color 0.2s ease',
@@ -487,10 +527,12 @@ function generatePlaintextAnno(): string {
       <n-alert
         v-if="tokenDetails?.comment"
         type="default"
-        :show-icon="false"
         :title="$t('common.comment')"
         class="mb-lg"
       >
+        <template #icon>
+          <n-icon :component="CommentIcon" size="medium" />
+        </template>
         <div
           class="text-small"
           :style="{ fontFamily: resource.contentFont, whiteSpace: 'pre-line' }"
@@ -498,25 +540,22 @@ function generatePlaintextAnno(): string {
           {{ tokenDetails.comment }}
         </div>
       </n-alert>
-      <n-table
-        v-if="tokenDetails?.annotations"
-        :bordered="false"
-        :bottom-bordered="false"
-        size="small"
-      >
-        <thead>
-          <tr>
-            <th class="b">
-              {{ $t('resources.types.textAnnotation.contentFields.annotationKey') }}
-            </th>
-            <th class="b">{{ $t('common.value') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="(annotation, index) in tokenDetails.annotations" :key="index">
-            <tr v-if="annotation.key !== 'comment'">
+
+      <!-- ANNOTATIONS TABLES -->
+      <n-table :bordered="false" :bottom-bordered="false" size="small">
+        <template
+          v-for="(group, index) in tokenDetails?.annotations"
+          :key="`${group.group || 'ungrouped'}_${index}`"
+        >
+          <template v-if="!!group.items.length">
+            <tr>
+              <th colspan="2">
+                {{ group.group || $t('common.other') }}
+              </th>
+            </tr>
+            <tr v-for="(annotation, index) in group.items" :key="index">
               <td>{{ annotation.key }}</td>
-              <td class="font-ui">
+              <td class="font-content">
                 {{
                   annotation.value.join(
                     resource.config.special.annotations.multiValueDelimiter || '/'
@@ -525,7 +564,7 @@ function generatePlaintextAnno(): string {
               </td>
             </tr>
           </template>
-        </tbody>
+        </template>
       </n-table>
     </generic-modal>
 
@@ -546,6 +585,10 @@ function generatePlaintextAnno(): string {
 .anno-content:not(:last-child) {
   padding-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
   margin-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
+}
+
+.anno-content:last-child {
+  margin-bottom: 4px;
 }
 
 .token-container {

@@ -481,9 +481,9 @@ resources:
         displayTemplate: Display template
         multiValueDelimiter: Delimiter for multiple annotation values
         annotationGroup: Annotation group | Annotation groups
-      itemDisplay:
-        groups: Metadata Groups
-        displayProps: Key Translation, Order and Grouping
+      itemIntegration:
+        itemProps: Translation, Order and Grouping
+        generateProps: Generate from known data
       apiCall:
         heading: API Request
         endpoint: URL (without query parameters)

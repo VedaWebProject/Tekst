@@ -417,8 +417,6 @@ export type GeneralResourceConfig = components['schemas']['GeneralResourceConfig
 export type AnyResourceConfig = AnyResourceRead['config'];
 export type LineLabellingConfig = components['schemas']['LineLabellingConfig'];
 export type DeepLLinksConfig = components['schemas']['DeepLLinksConfig'];
-export type ItemGroup = components['schemas']['ItemGroup'];
-export type ItemDisplayProps = components['schemas']['ItemDisplayProps'];
 
 // resource aggregations
 

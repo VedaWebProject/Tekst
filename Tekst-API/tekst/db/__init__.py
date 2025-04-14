@@ -8,12 +8,12 @@ from tekst.auth import AccessTokenDocument
 from tekst.config import TekstConfig, get_config
 from tekst.logs import log
 from tekst.models.bookmark import BookmarkDocument
-from tekst.models.common import PrecomputedDataDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
+from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
 )

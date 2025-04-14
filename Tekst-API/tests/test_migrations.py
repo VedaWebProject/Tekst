@@ -281,3 +281,63 @@ async def test_0_11_1a0(
         assert "default_collapsed" not in res["config"]["general"]
         if "collapsible_contents" in res["config"]["general"]:
             assert isinstance(res["config"]["general"]["collapsible_contents"], int)
+
+
+@pytest.mark.anyio
+async def test_0_12_0a0(
+    database,
+    get_test_data,
+):
+    collections = get_test_data("migrations/0_12_0a0.json")
+    for coll in collections:
+        await database[coll].insert_many(collections[coll])
+
+    # run migration
+    await _migration_fn("0_12_0a0")(database)
+
+    # assert the data has been fixed by the migration
+
+    # 1.: test "locationMetadata" resources
+    resources = await database.resources.find(
+        {"resource_type": "locationMetadata"}
+    ).to_list()
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "special" in res["config"]
+        assert "item_display" not in res["config"]["special"]
+        assert "entries_integration" in res["config"]["special"]
+        ii_cfg = res["config"]["special"]["entries_integration"]
+        assert "groups" in ii_cfg
+        assert len(ii_cfg["groups"]) == 1
+        assert ii_cfg["groups"][0]["key"] == "stanza_no"
+        assert "item_props" in ii_cfg
+        assert len(ii_cfg["item_props"]) == 2
+        assert ii_cfg["item_props"][0]["key"] == "stanza_no_num"
+        assert (
+            ii_cfg["item_props"][0]["translations"][0]["translation"] == "# in numbers"
+        )
+        assert ii_cfg["item_props"][1]["key"] == "stanza_no_word"
+        assert ii_cfg["item_props"][1]["translations"][0]["translation"] == "# in words"
+
+    # 2.: test "textAnnotation" resources
+    resources = await database.resources.find(
+        {"resource_type": "textAnnotation"}
+    ).to_list()
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "special" in res["config"]
+        assert "annotations" in res["config"]["special"]
+        assert "groups" not in res["config"]["special"]["annotations"]
+        assert "anno_integration" in res["config"]["special"]["annotations"]
+        oag_cfg = res["config"]["special"]["annotations"]["anno_integration"]
+        assert "groups" in oag_cfg
+        assert len(oag_cfg["groups"]) == 1
+        assert oag_cfg["groups"][0]["key"] == "entity"
+        assert "item_props" in oag_cfg
+        assert len(oag_cfg["item_props"]) == 2
+        assert oag_cfg["item_props"][0]["key"] == "foo"
+        assert oag_cfg["item_props"][0]["translations"][0]["translation"] == "foo"
+        assert oag_cfg["item_props"][1]["key"] == "bar"
+        assert oag_cfg["item_props"][1]["translations"][0]["translation"] == "bar"

@@ -9,11 +9,9 @@ from typing_extensions import TypeAliasType
 
 from tekst.i18n import TranslationBase
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import (
-    ModelBase,
-    PrecomputedDataDocument,
-)
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase, ContentBaseDocument
+from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -21,8 +19,7 @@ from tekst.models.resource import (
 )
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
-    ItemDisplayConfig,
-    ItemDisplayProps,
+    ItemIntegrationConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -204,10 +201,8 @@ class LocationMetadata(ResourceTypeABC):
                 PrecomputedDataDocument.precomputed_type == "aggregations",
             )
             # get sorted items keys based on resource config
-            keys = ItemDisplayProps.sort_items_keys(
-                [agg["key"] for agg in aggs.data] if aggs and aggs.data else [],
-                item_groups=resource.config.special.item_display.groups,
-                item_display_props=resource.config.special.item_display.display_props,
+            keys = resource.config.special.entries_integration.sorted_item_keys(
+                [agg["key"] for agg in aggs.data] if aggs and aggs.data else []
             )
             csv_writer.writerow(
                 [
@@ -296,7 +291,7 @@ class MetadataKeyTranslation(TranslationBase):
 
 
 class LocationMetadataSpecialConfig(ModelBase):
-    item_display: ItemDisplayConfig = ItemDisplayConfig()
+    entries_integration: ItemIntegrationConfig = ItemIntegrationConfig()
 
 
 class LocationMetadataResourceConfig(ResourceConfigBase):
