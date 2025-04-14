@@ -77,6 +77,27 @@ const tokenDetails = ref<TokenDetails>();
 const tokenData = ref<Token>();
 
 const annoGroups = computed(() => props.resource.config.special.annotations.annoIntegration.groups);
+
+const presentGroups = computed(() => {
+  const keys = new Set(
+    props.resource.contents
+      ?.map((c) => c.tokens)
+      .flat()
+      .map((t) => t.annotations)
+      .flat()
+      .map((a) => a.key)
+  );
+  return annoGroups.value
+    .filter((g) =>
+      props.resource.config.special.annotations.annoIntegration.itemProps
+        .filter((props) => keys.has(props.key))
+        .map((props) => props.group)
+        .filter((g) => !!g)
+        .includes(g.key)
+    )
+    .map((g) => g.key);
+});
+
 const activeAnnoGroups = ref(
   props.resource.config.special.annotations.annoIntegration.groups.map((g) => g.key)
 );
@@ -431,25 +452,26 @@ function generatePlaintextAnno(): string {
     <n-flex v-if="!focusView" class="mb-md">
       <!-- ANNOTATION GROUP TOGGLES -->
       <template v-if="!!annoGroups.length">
+        <template v-for="group in annoGroups">
+          <n-button
+            v-if="presentGroups.includes(group.key)"
+            :tertiary="!colorAnnoLines"
+            :type="colorAnnoLines ? 'primary' : undefined"
+            :key="group.key"
+            size="tiny"
+            :focusable="false"
+            :disabled="annoGroups.length == 1"
+            :color="colorAnnoLines ? groupColors[group.key] : undefined"
+            :text-color="colorAnnoLines ? nuiTheme.textColor1 : undefined"
+            @click="toggleAnnoGroup(group.key)"
+          >
+            <template #icon>
+              <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
+            </template>
+            {{ pickTranslation(group.translations, state.locale) }}
+          </n-button>
+        </template>
         <n-button
-          v-for="group in annoGroups"
-          :tertiary="!colorAnnoLines"
-          :type="colorAnnoLines ? 'primary' : undefined"
-          :key="group.key"
-          size="tiny"
-          :focusable="false"
-          :disabled="annoGroups.length == 1"
-          :color="colorAnnoLines ? groupColors[group.key] : undefined"
-          :text-color="colorAnnoLines ? nuiTheme.textColor1 : undefined"
-          @click="toggleAnnoGroup(group.key)"
-        >
-          <template #icon>
-            <n-icon :component="activeAnnoGroups.includes(group.key) ? CheckIcon : ClearIcon" />
-          </template>
-          {{ pickTranslation(group.translations, state.locale) }}
-        </n-button>
-        <n-button
-          v-if="annoGroups.length > 1"
           tertiary
           size="tiny"
           :focusable="false"
