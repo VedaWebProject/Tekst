@@ -76,7 +76,7 @@ const showDetailsModal = ref(false);
 const tokenDetails = ref<TokenDetails>();
 const tokenData = ref<Token>();
 
-const annoGroups = computed(() => props.resource.config.special.annotations.annoIntegration.groups);
+const annoCfg = computed(() => props.resource.config.special.annotations.annoIntegration);
 
 const presentGroups = computed(() => {
   const keys = new Set(
@@ -87,9 +87,9 @@ const presentGroups = computed(() => {
       .flat()
       .map((a) => a.key)
   );
-  return annoGroups.value
+  return annoCfg.value.groups
     .filter((g) =>
-      props.resource.config.special.annotations.annoIntegration.itemProps
+      annoCfg.value.itemProps
         .filter((props) => keys.has(props.key))
         .map((props) => props.group)
         .filter((g) => !!g)
@@ -103,7 +103,7 @@ const activeAnnoGroups = ref(
 );
 const groupColors = computed<Record<string, string>>(() =>
   Object.fromEntries(
-    annoGroups.value.map((g, i) => [
+    annoCfg.value.groups.map((g, i) => [
       g.key,
       toRgba(
         transparentize(
@@ -157,7 +157,9 @@ const annoLineNumbers = computed(() =>
   Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
 );
 const colorAnnoLinesChoice = ref(true);
-const colorAnnoLines = computed(() => colorAnnoLinesChoice.value && annoGroups.value.length > 1);
+const colorAnnoLines = computed(
+  () => colorAnnoLinesChoice.value && annoCfg.value.groups.length > 1
+);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.special.annotations.displayTemplate) return [];
@@ -178,9 +180,7 @@ const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
           case 'k':
             item.key = p[2];
             item.group =
-              props.resource.config.special.annotations.annoIntegration.itemProps.find(
-                (props) => props.key === item.key
-              )?.group || undefined;
+              annoCfg.value.itemProps.find((props) => props.key === item.key)?.group || undefined;
             break;
           case 'p':
             item.prefix = p[2];
@@ -219,9 +219,7 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
               type: 'anno',
               content: `${a.key}:${a.value}` + (i < t.annotations.length - 1 ? '; ' : ''),
               group:
-                props.resource.config.special.annotations.annoIntegration.itemProps.find(
-                  (props) => props.key === a.key
-                )?.group || undefined,
+                annoCfg.value.itemProps.find((props) => props.key === a.key)?.group || undefined,
             }) as AnnotationDisplay
         ) || [],
       ];
@@ -254,12 +252,21 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
       }
       // compose the content, prefix and suffix from the template and the data
       const content =
-        anno.template.content?.replace(/\\k/g, anno.data?.key || '').replace(
-          /\\v/g,
-          anno.data?.value
-            // join the values with the delimiter set in the resource config
-            .join(props.resource.config.special.annotations.multiValueDelimiter || '/') || ''
-        ) || '';
+        anno.template.content
+          ?.replace(/\\k/g, anno.data?.key || '')
+          .replace(
+            /\\t/g,
+            pickTranslation(
+              annoCfg.value.itemProps.find((props) => props.key === anno.data?.key)?.translations,
+              state.locale
+            )
+          )
+          .replace(
+            /\\v/g,
+            anno.data?.value
+              // join the values with the delimiter set in the resource config
+              .join(props.resource.config.special.annotations.multiValueDelimiter || '/') || ''
+          ) || '';
       const prefix = i > 0 ? anno.template.prefix || '' : '';
       const suffix =
         i < annos.length - 1 && annos[i + 1].template.type !== 'br'
@@ -303,7 +310,9 @@ const contents = computed(() => {
         .map((t) =>
           t.annoDisplay[ln].filter(
             (anno) =>
-              !anno.group || activeAnnoGroups.value.includes(anno.group) || !annoGroups.value.length
+              !anno.group ||
+              activeAnnoGroups.value.includes(anno.group) ||
+              !annoCfg.value.groups.length
           )
         )
         .some((line) => !!line.length)
@@ -338,7 +347,7 @@ function handleTokenClick(token: Token) {
     annotations: groupAndSortItems(
       annos,
       props.resource.config.special.annotations.annoIntegration.groups,
-      props.resource.config.special.annotations.annoIntegration.itemProps
+      annoCfg.value.itemProps
     ).map((g) => ({
       group:
         pickTranslation(
@@ -350,9 +359,7 @@ function handleTokenClick(token: Token) {
       items: g.items.map((i) => ({
         key:
           pickTranslation(
-            props.resource.config.special.annotations.annoIntegration.itemProps.find(
-              (props) => props.key === i.key
-            )?.translations,
+            annoCfg.value.itemProps.find((props) => props.key === i.key)?.translations,
             state.locale
           ) || i.key,
         value: i.value,
@@ -393,7 +400,7 @@ function handleTokenContextMenuSelect(key: string | number) {
 
 function toggleAnnoGroup(key: string) {
   if (activeAnnoGroups.value.includes(key) && activeAnnoGroups.value.length <= 1) {
-    activeAnnoGroups.value = annoGroups.value.map((g) => g.key);
+    activeAnnoGroups.value = annoCfg.value.groups.map((g) => g.key);
   } else if (activeAnnoGroups.value.includes(key)) {
     activeAnnoGroups.value = activeAnnoGroups.value.filter((g) => g !== key);
   } else {
@@ -451,8 +458,8 @@ function generatePlaintextAnno(): string {
   <div>
     <n-flex v-if="!focusView" class="mb-md">
       <!-- ANNOTATION GROUP TOGGLES -->
-      <template v-if="!!annoGroups.length">
-        <template v-for="group in annoGroups">
+      <template v-if="!!annoCfg.groups.length">
+        <template v-for="group in annoCfg.groups">
           <n-button
             v-if="presentGroups.includes(group.key)"
             :tertiary="!colorAnnoLines"
@@ -460,7 +467,7 @@ function generatePlaintextAnno(): string {
             :key="group.key"
             size="tiny"
             :focusable="false"
-            :disabled="annoGroups.length == 1"
+            :disabled="annoCfg.groups.length == 1"
             :color="colorAnnoLines ? groupColors[group.key] : undefined"
             :text-color="colorAnnoLines ? nuiTheme.textColor1 : undefined"
             @click="toggleAnnoGroup(group.key)"
@@ -517,7 +524,9 @@ function generatePlaintextAnno(): string {
             >
               <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
                 <span
-                  v-if="!anno.group || !annoGroups.length || activeAnnoGroups.includes(anno.group)"
+                  v-if="
+                    !anno.group || !annoCfg.groups.length || activeAnnoGroups.includes(anno.group)
+                  "
                   :style="{
                     ...anno.style,
                     transition: 'background-color 0.2s ease',
