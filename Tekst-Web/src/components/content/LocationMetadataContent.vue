@@ -21,11 +21,7 @@ const contents = computed(() =>
   (
     props.resource.contents?.map((c) => ({
       id: c.id,
-      groups: groupAndSortItems(
-        c.entries,
-        props.resource.config.special.entriesIntegration.groups,
-        props.resource.config.special.entriesIntegration.itemProps
-      ),
+      groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
     })) || []
   )
     // pick translations for groups and item keys, join values

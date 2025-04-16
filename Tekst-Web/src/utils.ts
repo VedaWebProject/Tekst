@@ -83,14 +83,13 @@ export async function delay(ms: number) {
 
 export function groupAndSortItems(
   items: { key: string; value: string[] }[],
-  groups: components['schemas']['ItemGroup'][],
-  itemProps: components['schemas']['ItemProps'][]
+  cfg: components['schemas']['ItemIntegrationConfig']
 ): {
   group?: string;
   items: { key: string; value: string[] }[];
 }[] {
   const itemPropsByKey = Object.fromEntries(
-    itemProps.map((props, i) => [props.key, { index: i, group: props.group }])
+    cfg.itemProps.map((props, i) => [props.key, { index: i, group: props.group }])
   );
   const _compare = (a: { key: string; value: string[] }, b: { key: string; value: string[] }) => {
     const comp =
@@ -99,12 +98,14 @@ export function groupAndSortItems(
     if (comp !== 0) return comp;
     return a.key.localeCompare(b.key);
   };
-  const grouped = groups.map((g) => ({
-    group: g.key,
-    items: items
-      .filter((item) => !!itemPropsByKey[item.key] && itemPropsByKey[item.key].group === g.key)
-      .sort(_compare),
-  }));
+  const grouped = cfg.groups
+    .map((g) => ({
+      group: g.key,
+      items: items
+        .filter((item) => !!itemPropsByKey[item.key] && itemPropsByKey[item.key].group === g.key)
+        .sort(_compare),
+    }))
+    .filter((g) => !!g.items.length);
   const ungrouped = [
     {
       group: undefined,
@@ -113,10 +114,10 @@ export function groupAndSortItems(
           (item) =>
             !itemPropsByKey[item.key] ||
             !itemPropsByKey[item.key].group ||
-            !groups.map((g) => g.key).includes(itemPropsByKey[item.key].group as string)
+            !cfg.groups.map((g) => g.key).includes(itemPropsByKey[item.key].group as string)
         )
         .sort(_compare),
     },
-  ];
+  ].filter((g) => !!g.items.length);
   return [...grouped, ...ungrouped];
 }

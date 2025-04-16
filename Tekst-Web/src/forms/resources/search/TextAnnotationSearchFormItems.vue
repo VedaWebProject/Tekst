@@ -9,7 +9,8 @@ import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { useResourcesStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
+import { groupAndSortItems, pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
@@ -19,6 +20,7 @@ const props = defineProps<{
 }>();
 const model = defineModel<TextAnnotationSearchQuery>({ required: true });
 
+const state = useStateStore();
 const resources = useResourcesStore();
 
 const annoValueStyle = {
@@ -27,33 +29,60 @@ const annoValueStyle = {
 
 const aggregations = ref<KeyValueAggregations>([]);
 const annoOptions = computed(() => {
-  const keysOptions = aggregations.value.map((agg) => ({ label: agg.key, value: agg.key }));
-  const anyValueOption = {
-    label: () => $t('resources.types.textAnnotation.searchFields.any'),
-    value: '',
-  };
+  const itemCfg = props.resource.config.special.annotations.annoIntegration;
+  const keysOptions = groupAndSortItems(
+    aggregations.value.map((agg) => ({ key: agg.key, value: agg.values })),
+    itemCfg
+  ).map((group) => ({
+    label:
+      pickTranslation(
+        itemCfg.groups.find((g) => g.key === group.group)?.translations,
+        state.locale
+      ) || group.group,
+    type: 'group',
+    children: group.items.map((item) => {
+      const lbl =
+        pickTranslation(
+          itemCfg.itemProps.find((p) => p.key === item.key)?.translations,
+          state.locale
+        ) || item.key;
+      return {
+        label: `${item.key} (${lbl})`,
+        value: item.key,
+      };
+    }),
+  }));
+
   return (
     model.value.anno?.map((a) => ({
-      keysOptions,
+      keysOptions: keysOptions.map((group) => ({
+        ...group,
+        // disable childred that are already in use
+        children: group.children.map((c) => ({
+          ...c,
+          disabled: model.value.anno?.map((an) => an.k).includes(c.value),
+        })),
+      })),
       valuesOptions: [
-        anyValueOption,
+        // "any value" option
+        {
+          label: () => $t('resources.types.textAnnotation.searchFields.any'),
+          value: '',
+        },
+        // existing values from aggregations
         ...(aggregations.value
-          .find(
-            // find possible values for the selected key
-            (agg) => agg.key === a.k
-          )
-          ?.values?.filter(
-            // filter out already selected values
+          // find possible values for the selected key
+          .find((agg) => agg.key === a.k)
+          ?.values // filter out already selected values
+          ?.filter(
             (v) =>
               !model.value.anno
                 ?.filter((an) => an.k === a.k)
                 .map((an) => an.v)
                 ?.includes(v)
           )
-          .map(
-            // map anno key-value pairs to options
-            (v) => ({ label: v, value: v, style: annoValueStyle })
-          ) || []),
+          // map anno key-value pairs to options
+          .map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
       ],
     })) || []
   );

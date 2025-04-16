@@ -11,7 +11,8 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { KeyboardReturnIcon } from '@/icons';
-import { useResourcesStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
+import { groupAndSortItems, pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NSelect, type SelectOption } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 
@@ -21,6 +22,7 @@ const props = defineProps<{
 const model = defineModel<TextAnnotationContentCreate>({ required: true });
 const tokenInputRefs = ref<{ [key: number]: InstanceType<typeof OskInput> }>({});
 
+const state = useStateStore();
 const resources = useResourcesStore();
 
 const annoValueStyle = {
@@ -31,21 +33,45 @@ const aggregations = ref<KeyValueAggregations>([]);
 const annoOptions = computed(() => {
   // all possible keys, containing unique keys collected in
   // aggregations and from the current model state
-  const keys = [
-    ...new Set([
-      ...aggregations.value.map((agg) => agg.key),
-      ...model.value.tokens.map((t) => t.annotations.map((a) => a.key) || []).flat(),
-    ]),
-  ];
+  const itemCfg = props.resource.config.special.annotations.annoIntegration;
+  const keys = aggregations.value
+    .map((agg) => ({ key: agg.key, value: agg.values }))
+    .concat(
+      model.value.tokens
+        .map((t) => t.annotations || [])
+        .flat()
+        .filter((a) => !aggregations.value.map((agg) => agg.key).includes(a.key))
+    );
+  const keysOptions = groupAndSortItems(keys, itemCfg).map((group) => ({
+    label:
+      pickTranslation(
+        itemCfg.groups.find((g) => g.key === group.group)?.translations,
+        state.locale
+      ) || group.group,
+    type: 'group',
+    children: group.items.map((item) => {
+      const lbl =
+        pickTranslation(
+          itemCfg.itemProps.find((p) => p.key === item.key)?.translations,
+          state.locale
+        ) || item.key;
+      return {
+        label: `${item.key} (${lbl})`,
+        value: item.key,
+      };
+    }),
+  }));
+
   return model.value.tokens.map(
     (t) =>
       t.annotations.map((a) => ({
-        keysOptions: keys
-          .filter((k) => !t.annotations.map((a) => a.key).includes(k))
-          .map((k) => ({
-            label: k,
-            value: k,
+        keysOptions: keysOptions.map((group) => ({
+          ...group,
+          children: group.children.map((c) => ({
+            ...c,
+            disabled: t.annotations?.map((an) => an.key).includes(c.value),
           })),
+        })),
         valuesOptions:
           aggregations.value
             .find((agg) => agg.key === a.key)

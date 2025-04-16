@@ -90,7 +90,10 @@ const presentGroups = computed(() => {
   return annoCfg.value.groups
     .filter((g) =>
       annoCfg.value.itemProps
-        .filter((props) => keys.has(props.key))
+        .filter(
+          (props) =>
+            keys.has(props.key) && displayTemplates.value.map((t) => t.key).includes(props.key)
+        )
         .map((props) => props.group)
         .filter((g) => !!g)
         .includes(g.key)
@@ -344,11 +347,7 @@ function handleTokenClick(token: Token) {
   tokenDetails.value = {
     token: token.token,
     comment: token.annotations.find((a) => a.key === 'comment')?.value.join('\n'),
-    annotations: groupAndSortItems(
-      annos,
-      props.resource.config.special.annotations.annoIntegration.groups,
-      annoCfg.value.itemProps
-    ).map((g) => ({
+    annotations: groupAndSortItems(annos, annoCfg.value).map((g) => ({
       group:
         pickTranslation(
           props.resource.config.special.annotations.annoIntegration.groups.find(

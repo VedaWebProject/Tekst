@@ -635,7 +635,7 @@ whenever(ArrowRight, () => {
       <correction-note-widget
         v-if="location"
         :quaternary="false"
-        dashed
+        secondary
         :resource="resource"
         :location-id="location.id"
         full

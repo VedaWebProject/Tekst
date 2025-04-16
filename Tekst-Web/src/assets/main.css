@@ -395,3 +395,7 @@ table td {
 .parent-form-item .n-form-item .n-form-item-label__text {
   font-weight: normal;
 }
+
+.n-base-select-menu .n-base-select-group-header {
+  font-size: var(--font-size-small);
+}
