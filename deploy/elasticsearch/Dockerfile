@@ -1,2 +1,2 @@
-FROM elasticsearch:8.17.4
+FROM elasticsearch:8.18.0
 RUN elasticsearch-plugin install analysis-icu
