@@ -336,6 +336,10 @@ table td {
   font-family: var(--font-family-content);
 }
 
+.font-mono {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .centered-spinner {
   width: 100%;
   display: flex;
