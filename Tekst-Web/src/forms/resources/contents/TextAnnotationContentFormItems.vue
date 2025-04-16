@@ -110,6 +110,7 @@ onMounted(async () => {
       :min="1"
       :max="1024"
       :create-button-props="dynInputCreateBtnProps"
+      item-class="divided"
       @create="handleInsertToken"
     >
       <template #default="{ value: tokenItem, index: tokenItemIndex }">

@@ -76,6 +76,7 @@ function generateItemProps() {
       :min="minGroups"
       :max="maxGroups"
       :create-button-props="dynInputCreateBtnProps"
+      item-class="divided"
       @create="() => ({ name: undefined, translations: [{ locale: '*', translation: undefined }] })"
     >
       <template #default="{ index }">
@@ -147,6 +148,7 @@ function generateItemProps() {
       :min="minItemProps"
       :max="maxItemProps"
       :create-button-props="dynInputCreateBtnProps"
+      item-class="divided"
       @create="
         () => ({
           name: undefined,

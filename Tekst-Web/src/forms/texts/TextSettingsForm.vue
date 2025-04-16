@@ -189,6 +189,7 @@ onBeforeRouteUpdate((to, from) => {
           :min="0"
           :max="32"
           :create-button-props="dynInputCreateBtnProps"
+          item-class="divided"
           @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
         >
           <template #default="{ index }">

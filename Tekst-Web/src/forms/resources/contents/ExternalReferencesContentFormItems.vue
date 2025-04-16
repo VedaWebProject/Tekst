@@ -24,6 +24,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
       :min="1"
       :max="100"
       :create-button-props="dynInputCreateBtnProps"
+      item-class="divided"
       @create="() => cloneDeep(defaultContentModels.externalReferences.links[0])"
     >
       <template #default="{ index }">

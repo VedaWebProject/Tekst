@@ -37,6 +37,7 @@ async function checkUrlInput(input: HTMLInputElement) {
       :min="1"
       :max="100"
       :create-button-props="dynInputCreateBtnProps"
+      item-class="divided"
       @create="() => cloneDeep(defaultContentModels.audio.files[0])"
     >
       <template #default="{ index }">

@@ -1,4 +1,3 @@
-import AddCircleOutlineOutlined from '@vicons/material/AddCircleOutlineOutlined';
 import AddOutlined from '@vicons/material/AddOutlined';
 import AltRouteOutlined from '@vicons/material/AltRouteOutlined';
 import ArrowBackOutlined from '@vicons/material/ArrowBackOutlined';
@@ -118,7 +117,6 @@ import VerticalAlignTopOutlined from '@vicons/material/VerticalAlignTopOutlined'
 import WarningAmberOutlined from '@vicons/material/WarningAmberOutlined';
 
 export {
-  AddCircleOutlineOutlined as AddCircleIcon,
   AddOutlined as AddIcon,
   ShieldOutlined as AdminIcon,
   ArrowBackOutlined as ArrowBackIcon,

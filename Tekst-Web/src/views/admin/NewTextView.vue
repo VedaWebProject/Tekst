@@ -10,7 +10,7 @@ import { usePlatformData } from '@/composables/platformData';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { textFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { AddCircleIcon } from '@/icons';
+import { TextsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { NAlert, NButton, NDynamicInput, NForm, NFormItem, NInput, type FormInst } from 'naive-ui';
 import { ref } from 'vue';
@@ -78,7 +78,7 @@ async function handleSave() {
 </script>
 
 <template>
-  <icon-heading level="1" :icon="AddCircleIcon">
+  <icon-heading level="1" :icon="TextsIcon">
     {{ $t('admin.newText.heading') }}
     <help-button-widget help-key="adminNewTextView" />
   </icon-heading>
