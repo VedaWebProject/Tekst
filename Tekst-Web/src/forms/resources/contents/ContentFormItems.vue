@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AnyContentCreate, AnyResourceRead } from '@/api';
+import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import { contentFormRules } from '@/forms/formRules';
 import resourceContentFormItems from '@/forms/resources/contents/mappings';
 import { NBadge, NCollapse, NCollapseItem, NFormItem, NInput } from 'naive-ui';
@@ -13,17 +14,22 @@ const model = defineModel<AnyContentCreate>({ required: true });
 
 <template>
   <template v-if="model">
+    <!-- CONTENT -->
+    <form-section-heading :label="$t('common.content')" />
     <component
       :is="resourceContentFormItems[model.resourceType]"
       v-model="model"
       :resource="resource"
     />
-    <n-collapse class="mb-lg">
+    <!-- CONTENT METADATA FIELDS -->
+    <n-collapse class="content-meta">
       <n-collapse-item name="meta">
         <template #header>
-          <n-badge value="!" :show="!!model.comment || !!model.notes" :offset="[10, 2]">
-            {{ $t('common.meta') }}
-          </n-badge>
+          <form-section-heading style="flex: 2">
+            <n-badge value="!" :show="!!model.comment || !!model.notes" :offset="[8, 2]">
+              {{ $t('common.meta') }}
+            </n-badge>
+          </form-section-heading>
         </template>
         <!-- COMMENT -->
         <n-form-item
@@ -55,3 +61,10 @@ const model = defineModel<AnyContentCreate>({ required: true });
     </n-collapse>
   </template>
 </template>
+
+<style scoped>
+.content-meta.n-collapse
+  :deep(.n-collapse-item .n-collapse-item__content-wrapper .n-collapse-item__content-inner) {
+  padding-top: 0;
+}
+</style>
