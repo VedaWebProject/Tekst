@@ -192,7 +192,6 @@ class RichTextContent(ContentBase):
     html: Annotated[
         ConStr(
             max_length=102400,
-            cleanup="multiline",
         ),
         Field(
             description="HTML content of the rich text content object",
