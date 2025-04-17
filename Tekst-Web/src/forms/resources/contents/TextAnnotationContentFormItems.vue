@@ -42,13 +42,18 @@ const annoOptions = computed(() => {
         .flat()
         .filter((a) => !aggregations.value.map((agg) => agg.key).includes(a.key))
     );
-  const keysOptions = groupAndSortItems(keys, itemCfg).map((group) => ({
+
+  // generate general key options
+  const keysOptions = groupAndSortItems(keys, itemCfg).map((group, i) => ({
     label:
       pickTranslation(
         itemCfg.groups.find((g) => g.key === group.group)?.translations,
         state.locale
-      ) || group.group,
+      ) ||
+      group.group ||
+      $t('common.other'),
     type: 'group',
+    key: `$group_${i}_${group.group || 'ungrouped'}`,
     children: group.items.map((item) => {
       const lbl =
         pickTranslation(
@@ -62,22 +67,27 @@ const annoOptions = computed(() => {
     }),
   }));
 
-  return model.value.tokens.map(
+  // generate key and value select options for each token
+  const options = model.value.tokens.map(
     (t) =>
       t.annotations.map((a) => ({
         keysOptions: keysOptions.map((group) => ({
           ...group,
           children: group.children.map((c) => ({
             ...c,
+            // disable options that are already selected
             disabled: t.annotations?.map((an) => an.key).includes(c.value),
           })),
         })),
+        // existing values from aggregations, filtered for the selected key
         valuesOptions:
           aggregations.value
             .find((agg) => agg.key === a.key)
             ?.values?.map((v) => ({ label: v, value: v })) || [],
       })) || []
   );
+
+  return options;
 });
 
 function renderValueLabel(option: SelectOption) {

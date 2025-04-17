@@ -1,4 +1,5 @@
 import type { LocationRead, TextRead, Translation, TranslationLocaleKey } from '@/api';
+import { uniqBy } from 'lodash-es';
 import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
 import type { components } from './api/schema';
@@ -83,14 +84,13 @@ export async function delay(ms: number) {
 
 export function groupAndSortItems(
   items: { key: string; value: string[] }[],
-  cfg: components['schemas']['ItemIntegrationConfig']
+  cfg: components['schemas']['ItemIntegrationConfig'],
+  unique: boolean = true,
+  filterNullishKeys: boolean = true
 ): {
   group?: string;
   items: { key: string; value: string[] }[];
 }[] {
-  const itemPropsByKey = Object.fromEntries(
-    cfg.itemProps.map((props, i) => [props.key, { index: i, group: props.group }])
-  );
   const _compare = (a: { key: string; value: string[] }, b: { key: string; value: string[] }) => {
     const comp =
       (itemPropsByKey[a.key] ? itemPropsByKey[a.key].index : Number.MAX_SAFE_INTEGER) -
@@ -98,10 +98,16 @@ export function groupAndSortItems(
     if (comp !== 0) return comp;
     return a.key.localeCompare(b.key);
   };
+  const proc_items = (unique ? uniqBy(items, 'key') : items).filter(
+    (item) => !filterNullishKeys || item.key != null
+  );
+  const itemPropsByKey = Object.fromEntries(
+    cfg.itemProps.map((props, i) => [props.key, { index: i, group: props.group }])
+  );
   const grouped = cfg.groups
     .map((g) => ({
       group: g.key,
-      items: items
+      items: proc_items
         .filter((item) => !!itemPropsByKey[item.key] && itemPropsByKey[item.key].group === g.key)
         .sort(_compare),
     }))
@@ -109,7 +115,7 @@ export function groupAndSortItems(
   const ungrouped = [
     {
       group: undefined,
-      items: items
+      items: proc_items
         .filter(
           (item) =>
             !itemPropsByKey[item.key] ||

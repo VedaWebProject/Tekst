@@ -30,16 +30,21 @@ const annoValueStyle = {
 const aggregations = ref<KeyValueAggregations>([]);
 const annoOptions = computed(() => {
   const itemCfg = props.resource.config.special.annotations.annoIntegration;
+
+  // generate general key options
   const keysOptions = groupAndSortItems(
     aggregations.value.map((agg) => ({ key: agg.key, value: agg.values })),
     itemCfg
-  ).map((group) => ({
+  ).map((group, i) => ({
     label:
       pickTranslation(
         itemCfg.groups.find((g) => g.key === group.group)?.translations,
         state.locale
-      ) || group.group,
+      ) ||
+      group.group ||
+      $t('common.other'),
     type: 'group',
+    key: `$group_${i}_${group.group || 'ungrouped'}`,
     children: group.items.map((item) => {
       const lbl =
         pickTranslation(
@@ -53,39 +58,40 @@ const annoOptions = computed(() => {
     }),
   }));
 
-  return (
-    model.value.anno?.map((a) => ({
-      keysOptions: keysOptions.map((group) => ({
-        ...group,
-        // disable childred that are already in use
-        children: group.children.map((c) => ({
-          ...c,
-          disabled: model.value.anno?.map((an) => an.k).includes(c.value),
-        })),
+  // generate key and value select options
+  const options = (model.value.anno || []).map((a) => ({
+    keysOptions: keysOptions.map((group) => ({
+      ...group,
+      // disable children that are already in use
+      children: group.children.map((c) => ({
+        ...c,
+        disabled: model.value.anno?.map((an) => an.k).includes(c.value),
       })),
-      valuesOptions: [
-        // "any value" option
-        {
-          label: () => $t('resources.types.textAnnotation.searchFields.any'),
-          value: '',
-        },
-        // existing values from aggregations
-        ...(aggregations.value
-          // find possible values for the selected key
-          .find((agg) => agg.key === a.k)
-          ?.values // filter out already selected values
-          ?.filter(
-            (v) =>
-              !model.value.anno
-                ?.filter((an) => an.k === a.k)
-                .map((an) => an.v)
-                ?.includes(v)
-          )
-          // map anno key-value pairs to options
-          .map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
-      ],
-    })) || []
-  );
+    })),
+    valuesOptions: [
+      // "any value" option
+      {
+        label: () => $t('resources.types.textAnnotation.searchFields.any'),
+        value: '',
+      },
+      // existing values from aggregations
+      ...(aggregations.value
+        // find possible values for the selected key
+        .find((agg) => agg.key === a.k)
+        ?.values?.filter(
+          // filter out already selected values
+          (v) =>
+            !model.value.anno
+              ?.filter((an) => an.k === a.k)
+              .map((an) => an.v)
+              ?.includes(v)
+        )
+        // map anno key-value pairs to options
+        .map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
+    ],
+  }));
+
+  return options;
 });
 
 function getAnnoValueSelectStyle(value?: string) {
