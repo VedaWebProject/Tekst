@@ -19,7 +19,7 @@ const fontStyle = {
 const contentCss = computed(() =>
   Object.fromEntries(props.resource.config.special.contentCss.map((c) => [c.prop, c.value]))
 );
-const cutomStyle = computed(() => ({ ...contentCss.value, ...fontStyle }));
+const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
 </script>
 
 <template>
