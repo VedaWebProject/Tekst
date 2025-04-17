@@ -57,12 +57,10 @@ const oskOptions = computed(
 );
 
 const fontOptions = computed(() =>
-  [...(state.pf?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font']
-    .filter((f) => !!f)
-    .map((f) => ({
-      label: f,
-      value: f,
-    }))
+  state.fonts.map((f) => ({
+    label: f,
+    value: f,
+  }))
 );
 
 const cCMarks = {
@@ -74,7 +72,7 @@ const cCMarks = {
 };
 
 function renderFontLabel(option: SelectOption) {
-  const fontIsValid = !!option.value && !!state.pf?.state.fonts?.includes(option.value as string);
+  const fontIsValid = !!option.value && !!state.fonts.includes(option.value as string);
   return h(
     'div',
     {

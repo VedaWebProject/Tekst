@@ -93,6 +93,11 @@ export const useStateStore = defineStore('state', () => {
     return effectiveLocale;
   }
 
+  // available fonts
+  const fonts = computed(() =>
+    [...(pf.value?.state.fonts || []), 'Tekst Content Font', 'Tekst UI Font'].filter((f) => !!f)
+  );
+
   // current text
 
   const text = ref<TextRead>();
@@ -169,6 +174,7 @@ export const useStateStore = defineStore('state', () => {
 
   return {
     pf,
+    fonts,
     init,
     smallScreen,
     isTouchDevice,

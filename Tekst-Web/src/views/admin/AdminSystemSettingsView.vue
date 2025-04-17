@@ -57,9 +57,7 @@ const localeOptions = computed(() =>
   localeProfiles.map((lp) => ({ label: `${lp.icon} ${lp.displayFull}`, value: lp.key }))
 );
 
-const oskFontOptions = computed(
-  () => state.pf?.state.fonts.map((f) => ({ label: f, value: f })) || []
-);
+const oskFontOptions = computed(() => state.fonts.map((f) => ({ label: f, value: f })) || []);
 
 const resourceTypeOptions = computed(
   () =>
@@ -70,14 +68,14 @@ const resourceTypeOptions = computed(
 );
 
 const fontOptions = computed(() =>
-  (formModel.value.fonts || []).map((f) => ({
+  state.fonts.map((f) => ({
     label: f,
     value: f,
   }))
 );
 
 function renderFontLabel(option: SelectOption) {
-  const fontIsValid = !!option.value && !!formModel.value.fonts?.includes(option.value as string);
+  const fontIsValid = !!option.value && !!state.fonts.includes(option.value as string);
   return h(
     'div',
     {
