@@ -308,14 +308,12 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, _, next) => {
+router.beforeEach(async (to, _from) => {
   // enforce route restrictions
   if (to.meta.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
-    while (!state.init.authChecked) {
-      await delay(50);
-    }
+    while (!state.init.authChecked) await delay(50);
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
     const l = auth.loggedIn; // a user is logged in
@@ -329,11 +327,20 @@ router.beforeEach(async (to, _, next) => {
       if (!auth.loggedIn) {
         auth.showLoginModal(undefined, to.fullPath, false);
       }
-      return next({ name: 'home' });
+      return { name: 'home' };
     }
   }
-  // proceed to next hook in router pipeline
-  next();
+  // detect invalid slug
+  if ('textSlug' in to.params) {
+    const state = useStateStore();
+    while (!state.pf) await delay(50);
+    if (!state.pf.texts.find((t) => t.slug === to.params.textSlug)) {
+      const { message } = useMessages();
+      message.warning($t('errors.invalidSlug', { slug: to.params.textSlug }));
+      return { name: 'home' };
+    }
+  }
+  return true;
 });
 
 router.afterEach((to, from) => {

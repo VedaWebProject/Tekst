@@ -105,6 +105,7 @@ init:
 errors:
   error: Fehler
   init: Fehler beim Starten der Anwendung. Die API scheint nicht bereit oder nicht erreichbar zu sein.
+  invalidSlug: Es existiert kein Text mit dem Identifikator "{slug}".
   loadData: Es ist ein Fehler beim Laden der Daten vom Server aufgetreten.
   notFound: Die angefragten Daten konnten nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.
@@ -309,6 +310,7 @@ models:
       passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
     slug: Identifikator
+    slugChangeWarning: Das Ändern des Identifikators des Textes wird alle existierenden URLs mit dem alten Identifikator ungültig machen! Benutzer haben möglicherweise URLs mit dem alten Identifikator gespeichert oder geteilt!
     defaultLevel: Standardebene
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)

@@ -103,6 +103,7 @@ init:
 errors:
   error: Error
   init: Error initializing the application. It seems the API isn't ready or unreachable.
+  invalidSlug: There is no text with the identifier "{slug}".
   loadData: There was an error loading data from the server.
   notFound: The requested data could not be found.
   unexpected: An unexpected error occurred. This should not happen.
@@ -306,6 +307,7 @@ models:
       passwordRepNoMatch: Passwords don't match
   text:
     slug: Identifier
+    slugChangeWarning: Changing the text's identifier will invalidate all existing URLs using the old identifier! Users might have bookmarked or shared the URL using the old identifier!
     defaultLevel: Default level
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)

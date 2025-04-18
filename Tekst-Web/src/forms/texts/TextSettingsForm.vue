@@ -15,6 +15,7 @@ import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { cloneDeep } from 'lodash-es';
 import {
+  NAlert,
   NButton,
   NColorPicker,
   NDynamicInput,
@@ -51,6 +52,14 @@ const defaultLevelOptions = computed(() =>
     value: i,
   }))
 );
+
+const slugChangeWarning = computed(() => {
+  if (!model.value || !state.text) return undefined;
+  if (model.value.slug !== state.text.slug) {
+    return $t('models.text.slugChangeWarning');
+  }
+  return undefined;
+});
 
 function resetForm() {
   model.value = initialModel();
@@ -121,11 +130,19 @@ onBeforeRouteUpdate((to, from) => {
       />
 
       <!-- SLUG -->
+      <n-alert
+        v-if="slugChangeWarning"
+        type="warning"
+        :title="$t('models.text.slugChangeWarning')"
+        class="mb-md"
+      />
       <n-form-item path="slug" :label="$t('models.text.slug')">
         <n-input
           v-model:value="model.slug"
           type="text"
           :placeholder="$t('models.text.slug')"
+          :style="{ backgroundColor: slugChangeWarning ? 'var(--warning-color)' : undefined }"
+          :input-props="{ style: { color: slugChangeWarning ? 'var(--base-color)' : undefined } }"
           @keydown.enter.prevent
         />
       </n-form-item>
