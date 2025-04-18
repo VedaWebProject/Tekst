@@ -74,7 +74,7 @@ useFavicon();
           style="height: 100vh"
         >
           <huge-labelled-icon
-            :message="$t('init.error')"
+            :message="$t('errors.init')"
             :loading="!state.init.error && !state.init.initialized"
             :icon="ErrorIcon"
           />

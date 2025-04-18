@@ -101,10 +101,10 @@ init:
   systemSegments: Füge Seitensegmente ein...
   fonts: Lade Schriftarten...
   ready: Fertig.
-  error: Es sind Fehler beim Starten der Anwendung aufgetreten. Der Server scheint nicht bereit oder nicht erreichbar zu sein.
 
 errors:
   error: Fehler
+  init: Fehler beim Starten der Anwendung. Die API scheint nicht bereit oder nicht erreichbar zu sein.
   loadData: Es ist ein Fehler beim Laden der Daten vom Server aufgetreten.
   notFound: Die angefragten Daten konnten nicht gefunden werden.
   unexpected: Ein unerwarteter Fehler ist aufgetreten. Das hätte nicht passieren dürfen.

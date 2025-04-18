@@ -36,6 +36,7 @@ export function useInitializeApp() {
           await state.setLocale();
           return success;
         } catch {
+          await state.setLocale(); // load default locale for further messages
           message.error($t('errors.loadData'));
           return false;
         }

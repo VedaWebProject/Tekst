@@ -99,10 +99,10 @@ init:
   systemSegments: Inserting system site segments...
   fonts: Loading fonts...
   ready: Ready.
-  error: There were errors initializing the application. It seems like the server is not ready or unreachable.
 
 errors:
   error: Error
+  init: Error initializing the application. It seems the API isn't ready or unreachable.
   loadData: There was an error loading data from the server.
   notFound: The requested data could not be found.
   unexpected: An unexpected error occurred. This should not happen.

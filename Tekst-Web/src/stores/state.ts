@@ -80,7 +80,7 @@ export const useStateStore = defineStore('state', () => {
   ): Promise<LocaleProfile> {
     const availableLocaleKeys = pf.value?.state.availableLocales as LocaleKey[] | undefined;
     const effectiveLocale = await setI18nLocale(
-      availableLocaleKeys?.find((al) => al === l) || 'enUS'
+      availableLocaleKeys?.find((al) => al === l) || availableLocaleKeys?.[0] || 'enUS'
     );
     if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {
       try {

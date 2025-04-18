@@ -43,7 +43,7 @@ router = APIRouter(
     summary="Get platform data",
     status_code=status.HTTP_200_OK,
 )
-async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> dict:
+async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> PlatformData:
     """Returns data the client needs to initialize"""
     return PlatformData(
         texts=await get_all_texts(ou),
