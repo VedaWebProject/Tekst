@@ -3,27 +3,38 @@ import { $t } from '@/i18n';
 import { ref, unref, watchEffect, type Ref } from 'vue';
 import { useMessages } from './messages';
 
-export function useOskLayout(oskModeKey: Ref<string | null | undefined>) {
-  const oskLayout = ref<{ char: string; shift?: string }[][][]>();
+type OskLayout = { char: string; shift?: string }[][][];
+const _cache = new Map<string, OskLayout>();
+
+export function useOskLayout(oskKey: Ref<string | null | undefined>) {
+  const oskLayout = ref<OskLayout>();
   const error = ref(false);
   const loading = ref(false);
 
   async function load(key?: string | null) {
-    oskLayout.value = undefined;
+    loading.value = true;
+    error.value = false;
 
-    if (key == null) {
-      loading.value = false;
+    if (!key) {
+      oskLayout.value = undefined;
       error.value = true;
+      loading.value = false;
       return;
     }
 
-    loading.value = true;
-    error.value = false;
+    if (_cache.has(key)) {
+      oskLayout.value = _cache.get(key);
+      loading.value = false;
+      return;
+    }
+
     const path = `${STATIC_PATH}/osk/${key}.json`;
 
     try {
       const response = await fetch(path);
-      oskLayout.value = await response.json();
+      const data = await response.json();
+      _cache.set(key, data);
+      oskLayout.value = data;
     } catch {
       oskLayout.value = undefined;
       error.value = true;
@@ -35,8 +46,7 @@ export function useOskLayout(oskModeKey: Ref<string | null | undefined>) {
   }
 
   watchEffect(() => {
-    loading.value = true;
-    load(unref(oskModeKey));
+    load(unref(oskKey));
   });
 
   return {
