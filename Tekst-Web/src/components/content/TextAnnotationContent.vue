@@ -117,7 +117,7 @@ const groupColors = computed<Record<string, string>>(() =>
             ),
             1
           ),
-          theme.dark ? 0.8 : 0.9
+          theme.dark ? 0.82 : 0.92
         )
       ),
     ])
