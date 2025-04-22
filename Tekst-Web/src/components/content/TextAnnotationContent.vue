@@ -528,7 +528,6 @@ function generatePlaintextAnno(): string {
                   "
                   :style="{
                     ...anno.style,
-                    transition: 'background-color 0.2s ease',
                     backgroundColor:
                       colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
                   }"
@@ -678,10 +677,20 @@ function generatePlaintextAnno(): string {
 }
 
 .annotations > .anno-sequence {
-  height: 1.4em;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  margin-bottom: 2px;
 }
 
 .annotations > .anno-sequence:empty {
   visibility: hidden;
+}
+
+.annotations > .anno-sequence > span {
+  padding: 0 1px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+  border-radius: var(--border-radius);
 }
 </style>
