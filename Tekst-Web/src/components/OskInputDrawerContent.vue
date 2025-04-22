@@ -72,46 +72,31 @@ whenever(Enter, () => {
   >
     <template #header>
       <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
-        <n-flex align="center" :wrap="false" style="flex: 4 300px">
-          <n-icon :component="KeyboardIcon" size="24" color="var(--accent-color)" />
-          <div
-            v-if="!!oskInput.length"
-            :style="fontStyle"
-            style="line-height: 1.5"
-            :class="{ 'text-large': !state.smallScreen }"
-            class="ellipsis"
-          >
-            {{ oskInputResult }}
-          </div>
-          <div v-else class="translucent ellipsis">
-            {{ $t('osk.inputPlaceholder') }}
-          </div>
-          <div style="flex: 2"></div>
-          <n-button
-            secondary
-            type="primary"
-            :focusable="false"
-            :disabled="!oskInput.length"
-            @click="oskInput.pop()"
-          >
-            <template #icon>
-              <n-icon :component="BackspaceIcon" />
-            </template>
-          </n-button>
-        </n-flex>
-        <n-select
-          ref="oskModeSelectRef"
-          v-model:value="oskKey"
-          :options="oskModeOptions"
-          style="flex: 1 200px"
-          :consistent-menu-width="false"
-          :disabled="oskModeOptions.length <= 1"
-          @update:value="() => handleInput()"
-        />
+        <n-icon :component="KeyboardIcon" size="24" color="var(--accent-color)" />
+        <span
+          :style="oskInputResult ? fontStyle : undefined"
+          style="line-height: 1.5em; flex: 2"
+          :class="{ 'text-large': !state.smallScreen }"
+        >
+          {{ oskInputResult || $t('osk.inputPlaceholder') }}
+        </span>
+        <n-button text :focusable="false" :disabled="!oskInput.length" @click="oskInput.pop()">
+          <template #icon>
+            <n-icon :component="BackspaceIcon" />
+          </template>
+        </n-button>
       </n-flex>
     </template>
 
-    <n-flex align="center" justify="center" style="min-height: 100%">
+    <n-flex vertical :size="32">
+      <n-select
+        ref="oskModeSelectRef"
+        v-model:value="oskKey"
+        :options="oskModeOptions"
+        :consistent-menu-width="false"
+        :disabled="oskModeOptions.length <= 1"
+        @update:value="() => handleInput()"
+      />
       <n-flex v-if="oskLayout" vertical justify="center" align="center" :size="18">
         <n-flex
           v-for="(line, lineIndex) in oskLayout"
