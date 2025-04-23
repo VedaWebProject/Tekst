@@ -50,6 +50,7 @@
   font-style: normal;
   font-weight: 100 600;
   font-display: swap;
+  ascent-override: 95%;
   src: url('fonts/Noto-Serif/Noto-Serif-Regular.eot'); /* IE9 */
   src:
     url('fonts/Noto-Serif/Noto-Serif-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -64,6 +65,7 @@
   font-style: italic;
   font-weight: 100 600;
   font-display: swap;
+  ascent-override: 95%;
   src: url('fonts/Noto-Serif/Noto-Serif-Italic.eot'); /* IE9 */
   src:
     url('fonts/Noto-Serif/Noto-Serif-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -78,6 +80,7 @@
   font-style: normal;
   font-weight: 700 900;
   font-display: swap;
+  ascent-override: 95%;
   src: url('fonts/Noto-Serif/Noto-Serif-500.eot'); /* IE9 */
   src:
     url('fonts/Noto-Serif/Noto-Serif-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
