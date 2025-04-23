@@ -17,6 +17,7 @@ import { pickTranslation } from '@/utils';
 const props = defineProps<{
   resource: AnyResourceRead;
   full?: boolean;
+  showComments?: boolean;
 }>();
 
 const emit = defineEmits(['done']);
@@ -79,6 +80,8 @@ async function handleClick() {
       <component
         :is="contentComponents[resource.resourceType]"
         :resource="{ ...resource, contents: contents }"
+        :show-comments="showComments"
+        :dir="resource.config.general.rtl ? 'rtl' : undefined"
       />
     </div>
 

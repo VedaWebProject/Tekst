@@ -69,7 +69,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
       </icon-heading>
-      <metadata-display :data="resource.meta" :content-font="resource.contentFont" />
+      <metadata-display :data="resource.meta" :font="resource.contentFont" />
       <n-divider />
     </template>
 

@@ -135,7 +135,8 @@ class RichText(ResourceTypeABC):
                 [
                     "LOCATION",
                     "HTML",
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -143,7 +144,8 @@ class RichText(ResourceTypeABC):
                     [
                         full_location_labels.get(str(content.location_id), ""),
                         content.html,
-                        content.comment,
+                        content.authors_comment,
+                        content.editors_comment,
                     ]
                 )
 

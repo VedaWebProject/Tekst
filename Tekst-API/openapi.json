@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.12.0a0"
+    "version": "0.13.0a0"
   },
   "servers": [
     {
@@ -7520,7 +7520,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -7531,22 +7531,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "query": {
             "type": "string",
@@ -7613,7 +7613,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -7624,22 +7624,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "query": {
             "type": "string",
@@ -7682,7 +7682,7 @@
             "const": "apiCall",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -7693,23 +7693,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "query": {
@@ -7816,6 +7816,13 @@
             "default": false,
             "optionalNullable": false
           },
+          "showComments": {
+            "type": "boolean",
+            "title": "Showcomments",
+            "description": "Show authors/editors comments by default (if any)",
+            "default": false,
+            "optionalNullable": false
+          },
           "searchableQuick": {
             "type": "boolean",
             "const": false,
@@ -7865,6 +7872,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": false,
               "searchableAdv": false,
               "rtl": false
@@ -7989,6 +7997,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -8232,6 +8241,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -8479,7 +8489,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -8490,22 +8500,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "files": {
             "items": {
@@ -8560,7 +8570,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -8571,22 +8581,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "files": {
             "items": {
@@ -8617,7 +8627,7 @@
             "const": "audio",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -8628,23 +8638,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "files": {
@@ -8724,6 +8734,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -8845,6 +8856,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -9078,6 +9090,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -10189,7 +10202,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -10200,22 +10213,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "links": {
             "items": {
@@ -10270,7 +10283,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -10281,22 +10294,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "links": {
             "items": {
@@ -10327,7 +10340,7 @@
             "const": "externalReferences",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -10338,23 +10351,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "links": {
@@ -10419,6 +10432,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -10540,6 +10554,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -10773,6 +10788,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -11076,6 +11092,13 @@
             "default": false,
             "optionalNullable": false
           },
+          "showComments": {
+            "type": "boolean",
+            "title": "Showcomments",
+            "description": "Show authors/editors comments by default (if any)",
+            "default": false,
+            "optionalNullable": false
+          },
           "searchableQuick": {
             "type": "boolean",
             "title": "Searchablequick",
@@ -11243,7 +11266,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -11254,22 +11277,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "files": {
             "items": {
@@ -11324,7 +11347,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -11335,22 +11358,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "files": {
             "items": {
@@ -11381,7 +11404,7 @@
             "const": "images",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -11392,23 +11415,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "files": {
@@ -11444,6 +11467,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -11565,6 +11589,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -11798,6 +11823,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               }
             }
@@ -12423,7 +12449,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -12434,22 +12460,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "entries": {
             "items": {
@@ -12504,7 +12530,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -12515,22 +12541,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "entries": {
             "items": {
@@ -12561,7 +12587,7 @@
             "const": "locationMetadata",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -12572,23 +12598,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "entries": {
@@ -12715,6 +12741,13 @@
             "default": false,
             "optionalNullable": false
           },
+          "showComments": {
+            "type": "boolean",
+            "title": "Showcomments",
+            "description": "Show authors/editors comments by default (if any)",
+            "default": false,
+            "optionalNullable": false
+          },
           "searchableQuick": {
             "type": "boolean",
             "title": "Searchablequick",
@@ -12798,6 +12831,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": false,
               "searchableAdv": true,
               "rtl": false
@@ -12918,6 +12952,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -13157,6 +13192,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -13759,7 +13795,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -13770,22 +13806,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "text": {
             "type": "string",
@@ -13837,7 +13873,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -13848,22 +13884,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "text": {
             "type": "string",
@@ -13891,7 +13927,7 @@
             "const": "plainText",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -13902,23 +13938,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "text": {
@@ -13951,6 +13987,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -14080,6 +14117,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -14328,6 +14366,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -15606,7 +15645,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -15617,22 +15656,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "html": {
             "type": "string",
@@ -15694,7 +15733,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -15705,22 +15744,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "html": {
             "type": "string",
@@ -15758,7 +15797,7 @@
             "const": "richText",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -15769,23 +15808,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "html": {
@@ -15895,6 +15934,13 @@
             "default": false,
             "optionalNullable": false
           },
+          "showComments": {
+            "type": "boolean",
+            "title": "Showcomments",
+            "description": "Show authors/editors comments by default (if any)",
+            "default": false,
+            "optionalNullable": false
+          },
           "searchableQuick": {
             "type": "boolean",
             "title": "Searchablequick",
@@ -15943,6 +15989,7 @@
               "defaultActive": true,
               "collapsibleContents": 400,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -16062,6 +16109,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -16300,6 +16348,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -16879,7 +16928,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -16890,22 +16939,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "tokens": {
             "items": {
@@ -16959,7 +17008,7 @@
             "description": "Text location ID",
             "example": "5eb7cf5a86d9755df3a6c593"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -16970,22 +17019,22 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content"
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author"
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content"
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
           "tokens": {
             "items": {
@@ -17015,7 +17064,7 @@
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
-          "comment": {
+          "authorsComment": {
             "anyOf": [
               {
                 "type": "null"
@@ -17026,23 +17075,23 @@
                 "minLength": 1
               }
             ],
-            "title": "Comment",
-            "description": "Plain text, potentially multiline comment that will be displayed with the content",
+            "title": "Authorscomment",
+            "description": "Plain text, potentially multiline comment of the original content author",
             "optionalNullable": true
           },
-          "notes": {
+          "editorsComment": {
             "anyOf": [
               {
                 "type": "null"
               },
               {
                 "type": "string",
-                "maxLength": 1000,
+                "maxLength": 5000,
                 "minLength": 1
               }
             ],
-            "title": "Notes",
-            "description": "Plain text, potentially multiline working notes on this content meant as an aid for people editing this content",
+            "title": "Editorscomment",
+            "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
           "tokens": {
@@ -17140,6 +17189,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
+              "showComments": false,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -17263,6 +17313,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {
@@ -17505,6 +17556,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
+                "showComments": false,
                 "sortOrder": 10
               },
               "special": {

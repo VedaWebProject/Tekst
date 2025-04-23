@@ -27,6 +27,7 @@ const props = defineProps<{
 const browse = useBrowseStore();
 const state = useStateStore();
 
+const showComments = ref(props.resource.config.general.showComments);
 const contentsLoaded = computed(() => !!props.resource.contents?.length);
 const onChildLevel = computed(() => props.resource.level - 1 === browse.level);
 const contentContextLoaded = computed(() => contentsLoaded.value && onChildLevel.value);
@@ -154,6 +155,7 @@ watch(
         </n-flex>
       </n-flex>
       <content-header-widget-bar
+        v-model:show-comments="showComments"
         :resource="resource"
         :opacity="headerWidgetsOpacity"
         :small-screen="state.smallScreen"
@@ -174,6 +176,7 @@ watch(
           :is="contentComponents[resource.resourceType]"
           :resource="resource"
           :focus-view="browse.focusView"
+          :show-comments="showComments && !browse.focusView"
           :dir="resource.config.general.rtl ? 'rtl' : undefined"
         />
       </collapsible-content>

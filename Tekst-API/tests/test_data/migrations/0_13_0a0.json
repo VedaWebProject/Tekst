@@ -1,0 +1,32 @@
+[
+  {
+    "_id": { "$oid": "66471b7fba9e65342c8e4963" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "comment": "FOO",
+    "notes": "BAR",
+    "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "66471b86ba9e65342c8e4965" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "comment": "FOO",
+    "notes": "BAR",
+    "text": "|: gib sie wieder her! :|"
+  },
+  {
+    "_id": { "$oid": "66471b8dba9e65342c8e4967" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "comment": "FOO",
+    "notes": "BAR",
+    "text": "|: Sonst wird dich der Jäger holen,"
+  }
+]

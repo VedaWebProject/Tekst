@@ -31,6 +31,7 @@ const props = withDefaults(
   }
 );
 
+const showComments = defineModel<boolean>('showComments');
 const state = useStateStore();
 
 const showWidgetsModal = ref(false);
@@ -65,8 +66,8 @@ function handleSmallScreenWidgetsTriggered() {
       :config="specialConfigs.deeplLinks"
     />
     <!-- generic widgets -->
-    <location-content-context-widget :resource="resource" />
-    <content-comment-widget :resource="resource" />
+    <location-content-context-widget :resource="resource" :show-comments="showComments" />
+    <content-comment-widget v-model:show-comments="showComments" :resource="resource" />
     <correction-note-widget :resource="resource" />
     <resource-export-widget :resource="resource" />
     <content-edit-widget :resource="resource" />

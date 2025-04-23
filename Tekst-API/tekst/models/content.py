@@ -42,27 +42,26 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
-    comment: Annotated[
+    authors_comment: Annotated[
         ConStrOrNone(
             max_length=50000,
             cleanup="multiline",
         ),
         Field(
             description=(
-                "Plain text, potentially multiline comment "
-                "that will be displayed with the content"
+                "Plain text, potentially multiline comment of "
+                "the original content author"
             ),
         ),
     ] = None
-    notes: Annotated[
+    editors_comment: Annotated[
         ConStrOrNone(
-            max_length=1000,
+            max_length=5000,
             cleanup="multiline",
         ),
         Field(
             description=(
-                "Plain text, potentially multiline working notes on this content "
-                "meant as an aid for people editing this content"
+                "Plain text, potentially multiline comment / working notes by an editor"
             ),
         ),
     ] = None

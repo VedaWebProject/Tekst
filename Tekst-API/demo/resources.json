@@ -470,6 +470,7 @@
         "sort_order": 10,
         "default_active": true,
         "enable_content_context": true,
+        "show_comments": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
@@ -534,7 +535,10 @@
               },
               {
                 "key": "comment",
-                "translations": [{ "locale": "*", "translation": "comment" }],
+                "translations": [
+                  { "locale": "enUS", "translation": "Comment" },
+                  { "locale": "deDE", "translation": "Kommentar" }
+                ],
                 "group": "misc"
               }
             ]

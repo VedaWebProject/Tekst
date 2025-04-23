@@ -5,11 +5,15 @@ import { contentFormRules } from '@/forms/formRules';
 import resourceContentFormItems from '@/forms/resources/contents/mappings';
 import { NBadge, NCollapse, NCollapseItem, NFormItem, NInput } from 'naive-ui';
 
-defineProps<{
+const props = defineProps<{
   resource: AnyResourceRead;
 }>();
 
 const model = defineModel<AnyContentCreate>({ required: true });
+
+const contentFontStyle = {
+  fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
+};
 </script>
 
 <template>
@@ -26,35 +30,45 @@ const model = defineModel<AnyContentCreate>({ required: true });
       <n-collapse-item name="meta">
         <template #header>
           <form-section-heading style="flex: 2">
-            <n-badge value="!" :show="!!model.comment || !!model.notes" :offset="[8, 2]">
+            <n-badge
+              value="!"
+              :show="!!model.authorsComment || !!model.editorsComment"
+              :offset="[8, 2]"
+            >
               {{ $t('common.meta') }}
             </n-badge>
           </form-section-heading>
         </template>
-        <!-- COMMENT -->
+        <!-- AUTHORS COMMENT -->
         <n-form-item
-          :label="$t('common.comment')"
-          path="comment"
-          :rule="contentFormRules.common.comment"
+          :label="$t('resources.types.common.contentFields.authorsComment')"
+          path="authorsComment"
+          :rule="contentFormRules.common.authorsComment"
         >
           <n-input
-            v-model:value="model.comment"
+            v-model:value="model.authorsComment"
             type="textarea"
             :rows="3"
+            :maxlength="50000"
+            show-count
             :placeholder="$t('common.comment')"
+            :style="contentFontStyle"
           />
         </n-form-item>
-        <!-- NOTES -->
+        <!-- EDITORS COMMENT -->
         <n-form-item
-          :label="$t('resources.types.common.contentFields.notes')"
+          :label="$t('resources.types.common.contentFields.editorsComment')"
           path="notes"
-          :rule="contentFormRules.common.notes"
+          :rule="contentFormRules.common.editorsComment"
         >
           <n-input
+            v-model:value="model.editorsComment"
             type="textarea"
             :rows="2"
-            v-model:value="model.notes"
-            :placeholder="$t('resources.types.common.contentFields.notes')"
+            :maxlength="5000"
+            show-count
+            :placeholder="$t('resources.types.common.contentFields.editorsComment')"
+            :style="contentFontStyle"
           />
         </n-form-item>
       </n-collapse-item>

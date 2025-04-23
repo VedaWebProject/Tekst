@@ -187,7 +187,7 @@ class ResourceTypeABC(ABC):
         """
         return dict(
             native=native,
-            comment=content.comment,
+            comment=content.authors_comment,
             **(cls._rtype_index_doc(content) or {}),
         )
 

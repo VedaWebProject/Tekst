@@ -2,11 +2,13 @@
 import type { RichTextResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { computed } from 'vue';
+import CommonContentDisplay from './CommonContentDisplay.vue';
 
 const props = withDefaults(
   defineProps<{
     resource: RichTextResourceRead;
     focusView?: boolean;
+    showComments?: boolean;
   }>(),
   {
     focusView: false,
@@ -24,18 +26,25 @@ const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
 
 <template>
   <div>
-    <div
+    <common-content-display
       v-for="content in resource.contents"
       :key="content.id"
-      :class="{
-        'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
-      }"
+      :show-comments="showComments"
+      :authors-comment="content.authorsComment"
+      :editors-comment="content.editorsComment"
+      :font="fontStyle.fontFamily"
     >
-      <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
-      <div v-else class="translucent i font-ui text-small">
-        {{ $t('contents.msgContentNoFocusView') }}
+      <div
+        :class="{
+          'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
+        }"
+      >
+        <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
+        <div v-else class="translucent i font-ui text-small">
+          {{ $t('contents.msgContentNoFocusView') }}
+        </div>
       </div>
-    </div>
+    </common-content-display>
   </div>
 </template>
 

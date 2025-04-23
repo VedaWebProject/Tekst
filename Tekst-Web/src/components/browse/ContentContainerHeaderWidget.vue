@@ -7,12 +7,15 @@ defineProps<{
   title: string;
   disabled?: boolean;
   full?: boolean;
+  toggled?: boolean;
 }>();
 </script>
 
 <template>
   <n-button
-    quaternary
+    :quaternary="!toggled"
+    :secondary="toggled"
+    :type="toggled ? 'primary' : undefined"
     :block="full"
     :circle="!full"
     :focusable="false"

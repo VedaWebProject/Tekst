@@ -130,7 +130,8 @@ class PlainText(ResourceTypeABC):
                 [
                     "LOCATION",
                     "TEXT",
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -138,7 +139,8 @@ class PlainText(ResourceTypeABC):
                     [
                         full_location_labels.get(str(content.location_id), ""),
                         content.text,
-                        content.comment,
+                        content.authors_comment,
+                        content.editors_comment,
                     ]
                 )
 

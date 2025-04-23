@@ -25,7 +25,7 @@ async def test_create_content(
         "resourceType": "plainText",
         "locationId": str(location.id),
         "text": "Ein Raabe geht im Feld spazieren.",
-        "comment": "This is a comment",
+        "authorsComment": "This is a comment",
     }
 
     # fail to create content with invalid resource type
@@ -55,7 +55,7 @@ async def test_create_content(
     assert_status(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == content_create_data["text"]
-    assert resp.json()["comment"] == content_create_data["comment"]
+    assert resp.json()["authorsComment"] == content_create_data["authorsComment"]
     assert "id" in resp.json()
 
     # fail to create duplicate
@@ -163,22 +163,26 @@ async def test_update_content(
     # update content w/ empty comment and note strings
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
-        json={"resourceType": "plainText", "comment": "", "notes": ""},
+        json={"resourceType": "plainText", "authorsComment": "", "editorsComment": ""},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["comment"] is None
-    assert resp.json()["notes"] is None
+    assert resp.json()["authorsComment"] is None
+    assert resp.json()["editorsComment"] is None
 
     # update content w/ None as comment and note
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
-        json={"resourceType": "plainText", "comment": None, "notes": None},
+        json={
+            "resourceType": "plainText",
+            "authorsComment": None,
+            "editorsComment": None,
+        },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["comment"] is None
-    assert resp.json()["notes"] is None
+    assert resp.json()["authorsComment"] is None
+    assert resp.json()["editorsComment"] is None
 
     # fail to update content with wrong ID
     resp = await test_client.patch(

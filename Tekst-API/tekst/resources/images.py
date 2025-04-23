@@ -139,7 +139,8 @@ class Images(ResourceTypeABC):
                     "URL",
                     "THUMB_URL",
                     "CAPTION",
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -150,7 +151,8 @@ class Images(ResourceTypeABC):
                             image_file.url,
                             image_file.thumb_url,
                             image_file.caption,
-                            content.comment,
+                            content.authors_comment,
+                            content.editors_comment,
                         ]
                     )
 

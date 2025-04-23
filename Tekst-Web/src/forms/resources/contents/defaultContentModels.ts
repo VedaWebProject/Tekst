@@ -1,19 +1,11 @@
-const common = {
-  comment: undefined,
-  notes: undefined,
-};
-
 export const defaultContentModels = {
   plainText: {
-    ...common,
     text: '',
   },
   richText: {
-    ...common,
     html: '',
   },
   textAnnotation: {
-    ...common,
     tokens: [
       {
         token: undefined,
@@ -22,7 +14,6 @@ export const defaultContentModels = {
     ],
   },
   locationMetadata: {
-    ...common,
     entries: [
       {
         key: undefined,
@@ -31,7 +22,6 @@ export const defaultContentModels = {
     ],
   },
   audio: {
-    ...common,
     files: [
       {
         url: undefined,
@@ -40,7 +30,6 @@ export const defaultContentModels = {
     ],
   },
   images: {
-    ...common,
     files: [
       {
         url: '',
@@ -51,7 +40,6 @@ export const defaultContentModels = {
     ],
   },
   externalReferences: {
-    ...common,
     links: [
       {
         url: undefined,
@@ -61,7 +49,6 @@ export const defaultContentModels = {
     ],
   },
   apiCall: {
-    ...common,
     url: undefined,
   },
 };

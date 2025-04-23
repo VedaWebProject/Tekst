@@ -8,7 +8,7 @@ common:
   title: Title
   subtitle: Subtitle
   description: Description
-  comment: Comment
+  comment: Comment | Comments
   settings: Settings
   switchThemeLight: Switch to light mode
   switchThemeDark: Switch to dark mode
@@ -453,6 +453,7 @@ resources:
         sortOrder: Sort order
         defaultActive: Resource is active by default when public
         enableContentContext: Enable viewing contents in context of parent level
+        showComments: Show authors/editors comments by default
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced search
         rtl: Right-to-left content text direction
@@ -498,7 +499,8 @@ resources:
   types:
     common:
       contentFields:
-        notes: Working Notes
+        authorsComment: Author's comment
+        editorsComment: Editor's comment / working notes
     plainText:
       label: Plain Text
       parenthesis: unstyled plain text content

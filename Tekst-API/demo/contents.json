@@ -194,8 +194,6 @@
     "resource_id": { "$oid": "6641ce24affa6cb96bc85a55" },
     "resource_type": "images",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "comment": null,
-    "notes": null,
     "files": [
       {
         "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
@@ -223,8 +221,6 @@
     "resource_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
     "resource_type": "externalReferences",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "comment": null,
-    "notes": null,
     "links": [
       {
         "url": "https://upload.wikimedia.org/score/o/k/oki67jic10ff1lnlz2s8fve28mcf0q6/oki67jic.midi",
@@ -249,8 +245,6 @@
     "resource_id": { "$oid": "6641d510affa6cb96bc85a5b" },
     "resource_type": "audio",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "comment": null,
-    "notes": null,
     "files": [
       {
         "url": "https://archive.org/download/78_fuchs-du-hast-die-gans-gestohlen_gbia0534511a/Fuchs%20du%20hast%20die%20Gans%20gestohlen.mp3",
@@ -275,8 +269,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "comment": null,
-    "notes": null,
     "text": "Fox, you stole the goose,"
   },
   {
@@ -285,8 +277,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "comment": null,
-    "notes": null,
     "text": "|: Give it back! :|"
   },
   {
@@ -295,8 +285,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "comment": null,
-    "notes": null,
     "text": "|: Otherwise the hunter will get it,"
   },
   {
@@ -305,8 +293,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "comment": null,
-    "notes": null,
     "text": "with the rifle. :|"
   },
   {
@@ -315,8 +301,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "comment": null,
-    "notes": null,
     "text": "|: shoots the buckshot at you, :|"
   },
   {
@@ -325,8 +309,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "comment": null,
-    "notes": null,
     "text": "|: so that the ink will stain you red"
   },
   {
@@ -335,8 +317,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "comment": null,
-    "notes": null,
     "text": "and then you are dead. :|"
   },
   {
@@ -345,8 +325,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "comment": null,
-    "notes": null,
     "text": "Dear little vixen, take it from me,"
   },
   {
@@ -355,8 +333,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "comment": null,
-    "notes": null,
     "text": "|: Don't be a thief; :|"
   },
   {
@@ -365,8 +341,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "comment": null,
-    "notes": null,
     "text": "|: You don't need roast goose,"
   },
   {
@@ -375,8 +349,6 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "comment": null,
-    "notes": null,
     "text": "make do with the mouse. :|"
   },
   {
@@ -385,8 +357,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "comment": null,
-    "notes": null,
     "text": "Fuchs, du hast die Gans gestohlen,"
   },
   {
@@ -395,8 +365,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "comment": null,
-    "notes": null,
     "text": "|: gib sie wieder her! :|"
   },
   {
@@ -405,8 +373,7 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
-    "notes": null,
+    "editors_comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
     "text": "|: Sonst wird dich der Jäger holen,"
   },
   {
@@ -415,8 +382,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "comment": null,
-    "notes": null,
     "text": "mit dem Schießgewehr. :|"
   },
   {
@@ -425,8 +390,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-    "comment": null,
-    "notes": null,
     "text": "Seine große, lange Flinte"
   },
   {
@@ -435,8 +398,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "comment": null,
-    "notes": null,
     "text": "|: schießt auf dich den Schrot, :|"
   },
   {
@@ -445,8 +406,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "comment": null,
-    "notes": null,
     "text": "|: dass dich färbt die rote Tinte"
   },
   {
@@ -455,8 +414,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "comment": null,
-    "notes": null,
     "text": "und dann bist du tot. :|"
   },
   {
@@ -465,8 +422,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "comment": null,
-    "notes": null,
     "text": "Liebes Füchslein, lass dir raten,"
   },
   {
@@ -475,8 +430,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "comment": null,
-    "notes": null,
     "text": "|: sei doch nur kein Dieb; :|"
   },
   {
@@ -485,8 +438,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "comment": null,
-    "notes": null,
     "text": "|: nimm, du brauchst nicht Gänsebraten,"
   },
   {
@@ -495,8 +446,6 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "comment": null,
-    "notes": null,
     "text": "mit der Maus vorlieb. :|"
   },
   {
@@ -505,8 +454,6 @@
     "resource_id": { "$oid": "66471de0ba9e65342c8e4995" },
     "resource_type": "externalReferences",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "comment": null,
-    "notes": null,
     "links": [
       {
         "url": "https://diglib.hab.de/drucke/un-17-1b/start.htm?image=00048",
@@ -953,7 +900,7 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "comment": "This is the only occurrence of the entity \"Mouse\"!",
+    "editors_comment": "This is the only occurrence of the entity \"Mouse\"!",
     "tokens": [
       {
         "token": "mit",
@@ -987,7 +934,7 @@
     "resource_id": { "$oid": "67472c393d0d7622956981c9" },
     "resource_type": "richText",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
-    "html": "<pre><code>\nG                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n    \nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n    \nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n</code></pre>",
+    "html": "<pre><code>G                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n    \nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n    \nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n</code></pre>",
     "editor_mode": "html"
   },
   {

@@ -3,11 +3,13 @@ import type { AudioResourceRead } from '@/api';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import { NFlex } from 'naive-ui';
 import { onBeforeUpdate, ref, type CSSProperties } from 'vue';
+import CommonContentDisplay from './CommonContentDisplay.vue';
 
 const props = withDefaults(
   defineProps<{
     resource: AudioResourceRead;
     focusView?: boolean;
+    showComments?: boolean;
   }>(),
   {
     focusView: false,
@@ -42,41 +44,35 @@ onBeforeUpdate(() => {
 
 <template>
   <div>
-    <n-flex v-for="content in resource.contents" :key="content.id" class="audio-content">
-      <audio-player
-        v-for="(file, fileIndex) in content.files"
-        :ref="
-          (el) =>
-            el &&
-            playerRefs.push({
-              id: `player-${content.id}-${fileIndex}`,
-              ref: el as InstanceType<typeof AudioPlayer>,
-            })
-        "
-        :key="fileIndex"
-        :src="file.url"
-        :external-link="file.sourceUrl || undefined"
-        :compact="focusView"
-        :caption="file.caption || undefined"
-        :font-style="fontStyle"
-        @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
-        @ended="() => handleEnded(`player-${content.id}-${fileIndex}`)"
-      />
-    </n-flex>
+    <common-content-display
+      v-for="content in resource.contents"
+      :key="content.id"
+      :show-comments="showComments"
+      :authors-comment="content.authorsComment"
+      :editors-comment="content.editorsComment"
+      :font="fontStyle.fontFamily"
+    >
+      <n-flex :vertical="!focusView" size="large">
+        <audio-player
+          v-for="(file, fileIndex) in content.files"
+          :ref="
+            (el) =>
+              el &&
+              playerRefs.push({
+                id: `player-${content.id}-${fileIndex}`,
+                ref: el as InstanceType<typeof AudioPlayer>,
+              })
+          "
+          :key="fileIndex"
+          :src="file.url"
+          :external-link="file.sourceUrl || undefined"
+          :compact="focusView"
+          :caption="file.caption || undefined"
+          :font-style="fontStyle"
+          @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
+          @ended="() => handleEnded(`player-${content.id}-${fileIndex}`)"
+        />
+      </n-flex>
+    </common-content-display>
   </div>
 </template>
-
-<style scoped>
-.audio-content:not(:only-child) {
-  padding: var(--gap-lg) 0;
-}
-
-.audio-content {
-  margin-top: inherit;
-}
-
-.audio-content:not(:first-child) {
-  padding-top: var(--gap-lg);
-  border-top: 1px solid var(--main-bg-color);
-}
-</style>

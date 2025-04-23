@@ -3,10 +3,13 @@ import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { useScriptTag } from '@vueuse/core';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import CommonContentDisplay from './CommonContentDisplay.vue';
 
 type ContentData = {
   query: ApiCallContentRead['query'];
   context: ApiCallContentRead['transformContext'];
+  authorsComment: ApiCallContentRead['authorsComment'];
+  editorsComment: ApiCallContentRead['editorsComment'];
 };
 type TransformationInput = { data: string; context?: unknown };
 
@@ -15,6 +18,7 @@ const AsyncFunction = async function () {}.constructor;
 const props = defineProps<{
   resource: ApiCallResourceRead;
   focusView?: boolean;
+  showComments?: boolean;
 }>();
 
 const fontStyle = {
@@ -22,9 +26,16 @@ const fontStyle = {
 };
 
 const contents = computed(() =>
-  props.resource.contents?.map((c) => ({ query: c.query, context: c.transformContext }))
+  props.resource.contents?.map((c) => ({
+    query: c.query,
+    context: c.transformContext,
+    authorsComment: c.authorsComment,
+    editorsComment: c.editorsComment,
+  }))
 );
-const html = ref<(string | undefined)[]>([]);
+const contentProcessed = ref<{ html?: string; authorsComment?: string; editorsComment?: string }[]>(
+  []
+);
 const loading = ref(false);
 
 function prepareRequest(query: string): Request {
@@ -65,18 +76,22 @@ async function updateContent(contents?: ContentData[]) {
     if (!content) continue;
     try {
       const resp = await fetch(prepareRequest(content.query));
-      newHtml[i] = resp.ok
-        ? await execTransformJs(props.resource.config.special.transform.js, {
-            data: await resp.text(),
-            context: !!content.context ? JSON.parse(content.context) : undefined,
-          })
-        : undefined;
+      newHtml[i] = {
+        html: resp.ok
+          ? await execTransformJs(props.resource.config.special.transform.js, {
+              data: await resp.text(),
+              context: !!content.context ? JSON.parse(content.context) : undefined,
+            })
+          : undefined,
+        authorsComment: content.authorsComment,
+        editorsComment: content.editorsComment,
+      };
     } catch (e) {
       newHtml[i] = undefined;
       console.log(e);
     }
   }
-  html.value = newHtml;
+  contentProcessed.value = newHtml;
   loading.value = false;
 }
 
@@ -84,7 +99,7 @@ watch(
   contents,
   (newContents, oldContents) => {
     if (!newContents?.length) {
-      html.value = [];
+      contentProcessed.value = [];
       return;
     } else if (JSON.stringify(newContents) === JSON.stringify(oldContents)) {
       return;
@@ -107,15 +122,22 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div :dir="resource.config.general.rtl ? 'rtl' : undefined">
-    <div v-for="(htmlPart, i) in html" :key="i">
+  <div>
+    <common-content-display
+      v-for="(content, i) in contentProcessed"
+      :key="i"
+      :show-comments="showComments"
+      :authors-comment="content.authorsComment"
+      :editors-comment="content.editorsComment"
+      :font="fontStyle.fontFamily"
+    >
       <template v-if="!focusView">
         <div
-          v-if="htmlPart !== undefined"
+          v-if="content.html !== undefined"
           class="content-loadable"
           :class="{ 'content-loading': loading }"
         >
-          <hydrated-html :html="htmlPart" :style="fontStyle" />
+          <hydrated-html :html="content.html" :style="fontStyle" />
         </div>
         <div v-else class="translucent i font-ui">
           {{ $t('errors.notFound') }}
@@ -124,6 +146,6 @@ onMounted(async () => {
       <div v-else class="translucent i font-ui text-small">
         {{ $t('contents.msgContentNoFocusView') }}
       </div>
-    </div>
+    </common-content-display>
   </div>
 </template>

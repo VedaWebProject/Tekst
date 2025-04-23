@@ -1,50 +1,42 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import GenericModal from '@/components/generic/GenericModal.vue';
 import { CommentIcon } from '@/icons';
-import { NBadge, NButton } from 'naive-ui';
-import { ref } from 'vue';
+import { NBadge } from 'naive-ui';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   resource: AnyResourceRead;
   full?: boolean;
 }>();
 
+const showComments = defineModel<boolean>('showComments');
 const emit = defineEmits(['done']);
 
-const showModal = ref(false);
+const authorsComments = computed(
+  () => props.resource.contents?.map((c) => c.authorsComment).filter(Boolean) || []
+);
+const editorsComments = computed(
+  () => props.resource.contents?.map((c) => c.editorsComment).filter(Boolean) || []
+);
+const hasComments = computed(
+  () => !!authorsComments.value.length || !!editorsComments.value.length
+);
 </script>
 
 <template>
-  <n-badge v-if="!!resource.contents?.[0]?.comment" show dot :offset="[-5, 10]">
+  <n-badge v-if="hasComments" :show="!showComments" dot :offset="[-5, 10]">
     <content-container-header-widget
       :full="full"
-      :title="$t('common.comment')"
+      :title="$t('common.comment', 2)"
       :icon-component="CommentIcon"
+      :toggled="showComments"
       @click="
         () => {
-          showModal = true;
+          showComments = !showComments;
           emit('done');
         }
       "
     />
   </n-badge>
-
-  <generic-modal
-    v-model:show="showModal"
-    width="wide"
-    :title="$t('common.comment')"
-    :icon="CommentIcon"
-  >
-    <p v-if="resource.contents?.[0]?.comment" class="pre-wrap">
-      {{ resource.contents[0].comment }}
-    </p>
-    <button-shelf top-gap>
-      <n-button type="primary" @click="showModal = false">
-        {{ $t('common.close') }}
-      </n-button>
-    </button-shelf>
-  </generic-modal>
 </template>

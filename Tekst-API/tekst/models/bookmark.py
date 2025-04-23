@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from tekst.models.common import (
     DocumentBase,
@@ -10,7 +10,6 @@ from tekst.models.common import (
     PydanticObjectId,
 )
 from tekst.types import ConStrOrNone
-from tekst.utils.strings import cleanup_spaces_multiline
 
 
 class Bookmark(ModelBase, ModelFactoryMixin):
@@ -87,11 +86,6 @@ class Bookmark(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ] = None
-
-    @field_validator("comment", mode="after")
-    @classmethod
-    def format_comment(cls, v) -> str | None:
-        return cleanup_spaces_multiline(v) or None
 
 
 class BookmarkDocument(Bookmark, DocumentBase):

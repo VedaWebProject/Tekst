@@ -341,3 +341,24 @@ async def test_0_12_0a0(
         assert oag_cfg["item_props"][0]["translations"][0]["translation"] == "foo"
         assert oag_cfg["item_props"][1]["key"] == "bar"
         assert oag_cfg["item_props"][1]["translations"][0]["translation"] == "bar"
+
+
+@pytest.mark.anyio
+async def test_0_13_0a0(
+    database,
+    get_test_data,
+):
+    contents = get_test_data("migrations/0_13_0a0.json")
+    await database.contents.insert_many(contents)
+
+    # run migration
+    await _migration_fn("0_13_0a0")(database)
+    contents = await database.contents.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(contents) == 3
+    for content in contents:
+        assert "comment" not in content
+        assert "notes" not in content
+        assert content.get("authors_comment") == "FOO"
+        assert content.get("editors_comment") == "BAR"

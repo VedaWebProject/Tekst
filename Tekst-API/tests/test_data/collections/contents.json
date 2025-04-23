@@ -30,7 +30,7 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
     "text": "Qux",
-    "comment": "The word \"Qux\" truly deserves a comment!"
+    "authorsComment": "The word \"Qux\" truly deserves a comment!"
   },
   {
     "_id": { "$oid": "67c044e3906e79b9062e22ff" },
@@ -85,7 +85,7 @@
         "lb": false
       }
     ],
-    "comment": "This one has a comment!"
+    "authorsComment": "This one has a comment!"
   },
   {
     "_id": { "$oid": "67c04541906e79b9062e2304" },

@@ -134,12 +134,7 @@ class Audio(ResourceTypeABC):
                 quoting=csv.QUOTE_ALL,
             )
             csv_writer.writerow(
-                [
-                    "LOCATION",
-                    "URL",
-                    "CAPTION",
-                    "LOCATION_COMMENT",
-                ]
+                ["LOCATION", "URL", "CAPTION", "AUTHORS_COMMENT", "EDITORS_COMMENT"]
             )
             for content in contents:
                 for audio_file in content.files:
@@ -148,7 +143,8 @@ class Audio(ResourceTypeABC):
                             full_location_labels.get(str(content.location_id), ""),
                             audio_file.url,
                             audio_file.caption,
-                            content.comment,
+                            content.authors_comment,
+                            content.editors_comment,
                         ]
                     )
 

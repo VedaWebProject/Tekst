@@ -136,7 +136,8 @@ class ExternalReferences(ResourceTypeABC):
                     "URL",
                     "TITLE",
                     "DESCRIPTION",
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -147,7 +148,8 @@ class ExternalReferences(ResourceTypeABC):
                             link.url,
                             link.title,
                             link.description,
-                            content.comment,
+                            content.authors_comment,
+                            content.editors_comment,
                         ]
                     )
 

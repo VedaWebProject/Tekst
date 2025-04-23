@@ -48,6 +48,13 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = False
+    show_comments: Annotated[
+        bool,
+        Field(
+            description="Show authors/editors comments by default (if any)",
+        ),
+        SchemaOptionalNonNullable,
+    ] = False
     searchable_quick: Annotated[
         bool,
         Field(

@@ -19,6 +19,7 @@ import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
 import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
+import CommonContentDisplay from './CommonContentDisplay.vue';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -62,6 +63,7 @@ const props = withDefaults(
   defineProps<{
     resource: TextAnnotationResourceRead;
     focusView?: boolean;
+    showComments?: boolean;
   }>(),
   {
     focusView: false,
@@ -152,7 +154,7 @@ const tokenContextMenuOptions = computed(() => [
     : []),
 ]);
 
-const fontFamilyStyle = computed(() => ({
+const fontStyle = computed(() => ({
   fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 }));
 
@@ -337,7 +339,7 @@ function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSPropert
     fontWeight: fmtFlags.bold ? 'bold' : undefined,
     fontStyle: fmtFlags.italic ? 'italic' : undefined,
     fontVariant: fmtFlags.caps ? 'small-caps' : undefined,
-    fontFamily: fmtFlags.font ? fontFamilyStyle.value.fontFamily : undefined,
+    fontFamily: fmtFlags.font ? fontStyle.value.fontFamily : undefined,
   };
 }
 
@@ -498,49 +500,58 @@ function generatePlaintextAnno(): string {
     </n-flex>
 
     <!-- CONTENT -->
-    <n-flex :size="4" v-for="(c, cIndex) in contents" :key="c.id" class="anno-content">
-      <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
-        <div
-          class="token-container"
-          :class="{
-            'token-with-annos': !!t.annotations.length,
-            'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
-            'token-content-copied':
-              tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
-          }"
-          :title="$t('resources.types.textAnnotation.copyHintTip')"
-          @click="handleTokenClick(t)"
-          @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
-        >
-          <div class="token b i" :style="fontFamilyStyle">
-            {{ t.token }}
-          </div>
-          <div class="annotations">
-            <div
-              v-for="(annoLine, lineIndex) in t.annoDisplay"
-              :key="lineIndex"
-              class="anno-sequence"
-            >
-              <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
-                <span
-                  v-if="
-                    !anno.group || !annoCfg.groups.length || activeAnnoGroups.includes(anno.group)
-                  "
-                  :style="{
-                    ...anno.style,
-                    backgroundColor:
-                      colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
-                  }"
-                >
-                  {{ anno.content }}
-                </span>
-              </template>
+    <common-content-display
+      v-for="(c, cIndex) in contents"
+      :key="c.id"
+      :show-comments="showComments"
+      :authors-comment="c.authorsComment"
+      :editors-comment="c.editorsComment"
+      :font="fontStyle.fontFamily"
+    >
+      <n-flex :size="4" class="anno-content">
+        <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
+          <div
+            class="token-container"
+            :class="{
+              'token-with-annos': !!t.annotations.length,
+              'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
+              'token-content-copied':
+                tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
+            }"
+            :title="$t('resources.types.textAnnotation.copyHintTip')"
+            @click="handleTokenClick(t)"
+            @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
+          >
+            <div class="token b i" :style="fontStyle">
+              {{ t.token }}
+            </div>
+            <div class="annotations">
+              <div
+                v-for="(annoLine, lineIndex) in t.annoDisplay"
+                :key="lineIndex"
+                class="anno-sequence"
+              >
+                <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
+                  <span
+                    v-if="
+                      !anno.group || !annoCfg.groups.length || activeAnnoGroups.includes(anno.group)
+                    "
+                    :style="{
+                      ...anno.style,
+                      backgroundColor:
+                        colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
+                    }"
+                  >
+                    {{ anno.content }}
+                  </span>
+                </template>
+              </div>
             </div>
           </div>
-        </div>
-        <hr v-if="t.lb" class="token-lb" />
-      </template>
-    </n-flex>
+          <hr v-if="t.lb" class="token-lb" />
+        </template>
+      </n-flex>
+    </common-content-display>
 
     <generic-modal
       v-model:show="showDetailsModal"
@@ -611,15 +622,6 @@ function generatePlaintextAnno(): string {
 </template>
 
 <style scoped>
-.anno-content:not(:last-child) {
-  padding-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
-  margin-bottom: v-bind('focusView ? `var(--gap-sm)` : `var(--gap-md)`');
-}
-
-.anno-content:last-child {
-  margin-bottom: 4px;
-}
-
 .token-container {
   position: relative;
   display: flex;

@@ -56,7 +56,6 @@ import {
   NButton,
   NCollapse,
   NCollapseItem,
-  NDivider,
   NDropdown,
   NFlex,
   NForm,
@@ -537,22 +536,18 @@ whenever(ArrowRight, () => {
           </n-flex>
         </template>
 
-        <template v-if="compareResource.contents?.length">
+        <template v-if="!!compareResource.contents?.length">
           <component
             :is="contentComponents[compareResource.resourceType]"
             :resource="compareResource"
             :dir="resource.config.general.rtl ? 'rtl' : undefined"
+            show-comments
             class="mt-md"
           />
-          <div v-if="compareResource.contents[0]?.comment" class="text-small translucent">
-            <n-divider />
-            <strong>{{ $t('common.comment') }}:</strong>
-            {{ compareResource.contents[0].comment }}
-          </div>
         </template>
-        <span v-else style="opacity: 0.75; font-style: italic">{{ $t('contents.noContent') }}</span>
+        <span v-else class="translucent i">{{ $t('contents.noContent') }}</span>
 
-        <button-shelf>
+        <button-shelf class="mt-sm">
           <n-button
             secondary
             type="primary"

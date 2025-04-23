@@ -155,6 +155,14 @@ function renderCCMark(value: number) {
     </n-flex>
   </n-form-item>
 
+  <!-- SHOW COMMENTS BY DEFAULT -->
+  <n-form-item :show-label="false" :show-feedback="false">
+    <labeled-switch
+      v-model="model.showComments"
+      :label="$t('resources.settings.config.general.showComments')"
+    />
+  </n-form-item>
+
   <!-- QUICK SEARCHABLE -->
   <n-form-item :show-label="false" :show-feedback="false">
     <labeled-switch

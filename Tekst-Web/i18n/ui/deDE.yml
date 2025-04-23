@@ -8,7 +8,7 @@ common:
   title: Titel
   subtitle: Untertitel
   description: Beschreibung
-  comment: Kommentar
+  comment: Kommentar | Kommentare
   settings: Einstellungen
   switchThemeLight: Zu hellem Farbschema wechseln
   switchThemeDark: Zu dunklem Farbschema wechseln
@@ -464,6 +464,7 @@ resources:
         sortOrder: Sortierreihenfolge
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         enableContentContext: Ermögliche Anzeige von Inhalten im Kontext übergeordneter Ebene
+        showComments: Zeige standardmäßig Autoren/Editoren-Kommentare
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
         rtl: Rechts-nach-links Textrichtung für Inhalte
@@ -509,7 +510,8 @@ resources:
   types:
     common:
       contentFields:
-        notes: Arbeitsnotizen
+        authorsComment: Kommentar des Autors
+        editorsComment: Kommentar des Editors / Arbeitsnotizen
     plainText:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text

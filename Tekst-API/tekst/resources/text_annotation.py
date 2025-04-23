@@ -305,7 +305,8 @@ class TextAnnotation(ResourceTypeABC):
                     "POSITION",
                     "TOKEN",
                     *anno_keys,
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -325,7 +326,8 @@ class TextAnnotation(ResourceTypeABC):
                             i,
                             token.token,
                             *csv_annos,
-                            content.comment,
+                            content.authors_comment,
+                            content.editors_comment,
                         ]
                     )
 

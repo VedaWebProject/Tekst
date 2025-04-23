@@ -136,9 +136,3 @@ onMounted(() => {
     </div>
   </n-flex>
 </template>
-
-<style scoped>
-.audio-player {
-  padding: 8px 0;
-}
-</style>

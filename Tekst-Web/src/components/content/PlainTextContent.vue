@@ -2,11 +2,13 @@
 import type { LineLabellingConfig, PlainTextResourceRead } from '@/api';
 import { NFlex } from 'naive-ui';
 import { computed } from 'vue';
+import CommonContentDisplay from './CommonContentDisplay.vue';
 
 const props = withDefaults(
   defineProps<{
     resource: PlainTextResourceRead;
     focusView?: boolean;
+    showComments?: boolean;
   }>(),
   {
     focusView: false,
@@ -53,26 +55,34 @@ const fontStyle = {
 const contentCss = computed(() =>
   Object.fromEntries(props.resource.config.special.contentCss.map((c) => [c.prop, c.value]))
 );
-const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
+const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
 </script>
 
 <template>
-  <div :style="cutomStyle">
-    <div
+  <div>
+    <common-content-display
       v-for="(content, contentIndex) in contents"
       :key="content.id"
-      :class="{ 'mt-md': !focusView && contentIndex > 0 }"
-      :title="content.comment || undefined"
+      :show-comments="showComments"
+      :authors-comment="content.authorsComment"
+      :editors-comment="content.editorsComment"
+      :font="fontStyle.fontFamily"
     >
-      <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
-        <div
-          v-if="resource.config.special.lineLabelling.enabled && line.label != null"
-          class="text-color-accent font-ui text-small"
-        >
-          {{ line.label }}
-        </div>
-        <div>{{ line.text }}</div>
-      </n-flex>
-    </div>
+      <div
+        :class="{ 'mt-md': !focusView && contentIndex > 0 }"
+        :title="content.authorsComment || undefined"
+        :style="customStyle"
+      >
+        <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
+          <div
+            v-if="resource.config.special.lineLabelling.enabled && line.label != null"
+            class="text-color-accent font-ui text-small"
+          >
+            {{ line.label }}
+          </div>
+          <div>{{ line.text }}</div>
+        </n-flex>
+      </div>
+    </common-content-display>
   </div>
 </template>

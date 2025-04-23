@@ -9,16 +9,16 @@ defineProps<{
   queryIndex: number;
 }>();
 
-const comment =
+const authorsComment =
   defineModel<NonNullable<AdvancedSearchRequestBody['q']>[number]['cmn']['cmt']>('comment');
 </script>
 
 <template>
   <n-form-item
-    :label="$t('common.comment')"
+    :label="$t('resources.types.common.contentFields.authorsComment')"
     :path="`queries[${queryIndex}].cmn.cmt`"
-    :rule="searchFormRules.common.comment"
+    :rule="searchFormRules.common.authorsComment"
   >
-    <osk-input v-model="comment" :placeholder="$t('common.comment')" />
+    <osk-input v-model="authorsComment" :placeholder="$t('common.comment')" />
   </n-form-item>
 </template>

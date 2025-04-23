@@ -106,7 +106,8 @@ class ApiCall(ResourceTypeABC):
                     "METHOD",
                     "CONTENT_TYPE",
                     "QUERY",
-                    "LOCATION_COMMENT",
+                    "AUTHORS_COMMENT",
+                    "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
@@ -117,7 +118,8 @@ class ApiCall(ResourceTypeABC):
                         resource.config.special.api_call.method,
                         resource.config.special.api_call.content_type,
                         content.query,
-                        content.comment,
+                        content.authors_comment,
+                        content.editors_comment,
                     ]
                 )
 

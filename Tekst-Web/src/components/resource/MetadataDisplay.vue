@@ -5,7 +5,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   data?: Metadata;
-  contentFont?: string;
+  font?: string;
 }>();
 
 const meta = computed<string[][] | null>(() => {
@@ -39,11 +39,11 @@ const metaExtra = computed<string[][] | null>(() => {
   <table>
     <tr v-for="m in meta" :key="m[0]">
       <td class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</td>
-      <td :style="{ fontFamily: contentFont }">{{ m[1] || '' }}</td>
+      <td :style="{ fontFamily: font }">{{ m[1] || '' }}</td>
     </tr>
     <tr v-for="m in metaExtra" :key="m[0]">
       <td class="metadata-category i">{{ m[0] ? `${m[0]}:` : '' }}</td>
-      <td :style="{ fontFamily: contentFont }">{{ m[1] || '' }}</td>
+      <td :style="{ fontFamily: font }">{{ m[1] || '' }}</td>
     </tr>
   </table>
 </template>
