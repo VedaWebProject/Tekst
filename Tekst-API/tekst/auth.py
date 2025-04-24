@@ -326,7 +326,10 @@ async def get_user_manager(user_db=Depends(get_user_db)):
 
 _fastapi_users = FastAPIUsers[UserDocument, PydanticObjectId](
     get_user_manager,
-    [_auth_backend_cookie, _auth_backend_jwt],
+    [
+        _auth_backend_cookie,
+        _auth_backend_jwt,
+    ],
 )
 
 
@@ -388,19 +391,25 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
 def _current_user(**kwargs) -> callable:
     """Returns auth dependencies for API routes (optional auth in dev mode)"""
     return _fastapi_users.current_user(
-        optional=kwargs.pop("optional", False),
         get_enabled_backends=_get_enabled_backends,
         **kwargs,
     )
 
 
 # auth dependencies for API routes
-get_current_user = _current_user(verified=not _cfg.security.closed_mode, active=True)
+get_current_user = _current_user(
+    verified=not _cfg.security.closed_mode,
+    active=True,
+)
 get_current_superuser = _current_user(
-    verified=not _cfg.security.closed_mode, active=True, superuser=True
+    verified=not _cfg.security.closed_mode,
+    active=True,
+    superuser=True,
 )
 get_current_optional_user = _current_user(
-    verified=not _cfg.security.closed_mode, active=True, optional=True
+    optional=True,
+    verified=not _cfg.security.closed_mode,
+    active=True,
 )
 UserDep = Annotated[UserRead, Depends(get_current_user)]
 SuperuserDep = Annotated[UserRead, Depends(get_current_superuser)]
