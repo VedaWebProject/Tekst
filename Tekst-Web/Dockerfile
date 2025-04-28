@@ -2,7 +2,7 @@
 # BUILDER
 # =======
 
-FROM node:22.14.0-alpine3.20 AS builder
+FROM node:22.15.0-alpine3.20 AS builder
 
 ARG WEB_PATH
 ARG SERVER_URL
