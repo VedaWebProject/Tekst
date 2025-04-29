@@ -39,7 +39,6 @@ jobs:
         with:
           version: "0.6.13"
           enable-cache: true
-          cache-dependency-glob: "./Tekst-API/uv.lock"
       - name: Install Python
         uses: actions/setup-python@v5
         with:
