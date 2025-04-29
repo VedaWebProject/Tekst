@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: "caddy:2.9-alpine"
+    image: "caddy:2.10-alpine"
     restart: unless-stopped
     volumes:
       - "./caddy:/etc/caddy/:ro"
