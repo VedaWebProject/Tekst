@@ -119,7 +119,11 @@ async def _setup_index_templates() -> None:
     )
 
 
-async def create_indices_task(force: bool = False) -> dict[str, float]:
+async def create_indices_task(
+    cfg: TekstConfig = _cfg,
+    *,
+    force: bool = False,
+) -> dict[str, float]:
     op_id = log_op_start("Create search indices", level="INFO")
     await _wait_for_es()
     await _setup_index_templates()
@@ -191,11 +195,12 @@ async def create_indices_task(force: bool = False) -> dict[str, float]:
         client.indices.delete(index=to_delete)
 
     # perform initial bogus search on all existing indices (to initialize index stats)
-    client.search(
-        index=IDX_ALIAS,
-        query={"match_all": {}},
-        timeout=_cfg.es.timeout_search_s,
-    )
+    if client.indices.exists(index=IDX_ALIAS, allow_no_indices=True).body:
+        client.search(
+            index=IDX_ALIAS,
+            query={"match_all": {}},
+            timeout=cfg.es.timeout_search_s,
+        )
 
     # update last global indexing time
     await update_state(indices_updated_at=datetime.utcnow())

@@ -1,11 +1,11 @@
 import { GET, type LocationRead } from '@/api';
-import { WEB_PATH } from '@/common';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
 import { createRouter, createWebHistory, type LocationQuery } from 'vue-router';
+import env from '@/env';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -65,7 +65,7 @@ async function _resolveLocation(locationQuery: LocationQuery): Promise<LocationR
 }
 
 const router = createRouter({
-  history: createWebHistory(WEB_PATH),
+  history: createWebHistory(env.WEB_PATH),
   linkActiveClass: 'active',
   routes: [
     {

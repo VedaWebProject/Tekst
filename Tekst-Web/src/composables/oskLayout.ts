@@ -1,7 +1,7 @@
-import { STATIC_PATH } from '@/common';
 import { $t } from '@/i18n';
 import { ref, unref, watchEffect, type Ref } from 'vue';
 import { useMessages } from './messages';
+import env from '@/env';
 
 type OskLayout = { char: string; shift?: string }[][][];
 const _cache = new Map<string, OskLayout>();
@@ -28,7 +28,7 @@ export function useOskLayout(oskKey: Ref<string | null | undefined>) {
       return;
     }
 
-    const path = `${STATIC_PATH}/osk/${key}.json`;
+    const path = `${env.STATIC_PATH}/osk/${key}.json`;
 
     try {
       const response = await fetch(path);

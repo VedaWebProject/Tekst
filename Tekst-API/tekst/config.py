@@ -285,7 +285,11 @@ class MiscConfig(ConfigSubSection):
     usrmsg_force_delete_after_days: int = 365
     max_resources_per_user: int = 10
     del_exports_after_minutes: int = 5
-    demo_data_path: DirectoryPath = Path(realpath(__file__)).parent.parent / "demo"
+
+    @computed_field
+    @property
+    def demo_data_path(self) -> str:
+        return Path(realpath(__file__)).parent.parent / "demo"
 
 
 class TekstConfig(BaseSettings):

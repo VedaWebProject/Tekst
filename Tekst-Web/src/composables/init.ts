@@ -1,4 +1,3 @@
-import { STATIC_PATH } from '@/common';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
@@ -6,6 +5,7 @@ import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
 import { useAsyncQueue, useStyleTag } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
+import env from '@/env';
 
 interface InitStep {
   key: string;
@@ -105,7 +105,7 @@ export function useInitializeApp() {
       info: () => $t('init.fonts'),
       action: async (success: boolean = true) => {
         try {
-          const response = await fetch(`${STATIC_PATH}/fonts.css`);
+          const response = await fetch(`${env.STATIC_PATH}/fonts.css`);
           useStyleTag(await response.text(), { id: 'custom-fonts' });
         } catch {
           // do sweet FA

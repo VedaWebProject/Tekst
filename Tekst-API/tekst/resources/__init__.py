@@ -314,7 +314,7 @@ class ResourceTypeABC(ABC):
         }
         res["subtitle"] = {
             sub_trans["locale"]: sub_trans["translation"]
-            for sub_trans in res["subtitle"]
+            for sub_trans in res.get("subtitle", [])
         }
         res["level"] = {
             lvl_trans["locale"]: lvl_trans["translation"]
@@ -322,7 +322,7 @@ class ResourceTypeABC(ABC):
         }
         res["description"] = {
             description["locale"]: description["translation"]
-            for description in res["description"]
+            for description in res.get("description", [])
         }
         res["meta"] = {meta["key"]: meta["value"] for meta in res["meta"]}
 

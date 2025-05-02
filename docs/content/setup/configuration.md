@@ -18,7 +18,7 @@ Full public URL of the server running the application (without sub path, port on
 Public sub path of the API (String – default: `/api`)
 
 ### `TEKST_WEB_PATH`
-Public sub path of the web client; **if using the project's** `compose.yml`**, this has to be set even if the value matches the default!** (String – default: `/`)
+Public sub path of the web client (String – default: `/`)
 
 ### `TEKST_BEHIND_REVERSE_PROXY`
 If the API runs behind a reverse proxy (e.g. if using the the project's `compose.yml`), set this to `true` and make sure the reverse proxy is properly setting (or appending to) the [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) header on the passed requests. This is to make sure the API is able to **try to** prevent accidentally flooding the workers with long-running background jobs. (Boolean – default: `false`)
@@ -244,6 +244,3 @@ Maximum number of resources/versions that one user is allowed to own (Integer �
 
 ### `TEKST_MISC__DEL_EXPORTS_AFTER_MINUTES`
 Time in minutes after whichfinished/failed tasks that produce a downloadable file artifact (namely "exports") will be deleted automatically, including the respective file (Integer – default: `5`)
-
-### `TEKST_MISC__DEMO_DATA_PATH`
-Path to demo data files – only change this if you deviate from the recommended deployment strategy (Directory path – default: `Tekst-API/demo`)

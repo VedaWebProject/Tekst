@@ -1,0 +1,16 @@
+**/__pycache__/
+**/.pytest_cache/
+**/htmlcov/
+**/.github/
+**/.env/
+**/.venv/
+**/.vscode/
+**/.git/
+**/dist/
+**/node_modules/
+
+**/Dockerfile
+**/compose.yml
+**/.coverage
+**/.dockerignore
+**/Taskfile.yml

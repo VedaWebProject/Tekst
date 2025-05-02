@@ -1,32 +1,12 @@
 services:
-  web:
+  tekst:
     build:
-      context: ./Tekst-Web
+      context: .
       target: prod
-      args:
-        SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
-        API_PATH: ${TEKST_API_PATH:-/api}
-        WEB_PATH: ${TEKST_WEB_PATH:-/}
-    image: "tekst-web:custom"
-    environment:
-      TEKST_SERVER_URL: ${TEKST_SERVER_URL:-http://127.0.0.1:8000}
-      TEKST_API_PATH: ${TEKST_API_PATH:-/api}
-    volumes:
-      - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
-      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    restart: always
-    ports:
-      - "127.0.0.1:8087:80"
-    networks:
-      - api
-
-  api:
-    build:
-      context: ./Tekst-API
-      target: prod
-    image: "tekst-api:custom"
+    image: "tekst:alpha"
     restart: always
     init: true
+    env_file: .env
     depends_on:
       mongo:
         condition: service_healthy
@@ -34,11 +14,11 @@ services:
       es:
         condition: service_healthy
         restart: true
-    env_file: .env
     volumes:
-      - ./deploy/gunicorn/gunicorn_conf.py:/etc/gunicorn/gunicorn_conf.py:ro
+      - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
+    ports:
+      - "127.0.0.1:8087:80"
     networks:
-      - api
       - mongo
       - es
 
@@ -70,7 +50,7 @@ services:
 
   es:
     build:
-      context: ./deploy/elasticsearch
+      context: ./docker/elasticsearch
     image: "elasticsearch:tekst"
     environment:
       discovery.type: single-node
@@ -106,6 +86,5 @@ volumes:
   es_data:
 
 networks:
-  api:
   mongo:
   es:
