@@ -184,9 +184,11 @@ async def test_update_user(
 
 
 @pytest.mark.anyio
-async def test_create_initial_superuser():
+async def test_create_initial_superuser(config):
     await create_initial_superuser()  # will abort because of dev mode
-    await create_initial_superuser(force=True)  # forced despite dev mode
+    prod_cfg = config.model_copy(deep=True)
+    prod_cfg.dev_mode = False
+    await create_initial_superuser(prod_cfg)  # will create initial superuser
 
 
 @pytest.mark.anyio

@@ -1,0 +1,73 @@
+{
+  "texts": [
+    {
+      "_id": { "$oid": "654ba1f3ec7833e469dde444" },
+      "title": "Welcome to Tekst",
+      "slug": "welcome",
+      "subtitle": [
+        { "locale": "enUS", "translation": "This is just a placeholder text" },
+        { "locale": "deDE", "translation": "Dies ist nur ein Platzhaltertext" }
+      ],
+      "levels": [
+        [
+          { "locale": "enUS", "translation": "Level One" },
+          { "locale": "deDE", "translation": "Ebene Eins" }
+        ]
+      ],
+      "is_active": true
+    }
+  ],
+  "locations": [
+    {
+      "_id": { "$oid": "654b825533ee5737b297f123" },
+      "text_id": { "$oid": "654ba1f3ec7833e469dde444" },
+      "parent_id": null,
+      "level": 0,
+      "position": 0,
+      "label": "Intro",
+      "aliases": ["intro"]
+    }
+  ],
+  "resources": [
+    {
+      "_id": { "$oid": "654b825533ee5737b297f777" },
+      "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+      "title": [{ "locale": "*", "translation": "Welcome Message" }],
+      "subtitle": [
+        {
+          "locale": "deDE",
+          "translation": "Diese Ressource enhält eine Willkommensnachricht"
+        },
+        {
+          "locale": "enUS",
+          "translation": "This resource holds a welcome message"
+        }
+      ],
+      "text_id": { "$oid": "654ba1f3ec7833e469dde444" },
+      "level": 0,
+      "resource_type": "plainText",
+      "shared_read": [],
+      "shared_write": [],
+      "public": true,
+      "proposed": false,
+      "citation": "Tekst. Welcome Message. 2042.",
+      "description": [],
+      "meta": [
+        { "key": "author", "value": "Tekst Developer" },
+        { "key": "year", "value": "2042" },
+        { "key": "language", "value": "EN" }
+      ],
+      "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    }
+  ],
+  "contents": [
+    {
+      "_id": { "$oid": "654b825533ee5737b297f111" },
+      "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+      "resource_id": { "$oid": "654b825533ee5737b297f777" },
+      "resource_type": "plainText",
+      "location_id": { "$oid": "654b825533ee5737b297f123" },
+      "text": "Welcome to Tekst!\nPlease visit https://vedawebproject.github.io/Tekst/ to learn how to set up your own text research platform!"
+    }
+  ]
+}

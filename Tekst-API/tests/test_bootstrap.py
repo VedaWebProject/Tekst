@@ -51,7 +51,21 @@ async def test_migrate_no_state_coll(
 @pytest.mark.anyio
 async def test_migrate_none_pending(
     config,
-    insert_test_data,
 ):
     await bootstrap()
     await migrations.migrate()  # no pending migrations
+
+
+@pytest.mark.anyio
+async def test_prod_startup(
+    config,
+    database,
+):
+    # clone config object
+    prod_cfg = config.model_copy(deep=True)
+    prod_cfg.dev_mode = False
+    await bootstrap(prod_cfg)
+    assert await database.texts.count_documents({}) == 1
+    assert await database.locations.count_documents({}) == 1
+    assert await database.resources.count_documents({}) == 1
+    assert await database.contents.count_documents({}) == 1

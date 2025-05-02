@@ -5,10 +5,7 @@ import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
 import createClient, { type Middleware } from 'openapi-fetch';
-
-const serverUrl: string | undefined = import.meta.env.TEKST_SERVER_URL;
-const apiPath: string | undefined = import.meta.env.TEKST_API_PATH;
-const apiUrl = (serverUrl && apiPath && serverUrl + apiPath) || '/';
+import env from '@/env';
 
 // HTTP client middleware for intercepting requests and responses
 const interceptors: Middleware = {
@@ -57,7 +54,7 @@ const interceptors: Middleware = {
   },
 };
 
-const client = createClient<paths>({ baseUrl: apiUrl });
+const client = createClient<paths>({ baseUrl: env.TEKST_API_PATH });
 client.use(interceptors);
 
 export const { GET, POST, PUT, PATCH, DELETE } = client;
@@ -74,15 +71,6 @@ export const optionsPresets = {
     },
   },
 };
-
-export function getFullUrl(path: string, query?: Record<string, unknown>): URL {
-  const searchParams = new URLSearchParams(
-    Object.fromEntries(Object.entries(query || {}).map(([key, value]) => [key, String(value)]))
-  );
-  const queryString = searchParams.toString() ? '?' + searchParams.toString() : '';
-  const relPath = path.replace(/^\/+/, '');
-  return new URL(relPath + queryString, apiUrl.replace(/\/*$/, '/'));
-}
 
 export async function withSelectedFile(
   cb: (file: File | null) => void | Promise<void>,

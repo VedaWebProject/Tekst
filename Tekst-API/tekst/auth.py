@@ -427,27 +427,27 @@ async def _create_user(user: UserCreate) -> UserRead:
             return await user_manager.create(user, safe=False)
 
 
-async def create_initial_superuser(force: bool = False):
-    if _cfg.dev_mode and not force:
+async def create_initial_superuser(cfg: TekstConfig = _cfg):
+    if cfg.dev_mode:
         return
     log.info("Creating initial superuser account...")
     # check if user collection contains users, abort if so
     if await UserDocument.find_one().exists():  # pragma: no cover
         log.warning(
             "User collection already contains users. "
-            f"Skipping creation of inital admin {_cfg.security.init_admin_email}."
+            f"Skipping creation of inital admin {cfg.security.init_admin_email}."
         )
         return
     # check if initial admin account is properly configured
     if (
-        not _cfg.security.init_admin_email or not _cfg.security.init_admin_password
+        not cfg.security.init_admin_email or not cfg.security.init_admin_password
     ):  # pragma: no cover
         log.warning("No initial admin account configured, skipping creation.")
         return
     # create inital admin account
     user = UserCreate(
-        email=_cfg.security.init_admin_email,
-        password=_cfg.security.init_admin_password,
+        email=cfg.security.init_admin_email,
+        password=cfg.security.init_admin_password,
         username="admin",
         name="Admin Admin",
         affiliation="Admin",
@@ -457,6 +457,6 @@ async def create_initial_superuser(force: bool = False):
     user.is_superuser = True
     await _create_user(user)
     log.warning(
-        f"Created initial admin account for email {_cfg.security.init_admin_email}. "
-        "PLEASE CHANGE THIS ACCOUNT'S EMAIL AND PASSWORD IMMEDIATELY!"
+        f"Created initial admin account for email {cfg.security.init_admin_email}. "
+        "PLEASE CHANGE ITS PASSWORD ASAP!"
     )

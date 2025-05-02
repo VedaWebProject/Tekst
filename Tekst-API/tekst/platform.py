@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from os.path import realpath
+from pathlib import Path
 
 from beanie.operators import LT
 from bson import json_util
@@ -15,21 +17,17 @@ from tekst.search import create_indices_task
 from tekst.state import get_state, update_state
 
 
-async def _insert_demo_data() -> bool:
+async def _insert_demo_data(cfg: TekstConfig = get_config()) -> bool:
     log.info("Inserting sample data...")
-    cfg: TekstConfig = get_config()
-
-    # define target collections
+    database = db.get_db()
     target_collections = (
         "texts",
         "locations",
         "resources",
         "contents",
+        "users",
+        "state",
     )
-    if cfg.dev_mode:
-        target_collections += ("users", "state")
-
-    database = db.get_db()
 
     # check if any of the target collections contains data
     for collection in target_collections:
@@ -40,15 +38,25 @@ async def _insert_demo_data() -> bool:
             )
             return False
 
-    # insert demo data
-    for collection in target_collections:
-        log.debug(f"Populating collection with sample data: {collection}...")
-        path = cfg.misc.demo_data_path / f"{collection}.json"
+    if cfg.dev_mode:
+        # insert complete set of dev demo data
+        for collection in target_collections:
+            log.debug(f"Populating collection with sample data: {collection}...")
+            path = cfg.misc.demo_data_path / f"{collection}.json"
+            data = json_util.loads(path.read_text())
+            result = await database[collection].insert_many(data)
+            if not result.acknowledged:  # pragma: no cover
+                log.error(f"Failed to insert dev data into collection: {collection}")
+                raise RuntimeError("Failed to insert sample data.")
+    else:
+        # just insert the initial placeholder text
+        path = Path(realpath(__file__)).parent / "welcome.json"
         data = json_util.loads(path.read_text())
-        result = await database[collection].insert_many(data)
-        if not result.acknowledged:  # pragma: no cover
-            log.error(f"Failed to insert sample data into collection: {collection}")
-            raise RuntimeError("Failed to insert sample data.")
+        for collection in data:
+            result = await database[collection].insert_many(data[collection])
+            if not result.acknowledged:  # pragma: no cover
+                log.error(f"Failed to insert data into collection: {collection}")
+                raise RuntimeError("Failed to insert sample data.")
 
     return True
 
@@ -60,7 +68,7 @@ async def bootstrap(cfg: TekstConfig = get_config()):
     # init DB and ODM
     await db.init_odm()
     # insert demo data if DB collections are empty
-    await _insert_demo_data()
+    await _insert_demo_data(cfg)
 
     # check for pending migrations
     state: PlatformStateDocument = await get_state()
@@ -76,9 +84,9 @@ async def bootstrap(cfg: TekstConfig = get_config()):
     # call resource precompute hooks (coverage, aggregations, ...)
     await call_resource_precompute_hooks()
     # create initial superuser (only when not in DEV mode)
-    await create_initial_superuser()
+    await create_initial_superuser(cfg)
     # create search indices (will skip up-to-date indices)
-    await create_indices_task()
+    await create_indices_task(cfg)
     log.info("Finished Tekst pre-launch bootstrap routine.")
 
 

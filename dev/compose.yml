@@ -27,7 +27,7 @@ services:
 
   es:
     build:
-      context: ../deploy/elasticsearch
+      context: ../docker/elasticsearch
     image: "elasticsearch:tekst"
     deploy:
       resources:

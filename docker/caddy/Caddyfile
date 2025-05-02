@@ -1,0 +1,41 @@
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	encode zstd gzip
+
+	# constrain max request body size
+	request_body {
+		max_size {$TEKST_MAX_REQ_SIZE:250MB}
+	}
+
+	# redirect API requests to use trailing slash
+	redir /api /api/
+
+	# proxy all API requests to API app
+	handle_path /api/* {
+		reverse_proxy http://127.0.0.1:8000
+	}
+
+	# serve static files (custom assets)
+	handle_path /static/* {
+		root * /var/www/tekst/static
+		file_server
+	}
+
+	# help browsers to find the custom favicon at root
+	# (ofc this only works if the app is served at root path "/")
+	handle_path /favicon.ico {
+		root * /var/www/tekst/static
+		file_server
+	}
+
+	# serve web client files
+	handle_path /* {
+		root * /var/www/html
+		try_files {path} /index.html
+		file_server
+	}
+}
