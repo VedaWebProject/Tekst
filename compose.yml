@@ -1,9 +1,6 @@
 services:
   tekst:
-    build:
-      context: .
-      target: prod
-    image: "tekst:alpha"
+    image: "ghcr.io/vedawebproject/tekst:latest"
     restart: always
     init: true
     env_file: .env
