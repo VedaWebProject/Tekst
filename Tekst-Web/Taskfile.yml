@@ -27,11 +27,6 @@ tasks:
     cmds:
       - npx npm-check-updates
 
-  update:
-    desc: Update dependencies
-    cmds:
-      - npm update
-
   dev:
     desc: Run development server
     cmds:

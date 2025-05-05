@@ -24,11 +24,6 @@ tasks:
     cmds:
       - uv sync
 
-  upgrade:
-    desc: Upgrade dependencies
-    cmds:
-      - uv sync --upgrade
-
   fix:
     desc: Run ruff to format code base and attempt to fix linting errors
     cmds:
