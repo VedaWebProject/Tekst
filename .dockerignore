@@ -8,9 +8,15 @@
 **/.git/
 **/dist/
 **/node_modules/
-
+**/.ruff_cache/
+**/demo/
+**/temp/
+**/tests/
 **/Dockerfile
 **/compose.yml
 **/.coverage
 **/.dockerignore
 **/Taskfile.yml
+docs/
+dev/
+assets/
