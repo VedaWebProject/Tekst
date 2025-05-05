@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useOskLayout } from '@/composables/oskLayout';
-import { BackspaceIcon, CapsLockIcon, KeyboardIcon, ShiftIcon } from '@/icons';
+import { BackspaceIcon, CapsLockIcon, ShiftIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { NButton, NDrawerContent, NFlex, NIcon, NSelect, NSpin } from 'naive-ui';
+import { NButton, NDivider, NDrawerContent, NFlex, NIcon, NSelect, NSpin } from 'naive-ui';
 import type { CSSProperties } from 'vue';
 import { computed, ref, watch } from 'vue';
-import ButtonShelf from './generic/ButtonShelf.vue';
 
 const props = defineProps<{
   initialValue: string;
@@ -69,25 +68,8 @@ whenever(Enter, () => {
     closable
     header-style="font-weight: normal"
     body-style="background-color: var(--main-bg-color)"
+    :title="$t('osk.label')"
   >
-    <template #header>
-      <n-flex style="flex-wrap: wrap-reverse" align="center" class="mr-md">
-        <n-icon :component="KeyboardIcon" size="24" color="var(--accent-color)" />
-        <span
-          :style="oskInputResult ? fontStyle : undefined"
-          style="line-height: 1.5em; flex: 2"
-          :class="{ 'text-large': !state.smallScreen }"
-        >
-          {{ oskInputResult || $t('osk.inputPlaceholder') }}
-        </span>
-        <n-button text :focusable="false" :disabled="!oskInput.length" @click="oskInput.pop()">
-          <template #icon>
-            <n-icon :component="BackspaceIcon" />
-          </template>
-        </n-button>
-      </n-flex>
-    </template>
-
     <n-flex vertical :size="32">
       <n-select
         ref="oskModeSelectRef"
@@ -119,7 +101,7 @@ whenever(Enter, () => {
                 :focusable="false"
                 :size="state.smallScreen ? undefined : 'large'"
                 :style="fontStyle"
-                class="key box-shadow"
+                class="key"
                 @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
               >
                 {{ shiftActive && key.shift ? key.shift : key.char }}
@@ -128,13 +110,13 @@ whenever(Enter, () => {
           </n-flex>
         </n-flex>
 
-        <!-- SHIFT / CAPSLOCK -->
+        <!-- SHIFT / CAPSLOCK / BACKSPACE -->
         <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
           <n-button
             :type="capsLock ? 'primary' : undefined"
             :size="state.smallScreen ? undefined : 'large'"
             :focusable="false"
-            class="key box-shadow"
+            class="key"
             :class="{ locked: capsLock }"
             @click="capsLock = !capsLock"
           >
@@ -147,12 +129,22 @@ whenever(Enter, () => {
             :size="state.smallScreen ? undefined : 'large'"
             :focusable="false"
             :disabled="capsLock"
-            class="key box-shadow"
+            class="key"
             :class="{ locked: shift }"
             @click="shift = !shift"
           >
             <template #icon>
               <n-icon :component="ShiftIcon" />
+            </template>
+          </n-button>
+          <n-button
+            :size="state.smallScreen ? undefined : 'large'"
+            :disabled="!oskInput.length"
+            class="key"
+            @click="oskInput.pop()"
+          >
+            <template #icon>
+              <n-icon :component="BackspaceIcon" />
             </template>
           </n-button>
         </n-flex>
@@ -170,24 +162,32 @@ whenever(Enter, () => {
     </n-flex>
 
     <template #footer>
-      <button-shelf style="width: 100%">
-        <template #start>
-          <n-button secondary :focusable="false" @click="oskInput = []">
+      <div style="width: 100%">
+        <div
+          :style="oskInputResult ? fontStyle : undefined"
+          style="line-height: 1.5em"
+          :class="{ 'text-large': !state.smallScreen }"
+        >
+          {{ oskInputResult || $t('osk.inputPlaceholder') }}
+        </div>
+        <n-divider />
+        <n-flex justify="space-between">
+          <n-button secondary :focusable="false" :disabled="!oskInputResult" @click="oskInput = []">
             {{ $t('common.reset') }}
           </n-button>
-        </template>
-        <n-button secondary :focusable="false" @click="emit('close')">
+          <!-- <n-button secondary :focusable="false" @click="emit('close')">
           {{ $t('common.cancel') }}
-        </n-button>
-        <n-button
-          type="primary"
-          :focusable="false"
-          :disabled="loading || error"
-          @click.stop.prevent="emit('submit', oskInputResult)"
-        >
-          {{ $t('common.insert') }}
-        </n-button>
-      </button-shelf>
+        </n-button> -->
+          <n-button
+            type="primary"
+            :focusable="false"
+            :disabled="loading || error || !oskInputResult"
+            @click.stop.prevent="emit('submit', oskInputResult)"
+          >
+            {{ $t('common.insert') }}
+          </n-button>
+        </n-flex>
+      </div>
     </template>
   </n-drawer-content>
 </template>

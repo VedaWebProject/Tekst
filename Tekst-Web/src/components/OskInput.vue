@@ -115,7 +115,7 @@ function handleClose() {
           <n-drawer
             v-model:show="showOsk"
             placement="bottom"
-            :height="640"
+            :height="800"
             style="max-height: 90%"
             @esc="handleClose"
           >
