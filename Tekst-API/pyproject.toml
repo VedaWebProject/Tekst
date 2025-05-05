@@ -105,7 +105,7 @@ skip-magic-trailing-comma = false
 testpaths = ["tests"]
 env_override_existing_values = 1
 env_files = [".env.dev", ".env.test"]
-addopts = "--cov=tekst --cov-fail-under=100"
+addopts = "--cov=tekst --cov-fail-under=100 --cov-report=term-missing"
 
 # coverage
 
