@@ -3,8 +3,9 @@
 
 FROM node:22.15.0-alpine3.20 AS web-builder
 WORKDIR /tekst
-COPY Tekst-Web/ .
-RUN npm install && npm run build-only -- --base=./
+COPY Tekst-Web/ ./Tekst-Web/
+COPY Tekst-API/openapi.json ./Tekst-API/openapi.json
+RUN cd Tekst-Web && npm install && npm run build-only -- --base=./
 
 
 # PYTHON ALPINE BASE IMAGE
@@ -75,7 +76,7 @@ HEALTHCHECK \
 
 COPY --from=api-builder /tekst/deps/ api/deps/
 COPY --from=api-builder /tekst/dist/ api/dist/
-COPY --from=web-builder /tekst/dist/ /var/www/html/
+COPY --from=web-builder /tekst/Tekst-Web/dist/ /var/www/html/
 
 RUN chown -R tekst:tekst /var/www/html/
 
