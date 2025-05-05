@@ -62,8 +62,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
     msg.attach(MIMEText(txt, "plain"))
     msg.attach(MIMEText(html, "html"))
 
-    # pragma: no cover
-    try:
+    try:  # pragma: no cover
         with smtplib.SMTP(_cfg.email.smtp_server, _cfg.email.smtp_port) as smtp:
             if _cfg.email.smtp_starttls:
                 log.debug("Initiating StartTLS handshake...")
@@ -77,7 +76,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
                 smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         log.error(
             f"Error sending email via "
             f"{_cfg.email.smtp_server}:{_cfg.email.smtp_port} "
