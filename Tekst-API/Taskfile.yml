@@ -46,8 +46,7 @@ tasks:
       - task: test-stack-up
       - task: wait-for-mongodb
       - task: wait-for-elasticsearch
-      - uv run coverage run -m pytest {{.CLI_ARGS}}
-      - uv run coverage report -m
+      - uv run pytest {{.CLI_ARGS}}
 
   run-dev:
     desc: Run the application dev server (only for development!)

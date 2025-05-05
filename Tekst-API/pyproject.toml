@@ -59,7 +59,6 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "pytest<9.0.0,>=8.1.1",
-    "coverage[toml]<8.0,>=7.2",
     "requests<3.0.0,>=2.31.0",
     "colorlog<7.0.0,>=6.7.0",
     "pytest-dotenv<1.0.0,>=0.5.2",
@@ -69,6 +68,7 @@ dev = [
     "pytest-env<2.0.0,>=1.1.1",
     "uvicorn[standard]>=0.34.2",
     "fastapi-cli>=0.0.7",
+    "pytest-cov>=6.1.1",
 ]
 
 # ruff
@@ -105,6 +105,7 @@ skip-magic-trailing-comma = false
 testpaths = ["tests"]
 env_override_existing_values = 1
 env_files = [".env.dev", ".env.test"]
+addopts = "--cov=tekst --cov-fail-under=100"
 
 # coverage
 
