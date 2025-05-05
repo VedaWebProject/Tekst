@@ -408,7 +408,7 @@ onMounted(() => {
           </n-flex>
         </template>
 
-        <n-flex vertical class="gray-box">
+        <n-flex vertical size="small" class="gray-box">
           <n-input
             v-model:value="filters.search"
             :placeholder="$t('common.searchAction')"

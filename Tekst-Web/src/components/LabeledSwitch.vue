@@ -39,7 +39,7 @@ const effectiveLabel = computed(() =>
 </script>
 
 <template>
-  <n-flex align="center" :wrap="false">
+  <n-flex :wrap="false" style="padding: 6px 0">
     <n-switch
       v-model:value="model"
       :round="!!round"
@@ -57,7 +57,12 @@ const effectiveLabel = computed(() =>
         <n-icon :component="iconOff" />
       </template>
     </n-switch>
-    <span v-if="!!effectiveLabel" class="text-medium" :class="{ translucent: disabled }">
+    <span
+      v-if="!!effectiveLabel"
+      class="text-medium"
+      :class="{ translucent: disabled }"
+      style="line-height: 22px"
+    >
       {{ effectiveLabel }}
     </span>
   </n-flex>

@@ -200,7 +200,7 @@ onMounted(() => {
           <span>{{ $t('common.filters') }}</span>
         </n-flex>
       </template>
-      <n-flex vertical class="gray-box" style="padding-left: var(--gap-lg)">
+      <n-flex vertical size="small" class="gray-box" style="padding-left: var(--gap-lg)">
         <n-input
           v-model:value="filters.q"
           :placeholder="$t('common.searchAction')"

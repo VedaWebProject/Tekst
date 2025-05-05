@@ -20,7 +20,6 @@ import {
   NButton,
   NDivider,
   NDynamicInput,
-  NFlex,
   NForm,
   NFormItem,
   NInput,
@@ -259,23 +258,27 @@ watch(
         <!-- BROWSE VIEW -->
         <n-tab-pane :tab="$t('admin.platformSettings.headingBrowseView')" name="browseView">
           <form-section-heading :label="$t('admin.platformSettings.headingBrowseView')" />
-          <n-flex vertical>
-            <!-- SHOW RESOURCE CATEGORY HEADINGS -->
+          <!-- SHOW RESOURCE CATEGORY HEADINGS -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.showResourceCategoryHeadings"
               :label="$t('models.platformSettings.showResourceCategoryHeadings')"
             />
-            <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
+          </n-form-item>
+          <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.prioritizeBrowseLevelResources"
               :label="$t('models.platformSettings.prioritizeBrowseLevelResources')"
             />
-            <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
+          </n-form-item>
+          <!-- SHOW LOCATION ALIASES IN BROWSE VIEW -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.showLocationAliases"
               :label="$t('models.platformSettings.showLocationAliases')"
             />
-          </n-flex>
+          </n-form-item>
         </n-tab-pane>
 
         <!-- RESOURCES -->
@@ -384,7 +387,7 @@ watch(
           <form-section-heading :label="$t('routes.pageTitle.search')" />
 
           <!-- INDEX UNPUBLISHED RESOURCES -->
-          <n-form-item :show-label="false">
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.indexUnpublishedResources"
               :label="$t('models.platformSettings.indexUnpublishedResources')"
@@ -474,23 +477,27 @@ watch(
           <!-- BRANDING -->
           <form-section-heading :label="$t('admin.platformSettings.headingBranding')" />
 
-          <n-flex vertical class="mb-lg">
-            <!-- SHOW LOGO ON LOADING SCREEN -->
+          <!-- SHOW LOGO ON LOADING SCREEN -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.showLogoOnLoadingScreen"
               :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
             />
-            <!-- SHOW LOGO IN HEADER -->
+          </n-form-item>
+          <!-- SHOW LOGO IN HEADER -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.showLogoInHeader"
               :label="$t('models.platformSettings.showLogoInHeader')"
             />
-            <!-- SHOW TEKST FOOTER HINT -->
+          </n-form-item>
+          <!-- SHOW TEKST FOOTER HINT -->
+          <n-form-item :show-label="false" :show-feedback="false">
             <labeled-switch
               v-model="formModel.showTekstFooterHint"
               :label="$t('models.platformSettings.showTekstFooterHint')"
             />
-          </n-flex>
+          </n-form-item>
         </n-tab-pane>
       </n-tabs>
     </n-form>

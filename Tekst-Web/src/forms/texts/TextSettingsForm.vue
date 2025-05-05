@@ -157,7 +157,7 @@ onBeforeRouteUpdate((to, from) => {
       </n-form-item>
 
       <!-- ACTIVE -->
-      <n-form-item :show-label="false">
+      <n-form-item :show-label="false" :show-feedback="false">
         <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
       </n-form-item>
 
@@ -173,18 +173,20 @@ onBeforeRouteUpdate((to, from) => {
         />
       </n-form-item>
 
-      <n-flex vertical class="mb-lg">
-        <!-- LABELLED LOCATION -->
+      <!-- LABELLED LOCATION -->
+      <n-form-item :show-label="false" :show-feedback="false">
         <labeled-switch
           v-model="model.labeledLocation"
           :label="$t('models.text.labeledLocation')"
         />
-        <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
+      </n-form-item>
+      <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
+      <n-form-item :show-label="false">
         <labeled-switch
           v-model="model.fullLocLabelAsHitHeading"
           :label="$t('models.text.fullLocLabelAsHitHeading')"
         />
-      </n-flex>
+      </n-form-item>
 
       <!-- ACCENT COLOR -->
       <n-form-item path="accentColor" :label="$t('models.text.accentColor')">

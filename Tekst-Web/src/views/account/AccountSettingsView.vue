@@ -20,7 +20,7 @@ import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { checkUrl } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
-import { NButton, NFlex, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
+import { NButton, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
 import { ref } from 'vue';
 
 const dialog = useDialog();
@@ -495,21 +495,24 @@ async function checkUrlInput(input: HTMLInputElement) {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-flex vertical>
+      <labeled-switch
+        :model-value="true"
+        disabled
+        :focusable="false"
+        :label="$t('models.user.username')"
+      />
+      <n-form-item
+        v-for="(_, field) in publicFieldsFormModel"
+        :key="field"
+        :show-label="false"
+        :show-feedback="false"
+      >
         <labeled-switch
-          :model-value="true"
-          disabled
-          :focusable="false"
-          :label="$t('models.user.username')"
+          v-model="publicFieldsFormModel[field]"
+          :label="$t(`models.user.${field}`)"
+          :disabled="loading"
         />
-        <template v-for="(_, field) in publicFieldsFormModel" :key="field">
-          <labeled-switch
-            v-model="publicFieldsFormModel[field]"
-            :label="$t(`models.user.${field}`)"
-            :disabled="loading"
-          />
-        </template>
-      </n-flex>
+      </n-form-item>
     </n-form>
     <button-shelf top-gap>
       <n-button
@@ -544,15 +547,18 @@ async function checkUrlInput(input: HTMLInputElement) {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-flex vertical>
-        <template v-for="(_, field) in userNotificationTriggersFormModel" :key="field">
-          <labeled-switch
-            v-model="userNotificationTriggersFormModel[field]"
-            :label="$t(`account.settings.userNotificationTriggers.${field}`)"
-            :disabled="loading"
-          />
-        </template>
-      </n-flex>
+      <n-form-item
+        v-for="(_, field) in userNotificationTriggersFormModel"
+        :key="field"
+        :show-label="false"
+        :show-feedback="false"
+      >
+        <labeled-switch
+          v-model="userNotificationTriggersFormModel[field]"
+          :label="$t(`account.settings.userNotificationTriggers.${field}`)"
+          :disabled="loading"
+        />
+      </n-form-item>
     </n-form>
     <button-shelf top-gap>
       <n-button
@@ -587,15 +593,18 @@ async function checkUrlInput(input: HTMLInputElement) {
       :disabled="loading"
       require-mark-placement="right-hanging"
     >
-      <n-flex vertical>
-        <template v-for="(_, field) in adminNotificationTriggersFormModel" :key="field">
-          <labeled-switch
-            v-model="adminNotificationTriggersFormModel[field]"
-            :label="$t(`account.settings.adminNotificationTriggers.${field}`)"
-            :disabled="loading"
-          />
-        </template>
-      </n-flex>
+      <n-form-item
+        v-for="(_, field) in adminNotificationTriggersFormModel"
+        :key="field"
+        :show-label="false"
+        :show-feedback="false"
+      >
+        <labeled-switch
+          v-model="adminNotificationTriggersFormModel[field]"
+          :label="$t(`account.settings.adminNotificationTriggers.${field}`)"
+          :disabled="loading"
+        />
+      </n-form-item>
     </n-form>
     <button-shelf top-gap>
       <n-button
