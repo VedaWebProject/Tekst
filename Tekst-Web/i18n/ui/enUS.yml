@@ -597,7 +597,6 @@ contents:
 
 account:
   account: Account
-  session: Session
   profile: Profile
   profileHeading: Public Profile
   profileNotFound: The user profile "{usernameOrId}" could not be found.
@@ -606,6 +605,7 @@ account:
   tipUserBtn: Show user actions for {username}
   tipLoginBtn: Log into your account
   tipLogoutBtn: Log out of your account
+  rememberMe: Keep me signed in
   switchToRegister: Register New User
   verify:
     success: Your email address has been successfully verified! You can now log into your account.

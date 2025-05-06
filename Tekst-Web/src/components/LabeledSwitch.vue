@@ -23,6 +23,7 @@ const props = withDefaults(
     showLabel: true,
     onValue: true,
     offValue: false,
+    size: 'medium',
   }
 );
 
@@ -35,6 +36,10 @@ const effectiveLabel = computed(() =>
       : model.value == (props.onValue !== undefined ? props.onValue : true)
         ? props.onLabel || $t('common.on')
         : props.offLabel || $t('common.off')
+);
+
+const labelLineHeight = computed(
+  () => ({ small: '20px', medium: '22px', large: '28px' })[props.size]
 );
 </script>
 
@@ -59,9 +64,13 @@ const effectiveLabel = computed(() =>
     </n-switch>
     <span
       v-if="!!effectiveLabel"
-      class="text-medium"
-      :class="{ translucent: disabled }"
-      style="line-height: 22px"
+      :class="{
+        translucent: disabled,
+        'text-small': size === 'small',
+        'text-medium': size === 'medium',
+        'text-large': size === 'large',
+      }"
+      :style="{ lineHeight: labelLineHeight }"
     >
       {{ effectiveLabel }}
     </span>

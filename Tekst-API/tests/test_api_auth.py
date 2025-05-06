@@ -92,20 +92,48 @@ async def test_register_email_exists(
 
 
 @pytest.mark.anyio
-async def test_login(
+async def test_login_session_cookie(
     config,
-    login,
+    register_test_user,
     test_client: AsyncClient,
     assert_status,
 ):
-    user = await login()
-    payload = {"username": user["email"], "password": user["password"]}
+    user = await register_test_user()
+    payload = {
+        "username": user["email"],
+        "password": user["password"],
+        "persistent": False,
+    }
     resp = await test_client.post(
         "/auth/cookie/login",
         data=payload,
     )
     assert_status(204, resp)
-    assert resp.cookies.get(config.security.auth_cookie_name)
+    assert resp.headers.get("set-cookie")
+    assert "max-age" not in resp.headers.get("set-cookie").lower()
+    assert "expires" not in resp.headers.get("set-cookie").lower()
+
+
+@pytest.mark.anyio
+async def test_login_persistent_cookie(
+    config,
+    register_test_user,
+    test_client: AsyncClient,
+    assert_status,
+):
+    user = await register_test_user()
+    payload = {
+        "username": user["email"],
+        "password": user["password"],
+        "persistent": True,
+    }
+    resp = await test_client.post(
+        "/auth/cookie/login",
+        data=payload,
+    )
+    assert_status(204, resp)
+    assert resp.headers.get("set-cookie")
+    assert "max-age" in resp.headers.get("set-cookie").lower()
 
 
 @pytest.mark.anyio

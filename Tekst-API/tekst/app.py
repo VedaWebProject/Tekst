@@ -15,6 +15,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.db import migrations
 from tekst.errors import TekstHTTPException
 from tekst.logs import log
+from tekst.middlewares import CookieTypeChoiceMiddleware
 from tekst.models.platform import PlatformState
 from tekst.openapi import customize_openapi
 from tekst.resources import init_resource_types_mgr
@@ -82,6 +83,10 @@ app = FastAPI(
     lifespan=lifespan,
     separate_input_output_schemas=False,
 )
+
+# add middleware to force use of session cookies if a request to the cookie-based
+# login endpoint does NOT carry a truthy value for the `persistent` form field
+app.add_middleware(CookieTypeChoiceMiddleware)
 
 # add and configure XSRF/CSRF middleware
 if not _cfg.dev_mode or _cfg.xsrf:  # pragma: no cover

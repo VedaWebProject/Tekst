@@ -4,7 +4,6 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
 import { computed } from 'vue';
-
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 

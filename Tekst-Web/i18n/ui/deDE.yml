@@ -608,7 +608,6 @@ contents:
 
 account:
   account: Konto
-  session: Sitzung
   profile: Profil
   profileHeading: Öffentliches Profil
   profileNotFound: Das Benutzerprofil "{usernameOrId}" konnte nicht gefunden werden.
@@ -617,6 +616,7 @@ account:
   tipUserBtn: Benutzer-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
+  rememberMe: Angemeldet bleiben
   switchToRegister: Neues Konto registrieren
   verify:
     success: Ihre E-Mail-Adresse wurde erfolgreich verifiziert! Sie können sich jetzt in Ihrem Konto anmelden.

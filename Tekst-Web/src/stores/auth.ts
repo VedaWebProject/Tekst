@@ -109,11 +109,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(username: string, password: string) {
+  async function login(username: string, password: string, persistent: boolean = false) {
     loginModalState.value.loading = true;
     // login
     const { error } = await POST('/auth/cookie/login', {
-      body: { username, password, scope: '' },
+      body: { username, password, scope: '', persistent },
       ...optionsPresets.formUrlEncoded,
     });
 

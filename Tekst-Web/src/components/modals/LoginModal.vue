@@ -10,10 +10,12 @@ import { useAuthStore } from '@/stores';
 import { NButton, NFlex, NForm, NFormItem, NInput, type FormInst, type InputInst } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 
 interface LoginCredentialsModel {
   email: string | null;
   password: string | null;
+  persistent?: boolean;
 }
 
 const auth = useAuthStore();
@@ -23,6 +25,7 @@ const router = useRouter();
 const initialFormModel: () => LoginCredentialsModel = () => ({
   email: import.meta.env.DEV ? 'admin@tekst.dev' : null,
   password: import.meta.env.DEV ? 'poiPOI098' : null,
+  persistent: false,
 });
 
 const formModel = ref<LoginCredentialsModel>(initialFormModel());
@@ -40,11 +43,15 @@ function switchToRegistration() {
   router.push({ name: 'register' });
 }
 
-async function handleLoginClick() {
+function handleLoginClick() {
   formRef.value
-    ?.validate(async (errors) => {
+    ?.validate((errors) => {
       if (errors) return;
-      auth.login(formModel.value.email || '', formModel.value.password || '');
+      auth.login(
+        formModel.value.email || '',
+        formModel.value.password || '',
+        formModel.value.persistent || false
+      );
       resetForm();
     })
     .catch(() => {
@@ -92,6 +99,7 @@ async function handleForgotPasswordClick() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
+      <!-- username/email -->
       <n-form-item
         path="email"
         :rule="accountFormRules.loginEmail"
@@ -106,6 +114,7 @@ async function handleForgotPasswordClick() {
           @keydown.enter.prevent
         />
       </n-form-item>
+      <!-- password -->
       <n-form-item
         path="password"
         :rule="accountFormRules.loginPassword"
@@ -118,6 +127,14 @@ async function handleForgotPasswordClick() {
           :placeholder="$t('models.user.password')"
           :disabled="auth.loginModalState.loading"
           @keyup.enter="handleLoginClick"
+        />
+      </n-form-item>
+      <!-- persistent login -->
+      <n-form-item :show-label="false">
+        <labeled-switch
+          v-model="formModel.persistent"
+          :label="$t('account.rememberMe')"
+          size="small"
         />
       </n-form-item>
     </n-form>
@@ -134,14 +151,17 @@ async function handleForgotPasswordClick() {
       </n-button>
     </n-flex>
 
-    <button-shelf top-gap>
-      <n-button
-        v-if="auth.loginModalState.showRegisterLink"
-        secondary
-        @click="switchToRegistration"
-      >
-        {{ $t('account.switchToRegister') }}
-      </n-button>
+    <button-shelf>
+      <template #start>
+        <n-button
+          v-if="auth.loginModalState.showRegisterLink"
+          secondary
+          type="primary"
+          @click="switchToRegistration"
+        >
+          {{ $t('account.switchToRegister') }}
+        </n-button>
+      </template>
       <n-button
         type="primary"
         :loading="auth.loginModalState.loading"
