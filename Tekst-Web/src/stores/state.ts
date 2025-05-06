@@ -131,9 +131,7 @@ export const useStateStore = defineStore('state', () => {
   // text level labels
 
   function getTextLevelLabel(textId: string, level: number, localeKey: LocaleKey = locale.value) {
-    return (
-      pickTranslation(pf.value?.texts.find((t) => t.id === textId)?.levels[level], localeKey) || ''
-    );
+    return pickTranslation(pf.value?.texts.find((t) => t.id === textId)?.levels[level], localeKey);
   }
 
   const textLevelLabels = computed(

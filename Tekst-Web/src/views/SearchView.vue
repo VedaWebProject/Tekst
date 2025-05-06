@@ -92,6 +92,7 @@ const resourceOptions = computed(() => {
         resourceType: r.resourceType,
         textColor: theme.getAccentColors(tId).base,
         level: r.level,
+        textId: r.textId,
       })),
   }));
 });
@@ -111,7 +112,7 @@ function renderResourceOptionLabel(option: SelectOption): VNodeChild {
           NTag,
           { size: 'small', style: 'cursor: pointer; font-weight: normal' },
           {
-            default: () => state.textLevelLabels[option.level as number],
+            default: () => state.getTextLevelLabel(option.textId as string, option.level as number),
             icon: () => h(NIcon, { component: LevelsIcon }),
           }
         ),
@@ -134,11 +135,13 @@ function handleResourceChange(
   }
 }
 
-function getNewSearchItem(): AdvancedSearchFormModelItem {
+function getNewSearchItem(): AdvancedSearchFormModelItem | undefined {
   const resId =
     resourceOptions.value.find((ro) => ro.key === state.text?.id)?.children[0]?.value ||
-    resources.ofText[0].id;
-  const resource = resources.all.find((r) => r.id === resId) || resources.ofText[0];
+    resources.ofText[0]?.id;
+  const resource =
+    resources.all.find((r) => r.id === resId) || resources.ofText[0] || resources.all[0];
+  if (!resource) return undefined;
   return {
     cmn: { res: resource.id, occ: 'must' },
     rts: { type: resource.resourceType as SearchableResourceType },
@@ -147,7 +150,9 @@ function getNewSearchItem(): AdvancedSearchFormModelItem {
 }
 
 function addSearchItem(index: number) {
-  formModel.value.queries.splice(index + 1, 0, getNewSearchItem());
+  const newItem = getNewSearchItem();
+  if (!newItem) return;
+  formModel.value.queries.splice(index + 1, 0, newItem);
 }
 
 function removeSearchItem(index: number) {
@@ -177,7 +182,8 @@ function initQueries() {
       resource: resources.all.find((r) => r.id === q.cmn.res),
     }));
   } else {
-    formModel.value.queries = resources.all.length ? [getNewSearchItem()] : [];
+    const searchItem = getNewSearchItem();
+    formModel.value.queries = !!searchItem ? [searchItem] : [];
   }
 }
 
