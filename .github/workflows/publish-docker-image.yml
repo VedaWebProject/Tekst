@@ -49,10 +49,3 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
-      - name: Delete untagged image versions
-        uses: actions/delete-package-versions@v5
-        with:
-          package-name: "tekst"
-          package-type: "container"
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: true
