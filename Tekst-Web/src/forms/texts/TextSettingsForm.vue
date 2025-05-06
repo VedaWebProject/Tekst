@@ -26,7 +26,7 @@ import {
   NSelect,
   type FormInst,
 } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
 const state = useStateStore();
@@ -89,6 +89,13 @@ function handleSave() {
       loading.value = false;
     });
 }
+
+watch(
+  () => state.text?.id,
+  () => {
+    resetForm();
+  }
+);
 
 onBeforeRouteUpdate((to, from) => {
   if (to.params.textSlug !== from.params.textSlug) {
