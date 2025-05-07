@@ -279,7 +279,11 @@ whenever(ctrlEnter, () => {
           </div>
         </div>
         <n-button
-          v-if="formModel.queries.length < 32 && queryIndex === formModel.queries.length - 1"
+          v-if="
+            formModel.queries.length < 32 &&
+            queryIndex === formModel.queries.length - 1 &&
+            !!resourceOptions.length
+          "
           secondary
           :title="$t('common.insert')"
           :focusable="false"
