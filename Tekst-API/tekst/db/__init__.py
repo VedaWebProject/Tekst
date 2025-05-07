@@ -85,7 +85,7 @@ async def init_odm(db: Database = get_db()) -> None:
     )
 
 
-def close() -> None:
+async def close() -> None:
     global _db_client
     if _db_client is not None:
         _db_client.close()

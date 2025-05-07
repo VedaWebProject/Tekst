@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In
-from elasticsearch import Elasticsearch
+from elasticsearch import AsyncElasticsearch
 
 from tekst import tasks
 from tekst.config import TekstConfig, get_config
@@ -48,14 +48,14 @@ from tekst.state import get_state, update_state
 
 
 _cfg: TekstConfig = get_config()
-_es_client: Elasticsearch | None = None
+_es: AsyncElasticsearch | None = None
 
 
 async def _wait_for_es() -> bool:
-    global _es_client
-    if _es_client is not None:
+    global _es
+    if _es is not None:
         for i in range(_cfg.es.timeout_init_s):
-            if _es_client.ping():
+            if await _es.ping():
                 return True
             if i % 10 == 0:  # pragma: no cover
                 log.debug(
@@ -70,47 +70,47 @@ async def _wait_for_es() -> bool:
         await init_es_client()
 
 
-async def init_es_client() -> Elasticsearch:
-    global _es_client
-    if _es_client is None:
+async def init_es_client() -> AsyncElasticsearch:
+    global _es
+    if _es is None:
         log.info("Initializing Elasticsearch client...")
-        _es_client = Elasticsearch(
+        _es = AsyncElasticsearch(
             _cfg.es.uri,
             request_timeout=_cfg.es.timeout_general_s,
         )
         if not await _wait_for_es():  # pragma: no cover
             raise RuntimeError("Waiting for Elasticsearch client exceeded timeout!")
-    return _es_client
+    return _es
 
 
-async def _get_es_client() -> Elasticsearch:
+async def _get_es_client() -> AsyncElasticsearch:
     return await init_es_client()
 
 
-def get_es_status() -> dict[str, Any] | None:
-    global _es_client
-    return _es_client.info() if _es_client else None
+async def get_es_status() -> dict[str, Any] | None:
+    global _es
+    return await _es.info() if _es else None
 
 
-def close() -> None:
-    global _es_client
-    if _es_client is not None:
-        _es_client.close()
-        _es_client = None
+async def close() -> None:
+    global _es
+    if _es is not None:
+        await _es.close()
+        _es = None
 
 
 async def _setup_index_templates() -> None:
     """This is called internally when re-indexing"""
-    client: Elasticsearch = await _get_es_client()
+    es: AsyncElasticsearch = await _get_es_client()
     log.debug(
         f'Setting up index template "{IDX_TEMPLATE_NAME}" '
         f'for pattern "{IDX_NAME_PATTERN}"...'
     )
     # delete possible existing index templates that could cause conflicts
-    if client.indices.exists_index_template(name=IDX_TEMPLATE_NAME_PATTERN):
-        client.indices.delete_index_template(name=IDX_TEMPLATE_NAME_PATTERN)
+    if await es.indices.exists_index_template(name=IDX_TEMPLATE_NAME_PATTERN):
+        await es.indices.delete_index_template(name=IDX_TEMPLATE_NAME_PATTERN)
     # create index template
-    client.indices.put_index_template(
+    await es.indices.put_index_template(
         name=IDX_TEMPLATE_NAME,
         index_patterns=IDX_NAME_PATTERN,
         template=IDX_TEMPLATE,
@@ -129,8 +129,8 @@ async def create_indices_task(
     await _setup_index_templates()
 
     # get existing search indices
-    client: Elasticsearch = await _get_es_client()
-    old_idxs = [idx for idx in client.indices.get(index=IDX_NAME_PATTERN_ANY)]
+    es: AsyncElasticsearch = await _get_es_client()
+    old_idxs = [idx for idx in await es.indices.get(index=IDX_NAME_PATTERN_ANY)]
     utd_idxs = []  # list of indices that are still up to date
 
     for text in await TextDocument.find_all().to_list():
@@ -168,7 +168,7 @@ async def create_indices_task(
 
         # create index (index template will be applied!)
         new_idx_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
-        client.indices.create(
+        await es.indices.create(
             index=new_idx_name,
             aliases={IDX_ALIAS: {}},
             mappings={"properties": {"resources": {"properties": mappings}}},
@@ -181,7 +181,7 @@ async def create_indices_task(
             await _populate_index(new_idx_name, text)
         except Exception as e:  # pragma: no cover
             log_op_end(populate_op_id, failed=True, failed_msg=str(e))
-            client.indices.delete(index=new_idx_name)  # delete broken/unfinished index
+            await es.indices.delete(index=new_idx_name)  # delete broken index
             raise e
 
         utd_idxs.append(new_idx_name)  # mark created index as "up to date"
@@ -192,11 +192,12 @@ async def create_indices_task(
     # delete indices that are no longer in use
     to_delete = [idx for idx in old_idxs if idx not in utd_idxs]
     if to_delete:
-        client.indices.delete(index=to_delete)
+        await es.indices.delete(index=to_delete)
 
     # perform initial bogus search on all existing indices (to initialize index stats)
-    if client.indices.exists(index=IDX_ALIAS, allow_no_indices=True).body:
-        client.search(
+    resp = await es.indices.exists(index=IDX_ALIAS, allow_no_indices=True)
+    if resp.body:
+        await es.search(
             index=IDX_ALIAS,
             query={"match_all": {}},
             timeout=cfg.es.timeout_search_s,
@@ -232,13 +233,13 @@ async def _populate_index(
     index_name: str,
     text: TextDocument,
 ) -> None:
-    client: Elasticsearch = await _get_es_client()
+    es: AsyncElasticsearch = await _get_es_client()
 
-    def _bulk_index(
+    async def _bulk_index(
         reqest_body: dict[str, Any],
         req_no: int = None,
     ) -> None:
-        resp = client.bulk(
+        resp = await es.bulk(
             body=reqest_body,
             timeout=f"{_cfg.es.timeout_general_s}s",
             refresh="wait_for",
@@ -335,7 +336,7 @@ async def _populate_index(
         # check bulk request body size, fire bulk request if necessary
         if len(bulk_index_body) / 2 >= bulk_index_max_size:  # pragma: no cover
             bulk_req_count += 1
-            _bulk_index(bulk_index_body, bulk_req_count)
+            await _bulk_index(bulk_index_body, bulk_req_count)
             bulk_index_body = []
 
         # add all child locations to the processing stack
@@ -354,29 +355,29 @@ async def _populate_index(
         )
 
     # index the remaining documents
-    _bulk_index(bulk_index_body, bulk_req_count + 1)
+    await _bulk_index(bulk_index_body, bulk_req_count + 1)
     bulk_index_body = []
 
 
 async def _get_mapped_fields_count(index: str) -> int:
-    client: Elasticsearch = await _get_es_client()
-    return len(
-        client.field_caps(
-            index=index,
-            fields="*",
-            human=True,
-            include_empty_fields=True,
-            include_unmapped=False,
-        )["fields"]
+    es: AsyncElasticsearch = await _get_es_client()
+    resp = await es.field_caps(
+        index=index,
+        fields="*",
+        human=True,
+        include_empty_fields=True,
+        include_unmapped=False,
     )
+    return len(resp["fields"])
 
 
 async def _get_index_stats(index: str) -> dict[str, Any]:
-    client: Elasticsearch = await _get_es_client()
-    data = client.indices.stats(
+    es: AsyncElasticsearch = await _get_es_client()
+    resp = await es.indices.stats(
         index=IDX_ALIAS,
         human=True,
-    ).body["indices"][index]["total"]
+    )
+    data = resp.body["indices"][index]["total"]
     return {
         "documents": data["docs"]["count"],
         "size": data["store"]["size"],
@@ -385,19 +386,20 @@ async def _get_index_stats(index: str) -> dict[str, Any]:
 
 
 async def get_indices_info() -> list[IndexInfo]:
-    client: Elasticsearch = await _get_es_client()
-    idx_names = client.indices.get_alias(index=IDX_ALIAS)
+    es: AsyncElasticsearch = await _get_es_client()
+    idx_names = await es.indices.get_alias(index=IDX_ALIAS)
     data = []
     try:
         for idx_name in idx_names:
             text_id = idx_name.split("_")[-2]
             text = await TextDocument.get(text_id)
+            idx_stats = await _get_index_stats(idx_name)
             data.append(
                 {
                     "text_id": text_id if text else None,
                     "fields": await _get_mapped_fields_count(idx_name),
                     "up_to_date": text.index_utd,
-                    **await _get_index_stats(idx_name),
+                    **idx_stats,
                 }
             )
         return [IndexInfo(**idx_info) for idx_info in data]
@@ -443,7 +445,7 @@ async def search_quick(
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
-    client: Elasticsearch = _es_client
+    es: AsyncElasticsearch = await _get_es_client()
 
     # get (pre-)selection of target resources
     target_resources = await _get_resources(
@@ -510,7 +512,7 @@ async def search_quick(
 
     # perform the search
     return SearchResults.from_es_results(
-        results=client.search(
+        results=await es.search(
             index=IDX_ALIAS,
             query=es_query,
             highlight={
@@ -532,7 +534,7 @@ async def search_advanced(
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
-    client: Elasticsearch = _es_client
+    es: AsyncElasticsearch = await _get_es_client()
     accessible_resources_by_id = {
         str(res.id): res for res in await _get_resources(user=user)
     }
@@ -596,7 +598,7 @@ async def search_advanced(
 
     # perform the search
     return SearchResults.from_es_results(
-        results=client.search(
+        results=await es.search(
             index=IDX_ALIAS,
             query=es_query,
             highlight={

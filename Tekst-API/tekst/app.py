@@ -63,8 +63,8 @@ async def startup_routine(app: FastAPI) -> None:
 async def shutdown_routine(app: FastAPI) -> None:
     log.info(f"{_cfg.tekst['name']} cleaning up and shutting down...")
     if not _NO_SERVICES:
-        db.close()
-        search.close()
+        await db.close()
+        await search.close()
 
 
 @asynccontextmanager
