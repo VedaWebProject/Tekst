@@ -75,7 +75,6 @@ whenever(ctrlEnter, () => {
 
 <template>
   <generic-modal
-    id="messaging-modal"
     v-model:show="userMessages.showMessagingModal"
     width="wide"
     style="max-height: 93vh"
@@ -107,7 +106,7 @@ whenever(ctrlEnter, () => {
             'from-them': msg.sender !== auth.user?.id,
           }"
         >
-          <div class="text-medium pre-wrap">{{ msg.content }}</div>
+          <div class="text-medium pre-wrap mb-md">{{ msg.content }}</div>
           <n-flex align="center" class="message-meta">
             <n-time v-if="msg.createdAt" :time="utcToLocalTime(msg.createdAt)" type="datetime" />
             <n-icon
@@ -161,27 +160,27 @@ whenever(ctrlEnter, () => {
   </generic-modal>
 </template>
 
-<style>
-#messaging-modal .message-bubble {
+<style scoped>
+.message-bubble {
   position: relative;
   border-radius: 24px;
   width: 80%;
   padding: 1.2rem;
 }
 
-#messaging-modal .message-bubble.from-me {
+.message-bubble.from-me {
   margin-left: auto;
   border-bottom-right-radius: 0px;
   background-color: var(--accent-color-fade4);
 }
 
-#messaging-modal .message-bubble.from-them {
+.message-bubble.from-them {
   margin-right: auto;
   border-bottom-left-radius: 0px;
   background-color: var(--main-bg-color);
 }
 
-#messaging-modal .message-bubble > .message-meta {
+.message-bubble > .message-meta {
   position: absolute;
   bottom: 8px;
   right: 16px;
@@ -189,12 +188,12 @@ whenever(ctrlEnter, () => {
   opacity: 0.75;
 }
 
-#messaging-modal .message-bubble q {
+.message-bubble q {
   font-style: italic;
   opacity: 0.75;
 }
 
-#messaging-modal .message-bubble q::before {
+.message-bubble q::before {
   content: '\00BB';
   font-weight: bold;
   font-size: var(--font-size-huge);
@@ -203,7 +202,7 @@ whenever(ctrlEnter, () => {
   line-height: 1;
 }
 
-#messaging-modal .messaging-status {
+.messaging-status {
   text-align: center;
 }
 </style>
