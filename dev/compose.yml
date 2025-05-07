@@ -27,7 +27,9 @@ services:
 
   es:
     build:
-      context: ../docker/elasticsearch
+      dockerfile_inline: |
+        FROM docker.elastic.co/elasticsearch/elasticsearch:9.0.1
+        RUN elasticsearch-plugin install analysis-icu
     image: "elasticsearch:tekst"
     deploy:
       resources:
