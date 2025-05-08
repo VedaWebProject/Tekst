@@ -49,7 +49,7 @@ watch(
 );
 
 watch(
-  () => auth.loggedIn,
+  () => auth.user?.id,
   () => {
     browse.loadLocationData(props.locId, true);
   }

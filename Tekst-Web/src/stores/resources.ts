@@ -68,7 +68,6 @@ export const useResourcesStore = defineStore('resources', () => {
 
     if (!err) {
       resourcesAll.value = processResources(data);
-      error.value = false;
     } else {
       error.value = true;
     }

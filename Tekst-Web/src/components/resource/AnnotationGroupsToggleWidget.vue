@@ -56,7 +56,7 @@ async function handleModalSubmit(note: string) {
 
 <template>
   <content-container-header-widget
-    v-if="auth.loggedIn"
+    v-if="!!auth.user"
     :full="full"
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon-component="CorrectionNoteIcon"

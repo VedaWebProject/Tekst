@@ -1,5 +1,5 @@
 import { useStateStore } from '@/stores';
-import { usePreferredDark, useStorage } from '@vueuse/core';
+import { usePreferredDark, useSessionStorage } from '@vueuse/core';
 import { lighten, saturate, toRgba, transparentize } from 'color2k';
 import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
@@ -75,7 +75,7 @@ export declare type ThemeMode = 'light' | 'dark';
 
 export const useThemeStore = defineStore('theme', () => {
   const state = useStateStore();
-  const dark = useStorage<boolean>('darkMode', usePreferredDark().value);
+  const dark = useSessionStorage<boolean>('darkMode', usePreferredDark().value);
   const toggleThemeMode = () => (dark.value = !dark.value);
 
   function generateAccentColorVariants(

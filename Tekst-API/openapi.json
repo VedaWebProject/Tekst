@@ -2568,7 +2568,7 @@
           "platform"
         ],
         "summary": "Get platform data",
-        "description": "Returns data the client needs to initialize",
+        "description": "Returns data about the platform and its configuration",
         "operationId": "getPlatformData",
         "responses": {
           "200": {
@@ -2577,6 +2577,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlatformData"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/platform/web-init": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get client init data",
+        "description": "Returns data the client needs to initialize",
+        "operationId": "getClientInitData",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientInitData"
                 }
               }
             }
@@ -6629,7 +6659,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Get public user",
+        "summary": "Get public user info",
         "description": "Returns public information on the user with the specified username or ID",
         "operationId": "getPublicUser",
         "parameters": [
@@ -9583,6 +9613,30 @@
           "locationLabels"
         ],
         "title": "BookmarkRead"
+      },
+      "ClientInitData": {
+        "properties": {
+          "platform": {
+            "$ref": "#/components/schemas/PlatformData",
+            "description": "Platform data"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserRead"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "User data of current user (if there is an active session)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "platform"
+        ],
+        "title": "ClientInitData"
       },
       "ClientSegmentCreate": {
         "properties": {

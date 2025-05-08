@@ -50,7 +50,7 @@ const resourceTitle = ref('');
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() =>
-  allFormatOptions.filter((o) => !o.restricted || auth.loggedIn)
+  allFormatOptions.filter((o) => !o.restricted || !!auth.user)
 );
 const formatInfoTitle = computed(
   () => allFormatOptions.find((o) => o.value === format.value)?.label

@@ -1,11 +1,11 @@
 import { GET, type LocationRead } from '@/api';
 import { useMessages } from '@/composables/messages';
+import env from '@/env';
 import { $t } from '@/i18n';
 import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
 import { createRouter, createWebHistory, type LocationQuery } from 'vue-router';
-import env from '@/env';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -313,10 +313,10 @@ router.beforeEach(async (to, _from) => {
   if (to.meta.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
-    while (!state.init.authChecked) await delay(50);
+    while (!state.init.authChecked) await delay(50); // wait for session check
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
-    const l = auth.loggedIn; // a user is logged in
+    const l = !!auth.user; // a user is logged in
     const u = auth.user?.isActive && auth.user?.isVerified; // the user is a verified, active user
     const su = auth.user?.isSuperuser; // the user is a superuser
     const authorized = (ru && l && u) || (rsu && l && su);
@@ -324,7 +324,7 @@ router.beforeEach(async (to, _from) => {
     if (!authorized) {
       const { message } = useMessages();
       message.warning($t('errors.noAccess', { resource: to.path }));
-      if (!auth.loggedIn) {
+      if (!l) {
         auth.showLoginModal(undefined, to.fullPath, false);
       }
       return { name: 'home' };

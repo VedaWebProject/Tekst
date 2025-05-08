@@ -27,13 +27,13 @@ const privacyPolicy = computed(
     <div v-if="state.pf?.state.showTekstFooterHint" class="tekst-hint text-tiny">
       {{ $t('common.tekstFooterHint') }}
       <a
-        href="http://github.com/VedaWebProject/Tekst"
+        :href="state.pf?.tekst.website || '#'"
         target="_blank"
         rel="external nofollow"
         class="b"
         :title="`${state.pf.tekst?.name} – ${state.pf.tekst?.description} (${state.pf.tekst?.version})`"
       >
-        {{ state.pf.tekst?.name }}
+        {{ state.pf.tekst?.name || 'Tekst' }}
       </a>
     </div>
   </footer>

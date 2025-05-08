@@ -17,7 +17,7 @@ export function useBookmarks() {
   );
 
   async function loadBookmarks() {
-    if (auth.loggedIn && allBookmarks.value === null) {
+    if (!!auth.user && allBookmarks.value === null) {
       const { data, error } = await GET('/bookmarks', {});
       if (!error) {
         allBookmarks.value = data;

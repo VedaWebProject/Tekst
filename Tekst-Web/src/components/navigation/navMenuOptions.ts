@@ -1,11 +1,11 @@
 import type { ClientSegmentHead } from '@/api';
 import { $t } from '@/i18n';
 import {
-  useAuthStore,
-  useBrowseStore,
-  useResourcesStore,
-  useStateStore,
-  useUserMessagesStore,
+    useAuthStore,
+    useBrowseStore,
+    useResourcesStore,
+    useStateStore,
+    useUserMessagesStore,
 } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
 import { NBadge, type MenuOption } from 'naive-ui';
@@ -13,20 +13,20 @@ import { computed, h } from 'vue';
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
 
 import {
-  BookIcon,
-  CommunityIcon,
-  InfoIcon,
-  LogoutIcon,
-  MaintenanceIcon,
-  ManageAccountIcon,
-  MessageIcon,
-  ResourceIcon,
-  SearchIcon,
-  SegmentsIcon,
-  SettingsIcon,
-  TextsIcon,
-  UserIcon,
-  UsersIcon,
+    BookIcon,
+    CommunityIcon,
+    InfoIcon,
+    LogoutIcon,
+    MaintenanceIcon,
+    ManageAccountIcon,
+    MessageIcon,
+    ResourceIcon,
+    SearchIcon,
+    SegmentsIcon,
+    SettingsIcon,
+    TextsIcon,
+    UserIcon,
+    UsersIcon,
 } from '@/icons';
 
 function renderLink(label: unknown, to: RouteLocationRaw, props?: Record<string, unknown>) {
@@ -94,7 +94,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
-    ...(state.smallScreen && auth.loggedIn
+    ...(state.smallScreen && !!auth.user
       ? [
           {
             label: renderLink(
@@ -133,7 +133,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(state.smallScreen && auth.loggedIn
+    ...(state.smallScreen && !!auth.user
       ? [
           {
             label: renderLink(() => $t('common.community'), {

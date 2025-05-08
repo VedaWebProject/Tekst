@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
+import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
 import { computed } from 'vue';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
 
 const show = defineModel<boolean>('show');
 
@@ -38,7 +38,7 @@ function toggleCategory(index: number, activate: boolean) {
       </template>
 
       <div
-        v-if="auth.loggedIn && showNonPublicResourcesToggle"
+        v-if="!!auth.user && showNonPublicResourcesToggle"
         class="gray-box"
         style="margin-top: 0"
       >

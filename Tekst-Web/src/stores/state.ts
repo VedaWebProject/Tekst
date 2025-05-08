@@ -4,7 +4,7 @@ import type { LocaleProfile } from '@/i18n';
 import { $t, $te, getAvaliableBrowserLocaleKey, localeProfiles, setI18nLocale } from '@/i18n';
 import { useAuthStore } from '@/stores/auth';
 import { pickTranslation } from '@/utils';
-import { StorageSerializers, useStorage, useWindowSize } from '@vueuse/core';
+import { StorageSerializers, useSessionStorage, useWindowSize } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -40,7 +40,7 @@ export const useStateStore = defineStore('state', () => {
 
   // locale
 
-  const locale = useStorage<LocaleKey>(
+  const locale = useSessionStorage<LocaleKey>(
     'locale',
     auth.user?.locale || getAvaliableBrowserLocaleKey() || (i18nLocale.value as LocaleKey) || 'enUS'
   );
@@ -82,7 +82,7 @@ export const useStateStore = defineStore('state', () => {
     const effectiveLocale = await setI18nLocale(
       availableLocaleKeys?.find((al) => al === l) || availableLocaleKeys?.[0] || 'enUS'
     );
-    if (updateUserLocale && auth.loggedIn && auth.user?.locale !== effectiveLocale.key) {
+    if (updateUserLocale && !!auth.user && auth.user.locale !== effectiveLocale.key) {
       try {
         await auth.updateUser({ locale: effectiveLocale.key });
       } catch {
@@ -101,7 +101,7 @@ export const useStateStore = defineStore('state', () => {
   // current text
 
   const text = ref<TextRead>();
-  const textSlug = useStorage<TextRead['slug']>('text', null, undefined, {
+  const textSlug = useSessionStorage<TextRead['slug']>('text', null, {
     serializer: StorageSerializers.string,
   });
   const defaultText = computed(() => textById(pf.value?.state.defaultTextId) || pf.value?.texts[0]);

@@ -9,7 +9,8 @@ authors = [
 maintainers = [
     { name = "Börge Kiss" }
 ]
-license = {file = "LICENSE"}
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
 requires-python = ">=3.12,<4.0"
 dependencies = [
     "pyhumps<4.0.0,>=3.8.0",

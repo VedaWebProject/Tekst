@@ -12,6 +12,7 @@ from tekst import errors, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep
 from tekst.models.platform import (
+    ClientInitData,
     PlatformData,
     PlatformSecurityInfo,
     PlatformStateDocument,
@@ -40,11 +41,10 @@ router = APIRouter(
 @router.get(
     "",
     response_model=PlatformData,
-    summary="Get platform data",
     status_code=status.HTTP_200_OK,
 )
 async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> PlatformData:
-    """Returns data the client needs to initialize"""
+    """Returns data about the platform and its configuration"""
     return PlatformData(
         texts=await get_all_texts(ou),
         state=await get_state(),
@@ -64,6 +64,22 @@ async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> PlatformData
         .project(ClientSegmentHead)
         .to_list(),
         tekst=camelize(cfg.tekst),
+    )
+
+
+@router.get(
+    "/web-init",
+    response_model=ClientInitData,
+    status_code=status.HTTP_200_OK,
+)
+async def get_client_init_data(
+    ou: OptionalUserDep,
+    cfg: ConfigDep,
+) -> PlatformData:
+    """Returns data the client needs to initialize"""
+    return ClientInitData(
+        platform=await get_platform_data(ou, cfg),
+        user=ou,
     )
 
 

@@ -12,12 +12,12 @@ import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import {
-  CoverageIcon,
-  DescIcon,
-  FormatQuoteIcon,
-  InfoIcon,
-  MetadataIcon,
-  ResourceIcon,
+    CoverageIcon,
+    DescIcon,
+    FormatQuoteIcon,
+    InfoIcon,
+    MetadataIcon,
+    ResourceIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -53,7 +53,7 @@ const showInfoModal = ref(false);
   />
 
   <generic-modal v-model:show="showInfoModal" :title="title" :icon="ResourceIcon" width="wide">
-    <n-flex v-if="auth.loggedIn" justify="space-between" class="mb-lg">
+    <n-flex v-if="!!auth.user" justify="space-between" class="mb-lg">
       <user-display :user="resource.owner || undefined" size="small" :system="!resource.owner" />
       <resource-info-tags :resource="resource" reverse />
     </n-flex>

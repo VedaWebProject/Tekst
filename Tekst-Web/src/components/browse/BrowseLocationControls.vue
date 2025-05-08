@@ -90,7 +90,7 @@ whenever(ArrowRight, () => {
       </n-button>
     </n-badge>
 
-    <bookmarks-widget v-if="auth.loggedIn" :button-size="buttonSize" />
+    <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" />
 
     <n-button
       type="primary"

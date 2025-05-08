@@ -1,11 +1,11 @@
 import type { components, paths } from '@/api/schema';
 import { useErrors } from '@/composables/errors';
 import { useMessages } from '@/composables/messages';
+import env from '@/env';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
 import Cookies from 'js-cookie';
 import createClient, { type Middleware } from 'openapi-fetch';
-import env from '@/env';
 
 // HTTP client middleware for intercepting requests and responses
 const interceptors: Middleware = {
@@ -28,7 +28,7 @@ const interceptors: Middleware = {
       // automatically log out on a 401 response
       if (!response.url.endsWith('/logout')) {
         const auth = useAuthStore();
-        if (auth.loggedIn) {
+        if (!!auth.user) {
           message.warning($t('account.sessionExpired'));
           console.log('Running logout sequence in reaction to 401 response...');
           await auth.logout(true);

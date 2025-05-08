@@ -20,6 +20,27 @@ async def test_platform_data(
 
 
 @pytest.mark.anyio
+async def test_web_init_data(
+    test_client: AsyncClient,
+    assert_status,
+    login,
+):
+    # anonymous
+    resp = await test_client.get("/platform/web-init")
+    assert_status(200, resp)
+    assert "platform" in resp.json()
+    assert "user" in resp.json()
+    assert resp.json()["user"] is None
+
+    # logged in
+    await login()
+    resp = await test_client.get("/platform/web-init")
+    assert_status(200, resp)
+    assert "user" in resp.json()
+    assert resp.json()["user"] is not None
+
+
+@pytest.mark.anyio
 async def test_update_platform_state(
     test_client: AsyncClient,
     assert_status,

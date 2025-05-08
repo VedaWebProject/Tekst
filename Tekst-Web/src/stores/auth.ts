@@ -4,7 +4,7 @@ import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { useResourcesStore, useSearchStore, useStateStore, useUserMessagesStore } from '@/stores';
-import { StorageSerializers, useIntervalFn, useStorage } from '@vueuse/core';
+import { useIntervalFn, useSessionStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
@@ -23,11 +23,8 @@ export const useAuthStore = defineStore('auth', () => {
   const userMessages = useUserMessagesStore();
 
   const user = ref<UserRead>();
-  const loggedIn = useStorage<boolean>('loggedIn', false, undefined, {
-    serializer: StorageSerializers.boolean,
-  });
 
-  const sessionExpiryTsSec = useStorage('sessionExpiryS', Number.MAX_SAFE_INTEGER);
+  const sessionExpiryTsSec = useSessionStorage('sessionExpiryS', Number.MAX_SAFE_INTEGER);
 
   const { pause: _stopSessionCheck, resume: _startSessionCheck } = useIntervalFn(
     async () => {
@@ -37,12 +34,6 @@ export const useAuthStore = defineStore('auth', () => {
     _SES_CHK_INTV_S * 1000,
     { immediate: true, immediateCallback: false }
   );
-
-  async function loadExistingSession() {
-    if (loggedIn.value) {
-      await _loadUserData();
-    }
-  }
 
   function _setCookieExpiry() {
     sessionExpiryTsSec.value =
@@ -55,7 +46,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   function _cleanupSession() {
     user.value = undefined;
-    loggedIn.value = false;
     userMessages.stopThreadsPolling();
     _unsetCookieExpiry();
     _stopSessionCheck();
@@ -132,7 +122,6 @@ export const useAuthStore = defineStore('auth', () => {
         await state.setLocale(userData.locale, false);
       }
       userMessages.startThreadsPolling();
-      loggedIn.value = true;
       // welcome
       if (userData.seen) {
         message.success($t('account.welcome', { name: userData.name }), undefined, 3);
@@ -190,8 +179,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     user,
-    loggedIn,
-    loadExistingSession,
     showLoginModal,
     closeLoginModal,
     loginModalState,

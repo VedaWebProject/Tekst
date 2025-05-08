@@ -10,15 +10,16 @@ export function usePlatformData() {
     pfData.value?.systemSegments.find((p) => p.key === 'systemHome')
   );
 
-  async function _cleanLoadedInfoSegments() {
-    loadedInfoSegments.value = [];
-  }
-
-  async function loadPlatformData() {
+  async function loadPlatformData(data?: PlatformData) {
+    if (data) {
+      pfData.value = data;
+      loadedInfoSegments.value = [];
+      return data;
+    }
     const { data: apiData, error } = await GET('/platform', {});
     if (!error) {
       pfData.value = apiData;
-      _cleanLoadedInfoSegments();
+      loadedInfoSegments.value = [];
       return apiData;
     } else {
       throw error;

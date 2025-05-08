@@ -14,6 +14,7 @@ from tekst.models.common import (
 )
 from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.text import TextRead
+from tekst.models.user import UserRead
 from tekst.types import (
     ConStr,
     ConStrOrNone,
@@ -284,3 +285,14 @@ class PlatformData(ModelBase):
     system_segments: list[ClientSegmentRead]
     info_segments: list[ClientSegmentHead]
     tekst: dict[str, str]
+
+
+class ClientInitData(ModelBase):
+    platform: Annotated[
+        PlatformData,
+        Field(description="Platform data"),
+    ]
+    user: Annotated[
+        UserRead | None,
+        Field(description="User data of current user (if there is an active session)"),
+    ] = None

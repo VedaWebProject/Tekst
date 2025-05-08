@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores';
 import { NSpin } from 'naive-ui';
+import { onMounted } from 'vue';
 const auth = useAuthStore();
-auth.logout();
+
+onMounted(() => {
+  auth.logout();
+})
 </script>
 
 <template>

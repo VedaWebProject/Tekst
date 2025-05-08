@@ -411,9 +411,29 @@ export interface paths {
     };
     /**
      * Get platform data
-     * @description Returns data the client needs to initialize
+     * @description Returns data about the platform and its configuration
      */
     get: operations['getPlatformData'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/platform/web-init': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get client init data
+     * @description Returns data the client needs to initialize
+     */
+    get: operations['getClientInitData'];
     put?: never;
     post?: never;
     delete?: never;
@@ -1059,7 +1079,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get public user
+     * Get public user info
      * @description Returns public information on the user with the specified username or ID
      */
     get: operations['getPublicUser'];
@@ -2298,6 +2318,13 @@ export interface components {
       comment?: null | string;
     } & {
       [key: string]: unknown;
+    };
+    /** ClientInitData */
+    ClientInitData: {
+      /** @description Platform data */
+      platform: components['schemas']['PlatformData'];
+      /** @description User data of current user (if there is an active session) */
+      user?: components['schemas']['UserRead'] | null;
     };
     /** ClientSegmentCreate */
     ClientSegmentCreate: {
@@ -8139,6 +8166,26 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['PlatformData'];
+        };
+      };
+    };
+  };
+  getClientInitData: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ClientInitData'];
         };
       };
     };

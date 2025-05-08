@@ -31,7 +31,7 @@ const theme = useThemeStore();
 const resources = useResourcesStore();
 
 const tooltip = computed(() =>
-  auth.loggedIn
+  !!auth.user
     ? $t('account.tipUserBtn', { username: auth.user?.username })
     : $t('account.tipLoginBtn')
 );
@@ -143,7 +143,7 @@ function handleUserOptionSelect(key: string) {
 
 <template>
   <n-dropdown
-    v-if="auth.loggedIn && !state.smallScreen"
+    v-if="!!auth.user && !state.smallScreen"
     :options="userOptions"
     trigger="hover"
     placement="bottom-end"

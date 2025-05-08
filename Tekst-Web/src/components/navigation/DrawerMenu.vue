@@ -14,14 +14,9 @@ import { useAuthStore, useStateStore } from '@/stores';
 import { NDrawer, NDrawerContent, NFlex } from 'naive-ui';
 import { computed } from 'vue';
 
-withDefaults(
-  defineProps<{
-    showUserActionsButton?: boolean;
-  }>(),
-  {
-    showUserActionsButton: false,
-  }
-);
+defineProps<{
+  showUserActionsButton?: boolean;
+}>();
 
 const show = defineModel<boolean>('show');
 
@@ -49,7 +44,7 @@ const allMenuOptions = computed(() => [
         },
       ]
     : []),
-  ...(auth.loggedIn && auth.user?.isSuperuser
+  ...(!!auth.user?.isSuperuser
     ? [
         {
           type: 'group',
@@ -59,7 +54,7 @@ const allMenuOptions = computed(() => [
         },
       ]
     : []),
-  ...(auth.loggedIn
+  ...(!!auth.user
     ? [
         {
           type: 'group',
@@ -79,8 +74,8 @@ const allMenuOptions = computed(() => [
         <n-flex :size="32" justify="center" :wrap="false">
           <theme-mode-switcher @click="() => (show = false)" />
           <locale-switcher />
-          <user-actions-button v-if="showUserActionsButton && !auth.loggedIn" />
-          <logout-button v-if="auth.loggedIn" @click="() => (show = false)" />
+          <user-actions-button v-if="showUserActionsButton && !auth.user" />
+          <logout-button v-else @click="() => (show = false)" />
         </n-flex>
       </template>
       <navigation-menu mode="vertical" :options="allMenuOptions" @select="() => (show = false)" />

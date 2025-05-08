@@ -10,15 +10,15 @@ import { UserIcon } from '@/icons';
 import router from '@/router';
 import { useAuthStore, useStateStore } from '@/stores';
 import {
-  type FormInst,
-  type FormItemInst,
-  type FormItemRule,
-  NButton,
-  NDivider,
-  NFlex,
-  NForm,
-  NFormItem,
-  NInput,
+    type FormInst,
+    type FormItemInst,
+    type FormItemRule,
+    NButton,
+    NDivider,
+    NFlex,
+    NForm,
+    NFormItem,
+    NInput,
 } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
@@ -112,8 +112,8 @@ function switchToLogin() {
 
 onMounted(() => {
   if (
-    (auth.loggedIn && !auth.user?.isSuperuser) ||
-    (!auth.loggedIn && state.pf?.security.closedMode)
+    (!!auth.user && !auth.user?.isSuperuser) ||
+    (!auth.user && state.pf?.security.closedMode)
   ) {
     router.push({ name: 'home' });
   }

@@ -40,5 +40,9 @@ def setup_routes(app: FastAPI) -> None:
         if isinstance(route, APIRoute):
             # generate route operation IDs from route names
             route.operation_id = humps.camelize(route.name)
-            route_name = getattr(route.endpoint, "__name__", route.name)
-            route.summary = route_name.replace("_", " ").capitalize()
+            route.summary = (
+                route.summary
+                or getattr(route.endpoint, "__name__", route.name)
+                .replace("_", " ")
+                .capitalize()
+            )
