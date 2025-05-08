@@ -45,7 +45,13 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     if (auth.user?.id) {
       const { data, error } = await GET('/messages/threads');
       if (!error) {
-        threads.value = data;
+        // sort and apply threads data
+        threads.value = data.sort((a, b) => {
+          // sort by unread count, then by contact username
+          const unreadDiff = b.unread - a.unread;
+          if (unreadDiff !== 0) return unreadDiff;
+          return (a.contact?.username || '').localeCompare(b.contact?.username || '');
+        });
       } else {
         threads.value = [];
       }
