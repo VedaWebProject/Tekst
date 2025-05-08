@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import Field
-from typing_extensions import TypeAliasType
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
@@ -185,41 +184,38 @@ class LineLabellingConfig(ModelBase):
     ] = "numbersOneBased"
 
 
-DeepLSourceLanguage = TypeAliasType(
-    "DeepLSourceLanguage",
-    Literal[
-        "ar",
-        "bg",
-        "cs",
-        "da",
-        "de",
-        "el",
-        "en",
-        "es",
-        "et",
-        "fi",
-        "fr",
-        "hu",
-        "id",
-        "it",
-        "ja",
-        "ko",
-        "lt",
-        "lv",
-        "nb",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "ru",
-        "sk",
-        "sl",
-        "sv",
-        "tr",
-        "uk",
-        "zh",
-    ],
-)
+type DeepLSourceLanguage = Literal[
+    "ar",
+    "bg",
+    "cs",
+    "da",
+    "de",
+    "el",
+    "en",
+    "es",
+    "et",
+    "fi",
+    "fr",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "lt",
+    "lv",
+    "nb",
+    "nl",
+    "pl",
+    "pt",
+    "ro",
+    "ru",
+    "sk",
+    "sl",
+    "sv",
+    "tr",
+    "uk",
+    "zh",
+]
 
 
 class DeepLLinksConfig(ModelBase):

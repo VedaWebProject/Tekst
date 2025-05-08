@@ -1,11 +1,10 @@
 import csv
 
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field
-from typing_extensions import TypeAliasType
 
 from tekst.i18n import TranslationBase
 from tekst.logs import log, log_op_end, log_op_start
@@ -252,32 +251,14 @@ class LocationMetadataModGeneralConfig(GeneralResourceConfig):
     ] = False
 
 
-LocationMetadataEntryKey = TypeAliasType(
-    "LocationMetadataEntryKey",
-    Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key of the entry",
-        ),
-    ],
-)
+type LocationMetadataEntryKey = Annotated[
+    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of the entry")
+]
 
 
-LocationMetadataEntryValue = TypeAliasType(
-    "LocationMetadataEntryValue",
-    Annotated[
-        ConStr(
-            max_length=256,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Value of an entry",
-        ),
-    ],
-)
+type LocationMetadataEntryValue = Annotated[
+    ConStr(max_length=256, cleanup="oneline"), Field(description="Value of an entry")
+]
 
 
 class MetadataKeyTranslation(TranslationBase):
@@ -422,7 +403,7 @@ class LocationMetadataResource(ResourceBase):
         )
 
         # update aggregations in DB
-        precomp_doc.created_at = datetime.utcnow()
+        precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
 
     async def resource_precompute_hook(self) -> None:

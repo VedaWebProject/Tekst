@@ -1,17 +1,15 @@
 from typing import Literal, TypeVar, get_args
 
 from pydantic import conlist
-from typing_extensions import TypeAliasType, TypedDict
+from typing_extensions import TypedDict
 
 
 # LOCALE AND TRANSLATION TYPES
 
 # type alias for available locale/language setting identifiers
 _platform_locales = ("deDE", "enUS")
-LocaleKey = TypeAliasType("LocaleKey", Literal[_platform_locales])
-TranslationLocaleKey = TypeAliasType(
-    "TranslationLocaleKey", Literal[_platform_locales + ("*",)]
-)
+type LocaleKey = Literal[_platform_locales]
+type TranslationLocaleKey = Literal[_platform_locales + ("*",)]
 
 
 class TranslationBase(TypedDict):

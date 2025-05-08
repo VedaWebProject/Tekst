@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from os.path import realpath
 from pathlib import Path
 
@@ -98,7 +98,7 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     await AccessTokenDocument.find(
         LT(
             AccessTokenDocument.created_at,
-            datetime.utcnow() - timedelta(seconds=cfg.security.access_token_lifetime),
+            datetime.now(UTC) - timedelta(seconds=cfg.security.access_token_lifetime),
         )
     ).delete()
 
@@ -107,7 +107,7 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     await UserMessageDocument.find(
         LT(
             UserMessageDocument.created_at,
-            datetime.utcnow() - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
+            datetime.now(UTC) - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
         ),
     ).delete()
 

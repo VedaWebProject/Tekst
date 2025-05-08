@@ -110,7 +110,7 @@ Please be aware that taking this approach is considerably more difficult and req
     You will also need:
 
     - NodeJS for building the client
-    - Python >3.10 for running the server
+    - Python >=3.12 for running the API
     - Gunicorn (or similar) as a WSGI with ASGI workers, typically from Uvicorn (see [here](https://www.uvicorn.org/deployment/))
     - `crontab` or something similar for scheduling recurring background jobs
 

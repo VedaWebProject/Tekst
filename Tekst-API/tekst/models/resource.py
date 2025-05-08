@@ -1,6 +1,6 @@
 import re
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
@@ -303,7 +303,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         is necessary to react to content changes. Overriding implementations MUST
         call `await super().contents_changed_hook()`!
         """
-        self.contents_changed_at = datetime.utcnow()
+        self.contents_changed_at = datetime.now(UTC)
         await self.replace()
 
     async def resource_precompute_hook(self) -> None:
@@ -463,7 +463,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             details=details,
         ).model_dump()
 
-        precomp_doc.created_at = datetime.utcnow()
+        precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
 
 

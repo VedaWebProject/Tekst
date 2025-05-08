@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
@@ -58,7 +58,7 @@ async def send_message(
     # create message
     message_doc = UserMessageDocument(
         **message.model_dump(),
-        created_at=datetime.utcnow(),
+        created_at=datetime.now(UTC),
     )
 
     # force sender id

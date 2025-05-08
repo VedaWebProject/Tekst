@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated, Literal, get_args
 
 from beanie import Document, PydanticObjectId
@@ -10,7 +10,6 @@ from fastapi_users_db_beanie import (
 )
 from pydantic import Field, model_validator
 from pymongo import IndexModel
-from typing_extensions import TypeAliasType
 
 from tekst.config import TekstConfig, get_config
 from tekst.i18n import LocaleKey
@@ -24,30 +23,22 @@ from tekst.types import ConStr, ConStrOrNone, HttpUrlOrNone
 
 _cfg: TekstConfig = get_config()
 
-PrivateUserProp = TypeAliasType(
-    "PrivateUserProp", Literal["name", "affiliation", "bio"]
-)
-PrivateUserProps = TypeAliasType(
-    "PrivateUserProps",
-    Annotated[
-        list[PrivateUserProp],
-        Field(
-            description="Properties set to be private by this user",
-            max_length=len(get_args(PrivateUserProp.__value__)),
-        ),
-    ],
-)
+type PrivateUserProp = Literal["name", "affiliation", "bio"]
+type PrivateUserProps = Annotated[
+    list[PrivateUserProp],
+    Field(
+        description="Properties set to be private by this user",
+        max_length=len(get_args(PrivateUserProp.__value__)),
+    ),
+]
 
 
-UserNotificationTrigger = TypeAliasType(
-    "UserNotificationTrigger",
-    Literal[
-        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
-        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
-        TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
-        TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
-    ],
-)
+type UserNotificationTrigger = Literal[
+    TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
+    TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+    TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
+    TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
+]
 UserNotificationTriggers = Annotated[
     list[UserNotificationTrigger],
     Field(
@@ -56,13 +47,10 @@ UserNotificationTriggers = Annotated[
     ),
 ]
 
-AdminNotificationTrigger = TypeAliasType(
-    "AdminNotificationTrigger",
-    Literal[
-        TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
-        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
-    ],
-)
+type AdminNotificationTrigger = Literal[
+    TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
+    TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+]
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],
     Field(
@@ -166,7 +154,7 @@ class UserDocument(User, BeanieBaseUser, Document):
         ]
 
     is_active: bool = _cfg.security.users_active_by_default
-    created_at: datetime = datetime.utcnow()
+    created_at: datetime = datetime.now(UTC)
 
 
 class UserRead(User, schemas.BaseUser[PydanticObjectId]):

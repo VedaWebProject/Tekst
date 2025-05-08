@@ -2,7 +2,6 @@ from collections.abc import Callable
 from typing import Annotated, Any, Literal
 
 from pydantic import Field, conint, field_validator
-from typing_extensions import TypeAliasType
 
 from tekst.models.common import (
     ModelBase,
@@ -79,9 +78,7 @@ class SearchResults(ModelBase):
         )
 
 
-SortingPreset = TypeAliasType(
-    "SortingPreset", Literal["relevance", "text_level_position", "text_level_relevance"]
-)
+type SortingPreset = Literal["relevance", "text_level_position", "text_level_relevance"]
 
 
 class PaginationSettings(ModelBase):

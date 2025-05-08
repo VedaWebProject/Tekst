@@ -1,6 +1,6 @@
 import asyncio
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -204,7 +204,7 @@ async def create_indices_task(
         )
 
     # update last global indexing time
-    await update_state(indices_updated_at=datetime.utcnow())
+    await update_state(indices_updated_at=datetime.now(UTC))
 
     return {
         "took": round(log_op_end(op_id), 2),

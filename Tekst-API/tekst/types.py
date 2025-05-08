@@ -3,7 +3,7 @@ from typing import Annotated, Literal, TypeAlias
 
 from pydantic import BeforeValidator, Field, StringConstraints, conint, constr
 from pydantic.functional_validators import AfterValidator
-from typing_extensions import TypeAliasType, TypedDict
+from typing_extensions import TypedDict
 
 from tekst.utils.strings import cleanup_spaces_multiline, cleanup_spaces_oneline
 
@@ -36,7 +36,12 @@ def _empty_str_to_none(v: str | None) -> None:
     raise ValueError("Value is not an empty string nor None")
 
 
-_EmptyStrToNone: TypeAlias = Annotated[None, BeforeValidator(_empty_str_to_none)]
+# For this, we're intentionally not using a `TypeAliasType`
+# (via `type _EmptyStrToNone = ...`)
+# but just a plain old `TypeAlias`, because we actually don't want Pydantic to be able
+# to access the type alias name. This would lead to our API schema being "polluted"
+# with references to a useless "_EmptyStrToNone" type that is just `null` in the end.
+_EmptyStrToNone = Annotated[None, BeforeValidator(_empty_str_to_none)]
 
 
 def ConStr(  # noqa: N802
@@ -174,19 +179,14 @@ class ContentCssProperty(TypedDict):
     ]
 
 
-ContentCssProperties = TypeAliasType(
-    "ContentCssProperties",
-    Annotated[
-        list[ContentCssProperty],
-        Field(
-            description=(
-                "List of CSS properties to apply to the contents of this resource"
-            ),
-            min_length=0,
-            max_length=64,
-        ),
-    ],
-)
+type ContentCssProperties = Annotated[
+    list[ContentCssProperty],
+    Field(
+        description="List of CSS properties to apply to the contents of this resource",
+        min_length=0,
+        max_length=64,
+    ),
+]
 
 
 class SearchReplacement(TypedDict):
@@ -211,20 +211,17 @@ class SearchReplacement(TypedDict):
     ]
 
 
-SearchReplacements = TypeAliasType(
-    "SearchReplacements",
-    Annotated[
-        list[SearchReplacement],
-        Field(
-            description=(
-                "List of regular expression replacements "
-                "to apply to search index documents"
-            ),
-            min_length=0,
-            max_length=16,
+type SearchReplacements = Annotated[
+    list[SearchReplacement],
+    Field(
+        description=(
+            "List of regular expression replacements "
+            "to apply to search index documents"
         ),
-    ],
-)
+        min_length=0,
+        max_length=16,
+    ),
+]
 
 
 # ANNOTATIONS FOR MODIFYING MODEL VARIANTS

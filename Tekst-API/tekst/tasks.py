@@ -2,7 +2,7 @@ import asyncio
 import traceback
 
 from collections.abc import Awaitable
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from enum import Enum
 from typing import Annotated, Any, Literal
 from uuid import uuid4
@@ -179,7 +179,7 @@ async def _run_task(
         if not isinstance(e, HTTPException):  # pragma: no cover
             log.error(str(e) + "\n" + traceback.format_exc())
     finally:
-        task_doc.end_time = datetime.utcnow()
+        task_doc.end_time = datetime.now(UTC)
         task_doc.duration_seconds = (
             task_doc.end_time - task_doc.start_time
         ).total_seconds()
@@ -204,7 +204,7 @@ async def create_task(
         user_id=user_id,
         pickup_key=str(uuid4()),
         status="running",
-        start_time=datetime.utcnow(),
+        start_time=datetime.now(UTC),
     ).create()
     asyncio.create_task(
         _run_task(
@@ -286,7 +286,7 @@ async def cleanup_tasks() -> None:
     # delete all tasks that started more than 1 week ago
     for task in await TaskDocument.find(
         NE(TaskDocument.task_type, TaskType.RESOURCE_EXPORT),
-        LT(TaskDocument.start_time, datetime.utcnow() - timedelta(weeks=1)),
+        LT(TaskDocument.start_time, datetime.now(UTC) - timedelta(weeks=1)),
     ).to_list():
         await delete_task(task)  # pragma: no cover
 

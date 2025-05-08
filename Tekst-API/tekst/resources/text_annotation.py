@@ -1,13 +1,12 @@
 import csv
 
 from collections.abc import Callable
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from pydantic import BeforeValidator, Field
-from typing_extensions import TypeAliasType
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import ModelBase
@@ -488,7 +487,7 @@ class TextAnnotationResource(ResourceBase):
         )
 
         # update aggregations in DB
-        precomp_doc.created_at = datetime.utcnow()
+        precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
 
     async def resource_precompute_hook(self) -> None:
@@ -502,18 +501,10 @@ class TextAnnotationResource(ResourceBase):
         log_op_end(op_id)
 
 
-TextAnnotationValue = TypeAliasType(
-    "TextAnnotationValue",
-    Annotated[
-        ConStr(
-            max_length=256,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Value of an annotation",
-        ),
-    ],
-)
+type TextAnnotationValue = Annotated[
+    ConStr(max_length=256, cleanup="oneline"),
+    Field(description="Value of an annotation"),
+]
 
 
 class TextAnnotationEntry(ModelBase):

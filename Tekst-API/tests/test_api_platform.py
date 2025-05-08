@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -162,7 +162,7 @@ async def test_platform_cleanup(
     # manipulate the access token of our session to be 2 hours old
     # (access token lifetime is set to 1 hour in tests config)
     await AccessTokenDocument.find().update(
-        Set({AccessTokenDocument.created_at: datetime.utcnow() - timedelta(hours=2)})
+        Set({AccessTokenDocument.created_at: datetime.now(UTC) - timedelta(hours=2)})
     )
 
     # try to start cleanup task again

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 import pytest
 
@@ -18,6 +18,6 @@ async def test_sending_email():
             is_active=True,
             is_verified=True,
             is_superuser=False,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(UTC),
         )
     )

@@ -1,7 +1,6 @@
 from typing import Annotated
 
 from pydantic import Field
-from typing_extensions import TypeAliasType
 
 from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
@@ -99,27 +98,13 @@ class ItemsDisplayTranslation(TranslationBase):
     ]
 
 
-ItemKey = TypeAliasType(
-    "ItemKey",
-    Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(description="Key of an item"),
-    ],
-)
+type ItemKey = Annotated[
+    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of an item")
+]
 
-ItemGroupKey = TypeAliasType(
-    "ItemGroupKey",
-    Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(description="Key of an item group"),
-    ],
-)
+type ItemGroupKey = Annotated[
+    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of an item group")
+]
 
 
 class ItemGroup(ModelBase):

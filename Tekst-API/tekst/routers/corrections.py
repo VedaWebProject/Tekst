@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
@@ -74,7 +74,7 @@ async def create_correction(
         position=location_doc.position,
         note=correction.note,
         user_id=user.id,
-        date=datetime.utcnow(),
+        date=datetime.now(UTC),
         location_labels=location_labels,
     ).create()
 
