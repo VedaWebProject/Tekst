@@ -68,7 +68,7 @@ const fontStyle = {
       :editors-comment="content.editorsComment"
       :font="fontStyle.fontFamily"
     >
-      <table :size="4">
+      <table>
         <template v-for="group in content.groups" :key="group.group">
           <tr>
             <td colspan="2" class="group-header text-small b">
@@ -91,14 +91,16 @@ const fontStyle = {
 
 <style scoped>
 table {
-  margin-top: -8px;
+  border-collapse: collapse;
 }
+
 table th {
   text-align: left;
-  padding-right: var(--gap-sm);
+  padding-right: var(--gap-md);
 }
+
 table .group-header {
-  padding-top: 8px;
-  border-bottom: 1px solid var(--accent-color-fade5);
+  padding-top: var(--gap-sm);
+  border-bottom: 1px solid var(--accent-color-fade4);
 }
 </style>
