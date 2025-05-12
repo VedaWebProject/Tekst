@@ -54,24 +54,22 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
         <n-image-group :render-toolbar="renderToolbar">
           <n-flex :vertical="!focusView">
             <figure v-for="(image, index) in content.files" :key="index" class="image-container">
-              <n-flex :wrap="state.smallScreen" :size="[18, 0]">
-                <div>
-                  <n-image
-                    lazy
-                    :src="image.thumbUrl || image.url"
-                    :preview-src="image.url"
-                    :alt="image.caption || undefined"
-                    :title="image.caption"
-                    :width="focusView ? undefined : imageSize"
-                    :height="focusView ? imageSize : undefined"
-                  >
-                    <template #placeholder>
-                      {{ $t('common.loading') }}
-                    </template>
-                  </n-image>
-                </div>
+              <n-flex align="stretch" :wrap="state.smallScreen" :size="[18, 0]">
+                <n-image
+                  lazy
+                  :src="image.thumbUrl || image.url"
+                  :preview-src="image.url"
+                  :alt="image.caption || undefined"
+                  :title="image.caption"
+                  :width="focusView ? undefined : imageSize"
+                  :height="focusView ? imageSize : undefined"
+                >
+                  <template #placeholder>
+                    {{ $t('common.loading') }}
+                  </template>
+                </n-image>
                 <figcaption v-if="!focusView" class="caption" :style="fontStyle">
-                  <span class="text-tiny translucent">{{ image.caption }}</span>
+                  <span class="text-small">{{ image.caption }}</span>
                   <a
                     v-if="image.sourceUrl"
                     :href="image.sourceUrl"
@@ -108,7 +106,6 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 
 .image-container:not(:first-child) {
   padding-top: var(--gap-sm);
-  border-top: 1px solid var(--main-bg-color);
 }
 
 .focus-view .image-container {
@@ -119,7 +116,9 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 .caption {
   white-space: pre-line;
   line-height: 1.2;
-  vertical-align: middle;
+  border-radius: var(--border-radius);
+  padding-left: var(--gap-sm);
+  border-left: 2px solid var(--accent-color-fade4);
 }
 
 .caption > .source-link {
