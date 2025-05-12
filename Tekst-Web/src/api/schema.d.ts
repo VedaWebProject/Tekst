@@ -6292,6 +6292,12 @@ export interface components {
        */
       accentColor: string;
       /**
+       * Pinnedmetadataids
+       * @description IDs of pinned location metadata resources
+       * @default []
+       */
+      pinnedMetadataIds: string[];
+      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6373,6 +6379,12 @@ export interface components {
        */
       accentColor: string;
       /**
+       * Pinnedmetadataids
+       * @description IDs of pinned location metadata resources
+       * @default []
+       */
+      pinnedMetadataIds: string[];
+      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6450,6 +6462,11 @@ export interface components {
        * @description Accent color used for this text in the client UI
        */
       accentColor?: string;
+      /**
+       * Pinnedmetadataids
+       * @description IDs of pinned location metadata resources
+       */
+      pinnedMetadataIds?: string[];
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client

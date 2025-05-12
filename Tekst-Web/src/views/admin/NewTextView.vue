@@ -21,6 +21,7 @@ const initialModel = (): TextCreate => ({
   slug: '',
   levels: [[{ locale: '*', translation: '' }]],
   accentColor: '#43895F',
+  pinnedMetadataIds: [],
   defaultLevel: 0,
   fullLocLabelAsHitHeading: false,
   isActive: false,

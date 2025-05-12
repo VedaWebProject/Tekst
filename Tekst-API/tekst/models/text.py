@@ -160,6 +160,14 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = "#305D97"
 
+    pinned_metadata_ids: Annotated[
+        list[PydanticObjectId],
+        Field(
+            description="IDs of pinned location metadata resources",
+            max_length=32,
+        ),
+    ] = []
+
     is_active: Annotated[
         bool,
         Field(

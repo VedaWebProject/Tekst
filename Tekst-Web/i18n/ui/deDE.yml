@@ -315,6 +315,7 @@ models:
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
     accentColor: Akzentfarbe
+    pinnedMetadataIds: Angeheftete Belegstellen-Metadaten
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
     isInactive: Nicht öffentlich gelistet

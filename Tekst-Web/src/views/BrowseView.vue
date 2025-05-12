@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import type { LocationMetadataContentRead } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
+import LocationMetadataContentPinned from '@/components/content/LocationMetadataContentPinned.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
 import { NButton, NFlex, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
@@ -20,6 +22,7 @@ const props = defineProps<{
 const auth = useAuthStore();
 const browse = useBrowseStore();
 const state = useStateStore();
+const resources = useResourcesStore();
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
@@ -29,6 +32,20 @@ const catHiddenResCount = computed<Record<string, number>>(() =>
     ])
   )
 );
+
+const pinnedMetadata =
+  computed<LocationMetadataContentRead[]>(
+    () =>
+      resources.ofText
+        .filter(
+          (r) =>
+            r.resourceType === 'locationMetadata' &&
+            r.level <= (browse.level || 0) &&
+            state.text?.pinnedMetadataIds.includes(r.id)
+        )
+        .map((r) => r.contents?.[0])
+        .filter(Boolean) as LocationMetadataContentRead[]
+  ) || [];
 
 function handleShowAllClick(categoryKey?: string) {
   if (!categoryKey) return;
@@ -66,6 +83,7 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
+  <!-- LOCATION ALIASES -->
   <n-flex
     v-if="state.pf?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
     class="mb-lg"
@@ -75,6 +93,13 @@ onMounted(() => {
       {{ alias }}
     </n-tag>
   </n-flex>
+
+  <!-- PINNED LOCATION METADATA -->
+  <location-metadata-content-pinned
+    v-if="!!pinnedMetadata.length"
+    :contents="pinnedMetadata"
+    v-model:expand="browse.expandPinnedLocMeta"
+  />
 
   <browse-toolbar v-if="browse.locationPath.length" />
 

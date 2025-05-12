@@ -92,6 +92,7 @@ import PlaylistRemoveOutlined from '@vicons/material/PlaylistRemoveOutlined';
 import PrivacyTipOutlined from '@vicons/material/PrivacyTipOutlined';
 import PublicOffOutlined from '@vicons/material/PublicOffOutlined';
 import PublicOutlined from '@vicons/material/PublicOutlined';
+import PushPinOutlined from '@vicons/material/PushPinOutlined';
 import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
@@ -198,6 +199,7 @@ export {
   HideImageOutlined as NoImageIcon,
   FindInPageOutlined as NothingFoundIcon,
   PauseFilled as PauseIcon,
+  PushPinOutlined as PinIcon,
   PlayArrowFilled as PlayIcon,
   PrivacyTipOutlined as PrivacyIcon,
   FlagFilled as ProposedIcon,

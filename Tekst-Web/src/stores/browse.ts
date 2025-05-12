@@ -22,6 +22,7 @@ export const useBrowseStore = defineStore('browse', () => {
   const loadingLocationData = ref(true); // this is intentional!
   const loadingResources = computed(() => resources.loading);
   const loading = computed(() => loadingLocationData.value || resources.loading);
+  const expandPinnedLocMeta = ref(true);
 
   /* BROWSE LOCATION */
 
@@ -108,7 +109,10 @@ export const useBrowseStore = defineStore('browse', () => {
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
         resources: resources.ofText
           .filter(
-            (r) => r.config.general.category === c.key && (showNonPublicResources.value || r.public)
+            (r) =>
+              r.config.general.category === c.key &&
+              (showNonPublicResources.value || r.public) &&
+              !state.text?.pinnedMetadataIds.includes(r.id)
           )
           .sort(compareResourceOrder),
       })) || [];
@@ -135,6 +139,7 @@ export const useBrowseStore = defineStore('browse', () => {
     loadingLocationData,
     loadingResources,
     loading,
+    expandPinnedLocMeta,
     resourcesCategorized,
     setResourcesActiveState: resources.setResourcesActiveState,
     locationPath,

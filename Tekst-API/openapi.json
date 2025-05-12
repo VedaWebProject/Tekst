@@ -17978,6 +17978,20 @@
             "description": "Accent color used for this text in the client UI",
             "default": "#305D97"
           },
+          "pinnedMetadataIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Pinnedmetadataids",
+            "description": "IDs of pinned location metadata resources",
+            "default": []
+          },
           "isActive": {
             "type": "boolean",
             "title": "Isactive",
@@ -18107,6 +18121,20 @@
             "title": "Accentcolor",
             "description": "Accent color used for this text in the client UI",
             "default": "#305D97"
+          },
+          "pinnedMetadataIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Pinnedmetadataids",
+            "description": "IDs of pinned location metadata resources",
+            "default": []
           },
           "isActive": {
             "type": "boolean",
@@ -18295,6 +18323,27 @@
             ],
             "title": "Accentcolor",
             "description": "Accent color used for this text in the client UI",
+            "optionalNullable": false
+          },
+          "pinnedMetadataIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 24,
+                  "minLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                "type": "array",
+                "maxItems": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pinnedmetadataids",
+            "description": "IDs of pinned location metadata resources",
             "optionalNullable": false
           },
           "isActive": {

@@ -69,14 +69,16 @@ const fontStyle = {
       :font="fontStyle.fontFamily"
     >
       <table>
-        <template v-for="group in content.groups" :key="group.group">
+        <template v-for="(group, index) in content.groups" :key="group.group">
           <tr>
             <td colspan="2" class="group-header text-small b">
-              {{ group.group || $t('common.other') }}
+              <div :class="{ 'mt-sm': index > 0 }">
+                {{ group.group || $t('common.other') }}
+              </div>
             </td>
           </tr>
           <tr v-for="entry in group.items" :key="entry.key">
-            <td style="padding-right: var(--gap-sm)">{{ entry.key }}:</td>
+            <td style="padding-right: var(--gap-sm)">{{ entry.key }}</td>
             <td
               :style="{ fontFamily: resource.config.general.font || 'var(--font-family-content)' }"
             >
@@ -100,7 +102,6 @@ table th {
 }
 
 table .group-header {
-  padding-top: var(--gap-sm);
   border-bottom: 1px solid var(--accent-color-fade4);
 }
 </style>

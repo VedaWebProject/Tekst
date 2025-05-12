@@ -312,6 +312,7 @@ models:
     labeledLocation: Include level names in location labels (does not apply to search results)
     fullLocLabelAsHitHeading: Use full location label as search result heading
     accentColor: Accent color
+    pinnedMetadataIds: Pinned location metadata
     resourceCategories: Resource Categories
     isActive: Publicly listed
     isInactive: Not publicly listed

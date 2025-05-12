@@ -25,6 +25,7 @@
     "loc_delim": " > ",
     "labeled_location": true,
     "accent_color": "#38714b",
+    "pinned_metadata_ids": [{ "$oid": "67dbc7432e51e7949ae22714" }],
     "is_active": true,
     "resource_categories": [
       {
