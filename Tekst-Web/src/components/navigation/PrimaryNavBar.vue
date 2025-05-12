@@ -30,9 +30,7 @@ const resources = useResourcesStore();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(true);
 const menuOpen = ref(false);
-const showUserActionsButton = computed(
-  () => !pfData.value?.security.closedMode || !!auth.user
-);
+const showUserActionsButton = computed(() => !pfData.value?.security.closedMode || !!auth.user);
 
 const { pageLogo } = useLogo();
 const titleLinkTo = computed(() => {

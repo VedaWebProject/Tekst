@@ -12,12 +12,12 @@ import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import {
-    CoverageIcon,
-    DescIcon,
-    FormatQuoteIcon,
-    InfoIcon,
-    MetadataIcon,
-    ResourceIcon,
+  CoverageIcon,
+  DescIcon,
+  FormatQuoteIcon,
+  InfoIcon,
+  MetadataIcon,
+  ResourceIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';

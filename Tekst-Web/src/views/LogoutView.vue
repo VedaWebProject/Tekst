@@ -6,7 +6,7 @@ const auth = useAuthStore();
 
 onMounted(() => {
   auth.logout();
-})
+});
 </script>
 
 <template>
