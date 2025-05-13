@@ -125,7 +125,8 @@ export const useBrowseStore = defineStore('browse', () => {
         resources: resources.ofText.filter(
           (r) =>
             !categorized.find((c) => c.category.key === r.config.general.category) &&
-            (showNonPublicResources.value || r.public)
+            (showNonPublicResources.value || r.public) &&
+            !state.text?.pinnedMetadataIds.includes(r.id)
         ),
       },
     ];
