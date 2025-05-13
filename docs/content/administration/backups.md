@@ -6,6 +6,7 @@ The following examples leverage the MongoDB utilities `mongodump` and `mongorest
     - `$container`: The name of the MongoDB Docker container
     - `$uri`: The [MongoDB connection string URI](https://www.mongodb.com/docs/manual/reference/connection-string/) (from inside the container if you're using Docker)
     - `$file`: The file to read/write the backup from/to
+    - `$db`: The name of the database you used in your configuration
 
 !!! warning "Important"
     You might have to use elevated privileges (e.g. via `sudo`) for executing the commands listed below!
@@ -19,13 +20,13 @@ The following examples leverage the MongoDB utilities `mongodump` and `mongorest
 If MongoDB runs in a container:
 
 ```sh
-docker exec -i $container /usr/bin/mongodump --uri $uri --gzip --archive > $file
+docker exec -i $container /usr/bin/mongodump --uri $uri --db=$db --gzip --archive > $file
 ```
 
 If MongoDB runs bare-metal:
 
 ```sh
-/usr/bin/mongodump --uri $uri --gzip --archive > $file
+/usr/bin/mongodump --uri $uri --db=$db --gzip --archive > $file
 ```
 
 
