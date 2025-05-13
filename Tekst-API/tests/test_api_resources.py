@@ -1170,7 +1170,7 @@ async def test_export_content(
     config,
 ):
     await insert_test_data()
-    await login()
+    await login(is_superuser=True)
 
     formats = [
         "json",
@@ -1211,6 +1211,22 @@ async def test_export_content(
                 params={"pickupKey": resp.json()["pickupKey"]},
             )
             assert_status(200, resp)
+
+            # if format is Tekst-JSON, make sure re-import works
+            if fmt == "tekst-json":
+                resp = await test_client.post(
+                    f"/resources/{target_res_id}/import",
+                    files={
+                        "file": (
+                            "foo.json",
+                            json.dumps(resp.json()),
+                            "application/json",
+                        )
+                    },
+                )
+                assert_status(202, resp)
+                assert "id" in resp.json()
+                assert await wait_for_task_success(resp.json()["id"])
 
     # log out for the next tests
     await logout()
