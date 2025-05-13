@@ -42,7 +42,6 @@ from tekst.resources import (
     AnyResourceRead,
     AnyResourceUpdate,
     call_resource_precompute_hooks,
-    get_resource_template_readme,
     resource_types_mgr,
 )
 from tekst.search import set_index_ood
@@ -780,9 +779,7 @@ async def download_resource_template(
     ).prepare_import_template()
     # apply data from resource instance
     template["resourceId"] = str(resource_doc.id)
-    template["_resourceTitle"] = resource_doc.title
-    # add resource template README text
-    template["__README"] = get_resource_template_readme()
+    template["_resourceTitle"] = pick_translation(resource_doc.title, user.locale)
 
     # construct labels of all locations on the resource's level
     full_location_labels = await text_doc.full_location_labels(resource_doc.level)

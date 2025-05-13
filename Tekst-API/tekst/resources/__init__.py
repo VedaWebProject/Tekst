@@ -122,14 +122,6 @@ class ResourceSearchQuery(ModelBase):
 class ResourceTypeABC(ABC):
     """Abstract base class for defining a resource type"""
 
-    # fields to exclude from content import schema
-    _EXCLUDE_FROM_CONTENT_IMPORT_SCHEMA: set[str] = {
-        "id",
-        "resource_id",
-        "resource_type",
-        "location_id",
-    }
-
     # fields to exclude from content export data
     _EXCLUDE_FROM_CONTENT_EXPORT_DATA: set[str] = {
         "_id",
@@ -228,19 +220,24 @@ class ResourceTypeABC(ABC):
     def prepare_import_template(cls) -> dict:
         """Returns the base template for import data for this resource type"""
         schema = jsonref.replace_refs(
-            cls.content_model().create_model().model_json_schema()
+            cls.content_model().create_model().model_json_schema(),
+            proxies=False,
+            lazy_load=False,
         )
-        required = schema.get("required", [])
+        schema_excludes = camelize({"id", "resource_id", "resource_type"})
         template = {
-            "_contentSchema": {},  # will be populated in the next step
+            "__README": get_resource_template_readme(),
+            "_contentSchema": {
+                "properties": {
+                    k: v
+                    for k, v in schema.get("properties", {}).items()
+                    if k not in schema_excludes
+                },
+                "required": [
+                    k for k in schema.get("required", []) if k not in schema_excludes
+                ],
+            },
         }
-        # generate content schema for the template
-        excludes = camelize(cls._EXCLUDE_FROM_CONTENT_IMPORT_SCHEMA)
-        for prop, value in schema.get("properties", {}).items():
-            if prop not in excludes:
-                prop_schema = {k: v for k, v in value.items()}
-                prop_schema["required"] = prop in required
-                template["_contentSchema"][prop] = prop_schema
         return template
 
     @classmethod
@@ -256,11 +253,13 @@ class ResourceTypeABC(ABC):
         re-import in Tekst.
         """
         contents = [
-            c.model_dump(
-                by_alias=True,
-                exclude_unset=True,
-                exclude_none=True,
-                exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+            camelize(
+                c.model_dump(
+                    by_alias=True,
+                    exclude_unset=True,
+                    exclude_none=True,
+                    exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+                )
             )
             for c in contents
         ]
