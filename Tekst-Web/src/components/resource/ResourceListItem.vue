@@ -3,7 +3,6 @@ import type { AnyResourceRead, UserRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
-import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
@@ -213,7 +212,6 @@ function handleCorrectionsClick() {
 
           <resource-settings-widget :resource="resource" />
           <content-edit-widget :resource="resource" />
-          <resource-export-widget :resource="resource" />
           <resource-info-widget :resource="resource" />
 
           <n-dropdown

@@ -7,7 +7,6 @@ import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue
 import DeepLLinksWidget from '@/components/resource/DeepLLinksWidget.vue';
 import LocationContentContextWidget from '@/components/resource/LocationContentContextWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
-import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
 import { MoreIcon } from '@/icons';
@@ -69,7 +68,6 @@ function handleSmallScreenWidgetsTriggered() {
     <location-content-context-widget :resource="resource" :show-comments="showComments" />
     <content-comment-widget v-model:show-comments="showComments" :resource="resource" />
     <correction-note-widget :resource="resource" />
-    <resource-export-widget :resource="resource" />
     <content-edit-widget :resource="resource" />
     <resource-settings-widget :resource="resource" />
     <resource-info-widget :resource="resource" />
@@ -117,7 +115,6 @@ function handleSmallScreenWidgetsTriggered() {
       <!-- generic content widgets -->
       <location-content-context-widget :resource="resource" full @done="closeModal" />
       <correction-note-widget :resource="resource" full @done="closeModal" />
-      <resource-export-widget :resource="resource" full @done="closeModal" />
       <content-comment-widget :resource="resource" full @done="closeModal" />
       <content-edit-widget :resource="resource" full @done="closeModal" />
       <resource-settings-widget :resource="resource" full @done="closeModal" />

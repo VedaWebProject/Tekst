@@ -348,10 +348,16 @@ table td {
 }
 
 .gray-box {
-  padding: var(--gap-lg);
+  padding: var(--gap-md);
   margin: var(--gap-lg) 0;
   background-color: color-mix(in srgb, var(--main-bg-color), #0000 40%);
   border-radius: var(--border-radius);
+}
+
+@media screen and (min-width: 900px) {
+  .gray-box {
+    padding: var(--gap-lg);
+  }
 }
 
 .gray-box:first-child {

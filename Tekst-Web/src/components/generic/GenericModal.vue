@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import IconHeading from '@/components/generic/IconHeading.vue';
+import { useStateStore } from '@/stores';
 import { NModal } from 'naive-ui';
 import { type Component } from 'vue';
 
@@ -21,6 +22,7 @@ const props = withDefaults(
 );
 
 const show = defineModel<boolean>('show', { default: false });
+const state = useStateStore();
 
 const modalWidths = {
   narrow: '480px',
@@ -36,6 +38,7 @@ const modalWidths = {
     :to="to"
     display-directive="if"
     preset="card"
+    :size="state.smallScreen ? 'small' : undefined"
     :bordered="false"
     :style="{ width: modalWidths[props.width], maxWidth: '95%' }"
     class="mx-auto my-md"

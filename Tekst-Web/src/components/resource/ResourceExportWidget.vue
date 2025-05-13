@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { GET, type AnyResourceRead, type LocationRead, type ResourceExportFormat } from '@/api';
-import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import GenericModal from '@/components/generic/GenericModal.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
-import { DownloadIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
-import { getFullLocationLabel, pickTranslation } from '@/utils';
+import { getFullLocationLabel } from '@/utils';
 import { NAlert, NButton, NCollapse, NCollapseItem, NFormItem, NSelect } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: unknown }[] = [
   {
@@ -33,7 +30,6 @@ const allFormatOptions: { label: string; value: ResourceExportFormat; [key: stri
 
 const props = defineProps<{
   resource: AnyResourceRead;
-  full?: boolean;
 }>();
 
 const emit = defineEmits(['done']);
@@ -43,10 +39,6 @@ const auth = useAuthStore();
 const browse = useBrowseStore();
 const { addTask, startTasksPolling } = useTasks();
 const { message } = useMessages();
-
-const showExportModal = ref(false);
-const loadingExport = ref(false);
-const resourceTitle = ref('');
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() => allFormatOptions.filter((o) => !o.restricted || !!auth.user));
@@ -100,7 +92,6 @@ const isLocationRangeValid = computed(
 const collapseExpandedModel = ref<string[]>([]);
 
 async function startExport() {
-  loadingExport.value = true;
   const { data, error } = await GET('/resources/{id}/export', {
     params: {
       path: { id: props.resource.id },
@@ -116,8 +107,7 @@ async function startExport() {
     message.info($t('common.msgExportStarted'));
     startTasksPolling();
   }
-  loadingExport.value = false;
-  showExportModal.value = false;
+  emit('done');
 }
 
 async function selectFullLocationRange() {
@@ -131,43 +121,24 @@ async function selectFullLocationRange() {
   }
 }
 
-async function handleModalEnter() {
+onMounted(() => {
   if (browse.locationPath.length === props.resource.level + 1) {
     fromLocationPath.value = browse.locationPath;
     toLocationPath.value = browse.locationPath;
   } else {
     selectFullLocationRange();
   }
-}
+});
 
-function handleModalLeave() {
+onBeforeUnmount(() => {
   format.value = 'json';
   fromLocationPath.value = [];
   toLocationPath.value = [];
-}
-
-function handleWidgetClick() {
-  resourceTitle.value = pickTranslation(props.resource.title, state.locale);
-  showExportModal.value = true;
-  emit('done');
-}
+});
 </script>
 
 <template>
-  <content-container-header-widget
-    :full="full"
-    :title="$t('common.export')"
-    :icon-component="DownloadIcon"
-    @click="handleWidgetClick"
-  />
-
-  <generic-modal
-    v-model:show="showExportModal"
-    :title="`${$t('common.export')}: ${resourceTitle}`"
-    :icon="DownloadIcon"
-    @after-enter="handleModalEnter"
-    @after-leave="handleModalLeave"
-  >
+  <div>
     <n-form-item :label="$t('browse.contents.widgets.exportWidget.format')">
       <n-select v-model:value="format" :options="formatOptions" />
     </n-form-item>
@@ -204,33 +175,21 @@ function handleWidgetClick() {
     </n-alert>
 
     <button-shelf top-gap>
-      <template #start>
-        <n-button
-          secondary
-          :disabled="
-            loadingExport ||
-            !isLocationRangeValid ||
-            !fromLocationPath.length ||
-            !toLocationPath.length
-          "
-          @click="selectFullLocationRange"
-        >
-          {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
-        </n-button>
-      </template>
       <n-button
+        secondary
+        :disabled="!isLocationRangeValid || !fromLocationPath.length || !toLocationPath.length"
+        @click="selectFullLocationRange"
+      >
+        {{ $t('browse.contents.widgets.exportWidget.fullLocationRange') }}
+      </n-button>
+      <n-button
+        secondary
         type="primary"
-        :loading="loadingExport"
-        :disabled="
-          loadingExport ||
-          !isLocationRangeValid ||
-          !fromLocationPath.length ||
-          !toLocationPath.length
-        "
+        :disabled="!isLocationRangeValid || !fromLocationPath.length || !toLocationPath.length"
         @click="startExport"
       >
         {{ $t('common.export') }}
       </n-button>
     </button-shelf>
-  </generic-modal>
+  </div>
 </template>

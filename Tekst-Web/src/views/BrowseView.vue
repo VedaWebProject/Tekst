@@ -24,6 +24,10 @@ const browse = useBrowseStore();
 const state = useStateStore();
 const resources = useResourcesStore();
 
+const showLocAliases = computed(
+  () => state.pf?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length
+);
+
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
     browse.resourcesCategorized.map((c) => [
@@ -83,23 +87,22 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
-  <!-- LOCATION ALIASES -->
-  <n-flex
-    v-if="state.pf?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length"
-    class="mb-lg"
-    :title="$t('browse.location.aliasesTip')"
-  >
-    <n-tag v-for="alias in browse.locationPathHead?.aliases" :key="alias" size="small">
-      {{ alias }}
-    </n-tag>
+  <n-flex v-if="showLocAliases || !!pinnedMetadata.length" align="center" class="mb-lg">
+    <!-- PINNED LOCATION METADATA AS TAGS -->
+    <location-metadata-content-pinned v-if="!!pinnedMetadata.length" :contents="pinnedMetadata" />
+    <!-- LOCATION ALIASES -->
+    <template v-if="showLocAliases">
+      <n-tag
+        v-for="alias in browse.locationPathHead?.aliases"
+        :key="alias"
+        size="small"
+        class="loc-alias-tag"
+        :title="$t('browse.location.aliasesTip')"
+      >
+        {{ alias }}
+      </n-tag>
+    </template>
   </n-flex>
-
-  <!-- PINNED LOCATION METADATA -->
-  <location-metadata-content-pinned
-    v-if="!!pinnedMetadata.length"
-    :contents="pinnedMetadata"
-    v-model:expand="browse.expandPinnedLocMeta"
-  />
 
   <browse-toolbar v-if="browse.locationPath.length" />
 
@@ -166,6 +169,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.loc-alias-tag {
+  cursor: help;
+}
+
 .browse-heading-location.smallscreen {
   font-size: 1.3rem;
 }

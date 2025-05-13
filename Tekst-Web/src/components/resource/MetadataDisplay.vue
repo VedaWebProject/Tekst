@@ -49,6 +49,10 @@ const metaExtra = computed<string[][] | null>(() => {
 </template>
 
 <style scoped>
+table {
+  border-collapse: collapse;
+}
+
 table td {
   vertical-align: top;
 }
