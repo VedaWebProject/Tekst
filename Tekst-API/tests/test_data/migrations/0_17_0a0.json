@@ -1,68 +1,134 @@
-[
-  {
-    "_id": { "$oid": "654b825533ee5737b297f8e3" },
-    "title": "Fuchs, du hast die Gans gestohlen",
-    "slug": "fdhdgg",
-    "subtitle": [
-      { "locale": "enUS", "translation": "An old German folk song" },
-      { "locale": "deDE", "translation": "Ein altdeutsches Volkslied" }
-    ],
-    "levels": [
-      [
-        { "locale": "enUS", "translation": "Song" },
-        { "locale": "deDE", "translation": "Lied" }
+{
+  "texts": [
+    {
+      "_id": { "$oid": "654b825533ee5737b297f8e3" },
+      "title": "Fuchs, du hast die Gans gestohlen",
+      "slug": "fdhdgg",
+      "subtitle": [
+        { "locale": "enUS", "translation": "An old German folk song" },
+        { "locale": "deDE", "translation": "Ein altdeutsches Volkslied" }
       ],
-      [
-        { "locale": "enUS", "translation": "Stanza" },
-        { "locale": "deDE", "translation": "Strophe" }
+      "levels": [
+        [
+          { "locale": "enUS", "translation": "Song" },
+          { "locale": "deDE", "translation": "Lied" }
+        ],
+        [
+          { "locale": "enUS", "translation": "Stanza" },
+          { "locale": "deDE", "translation": "Strophe" }
+        ],
+        [
+          { "locale": "enUS", "translation": "Line" },
+          { "locale": "deDE", "translation": "Vers" }
+        ]
       ],
-      [
-        { "locale": "enUS", "translation": "Line" },
-        { "locale": "deDE", "translation": "Vers" }
-      ]
-    ],
-    "default_level": 2,
-    "loc_delim": " > ",
-    "labeled_location": true,
-    "accent_color": "#38714b",
-    "pinned_metadata_ids": [{ "$oid": "67dbc7432e51e7949ae22714" }],
-    "is_active": true,
-    "resource_categories": [
-      {
-        "key": "versions",
-        "translations": [
-          { "locale": "enUS", "translation": "Versions" },
-          { "locale": "deDE", "translation": "Versionen" }
-        ]
+      "default_level": 2,
+      "loc_delim": " > ",
+      "labeled_location": true,
+      "accent_color": "#38714b",
+      "pinned_metadata_ids": [{ "$oid": "67dbc7432e51e7949ae22714" }],
+      "is_active": true,
+      "resource_categories": [
+        {
+          "key": "versions",
+          "translations": [
+            { "locale": "enUS", "translation": "Versions" },
+            { "locale": "deDE", "translation": "Versionen" }
+          ]
+        },
+        {
+          "key": "translations",
+          "translations": [
+            { "locale": "enUS", "translation": "Translations" },
+            { "locale": "deDE", "translation": "Übersetzungen" }
+          ]
+        },
+        {
+          "key": "annotations",
+          "translations": [
+            { "locale": "enUS", "translation": "Annotations" },
+            { "locale": "deDE", "translation": "Annotationen" }
+          ]
+        },
+        {
+          "key": "multimedia",
+          "translations": [{ "locale": "*", "translation": "Multimedia" }]
+        },
+        {
+          "key": "links",
+          "translations": [{ "locale": "*", "translation": "Links" }]
+        },
+        {
+          "key": "demo",
+          "translations": [{ "locale": "*", "translation": "Demo" }]
+        }
+      ],
+      "full_loc_label_as_hit_heading": true,
+      "index_utd": true
+    }
+  ],
+  "resources": [
+    {
+      "_id": { "$oid": "67dbc7432e51e7949ae22714" },
+      "_class_id": "ResourceBaseDocument.LocationMetadataResourceDocument",
+      "title": [
+        { "locale": "enUS", "translation": "Demo Stanza Metadata" },
+        { "locale": "deDE", "translation": "Demo Strophen-Metadaten" }
+      ],
+      "subtitle": [],
+      "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+      "level": 1,
+      "resource_type": "locationMetadata",
+      "shared_read": [],
+      "shared_write": [],
+      "public": true,
+      "proposed": false,
+      "meta": [],
+      "description": [],
+      "config": {
+        "general": {
+          "category": "demo",
+          "sort_order": 10,
+          "default_active": false,
+          "enable_content_context": false,
+          "show_comments": false,
+          "searchable_quick": true,
+          "searchable_adv": true,
+          "rtl": false
+        },
+        "special": {
+          "entries_integration": {
+            "groups": [
+              {
+                "key": "stanza_no",
+                "translations": [
+                  { "locale": "enUS", "translation": "Stanza Number" },
+                  { "locale": "deDE", "translation": "Strophen-Nummer" }
+                ]
+              }
+            ],
+            "item_props": [
+              {
+                "key": "stanza_no_num",
+                "translations": [
+                  { "locale": "enUS", "translation": "# in numbers" },
+                  { "locale": "deDE", "translation": "# in Zahlen" }
+                ],
+                "group": "stanza_no"
+              },
+              {
+                "key": "stanza_no_word",
+                "translations": [
+                  { "locale": "enUS", "translation": "# in words" },
+                  { "locale": "deDE", "translation": "# in Worten" }
+                ],
+                "group": "stanza_no"
+              }
+            ]
+          }
+        }
       },
-      {
-        "key": "translations",
-        "translations": [
-          { "locale": "enUS", "translation": "Translations" },
-          { "locale": "deDE", "translation": "Übersetzungen" }
-        ]
-      },
-      {
-        "key": "annotations",
-        "translations": [
-          { "locale": "enUS", "translation": "Annotations" },
-          { "locale": "deDE", "translation": "Annotationen" }
-        ]
-      },
-      {
-        "key": "multimedia",
-        "translations": [{ "locale": "*", "translation": "Multimedia" }]
-      },
-      {
-        "key": "links",
-        "translations": [{ "locale": "*", "translation": "Links" }]
-      },
-      {
-        "key": "demo",
-        "translations": [{ "locale": "*", "translation": "Demo" }]
-      }
-    ],
-    "full_loc_label_as_hit_heading": true,
-    "index_utd": true
-  }
-]
+      "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }
+    }
+  ]
+}

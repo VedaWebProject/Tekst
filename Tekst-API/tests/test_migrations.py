@@ -369,14 +369,22 @@ async def test_0_17_0a0(
     database,
     get_test_data,
 ):
-    texts = get_test_data("migrations/0_17_0a0.json")
-    await database.texts.insert_many(texts)
+    data = get_test_data("migrations/0_17_0a0.json")
+    await database.texts.insert_many(data["texts"])
+    await database.resources.insert_many(data["resources"])
 
     # run migration
     await _migration_fn("0_17_0a0")(database)
     texts = await database.texts.find({}).to_list()
+    resources = await database.resources.find({}).to_list()
 
     # assert the data has been fixed by the migration
     assert len(texts) > 0
     for text in texts:
         assert "pinned_metadata_ids" not in text
+    assert len(resources) > 0
+    for res in resources:
+        assert "config" in res
+        assert "special" in res["config"]
+        assert "embed_as_tags" in res["config"]["special"]
+        assert res["config"]["special"]["embed_as_tags"]
