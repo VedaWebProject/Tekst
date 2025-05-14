@@ -657,11 +657,13 @@
         "sort_order": 10,
         "default_active": false,
         "enable_content_context": false,
+        "show_comments": false,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
       "special": {
+        "embed_as_tags": true,
         "entries_integration": {
           "groups": [
             {
