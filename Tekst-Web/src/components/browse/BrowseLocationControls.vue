@@ -3,7 +3,7 @@ import type { LocationRead } from '@/api';
 import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, ArrowForwardIcon, BookIcon, WarningIcon } from '@/icons';
+import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
 import router from '@/router';
 import { useAuthStore, useBrowseStore } from '@/stores';
 import { isInputFocused, isOverlayOpen } from '@/utils';
@@ -69,10 +69,7 @@ whenever(ArrowRight, () => {
       </template>
     </n-button>
 
-    <n-badge :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
-      <template #value>
-        <n-icon :component="WarningIcon" />
-      </template>
+    <n-badge value="!" :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <n-button
         type="primary"
         :title="

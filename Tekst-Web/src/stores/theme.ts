@@ -136,7 +136,7 @@ export const useThemeStore = defineStore('theme', () => {
   // set/update global CSS vars for use in CSS contexts
   watchEffect(() => {
     const vars = {
-      '--base-color': nuiBaseTheme.value.common.baseColor,
+      '--base-color': dark.value ? '#242424' : '#FFFFFF',
       '--text-color': nuiBaseTheme.value.common.textColor1,
 
       '--success-color': nuiBaseTheme.value.common.successColor,

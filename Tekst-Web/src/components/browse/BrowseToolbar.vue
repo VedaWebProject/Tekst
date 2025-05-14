@@ -79,7 +79,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           </n-button>
         </n-badge>
 
-        <n-badge :value="resourceDrawerBadgeLabel">
+        <n-badge
+          :value="resourceDrawerBadgeLabel"
+          color="var(--base-color)"
+          class="active-resources-badge"
+        >
           <n-button
             type="primary"
             :size="buttonSize"
@@ -172,5 +176,9 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.n-badge.active-resources-badge :deep(.n-badge-sup) {
+  color: var(--text-color);
 }
 </style>
