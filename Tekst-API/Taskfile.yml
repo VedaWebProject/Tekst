@@ -44,8 +44,6 @@ tasks:
       - defer: { task: test-stack-down }
       - task: install
       - task: test-stack-up
-      - task: wait-for-mongodb
-      - task: wait-for-elasticsearch
       - uv run pytest {{.CLI_ARGS}}
 
   run-dev:
@@ -62,8 +60,6 @@ tasks:
     cmds:
       - defer: { task: dev-stack-down }
       - task: dev-stack-up
-      - task: wait-for-mongodb
-      - task: wait-for-elasticsearch
       - task: run-dev
 
   schema:
@@ -103,6 +99,8 @@ tasks:
     cmds:
       - task: gen-smtp-ssl-cert
       - docker compose -f ../dev/compose.yml --profile dev -p tekst-dev up --detach
+      - task: wait-for-mongodb
+      - task: wait-for-elasticsearch
 
   dev-stack-down:
     desc: Stop dev stack and clean up all resources
@@ -119,6 +117,8 @@ tasks:
     cmds:
       - task: gen-smtp-ssl-cert
       - docker compose -f ../dev/compose.yml --profile test -p tekst-testing up --detach
+      - task: wait-for-mongodb
+      - task: wait-for-elasticsearch
 
   test-stack-down:
     desc: Stop test stack and clean up all resources
