@@ -49,8 +49,8 @@ services:
     ports:
       - 127.0.0.1:9200:9200
     environment:
-      discovery.type: single-node
-      xpack.security.enabled: false
+      ES_SETTING_DISCOVERY_TYPE: single-node
+      ES_SETTING_XPACK_SECURITY_ENABLED: false
       ES_JAVA_OPTS: "-XX:-AlwaysPreTouch"
     profiles:
       - dev

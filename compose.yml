@@ -46,9 +46,9 @@ services:
         RUN elasticsearch-plugin install analysis-icu
     image: "elasticsearch:tekst"
     environment:
-      discovery.type: single-node
-      xpack.security.enabled: false
-      logger.level: WARN
+      ES_SETTING_DISCOVERY_TYPE: single-node
+      ES_SETTING_XPACK_SECURITY_ENABLED: false
+      ES_SETTING_LOGGER_LEVEL: WARN
     deploy:
       resources:
         limits:
