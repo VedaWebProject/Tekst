@@ -1,4 +1,4 @@
-name: Style Checks
+name: Tekst-API code formatting and style checks
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/uv.lock"
-      - ".github/workflows/server-style.yml"
+      - ".github/workflows/api-style.yml"
   pull_request:
     branches:
       - development
@@ -19,7 +19,7 @@ on:
       - "Tekst-API/tests/**"
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/uv.lock"
-      - ".github/workflows/server-style.yml"
+      - ".github/workflows/api-style.yml"
   workflow_dispatch:
 
 jobs:

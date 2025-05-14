@@ -4,9 +4,9 @@
 
 A collaborative, web-based research platform for aligning, linking, publishing, exploring and enriching resources on natural language texts.
 
-![Server tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=server%20tests)
-[![Server tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=server%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
-![Client build status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/client-build.yml?label=client%20checks)
+![Tekst-API tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=API%20tests)
+[![Tekst-API tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=API%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
+![Tekst-Web code checks status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/web-checks.yml?label=client%20checks)
 
 > [!IMPORTANT]
 > Tekst is still in development. We're currently testing Tekst internally and implementing the last missing bits. As soon as we're ready for it, the new [VedaWeb platform](https://vedaweb.uni-koeln.de) will become the first public instance of Tekst. Until then, you are welcome to follow the development in this very repository.

@@ -1,4 +1,4 @@
-name: Run Server Tests
+name: Tekst-API tests
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/uv.lock"
       - "dev/compose.yml"
-      - ".github/workflows/server-tests.yml"
+      - ".github/workflows/api-tests.yml"
   pull_request:
     branches:
       - development
@@ -21,7 +21,7 @@ on:
       - "Tekst-API/pyproject.toml"
       - "Tekst-API/uv.lock"
       - "dev/compose.yml"
-      - ".github/workflows/server-tests.yml"
+      - ".github/workflows/api-tests.yml"
   workflow_dispatch:
 
 jobs:

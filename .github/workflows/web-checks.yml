@@ -1,4 +1,4 @@
-name: Test Client Build
+name: Tekst-Web code formatting, code style and build
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - "Tekst-Web/src/**"
       - "Tekst-Web/package.json"
       - "Tekst-Web/package-lock.json"
-      - ".github/workflows/client-build.yml"
+      - ".github/workflows/web-checks.yml"
   pull_request:
     branches:
       - development
@@ -21,7 +21,7 @@ on:
       - "Tekst-Web/src/**"
       - "Tekst-Web/package.json"
       - "Tekst-Web/package-lock.json"
-      - ".github/workflows/client-build.yml"
+      - ".github/workflows/web-checks.yml"
   workflow_dispatch:
 
 jobs:
