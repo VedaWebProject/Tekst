@@ -18,7 +18,6 @@ from tekst.logs import log
 from tekst.middlewares import CookieTypeChoiceMiddleware
 from tekst.models.platform import PlatformState
 from tekst.openapi import customize_openapi
-from tekst.resources import init_resource_types_mgr
 from tekst.routers import setup_routes
 from tekst.state import get_state
 
@@ -28,7 +27,6 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
 async def startup_routine(app: FastAPI) -> None:
-    init_resource_types_mgr()
     setup_routes(app)
 
     if not _NO_SERVICES:

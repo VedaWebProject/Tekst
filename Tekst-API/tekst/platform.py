@@ -12,7 +12,7 @@ from tekst.db import migrations
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
-from tekst.resources import call_resource_precompute_hooks, init_resource_types_mgr
+from tekst.resources import call_resource_precompute_hooks
 from tekst.search import create_indices_task
 from tekst.state import get_state, update_state
 
@@ -63,8 +63,6 @@ async def _insert_demo_data(cfg: TekstConfig = get_config()) -> bool:
 
 async def bootstrap(cfg: TekstConfig = get_config()):
     log.info("Running Tekst pre-launch bootstrap routine...")
-    # register all resource types
-    init_resource_types_mgr()
     # init DB and ODM
     await db.init_odm()
     # insert demo data if DB collections are empty

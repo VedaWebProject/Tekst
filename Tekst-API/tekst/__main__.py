@@ -7,7 +7,7 @@ from tekst.db import init_odm, migrations
 from tekst.openapi import generate_openapi_json
 from tekst.platform import bootstrap as app_bootstrap
 from tekst.platform import cleanup_task
-from tekst.resources import call_resource_precompute_hooks, init_resource_types_mgr
+from tekst.resources import call_resource_precompute_hooks
 from tekst.search import create_indices_task
 
 
@@ -17,7 +17,6 @@ Command line interface to some utilities of Tekst-API
 
 
 async def _prepare_odm() -> None:
-    init_resource_types_mgr()
     await init_odm()
 
 

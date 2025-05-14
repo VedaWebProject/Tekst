@@ -460,8 +460,8 @@ class ResourceTypesManager:
 
 def init_resource_types_mgr() -> None:
     global resource_types_mgr
-    if resource_types_mgr is not None:
-        return resource_types_mgr
+    if resource_types_mgr is not None:  # pragma: no cover
+        return
     log.info("Registering resource types...")
     # init manager
     manager = ResourceTypesManager()
