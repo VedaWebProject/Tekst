@@ -5,7 +5,7 @@ from pathlib import Path
 from beanie.operators import LT
 from bson import json_util
 
-from tekst import db
+from tekst import db, search
 from tekst.auth import AccessTokenDocument, create_initial_superuser
 from tekst.config import TekstConfig, get_config
 from tekst.db import migrations
@@ -13,7 +13,6 @@ from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
 from tekst.resources import call_resource_precompute_hooks
-from tekst.search import create_indices_task
 from tekst.state import get_state, update_state
 
 
@@ -61,7 +60,11 @@ async def _insert_demo_data(cfg: TekstConfig = get_config()) -> bool:
     return True
 
 
-async def bootstrap(cfg: TekstConfig = get_config()):
+async def bootstrap(
+    cfg: TekstConfig = get_config(),
+    *,
+    close_connections: bool = True,
+):
     log.info("Running Tekst pre-launch bootstrap routine...")
     # init DB and ODM
     await db.init_odm()
@@ -84,7 +87,11 @@ async def bootstrap(cfg: TekstConfig = get_config()):
     # create initial superuser (only when not in DEV mode)
     await create_initial_superuser(cfg)
     # create search indices (will skip up-to-date indices)
-    await create_indices_task(cfg)
+    await search.create_indices_task(cfg)
+
+    if close_connections:  # pragma: no cover
+        await db.close()
+        await search.close()
     log.info("Finished Tekst pre-launch bootstrap routine.")
 
 

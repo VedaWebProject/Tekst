@@ -7,9 +7,9 @@ from tekst.platform import bootstrap
 @pytest.mark.anyio
 async def test_bootstrap_tabula_rasa(config):
     # run app bootstrap – will insert sample data, run precomputation hooks, ...
-    await bootstrap()
+    await bootstrap(close_connections=False)
     # 2nd time to test bootstrap attempt on already set-up instance DB
-    await bootstrap()
+    await bootstrap(close_connections=False)
 
 
 @pytest.mark.anyio
@@ -20,7 +20,7 @@ async def test_bootstrap_auto_migrate_no_pending(
     await insert_test_data()  # need sample data, as an empty DB will not be migrated
     # run app bootstrap with auto_migrate == True (with no pending migrations)
     config.auto_migrate = True
-    await bootstrap(config)
+    await bootstrap(config, close_connections=False)
 
 
 @pytest.mark.anyio
@@ -34,7 +34,7 @@ async def test_bootstrap_auto_migrate_pending(
     await database["state"].update_one({}, {"$set": {"db_version": "0.0.0"}})
     # run app bootstrap with auto_migrate == True (with no pending migrations)
     config.auto_migrate = True
-    await bootstrap(config)
+    await bootstrap(config, close_connections=False)
 
 
 @pytest.mark.anyio
@@ -52,7 +52,7 @@ async def test_migrate_no_state_coll(
 async def test_migrate_none_pending(
     config,
 ):
-    await bootstrap()
+    await bootstrap(close_connections=False)
     await migrations.migrate()  # no pending migrations
 
 
@@ -64,7 +64,7 @@ async def test_prod_startup(
     # clone config object
     prod_cfg = config.model_copy(deep=True)
     prod_cfg.dev_mode = False
-    await bootstrap(prod_cfg)
+    await bootstrap(prod_cfg, close_connections=False)
     assert await database.texts.count_documents({}) == 1
     assert await database.locations.count_documents({}) == 1
     assert await database.resources.count_documents({}) == 1
