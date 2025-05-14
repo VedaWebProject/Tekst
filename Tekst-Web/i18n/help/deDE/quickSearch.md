@@ -19,7 +19,7 @@ Die Schnellsuche ist eine Volltextsuche über alle verfügbaren Ressourcen der a
 Legt fest, welche Texte durchsucht werden. Standardmäßig werden alle verfügbaren Texte ausgewählt. Diese Einstellung wird automatisch zurückgesetzt, wenn Sie Ihren Arbeitstext ändern.
 
 ### Alle Begriffe müssen vorkommen
-Mit "_Alle Begriffe müssen vorkommen_" lässt sich bestimmen, wie einzelne Suchbegriffe logisch miteinander verknüpft sein sollen. Ist die Funktion aktiviert, werden ausschließlich Belegstellen mit Inhalten gefunden, in denen alle eingegebenen Suchbegriffe vorkommen. Andernfalls werden die Fundstellen mit den meisten Treffern einen höheren Rang in den Suchergebnissen erhalten, also solche mit weniger Treffern.
+Mit "_Alle Begriffe müssen vorkommen_" lässt sich bestimmen, wie einzelne Suchbegriffe logisch miteinander verknüpft sein sollen. Ist die Funktion aktiviert, werden ausschließlich Belegstellen mit Inhalten gefunden, in denen alle eingegebenen Suchbegriffe vorkommen. Andernfalls werden die Belegstellen mit den meisten Treffern einen höheren Rang in den Suchergebnissen erhalten, also solche mit weniger Treffern.
 
 ### Interpretiere Reguläre Ausdrücke
 Die Schnellsuche kann Suchanfragen mit einem Regulären Ausdruck verarbeiten. Diese Funktion **deaktiviert die oben aufgelisteten Standard-Suchoperatoren**!

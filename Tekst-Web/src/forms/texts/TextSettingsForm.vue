@@ -4,7 +4,6 @@ import { PATCH, accentColorPresets } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSectionHeading from '@/components/FormSectionHeading.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -13,7 +12,7 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { textFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t } from '@/i18n';
-import { useResourcesStore, useStateStore } from '@/stores';
+import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { cloneDeep } from 'lodash-es';
 import {
@@ -32,7 +31,6 @@ import { computed, ref, watch } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
 const state = useStateStore();
-const resources = useResourcesStore();
 const { loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 const loading = ref(false);
@@ -55,12 +53,6 @@ const defaultLevelOptions = computed(
       label: pickTranslation(lvl, state.locale),
       value: i,
     })) || []
-);
-
-const pinnedMetadataIdsOptions = computed(() =>
-  resources.ofText
-    .filter((r) => r.resourceType === 'locationMetadata')
-    .map((r) => ({ label: pickTranslation(r.title, state.locale), value: r.id }))
 );
 
 const slugChangeWarning = computed(() => {
@@ -213,22 +205,6 @@ onBeforeRouteUpdate((to, from) => {
           :modes="['hex']"
           :show-alpha="false"
           :swatches="accentColorPresets"
-        />
-      </n-form-item>
-
-      <!-- PINNED LOCATION METADATA RESOURCE IDS -->
-      <n-form-item path="pinnedMetadataIds">
-        <template #label>
-          <n-flex align="center" :wrap="false">
-            <span>{{ $t('models.text.pinnedMetadataIds') }}</span>
-            <help-button-widget help-key="pinnedMetadataIds" />
-          </n-flex>
-        </template>
-        <n-select
-          v-model:value="model.pinnedMetadataIds"
-          multiple
-          :options="pinnedMetadataIdsOptions"
-          :disabled="!pinnedMetadataIdsOptions.length"
         />
       </n-form-item>
 

@@ -111,7 +111,7 @@ export const useBrowseStore = defineStore('browse', () => {
             (r) =>
               r.config.general.category === c.key &&
               (showNonPublicResources.value || r.public) &&
-              !state.text?.pinnedMetadataIds.includes(r.id)
+              !(r.resourceType === 'locationMetadata' && r.config.special.embedAsTags)
           )
           .sort(compareResourceOrder),
       })) || [];
@@ -125,7 +125,7 @@ export const useBrowseStore = defineStore('browse', () => {
           (r) =>
             !categorized.find((c) => c.category.key === r.config.general.category) &&
             (showNonPublicResources.value || r.public) &&
-            !state.text?.pinnedMetadataIds.includes(r.id)
+            !(r.resourceType === 'locationMetadata' && r.config.special.embedAsTags)
         ),
       },
     ];

@@ -5,7 +5,7 @@ import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
-import LocationMetadataContentPinned from '@/components/content/LocationMetadataContentPinned.vue';
+import LocationMetadataContentTags from '@/components/content/LocationMetadataContentTags.vue';
 import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
@@ -37,7 +37,7 @@ const catHiddenResCount = computed<Record<string, number>>(() =>
   )
 );
 
-const pinnedMetadata =
+const embeddedMetadata =
   computed<LocationMetadataContentRead[]>(
     () =>
       resources.ofText
@@ -45,7 +45,7 @@ const pinnedMetadata =
           (r) =>
             r.resourceType === 'locationMetadata' &&
             r.level <= (browse.level || 0) &&
-            state.text?.pinnedMetadataIds.includes(r.id)
+            r.config.special.embedAsTags
         )
         .map((r) => r.contents?.[0])
         .filter(Boolean) as LocationMetadataContentRead[]
@@ -87,9 +87,9 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
-  <n-flex v-if="showLocAliases || !!pinnedMetadata.length" align="center" class="mb-lg">
-    <!-- PINNED LOCATION METADATA AS TAGS -->
-    <location-metadata-content-pinned v-if="!!pinnedMetadata.length" :contents="pinnedMetadata" />
+  <n-flex v-if="showLocAliases || !!embeddedMetadata.length" align="center" class="mb-lg">
+    <!-- EMBED LOCATION METADATA AS TAGS -->
+    <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
     <!-- LOCATION ALIASES -->
     <template v-if="showLocAliases">
       <n-tag

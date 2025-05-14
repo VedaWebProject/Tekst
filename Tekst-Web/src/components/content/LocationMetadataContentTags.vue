@@ -77,7 +77,7 @@ const contentsProcessed = computed(() => {
     <template v-for="group in content.groups" :key="group.group">
       <resource-info-widget v-for="item in group.items" :key="item.key" :resource="content.res">
         <n-tag size="small" :color="tagColor" :title="item.title" class="loc-meta-tag">
-          <span>{{ item.key }}: </span>
+          <span v-if="!state.smallScreen">{{ item.key }}: </span>
           <span :style="{ 'font-family': content.font }">{{ item.value }}</span>
         </n-tag>
       </resource-info-widget>

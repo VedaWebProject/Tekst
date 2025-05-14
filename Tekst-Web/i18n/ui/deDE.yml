@@ -197,7 +197,7 @@ routes:
 browse:
   location:
     goTo: Gehe zu Belegstelle
-    aliasesTip: 'Belegstellen-Alias: Suchen Sie nach einem Belegstellen-Alias in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.'
+    aliasesTip: Suchen Sie nach diesem Belegstellen-Alias in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
   toolbar:
     tipSelectLocation: Belegstelle auswählen
     tipPreviousLocation: Vorherige Belegstelle auf dieser Ebene
@@ -315,7 +315,6 @@ models:
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
     accentColor: Akzentfarbe
-    pinnedMetadataIds: Angeheftete Belegstellen-Metadaten
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
     isInactive: Nicht öffentlich gelistet
@@ -490,6 +489,9 @@ resources:
           numbersOneBased: Zahlen (1-basiert)
           lettersLowercase: Buchstaben (klein)
           lettersUppercase: Buchstaben (groß)
+      locationMetadata:
+        embedAsTagsHeading: Als Tags einbetten
+        embedAsTags: Als Tags in Belegstellen-Kopfzeile einbetten
       annotations:
         annoDisplayHeading: Annotations-Darstellung
         displayTemplate: Darstellungsvorlage
@@ -537,7 +539,7 @@ resources:
       copyHintTip: Rechtsklick order halten zum Kopieren
       copyAnnosPlainAction: Alle sichtbaren Annotationen als einfachen Text kopieren
     locationMetadata:
-      label: Fundstellen-Metadaten
+      label: Belegstellen-Metadaten
       parenthesis: Metadaten als Schlüssel-Wert-Paare
       contentFields:
         entries: Einträge
@@ -581,7 +583,7 @@ contents:
   lblBtnCompare: Vergleichen
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
-  tipBtnApplyChanges: Inhalt für diese Fundstelle übernehmen
+  tipBtnApplyChanges: Inhalt für diese Belegstelle übernehmen
   tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt springen
   tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt springen
   forComparison: '{title} (zum Vergleich)'
@@ -890,8 +892,8 @@ search:
     quick:
       defaultOperator: Alle Begriffe müssen vorkommen
       regexp: Interpretiere Reguläre Ausdrücke
-      inheritedContents: Beziehe Inhalte übergeordneter Fundstellen ein
-      allLevels: Finde Fundstellen aller Ebenen
+      inheritedContents: Beziehe Inhalte übergeordneter Belegstelle ein
+      allLevels: Finde Belegstellen aller Ebenen
       textsPlaceholder: Alle Texte
       targetResources: Einbezogene Ressourcen auflisten
   results:

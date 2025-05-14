@@ -194,7 +194,7 @@ routes:
 browse:
   location:
     goTo: Go to location
-    aliasesTip: 'Location Alias: Search for a location alias in the Quick Search to directly jump to this location.'
+    aliasesTip: Search for this location alias in the Quick Search to directly jump to this location.
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level
@@ -312,7 +312,6 @@ models:
     labeledLocation: Include level names in location labels (does not apply to search results)
     fullLocLabelAsHitHeading: Use full location label as search result heading
     accentColor: Accent color
-    pinnedMetadataIds: Pinned location metadata
     resourceCategories: Resource Categories
     isActive: Publicly listed
     isInactive: Not publicly listed
@@ -479,6 +478,9 @@ resources:
           numbersOneBased: Numbers (1-based)
           lettersLowercase: Letters (lowercase)
           lettersUppercase: Letters (uppercase)
+      locationMetadata:
+        embedAsTagsHeading: Embed as Tags
+        embedAsTags: Display as tags in location header
       annotations:
         annoDisplayHeading: Annotation Display
         displayTemplate: Display template

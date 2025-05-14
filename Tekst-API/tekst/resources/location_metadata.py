@@ -274,6 +274,13 @@ class MetadataKeyTranslation(TranslationBase):
 
 
 class LocationMetadataSpecialConfig(ModelBase):
+    embed_as_tags: Annotated[
+        bool,
+        Field(
+            description="Display metadata as tags in browse view",
+        ),
+        SchemaOptionalNonNullable,
+    ] = False
     entries_integration: ItemIntegrationConfig = ItemIntegrationConfig()
 
 

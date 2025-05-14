@@ -3853,6 +3853,7 @@ export interface components {
        *     } */
       general: components['schemas']['LocationMetadataModGeneralConfig'];
       /** @default {
+       *       "embedAsTags": false,
        *       "entriesIntegration": {
        *         "groups": [],
        *         "itemProps": []
@@ -3922,6 +3923,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
+       *         "embedAsTags": false,
        *         "entriesIntegration": {
        *           "groups": [],
        *           "itemProps": []
@@ -4043,6 +4045,7 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
+       *         "embedAsTags": false,
        *         "entriesIntegration": {
        *           "groups": [],
        *           "itemProps": []
@@ -4125,6 +4128,12 @@ export interface components {
     };
     /** LocationMetadataSpecialConfig */
     LocationMetadataSpecialConfig: {
+      /**
+       * Embedastags
+       * @description Display metadata as tags in browse view
+       * @default false
+       */
+      embedAsTags?: boolean;
       /** @default {
        *       "groups": [],
        *       "itemProps": []
@@ -6292,12 +6301,6 @@ export interface components {
        */
       accentColor: string;
       /**
-       * Pinnedmetadataids
-       * @description IDs of pinned location metadata resources
-       * @default []
-       */
-      pinnedMetadataIds: string[];
-      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6379,12 +6382,6 @@ export interface components {
        */
       accentColor: string;
       /**
-       * Pinnedmetadataids
-       * @description IDs of pinned location metadata resources
-       * @default []
-       */
-      pinnedMetadataIds: string[];
-      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6462,11 +6459,6 @@ export interface components {
        * @description Accent color used for this text in the client UI
        */
       accentColor?: string;
-      /**
-       * Pinnedmetadataids
-       * @description IDs of pinned location metadata resources
-       */
-      pinnedMetadataIds?: string[];
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client

@@ -362,3 +362,21 @@ async def test_0_13_0a0(
         assert "notes" not in content
         assert content.get("authors_comment") == "FOO"
         assert content.get("editors_comment") == "BAR"
+
+
+@pytest.mark.anyio
+async def test_0_17_0a0(
+    database,
+    get_test_data,
+):
+    texts = get_test_data("migrations/0_17_0a0.json")
+    await database.texts.insert_many(texts)
+
+    # run migration
+    await _migration_fn("0_17_0a0")(database)
+    texts = await database.texts.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(texts) > 0
+    for text in texts:
+        assert "pinned_metadata_ids" not in text

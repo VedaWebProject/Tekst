@@ -7,6 +7,7 @@ import DeepLLinksConfigFormItems from './DeepLLinksConfigFormItems.vue';
 import EntriesIntegrationConfigFormItems from './EntriesIntegrationConfigFormItems.vue';
 import FocusViewConfigFormItems from './FocusViewConfigFormItems.vue';
 import LineLabellingConfigFormItems from './LineLabellingConfigFormItems.vue';
+import LocMetaEmbedAsTagsConfigFormItems from './LocMetaEmbedAsTagsConfigFormItems.vue';
 import SearchReplacementsConfigFormItems from './SearchReplacementsConfigFormItems.vue';
 
 export const specialConfigFormItems: Record<string, Component> = {
@@ -19,4 +20,5 @@ export const specialConfigFormItems: Record<string, Component> = {
   entriesIntegration: EntriesIntegrationConfigFormItems,
   apiCall: ApiCallConfigFormItems,
   transform: ContentTransformationConfigFormItems,
+  embedAsTags: LocMetaEmbedAsTagsConfigFormItems,
 };
