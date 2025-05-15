@@ -348,15 +348,16 @@ table td {
 }
 
 .gray-box {
-  padding: var(--gap-md);
+  padding: var(--gap-sm) var(--gap-md);
   margin: var(--gap-lg) 0;
-  background-color: color-mix(in srgb, var(--main-bg-color), #0000 40%);
+  background-color: color-mix(in srgb, var(--main-bg-color), transparent 60%);
   border-radius: var(--border-radius);
+  border: 1px solid color-mix(in srgb, var(--main-bg-color), transparent 40%);
 }
 
 @media screen and (min-width: 900px) {
   .gray-box {
-    padding: var(--gap-lg);
+    padding: var(--gap-md) var(--gap-lg);
   }
 }
 

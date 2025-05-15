@@ -112,7 +112,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   const custom = computed(() => ({
     mainBgColor: dark.value ? '#ffffff10' : '#00000010',
-    contentBgColor: dark.value ? '#00000044' : '#ffffffcc',
+    contentBgColor: dark.value ? '#0004' : '#fff',
     accent: getAccentColors(state.text?.id),
   }));
 

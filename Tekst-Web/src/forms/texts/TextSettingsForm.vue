@@ -2,7 +2,7 @@
 import type { TextCreate } from '@/api';
 import { PATCH, accentColorPresets } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
@@ -117,153 +117,153 @@ onBeforeRouteUpdate((to, from) => {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <form-section-heading :label="$t('common.general')" />
+      <form-section :title="$t('common.general')">
+        <!-- TITLE -->
+        <n-form-item path="title" :label="$t('common.title')">
+          <n-input
+            v-model:value="model.title"
+            type="text"
+            :placeholder="$t('common.title')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
 
-      <!-- TITLE -->
-      <n-form-item path="title" :label="$t('common.title')">
-        <n-input
-          v-model:value="model.title"
-          type="text"
-          :placeholder="$t('common.title')"
-          @keydown.enter.prevent
+        <!-- SUBTITLE -->
+        <translation-form-item
+          v-model="model.subtitle"
+          parent-form-path-prefix="subtitle"
+          :main-form-label="$t('common.subtitle')"
+          :translation-form-label="$t('common.subtitle')"
+          :translation-form-rules="textFormRules.subtitleTranslation"
         />
-      </n-form-item>
 
-      <!-- SUBTITLE -->
-      <translation-form-item
-        v-model="model.subtitle"
-        parent-form-path-prefix="subtitle"
-        :main-form-label="$t('common.subtitle')"
-        :translation-form-label="$t('common.subtitle')"
-        :translation-form-rules="textFormRules.subtitleTranslation"
-      />
-
-      <!-- SLUG -->
-      <n-alert
-        v-if="slugChangeWarning"
-        type="warning"
-        :title="$t('models.text.slugChangeWarning')"
-        class="mb-md"
-      />
-      <n-form-item path="slug" :label="$t('models.text.slug')">
-        <n-input
-          v-model:value="model.slug"
-          type="text"
-          :placeholder="$t('models.text.slug')"
-          :style="{ backgroundColor: slugChangeWarning ? 'var(--warning-color)' : undefined }"
-          :input-props="{ style: { color: slugChangeWarning ? 'var(--base-color)' : undefined } }"
-          @keydown.enter.prevent
+        <!-- SLUG -->
+        <n-alert
+          v-if="slugChangeWarning"
+          type="warning"
+          :title="$t('models.text.slugChangeWarning')"
+          class="mb-md"
         />
-      </n-form-item>
+        <n-form-item path="slug" :label="$t('models.text.slug')">
+          <n-input
+            v-model:value="model.slug"
+            type="text"
+            :placeholder="$t('models.text.slug')"
+            :style="{ backgroundColor: slugChangeWarning ? 'var(--warning-color)' : undefined }"
+            :input-props="{ style: { color: slugChangeWarning ? 'var(--base-color)' : undefined } }"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
 
-      <!-- DEFAULT STRUCTURE LEVEL -->
-      <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
-        <n-select
-          v-model:value="model.defaultLevel"
-          :options="defaultLevelOptions"
-          :disabled="!defaultLevelOptions.length"
-        />
-      </n-form-item>
+        <!-- DEFAULT STRUCTURE LEVEL -->
+        <n-form-item path="defaultLevel" :label="$t('models.text.defaultLevel')">
+          <n-select
+            v-model:value="model.defaultLevel"
+            :options="defaultLevelOptions"
+            :disabled="!defaultLevelOptions.length"
+          />
+        </n-form-item>
 
-      <!-- ACTIVE -->
-      <n-form-item :show-label="false" :show-feedback="false">
-        <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
-      </n-form-item>
+        <!-- ACTIVE -->
+        <n-form-item :show-label="false" :show-feedback="false">
+          <labeled-switch v-model="model.isActive" :label="$t('models.text.isActive')" />
+        </n-form-item>
+      </form-section>
 
-      <form-section-heading :label="$t('common.presentation')" />
+      <form-section :title="$t('common.presentation')">
+        <!-- LOCATION DELIMITER -->
+        <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
+          <n-input
+            v-model:value="model.locDelim"
+            type="text"
+            :placeholder="$t('models.text.locDelim')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
 
-      <!-- LOCATION DELIMITER -->
-      <n-form-item path="locDelim" :label="$t('models.text.locDelim')">
-        <n-input
-          v-model:value="model.locDelim"
-          type="text"
-          :placeholder="$t('models.text.locDelim')"
-          @keydown.enter.prevent
-        />
-      </n-form-item>
+        <!-- LABELLED LOCATION -->
+        <n-form-item :show-label="false" :show-feedback="false">
+          <labeled-switch
+            v-model="model.labeledLocation"
+            :label="$t('models.text.labeledLocation')"
+          />
+        </n-form-item>
 
-      <!-- LABELLED LOCATION -->
-      <n-form-item :show-label="false" :show-feedback="false">
-        <labeled-switch
-          v-model="model.labeledLocation"
-          :label="$t('models.text.labeledLocation')"
-        />
-      </n-form-item>
+        <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
+        <n-form-item :show-label="false">
+          <labeled-switch
+            v-model="model.fullLocLabelAsHitHeading"
+            :label="$t('models.text.fullLocLabelAsHitHeading')"
+          />
+        </n-form-item>
 
-      <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
-      <n-form-item :show-label="false">
-        <labeled-switch
-          v-model="model.fullLocLabelAsHitHeading"
-          :label="$t('models.text.fullLocLabelAsHitHeading')"
-        />
-      </n-form-item>
-
-      <!-- ACCENT COLOR -->
-      <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
-        <n-color-picker
-          v-model:value="model.accentColor"
-          :modes="['hex']"
-          :show-alpha="false"
-          :swatches="accentColorPresets"
-        />
-      </n-form-item>
+        <!-- ACCENT COLOR -->
+        <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
+          <n-color-picker
+            v-model:value="model.accentColor"
+            :modes="['hex']"
+            :show-alpha="false"
+            :swatches="accentColorPresets"
+          />
+        </n-form-item>
+      </form-section>
 
       <!-- RESOURCE CATEGORIES -->
-      <form-section-heading :label="$t('models.text.resourceCategories')" />
-
-      <n-form-item v-if="model.resourceCategories" :show-label="false">
-        <n-dynamic-input
-          v-model:value="model.resourceCategories"
-          show-sort-button
-          :min="0"
-          :max="32"
-          :create-button-props="dynInputCreateBtnProps"
-          item-class="divided"
-          @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
-        >
-          <template #default="{ index }">
-            <n-flex align="flex-start" style="width: 100%">
-              <n-form-item
-                ignore-path-change
-                :label="$t('common.key')"
-                :path="`resourceCategories[${index}].key`"
-                :rule="textFormRules.resourceCategoryKey"
-              >
-                <n-input
-                  v-model:value="model.resourceCategories[index].key"
-                  :placeholder="$t('common.key')"
-                  @keydown.enter.prevent
+      <form-section :title="$t('models.text.resourceCategories')">
+        <n-form-item v-if="model.resourceCategories" :show-label="false">
+          <n-dynamic-input
+            v-model:value="model.resourceCategories"
+            show-sort-button
+            :min="0"
+            :max="32"
+            :create-button-props="dynInputCreateBtnProps"
+            item-class="divided"
+            @create="() => ({ key: '', translations: [{ locale: '*', translation: '' }] })"
+          >
+            <template #default="{ index }">
+              <n-flex align="flex-start" style="width: 100%">
+                <n-form-item
+                  ignore-path-change
+                  :label="$t('common.key')"
+                  :path="`resourceCategories[${index}].key`"
+                  :rule="textFormRules.resourceCategoryKey"
+                >
+                  <n-input
+                    v-model:value="model.resourceCategories[index].key"
+                    :placeholder="$t('common.key')"
+                    @keydown.enter.prevent
+                  />
+                </n-form-item>
+                <translation-form-item
+                  v-model="model.resourceCategories[index].translations"
+                  ignore-path-change
+                  secondary
+                  :parent-form-path-prefix="`resourceCategories[${index}].translations`"
+                  style="flex: 2"
+                  :main-form-label="$t('common.label')"
+                  :translation-form-label="$t('common.label')"
+                  :translation-form-rules="textFormRules.resourceCategoryTranslation"
                 />
-              </n-form-item>
-              <translation-form-item
-                v-model="model.resourceCategories[index].translations"
-                ignore-path-change
-                secondary
-                :parent-form-path-prefix="`resourceCategories[${index}].translations`"
-                style="flex: 2"
-                :main-form-label="$t('common.label')"
-                :translation-form-label="$t('common.label')"
-                :translation-form-rules="textFormRules.resourceCategoryTranslation"
+              </n-flex>
+            </template>
+            <template #action="{ index, create, remove, move }">
+              <dynamic-input-controls
+                top-offset
+                :move-up-disabled="index === 0"
+                :move-down-disabled="index === model.resourceCategories?.length - 1"
+                :insert-disabled="(model.resourceCategories?.length || 0) >= 32"
+                @move-up="() => move('up', index)"
+                @move-down="() => move('down', index)"
+                @remove="() => remove(index)"
+                @insert="() => create(index)"
               />
-            </n-flex>
-          </template>
-          <template #action="{ index, create, remove, move }">
-            <dynamic-input-controls
-              top-offset
-              :move-up-disabled="index === 0"
-              :move-down-disabled="index === model.resourceCategories?.length - 1"
-              :insert-disabled="(model.resourceCategories?.length || 0) >= 32"
-              @move-up="() => move('up', index)"
-              @move-down="() => move('down', index)"
-              @remove="() => remove(index)"
-              @insert="() => create(index)"
-            />
-          </template>
-          <template #create-button-default>
-            {{ $t('common.add') }}
-          </template>
-        </n-dynamic-input>
-      </n-form-item>
+            </template>
+            <template #create-button-default>
+              {{ $t('common.add') }}
+            </template>
+          </n-dynamic-input>
+        </n-form-item>
+      </form-section>
     </n-form>
 
     <button-shelf top-gap>

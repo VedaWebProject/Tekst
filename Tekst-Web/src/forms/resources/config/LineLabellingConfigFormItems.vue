@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { $t } from '@/i18n';
 import { NFormItem, NSelect } from 'naive-ui';
@@ -21,19 +21,19 @@ const labellingOptions = computed(() =>
 </script>
 
 <template>
-  <form-section-heading :label="$t('resources.settings.config.plainText.lineLabelling.heading')" />
+  <form-section :title="$t('resources.settings.config.plainText.lineLabelling.heading')">
+    <!-- enabled -->
+    <n-form-item :show-label="false">
+      <labeled-switch v-model="model.enabled" />
+    </n-form-item>
 
-  <!-- enabled -->
-  <n-form-item :show-label="false">
-    <labeled-switch v-model="model.enabled" />
-  </n-form-item>
-
-  <!-- labelling type -->
-  <n-form-item :label="$t('common.type')">
-    <n-select
-      v-model:value="model.labellingType"
-      :disabled="!model.enabled"
-      :options="labellingOptions"
-    />
-  </n-form-item>
+    <!-- labelling type -->
+    <n-form-item :label="$t('common.type')">
+      <n-select
+        v-model:value="model.labellingType"
+        :disabled="!model.enabled"
+        :options="labellingOptions"
+      />
+    </n-form-item>
+  </form-section>
 </template>

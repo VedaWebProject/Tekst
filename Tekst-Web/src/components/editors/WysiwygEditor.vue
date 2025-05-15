@@ -444,6 +444,7 @@ onUnmounted(() => {
   border: 1px solid rgb(224, 224, 230);
   border-radius: var(--border-radius);
   overflow-y: scroll;
+  background-color: var(--content-bg-color);
 }
 
 .character-count {

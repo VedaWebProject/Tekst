@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnyContentCreate, AnyResourceRead } from '@/api';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import { contentFormRules } from '@/forms/formRules';
 import resourceContentFormItems from '@/forms/resources/contents/mappings';
 import { NBadge, NCollapse, NCollapseItem, NFormItem, NInput } from 'naive-ui';
@@ -17,9 +17,8 @@ const contentFontStyle = {
 </script>
 
 <template>
-  <template v-if="model">
+  <form-section v-if="model" :title="$t('common.content')">
     <!-- CONTENT -->
-    <form-section-heading :label="$t('common.content')" />
     <component
       :is="resourceContentFormItems[model.resourceType]"
       v-model="model"
@@ -29,15 +28,13 @@ const contentFontStyle = {
     <n-collapse class="content-meta">
       <n-collapse-item name="meta">
         <template #header>
-          <form-section-heading style="flex: 2">
-            <n-badge
-              value="!"
-              :show="!!model.authorsComment || !!model.editorsComment"
-              :offset="[8, 2]"
-            >
-              {{ $t('common.meta') }}
-            </n-badge>
-          </form-section-heading>
+          <n-badge
+            value="!"
+            :show="!!model.authorsComment || !!model.editorsComment"
+            :offset="[8, 2]"
+          >
+            {{ $t('common.meta') }}
+          </n-badge>
         </template>
         <!-- AUTHORS COMMENT -->
         <n-form-item
@@ -73,12 +70,5 @@ const contentFontStyle = {
         </n-form-item>
       </n-collapse-item>
     </n-collapse>
-  </template>
+  </form-section>
 </template>
-
-<style scoped>
-.content-meta.n-collapse
-  :deep(.n-collapse-item .n-collapse-item__content-wrapper .n-collapse-item__content-inner) {
-  padding-top: 0;
-}
-</style>

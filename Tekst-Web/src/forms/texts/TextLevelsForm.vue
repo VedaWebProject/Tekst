@@ -2,7 +2,7 @@
 import type { Translation } from '@/api';
 import { DELETE, PATCH, POST } from '@/api';
 import { dialogProps } from '@/common';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import InsertItemSeparator from '@/components/InsertItemSeparator.vue';
@@ -152,50 +152,50 @@ async function handleModalSubmit() {
 
 <template>
   <div>
-    <form-section-heading :label="$t('common.level', 2)" help-key="textLevels" />
-
-    <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
-      <insert-item-separator
-        :title="$t('texts.levels.tipInsertLevel', { n: lvlIndex + 1 })"
-        :disabled="levels.length >= 32"
-        @click="() => handleInsertClick(lvlIndex)"
-      />
-      <n-flex align="center" :wrap="false" class="level">
-        <div class="level-index">{{ lvlIndex + 1 }}.</div>
-        <n-flex vertical :wrap="false" style="flex: 2">
-          <n-flex v-for="lvlTranslation in lvl" :key="lvlTranslation.locale" :wrap="false">
-            <span>{{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}</span>
-            <span>{{ lvlTranslation.translation }}</span>
+    <form-section :title="$t('common.level', 2)" help-key="textLevels">
+      <div v-for="(lvl, lvlIndex) in levels" :key="`lvl_${lvlIndex}`">
+        <insert-item-separator
+          :title="$t('texts.levels.tipInsertLevel', { n: lvlIndex + 1 })"
+          :disabled="levels.length >= 32"
+          @click="() => handleInsertClick(lvlIndex)"
+        />
+        <n-flex align="center" :wrap="false" class="level">
+          <div class="level-index">{{ lvlIndex + 1 }}.</div>
+          <n-flex vertical :wrap="false" style="flex: 2">
+            <n-flex v-for="lvlTranslation in lvl" :key="lvlTranslation.locale" :wrap="false">
+              <span>{{ getLocaleProfile(lvlTranslation.locale)?.icon || '🌐' }}</span>
+              <span>{{ lvlTranslation.translation }}</span>
+            </n-flex>
           </n-flex>
+          <div class="level-buttons">
+            <n-button
+              secondary
+              circle
+              :title="$t('texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
+              :focusable="false"
+              @click="() => handleEditClick(lvlIndex)"
+            >
+              <n-icon :component="EditIcon" />
+            </n-button>
+            <n-button
+              secondary
+              circle
+              :title="$t('texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
+              :focusable="false"
+              @click="() => handleDeleteClick(lvlIndex)"
+            >
+              <n-icon :component="DeleteIcon" />
+            </n-button>
+          </div>
         </n-flex>
-        <div class="level-buttons">
-          <n-button
-            secondary
-            circle
-            :title="$t('texts.levels.tipEditLevel', { levelLabel: getLevelLabel(lvl) })"
-            :focusable="false"
-            @click="() => handleEditClick(lvlIndex)"
-          >
-            <n-icon :component="EditIcon" />
-          </n-button>
-          <n-button
-            secondary
-            circle
-            :title="$t('texts.levels.tipDeleteLevel', { levelLabel: getLevelLabel(lvl) })"
-            :focusable="false"
-            @click="() => handleDeleteClick(lvlIndex)"
-          >
-            <n-icon :component="DeleteIcon" />
-          </n-button>
-        </div>
-      </n-flex>
-    </div>
+      </div>
 
-    <insert-item-separator
-      :title="$t('texts.levels.tipInsertLevel', { n: levels.length + 1 })"
-      :disabled="levels.length >= 32"
-      @click="() => handleInsertClick(levels.length)"
-    />
+      <insert-item-separator
+        :title="$t('texts.levels.tipInsertLevel', { n: levels.length + 1 })"
+        :disabled="levels.length >= 32"
+        @click="() => handleInsertClick(levels.length)"
+      />
+    </form-section>
 
     <generic-modal
       v-model:show="showEditModal"

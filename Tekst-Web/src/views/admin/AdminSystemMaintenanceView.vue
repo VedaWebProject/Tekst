@@ -3,7 +3,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { $t } from '@/i18n';
 
 import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
@@ -150,222 +150,230 @@ onBeforeMount(() => {
     >
       <!-- SEARCH INDICES -->
       <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="indices">
-        <form-section-heading :label="$t('admin.maintenance.indices.heading')" />
-        <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="indicesInfoLoading"
-              :loading="indicesInfoLoading"
-              @click="loadIndexInfo"
-            >
-              <template #icon>
-                <n-icon :component="RefreshIcon" />
-              </template>
-              {{ $t('common.refresh') }}
-            </n-button>
-            <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
-              <template #icon>
-                <n-icon :component="UpdateIcon" />
-              </template>
-              {{ $t('admin.maintenance.indices.actionCreate') }}
-            </n-button>
-          </template>
-        </button-shelf>
-
-        <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
-          <template v-for="(indexInfo, i) in indicesInfo" :key="`${i}_${indexInfo.textId}`">
-            <tr>
-              <th
-                colspan="2"
-                :style="{
-                  backgroundColor: theme.getAccentColors(indexInfo.textId).fade5,
-                }"
+        <form-section :title="$t('admin.maintenance.indices.heading')" :show-box="false">
+          <button-shelf bottom-gap>
+            <template #start>
+              <n-button
+                secondary
+                :disabled="indicesInfoLoading"
+                :loading="indicesInfoLoading"
+                @click="loadIndexInfo"
               >
-                {{ state.textById(indexInfo.textId)?.title || '???' }}
-              </th>
-            </tr>
-            <template v-for="(value, key) in indexInfo" :key="key">
-              <tr v-if="!['textId', 'fields', 'upToDate'].includes(key)">
-                <th>
-                  {{ $t(`admin.maintenance.indices.${key}`) }}
+                <template #icon>
+                  <n-icon :component="RefreshIcon" />
+                </template>
+                {{ $t('common.refresh') }}
+              </n-button>
+              <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
+                <template #icon>
+                  <n-icon :component="UpdateIcon" />
+                </template>
+                {{ $t('admin.maintenance.indices.actionCreate') }}
+              </n-button>
+            </template>
+          </button-shelf>
+
+          <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
+            <template v-for="(indexInfo, i) in indicesInfo" :key="`${i}_${indexInfo.textId}`">
+              <tr>
+                <th
+                  colspan="2"
+                  :style="{
+                    backgroundColor: theme.getAccentColors(indexInfo.textId).fade5,
+                  }"
+                >
+                  {{ state.textById(indexInfo.textId)?.title || '???' }}
                 </th>
-                <td>{{ value }}</td>
+              </tr>
+              <template v-for="(value, key) in indexInfo" :key="key">
+                <tr v-if="!['textId', 'fields', 'upToDate'].includes(key)">
+                  <th>
+                    {{ $t(`admin.maintenance.indices.${key}`) }}
+                  </th>
+                  <td>{{ value }}</td>
+                </tr>
+              </template>
+              <tr>
+                <th>
+                  {{ $t(`admin.maintenance.indices.fields`) }}
+                </th>
+                <td>
+                  <n-flex align="center">
+                    <span :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
+                      {{ indexInfo.fields }} / {{ SANE_IDX_FIELDS_LIMIT }}
+                    </span>
+                    <help-button-widget help-key="maxIndexFields" />
+                  </n-flex>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  {{ $t('common.status') }}
+                </th>
+                <td>
+                  <span
+                    :class="{ 'index-ood': !indexInfo.upToDate, 'index-utd': indexInfo.upToDate }"
+                  >
+                    {{
+                      indexInfo.upToDate
+                        ? $t('admin.maintenance.indices.utd')
+                        : $t('admin.maintenance.indices.ood')
+                    }}
+                  </span>
+                </td>
               </tr>
             </template>
-            <tr>
-              <th>
-                {{ $t(`admin.maintenance.indices.fields`) }}
-              </th>
-              <td>
-                <n-flex align="center">
-                  <span :class="`max-fields-warn-${getFieldMappingsStatus(indexInfo.fields)}`">
-                    {{ indexInfo.fields }} / {{ SANE_IDX_FIELDS_LIMIT }}
-                  </span>
-                  <help-button-widget help-key="maxIndexFields" />
-                </n-flex>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                {{ $t('common.status') }}
-              </th>
-              <td>
-                <span
-                  :class="{ 'index-ood': !indexInfo.upToDate, 'index-utd': indexInfo.upToDate }"
-                >
-                  {{
-                    indexInfo.upToDate
-                      ? $t('admin.maintenance.indices.utd')
-                      : $t('admin.maintenance.indices.ood')
-                  }}
-                </span>
-              </td>
-            </tr>
-          </template>
-        </n-table>
+          </n-table>
+        </form-section>
       </n-tab-pane>
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
-        <form-section-heading :label="$t('admin.maintenance.precomputed.heading')" />
-        <n-button
-          secondary
-          :disabled="precomputedLoading"
-          :loading="precomputedLoading"
-          @click="triggerPrecomputation"
-        >
-          <template #icon>
-            <n-icon :component="UpdateIcon" />
-          </template>
-          {{ $t('common.run') }}
-        </n-button>
-        <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
+        <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false">
+          <n-button
+            secondary
+            :disabled="precomputedLoading"
+            :loading="precomputedLoading"
+            @click="triggerPrecomputation"
+          >
+            <template #icon>
+              <n-icon :component="UpdateIcon" />
+            </template>
+            {{ $t('common.run') }}
+          </n-button>
+          <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
+        </form-section>
       </n-tab-pane>
 
       <!-- INTERNAL CLEANUP -->
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
-        <form-section-heading :label="$t('admin.maintenance.cleanup.heading')" />
-        <n-button
-          secondary
-          :disabled="cleanupLoading"
-          :loading="cleanupLoading"
-          @click="triggerInternalCleanup"
-        >
-          <template #icon>
-            <n-icon :component="UpdateIcon" />
-          </template>
-          {{ $t('common.run') }}
-        </n-button>
-        <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
+        <form-section :title="$t('admin.maintenance.cleanup.heading')" :show-box="false">
+          <n-button
+            secondary
+            :disabled="cleanupLoading"
+            :loading="cleanupLoading"
+            @click="triggerInternalCleanup"
+          >
+            <template #icon>
+              <n-icon :component="UpdateIcon" />
+            </template>
+            {{ $t('common.run') }}
+          </n-button>
+          <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
+        </form-section>
       </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
       <n-tab-pane :tab="$t('tasks.title')" name="tasks">
-        <form-section-heading :label="$t('tasks.title')" />
-        <button-shelf bottom-gap>
-          <template #start>
-            <n-button
-              secondary
-              :disabled="tasksLoading"
-              :loading="tasksLoading"
-              @click="updateAllTasksData"
-            >
-              <template #icon>
-                <n-icon :component="RefreshIcon" />
-              </template>
-              {{ $t('common.refresh') }}
-            </n-button>
-            <n-button
-              secondary
-              type="error"
-              :disabled="tasksLoading"
-              :loading="tasksLoading"
-              @click="deleteAllTasks"
-            >
-              <template #icon>
-                <n-icon :component="DeleteIcon" />
-              </template>
-              {{ $t('admin.maintenance.tasks.actionDeleteAll') }}
-            </n-button>
-          </template>
-        </button-shelf>
+        <form-section :title="$t('tasks.title')" :show-box="false">
+          <button-shelf bottom-gap>
+            <template #start>
+              <n-button
+                secondary
+                :disabled="tasksLoading"
+                :loading="tasksLoading"
+                @click="updateAllTasksData"
+              >
+                <template #icon>
+                  <n-icon :component="RefreshIcon" />
+                </template>
+                {{ $t('common.refresh') }}
+              </n-button>
+              <n-button
+                secondary
+                type="error"
+                :disabled="tasksLoading"
+                :loading="tasksLoading"
+                @click="deleteAllTasks"
+              >
+                <template #icon>
+                  <n-icon :component="DeleteIcon" />
+                </template>
+                {{ $t('admin.maintenance.tasks.actionDeleteAll') }}
+              </n-button>
+            </template>
+          </button-shelf>
 
-        <n-table size="small" style="table-layout: fixed">
-          <thead>
-            <tr>
-              <th>{{ $t('common.type') }}</th>
-              <th>{{ $t('common.status') }}</th>
-              <th>{{ $t('admin.maintenance.tasks.started') }}</th>
-              <th>{{ $t('admin.maintenance.tasks.ended') }}</th>
-              <th>{{ $t('admin.maintenance.tasks.duration') }}</th>
-              <th>{{ $t('admin.maintenance.tasks.startedBy') }}</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody v-if="allTasks.length">
-            <tr v-for="task in allTasks" :key="task.id">
-              <td>{{ $t(`tasks.types.${task.type}`) }}</td>
-              <td class="nowrap" :style="{ color: statusColors[task.status || 'running'] }">
-                {{ $t(`tasks.statuses.${task.status}`) }}
-              </td>
-              <td class="nowrap">
-                <n-time
-                  v-if="task.startTime"
-                  :time="utcToLocalTime(task.startTime)"
-                  type="datetime"
-                />
-                <span v-else>–</span>
-              </td>
-              <td class="nowrap">
-                <n-time v-if="task.endTime" :time="utcToLocalTime(task.endTime)" type="datetime" />
-                <span v-else>–</span>
-              </td>
-              <td class="nowrap">
-                {{
-                  task.durationSeconds
-                    ? $t('admin.maintenance.tasks.seconds', {
-                        seconds: task.durationSeconds.toFixed(2),
-                      })
-                    : '–'
-                }}
-              </td>
-              <td class="nowrap">
-                <router-link
-                  v-if="task.userId"
-                  :to="{ name: 'user', params: { username: task.userId } }"
-                >
-                  {{ $t('models.user.modelLabel') }}
-                </router-link>
-                <span v-else>
-                  {{ $t('common.system') }}
-                </span>
-              </td>
-              <td class="nowrap">
-                <n-button
-                  secondary
-                  size="small"
-                  :title="$t('common.delete')"
-                  :disabled="tasksLoading"
-                  :loading="tasksLoading"
-                  @click="deleteTask(task.id)"
-                >
-                  <template #icon>
-                    <n-icon :component="DeleteIcon" />
-                  </template>
-                </n-button>
-              </td>
-            </tr>
-          </tbody>
+          <n-table size="small" style="table-layout: fixed">
+            <thead>
+              <tr>
+                <th>{{ $t('common.type') }}</th>
+                <th>{{ $t('common.status') }}</th>
+                <th>{{ $t('admin.maintenance.tasks.started') }}</th>
+                <th>{{ $t('admin.maintenance.tasks.ended') }}</th>
+                <th>{{ $t('admin.maintenance.tasks.duration') }}</th>
+                <th>{{ $t('admin.maintenance.tasks.startedBy') }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody v-if="allTasks.length">
+              <tr v-for="task in allTasks" :key="task.id">
+                <td>{{ $t(`tasks.types.${task.type}`) }}</td>
+                <td class="nowrap" :style="{ color: statusColors[task.status || 'running'] }">
+                  {{ $t(`tasks.statuses.${task.status}`) }}
+                </td>
+                <td class="nowrap">
+                  <n-time
+                    v-if="task.startTime"
+                    :time="utcToLocalTime(task.startTime)"
+                    type="datetime"
+                  />
+                  <span v-else>–</span>
+                </td>
+                <td class="nowrap">
+                  <n-time
+                    v-if="task.endTime"
+                    :time="utcToLocalTime(task.endTime)"
+                    type="datetime"
+                  />
+                  <span v-else>–</span>
+                </td>
+                <td class="nowrap">
+                  {{
+                    task.durationSeconds
+                      ? $t('admin.maintenance.tasks.seconds', {
+                          seconds: task.durationSeconds.toFixed(2),
+                        })
+                      : '–'
+                  }}
+                </td>
+                <td class="nowrap">
+                  <router-link
+                    v-if="task.userId"
+                    :to="{ name: 'user', params: { username: task.userId } }"
+                  >
+                    {{ $t('models.user.modelLabel') }}
+                  </router-link>
+                  <span v-else>
+                    {{ $t('common.system') }}
+                  </span>
+                </td>
+                <td class="nowrap">
+                  <n-button
+                    secondary
+                    size="small"
+                    :title="$t('common.delete')"
+                    :disabled="tasksLoading"
+                    :loading="tasksLoading"
+                    @click="deleteTask(task.id)"
+                  >
+                    <template #icon>
+                      <n-icon :component="DeleteIcon" />
+                    </template>
+                  </n-button>
+                </td>
+              </tr>
+            </tbody>
 
-          <tbody v-else>
-            <tr>
-              <td colspan="999">
-                {{ $t('admin.maintenance.tasks.noTasks') }}
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
+            <tbody v-else>
+              <tr>
+                <td colspan="999">
+                  {{ $t('admin.maintenance.tasks.noTasks') }}
+                </td>
+              </tr>
+            </tbody>
+          </n-table>
+        </form-section>
       </n-tab-pane>
     </n-tabs>
   </div>

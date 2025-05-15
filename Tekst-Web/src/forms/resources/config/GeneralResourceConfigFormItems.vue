@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type GeneralResourceConfig, resourceTypes } from '@/api';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
@@ -96,107 +96,107 @@ function renderCCMark(value: number) {
 </script>
 
 <template>
-  <form-section-heading :label="$t('common.general')" />
-
-  <!-- CATEGORY -->
-  <n-form-item :label="$t('resources.settings.config.general.category')">
-    <n-select
-      v-model:value="model.category"
-      clearable
-      :placeholder="$t('browse.uncategorized')"
-      :options="categoryOptions"
-    />
-  </n-form-item>
-
-  <!-- PREFERRED OSK MODE -->
-  <n-form-item :label="$t('osk.label')">
-    <n-select v-model:value="model.osk" clearable placeholder="–" :options="oskOptions" />
-  </n-form-item>
-
-  <!-- SORT ORDER -->
-  <n-form-item path="config.general.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
-    <template #label>
-      <n-flex align="center" :wrap="false">
-        {{ $t('resources.settings.config.general.sortOrder') }}
-        <help-button-widget help-key="resourceSortOrder" />
-      </n-flex>
-    </template>
-    <n-input-number v-model:value="model.sortOrder" :min="0" :max="1000" style="width: 100%" />
-  </n-form-item>
-
-  <!-- CONTENT FONT -->
-  <n-form-item :label="$t('resources.settings.config.general.font')">
-    <n-select
-      v-model:value="model.font"
-      clearable
-      :options="fontOptions"
-      :placeholder="$t('common.default')"
-      :render-label="renderFontLabel"
-    />
-  </n-form-item>
-
-  <!-- DEFAULT ACTIVE -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch
-      v-model="model.defaultActive"
-      :label="$t('resources.settings.config.general.defaultActive')"
-    />
-  </n-form-item>
-
-  <!-- ENABLE CONTENT CONTEXT -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <n-flex :wrap="false" align="center">
-      <labeled-switch
-        v-model="model.enableContentContext"
-        :label="$t('resources.settings.config.general.enableContentContext')"
-        :disabled="preventContentContext"
+  <form-section :title="$t('common.general')">
+    <!-- CATEGORY -->
+    <n-form-item :label="$t('resources.settings.config.general.category')">
+      <n-select
+        v-model:value="model.category"
+        clearable
+        :placeholder="$t('browse.uncategorized')"
+        :options="categoryOptions"
       />
-      <help-button-widget help-key="resourceConfigCombinedSiblings" />
-    </n-flex>
-  </n-form-item>
+    </n-form-item>
 
-  <!-- SHOW COMMENTS BY DEFAULT -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch
-      v-model="model.showComments"
-      :label="$t('resources.settings.config.general.showComments')"
-    />
-  </n-form-item>
+    <!-- PREFERRED OSK MODE -->
+    <n-form-item :label="$t('osk.label')">
+      <n-select v-model:value="model.osk" clearable placeholder="–" :options="oskOptions" />
+    </n-form-item>
 
-  <!-- QUICK SEARCHABLE -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch
-      v-model="model.searchableQuick"
-      :label="$t('resources.settings.config.general.searchableQuick')"
-      :disabled="preventQuickSearchable"
-    />
-  </n-form-item>
+    <!-- SORT ORDER -->
+    <n-form-item path="config.general.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
+      <template #label>
+        <n-flex align="center" :wrap="false">
+          {{ $t('resources.settings.config.general.sortOrder') }}
+          <help-button-widget help-key="resourceSortOrder" />
+        </n-flex>
+      </template>
+      <n-input-number v-model:value="model.sortOrder" :min="0" :max="1000" style="width: 100%" />
+    </n-form-item>
 
-  <!-- ADVANCED SEARCHABLE -->
-  <n-form-item :show-label="false" :show-feedback="false">
-    <labeled-switch
-      v-model="model.searchableAdv"
-      :label="$t('resources.settings.config.general.searchableAdv')"
-      :disabled="preventAdvSearchable"
-    />
-  </n-form-item>
+    <!-- CONTENT FONT -->
+    <n-form-item :label="$t('resources.settings.config.general.font')">
+      <n-select
+        v-model:value="model.font"
+        clearable
+        :options="fontOptions"
+        :placeholder="$t('common.default')"
+        :render-label="renderFontLabel"
+      />
+    </n-form-item>
 
-  <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
-  <n-form-item :show-label="false">
-    <labeled-switch v-model="model.rtl" :label="$t('resources.settings.config.general.rtl')" />
-  </n-form-item>
+    <!-- COLLAPSIBLE CONTENTS -->
+    <n-form-item :label="$t('resources.settings.config.general.collapsibleContents')">
+      <n-slider
+        :value="model.collapsibleContents || 0"
+        :marks="cCMarks"
+        step="mark"
+        :min="0"
+        :max="800"
+        :format-tooltip="(v) => (v > 0 ? `${v}px` : $t('common.off'))"
+        style="width: 98%"
+        @update:value="(v) => (model.collapsibleContents = v > 0 ? v : null)"
+      />
+    </n-form-item>
 
-  <!-- COLLAPSIBLE CONTENTS -->
-  <n-form-item :label="$t('resources.settings.config.general.collapsibleContents')">
-    <n-slider
-      :value="model.collapsibleContents || 0"
-      :marks="cCMarks"
-      step="mark"
-      :min="0"
-      :max="800"
-      :format-tooltip="(v) => (v > 0 ? `${v}px` : $t('common.off'))"
-      style="width: 98%"
-      @update:value="(v) => (model.collapsibleContents = v > 0 ? v : null)"
-    />
-  </n-form-item>
+    <!-- DEFAULT ACTIVE -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
+        v-model="model.defaultActive"
+        :label="$t('resources.settings.config.general.defaultActive')"
+      />
+    </n-form-item>
+
+    <!-- ENABLE CONTENT CONTEXT -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <n-flex :wrap="false" align="center">
+        <labeled-switch
+          v-model="model.enableContentContext"
+          :label="$t('resources.settings.config.general.enableContentContext')"
+          :disabled="preventContentContext"
+        />
+        <help-button-widget help-key="resourceConfigCombinedSiblings" />
+      </n-flex>
+    </n-form-item>
+
+    <!-- SHOW COMMENTS BY DEFAULT -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
+        v-model="model.showComments"
+        :label="$t('resources.settings.config.general.showComments')"
+      />
+    </n-form-item>
+
+    <!-- QUICK SEARCHABLE -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
+        v-model="model.searchableQuick"
+        :label="$t('resources.settings.config.general.searchableQuick')"
+        :disabled="preventQuickSearchable"
+      />
+    </n-form-item>
+
+    <!-- ADVANCED SEARCHABLE -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch
+        v-model="model.searchableAdv"
+        :label="$t('resources.settings.config.general.searchableAdv')"
+        :disabled="preventAdvSearchable"
+      />
+    </n-form-item>
+
+    <!-- RIGHT-TO-LEFT TEXT DIRECTION -->
+    <n-form-item :show-label="false" :show-feedback="false">
+      <labeled-switch v-model="model.rtl" :label="$t('resources.settings.config.general.rtl')" />
+    </n-form-item>
+  </form-section>
 </template>

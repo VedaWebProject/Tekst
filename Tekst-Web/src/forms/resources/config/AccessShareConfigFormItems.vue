@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type PublicUserSearchFilters, type UserReadPublic } from '@/api';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import UserDisplayText from '@/components/user/UserDisplayText.vue';
 import { usePublicUserSearch } from '@/composables/publicUserSearch';
 import { $t } from '@/i18n';
@@ -128,50 +128,50 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       {{ $t('resources.settings.unavailableWhenPublished') }}
     </n-alert>
 
-    <form-section-heading v-if="sharingAuthorized" :label="$t('models.resource.sharedRead')" />
+    <form-section v-if="sharingAuthorized" :title="$t('models.resource.sharedRead')">
+      <n-form-item v-if="sharingAuthorized" path="sharedRead" :show-label="false">
+        <n-select
+          v-model:value="sharedRead"
+          multiple
+          filterable
+          clearable
+          remote
+          clear-filter-after-select
+          :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
+          max-tag-count="responsive"
+          :render-label="renderUserSelectLabel"
+          :render-tag="renderUserSelectTag"
+          :loading="loadingUsers"
+          :status="errorUsers ? 'error' : undefined"
+          :options="usersOptionsRead"
+          :placeholder="$t('resources.phSearchUsers')"
+          @update:value="(v) => onSharesUpdate(v)"
+          @search="handleUserSearch"
+        />
+      </n-form-item>
+    </form-section>
 
-    <n-form-item v-if="sharingAuthorized" path="sharedRead" :show-label="false">
-      <n-select
-        v-model:value="sharedRead"
-        multiple
-        filterable
-        clearable
-        remote
-        clear-filter-after-select
-        :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
-        max-tag-count="responsive"
-        :render-label="renderUserSelectLabel"
-        :render-tag="renderUserSelectTag"
-        :loading="loadingUsers"
-        :status="errorUsers ? 'error' : undefined"
-        :options="usersOptionsRead"
-        :placeholder="$t('resources.phSearchUsers')"
-        @update:value="(v) => onSharesUpdate(v)"
-        @search="handleUserSearch"
-      />
-    </n-form-item>
-
-    <form-section-heading v-if="sharingAuthorized" :label="$t('models.resource.sharedWrite')" />
-
-    <n-form-item v-if="sharingAuthorized" path="sharedWrite" :show-label="false">
-      <n-select
-        v-model:value="sharedWrite"
-        multiple
-        filterable
-        clearable
-        remote
-        clear-filter-after-select
-        :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
-        max-tag-count="responsive"
-        :render-label="renderUserSelectLabel"
-        :render-tag="renderUserSelectTag"
-        :loading="loadingUsers"
-        :status="errorUsers ? 'error' : undefined"
-        :options="usersOptionsWrite"
-        :placeholder="$t('resources.phSearchUsers')"
-        @update:value="(v) => onSharesUpdate(v)"
-        @search="handleUserSearch"
-      />
-    </n-form-item>
+    <form-section v-if="sharingAuthorized" :title="$t('models.resource.sharedWrite')">
+      <n-form-item v-if="sharingAuthorized" path="sharedWrite" :show-label="false">
+        <n-select
+          v-model:value="sharedWrite"
+          multiple
+          filterable
+          clearable
+          remote
+          clear-filter-after-select
+          :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
+          max-tag-count="responsive"
+          :render-label="renderUserSelectLabel"
+          :render-tag="renderUserSelectTag"
+          :loading="loadingUsers"
+          :status="errorUsers ? 'error' : undefined"
+          :options="usersOptionsWrite"
+          :placeholder="$t('resources.phSearchUsers')"
+          @update:value="(v) => onSharesUpdate(v)"
+          @search="handleUserSearch"
+        />
+      </n-form-item>
+    </form-section>
   </div>
 </template>

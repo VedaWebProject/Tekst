@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
 import type { components } from '@/api/schema';
-import FormSectionHeading from '@/components/FormSectionHeading.vue';
+import FormSection from '@/components/FormSection.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import {
   commonResourceConfigFormRules,
@@ -29,37 +29,35 @@ onMounted(async () => {
 </script>
 
 <template>
-  <form-section-heading
-    :label="$t('resources.settings.config.annotations.annoDisplayHeading', 2)"
-  />
+  <form-section :title="$t('resources.settings.config.annotations.annoDisplayHeading', 2)">
+    <!-- ANNOTATION DISPLAY TEMPLATE -->
+    <n-form-item
+      :rule="typeSpecificResourceConfigFormRules.textAnnotation.displayTemplate"
+      path="config.special.annotations.displayTemplate"
+    >
+      <template #label>
+        <n-flex align="center">
+          {{ $t('resources.settings.config.annotations.displayTemplate', 2) }}
+          <help-button-widget help-key="textAnnotationDisplayTemplate" />
+        </n-flex>
+      </template>
+      <n-input
+        v-model:value="model.displayTemplate"
+        type="textarea"
+        rows="3"
+        style="font-family: monospace"
+      />
+    </n-form-item>
 
-  <!-- ANNOTATION DISPLAY TEMPLATE -->
-  <n-form-item
-    :rule="typeSpecificResourceConfigFormRules.textAnnotation.displayTemplate"
-    path="config.special.annotations.displayTemplate"
-  >
-    <template #label>
-      <n-flex align="center">
-        {{ $t('resources.settings.config.annotations.displayTemplate', 2) }}
-        <help-button-widget help-key="textAnnotationDisplayTemplate" />
-      </n-flex>
-    </template>
-    <n-input
-      v-model:value="model.displayTemplate"
-      type="textarea"
-      rows="3"
-      style="font-family: monospace"
-    />
-  </n-form-item>
-
-  <!-- MULTI VALUE DELIMITER -->
-  <n-form-item
-    :label="$t('resources.settings.config.annotations.multiValueDelimiter')"
-    :rule="typeSpecificResourceConfigFormRules.textAnnotation.multiValueDelimiter"
-    path="config.special.annotations.multiValueDelimiter"
-  >
-    <n-input v-model:value="model.multiValueDelimiter" />
-  </n-form-item>
+    <!-- MULTI VALUE DELIMITER -->
+    <n-form-item
+      :label="$t('resources.settings.config.annotations.multiValueDelimiter')"
+      :rule="typeSpecificResourceConfigFormRules.textAnnotation.multiValueDelimiter"
+      path="config.special.annotations.multiValueDelimiter"
+    >
+      <n-input v-model:value="model.multiValueDelimiter" />
+    </n-form-item>
+  </form-section>
 
   <!-- ANNOTATION INTEGRATION -->
   <item-integration-config-form-items
