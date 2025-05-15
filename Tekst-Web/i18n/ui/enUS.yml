@@ -257,12 +257,6 @@ browse:
         to: To
         rangeError: The selected location range is invalid!
         fullLocationRange: Select all locations
-        info:
-          json: Comprehensive export data as JSON – a format that is easy to process for subsequent use
-          tekst-json: Special JSON export that is suitable for a re-import into the platform
-          html: HTML export that can be embedded into websites or converted to PDF
-          csv: Tabular data export as comma-separated values – useful for spreadsheet programs like Excel or subsequent processing
-          txt: Plain text export without any formatting beyond whitespace alignment
 
 forms:
   rulesFeedback:

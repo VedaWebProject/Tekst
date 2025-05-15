@@ -260,12 +260,6 @@ browse:
         to: Bis
         rangeError: Der ausgewählte Belegstellenbereich ist ungültig!
         fullLocationRange: Alle Belegstellen auswählen
-        info:
-          json: Umfassende Exportdaten als JSON - ein Format, das gut zur Weiterverarbeitung geeignet ist
-          tekst-json: Spezieller JSON-Export, der für den Wieder-Import in die Plattform geeignet ist
-          html: HTML-Export, der in Websites eingebettet oder in PDF umgewandelt werden kann
-          csv: Tabellarischer Datenexport als kommagetrennte Werte - nützlich für Tabellenkalkulationsprogramme wie Excel oder die spätere Weiterverarbeitung
-          txt: Einfacher Textexport ohne Formatierung über die Ausrichtung durch Leerzeichen hinaus
 
 forms:
   rulesFeedback:

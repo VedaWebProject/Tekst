@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { GET, type AnyResourceRead, type LocationRead, type ResourceExportFormat } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
 import { useAuthStore, useBrowseStore, useStateStore } from '@/stores';
 import { getFullLocationLabel } from '@/utils';
-import { NAlert, NButton, NCollapse, NCollapseItem, NFormItem, NSelect } from 'naive-ui';
+import { NAlert, NButton, NCollapse, NCollapseItem, NFlex, NFormItem, NSelect } from 'naive-ui';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const allFormatOptions: { label: string; value: ResourceExportFormat; [key: string]: unknown }[] = [
@@ -42,12 +43,6 @@ const { message } = useMessages();
 
 const format = ref<ResourceExportFormat>('json');
 const formatOptions = computed(() => allFormatOptions.filter((o) => !o.restricted || !!auth.user));
-const formatInfoTitle = computed(
-  () => allFormatOptions.find((o) => o.value === format.value)?.label
-);
-const formatInfoText = computed(() =>
-  $t(`browse.contents.widgets.exportWidget.info.${format.value}`)
-);
 
 const fromLocationPath = ref<LocationRead[]>([]);
 const toLocationPath = ref<LocationRead[]>([]);
@@ -140,12 +135,14 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <n-form-item :label="$t('browse.contents.widgets.exportWidget.format')">
+      <template #label>
+        <n-flex align="center">
+          <span>{{ $t('browse.contents.widgets.exportWidget.format') }}</span>
+          <help-button-widget help-key="exportFormats" />
+        </n-flex>
+      </template>
       <n-select v-model:value="format" :options="formatOptions" />
     </n-form-item>
-
-    <n-alert type="info" :title="formatInfoTitle" :closable="false" class="mb-lg">
-      <span class="text-small">{{ formatInfoText }}</span>
-    </n-alert>
 
     <n-collapse v-model:expanded-names="collapseExpandedModel">
       <n-collapse-item
