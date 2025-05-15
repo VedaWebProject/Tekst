@@ -116,9 +116,8 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 .caption {
   white-space: pre-line;
   line-height: 1.2;
-  border-radius: var(--border-radius);
   padding-left: var(--gap-sm);
-  border-left: 2px solid var(--accent-color-fade4);
+  border-left: 2px solid var(--main-bg-color);
 }
 
 .caption > .source-link {
