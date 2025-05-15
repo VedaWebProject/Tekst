@@ -109,29 +109,29 @@ async function handleWidgetClick() {
       :placeholder="$t('common.searchAction')"
       round
       clearable
-      class="my-md"
+      class="mb-md"
     >
       <template #prefix>
         <n-icon :component="SearchIcon" />
       </template>
     </n-input>
 
-    <n-list hoverable clickable style="background-color: transparent">
-      <n-list-item
-        :class="{ disabled: loading || maxCountReached || bookmarkAlreadyExists }"
-        @click="handleCreateBookmarkClick"
-      >
-        <n-thing content-indented>
-          <template #avatar>
-            <n-icon :component="AddIcon" size="large" />
-          </template>
-          <span v-if="!maxCountReached">
-            {{ $t('browse.bookmarks.lblCreate') }}
-          </span>
-          <span v-else>{{ $t('browse.bookmarks.maxCountReached') }}</span>
-        </n-thing>
-      </n-list-item>
+    <n-button
+      secondary
+      block
+      :disabled="loading || maxCountReached || bookmarkAlreadyExists"
+      class="mb-md"
+      @click="handleCreateBookmarkClick"
+    >
+      <template #icon>
+        <n-icon :component="AddIcon" size="large" />
+      </template>
+      {{
+        !maxCountReached ? $t('browse.bookmarks.lblCreate') : $t('browse.bookmarks.maxCountReached')
+      }}
+    </n-button>
 
+    <n-list hoverable clickable style="background-color: transparent">
       <n-list-item
         v-for="bookmark in filteredBookmarks"
         :key="bookmark.id"
