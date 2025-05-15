@@ -38,6 +38,7 @@ const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
       <div ref="contentRef">
         <slot></slot>
       </div>
+      <div class="collapsed-shadow"></div>
     </div>
     <n-button
       v-if="isCollapsible"
@@ -62,6 +63,19 @@ const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
 
 <style scoped>
 .collapsed {
+  position: relative;
+}
+
+.collapsed-shadow {
+  display: none;
+}
+
+.collapsed > .collapsed-shadow {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
   box-shadow: rgba(0, 0, 0, 0.175) 0px -40px 12px -40px inset;
   border-radius: var(--border-radius);
 }
