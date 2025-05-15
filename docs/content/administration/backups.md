@@ -4,7 +4,7 @@ The following examples leverage the MongoDB utilities `mongodump` and `mongorest
 
 !!! example "Variables used in example commands"
     - `$container`: The name of the MongoDB Docker container
-    - `$uri`: The [MongoDB connection string URI](https://www.mongodb.com/docs/manual/reference/connection-string/) (from inside the container if you're using Docker)
+    - `$uri`: The [MongoDB connection string URI](https://www.mongodb.com/docs/manual/reference/connection-string/) (from inside the container if you're using Docker) – Example: `mongodb://mongoDbUser:mongoDbPassword@127.0.0.1:27017/?authSource=admin`
     - `$file`: The file to read/write the backup from/to
     - `$db`: The name of the database you used in your configuration
 
