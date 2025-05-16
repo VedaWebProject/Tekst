@@ -95,7 +95,7 @@ COPY docker/gunicorn/gunicorn_conf.py /etc/gunicorn/
 COPY docker/entrypoint.sh /usr/local/bin/
 
 VOLUME /var/www/tekst/static/
-EXPOSE 80
+EXPOSE 8080
 USER tekst
 
 LABEL org.opencontainers.image.description="A collaborative research platform for resources on natural language texts"

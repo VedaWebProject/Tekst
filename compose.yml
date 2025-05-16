@@ -14,7 +14,7 @@ services:
     volumes:
       - ${TEKST_WEB_STATIC_DIR:-/var/www/tekst/static/}:/var/www/tekst/static/:ro
     ports:
-      - "127.0.0.1:8087:80"
+      - "127.0.0.1:8087:8080"
     networks:
       - mongo
       - es
@@ -30,7 +30,13 @@ services:
       - mongo_db:/data/db
     networks:
       - mongo
-    command: ["mongod", "--quiet", "--setParameter", "diagnosticDataCollectionEnabled=false"]
+    command:
+      [
+        "mongod",
+        "--quiet",
+        "--setParameter",
+        "diagnosticDataCollectionEnabled=false",
+      ]
     healthcheck:
       test: echo "db.getMongo()" | mongosh --norc --quiet --host=localhost:27017
       interval: 1m30s

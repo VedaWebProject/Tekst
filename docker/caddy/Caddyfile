@@ -3,7 +3,7 @@
 	auto_https off
 }
 
-:80 {
+:8080 {
 	encode zstd gzip
 
 	# constrain max request body size
