@@ -1,7 +1,7 @@
 
 # TEKST-WEB BUILDER IMAGE
 
-FROM node:22.15.0-alpine3.20 AS web-builder
+FROM node:22.15.1-alpine3.20 AS web-builder
 WORKDIR /tekst
 COPY Tekst-Web/ ./Tekst-Web/
 COPY Tekst-API/openapi.json ./Tekst-API/openapi.json
