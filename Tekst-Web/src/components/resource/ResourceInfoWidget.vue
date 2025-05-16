@@ -108,20 +108,20 @@ const showInfoModal = ref(false);
       </collapsible-content>
     </div>
 
-    <!-- EXPORT -->
-    <div class="gray-box">
-      <icon-heading level="3" :icon="DownloadIcon">
-        {{ $t('common.export') }}
-      </icon-heading>
-      <resource-export-widget :resource="resource" @done="showInfoModal = false" />
-    </div>
-
     <!-- COVERAGE -->
     <div class="gray-box">
       <icon-heading level="3" :icon="CoverageIcon">
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </icon-heading>
       <resource-coverage-widget :resource="resource" @navigate="showInfoModal = false" />
+    </div>
+
+    <!-- EXPORT -->
+    <div class="gray-box">
+      <icon-heading level="3" :icon="DownloadIcon">
+        {{ $t('common.export') }}
+      </icon-heading>
+      <resource-export-widget :resource="resource" @done="showInfoModal = false" />
     </div>
 
     <button-shelf top-gap>
