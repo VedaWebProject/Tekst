@@ -4,7 +4,7 @@
 
 A collaborative, web-based research platform for aligning, linking, publishing, exploring and enriching resources on natural language texts.
 
-![Tekst-API tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/server-tests.yml?label=API%20tests)
+![Tekst-API tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/api-tests.yml?label=API%20tests)
 [![Tekst-API tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=API%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
 ![Tekst-Web code checks status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/web-checks.yml?label=client%20checks)
 
