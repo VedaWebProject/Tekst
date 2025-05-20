@@ -189,8 +189,39 @@ class QuickSearchSettings(ModelBase):
         return str(v).upper()
 
 
+class LocationRange(ModelBase):
+    level: Annotated[
+        int,
+        Field(
+            alias="lvl",
+            description="Level to search in",
+        ),
+    ]
+    from_pos: Annotated[
+        int,
+        Field(
+            alias="from",
+            description="Lower location position boundary of search range",
+        ),
+    ]
+    to_pos: Annotated[
+        int,
+        Field(
+            alias="to",
+            description="Upper location position boundary of search range",
+        ),
+    ]
+
+
 class AdvancedSearchSettings(ModelBase):
-    pass
+    location_range: Annotated[
+        LocationRange,
+        Field(
+            alias="rng",
+            description="Search range",
+        ),
+        SchemaOptionalNonNullable,
+    ]
 
 
 class QuickSearchRequestBody(ModelBase):

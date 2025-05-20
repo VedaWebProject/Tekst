@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PublicUserSearchFilters } from '@/api';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
@@ -10,7 +9,7 @@ import { $t } from '@/i18n';
 import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { createReusableTemplate } from '@vueuse/core';
-import { NFlex, NIcon, NInput, NList, NListItem, NPagination, NSpin } from 'naive-ui';
+import { NEmpty, NFlex, NIcon, NInput, NList, NListItem, NPagination, NSpin } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
@@ -74,7 +73,11 @@ function resetPagination() {
 
   <n-spin v-if="loading" class="centered-spinner" :description="$t('common.loading')" />
 
-  <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
+  <n-empty v-else-if="error" :description="$t('errors.unexpected')">
+    <template #icon>
+      <n-icon :component="ErrorIcon" />
+    </template>
+  </n-empty>
 
   <template v-else-if="total">
     <div class="text-small translucent">
@@ -111,11 +114,11 @@ function resetPagination() {
     </div>
   </template>
 
-  <huge-labelled-icon
-    v-else
-    :message="$t('admin.users.msgFoundCount', { count: total })"
-    :icon="NoContentIcon"
-  />
+  <n-empty v-else :description="$t('admin.users.msgFoundCount', { count: total })">
+    <template #icon>
+      <n-icon :component="NoContentIcon" />
+    </template>
+  </n-empty>
 </template>
 
 <style scoped>

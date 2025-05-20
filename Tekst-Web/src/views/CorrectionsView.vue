@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
 import { $t } from '@/i18n';
 import { ArrowBackIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NButton, NIcon, NList } from 'naive-ui';
+import { NButton, NEmpty, NIcon, NList } from 'naive-ui';
 import { computed, onBeforeMount } from 'vue';
 import { onBeforeRouteUpdate, RouterLink, useRouter } from 'vue-router';
 
@@ -63,7 +62,11 @@ onBeforeMount(async () => {
         :correction="correction"
       />
     </n-list>
-    <huge-labelled-icon v-else :icon="NoContentIcon" :message="$t('search.nothingFound')" />
+    <n-empty v-else :description="$t('search.nothingFound')">
+      <template #icon>
+        <n-icon :component="NoContentIcon" />
+      </template>
+    </n-empty>
   </div>
 </template>
 

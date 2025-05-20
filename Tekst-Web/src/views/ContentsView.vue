@@ -14,7 +14,6 @@ import {
 import { dialogProps } from '@/common';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
@@ -57,6 +56,7 @@ import {
   NCollapse,
   NCollapseItem,
   NDropdown,
+  NEmpty,
   NFlex,
   NForm,
   NIcon,
@@ -688,11 +688,11 @@ whenever(ArrowRight, () => {
       </template>
 
       <n-flex v-else vertical align="center" class="mb-lg">
-        <huge-labelled-icon
-          :message="$t('contents.noContent')"
-          :icon="NoContentIcon"
-          style="padding: 0 0 var(--gap-lg) 0"
-        />
+        <n-empty :description="$t('contents.noContent')" class="mb-lg">
+          <template #icon>
+            <n-icon :component="NoContentIcon" />
+          </template>
+        </n-empty>
         <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
           <template #icon>
             <n-icon :component="AddIcon" />

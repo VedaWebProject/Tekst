@@ -45,6 +45,10 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   Table: {
     thFontWeight: 'bold',
   },
+  Empty: {
+    textColor: 'var(--text-color-translucent)',
+    iconColor: 'var(--text-color-translucent)',
+  },
 };
 
 const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
@@ -135,9 +139,10 @@ export const useThemeStore = defineStore('theme', () => {
 
   // set/update global CSS vars for use in CSS contexts
   watchEffect(() => {
-    const vars = {
+    Object.entries({
       '--base-color': dark.value ? '#242424' : '#FFFFFF',
       '--text-color': nuiBaseTheme.value.common.textColor1,
+      '--text-color-translucent': transparentize(nuiBaseTheme.value.common.textColor1, 0.6),
 
       '--success-color': nuiBaseTheme.value.common.successColor,
       '--info-color': nuiBaseTheme.value.common.infoColor,
@@ -151,9 +156,6 @@ export const useThemeStore = defineStore('theme', () => {
       '--accent-color-fade4': custom.value.accent.fade4,
       '--accent-color-fade5': custom.value.accent.fade5,
 
-      '--link-color': custom.value.accent.base,
-      '--link-color-hover': custom.value.accent.fade1,
-
       '--main-bg-color': custom.value.mainBgColor,
       '--content-bg-color': custom.value.contentBgColor,
 
@@ -163,8 +165,7 @@ export const useThemeStore = defineStore('theme', () => {
       '--font-family-content': [state.pf?.state.contentFont, `'Tekst Content Font'`, 'serif']
         .filter((f) => !!f)
         .join(', '),
-    };
-    Object.entries(vars).forEach(([k, v]) => {
+    }).forEach(([k, v]) => {
       document.documentElement.style.setProperty(k, v);
     });
   });

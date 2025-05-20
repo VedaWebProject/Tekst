@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import TasksWidget from '@/components/TasksWidget.vue';
@@ -17,8 +16,10 @@ import {
   NBackTop,
   NConfigProvider,
   NDialogProvider,
+  NEmpty,
   NFlex,
   NGlobalStyle,
+  NIcon,
   NLoadingBarProvider,
 } from 'naive-ui';
 import { computed } from 'vue';
@@ -73,11 +74,11 @@ useFavicon();
           align="center"
           style="height: 100vh"
         >
-          <huge-labelled-icon
-            :message="$t('errors.init')"
-            :loading="!state.init.error && !state.init.initialized"
-            :icon="ErrorIcon"
-          />
+          <n-empty :description="$t('errors.init')">
+            <template #icon>
+              <n-icon :component="ErrorIcon" />
+            </template>
+          </n-empty>
         </n-flex>
       </n-dialog-provider>
       <app-loading-feedback />

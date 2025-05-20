@@ -24,14 +24,14 @@ body {
 
 a,
 a:any-link {
-  color: var(--link-color);
+  color: var(--accent-color);
   text-decoration: none;
   transition: 0.1s;
   cursor: pointer;
 }
 
 a:hover {
-  color: var(--link-color-hover);
+  color: var(--accent-color-fade1);
 }
 
 p {
@@ -419,4 +419,8 @@ table td {
 
 .n-base-select-menu .n-base-select-group-header {
   font-size: var(--font-size-small);
+}
+
+.n-empty .n-empty__description {
+  text-align: center;
 }

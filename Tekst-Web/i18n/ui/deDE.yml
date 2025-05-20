@@ -4,6 +4,8 @@ common:
   enabled: Aktiv
   on: 'An'
   off: 'Aus'
+  from: Von
+  to: Bis
   status: Status
   title: Titel
   subtitle: Untertitel
@@ -256,8 +258,6 @@ browse:
         noContext: Es existieren keine Inhalte für diese oder untergeordnete Belegstellen.
       exportWidget:
         format: Format
-        from: Von
-        to: Bis
         rangeError: Der ausgewählte Belegstellenbereich ist ungültig!
         fullLocationRange: Alle Belegstellen auswählen
 
@@ -880,6 +880,13 @@ search:
       must: erforderlich
       not: ausgeschlossen
     wc: Interpretiere Platzhalter (* und ?) für dieses Feld
+    range:
+      title: Fundstellen-Bereich
+      unconstrained: Uneingeschränkt
+      msgImpossible: |
+        Es ist nicht möglich den Suchbereich dieser Suche einzuschränken,
+        da die gewählten Zielressourcen keinen gemeinsamen Referenztext haben und/oder
+        sich nicht auf die selbe Strukturebene beziehen.
   settings:
     general:
       strict: Berücksichtige Diakritika

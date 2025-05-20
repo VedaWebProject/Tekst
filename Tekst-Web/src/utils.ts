@@ -45,6 +45,7 @@ export function getFullLocationLabel(
   textLevelLabels: string[] = [],
   text?: TextRead
 ) {
+  if (!text) return '';
   return locationPath
     .map((n) => {
       if (!n.label) return '';

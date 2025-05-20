@@ -1,23 +1,30 @@
 <script setup lang="ts">
-import { type AnyResourceRead, type ResourceSearchQuery, type SearchableResourceType } from '@/api';
+import {
+  GET,
+  type AnyResourceRead,
+  type LocationRead,
+  type ResourceSearchQuery,
+  type SearchableResourceType,
+} from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import LocationRange from '@/components/search/LocationRange.vue';
 import { useMessages } from '@/composables/messages';
 import CommonSearchFormItems from '@/forms/resources/search/CommonSearchFormItems.vue';
 import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceSelector.vue';
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import { $t } from '@/i18n';
-import { AddIcon, ClearIcon, LevelsIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { AddIcon, ClearIcon, LevelsIcon, NoContentIcon, ResourceIcon, SearchIcon } from '@/icons';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import {
   NButton,
   NDynamicInput,
+  NEmpty,
   NFlex,
   NForm,
   NFormItem,
@@ -27,7 +34,7 @@ import {
   type FormInst,
 } from 'naive-ui';
 import type { SelectMixedOption, SelectOption } from 'naive-ui/es/select/src/interface';
-import { computed, h, ref, watch, type VNodeChild } from 'vue';
+import { computed, h, ref, watch, watchEffect, type VNodeChild } from 'vue';
 
 interface AdvancedSearchFormModelItem extends ResourceSearchQuery {
   resource?: AnyResourceRead;
@@ -101,23 +108,56 @@ const resourceColors = computed(() =>
   Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getAccentColors(r.textId) }]))
 );
 
+const queriesCommonText = computed(() =>
+  !!formModel.value.queries.length &&
+  formModel.value.queries.map((q) => q.resource?.textId).every((val, _, arr) => val === arr[0])
+    ? formModel.value.queries[0].resource?.textId
+    : undefined
+);
+const queriesCommonLevel = computed(() =>
+  !!formModel.value.queries.length &&
+  formModel.value.queries.map((q) => q.resource?.level).every((val, _, arr) => val === arr[0])
+    ? formModel.value.queries[0].resource?.level
+    : undefined
+);
+const locRangeEnabled = computed(
+  () => !!queriesCommonText.value && queriesCommonLevel.value !== undefined
+);
+const locRangeExpanded = ref(false);
+const fromLocationPath = ref<LocationRead[]>([]);
+const toLocationPath = ref<LocationRead[]>([]);
+
+watchEffect(async () => {
+  locRangeExpanded.value = false;
+  if (!locRangeEnabled.value) {
+    fromLocationPath.value = [];
+    toLocationPath.value = [];
+    return;
+  }
+  const { data, error } = await GET('/locations/first-last-paths', {
+    params: { query: { txt: queriesCommonText.value as string, lvl: queriesCommonLevel.value } },
+  });
+  if (!error) {
+    fromLocationPath.value = data[0];
+    toLocationPath.value = data[1];
+  }
+});
+
 function renderResourceOptionLabel(option: SelectOption): VNodeChild {
-  return h(
-    NFlex,
-    { align: 'center', justify: 'space-between', wrap: false, class: 'mr-lg' },
-    () => [
-      h('span', { style: 'white-space: nowrap' }, option.label as string),
-      !state.smallScreen &&
-        h(
-          NTag,
-          { size: 'small', style: 'cursor: pointer; font-weight: normal' },
-          {
-            default: () => state.getTextLevelLabel(option.textId as string, option.level as number),
-            icon: () => h(NIcon, { component: LevelsIcon }),
-          }
-        ),
-    ]
-  );
+  return h(NFlex, { align: 'center', wrap: false, class: 'mr-lg' }, () => [
+    !state.smallScreen && h(NIcon, { component: ResourceIcon, color: option.textColor as string }),
+    h('div', { style: 'white-space: nowrap' }, option.label as string),
+    h('div', { style: 'flex: 2' }),
+    !state.smallScreen &&
+      h(
+        NTag,
+        { size: 'small', style: 'cursor: pointer; font-weight: normal' },
+        {
+          default: () => state.getTextLevelLabel(option.textId as string, option.level as number),
+          icon: () => h(NIcon, { component: LevelsIcon }),
+        }
+      ),
+  ]);
 }
 
 function handleResourceChange(
@@ -163,6 +203,17 @@ function handleSearch() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
+      // constrain location range (or don't)
+      if (locRangeEnabled.value && locRangeExpanded.value) {
+        const lvl = fromLocationPath.value.length - 1;
+        search.settingsAdvanced.rng = {
+          lvl,
+          from: fromLocationPath.value[lvl].position,
+          to: toLocationPath.value[lvl].position,
+        };
+      } else {
+        delete search.settingsAdvanced.rng;
+      }
       search.searchAdvanced(
         formModel.value.queries.map((q) => {
           const { resource, ...query } = q; // remove "resource" prop from q
@@ -229,12 +280,11 @@ whenever(ctrlEnter, () => {
     >
       <!-- SEARCH ITEM -->
       <template #default="{ value: query, index: queryIndex }">
-        <div class="content-block p-0">
-          <n-flex
-            :wrap="false"
-            class="search-item-header p"
-            :style="{ backgroundColor: resourceColors[query.cmn.res].colors.fade3 }"
-          >
+        <div
+          class="content-block"
+          :style="{ borderLeft: `6px solid ${resourceColors[query.cmn.res].colors.base}` }"
+        >
+          <n-flex align="center" :wrap="false" class="mb-lg">
             <n-flex align="flex-start" style="flex: 2">
               <n-form-item :show-label="false" :show-feedback="false" style="flex: 6 400px">
                 <n-select
@@ -268,7 +318,7 @@ whenever(ctrlEnter, () => {
               <n-icon :component="ClearIcon" />
             </n-button>
           </n-flex>
-          <div class="p">
+          <div>
             <component
               :is="resourceTypeSearchForms[query.rts.type]"
               v-model="query.rts"
@@ -298,18 +348,24 @@ whenever(ctrlEnter, () => {
       </template>
       <!-- ADD / REMOVE ACTION BUTTONS -->
       <template #action>
-        <div>
-          <!-- this is needed so the default action buttons don't show -->
-        </div>
+        <!-- this is needed so the default action buttons don't show :( -->
+        <div></div>
       </template>
     </n-dynamic-input>
-  </n-form>
 
-  <huge-labelled-icon
-    v-else
-    :message="$t('search.advancedSearch.msgNoResources')"
-    :icon="NoContentIcon"
-  />
+    <!-- LOCATION RANGE -->
+    <location-range
+      v-model:from-path="fromLocationPath"
+      v-model:to-path="toLocationPath"
+      v-model:expanded="locRangeExpanded"
+      :enabled="locRangeEnabled"
+    />
+  </n-form>
+  <n-empty v-else :description="$t('search.advancedSearch.msgNoResources')">
+    <template #icon>
+      <n-icon :component="NoContentIcon" />
+    </template>
+  </n-empty>
 
   <button-shelf v-if="!!resources.all.length" top-gap>
     <n-button
@@ -333,11 +389,6 @@ whenever(ctrlEnter, () => {
 :deep(.search-item > .content-block) {
   margin: 0;
 }
-
-:deep(.search-item .search-item-header) {
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
-}
 </style>
 
 <style>
@@ -346,7 +397,6 @@ whenever(ctrlEnter, () => {
 .search-resource-select-menu.n-base-select-menu
   .n-base-select-option.n-base-select-option--selected
   .n-base-select-option__check {
-  color: unset;
   font-weight: bold;
 }
 

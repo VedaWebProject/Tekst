@@ -4,7 +4,6 @@ import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
@@ -15,6 +14,7 @@ import { AddIcon, FileOpenIcon, InfoIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import {
   NButton,
+  NEmpty,
   NFlex,
   NForm,
   NFormItem,
@@ -316,5 +316,9 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <huge-labelled-icon v-else :message="$t('admin.infoPages.noPage')" :icon="FileOpenIcon" />
+  <n-empty v-else :description="$t('admin.infoPages.noPage')">
+    <template #icon>
+      <n-icon :component="FileOpenIcon" />
+    </template>
+  </n-empty>
 </template>

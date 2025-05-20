@@ -4,7 +4,6 @@ import { DELETE, PATCH, POST } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserListItem from '@/components/user/UserListItem.vue';
 import { useAdminUserSearch } from '@/composables/adminUserSearch';
@@ -17,6 +16,7 @@ import {
   NButton,
   NCollapse,
   NCollapseItem,
+  NEmpty,
   NFlex,
   NIcon,
   NInput,
@@ -257,7 +257,11 @@ onMounted(() => {
 
   <n-spin v-if="loading" class="centered-spinner" :description="$t('common.loading')" />
 
-  <huge-labelled-icon v-else-if="error" :message="$t('errors.unexpected')" :icon="ErrorIcon" />
+  <n-empty v-else-if="error" :description="$t('errors.unexpected')">
+    <template #icon>
+      <n-icon :component="ErrorIcon" />
+    </template>
+  </n-empty>
 
   <template v-else-if="total">
     <div class="text-small translucent">
@@ -291,9 +295,9 @@ onMounted(() => {
     </div>
   </template>
 
-  <huge-labelled-icon
-    v-else
-    :message="$t('admin.users.msgFoundCount', { count: total })"
-    :icon="NoContentIcon"
-  />
+  <n-empty v-else :description="$t('admin.users.msgFoundCount', { count: total })">
+    <template #icon>
+      <n-icon :component="NoContentIcon" />
+    </template>
+  </n-empty>
 </template>
