@@ -189,23 +189,24 @@ onMounted(() => {
       <n-divider />
     </template>
 
-    <n-form-item
-      v-for="(levelLoc, index) in locationSelectModels"
-      :key="`${index}_loc_select`"
-      :label="state.textLevelLabels[index]"
-      class="location-select-item mb-sm"
-      :class="{ disabled: levelLoc.disabled }"
-    >
-      <n-select
-        v-model:value="levelLoc.selected"
-        :options="locationSelectOptions[index]"
-        filterable
-        placeholder="–"
-        :loading="loading"
-        :disabled="loading || levelLoc.disabled || locationSelectOptions[index].length === 0"
-        @update:value="() => updateSelectModels(index)"
-      />
-    </n-form-item>
+    <template v-for="(levelLoc, index) in locationSelectModels" :key="`${index}_loc_select`">
+      <n-form-item
+        v-if="allowLevelChange || index <= lvl"
+        :label="state.textLevelLabels[index]"
+        class="location-select-item mb-sm"
+        :class="{ disabled: levelLoc.disabled }"
+      >
+        <n-select
+          v-model:value="levelLoc.selected"
+          :options="locationSelectOptions[index]"
+          filterable
+          placeholder="–"
+          :loading="loading"
+          :disabled="loading || levelLoc.disabled || locationSelectOptions[index].length === 0"
+          @update:value="() => updateSelectModels(index)"
+        />
+      </n-form-item>
+    </template>
   </n-form>
 </template>
 

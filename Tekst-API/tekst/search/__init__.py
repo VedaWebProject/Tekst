@@ -539,7 +539,7 @@ async def search_advanced(
         str(res.id): res for res in await _get_resources(user=user)
     }
 
-    # construct all the sub-queries
+    # prepare sub-queries
     sub_queries_must = []
     sub_queries_should = []
     sub_queries_must_not = []
@@ -580,6 +580,28 @@ async def search_advanced(
             sub_queries_must_not.append(res_es_query)
         else:
             sub_queries_should.append(res_es_query)
+
+    # constrain location range
+    if settings_advanced.location_range:
+        sub_queries_must.append(
+            {
+                "term": {
+                    "level": {
+                        "value": settings_advanced.location_range.level,
+                    }
+                }
+            }
+        )
+        sub_queries_must.append(
+            {
+                "range": {
+                    "position": {
+                        "gte": settings_advanced.location_range.from_pos,
+                        "lte": settings_advanced.location_range.to_pos,
+                    }
+                }
+            }
+        )
 
     # compose the overall compound query
     es_query = {

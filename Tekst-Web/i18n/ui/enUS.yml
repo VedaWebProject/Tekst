@@ -4,6 +4,8 @@ common:
   enabled: Enabled
   on: 'On'
   off: 'Off'
+  from: From
+  to: To
   status: Status
   title: Title
   subtitle: Subtitle
@@ -253,8 +255,6 @@ browse:
         noContext: There are no contents for this location nor any subordinate locations.
       exportWidget:
         format: Format
-        from: From
-        to: To
         rangeError: The selected location range is invalid!
         fullLocationRange: Select all locations
 
@@ -856,6 +856,13 @@ search:
       must: required
       not: excluded
     wc: Interpret wildcards (* and ?) for this field
+    range:
+      title: Location range
+      unconstrained: Unconstrained
+      msgImpossible: |
+        Constraining the location range for this search is not possible,
+        because the selected target resources don't have a common reference text and/or
+        don't share the same structure level.
   settings:
     general:
       strict: Respect diacritics

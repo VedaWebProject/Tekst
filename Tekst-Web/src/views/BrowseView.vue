@@ -6,12 +6,11 @@ import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import LocationMetadataContentTags from '@/components/content/LocationMetadataContentTags.vue';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
-import { NButton, NFlex, NTag } from 'naive-ui';
+import { NButton, NEmpty, NFlex, NIcon, NTag } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
 const props = defineProps<{
@@ -151,19 +150,23 @@ onMounted(() => {
     </template>
   </div>
 
-  <huge-labelled-icon
-    v-else-if="browse.loading"
-    :message="$t('common.loading')"
-    :icon="HourglassIcon"
-  />
+  <n-empty v-else-if="browse.loading" :description="$t('common.loading')">
+    <template #icon>
+      <n-icon :component="HourglassIcon" />
+    </template>
+  </n-empty>
 
-  <huge-labelled-icon
-    v-else-if="!browse.locationPath.length"
-    :message="$t('browse.textNoLocations')"
-    :icon="ErrorIcon"
-  />
+  <n-empty v-else-if="!browse.locationPath.length" :description="$t('browse.textNoLocations')">
+    <template #icon>
+      <n-icon :component="ErrorIcon" />
+    </template>
+  </n-empty>
 
-  <huge-labelled-icon v-else :message="$t('browse.locationNoData')" :icon="NoContentIcon" />
+  <n-empty v-else :description="$t('browse.locationNoData')">
+    <template #icon>
+      <n-icon :component="NoContentIcon" />
+    </template>
+  </n-empty>
 
   <resource-toggle-drawer v-model:show="browse.showResourceToggleDrawer" />
 </template>

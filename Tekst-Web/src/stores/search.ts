@@ -30,7 +30,13 @@ type QuickSearchSettings = {
   txt?: string[];
 };
 
-type AdvancedSearchSettings = { [key: string]: never };
+type AdvancedSearchSettings = {
+  rng?: {
+    lvl: number;
+    from: number;
+    to: number;
+  };
+};
 
 type QuickSearchRequest = {
   type: 'quick';

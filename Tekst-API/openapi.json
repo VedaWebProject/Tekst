@@ -7455,7 +7455,13 @@
         "title": "AdvancedSearchRequestBody"
       },
       "AdvancedSearchSettings": {
-        "properties": {},
+        "properties": {
+          "rng": {
+            "$ref": "#/components/schemas/LocationRange",
+            "description": "Search range",
+            "optionalNullable": false
+          }
+        },
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
@@ -13493,6 +13499,32 @@
         },
         "type": "object",
         "title": "LocationMetadataSpecialConfig"
+      },
+      "LocationRange": {
+        "properties": {
+          "lvl": {
+            "type": "integer",
+            "title": "Lvl",
+            "description": "Level to search in"
+          },
+          "from": {
+            "type": "integer",
+            "title": "From",
+            "description": "Lower location position boundary of search range"
+          },
+          "to": {
+            "type": "integer",
+            "title": "To",
+            "description": "Upper location position boundary of search range"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lvl",
+          "from",
+          "to"
+        ],
+        "title": "LocationRange"
       },
       "LocationRead": {
         "properties": {

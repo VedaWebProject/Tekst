@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import { useErrors } from '@/composables/errors';
 import { $t } from '@/i18n';
-import { CheckCircleIcon, KeyOffIcon } from '@/icons';
+import { CheckCircleIcon, HourglassIcon, KeyOffIcon } from '@/icons';
+import { NEmpty, NIcon } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -29,9 +29,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <huge-labelled-icon
-    :message="error ? error : $t('account.verify.success')"
-    :loading="!error && !verified"
-    :icon="error ? KeyOffIcon : CheckCircleIcon"
-  />
+  <n-empty v-if="!verified && !error" :description="$t('common.loading')">
+    <template #icon>
+      <n-icon :component="HourglassIcon" />
+    </template>
+  </n-empty>
+  <n-empty v-else-if="error" :description="error">
+    <template #icon>
+      <n-icon :component="KeyOffIcon" />
+    </template>
+  </n-empty>
+  <n-empty v-else :description="$t('account.verify.success')">
+    <template #icon>
+      <n-icon :component="CheckCircleIcon" />
+    </template>
+  </n-empty>
 </template>

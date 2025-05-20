@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { POST } from '@/api';
-import HugeLabelledIcon from '@/components/generic/HugeLabelledIcon.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import SearchQueryDisplay from '@/components/search/SearchQueryDisplay.vue';
 import type { SearchResultProps } from '@/components/search/SearchResult.vue';
@@ -13,7 +12,7 @@ import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/
 import { useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
-import { NButton, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
+import { NButton, NEmpty, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
 import { computed, onBeforeMount, ref } from 'vue';
 
 const state = useStateStore();
@@ -166,12 +165,16 @@ onBeforeMount(() => {
         @navigate="search.browse(index)"
       />
     </n-list>
-    <huge-labelled-icon
-      v-else-if="search.error"
-      :icon="ErrorIcon"
-      :message="$t('errors.unexpected')"
-    />
-    <huge-labelled-icon v-else :icon="NothingFoundIcon" :message="$t('search.nothingFound')" />
+    <n-empty v-else-if="search.error" :description="$t('errors.unexpected')">
+      <template #icon>
+        <n-icon :component="ErrorIcon" />
+      </template>
+    </n-empty>
+    <n-empty v-else :description="$t('search.nothingFound')">
+      <template #icon>
+        <n-icon :component="NothingFoundIcon" />
+      </template>
+    </n-empty>
     <reuse-template />
   </div>
 

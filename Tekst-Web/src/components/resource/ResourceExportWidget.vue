@@ -55,10 +55,10 @@ const toLocation = computed<LocationRead | undefined>(
 
 const fromLocationTitle = computed(() => {
   if (!fromLocationPath.value.length) {
-    return $t('browse.contents.widgets.exportWidget.from') + ' ...';
+    return $t('common.from') + ' ...';
   } else {
     return (
-      $t('browse.contents.widgets.exportWidget.from') +
+      $t('common.from') +
       ': ' +
       getFullLocationLabel(fromLocationPath.value, state.textLevelLabels, state.text)
     );
@@ -67,10 +67,10 @@ const fromLocationTitle = computed(() => {
 
 const toLocationTitle = computed(() => {
   if (!toLocationPath.value.length) {
-    return $t('browse.contents.widgets.exportWidget.to') + ' ...';
+    return $t('common.to') + ' ...';
   } else {
     return (
-      $t('browse.contents.widgets.exportWidget.to') +
+      $t('common.to') +
       ': ' +
       getFullLocationLabel(toLocationPath.value, state.textLevelLabels, state.text)
     );

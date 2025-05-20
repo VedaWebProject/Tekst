@@ -1289,7 +1289,10 @@ export interface components {
       adv?: components['schemas']['AdvancedSearchSettings'];
     };
     /** AdvancedSearchSettings */
-    AdvancedSearchSettings: Record<string, never>;
+    AdvancedSearchSettings: {
+      /** @description Search range */
+      rng?: components['schemas']['LocationRange'];
+    };
     /** AnnotationsConfig */
     AnnotationsConfig: {
       /**
@@ -4139,6 +4142,24 @@ export interface components {
        *       "itemProps": []
        *     } */
       entriesIntegration: components['schemas']['ItemIntegrationConfig'];
+    };
+    /** LocationRange */
+    LocationRange: {
+      /**
+       * Lvl
+       * @description Level to search in
+       */
+      lvl: number;
+      /**
+       * From
+       * @description Lower location position boundary of search range
+       */
+      from: number;
+      /**
+       * To
+       * @description Upper location position boundary of search range
+       */
+      to: number;
     };
     /** LocationRead */
     LocationRead: {
