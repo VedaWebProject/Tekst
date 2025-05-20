@@ -282,7 +282,7 @@ whenever(ctrlEnter, () => {
       <template #default="{ value: query, index: queryIndex }">
         <div
           class="content-block"
-          :style="{ borderLeft: `8px solid ${resourceColors[query.cmn.res].colors.base}` }"
+          :style="{ borderLeft: `6px solid ${resourceColors[query.cmn.res].colors.base}` }"
         >
           <n-flex align="center" :wrap="false" class="mb-lg">
             <n-flex align="flex-start" style="flex: 2">
