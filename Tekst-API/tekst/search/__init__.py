@@ -543,6 +543,7 @@ async def search_advanced(
     sub_queries_must = []
     sub_queries_should = []
     sub_queries_must_not = []
+    sub_queries_filter = []
     highlights_generators = {}
 
     # for each query block in the advanced search request...
@@ -583,7 +584,7 @@ async def search_advanced(
 
     # constrain location range
     if settings_advanced.location_range:
-        sub_queries_must.append(
+        sub_queries_filter.append(
             {
                 "term": {
                     "level": {
@@ -592,7 +593,7 @@ async def search_advanced(
                 }
             }
         )
-        sub_queries_must.append(
+        sub_queries_filter.append(
             {
                 "range": {
                     "position": {
@@ -609,12 +610,22 @@ async def search_advanced(
             **({"must": sub_queries_must} if sub_queries_must else {}),
             **({"should": sub_queries_should} if sub_queries_should else {}),
             **({"must_not": sub_queries_must_not} if sub_queries_must_not else {}),
+            **({"filter": sub_queries_filter} if sub_queries_filter else {}),
         )
     }
 
     # if the search request didn't resolve to any valid ES queries, match nothing
     if not es_query.get("bool"):  # pragma: no cover
         es_query = {"match_none": {}}
+
+    # Set minimum_should_match to 1 for root bool query if it has a filter clause,
+    # as Elasticsearch's default is 0 if there are "filter" or "must" clauses.
+    # But we're using the filter clause to constrain location range, so we still need
+    # at least one "should" match if there is no "must". It's complicated, I know.
+    # See: https://www.elastic.co/docs/reference/query-languages
+    #      /query-dsl/query-dsl-bool-query#bool-min-should-match
+    if es_query["bool"].get("filter") and not es_query["bool"].get("must"):
+        es_query["bool"]["minimum_should_match"] = 1
 
     log.debug(f"Running ES query: {es_query}")
 
