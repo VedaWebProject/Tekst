@@ -792,6 +792,36 @@ async def test_advanced_rich_text(
 
 
 @pytest.mark.anyio
+async def test_advanced_location_range(
+    test_client: AsyncClient,
+    use_indices,
+):
+    # text, simple term, should/optional, with location range
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c043c0906e79b9062e22f4", "occ": "should"},
+                        "rts": {"type": "plainText", "text": "b*"},
+                    }
+                ],
+                "adv": {
+                    "rng": {
+                        "lvl": 1,
+                        "from": 0,
+                        "to": 1,
+                    }
+                },
+            },
+        ),
+        expected_hits=1,
+    )
+
+
+@pytest.mark.anyio
 async def test_export_search_results(
     test_client: AsyncClient,
     use_indices,
