@@ -139,7 +139,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
   padding: var(--gap-sm) var(--gap-md);
   cursor: pointer;
   border-radius: var(--border-radius);
-  border-top: v-bind('`2px solid ${textColorTranslucent}`');
+  border-left: v-bind('`6px solid ${textColor}`');
   transition: background-color 0.2s ease;
 }
 
