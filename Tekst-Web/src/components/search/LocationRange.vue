@@ -38,15 +38,17 @@ function handleExpandedChange(names: string[]) {
     <n-collapse :expanded-names="rangeExpandedNames" @update:expanded-names="handleExpandedChange">
       <n-collapse-item name="range">
         <template #header>
-          {{ $t('search.advancedSearch.range.title') }}:&nbsp;
-          <n-flex v-if="enabled && !!rangeExpandedNames.length" align="center" size="small">
-            <n-tag>{{ fromLocationFullLabel }}</n-tag>
-            <n-icon :component="ArrowForwardIcon" />
-            <n-tag>{{ toLocationFullLabel }}</n-tag>
+          <n-flex align="center" size="small">
+            {{ $t('search.advancedSearch.range.title') }}:&nbsp;
+            <n-flex v-if="enabled && !!rangeExpandedNames.length" align="center" size="small">
+              <n-tag size="small">{{ fromLocationFullLabel }}</n-tag>
+              <n-icon :component="ArrowForwardIcon" />
+              <n-tag size="small">{{ toLocationFullLabel }}</n-tag>
+            </n-flex>
+            <template v-else>
+              <n-tag size="small">{{ $t('search.advancedSearch.range.unconstrained') }}</n-tag>
+            </template>
           </n-flex>
-          <template v-else>
-            <span class="i">{{ $t('search.advancedSearch.range.unconstrained') }}</span>
-          </template>
         </template>
         <n-flex v-if="enabled" size="large" align="stretch">
           <div style="flex: 2 320px">
