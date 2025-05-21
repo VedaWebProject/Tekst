@@ -157,13 +157,13 @@ tasks:
     search_export: Suchergebnisse exportieren
     broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
-    resource_precompute_hook: Generierung vorberechneter Ressourcen-Daten
+    precompute_data: Generierung vorberechneter Daten
     structure_update: Textstruktur aktualisieren
     platform_cleanup: Bereinigung interner Plattformdaten
   results:
     generic_duration_msg: Dies hat {took} Sekunden gedauert.
     indices_create_update: '@:tasks.results.generic_duration_msg'
-    resource_precompute_hook: '@:tasks.results.generic_duration_msg'
+    precompute_data: '@:tasks.results.generic_duration_msg'
     resource_import: '{created} Inhalte erzeugt, {updated} Inhalte aktualisiert.'
     platform_cleanup: '@:tasks.results.generic_duration_msg'
 
@@ -526,6 +526,7 @@ resources:
         lb: Dieses Token schließt eine Zeile ab
         annotations: Annotationen
         annotationKey: Annotation
+        commaSepHint: comma-separated values
       searchFields:
         any: '[beliebiger Wert]'
       copyTokenAction: Token kopieren

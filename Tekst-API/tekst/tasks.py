@@ -32,7 +32,7 @@ class TaskType(Enum):
     SEARCH_EXPORT = "search_export", True, True
     BROADCAST_USER_NTFC = "broadcast_user_ntfc", False, False
     BROADCAST_ADMIN_NTFC = "broadcast_admin_ntfc", False, False
-    RESOURCE_PRECOMPUTE_HOOK = "resource_precompute_hook", True, False
+    PRECOMPUTE_DATA = "precompute_data", True, False
     STRUCTURE_UPDATE = "structure_update", True, False
     PLATFORM_CLEANUP = "platform_cleanup", True, False
 

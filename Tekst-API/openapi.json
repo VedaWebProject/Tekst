@@ -3324,8 +3324,8 @@
         "tags": [
           "resources"
         ],
-        "summary": "Trigger resource precomputation",
-        "operationId": "triggerResourcePrecomputation",
+        "summary": "Trigger cache precomputation",
+        "operationId": "triggerCachePrecomputation",
         "responses": {
           "202": {
             "description": "Successful Response",
@@ -16980,7 +16980,7 @@
           "search_export",
           "broadcast_user_ntfc",
           "broadcast_admin_ntfc",
-          "resource_precompute_hook",
+          "precompute_data",
           "structure_update",
           "platform_cleanup"
         ],

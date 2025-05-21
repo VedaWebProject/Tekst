@@ -588,8 +588,8 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Trigger resource precomputation */
-    get: operations['triggerResourcePrecomputation'];
+    /** Trigger cache precomputation */
+    get: operations['triggerCachePrecomputation'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5798,7 +5798,7 @@ export interface components {
       | 'search_export'
       | 'broadcast_user_ntfc'
       | 'broadcast_admin_ntfc'
-      | 'resource_precompute_hook'
+      | 'precompute_data'
       | 'structure_update'
       | 'platform_cleanup';
     /** TekstErrorModel */
@@ -8721,7 +8721,7 @@ export interface operations {
       };
     };
   };
-  triggerResourcePrecomputation: {
+  triggerCachePrecomputation: {
     parameters: {
       query?: never;
       header?: never;

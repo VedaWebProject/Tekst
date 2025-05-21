@@ -37,6 +37,11 @@ export const useResourcesStore = defineStore('resources', () => {
 
   const loading = ref(false);
 
+  function clearPrecomputedData() {
+    coverage.value = {};
+    aggregations.value = {};
+  }
+
   function processResources(resources: AnyResourceRead[]) {
     return (
       resources
@@ -199,5 +204,6 @@ export const useResourcesStore = defineStore('resources', () => {
     getCoverage,
     resetCoverage,
     setResourcesActiveState,
+    clearPrecomputedData,
   };
 });

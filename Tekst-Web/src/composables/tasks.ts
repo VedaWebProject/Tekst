@@ -1,6 +1,7 @@
 import { GET, downloadData, type TaskRead } from '@/api';
 import { useMessages } from '@/composables/messages';
 import { $t, $te } from '@/i18n';
+import { useResourcesStore } from '@/stores';
 import { useTimeoutPoll } from '@vueuse/core';
 import { computed, ref } from 'vue';
 
@@ -67,6 +68,12 @@ const { resume, pause } = useTimeoutPoll(
               message.info($t('common.downloadSaved', { filename }));
               downloadData(data, filename);
             }
+          }
+          // check if task is of type 'precompute_data',
+          // if so, clear local precomputed cache
+          if (task.type === 'precompute_data' && task.status === 'done') {
+            const resources = useResourcesStore();
+            resources.clearPrecomputedData();
           }
         }
       });
