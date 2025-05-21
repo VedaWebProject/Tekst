@@ -1,7 +1,6 @@
-from datetime import datetime
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import AwareDatetime, Field
 
 from tekst.models.common import (
     DocumentBase,
@@ -37,7 +36,7 @@ class UserMessage(ModelBase, ModelFactoryMixin):
         ),
     ]
     created_at: Annotated[
-        datetime,
+        AwareDatetime,
         Field(
             description="Time when the message was sent",
         ),

@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.18.0a0"
+    "version": "0.18.1a0"
   },
   "servers": [
     {
@@ -8297,7 +8297,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -9136,7 +9136,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -10858,7 +10858,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -11893,7 +11893,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -13271,7 +13271,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -14487,7 +14487,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -16458,7 +16458,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,
@@ -17671,7 +17671,7 @@
             "format": "date-time",
             "title": "Contentschangedat",
             "description": "The last time contents of this resource changed",
-            "default": "1970-01-02T00:00:00"
+            "default": "1970-01-01T00:00:00Z"
           }
         },
         "additionalProperties": true,

@@ -11,7 +11,7 @@ from beanie import PydanticObjectId
 from beanie.operators import LT, NE, Eq, In
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
-from pydantic import Field
+from pydantic import AwareDatetime, Field
 
 from tekst import errors
 from tekst.config import TekstConfig, get_config
@@ -98,13 +98,13 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ]
     start_time: Annotated[
-        datetime,
+        AwareDatetime,
         Field(
             description="Time when the task was started",
         ),
     ]
     end_time: Annotated[
-        datetime | None,
+        AwareDatetime | None,
         Field(
             description="Time when the task has ended",
         ),

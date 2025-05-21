@@ -1,7 +1,6 @@
-from datetime import datetime
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import AwareDatetime, Field
 
 from tekst.models.common import (
     DocumentBase,
@@ -50,7 +49,7 @@ class Correction(ModelBase, ModelFactoryMixin):
         ExcludeFromModelVariants(create=True),
     ]
     date: Annotated[
-        datetime,
+        AwareDatetime,
         Field(
             description="Date when the correction was created",
         ),

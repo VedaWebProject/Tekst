@@ -1,6 +1,8 @@
+from datetime import UTC
 from typing import Any
 
 from beanie import init_beanie
+from bson.codec_options import CodecOptions
 from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
 from motor.motor_asyncio import AsyncIOMotorDatabase as Database
 
@@ -24,6 +26,7 @@ from tekst.resources import resource_types_mgr
 from tekst.tasks import TaskDocument
 
 
+_BSON_CODEC_OPTIONS = CodecOptions(tz_aware=True, tzinfo=UTC)
 _db_client: DatabaseClient = None
 
 
@@ -52,7 +55,10 @@ async def get_db_status() -> dict[str, Any] | None:
 def get_db(
     db_client: Database = get_db_client(), cfg: TekstConfig = get_config()
 ) -> Database:
-    return db_client[cfg.db.name]
+    return db_client.get_database(
+        cfg.db.name,
+        codec_options=_BSON_CODEC_OPTIONS,
+    )
 
 
 async def init_odm(db: Database = get_db()) -> None:

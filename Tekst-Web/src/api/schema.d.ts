@@ -1737,7 +1737,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -2119,7 +2119,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -2931,7 +2931,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -3419,7 +3419,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -4060,7 +4060,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -4638,7 +4638,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -5589,7 +5589,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {
@@ -6160,7 +6160,7 @@ export interface components {
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
-       * @default 1970-01-02T00:00:00
+       * @default 1970-01-01T00:00:00Z
        */
       contentsChangedAt: string;
     } & {

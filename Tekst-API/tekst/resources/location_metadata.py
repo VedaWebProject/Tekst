@@ -305,7 +305,7 @@ class LocationMetadataResource(ResourceBase):
             PrecomputedDataDocument.precomputed_type == "aggregations",
         )
         if precomp_doc:
-            if precomp_doc.created_at > self.contents_changed_at:
+            if precomp_doc.created_at >= self.contents_changed_at:
                 log.debug(
                     f"Aggregations for resource {str(self.id)} up-to-date. Skipping."
                 )

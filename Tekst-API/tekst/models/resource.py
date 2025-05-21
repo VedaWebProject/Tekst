@@ -5,10 +5,7 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or
-from pydantic import (
-    Field,
-    field_validator,
-)
+from pydantic import AwareDatetime, Field, field_validator
 from typing_extensions import TypedDict
 
 from tekst.i18n import TranslationBase, Translations
@@ -232,7 +229,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     config: ResourceConfigBase = ResourceConfigBase()
 
     contents_changed_at: Annotated[
-        datetime,
+        AwareDatetime,
         Field(
             description="The last time contents of this resource changed",
         ),
@@ -240,7 +237,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             update=True,
             create=True,
         ),
-    ] = datetime.utcfromtimestamp(86400)
+    ] = datetime.fromtimestamp(0, UTC)
 
     @field_validator("subtitle", mode="after")
     @classmethod

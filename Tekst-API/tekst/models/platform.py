@@ -1,8 +1,7 @@
-from datetime import datetime
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import Field, field_validator
+from pydantic import AwareDatetime, Field, field_validator
 
 from tekst.config import TekstConfig, get_config
 from tekst.i18n import LocaleKey, TranslationBase, Translations
@@ -220,7 +219,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = []
 
     indices_updated_at: Annotated[
-        datetime | None,
+        AwareDatetime | None,
         Field(
             description="Time when indices were created",
         ),
