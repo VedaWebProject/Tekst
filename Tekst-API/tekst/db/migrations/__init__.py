@@ -19,7 +19,7 @@ def _sort_migrations(migrations: MigrationsDict) -> MigrationsDict:
 def _all_migrations() -> MigrationsDict:
     all_migrations = dict()
     for mig_mod in iter_modules(__path__):
-        if not mig_mod.name.startswith("migration_"):
+        if not mig_mod.name.startswith("migration_"):  # pragma: no cover
             continue
         mig_name = mig_mod.name.replace("migration_", "").replace("_", ".")
         mig_fn = import_module(f"{__name__}.{mig_mod.name}").migration
