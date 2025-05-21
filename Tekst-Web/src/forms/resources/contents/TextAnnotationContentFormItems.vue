@@ -13,7 +13,7 @@ import { $t } from '@/i18n';
 import { KeyboardReturnIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NSelect, type SelectOption } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type SelectOption } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -172,6 +172,7 @@ onMounted(async () => {
             >
               <template #default="{ value: annotationItem, index: annotationItemIndex }">
                 <n-flex align="flex-start" :wrap="false" style="flex: 2">
+                  <!-- KEY -->
                   <n-form-item
                     style="flex: 2 100px"
                     :show-label="false"
@@ -191,6 +192,7 @@ onMounted(async () => {
                       @update:value="() => (annotationItem.value = '')"
                     />
                   </n-form-item>
+                  <!-- VALUES -->
                   <n-form-item
                     style="flex: 2 100px"
                     :show-label="false"
@@ -199,6 +201,7 @@ onMounted(async () => {
                     ignore-path-change
                   >
                     <n-select
+                      v-if="!!annoOptions[tokenItemIndex][annotationItemIndex].valuesOptions.length"
                       v-model:value="annotationItem.value"
                       multiple
                       filterable
@@ -209,6 +212,17 @@ onMounted(async () => {
                       :placeholder="$t('common.value')"
                       :style="annoValueStyle"
                       :render-label="renderValueLabel"
+                    />
+                    <n-input
+                      v-else
+                      :ref="`cmSepInputRef_${tokenItemIndex}_${annotationItemIndex}`"
+                      :default-value="(annotationItem.value || []).join(', ')"
+                      :disabled="!annotationItem.key"
+                      :placeholder="$t('resources.types.textAnnotation.contentFields.commaSepHint')"
+                      :title="$t('resources.types.textAnnotation.contentFields.commaSepHint')"
+                      @change="
+                        (value) => (annotationItem.value = value.split(',').map((v) => v.trim()))
+                      "
                     />
                   </n-form-item>
                 </n-flex>
