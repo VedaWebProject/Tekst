@@ -86,21 +86,22 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
-  <n-flex v-if="showLocAliases || !!embeddedMetadata.length" align="center" class="mb-lg">
-    <!-- EMBED LOCATION METADATA AS TAGS -->
+  <!-- LOCATION ALIASES -->
+  <n-flex v-if="showLocAliases" align="center" class="my-lg">
+    <n-tag
+      v-for="alias in browse.locationPathHead?.aliases"
+      :key="alias"
+      size="small"
+      class="loc-alias-tag"
+      :title="$t('browse.location.aliasesTip')"
+    >
+      {{ alias }}
+    </n-tag>
+  </n-flex>
+
+  <!-- EMBED LOCATION METADATA AS TAGS -->
+  <n-flex v-if="!!embeddedMetadata.length" align="center" class="my-lg">
     <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
-    <!-- LOCATION ALIASES -->
-    <template v-if="showLocAliases">
-      <n-tag
-        v-for="alias in browse.locationPathHead?.aliases"
-        :key="alias"
-        size="small"
-        class="loc-alias-tag"
-        :title="$t('browse.location.aliasesTip')"
-      >
-        {{ alias }}
-      </n-tag>
-    </template>
   </n-flex>
 
   <browse-toolbar v-if="browse.locationPath.length" />
