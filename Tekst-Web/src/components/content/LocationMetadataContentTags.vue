@@ -56,7 +56,7 @@ const contentsProcessed = computed(() => {
                 pickTranslation(
                   c.ei.itemProps.find((props) => props.key === i.key)?.translations,
                   state.locale
-                ) || i.key;
+                ) || null;
               const itemValue = i.value.join(', ');
               return {
                 key: itemKey,
@@ -75,9 +75,13 @@ const contentsProcessed = computed(() => {
 <template>
   <template v-for="content in contentsProcessed" :key="content.id">
     <template v-for="group in content.groups" :key="group.group">
-      <resource-info-widget v-for="item in group.items" :key="item.key" :resource="content.res">
+      <resource-info-widget
+        v-for="(item, index) in group.items"
+        :key="`${item.key || 'no_key'}_${index}`"
+        :resource="content.res"
+      >
         <n-tag size="small" :color="tagColor" :title="item.title" class="loc-meta-tag">
-          <span v-if="!state.smallScreen">{{ item.key }}: </span>
+          <span v-if="item.key && !state.smallScreen">{{ item.key }}: </span>
           <span :style="{ 'font-family': content.font }">{{ item.value }}</span>
         </n-tag>
       </resource-info-widget>
