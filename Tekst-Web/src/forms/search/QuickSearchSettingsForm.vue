@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import { InfoIcon } from '@/icons';
 import { useSearchStore, useStateStore } from '@/stores';
-import { NButton, NForm, NFormItem, NIcon, NSelect } from 'naive-ui';
+import { NForm, NFormItem, NSelect } from 'naive-ui';
 import { computed } from 'vue';
-
-const emit = defineEmits(['targetResourcesClick']);
 
 const search = useSearchStore();
 const state = useStateStore();
@@ -64,16 +61,7 @@ const textOptions = computed(() => state.pf?.texts.map((t) => ({ label: t.title,
         :placeholder="$t('search.settings.quick.textsPlaceholder')"
         clearable
         multiple
-      >
-        <template #action>
-          <n-button text size="small" :focusable="false" @click="emit('targetResourcesClick')">
-            <template #icon>
-              <n-icon :component="InfoIcon" />
-            </template>
-            {{ $t('search.settings.quick.targetResources') }}
-          </n-button>
-        </template>
-      </n-select>
+      />
     </n-form-item>
   </n-form>
 </template>

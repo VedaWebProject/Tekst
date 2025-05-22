@@ -897,7 +897,7 @@ search:
       inheritedContents: Beziehe Inhalte übergeordneter Belegstelle ein
       allLevels: Finde Belegstellen aller Ebenen
       textsPlaceholder: Alle Texte
-      targetResources: Einbezogene Ressourcen auflisten
+      targetResources: Einbezogene Ressourcen
   results:
     heading: Suchergebnisse
     searching: Suche

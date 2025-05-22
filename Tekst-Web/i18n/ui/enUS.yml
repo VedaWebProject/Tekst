@@ -873,7 +873,7 @@ search:
       inheritedContents: Include contents from higher-level locations
       allLevels: Find locations from all levels
       textsPlaceholder: All texts
-      targetResources: List included resources
+      targetResources: Included resources
   results:
     heading: Search Results
     searching: Searching

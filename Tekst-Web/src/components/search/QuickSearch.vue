@@ -7,7 +7,7 @@ import OskInput from '@/components/OskInput.vue';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import QuickSearchSettingsForm from '@/forms/search/QuickSearchSettingsForm.vue';
 import { $t } from '@/i18n';
-import { ResourceIcon, SearchIcon, SettingsIcon } from '@/icons';
+import { InfoIcon, ResourceIcon, SearchIcon, SettingsIcon } from '@/icons';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { NButton, NIcon, NPopselect, type InputInst, type SelectOption } from 'naive-ui';
 import { computed, ref } from 'vue';
@@ -207,9 +207,17 @@ function handleSettingsSubmit() {
     :icon="SettingsIcon"
   >
     <general-search-settings-form />
-    <quick-search-settings-form @target-resources-click="showTargetResourcesModal = true" />
+    <quick-search-settings-form />
 
     <button-shelf>
+      <template #start>
+        <n-button text size="small" :focusable="false" @click="showTargetResourcesModal = true">
+          <template #icon>
+            <n-icon :component="InfoIcon" />
+          </template>
+          {{ $t('search.settings.quick.targetResources') }}
+        </n-button>
+      </template>
       <n-button type="primary" @click="handleSettingsSubmit">
         {{ $t('common.ok') }}
       </n-button>
@@ -222,13 +230,13 @@ function handleSettingsSubmit() {
     :icon="ResourceIcon"
     width="wide"
   >
-    <template v-for="(txt, index) in searchableResources" :key="`${txt.title}_${index}`">
-      <h3 :style="{ color: txt.color }">{{ txt.title }}</h3>
+    <div v-for="(txt, index) in searchableResources" :key="`${txt.title}_${index}`" class="mb-sm">
+      <b :style="{ color: txt.color }" class="b">{{ txt.title }}</b>
       <ul class="m-0">
         <li v-for="res in txt.resources" :key="res.id">
           {{ resources.resourceTitles[res.id] }}
         </li>
       </ul>
-    </template>
+    </div>
   </generic-modal>
 </template>
