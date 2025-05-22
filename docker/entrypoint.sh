@@ -11,7 +11,7 @@ python3 -m tekst bootstrap
 test $? -ne 0 && exit 1
 
 # remove (all) trailing slashes from TEKST_WEB_PATH
-TEKST_WEB_PATH=$(echo "$VALUE" | sed 's|/*$||')
+TEKST_WEB_PATH=$(echo "$TEKST_WEB_PATH" | sed 's|/*$||')
 # remove existing base tag from client's index.html, if any
 sed -i 's|<base href=".*">||g' /var/www/html/index.html
 # inject base tag with base URL into client's index.html
