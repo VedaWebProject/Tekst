@@ -98,7 +98,7 @@ VOLUME /var/www/tekst/static/
 EXPOSE 8080
 USER tekst
 
-LABEL org.opencontainers.image.description="A collaborative research platform for resources on natural language texts"
+LABEL org.opencontainers.image.description DESCRIPTION
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["gunicorn", "tekst.app:app", "--config", "/etc/gunicorn/gunicorn_conf.py"]
