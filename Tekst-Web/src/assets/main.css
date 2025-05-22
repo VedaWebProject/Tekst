@@ -169,6 +169,7 @@ pre > code {
 table {
   border-spacing: 4px;
   border-collapse: separate;
+  word-break: normal;
 }
 
 table th,
