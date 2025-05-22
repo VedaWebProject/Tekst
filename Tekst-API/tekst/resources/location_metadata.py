@@ -6,7 +6,6 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BeforeValidator, Field
 
-from tekst.i18n import TranslationBase
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase, ContentBaseDocument
@@ -252,25 +251,21 @@ class LocationMetadataModGeneralConfig(GeneralResourceConfig):
 
 
 type LocationMetadataEntryKey = Annotated[
-    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of the entry")
+    ConStr(
+        max_length=32,
+        cleanup="oneline",
+    ),
+    Field(description="Key of the entry"),
 ]
 
 
 type LocationMetadataEntryValue = Annotated[
-    ConStr(max_length=256, cleanup="oneline"), Field(description="Value of an entry")
+    ConStr(
+        max_length=256,
+        cleanup="oneline",
+    ),
+    Field(description="Value of an entry"),
 ]
-
-
-class MetadataKeyTranslation(TranslationBase):
-    translation: Annotated[
-        ConStr(
-            max_length=64,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Translation of a metadata entry key",
-        ),
-    ]
 
 
 class LocationMetadataSpecialConfig(ModelBase):
