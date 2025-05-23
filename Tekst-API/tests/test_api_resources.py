@@ -1007,7 +1007,12 @@ async def test_import_resource_contents(
     resource_id = "67c043c0906e79b9062e22f4"
     import_sample = {
         "contents": [
-            {"locationId": "67c040a0906e79b9062e22e8", "text": "FOO"},
+            {
+                "locationId": "67c040a0906e79b9062e22e8",
+                "text": "FOO",
+                "authors_comment": "foo\n\nbar\n\nbaz\n\nqux",
+                "editors_comment": "quux\n\nquuux\n\nquuuxx\n\nquuuxxx",
+            },
             {"locationId": "67c040bb906e79b9062e22e9", "text": "BAR"},
             {"locationId": additional_location_id, "text": "QUUX"},
         ],
