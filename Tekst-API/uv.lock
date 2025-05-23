@@ -1249,7 +1249,7 @@ wheels = [
 
 [[package]]
 name = "tekst"
-version = "0.18.5a0"
+version = "0.18.6a0"
 source = { editable = "." }
 dependencies = [
     { name = "beanie" },
