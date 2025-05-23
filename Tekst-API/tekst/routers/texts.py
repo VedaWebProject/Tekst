@@ -246,6 +246,7 @@ async def import_text_structure(
                 level=level,
                 position=i,
                 label=locations[i]["label"],
+                aliases=locations[i]["aliases"],
             )
             for i in range(len(locations))
         ]
@@ -265,7 +266,9 @@ async def import_text_structure(
         locations = children
 
 
-async def _update_text_structure_task(location_updates: list[dict]) -> None:
+async def _update_text_structure_task(
+    location_updates: list[dict],
+) -> None:
     updated_docs = []
     last_text_id = None
     all_locs_same_text = True

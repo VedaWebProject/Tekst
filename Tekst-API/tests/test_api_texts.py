@@ -1,6 +1,8 @@
 import pytest
 
+from beanie import PydanticObjectId
 from httpx import AsyncClient
+from tekst.models.location import LocationDocument
 
 
 @pytest.mark.anyio
@@ -430,6 +432,13 @@ async def test_import_text_structure(
             files={"file": (f.name, f, "application/json")},
         )
         assert_status(409, resp)
+
+    # check if aliases have been imported
+    sample_loc = await LocationDocument.find_one(
+        LocationDocument.text_id == PydanticObjectId(text_id)
+    )
+    assert sample_loc
+    assert len(sample_loc.aliases) > 0
 
 
 @pytest.mark.anyio

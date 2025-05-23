@@ -4,52 +4,67 @@
       "label": "1",
       "locations": [
         {
-          "label": "1"
+          "label": "1",
+          "aliases": ["1.1", "1,1"]
         },
         {
-          "label": "2"
+          "label": "2",
+          "aliases": ["1.2", "1,2"]
         },
         {
-          "label": "3"
+          "label": "3",
+          "aliases": ["1.3", "1,3"]
         },
         {
-          "label": "4"
+          "label": "4",
+          "aliases": ["1.4", "1,4"]
         }
-      ]
+      ],
+      "aliases": ["1"]
     },
     {
       "label": "2",
       "locations": [
         {
-          "label": "1"
+          "label": "1",
+          "aliases": ["2.1", "2,1"]
         },
         {
-          "label": "2"
+          "label": "2",
+          "aliases": ["2.2", "2,2"]
         },
         {
-          "label": "3"
+          "label": "3",
+          "aliases": ["2.3", "2,3"]
         },
         {
-          "label": "4"
+          "label": "4",
+          "aliases": ["2.4", "2,4"]
         }
-      ]
+      ],
+      "aliases": ["2"]
     },
     {
       "label": "3",
       "locations": [
         {
-          "label": "1"
+          "label": "1",
+          "aliases": ["3.1", "3,1"]
         },
         {
-          "label": "2"
+          "label": "2",
+          "aliases": ["3.2", "3,2"]
         },
         {
-          "label": "3"
+          "label": "3",
+          "aliases": ["3.3", "3,3"]
         },
         {
-          "label": "4"
+          "label": "4",
+          "aliases": ["3.4", "3,4"]
         }
-      ]
+      ],
+      "aliases": ["3"]
     }
   ]
 }
