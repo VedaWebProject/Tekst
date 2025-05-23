@@ -726,9 +726,9 @@ texts:
     errorLocationLeftLevel: Text locations can only be moved on their original structure level!
     checkShowWarnings: Show warnings before performing destructive operations
     editOrAdd:
-      headingEdit: Edit @:models.location.modelLabel
-      headingAdd: Add @:models.location.modelLabel
-      msgSuccess: '@:models.location.modelLabel "{label}" saved'
+      headingEdit: Edit @:common.location
+      headingAdd: Add @:common.location
+      msgSuccess: '@:common.location "{label}" saved'
     importSuccess: New text structure uploaded and processed successfully
     updateInfo: Modified labels and aliases for locations are processed in the background. @:common.takeAWhile
 

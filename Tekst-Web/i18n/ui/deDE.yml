@@ -750,9 +750,9 @@ texts:
     errorLocationLeftLevel: Belegstellen können nur innerhalb der gleichen Ebene verschoben werden!
     checkShowWarnings: Zeige Warnungen, bevor destruktive Operationen durchgeführt werden
     editOrAdd:
-      headingEdit: '@:models.location.modelLabel bearbeiten'
-      headingAdd: '@:models.location.modelLabel hinzufügen'
-      msgSuccess: '@:models.location.modelLabel "{label}" gespeichert'
+      headingEdit: '@:common.location bearbeiten'
+      headingAdd: '@:common.location hinzufügen'
+      msgSuccess: '@:common.location "{label}" gespeichert'
     importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
     updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:common.takeAWhile
 
