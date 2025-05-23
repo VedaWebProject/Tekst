@@ -40,14 +40,17 @@ const loading = ref(false);
 
 function handleTitleChange(title: string) {
   const tokens = title
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/[^a-z0-9 ]+/g, '')
+    .replace(/\s+/g, ' ')
     .trim()
     .split(' ');
   if (tokens.length > 1) {
     model.value.slug = tokens.map((t) => t[0]).join('');
-  } else {
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '');
+  } else if (tokens.length === 1) {
+    const slug = tokens[0];
     model.value.slug = slug.substring(0, Math.min(15, slug.length));
   }
 }
