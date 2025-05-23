@@ -18,9 +18,7 @@ export function useMessages() {
         {
           text,
           details: details
-            ? typeof details == 'string'
-              ? details
-              : JSON.stringify(details, null, 2)
+            ? JSON.stringify(details, null, 2)
             : undefined,
           type,
           seconds,

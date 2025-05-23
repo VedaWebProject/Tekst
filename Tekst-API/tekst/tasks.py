@@ -124,7 +124,13 @@ class Task(ModelBase, ModelFactoryMixin):
     error: Annotated[
         ConStrOrNone(),
         Field(
-            description="Error message if the task failed",
+            description="Error ID if the task failed",
+        ),
+    ] = None
+    error_details: Annotated[
+        ConStrOrNone(),
+        Field(
+            description="Error details if the task failed",
         ),
     ] = None
 
@@ -173,6 +179,7 @@ async def _run_task(
         task_doc.status = "failed"
         try:
             task_doc.error = e.detail.detail.key
+            task_doc.error_details = str(e.detail.detail.values)
         except Exception:  # pragma: no cover
             task_doc.error = str(e)
         # write to error log if the exception is not an HTTPException

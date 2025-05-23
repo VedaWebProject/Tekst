@@ -16957,7 +16957,20 @@
               }
             ],
             "title": "Error",
-            "description": "Error message if the task failed"
+            "description": "Error ID if the task failed"
+          },
+          "errorDetails": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ],
+            "title": "Errordetails",
+            "description": "Error details if the task failed"
           }
         },
         "additionalProperties": true,

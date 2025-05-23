@@ -5780,9 +5780,14 @@ export interface components {
       result?: Record<string, never> | null;
       /**
        * Error
-       * @description Error message if the task failed
+       * @description Error ID if the task failed
        */
       error?: null | string;
+      /**
+       * Errordetails
+       * @description Error details if the task failed
+       */
+      errorDetails?: null | string;
     } & {
       [key: string]: unknown;
     };

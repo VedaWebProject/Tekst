@@ -919,7 +919,10 @@ async def _import_resource_contents_task(
                     contents.append((content_doc, False))
             except Exception as e:
                 print(e)
-                raise errors.E_422_UPLOAD_INVALID_DATA
+                raise errors.update_values(
+                    exc=errors.E_422_UPLOAD_INVALID_DATA,
+                    values={"errors": str(e)},
+                )
 
         # write import data
         while contents:
