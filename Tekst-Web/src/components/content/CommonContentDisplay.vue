@@ -6,7 +6,7 @@ defineProps<{
   authorsComment?: string | null;
   editorsComment?: string | null;
   showComments?: boolean;
-  contentFont?: string;
+  font?: string;
 }>();
 </script>
 
@@ -22,7 +22,7 @@ defineProps<{
       <template #icon>
         <n-icon :component="CommentIcon" :size="16" />
       </template>
-      <div class="pre-wrap text-small" :style="{ fontFamily: contentFont }">
+      <div class="pre-wrap text-small" :style="{ fontFamily: font }">
         {{ authorsComment }}
       </div>
     </n-alert>
@@ -35,7 +35,7 @@ defineProps<{
       <template #icon>
         <n-icon :component="CommentIcon" :size="16" />
       </template>
-      <div class="pre-wrap text-small" :style="{ fontFamily: contentFont }">
+      <div class="pre-wrap text-small" :style="{ fontFamily: font }">
         {{ editorsComment }}
       </div>
     </n-alert>
