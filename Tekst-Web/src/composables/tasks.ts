@@ -45,7 +45,10 @@ const { resume, pause } = useTimeoutPoll(
               $t('tasks.successful', { name: $t(`tasks.types.${task.type}`) }) + ' ' + result
             );
           } else if (task.status === 'failed') {
-            const detailsText = ($te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : '') + '\n' + (task.errorDetails || '').trim();
+            const detailsText =
+              ($te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : '') +
+              '\n' +
+              (task.errorDetails || '').trim();
             message.error(
               $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
               detailsText

@@ -17,9 +17,7 @@ export function useMessages() {
       messageQueue.value = messageQueue.value.concat([
         {
           text,
-          details: details
-            ? JSON.stringify(details, null, 2)
-            : undefined,
+          details: details ? JSON.stringify(details, null, 2) : undefined,
           type,
           seconds,
         },
