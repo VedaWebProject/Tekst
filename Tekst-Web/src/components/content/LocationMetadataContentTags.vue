@@ -81,7 +81,7 @@ const contentsProcessed = computed(() => {
         :resource="content.res"
       >
         <n-tag size="small" :color="tagColor" :title="item.title" class="loc-meta-tag">
-          <span v-if="item.key && !state.smallScreen">{{ item.key }}: </span>
+          <span v-if="item.key">{{ item.key }}: </span>
           <span :style="{ 'font-family': content.font }">{{ item.value }}</span>
         </n-tag>
       </resource-info-widget>
