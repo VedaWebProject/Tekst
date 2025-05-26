@@ -3,8 +3,8 @@ import type { SearchHit, TextRead } from '@/api';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import { $t } from '@/i18n';
 import { BookIcon, LevelsIcon, StarHalfIcon, TextsIcon } from '@/icons';
-import { useResourcesStore, useStateStore } from '@/stores';
-import { transparentize } from 'color2k';
+import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
+import { lighten, transparentize } from 'color2k';
 import { NFlex, NIcon, NListItem, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -38,6 +38,7 @@ const emit = defineEmits(['navigate']);
 
 const state = useStateStore();
 const resources = useResourcesStore();
+const theme = useThemeStore();
 
 const textColorTranslucent = computed(() => transparentize(props.textColor, 0.6));
 const resultHoverColor = computed(() => transparentize(props.textColor, 0.9));
@@ -50,8 +51,12 @@ const scoreTagColor = computed(() => {
   if (!props.scorePercent) return;
   const red = 140 - (props.scorePercent / 100) * 140;
   const green = (props.scorePercent / 100) * 140;
-  return `rgba(${red}, ${green}, 0, 1)`;
+  return lighten(`rgba(${red}, ${green}, 0, 1)`, theme.dark ? 0.5 : 0);
 });
+
+const scoreTagBorderColor = computed(() =>
+  scoreTagColor.value ? transparentize(scoreTagColor.value, 0.75) : undefined
+);
 
 const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
   if (!props.highlight) return [];
@@ -107,7 +112,10 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
               </template>
               {{ levelLabel }}
             </n-tag>
-            <n-tag size="small" :color="{ textColor: scoreTagColor }">
+            <n-tag
+              size="small"
+              :color="{ textColor: scoreTagColor, borderColor: scoreTagBorderColor }"
+            >
               <template #icon>
                 <n-icon class="translucent" :component="StarHalfIcon" />
               </template>
