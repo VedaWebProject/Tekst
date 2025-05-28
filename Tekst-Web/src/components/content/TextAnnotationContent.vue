@@ -161,7 +161,9 @@ const fontStyle = computed(() => ({
 const annoLineNumbers = computed(() =>
   Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
 );
-const colorAnnoLinesChoice = ref(true);
+const colorAnnoLinesChoice = ref(
+  props.resource.config.special.annotations.annoIntegration.groups.length > 1
+);
 const colorAnnoLines = computed(
   () => colorAnnoLinesChoice.value && annoCfg.value.groups.length > 1
 );
@@ -483,6 +485,7 @@ function generatePlaintextAnno(): string {
           tertiary
           size="tiny"
           :focusable="false"
+          :disabled="annoCfg.groups.length > 1"
           @click="colorAnnoLinesChoice = !colorAnnoLinesChoice"
         >
           <template #icon>
