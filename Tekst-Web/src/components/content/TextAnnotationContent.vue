@@ -485,7 +485,7 @@ function generatePlaintextAnno(): string {
           tertiary
           size="tiny"
           :focusable="false"
-          :disabled="annoCfg.groups.length > 1"
+          :disabled="annoCfg.groups.length < 2"
           @click="colorAnnoLinesChoice = !colorAnnoLinesChoice"
         >
           <template #icon>
