@@ -11,7 +11,7 @@ import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -175,13 +175,19 @@ onMounted(async () => {
               style="flex: 2 200px"
             >
               <n-select
+                v-if="!!annoOptions[annotationItemIndex].valuesOptions.length"
                 v-model:value="annotationItem.v"
-                tag
                 filterable
                 clearable
                 :disabled="!annotationItem.k"
                 :style="getAnnoValueSelectStyle(annotationItem.v)"
                 :options="annoOptions[annotationItemIndex].valuesOptions"
+                :placeholder="$t('common.value')"
+              />
+              <n-input
+                v-else
+                v-model:value="annotationItem.v"
+                :disabled="!annotationItem.k"
                 :placeholder="$t('common.value')"
               />
             </n-form-item>
