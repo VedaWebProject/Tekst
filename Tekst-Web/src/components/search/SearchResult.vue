@@ -49,8 +49,8 @@ const scorePercentDisplay = computed(() =>
 
 const scoreTagColor = computed(() => {
   if (!props.scorePercent) return;
-  const red = 140 - (props.scorePercent / 100) * 140;
-  const green = (props.scorePercent / 100) * 140;
+  const red = Math.round(140 - (props.scorePercent / 100) * 140);
+  const green = Math.round((props.scorePercent / 100) * 140);
   return lighten(`rgba(${red}, ${green}, 0, 1)`, theme.dark ? 0.5 : 0);
 });
 
