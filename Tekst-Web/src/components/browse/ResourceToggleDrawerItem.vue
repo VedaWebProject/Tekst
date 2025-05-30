@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { AnyResourceRead, UserRead } from '@/api';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import MetadataDisplayMinimal from '@/components/resource/MetadataDisplayMinimal.vue';
+import { prioritizedMetadataKeys, type AnyResourceRead, type UserRead } from '@/api';
 import { $t } from '@/i18n';
 import { ProposedIcon, PublicIcon, PublicOffIcon } from '@/icons';
-import { NFlex, NIcon, NSwitch } from 'naive-ui';
+import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
+import { NFlex, NIcon, NSwitch, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -14,10 +14,29 @@ const props = defineProps<{
 }>();
 
 const active = defineModel<boolean>('active');
+const state = useStateStore();
+
+const resTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 
 const infoTooltip = computed(() =>
   props.disabled ? $t('browse.locationResourceNoData') : undefined
 );
+
+const desc = computed<string>(() => {
+  const m: string[] = [];
+  const data = props.resource.meta || [];
+
+  // prioritized metadata goes first
+  prioritizedMetadataKeys.forEach((p: string) => {
+    const v = data.find((d) => d.key === p)?.value;
+    if (v) m.push(v);
+  });
+  // resource type
+  if (props.resource.resourceType)
+    m.push($t(`resources.types.${props.resource.resourceType}.label`));
+  // join metadata to string
+  return m.join(', ');
+});
 </script>
 
 <template>
@@ -30,11 +49,17 @@ const infoTooltip = computed(() =>
   >
     <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
-      <div>
-        <translation-display v-if="resource.title" :value="resource.title" />
-      </div>
+      <n-flex justify="space-between" align="center" :wrap="false">
+        {{ resTitle || '???' }}
+        <n-tag
+          size="small"
+          :title="`${$t('common.level')}: ${state.textLevelLabels[props.resource.level]}`"
+        >
+          {{ state.textLevelLabels[props.resource.level] }}
+        </n-tag>
+      </n-flex>
       <div class="text-mini translucent ellipsis">
-        <metadata-display-minimal :resource="resource" />
+        {{ desc }}
       </div>
     </div>
     <div v-if="user" class="item-extra">
