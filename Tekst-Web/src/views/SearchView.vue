@@ -401,6 +401,7 @@ whenever(ctrlEnter, () => {
 }
 
 .search-resource-select-menu .n-base-select-option .n-base-select-option__content {
+  color: var(--text-color);
   width: 100%;
 }
 </style>
