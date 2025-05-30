@@ -91,7 +91,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
       class="mb-sm"
     >
       <n-flex vertical size="small" class="sr-container" @click="emit('navigate')">
-        <n-flex wrap align="center" :title="fullLabel">
+        <n-flex wrap align="center">
           <n-flex align="center" :wrap="false" style="flex: 2">
             <n-icon :component="BookIcon" class="text-medium" />
             <b>{{ fullLabelAsTitle ? fullLabel : label }}</b>

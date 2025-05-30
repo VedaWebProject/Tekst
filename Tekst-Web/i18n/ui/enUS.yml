@@ -879,7 +879,6 @@ search:
     searching: Searching
     count: No results | One result | {count} results
     took: This search took {ms} milliseconds
-    browse: Open result in "{browse}" view
     browsePrev: Previous search result
     browseNext: Next search result
     browseCurrHit: 'Search hit: {no} of {of}'

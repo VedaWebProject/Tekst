@@ -10,7 +10,7 @@ import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { DownloadIcon, ErrorIcon, NothingFoundIcon, SearchResultsIcon } from '@/icons';
 import { useSearchStore, useStateStore, useThemeStore } from '@/stores';
-import { isInputFocused, isOverlayOpen, pickTranslation, utcToLocalTime } from '@/utils';
+import { isInputFocused, isOverlayOpen, utcToLocalTime } from '@/utils';
 import { createReusableTemplate, useMagicKeys, whenever } from '@vueuse/core';
 import { NButton, NEmpty, NFlex, NIcon, NList, NPagination, NSpin, NTime } from 'naive-ui';
 import { computed, onBeforeMount, ref } from 'vue';
@@ -51,10 +51,6 @@ const results = computed<SearchResultProps[]>(
         smallScreen: state.smallScreen,
       };
     }) || []
-);
-
-const browseViewLabel = computed(
-  () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('common.browse')
 );
 
 async function afterPaginate() {
@@ -161,7 +157,7 @@ onBeforeMount(() => {
         v-for="(result, index) in results"
         :key="result.id"
         v-bind="result"
-        :title="$t('search.results.browse', { browse: browseViewLabel })"
+        :title="result.fullLabel"
         @navigate="search.browse(index)"
       />
     </n-list>

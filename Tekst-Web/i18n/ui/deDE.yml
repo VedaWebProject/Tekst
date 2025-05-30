@@ -903,7 +903,6 @@ search:
     searching: Suche
     count: Keine Ergebnisse | Ein Ergebnis | {count} Ergebnisse
     took: Diese Suche dauerte {ms} Millisekunden
-    browse: Ergebnis in "{browse}"-Ansicht öffnen
     browsePrev: Vorheriges Suchergebnis
     browseNext: Nächstes Suchergebnis
     browseCurrHit: 'Suchtreffer: {no} von {of}'
