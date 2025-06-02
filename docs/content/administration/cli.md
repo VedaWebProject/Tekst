@@ -112,3 +112,32 @@ Options:
                           flag is not set)
   --help                  Show this message and exit.
 ```
+
+
+
+## `export`
+
+Bulk-exports one or more (or all) resources' data in on or more (or all) available export formats.
+
+```sh
+python -m tekst export
+```
+
+This command takes several arguments for customizing its behavior:
+
+```
+Usage: python -m tekst export [OPTIONS]
+
+  Exports the contents of the given resources (or all) using the given formats
+  (or all) to the given output directory
+
+Options:
+  -r, --resource TEXT  ID(s) of resource(s) to export, all if not set
+  -f, --format TEXT    Format(s) to export, all if not set  [default: json,
+                       tekst-json, csv]
+  -o, --output TEXT    Output directory to write to  [default:
+                       /tmp/tekst_resource_export/]
+  -q, --quiet          Don't output anything (except errors and warnings)
+  -d, --delete         Delete all existing files in the output directory
+  --help               Show this message and exit.
+```
