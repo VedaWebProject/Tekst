@@ -995,13 +995,13 @@ async def import_resource_contents(
     )
 
 
-async def _export_resource_contents_task(
+async def export_resource_contents_task(
     user: OptionalUserDep,
     cfg: TekstConfig,
     resource_id: PydanticObjectId,
     export_format: ResourceExportFormat,
-    location_from_id: PydanticObjectId | None,
-    location_to_id: PydanticObjectId | None,
+    location_from_id: PydanticObjectId | None = None,
+    location_to_id: PydanticObjectId | None = None,
 ) -> dict[str, Any]:
     # check if user has permission to read this resource, if so, fetch from DB
     resource: ResourceBaseDocument = await ResourceBaseDocument.find_one(
@@ -1142,7 +1142,7 @@ async def export_resource_contents(
         raise errors.E_403_FORBIDDEN
     # create and return background task
     return await tasks.create_task(
-        _export_resource_contents_task,
+        export_resource_contents_task,
         tasks.TaskType.RESOURCE_EXPORT,
         user_id=user.id if user else None,
         target_id=user.id

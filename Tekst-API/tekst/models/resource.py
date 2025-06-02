@@ -589,7 +589,7 @@ class ResourceCoverage(ModelBase):
     details: list[ParentCoverage]
 
 
-ResourceExportFormat = Literal["json", "tekst-json", "csv"]
+type ResourceExportFormat = Literal["json", "tekst-json", "csv"]
 
 res_exp_fmt_info = {
     "json": {
@@ -603,13 +603,5 @@ res_exp_fmt_info = {
     "csv": {
         "extension": "csv",
         "mimetype": "text/csv",
-    },
-    "txt": {
-        "extension": "txt",
-        "mimetype": "text/plain",
-    },
-    "html": {
-        "extension": "html",
-        "mimetype": "text/html",
     },
 }
