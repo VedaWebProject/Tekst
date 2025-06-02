@@ -482,6 +482,10 @@
           "anno_integration": {
             "groups": [
               {
+                "key": "form",
+                "translations": [{ "locale": "*", "translation": "Form" }]
+              },
+              {
                 "key": "ne",
                 "translations": [
                   { "locale": "enUS", "translation": "Named Entities" },
@@ -497,6 +501,19 @@
               }
             ],
             "item_props": [
+              {
+                "key": "form",
+                "translations": [{ "locale": "*", "translation": "Form" }],
+                "group": "form"
+              },
+              {
+                "key": "eol",
+                "translations": [
+                  { "locale": "enUS", "translation": "End-of-line" },
+                  { "locale": "deDE", "translation": "Zeilenende" }
+                ],
+                "group": "misc"
+              },
               {
                 "key": "len",
                 "translations": [

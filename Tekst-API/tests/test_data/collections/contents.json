@@ -76,13 +76,12 @@
     "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
     "tokens": [
       {
-        "token": "Foo",
         "annotations": [
+          { "key": "form", "value": ["Foo"] },
           { "key": "vowels", "value": ["two"] },
           { "key": "type", "value": ["Token"] },
           { "key": "comment", "value": ["This is a comment!"] }
-        ],
-        "lb": false
+        ]
       }
     ],
     "authorsComment": "This one has a comment!"
@@ -95,12 +94,11 @@
     "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
     "tokens": [
       {
-        "token": "Bar",
         "annotations": [
+          { "key": "form", "value": ["Bar"] },
           { "key": "type", "value": ["Token"] },
           { "key": "vowels", "value": ["one"] }
-        ],
-        "lb": false
+        ]
       }
     ]
   },
@@ -112,12 +110,11 @@
     "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
     "tokens": [
       {
-        "token": "Baz",
         "annotations": [
+          { "key": "form", "value": ["Baz"] },
           { "key": "type", "value": ["Token"] },
           { "key": "vowels", "value": ["one"] }
-        ],
-        "lb": false
+        ]
       }
     ]
   },
@@ -129,12 +126,11 @@
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
     "tokens": [
       {
-        "token": "Qux",
         "annotations": [
+          { "key": "form", "value": ["Qux"] },
           { "key": "type", "value": ["Token"] },
           { "key": "vowels", "value": ["one"] }
-        ],
-        "lb": false
+        ]
       }
     ]
   },

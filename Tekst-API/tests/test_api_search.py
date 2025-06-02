@@ -240,24 +240,6 @@ async def test_advanced_text_annotation(
     test_client: AsyncClient,
     use_indices,
 ):
-    # token empty, nothing else (finds everything)
-    _assert_search_resp(
-        await test_client.post(
-            "/search",
-            json={
-                "type": "advanced",
-                "q": [
-                    {
-                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
-                        # this counts as "empty"
-                        "rts": {"type": "textAnnotation", "token": "    *        "},
-                    }
-                ],
-            },
-        ),
-        expected_hits=4,
-    )
-
     # search for location comment
     # (to test custom highlights generator of text annotation resource type)
     _assert_search_resp(
@@ -280,7 +262,7 @@ async def test_advanced_text_annotation(
         expected_hits=1,
     )
 
-    # token only
+    # token form anno
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -289,7 +271,10 @@ async def test_advanced_text_annotation(
                 "q": [
                     {
                         "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
-                        "rts": {"type": "textAnnotation", "token": "foo"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [{"k": "form", "v": "foo"}],
+                        },
                     }
                 ],
             },
@@ -297,7 +282,7 @@ async def test_advanced_text_annotation(
         expected_hits=1,
     )
 
-    # token only, with wildcard
+    # token from anno, with wildcard
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -306,7 +291,10 @@ async def test_advanced_text_annotation(
                 "q": [
                     {
                         "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
-                        "rts": {"type": "textAnnotation", "token": "b*", "twc": True},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [{"k": "form", "v": "b*", "wc": True}],
+                        },
                     }
                 ],
             },
@@ -411,8 +399,10 @@ async def test_advanced_text_annotation(
                         "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
                         "rts": {
                             "type": "textAnnotation",
-                            "token": "foo",
-                            "anno": [{"k": "type", "v": "token"}],
+                            "anno": [
+                                {"k": "form", "v": "foo"},
+                                {"k": "type", "v": "token"},
+                            ],
                         },
                     }
                 ],

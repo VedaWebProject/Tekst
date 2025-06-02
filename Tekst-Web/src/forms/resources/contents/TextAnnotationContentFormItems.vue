@@ -5,12 +5,10 @@ import type {
   TextAnnotationResourceRead,
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { KeyboardReturnIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, type SelectOption } from 'naive-ui';
@@ -125,39 +123,6 @@ onMounted(async () => {
     >
       <template #default="{ value: tokenItem, index: tokenItemIndex }">
         <n-flex align="flex-start" style="flex: 2">
-          <n-flex align="flex-start" :wrap="false" style="flex: 1 250px">
-            <!-- TOKEN -->
-            <n-form-item
-              :label="$t('resources.types.textAnnotation.contentFields.token')"
-              :path="`tokens[${tokenItemIndex}].token`"
-              :rule="contentFormRules.textAnnotation.token"
-              ignore-path-change
-              style="flex: 2"
-            >
-              <osk-input
-                :ref="
-                  (el) => (tokenInputRefs[tokenItemIndex] = el as InstanceType<typeof OskInput>)
-                "
-                v-model="tokenItem.token"
-                :font="resource.config.general.font || 'var(--font-family-content)'"
-                :osk-key="resource.config.general.osk || undefined"
-                :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-              />
-            </n-form-item>
-
-            <!-- LINEBREAK -->
-            <n-form-item ignore-path-change>
-              <labeled-switch
-                v-model="tokenItem.lb"
-                size="large"
-                :icon-on="KeyboardReturnIcon"
-                :icon-off="KeyboardReturnIcon"
-                :show-label="false"
-                :title="$t('resources.types.textAnnotation.contentFields.lb')"
-              />
-            </n-form-item>
-          </n-flex>
-
           <!-- ANNOTATIONS -->
           <n-form-item
             :label="$t('resources.types.textAnnotation.contentFields.annotations')"
@@ -171,10 +136,10 @@ onMounted(async () => {
               @create="() => ({ key: undefined, value: undefined })"
             >
               <template #default="{ value: annotationItem, index: annotationItemIndex }">
-                <n-flex align="flex-start" :wrap="false" style="flex: 2">
+                <n-flex align="flex-start" style="flex: 2">
                   <!-- KEY -->
                   <n-form-item
-                    style="flex: 2 100px"
+                    style="flex: 2 180px"
                     :show-label="false"
                     :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].key`"
                     :rule="contentFormRules.textAnnotation.annotationKey"
@@ -194,7 +159,7 @@ onMounted(async () => {
                   </n-form-item>
                   <!-- VALUES -->
                   <n-form-item
-                    style="flex: 2 100px"
+                    style="flex: 2 180px"
                     :show-label="false"
                     :path="`tokens[${tokenItemIndex}].annotations[${annotationItemIndex}].value`"
                     :rule="contentFormRules.textAnnotation.annotationValue"

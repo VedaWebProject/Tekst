@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.18.9a0"
+    "version": "0.19.0a0"
   },
   "servers": [
     {
@@ -4956,15 +4956,9 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "json",
-                "tekst-json",
-                "csv"
-              ],
-              "type": "string",
+              "$ref": "#/components/schemas/ResourceExportFormat",
               "description": "Export format",
-              "default": "json",
-              "title": "Format"
+              "default": "json"
             },
             "description": "Export format"
           },
@@ -15623,6 +15617,14 @@
         ],
         "title": "ResourceDescriptionTranslation"
       },
+      "ResourceExportFormat": {
+        "type": "string",
+        "enum": [
+          "json",
+          "tekst-json",
+          "csv"
+        ]
+      },
       "ResourceSearchQuery": {
         "properties": {
           "cmn": {
@@ -17875,22 +17877,6 @@
             "title": "Type",
             "description": "Type of the resource to search in"
           },
-          "token": {
-            "type": "string",
-            "maxLength": 512,
-            "minLength": 0,
-            "title": "Token",
-            "description": "Token search query",
-            "default": "",
-            "optionalNullable": true
-          },
-          "twc": {
-            "type": "boolean",
-            "title": "Twc",
-            "description": "Whether to interpret wildcards in the token query",
-            "default": false,
-            "optionalNullable": true
-          },
           "anno": {
             "items": {
               "$ref": "#/components/schemas/TextAnnotationQueryEntry"
@@ -17927,13 +17913,6 @@
       },
       "TextAnnotationToken": {
         "properties": {
-          "token": {
-            "type": "string",
-            "maxLength": 4096,
-            "minLength": 1,
-            "title": "Token",
-            "description": "Text token"
-          },
           "annotations": {
             "items": {
               "$ref": "#/components/schemas/TextAnnotationEntry"
@@ -17941,20 +17920,11 @@
             "type": "array",
             "maxItems": 128,
             "title": "Annotations",
-            "description": "List of annotations on this token",
+            "description": "List of annotations on a token",
             "default": []
-          },
-          "lb": {
-            "type": "boolean",
-            "title": "Lb",
-            "description": "Whether this token ends a line",
-            "default": false
           }
         },
         "type": "object",
-        "required": [
-          "token"
-        ],
         "title": "TextAnnotationToken"
       },
       "TextAnnotationValue": {

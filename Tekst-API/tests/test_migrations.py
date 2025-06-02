@@ -388,3 +388,40 @@ async def test_0_17_0a0(
         assert "special" in res["config"]
         assert "embed_as_tags" in res["config"]["special"]
         assert res["config"]["special"]["embed_as_tags"]
+
+
+@pytest.mark.anyio
+async def test_0_19_0a0(
+    database,
+    get_test_data,
+):
+    contents = get_test_data("migrations/0_19_0a0.json")
+    await database.contents.insert_many(contents)
+
+    # run migration
+    await _migration_fn("0_19_0a0")(database)
+    contents = await database.contents.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    eol_count = 0
+    for content in contents:
+        assert "tokens" in content
+        for token in content["tokens"]:
+            assert "token" not in token
+            assert "lb" not in token
+            assert (
+                len(
+                    [
+                        anno["value"]
+                        for anno in token["annotations"]
+                        if anno["key"] == "form"
+                    ]
+                )
+                == 1
+            )
+
+            assert "annotations" in token
+            for anno in token["annotations"]:
+                if anno["key"] == "eol":
+                    eol_count += 1
+    assert eol_count == 2

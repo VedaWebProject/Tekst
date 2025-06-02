@@ -5160,6 +5160,8 @@ export interface components {
        */
       translation: string;
     };
+    /** @enum {string} */
+    ResourceExportFormat: 'json' | 'tekst-json' | 'csv';
     /** ResourceSearchQuery */
     ResourceSearchQuery: {
       /** @description Common resource search query data */
@@ -6228,18 +6230,6 @@ export interface components {
        */
       type: 'textAnnotation';
       /**
-       * Token
-       * @description Token search query
-       * @default
-       */
-      token?: string;
-      /**
-       * Twc
-       * @description Whether to interpret wildcards in the token query
-       * @default false
-       */
-      twc?: boolean;
-      /**
        * Anno
        * @description List of annotations to match
        * @default []
@@ -6260,22 +6250,11 @@ export interface components {
     /** TextAnnotationToken */
     TextAnnotationToken: {
       /**
-       * Token
-       * @description Text token
-       */
-      token: string;
-      /**
        * Annotations
-       * @description List of annotations on this token
+       * @description List of annotations on a token
        * @default []
        */
       annotations: components['schemas']['TextAnnotationEntry'][];
-      /**
-       * Lb
-       * @description Whether this token ends a line
-       * @default false
-       */
-      lb: boolean;
     };
     TextAnnotationValue: string;
     /** TextCreate */
@@ -9574,7 +9553,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Export format */
-        format?: 'json' | 'tekst-json' | 'csv';
+        format?: components['schemas']['ResourceExportFormat'];
         /** @description ID of the location to start the export's location range from */
         from?: string | null;
         /** @description ID of the location to end the export's location range at */

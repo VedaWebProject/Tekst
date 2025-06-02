@@ -1,0 +1,87 @@
+[
+  {
+    "_id": { "$oid": "6656cdd681a66322c1bffb26" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "tokens": [
+      {
+        "token": "Fuchs",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["5"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "du",
+        "annotations": [
+          { "key": "ne", "value": ["Fox"] },
+          { "key": "ne_deu", "value": ["Fuchs"] },
+          { "key": "len", "value": ["2"] },
+          { "key": "comment", "value": ["This is a comment."] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "hast",
+        "annotations": [{ "key": "len", "value": ["4"] }],
+        "lb": false
+      },
+      {
+        "token": "die",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": true
+      },
+      {
+        "token": "Gans",
+        "annotations": [
+          { "key": "ne", "value": ["Goose"] },
+          { "key": "ne_deu", "value": ["Gans"] },
+          { "key": "len", "value": ["4"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "gestohlen",
+        "annotations": [{ "key": "len", "value": ["9"] }],
+        "lb": false
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "6656ce6881a66322c1bffb28" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+    "tokens": [
+      {
+        "token": "gib",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      },
+      {
+        "token": "sie",
+        "annotations": [
+          { "key": "ne", "value": ["Goose"] },
+          { "key": "ne_deu", "value": ["Gans"] },
+          { "key": "len", "value": ["3"] }
+        ],
+        "lb": false
+      },
+      {
+        "token": "wieder",
+        "annotations": [{ "key": "len", "value": ["6"] }],
+        "lb": true
+      },
+      {
+        "token": "her",
+        "annotations": [{ "key": "len", "value": ["3"] }],
+        "lb": false
+      }
+    ]
+  }
+]

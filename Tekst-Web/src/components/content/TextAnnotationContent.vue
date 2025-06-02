@@ -16,7 +16,7 @@ import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import { getFullLocationLabel, groupAndSortItems, pickTranslation, renderIcon } from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
-import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
+import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, NTag, useThemeVars } from 'naive-ui';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
@@ -45,7 +45,7 @@ interface AnnotationDisplay {
 }
 
 interface TokenDetails {
-  token: string;
+  form: string;
   comment?: string;
   annotations?: {
     group?: string;
@@ -298,8 +298,10 @@ const contents = computed(() => {
       return {
         ...c,
         tokens: c.tokens.map((t, i) => ({
-          token: t.token,
-          lb: t.lb,
+          form: t.annotations
+            .find((a) => a.key === 'form')
+            ?.value.join(props.resource.config.special.annotations.multiValueDelimiter),
+          eol: !!t.annotations.find((a) => a.key === 'eol'),
           annotations: t.annotations,
           annoDisplay: displays[i],
           comment: t.annotations.find((a) => a.key === 'comment')?.value,
@@ -349,7 +351,10 @@ function handleTokenClick(token: Token) {
   if (!token.annotations.length) return;
   const annos = token.annotations.filter((a) => a.key !== 'comment');
   tokenDetails.value = {
-    token: token.token,
+    form:
+      token.annotations
+        .find((a) => a.key === 'form')
+        ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) || '',
     comment: token.annotations.find((a) => a.key === 'comment')?.value.join('\n'),
     annotations: groupAndSortItems(annos, annoCfg.value).map((g) => ({
       group:
@@ -389,15 +394,18 @@ function handleTokenContextMenuClickOutside() {
 
 function handleTokenContextMenuSelect(key: string | number) {
   showTokenContextMenu.value = false;
-  if (key === 'copyToken' && tokenData.value?.token) {
-    copyTokenContent(tokenData.value.token);
+  const tokenForm =
+    tokenData.value?.annotations
+      .find((a) => a.key === 'form')
+      ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) || '';
+  if (key === 'copyToken' && tokenForm) {
+    copyTokenContent(tokenForm);
   } else if (key === 'copyFull') {
-    const token = tokenData.value?.token ? tokenData.value.token : '???';
     const delim = props.resource.config.special.annotations.multiValueDelimiter;
     const annos = tokenData.value?.annotations
       ? tokenData.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
-    copyTokenContent(token + (annos ? ` (${annos})` : ''));
+    copyTokenContent((tokenForm || '[???]') + (annos ? ` (${annos})` : ''));
   }
 }
 
@@ -426,20 +434,20 @@ function generatePlaintextAnno(): string {
   // for each content...
   contents.value.forEach((c, contentIndex) => {
     // preprocess data
-    const tokenLines: { token: string; annoLines: string[]; maxLen: number }[][] = [[]];
+    const tokenLines: { form: string; annoLines: string[]; maxLen: number }[][] = [[]];
     c.tokens.forEach((t) => {
-      t.token = t.token.normalize('NFC');
+      t.form = t.form?.normalize('NFC') || '[???]';
       const annoLines: string[] = t.annoDisplay.map((line) =>
         line.map((anno) => anno.content?.normalize('NFC') || '').join('')
       );
-      const maxLen = Math.max(t.token.length, ...annoLines.map((l) => l.length));
-      tokenLines[tokenLines.length - 1].push({ token: t.token, annoLines, maxLen });
-      if (t.lb) tokenLines.push([]); // push new line if token followed by line break
+      const maxLen = Math.max(t.form.length, ...annoLines.map((l) => l.length));
+      tokenLines[tokenLines.length - 1].push({ form: t.form, annoLines, maxLen });
+      if (t.eol) tokenLines.push([]); // push new line if token followed by line break
     });
     // "render" token lines
     tokenLines.forEach((l, lineIndex) => {
       l.forEach((t) => {
-        out.push(t.token.padEnd(t.maxLen + 1, ' '));
+        out.push(t.form.padEnd(t.maxLen + 1, ' '));
       });
       out.push('\n');
       const annoLineCount = Math.max(...l.map((t) => t.annoLines.length));
@@ -525,9 +533,10 @@ function generatePlaintextAnno(): string {
             @click="handleTokenClick(t)"
             @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
           >
-            <div class="token b i" :style="fontStyle">
-              {{ t.token }}
+            <div v-if="t.form" class="b i" :style="fontStyle">
+              {{ t.form }}
             </div>
+            <n-tag v-else>???</n-tag>
             <div class="annotations">
               <div
                 v-for="(annoLine, lineIndex) in t.annoDisplay"
@@ -551,14 +560,14 @@ function generatePlaintextAnno(): string {
               </div>
             </div>
           </div>
-          <hr v-if="t.lb" class="token-lb" />
+          <hr v-if="t.eol" class="token-lb" />
         </template>
       </n-flex>
     </common-content-display>
 
     <generic-modal
       v-model:show="showDetailsModal"
-      :title="tokenDetails?.token"
+      :title="tokenDetails?.form"
       :icon="MetadataIcon"
       heading-level="3"
       :header-style="{

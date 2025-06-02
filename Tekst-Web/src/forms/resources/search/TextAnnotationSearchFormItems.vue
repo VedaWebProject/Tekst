@@ -11,7 +11,7 @@ import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, NSwitch } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -99,41 +99,12 @@ function getAnnoValueSelectStyle(value?: string) {
 }
 
 onMounted(async () => {
+  model.value.anno = model.value.anno || [{ k: '', v: undefined, wc: false }];
   aggregations.value = await resources.getAggregations(props.resource.id);
 });
 </script>
 
 <template>
-  <n-flex :wrap="false" align="center" style="flex: 1 248px">
-    <!-- TOKEN -->
-    <n-form-item
-      :label="$t('resources.types.textAnnotation.contentFields.token')"
-      ignore-path-change
-      :path="`queries[${queryIndex}].rts.token`"
-      :rule="searchFormRules.textAnnotation.token"
-      style="flex: 2"
-    >
-      <osk-input
-        v-model="model.token"
-        :font="resource.config.general.font || undefined"
-        :osk-key="resource.config.general.osk || undefined"
-        :placeholder="$t('resources.types.textAnnotation.contentFields.token')"
-      />
-    </n-form-item>
-    <!-- TOKEN QUERY WILDCARDS -->
-    <n-form-item ignore-path-change style="flex-basis: 48px">
-      <n-switch
-        v-model:value="model.twc"
-        :round="false"
-        class="b text-small"
-        :title="$t('search.advancedSearch.wc')"
-      >
-        <template #checked>*</template>
-        <template #unchecked>*</template>
-      </n-switch>
-    </n-form-item>
-  </n-flex>
-
   <!-- ANNOTATIONS -->
   <n-form-item
     :label="$t('resources.types.textAnnotation.contentFields.annotations')"
@@ -184,10 +155,12 @@ onMounted(async () => {
                 :options="annoOptions[annotationItemIndex].valuesOptions"
                 :placeholder="$t('common.value')"
               />
-              <n-input
+              <osk-input
                 v-else
-                v-model:value="annotationItem.v"
+                v-model="annotationItem.v"
                 :disabled="!annotationItem.k"
+                :font="resource.config.general.font || undefined"
+                :osk-key="resource.config.general.osk || undefined"
                 :placeholder="$t('common.value')"
               />
             </n-form-item>
@@ -198,6 +171,7 @@ onMounted(async () => {
                 v-model:value="annotationItem.wc"
                 :round="false"
                 class="b text-small"
+                :disabled="!!annoOptions[annotationItemIndex].valuesOptions.length"
                 :title="$t('search.advancedSearch.wc')"
               >
                 <template #checked>*</template>

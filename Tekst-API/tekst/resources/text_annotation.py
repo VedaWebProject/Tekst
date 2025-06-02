@@ -54,16 +54,6 @@ class TextAnnotation(ResourceTypeABC):
             "tokens": {
                 "type": "nested",
                 "properties": {
-                    "token": {
-                        "type": "keyword",
-                        "normalizer": "no_diacritics_normalizer",
-                        "fields": {
-                            "strict": {
-                                "type": "keyword",
-                                "normalizer": "lowercase_normalizer",
-                            }
-                        },
-                    },
                     "annotations": {
                         "type": "nested",
                         "properties": {
@@ -101,10 +91,14 @@ class TextAnnotation(ResourceTypeABC):
         cls,
         content: "TextAnnotationContent",
     ) -> dict[str, Any] | None:
+        token_forms = []
+        for token in content.tokens:
+            for anno in token.annotations:
+                if anno.key == "form":
+                    token_forms.append("/".join(anno.value))
         return {
             "tokens": [
                 {
-                    "token": token.token or "",
                     "annotations": [
                         {
                             "key": anno.key,
@@ -119,7 +113,7 @@ class TextAnnotation(ResourceTypeABC):
                 }
                 for token in content.tokens
             ],
-            "tokens_concat": "; ".join(token.token or "" for token in content.tokens),
+            "tokens_concat": "; ".join(token_forms),
         }
 
     @classmethod
@@ -134,30 +128,8 @@ class TextAnnotation(ResourceTypeABC):
         res_id = str(query.common.resource_id)
         q_id = str(uuid4())
 
-        token_usr_q = (query.resource_type_specific.token or "").strip(" ") or None
-        token_es_q = []
-        token_wc = query.resource_type_specific.token_wildcards
         annos_usr_q = query.resource_type_specific.annotations or []
         annos_es_q = []
-
-        # process token query
-        if token_usr_q and token_usr_q.strip("* "):
-            # handle actual token query with content
-            token_es_q.append(
-                {
-                    "wildcard": {
-                        f"resources.{res_id}.tokens.token{strict_suffix}": {
-                            "value": token_usr_q,
-                        }
-                    }
-                }
-                if token_wc
-                else {
-                    "term": {
-                        f"resources.{res_id}.tokens.token{strict_suffix}": token_usr_q
-                    }
-                }
-            )
 
         # process annotation queries
         for anno_q in annos_usr_q:
@@ -176,6 +148,7 @@ class TextAnnotation(ResourceTypeABC):
                 )
             elif anno_q.key and anno_q.value:
                 # both key and value are set: query for specific key/value combination
+                anno_v = anno_q.value.strip()
                 anno_k_q = {
                     "term": {f"resources.{res_id}.tokens.annotations.key": anno_q.key}
                 }
@@ -186,7 +159,7 @@ class TextAnnotation(ResourceTypeABC):
                                 f"resources.{res_id}.tokens.annotations"
                                 f".value{strict_suffix}"
                             ): {
-                                "value": anno_q.value,
+                                "value": anno_v,
                             }
                         }
                     }
@@ -196,7 +169,7 @@ class TextAnnotation(ResourceTypeABC):
                             (
                                 f"resources.{res_id}.tokens.annotations"
                                 f".value{strict_suffix}"
-                            ): anno_q.value
+                            ): anno_v
                         }
                     }
                 )
@@ -214,8 +187,7 @@ class TextAnnotation(ResourceTypeABC):
                 )
 
         # add token and annotation queries to the ES queries
-        if token_es_q or annos_es_q:
-            es_sub_queries = [*token_es_q, *annos_es_q]
+        if annos_es_q:
             es_queries.append(
                 {
                     "nested": {
@@ -223,11 +195,11 @@ class TextAnnotation(ResourceTypeABC):
                         "inner_hits": {"name": q_id},
                         "query": {
                             "bool": {
-                                "must": es_sub_queries,
+                                "must": annos_es_q,
                             },
                         }
-                        if len(es_sub_queries) > 1
-                        else es_sub_queries[0],
+                        if len(annos_es_q) > 1
+                        else annos_es_q[0],
                     }
                 }
             )
@@ -243,14 +215,13 @@ class TextAnnotation(ResourceTypeABC):
                     hl_strings.extend(hl_v)
             for ih in hit.get("inner_hits", {}).values():
                 for ih_hit in ih.get("hits", {}).get("hits", []):
-                    token = ih_hit["_source"]["token"]
-                    annos = ih_hit["_source"]["annotations"]
-                    values = [a["value"] for a in annos] if annos else []
-                    values_strings = []
-                    for v in values:
-                        values_strings.extend(v if isinstance(v, list) else [v])
-                    annos = f" ({'; '.join(values_strings)})"
-                    hl_strings.append(f"{token} {annos}")
+                    values = [
+                        a["value"] for a in ih_hit["_source"]["annotations"] or []
+                    ]
+                    values_strings = [
+                        ", ".join(v) if isinstance(v, list) else v for v in values
+                    ]
+                    hl_strings.append("; ".join(values_strings))
             return hl_strings
 
         return _highlights_generator
@@ -302,7 +273,6 @@ class TextAnnotation(ResourceTypeABC):
                 [
                     "LOCATION",
                     "POSITION",
-                    "TOKEN",
                     *anno_keys,
                     "AUTHORS_COMMENT",
                     "EDITORS_COMMENT",
@@ -323,7 +293,6 @@ class TextAnnotation(ResourceTypeABC):
                         [
                             full_location_labels.get(str(content.location_id), ""),
                             i,
-                            token.token,
                             *csv_annos,
                             content.authors_comment,
                             content.editors_comment,
@@ -529,26 +498,13 @@ class TextAnnotationEntry(ModelBase):
 
 
 class TextAnnotationToken(ModelBase):
-    token: Annotated[
-        ConStr(
-            max_length=4096,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Text token",
-        ),
-    ]
     annotations: Annotated[
         list[TextAnnotationEntry],
         Field(
-            description="List of annotations on this token",
+            description="List of annotations on a token",
             max_length=128,
         ),
     ] = []
-    lb: Annotated[
-        bool,
-        Field(description="Whether this token ends a line"),
-    ] = False
 
 
 class TextAnnotationContent(ContentBase):
@@ -603,25 +559,6 @@ class TextAnnotationSearchQuery(ModelBase):
             description="Type of the resource to search in",
         ),
     ]
-    token: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Token search query",
-        ),
-        SchemaOptionalNullable,
-    ] = ""
-    token_wildcards: Annotated[
-        bool,
-        Field(
-            alias="twc",
-            description="Whether to interpret wildcards in the token query",
-        ),
-        SchemaOptionalNullable,
-    ] = False
     annotations: Annotated[
         list[TextAnnotationQueryEntry],
         Field(
