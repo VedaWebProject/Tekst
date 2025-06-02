@@ -324,7 +324,7 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <n-empty v-else :description="$t('admin.segments.noSegment')">
+  <n-empty v-else :description="$t('admin.segments.noSegment')" class="mt-lg">
     <template #icon>
       <n-icon :component="FileOpenIcon" />
     </template>

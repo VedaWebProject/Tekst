@@ -316,7 +316,7 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <n-empty v-else :description="$t('admin.infoPages.noPage')">
+  <n-empty v-else :description="$t('admin.infoPages.noPage')" class="mt-lg">
     <template #icon>
       <n-icon :component="FileOpenIcon" />
     </template>
