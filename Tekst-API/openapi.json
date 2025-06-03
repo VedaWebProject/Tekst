@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.19.1a0"
+    "version": "0.19.2a0"
   },
   "servers": [
     {
@@ -9987,7 +9987,7 @@
           },
           "note": {
             "type": "string",
-            "maxLength": 1000,
+            "maxLength": 2000,
             "minLength": 1,
             "title": "Note",
             "description": "Content of the correction note"
@@ -10031,7 +10031,7 @@
           },
           "note": {
             "type": "string",
-            "maxLength": 1000,
+            "maxLength": 2000,
             "minLength": 1,
             "title": "Note",
             "description": "Content of the correction note"
