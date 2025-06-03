@@ -342,7 +342,11 @@ class TextAnnotationResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["tokens_concat"]
 
-    async def _update_aggregations(self) -> None:
+    async def _update_aggregations(
+        self,
+        *,
+        force: bool = False,
+    ) -> None:
         max_values_per_anno = 250
         # get precomputed resource aggregations data, if present
         precomp_doc = await PrecomputedDataDocument.find_one(
@@ -350,7 +354,7 @@ class TextAnnotationResource(ResourceBase):
             PrecomputedDataDocument.precomputed_type == "aggregations",
         )
         if precomp_doc:
-            if precomp_doc.created_at > self.contents_changed_at:
+            if precomp_doc.created_at > self.contents_changed_at and not force:
                 log.debug(
                     f"Aggregations for resource {str(self.id)} up-to-date. Skipping."
                 )
@@ -467,7 +471,7 @@ class TextAnnotationResource(ResourceBase):
         await super().resource_precompute_hook(force=force)
         op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
         try:
-            await self._update_aggregations()
+            await self._update_aggregations(force=force)
         except Exception as e:  # pragma: no cover
             log_op_end(op_id, failed=True)
             raise e
