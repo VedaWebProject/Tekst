@@ -27,7 +27,7 @@ class Correction(ModelBase, ModelFactoryMixin):
     ]
     note: Annotated[
         ConStr(
-            max_length=1000,
+            max_length=2000,
             cleanup="multiline",
         ),
         Field(
