@@ -146,7 +146,7 @@ onMounted(async () => {
               style="flex: 2 200px"
             >
               <n-select
-                v-if="!!annoOptions[annotationItemIndex].valuesOptions.length"
+                v-if="annoOptions[annotationItemIndex].valuesOptions.length > 1"
                 v-model:value="annotationItem.v"
                 filterable
                 clearable
@@ -171,7 +171,7 @@ onMounted(async () => {
                 v-model:value="annotationItem.wc"
                 :round="false"
                 class="b text-small"
-                :disabled="!!annoOptions[annotationItemIndex].valuesOptions.length"
+                :disabled="annoOptions[annotationItemIndex].valuesOptions.length > 1"
                 :title="$t('search.advancedSearch.wc')"
               >
                 <template #checked>*</template>
