@@ -16,10 +16,12 @@ import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import { getFullLocationLabel, groupAndSortItems, pickTranslation, renderIcon } from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
-import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, NTag, useThemeVars } from 'naive-ui';
+import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+
+const _TOKEN_PLACEHOLDER = '[…]';
 
 interface AnnotationDisplayFormatFlags {
   bold?: boolean;
@@ -298,9 +300,11 @@ const contents = computed(() => {
       return {
         ...c,
         tokens: c.tokens.map((t, i) => ({
-          form: t.annotations
-            .find((a) => a.key === 'form')
-            ?.value.join(props.resource.config.special.annotations.multiValueDelimiter),
+          form:
+            t.annotations
+              .find((a) => a.key === 'form')
+              ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ||
+            _TOKEN_PLACEHOLDER,
           eol: !!t.annotations.find((a) => a.key === 'eol'),
           annotations: t.annotations,
           annoDisplay: displays[i],
@@ -397,15 +401,16 @@ function handleTokenContextMenuSelect(key: string | number) {
   const tokenForm =
     tokenData.value?.annotations
       .find((a) => a.key === 'form')
-      ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) || '';
-  if (key === 'copyToken' && tokenForm) {
+      ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ||
+    _TOKEN_PLACEHOLDER;
+  if (key === 'copyToken') {
     copyTokenContent(tokenForm);
   } else if (key === 'copyFull') {
     const delim = props.resource.config.special.annotations.multiValueDelimiter;
     const annos = tokenData.value?.annotations
       ? tokenData.value.annotations.map((a) => `${a.key}: ${a.value.join(delim)}`).join('; ')
       : [];
-    copyTokenContent((tokenForm || '[???]') + (annos ? ` (${annos})` : ''));
+    copyTokenContent(tokenForm + (annos ? ` (${annos})` : ''));
   }
 }
 
@@ -436,7 +441,7 @@ function generatePlaintextAnno(): string {
     // preprocess data
     const tokenLines: { form: string; annoLines: string[]; maxLen: number }[][] = [[]];
     c.tokens.forEach((t) => {
-      t.form = t.form?.normalize('NFC') || '[???]';
+      t.form = t.form.normalize('NFC');
       const annoLines: string[] = t.annoDisplay.map((line) =>
         line.map((anno) => anno.content?.normalize('NFC') || '').join('')
       );
@@ -533,10 +538,9 @@ function generatePlaintextAnno(): string {
             @click="handleTokenClick(t)"
             @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
           >
-            <div v-if="t.form" class="b i" :style="fontStyle">
+            <div class="b i" :style="fontStyle">
               {{ t.form }}
             </div>
-            <n-tag v-else>???</n-tag>
             <div class="annotations">
               <div
                 v-for="(annoLine, lineIndex) in t.annoDisplay"
