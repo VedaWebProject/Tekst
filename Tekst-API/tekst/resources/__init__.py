@@ -54,6 +54,8 @@ def get_resource_template_readme() -> dict[str, str]:
 
 async def call_resource_precompute_hooks(
     text_id: PydanticObjectId | None = None,
+    *,
+    force: bool = False,
 ) -> dict[str, float]:
     op_id = log_op_start("Refresh precomputed cache for resource data", level="INFO")
     for resource in await ResourceBaseDocument.find(
@@ -65,7 +67,7 @@ async def call_resource_precompute_hooks(
         ),
         with_children=True,
     ).to_list():
-        await resource.resource_precompute_hook()
+        await resource.resource_precompute_hook(force=force)
 
     return {
         "took": round(log_op_end(op_id), 2),

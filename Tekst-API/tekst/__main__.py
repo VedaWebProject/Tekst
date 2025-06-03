@@ -34,9 +34,9 @@ async def _create_indices() -> None:
     await create_indices_task()
 
 
-async def _refresh_precomputed_cache() -> None:
+async def _refresh_precomputed_cache(force: bool) -> None:
     await init_odm()
-    await call_resource_precompute_hooks()
+    await call_resource_precompute_hooks(force=force)
 
 
 async def _cleanup() -> None:
@@ -133,9 +133,15 @@ def index():
 
 
 @click.command()
-def precompute():
+@click.option(
+    "--force",
+    "-f",
+    is_flag=True,
+    help="Force regeneration of precomputed data even if system thinks it's up-to-date",
+)
+def precompute(force: bool):
     """Refreshes data that has to be precomputed and cached for performance"""
-    asyncio.run(_refresh_precomputed_cache())
+    asyncio.run(_refresh_precomputed_cache(force=force))
 
 
 @click.command()

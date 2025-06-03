@@ -137,6 +137,7 @@ async def trigger_cache_precomputation(
         call_resource_precompute_hooks,
         tasks.TaskType.PRECOMPUTE_DATA,
         user_id=su.id,
+        task_kwargs={"force": True},
     )
 
 

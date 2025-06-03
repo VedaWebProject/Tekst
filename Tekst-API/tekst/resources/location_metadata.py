@@ -408,8 +408,12 @@ class LocationMetadataResource(ResourceBase):
         precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
 
-    async def resource_precompute_hook(self) -> None:
-        await super().resource_precompute_hook()
+    async def resource_precompute_hook(
+        self,
+        *,
+        force: bool = False,
+    ) -> None:
+        await super().resource_precompute_hook(force=force)
         op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
         try:
             await self._update_aggregations()

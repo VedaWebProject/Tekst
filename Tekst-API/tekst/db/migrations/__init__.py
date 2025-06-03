@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from datetime import UTC, datetime
 from importlib import import_module
 from pkgutil import iter_modules
 
@@ -122,4 +123,18 @@ async def migrate() -> None:
         {"_id": state.get("_id")},
         {"$set": {"db_version": curr_db_version}},
     )
+
+    # mark content as changed for all resources
+    # to enforce complete regeneration of precomputed cache
+    await db.resources.update_many(
+        {},
+        {"$set": {"contents_changed_at": datetime.now(UTC)}},
+    )
+
+    # mark search index as out-of-date for all texts to enforce regeneration
+    await db.texts.update_many(
+        {},
+        {"$set": {"index_utd": False}},
+    )
+
     log.info(f"Finished migrating DB from {db_version_before} to {curr_db_version}.")

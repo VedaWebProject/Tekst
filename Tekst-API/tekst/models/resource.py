@@ -303,7 +303,11 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         self.contents_changed_at = datetime.now(UTC)
         await self.replace()
 
-    async def resource_precompute_hook(self) -> None:
+    async def resource_precompute_hook(
+        self,
+        *,
+        force: bool = False,
+    ) -> None:
         """
         Will be called whenever the central resource precompute procedures are run.
         This may be overridden by concrete resource implementations to run arbitrary
@@ -312,20 +316,24 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         """
         op_id = log_op_start(f"Precompute coverage data for resource {self.id}")
         try:
-            await self.__precompute_coverage_data()
+            await self.__precompute_coverage_data(force=force)
         except Exception as e:  # pragma: no cover
             log_op_end(op_id, failed=True)
             raise e
         log_op_end(op_id)
 
-    async def __precompute_coverage_data(self) -> None:
+    async def __precompute_coverage_data(
+        self,
+        *,
+        force: bool = False,
+    ) -> None:
         # get precomputed resource coverage data
         precomp_doc = await PrecomputedDataDocument.find_one(
             PrecomputedDataDocument.ref_id == self.id,
             PrecomputedDataDocument.precomputed_type == "coverage",
         )
         if precomp_doc:
-            if precomp_doc.created_at > self.contents_changed_at:
+            if precomp_doc.created_at > self.contents_changed_at and not force:
                 log.debug(
                     f"Coverage data for resource {str(self.id)} up-to-date. Skipping."
                 )

@@ -42,11 +42,11 @@ python -m tekst index
 Tekst uses a precomputed cache holding data that is expensive to generate but essential for the application to work. This command triggers the update/creation of the precomputed cache.
 
 ```sh
-python -m tekst precompute
+python -m tekst precompute # use -f/--force to enforce even if up-to-date
 ```
 
 !!! tip
-    The `precompute` command is included in the things the `maintenance` command does (see below!).
+    The `precompute` command is included in the things the `maintenance` command does (see below!). Regeneration of the precomputed cache is **not enforced** when run as part of the `maintenance` routine.
 
 
 ## `cleanup`
