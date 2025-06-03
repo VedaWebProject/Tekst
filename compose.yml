@@ -50,7 +50,7 @@ services:
       dockerfile_inline: |
         FROM docker.elastic.co/elasticsearch/elasticsearch:9.0.1
         RUN elasticsearch-plugin install analysis-icu
-    image: "elasticsearch:tekst"
+    image: localhost/tekst/es
     environment:
       ES_SETTING_DISCOVERY_TYPE: single-node
       ES_SETTING_XPACK_SECURITY_ENABLED: false
