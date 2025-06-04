@@ -15,10 +15,13 @@ Basic configuration, URL, paths, ...
 Full public URL of the server running the application (without sub path, port only if other than 80/443) (String – default: `http://127.0.0.1:8000`)
 
 ### `TEKST_API_PATH`
-Public sub path of the API (String – default: `/api`)
+Public sub path of the API. This **must** be set independently from `TEKST_WEB_PATH`, so if `TEKST_WEB_PATH` is `/foo`, `TEKST_API_PATH` must include the web path, like `/foo/api`. (String – default: `/api`)
+
+!!! warning "Important"
+    The official docker image **assumes an API path ending with `/api`**, so either **do not** set `TEKST_API_PATH` at all (if you deploy Tekst under `/`) to let it default to `/api`, or set an API path that is a combination of `TEKST_WEB_PATH` and the path suffix `/api`, e.g. `/foo/api`!
 
 ### `TEKST_WEB_PATH`
-Public sub path of the web client (String – default: `/`)
+Public path of the web client (String – default: `/`)
 
 ### `TEKST_BEHIND_REVERSE_PROXY`
 If the API runs behind a reverse proxy (e.g. if using the the project's `compose.yml`), set this to `true` and make sure the reverse proxy is properly setting (or appending to) the [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) header on the passed requests. This is to make sure the API is able to **try to** prevent accidentally flooding the workers with long-running background jobs. (Boolean – default: `false`)
