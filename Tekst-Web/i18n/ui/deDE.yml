@@ -843,6 +843,8 @@ admin:
       actionDeleteSystem: Systemprozesse löschen
       actionDeleteAll: Alle Prozesse löschen
       actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
+    force: erzwingen
+    forceTip: Erzwinge Durchführung auch für Elemente, die mutmaßlich bereits auf aktuell sind
   segments:
     heading: Seitensegmente
     systemKeys:

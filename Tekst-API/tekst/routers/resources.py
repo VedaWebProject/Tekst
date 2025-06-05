@@ -132,12 +132,13 @@ router = APIRouter(
 )
 async def trigger_cache_precomputation(
     su: SuperuserDep,
+    force: bool = False,
 ) -> tasks.TaskDocument:
     return await tasks.create_task(
         call_resource_precompute_hooks,
         tasks.TaskType.PRECOMPUTE_DATA,
         user_id=su.id,
-        task_kwargs={"force": True},
+        task_kwargs={"force": force},
     )
 
 

@@ -819,6 +819,8 @@ admin:
       actionDeleteSystem: Delete system tasks
       actionDeleteAll: Delete all tasks
       actionDeleteAllSuccess: All background tasks have been deleted
+    force: force
+    forceTip: Force execution even for elements that are considered already up-to-date
   segments:
     heading: Site Segments
     systemKeys:

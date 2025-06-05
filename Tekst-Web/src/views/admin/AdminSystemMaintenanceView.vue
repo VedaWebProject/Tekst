@@ -6,12 +6,23 @@ import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
-import { NButton, NFlex, NIcon, NTable, NTabPane, NTabs, NTime, type TabsInst } from 'naive-ui';
+import {
+  NButton,
+  NDivider,
+  NFlex,
+  NIcon,
+  NTable,
+  NTabPane,
+  NTabs,
+  NTime,
+  type TabsInst,
+} from 'naive-ui';
 import { onBeforeMount, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 
@@ -26,7 +37,9 @@ const tabsRef = ref<TabsInst>();
 const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
 const indicesInfoLoading = ref(false);
+const indicesForce = ref(false);
 const precomputedLoading = ref(false);
+const precomputedForce = ref(false);
 const cleanupLoading = ref(false);
 const tasksLoading = ref(false);
 
@@ -39,22 +52,28 @@ const statusColors: Record<string, string> = {
 
 async function createIndex() {
   indicesInfoLoading.value = true;
-  const { data, error } = await GET('/search/index/create');
+  const { data, error } = await GET('/search/index/create', {
+    params: { query: { force: indicesForce.value } },
+  });
   if (!error) {
     addTask(data);
     message.info($t('admin.maintenance.indices.actionCreateStarted'));
     startTasksPolling();
+    indicesForce.value = false;
   }
   indicesInfoLoading.value = false;
 }
 
 async function triggerPrecomputation() {
   precomputedLoading.value = true;
-  const { data, error } = await GET('/resources/precompute');
+  const { data, error } = await GET('/resources/precompute', {
+    params: { query: { force: precomputedForce.value } },
+  });
   if (!error) {
     addTask(data);
     message.info($t('admin.maintenance.precomputed.actionStarted'));
     startTasksPolling();
+    precomputedForce.value = false;
   }
   precomputedLoading.value = false;
 }
@@ -164,12 +183,18 @@ onBeforeMount(() => {
                 </template>
                 {{ $t('common.refresh') }}
               </n-button>
+              <n-divider vertical style="height: 100%" />
               <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
                 <template #icon>
                   <n-icon :component="UpdateIcon" />
                 </template>
                 {{ $t('admin.maintenance.indices.actionCreate') }}
               </n-button>
+              <labeled-switch
+                v-model="indicesForce"
+                :label="$t('admin.maintenance.force')"
+                :title="$t('admin.maintenance.forceTip')"
+              />
             </template>
           </button-shelf>
 
@@ -230,17 +255,26 @@ onBeforeMount(() => {
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
         <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false">
-          <n-button
-            secondary
-            :disabled="precomputedLoading"
-            :loading="precomputedLoading"
-            @click="triggerPrecomputation"
-          >
-            <template #icon>
-              <n-icon :component="UpdateIcon" />
+          <button-shelf bottom-gap>
+            <template #start>
+              <n-button
+                secondary
+                :disabled="precomputedLoading"
+                :loading="precomputedLoading"
+                @click="triggerPrecomputation"
+              >
+                <template #icon>
+                  <n-icon :component="UpdateIcon" />
+                </template>
+                {{ $t('common.run') }}
+              </n-button>
+              <labeled-switch
+                v-model="precomputedForce"
+                :label="$t('admin.maintenance.force')"
+                :title="$t('admin.maintenance.forceTip')"
+              />
             </template>
-            {{ $t('common.run') }}
-          </n-button>
+          </button-shelf>
           <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
         </form-section>
       </n-tab-pane>
@@ -279,19 +313,19 @@ onBeforeMount(() => {
                 </template>
                 {{ $t('common.refresh') }}
               </n-button>
-              <n-button
-                secondary
-                type="error"
-                :disabled="tasksLoading"
-                :loading="tasksLoading"
-                @click="deleteAllTasks"
-              >
-                <template #icon>
-                  <n-icon :component="DeleteIcon" />
-                </template>
-                {{ $t('admin.maintenance.tasks.actionDeleteAll') }}
-              </n-button>
             </template>
+            <n-button
+              secondary
+              type="error"
+              :disabled="tasksLoading"
+              :loading="tasksLoading"
+              @click="deleteAllTasks"
+            >
+              <template #icon>
+                <n-icon :component="DeleteIcon" />
+              </template>
+              {{ $t('admin.maintenance.tasks.actionDeleteAll') }}
+            </n-button>
           </button-shelf>
 
           <n-table size="small" style="table-layout: fixed">

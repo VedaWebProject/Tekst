@@ -8707,7 +8707,9 @@ export interface operations {
   };
   triggerCachePrecomputation: {
     parameters: {
-      query?: never;
+      query?: {
+        force?: boolean;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8739,6 +8741,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -9723,7 +9734,9 @@ export interface operations {
   };
   createSearchIndex: {
     parameters: {
-      query?: never;
+      query?: {
+        force?: boolean;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -9755,6 +9768,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };

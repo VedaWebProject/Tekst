@@ -57,7 +57,10 @@ async def call_resource_precompute_hooks(
     *,
     force: bool = False,
 ) -> dict[str, float]:
-    op_id = log_op_start("Refresh precomputed cache for resource data", level="INFO")
+    op_id = log_op_start(
+        f"Refresh precomputed cache for resource data (forced: {force})",
+        level="INFO",
+    )
     for resource in await ResourceBaseDocument.find(
         In(
             ResourceBaseDocument.text_id,

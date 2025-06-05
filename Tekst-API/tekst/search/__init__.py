@@ -124,7 +124,10 @@ async def create_indices_task(
     *,
     force: bool = False,
 ) -> dict[str, float]:
-    op_id = log_op_start("Create search indices", level="INFO")
+    op_id = log_op_start(
+        f"Create search indices (forced: {force})",
+        level="INFO",
+    )
     await _wait_for_es()
     await _setup_index_templates()
 
@@ -216,7 +219,7 @@ async def create_indices(
     user: UserRead | None = None,
     force: bool = False,
 ) -> tasks.TaskDocument:
-    log.info("Creating search indices ...")
+    log.info(f"Creating search indices (forced: {force}) ...")
     # create index task
     return await tasks.create_task(
         create_indices_task,
