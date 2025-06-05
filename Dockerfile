@@ -98,7 +98,16 @@ VOLUME /var/www/tekst/static/
 EXPOSE 8080
 USER tekst
 
-LABEL org.opencontainers.image.description DESCRIPTION
+
+ARG TEKST_VERSION=unknown
+LABEL \
+    org.opencontainers.image.title="Tekst" \
+    org.opencontainers.image.description="A collaborative research platform for resources on natural language texts" \
+    org.opencontainers.image.documentation="https://vedawebproject.github.io/Tekst/" \
+    org.opencontainers.image.url="https://github.com/VedaWebProject/Tekst" \
+    org.opencontainers.image.source="https://github.com/VedaWebProject/Tekst" \
+    org.opencontainers.image.licenses="AGPL-3.0-or-later" \
+    org.opencontainers.image.version="$TEKST_VERSION"
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["gunicorn", "tekst.app:app", "--config", "/etc/gunicorn/gunicorn_conf.py"]
