@@ -98,7 +98,6 @@ VOLUME /var/www/tekst/static/
 EXPOSE 8080
 USER tekst
 
-
 ARG TEKST_VERSION=unknown
 LABEL \
     org.opencontainers.image.title="Tekst" \
