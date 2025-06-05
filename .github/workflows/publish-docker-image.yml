@@ -42,5 +42,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args:
-            - TEKST_VERSION=${{ steps.meta.outputs.version }}
+          build-args: |
+            TEKST_VERSION=${{ steps.meta.outputs.version }}
