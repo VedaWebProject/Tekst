@@ -253,6 +253,7 @@ class TextAnnotation(ResourceTypeABC):
         text = await TextDocument.get(resource.text_id)
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
+        sort_num = 0
         with open(file_path, "w", newline="") as csvfile:
             csv_writer = csv.writer(
                 csvfile,
@@ -272,6 +273,7 @@ class TextAnnotation(ResourceTypeABC):
             csv_writer.writerow(
                 [
                     "LOCATION",
+                    "SORT",
                     "POSITION",
                     *anno_keys,
                     "AUTHORS_COMMENT",
@@ -292,12 +294,14 @@ class TextAnnotation(ResourceTypeABC):
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
+                            sort_num,
                             i,
                             *csv_annos,
                             content.authors_comment,
                             content.editors_comment,
                         ]
                     )
+                    sort_num += 1
 
 
 class AnnotationsConfig(ModelBase):

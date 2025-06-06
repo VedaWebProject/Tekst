@@ -127,6 +127,7 @@ class Images(ResourceTypeABC):
         text = await TextDocument.get(resource.text_id)
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
+        sort_num = 0
         with open(file_path, "w", newline="") as csvfile:
             csv_writer = csv.writer(
                 csvfile,
@@ -136,6 +137,7 @@ class Images(ResourceTypeABC):
             csv_writer.writerow(
                 [
                     "LOCATION",
+                    "SORT",
                     "URL",
                     "THUMB_URL",
                     "CAPTION",
@@ -148,6 +150,7 @@ class Images(ResourceTypeABC):
                     csv_writer.writerow(
                         [
                             full_location_labels.get(str(content.location_id), ""),
+                            sort_num,
                             image_file.url,
                             image_file.thumb_url,
                             image_file.caption,
@@ -155,6 +158,7 @@ class Images(ResourceTypeABC):
                             content.editors_comment,
                         ]
                     )
+                    sort_num += 1
 
 
 class ImagesResourceConfig(ResourceConfigBase):

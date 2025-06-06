@@ -125,6 +125,7 @@ class RichText(ResourceTypeABC):
         text = await TextDocument.get(resource.text_id)
         # construct labels of all locations on the resource's level
         full_location_labels = await text.full_location_labels(resource.level)
+        sort_num = 0
         with open(file_path, "w", newline="") as csvfile:
             csv_writer = csv.writer(
                 csvfile,
@@ -134,6 +135,7 @@ class RichText(ResourceTypeABC):
             csv_writer.writerow(
                 [
                     "LOCATION",
+                    "SORT",
                     "HTML",
                     "AUTHORS_COMMENT",
                     "EDITORS_COMMENT",
@@ -143,11 +145,13 @@ class RichText(ResourceTypeABC):
                 csv_writer.writerow(
                     [
                         full_location_labels.get(str(content.location_id), ""),
+                        sort_num,
                         content.html,
                         content.authors_comment,
                         content.editors_comment,
                     ]
                 )
+                sort_num += 1
 
 
 class RichTextModGeneralConfig(GeneralResourceConfig):

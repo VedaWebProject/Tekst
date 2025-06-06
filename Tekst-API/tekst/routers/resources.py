@@ -1041,9 +1041,7 @@ async def export_resource_contents_task(
             LocationDocument.level == resource.level,
             GTE(LocationDocument.position, loc_from.position) if loc_from else {},
             LTE(LocationDocument.position, loc_to.position) if loc_to else {},
-        )
-        .sort(+LocationDocument.position)
-        .to_list()
+        ).to_list()
     }
 
     # get target contents
