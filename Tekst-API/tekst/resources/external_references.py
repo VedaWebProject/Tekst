@@ -123,7 +123,7 @@ class ExternalReferences(ResourceTypeABC):
     ) -> None:
         text = await TextDocument.get(resource.text_id)
         # construct labels of all locations on the resource's level
-        full_location_labels = await text.full_location_labels(resource.level)
+        full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
         with open(file_path, "w", newline="") as csvfile:
             csv_writer = csv.writer(
@@ -146,7 +146,7 @@ class ExternalReferences(ResourceTypeABC):
                 for link in content.links:
                     csv_writer.writerow(
                         [
-                            full_location_labels.get(str(content.location_id), ""),
+                            full_loc_labels.get(str(content.location_id), ""),
                             sort_num,
                             link.url,
                             link.title,

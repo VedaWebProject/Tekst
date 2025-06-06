@@ -253,10 +253,13 @@ class TextDocument(Text, DocumentBase):
         location_labels = {}
         for level in range(target_level + 1):
             location_labels = {
-                str(loc.id): loc_delim.join(
+                str(loc["_id"]): loc_delim.join(
                     [
                         lbl
-                        for lbl in [location_labels.get(str(loc.parent_id)), loc.label]
+                        for lbl in [
+                            location_labels.get(str(loc.get("parent_id"))),
+                            loc["label"],
+                        ]
                         if lbl
                     ]
                 )
@@ -265,6 +268,7 @@ class TextDocument(Text, DocumentBase):
                     LocationDocument.level == level,
                 )
                 .sort(+LocationDocument.position)
+                .aggregate([{"$project": {"_id": 1, "parent_id": 1, "label": 1}}])
                 .to_list()
             }
         return location_labels

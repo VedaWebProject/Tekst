@@ -344,9 +344,9 @@ class ResourceTypeABC(ABC):
         ]
 
         # construct labels of all locations on the resource's level
-        full_location_labels = await text.full_location_labels(resource.level)
+        full_loc_labels = await text.full_location_labels(resource.level)
         for content in contents:
-            content["location"] = full_location_labels.get(str(content["locationId"]))
+            content["location"] = full_loc_labels.get(str(content["locationId"]))
             del content["locationId"]
         res["contents"] = contents
 

@@ -229,11 +229,8 @@ async def import_text_structure(
     locations = structure_def.model_dump(exclude_none=True, by_alias=False)["locations"]
     structure_def = None  # de-reference structure definition object
 
-    # apply parent IDs (None) to all 0-level locations
-    for location in locations:
-        location["parent_id"] = None
-
     # process locations level by level
+    count = 0
     for level in range(len(text.levels)):
         if len(locations) == 0:
             break  # pragma: no cover
@@ -242,11 +239,11 @@ async def import_text_structure(
         location_docs = [
             LocationDocument(
                 text_id=text_id,
-                parent_id=locations[i]["parent_id"],
+                parent_id=locations[i].get("parent_id", None),
                 level=level,
                 position=i,
-                label=locations[i]["label"],
-                aliases=locations[i]["aliases"],
+                label=locations[i].get("label", f"Location {count}"),
+                aliases=locations[i].get("aliases", None),
             )
             for i in range(len(locations))
         ]

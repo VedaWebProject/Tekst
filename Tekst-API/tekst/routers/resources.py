@@ -692,7 +692,7 @@ async def publish_resource(
     # mark the text's index as out-of-date
     await set_index_ood(
         resource_doc.text_id,
-        by_public_resource=resource_doc.public,
+        by_public_resource=True,
     )
 
     # notify users about the new publication
@@ -784,14 +784,14 @@ async def download_resource_template(
     template["_resourceTitle"] = pick_translation(resource_doc.title, user.locale)
 
     # construct labels of all locations on the resource's level
-    full_location_labels = await text_doc.full_location_labels(resource_doc.level)
+    full_loc_labels = await text_doc.full_location_labels(resource_doc.level)
 
     # fill in content templates with IDs and some informational fields
     template["contents"] = [
         dict(
             locationId=str(location.id),
             _position=location.position,
-            _location=full_location_labels.get(str(location.id)),
+            _location=full_loc_labels.get(str(location.id)),
         )
         for location in await LocationDocument.find(
             LocationDocument.text_id == resource_doc.text_id,
