@@ -61,8 +61,8 @@ ENV FASTAPI_ENV=production
 WORKDIR "/tekst"
 
 RUN set -x && \
-    addgroup -S tekst && \
-    adduser -S tekst -G tekst
+    addgroup -g 1111 -S tekst && \
+    adduser -u 1111 -S tekst -G tekst
 
 RUN apk update && \
     apk add --no-cache curl caddy
