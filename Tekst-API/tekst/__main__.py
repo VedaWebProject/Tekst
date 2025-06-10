@@ -109,7 +109,7 @@ async def _export(
     if not target_resources:
         click.echo("No resources to export", err=True)
         exit(1)
-    cfg = get_config(log_level="info")
+    cfg = get_config()
     for res in target_resources:
         res_id_str = str(res.id)
         for fmt in formats:
@@ -260,7 +260,7 @@ def schema(
         )
     )
     if to_file and not quiet:
-        dev_mode = get_config(log_level="info").dev_mode
+        dev_mode = get_config().dev_mode
         click.echo(
             f"Saved Tekst "
             f"({'DEVELOPMENT' if dev_mode else 'PRODUCTION'} mode)"
