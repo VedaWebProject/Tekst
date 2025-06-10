@@ -362,7 +362,7 @@ class TekstConfig(BaseSettings):
 
 @cache
 def get_config(log_level: str | None = None) -> TekstConfig:
-    return TekstConfig(log_level=log_level or "info")
+    return TekstConfig(**({"log_level": log_level} if log_level else {}))
 
 
 ConfigDep = Annotated[TekstConfig, Depends(get_config)]
