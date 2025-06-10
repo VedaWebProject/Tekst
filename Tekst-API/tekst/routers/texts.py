@@ -671,9 +671,7 @@ async def delete_text(
 async def get_text(
     text_id: Annotated[
         PydanticObjectId,
-        Path(
-            alias="id",
-        ),
+        Path(alias="id"),
     ],
 ) -> TextRead:
     text = await TextDocument.get(text_id)
@@ -696,7 +694,10 @@ async def get_text(
 )
 async def update_text(
     su: SuperuserDep,
-    text_id: Annotated[PydanticObjectId, Path(alias="id")],
+    text_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
     updates: TextUpdate,
 ) -> TextDocument:
     text = await TextDocument.get(text_id)
