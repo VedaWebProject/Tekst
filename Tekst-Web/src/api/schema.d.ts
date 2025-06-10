@@ -1303,7 +1303,7 @@ export interface components {
       /**
        * Multivaluedelimiter
        * @description String used to delimit multiple values for an annotation
-       * @default /
+       * @default ,
        */
       multiValueDelimiter: string;
       /** @default {
@@ -5962,7 +5962,7 @@ export interface components {
        *           "groups": [],
        *           "itemProps": []
        *         },
-       *         "multiValueDelimiter": "/"
+       *         "multiValueDelimiter": ","
        *       }
        *     } */
       special: components['schemas']['TextAnnotationSpecialConfig'];
@@ -6034,7 +6034,7 @@ export interface components {
        *             "groups": [],
        *             "itemProps": []
        *           },
-       *           "multiValueDelimiter": "/"
+       *           "multiValueDelimiter": ","
        *         }
        *       }
        *     } */
@@ -6158,7 +6158,7 @@ export interface components {
        *             "groups": [],
        *             "itemProps": []
        *           },
-       *           "multiValueDelimiter": "/"
+       *           "multiValueDelimiter": ","
        *         }
        *       }
        *     } */
@@ -6239,7 +6239,7 @@ export interface components {
     /** TextAnnotationSpecialConfig */
     TextAnnotationSpecialConfig: {
       /** @default {
-       *       "multiValueDelimiter": "/",
+       *       "multiValueDelimiter": ",",
        *       "annoIntegration": {
        *         "groups": [],
        *         "itemProps": []
@@ -8001,6 +8001,7 @@ export interface operations {
       query?: {
         /** @description ID of the thread to return messages for */
         thread?: string | null;
+        log_level?: string | null;
       };
       header?: never;
       path?: never;
@@ -8166,7 +8167,9 @@ export interface operations {
   };
   getPlatformData: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8182,11 +8185,22 @@ export interface operations {
           'application/json': components['schemas']['PlatformData'];
         };
       };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
     };
   };
   getClientInitData: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8200,6 +8214,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ClientInitData'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -8584,6 +8607,7 @@ export interface operations {
       query: {
         /** @description Pickup key for accessing the task's file artifact */
         pickupKey: string;
+        log_level?: string | null;
       };
       header?: never;
       path?: never;
@@ -8802,7 +8826,9 @@ export interface operations {
   };
   createResource: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8887,7 +8913,9 @@ export interface operations {
   };
   createResourceVersion: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path: {
         id: string;
@@ -9117,7 +9145,9 @@ export interface operations {
   };
   transferResource: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path: {
         id: string;
@@ -9569,6 +9599,7 @@ export interface operations {
         from?: string | null;
         /** @description ID of the location to end the export's location range at */
         to?: string | null;
+        log_level?: string | null;
       };
       header?: never;
       path: {
@@ -9821,7 +9852,9 @@ export interface operations {
   };
   exportSearchResults: {
     parameters: {
-      query?: never;
+      query?: {
+        log_level?: string | null;
+      };
       header?: never;
       path?: never;
       cookie?: never;
