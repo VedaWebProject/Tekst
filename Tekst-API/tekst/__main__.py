@@ -1,4 +1,6 @@
 import asyncio
+import os
+import shutil
 
 from pathlib import Path
 from typing import get_args
@@ -9,7 +11,6 @@ from beanie import PydanticObjectId
 from beanie.operators import Eq, In
 
 from tekst.config import get_config
-from tekst.db import init_odm, migrations
 from tekst.errors import TekstHTTPException
 from tekst.models.resource import (
     ResourceBaseDocument,
@@ -17,11 +18,6 @@ from tekst.models.resource import (
     res_exp_fmt_info,
 )
 from tekst.openapi import generate_openapi_json
-from tekst.platform import bootstrap as app_bootstrap
-from tekst.platform import cleanup_task
-from tekst.resources import call_resource_precompute_hooks
-from tekst.routers.resources import export_resource_contents_task
-from tekst.search import create_indices_task
 
 
 """
@@ -29,26 +25,41 @@ Command line interface to some utilities of Tekst-API
 """
 
 
+async def _init_odm() -> None:
+    from tekst import db
+
+    await db.init_odm()
+
+
 async def _create_indices() -> None:
-    await init_odm()
-    await create_indices_task()
+    await _init_odm()
+    from tekst import search
+
+    await search.create_indices_task()
+    await search.close()
 
 
 async def _refresh_precomputed_cache(force: bool) -> None:
-    await init_odm()
-    await call_resource_precompute_hooks(force=force)
+    await _init_odm()
+    from tekst import resources
+
+    await resources.call_resource_precompute_hooks(force=force)
 
 
 async def _cleanup() -> None:
-    await init_odm()
-    await cleanup_task()
+    await _init_odm()
+    from tekst import platform
+
+    await platform.cleanup_task()
 
 
 async def _maintenance() -> None:
-    await init_odm()
-    await create_indices_task()
-    await call_resource_precompute_hooks()
-    await cleanup_task()
+    await _init_odm()
+    from tekst import platform, resources, search
+
+    await search.create_indices_task()
+    await resources.call_resource_precompute_hooks()
+    await platform.cleanup_task()
 
 
 async def _export(
@@ -65,6 +76,7 @@ async def _export(
     if not output_dir_path.is_dir():
         click.echo(f"Output directory {output_dir_path} is not a directory", err=True)
         exit(1)
+
     # delete all existing files in output directory
     if delete:
         if not quiet:
@@ -72,31 +84,39 @@ async def _export(
         for child in output_dir_path.iterdir():
             if child.is_file():
                 child.unlink()
+
     # prepare system
-    await init_odm()
-    await call_resource_precompute_hooks()
+    await _init_odm()
+    from tekst import resources
+    from tekst.routers import resources as resources_router
+
+    # call precompute hooks
+    await resources.call_resource_precompute_hooks()
+
     # get IDs of resources to export
     target_resources = await ResourceBaseDocument.find(
         Eq(ResourceBaseDocument.public, True),
         In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
         with_children=True,
     ).to_list()
+
     # give feedback on resources that could not be found
     for res in resource_ids or []:
         if res not in [res.id for res in target_resources]:
             click.echo(f"Resource ID {res} not found or not public", err=True)
+
     # run exports
     if not target_resources:
         click.echo("No resources to export", err=True)
         exit(1)
-    cfg = get_config()
+    cfg = get_config(log_level="info")
     for res in target_resources:
         res_id_str = str(res.id)
         for fmt in formats:
             if not quiet:
                 click.echo(f"Exporting resource {res_id_str} as {fmt} ...")
             try:
-                export_props = await export_resource_contents_task(
+                export_props = await resources_router.export_resource_contents_task(
                     user=None,
                     cfg=cfg,
                     resource_id=res.id,
@@ -111,11 +131,13 @@ async def _export(
                     continue
                 else:
                     raise
+
             # move exported file to output directory
             source_path = cfg.temp_files_dir / export_props["artifact"]
             target_ext = res_exp_fmt_info[fmt]["extension"]
             target_path = output_dir_path / f"{res_id_str}_{fmt}.{target_ext}"
-            source_path.replace(target_path)
+            shutil.copy(source_path, target_path)
+            os.remove(source_path)
             if not quiet:
                 click.echo(f"Exported resource {res_id_str} as {str(target_path)}.")
 
@@ -123,7 +145,9 @@ async def _export(
 @click.command()
 def bootstrap():
     """Runs the Tekst initial bootstrap procedure"""
-    asyncio.run(app_bootstrap())
+    from tekst import platform
+
+    asyncio.run(platform.bootstrap())
 
 
 @click.command()
@@ -177,6 +201,8 @@ def migrate(yes: bool):
     ):
         click.echo("Aborting database migration.")
         return
+    from tekst.db import migrations
+
     asyncio.run(migrations.migrate())
 
 
@@ -234,9 +260,10 @@ def schema(
         )
     )
     if to_file and not quiet:
+        dev_mode = get_config(log_level="info").dev_mode
         click.echo(
             f"Saved Tekst "
-            f"({'DEVELOPMENT' if get_config().dev_mode else 'PRODUCTION'} mode)"
+            f"({'DEVELOPMENT' if dev_mode else 'PRODUCTION'} mode)"
             f" OpenAPI schema to {output_file}."
         )
     if not to_file:
