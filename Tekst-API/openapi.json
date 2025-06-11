@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.20.3a0"
+    "version": "0.20.4a0"
   },
   "servers": [
     {
@@ -7525,7 +7525,7 @@
             "minLength": 1,
             "title": "Multivaluedelimiter",
             "description": "String used to delimit multiple values for an annotation",
-            "default": ","
+            "default": "/"
           },
           "annoIntegration": {
             "$ref": "#/components/schemas/ItemIntegrationConfig",
@@ -17358,7 +17358,7 @@
                   "groups": [],
                   "itemProps": []
                 },
-                "multiValueDelimiter": ","
+                "multiValueDelimiter": "/"
               }
             }
           }
@@ -17477,7 +17477,7 @@
                     "groups": [],
                     "itemProps": []
                   },
-                  "multiValueDelimiter": ","
+                  "multiValueDelimiter": "/"
                 }
               }
             }
@@ -17720,7 +17720,7 @@
                     "groups": [],
                     "itemProps": []
                   },
-                  "multiValueDelimiter": ","
+                  "multiValueDelimiter": "/"
                 }
               }
             }
@@ -17944,7 +17944,7 @@
           "annotations": {
             "$ref": "#/components/schemas/AnnotationsConfig",
             "default": {
-              "multiValueDelimiter": ",",
+              "multiValueDelimiter": "/",
               "annoIntegration": {
                 "groups": [],
                 "itemProps": []

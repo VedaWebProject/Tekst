@@ -1303,7 +1303,7 @@ export interface components {
       /**
        * Multivaluedelimiter
        * @description String used to delimit multiple values for an annotation
-       * @default ,
+       * @default /
        */
       multiValueDelimiter: string;
       /** @default {
@@ -5962,7 +5962,7 @@ export interface components {
        *           "groups": [],
        *           "itemProps": []
        *         },
-       *         "multiValueDelimiter": ","
+       *         "multiValueDelimiter": "/"
        *       }
        *     } */
       special: components['schemas']['TextAnnotationSpecialConfig'];
@@ -6034,7 +6034,7 @@ export interface components {
        *             "groups": [],
        *             "itemProps": []
        *           },
-       *           "multiValueDelimiter": ","
+       *           "multiValueDelimiter": "/"
        *         }
        *       }
        *     } */
@@ -6158,7 +6158,7 @@ export interface components {
        *             "groups": [],
        *             "itemProps": []
        *           },
-       *           "multiValueDelimiter": ","
+       *           "multiValueDelimiter": "/"
        *         }
        *       }
        *     } */
@@ -6239,7 +6239,7 @@ export interface components {
     /** TextAnnotationSpecialConfig */
     TextAnnotationSpecialConfig: {
       /** @default {
-       *       "multiValueDelimiter": ",",
+       *       "multiValueDelimiter": "/",
        *       "annoIntegration": {
        *         "groups": [],
        *         "itemProps": []
