@@ -25,41 +25,40 @@ Command line interface to some utilities of Tekst-API
 """
 
 
-async def _init_odm() -> None:
-    from tekst import db
+async def _create_indices() -> None:
+    from tekst import db, search
 
     await db.init_odm()
-
-
-async def _create_indices() -> None:
-    await _init_odm()
-    from tekst import search
-
     await search.create_indices_task()
     await search.close()
+    await db.close()
 
 
 async def _refresh_precomputed_cache(force: bool) -> None:
-    await _init_odm()
-    from tekst import resources
+    from tekst import db, resources
 
+    await db.init_odm()
     await resources.call_resource_precompute_hooks(force=force)
+    await db.close()
 
 
 async def _cleanup() -> None:
-    await _init_odm()
-    from tekst import platform
+    from tekst import db, platform
 
+    await db.init_odm()
     await platform.cleanup_task()
+    await db.close()
 
 
 async def _maintenance() -> None:
-    await _init_odm()
-    from tekst import platform, resources, search
+    from tekst import db, platform, resources, search
 
+    await db.init_odm()
     await search.create_indices_task()
     await resources.call_resource_precompute_hooks()
     await platform.cleanup_task()
+    await search.close()
+    await db.close()
 
 
 async def _export(
@@ -77,6 +76,12 @@ async def _export(
         click.echo(f"Output directory {output_dir_path} is not a directory", err=True)
         exit(1)
 
+    # prepare system
+    from tekst import db, resources
+    from tekst.routers import resources as resources_router
+
+    await db.init_odm()
+
     # delete all existing files in output directory
     if delete:
         if not quiet:
@@ -84,11 +89,6 @@ async def _export(
         for child in output_dir_path.iterdir():
             if child.is_file():
                 child.unlink()
-
-    # prepare system
-    await _init_odm()
-    from tekst import resources
-    from tekst.routers import resources as resources_router
 
     # call precompute hooks
     await resources.call_resource_precompute_hooks()
@@ -140,6 +140,8 @@ async def _export(
             os.remove(source_path)
             if not quiet:
                 click.echo(f"Exported resource {res_id_str} as {str(target_path)}.")
+
+    await db.close()
 
 
 @click.command()

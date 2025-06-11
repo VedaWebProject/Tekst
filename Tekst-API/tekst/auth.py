@@ -1,6 +1,7 @@
 import contextlib
 import re
 
+from collections.abc import Callable
 from typing import Annotated, Any
 
 import fastapi_users.models as fapi_users_models
@@ -388,7 +389,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     )
 
 
-def _current_user(**kwargs) -> callable:
+def _current_user(**kwargs) -> Callable:
     """Returns auth dependencies for API routes (optional auth in dev mode)"""
     return _fastapi_users.current_user(
         get_enabled_backends=_get_enabled_backends,
