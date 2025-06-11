@@ -255,7 +255,7 @@ async def _populate_index(
                 log.error(str(error))
             raise RuntimeError(f"Failed to index documents for text '{text.title}'.")
         req_no_str = f"#{req_no} " if req_no is not None else ""
-        log.debug(f"Bulk index request {req_no_str}took: {resp.get('took', '???')}ms")
+        log.debug(f"Bulk index request {req_no_str} [{resp.get('took', '???')}ms]")
 
     bulk_index_max_size = 200
     bulk_index_body = []

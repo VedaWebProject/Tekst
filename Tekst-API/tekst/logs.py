@@ -148,9 +148,9 @@ def log_op_end(
     label, start_t, level_code, use_proc_t = op_entry
     dur = (process_time() if use_proc_t else perf_counter()) - start_t
     if not failed:
-        log.log(level_code, f"Finished: {label} [took: {dur:.2f}s]")
+        log.log(level_code, f"Finished: {label} [{dur:.2f}s]")
     else:
         level_code = _LOG_LEVELS.get(failed_level, _LOG_LEVELS["ERROR"])
         failed_msg = f" – {failed_msg}" if failed_msg else ""
-        log.log(level_code, f"Failed: {label} [took: {dur:.2f}s]{failed_msg}")
+        log.log(level_code, f"Failed: {label} [{dur:.2f}s]{failed_msg}")
     return dur
