@@ -326,7 +326,7 @@ class AnnotationsConfig(ModelBase):
         Field(
             description="String used to delimit multiple values for an annotation",
         ),
-    ] = ","
+    ] = "/"
     anno_integration: ItemIntegrationConfig = ItemIntegrationConfig()
 
 
