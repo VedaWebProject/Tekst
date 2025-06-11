@@ -98,7 +98,7 @@ class ApiCall(ResourceTypeABC):
             csv_writer = csv.writer(
                 csvfile,
                 dialect="excel",
-                quoting=csv.QUOTE_ALL,
+                quoting=csv.QUOTE_MINIMAL,
             )
             csv_writer.writerow(
                 [
