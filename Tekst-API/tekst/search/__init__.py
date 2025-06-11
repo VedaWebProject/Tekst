@@ -179,7 +179,10 @@ async def create_indices_task(
         )
 
         # populate newly created index
-        populate_op_id = log_op_start(f"Index resources for text '{text.title}'")
+        populate_op_id = log_op_start(
+            f"Index resources for text '{text.title}'",
+            level="INFO",
+        )
         try:
             await _populate_index(new_idx_name, text)
         except Exception as e:  # pragma: no cover
