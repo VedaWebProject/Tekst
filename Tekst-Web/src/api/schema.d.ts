@@ -8001,7 +8001,6 @@ export interface operations {
       query?: {
         /** @description ID of the thread to return messages for */
         thread?: string | null;
-        log_level?: string | null;
       };
       header?: never;
       path?: never;
@@ -8167,9 +8166,7 @@ export interface operations {
   };
   getPlatformData: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path?: never;
       cookie?: never;
@@ -8185,22 +8182,11 @@ export interface operations {
           'application/json': components['schemas']['PlatformData'];
         };
       };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
     };
   };
   getClientInitData: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path?: never;
       cookie?: never;
@@ -8214,15 +8200,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ClientInitData'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -8607,7 +8584,6 @@ export interface operations {
       query: {
         /** @description Pickup key for accessing the task's file artifact */
         pickupKey: string;
-        log_level?: string | null;
       };
       header?: never;
       path?: never;
@@ -8826,9 +8802,7 @@ export interface operations {
   };
   createResource: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path?: never;
       cookie?: never;
@@ -8913,9 +8887,7 @@ export interface operations {
   };
   createResourceVersion: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path: {
         id: string;
@@ -9145,9 +9117,7 @@ export interface operations {
   };
   transferResource: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path: {
         id: string;
@@ -9599,7 +9569,6 @@ export interface operations {
         from?: string | null;
         /** @description ID of the location to end the export's location range at */
         to?: string | null;
-        log_level?: string | null;
       };
       header?: never;
       path: {
@@ -9852,9 +9821,7 @@ export interface operations {
   };
   exportSearchResults: {
     parameters: {
-      query?: {
-        log_level?: string | null;
-      };
+      query?: never;
       header?: never;
       path?: never;
       cookie?: never;

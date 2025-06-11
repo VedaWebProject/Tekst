@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.20.2a0"
+    "version": "0.20.3a0"
   },
   "servers": [
     {
@@ -2402,22 +2402,6 @@
               "title": "Thread"
             },
             "description": "ID of the thread to return messages for"
-          },
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
           }
         ],
         "responses": {
@@ -2586,32 +2570,6 @@
         "summary": "Get platform data",
         "description": "Returns data about the platform and its configuration",
         "operationId": "getPlatformData",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -2622,18 +2580,16 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/web-init": {
@@ -2644,32 +2600,6 @@
         "summary": "Get client init data",
         "description": "Returns data the client needs to initialize",
         "operationId": "getClientInitData",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -2680,18 +2610,16 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/platform/state": {
@@ -3241,22 +3169,6 @@
               "title": "Pickupkey"
             },
             "description": "Pickup key for accessing the task's file artifact"
-          },
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
           }
         ],
         "responses": {
@@ -3491,24 +3403,6 @@
           },
           {
             "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
           }
         ],
         "requestBody": {
@@ -3828,22 +3722,6 @@
               "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
-            }
-          },
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
             }
           }
         ],
@@ -4295,22 +4173,6 @@
               "pattern": "^[0-9a-f]{24}$",
               "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Id"
-            }
-          },
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
             }
           }
         ],
@@ -5165,22 +5027,6 @@
               "title": "To"
             },
             "description": "ID of the location to end the export's location range at"
-          },
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
           }
         ],
         "responses": {
@@ -5552,34 +5398,7 @@
         ],
         "summary": "Export search results",
         "operationId": "exportSearchResults",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "log_level",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Log Level"
-            }
-          }
-        ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -5591,17 +5410,18 @@
                     "$ref": "#/components/schemas/AdvancedSearchRequestBody"
                   }
                 ],
+                "title": "Body",
                 "discriminator": {
                   "propertyName": "type",
                   "mapping": {
                     "quick": "#/components/schemas/QuickSearchRequestBody",
                     "advanced": "#/components/schemas/AdvancedSearchRequestBody"
                   }
-                },
-                "title": "Body"
+                }
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "202": {
@@ -5624,7 +5444,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/status": {
