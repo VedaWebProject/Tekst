@@ -52,7 +52,7 @@ const annoOptions = computed(() => {
           state.locale
         ) || item.key;
       return {
-        label: `${item.key} (${lbl})`,
+        label: lbl || item.key,
         value: item.key,
       };
     }),
