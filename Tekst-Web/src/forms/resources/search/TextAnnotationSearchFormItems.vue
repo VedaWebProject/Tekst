@@ -150,6 +150,7 @@ onMounted(async () => {
                 v-model:value="annotationItem.v"
                 filterable
                 clearable
+                multiple
                 :disabled="!annotationItem.k"
                 :style="getAnnoValueSelectStyle(annotationItem.v)"
                 :options="annoOptions[annotationItemIndex].valuesOptions"
