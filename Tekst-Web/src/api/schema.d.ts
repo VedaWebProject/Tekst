@@ -1293,6 +1293,7 @@ export interface components {
       /** @description Search range */
       rng?: components['schemas']['LocationRange'];
     };
+    AnnoValueQuery: null | string;
     /** AnnotationsConfig */
     AnnotationsConfig: {
       /**
@@ -5929,14 +5930,14 @@ export interface components {
     TextAnnotationQueryEntry: {
       /**
        * K
-       * @description Key of the annotation
+       * @description Key of the annotation to search for
        */
       k: string;
       /**
        * V
-       * @description Value of the annotation
+       * @description Value(s) of the annotation to search for
        */
-      v?: null | string;
+      v?: components['schemas']['AnnoValueQuery'] | components['schemas']['AnnoValueQuery'][];
       /**
        * Wc
        * @description Whether to interpret wildcards in the annotation value query

@@ -282,6 +282,46 @@ async def test_advanced_text_annotation(
         expected_hits=1,
     )
 
+    # token form anno (value list)
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [{"k": "form", "v": ["foo"]}],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=1,
+    )
+
+    # token form anno (value list, no hits!)
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [{"k": "form", "v": ["foo", "bar"]}],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=0,
+    )
+
     # token from anno, with wildcard
     _assert_search_resp(
         await test_client.post(

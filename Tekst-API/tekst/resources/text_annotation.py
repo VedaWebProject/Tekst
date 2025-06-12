@@ -133,6 +133,14 @@ class TextAnnotation(ResourceTypeABC):
 
         # process annotation queries
         for anno_q in annos_usr_q:
+            # preprocess value query to be list containing only truthy values
+            anno_q.value = [
+                v
+                for v in (
+                    anno_q.value if isinstance(anno_q.value, list) else [anno_q.value]
+                )
+                if v
+            ]
             if anno_q.key and not anno_q.value:
                 # only key is set (and no value): query for existence of key
                 anno_k_q = {
@@ -148,18 +156,19 @@ class TextAnnotation(ResourceTypeABC):
                 )
             elif anno_q.key and anno_q.value:
                 # both key and value are set: query for specific key/value combination
-                anno_v = anno_q.value.strip()
+                # key query
                 anno_k_q = {
                     "term": {f"resources.{res_id}.tokens.annotations.key": anno_q.key}
                 }
-                anno_v_q = (
+                # value(s) queries
+                anno_v_qs = [
                     {
                         "wildcard": {
                             (
                                 f"resources.{res_id}.tokens.annotations"
                                 f".value{strict_suffix}"
                             ): {
-                                "value": anno_v,
+                                "value": v,
                             }
                         }
                     }
@@ -169,17 +178,18 @@ class TextAnnotation(ResourceTypeABC):
                             (
                                 f"resources.{res_id}.tokens.annotations"
                                 f".value{strict_suffix}"
-                            ): anno_v
+                            ): v
                         }
                     }
-                )
+                    for v in [v.strip() for v in anno_q.value]
+                ]
                 annos_es_q.append(
                     {
                         "nested": {
                             "path": f"resources.{res_id}.tokens.annotations",
                             "query": {
                                 "bool": {
-                                    "must": [anno_k_q, anno_v_q],
+                                    "must": [anno_k_q, *anno_v_qs],
                                 },
                             },
                         }
@@ -532,6 +542,13 @@ class TextAnnotationContent(ContentBase):
     ]
 
 
+type AnnoValueQuery = ConStrOrNone(
+    min_length=0,
+    max_length=256,
+    cleanup="oneline",
+)
+
+
 class TextAnnotationQueryEntry(ModelBase):
     key: Annotated[
         ConStr(
@@ -540,18 +557,14 @@ class TextAnnotationQueryEntry(ModelBase):
         ),
         Field(
             alias="k",
-            description="Key of the annotation",
+            description="Key of the annotation to search for",
         ),
     ]
     value: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=256,
-            cleanup="oneline",
-        ),
+        AnnoValueQuery | list[AnnoValueQuery],
         Field(
             alias="v",
-            description="Value of the annotation",
+            description="Value(s) of the annotation to search for",
         ),
     ] = None
     wildcards: Annotated[

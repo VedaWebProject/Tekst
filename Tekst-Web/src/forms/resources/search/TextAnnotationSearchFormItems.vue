@@ -5,7 +5,6 @@ import type {
   TextAnnotationSearchQuery,
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
-import OskInput from '@/components/OskInput.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -146,22 +145,14 @@ onMounted(async () => {
               style="flex: 2 200px"
             >
               <n-select
-                v-if="annoOptions[annotationItemIndex].valuesOptions.length > 1"
                 v-model:value="annotationItem.v"
                 filterable
                 clearable
+                tag
                 multiple
                 :disabled="!annotationItem.k"
                 :style="getAnnoValueSelectStyle(annotationItem.v)"
                 :options="annoOptions[annotationItemIndex].valuesOptions"
-                :placeholder="$t('common.value')"
-              />
-              <osk-input
-                v-else
-                v-model="annotationItem.v"
-                :disabled="!annotationItem.k"
-                :font="resource.config.general.font || undefined"
-                :osk-key="resource.config.general.osk || undefined"
                 :placeholder="$t('common.value')"
               />
             </n-form-item>
@@ -172,7 +163,6 @@ onMounted(async () => {
                 v-model:value="annotationItem.wc"
                 :round="false"
                 class="b text-small"
-                :disabled="annoOptions[annotationItemIndex].valuesOptions.length > 1"
                 :title="$t('search.advancedSearch.wc')"
               >
                 <template #checked>*</template>

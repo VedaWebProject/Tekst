@@ -7503,6 +7503,18 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
+      "AnnoValueQuery": {
+        "anyOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 0
+          }
+        ]
+      },
       "AnnotationsConfig": {
         "properties": {
           "displayTemplate": {
@@ -17307,21 +17319,22 @@
             "maxLength": 32,
             "minLength": 1,
             "title": "K",
-            "description": "Key of the annotation"
+            "description": "Key of the annotation to search for"
           },
           "v": {
             "anyOf": [
               {
-                "type": "null"
+                "$ref": "#/components/schemas/AnnoValueQuery"
               },
               {
-                "type": "string",
-                "maxLength": 256,
-                "minLength": 0
+                "items": {
+                  "$ref": "#/components/schemas/AnnoValueQuery"
+                },
+                "type": "array"
               }
             ],
             "title": "V",
-            "description": "Value of the annotation"
+            "description": "Value(s) of the annotation to search for"
           },
           "wc": {
             "type": "boolean",
