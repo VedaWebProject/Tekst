@@ -16,6 +16,7 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
+from pydantic import TypeAdapter, ValidationError
 from starlette.background import BackgroundTask
 
 from tekst import errors, tasks
@@ -269,6 +270,11 @@ async def _update_text_structure_task(
     updated_docs = []
     last_text_id = None
     all_locs_same_text = True
+    label_field_adapter = TypeAdapter(LocationDocument.model_fields["label"].annotation)
+    aliases_field_adapter = TypeAdapter(
+        LocationDocument.model_fields["aliases"].annotation
+    )
+
     for loc in location_updates:
         try:
             doc_id = PydanticObjectId(loc["id"])
@@ -298,11 +304,12 @@ async def _update_text_structure_task(
         # modify label and aliases according to updates (and nothing else!)
         try:
             if "label" in loc:
+                label_field_adapter.validate_python(loc["label"])
                 loc_doc.label = loc["label"]
             if "aliases" in loc:
+                aliases_field_adapter.validate_python(loc["aliases"])
                 loc_doc.aliases = loc["aliases"]
-            LocationDocument.model_validate(loc_doc.model_dump())
-        except Exception as e:
+        except ValidationError as e:
             raise errors.update_values(
                 exc=errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": str(e)},
