@@ -292,6 +292,7 @@ async def update_resource(
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
+        ResourceBaseDocument.resource_type == updates.resource_type,
         await ResourceBaseDocument.access_conditions_write(user),
         with_children=True,
     )
