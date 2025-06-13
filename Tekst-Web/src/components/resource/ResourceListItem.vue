@@ -29,6 +29,7 @@ import {
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
+  ReviewIcon,
   UnproposedIcon,
   UploadIcon,
   UserIcon,
@@ -48,6 +49,7 @@ const emit = defineEmits([
   'unproposeClick',
   'publishClick',
   'unpublishClick',
+  'reqVersionIntegrationClick',
   'settingsClick',
   'contentsClick',
   'createVersionClick',
@@ -99,7 +101,7 @@ const actionOptions = computed(() => [
                   {
                     label: $t('resources.proposeAction'),
                     key: 'propose',
-                    disabled: !!props.resource.originalId,
+                    disabled: !!props.resource.originalId || !isOwner.value,
                     icon: renderIcon(ProposedIcon),
                     action: () => emit('proposeClick', props.resource),
                   },
@@ -110,7 +112,7 @@ const actionOptions = computed(() => [
                   {
                     label: $t('resources.unproposeAction'),
                     key: 'unpropose',
-                    disabled: !!props.resource.originalId,
+                    disabled: !!props.resource.originalId || !isOwner.value,
                     icon: renderIcon(UnproposedIcon),
                     action: () => emit('unproposeClick', props.resource),
                   },
@@ -142,9 +144,21 @@ const actionOptions = computed(() => [
               label: $t('resources.transferAction'),
               key: 'transfer',
               icon: renderIcon(UserIcon),
-              disabled: props.resource.public || props.resource.proposed,
               action: () => emit('transferClick', props.resource),
             },
+            ...(!!props.resource.originalId && props.resource.ownerId === props.currentUser?.id
+              ? [
+                  {
+                    label: $t('resources.reqVersionIntegrationAction'),
+                    key: 'reqVersionIntegration',
+                    icon: renderIcon(ReviewIcon),
+                    disabled:
+                      resources.all.find((r) => r.id === props.resource.originalId)?.ownerId ===
+                      props.resource.ownerId,
+                    action: () => emit('reqVersionIntegrationClick', props.resource),
+                  },
+                ]
+              : []),
           ],
         },
       ]
@@ -234,7 +248,7 @@ function handleCorrectionsClick() {
           <user-display
             :user="resource.owner || undefined"
             size="small"
-            :system="!resource.owner"
+            :system="resource.public"
           />
           <resource-info-tags :resource="resource" reverse />
         </n-flex>

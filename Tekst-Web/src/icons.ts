@@ -94,6 +94,7 @@ import PublicOffOutlined from '@vicons/material/PublicOffOutlined';
 import PublicOutlined from '@vicons/material/PublicOutlined';
 import PushPinOutlined from '@vicons/material/PushPinOutlined';
 import QuestionMarkOutlined from '@vicons/material/QuestionMarkOutlined';
+import RateReviewOutlined from '@vicons/material/RateReviewOutlined';
 import RedoOutlined from '@vicons/material/RedoOutlined';
 import RefreshOutlined from '@vicons/material/RefreshOutlined';
 import RemoveCircleFilled from '@vicons/material/RemoveCircleFilled';
@@ -209,6 +210,7 @@ export {
   RedoOutlined as RedoIcon,
   RefreshOutlined as RefreshIcon,
   LayersOutlined as ResourceIcon,
+  RateReviewOutlined as ReviewIcon,
   SearchOutlined as SearchIcon,
   ManageSearchOutlined as SearchResultsIcon,
   AutoAwesomeMosaicOutlined as SegmentsIcon,

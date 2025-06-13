@@ -40,7 +40,13 @@ const formRef = ref<FormInst | null>(null);
 const userSearchQuery = ref<PublicUserSearchFilters>(initialUserSearchQuery());
 const { users, loading: loadingSearch, error } = usePublicUserSearch(userSearchQuery);
 
-const usersOptions = computed(() => users.value.map((u) => ({ value: u.id, user: u })));
+const usersOptions = computed(() =>
+  users.value.map((u) => ({
+    value: u.id,
+    user: u,
+    disabled: props.resource?.public && !u.isSuperuser,
+  }))
+);
 
 const formRules: Record<string, FormItemRule[]> = {
   userId: [

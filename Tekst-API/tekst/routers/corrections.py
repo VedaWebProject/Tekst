@@ -13,7 +13,7 @@ from tekst.models.notifications import TemplateIdentifier
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
-from tekst.notifications import broadcast_admin_notification, send_notification
+from tekst.notifications import send_notification
 
 
 router = APIRouter(
@@ -86,26 +86,18 @@ async def create_correction(
         "resource_id": resource_doc.id,
         "resource_title": pick_translation(resource_doc.title),
     }
-    if not resource_doc.public and resource_doc.owner_id:
-        if user.id != resource_doc.owner_id:
-            to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
-            if (
-                to_user
-                and to_user.id != user.id
-                and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
-                in to_user.user_notification_triggers
-            ):
-                await send_notification(
-                    to_user,
-                    TemplateIdentifier.EMAIL_NEW_CORRECTION,
-                    **msg_specific_attrs,
-                )
-    else:
-        await broadcast_admin_notification(
-            TemplateIdentifier.EMAIL_NEW_CORRECTION,
-            exclude_users=[user.id],
-            **msg_specific_attrs,
-        )
+    if user.id != resource_doc.owner_id:
+        to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
+        if (
+            to_user
+            and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
+            in to_user.user_notification_triggers
+        ):
+            await send_notification(
+                to_user,
+                TemplateIdentifier.EMAIL_NEW_CORRECTION,
+                **msg_specific_attrs,
+            )
 
     return correction_doc
 

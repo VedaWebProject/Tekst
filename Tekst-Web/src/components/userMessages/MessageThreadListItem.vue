@@ -21,7 +21,9 @@ function handleDeleteClick() {
     <n-flex align="center">
       <n-badge :value="thread.unread" :offset="[10, 0]">
         <user-display
-          :user="thread.contact || undefined"
+          :user="
+            !thread.contact || thread.contact.username === 'system' ? undefined : thread.contact
+          "
           :link="false"
           :system="!thread.contact || thread.contact.username === 'system'"
         />

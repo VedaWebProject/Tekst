@@ -38,11 +38,12 @@ const { pageLogo } = useLogo();
   <n-flex align="center" :size="size" :style="`font-size: var(--font-size-${size})`">
     <user-avatar
       v-if="showAvatar"
-      :avatar-url="!system ? user?.avatarUrl || undefined : pageLogo"
+      :avatar-url="!system ? user.avatarUrl || undefined : pageLogo"
       :size="iconSizes[size]"
       style="flex-shrink: 0"
     />
-    <template v-if="user && !system">
+    <template v-if="user">
+      <span v-if="system">{{ state.pf?.state.platformName }}:</span>
       <router-link
         v-if="link"
         :to="{ name: 'user', params: { username: user.username } }"
@@ -58,7 +59,7 @@ const { pageLogo } = useLogo();
         :title="$t('models.user.isSuperuser')"
       />
     </template>
-    <span v-else-if="system">{{ state.pf?.state.platformName }}</span>
+    <span v-else-if="system"> {{ state.pf?.state.platformName }} </span>
     <span v-else>–</span>
   </n-flex>
 </template>

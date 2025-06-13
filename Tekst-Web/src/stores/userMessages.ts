@@ -1,14 +1,10 @@
-import type {
-  UserMessageCreate,
-  UserMessageRead,
-  UserMessageThread,
-  UserRead,
-  UserReadPublic,
-} from '@/api';
+import type { UserMessageCreate, UserMessageRead, UserMessageThread } from '@/api';
 import { DELETE, GET, POST } from '@/api';
 import { useMessages } from '@/composables/messages';
+import { useUser } from '@/composables/user';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
+import { delay } from '@/utils';
 import { useIntervalFn } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -108,13 +104,21 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
     loading.value = false;
   }
 
-  function openConversation(withUser: UserRead | UserReadPublic, msgContent?: string) {
+  async function openConversation(withUserId: string, msgContent?: string) {
+    const { user: withUser, loading, error } = useUser(withUserId);
+    while (loading.value) {
+      await delay(100);
+    }
+    if (error.value || !withUser.value) {
+      console.error(`Could not load user data for user ${withUserId}`);
+      return;
+    }
     preparedMsgContent.value = msgContent;
     const thread: UserMessageThread = threads.value.find(
-      (t) => withUser && t.id === withUser.id
+      (t) => withUser.value && t.id === withUser.value.id
     ) || {
-      id: withUser.id,
-      contact: withUser,
+      id: withUser.value.id,
+      contact: withUser.value,
       unread: 0,
     };
     openThread.value = thread;

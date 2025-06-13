@@ -492,12 +492,7 @@ whenever(ArrowRight, () => {
 
       <!-- ALERT: THIS IS NOT YOUR RESOURCE! -->
       <n-alert
-        v-if="
-          contentModel &&
-          auth.user?.isSuperuser &&
-          resource.ownerId &&
-          resource.ownerId !== auth.user.id
-        "
+        v-if="contentModel && auth.user?.isSuperuser && resource.ownerId !== auth.user.id"
         type="warning"
         closable
         :title="$t('resources.msgNotYourResourceTitle')"

@@ -386,6 +386,7 @@ resources:
   notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes
   transferAction: Transfer to user
+  reqVersionIntegrationAction: Propose integration
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
   createVersionAction: Create version of this resource
@@ -403,7 +404,10 @@ resources:
   warnUnpropose: |
     Are you sure you want to revoke your publication proposal for this resource?
   warnPublish: |
-    You are about to publish this resource to the public (non-registered users).
+    You are about to publish this resource, making it accessible to
+    non-registered users. You will be set as the owner of this resource and assumed
+    to be the main contact for other users in case of any requests regarding this resource.
+    Ownership of public resources may be transferred to another administrator.
     It's very important that you understand the implications of publishing resources.
   warnUnpublish: |
     Are you sure you want to revoke the publication of this resource?

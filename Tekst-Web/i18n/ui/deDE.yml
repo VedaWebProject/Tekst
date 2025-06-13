@@ -390,6 +390,7 @@ resources:
   notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer übertragen
+  reqVersionIntegrationAction: Integration vorschlagen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version dieser Ressource erstellen
@@ -410,9 +411,12 @@ resources:
     Sind Sie sicher, dass Sie Ihren Veröffentlichungsvorschlag
     für diese Ressource widerrufen wollen?
   warnPublish: |
-    Sie sind im Begriff, diese Ressource für die Öffentlichkeit
-    (nicht registrierte Benutzer) zu veröffentlichen. Es ist sehr wichtig,
-    dass Sie sich über die Auswirkungen der Veröffentlichung
+    Sie sind im Begriff, diese Ressource zu veröffentlichen und
+    sie für nicht registrierte Benutzer zugänglich zu machen.
+    Sie werden als Besitzer der Ressource eingetragen und damit die hauptsächliche
+    Ansprechperson für andere Benutzer in Belangen zu dieser Ressource.
+    Veröffentlichte Ressourcen können auf andere Administratoren übertragen werden.
+    Es ist sehr wichtig, dass Sie sich über die Auswirkungen der Veröffentlichung
     von Ressourcen im Klaren sind.
   warnUnpublish: |
     Sind Sie sicher, dass Sie die Veröffentlichung dieser

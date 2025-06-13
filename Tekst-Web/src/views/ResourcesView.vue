@@ -18,7 +18,7 @@ import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { AddIcon, FilterIcon, ResourceIcon, SearchIcon, UndoIcon } from '@/icons';
-import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { createReusableTemplate } from '@vueuse/core';
 import {
@@ -43,6 +43,7 @@ const props = defineProps<{
 const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
+const userMessages = useUserMessagesStore();
 const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
@@ -359,6 +360,22 @@ async function handleImportClick(resource: AnyResourceRead) {
   });
 }
 
+function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
+  const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
+  if (!originalResource) {
+    console.error(`No original resource found for version ${resourceVersion}`);
+    return;
+  }
+  if (!originalResource.ownerId) {
+    console.error(`No owner ID found for original resource ${originalResource}`);
+    return;
+  }
+  const versionTitle = pickTranslation(resourceVersion.title, state.locale);
+  const originalTitle = pickTranslation(originalResource.title, state.locale);
+  const prepMsg = `> ${versionTitle} → ${originalTitle}\n\n`;
+  userMessages.openConversation(originalResource.ownerId, prepMsg);
+}
+
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
   if (data.name === 'filters' && !data.expanded) {
     filters.value = initialFilters();
@@ -487,6 +504,7 @@ onMounted(() => {
             @delete-click="handleDeleteClick"
             @download-template-click="handleDownloadTemplateClick"
             @import-click="handleImportClick"
+            @req-version-integration-click="handleReqVersionIntegrationClick"
           />
         </n-list>
         <!-- Pagination -->

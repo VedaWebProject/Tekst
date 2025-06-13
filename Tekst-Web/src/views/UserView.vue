@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { UserReadPublic } from '@/api';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
@@ -66,7 +65,7 @@ watchEffect(() => {
               username: user.name || `@${user.username}`,
             })
           "
-          @click="() => userMessages.openConversation(user as UserReadPublic)"
+          @click="() => userMessages.openConversation(user?.id || '?')"
         >
           <template #icon>
             <n-icon :component="MessageIcon" />

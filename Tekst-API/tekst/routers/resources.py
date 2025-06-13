@@ -81,15 +81,15 @@ async def _preprocess_res_read(
 
     # include owner user data in each resource model (if an owner id is set)
     if resource.owner_id:
-        resource.owner = UserReadPublic.model_from(
-            await UserDocument.get(resource.owner_id)
-        )
+        owner = await UserDocument.get(resource.owner_id)
+        if owner:
+            resource.owner = UserReadPublic.model_from(owner)
 
     # include corrections count if user is owner of the resource
     # or, if resource has no owner, user is superuser
     if for_user and (
         for_user.is_superuser
-        or (resource.owner_id and for_user.id == resource.owner_id)
+        or for_user.id == resource.owner_id
         or for_user.id in resource.shared_write
     ):
         resource.corrections = await CorrectionDocument.find(
@@ -512,8 +512,8 @@ async def delete_resource(
         [
             errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_400_RESOURCE_PUBLIC_PROPOSED_TRANSFER,
             errors.E_403_FORBIDDEN,
+            errors.E_400_RESOURCE_PUBLIC_INVALID_TRANSFER,
             errors.E_400_TARGET_USER_NON_EXISTENT,
         ]
     ),
@@ -532,13 +532,15 @@ async def transfer_resource(
     # check if user is allowed to transfer resource
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise errors.E_403_FORBIDDEN
-    if resource_doc.public or resource_doc.proposed:
-        raise errors.E_400_RESOURCE_PUBLIC_PROPOSED_TRANSFER
 
     # check if target user exists
     target_user: UserDocument = await UserDocument.get(target_user_id)
     if not target_user:
         raise errors.E_400_TARGET_USER_NON_EXISTENT
+
+    # check if target user is superuser in case resource is public
+    if resource_doc.public and not target_user.is_superuser:
+        raise errors.E_400_RESOURCE_PUBLIC_INVALID_TRANSFER
 
     # if the target user is already the owner, return the resource
     if target_user_id == resource_doc.owner_id:
@@ -684,7 +686,7 @@ async def publish_resource(
         {
             ResourceBaseDocument.public: True,
             ResourceBaseDocument.proposed: False,
-            ResourceBaseDocument.owner_id: None,
+            ResourceBaseDocument.owner_id: user.id,
             ResourceBaseDocument.shared_read: [],
             ResourceBaseDocument.shared_write: [],
         }

@@ -126,9 +126,7 @@ async function handleSaveClick() {
   <template v-if="model">
     <div class="content-block">
       <n-alert
-        v-if="
-          model && auth.user?.isSuperuser && resource?.ownerId && resource.ownerId !== auth.user.id
-        "
+        v-if="model && auth.user?.isSuperuser && !!resource && resource.ownerId !== auth.user.id"
         type="warning"
         closable
         :title="$t('resources.msgNotYourResourceTitle')"

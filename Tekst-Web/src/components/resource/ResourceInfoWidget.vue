@@ -71,7 +71,7 @@ const showInfoModal = ref(false);
 
   <generic-modal v-model:show="showInfoModal" :title="title" :icon="ResourceIcon" width="wide">
     <n-flex v-if="!!auth.user" justify="space-between" class="mb-lg">
-      <user-display :user="resource.owner || undefined" size="small" :system="!resource.owner" />
+      <user-display :user="resource.owner || undefined" size="small" :system="resource.public" />
       <resource-info-tags :resource="resource" reverse />
     </n-flex>
 
