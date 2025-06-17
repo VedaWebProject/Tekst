@@ -30,9 +30,9 @@ async def test_bootstrap_auto_migrate_pending(
     insert_test_data,
 ):
     await insert_test_data()  # need sample data, as an empty DB will not be migrated
-    # set bugus DB data version to 0.0.0
+    # set bogus DB data version 0.0.0
     await database["state"].update_one({}, {"$set": {"db_version": "0.0.0"}})
-    # run app bootstrap with auto_migrate == True (with no pending migrations)
+    # run app bootstrap with auto_migrate == True (with pending migrations)
     config.auto_migrate = True
     await bootstrap(config, close_connections=False)
 

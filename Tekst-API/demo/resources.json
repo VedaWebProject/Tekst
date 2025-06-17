@@ -634,7 +634,6 @@
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 2,
     "resource_type": "apiCall",
-    "original_id": null,
     "owner_id": { "$oid": "65c5fe0c691066aabd498239" },
     "shared_read": [],
     "shared_write": [],
@@ -648,19 +647,15 @@
         "sort_order": 10,
         "default_active": false,
         "enable_content_context": false,
+        "show_comments": false,
         "searchable_quick": false,
         "searchable_adv": false,
         "rtl": false
       },
       "special": {
-        "api_call": {
-          "endpoint": "https://dummyjson.com/quotes",
-          "method": "GET",
-          "content_type": "application/json"
-        },
         "transform": {
           "deps": [],
-          "js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+          "js": "const data = this.map(d => ({...d, data: JSON.parse(d.data)}))[0];\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
         }
       }
     },

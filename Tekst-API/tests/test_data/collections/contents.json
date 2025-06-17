@@ -328,7 +328,15 @@
     "resource_id": { "$oid": "67c04473906e79b9062e22fa" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
-    "query": "id=foo"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://api.example.com/v2/some/endpoint",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "id=foo"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c04685906e79b9062e2314" },
@@ -336,7 +344,15 @@
     "resource_id": { "$oid": "67c04473906e79b9062e22fa" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
-    "query": "id=bar"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://api.example.com/v2/some/endpoint",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "id=bar"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c0468b906e79b9062e2315" },
@@ -344,7 +360,15 @@
     "resource_id": { "$oid": "67c04473906e79b9062e22fa" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
-    "query": "id=baz"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://api.example.com/v2/some/endpoint",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "id=baz"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c04695906e79b9062e2316" },
@@ -352,7 +376,15 @@
     "resource_id": { "$oid": "67c04473906e79b9062e22fa" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
-    "query": "id=qux"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://api.example.com/v2/some/endpoint",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "id=qux"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c04793906e79b9062e2343" },

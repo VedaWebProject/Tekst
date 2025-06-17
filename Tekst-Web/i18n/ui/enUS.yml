@@ -487,13 +487,8 @@ resources:
       itemIntegration:
         itemProps: Translation, Order and Grouping
         generateProps: Generate from known data
-      apiCall:
-        heading: API Request
-        endpoint: URL (without query parameters)
-        method: HTTP request method
-        contentType: Request body content type
       transformation:
-        heading: Transformation
+        heading: Response Transformation to HTML
         deps: Transformation function dependencies (URLs)
         js: Transformation function body (JavaScript)
   types:
@@ -557,6 +552,9 @@ resources:
       label: API Call
       parenthesis: Request for data from a HTTP API
       contentFields:
+        endpoint: URL (without query parameters)
+        method: HTTP request method
+        contentType: Request body content type
         queryString: URL Query String
         body: Request Body
         transformContext: Extra data for transformation function (JSON)

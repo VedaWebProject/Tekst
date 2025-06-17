@@ -49,6 +49,15 @@ export const defaultContentModels = {
     ],
   },
   apiCall: {
-    url: undefined,
+    calls: [
+      {
+        key: '',
+        endpoint: '',
+        method: 'GET',
+        contentType: 'application/json',
+        query: undefined,
+        transformContext: undefined,
+      },
+    ],
   },
 };

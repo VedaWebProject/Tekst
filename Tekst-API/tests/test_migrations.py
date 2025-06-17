@@ -425,3 +425,36 @@ async def test_0_19_0a0(
                 if anno["key"] == "eol":
                     eol_count += 1
     assert eol_count == 2
+
+
+@pytest.mark.anyio
+async def test_0_22_0a0(
+    database,
+    get_test_data,
+):
+    collections = get_test_data("migrations/0_22_0a0.json")
+    for coll_name in collections:
+        await database[coll_name].insert_many(collections[coll_name])
+
+    # run migration
+    await _migration_fn("0_22_0a0")(database)
+
+    # assert resource data has been fixed by the migration
+    for res in await database.resources.find({"resource_type": "apiCall"}).to_list():
+        assert "config" in res
+        assert "special" in res["config"]
+        assert "api_call" not in res["config"]["special"]
+
+    # assert contents data has been fixed by the migration
+    for content in await database.contents.find({"resource_type": "apiCall"}).to_list():
+        assert "query" not in content
+        assert "transform_context" not in content
+        assert "calls" in content
+        assert len(content["calls"]) == 1
+        call = content["calls"][0]
+        assert "key" in call
+        assert "endpoint" in call
+        assert "method" in call
+        assert "content_type" in call
+        assert "query" in call
+        assert "transform_context" in call

@@ -1,6 +1,5 @@
 import { type Component } from 'vue';
 import AnnotationsConfigFormItems from './AnnotationsConfigFormItems.vue';
-import ApiCallConfigFormItems from './ApiCallConfigFormItems.vue';
 import ContentCssFormItems from './ContentCssFormItems.vue';
 import ContentTransformationConfigFormItems from './ContentTransformationConfigFormItems.vue';
 import DeepLLinksConfigFormItems from './DeepLLinksConfigFormItems.vue';
@@ -18,7 +17,6 @@ export const specialConfigFormItems: Record<string, Component> = {
   deeplLinks: DeepLLinksConfigFormItems,
   annotations: AnnotationsConfigFormItems,
   entriesIntegration: EntriesIntegrationConfigFormItems,
-  apiCall: ApiCallConfigFormItems,
   transform: ContentTransformationConfigFormItems,
   embedAsTags: LocMetaEmbedAsTagsConfigFormItems,
 };

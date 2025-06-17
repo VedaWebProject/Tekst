@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.21.0a0"
+    "version": "0.22.0a0"
   },
   "servers": [
     {
@@ -7550,37 +7550,6 @@
         "type": "object",
         "title": "AnnotationsConfig"
       },
-      "ApiCallConfig": {
-        "properties": {
-          "endpoint": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "title": "Endpoint",
-            "default": "https://api.example.com/v2/some/endpoint"
-          },
-          "method": {
-            "type": "string",
-            "enum": [
-              "GET",
-              "POST",
-              "QUERY",
-              "SEARCH"
-            ],
-            "title": "Method",
-            "default": "GET"
-          },
-          "contentType": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 1,
-            "title": "Contenttype",
-            "default": "application/json"
-          }
-        },
-        "type": "object",
-        "title": "ApiCallConfig"
-      },
       "ApiCallContentCreate": {
         "properties": {
           "resourceId": {
@@ -7634,12 +7603,73 @@
             "title": "Editorscomment",
             "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
-          "query": {
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/ApiCallContentItem"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Calls",
+            "description": "List of API calls to make for this content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId",
+          "calls"
+        ],
+        "title": "ApiCallContentCreate"
+      },
+      "ApiCallContentItem": {
+        "properties": {
+          "key": {
             "type": "string",
-            "maxLength": 102400,
+            "maxLength": 32,
             "minLength": 1,
+            "title": "Key",
+            "description": "Key of this content item"
+          },
+          "endpoint": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Endpoint"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "QUERY",
+              "SEARCH"
+            ],
+            "title": "Method",
+            "default": "GET"
+          },
+          "contentType": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Contenttype",
+            "default": "application/json"
+          },
+          "query": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 102400,
+                "minLength": 1
+              }
+            ],
             "title": "Query",
-            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
+            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.",
+            "optionalNullable": false
           },
           "transformContext": {
             "anyOf": [
@@ -7659,12 +7689,10 @@
         },
         "type": "object",
         "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "query"
+          "key",
+          "endpoint"
         ],
-        "title": "ApiCallContentCreate"
+        "title": "ApiCallContentItem"
       },
       "ApiCallContentRead": {
         "properties": {
@@ -7727,27 +7755,15 @@
             "title": "Editorscomment",
             "description": "Plain text, potentially multiline comment / working notes by an editor"
           },
-          "query": {
-            "type": "string",
-            "maxLength": 102400,
-            "minLength": 1,
-            "title": "Query",
-            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects."
-          },
-          "transformContext": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 10240,
-                "minLength": 1
-              }
-            ],
-            "title": "Transformcontext",
-            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
-            "optionalNullable": false
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/ApiCallContentItem"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Calls",
+            "description": "List of API calls to make for this content"
           }
         },
         "additionalProperties": true,
@@ -7757,7 +7773,7 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "query"
+          "calls"
         ],
         "title": "ApiCallContentRead"
       },
@@ -7798,35 +7814,23 @@
             "description": "Plain text, potentially multiline comment / working notes by an editor",
             "optionalNullable": true
           },
-          "query": {
+          "calls": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 1
+                "items": {
+                  "$ref": "#/components/schemas/ApiCallContentItem"
+                },
+                "type": "array",
+                "maxItems": 16,
+                "minItems": 1
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Query",
-            "description": "Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.",
+            "title": "Calls",
+            "description": "List of API calls to make for this content",
             "optionalNullable": false
-          },
-          "transformContext": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 10240,
-                "minLength": 1
-              }
-            ],
-            "title": "Transformcontext",
-            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
-            "optionalNullable": true
           }
         },
         "type": "object",
@@ -7967,11 +7971,6 @@
           "special": {
             "$ref": "#/components/schemas/ApiCallSpecialConfig",
             "default": {
-              "apiCall": {
-                "contentType": "application/json",
-                "endpoint": "https://api.example.com/v2/some/endpoint",
-                "method": "GET"
-              },
               "transform": {
                 "deps": []
               }
@@ -8087,11 +8086,6 @@
                 "sortOrder": 10
               },
               "special": {
-                "apiCall": {
-                  "contentType": "application/json",
-                  "endpoint": "https://api.example.com/v2/some/endpoint",
-                  "method": "GET"
-                },
                 "transform": {
                   "deps": []
                 }
@@ -8331,11 +8325,6 @@
                 "sortOrder": 10
               },
               "special": {
-                "apiCall": {
-                  "contentType": "application/json",
-                  "endpoint": "https://api.example.com/v2/some/endpoint",
-                  "method": "GET"
-                },
                 "transform": {
                   "deps": []
                 }
@@ -8532,14 +8521,6 @@
       },
       "ApiCallSpecialConfig": {
         "properties": {
-          "apiCall": {
-            "$ref": "#/components/schemas/ApiCallConfig",
-            "default": {
-              "endpoint": "https://api.example.com/v2/some/endpoint",
-              "method": "GET",
-              "contentType": "application/json"
-            }
-          },
           "transform": {
             "$ref": "#/components/schemas/ContentTransformConfig",
             "default": {

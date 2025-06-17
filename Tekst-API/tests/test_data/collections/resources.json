@@ -245,16 +245,6 @@
         "searchable_quick": false,
         "searchable_adv": false,
         "rtl": false
-      },
-      "special": {
-        "api_call": {
-          "endpoint": "https://api.example.com/v2/some/endpoint",
-          "method": "GET",
-          "content_type": "application/json"
-        },
-        "transform": {
-          "transform_deps": []
-        }
       }
     },
     "contents_changed_at": { "$date": "2025-02-27T11:03:49.743Z" }

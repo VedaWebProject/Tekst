@@ -1313,25 +1313,6 @@ export interface components {
        *     } */
       annoIntegration: components['schemas']['ItemIntegrationConfig'];
     };
-    /** ApiCallConfig */
-    ApiCallConfig: {
-      /**
-       * Endpoint
-       * @default https://api.example.com/v2/some/endpoint
-       */
-      endpoint: string;
-      /**
-       * Method
-       * @default GET
-       * @enum {string}
-       */
-      method: 'GET' | 'POST' | 'QUERY' | 'SEARCH';
-      /**
-       * Contenttype
-       * @default application/json
-       */
-      contentType: string;
-    };
     /** ApiCallContentCreate */
     ApiCallContentCreate: {
       /**
@@ -1362,10 +1343,36 @@ export interface components {
        */
       editorsComment?: null | string;
       /**
+       * Calls
+       * @description List of API calls to make for this content
+       */
+      calls: components['schemas']['ApiCallContentItem'][];
+    };
+    /** ApiCallContentItem */
+    ApiCallContentItem: {
+      /**
+       * Key
+       * @description Key of this content item
+       */
+      key: string;
+      /** Endpoint */
+      endpoint: string;
+      /**
+       * Method
+       * @default GET
+       * @enum {string}
+       */
+      method: 'GET' | 'POST' | 'QUERY' | 'SEARCH';
+      /**
+       * Contenttype
+       * @default application/json
+       */
+      contentType: string;
+      /**
        * Query
        * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
        */
-      query: string;
+      query?: string;
       /**
        * Transformcontext
        * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
@@ -1407,15 +1414,10 @@ export interface components {
        */
       editorsComment?: null | string;
       /**
-       * Query
-       * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
+       * Calls
+       * @description List of API calls to make for this content
        */
-      query: string;
-      /**
-       * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
-       */
-      transformContext?: string;
+      calls: components['schemas']['ApiCallContentItem'][];
     } & {
       [key: string]: unknown;
     };
@@ -1437,15 +1439,10 @@ export interface components {
        */
       editorsComment?: null | string;
       /**
-       * Query
-       * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
+       * Calls
+       * @description List of API calls to make for this content
        */
-      query?: string;
-      /**
-       * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
-       */
-      transformContext?: null | string;
+      calls?: components['schemas']['ApiCallContentItem'][];
     };
     /** ApiCallModGeneralConfig */
     ApiCallModGeneralConfig: {
@@ -1525,11 +1522,6 @@ export interface components {
        *     } */
       general: components['schemas']['ApiCallModGeneralConfig'];
       /** @default {
-       *       "apiCall": {
-       *         "contentType": "application/json",
-       *         "endpoint": "https://api.example.com/v2/some/endpoint",
-       *         "method": "GET"
-       *       },
        *       "transform": {
        *         "deps": []
        *       }
@@ -1598,11 +1590,6 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
-       *         "apiCall": {
-       *           "contentType": "application/json",
-       *           "endpoint": "https://api.example.com/v2/some/endpoint",
-       *           "method": "GET"
-       *         },
        *         "transform": {
        *           "deps": []
        *         }
@@ -1723,11 +1710,6 @@ export interface components {
        *         "sortOrder": 10
        *       },
        *       "special": {
-       *         "apiCall": {
-       *           "contentType": "application/json",
-       *           "endpoint": "https://api.example.com/v2/some/endpoint",
-       *           "method": "GET"
-       *         },
        *         "transform": {
        *           "deps": []
        *         }
@@ -1795,12 +1777,6 @@ export interface components {
     };
     /** ApiCallSpecialConfig */
     ApiCallSpecialConfig: {
-      /** @default {
-       *       "endpoint": "https://api.example.com/v2/some/endpoint",
-       *       "method": "GET",
-       *       "contentType": "application/json"
-       *     } */
-      apiCall: components['schemas']['ApiCallConfig'];
       /** @default {
        *       "deps": []
        *     } */

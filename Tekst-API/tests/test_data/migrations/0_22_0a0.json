@@ -1,0 +1,160 @@
+{
+  "resources": [
+    {
+      "_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "_class_id": "ResourceBaseDocument.ApiCallResourceDocument",
+      "title": [
+        { "locale": "enUS", "translation": "Unrelated Demo API Call" },
+        {
+          "locale": "deDE",
+          "translation": "Demo API-Anfragen ohne Bezug zum Thema"
+        }
+      ],
+      "subtitle": [],
+      "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+      "level": 2,
+      "resource_type": "apiCall",
+      "original_id": null,
+      "owner_id": { "$oid": "65c5fe0c691066aabd498239" },
+      "shared_read": [],
+      "shared_write": [],
+      "public": true,
+      "proposed": false,
+      "meta": [],
+      "description": [],
+      "config": {
+        "general": {
+          "category": "demo",
+          "sort_order": 10,
+          "default_active": false,
+          "enable_content_context": false,
+          "searchable_quick": false,
+          "searchable_adv": false,
+          "rtl": false
+        },
+        "special": {
+          "api_call": {
+            "endpoint": "https://dummyjson.com/quotes",
+            "method": "GET",
+            "content_type": "application/json"
+          },
+          "transform": {
+            "deps": [],
+            "js": "const data = JSON.parse(this.data);\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+          }
+        }
+      },
+      "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
+    }
+  ],
+  "contents": [
+    {
+      "_id": { "$oid": "67c96b67e9e69aa8f1c75df5" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+      "query": "limit=1&skip=0",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b6de9e69aa8f1c75df6" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+      "query": "limit=1&skip=1",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b73e9e69aa8f1c75df7" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8e6" },
+      "query": "limit=1&skip=2",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b7ae9e69aa8f1c75df8" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+      "query": "limit=1&skip=3",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b7fe9e69aa8f1c75df9" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8e8" },
+      "query": "limit=1&skip=4",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b85e9e69aa8f1c75dfa" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8ea" },
+      "query": "limit=1&skip=5",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b8be9e69aa8f1c75dfb" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8eb" },
+      "query": "limit=1&skip=6",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b91e9e69aa8f1c75dfc" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8ec" },
+      "query": "limit=1&skip=7",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b96e9e69aa8f1c75dfd" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8ed" },
+      "query": "limit=1&skip=8",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96b9ce9e69aa8f1c75dfe" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8ef" },
+      "query": "limit=1&skip=9",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96ba4e9e69aa8f1c75dff" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8f0" },
+      "query": "limit=1&skip=10",
+      "transform_context": "{\"foo\": \"bar\"}"
+    },
+    {
+      "_id": { "$oid": "67c96baae9e69aa8f1c75e00" },
+      "_class_id": "ContentBaseDocument.ApiCallContentDocument",
+      "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
+      "resource_type": "apiCall",
+      "location_id": { "$oid": "654b825533ee5737b297f8f1" },
+      "query": "limit=1&skip=11",
+      "transform_context": "{\"foo\": \"bar\"}"
+    }
+  ]
+}

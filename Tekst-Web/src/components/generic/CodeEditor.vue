@@ -11,7 +11,7 @@ const props = defineProps<{
   indentSize?: number;
 }>();
 
-const model = defineModel<string>();
+const model = defineModel<string | undefined>();
 const emit = defineEmits(['input', 'focus', 'blur']);
 
 const theme = useThemeStore();

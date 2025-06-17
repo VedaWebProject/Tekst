@@ -498,13 +498,8 @@ resources:
       itemIntegration:
         itemProps: Übersetzung, -Reihenfolge und -Gruppierung
         generateProps: Aus bekannten Daten generieren
-      apiCall:
-        heading: API-Anfrage
-        endpoint: URL (ohne Query-Parameter)
-        method: HTTP-Anfrage-Methode
-        contentType: Content-Type der Anfrage
       transformation:
-        heading: Transformation
+        heading: Antwort-Transformation zu HTML
         deps: Abhängigkeiten der Transformationsfunktion (URLs)
         js: Transformations-Funktionskörper (JavaScript)
   types:
@@ -568,6 +563,9 @@ resources:
       label: API-Abruf
       parenthesis: Abruf von Daten von einer HTTP-API
       contentFields:
+        endpoint: URL (ohne Query-Parameter)
+        method: HTTP-Anfrage-Methode
+        contentType: Content-Type der Anfrage
         queryString: URL-Query String
         body: Request Body
         transformContext: Zusätzliche Daten für Transformationsfunktion (JSON)

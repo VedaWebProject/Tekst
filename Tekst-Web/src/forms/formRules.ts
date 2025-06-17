@@ -329,11 +329,6 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
     ],
   },
   apiCall: {
-    endpoint: [
-      requiredStringRule(() => $t('resources.settings.config.apiCall.endpoint'), 'blur'),
-      minMaxCharsRule(1, 2083, 'blur'),
-    ],
-    contentType: [minMaxCharsRule(0, 64, 'blur')],
     dep: [requiredStringRule(() => $t('common.url'), 'blur'), minMaxCharsRule(1, 2083, 'blur')],
     js: [minMaxCharsRule(0, 102400, 'blur')],
   },
@@ -436,6 +431,12 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
     description: [minMaxCharsRule(0, 4096, 'blur')],
   },
   apiCall: {
+    key: [requiredStringRule(() => $t('common.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
+    endpoint: [
+      requiredStringRule(() => $t('resources.types.apiCall.contentFields.endpoint'), 'blur'),
+      minMaxCharsRule(1, 2083, 'blur'),
+    ],
+    contentType: [minMaxCharsRule(0, 64, 'blur')],
     queryString: [
       requiredStringRule(() => $t('resources.types.apiCall.contentFields.queryString'), 'blur'),
       minMaxCharsRule(1, 2083, 'blur'),
@@ -444,7 +445,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       requiredStringRule(() => $t('resources.types.apiCall.contentFields.body'), 'blur'),
       minMaxCharsRule(1, 102400, 'blur'),
     ],
-    extra: [
+    transformContext: [
       minMaxCharsRule(0, 10240, 'blur'),
       {
         validator: (_: FormItemRule, value: string) => {

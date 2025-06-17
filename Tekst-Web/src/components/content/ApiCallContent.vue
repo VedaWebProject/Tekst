@@ -6,12 +6,11 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
 
 type ContentData = {
-  query: ApiCallContentRead['query'];
-  context: ApiCallContentRead['transformContext'];
+  calls: ApiCallContentRead['calls'];
   authorsComment: ApiCallContentRead['authorsComment'];
   editorsComment: ApiCallContentRead['editorsComment'];
 };
-type TransformationInput = { data: string; context?: unknown };
+type TransformationInput = { key: string; data: string; context?: unknown }[];
 
 const AsyncFunction = async function () {}.constructor;
 
@@ -27,8 +26,7 @@ const fontStyle = {
 
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
-    query: c.query,
-    context: c.transformContext,
+    calls: c.calls,
     authorsComment: c.authorsComment,
     editorsComment: c.editorsComment,
   }))
@@ -38,33 +36,34 @@ const contentProcessed = ref<{ html?: string; authorsComment?: string; editorsCo
 );
 const loading = ref(false);
 
-function prepareRequest(query: string): Request {
-  const cfg = props.resource.config.special.apiCall;
-  if (cfg.method === 'GET') {
-    return new Request(`${cfg.endpoint}?${query}`, { method: 'GET' });
+function prepareRequest(call: ApiCallContentRead['calls'][number]): Request {
+  if (call.method === 'GET') {
+    return new Request(`${call.endpoint}?${call.query}`, { method: 'GET' });
   } else {
-    return new Request(cfg.endpoint || '', {
-      method: cfg.method,
-      body: query,
+    return new Request(call.endpoint || '', {
+      method: call.method,
+      body: call.query,
       headers: {
-        'Content-Type': cfg.contentType || 'application/json',
+        'Content-Type': call.contentType || 'application/json',
       },
     });
   }
 }
 
 async function execTransformJs(
-  transformFnBody?: string | null,
-  input: TransformationInput = { data: '' }
+  input: TransformationInput,
+  transformFnBody?: string | null
 ): Promise<string> {
-  if (!transformFnBody) return input.data;
+  if (!transformFnBody) {
+    return input.map((input) => input.data).join('\n');
+  }
   try {
     return await AsyncFunction(
       `"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`
     ).bind(input)();
   } catch (e) {
     console.log(e);
-    return input.data;
+    return input.map((input) => input.data).join('\n');
   }
 }
 
@@ -75,14 +74,21 @@ async function updateContent(contents?: ContentData[]) {
   for (const [i, content] of contents.entries()) {
     if (!content) continue;
     try {
-      const resp = await fetch(prepareRequest(content.query));
+      const transformInput: TransformationInput = [];
+      for (const call of content.calls) {
+        const resp = await fetch(prepareRequest(call));
+        if (!resp.ok) {
+          console.error(`Error ${resp.status} requesting API data: ${resp.statusText}`);
+          continue;
+        }
+        transformInput.push({
+          key: call.key,
+          data: await resp.text(),
+          context: !!call.transformContext ? JSON.parse(call.transformContext) : undefined,
+        });
+      }
       newHtml[i] = {
-        html: resp.ok
-          ? await execTransformJs(props.resource.config.special.transform.js, {
-              data: await resp.text(),
-              context: !!content.context ? JSON.parse(content.context) : undefined,
-            })
-          : undefined,
+        html: await execTransformJs(transformInput, props.resource.config.special.transform.js),
         authorsComment: content.authorsComment,
         editorsComment: content.editorsComment,
       };

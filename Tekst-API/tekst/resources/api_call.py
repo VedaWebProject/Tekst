@@ -104,28 +104,33 @@ class ApiCall(ResourceTypeABC):
                 [
                     "LOCATION",
                     "SORT",
+                    "KEY",
                     "ENDPOINT",
                     "METHOD",
                     "CONTENT_TYPE",
                     "QUERY",
+                    "TRANSFORM_CONTEXT",
                     "AUTHORS_COMMENT",
                     "EDITORS_COMMENT",
                 ]
             )
             for content in contents:
-                csv_writer.writerow(
-                    [
-                        full_loc_labels.get(str(content.location_id), ""),
-                        sort_num,
-                        resource.config.special.api_call.endpoint,
-                        resource.config.special.api_call.method,
-                        resource.config.special.api_call.content_type,
-                        content.query,
-                        content.authors_comment,
-                        content.editors_comment,
-                    ]
-                )
-                sort_num += 1
+                for call in content.calls:
+                    csv_writer.writerow(
+                        [
+                            full_loc_labels.get(str(content.location_id), ""),
+                            sort_num,
+                            call.key,
+                            call.endpoint,
+                            call.method,
+                            call.content_type,
+                            call.query,
+                            call.transform_context,
+                            content.authors_comment,
+                            content.editors_comment,
+                        ]
+                    )
+                    sort_num += 1
 
 
 class ApiCallModGeneralConfig(GeneralResourceConfig):
@@ -173,14 +178,6 @@ class ApiCallModGeneralConfig(GeneralResourceConfig):
     ] = False
 
 
-class ApiCallConfig(ModelBase):
-    endpoint: HttpUrl = "https://api.example.com/v2/some/endpoint"
-    method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
-    content_type: ConStr(
-        max_length=64,
-    ) = "application/json"
-
-
 class ContentTransformConfig(ModelBase):
     deps: Annotated[
         list[HttpUrl],
@@ -205,7 +202,6 @@ class ContentTransformConfig(ModelBase):
 
 
 class ApiCallSpecialConfig(ModelBase):
-    api_call: ApiCallConfig = ApiCallConfig()
     transform: ContentTransformConfig = ContentTransformConfig()
 
 
@@ -224,12 +220,23 @@ class ApiCallResource(ResourceBase):
         return []  # pragma: no cover
 
 
-class ApiCallContent(ContentBase):
-    """A content of an API call resource"""
-
-    resource_type: Literal["apiCall"]  # camelCased resource type classname
-    query: Annotated[
+class ApiCallContentItem(ModelBase):
+    key: Annotated[
         ConStr(
+            max_length=32,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Key of this content item",
+        ),
+    ]
+    endpoint: HttpUrl
+    method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
+    content_type: ConStr(
+        max_length=64,
+    ) = "application/json"
+    query: Annotated[
+        ConStrOrNone(
             max_length=102400,
         ),
         Field(
@@ -238,7 +245,8 @@ class ApiCallContent(ContentBase):
                 "(for GET requests) a JSON object, or whatever the API expects."
             ),
         ),
-    ]
+        SchemaOptionalNonNullable,
+    ] = None
     transform_context: Annotated[
         ConStrOrNone(
             max_length=10240,
@@ -251,3 +259,17 @@ class ApiCallContent(ContentBase):
         ),
         SchemaOptionalNonNullable,
     ] = None
+
+
+class ApiCallContent(ContentBase):
+    """A content of an API call resource"""
+
+    resource_type: Literal["apiCall"]  # camelCased resource type classname
+    calls: Annotated[
+        list[ApiCallContentItem],
+        Field(
+            min_length=1,
+            max_length=16,
+            description="List of API calls to make for this content",
+        ),
+    ]

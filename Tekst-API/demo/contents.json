@@ -973,7 +973,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "query": "limit=1&skip=0"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=0"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b6de9e69aa8f1c75df6" },
@@ -981,7 +989,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "query": "limit=1&skip=1"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=1"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b73e9e69aa8f1c75df7" },
@@ -989,7 +1005,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "query": "limit=1&skip=2"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=2"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b7ae9e69aa8f1c75df8" },
@@ -997,7 +1021,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "query": "limit=1&skip=3"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=3"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b7fe9e69aa8f1c75df9" },
@@ -1005,7 +1037,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "query": "limit=1&skip=4"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=4"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b85e9e69aa8f1c75dfa" },
@@ -1013,7 +1053,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-    "query": "limit=1&skip=5"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=5"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b8be9e69aa8f1c75dfb" },
@@ -1021,7 +1069,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "query": "limit=1&skip=6"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=6"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b91e9e69aa8f1c75dfc" },
@@ -1029,7 +1085,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "query": "limit=1&skip=7"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=7"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b96e9e69aa8f1c75dfd" },
@@ -1037,7 +1101,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "query": "limit=1&skip=8"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=8"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96b9ce9e69aa8f1c75dfe" },
@@ -1045,7 +1117,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "query": "limit=1&skip=9"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=9"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96ba4e9e69aa8f1c75dff" },
@@ -1053,7 +1133,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "query": "limit=1&skip=10"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=10"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c96baae9e69aa8f1c75e00" },
@@ -1061,7 +1149,15 @@
     "resource_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
     "resource_type": "apiCall",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "query": "limit=1&skip=11"
+    "calls": [
+      {
+        "key": "foo",
+        "endpoint": "https://dummyjson.com/quotes",
+        "method": "GET",
+        "content_type": "application/json",
+        "query": "limit=1&skip=11"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22722" },
