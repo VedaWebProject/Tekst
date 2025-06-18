@@ -28,6 +28,7 @@ const fontStyle = {
 const contents = computed(() =>
   props.resource.contents?.map((c) => ({
     calls: c.calls,
+    transformContext: c.transformContext,
     authorsComment: c.authorsComment,
     editorsComment: c.editorsComment,
   }))
