@@ -1347,6 +1347,11 @@ export interface components {
        * @description List of API calls to make for this content
        */
       calls: components['schemas']['ApiCallContentItem'][];
+      /**
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       */
+      transformContext?: string;
     };
     /** ApiCallContentItem */
     ApiCallContentItem: {
@@ -1373,11 +1378,6 @@ export interface components {
        * @description Query payload to use for the API call. This can be a URL query string,(for GET requests) a JSON object, or whatever the API expects.
        */
       query?: string;
-      /**
-       * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
-       */
-      transformContext?: string;
     };
     /** ApiCallContentRead */
     ApiCallContentRead: {
@@ -1418,6 +1418,11 @@ export interface components {
        * @description List of API calls to make for this content
        */
       calls: components['schemas']['ApiCallContentItem'][];
+      /**
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       */
+      transformContext?: string;
     } & {
       [key: string]: unknown;
     };
@@ -1443,6 +1448,11 @@ export interface components {
        * @description List of API calls to make for this content
        */
       calls?: components['schemas']['ApiCallContentItem'][];
+      /**
+       * Transformcontext
+       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       */
+      transformContext?: null | string;
     };
     /** ApiCallModGeneralConfig */
     ApiCallModGeneralConfig: {

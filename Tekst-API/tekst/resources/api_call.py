@@ -125,7 +125,7 @@ class ApiCall(ResourceTypeABC):
                             call.method,
                             call.content_type,
                             call.query,
-                            call.transform_context,
+                            content.transform_context,
                             content.authors_comment,
                             content.editors_comment,
                         ]
@@ -247,18 +247,6 @@ class ApiCallContentItem(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = None
-    transform_context: Annotated[
-        ConStrOrNone(
-            max_length=10240,
-        ),
-        Field(
-            description=(
-                "Extra data that will be made available to the transformation script. "
-                "This has to be a valid, string-encoded JSON object."
-            ),
-        ),
-        SchemaOptionalNonNullable,
-    ] = None
 
 
 class ApiCallContent(ContentBase):
@@ -273,3 +261,15 @@ class ApiCallContent(ContentBase):
             description="List of API calls to make for this content",
         ),
     ]
+    transform_context: Annotated[
+        ConStrOrNone(
+            max_length=10240,
+        ),
+        Field(
+            description=(
+                "Extra data that will be made available to the transformation script. "
+                "This has to be a valid, string-encoded JSON object."
+            ),
+        ),
+        SchemaOptionalNonNullable,
+    ] = None

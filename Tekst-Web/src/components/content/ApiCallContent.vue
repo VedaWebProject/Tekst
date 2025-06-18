@@ -7,6 +7,7 @@ import CommonContentDisplay from './CommonContentDisplay.vue';
 
 type ContentData = {
   calls: ApiCallContentRead['calls'];
+  transformContext?: ApiCallContentRead['transformContext'];
   authorsComment: ApiCallContentRead['authorsComment'];
   editorsComment: ApiCallContentRead['editorsComment'];
 };
@@ -84,7 +85,7 @@ async function updateContent(contents?: ContentData[]) {
         transformInput.push({
           key: call.key,
           data: await resp.text(),
-          context: !!call.transformContext ? JSON.parse(call.transformContext) : undefined,
+          context: !!content.transformContext ? JSON.parse(content.transformContext) : undefined,
         });
       }
       newHtml[i] = {
