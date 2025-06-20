@@ -31,12 +31,7 @@ const fontStyle: CSSProperties = {
       :editors-comment="content.editorsComment"
       :font="fontStyle.fontFamily"
     >
-      <n-flex
-        :vertical="!focusView"
-        :wrap="false"
-        class="ext-ref-content"
-        :class="{ 'mt-lg': !focusView }"
-      >
+      <n-flex :vertical="!focusView" :wrap="false" class="ext-ref-content">
         <n-flex v-for="(link, index) in content.links" :key="index" vertical size="small">
           <n-flex align="center" :wrap="false">
             <n-icon v-if="!focusView" :component="LinkIcon" />

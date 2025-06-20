@@ -11,7 +11,7 @@ type ContentData = {
   authorsComment: ApiCallContentRead['authorsComment'];
   editorsComment: ApiCallContentRead['editorsComment'];
 };
-type TransformationInput = { key: string; data: string; context?: unknown }[];
+type ResponseData = { key: string; data: string }[];
 
 const AsyncFunction = async function () {}.constructor;
 
@@ -53,19 +53,20 @@ function prepareRequest(call: ApiCallContentRead['calls'][number]): Request {
 }
 
 async function execTransformJs(
-  input: TransformationInput,
+  respData: ResponseData,
+  transformContext?: unknown,
   transformFnBody?: string | null
 ): Promise<string> {
   if (!transformFnBody) {
-    return input.map((input) => input.data).join('\n');
+    return respData.map((rd) => rd.data).join('\n');
   }
   try {
     return await AsyncFunction(
       `"use strict"; try { ${transformFnBody} } catch (e) { console.error(e); }`
-    ).bind(input)();
+    ).bind({ data: respData, context: transformContext })();
   } catch (e) {
     console.log(e);
-    return input.map((input) => input.data).join('\n');
+    return respData.map((rd) => rd.data).join('\n');
   }
 }
 
@@ -76,7 +77,7 @@ async function updateContent(contents?: ContentData[]) {
   for (const [i, content] of contents.entries()) {
     if (!content) continue;
     try {
-      const transformInput: TransformationInput = [];
+      const transformInput: ResponseData = [];
       for (const call of content.calls) {
         const resp = await fetch(prepareRequest(call));
         if (!resp.ok) {
@@ -86,11 +87,14 @@ async function updateContent(contents?: ContentData[]) {
         transformInput.push({
           key: call.key,
           data: await resp.text(),
-          context: !!content.transformContext ? JSON.parse(content.transformContext) : undefined,
         });
       }
       newHtml[i] = {
-        html: await execTransformJs(transformInput, props.resource.config.special.transform.js),
+        html: await execTransformJs(
+          transformInput,
+          !!content.transformContext ? JSON.parse(content.transformContext) : undefined,
+          props.resource.config.special.transform.js
+        ),
         authorsComment: content.authorsComment,
         editorsComment: content.editorsComment,
       };
@@ -135,17 +139,16 @@ onMounted(async () => {
       v-for="(content, i) in contentProcessed"
       :key="i"
       :show-comments="showComments"
-      :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :authors-comment="content?.authorsComment"
+      :editors-comment="content?.editorsComment"
       :font="fontStyle.fontFamily"
     >
       <template v-if="!focusView">
         <div
-          v-if="content.html !== undefined"
-          class="content-loadable"
-          :class="{ 'content-loading': loading }"
+          v-if="content?.html !== undefined"
+          :class="`content-loadable res-${resource.id}` + (loading ? ' content-loading' : '')"
         >
-          <hydrated-html :html="content.html" :style="fontStyle" />
+          <hydrated-html :html="content?.html" :style="fontStyle" />
         </div>
         <div v-else class="translucent i font-ui">
           {{ $t('errors.notFound') }}
