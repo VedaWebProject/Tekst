@@ -60,7 +60,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       <div v-if="!state.smallScreen" class="browse-toolbar-middle browse-location-label text-small">
         <n-flex justify="center" align="center" :wrap="false">
           <text-color-indicator :title="state.text?.title" />
-          <b style="text-align: center">dfgdfgdgfd</b>
+          <b style="text-align: center">{{ state.text?.title || '???' }}</b>
         </n-flex>
         <div><location-label /></div>
       </div>
