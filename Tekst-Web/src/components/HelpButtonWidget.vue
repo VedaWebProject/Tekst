@@ -60,7 +60,7 @@ async function handleHelpButtonClick() {
   <n-button
     secondary
     circle
-    color="var(--accent-color)"
+    color="var(--primary-color)"
     :size="size"
     :title="$t('common.help')"
     :focusable="false"

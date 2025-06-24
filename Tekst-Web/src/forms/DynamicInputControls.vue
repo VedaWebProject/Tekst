@@ -131,7 +131,7 @@ const btnProps = computed<ButtonProps>(() => ({
 
 .di-ctrl.di-ctrl-vertical {
   flex-direction: column;
-  border-left: 3px solid var(--accent-color);
+  border-left: 3px solid var(--primary-color);
   padding: 0;
 }
 

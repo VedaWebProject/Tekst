@@ -1,7 +1,14 @@
 from re import Pattern
 from typing import Annotated, Literal, TypeAlias
 
-from pydantic import BeforeValidator, Field, StringConstraints, conint, constr
+from pydantic import (
+    BeforeValidator,
+    Field,
+    PlainSerializer,
+    StringConstraints,
+    conint,
+    constr,
+)
 from pydantic.functional_validators import AfterValidator
 from typing_extensions import TypedDict
 
@@ -88,6 +95,12 @@ HttpUrl = ConStr(
     cleanup="oneline",
 )
 HttpUrlOrNone = _EmptyStrToNone | HttpUrl
+
+ColorSerializer = PlainSerializer(
+    lambda c: c.as_hex() if hasattr(c, "as_hex") else str(c),
+    return_type=str,
+    when_used="unless-none",
+)
 
 
 # LOCATION-SPECIFIC PROPERTY TYPES

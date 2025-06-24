@@ -44,7 +44,7 @@ import {
   SkipPreviousIcon,
   VersionIcon,
 } from '@/icons';
-import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
@@ -76,6 +76,7 @@ const props = defineProps<{
 
 const state = useStateStore();
 const auth = useAuthStore();
+const theme = useThemeStore();
 const resources = useResourcesStore();
 const { message } = useMessages();
 const router = useRouter();
@@ -128,7 +129,7 @@ const compareResourceOptions = computed(() =>
       icon: r.originalId
         ? renderIcon(
             VersionIcon,
-            r.originalId === resource.value?.id ? 'var(--accent-color)' : undefined
+            r.originalId === resource.value?.id ? theme.colors.text.base : undefined
           )
         : renderIcon(ResourceIcon),
     }))
@@ -435,7 +436,7 @@ whenever(ArrowRight, () => {
     />
   </icon-heading>
 
-  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="toolbar accent-color-bg">
+  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="toolbar primary-color-bg">
     <template #start>
       <n-button
         type="primary"

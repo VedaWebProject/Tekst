@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.23.2a0"
+    "version": "0.24.0a0"
   },
   "servers": [
     {
@@ -15034,6 +15034,13 @@
             "description": "Show location aliases in browse view",
             "default": true
           },
+          "uiColor": {
+            "type": "string",
+            "format": "color",
+            "title": "Uicolor",
+            "description": "Primary color used in for client UI",
+            "default": "#305D97"
+          },
           "showLogoOnLoadingScreen": {
             "type": "boolean",
             "title": "Showlogoonloadingscreen",
@@ -15341,6 +15348,20 @@
             ],
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
+            "optionalNullable": false
+          },
+          "uiColor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "color"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uicolor",
+            "description": "Primary color used in for client UI",
             "optionalNullable": false
           },
           "showLogoOnLoadingScreen": {
@@ -18064,12 +18085,12 @@
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
           },
-          "accentColor": {
+          "color": {
             "type": "string",
             "format": "color",
-            "title": "Accentcolor",
+            "title": "Color",
             "description": "Accent color used for this text in the client UI",
-            "default": "#305D97"
+            "default": "#38714B"
           },
           "isActive": {
             "type": "boolean",
@@ -18194,12 +18215,12 @@
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "default": true
           },
-          "accentColor": {
+          "color": {
             "type": "string",
             "format": "color",
-            "title": "Accentcolor",
+            "title": "Color",
             "description": "Accent color used for this text in the client UI",
-            "default": "#305D97"
+            "default": "#38714B"
           },
           "isActive": {
             "type": "boolean",
@@ -18376,7 +18397,7 @@
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "optionalNullable": false
           },
-          "accentColor": {
+          "color": {
             "anyOf": [
               {
                 "type": "string",
@@ -18386,7 +18407,7 @@
                 "type": "null"
               }
             ],
-            "title": "Accentcolor",
+            "title": "Color",
             "description": "Accent color used for this text in the client UI",
             "optionalNullable": false
           },

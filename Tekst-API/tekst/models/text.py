@@ -3,10 +3,10 @@ import re
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.operators import Eq
 from pydantic import (
     ConfigDict,
     Field,
-    PlainSerializer,
     field_validator,
 )
 from pydantic_extra_types.color import Color
@@ -20,7 +20,7 @@ from tekst.models.common import (
     ModelFactoryMixin,
 )
 from tekst.models.location import LocationDocument
-from tekst.types import ConStr, LocationLabel, LocationLevel
+from tekst.types import ColorSerializer, ConStr, LocationLabel, LocationLevel
 
 
 class TextSubtitleTranslation(TranslationBase):
@@ -148,17 +148,13 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
-    accent_color: Annotated[
+    color: Annotated[
         Color,
-        PlainSerializer(
-            lambda c: c.as_hex() if isinstance(c, Color) else str(c),
-            return_type=str,
-            when_used="unless-none",
-        ),
+        ColorSerializer,
         Field(
             description="Accent color used for this text in the client UI",
         ),
-    ] = "#305D97"
+    ] = "#38714B"
 
     is_active: Annotated[
         bool,
@@ -233,7 +229,7 @@ class TextDocument(Text, DocumentBase):
         return [
             text.id
             for text in await TextDocument.find(
-                TextDocument.is_active == True  # noqa: E712
+                Eq(TextDocument.is_active, True)
             ).to_list()
         ]
 

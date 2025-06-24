@@ -116,7 +116,7 @@ const groupColors = computed<Record<string, string>>(() =>
         transparentize(
           saturate(
             adjustHue(
-              theme.custom.accent.base,
+              theme.colors.primary.base,
               (360 / (annoLineNumbers.value.length + 1)) * (i + 1)
             ),
             1
@@ -661,12 +661,12 @@ function generatePlaintextAnno(): string {
 }
 
 .token-container.token-with-comment {
-  border-left-color: var(--accent-color-fade3);
+  border-left-color: var(--primary-color-fade3);
 }
 
 .token-container.token-content-copied {
   border-color: transparent;
-  outline: 2px dashed var(--accent-color-fade2);
+  outline: 2px dashed var(--primary-color-fade2);
 }
 
 .focus-view .token-container {

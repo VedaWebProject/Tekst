@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TextCreate } from '@/api';
-import { PATCH, accentColorPresets } from '@/api';
+import { PATCH, colorPresets } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -197,13 +197,13 @@ onBeforeRouteUpdate((to, from) => {
           />
         </n-form-item>
 
-        <!-- ACCENT COLOR -->
-        <n-form-item path="accentColor" :label="$t('models.text.accentColor')">
+        <!-- COLOR -->
+        <n-form-item path="color" :label="$t('models.text.color')">
           <n-color-picker
-            v-model:value="model.accentColor"
+            v-model:value="model.color"
             :modes="['hex']"
             :show-alpha="false"
-            :swatches="accentColorPresets"
+            :swatches="colorPresets"
           />
         </n-form-item>
       </form-section>

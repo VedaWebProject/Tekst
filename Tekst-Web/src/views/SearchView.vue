@@ -69,7 +69,7 @@ const resourceOptions = computed(() => {
         {
           class: 'text-small b',
           style: {
-            color: theme.getAccentColors(tId).base,
+            color: theme.getTextColors(tId).base,
             padding: '8px',
           },
         },
@@ -97,7 +97,7 @@ const resourceOptions = computed(() => {
         label: pickTranslation(r.title, state.locale),
         value: r.id,
         resourceType: r.resourceType,
-        textColor: theme.getAccentColors(tId).base,
+        textColor: theme.getTextColors(tId).base,
         level: r.level,
         textId: r.textId,
       })),
@@ -105,7 +105,7 @@ const resourceOptions = computed(() => {
 });
 
 const resourceColors = computed(() =>
-  Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getAccentColors(r.textId) }]))
+  Object.fromEntries(resources.all.map((r) => [r.id, { colors: theme.getTextColors(r.textId) }]))
 );
 
 const queriesCommonText = computed(() =>

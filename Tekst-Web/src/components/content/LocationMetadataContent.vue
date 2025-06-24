@@ -102,6 +102,6 @@ table th {
 }
 
 table .group-header {
-  border-bottom: 1px solid var(--accent-color-fade4);
+  border-bottom: 1px solid var(--primary-color-fade4);
 }
 </style>

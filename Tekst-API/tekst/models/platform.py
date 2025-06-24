@@ -2,6 +2,7 @@ from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
 from pydantic import AwareDatetime, Field, field_validator
+from pydantic_extra_types.color import Color
 
 from tekst.config import TekstConfig, get_config
 from tekst.i18n import LocaleKey, TranslationBase, Translations
@@ -15,6 +16,7 @@ from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
 from tekst.models.text import TextRead
 from tekst.models.user import UserRead
 from tekst.types import (
+    ColorSerializer,
     ConStr,
     ConStrOrNone,
     FontFamilyValue,
@@ -182,6 +184,14 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
+    ui_color: Annotated[
+        Color,
+        ColorSerializer,
+        Field(
+            description="Primary color used in for client UI",
+        ),
+    ] = "#305D97"
+
     show_logo_on_loading_screen: Annotated[
         bool,
         Field(
@@ -261,6 +271,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 class PlatformStateDocument(PlatformState, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "state"
+        bson_encoders = {Color: lambda c: c.as_hex()}
 
 
 PlatformStateRead = PlatformState.read_model()

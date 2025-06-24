@@ -4867,6 +4867,13 @@ export interface components {
        */
       showLocationAliases: boolean;
       /**
+       * Uicolor
+       * Format: color
+       * @description Primary color used in for client UI
+       * @default #305D97
+       */
+      uiColor: string;
+      /**
        * Showlogoonloadingscreen
        * @description Show logo on loading screen
        * @default true
@@ -4988,6 +4995,11 @@ export interface components {
        * @description Show location aliases in browse view
        */
       showLocationAliases?: boolean;
+      /**
+       * Uicolor
+       * @description Primary color used in for client UI
+       */
+      uiColor?: string;
       /**
        * Showlogoonloadingscreen
        * @description Show logo on loading screen
@@ -6286,12 +6298,12 @@ export interface components {
        */
       labeledLocation: boolean;
       /**
-       * Accentcolor
+       * Color
        * Format: color
        * @description Accent color used for this text in the client UI
-       * @default #305D97
+       * @default #38714B
        */
-      accentColor: string;
+      color: string;
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
@@ -6367,12 +6379,12 @@ export interface components {
        */
       labeledLocation: boolean;
       /**
-       * Accentcolor
+       * Color
        * Format: color
        * @description Accent color used for this text in the client UI
-       * @default #305D97
+       * @default #38714B
        */
-      accentColor: string;
+      color: string;
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
@@ -6447,10 +6459,10 @@ export interface components {
        */
       labeledLocation?: boolean;
       /**
-       * Accentcolor
+       * Color
        * @description Accent color used for this text in the client UI
        */
-      accentColor?: string;
+      color?: string;
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client

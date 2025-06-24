@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { prioritizedMetadataKeys, type AnyResourceRead, type UserRead } from '@/api';
+import { type AnyResourceRead, type UserRead } from '@/api';
 import { $t } from '@/i18n';
-import { ProposedIcon, PublicIcon, PublicOffIcon } from '@/icons';
+import { ProposedIcon, PublicOffIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon, NSwitch, NTag } from 'naive-ui';
@@ -21,22 +21,6 @@ const resTitle = computed(() => pickTranslation(props.resource.title, state.loca
 const infoTooltip = computed(() =>
   props.disabled ? $t('browse.locationResourceNoData') : undefined
 );
-
-const desc = computed<string>(() => {
-  const m: string[] = [];
-  const data = props.resource.meta || [];
-
-  // prioritized metadata goes first
-  prioritizedMetadataKeys.forEach((p: string) => {
-    const v = data.find((d) => d.key === p)?.value;
-    if (v) m.push(v);
-  });
-  // resource type
-  if (props.resource.resourceType)
-    m.push($t(`resources.types.${props.resource.resourceType}.label`));
-  // join metadata to string
-  return m.join(', ');
-});
 </script>
 
 <template>
@@ -47,10 +31,26 @@ const desc = computed<string>(() => {
     :class="disabled && 'disabled'"
     :title="infoTooltip"
   >
-    <n-switch v-model:value="active" :round="false" />
     <div class="item-main">
       <n-flex justify="space-between" align="center" :wrap="false">
-        {{ resTitle || '???' }}
+        <n-flex align="center" :wrap="false">
+          <n-switch v-model:value="active" :round="false" />
+          <span class="text-medium">{{ resTitle || '???' }}</span>
+          <n-icon
+            v-if="user && resource.proposed"
+            size="medium"
+            :component="ProposedIcon"
+            :title="$t('resources.proposed')"
+            color="var(--warning-color)"
+          />
+          <n-icon
+            v-else-if="user && !resource.public"
+            size="medium"
+            :component="PublicOffIcon"
+            :title="$t('resources.notPublic')"
+            color="var(--error-color)"
+          />
+        </n-flex>
         <n-tag
           size="small"
           :title="`${$t('common.level')}: ${state.textLevelLabels[props.resource.level]}`"
@@ -58,18 +58,6 @@ const desc = computed<string>(() => {
           {{ state.textLevelLabels[props.resource.level] }}
         </n-tag>
       </n-flex>
-      <div class="text-mini translucent ellipsis">
-        {{ desc }}
-      </div>
-    </div>
-    <div v-if="user" class="item-extra">
-      <n-icon v-if="resource.public" :component="PublicIcon" :title="$t('resources.public')" />
-      <n-icon
-        v-else-if="resource.proposed"
-        :component="ProposedIcon"
-        :title="$t('resources.proposed')"
-      />
-      <n-icon v-else :component="PublicOffIcon" :title="$t('resources.notPublic')" />
     </div>
   </n-flex>
 </template>

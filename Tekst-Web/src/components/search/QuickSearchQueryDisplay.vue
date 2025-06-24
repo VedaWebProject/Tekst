@@ -27,8 +27,8 @@ const targetTexts = computed(() => {
     .filter((t) => props.req.qck.txt?.includes(t.id))
     ?.map((t) => ({
       ...t,
-      color: theme.getAccentColors(t.id).base,
-      colorFade: theme.getAccentColors(t.id).fade3,
+      color: theme.getTextColors(t.id).base,
+      colorFade: theme.getTextColors(t.id).fade3,
     }));
 });
 const settings = computed(() => [

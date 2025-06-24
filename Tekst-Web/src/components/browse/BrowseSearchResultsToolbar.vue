@@ -189,7 +189,7 @@ onMounted(() => {
 
 .bsr-toolbar {
   padding: var(--gap-sm);
-  background-color: var(--accent-color-fade3);
+  background-color: var(--primary-color-fade3);
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }

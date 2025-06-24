@@ -205,9 +205,7 @@ function handleCorrectionsClick() {
   <n-list-item class="resource-list-item">
     <n-thing content-style="margin-top: 8px">
       <template #header>
-        <span class="b">
-          {{ resourceTitle }}
-        </span>
+        {{ resourceTitle }}
       </template>
 
       <template #header-extra>
@@ -268,10 +266,6 @@ function handleCorrectionsClick() {
 
 .resource-list-item:last-child {
   padding-bottom: 0;
-}
-
-.resource-list-item :deep(.n-thing > .n-thing-main .n-thing-header__title) {
-  color: var(--accent-color);
 }
 
 .resource-list-item :deep(.n-thing > .n-thing-main) {

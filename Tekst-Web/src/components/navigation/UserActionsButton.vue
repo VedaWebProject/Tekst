@@ -172,7 +172,7 @@ function handleUserOptionSelect(key: string) {
         size="large"
         :title="tooltip"
         :focusable="false"
-        :color="theme.custom.accent.base"
+        :color="theme.colors.primary.base"
       >
         <template #icon>
           <n-icon :component="UserIcon" />

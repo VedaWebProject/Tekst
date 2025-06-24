@@ -132,7 +132,7 @@ const titleLinkTo = computed(() => {
 }
 
 .navbar a:hover {
-  color: var(--accent-color);
+  color: var(--primary-color);
 }
 
 .navbar-logo {

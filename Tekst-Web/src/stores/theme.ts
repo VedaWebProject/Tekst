@@ -82,8 +82,8 @@ export const useThemeStore = defineStore('theme', () => {
   const dark = useSessionStorage<boolean>('darkMode', usePreferredDark().value);
   const toggleThemeMode = () => (dark.value = !dark.value);
 
-  function generateAccentColorVariants(
-    baseColor: string = state.text?.accentColor || '#7A7A7A',
+  function getColorShades(
+    baseColor: string = state.text?.color || '#7A7A7A',
     darkMode: boolean = dark.value
   ) {
     const lightenBy = darkMode ? 0.4 : 0.0;
@@ -98,32 +98,28 @@ export const useThemeStore = defineStore('theme', () => {
     };
   }
 
-  // all texts accent color variants
-  const _allAccentColors = computed(() =>
+  // all texts color variants
+  const _allTextColors = computed(() =>
     Object.fromEntries(
-      state.pf?.texts.map((t) => [
-        t.id,
-        generateAccentColorVariants(t.accentColor || '#7A7A7A', dark.value),
-      ]) || []
+      state.pf?.texts.map((t) => [t.id, getColorShades(t.color || '#7A7A7A', dark.value)]) || []
     )
   );
 
-  function getAccentColors(textId?: string | null) {
-    return (
-      _allAccentColors.value[textId || ''] || generateAccentColorVariants('#7A7A7A', dark.value)
-    );
+  function getTextColors(textId?: string | null) {
+    return _allTextColors.value[textId || ''] || getColorShades('#7A7A7A', dark.value);
   }
 
-  const custom = computed(() => ({
-    mainBgColor: dark.value ? '#ffffff10' : '#00000010',
-    contentBgColor: dark.value ? '#0004' : '#fff',
-    accent: getAccentColors(state.text?.id),
+  const colors = computed(() => ({
+    mainBg: dark.value ? '#ffffff10' : '#00000010',
+    contentBg: dark.value ? '#0004' : '#fff',
+    primary: getColorShades(state.pf?.state.uiColor || '#305D97', dark.value),
+    text: getTextColors(state.text?.id),
   }));
 
   const nuiBaseTheme = computed(() => (dark.value ? darkTheme : lightTheme));
 
   const nuiThemeOverrides = computed(() => {
-    const primary = toRgba(custom.value.accent.base);
+    const primary = toRgba(colors.value.primary.base);
     const baseOverrides = dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES;
     return {
       ...baseOverrides,
@@ -140,7 +136,16 @@ export const useThemeStore = defineStore('theme', () => {
   // set/update global CSS vars for use in CSS contexts
   watchEffect(() => {
     Object.entries({
+      '--primary-color': colors.value.primary.base,
+      '--primary-color-fade1': colors.value.primary.fade1,
+      '--primary-color-fade2': colors.value.primary.fade2,
+      '--primary-color-fade3': colors.value.primary.fade3,
+      '--primary-color-fade4': colors.value.primary.fade4,
+      '--primary-color-fade5': colors.value.primary.fade5,
+      '--working-text-color': colors.value.text.base,
+
       '--base-color': dark.value ? '#242424' : '#FFFFFF',
+      '--base-color-translucent': transparentize(dark.value ? '#242424' : '#FFFFFF', 0.3),
       '--text-color': nuiBaseTheme.value.common.textColor1,
       '--text-color-translucent': transparentize(nuiBaseTheme.value.common.textColor1, 0.6),
 
@@ -149,15 +154,8 @@ export const useThemeStore = defineStore('theme', () => {
       '--warning-color': nuiBaseTheme.value.common.warningColor,
       '--error-color': nuiBaseTheme.value.common.errorColor,
 
-      '--accent-color': custom.value.accent.base,
-      '--accent-color-fade1': custom.value.accent.fade1,
-      '--accent-color-fade2': custom.value.accent.fade2,
-      '--accent-color-fade3': custom.value.accent.fade3,
-      '--accent-color-fade4': custom.value.accent.fade4,
-      '--accent-color-fade5': custom.value.accent.fade5,
-
-      '--main-bg-color': custom.value.mainBgColor,
-      '--content-bg-color': custom.value.contentBgColor,
+      '--main-bg-color': colors.value.mainBg,
+      '--content-bg-color': colors.value.contentBg,
 
       '--font-family-ui': [state.pf?.state.uiFont, `'Tekst UI Font'`, 'sans-serif']
         .filter((f) => !!f)
@@ -175,7 +173,7 @@ export const useThemeStore = defineStore('theme', () => {
     toggleThemeMode,
     nuiBaseTheme,
     nuiThemeOverrides,
-    custom,
-    getAccentColors,
+    colors,
+    getTextColors,
   };
 });

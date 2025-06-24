@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PATCH, resourceTypes, type PlatformStateUpdate } from '@/api';
+import { colorPresets, PATCH, resourceTypes, type PlatformStateUpdate } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -18,6 +18,7 @@ import { useStateStore } from '@/stores';
 import { cloneDeep } from 'lodash-es';
 import {
   NButton,
+  NColorPicker,
   NDivider,
   NDynamicInput,
   NForm,
@@ -479,6 +480,15 @@ watch(
 
           <!-- BRANDING -->
           <form-section :title="$t('admin.platformSettings.headingBranding')">
+            <!-- UI COLOR -->
+            <n-form-item path="uiColor" :label="$t('models.platformSettings.uiColor')">
+              <n-color-picker
+                v-model:value="formModel.uiColor"
+                :modes="['hex']"
+                :show-alpha="false"
+                :swatches="colorPresets"
+              />
+            </n-form-item>
             <!-- SHOW LOGO ON LOADING SCREEN -->
             <n-form-item :show-label="false" :show-feedback="false">
               <labeled-switch

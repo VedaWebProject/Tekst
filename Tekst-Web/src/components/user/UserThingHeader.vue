@@ -17,7 +17,7 @@ defineProps<{
         <n-icon
           v-if="user.isSuperuser"
           :component="AdminIcon"
-          color="var(--accent-color)"
+          color="var(--primary-color)"
           :title="$t('models.user.isSuperuser')"
         />
       </n-flex>

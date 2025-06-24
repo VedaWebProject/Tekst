@@ -23,7 +23,7 @@ const theme = useThemeStore();
 
 <template>
   <component :is="`h${level}`" class="icon-heading" :style="style">
-    <n-icon v-if="icon" :component="icon" :size="iconSize" :color="theme.custom.accent.base" />
+    <n-icon v-if="icon" :component="icon" :size="iconSize" :color="theme.colors.primary.base" />
     <n-ellipsis v-if="ellipsis">
       <slot></slot>
     </n-ellipsis>

@@ -252,9 +252,9 @@ async function handleModalSubmit() {
 .level-index {
   min-width: 28px;
   align-self: stretch;
-  color: var(--accent-color);
+  color: var(--primary-color);
   font-weight: bold;
-  border-right: 2px solid var(--accent-color);
+  border-right: 2px solid var(--primary-color);
 }
 
 .level-buttons {

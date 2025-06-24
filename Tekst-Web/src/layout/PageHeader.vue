@@ -11,7 +11,7 @@ const state = useStateStore();
 <template>
   <header>
     <primary-nav-bar />
-    <div class="accent-color-bg" style="color: var(--base-color)">
+    <div class="primary-color-bg" style="color: var(--base-color)">
       <n-flex
         size="large"
         justify="space-between"

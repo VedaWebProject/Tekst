@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
+import TextColorIndicator from '@/components/TextColorIndicator.vue';
 import { ExpandArrowDownIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { NButton, NDropdown, NFlex, NIcon, useThemeVars } from 'naive-ui';
@@ -75,6 +76,7 @@ function handleSelect(text: TextRead) {
       :style="{ cursor: !disabled ? 'pointer' : 'default' }"
     >
       <n-flex align="center" :wrap="false" style="max-width: 100%">
+        <text-color-indicator />
         <span class="text-title ellipsis text-large">{{ state.text.title }}</span>
         <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
       </n-flex>

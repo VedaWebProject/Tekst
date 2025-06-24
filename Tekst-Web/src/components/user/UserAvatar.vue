@@ -18,7 +18,7 @@ defineProps<{
     :render-fallback="() => h(NIcon, { component: fallbackIcon || UserIcon })"
     :size="size"
     object-fit="cover"
-    color="var(--accent-color-fade4)"
+    color="var(--primary-color-fade4)"
     :style="{
       justifyContent: 'center',
       alignItems: 'center',

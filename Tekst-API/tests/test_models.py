@@ -164,12 +164,12 @@ async def test_apply_updates(test_app):
         slug="foo",
         levels=[[{"locale": "enUS", "translation": "foo"}]],
         loc_delim=" > ",
-        accent_color="#FF0000",
+        color="#FF0000",
     )
     assert text.labeled_location
     text_doc = TextDocument.model_from(text)
     await text_doc.create()
-    assert text_doc.accent_color.as_rgb() == "rgb(255, 0, 0)"
+    assert text_doc.color.as_rgb() == "rgb(255, 0, 0)"
     assert text_doc.id
     text_updates = TextUpdate(slug="bar", loc_delim=None)
     text_doc = await text_doc.apply_updates(text_updates)

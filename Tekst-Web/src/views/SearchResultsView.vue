@@ -39,7 +39,7 @@ const results = computed<SearchResultProps[]>(
         fullLabelAsTitle: !!text?.fullLocLabelAsHitHeading,
         textSlug: text?.slug || '',
         textTitle: text?.title || '',
-        textColor: theme.getAccentColors(text?.id).base,
+        textColor: theme.getTextColors(text?.id).base,
         level: r.level,
         levelLabel: state.getTextLevelLabel(r.textId, r.level) || '',
         position: r.position,

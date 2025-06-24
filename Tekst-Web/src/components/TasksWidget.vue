@@ -118,13 +118,13 @@ function handleTaskClick(id: string) {
   max-width: 80vw;
   box-shadow: var(--affix-box-shadow);
   background-color: var(--base-color);
-  border: 2px solid var(--accent-color);
+  border: 2px solid var(--primary-color);
   border-radius: var(--border-radius);
 }
 
 #tasks-widget .task-list-header {
   padding: 10px 16px;
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   margin: 0;
 }
 

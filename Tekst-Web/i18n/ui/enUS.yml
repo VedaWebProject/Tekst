@@ -213,7 +213,6 @@ browse:
     deleteSuccess: Bookmark deleted
     maxCountReached: You have reached the maximum number of 1000 bookmarks!
   resourceToggleDrawer:
-    heading: Show Resources
     showNonPublicResources: Show unpublished resources
     activateCategory: Show all resources in this category
     deactivateCategory: Hide all resources in this category
@@ -305,7 +304,7 @@ models:
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)
     fullLocLabelAsHitHeading: Use full location label as search result heading
-    accentColor: Accent color
+    color: Color for emphasis in user interface
     resourceCategories: Resource Categories
     isActive: Publicly listed
     isInactive: Not publicly listed
@@ -345,6 +344,7 @@ models:
     navInfoEntry: Label for "Info" in main navigation
     registerIntroText: Introduction text for register page
     directJumpOnUniqueAliasSearch: Directly jump to location when an unambiguous alias is found
+    uiColor: Primary UI Color
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)

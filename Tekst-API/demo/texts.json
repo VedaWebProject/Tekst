@@ -24,8 +24,7 @@
     "default_level": 2,
     "loc_delim": " > ",
     "labeled_location": true,
-    "accent_color": "#38714b",
-    "pinned_metadata_ids": [{ "$oid": "67dbc7432e51e7949ae22714" }],
+    "color": "#38714b",
     "is_active": true,
     "resource_categories": [
       {
@@ -62,7 +61,7 @@
         "translations": [{ "locale": "*", "translation": "Demo" }]
       }
     ],
-    "full_loc_label_as_hit_heading": true,
+    "full_loc_label_as_hit_heading": false,
     "index_utd": true
   },
   {
@@ -82,7 +81,7 @@
     "default_level": 0,
     "loc_delim": "/",
     "labeled_location": true,
-    "accent_color": "#384a71",
+    "color": "#71384e",
     "is_active": true,
     "resource_categories": [
       {

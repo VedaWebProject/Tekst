@@ -76,7 +76,7 @@ const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
         <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
           <div
             v-if="resource.config.special.lineLabelling.enabled && line.label != null"
-            class="text-color-accent font-ui text-small"
+            class="text-color-primary font-ui text-small"
           >
             {{ line.label }}
           </div>

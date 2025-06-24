@@ -77,11 +77,10 @@ watch(
     >
       <n-flex align="center" :gap="12" :class="{ translucent: !contentsLoaded }" style="flex: 2">
         <div
-          class="text-color-accent"
           :class="{
-            b: !browse.focusView,
             'text-medium': !browse.focusView,
             'text-small': browse.focusView,
+            translucent: true,
           }"
         >
           {{ resourceTitle }}

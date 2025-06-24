@@ -2,6 +2,7 @@
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
+import TextColorIndicator from '@/components/TextColorIndicator.vue';
 import { FocusViewOffIcon, FocusViewOnIcon, ResourceIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
@@ -52,14 +53,16 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       :wrap="false"
       justify="space-between"
       align="center"
-      class="browse-toolbar accent-color-bg"
+      class="browse-toolbar primary-color-bg"
     >
       <browse-location-controls :button-size="buttonSize" />
 
-      <div class="browse-toolbar-middle">
-        <div v-show="!state.smallScreen" class="browse-location-label">
-          <location-label />
-        </div>
+      <div v-if="!state.smallScreen" class="browse-toolbar-middle browse-location-label text-small">
+        <n-flex justify="center" align="center" :wrap="false">
+          <text-color-indicator :title="state.text?.title" />
+          <b style="text-align: center">dfgdfgdgfd</b>
+        </n-flex>
+        <div><location-label /></div>
       </div>
 
       <div class="browse-toolbar-end">
@@ -147,7 +150,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 }
 
 .browse-toolbar {
-  padding: var(--gap-sm);
+  padding: var(--gap-sm) var(--gap-md);
 }
 
 .browse-toolbar-middle {
@@ -167,12 +170,12 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 }
 
 .browse-toolbar .browse-location-label {
-  display: none;
+  visibility: hidden;
   color: var(--base-color);
 }
 
 .browse-toolbar-container.affixed .browse-location-label {
-  display: initial;
+  visibility: initial;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

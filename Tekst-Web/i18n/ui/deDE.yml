@@ -216,7 +216,6 @@ browse:
     deleteSuccess: Lesezeichen gelöscht
     maxCountReached: Sie haben die maximale Anzahl von 1000 Lesezeichen erreicht!
   resourceToggleDrawer:
-    heading: Ressourcen anzeigen
     showNonPublicResources: Zeige nicht veröffentlichte Ressourcen
     activateCategory: Zeige alle Ressourcen dieser Kategorie
     deactivateCategory: Verstecke alle Ressourcen dieser Kategorie
@@ -308,7 +307,7 @@ models:
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
-    accentColor: Akzentfarbe
+    color: Farbe für Hervorhebung in Benutzeroberfläche
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
     isInactive: Nicht öffentlich gelistet
@@ -348,6 +347,7 @@ models:
     navInfoEntry: Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Einführungstext für Registrierungsseite
     directJumpOnUniqueAliasSearch: Bei eindeutigem Treffer direkt zur Belegstelle springen
+    uiColor: Primärfarbe der Benutzeroberfläche
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)

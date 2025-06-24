@@ -46,7 +46,7 @@ const searchableResources = computed(
       : state.pf?.texts.map((t) => t.id)
     )?.map((tId) => ({
       title: state.textById(tId)?.title,
-      color: theme.getAccentColors(tId).base,
+      color: theme.getTextColors(tId).base,
       resources: resources.all.filter((r) => r.textId === tId && r.config.general.searchableQuick),
     })) || []
 );

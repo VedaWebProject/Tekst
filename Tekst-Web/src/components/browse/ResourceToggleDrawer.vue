@@ -2,13 +2,15 @@
 import ResourceToggleDrawerItem from '@/components/browse/ResourceToggleDrawerItem.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
+import TextColorIndicator from '@/components/TextColorIndicator.vue';
 import { CheckAllIcon, ResourceIcon, UncheckAllIcon } from '@/icons';
-import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
 import { NButton, NDrawer, NDrawerContent, NFlex, NIcon } from 'naive-ui';
 import { computed } from 'vue';
 
 const show = defineModel<boolean>('show');
 
+const state = useStateStore();
 const auth = useAuthStore();
 const browse = useBrowseStore();
 const resources = useResourcesStore();
@@ -33,7 +35,8 @@ function toggleCategory(index: number, activate: boolean) {
     <n-drawer-content closable header-style="border: none">
       <template #header>
         <icon-heading level="2" :icon="ResourceIcon" class="m-0">
-          {{ $t('browse.resourceToggleDrawer.heading') }}
+          <text-color-indicator no-border />
+          {{ state.text?.title || $t('models.resource.modelLabel', 2) }}
         </icon-heading>
       </template>
 

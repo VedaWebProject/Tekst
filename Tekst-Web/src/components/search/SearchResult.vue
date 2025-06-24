@@ -24,7 +24,7 @@ const props = defineProps<{
   fullLabelAsTitle?: boolean;
   textTitle: TextRead['title'];
   textSlug: TextRead['slug'];
-  textColor: TextRead['accentColor'];
+  textColor: TextRead['color'];
   level: SearchHit['level'];
   levelLabel: string;
   position: SearchHit['position'];
@@ -94,7 +94,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
         <n-flex wrap align="center">
           <n-flex align="center" :wrap="false" style="flex: 2">
             <n-icon :component="BookIcon" class="text-medium" />
-            <b>{{ fullLabelAsTitle ? fullLabel : label }}</b>
+            <b class="text-medium">{{ fullLabelAsTitle ? fullLabel : label }}</b>
           </n-flex>
           <div class="sr-header-tags">
             <n-tag
@@ -133,7 +133,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
             :title="hl.tip"
             :class="{ translucent: hl.level < level }"
           >
-            <span class="b" :style="{ color: textColor }">{{ hl.title }}: </span>
+            <span>{{ hl.title }}: </span>
             <span :style="{ fontFamily: hl.font }" v-html="hl.hl"></span>
           </div>
         </div>

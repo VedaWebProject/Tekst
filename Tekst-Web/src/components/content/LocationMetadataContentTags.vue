@@ -14,9 +14,9 @@ const state = useStateStore();
 const resources = useResourcesStore();
 
 const tagColor = {
-  color: 'var(--accent-color-fade5)',
-  borderColor: 'var(--accent-color-fade4)',
-  textColor: 'var(--accent-color)',
+  color: 'var(--primary-color-fade5)',
+  borderColor: 'var(--primary-color-fade4)',
+  textColor: 'var(--primary-color)',
 };
 
 const contentsProcessed = computed(() => {
@@ -95,6 +95,6 @@ const contentsProcessed = computed(() => {
 }
 
 .loc-meta-tag:hover {
-  background-color: var(--accent-color-fade4);
+  background-color: var(--primary-color-fade4);
 }
 </style>

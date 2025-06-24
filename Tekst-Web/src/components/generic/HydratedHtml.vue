@@ -126,25 +126,25 @@ watchEffect(() => {
 <style scoped>
 :deep(.modal-trigger) {
   cursor: pointer;
-  color: var(--accent-color);
+  color: var(--primary-color);
   transition: color 0.2s ease-in-out;
 }
 
 :deep(.modal-trigger:hover) {
-  color: var(--accent-color-fade1);
+  color: var(--primary-color-fade1);
 }
 
 :deep(a.internal-ref-link) {
   padding: 0 0.2em;
   cursor: pointer;
-  border: 1px solid var(--accent-color-fade4);
+  border: 1px solid var(--primary-color-fade4);
   border-radius: var(--border-radius);
   font-family: var(--font-family-ui);
   transition: border-color 0.2s ease-in-out;
 }
 
 :deep(a.internal-ref-link:hover) {
-  color: var(--accent-color);
-  border-color: var(--accent-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 </style>

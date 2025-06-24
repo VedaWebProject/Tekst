@@ -32,8 +32,8 @@ const searchedResources = computed(() => {
       return {
         id: r.id,
         label: pickTranslation(r.title, state.locale),
-        color: theme.getAccentColors(r.textId).base,
-        colorFade: theme.getAccentColors(r.textId).fade3,
+        color: theme.getTextColors(r.textId).base,
+        colorFade: theme.getTextColors(r.textId).fade3,
       };
     });
 });

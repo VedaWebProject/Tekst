@@ -20,7 +20,7 @@ const initialModel = (): TextCreate => ({
   title: '',
   slug: '',
   levels: [[{ locale: '*', translation: '' }]],
-  accentColor: '#43895F',
+  color: '#38714B',
   defaultLevel: 0,
   fullLocLabelAsHitHeading: false,
   isActive: false,

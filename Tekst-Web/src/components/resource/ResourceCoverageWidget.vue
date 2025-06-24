@@ -76,8 +76,8 @@ onMounted(async () => {
           :height="16"
           :border-radius="3"
           indicator-placement="inside"
-          color="var(--accent-color)"
-          rail-color="var(--accent-color-fade4)"
+          color="var(--primary-color)"
+          rail-color="var(--primary-color-fade4)"
         />
       </n-collapse-item>
       <n-collapse-item
@@ -178,7 +178,7 @@ onMounted(async () => {
 
 .range-boundary {
   padding: 0 var(--gap-sm);
-  background-color: var(--accent-color-fade5);
+  background-color: var(--primary-color-fade5);
   border-radius: var(--border-radius);
 }
 

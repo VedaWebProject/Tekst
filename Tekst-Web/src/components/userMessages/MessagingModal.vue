@@ -171,7 +171,7 @@ whenever(ctrlEnter, () => {
 .message-bubble.from-me {
   margin-left: auto;
   border-bottom-right-radius: 0px;
-  background-color: var(--accent-color-fade4);
+  background-color: var(--primary-color-fade4);
 }
 
 .message-bubble.from-them {
@@ -198,7 +198,7 @@ whenever(ctrlEnter, () => {
   font-weight: bold;
   font-size: var(--font-size-huge);
   margin-right: var(--gap-sm);
-  color: var(--accent-color);
+  color: var(--primary-color);
   line-height: 1;
 }
 
