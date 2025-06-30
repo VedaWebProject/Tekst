@@ -26,7 +26,7 @@ ENV PYTHONFAULTHANDLER=1 \
 FROM py-base AS api-builder
 WORKDIR "/tekst"
 
-COPY --from=ghcr.io/astral-sh/uv:0.7.14 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.7.17 /uv /uvx /bin/
 COPY Tekst-API/tekst/ ./tekst/
 COPY Tekst-API/uv.lock* \
      Tekst-API/pyproject.toml \
