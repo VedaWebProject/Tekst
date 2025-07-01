@@ -307,7 +307,7 @@ models:
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
-    color: Farbe für Hervorhebung in Benutzeroberfläche
+    color: Farbe für visuelle Abhebung
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
     isInactive: Nicht öffentlich gelistet

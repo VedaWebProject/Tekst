@@ -2,7 +2,6 @@
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import TextColorIndicator from '@/components/TextColorIndicator.vue';
 import { FocusViewOffIcon, FocusViewOnIcon, ResourceIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
@@ -59,7 +58,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
       <div v-if="!state.smallScreen" class="browse-toolbar-middle browse-location-label text-small">
         <n-flex justify="center" align="center" :wrap="false">
-          <text-color-indicator :title="state.text?.title" />
           <b style="text-align: center">{{ state.text?.title || '???' }}</b>
         </n-flex>
         <div><location-label /></div>

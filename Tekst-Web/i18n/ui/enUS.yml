@@ -304,7 +304,7 @@ models:
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)
     fullLocLabelAsHitHeading: Use full location label as search result heading
-    color: Color for emphasis in user interface
+    color: Color for visual distinction
     resourceCategories: Resource Categories
     isActive: Publicly listed
     isInactive: Not publicly listed

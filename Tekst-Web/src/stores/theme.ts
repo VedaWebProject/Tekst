@@ -142,7 +142,6 @@ export const useThemeStore = defineStore('theme', () => {
       '--primary-color-fade3': colors.value.primary.fade3,
       '--primary-color-fade4': colors.value.primary.fade4,
       '--primary-color-fade5': colors.value.primary.fade5,
-      '--working-text-color': colors.value.text.base,
 
       '--base-color': dark.value ? '#242424' : '#FFFFFF',
       '--base-color-translucent': transparentize(dark.value ? '#242424' : '#FFFFFF', 0.3),
