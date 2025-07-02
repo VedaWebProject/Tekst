@@ -68,6 +68,7 @@ async function handleSearch() {
         textId: state.text?.id || '',
         alias: search.queryQuick,
         limit: matchesToShow,
+        fullLabels: true,
       },
     },
   });
@@ -80,7 +81,8 @@ async function handleSearch() {
         params: { textSlug: state.text?.slug || '', locId: data[0].id },
       });
     } else {
-      // there are multiple matching locations, so we show a list of them
+      // there are multiple matching locations (or the config say to ask anyway),
+      // so we show a list of them
       locationSelectOptions.value = [
         {
           type: 'group',
