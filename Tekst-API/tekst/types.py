@@ -121,7 +121,7 @@ LocationLabel = ConStr(
 
 LocationAlias = constr(
     min_length=1,
-    max_length=32,
+    max_length=512,
     strip_whitespace=True,
 )
 

@@ -12427,7 +12427,7 @@
               {
                 "items": {
                   "type": "string",
-                  "maxLength": 32,
+                  "maxLength": 512,
                   "minLength": 1
                 },
                 "type": "array",
@@ -13647,7 +13647,7 @@
               {
                 "items": {
                   "type": "string",
-                  "maxLength": 32,
+                  "maxLength": 512,
                   "minLength": 1
                 },
                 "type": "array",
@@ -13741,7 +13741,7 @@
               {
                 "items": {
                   "type": "string",
-                  "maxLength": 32,
+                  "maxLength": 512,
                   "minLength": 1
                 },
                 "type": "array",
