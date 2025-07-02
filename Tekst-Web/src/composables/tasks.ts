@@ -44,6 +44,11 @@ const { resume, pause } = useTimeoutPoll(
             message.success(
               $t('tasks.successful', { name: $t(`tasks.types.${task.type}`) }) + ' ' + result
             );
+            // if this was a resource import, re-load resources data
+            if (task.type === 'resource_import') {
+              const resources = useResourcesStore();
+              resources.load();
+            }
           } else if (task.status === 'failed') {
             const detailsText =
               ($te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : '') +

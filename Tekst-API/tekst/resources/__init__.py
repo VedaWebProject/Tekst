@@ -38,6 +38,20 @@ from tekst.types import ConStr, SchemaOptionalNullable
 # global variable to hold resource type manager instance
 resource_types_mgr: "ResourceTypesManager" = None
 
+# resource base model fields to exclude from export/import
+RES_EXCLUDE_FIELDS_EXP_IMP = {
+    "text_id",
+    "level",
+    "resource_type",
+    "original_id",
+    "owner_id",
+    "shared_read",
+    "shared_write",
+    "public",
+    "proposed",
+    "contents_changed_at",
+}
+
 
 @lru_cache
 def get_resource_template_readme() -> dict[str, str]:
@@ -274,12 +288,19 @@ class ResourceTypeABC(ABC):
                 if isinstance(c[attr], PydanticObjectId):
                     c[attr] = str(c[attr])
         # write to file
+        data = camelize(
+            resource.model_dump(
+                mode="json",
+                exclude=RES_EXCLUDE_FIELDS_EXP_IMP,
+                by_alias=True,
+                exclude_none=True,
+                exclude_unset=True,
+            )
+        )
+        data.update(contents=contents)
         with open(file_path, "w") as fp:
             json.dump(
-                {
-                    "resourceId": str(resource.id),
-                    "contents": contents,
-                },
+                data,
                 fp=fp,
                 ensure_ascii=False,
             )

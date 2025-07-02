@@ -4863,8 +4863,8 @@
         "tags": [
           "resources"
         ],
-        "summary": "Import resource contents",
-        "operationId": "importResourceContents",
+        "summary": "Import resource",
+        "operationId": "importResource",
         "security": [
           {
             "APIKeyCookie": []
@@ -4893,7 +4893,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_import_resource_contents_resources__id__import_post"
+                "$ref": "#/components/schemas/Body_import_resource_resources__id__import_post"
               }
             }
           }
@@ -9460,7 +9460,7 @@
         ],
         "title": "Body_auth_cookie_login_auth_cookie_login_post"
       },
-      "Body_import_resource_contents_resources__id__import_post": {
+      "Body_import_resource_resources__id__import_post": {
         "properties": {
           "file": {
             "type": "string",
@@ -9473,7 +9473,7 @@
         "required": [
           "file"
         ],
-        "title": "Body_import_resource_contents_resources__id__import_post"
+        "title": "Body_import_resource_resources__id__import_post"
       },
       "Body_import_text_structure_texts__id__structure_post": {
         "properties": {

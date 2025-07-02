@@ -38,6 +38,7 @@ from tekst.models.resource import (
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.resources import (
+    RES_EXCLUDE_FIELDS_EXP_IMP,
     AnyResourceCreate,
     AnyResourceRead,
     AnyResourceUpdate,
@@ -828,7 +829,7 @@ async def download_resource_template(
     )
 
 
-async def _import_resource_contents_task(
+async def _import_resource_task(
     resource_id: PydanticObjectId,
     file_bytes: bytes,
     user: UserRead,
@@ -859,18 +860,27 @@ async def _import_resource_contents_task(
     finally:
         del file_bytes
 
-    # check if resource_id matches the one in the import file
-    if str(resource_id) != str(import_data.get("resourceId")):
+    # normalize resource ID key to allow following the import template as well as
+    # re-importing a Tekst-JSON-exported resource
+    import_data["_id"] = (
+        import_data.pop("resourceId", None)
+        or import_data.pop("resource_id", None)
+        or import_data.pop("id", None)
+        or import_data.pop("_id", None)
+    )
+
+    # check if resource_id matches ID in import_data
+    if str(resource_id) != str(import_data.get("_id")):
         raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
 
-    # chek if "contents" is a list
+    # check if "contents" is a list
     if not isinstance(import_data.get("contents"), list):
         raise errors.E_422_UPLOAD_INVALID_DATA
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     doc_model: ContentBaseDocument = content_model.document_model()
-    update_model = content_model.update_model()
+    content_update_model = content_model.update_model()
 
     created_count = 0
     updated_count = 0
@@ -907,7 +917,7 @@ async def _import_resource_contents_task(
             try:
                 if content_doc:
                     await content_doc.apply_updates(
-                        update_model(
+                        content_update_model(
                             resource_type=resource_doc.resource_type,
                             **content,
                         ),
@@ -929,7 +939,24 @@ async def _import_resource_contents_task(
                     values={"errors": str(e)},
                 )
 
-        # write import data
+        # create resource update model instance and make sure to exclude
+        # fields that are not allowed to be updated on resource import
+        # (do it before writing any content data because we want this to fail fast)
+        import_data["resource_type"] = resource_doc.resource_type
+        res_updates = (
+            resource_types_mgr.get(resource_doc.resource_type)
+            .resource_model()
+            .update_model()(
+                **{
+                    k: v
+                    for k, v in import_data.items()
+                    if k not in RES_EXCLUDE_FIELDS_EXP_IMP
+                },
+                resource_type=resource_doc.resource_type,
+            )
+        )
+
+        # write content import data
         while contents:
             content_doc, is_update = contents.pop(0)
             if is_update:
@@ -938,6 +965,13 @@ async def _import_resource_contents_task(
             else:
                 await content_doc.save()
                 created_count += 1
+
+        # write resource props and config import data
+        # (will be skipped if anything went wrong with content import)
+        await resource_doc.apply_updates(
+            res_updates,
+            replace=True,
+        )
     except Exception as e:
         raise e
     finally:
@@ -967,7 +1001,7 @@ async def _import_resource_contents_task(
         ]
     ),
 )
-async def import_resource_contents(
+async def import_resource(
     user: UserDep,
     resource_id: Annotated[
         PydanticObjectId,
@@ -988,7 +1022,7 @@ async def import_resource_contents(
     file_bytes = await file.read()
     await file.close()
     return await tasks.create_task(
-        _import_resource_contents_task,
+        _import_resource_task,
         tasks.TaskType.RESOURCE_IMPORT,
         target_id=resource_id,
         user_id=user.id,

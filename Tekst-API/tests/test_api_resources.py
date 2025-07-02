@@ -974,7 +974,7 @@ async def test_get_resource_template(
 
 
 @pytest.mark.anyio
-async def test_import_resource_contents(
+async def test_import_resource(
     test_client: AsyncClient,
     insert_test_data,
     get_test_data_path,

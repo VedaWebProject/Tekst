@@ -769,8 +769,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Import resource contents */
-    post: operations['importResourceContents'];
+    /** Import resource */
+    post: operations['importResource'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2192,8 +2192,8 @@ export interface components {
       /** Client Secret */
       client_secret?: string | null;
     };
-    /** Body_import_resource_contents_resources__id__import_post */
-    Body_import_resource_contents_resources__id__import_post: {
+    /** Body_import_resource_resources__id__import_post */
+    Body_import_resource_resources__id__import_post: {
       /**
        * File
        * Format: binary
@@ -9506,7 +9506,7 @@ export interface operations {
       };
     };
   };
-  importResourceContents: {
+  importResource: {
     parameters: {
       query?: never;
       header?: never;
@@ -9517,7 +9517,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_import_resource_contents_resources__id__import_post'];
+        'multipart/form-data': components['schemas']['Body_import_resource_resources__id__import_post'];
       };
     };
     responses: {
