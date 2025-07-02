@@ -179,9 +179,11 @@ async def _run_task(
         task_doc.status = "failed"
         try:
             task_doc.error = e.detail.detail.key
-            task_doc.error_details = str(e.detail.detail.values)
+            task_doc.error_details = (
+                str(e.detail.detail.values) if e.detail.detail.values else None
+            )
         except Exception:  # pragma: no cover
-            task_doc.error = str(e)
+            task_doc.error_details = str(e) if e else None
         # write to error log if the exception is not an HTTPException
         if not isinstance(e, HTTPException):  # pragma: no cover
             log.error(str(e) + "\n" + traceback.format_exc())

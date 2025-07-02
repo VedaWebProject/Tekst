@@ -50,10 +50,12 @@ const { resume, pause } = useTimeoutPoll(
               resources.load();
             }
           } else if (task.status === 'failed') {
-            const detailsText =
-              ($te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : '') +
-              '\n' +
-              (task.errorDetails || '').trim();
+            const detailsText = [
+              $te(`errors.${task.error}`) ? $t(`errors.${task.error}`) : null,
+              (task.errorDetails || '').trim(),
+            ]
+              .filter(Boolean)
+              .join('\n---\n');
             message.error(
               $t('tasks.failed', { name: $t(`tasks.types.${task.type}`) }),
               detailsText

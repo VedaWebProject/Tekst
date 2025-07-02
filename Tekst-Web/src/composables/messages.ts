@@ -14,10 +14,14 @@ const messageQueue = ref<Message[]>([]);
 export function useMessages() {
   function messageFn(type: MessageType) {
     return (text: string, details?: string | object, seconds: number = 5) => {
+      details =
+        !!details && typeof details !== 'string' && !(details instanceof String)
+          ? (JSON.stringify(details || '', null, 2) as string) || undefined
+          : (details as string) || undefined;
       messageQueue.value = messageQueue.value.concat([
         {
           text,
-          details: details ? JSON.stringify(details, null, 2) : undefined,
+          details,
           type,
           seconds,
         },

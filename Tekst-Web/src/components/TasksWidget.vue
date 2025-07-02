@@ -37,10 +37,16 @@ function handleTaskClick(id: string) {
 
   // open dialog if task has failed (to display error info)
   if (t.status === 'failed') {
+    const errorDetails = [
+      $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || null,
+      (t.errorDetails || '').trim(),
+    ]
+      .filter(Boolean)
+      .join('\n---\n');
     dialog.create({
       type: statusThemes[t.status].dialogType,
       title: $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status}`),
-      content: $te(`errors.${t.error}`) ? $t(`errors.${t.error}`) : t.error || '',
+      content: errorDetails,
     });
   }
 
