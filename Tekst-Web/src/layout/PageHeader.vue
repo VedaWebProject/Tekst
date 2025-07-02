@@ -4,12 +4,8 @@ import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
 import { useStateStore } from '@/stores';
 import { NFlex } from 'naive-ui';
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
 
 const state = useStateStore();
-const route = useRoute();
-const showText = computed(() => !!route.params.hasOwnProperty('textSlug'));
 </script>
 
 <template>
@@ -23,9 +19,9 @@ const showText = computed(() => !!route.params.hasOwnProperty('textSlug'));
         :wrap="false"
         class="page-header-bottom"
       >
-        <text-select v-if="showText" />
+        <text-select />
         <div
-          v-if="showText && state.text?.subtitle && !state.smallScreen"
+          v-if="state.text?.subtitle && !state.smallScreen"
           class="text-large i translucent ellipsis"
         >
           <translation-display :value="state.text?.subtitle" />
