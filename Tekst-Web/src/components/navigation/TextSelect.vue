@@ -40,14 +40,18 @@ function handleSelect(text: TextRead) {
   dropdownRef.value.doUpdateShow(false);
   browse.locationPath = [];
 
-  router.push({
-    name: router.currentRoute.value.name,
-    params: {
-      ...router.currentRoute.value.params,
-      textSlug: text.slug,
-      locId: undefined,
-    },
-  });
+  if (router.currentRoute.value.params.hasOwnProperty('textSlug')) {
+    router.push({
+      name: router.currentRoute.value.name,
+      params: {
+        ...router.currentRoute.value.params,
+        textSlug: text.slug,
+        locId: undefined,
+      },
+    });
+  } else {
+    state.text = state.textById(text.id);
+  }
 }
 </script>
 
