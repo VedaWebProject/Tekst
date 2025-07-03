@@ -626,10 +626,13 @@ whenever(ArrowRight, () => {
       <correction-note-widget
         v-if="location"
         :quaternary="false"
-        secondary
+        :secondary="false"
+        tertiary
+        type="error"
         :resource="resource"
         :location-id="location.id"
         full
+        :show-info="false"
         class="mb-lg"
         style="justify-content: center"
       />

@@ -9,11 +9,17 @@ import { CorrectionNoteIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
 import { ref } from 'vue';
 
-const props = defineProps<{
-  resource: AnyResourceRead;
-  locationId?: string;
-  full?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    resource: AnyResourceRead;
+    locationId?: string;
+    full?: boolean;
+    showInfo?: boolean;
+  }>(),
+  {
+    showInfo: true,
+  }
+);
 
 const emit = defineEmits(['done']);
 
@@ -80,7 +86,7 @@ async function handleModalSubmit(note: string) {
     :title="$t('browse.contents.widgets.correctionNote.title')"
     :icon="CorrectionNoteIcon"
     :input-label="$t('browse.contents.widgets.correctionNote.lblNote')"
-    :msg="$t('browse.contents.widgets.correctionNote.info')"
+    :msg="showInfo ? $t('browse.contents.widgets.correctionNote.info') : undefined"
     :font="resource.config.general.font || undefined"
     :osk-mode-key="resource.config.general.osk || undefined"
     :rows="3"
