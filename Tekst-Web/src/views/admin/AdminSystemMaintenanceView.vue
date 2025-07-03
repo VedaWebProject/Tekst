@@ -173,7 +173,7 @@ onBeforeMount(() => {
           <button-shelf bottom-gap>
             <template #start>
               <n-button
-                secondary
+                type="primary"
                 :disabled="indicesInfoLoading"
                 :loading="indicesInfoLoading"
                 @click="loadIndexInfo"
@@ -184,7 +184,7 @@ onBeforeMount(() => {
                 {{ $t('common.refresh') }}
               </n-button>
               <n-divider vertical style="height: 100%" />
-              <n-button secondary :disabled="indicesInfoLoading" @click="createIndex">
+              <n-button type="primary" :disabled="indicesInfoLoading" @click="createIndex">
                 <template #icon>
                   <n-icon :component="UpdateIcon" />
                 </template>
@@ -258,7 +258,7 @@ onBeforeMount(() => {
           <button-shelf bottom-gap>
             <template #start>
               <n-button
-                secondary
+                type="primary"
                 :disabled="precomputedLoading"
                 :loading="precomputedLoading"
                 @click="triggerPrecomputation"
@@ -283,7 +283,7 @@ onBeforeMount(() => {
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
         <form-section :title="$t('admin.maintenance.cleanup.heading')" :show-box="false">
           <n-button
-            secondary
+            type="primary"
             :disabled="cleanupLoading"
             :loading="cleanupLoading"
             @click="triggerInternalCleanup"
@@ -303,7 +303,7 @@ onBeforeMount(() => {
           <button-shelf bottom-gap>
             <template #start>
               <n-button
-                secondary
+                type="primary"
                 :disabled="tasksLoading"
                 :loading="tasksLoading"
                 @click="updateAllTasksData"
