@@ -115,10 +115,7 @@ const groupColors = computed<Record<string, string>>(() =>
       toRgba(
         transparentize(
           saturate(
-            adjustHue(
-              theme.colors.primary.base,
-              (360 / (annoLineNumbers.value.length + 1)) * (i + 1)
-            ),
+            adjustHue(theme.colors.primary.base, (360 / (annoCfg.value.groups.length + 1)) * i),
             1
           ),
           theme.dark ? 0.82 : 0.92
