@@ -824,7 +824,7 @@ admin:
       actionCreate: Neuindexierung
       actionCreateStarted: Die Suchindizes werden im Hintergrund aktualisiert. @:common.takeAWhile
     precomputed:
-      heading: Vorberechnete Ressourcen-Daten
+      heading: Vorberechnete Daten
       description: |
         Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
         Es werden die Belegstellen-Abdeckung aller Ressourcen sowie weitere Ressourcentyp-spezifische Daten (falls zutreffend) vorberechnet.
