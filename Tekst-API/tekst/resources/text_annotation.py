@@ -74,7 +74,7 @@ class TextAnnotation(ResourceTypeABC):
                     },
                 },
             },
-            "tokens_concat": {
+            "quick_search_content": {
                 "type": "text",
                 "analyzer": lenient_analyzer,
                 "fields": {
@@ -113,7 +113,7 @@ class TextAnnotation(ResourceTypeABC):
                 }
                 for token in content.tokens
             ],
-            "tokens_concat": "; ".join(token_forms),
+            "quick_search_content": "; ".join(token_forms),
         }
 
     @classmethod
@@ -354,7 +354,7 @@ class TextAnnotationResource(ResourceBase):
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["tokens_concat"]
+        return ["quick_search_content"]
 
     async def _update_aggregations(
         self,

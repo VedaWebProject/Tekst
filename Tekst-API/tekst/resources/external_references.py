@@ -67,7 +67,13 @@ class ExternalReferences(ResourceTypeABC):
     ) -> dict[str, Any] | None:
         return {
             "text": [
-                f"{f.get('title', '')} – {f.get('description', '')}".strip()
+                "".join(
+                    [
+                        f"{f.get('title', '')}",
+                        f" ({f.get('alt_ref')})" if f.get("alt_ref") else "",
+                        f" – {f.get('description')}" if f.get("description") else "",
+                    ]
+                ).strip()
                 for f in content.model_dump(include={"links"}).get("links", [])
             ]
         }
@@ -138,6 +144,7 @@ class ExternalReferences(ResourceTypeABC):
                     "URL",
                     "TITLE",
                     "DESCRIPTION",
+                    "ALT_REF",
                     "AUTHORS_COMMENT",
                     "EDITORS_COMMENT",
                 ]
@@ -151,6 +158,7 @@ class ExternalReferences(ResourceTypeABC):
                             link.url,
                             link.title,
                             link.description,
+                            link.alt_ref,
                             content.authors_comment,
                             content.editors_comment,
                         ]
@@ -188,13 +196,21 @@ class ExternalReferencesLink(ModelBase):
         ),
     ]
     description: Annotated[
-        str,
         ConStrOrNone(
             max_length=4096,
             cleanup="multiline",
         ),
         Field(
             description="Description of the link",
+        ),
+    ] = None
+    alt_ref: Annotated[
+        ConStrOrNone(
+            max_length=512,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Additional, alternate reference data",
         ),
     ] = None
 

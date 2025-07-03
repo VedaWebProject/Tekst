@@ -31,39 +31,49 @@ const fontStyle: CSSProperties = {
       :editors-comment="content.editorsComment"
       :font="fontStyle.fontFamily"
     >
-      <n-flex :vertical="!focusView" :wrap="false" class="ext-ref-content">
-        <n-flex v-for="(link, index) in content.links" :key="index" vertical size="small">
-          <n-flex align="center" :wrap="false">
-            <n-icon v-if="!focusView" :component="LinkIcon" />
-            <a
-              :href="link.url"
-              target="_blank"
-              :title="link.title + (link.description ? ' – ' + link.description : '')"
-              style="line-height: 1.2"
-              :style="fontStyle"
-              rel="noopener noreferrer"
-            >
-              <n-icon v-if="focusView" :component="LinkIcon" size="24" />
-              <template v-else>{{ link.title }}</template>
-            </a>
-          </n-flex>
-          <n-flex v-if="!focusView && link.description" :wrap="false">
-            <n-icon />
-            <div class="text-tiny translucent ext-ref-description">{{ link.description }}</div>
-          </n-flex>
-        </n-flex>
+      <n-flex :vertical="!focusView">
+        <div
+          v-for="(link, index) in content.links"
+          :key="index"
+          :class="{ 'ext-ref-sibling': index > 0 && !focusView }"
+        >
+          <a
+            :href="link.url"
+            target="_blank"
+            :title="
+              link.title +
+              (link.altRef ? ` (${link.altRef})` : '') +
+              (link.description ? ' – ' + link.description : '')
+            "
+            style="line-height: 1.2"
+            :style="fontStyle"
+            rel="noopener noreferrer"
+          >
+            <n-icon v-if="focusView" :component="LinkIcon" size="24" />
+            <template v-else>{{ link.title }}&nearr;</template>
+          </a>
+          <div
+            v-if="!focusView && link.altRef"
+            :title="$t('resources.types.externalReferences.contentFields.altRef')"
+            class="text-small"
+          >
+            {{ link.altRef }}
+          </div>
+          <div
+            v-if="!focusView && link.description"
+            :title="$t('common.description')"
+            class="text-small translucent pre-wrap"
+          >
+            {{ link.description }}
+          </div>
+        </div>
       </n-flex>
     </common-content-display>
   </div>
 </template>
 
 <style scoped>
-.ext-ref-content:not(:first-child) {
-  padding-top: var(--gap-lg);
-  border-top: 1px solid var(--main-bg-color);
-}
-
-.ext-ref-description {
-  white-space: pre-line;
+.ext-ref-sibling:not(:first-child) {
+  margin-top: var(--gap-md);
 }
 </style>

@@ -557,6 +557,7 @@ resources:
       parenthesis: Links zu externen Ressourcen
       contentFields:
         title: Titel / Text
+        altRef: Alternative Referenz
       searchFields:
         text: Titel / Beschreibung
     apiCall:

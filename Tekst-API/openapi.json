@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.25.1a0"
+    "version": "0.26.0a0"
   },
   "servers": [
     {
@@ -10533,9 +10533,32 @@
             "description": "Title/text of the link"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 4096,
+                "minLength": 1
+              }
+            ],
             "title": "Description",
             "description": "Description of the link"
+          },
+          "altRef": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "Altref",
+            "description": "Additional, alternate reference data"
           }
         },
         "type": "object",

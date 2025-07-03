@@ -546,6 +546,7 @@ resources:
       parenthesis: links to external resources
       contentFields:
         title: Title / Text
+        altRef: Alternate Reference
       searchFields:
         text: Title / Description
     apiCall:

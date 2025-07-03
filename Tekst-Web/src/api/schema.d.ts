@@ -2720,7 +2720,12 @@ export interface components {
        * Description
        * @description Description of the link
        */
-      description?: string;
+      description?: null | string;
+      /**
+       * Altref
+       * @description Additional, alternate reference data
+       */
+      altRef?: null | string;
     };
     /** ExternalReferencesResourceConfig */
     ExternalReferencesResourceConfig: {

@@ -6,7 +6,7 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { cloneDeep } from 'lodash-es';
-import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
+import { NDynamicInput, NFormItem, NInput } from 'naive-ui';
 import { defaultContentModels } from './defaultContentModels';
 
 defineProps<{
@@ -28,7 +28,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
       @create="() => cloneDeep(defaultContentModels.externalReferences.links[0])"
     >
       <template #default="{ index }">
-        <n-flex align="start" style="flex: 2">
+        <div style="flex: 2">
           <!-- URL -->
           <n-form-item
             ignore-path-change
@@ -37,11 +37,7 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
             :rule="contentFormRules.externalReferences.url"
             style="flex: 2"
           >
-            <n-input
-              v-model:value="model.links[index].url"
-              :placeholder="$t('common.url')"
-              @keydown.enter.prevent
-            />
+            <n-input v-model:value="model.links[index].url" :placeholder="$t('common.url')" />
           </n-form-item>
           <!-- TITLE -->
           <n-form-item
@@ -79,7 +75,21 @@ const model = defineModel<ExternalReferencesContentCreate>({ required: true });
               :dir="resource.config.general.rtl ? 'rtl' : undefined"
             />
           </n-form-item>
-        </n-flex>
+          <!-- ALTERNATE REFERENCE -->
+          <n-form-item
+            ignore-path-change
+            :label="$t('resources.types.externalReferences.contentFields.altRef')"
+            :path="`links[${index}].altRef`"
+            :rule="contentFormRules.externalReferences.altRef"
+            style="flex: 2"
+          >
+            <n-input
+              v-model:value="model.links[index].altRef"
+              :placeholder="$t('resources.types.externalReferences.contentFields.altRef')"
+              :dir="resource.config.general.rtl ? 'rtl' : undefined"
+            />
+          </n-form-item>
+        </div>
       </template>
       <template #action="{ index, create, remove, move }">
         <dynamic-input-controls

@@ -70,7 +70,7 @@ class LocationMetadata(ResourceTypeABC):
                     },
                 },
             },
-            "entries_concat": {
+            "quick_search_content": {
                 "type": "text",
                 "analyzer": lenient_analyzer,
                 "fields": {
@@ -95,7 +95,7 @@ class LocationMetadata(ResourceTypeABC):
                 }
                 for entry in content.entries
             ],
-            "entries_concat": "; ".join(
+            "quick_search_content": "; ".join(
                 str(", ".join(entry.value)) for entry in content.entries
             ),
         }
@@ -294,7 +294,7 @@ class LocationMetadataResource(ResourceBase):
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["entries_concat"]
+        return ["quick_search_content"]
 
     async def _update_aggregations(self, *, force: bool = False) -> None:
         max_values_per_key = 250

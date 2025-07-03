@@ -429,6 +429,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 128, 'blur'),
     ],
     description: [minMaxCharsRule(0, 4096, 'blur')],
+    altRef: [minMaxCharsRule(0, 512, 'blur')],
   },
   apiCall: {
     key: [requiredStringRule(() => $t('common.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
