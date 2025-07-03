@@ -202,6 +202,7 @@ function generateItemProps() {
                 v-model:value="model.itemProps[index].group"
                 tag
                 filterable
+                clearable
                 :options="itemGroupOptions"
               />
             </n-form-item>
