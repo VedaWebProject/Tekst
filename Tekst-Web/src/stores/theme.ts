@@ -1,6 +1,14 @@
 import { useStateStore } from '@/stores';
 import { usePreferredDark, useSessionStorage } from '@vueuse/core';
-import { lighten, saturate, toRgba, transparentize } from 'color2k';
+import {
+  desaturate,
+  getLuminance,
+  lighten,
+  parseToHsla,
+  saturate,
+  toRgba,
+  transparentize,
+} from 'color2k';
 import type { GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
@@ -82,12 +90,24 @@ export const useThemeStore = defineStore('theme', () => {
   const dark = useSessionStorage<boolean>('darkMode', usePreferredDark().value);
   const toggleThemeMode = () => (dark.value = !dark.value);
 
-  function getColorShades(
-    baseColor: string = state.text?.color || '#7A7A7A',
-    darkMode: boolean = dark.value
-  ) {
-    const lightenBy = darkMode ? 0.4 : 0.0;
-    const base = lighten(baseColor, lightenBy);
+  function getBaseColorFor(color: string, darkMode: boolean) {
+    // reduce color saturation for dark mode (we want a pastel tone)
+    while (darkMode && parseToHsla(color)[1] > 0.6) {
+      color = desaturate(color, 0.05);
+    }
+    // raise color saturation for dark mode (if too unsaturated)
+    while (darkMode && parseToHsla(color)[1] < 0.6) {
+      color = saturate(color, 0.05);
+    }
+    // raise color luminance for dark mode if too "dark"
+    while (darkMode && getLuminance(color) < 0.675) {
+      color = lighten(color, 0.05);
+    }
+    return color;
+  }
+
+  function getColorShades(color: string) {
+    const base = getBaseColorFor(color, dark.value);
     return {
       base: toRgba(base),
       fade1: toRgba(transparentize(base, 0.2)),
@@ -100,19 +120,17 @@ export const useThemeStore = defineStore('theme', () => {
 
   // all texts color variants
   const _allTextColors = computed(() =>
-    Object.fromEntries(
-      state.pf?.texts.map((t) => [t.id, getColorShades(t.color || '#7A7A7A', dark.value)]) || []
-    )
+    Object.fromEntries(state.pf?.texts.map((t) => [t.id, getColorShades(t.color)]) || [])
   );
 
   function getTextColors(textId?: string | null) {
-    return _allTextColors.value[textId || ''] || getColorShades('#7A7A7A', dark.value);
+    return _allTextColors.value[textId || ''] || getColorShades('#7A7A7A');
   }
 
   const colors = computed(() => ({
     mainBg: dark.value ? '#ffffff10' : '#00000010',
     contentBg: dark.value ? '#0004' : '#fff',
-    primary: getColorShades(state.pf?.state.uiColor || '#305D97', dark.value),
+    primary: getColorShades(state.pf?.state.uiColor || '#305D97'),
     text: getTextColors(state.text?.id),
   }));
 
