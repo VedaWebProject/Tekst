@@ -100,7 +100,7 @@ export const useThemeStore = defineStore('theme', () => {
       color = saturate(color, 0.05);
     }
     // raise color luminance for dark mode if too "dark"
-    while (darkMode && getLuminance(color) < 0.675) {
+    while (darkMode && getLuminance(color) < 0.6) {
       color = lighten(color, 0.05);
     }
     return color;
