@@ -32,11 +32,7 @@ const fontStyle: CSSProperties = {
       :font="fontStyle.fontFamily"
     >
       <n-flex :vertical="!focusView">
-        <div
-          v-for="(link, index) in content.links"
-          :key="index"
-          :class="{ 'ext-ref-sibling': index > 0 && !focusView }"
-        >
+        <div v-for="(link, index) in content.links" :key="index">
           <a
             :href="link.url"
             target="_blank"
@@ -71,9 +67,3 @@ const fontStyle: CSSProperties = {
     </common-content-display>
   </div>
 </template>
-
-<style scoped>
-.ext-ref-sibling:not(:first-child) {
-  margin-top: var(--gap-md);
-}
-</style>
