@@ -13,7 +13,13 @@ import {
   MetadataIcon,
 } from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
-import { getFullLocationLabel, groupAndSortItems, pickTranslation, renderIcon } from '@/utils';
+import {
+  getFullLocationLabel,
+  groupAndSortItems,
+  hashCode,
+  pickTranslation,
+  renderIcon,
+} from '@/utils';
 import { useClipboard } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
 import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
@@ -110,16 +116,10 @@ const activeAnnoGroups = ref(
 );
 const groupColors = computed<Record<string, string>>(() =>
   Object.fromEntries(
-    annoCfg.value.groups.map((g, i) => [
+    annoCfg.value.groups.map((g) => [
       g.key,
       toRgba(
-        transparentize(
-          saturate(
-            adjustHue(theme.colors.primary.base, (360 / (annoCfg.value.groups.length + 1)) * i),
-            1
-          ),
-          theme.dark ? 0.82 : 0.92
-        )
+        transparentize(saturate(adjustHue('#f00', hashCode(g.key)), 1), theme.dark ? 0.82 : 0.92)
       ),
     ])
   )

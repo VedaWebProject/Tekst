@@ -4,7 +4,7 @@ import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
 import type { components } from './api/schema';
 
-export function hashCode(obj: object) {
+export function hashCode(obj: unknown) {
   const string = JSON.stringify(obj);
   let hash = 0;
   for (let i = 0; i < string.length; i++) {
