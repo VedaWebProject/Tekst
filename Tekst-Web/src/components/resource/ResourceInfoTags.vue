@@ -7,6 +7,7 @@ import {
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
+  ResourceIcon,
   VersionIcon,
 } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
@@ -87,14 +88,17 @@ const accessSharesTip = computed(() => {
         $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })
       }}
     </n-tag>
-    <n-tag
-      :size="size"
-      :title="`${$t('common.level')}: ${state.textLevelLabels[props.resource.level]}`"
-    >
+    <n-tag :size="size" :title="`${$t('common.level')}: ${state.textLevelLabels[resource.level]}`">
       <template #icon>
         <n-icon :component="LevelsIcon" />
       </template>
-      {{ state.textLevelLabels[props.resource.level] }}
+      {{ state.textLevelLabels[resource.level] }}
+    </n-tag>
+    <n-tag :size="size" :title="`${$t('common.level')}: ${state.textLevelLabels[resource.level]}`">
+      <template #icon>
+        <n-icon :component="ResourceIcon" />
+      </template>
+      {{ $t(`resources.types.${resource.resourceType}.label`) }}
     </n-tag>
   </n-flex>
 </template>
