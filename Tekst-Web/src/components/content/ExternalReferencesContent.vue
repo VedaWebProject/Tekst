@@ -49,18 +49,12 @@ const fontStyle: CSSProperties = {
             <template v-else>{{ link.title }} &nearr;</template>
           </a>
           <div
-            v-if="!focusView && link.altRef"
-            :title="$t('resources.types.externalReferences.contentFields.altRef')"
-            class="text-small"
-          >
-            {{ link.altRef }}
-          </div>
-          <div
             v-if="!focusView && link.description"
             :title="$t('common.description')"
             class="text-small translucent pre-wrap"
           >
             {{ link.description }}
+            <span v-if="link.altRef">&nbsp;[{{ link.altRef }}]</span>
           </div>
         </div>
       </n-flex>
