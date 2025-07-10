@@ -477,3 +477,20 @@ async def test_0_24_0a0(
     assert "accent_color" not in text
     assert "color" in text
     assert text["color"] == color
+
+
+@pytest.mark.anyio
+async def test_0_28_0a0(
+    database,
+    get_test_data,
+):
+    text = get_test_data("migrations/0_28_0a0.json")
+    await database.texts.insert_one(text)
+
+    # run migration
+    await _migration_fn("0_28_0a0")(database)
+    text = await database.texts.find_one({})
+
+    # assert the data has been fixed by the migration
+    assert "index_utd" in text
+    assert text["index_utd"] is False

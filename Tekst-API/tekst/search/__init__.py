@@ -158,16 +158,20 @@ async def create_indices_task(
             text_ids=[text.id],
             check_read_access=False,
         ):
-            # add resource type-specific mappings
-            add_mappings(
-                for_resource=resource,
-                to_mappings=mappings,
-            )
-            # add resource-specific analysis settings
-            add_analysis_settings(
-                for_resource=resource,
-                to_analysis=analysis,
-            )
+            if (
+                resource.config.general.searchable_quick
+                or resource.config.general.searchable_adv
+            ):
+                # add resource type-specific mappings
+                add_mappings(
+                    for_resource=resource,
+                    to_mappings=mappings,
+                )
+                # add resource-specific analysis settings
+                add_analysis_settings(
+                    for_resource=resource,
+                    to_analysis=analysis,
+                )
 
         # create index (index template will be applied!)
         new_idx_name = f"{IDX_NAME_PREFIX}{text.slug}_{text.id}_{str(uuid4().hex)}"
@@ -266,6 +270,7 @@ async def _populate_index(
             text_ids=[text.id],
             check_read_access=False,
         )
+        if res.config.general.searchable_quick or res.config.general.searchable_adv
     ]
 
     # Initialize stack with all level 0 locations (sorted) of the current text.

@@ -13,6 +13,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.resource_configs import (
+    GeneralResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
@@ -167,7 +168,11 @@ class ExternalReferences(ResourceTypeABC):
 
 
 class ExternalReferencesResourceConfig(ResourceConfigBase):
-    pass
+    # override general resource config defaults to disable searchability by default
+    general: GeneralResourceConfig = GeneralResourceConfig(
+        searchable_quick=False,
+        searchable_adv=False,
+    )
 
 
 class ExternalReferencesResource(ResourceBase):

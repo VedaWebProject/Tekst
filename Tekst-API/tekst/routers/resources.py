@@ -341,11 +341,8 @@ async def update_resource(
         ]
 
     # mark respective text's index as out-of-date if any indexing-relevant config
-    # will be changed by this update (this logic might have to find a new home
-    # in case there are more of these indexing-relevant configs in the future)
-    sr_before = resource_doc.attr_by_path("config.special.search_replacements")
-    sr_after = updates.attr_by_path("config.special.search_replacements")
-    if str(sr_before) != str(sr_after):
+    # will be changed by this update
+    if resource_doc.cfg_updates_invalidate_index(updates):
         await set_index_ood(
             text_id=resource_doc.text_id,
             by_public_resource=resource_doc.public,

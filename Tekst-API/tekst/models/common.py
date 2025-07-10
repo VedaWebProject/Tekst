@@ -43,7 +43,7 @@ class ModelBase(BaseModel):
             v = self
             for part in path.split("."):
                 v = getattr(v, part, None)
-                if v is None:
+                if v is None:  # pragma: no cover
                     return None
             return v
         except AttributeError:  # pragma: no cover

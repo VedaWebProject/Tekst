@@ -290,7 +290,6 @@ async def test_update_resource(
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
-        "public": True,
     }
     resp = await test_client.post(
         "/resources",
@@ -459,6 +458,125 @@ async def test_update_resource(
 
 
 @pytest.mark.anyio
+async def test_update_resource_searchability(
+    test_client: AsyncClient,
+    insert_test_data,
+    assert_status,
+    login,
+    register_test_user,
+    wrong_id,
+    logout,
+    wait_for_task_success,
+):
+    text_id = (await insert_test_data("texts", "locations", "resources"))["texts"][0]
+    superuser = await login(is_superuser=True)
+
+    # create new resource (because only owner can update(write))
+    payload = {
+        "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
+        "textId": text_id,
+        "level": 0,
+        "resourceType": "plainText",
+    }
+    resp = await test_client.post(
+        "/resources",
+        json=payload,
+    )
+    assert_status(201, resp)
+    resource_data = resp.json()
+    assert "id" in resource_data
+    assert resource_data["ownerId"] == superuser.get("id")
+    assert resource_data["public"] is False
+    assert resource_data["config"]["general"]["searchableQuick"] is True
+    assert resource_data["config"]["general"]["searchableAdv"] is True
+
+    # propose resource for publication
+    # (because we need this step before publishing it)
+    resp = await test_client.post(
+        f"/resources/{resource_data['id']}/propose",
+    )
+    assert_status(200, resp)
+
+    # publish resource
+    # (bacause what we're about to do only has an effect if the resource is public)
+    resp = await test_client.post(
+        f"/resources/{resource_data['id']}/publish",
+    )
+    assert_status(200, resp)
+
+    # update/create search index
+    resp = await test_client.get("/search/index/create")
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # make sure text's `index_utd` is True
+    resp = await test_client.get(
+        f"/texts/{text_id}",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["indexUtd"] is True
+
+    # update published resource's searchability
+    updates = {
+        "resourceType": "plainText",
+        "config": {
+            "general": {
+                "searchableQuick": False,
+                "searchableAdv": False,
+            }
+        },
+    }
+    resp = await test_client.patch(
+        f"/resources/{resource_data['id']}",
+        json=updates,
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["id"] == resource_data["id"]
+    assert resp.json()["config"]["general"]["searchableQuick"] is False
+    assert resp.json()["config"]["general"]["searchableAdv"] is False
+
+    # make sure text's `index_utd` is False now
+    resp = await test_client.get(
+        f"/texts/{text_id}",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["indexUtd"] is False
+
+    # update/create search index again
+    resp = await test_client.get("/search/index/create")
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # make sure text's `index_utd` is True now
+    resp = await test_client.get(
+        f"/texts/{text_id}",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["indexUtd"] is True
+
+    # run same resource updates again to cover case of unmodified config
+    resp = await test_client.patch(
+        f"/resources/{resource_data['id']}",
+        json=updates,
+    )
+    assert_status(200, resp)
+
+    # make sure text's `index_utd` is still True
+    resp = await test_client.get(
+        f"/texts/{text_id}",
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert resp.json()["indexUtd"] is True
+
+
+@pytest.mark.anyio
 async def test_set_shares_for_public_resource(
     test_client: AsyncClient,
     insert_test_data,
@@ -467,9 +585,13 @@ async def test_set_shares_for_public_resource(
     register_test_user,
     wrong_id,
 ):
-    resource_id = (await insert_test_data("texts", "locations", "resources"))[
-        "resources"
-    ][0]
+    resource_id = (
+        await insert_test_data(
+            "texts",
+            "locations",
+            "resources",
+        )
+    )["resources"][0]
     await login(is_superuser=True)
     other_user = await register_test_user()
 

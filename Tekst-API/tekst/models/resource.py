@@ -284,6 +284,25 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         }
         return {k for k, v in restrictions.items() if v}
 
+    def cfg_updates_invalidate_index(self, updates: "ResourceBase") -> bool:
+        """
+        Returns `True` if the given updates invalidate
+        the search index of the reference text
+        """
+        if "config" not in updates.model_fields_set:
+            return False
+        field_paths = [
+            "config.general.searchable_quick",
+            "config.general.searchable_adv",
+            "config.special.search_replacements",
+        ]
+        for field_path in field_paths:
+            before = self.attr_by_path(field_path)
+            after = updates.attr_by_path(field_path)
+            if str(before) != str(after):
+                return True
+        return False
+
     @classmethod
     def quick_search_fields(cls) -> list[str]:
         """

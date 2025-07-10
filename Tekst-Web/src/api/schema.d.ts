@@ -2734,8 +2734,8 @@ export interface components {
        *       "defaultActive": true,
        *       "enableContentContext": false,
        *       "showComments": false,
-       *       "searchableQuick": true,
-       *       "searchableAdv": true,
+       *       "searchableQuick": false,
+       *       "searchableAdv": false,
        *       "rtl": false
        *     } */
       general: components['schemas']['GeneralResourceConfig'];
@@ -2797,8 +2797,8 @@ export interface components {
        *         "defaultActive": true,
        *         "enableContentContext": false,
        *         "rtl": false,
-       *         "searchableAdv": true,
-       *         "searchableQuick": true,
+       *         "searchableAdv": false,
+       *         "searchableQuick": false,
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
@@ -2912,8 +2912,8 @@ export interface components {
        *         "defaultActive": true,
        *         "enableContentContext": false,
        *         "rtl": false,
-       *         "searchableAdv": true,
-       *         "searchableQuick": true,
+       *         "searchableAdv": false,
+       *         "searchableQuick": false,
        *         "showComments": false,
        *         "sortOrder": 10
        *       }

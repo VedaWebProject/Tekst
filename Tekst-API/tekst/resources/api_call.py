@@ -206,7 +206,7 @@ class ApiCallSpecialConfig(ModelBase):
 
 
 class ApiCallResourceConfig(ResourceConfigBase):
-    # override common resource config field of ResourceConfigBase
+    # override general resource config field of ResourceConfigBase
     general: ApiCallModGeneralConfig = ApiCallModGeneralConfig()
     special: ApiCallSpecialConfig = ApiCallSpecialConfig()
 

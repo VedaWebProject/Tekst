@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.27.2a0"
+    "version": "0.28.0a0"
   },
   "servers": [
     {
@@ -10577,8 +10577,8 @@
               "defaultActive": true,
               "enableContentContext": false,
               "showComments": false,
-              "searchableQuick": true,
-              "searchableAdv": true,
+              "searchableQuick": false,
+              "searchableAdv": false,
               "rtl": false
             }
           },
@@ -10696,8 +10696,8 @@
                 "defaultActive": true,
                 "enableContentContext": false,
                 "rtl": false,
-                "searchableAdv": true,
-                "searchableQuick": true,
+                "searchableAdv": false,
+                "searchableQuick": false,
                 "showComments": false,
                 "sortOrder": 10
               }
@@ -10930,8 +10930,8 @@
                 "defaultActive": true,
                 "enableContentContext": false,
                 "rtl": false,
-                "searchableAdv": true,
-                "searchableQuick": true,
+                "searchableAdv": false,
+                "searchableQuick": false,
                 "showComments": false,
                 "sortOrder": 10
               }
