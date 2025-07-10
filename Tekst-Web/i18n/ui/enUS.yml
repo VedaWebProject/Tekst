@@ -452,7 +452,7 @@ resources:
         enableContentContext: Enable viewing contents in context of parent level
         showComments: Show authors/editors comments by default
         searchableQuick: Searchable via Quick Search
-        searchableAdv: Searchable via Advanced search
+        searchableAdv: Searchable via Advanced Search
         rtl: Right-to-left content text direction
         collapsibleContents: Collapsible contents if height greater than...
         font: Content Font
