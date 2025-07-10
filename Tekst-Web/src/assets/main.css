@@ -103,7 +103,7 @@ h3 {
 }
 
 h4 {
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size);
   font-weight: normal;
   margin-top: 0.9rem;
   margin-bottom: 0.8rem;

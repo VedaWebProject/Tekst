@@ -691,7 +691,6 @@ function generatePlaintextAnno(): string {
 
 .focus-view .annotations {
   font-size: var(--font-size-tiny);
-  opacity: 0.75;
 }
 
 .annotations > .anno-sequence {

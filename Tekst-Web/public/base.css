@@ -12,14 +12,14 @@
   --gap-md: 0.75rem;
   --gap-sm: 0.5rem;
 
-  --font-size: 18px;
-  --font-size-mini: 12px;
-  --font-size-tiny: 13px;
+  --font-size-gigantic: 22px;
+  --font-size-huge: 20px;
+  --font-size-large: 18px;
+  --font-size: 16px;
+  --font-size-medium: 15px;
   --font-size-small: 14px;
-  --font-size-medium: 16px;
-  --font-size-large: 20px;
-  --font-size-huge: 22px;
-  --font-size-gigantic: 24px;
+  --font-size-tiny: 13px;
+  --font-size-mini: 12px;
 
   --border-radius: 4px;
   --block-box-shadow: 0 3px 6px 0px rgba(0, 0, 0, 0.04);
@@ -29,14 +29,14 @@
 /* For screens with a width of 900px and above, use slightly larger font sizes. */
 @media screen and (min-width: 900px) {
   :root {
-    --font-size: 20px;
-    --font-size-mini: 14px;
-    --font-size-tiny: 15px;
-    --font-size-small: 16px;
-    --font-size-medium: 18px;
-    --font-size-large: 22px;
-    --font-size-huge: 24px;
     --font-size-gigantic: 26px;
+    --font-size-huge: 24px;
+    --font-size-large: 22px;
+    --font-size: 18px;
+    --font-size-medium: 17px;
+    --font-size-small: 16px;
+    --font-size-tiny: 15px;
+    --font-size-mini: 14px;
   }
 }
 

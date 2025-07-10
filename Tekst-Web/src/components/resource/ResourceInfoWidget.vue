@@ -76,27 +76,9 @@ const showInfoModal = ref(false);
     </n-flex>
 
     <!-- SUBTITLE -->
-    <p v-if="resource.subtitle.length" :style="{ fontFamily: resource.contentFont }">
+    <p v-if="resource.subtitle.length">
       <translation-display :value="resource.subtitle" />
     </p>
-
-    <!-- METADATA -->
-    <div class="gray-box" v-if="resource.meta && Object.keys(resource.meta).length">
-      <icon-heading level="3" :icon="MetadataIcon">
-        {{ $t('models.meta.modelLabel') }}
-      </icon-heading>
-      <metadata-display :data="resource.meta" :font="resource.contentFont" />
-    </div>
-
-    <!-- CITATION -->
-    <div class="gray-box" v-if="resource.citation">
-      <icon-heading level="3" :icon="FormatQuoteIcon">
-        {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
-      </icon-heading>
-      <div :style="{ fontFamily: resource.contentFont }">
-        {{ resource.citation }}
-      </div>
-    </div>
 
     <!-- DESCRIPTION -->
     <div class="gray-box" v-if="!!descriptionHtml">
@@ -104,8 +86,30 @@ const showInfoModal = ref(false);
         {{ $t('common.description') }}
       </icon-heading>
       <collapsible-content>
-        <hydrated-html :html="descriptionHtml" :style="{ fontFamily: resource.contentFont }" />
+        <hydrated-html
+          :html="descriptionHtml"
+          :style="{ fontFamily: resource.contentFont }"
+          class="text-medium"
+        />
       </collapsible-content>
+    </div>
+
+    <!-- METADATA -->
+    <div class="gray-box" v-if="resource.meta && Object.keys(resource.meta).length">
+      <icon-heading level="3" :icon="MetadataIcon">
+        {{ $t('models.meta.modelLabel') }}
+      </icon-heading>
+      <metadata-display :data="resource.meta" class="text-medium" />
+    </div>
+
+    <!-- CITATION -->
+    <div class="gray-box" v-if="resource.citation">
+      <icon-heading level="3" :icon="FormatQuoteIcon">
+        {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
+      </icon-heading>
+      <div :style="{ fontFamily: resource.contentFont }" class="text-medium">
+        {{ resource.citation }}
+      </div>
     </div>
 
     <!-- COVERAGE -->
