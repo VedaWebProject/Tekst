@@ -655,7 +655,7 @@
       "special": {
         "transform": {
           "deps": [],
-          "js": "const data = this.map(d => ({...d, data: JSON.parse(d.data)}))[0];\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+          "js": "const data = this.data.map(d => ({...d, data: JSON.parse(d.data)}))[0];\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
         }
       }
     },
