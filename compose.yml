@@ -48,7 +48,7 @@ services:
   es:
     build:
       dockerfile_inline: |
-        FROM docker.elastic.co/elasticsearch/elasticsearch:9.0.1
+        FROM docker.elastic.co/elasticsearch/elasticsearch-wolfi:9.0.3
         RUN elasticsearch-plugin install analysis-icu
     image: localhost/tekst/es
     environment:
