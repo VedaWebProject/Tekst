@@ -25,11 +25,7 @@ import {
 } from '@/icons';
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
+import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
@@ -71,12 +67,12 @@ const editor = useEditor({
       heading: {
         levels: [1, 2, 3, 4],
       },
+      link: {
+        openOnClick: false,
+      },
     }),
     TextAlign.configure({
       types: ['heading', 'paragraph'],
-    }),
-    Link.configure({
-      openOnClick: false,
     }),
     Image.configure({
       inline: true,
@@ -86,10 +82,7 @@ const editor = useEditor({
       limit: props.maxChars,
       mode: 'textSize',
     }),
-    Table.configure(),
-    TableRow.configure(),
-    TableHeader.configure(),
-    TableCell.configure(),
+    TableKit.configure(),
   ],
   injectCSS: false,
   onUpdate: () => {
