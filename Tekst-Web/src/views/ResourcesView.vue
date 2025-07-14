@@ -10,29 +10,18 @@ import {
 } from '@/api';
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
+import ListingsFilters from '@/components/ListingsFilters.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import ResourceListItem from '@/components/resource/ResourceListItem.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import { AddIcon, FilterIcon, ResourceIcon, SearchIcon, UndoIcon } from '@/icons';
+import { AddIcon, ResourceIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { createReusableTemplate } from '@vueuse/core';
-import {
-  NButton,
-  NCollapse,
-  NCollapseItem,
-  NFlex,
-  NIcon,
-  NInput,
-  NList,
-  NPagination,
-  NSpin,
-  useDialog,
-} from 'naive-ui';
+import { NButton, NFlex, NIcon, NList, NPagination, NSpin, useDialog } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -61,44 +50,38 @@ const pagination = ref({
   pageSize: 20,
 });
 
-const initialFilters = () => ({
-  search: '',
-  public: true,
-  notPublic: true,
-  proposed: true,
-  notProposed: true,
-  ownedByMe: true,
-  ownedByOthers: true,
-  hasCorrections: true,
-  hasNoCorrections: true,
-});
-
-const filters = ref(initialFilters());
+const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
+const filtersSearch = ref<string>();
+const filtersFlags = ref<string[]>();
 
 function filterData(resourcesData: AnyResourceRead[]) {
   pagination.value.page = 1;
   return resourcesData.filter((r) => {
-    const resourceStringContent = filters.value.search
+    const resourceStringContent = filtersSearch.value
       ? [
           r.title.map((t) => t.translation).join(' '),
           r.subtitle.map((s) => s.translation).join(' ') || '',
-          r.ownerId,
+          r.owner?.name || '',
+          r.owner?.username || '',
+          r.owner?.affiliation || '',
           r.description.map((d) => d.translation).join(' ') || '',
           r.citation,
           JSON.stringify(r.meta),
         ]
-          .filter((prop) => prop)
+          .filter(Boolean)
           .join(' ')
       : '';
     return (
-      (!filters.value.search ||
-        resourceStringContent.toLowerCase().includes(filters.value.search.toLowerCase())) &&
-      ((filters.value.proposed && r.proposed) || (filters.value.notProposed && !r.proposed)) &&
-      ((filters.value.public && r.public) || (filters.value.notPublic && !r.public)) &&
-      ((filters.value.ownedByMe && r.ownerId === auth.user?.id) ||
-        (filters.value.ownedByOthers && r.ownerId !== auth.user?.id)) &&
-      ((filters.value.hasCorrections && r.corrections) ||
-        (filters.value.hasNoCorrections && !r.corrections))
+      (!filtersSearch.value ||
+        resourceStringContent.toLowerCase().includes(filtersSearch.value.toLowerCase())) &&
+      ((filtersFlags.value?.includes('proposed') && r.proposed) ||
+        (filtersFlags.value?.includes('notProposed') && !r.proposed)) &&
+      ((filtersFlags.value?.includes('public') && r.public) ||
+        (filtersFlags.value?.includes('notPublic') && !r.public)) &&
+      ((filtersFlags.value?.includes('ownedByMe') && r.ownerId === auth.user?.id) ||
+        (filtersFlags.value?.includes('notOwnedByMe') && r.ownerId !== auth.user?.id)) &&
+      ((filtersFlags.value?.includes('hasCorrections') && r.corrections) ||
+        (filtersFlags.value?.includes('hasNoCorrections') && !r.corrections))
     );
   });
 }
@@ -146,7 +129,7 @@ async function handleTransferResource(resource?: AnyResourceRead, user?: UserRea
       })
     );
   }
-  filters.value = initialFilters();
+  filtersRef.value?.reset();
   showTransferModal.value = false;
   transferTargetResource.value = undefined;
   actionsLoading.value = false;
@@ -171,7 +154,7 @@ function handleProposeClick(resource: AnyResourceRead) {
           $t('resources.msgProposed', { title: pickTranslation(resource.title, state.locale) })
         );
       }
-      filters.value = initialFilters();
+      filtersRef.value?.reset();
       actionsLoading.value = false;
     },
   });
@@ -196,7 +179,7 @@ function handleUnproposeClick(resource: AnyResourceRead) {
           $t('resources.msgUnproposed', { title: pickTranslation(resource.title, state.locale) })
         );
       }
-      filters.value = initialFilters();
+      filtersRef.value?.reset();
       actionsLoading.value = false;
     },
   });
@@ -221,7 +204,7 @@ function handlePublishClick(resource: AnyResourceRead) {
           $t('resources.msgPublished', { title: pickTranslation(resource.title, state.locale) })
         );
       }
-      filters.value = initialFilters();
+      filtersRef.value?.reset();
       actionsLoading.value = false;
     },
   });
@@ -246,7 +229,7 @@ function handleUnpublishClick(resource: AnyResourceRead) {
           $t('resources.msgUnpublished', { title: pickTranslation(resource.title, state.locale) })
         );
       }
-      filters.value = initialFilters();
+      filtersRef.value?.reset();
       actionsLoading.value = false;
     },
   });
@@ -376,12 +359,6 @@ function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
   userMessages.openConversation(originalResource.ownerId, prepMsg);
 }
 
-function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
-  if (data.name === 'filters' && !data.expanded) {
-    filters.value = initialFilters();
-  }
-}
-
 onMounted(() => {
   // inform user in case there are corrections for resources of another text
   if (
@@ -416,51 +393,24 @@ onMounted(() => {
 
   <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filters -->
-    <n-collapse class="mb-lg" @item-header-click="handleFilterCollapseItemClick">
-      <n-collapse-item name="filters">
-        <template #header>
-          <n-flex align="center" :wrap="false">
-            <n-icon :component="FilterIcon" class="translucent" />
-            <span>{{ $t('common.filters') }}</span>
-          </n-flex>
-        </template>
+    <listings-filters
+      ref="filtersRef"
+      v-model:search="filtersSearch"
+      v-model:flags="filtersFlags"
+      :flags-labels="{
+        public: $t('resources.public'),
+        notPublic: $t('resources.notPublic'),
+        proposed: $t('resources.proposed'),
+        notProposed: $t('resources.notProposed'),
+        ownedByMe: $t('resources.ownedByMe'),
+        ownedByOthers: $t('resources.ownedByOthers'),
+        hasCorrections: $t('resources.hasCorrections'),
+        hasNoCorrections: $t('resources.hasNoCorrections'),
+      }"
+    />
 
-        <n-flex vertical size="small" class="gray-box">
-          <n-input
-            v-model:value="filters.search"
-            :placeholder="$t('common.searchAction')"
-            class="mb-md"
-            round
-          >
-            <template #prefix>
-              <n-icon :component="SearchIcon" />
-            </template>
-          </n-input>
-          <labeled-switch v-model="filters.public" :label="$t('resources.public')" />
-          <labeled-switch v-model="filters.notPublic" :label="$t('resources.notPublic')" />
-          <labeled-switch v-model="filters.proposed" :label="$t('resources.proposed')" />
-          <labeled-switch v-model="filters.notProposed" :label="$t('resources.notProposed')" />
-          <labeled-switch v-model="filters.ownedByMe" :label="$t('resources.ownedByMe')" />
-          <labeled-switch v-model="filters.ownedByOthers" :label="$t('resources.ownedByOthers')" />
-          <labeled-switch
-            v-model="filters.hasCorrections"
-            :label="$t('resources.hasCorrections')"
-          />
-          <labeled-switch
-            v-model="filters.hasNoCorrections"
-            :label="$t('resources.hasNoCorrections')"
-          />
-          <n-button secondary class="mt-md" @click="filters = initialFilters()">
-            {{ $t('common.reset') }}
-            <template #icon>
-              <n-icon :component="UndoIcon" />
-            </template>
-          </n-button>
-        </n-flex>
-      </n-collapse-item>
-    </n-collapse>
-
-    <div class="resource-list-header">
+    <!-- List Header -->
+    <n-flex justify="space-between" align="center">
       <div class="text-small translucent ellipsis">
         {{
           $t('resources.msgFoundCount', {
@@ -480,7 +430,7 @@ onMounted(() => {
         </template>
         {{ $t('resources.new') }}
       </n-button>
-    </div>
+    </n-flex>
 
     <!-- Resources List -->
     <div class="content-block">
@@ -532,14 +482,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.resource-list-header {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: flex-end;
-  max-width: 100%;
-}
-
 .pagination-container:first-child {
   margin-bottom: var(--gap-lg);
 }

@@ -2,8 +2,8 @@ common:
   general: Allgemein
   default: standard
   enabled: Aktiv
-  on: 'An'
-  off: 'Aus'
+  on: 'an'
+  off: 'aus'
   from: Von
   to: Bis
   status: Status

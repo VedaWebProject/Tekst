@@ -2,8 +2,8 @@ common:
   general: General
   default: default
   enabled: Enabled
-  on: 'On'
-  off: 'Off'
+  on: 'on'
+  off: 'off'
   from: From
   to: To
   status: Status
