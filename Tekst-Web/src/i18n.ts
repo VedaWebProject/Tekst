@@ -47,6 +47,7 @@ export const $te: typeof i18n.global.te = i18n.global.te;
 // @ts-expect-error typing for i18n.global.locale is wrong when not in legacy mode;
 // see https://vue-i18n.intlify.dev/guide/essentials/scope.html#local-scope-1
 i18n.global.locale.value = 'enUS';
+await setI18nLocale(); // load and set initial (default) locale
 
 export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
   return localeProfiles.find((lp) => lp.key === localeKey);

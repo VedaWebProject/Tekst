@@ -313,7 +313,7 @@ router.beforeEach(async (to, _from) => {
   if (to.meta.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
-    while (!state.init.authChecked) await delay(50); // wait for session check
+    while (!state.init.authChecked) await delay(25); // wait for session check
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
     const l = !!auth.user; // a user is logged in
