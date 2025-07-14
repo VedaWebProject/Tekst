@@ -1727,6 +1727,11 @@ export interface components {
        *     } */
       config: components['schemas']['ApiCallResourceConfig'];
       /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
+      /**
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
@@ -2102,6 +2107,11 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['AudioResourceConfig'];
+      /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
       /**
        * Contentschangedat
        * Format: date-time
@@ -2920,6 +2930,11 @@ export interface components {
        *     } */
       config: components['schemas']['ExternalReferencesResourceConfig'];
       /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
+      /**
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
@@ -3407,6 +3422,11 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['ImagesResourceConfig'];
+      /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
       /**
        * Contentschangedat
        * Format: date-time
@@ -4049,6 +4069,11 @@ export interface components {
        *     } */
       config: components['schemas']['LocationMetadataResourceConfig'];
       /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
+      /**
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
@@ -4626,6 +4651,11 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['PlainTextResourceConfig'];
+      /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
       /**
        * Contentschangedat
        * Format: date-time
@@ -5592,6 +5622,11 @@ export interface components {
        *     } */
       config: components['schemas']['RichTextResourceConfig'];
       /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
+      /**
        * Contentschangedat
        * Format: date-time
        * @description The last time contents of this resource changed
@@ -6167,6 +6202,11 @@ export interface components {
        *       }
        *     } */
       config: components['schemas']['TextAnnotationResourceConfig'];
+      /**
+       * Coverage
+       * @description Location coverage of this resource by contents, locations
+       */
+      coverage?: number[] | null;
       /**
        * Contentschangedat
        * Format: date-time

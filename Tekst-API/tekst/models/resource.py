@@ -228,6 +228,19 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     config: ResourceConfigBase = ResourceConfigBase()
 
+    coverage: Annotated[
+        list[int] | None,
+        Field(
+            min_length=2,
+            max_length=2,
+            description="Location coverage of this resource by contents, locations",
+        ),
+        ExcludeFromModelVariants(
+            update=True,
+            create=True,
+        ),
+    ] = None
+
     contents_changed_at: Annotated[
         AwareDatetime,
         Field(
@@ -447,7 +460,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             for p_id, loc_cov in coverage_per_parent.items()
         ]
 
-        # generate coverage ranges data
+        # collect coverage ranges data
         ranges = []
         curr_range: dict[str, str | bool] | None = None
         for location in data:
@@ -468,6 +481,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         if curr_range:
             # append the last remaining coverage range
             ranges.append(curr_range)
+        # save locations count, deref data
+        loc_count = len(data)
+        data = None
+        # evaluate ranges data
         covered_count = len([r for r in ranges if r.get("covered")])
         missing_count = len(ranges) - covered_count
         use_covered_ranges = (
@@ -479,16 +496,21 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             if r.get("covered") == use_covered_ranges
         ]
 
+        # compose and save precomputed coverage data
         precomp_doc.data = ResourceCoverage(
             covered=covered_locations_count,
-            total=len(data),
+            total=loc_count,
             ranges=ranges,
             ranges_covered=use_covered_ranges,
             details=details,
         ).model_dump()
-
         precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
+
+        # save basic coverage data to resource document directly
+        await ResourceBaseDocument.find_one(
+            ResourceBaseDocument.id == self.id, with_children=True
+        ).set({ResourceBaseDocument.coverage: [covered_locations_count, loc_count]})
 
 
 # generate document and update models for this base model,

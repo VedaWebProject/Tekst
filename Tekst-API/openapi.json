@@ -8361,6 +8361,23 @@
               }
             }
           },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
+          },
           "contentsChangedAt": {
             "type": "string",
             "format": "date-time",
@@ -9191,6 +9208,23 @@
                 "sortOrder": 10
               }
             }
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -10937,6 +10971,23 @@
               }
             }
           },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
+          },
           "contentsChangedAt": {
             "type": "string",
             "format": "date-time",
@@ -11971,6 +12022,23 @@
                 "sortOrder": 10
               }
             }
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -13350,6 +13418,23 @@
               }
             }
           },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
+          },
           "contentsChangedAt": {
             "type": "string",
             "format": "date-time",
@@ -14565,6 +14650,23 @@
                 "searchReplacements": []
               }
             }
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -16566,6 +16668,23 @@
               }
             }
           },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
+          },
           "contentsChangedAt": {
             "type": "string",
             "format": "date-time",
@@ -17792,6 +17911,23 @@
                 }
               }
             }
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage",
+            "description": "Location coverage of this resource by contents, locations"
           },
           "contentsChangedAt": {
             "type": "string",
