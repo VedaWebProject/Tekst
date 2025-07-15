@@ -7,6 +7,7 @@ from typing import (
     get_args,
     get_origin,
 )  # noqa: UP035
+from unicodedata import normalize
 
 from beanie import Document, PydanticObjectId
 from beanie.odm.utils.encoder import Encoder
@@ -21,6 +22,7 @@ from pydantic import (
 from pydantic.aliases import PydanticUndefined
 from pydantic.fields import FieldInfo
 
+from tekst.config import get_config
 from tekst.types import (
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
@@ -85,14 +87,21 @@ class NoAliasEncoder(Encoder):
     """
 
     def _iter_model_items(self, obj: BaseModel) -> Iterable[tuple[str, Any]]:
-        exclude, keep_nulls = self.exclude, self.keep_nulls
         for key, value in obj.__iter__():
-            if key not in exclude and (value is not None or keep_nulls):
+            if key not in self.exclude and (value is not None or self.keep_nulls):
                 # this is where we use "key" directly, without considering aliases
                 yield key, value
 
 
 _no_alias_encoder = NoAliasEncoder(to_db=True, keep_nulls=False).encode
+_unicode_nf = get_config().db.unicode_nf
+
+
+def _apply_unicode_nf(str_v):
+    if _unicode_nf is not None:
+        return normalize(_unicode_nf, str_v)
+    else:  # pragma: no cover
+        return str_v
 
 
 class DocumentBase(Document):
@@ -104,8 +113,8 @@ class DocumentBase(Document):
         validate_on_save = True
         keep_nulls = False
         bson_encoders = {
-            # see docstring of NoAliasEncoder for rationale!
-            BaseModel: _no_alias_encoder,
+            BaseModel: _no_alias_encoder,  # see docstring of NoAliasEncoder
+            str: _apply_unicode_nf,
         }
 
     def __init__(self, *args, **kwargs):

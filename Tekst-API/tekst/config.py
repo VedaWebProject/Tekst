@@ -5,7 +5,7 @@ from functools import cache
 from os.path import realpath
 from pathlib import Path
 from secrets import token_hex
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from urllib.parse import quote
 from uuid import uuid4
 
@@ -96,6 +96,7 @@ class MongoDBConfig(ConfigSubSection):
         max_length=64,
     ) = None
     name: str = "tekst"
+    unicode_nf: Literal["NFC", "NFKC", "NFD", "NFKD"] | None = "NFC"
 
     @field_validator("name", mode="before")
     @classmethod

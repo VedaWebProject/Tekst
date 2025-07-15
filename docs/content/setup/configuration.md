@@ -68,6 +68,9 @@ MongoDB password (String – default: _none_)
 ### `TEKST_DB__NAME`
 MongoDB database name (String – default: `tekst`)
 
+### `TEKST_DB__UNICODE_NF`
+Apply Unicode string normalization when writing to the database (`NFC`, `NFKC`, `NFD`, `NFKD` or _none_ – default: `NFC`)
+
 
 
 ## Search Server (Elasticsearch)
