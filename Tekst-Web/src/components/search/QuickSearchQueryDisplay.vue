@@ -24,7 +24,7 @@ const theme = useThemeStore();
 
 const targetTexts = computed(() => {
   return state.pf?.texts
-    .filter((t) => props.req.qck.txt?.includes(t.id))
+    .filter((t) => !props.req.qck.txt?.length || props.req.qck.txt.includes(t.id))
     ?.map((t) => ({
       ...t,
       color: theme.getTextColors(t.id).base,
