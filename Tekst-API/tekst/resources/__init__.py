@@ -115,7 +115,7 @@ class CommonResourceSearchQueryData(ModelBase):
         ),
         Field(
             alias="cmt",
-            description="Comment search query",
+            description="Author's/editor's comment search query",
         ),
         SchemaOptionalNullable,
     ] = ""
@@ -198,7 +198,10 @@ class ResourceTypeABC(ABC):
         """
         return dict(
             native=native,
-            comment=content.authors_comment,
+            comment=" ".join(
+                [content.authors_comment or "", content.editors_comment or ""]
+            ).strip()
+            or None,
             **(cls._rtype_index_doc(content) or {}),
         )
 

@@ -467,7 +467,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
 
 export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
   common: {
-    authorsComment: [minMaxCharsRule(0, 512, 'blur')],
+    comment: [minMaxCharsRule(0, 512, 'blur')],
   },
   plainText: {
     text: [minMaxCharsRule(0, 512, 'blur')],

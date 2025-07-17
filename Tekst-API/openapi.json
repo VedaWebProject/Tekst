@@ -9991,7 +9991,7 @@
             "maxLength": 512,
             "minLength": 0,
             "title": "Cmt",
-            "description": "Comment search query",
+            "description": "Author's/editor's comment search query",
             "default": "",
             "optionalNullable": true
           }

@@ -2442,7 +2442,7 @@ export interface components {
       res: string;
       /**
        * Cmt
-       * @description Comment search query
+       * @description Author's/editor's comment search query
        * @default
        */
       cmt?: string;
