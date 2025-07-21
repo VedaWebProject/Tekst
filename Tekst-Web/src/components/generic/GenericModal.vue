@@ -11,6 +11,7 @@ const props = withDefaults(
     title?: string;
     icon?: Component;
     headingLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+    nodeClass?: string;
   }>(),
   {
     width: 'medium',
@@ -42,6 +43,7 @@ const modalWidths = {
     :bordered="false"
     :style="{ width: modalWidths[props.width], maxWidth: '95%' }"
     class="mx-auto my-md"
+    :class="nodeClass"
   >
     <template #header>
       <slot name="header">

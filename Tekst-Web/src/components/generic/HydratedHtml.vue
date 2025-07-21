@@ -21,6 +21,7 @@ const props = withDefaults(
   defineProps<{
     html?: string;
     style?: CSSProperties;
+    nodeClass?: string;
   }>(),
   {
     html: '',
@@ -106,16 +107,18 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="$attrs" ref="contentRef" :style="style"></div>
+  <div v-bind="$attrs" ref="contentRef" :style="style" :class="nodeClass"></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
     :title="modalId ? modalTitles[modalId] : undefined"
     width="wide"
+    :class="nodeClass"
   >
     <hydrated-html
       :html="modalId ? modalHtml[modalId] : undefined"
       :style="style"
+      :node-class="nodeClass"
       @click-location-ref="showModal = false"
     />
   </generic-modal>

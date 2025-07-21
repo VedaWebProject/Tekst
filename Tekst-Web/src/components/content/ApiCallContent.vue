@@ -148,7 +148,11 @@ onMounted(async () => {
           v-if="content?.html !== undefined"
           :class="`content-loadable res-${resource.id}` + (loading ? ' content-loading' : '')"
         >
-          <hydrated-html :html="content?.html" :style="fontStyle" />
+          <hydrated-html
+            :html="content?.html"
+            :style="fontStyle"
+            :node-class="`res-${resource.id}`"
+          />
         </div>
         <div v-else class="translucent i font-ui">
           {{ $t('errors.notFound') }}
