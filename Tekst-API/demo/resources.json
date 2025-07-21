@@ -60,7 +60,8 @@
         "deepl_links": { "enabled": true, "source_language": "de" }
       }
     },
-    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [12, 12]
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
@@ -106,7 +107,8 @@
         "focus_view_oneline": true,
         "deepl_links": { "enabled": true, "source_language": "ja" }
       }
-    }
+    },
+    "coverage": [3, 3]
   },
   {
     "_id": { "$oid": "654ba525ec7833e469dde77e" },
@@ -150,7 +152,8 @@
         "deepl_links": { "enabled": false, "source_language": "en" }
       }
     },
-    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [3, 3]
   },
   {
     "_id": { "$oid": "654ba678ec7833e469dde782" },
@@ -180,7 +183,8 @@
         "focus_view_oneline": true,
         "deepl_links": { "enabled": false, "source_language": "en" }
       }
-    }
+    },
+    "coverage": [3, 3]
   },
   {
     "_id": { "$oid": "6641ce24affa6cb96bc85a55" },
@@ -222,7 +226,8 @@
         "rtl": false
       }
     },
-    "contents_changed_at": { "$date": "2025-04-02T13:04:29.126Z" }
+    "contents_changed_at": { "$date": "2025-04-02T13:04:29.126Z" },
+    "coverage": [1, 1]
   },
   {
     "_id": { "$oid": "6641d2bfaffa6cb96bc85a58" },
@@ -257,7 +262,8 @@
         "default_active": true,
         "enable_content_context": false
       }
-    }
+    },
+    "coverage": [1, 1]
   },
   {
     "_id": { "$oid": "6641d510affa6cb96bc85a5b" },
@@ -295,7 +301,8 @@
         "default_active": true,
         "enable_content_context": false
       }
-    }
+    },
+    "coverage": [1, 1]
   },
   {
     "_id": { "$oid": "664717b0ba9e65342c8e4941" },
@@ -358,7 +365,8 @@
         "deepl_links": { "enabled": true, "source_language": "en" }
       }
     },
-    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [11, 12]
   },
   {
     "_id": { "$oid": "66471b68ba9e65342c8e495b" },
@@ -417,7 +425,8 @@
         "deepl_links": { "enabled": true, "source_language": "de" }
       }
     },
-    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [12, 12]
   },
   {
     "_id": { "$oid": "66471de0ba9e65342c8e4995" },
@@ -446,7 +455,8 @@
         "default_active": true,
         "enable_content_context": false
       }
-    }
+    },
+    "coverage": [1, 1]
   },
   {
     "_id": { "$oid": "6656cc7b81a66322c1bffb24" },
@@ -575,7 +585,8 @@
         }
       }
     },
-    "contents_changed_at": { "$date": "2025-04-10T13:23:31.760Z" }
+    "contents_changed_at": { "$date": "2025-04-10T13:23:31.760Z" },
+    "coverage": [12, 12]
   },
   {
     "_id": { "$oid": "67472c393d0d7622956981c9" },
@@ -618,7 +629,8 @@
       },
       "special": { "search_replacements": [], "content_css": [] }
     },
-    "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" }
+    "contents_changed_at": { "$date": "2024-11-27T14:30:05.827Z" },
+    "coverage": [1, 1]
   },
   {
     "_id": { "$oid": "67c96a3ce9e69aa8f1c75df4" },
@@ -655,10 +667,11 @@
       "special": {
         "transform": {
           "deps": [],
-          "js": "const data = this.data.map(d => ({...d, data: JSON.parse(d.data)}))[0];\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n`;"
+          "js": "const data = this.data.map(d => ({...d, data: JSON.parse(d.data)}))[0];\n// artificially delay execution for demonstration purposes\nawait new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * 1500) + 50));\n// return HTML\nreturn `\n<blockquote>\n  ${data.data.quotes[0].quote}\n  <p>\n    —\n    <cite>\n      <a href=\"https://en.wikipedia.org/wiki/${data.data.quotes[0].author}\" target=\"_blank\" rel=\"noreferrer\">\n        ${data.data.quotes[0].author}\n      </a>\n    </cite>\n  </p>\n</blockquote>\n<a class=\"text-small\" data-tekst-modal-trigger=\"quote-modal\" title=\"Open quote!\">Click here to open this quote in a modal</a>\n<div data-tekst-modal=\"quote-modal\" title=\"${data.data.quotes[0].author}\"><span>${data.data.quotes[0].quote}</span></div>\n`;"
         }
       }
     },
+    "coverage": [12, 12],
     "contents_changed_at": { "$date": "2025-03-06T09:32:26.666Z" }
   },
   {
@@ -724,6 +737,7 @@
         }
       }
     },
-    "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" }
+    "contents_changed_at": { "$date": "2025-03-20T12:49:57.940Z" },
+    "coverage": [3, 3]
   }
 ]
