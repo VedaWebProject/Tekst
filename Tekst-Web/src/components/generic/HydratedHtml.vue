@@ -33,7 +33,6 @@ const router = useRouter();
 
 const domParser = new DOMParser();
 const contentRef = ref<HTMLElement>();
-const elementId = Math.random().toString(36).replace('0.', 'html-');
 
 // modal state and data
 const modalId = ref<string>();
@@ -107,13 +106,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="$attrs" ref="contentRef" :id="elementId" :style="style"></div>
+  <div v-bind="$attrs" ref="contentRef" :style="style"></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
     :title="modalId ? modalTitles[modalId] : undefined"
     width="wide"
-    :to="`#${elementId}`"
   >
     <hydrated-html
       :html="modalId ? modalHtml[modalId] : undefined"
