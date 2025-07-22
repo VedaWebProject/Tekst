@@ -803,13 +803,13 @@ admin:
     precomputed:
       heading: Precomputed Data
       description: |
-        This routine is part of the maintenance process, but can be run manually here.
+        This routine is part of the maintenance job, but can be run manually here.
         The location coverage of all resources and resource type-specific data (if applicable) will be precomputed.
       actionStarted: The generation of precomputed resource data is performed in the background. @:common.takeAWhile
     cleanup:
       heading: Internal Cleanup
       description: |
-        This routine is part of the maintenance process, but can be run manually here.
+        This routine is part of the maintenance job, but can be run manually here.
         Outdated access tokens and user messages scheduled for removal will be deleted.
       actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:

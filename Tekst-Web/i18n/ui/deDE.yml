@@ -827,13 +827,13 @@ admin:
     precomputed:
       heading: Vorberechnete Daten
       description: |
-        Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
+        Diese Routine ist Teil des Wartungsprogramms, kann hier aber manuell ausgeführt werden.
         Es werden die Belegstellen-Abdeckung aller Ressourcen sowie weitere Ressourcentyp-spezifische Daten (falls zutreffend) vorberechnet.
       actionStarted: Die Generierung von vorberechneten Ressourcen-Daten wird im Hintergrund durchgeführt. @:common.takeAWhile
     cleanup:
       heading: Interne Bereinigung
       description: |
-        Diese Routine ist Teil des Wartungsprozesses, kann hier aber manuell ausgeführt werden.
+        Diese Routine ist Teil des Wartungsprogramms, kann hier aber manuell ausgeführt werden.
         Abgelaufene Zugangstokens und Benutzernachrichten werden gelöscht.
       actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
