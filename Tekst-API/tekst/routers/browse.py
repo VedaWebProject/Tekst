@@ -230,7 +230,7 @@ async def get_location_data(
     ).to_list()
     content_docs = (
         await ContentBaseDocument.find(
-            In(ContentBaseDocument.location_id, location_ids) if location_ids else {},
+            In(ContentBaseDocument.location_id, location_ids or []),
             In(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in target_resources],
