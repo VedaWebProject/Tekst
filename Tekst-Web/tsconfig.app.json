@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["@intlify/unplugin-vue-i18n/messages", "naive-ui/volar"]
+    "types": ["@intlify/unplugin-vue-i18n/messages", "naive-ui/volar"],
+    "noUncheckedIndexedAccess": false
   }
 }
