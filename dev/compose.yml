@@ -93,7 +93,7 @@ services:
       - test
 
   docs:
-    image: squidfunk/mkdocs-material:9.6.17
+    image: squidfunk/mkdocs-material:9.6.18
     restart: unless-stopped
     volumes:
       - ../docs:/docs:ro
