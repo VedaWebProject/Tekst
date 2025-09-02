@@ -172,7 +172,7 @@ routes:
     searchResults: '@:search.results.heading'
     help: '@:common.help'
     login: '@:common.login'
-    register: '@:register.heading'
+    register: '@:common.register'
     resources: Resources – {text}
     resourceContents: '@:contents.heading'
     resourceSettings: '@:resources.settings.heading'

@@ -175,7 +175,7 @@ routes:
     searchResults: '@:search.results.heading'
     help: '@:common.help'
     login: '@:common.login'
-    register: '@:register.heading'
+    register: '@:common.register'
     resources: Ressourcen – {text}
     resourceContents: '@:contents.heading'
     resourcesCorrections: Korrekturnotizen
