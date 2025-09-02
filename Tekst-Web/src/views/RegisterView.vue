@@ -113,6 +113,7 @@ function switchToLogin() {
 onMounted(() => {
   if ((!!auth.user && !auth.user?.isSuperuser) || (!auth.user && state.pf?.security.closedMode)) {
     router.push({ name: 'home' });
+    return;
   }
   nextTick(() => {
     firstInputRef.value?.focus();
@@ -211,7 +212,7 @@ onMounted(() => {
           >
             {{ $t('common.register') }}
           </n-button>
-          <n-button secondary block @click="switchToLogin">
+          <n-button v-if="!state.pf?.security.closedMode" secondary block @click="switchToLogin">
             {{ $t('register.switchToLogin') }}
           </n-button>
         </n-flex>

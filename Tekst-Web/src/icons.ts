@@ -84,6 +84,7 @@ import MoveDownOutlined from '@vicons/material/MoveDownOutlined';
 import PanToolAltOutlined from '@vicons/material/PanToolAltOutlined';
 import PauseFilled from '@vicons/material/PauseFilled';
 import PercentOutlined from '@vicons/material/PercentOutlined';
+import PersonAddOutlined from '@vicons/material/PersonAddOutlined';
 import PersonOutlined from '@vicons/material/PersonOutlined';
 import PersonRemoveFilled from '@vicons/material/PersonRemoveFilled';
 import PlayArrowFilled from '@vicons/material/PlayArrowFilled';
@@ -196,6 +197,7 @@ export {
   MinusOutlined as MinusIcon,
   MoreVertOutlined as MoreIcon,
   MoveDownOutlined as MoveDownIcon,
+  PersonAddOutlined as NewUserIcon,
   FolderOffOutlined as NoContentIcon,
   HideImageOutlined as NoImageIcon,
   FindInPageOutlined as NothingFoundIcon,

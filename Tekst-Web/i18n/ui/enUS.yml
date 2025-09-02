@@ -742,6 +742,7 @@ admin:
     heading: Users
     save: Saved user "{username}"
     msgFoundCount: 'No users match the given filters | Found one user | Found {count} users'
+    registerNewUser: New User
     registeredAt: registered at
     msgSentVerificationLink: A verification email was sent to "{username}".
     msgUserDeleted: The user {username} has been deleted and informed via email.

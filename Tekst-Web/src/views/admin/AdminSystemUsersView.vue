@@ -9,16 +9,17 @@ import UserListItem from '@/components/user/UserListItem.vue';
 import { useAdminUserSearch } from '@/composables/adminUserSearch';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { ErrorIcon, NoContentIcon, UsersIcon } from '@/icons';
+import { ErrorIcon, NewUserIcon, NoContentIcon, UsersIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { createReusableTemplate } from '@vueuse/core';
-import { NEmpty, NFlex, NIcon, NList, NPagination, NSpin, useDialog } from 'naive-ui';
+import { NButton, NEmpty, NFlex, NIcon, NList, NPagination, NSpin, useDialog } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const { message } = useMessages();
 const dialog = useDialog();
 const route = useRoute();
+const router = useRouter();
 const auth = useAuthStore();
 const state = useStateStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
@@ -145,6 +146,10 @@ function handleDeleteClick(user: UserRead) {
   });
 }
 
+function handleRegister() {
+  router.push({ name: 'register' });
+}
+
 onMounted(() => {
   if (route.query.search) {
     filters.value.q = route.query.search?.toString();
@@ -199,9 +204,17 @@ onMounted(() => {
   </n-empty>
 
   <template v-else-if="total">
-    <div class="text-small translucent">
-      {{ $t('admin.users.msgFoundCount', { count: total }) }}
-    </div>
+    <n-flex justify="space-between">
+      <span class="text-small translucent">{{
+        $t('admin.users.msgFoundCount', { count: total })
+      }}</span>
+      <n-button v-if="!!state.pf?.security.closedMode" type="primary" @click="handleRegister">
+        <template #icon>
+          <n-icon :component="NewUserIcon" />
+        </template>
+        {{ $t('admin.users.registerNewUser') }}
+      </n-button>
+    </n-flex>
 
     <!-- Users List -->
     <div class="content-block">

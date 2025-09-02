@@ -766,6 +766,7 @@ admin:
     heading: Benutzer
     save: Benutzer "{username}" gespeichert
     msgFoundCount: 'Keine Benutzer entsprechen den eingestellten Filterregeln | Einen Benutzer gefunden | {count} Benutzer gefunden'
+    registerNewUser: Neuer Benutzer
     registeredAt: registriert am
     msgSentVerificationLink: Eine Verifizierungs-E-Mail wurde an "{username}" gesendet.
     msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
