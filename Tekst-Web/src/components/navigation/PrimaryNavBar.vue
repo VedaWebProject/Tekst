@@ -21,7 +21,7 @@ import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const { pfData, systemHome } = usePlatformData();
+const { systemHome } = usePlatformData();
 const auth = useAuthStore();
 const state = useStateStore();
 const browse = useBrowseStore();
@@ -30,7 +30,6 @@ const resources = useResourcesStore();
 
 const { menuOptions: mainMenuOptions } = useMainMenuOptions(true);
 const menuOpen = ref(false);
-const showUserActionsButton = computed(() => !pfData.value?.security.closedMode || !!auth.user);
 
 const { pageLogo } = useLogo();
 const titleLinkTo = computed(() => {
@@ -57,7 +56,7 @@ const titleLinkTo = computed(() => {
   >
     <router-link :to="titleLinkTo">
       <img
-        v-if="pageLogo && pfData?.state.showLogoInHeader"
+        v-if="pageLogo && state.pf?.state.showLogoInHeader"
         class="navbar-logo"
         alt=""
         :src="pageLogo"
@@ -65,10 +64,12 @@ const titleLinkTo = computed(() => {
     </router-link>
     <div class="navbar-title">
       <router-link :to="titleLinkTo">
-        <div class="text-gigantic" style="line-height: 120%">{{ pfData?.state.platformName }}</div>
+        <div class="text-gigantic" style="line-height: 120%">
+          {{ state.pf?.state.platformName }}
+        </div>
       </router-link>
-      <div v-if="!!pfData?.state.platformSubtitle.length" class="translucent text-tiny">
-        <translation-display :value="pfData.state.platformSubtitle" />
+      <div v-if="!!state.pf?.state.platformSubtitle.length" class="translucent text-tiny">
+        <translation-display :value="state.pf.state.platformSubtitle" />
       </div>
     </div>
 
@@ -80,7 +81,7 @@ const titleLinkTo = computed(() => {
     >
       <theme-mode-switcher />
       <locale-switcher />
-      <user-actions-button v-if="showUserActionsButton" />
+      <user-actions-button v-if="!!state.pf && (!state.pf.security.closedMode || !!auth.user)" />
     </n-flex>
 
     <n-badge
@@ -111,7 +112,7 @@ const titleLinkTo = computed(() => {
 
   <n-flex align="center" class="navbar-menu">
     <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
-    <drawer-menu v-else v-model:show="menuOpen" :show-user-actions-button="showUserActionsButton" />
+    <drawer-menu v-else v-model:show="menuOpen" />
     <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
   </n-flex>
 </template>
