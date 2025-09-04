@@ -296,13 +296,15 @@ table td {
 }
 
 .content-loadable {
-  transition: filter 0.2s ease;
-  transition-delay: 0.3s;
+  transition: filter 0s;
+  transition-delay: 0s;
 }
 
 .content-loading {
   cursor: wait;
   filter: blur(2px) grayscale(100%) opacity(50%);
+  transition: filter 0.2s ease;
+  transition-delay: 0.4s !important;
 }
 
 .content-loading > * {

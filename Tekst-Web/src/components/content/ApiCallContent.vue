@@ -2,15 +2,10 @@
 import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { useScriptTag } from '@vueuse/core';
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { NSpin } from 'naive-ui';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
 
-type ContentData = {
-  calls: ApiCallContentRead['calls'];
-  transformContext?: ApiCallContentRead['transformContext'];
-  authorsComment: ApiCallContentRead['authorsComment'];
-  editorsComment: ApiCallContentRead['editorsComment'];
-};
 type ResponseData = { key: string; data: string }[];
 
 const AsyncFunction = async function () {}.constructor;
@@ -25,14 +20,6 @@ const fontStyle = {
   fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
-const contents = computed(() =>
-  props.resource.contents?.map((c) => ({
-    calls: c.calls,
-    transformContext: c.transformContext,
-    authorsComment: c.authorsComment,
-    editorsComment: c.editorsComment,
-  }))
-);
 const contentProcessed = ref<{ html?: string; authorsComment?: string; editorsComment?: string }[]>(
   []
 );
@@ -70,7 +57,7 @@ async function execTransformJs(
   }
 }
 
-async function updateContent(contents?: ContentData[]) {
+async function updateContent(contents?: ApiCallContentRead[]) {
   if (!contents?.length) return;
   loading.value = true;
   const newHtml = Array(contents.length).fill(undefined);
@@ -108,18 +95,14 @@ async function updateContent(contents?: ContentData[]) {
 }
 
 watch(
-  contents,
-  (newContents, oldContents) => {
-    if (!newContents?.length) {
+  () => props.resource.contents?.map((c) => c.id).join('-'),
+  (contentIds) => {
+    if (!contentIds) {
       contentProcessed.value = [];
-      return;
-    } else if (JSON.stringify(newContents) === JSON.stringify(oldContents)) {
-      return;
     } else {
-      updateContent(newContents);
+      updateContent(props.resource.contents);
     }
-  },
-  { deep: true }
+  }
 );
 
 onMounted(async () => {
@@ -129,7 +112,7 @@ onMounted(async () => {
     await load(true);
   }
   // load and process contents
-  nextTick().then(() => updateContent(contents.value));
+  nextTick().then(() => updateContent(props.resource.contents));
 });
 </script>
 
@@ -143,7 +126,7 @@ onMounted(async () => {
       :editors-comment="content?.editorsComment"
       :font="fontStyle.fontFamily"
     >
-      <template v-if="!focusView">
+      <n-spin v-if="!focusView" :show="loading" size="small">
         <div
           v-if="content?.html !== undefined"
           :class="`content-loadable res-${resource.id}` + (loading ? ' content-loading' : '')"
@@ -157,7 +140,7 @@ onMounted(async () => {
         <div v-else class="translucent i font-ui">
           {{ $t('errors.notFound') }}
         </div>
-      </template>
+      </n-spin>
       <div v-else class="translucent i font-ui text-small">
         {{ $t('contents.msgContentNoFocusView') }}
       </div>

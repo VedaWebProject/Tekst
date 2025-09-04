@@ -28,9 +28,9 @@ const browse = useBrowseStore();
 const state = useStateStore();
 
 const showComments = ref(props.resource.config.general.showComments);
-const contentsLoaded = computed(() => !!props.resource.contents?.length);
+const hasContents = computed(() => !!props.resource.contents?.length);
 const onChildLevel = computed(() => props.resource.level - 1 === browse.level);
-const contentContextLoaded = computed(() => contentsLoaded.value && onChildLevel.value);
+const contentContextLoaded = computed(() => hasContents.value && onChildLevel.value);
 
 const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 const contentContainerTitle = computed(() =>
@@ -48,7 +48,7 @@ const headerWidgetsOpacity = computed<number>(() =>
 
 const collapsible = computed(
   () =>
-    !browse.focusView && contentsLoaded.value && !!props.resource.config.general.collapsibleContents
+    !browse.focusView && hasContents.value && !!props.resource.config.general.collapsibleContents
 );
 const collapsed = ref(!!props.resource.config.general.collapsibleContents);
 watch(
@@ -62,10 +62,10 @@ watch(
 
 <template>
   <div
-    v-if="resource.active && (contentsLoaded || !browse.focusView)"
+    v-if="resource.active && (hasContents || !browse.focusView)"
     ref="contentContainerRef"
     class="content-block"
-    :class="{ empty: !contentsLoaded }"
+    :class="{ empty: !hasContents }"
     :title="contentContainerTitle"
   >
     <n-flex
@@ -73,9 +73,9 @@ watch(
       :wrap="false"
       :size="[12, 0]"
       class="content-header mb-sm"
-      :class="{ 'mb-0': browse.focusView || !contentsLoaded }"
+      :class="{ 'mb-0': browse.focusView || !hasContents }"
     >
-      <n-flex align="center" :gap="12" :class="{ translucent: !contentsLoaded }" style="flex: 2">
+      <n-flex align="center" :gap="12" :class="{ translucent: !hasContents }" style="flex: 2">
         <div
           :class="{
             'text-medium': !browse.focusView,
@@ -116,7 +116,7 @@ watch(
           <n-icon
             v-else-if="
               !loading &&
-              !contentsLoaded &&
+              !hasContents &&
               (resource.level === browse.level ||
                 (onChildLevel && resource.config.general.enableContentContext))
             "
@@ -125,7 +125,7 @@ watch(
           />
           <!-- icon hint: cannot display possible content from original level -->
           <n-icon
-            v-else-if="!loading && !contentsLoaded"
+            v-else-if="!loading && !hasContents"
             :component="WarningIcon"
             size="medium"
             :title="$t('browse.contents.cannotShowContext')"
@@ -142,7 +142,7 @@ watch(
           </n-tag>
         </n-flex>
         <n-flex
-          v-if="loading && !contentsLoaded && !browse.focusView"
+          v-if="loading && !hasContents && !browse.focusView"
           align="center"
           size="small"
           :wrap="false"
@@ -161,9 +161,9 @@ watch(
       />
     </n-flex>
 
-    <n-spin :show="loading && contentsLoaded" size="small" :delay="1000">
+    <n-spin :show="loading && hasContents" size="small" :delay="1500">
       <collapsible-content
-        v-if="contentsLoaded"
+        v-if="hasContents"
         :collapsible="collapsible || contentContextLoaded"
         :collapsed="collapsed"
         :height-tresh-px="resource.config.general.collapsibleContents || undefined"
