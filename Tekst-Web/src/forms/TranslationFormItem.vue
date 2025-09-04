@@ -102,7 +102,10 @@ const localeOptions = computed(() =>
             :show-label="false"
             :path="`${parentFormPathPrefix}[${translationIndex}].translation`"
             :rule="translationFormRules"
-            style="flex: 2 200px"
+            :style="{
+              flex: inputType !== 'html' ? '1 200px' : undefined,
+              width: inputType !== 'html' ? undefined : '100%',
+            }"
           >
             <n-input
               v-if="inputType === 'input' || inputType === 'textarea'"
@@ -115,7 +118,6 @@ const localeOptions = computed(() =>
             <html-editor
               v-else-if="inputType === 'html'"
               v-model:value="translationValue.translation"
-              toolbar-size="medium"
               :max-chars="maxTranslationLength"
             />
           </n-form-item>

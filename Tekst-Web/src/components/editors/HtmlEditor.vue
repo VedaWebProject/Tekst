@@ -88,6 +88,7 @@ watch(
         :max-chars="maxChars"
         :font="wysiwygFont"
         :rtl="rtl"
+        :toolbar-size="toolbarSize"
         @blur="emit('blur')"
         @focus="emit('focus')"
         @input="emit('input')"

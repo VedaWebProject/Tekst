@@ -21,7 +21,6 @@ const model = defineModel<RichTextContentCreate>({ required: true });
     <html-editor
       v-model:value="model.html"
       v-model:editor-mode="model.editorMode"
-      toolbar-size="medium"
       :max-chars="102400"
       :wysiwyg-font="resource.config.general.font || undefined"
       :rtl="resource.config.general.rtl"

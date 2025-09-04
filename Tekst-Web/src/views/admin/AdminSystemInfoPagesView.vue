@@ -291,7 +291,6 @@ async function handleDeleteClick() {
           <html-editor
             v-model:value="segmentModel.html"
             v-model:editor-mode="segmentModel.editorMode"
-            toolbar-size="medium"
             :max-chars="1048576"
           />
         </n-form-item>
