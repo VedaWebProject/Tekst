@@ -494,3 +494,26 @@ async def test_0_28_0a0(
     # assert the data has been fixed by the migration
     assert "index_utd" in text
     assert text["index_utd"] is False
+
+
+@pytest.mark.anyio
+async def test_0_30_0a0(
+    database,
+    get_test_data,
+):
+    contents = get_test_data("migrations/0_30_0a0.json")
+    await database.contents.insert_many(contents)
+
+    # run migration
+    await _migration_fn("0_30_0a0")(database)
+    contents = await database.contents.find({}).to_list()
+
+    # assert the data has been fixed by the migration
+    assert len(contents) > 0
+    for content in contents:
+        assert "editors_comment" not in content
+        assert "editors_comments" in content
+        assert len(content["editors_comments"]) > 0
+        for cmt in content["editors_comments"]:
+            assert cmt.get("by")
+            assert cmt.get("comment")

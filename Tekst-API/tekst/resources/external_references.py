@@ -147,10 +147,13 @@ class ExternalReferences(ResourceTypeABC):
                     "DESCRIPTION",
                     "ALT_REF",
                     "AUTHORS_COMMENT",
-                    "EDITORS_COMMENT",
+                    "EDITORS_COMMENTS",
                 ]
             )
             for content in contents:
+                editors_comments = await cls.editors_comments_for_csv(
+                    content.editors_comments
+                )
                 for link in content.links:
                     csv_writer.writerow(
                         [
@@ -161,7 +164,7 @@ class ExternalReferences(ResourceTypeABC):
                             link.description,
                             link.alt_ref,
                             content.authors_comment,
-                            content.editors_comment,
+                            editors_comments,
                         ]
                     )
                     sort_num += 1

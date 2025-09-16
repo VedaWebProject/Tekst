@@ -49,7 +49,7 @@ onBeforeUpdate(() => {
       :key="content.id"
       :show-comments="showComments"
       :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :editors-comments="content.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <n-flex :vertical="!focusView" size="large">

@@ -1133,7 +1133,9 @@ async def test_import_resource(
                 "locationId": "67c040a0906e79b9062e22e8",
                 "text": "FOO",
                 "authors_comment": "foo\n\nbar\n\nbaz\n\nqux",
-                "editors_comment": "quux\n\nquuux\n\nquuuxx\n\nquuuxxx",
+                "editors_comments": [
+                    {"by": "Tekst", "comment": "quux\n\nquuux\n\nquuuxx\n\nquuuxxx"}
+                ],
             },
             {"locationId": "67c040bb906e79b9062e22e9", "text": "BAR"},
             {"locationId": additional_location_id, "text": "QUUX"},

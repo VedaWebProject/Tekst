@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.29.4a0"
+    "version": "0.30.0a0"
   },
   "servers": [
     {
@@ -7587,21 +7587,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "calls": {
             "items": {
@@ -7739,21 +7743,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "calls": {
             "items": {
@@ -7811,22 +7819,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "calls": {
@@ -8615,21 +8626,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "files": {
             "items": {
@@ -8696,21 +8711,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "files": {
             "items": {
@@ -8753,22 +8772,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "files": {
@@ -10257,6 +10279,28 @@
         ],
         "title": "DeleteLocationResult"
       },
+      "EditorsComment": {
+        "properties": {
+          "by": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "By"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "by",
+          "comment"
+        ],
+        "title": "EditorsComment"
+      },
       "ErrorDetail": {
         "properties": {
           "key": {
@@ -10369,21 +10413,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "links": {
             "items": {
@@ -10450,21 +10498,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "links": {
             "items": {
@@ -10507,22 +10559,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "links": {
@@ -11473,21 +11528,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "files": {
             "items": {
@@ -11554,21 +11613,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "files": {
             "items": {
@@ -11611,22 +11674,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "files": {
@@ -12673,21 +12739,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "entries": {
             "items": {
@@ -12754,21 +12824,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "entries": {
             "items": {
@@ -12811,22 +12885,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "entries": {
@@ -14072,21 +14149,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "text": {
             "type": "string",
@@ -14150,21 +14231,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "text": {
             "type": "string",
@@ -14204,22 +14289,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "text": {
@@ -15968,21 +16056,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "html": {
             "type": "string",
@@ -16056,21 +16148,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "html": {
             "type": "string",
@@ -16120,22 +16216,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "html": {
@@ -17281,21 +17380,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "tokens": {
             "items": {
@@ -17361,21 +17464,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author"
+            "description": "Potentially multiline comment by the original author"
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor"
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
+            "optionalNullable": false
           },
           "tokens": {
             "items": {
@@ -17417,22 +17524,25 @@
               }
             ],
             "title": "Authorscomment",
-            "description": "Plain text, potentially multiline comment of the original content author",
+            "description": "Potentially multiline comment by the original author",
             "optionalNullable": true
           },
-          "editorsComment": {
+          "editorsComments": {
             "anyOf": [
               {
-                "type": "null"
+                "items": {
+                  "$ref": "#/components/schemas/EditorsComment"
+                },
+                "type": "array",
+                "maxItems": 64,
+                "minItems": 1
               },
               {
-                "type": "string",
-                "maxLength": 5000,
-                "minLength": 1
+                "type": "null"
               }
             ],
-            "title": "Editorscomment",
-            "description": "Plain text, potentially multiline comment / working notes by an editor",
+            "title": "Editorscomments",
+            "description": "Potentially multiline comments / working notes editors",
             "optionalNullable": true
           },
           "tokens": {

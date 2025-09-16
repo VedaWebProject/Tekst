@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ApiCallContentRead, ApiCallResourceRead } from '@/api';
+import type { AnyContentRead, ApiCallContentRead, ApiCallResourceRead } from '@/api';
+import CommonContentDisplay from '@/components/content/CommonContentDisplay.vue';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { useScriptTag } from '@vueuse/core';
 import { NSpin } from 'naive-ui';
 import { nextTick, onMounted, ref, watch } from 'vue';
-import CommonContentDisplay from './CommonContentDisplay.vue';
 
 type ResponseData = { key: string; data: string }[];
 
@@ -20,9 +20,13 @@ const fontStyle = {
   fontFamily: props.resource.config.general.font || 'var(--font-family-content)',
 };
 
-const contentProcessed = ref<{ html?: string; authorsComment?: string; editorsComment?: string }[]>(
-  []
-);
+const contentProcessed = ref<
+  {
+    html?: string;
+    authorsComment?: AnyContentRead['authorsComment'];
+    editorsComments?: AnyContentRead['editorsComments'];
+  }[]
+>([]);
 const loading = ref(false);
 
 function prepareRequest(call: ApiCallContentRead['calls'][number]): Request {
@@ -83,7 +87,7 @@ async function updateContent(contents?: ApiCallContentRead[]) {
           props.resource.config.special.transform.js
         ),
         authorsComment: content.authorsComment,
-        editorsComment: content.editorsComment,
+        editorsComments: content.editorsComments,
       };
     } catch (e) {
       newHtml[i] = undefined;
@@ -123,7 +127,7 @@ onMounted(async () => {
       :key="i"
       :show-comments="showComments"
       :authors-comment="content?.authorsComment"
-      :editors-comment="content?.editorsComment"
+      :editors-comments="content?.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <n-spin v-if="!focusView" :show="loading" size="small">

@@ -521,7 +521,7 @@ function generatePlaintextAnno(): string {
       :key="c.id"
       :show-comments="showComments"
       :authors-comment="c.authorsComment"
-      :editors-comment="c.editorsComment"
+      :editors-comments="c.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <n-flex :size="4" class="anno-content">

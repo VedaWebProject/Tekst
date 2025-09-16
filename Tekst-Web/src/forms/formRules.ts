@@ -337,7 +337,8 @@ export const typeSpecificResourceConfigFormRules: Record<string, Record<string, 
 export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = {
   common: {
     authorsComment: [minMaxCharsRule(0, 50000, 'blur')],
-    editorsComment: [minMaxCharsRule(0, 5000, 'blur')],
+    editorsCommentBy: [minMaxCharsRule(1, 128, 'blur')],
+    editorsComment: [minMaxCharsRule(1, 5000, 'blur')],
     optionalUrl: [minMaxCharsRule(0, 2083, 'blur')],
     caption: [minMaxCharsRule(0, 8192, 'blur')],
   },

@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, TypedDict
 
 from beanie import PydanticObjectId
 from pydantic import Field, field_validator
@@ -9,7 +9,23 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.types import ConStrOrNone, ResourceTypeName
+from tekst.types import (
+    ConStr,
+    ConStrOrNone,
+    ResourceTypeName,
+    SchemaOptionalNonNullable,
+)
+
+
+class EditorsComment(TypedDict):
+    by: ConStr(
+        max_length=128,
+        cleanup="oneline",
+    )
+    comment: ConStr(
+        max_length=5000,
+        cleanup="multiline",
+    )
 
 
 class ContentBase(ModelBase, ModelFactoryMixin):
@@ -48,22 +64,17 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             cleanup="multiline",
         ),
         Field(
-            description=(
-                "Plain text, potentially multiline comment of "
-                "the original content author"
-            ),
+            description="Potentially multiline comment by the original author",
         ),
     ] = None
-    editors_comment: Annotated[
-        ConStrOrNone(
-            max_length=5000,
-            cleanup="multiline",
-        ),
+    editors_comments: Annotated[
+        list[EditorsComment] | None,
         Field(
-            description=(
-                "Plain text, potentially multiline comment / working notes by an editor"
-            ),
+            description="Potentially multiline comments / working notes editors",
+            min_length=1,
+            max_length=64,
         ),
+        SchemaOptionalNonNullable,
     ] = None
 
     @field_validator(
@@ -81,6 +92,21 @@ class ContentBase(ModelBase, ModelFactoryMixin):
                 f"Given resource type ({v}) is not a valid "
                 f"resource type name (one of {resource_type_names})."
             )
+        return v
+
+    @field_validator(
+        "editors_comments",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def pre_validate_editors_comments(cls, v) -> list | None:
+        if v is None:
+            return v
+        if type(v) is not list:  # pragma: no cover
+            return [v]
+        if len(v) == 0:
+            return None
         return v
 
 

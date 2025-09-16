@@ -1,0 +1,47 @@
+[
+  {
+    "_id": { "$oid": "66471b8dba9e65342c8e4967" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e7" },
+    "editors_comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\".",
+    "text": "|: Sonst wird dich der Jäger holen,"
+  },
+  {
+    "_id": { "$oid": "6656d09c81a66322c1bffb3f" },
+    "_class_id": "ContentBaseDocument.TextAnnotationContentDocument",
+    "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
+    "resource_type": "textAnnotation",
+    "location_id": { "$oid": "654b825533ee5737b297f8f2" },
+    "editors_comment": "This is the only occurrence of the entity \"Mouse\"!",
+    "tokens": [
+      {
+        "annotations": [
+          { "key": "form", "value": ["mit"] },
+          { "key": "len", "value": ["3"] }
+        ]
+      },
+      {
+        "annotations": [
+          { "key": "form", "value": ["der"] },
+          { "key": "len", "value": ["3"] }
+        ]
+      },
+      {
+        "annotations": [
+          { "key": "form", "value": ["Maus"] },
+          { "key": "ne", "value": ["Mouse"] },
+          { "key": "ne_deu", "value": ["Maus"] },
+          { "key": "len", "value": ["4"] }
+        ]
+      },
+      {
+        "annotations": [
+          { "key": "form", "value": ["vorlieb"] },
+          { "key": "len", "value": ["7"] }
+        ]
+      }
+    ]
+  }
+]

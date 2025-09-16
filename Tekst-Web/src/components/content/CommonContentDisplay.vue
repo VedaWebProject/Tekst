@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { AnyContentRead } from '@/api';
 import { CommentIcon } from '@/icons';
-import { NAlert, NIcon } from 'naive-ui';
+import { NAlert, NFlex, NIcon } from 'naive-ui';
 
 defineProps<{
-  authorsComment?: string | null;
-  editorsComment?: string | null;
+  authorsComment?: AnyContentRead['authorsComment'];
+  editorsComments?: AnyContentRead['editorsComments'];
   showComments?: boolean;
   font?: string;
 }>();
@@ -28,16 +29,27 @@ defineProps<{
     </n-alert>
 
     <n-alert
-      v-if="showComments && !!editorsComment"
-      :title="$t('resources.types.common.contentFields.editorsComment')"
+      v-if="showComments && !!editorsComments"
+      :title="$t('resources.types.common.contentFields.editorsComments')"
       class="mt-md"
     >
       <template #icon>
         <n-icon :component="CommentIcon" :size="16" />
       </template>
-      <div class="pre-wrap text-small" :style="{ fontFamily: font }">
-        {{ editorsComment }}
-      </div>
+      <n-flex vertical size="small">
+        <div
+          v-for="(cmt, i) in editorsComments"
+          :key="i"
+          class="text-small divided"
+          :style="{
+            fontFamily: font,
+            paddingBottom: i < editorsComments.length - 1 ? 'var(--gap-sm)' : undefined,
+          }"
+        >
+          <div class="pre-wrap">{{ cmt.comment }}</div>
+          <div class="i font-ui">– {{ cmt.by }}</div>
+        </div>
+      </n-flex>
     </n-alert>
   </div>
 </template>

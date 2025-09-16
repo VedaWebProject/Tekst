@@ -658,7 +658,7 @@ async def test_advanced_plain_text(
                 ],
             },
         ),
-        expected_hits=1,
+        expected_hits=3,
     )
 
 

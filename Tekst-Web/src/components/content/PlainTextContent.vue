@@ -65,14 +65,10 @@ const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
       :key="content.id"
       :show-comments="showComments"
       :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :editors-comments="content.editorsComments"
       :font="fontStyle.fontFamily"
     >
-      <div
-        :class="{ 'mt-md': !focusView && contentIndex > 0 }"
-        :title="content.authorsComment || undefined"
-        :style="customStyle"
-      >
+      <div :class="{ 'mt-md': !focusView && contentIndex > 0 }" :style="customStyle">
         <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
           <div
             v-if="resource.config.special.lineLabelling.enabled && line.label != null"

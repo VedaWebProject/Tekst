@@ -389,12 +389,12 @@ table td {
   border-radius: var(--border-radius);
 }
 
-.n-dynamic-input .divided {
+.divided {
   border-bottom: 1px solid var(--main-bg-color);
   margin-bottom: var(--gap-md) !important;
 }
 
-.n-dynamic-input .divided:last-child {
+.divided:last-child {
   border-bottom: none;
   margin-bottom: unset !important;
 }

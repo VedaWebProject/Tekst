@@ -209,7 +209,7 @@ class LocationMetadata(ResourceTypeABC):
                     "SORT",
                     *keys,
                     "AUTHORS_COMMENT",
-                    "EDITORS_COMMENT",
+                    "EDITORS_COMMENTS",
                 ]
             )
             for content in contents:
@@ -221,7 +221,7 @@ class LocationMetadata(ResourceTypeABC):
                         sort_num,
                         *values,
                         content.authors_comment,
-                        content.editors_comment,
+                        await cls.editors_comments_for_csv(content.editors_comments),
                     ]
                 )
                 sort_num += 1

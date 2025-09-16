@@ -1334,14 +1334,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1405,14 +1405,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1435,14 +1435,14 @@ export interface components {
       resourceType: 'apiCall';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1818,14 +1818,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Files
        * @description List of audio file objects
@@ -1858,14 +1858,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Files
        * @description List of audio file objects
@@ -1883,14 +1883,14 @@ export interface components {
       resourceType: 'audio';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Files
        * @description List of audio file objects
@@ -2594,6 +2594,13 @@ export interface components {
       /** Locations */
       locations: number;
     };
+    /** EditorsComment */
+    EditorsComment: {
+      /** By */
+      by: string;
+      /** Comment */
+      comment: string;
+    };
     /** ErrorDetail */
     ErrorDetail: {
       /** Key */
@@ -2635,14 +2642,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Links
        * @description List of external reference link objects
@@ -2675,14 +2682,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Links
        * @description List of external reference link objects
@@ -2700,14 +2707,14 @@ export interface components {
       resourceType: 'externalReferences';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Links
        * @description List of external reference link objects
@@ -3151,14 +3158,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Files
        * @description List of image file objects
@@ -3191,14 +3198,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Files
        * @description List of image file objects
@@ -3216,14 +3223,14 @@ export interface components {
       resourceType: 'images';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Files
        * @description List of image file objects
@@ -3686,14 +3693,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3726,14 +3733,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3751,14 +3758,14 @@ export interface components {
       resourceType: 'locationMetadata';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -4335,14 +4342,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Text
        * @description Text content of the plain text content object
@@ -4375,14 +4382,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Text
        * @description Text content of the plain text content object
@@ -4400,14 +4407,14 @@ export interface components {
       resourceType: 'plainText';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5252,14 +5259,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5299,14 +5306,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5331,14 +5338,14 @@ export interface components {
       resourceType: 'richText';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5872,14 +5879,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5912,14 +5919,14 @@ export interface components {
       locationId: string;
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][];
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5937,14 +5944,14 @@ export interface components {
       resourceType: 'textAnnotation';
       /**
        * Authorscomment
-       * @description Plain text, potentially multiline comment of the original content author
+       * @description Potentially multiline comment by the original author
        */
       authorsComment?: null | string;
       /**
-       * Editorscomment
-       * @description Plain text, potentially multiline comment / working notes by an editor
+       * Editorscomments
+       * @description Potentially multiline comments / working notes editors
        */
-      editorsComment?: null | string;
+      editorsComments?: components['schemas']['EditorsComment'][] | null;
       /**
        * Tokens
        * @description List of annotated tokens in this content object

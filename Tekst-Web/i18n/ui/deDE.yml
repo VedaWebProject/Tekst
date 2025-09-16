@@ -506,7 +506,7 @@ resources:
     common:
       contentFields:
         authorsComment: Kommentar des Autors
-        editorsComment: Kommentar des Editors / Arbeitsnotizen
+        editorsComments: Kommentare der Editoren / Arbeitsnotizen
     plainText:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text

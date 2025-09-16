@@ -47,7 +47,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
       :key="content.id"
       :show-comments="showComments"
       :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :editors-comments="content.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <n-flex vertical :wrap="false" class="images-content">

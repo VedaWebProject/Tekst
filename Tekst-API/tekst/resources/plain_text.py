@@ -132,7 +132,7 @@ class PlainText(ResourceTypeABC):
                     "SORT",
                     "TEXT",
                     "AUTHORS_COMMENT",
-                    "EDITORS_COMMENT",
+                    "EDITORS_COMMENTS",
                 ]
             )
             for content in contents:
@@ -142,7 +142,7 @@ class PlainText(ResourceTypeABC):
                         sort_num,
                         content.text,
                         content.authors_comment,
-                        content.editors_comment,
+                        await cls.editors_comments_for_csv(content.editors_comments),
                     ]
                 )
                 sort_num += 1

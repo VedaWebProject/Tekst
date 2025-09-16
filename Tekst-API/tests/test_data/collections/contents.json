@@ -5,7 +5,8 @@
     "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
-    "text": "Foö is the first word"
+    "text": "Foö is the first word",
+    "authors_comment": "This is a comment!"
   },
   {
     "_id": { "$oid": "67c044b9906e79b9062e22fc" },
@@ -21,7 +22,17 @@
     "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
-    "text": "Baz"
+    "text": "Baz",
+    "editors_comments": [
+      {
+        "by": "Editor One",
+        "comment": "This is an editor's comment!"
+      },
+      {
+        "by": "Editor Two",
+        "comment": "This is another editor's comment!"
+      }
+    ]
   },
   {
     "_id": { "$oid": "67c044c6906e79b9062e22fe" },
@@ -30,7 +41,7 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
     "text": "Qux",
-    "authorsComment": "The word \"Qux\" truly deserves a comment!"
+    "authors_comment": "The word \"Qux\" truly deserves a comment!"
   },
   {
     "_id": { "$oid": "67c044e3906e79b9062e22ff" },
@@ -84,7 +95,7 @@
         ]
       }
     ],
-    "authorsComment": "This one has a comment!"
+    "authors_comment": "This one has a comment!"
   },
   {
     "_id": { "$oid": "67c04541906e79b9062e2304" },

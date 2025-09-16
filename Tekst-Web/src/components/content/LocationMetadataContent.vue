@@ -25,7 +25,7 @@ const contents = computed(() =>
       id: c.id,
       groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
       authorsComment: c.authorsComment,
-      editorsComment: c.editorsComment,
+      editorsComments: c.editorsComments,
     })) || []
   )
     // pick translations for groups and item keys, join values
@@ -65,7 +65,7 @@ const fontStyle = {
       :key="content.id"
       :show-comments="showComments"
       :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :editors-comments="content.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <table>

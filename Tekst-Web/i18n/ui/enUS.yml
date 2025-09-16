@@ -495,7 +495,7 @@ resources:
     common:
       contentFields:
         authorsComment: Author's comment
-        editorsComment: Editor's comment / working notes
+        editorsComments: Editors' comments / working notes
     plainText:
       label: Plain Text
       parenthesis: unstyled plain text content

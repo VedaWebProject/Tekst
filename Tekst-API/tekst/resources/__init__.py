@@ -23,7 +23,12 @@ from tekst.models.common import (
     PydanticObjectId,
     ReadBase,
 )
-from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
+from tekst.models.content import (
+    ContentBase,
+    ContentBaseDocument,
+    ContentBaseUpdate,
+    EditorsComment,
+)
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -199,7 +204,12 @@ class ResourceTypeABC(ABC):
         return dict(
             native=native,
             comment=" ".join(
-                [content.authors_comment or "", content.editors_comment or ""]
+                [
+                    content.authors_comment or "",
+                    " ".join([cmt["comment"] for cmt in content.editors_comments])
+                    if content.editors_comments
+                    else "",
+                ]
             ).strip()
             or None,
             **(cls._rtype_index_doc(content) or {}),
@@ -261,6 +271,17 @@ class ResourceTypeABC(ABC):
             },
         }
         return template
+
+    @classmethod
+    async def editors_comments_for_csv(
+        cls,
+        comments: list[EditorsComment] | None,
+    ) -> str:
+        if not comments:
+            return ""
+        return "\n\n".join(
+            [f"{cmt['comment']}\n::comment by: {cmt['by']}::" for cmt in comments]
+        )
 
     @classmethod
     async def export_tekst_json(

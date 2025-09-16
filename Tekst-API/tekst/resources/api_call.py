@@ -111,10 +111,13 @@ class ApiCall(ResourceTypeABC):
                     "QUERY",
                     "TRANSFORM_CONTEXT",
                     "AUTHORS_COMMENT",
-                    "EDITORS_COMMENT",
+                    "EDITORS_COMMENTS",
                 ]
             )
             for content in contents:
+                editors_comments = await cls.editors_comments_for_csv(
+                    content.editors_comments
+                )
                 for call in content.calls:
                     csv_writer.writerow(
                         [
@@ -127,7 +130,7 @@ class ApiCall(ResourceTypeABC):
                             call.query,
                             content.transform_context,
                             content.authors_comment,
-                            content.editors_comment,
+                            editors_comments,
                         ]
                     )
                     sort_num += 1

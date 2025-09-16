@@ -31,7 +31,7 @@ const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
       :key="content.id"
       :show-comments="showComments"
       :authors-comment="content.authorsComment"
-      :editors-comment="content.editorsComment"
+      :editors-comments="content.editorsComments"
       :font="fontStyle.fontFamily"
     >
       <div

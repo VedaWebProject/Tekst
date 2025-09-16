@@ -17,7 +17,7 @@ const authorsComments = computed(
   () => props.resource.contents?.map((c) => c.authorsComment).filter(Boolean) || []
 );
 const editorsComments = computed(
-  () => props.resource.contents?.map((c) => c.editorsComment).filter(Boolean) || []
+  () => props.resource.contents?.map((c) => c.editorsComments).filter(Boolean) || []
 );
 const hasComments = computed(
   () => !!authorsComments.value.length || !!editorsComments.value.length

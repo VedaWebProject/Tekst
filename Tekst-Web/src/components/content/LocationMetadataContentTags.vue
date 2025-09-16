@@ -31,7 +31,7 @@ const contentsProcessed = computed(() => {
       font: res.config.general.font || 'var(--font-family-content)',
       groups: groupAndSortItems(c.entries, res.config.special.entriesIntegration),
       authorsComment: c.authorsComment,
-      editorsComment: c.editorsComment,
+      editorsComments: c.editorsComments,
     });
   }
   // transform contents, group and sort entries
