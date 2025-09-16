@@ -119,11 +119,11 @@ errors:
   loginBadCredentials: Falsche E-Mail-Adresse/Passwort oder Konto noch nicht aktiviert
   loginUserNotVerified: Ihre E-Mail-Adresse ist noch nicht verifiziert. Wir haben Ihnen einen Verifizierungs-Link geschickt.
   registerEmailAlreadyExists: Diese E-Mail-Adresse ist bereits registriert.
-  registerUsernameAlreadyExists: Dieser Benutzername ist bereits vergeben.
+  registerUsernameAlreadyExists: Dieser Benutzer*innenname ist bereits vergeben.
   registerInvalidPassword: Das eingegebene Passwort entspricht nicht den Sicherheitsanforderungen.
   verifyUserBadToken: Dieser Verifizierungs-Link ist entweder ungültig oder bereits abgelaufen.
   verifyUserAlreadyVerified: Diese E-Mail-Adresse ist bereits verifiziert.
-  resourcesLimitReached: Maximum von {limit} Ressourcen für diesen Benutzer erreicht
+  resourcesLimitReached: Maximum von {limit} Ressourcen für diese Benutzer*in erreicht
   bookmarkExists: Sie haben bereits ein Lesezeichen für diese Belegstelle angelegt.
   uploadInvalidMimeTypeNotJson: Ungültiger Dateityp. Nur JSON-Dateien sind erlaubt.
   uploadInvalidJson: Die hochgeladene JSON-Datei ist ungültig.
@@ -155,7 +155,7 @@ tasks:
     resource_import: Ressourcen-Inhalte importieren
     resource_export: Ressourcen-Export erstellen
     search_export: Suchergebnisse exportieren
-    broadcast_user_ntfc: Benutzer-Benachrichtigungen versenden
+    broadcast_user_ntfc: Benutzer*innen-Benachrichtigungen versenden
     broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
     precompute_data: Generierung vorberechneter Daten
     structure_update: Textstruktur aktualisieren
@@ -187,7 +187,7 @@ routes:
     textSettings: Einstellungen – {text}
     newText: Neuer Text
     adminSettings: '@:common.settings'
-    adminUsers: Benutzer
+    adminUsers: Benutzer*innen
     adminSegments: Segmente
     adminInfoPages: Info-Seiten
     adminMaintenance: '@:admin.maintenance.heading'
@@ -281,10 +281,10 @@ models:
   locale:
     allLanguages: Alle Sprachen
   user:
-    modelLabel: Benutzer | Benutzer
+    modelLabel: Benutzer*in | Benutzer*innen
     name: '@:common.name'
     email: E-Mail-Adresse
-    username: Benutzername
+    username: Benutzer*innenname
     password: Passwort
     affiliation: Zugehörigkeit
     avatarUrl: Avatar-Grafik-URL (64-512 Pixel Breite/Höhe empfohlen!)
@@ -328,7 +328,7 @@ models:
     config: Konfiguration
   meta:
     modelLabel: Metadaten
-    author: Autor
+    author: Autor*in
     year: Jahr
     language: '@:common.language'
     resourceType: '@:models.resource.resourceType'
@@ -340,14 +340,14 @@ models:
     infoContactEmail: E-Mail Kontaktperson
     infoContactUrl: URL Kontaktperson
     defaultText: Standard-Text
-    indexUnpublishedResources: Unveröffentlichte Ressourcen sind durchsuchbar (von Benutzern mit Lesezugriff)
+    indexUnpublishedResources: Unveröffentlichte Ressourcen sind durchsuchbar (von Benutzer*innen mit Lesezugriff)
     availableLocales: Verfügbare UI-Sprachen
     navBrowseEntry: Beschriftung für "Lesen" in Hauptnavigation
     navSearchEntry: Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Einführungstext für Registrierungsseite
     directJumpOnUniqueAliasSearch: Bei eindeutigem Treffer direkt zur Belegstelle springen
-    uiColor: Primärfarbe der Benutzeroberfläche
+    uiColor: Primärfarbe der UI
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
@@ -355,8 +355,8 @@ models:
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
-    fonts: Benutzerdefinierte Schritarten
-    uiFont: Benutzeroberflächen-Schriftart
+    fonts: Benutzer*innendefinierte Schritarten
+    uiFont: UI-Schriftart
     contentFont: Standard-Schriftart für Inhalte
     oskModes: Bildschirmtastaturen
     oskModeFont: Tastatur-Schriftart
@@ -374,7 +374,7 @@ resources:
   unknownOriginal: Unbekannte Original-Ressource
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
   msgNotYourResourceBody: |
-    Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzern zu bearbeiten.
+    Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
@@ -385,11 +385,11 @@ resources:
   hasNoCorrections: hat keine Korrekturnotizen
   public: '@:models.resource.public'
   notPublic: unveröffentlicht
-  shared: Zugriff mit {count} Benutzer geteilt | Zugriff mit {count} Benutzern geteilt
+  shared: Zugriff mit einer Benutzer*in geteilt | Zugriff mit {count} Benutzer*innen geteilt
   proposed: '@:models.resource.proposed'
   notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
-  transferAction: An Benutzer übertragen
+  transferAction: An Benutzer*in übertragen
   reqVersionIntegrationAction: Integration vorschlagen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
@@ -399,7 +399,7 @@ resources:
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
   warnTransfer: |
-    Wenn sie eine Ressource an einen anderen Benutzer übertragen,
+    Wenn sie eine Ressource an eine andere Benutzer*in übertragen,
     verlieren Sie Ihre Berechtigungen diese zu editieren,
     zu löschen, zur Veröffentlichung vorzuschlagen und Zugriffsrechte zu vergeben.
     Bitte fahren Sie nur fort, wenn Sie sich dessen bewusst sind!
@@ -412,9 +412,9 @@ resources:
     für diese Ressource widerrufen wollen?
   warnPublish: |
     Sie sind im Begriff, diese Ressource zu veröffentlichen und
-    sie für nicht registrierte Benutzer zugänglich zu machen.
+    sie auch für nicht registrierte Benutzer*innen zugänglich zu machen.
     Sie werden als Besitzer der Ressource eingetragen und damit die hauptsächliche
-    Ansprechperson für andere Benutzer in Belangen zu dieser Ressource.
+    Ansprechperson für andere Benutzer*innen in Belangen zu dieser Ressource.
     Veröffentlichte Ressourcen können auf andere Administratoren übertragen werden.
     Es ist sehr wichtig, dass Sie sich über die Auswirkungen der Veröffentlichung
     von Ressourcen im Klaren sind.
@@ -432,14 +432,14 @@ resources:
     Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalversion angelegt haben,
     können Sie dem Besitzer vorschlagen, diese oder Teile davon zu übernehmen.
     Möchten Sie fortfahren?
-  msgTransferred: Die Ressource "{title}" wurde an den Benutzer "{username}" übertragen.
+  msgTransferred: Die Ressource "{title}" wurde an die Benutzer*in "{username}" übertragen.
   msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
   msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde widerrufen.
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
   msgCreatedVersion: Eine neue Version der Ressource "{title}" wurde erstellt.
-  phSearchUsers: Benutzer suchen...
+  phSearchUsers: Benutzer*in suchen...
   backToOverview: Gehe zur Ressourcen-Übersicht
   create:
     heading: Neue Ressource zu "{text}"
@@ -461,7 +461,7 @@ resources:
         sortOrder: Sortierreihenfolge
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         enableContentContext: Ermögliche Anzeige von Inhalten im Kontext übergeordneter Ebene
-        showComments: Zeige standardmäßig Autoren/Editoren-Kommentare
+        showComments: Zeige standardmäßig Autor*innen/Editor*innen-Kommentare
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
         rtl: Rechts-nach-links Textrichtung für Inhalte
@@ -505,8 +505,8 @@ resources:
   types:
     common:
       contentFields:
-        authorsComment: Kommentar des Autors
-        editorsComments: Kommentare der Editoren / Arbeitsnotizen
+        authorsComment: Kommentar der Autor*in
+        editorsComments: Kommentare der Editor*innen / Arbeitsnotizen
     plainText:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text
@@ -610,10 +610,10 @@ account:
   account: Konto
   profile: Profil
   profileHeading: Öffentliches Profil
-  profileNotFound: Das Benutzerprofil "{usernameOrId}" konnte nicht gefunden werden.
-  profileNoBio: Benutzer hat keine Biographie angegeben
+  profileNotFound: Das Profil "{usernameOrId}" konnte nicht gefunden werden.
+  profileNoBio: Benutzer*in hat keine Biographie angegeben
   logoutSuccessful: Sie sind jetzt ausgeloggt.
-  tipUserBtn: Benutzer-Aktionen für {username} anzeigen
+  tipUserBtn: Benutzer*innen-Aktionen für {username} anzeigen
   tipLoginBtn: In Ihrem Konto anmelden
   tipLogoutBtn: Von Ihrem Konto abmelden
   rememberMe: Angemeldet bleiben
@@ -633,7 +633,7 @@ account:
   renewLogin: Melden Sie sich wieder an, um Ihre Sitzung zu erneuern.
   settings:
     heading: Konto-Einstellungen
-    headingChangeUserData: Allgemeine Benutzerdaten
+    headingChangeUserData: Allgemeine Benutzer*innendaten
     headingChangePublicFields: Öffentliche Profildaten
     headingDeleteAccount: Konto löschen
     notifyMe: Benachrichtige mich, wenn...
@@ -641,21 +641,21 @@ account:
       heading: Benachrichtigungen
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
-      messageReceived: ich eine Nachricht von einem anderen Benutzer erhalte (per Email)
+      messageReceived: ich eine Nachricht von einer anderen Benutzer*in erhalte (per Email)
       newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren
-      userAwaitsActivation: ein Benutzer auf die Aktivierung des Kontos wartet (per Email)
+      userAwaitsActivation: eine Benutzer*in auf die Aktivierung des Kontos wartet (per Email)
       newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde (per Email)
-      msgSaveSuccess: Einstellungen zu Benutzer-Email-Benachrichtigungen gespeichert.
+      msgSaveSuccess: Einstellungen zu Benutzer*innen-Email-Benachrichtigungen gespeichert.
     msgEmailSaveSuccess: '@:models.user.email gespeichert.'
     msgEmailChangeWarning: Stellen Sie sicher, dass Sie eine gültige @:models.user.email eingeben, auf die Sie Zugriff haben! Wenn Sie fortfahren, werden Sie abgemeldet und müssen Ihre geänderte @:models.users.email verifizieren, bevor Sie sich wieder anmelden können.
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre @:models.user.email! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password gespeichert.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
     msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, ebenfalls gelöscht. Sind Sie sich sicher?
-    msgUserDataSaveSuccess: Benutzerdaten gespeichert.
+    msgUserDataSaveSuccess: Benutzer*innendaten gespeichert.
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
   messages:
     heading: Nachrichten
@@ -707,7 +707,7 @@ texts:
       Das Löschen einer Textebene hat weitreichende Folgen:
       Alle Daten, die mit dieser Textebene verbunden sind,
       werden mit ihr gelöscht. Dies betrifft alle (!) Ressourcen auf dieser
-      Ebene - egal, welcher Benutzer diese erstellt hat!
+      Ebene - egal, welche Benutzer*in diese erstellt hat!
       Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
       zu verbinden, aber Sie werden das Ergebnis
       anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
@@ -744,7 +744,7 @@ texts:
       Wenn Sie diese Belegstelle löschen, werden alle Daten, die mit ihr und allen
       untergeordneten Belegstelle verbunden sind, ebenfalls gelöscht.
       Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
-      die von anderen Benutzern angelegt wurden. Die Belegstelle wird danach nicht mehr
+      die von anderen Benutzer*innen angelegt wurden. Die Belegstelle wird danach nicht mehr
       über ihre ursprüngliche ID adressierbar sein.
       Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
     tipDeleteLocation: Belegstelle "{location}" löschen
@@ -763,13 +763,13 @@ admin:
   heading: Administration
   optionGroupLabel: Administration
   users:
-    heading: Benutzer
-    save: Benutzer "{username}" gespeichert
-    msgFoundCount: 'Keine Benutzer entsprechen den eingestellten Filterregeln | Einen Benutzer gefunden | {count} Benutzer gefunden'
-    registerNewUser: Neuer Benutzer
+    heading: Benutzer*innen
+    save: Benutzer*in "{username}" gespeichert
+    msgFoundCount: 'Keine Benutzer*innen entsprechen den eingestellten Filterregeln | Eine Benutzer*in gefunden | {count} Benutzer*innen gefunden'
+    registerNewUser: Neue Benutzer*in
     registeredAt: registriert am
     msgSentVerificationLink: Eine Verifizierungs-E-Mail wurde an "{username}" gesendet.
-    msgUserDeleted: Der Benutzer {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
+    msgUserDeleted: Die Benutzer*in {username} wurde gelöscht und darüber per E-Mail benachrichtigt.
     mailtoLinkTitle: E-Mail an {username} senden
     mailtoSubject: Ihr {platform}-Konto
     userItemActions:
@@ -779,17 +779,17 @@ admin:
       setVerified: E-Mail als verifiziert markieren
       setUnverified: E-Mail-Verifizierung zurücksetzen
       setSuperuser: Zu Administrator befördern
-      unsetSuperuser: Zu normalem Benutzer herabstufen
-      deleteUser: Benutzer löschen
+      unsetSuperuser: Zu normaler Benutzer*in herabstufen
+      deleteUser: Benutzer*in löschen
     confirmMsg:
       areYouSure: Sind Sie sicher, dass Sie
-      setUser: '@:admin.users.confirmMsg.areYouSure {username} zu einem normalen Benutzer herabstufen möchten?'
+      setUser: '@:admin.users.confirmMsg.areYouSure {username} zu einer normalen Benutzer*in herabstufen möchten?'
       setSuperuser: '@:admin.users.confirmMsg.areYouSure {username} Administratorenrechte zuteilen möchten?'
       setInactive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} deaktivieren möchten?'
       setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Verifizierung von {username} zurücksetzen möchten?'
       setVerified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Adresse von {username} als verifiziert markieren möchten?'
-      deleteUser: '@:admin.users.confirmMsg.areYouSure den Benutzeraccount {username} und alle damit verknüpften Daten löschen möchten?'
+      deleteUser: '@:admin.users.confirmMsg.areYouSure den Account {username} und alle damit verknüpften Daten löschen möchten?'
   newText:
     heading: Neuer Text
     headerInfoAlert: |
@@ -804,7 +804,7 @@ admin:
     nav:
       heading: Navigation
       aliasSearch: Suche nach Belegstellen-Aliasen
-      customNavLabels: Benutzerdefinierte Navigations-Beschriftungen
+      customNavLabels: Benutzer*innendefinierte Navigations-Beschriftungen
     headingBrowseView: Lese-Ansicht
     headingAppearance: Aussehen
     headingFonts: Schriftarten
@@ -835,7 +835,7 @@ admin:
       heading: Interne Bereinigung
       description: |
         Diese Routine ist Teil des Wartungsprogramms, kann hier aber manuell ausgeführt werden.
-        Abgelaufene Zugangstokens und Benutzernachrichten werden gelöscht.
+        Abgelaufene Zugangstokens und Benutzer*innen-Nachrichten werden gelöscht.
       actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
       noTasks: Keine aktiven @:tasks.title
