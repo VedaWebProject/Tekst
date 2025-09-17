@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AnyContentRead } from '@/api';
 import { CommentIcon } from '@/icons';
-import { NAlert, NFlex, NIcon } from 'naive-ui';
+import { NFlex, NIcon } from 'naive-ui';
 
 defineProps<{
   authorsComment?: AnyContentRead['authorsComment'];
@@ -15,42 +15,40 @@ defineProps<{
   <div class="common-content-display">
     <slot></slot>
 
-    <n-alert
+    <div
       v-if="showComments && !!authorsComment"
       :title="$t('resources.types.common.contentFields.authorsComment')"
-      class="mt-md"
+      class="comment-container text-small mt-lg"
     >
-      <template #icon>
-        <n-icon :component="CommentIcon" :size="16" />
-      </template>
-      <div class="pre-wrap text-small" :style="{ fontFamily: font }">
+      <n-flex class="mb-sm translucent" align="center" :wrap="false">
+        <n-icon :component="CommentIcon" />
+        <span>{{ $t('resources.types.common.contentFields.authorsComment') }}</span>
+      </n-flex>
+      <div class="pre-wrap text-small" :style="{ fontFamily: font, paddingLeft: '30px' }">
         {{ authorsComment }}
       </div>
-    </n-alert>
+    </div>
 
-    <n-alert
-      v-if="showComments && !!editorsComments"
-      :title="$t('resources.types.common.contentFields.editorsComments')"
-      class="mt-md"
-    >
-      <template #icon>
-        <n-icon :component="CommentIcon" :size="16" />
-      </template>
-      <n-flex vertical size="small">
+    <div v-if="showComments && !!editorsComments" class="comment-container text-small mt-lg">
+      <n-flex class="mb-sm translucent" align="center" :wrap="false">
+        <n-icon :component="CommentIcon" />
+        <span>{{ $t('resources.types.common.contentFields.editorsComments') }}</span>
+      </n-flex>
+      <n-flex vertical size="small" style="padding-left: 30px">
         <div
           v-for="(cmt, i) in editorsComments"
           :key="i"
-          class="text-small divided"
+          class="divided"
           :style="{
             fontFamily: font,
-            paddingBottom: i < editorsComments.length - 1 ? 'var(--gap-sm)' : undefined,
+            paddingBottom: i < editorsComments.length - 1 ? 'var(--gap-md)' : undefined,
           }"
         >
           <div class="pre-wrap">{{ cmt.comment }}</div>
           <div class="i font-ui">– {{ cmt.by }}</div>
         </div>
       </n-flex>
-    </n-alert>
+    </div>
   </div>
 </template>
 
@@ -63,5 +61,11 @@ defineProps<{
 
 .common-content-display:last-child {
   margin-bottom: 4px;
+}
+
+.common-content-display .comment-container {
+  padding: var(--gap-sm) var(--gap-md);
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--text-color-translucent);
 }
 </style>
