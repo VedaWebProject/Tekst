@@ -37,7 +37,7 @@ jobs:
       - name: Use Node.js 20.14.0
         uses: actions/setup-node@v4
         with:
-          node-version: "22.18.0"
+          node-version: "22.19.0"
           cache: "npm"
           cache-dependency-path: "./Tekst-Web/package-lock.json"
       - run: npm install
