@@ -90,31 +90,27 @@ export const useThemeStore = defineStore('theme', () => {
   const dark = useSessionStorage<boolean>('darkMode', usePreferredDark().value);
   const toggleThemeMode = () => (dark.value = !dark.value);
 
-  function getBaseColorFor(color: string, darkMode: boolean) {
+  function getColorShades(color: string) {
     // reduce color saturation for dark mode (we want a pastel tone)
-    while (darkMode && parseToHsla(color)[1] > 0.6) {
+    while (dark.value && parseToHsla(color)[1] > 0.6) {
       color = desaturate(color, 0.05);
     }
     // raise color saturation for dark mode (if too unsaturated)
-    while (darkMode && parseToHsla(color)[1] < 0.6) {
+    while (dark.value && parseToHsla(color)[1] < 0.6) {
       color = saturate(color, 0.05);
     }
     // raise color luminance for dark mode if too "dark"
-    while (darkMode && getLuminance(color) < 0.6) {
+    while (dark.value && getLuminance(color) < 0.6) {
       color = lighten(color, 0.05);
     }
-    return color;
-  }
-
-  function getColorShades(color: string) {
-    const base = getBaseColorFor(color, dark.value);
+    // return different shades
     return {
-      base: toRgba(base),
-      fade1: toRgba(transparentize(base, 0.2)),
-      fade2: toRgba(transparentize(base, 0.4)),
-      fade3: toRgba(transparentize(base, 0.6)),
-      fade4: toRgba(transparentize(base, 0.8)),
-      fade5: toRgba(transparentize(base, 0.9)),
+      base: toRgba(color),
+      fade1: toRgba(transparentize(color, 0.2)),
+      fade2: toRgba(transparentize(color, 0.4)),
+      fade3: toRgba(transparentize(color, 0.6)),
+      fade4: toRgba(transparentize(color, 0.8)),
+      fade5: toRgba(transparentize(color, 0.9)),
     };
   }
 

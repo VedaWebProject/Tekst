@@ -4,7 +4,7 @@ import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import { $t } from '@/i18n';
 import { BookIcon, LevelsIcon, StarHalfIcon, TextsIcon } from '@/icons';
 import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
-import { lighten, transparentize } from 'color2k';
+import { lighten, toRgba, transparentize } from 'color2k';
 import { NFlex, NIcon, NListItem, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -40,8 +40,8 @@ const state = useStateStore();
 const resources = useResourcesStore();
 const theme = useThemeStore();
 
-const textColorTranslucent = computed(() => transparentize(props.textColor, 0.6));
-const resultHoverColor = computed(() => transparentize(props.textColor, 0.9));
+const textColorTranslucent = computed(() => toRgba(transparentize(props.textColor, 0.6)));
+const resultHoverColor = computed(() => toRgba(transparentize(props.textColor, 0.9)));
 
 const scorePercentDisplay = computed(() =>
   props.scorePercent ? props.scorePercent.toFixed(1) + '%' : '–'

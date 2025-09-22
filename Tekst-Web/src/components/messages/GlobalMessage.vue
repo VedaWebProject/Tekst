@@ -33,7 +33,7 @@ defineProps<{
   box-shadow: var(--n-box-shadow);
   max-width: calc(100vw - 32px);
   width: 512px;
-  line-height: 1.5rem;
+  line-height: 1.75rem;
   padding-right: 36px;
 }
 </style>
