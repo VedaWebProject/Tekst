@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12, <4.0"
 
 [[package]]
@@ -1249,7 +1249,7 @@ wheels = [
 
 [[package]]
 name = "tekst"
-version = "0.30.0a0"
+version = "0.30.1a0"
 source = { editable = "." }
 dependencies = [
     { name = "beanie" },
