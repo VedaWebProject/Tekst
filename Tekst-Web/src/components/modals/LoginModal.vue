@@ -2,6 +2,7 @@
 import { POST } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -10,7 +11,6 @@ import { useAuthStore } from '@/stores';
 import { NButton, NFlex, NForm, NFormItem, NInput, type FormInst, type InputInst } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
 
 interface LoginCredentialsModel {
   email: string | null;
@@ -87,7 +87,6 @@ async function handleForgotPasswordClick() {
     :icon="LoginIcon"
     @close="auth.closeLoginModal(false)"
     @mask-click="auth.closeLoginModal(false)"
-    @after-enter="emailInputRef?.focus()"
   >
     <div v-show="auth.loginModalState.message" class="login-message mb-lg">
       {{ auth.loginModalState.message }}
