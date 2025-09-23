@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { FilterIcon, SearchIcon, UndoIcon } from '@/icons';
-import { NButton, NCollapse, NCollapseItem, NFlex, NIcon, NInput, NSelect } from 'naive-ui';
-import { computed, onMounted } from 'vue';
+import {
+  NButton,
+  NCollapse,
+  NCollapseItem,
+  NFlex,
+  NIcon,
+  NInput,
+  NSelect,
+  type InputInst,
+} from 'naive-ui';
+import { computed, nextTick, onMounted, ref } from 'vue';
 
 const props = defineProps<{ flagsLabels: Record<string, string> }>();
 const search = defineModel<string | undefined>('search', { required: false, default: undefined });
 const flags = defineModel<string[]>('flags', { required: false, default: () => [] });
 const emit = defineEmits(['changed']);
+
+const searchInputRef = ref<InputInst | null>(null);
 
 const flagsOptions = computed(() =>
   Object.entries(props.flagsLabels).map(([k, v]) => ({ label: v, value: k }))
@@ -21,8 +32,12 @@ function reset() {
 }
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
-  if (data.name === 'filters' && !data.expanded) {
-    reset();
+  if (data.name === 'filters') {
+    if (data.expanded) {
+      nextTick(() => searchInputRef.value?.focus());
+    } else {
+      reset();
+    }
   }
 }
 
@@ -48,6 +63,7 @@ onMounted(() => {
         </template>
 
         <n-input
+          ref="searchInputRef"
           v-model:value="search"
           :placeholder="$t('common.searchAction')"
           class="mb-md"
