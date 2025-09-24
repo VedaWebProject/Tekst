@@ -2,11 +2,10 @@
 import type { ImagesContentCreate, ImagesResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import OskInput from '@/components/OskInput.vue';
-import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { checkUrl } from '@/utils';
+import { validateUrlInput } from '@/utils';
 import { cloneDeep } from 'lodash-es';
 import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
 import { defaultContentModels } from './defaultContentModels';
@@ -16,17 +15,6 @@ defineProps<{
 }>();
 
 const model = defineModel<ImagesContentCreate>({ required: true });
-const { message } = useMessages();
-
-async function checkUrlInput(input: HTMLInputElement) {
-  const url = input.value;
-  if (url && !(await checkUrl(url))) {
-    message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.style.color = 'var(--error-color)';
-  } else {
-    input.style.color = 'var(--success-color)';
-  }
-}
 </script>
 
 <template>
@@ -53,7 +41,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               <n-input
                 v-model:value="model.files[index].url"
                 :placeholder="$t('common.url')"
-                @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+                @input-blur="validateUrlInput($event.target as HTMLInputElement)"
                 @keydown.enter.prevent
               />
             </n-form-item>
@@ -67,7 +55,7 @@ async function checkUrlInput(input: HTMLInputElement) {
               <n-input
                 v-model:value="model.files[index].thumbUrl"
                 :placeholder="$t('common.url')"
-                @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+                @input-blur="validateUrlInput($event.target as HTMLInputElement)"
                 @keydown.enter.prevent
               />
             </n-form-item>

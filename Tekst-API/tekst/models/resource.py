@@ -208,21 +208,41 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    meta: Annotated[
-        list[MetadataEntry],
-        Field(
-            description="Arbitrary metadata",
-            min_length=0,
-            max_length=64,
-        ),
-    ] = []
-
     description: Annotated[
         Translations[ResourceDescriptionTranslation],
         Field(
             description=(
                 "Plain text, potentially multiline description on this resource"
             ),
+        ),
+    ] = []
+
+    license: Annotated[
+        ConStrOrNone(
+            max_length=512,
+            cleanup="oneline",
+        ),
+        Field(
+            description="License used for contents of this resource",
+        ),
+    ] = None
+
+    license_url: Annotated[
+        ConStrOrNone(
+            max_length=1024,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Link to license used for contents of this resource",
+        ),
+    ] = None
+
+    meta: Annotated[
+        list[MetadataEntry],
+        Field(
+            description="Arbitrary metadata",
+            min_length=0,
+            max_length=64,
         ),
     ] = []
 

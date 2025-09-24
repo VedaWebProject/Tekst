@@ -251,6 +251,7 @@ browse:
         coverageStatement: '{present} von {total} Belegstellen auf Ebene "{level}"'
         coverageRangesPresent: 'Inhalte liegen vor für die folgenden Belegstellen:'
         coverageRangesMissing: 'Inhalte fehlen für die folgenden Belegstellen:'
+        noLicense: Für die Inhalte dieser Ressource wird keine Lizenz gewährt. Alle Rechte sind vorbehalten, es gelten die Urheberrechtsgesetze.
       deactivateWidget:
         title: Ausblenden
       contextWidget:
@@ -323,6 +324,7 @@ models:
     public: veröffentlicht
     proposed: vorgeschlagen für Veröffentlichung
     citation: Zitation
+    license: Lizenz
     share: Zugriff
     sharedRead: Lesezugriff
     sharedWrite: Schreibzugriff
@@ -598,7 +600,7 @@ contents:
     Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
   msgContentNoFocusView: Dieser Inhalt kann in der Fokus-Ansicht nicht angezeigt werden.
-  warnUrlInvalid: 'Die eingegebene URL scheint ungültig zu sein: {url}'
+  warnUrlInvalid: 'Diese URL scheint ungültig oder nicht erreichbar zu sein: {url}'
   corrections:
     notes: Korrekturnotizen
     otherTitle: Andere Belegstellen

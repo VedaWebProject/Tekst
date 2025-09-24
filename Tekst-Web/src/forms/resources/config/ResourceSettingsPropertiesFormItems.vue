@@ -53,7 +53,6 @@ const metadataKeysOptions = computed(() =>
     <n-form-item path="citation" :show-label="false">
       <n-input
         v-model:value="model.citation"
-        type="text"
         :placeholder="$t('models.resource.citation')"
         @keydown.enter.prevent
       />
@@ -72,6 +71,24 @@ const metadataKeysOptions = computed(() =>
         :translation-form-rules="resourceSettingsFormRules.descriptionTranslation"
       />
     </collapsible-content>
+  </form-section>
+
+  <!-- LICENSE -->
+  <form-section :title="$t('models.resource.license')">
+    <n-form-item path="license" :label="$t('common.name')">
+      <n-input
+        v-model:value="model.license"
+        :placeholder="$t('common.name')"
+        @keydown.enter.prevent
+      />
+    </n-form-item>
+    <n-form-item path="licenseUrl" :label="$t('common.url')">
+      <n-input
+        v-model:value="model.licenseUrl"
+        :placeholder="$t('common.url')"
+        @keydown.enter.prevent
+      />
+    </n-form-item>
   </form-section>
 
   <!-- METADATA -->

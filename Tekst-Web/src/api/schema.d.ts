@@ -1578,17 +1578,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -1698,17 +1708,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -1779,15 +1799,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['ApiCallResourceConfig'];
     };
     /** ApiCallSpecialConfig */
@@ -1969,17 +1999,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -2084,17 +2124,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -2160,15 +2210,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['AudioResourceConfig'];
     };
     /** AudioSearchQuery */
@@ -2798,17 +2858,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -2913,17 +2983,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -2989,15 +3069,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['ExternalReferencesResourceConfig'];
     };
     /** ExternalReferencesSearchQuery */
@@ -3291,17 +3381,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -3406,17 +3506,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -3482,15 +3592,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['ImagesResourceConfig'];
     };
     /** ImagesSearchQuery */
@@ -3923,17 +4043,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -4045,17 +4175,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -4128,15 +4268,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['LocationMetadataResourceConfig'];
     };
     /** LocationMetadataSearchQuery */
@@ -4490,17 +4640,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -4620,17 +4780,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -4711,15 +4881,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['PlainTextResourceConfig'];
     };
     /** PlainTextSearchQuery */
@@ -5480,17 +5660,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "collapsibleContents": 400,
@@ -5600,17 +5790,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "collapsibleContents": 400,
@@ -5681,15 +5881,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['RichTextResourceConfig'];
     };
     /** RichTextSearchQuery */
@@ -6053,17 +6263,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -6177,17 +6397,27 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       * @default []
-       */
-      meta: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        * @default []
        */
       description: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       * @default []
+       */
+      meta: components['schemas']['MetadataEntry'][];
       /** @default {
        *       "general": {
        *         "defaultActive": true,
@@ -6262,15 +6492,25 @@ export interface components {
        */
       citation?: null | string;
       /**
-       * Meta
-       * @description Arbitrary metadata
-       */
-      meta?: components['schemas']['MetadataEntry'][];
-      /**
        * Description
        * @description Plain text, potentially multiline description on this resource
        */
       description?: components['schemas']['ResourceDescriptionTranslation'][];
+      /**
+       * License
+       * @description License used for contents of this resource
+       */
+      license?: null | string;
+      /**
+       * Licenseurl
+       * @description Link to license used for contents of this resource
+       */
+      licenseUrl?: null | string;
+      /**
+       * Meta
+       * @description Arbitrary metadata
+       */
+      meta?: components['schemas']['MetadataEntry'][];
       config?: components['schemas']['TextAnnotationResourceConfig'];
     };
     /** TextAnnotationSearchQuery */

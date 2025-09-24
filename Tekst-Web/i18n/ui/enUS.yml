@@ -248,6 +248,7 @@ browse:
         coverageStatement: '{present} of {total} locations on level "{level}"'
         coverageRangesPresent: 'Contents are available for the following locations:'
         coverageRangesMissing: 'Contents are missing for the following locations:'
+        noLicense: There is no license provided for the contents of this resource. All rights are reserved, copyright laws apply.
       deactivateWidget:
         title: Hide
       contextWidget:
@@ -320,6 +321,7 @@ models:
     public: published
     proposed: proposed for publication
     citation: Citation
+    license: License
     share: Access
     sharedRead: Read Access
     sharedWrite: Write Access
@@ -587,7 +589,7 @@ contents:
     You are shown content from the original resource. You may copy it
     or make changes and save them as content of this resource version.
   msgContentNoFocusView: This content cannot be displayed in focus view.
-  warnUrlInvalid: 'The URL seems to be invalid: {url}'
+  warnUrlInvalid: 'The URL seems to be invalid or unreachable: {url}'
   corrections:
     notes: Correction Notes
     otherTitle: Other locations

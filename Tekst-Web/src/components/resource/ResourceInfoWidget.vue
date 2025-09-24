@@ -20,6 +20,7 @@ import {
   InfoIcon,
   MetadataIcon,
   ResourceIcon,
+  SiteNoticeIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -118,6 +119,29 @@ const showInfoModal = ref(false);
         {{ $t('browse.contents.widgets.infoWidget.coverage') }}
       </icon-heading>
       <resource-coverage-widget :resource="resource" @navigate="showInfoModal = false" />
+    </div>
+
+    <!-- LICENSE -->
+    <div class="gray-box">
+      <icon-heading level="3" :icon="SiteNoticeIcon">
+        {{ $t('models.resource.license') }}
+      </icon-heading>
+      <template v-if="resource.license || resource.licenseUrl">
+        <a
+          v-if="resource.licenseUrl"
+          :href="resource.licenseUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ resource.license || resource.licenseUrl }} &nearr;
+        </a>
+        <span v-else>
+          {{ resource.license }}
+        </span>
+      </template>
+      <i v-else>
+        {{ $t('browse.contents.widgets.infoWidget.noLicense') }}
+      </i>
     </div>
 
     <!-- EXPORT -->

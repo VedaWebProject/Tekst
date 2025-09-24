@@ -235,6 +235,8 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
     minMaxCharsRule(1, 512, 'blur'),
   ],
   citation: [minMaxCharsRule(0, 4096, 'blur')],
+  license: [minMaxCharsRule(0, 512, 'blur')],
+  licenseUrl: [minMaxCharsRule(0, 1024, 'blur')],
   descriptionTranslation: [
     requiredStringRule(() => $t('common.description'), 'blur'),
     minMaxCharsRule(1, 102400, 'blur'),

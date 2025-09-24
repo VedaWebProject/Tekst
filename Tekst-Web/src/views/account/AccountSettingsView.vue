@@ -18,7 +18,7 @@ import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { ManageAccountIcon, NoImageIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
-import { checkUrl } from '@/utils';
+import { validateUrlInput } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
 import { NButton, NForm, NFormItem, NInput, useDialog } from 'naive-ui';
 import { ref } from 'vue';
@@ -285,16 +285,6 @@ async function handleDeleteAccount() {
     },
   });
 }
-
-async function checkUrlInput(input: HTMLInputElement) {
-  const url = input.value;
-  if (url && !(await checkUrl(url))) {
-    message.warning($t('contents.warnUrlInvalid', { url }), undefined, 3);
-    input.style.color = 'var(--error-color)';
-  } else {
-    input.style.color = 'var(--success-color)';
-  }
-}
 </script>
 
 <template>
@@ -346,7 +336,7 @@ async function checkUrlInput(input: HTMLInputElement) {
         <n-input
           v-model:value="userDataFormModel.avatarUrl"
           :placeholder="$t('models.user.avatarUrl')"
-          @input-blur="checkUrlInput($event.target as HTMLInputElement)"
+          @input-blur="validateUrlInput($event.target as HTMLInputElement)"
         />
         <user-avatar
           :avatar-url="userDataFormModel.avatarUrl || undefined"

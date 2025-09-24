@@ -3,6 +3,7 @@ import { uniqBy } from 'lodash-es';
 import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
 import type { components } from './api/schema';
+import { $t } from './i18n';
 
 export function hashCode(obj: unknown) {
   const string = JSON.stringify(obj);
@@ -59,11 +60,19 @@ export function getFullLocationLabel(
 export async function checkUrl(url?: string, method: 'GET' | 'HEAD' = 'HEAD'): Promise<boolean> {
   if (!url) return false;
   try {
-    new URL(url);
-    const response = await fetch(url, { method });
-    return response.ok;
+    return (await fetch(new URL(url), { method })).ok;
   } catch {
     return false;
+  }
+}
+
+export async function validateUrlInput(input: HTMLInputElement) {
+  if (!input.value || !URL.canParse(input.value) || !(await checkUrl(input.value))) {
+    input.style.color = 'var(--error-color)';
+    input.title = $t('contents.warnUrlInvalid', { url: input.value });
+  } else {
+    input.style.color = 'var(--success-color)';
+    input.title = '';
   }
 }
 

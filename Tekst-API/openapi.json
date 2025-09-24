@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.30.1a0"
+    "version": "0.31.0a0"
   },
   "servers": [
     {
@@ -8093,6 +8093,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -8102,16 +8140,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -8332,6 +8360,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -8341,16 +8407,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -8524,6 +8580,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -8540,23 +8643,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -8962,6 +9048,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -8971,16 +9095,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -9196,6 +9310,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -9205,16 +9357,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -9383,6 +9525,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -9399,23 +9588,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -10757,6 +10929,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -10766,16 +10976,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -10991,6 +11191,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -11000,16 +11238,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -11178,6 +11406,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -11194,23 +11469,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -11820,6 +12078,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -11829,16 +12125,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -12054,6 +12340,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -12063,16 +12387,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -12241,6 +12555,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -12257,23 +12618,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -13212,6 +13556,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -13221,16 +13603,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -13453,6 +13825,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -13462,16 +13872,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -13647,6 +14047,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -13663,23 +14110,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -14440,6 +14870,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -14449,16 +14917,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -14689,6 +15147,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -14698,16 +15194,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -14891,6 +15377,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -14907,23 +15440,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -16488,6 +17004,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -16497,16 +17051,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -16727,6 +17271,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -16736,16 +17318,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -16919,6 +17491,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -16935,23 +17554,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
@@ -17735,6 +18337,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -17744,16 +18384,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -17978,6 +18608,44 @@
             "title": "Citation",
             "description": "Citation details for this resource"
           },
+          "description": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "default": []
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource"
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource"
+          },
           "meta": {
             "items": {
               "$ref": "#/components/schemas/MetadataEntry"
@@ -17987,16 +18655,6 @@
             "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "default": []
-          },
-          "description": {
-            "items": {
-              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "default": []
           },
           "config": {
@@ -18174,6 +18832,53 @@
             "description": "Citation details for this resource",
             "optionalNullable": true
           },
+          "description": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Plain text, potentially multiline description on this resource",
+            "optionalNullable": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1
+              }
+            ],
+            "title": "License",
+            "description": "License used for contents of this resource",
+            "optionalNullable": true
+          },
+          "licenseUrl": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 1024,
+                "minLength": 1
+              }
+            ],
+            "title": "Licenseurl",
+            "description": "Link to license used for contents of this resource",
+            "optionalNullable": true
+          },
           "meta": {
             "anyOf": [
               {
@@ -18190,23 +18895,6 @@
             ],
             "title": "Meta",
             "description": "Arbitrary metadata",
-            "optionalNullable": false
-          },
-          "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
           },
           "config": {
