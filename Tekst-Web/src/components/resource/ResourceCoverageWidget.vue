@@ -112,10 +112,10 @@ async function loadCoverageData() {
             >
               <template #default="{ item: range }">
                 <div class="range">
-                  <span class="range-boundary">{{ range[0] }}</span>
+                  <code class="text-small">{{ range[0] }}</code>
                   <template v-if="range[0] !== range[1]">
-                    <span class="mx-sm">–</span>
-                    <span class="range-boundary">{{ range[1] }}</span>
+                    <b class="mx-sm">&rarr;</b>
+                    <code class="text-small">{{ range[1] }}</code>
                   </template>
                 </div>
               </template>
@@ -186,12 +186,6 @@ async function loadCoverageData() {
 
 .range:first-child {
   padding-top: 0;
-}
-
-.range-boundary {
-  padding: 0 var(--gap-sm);
-  background-color: var(--primary-color-fade5);
-  border-radius: var(--border-radius);
 }
 
 :deep(.n-collapse-item__content-inner) {
