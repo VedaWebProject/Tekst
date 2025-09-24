@@ -23,6 +23,7 @@ class GeneralResourceConfig(ModelBase):
             description="Resource category key",
         ),
     ] = None
+
     sort_order: Annotated[
         int,
         Field(
@@ -31,6 +32,7 @@ class GeneralResourceConfig(ModelBase):
             le=1000,
         ),
     ] = 10
+
     default_active: Annotated[
         bool,
         Field(
@@ -38,8 +40,11 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = True
+
     collapsible_contents: CollapsibleContentsConfigValue = None
+
     font: FontFamilyValueOrNone = None
+
     enable_content_context: Annotated[
         bool,
         Field(
@@ -47,6 +52,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = False
+
     show_comments: Annotated[
         bool,
         Field(
@@ -54,6 +60,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = False
+
     searchable_quick: Annotated[
         bool,
         Field(
@@ -61,6 +68,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = True
+
     searchable_adv: Annotated[
         bool,
         Field(
@@ -68,6 +76,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = True
+
     rtl: Annotated[
         bool,
         Field(
@@ -75,6 +84,7 @@ class GeneralResourceConfig(ModelBase):
         ),
         SchemaOptionalNonNullable,
     ] = False
+
     osk: OskKey | None = None
 
 
@@ -134,6 +144,7 @@ class ItemIntegrationConfig(ModelBase):
             max_length=64,
         ),
     ] = []
+
     item_props: Annotated[
         list[ItemProps],
         Field(
