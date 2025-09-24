@@ -5510,7 +5510,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 128,
+              "default": 4096,
               "title": "Limit"
             }
           }
@@ -18361,6 +18361,14 @@
             "description": "Accent color used for this text in the client UI",
             "default": "#38714B"
           },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
+          },
           "isActive": {
             "type": "boolean",
             "title": "Isactive",
@@ -18490,6 +18498,14 @@
             "title": "Color",
             "description": "Accent color used for this text in the client UI",
             "default": "#38714B"
+          },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
+            "default": 10
           },
           "isActive": {
             "type": "boolean",
@@ -18678,6 +18694,21 @@
             ],
             "title": "Color",
             "description": "Accent color used for this text in the client UI",
+            "optionalNullable": false
+          },
+          "sortOrder": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sortorder",
+            "description": "Sort order for displaying this resource among others",
             "optionalNullable": false
           },
           "isActive": {

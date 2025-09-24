@@ -122,12 +122,29 @@ export const textFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('models.text.locDelim'), 'blur'),
     minMaxCharsRule(1, 3, 'blur'),
   ],
+  sortOrder: [
+    {
+      required: true,
+      type: 'number',
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('common.sortOrder'),
+        }),
+      trigger: 'blur',
+    },
+    {
+      validator: (_: FormItemRule, value: number) =>
+        Number.isInteger(value) && value >= 0 && value <= 1000,
+      message: '0-1000',
+      trigger: 'blur',
+    },
+  ],
   resourceCategoryKey: [
     requiredStringRule(() => $t('common.key'), 'blur'),
     minMaxCharsRule(1, 16, 'blur'),
   ],
   resourceCategoryTranslation: [
-    requiredStringRule(() => $t('common.key'), 'blur'),
+    requiredStringRule(() => $t('common.translation'), 'blur'),
     minMaxCharsRule(1, 32, 'blur'),
   ],
 };
@@ -260,7 +277,7 @@ export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
       type: 'number',
       message: () =>
         $t('forms.rulesFeedback.isRequired', {
-          x: $t('resources.settings.config.general.sortOrder'),
+          x: $t('common.sortOrder'),
         }),
       trigger: 'blur',
     },

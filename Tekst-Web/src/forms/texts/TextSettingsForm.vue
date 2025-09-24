@@ -24,6 +24,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NInputNumber,
   NSelect,
   type FormInst,
 } from 'naive-ui';
@@ -206,6 +207,16 @@ onBeforeRouteUpdate((to, from) => {
             :swatches="colorPresets"
           />
         </n-form-item>
+
+        <!-- SORT ORDER -->
+        <n-form-item path="sortOrder" :label="$t('common.sortOrder')">
+          <n-input-number
+            v-model:value="model.sortOrder"
+            :min="0"
+            :max="1000"
+            style="width: 100%"
+          />
+        </n-form-item>
       </form-section>
 
       <!-- RESOURCE CATEGORIES -->
@@ -241,7 +252,7 @@ onBeforeRouteUpdate((to, from) => {
                   :parent-form-path-prefix="`resourceCategories[${index}].translations`"
                   style="flex: 2"
                   :main-form-label="$t('common.label')"
-                  :translation-form-label="$t('common.label')"
+                  :translation-form-label="$t('common.translation')"
                   :translation-form-rules="textFormRules.resourceCategoryTranslation"
                 />
               </n-flex>

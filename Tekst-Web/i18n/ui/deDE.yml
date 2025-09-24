@@ -91,6 +91,7 @@ common:
     Der Download startet, sobald die Daten generiert sind.
   ctrlEnter: Strg+Enter
   copiedMsg: 'In Zwischenablage kopiert: {text}'
+  sortOrder: Sortierreihenfolge
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen
@@ -458,7 +459,6 @@ resources:
       general:
         category: Kategorie
         catUnlabelled: unbeschriftet
-        sortOrder: Sortierreihenfolge
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         enableContentContext: Ermögliche Anzeige von Inhalten im Kontext übergeordneter Ebene
         showComments: Zeige standardmäßig Autor*innen/Editor*innen-Kommentare

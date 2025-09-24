@@ -6357,6 +6357,12 @@ export interface components {
        */
       color: string;
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6438,6 +6444,12 @@ export interface components {
        */
       color: string;
       /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       * @default 10
+       */
+      sortOrder: number;
+      /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client
        * @default false
@@ -6515,6 +6527,11 @@ export interface components {
        * @description Accent color used for this text in the client UI
        */
       color?: string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this resource among others
+       */
+      sortOrder?: number;
       /**
        * Isactive
        * @description Whether the text should be listed for non-admin users in the web client

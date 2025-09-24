@@ -156,6 +156,15 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = "#38714B"
 
+    sort_order: Annotated[
+        int,
+        Field(
+            description="Sort order for displaying this resource among others",
+            ge=0,
+            le=1000,
+        ),
+    ] = 10
+
     is_active: Annotated[
         bool,
         Field(

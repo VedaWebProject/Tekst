@@ -47,13 +47,18 @@ router = APIRouter(
 
 
 @router.get("", response_model=list[TextRead], status_code=status.HTTP_200_OK)
-async def get_all_texts(ou: OptionalUserDep, limit: int = 128) -> list[TextRead]:
+async def get_all_texts(ou: OptionalUserDep, limit: int = 4096) -> list[TextRead]:
     """
     Returns a list of all texts.
     Only users with admin permissions will see inactive texts.
     """
     restrictions = {} if (ou and ou.is_superuser) else {"is_active": True}
-    return await TextDocument.find(restrictions).limit(limit).to_list()
+    return (
+        await TextDocument.find(restrictions)
+        .sort(+TextDocument.sort_order)
+        .limit(limit)
+        .to_list()
+    )
 
 
 @router.post(

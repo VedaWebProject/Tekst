@@ -116,7 +116,7 @@ function renderCCMark(value: number) {
     <n-form-item path="config.general.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
       <template #label>
         <n-flex align="center" :wrap="false">
-          {{ $t('resources.settings.config.general.sortOrder') }}
+          {{ $t('common.sortOrder') }}
           <help-button-widget help-key="resourceSortOrder" />
         </n-flex>
       </template>

@@ -89,6 +89,7 @@ common:
     The download will start as soon as your data is generated.
   ctrlEnter: Ctrl+Enter
   copiedMsg: 'Copied to clipboard: {text}'
+  sortOrder: Sort order
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -447,7 +448,6 @@ resources:
       general:
         category: Category
         catUnlabelled: unlabelled
-        sortOrder: Sort order
         defaultActive: Resource is active by default when public
         enableContentContext: Enable viewing contents in context of parent level
         showComments: Show authors/editors comments by default

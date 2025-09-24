@@ -21,6 +21,7 @@ const initialModel = (): TextCreate => ({
   slug: '',
   levels: [[{ locale: '*', translation: '' }]],
   color: '#38714B',
+  sortOrder: 10,
   defaultLevel: 0,
   fullLocLabelAsHitHeading: false,
   isActive: false,
