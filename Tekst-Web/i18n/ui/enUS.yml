@@ -198,6 +198,7 @@ browse:
   location:
     goTo: Go to location
     aliasesTip: Search for this location alias in the Quick Search to directly jump to this location.
+    msgNoNearest: There are no more locations holding contents of this resource in this direction.
   toolbar:
     tipSelectLocation: Select location
     tipPreviousLocation: Previous location on this level
@@ -581,7 +582,6 @@ contents:
   msgSaved: The content for this location has been saved.
   msgDeleted: The content for this location has been deleted.
   msgImportInfo: The import will be processed in the background. @:common.takeAWhile
-  msgNoNearest: There are no more locations holding content in this direction.
   confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |

@@ -17,11 +17,11 @@ import {
   FormatSizeIcon,
   HorizontalRuleIcon,
   ImageIcon,
+  JumpBackIcon,
+  JumpForwardIcon,
   KeyboardReturnIcon,
   LinkIcon,
-  RedoIcon,
   ShortTextIcon,
-  UndoIcon,
 } from '@/icons';
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
@@ -403,7 +403,7 @@ onUnmounted(() => {
           :size="toolbarSize"
           :title="$t('wysiwyg.undo')"
           :disabled="!editor.can().chain().focus().undo().run()"
-          :render-icon="renderToolbarIcon(UndoIcon)"
+          :render-icon="renderToolbarIcon(JumpBackIcon)"
           :focusable="false"
           @click="editor.chain().focus().undo().run()"
         />
@@ -412,7 +412,7 @@ onUnmounted(() => {
           :size="toolbarSize"
           :title="$t('wysiwyg.redo')"
           :disabled="!editor.can().chain().focus().redo().run()"
-          :render-icon="renderToolbarIcon(RedoIcon)"
+          :render-icon="renderToolbarIcon(JumpForwardIcon)"
           :focusable="false"
           @click="editor.chain().focus().redo().run()"
         />

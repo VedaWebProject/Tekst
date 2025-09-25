@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { deeplTargetLanguages, type AnyResourceRead, type DeepLLinksConfig } from '@/api';
+import { deeplTargetLanguages, type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { TranslateIcon } from '@/icons';
 import { NPopselect } from 'naive-ui';
@@ -9,12 +9,15 @@ import { computed } from 'vue';
 const DEEPL_TRANSLATOR_URL = 'https://www.deepl.com/translator';
 
 const props = defineProps<{
-  config: DeepLLinksConfig;
   resource: AnyResourceRead;
   full?: boolean;
 }>();
 
 const emit = defineEmits(['done']);
+
+const config = computed(() =>
+  props.resource.resourceType === 'plainText' ? props.resource.config.special.deeplLinks : null
+);
 
 const contentsTextEncoded = computed<string>(() => {
   const contentsText = props.resource.contents
@@ -30,15 +33,17 @@ const contentsTextEncoded = computed<string>(() => {
 });
 
 const options = computed(() =>
-  deeplTargetLanguages.map((l) => ({
-    label: l,
-    value: l,
-    url: `${DEEPL_TRANSLATOR_URL}#${props.config.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
-  }))
+  config.value
+    ? deeplTargetLanguages.map((l) => ({
+        label: l,
+        value: l,
+        url: `${DEEPL_TRANSLATOR_URL}#${config.value?.sourceLanguage}/${l}/${contentsTextEncoded.value}`,
+      }))
+    : []
 );
 
 const show = computed(
-  () => props.config.enabled && props.config.sourceLanguage && contentsTextEncoded.value
+  () => config.value?.enabled && config.value.sourceLanguage && contentsTextEncoded.value
 );
 
 function handleOptionSelect(_: string, option: SelectBaseOption) {

@@ -20,8 +20,6 @@ withDefaults(
   }
 );
 
-const emit = defineEmits(['navigate']);
-
 const auth = useAuthStore();
 const browse = useBrowseStore();
 
@@ -29,26 +27,25 @@ const { ArrowLeft, ArrowRight } = useMagicKeys();
 
 const showLocationSelectModal = ref(false);
 
-function gotoPosition(locId?: string) {
+function gotoLocation(locId?: string) {
   if (!locId) return;
   router.replace({
     params: {
       locId: locId,
     },
   });
-  emit('navigate');
 }
 
 function handleLocationSelect(locationPath: LocationRead[]) {
-  gotoPosition(locationPath[locationPath.length - 1]?.id);
+  gotoLocation(locationPath[locationPath.length - 1]?.id);
 }
 
 // react to keyboard for in-/decreasing location
 whenever(ArrowLeft, () => {
-  if (!isOverlayOpen() && !isInputFocused()) gotoPosition(browse.prevLocationId);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(browse.prevLocationId);
 });
 whenever(ArrowRight, () => {
-  if (!isOverlayOpen() && !isInputFocused()) gotoPosition(browse.nextLocationId);
+  if (!isOverlayOpen() && !isInputFocused()) gotoLocation(browse.nextLocationId);
 });
 </script>
 
@@ -62,7 +59,7 @@ whenever(ArrowRight, () => {
       :size="buttonSize"
       :bordered="false"
       :disabled="!browse.prevLocationId"
-      @click="() => gotoPosition(browse.prevLocationId)"
+      @click="() => gotoLocation(browse.prevLocationId)"
     >
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
@@ -96,7 +93,7 @@ whenever(ArrowRight, () => {
       :size="buttonSize"
       :bordered="false"
       :disabled="!browse.nextLocationId"
-      @click="() => gotoPosition(browse.nextLocationId)"
+      @click="() => gotoLocation(browse.nextLocationId)"
     >
       <template #icon>
         <n-icon :component="ArrowForwardIcon" />

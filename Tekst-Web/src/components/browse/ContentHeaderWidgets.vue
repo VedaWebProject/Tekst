@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { AnyResourceRead, DeepLLinksConfig } from '@/api';
+import type { AnyResourceRead } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import ContentCommentWidget from '@/components/resource/ContentCommentWidget.vue';
 import ContentEditWidget from '@/components/resource/ContentEditWidget.vue';
 import CorrectionNoteWidget from '@/components/resource/CorrectionNoteWidget.vue';
 import DeepLLinksWidget from '@/components/resource/DeepLLinksWidget.vue';
+import JumpToContentWidget from '@/components/resource/JumpToContentWidget.vue';
 import LocationContentContextWidget from '@/components/resource/LocationContentContextWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
@@ -14,10 +15,6 @@ import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
-
-type SpecialConfigs = {
-  deeplLinks?: DeepLLinksConfig;
-};
 
 const props = withDefaults(
   defineProps<{
@@ -37,13 +34,6 @@ const showWidgetsModal = ref(false);
 const closeModal = () => (showWidgetsModal.value = false);
 const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
 
-const specialConfigs = computed(
-  () =>
-    Object.entries(props.resource.config).find(
-      ([k, _]) => k === props.resource.resourceType
-    )?.[1] as SpecialConfigs | undefined
-);
-
 function handleSmallScreenWidgetsTriggered() {
   showWidgetsModal.value = !showWidgetsModal.value;
 }
@@ -57,19 +47,18 @@ function handleSmallScreenWidgetsTriggered() {
     :wrap="false"
     class="content-header-widgets"
     :style="{ opacity }"
+    size="small"
   >
-    <!-- skip resource-type-specific widgets -->
-    <deep-l-links-widget
-      v-if="!!specialConfigs?.deeplLinks"
-      :resource="resource"
-      :config="specialConfigs.deeplLinks"
-    />
+    <!-- resource-type-specific widgets -->
+    <deep-l-links-widget :resource="resource" />
     <!-- generic widgets -->
     <location-content-context-widget :resource="resource" :show-comments="showComments" />
     <content-comment-widget v-model:show-comments="showComments" :resource="resource" />
     <correction-note-widget :resource="resource" />
     <content-edit-widget :resource="resource" />
     <resource-settings-widget :resource="resource" />
+    <jump-to-content-widget :resource="resource" direction="before" />
+    <jump-to-content-widget :resource="resource" direction="after" />
     <resource-info-widget :resource="resource" />
     <resource-deactivate-widget :resource="resource" />
   </n-flex>
@@ -105,19 +94,15 @@ function handleSmallScreenWidgetsTriggered() {
       style="flex-direction: column-reverse"
     >
       <!-- resource-type-specific widgets -->
-      <deep-l-links-widget
-        v-if="!!specialConfigs?.deeplLinks"
-        full
-        :resource="resource"
-        :config="specialConfigs.deeplLinks"
-        @done="closeModal"
-      />
+      <deep-l-links-widget :resource="resource" full @done="closeModal" />
       <!-- generic content widgets -->
       <location-content-context-widget :resource="resource" full @done="closeModal" />
       <correction-note-widget :resource="resource" full @done="closeModal" />
       <content-comment-widget :resource="resource" full @done="closeModal" />
       <content-edit-widget :resource="resource" full @done="closeModal" />
       <resource-settings-widget :resource="resource" full @done="closeModal" />
+      <jump-to-content-widget :resource="resource" direction="before" full @done="closeModal" />
+      <jump-to-content-widget :resource="resource" direction="after" full @done="closeModal" />
       <resource-info-widget :resource="resource" full @done="closeModal" />
       <resource-deactivate-widget :resource="resource" full @done="closeModal" />
     </n-flex>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FilterIcon, SearchIcon, UndoIcon } from '@/icons';
+import { FilterIcon, JumpBackIcon, SearchIcon } from '@/icons';
 import {
   NButton,
   NCollapse,
@@ -84,7 +84,7 @@ onMounted(() => {
           <n-button secondary class="mt-md" @click="reset">
             {{ $t('common.reset') }}
             <template #icon>
-              <n-icon :component="UndoIcon" />
+              <n-icon :component="JumpBackIcon" />
             </template>
           </n-button>
         </n-flex>

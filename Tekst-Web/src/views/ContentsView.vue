@@ -364,7 +364,7 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
   if (!error) {
     gotoLocation(data.id);
   } else {
-    message.info($t('contents.msgNoNearest'));
+    message.info($t('browse.location.msgNoNearest'));
   }
 }
 

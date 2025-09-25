@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
-import ContentHeaderWidgetBar from '@/components/browse/ContentHeaderWidgetBar.vue';
+import ContentHeaderWidgets from '@/components/browse/ContentHeaderWidgets.vue';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import contentComponents from '@/components/content/mappings';
 import { $t } from '@/i18n';
@@ -76,6 +76,7 @@ watch(
       :class="{ 'mb-0': browse.focusView || !hasContents }"
     >
       <n-flex align="center" :gap="12" :class="{ translucent: !hasContents }" style="flex: 2">
+        <!-- RESOURCE TITLE -->
         <div
           :class="{
             'text-medium': !browse.focusView,
@@ -85,6 +86,7 @@ watch(
         >
           {{ resourceTitle }}
         </div>
+        <!-- RESOURCE STATUS HINTS -->
         <n-flex v-if="!browse.focusView" align="center" :wrap="false">
           <!-- icon hint: publication status -->
           <n-icon
@@ -141,6 +143,7 @@ watch(
             {{ state.textLevelLabels[props.resource.level] }}
           </n-tag>
         </n-flex>
+        <!-- RESOURCE CONTENT LOADING INDICATOR -->
         <n-flex
           v-if="loading && !hasContents && !browse.focusView"
           align="center"
@@ -153,7 +156,8 @@ watch(
           <span>{{ $t('common.loading') }}</span>
         </n-flex>
       </n-flex>
-      <content-header-widget-bar
+      <!-- CONTENT WIDGETS -->
+      <content-header-widgets
         v-model:show-comments="showComments"
         :resource="resource"
         :opacity="headerWidgetsOpacity"

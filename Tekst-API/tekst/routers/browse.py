@@ -181,7 +181,7 @@ async def get_nearest_content_location(
     ):
         raise errors.E_400_INVALID_REQUEST_DATA
 
-    # get all locations before/after said location
+    # get nearest location the given resource holds contents for
     locations = (
         await LocationDocument.find(
             LocationDocument.text_id == resource_doc.text_id,
@@ -190,44 +190,57 @@ async def get_nearest_content_location(
             if direction == "before"
             else (LocationDocument.position > location_doc.position),
         )
-        .sort(
-            +LocationDocument.position
-            if direction == "after"
-            else -LocationDocument.position
+        .aggregate(
+            [
+                {
+                    "$lookup": {
+                        "from": "contents",
+                        "localField": "_id",
+                        "foreignField": "location_id",
+                        "let": {"location_id": "$_id", "resource_id": resource_doc.id},
+                        "pipeline": [
+                            {
+                                "$match": {
+                                    "$expr": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$location_id",
+                                                    "$$location_id",
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$resource_id",
+                                                    "$$resource_id",
+                                                ]
+                                            },
+                                        ]
+                                    }
+                                }
+                            },
+                            {"$project": {"_id": 1}},
+                        ],
+                        "as": "contents",
+                    }
+                },
+                {
+                    "$project": {
+                        "position": 1,
+                        "covered": {"$gt": [{"$size": "$contents"}, 0]},
+                    }
+                },
+                {"$match": {"covered": True}},
+                {"$sort": {"position": -1 if direction == "before" else 1}},
+                {"$limit": 1},
+            ],
         )
-        .aggregate([{"$project": {"position": 1}}])
         .to_list()
     )
+
     if not locations:  # pragma: no cover
         raise errors.E_404_NOT_FOUND
 
-    # get contents for these locations
-    contents = (
-        await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == resource_id,
-            In(
-                ContentBaseDocument.location_id,
-                [location.get("_id") for location in locations],
-            ),
-            with_children=True,
-        )
-        .aggregate([{"$project": {"location_id": 1}}])
-        .to_list()
-    )
-    if not contents:  # pragma: no cover
-        raise errors.E_404_NOT_FOUND
-
-    # find out nearest of those locations with contents
-    locations = [
-        location
-        for location in locations
-        if location.get("_id") in [content.get("location_id") for content in contents]
-    ]
-
-    if len(locations) == 0:  # pragma: no cover
-        raise errors.E_404_NOT_FOUND
-
-    # return ID of nearest location with contents of the target resource
     return await LocationDocument.get(locations[0].get("_id"))
 
 
