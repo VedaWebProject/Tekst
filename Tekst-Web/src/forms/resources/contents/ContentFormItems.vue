@@ -98,7 +98,7 @@ const contentFontStyle = {
                     :rows="3"
                     :maxlength="5000"
                     show-count
-                    :placeholder="$t('resources.types.common.contentFields.editorsComments')"
+                    :placeholder="$t('common.comment')"
                     :style="contentFontStyle"
                     style="flex: 3"
                   />
