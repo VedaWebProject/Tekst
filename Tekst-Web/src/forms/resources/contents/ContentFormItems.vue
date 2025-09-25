@@ -68,7 +68,6 @@ const contentFontStyle = {
         >
           <n-dynamic-input
             v-model:value="model.editorsComments"
-            :min="1"
             :max="100"
             :create-button-props="dynInputCreateBtnProps"
             item-class="divided"
@@ -110,7 +109,6 @@ const contentFontStyle = {
                 top-offset
                 movable
                 :insert-disabled="(model.editorsComments?.length || 0) >= 64"
-                :remove-disabled="(model.editorsComments?.length || 0) <= 1"
                 :move-up-disabled="index === 0"
                 :move-down-disabled="index === (model.editorsComments?.length || 0) - 1"
                 @remove="() => remove(index)"
