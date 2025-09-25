@@ -918,7 +918,7 @@ async def _import_resource_task(
                             resource_type=resource_doc.resource_type,
                             **content,
                         ),
-                        replace=False,
+                        write_to_db=False,
                     )
                     contents.append((content_doc, True))
                 else:
@@ -965,10 +965,7 @@ async def _import_resource_task(
 
         # write resource props and config import data
         # (will be skipped if anything went wrong with content import)
-        await resource_doc.apply_updates(
-            res_updates,
-            replace=True,
-        )
+        await resource_doc.apply_updates(res_updates)
     except Exception as e:
         raise e
     finally:

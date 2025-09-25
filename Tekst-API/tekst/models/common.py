@@ -128,8 +128,8 @@ class DocumentBase(Document):
         self,
         updates_model: ModelBase,
         *,
-        replace: bool = True,
-    ):
+        write_to_db: bool = True,
+    ) -> "DocumentBase":
         """
         Custom method to apply updates to the document, excluding any fields that are
         - not set in `updates_model`
@@ -148,7 +148,7 @@ class DocumentBase(Document):
             # set attribute
             setattr(self, field, getattr(updates_model, field))
 
-        if replace:
+        if write_to_db:
             return await self.replace()
         else:
             return self
