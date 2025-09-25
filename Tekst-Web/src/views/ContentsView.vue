@@ -138,8 +138,14 @@ const compareResourceOptions = computed(() =>
 const loadingDelete = ref(false);
 const loadingSave = ref(false);
 const loadingData = ref(false);
+const loadingNav = ref(false);
 const loading = computed(
-  () => resources.loading || loadingDelete.value || loadingSave.value || loadingData.value
+  () =>
+    resources.loading ||
+    loadingDelete.value ||
+    loadingSave.value ||
+    loadingData.value ||
+    loadingNav.value
 );
 
 const corrections = computed(() => resources.corrections[resource.value?.id || ''] || []);
@@ -352,6 +358,7 @@ function handleSelectcompareResource(key: string) {
 }
 
 async function handleNearestChangeClick(direction: 'before' | 'after') {
+  loadingNav.value = true;
   const { data, error } = await GET('/browse/nearest-content-location', {
     params: {
       query: {
@@ -361,6 +368,7 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
       },
     },
   });
+  loadingNav.value = false;
   if (!error) {
     gotoLocation(data.id);
   } else {
@@ -548,6 +556,7 @@ whenever(ArrowRight, () => {
             secondary
             type="primary"
             :title="$t('contents.tipBtnPrevChange')"
+            :disabled="loading"
             @click="() => handleNearestChangeClick('before')"
           >
             <template #icon>
@@ -559,7 +568,7 @@ whenever(ArrowRight, () => {
             secondary
             type="primary"
             :title="$t('contents.tipBtnApplyChanges')"
-            :disabled="!compareResource.contents?.length"
+            :disabled="loading || !compareResource.contents?.length"
             @click="copyFromComparison"
           >
             <template #icon>
@@ -570,6 +579,7 @@ whenever(ArrowRight, () => {
             secondary
             type="primary"
             :title="$t('contents.tipBtnNextChange')"
+            :disabled="loading"
             @click="() => handleNearestChangeClick('after')"
           >
             <template #icon>
