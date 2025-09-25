@@ -7,9 +7,9 @@ import { useBookmarks } from '@/composables/bookmarks';
 import { useMessages } from '@/composables/messages';
 import { bookmarkFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, SearchIcon } from '@/icons';
+import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NButton, NFlex, NIcon, NInput, NList, NListItem, NThing } from 'naive-ui';
+import { NButton, NEmpty, NFlex, NIcon, NInput, NList, NListItem, NThing } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -110,6 +110,7 @@ async function handleWidgetClick() {
       round
       clearable
       class="mb-md"
+      :disabled="!bookmarks.length"
     >
       <template #prefix>
         <n-icon :component="SearchIcon" />
@@ -117,7 +118,7 @@ async function handleWidgetClick() {
     </n-input>
 
     <n-button
-      secondary
+      type="primary"
       block
       :disabled="loading || maxCountReached || bookmarkAlreadyExists"
       class="mb-md"
@@ -131,7 +132,12 @@ async function handleWidgetClick() {
       }}
     </n-button>
 
-    <n-list hoverable clickable style="background-color: transparent">
+    <n-list
+      v-if="!!filteredBookmarks.length"
+      hoverable
+      clickable
+      style="background-color: transparent"
+    >
       <n-list-item
         v-for="bookmark in filteredBookmarks"
         :key="bookmark.id"
@@ -172,6 +178,12 @@ async function handleWidgetClick() {
         </n-thing>
       </n-list-item>
     </n-list>
+
+    <n-empty v-else class="mt-lg" :description="$t('search.nothingFound')">
+      <template #icon>
+        <n-icon :component="NoContentIcon" />
+      </template>
+    </n-empty>
   </generic-modal>
 
   <prompt-modal

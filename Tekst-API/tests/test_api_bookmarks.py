@@ -17,7 +17,7 @@ async def test_crud_bookmark(
 
     # fail to create bookmark with wrong location ID
     resp = await test_client.post(
-        "/bookmarks",
+        "/browse/bookmarks",
         json={
             "locationId": wrong_id,
             "comment": "FOO",
@@ -27,7 +27,7 @@ async def test_crud_bookmark(
 
     # create bookmark
     resp = await test_client.post(
-        "/bookmarks",
+        "/browse/bookmarks",
         json={
             "locationId": location_id,
             "comment": "FOO",
@@ -42,7 +42,7 @@ async def test_crud_bookmark(
 
     # create conflicting bookmark
     resp = await test_client.post(
-        "/bookmarks",
+        "/browse/bookmarks",
         json={
             "locationId": location_id,
             "comment": "This should not work",
@@ -52,22 +52,22 @@ async def test_crud_bookmark(
 
     # get all user bookmarks
     resp = await test_client.get(
-        "/bookmarks",
+        "/browse/bookmarks",
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
     assert resp.json()[0]["comment"] == "FOO"
 
     # fail to delete with wrong ID
-    resp = await test_client.delete(f"/bookmarks/{wrong_id}")
+    resp = await test_client.delete(f"/browse/bookmarks/{wrong_id}")
     assert_status(404, resp)
 
     # fail to delete as wrong user
     await login()
-    resp = await test_client.delete(f"/bookmarks/{bookmark_id}")
+    resp = await test_client.delete(f"/browse/bookmarks/{bookmark_id}")
     assert_status(403, resp)
     await login(user=superuser)
 
     # delete bookmark
-    resp = await test_client.delete(f"/bookmarks/{bookmark_id}")
+    resp = await test_client.delete(f"/browse/bookmarks/{bookmark_id}")
     assert_status(204, resp)

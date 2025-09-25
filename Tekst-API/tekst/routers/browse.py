@@ -2,10 +2,14 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import In, NotIn
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
-from tekst.auth import OptionalUserDep
+from tekst.auth import (
+    OptionalUserDep,
+    UserDep,
+)
+from tekst.models.bookmark import BookmarkCreate, BookmarkDocument, BookmarkRead
 from tekst.models.browse import LocationData
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import (
@@ -116,6 +120,115 @@ async def get_content_context(
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     return await _get_content_context(resource, parent_location_id)
+
+
+@router.get(
+    "/nearest-content-location",
+    status_code=status.HTTP_200_OK,
+    response_model=LocationRead,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_404_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
+        ]
+    ),
+)
+async def get_nearest_content_location(
+    user: OptionalUserDep,
+    location_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="loc",
+            description="ID of the location to start from",
+        ),
+    ],
+    resource_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="res",
+            description="ID of resource to return nearest location with content for",
+        ),
+    ],
+    direction: Annotated[
+        Literal["before", "after"],
+        Query(
+            alias="dir",
+            description=(
+                "Whether to look for the nearest preceding (before) "
+                "or subsequent (after) location with content"
+            ),
+        ),
+    ] = "after",
+) -> LocationDocument:
+    """
+    Finds the nearest location the given resource holds content for and returns it.
+    """
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise errors.E_404_RESOURCE_NOT_FOUND
+
+    location_doc = await LocationDocument.get(location_id)
+    if not location_doc:
+        raise errors.E_404_LOCATION_NOT_FOUND
+    if (
+        location_doc.level != resource_doc.level
+        or location_doc.text_id != resource_doc.text_id
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
+
+    # get all locations before/after said location
+    locations = (
+        await LocationDocument.find(
+            LocationDocument.text_id == resource_doc.text_id,
+            LocationDocument.level == resource_doc.level,
+            (LocationDocument.position < location_doc.position)
+            if direction == "before"
+            else (LocationDocument.position > location_doc.position),
+        )
+        .sort(
+            +LocationDocument.position
+            if direction == "after"
+            else -LocationDocument.position
+        )
+        .aggregate([{"$project": {"position": 1}}])
+        .to_list()
+    )
+    if not locations:  # pragma: no cover
+        raise errors.E_404_NOT_FOUND
+
+    # get contents for these locations
+    contents = (
+        await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource_id,
+            In(
+                ContentBaseDocument.location_id,
+                [location.get("_id") for location in locations],
+            ),
+            with_children=True,
+        )
+        .aggregate([{"$project": {"location_id": 1}}])
+        .to_list()
+    )
+    if not contents:  # pragma: no cover
+        raise errors.E_404_NOT_FOUND
+
+    # find out nearest of those locations with contents
+    locations = [
+        location
+        for location in locations
+        if location.get("_id") in [content.get("location_id") for content in contents]
+    ]
+
+    if len(locations) == 0:  # pragma: no cover
+        raise errors.E_404_NOT_FOUND
+
+    # return ID of nearest location with contents of the target resource
+    return await LocationDocument.get(locations[0].get("_id"))
 
 
 @router.get(
@@ -289,110 +402,96 @@ async def get_location_data(
     )
 
 
-@router.get(
-    "/nearest-content-location",
-    status_code=status.HTTP_200_OK,
-    response_model=LocationRead,
+@router.delete(
+    "/bookmarks/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
     responses=errors.responses(
         [
-            errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_404_NOT_FOUND,
-            errors.E_400_INVALID_REQUEST_DATA,
+            errors.E_404_BOOKMARK_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
         ]
     ),
 )
-async def get_nearest_content_location(
-    user: OptionalUserDep,
-    location_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="loc",
-            description="ID of the location to start from",
-        ),
-    ],
-    resource_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="res",
-            description="ID of resource to return nearest location with content for",
-        ),
-    ],
-    direction: Annotated[
-        Literal["before", "after"],
-        Query(
-            alias="dir",
-            description=(
-                "Whether to look for the nearest preceding (before) "
-                "or subsequent (after) location with content"
-            ),
-        ),
-    ] = "after",
-) -> LocationDocument:
-    """
-    Finds the nearest location the given resource holds content for and returns it.
-    """
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+async def delete_bookmark(
+    user: UserDep,
+    bookmark_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> None:
+    bookmark_doc = await BookmarkDocument.get(bookmark_id)
+    if not bookmark_doc:
+        raise errors.E_404_BOOKMARK_NOT_FOUND
+    if user.id != bookmark_doc.user_id:
+        raise errors.E_403_FORBIDDEN
+    await bookmark_doc.delete()
 
-    location_doc = await LocationDocument.get(location_id)
+
+@router.get(
+    "/bookmarks",
+    response_model=list[BookmarkRead],
+    status_code=status.HTTP_200_OK,
+)
+async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
+    """Returns all bookmarks that belong to the requesting user"""
+    return (
+        await BookmarkDocument.find(BookmarkDocument.user_id == user.id)
+        .sort(
+            +BookmarkDocument.text_id,
+            +BookmarkDocument.level,
+            +BookmarkDocument.position,
+        )
+        .to_list()
+    )
+
+
+@router.post(
+    "/bookmarks",
+    response_model=BookmarkRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errors.responses(
+        [
+            errors.E_409_BOOKMARK_EXISTS,
+            errors.E_409_BOOKMARKS_LIMIT_REACHED,
+            errors.E_404_LOCATION_NOT_FOUND,
+            errors.E_404_TEXT_NOT_FOUND,
+        ]
+    ),
+)
+async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDocument:
+    """Creates a bookmark for the requesting user"""
+
+    if await BookmarkDocument.find(
+        BookmarkDocument.user_id == user.id,
+        BookmarkDocument.location_id == bookmark.location_id,
+    ).exists():
+        raise errors.E_409_BOOKMARK_EXISTS
+
+    if (
+        await BookmarkDocument.find(BookmarkDocument.user_id == user.id).count()
+    ) >= 1000:
+        raise errors.E_409_BOOKMARKS_LIMIT_REACHED  # pragma: no cover
+
+    location_doc = await LocationDocument.get(bookmark.location_id)
     if not location_doc:
         raise errors.E_404_LOCATION_NOT_FOUND
-    if (
-        location_doc.level != resource_doc.level
-        or location_doc.text_id != resource_doc.text_id
-    ):
-        raise errors.E_400_INVALID_REQUEST_DATA
 
-    # get all locations before/after said location
-    locations = (
-        await LocationDocument.find(
-            LocationDocument.text_id == resource_doc.text_id,
-            LocationDocument.level == resource_doc.level,
-            (LocationDocument.position < location_doc.position)
-            if direction == "before"
-            else (LocationDocument.position > location_doc.position),
-        )
-        .sort(
-            +LocationDocument.position
-            if direction == "after"
-            else -LocationDocument.position
-        )
-        .aggregate([{"$project": {"position": 1}}])
-        .to_list()
-    )
-    if not locations:  # pragma: no cover
-        raise errors.E_404_NOT_FOUND
+    text_doc = await TextDocument.get(location_doc.text_id)
+    if not text_doc:
+        raise errors.E_404_TEXT_NOT_FOUND  # pragma: no cover
 
-    # get contents for these locations
-    contents = (
-        await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == resource_id,
-            In(
-                ContentBaseDocument.location_id,
-                [location.get("_id") for location in locations],
-            ),
-            with_children=True,
-        )
-        .aggregate([{"$project": {"location_id": 1}}])
-        .to_list()
-    )
-    if not contents:  # pragma: no cover
-        raise errors.E_404_NOT_FOUND
+    # construct full label
+    location_labels = [location_doc.label]
+    parent_location_id = location_doc.parent_id
+    while parent_location_id:
+        parent_location = await LocationDocument.get(parent_location_id)
+        location_labels.insert(0, parent_location.label)
+        parent_location_id = parent_location.parent_id
 
-    # find out nearest of those locations with contents
-    locations = [
-        location
-        for location in locations
-        if location.get("_id") in [content.get("location_id") for content in contents]
-    ]
-
-    if len(locations) == 0:  # pragma: no cover
-        raise errors.E_404_NOT_FOUND
-
-    # return ID of nearest location with contents of the target resource
-    return await LocationDocument.get(locations[0].get("_id"))
+    return await BookmarkDocument(
+        user_id=user.id,
+        text_id=location_doc.text_id,
+        location_id=location_doc.id,
+        level=location_doc.level,
+        position=location_doc.position,
+        label=location_doc.label,
+        location_labels=location_labels,
+        comment=bookmark.comment,
+    ).create()

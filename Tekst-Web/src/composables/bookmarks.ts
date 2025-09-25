@@ -18,7 +18,7 @@ export function useBookmarks() {
 
   async function loadBookmarks() {
     if (!!auth.user && allBookmarks.value === null) {
-      const { data, error } = await GET('/bookmarks', {});
+      const { data, error } = await GET('/browse/bookmarks', {});
       if (!error) {
         allBookmarks.value = data;
       } else {
@@ -28,7 +28,7 @@ export function useBookmarks() {
   }
 
   async function createBookmark(locationId: string, comment: string) {
-    const { data, error } = await POST('/bookmarks', {
+    const { data, error } = await POST('/browse/bookmarks', {
       body: {
         locationId,
         comment,
@@ -41,7 +41,7 @@ export function useBookmarks() {
   }
 
   async function deleteBookmark(id: string) {
-    const { error } = await DELETE('/bookmarks/{id}', {
+    const { error } = await DELETE('/browse/bookmarks/{id}', {
       params: { path: { id } },
     });
     if (!error) {

@@ -1,45 +1,4 @@
 export interface paths {
-  '/bookmarks/{id}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    /** Delete bookmark */
-    delete: operations['deleteBookmark'];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/bookmarks': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get user bookmarks
-     * @description Returns all bookmarks that belong to the requesting user
-     */
-    get: operations['getUserBookmarks'];
-    put?: never;
-    /**
-     * Create bookmark
-     * @description Creates a bookmark for the requesting user
-     */
-    post: operations['createBookmark'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/browse/context': {
     parameters: {
       query?: never;
@@ -54,6 +13,26 @@ export interface paths {
      *     with the given ID.
      */
     get: operations['getContentContext'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/browse/nearest-content-location': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get nearest content location
+     * @description Finds the nearest location the given resource holds content for and returns it.
+     */
+    get: operations['getNearestContentLocation'];
     put?: never;
     post?: never;
     delete?: never;
@@ -85,7 +64,24 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/browse/nearest-content-location': {
+  '/browse/bookmarks/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete bookmark */
+    delete: operations['deleteBookmark'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/browse/bookmarks': {
     parameters: {
       query?: never;
       header?: never;
@@ -93,12 +89,16 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get nearest content location
-     * @description Finds the nearest location the given resource holds content for and returns it.
+     * Get user bookmarks
+     * @description Returns all bookmarks that belong to the requesting user
      */
-    get: operations['getNearestContentLocation'];
+    get: operations['getUserBookmarks'];
     put?: never;
-    post?: never;
+    /**
+     * Create bookmark
+     * @description Creates a bookmark for the requesting user
+     */
+    post: operations['createBookmark'];
     delete?: never;
     options?: never;
     head?: never;
@@ -7137,6 +7137,163 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  getContentContext: {
+    parameters: {
+      query: {
+        /** @description ID of resource the requested contents belong to */
+        res: string;
+        /** @description ID of parent location to get child contents for */
+        parent?: string | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': (
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead']
+          )[];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getNearestContentLocation: {
+    parameters: {
+      query: {
+        /** @description ID of the location to start from */
+        loc: string;
+        /** @description ID of resource to return nearest location with content for */
+        res: string;
+        /** @description Whether to look for the nearest preceding (before) or subsequent (after) location with content */
+        dir?: 'before' | 'after';
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getLocationData: {
+    parameters: {
+      query?: {
+        /** @description ID of location to request data for */
+        id?: string | null;
+        /** @description ID of text the target location belongs to (needed if no location ID is given) */
+        txt?: string | null;
+        /** @description Location level (only used if no location ID is given, text's default level is used by default) */
+        lvl?: number | null;
+        /** @description Location position (only used if no location ID is given) */
+        pos?: number;
+        /** @description List of IDs of resources to return contents for (assumes all if none are given) */
+        res?: string[];
+        /** @description Only return contents for the head location of the path */
+        head?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationData'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   deleteBookmark: {
     parameters: {
       query?: never;
@@ -7237,163 +7394,6 @@ export interface operations {
       };
       /** @description Conflict */
       409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getContentContext: {
-    parameters: {
-      query: {
-        /** @description ID of resource the requested contents belong to */
-        res: string;
-        /** @description ID of parent location to get child contents for */
-        parent?: string | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': (
-            | components['schemas']['ApiCallContentRead']
-            | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferencesContentRead']
-            | components['schemas']['ImagesContentRead']
-            | components['schemas']['LocationMetadataContentRead']
-            | components['schemas']['PlainTextContentRead']
-            | components['schemas']['RichTextContentRead']
-            | components['schemas']['TextAnnotationContentRead']
-          )[];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getLocationData: {
-    parameters: {
-      query?: {
-        /** @description ID of location to request data for */
-        id?: string | null;
-        /** @description ID of text the target location belongs to (needed if no location ID is given) */
-        txt?: string | null;
-        /** @description Location level (only used if no location ID is given, text's default level is used by default) */
-        lvl?: number | null;
-        /** @description Location position (only used if no location ID is given) */
-        pos?: number;
-        /** @description List of IDs of resources to return contents for (assumes all if none are given) */
-        res?: string[];
-        /** @description Only return contents for the head location of the path */
-        head?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['LocationData'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  getNearestContentLocation: {
-    parameters: {
-      query: {
-        /** @description ID of the location to start from */
-        loc: string;
-        /** @description ID of resource to return nearest location with content for */
-        res: string;
-        /** @description Whether to look for the nearest preceding (before) or subsequent (after) location with content */
-        dir?: 'before' | 'after';
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['LocationRead'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Not Found */
-      404: {
         headers: {
           [name: string]: unknown;
         };

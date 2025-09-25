@@ -12,175 +12,6 @@
     }
   ],
   "paths": {
-    "/bookmarks/{id}": {
-      "delete": {
-        "tags": [
-          "bookmarks"
-        ],
-        "summary": "Delete bookmark",
-        "operationId": "deleteBookmark",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/bookmarks": {
-      "get": {
-        "tags": [
-          "bookmarks"
-        ],
-        "summary": "Get user bookmarks",
-        "description": "Returns all bookmarks that belong to the requesting user",
-        "operationId": "getUserBookmarks",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/BookmarkRead"
-                  },
-                  "type": "array",
-                  "title": "Response Get User Bookmarks Bookmarks Get"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "bookmarks"
-        ],
-        "summary": "Create bookmark",
-        "description": "Creates a bookmark for the requesting user",
-        "operationId": "createBookmark",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookmarkCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookmarkRead"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/browse/context": {
       "get": {
         "tags": [
@@ -298,6 +129,114 @@
               }
             },
             "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/browse/nearest-content-location": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get nearest content location",
+        "description": "Finds the nearest location the given resource holds content for and returns it.",
+        "operationId": "getNearestContentLocation",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "loc",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "description": "ID of the location to start from",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Loc"
+            },
+            "description": "ID of the location to start from"
+          },
+          {
+            "name": "res",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "description": "ID of resource to return nearest location with content for",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Res"
+            },
+            "description": "ID of resource to return nearest location with content for"
+          },
+          {
+            "name": "dir",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "before",
+                "after"
+              ],
+              "type": "string",
+              "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content",
+              "default": "after",
+              "title": "Dir"
+            },
+            "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -469,14 +408,13 @@
         }
       }
     },
-    "/browse/nearest-content-location": {
-      "get": {
+    "/browse/bookmarks/{id}": {
+      "delete": {
         "tags": [
           "browse"
         ],
-        "summary": "Get nearest content location",
-        "description": "Finds the nearest location the given resource holds content for and returns it.",
-        "operationId": "getNearestContentLocation",
+        "summary": "Delete bookmark",
+        "operationId": "deleteBookmark",
         "security": [
           {
             "APIKeyCookie": []
@@ -487,62 +425,22 @@
         ],
         "parameters": [
           {
-            "name": "loc",
-            "in": "query",
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "minLength": 24,
               "maxLength": 24,
               "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of the location to start from",
               "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Loc"
-            },
-            "description": "ID of the location to start from"
-          },
-          {
-            "name": "res",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of resource to return nearest location with content for",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Res"
-            },
-            "description": "ID of resource to return nearest location with content for"
-          },
-          {
-            "name": "dir",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "enum": [
-                "before",
-                "after"
-              ],
-              "type": "string",
-              "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content",
-              "default": "after",
-              "title": "Dir"
-            },
-            "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content"
+              "title": "Id"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationRead"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "404": {
             "content": {
@@ -554,7 +452,7 @@
             },
             "description": "Not Found"
           },
-          "400": {
+          "403": {
             "content": {
               "application/json": {
                 "schema": {
@@ -562,7 +460,7 @@
                 }
               }
             },
-            "description": "Bad Request"
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -575,6 +473,108 @@
             }
           }
         }
+      }
+    },
+    "/browse/bookmarks": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get user bookmarks",
+        "description": "Returns all bookmarks that belong to the requesting user",
+        "operationId": "getUserBookmarks",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BookmarkRead"
+                  },
+                  "type": "array",
+                  "title": "Response Get User Bookmarks Browse Bookmarks Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Create bookmark",
+        "description": "Creates a bookmark for the requesting user",
+        "operationId": "createBookmark",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookmarkCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkRead"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/contents": {
