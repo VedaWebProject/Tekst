@@ -43,7 +43,7 @@
   "devDependencies": {
     "@babel/types": "^7.25.6",
     "@intlify/eslint-plugin-vue-i18n": "^4.0.0",
-    "@intlify/unplugin-vue-i18n": "^6.0.0",
+    "@intlify/unplugin-vue-i18n": "^11.0.0",
     "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node20": "^20.1.4",
     "@types/color": "^4.0.0",
