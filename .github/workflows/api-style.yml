@@ -38,7 +38,7 @@ jobs:
           version: "0.8.22"
           enable-cache: true
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version-file: "./Tekst-API/pyproject.toml"
       - name: Install dependencies
