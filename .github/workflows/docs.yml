@@ -32,5 +32,5 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material=="9.*" mkdocs-include-markdown-plugin=="7.*"
-      - run: mkdir /includes && cp ../Tekst-Web/i18n/help/enUS /includes
+      - run: sudo mkdir /includes && sudo cp ../Tekst-Web/i18n/help/enUS/** /includes/
       - run: mkdocs gh-deploy --force
