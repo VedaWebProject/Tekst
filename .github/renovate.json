@@ -1,8 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "schedule:daily", "schedule:automergeDaily"],
+  "extends": [
+    "config:recommended",
+    "schedule:daily",
+    "schedule:automergeDaily"
+  ],
   "baseBranches": ["development"],
-  "prHourlyLimit": 2,
+  "prHourlyLimit": 10,
   "labels": ["dependencies"],
   "assignees": ["bkis"],
   "assigneesSampleSize": 1,
