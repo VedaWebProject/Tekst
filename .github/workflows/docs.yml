@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "docs/**"
-      - "Tekst-Web/i18n/help/**"
+      - "Tekst-Web/i18n/help/enUS/**"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
@@ -31,5 +31,6 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material=="9.*"
+      - run: pip install mkdocs-material=="9.*" mkdocs-include-markdown-plugin=="7.*"
+      - run: mkdir /includes && cp ../Tekst-Web/i18n/help/enUS /includes
       - run: mkdocs gh-deploy --force
