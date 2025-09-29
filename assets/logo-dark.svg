@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    id="svg2932"
-   sodipodi:docname="logo.svg"
+   sodipodi:docname="logo-dark.svg"
    viewBox="0 0 120 120"
    version="1.1"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   inkscape:export-filename="/home/bkis/Code/Tekst/Tekst-Web/src/assets/logo.png"
+   inkscape:export-filename="/home/bkis/Code/Tekst/Tekst-Web/src/assets/logo-dark.png"
    inkscape:export-xdpi="51.200001"
    inkscape:export-ydpi="51.200001"
    width="120"
@@ -323,7 +323,7 @@
      objecttolerance="10"
      borderopacity="1"
      inkscape:current-layer="svg2932"
-     inkscape:cx="55.566406"
+     inkscape:cx="53.222656"
      inkscape:cy="67.089844"
      inkscape:window-y="1107"
      inkscape:window-x="0"
@@ -360,14 +360,14 @@
     </rdf:RDF>
   </metadata>
   <circle
-     style="fill:#316149;fill-rule:evenodd;stroke-width:0;stroke-linecap:square;stroke:none;fill-opacity:1"
+     style="fill:#66dea2;fill-rule:evenodd;stroke-width:0;stroke-linecap:square;stroke:none;fill-opacity:1"
      id="path1216"
      cx="60"
      cy="60"
      r="59.144272" />
   <path
      id="path1216-3"
-     style="fill:#d92626;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:square"
+     style="fill:#e77878;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:square"
      d="M 60,119.14427 A 59.144272,59.144272 0 0 1 0.85547,59.999742 59.144272,59.144272 0 0 1 3.10742,43.997792 59.144272,59.144272 0 0 0 60,87.144272 59.144272,59.144272 0 0 0 116.90429,44.056382 59.144272,59.144272 0 0 1 119.14453,59.999742 59.144272,59.144272 0 0 1 60,119.14427 Z" />
   <path
      style="fill:#fefefe;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.903307;stroke-linejoin:round"

@@ -1,13 +1,13 @@
-import faviconIcoDarkmode from '@/assets/favicon-darkmode.ico';
-import faviconPngDarkmode from '@/assets/favicon-darkmode.png';
+import faviconIcoDarkmode from '@/assets/favicon-dark.ico';
+import faviconPngDarkmode from '@/assets/favicon-dark.png';
 import faviconIco from '@/assets/favicon.ico';
 import faviconPng from '@/assets/favicon.png';
-import logoDarkmode from '@/assets/logo-darkmode.png';
+import logoDarkmode from '@/assets/logo-dark.png';
 import logo from '@/assets/logo.png';
+import env from '@/env';
 import { useThemeStore } from '@/stores';
 import { useFetch, usePreferredDark } from '@vueuse/core';
 import { computed, ref, type Ref } from 'vue';
-import env from '@/env';
 
 interface LogoImage {
   url?: string;
@@ -22,7 +22,7 @@ const imgs: Ref<{ [key: string]: LogoImage }> = ref({
     fallback: logo,
   },
   logoPngDark: {
-    custom: `${env.STATIC_PATH}/logo-darkmode.png`,
+    custom: `${env.STATIC_PATH}/logo-dark.png`,
     fallback: logoDarkmode,
   },
   favPng: {
@@ -30,7 +30,7 @@ const imgs: Ref<{ [key: string]: LogoImage }> = ref({
     fallback: faviconPng,
   },
   favPngDark: {
-    custom: `${env.STATIC_PATH}/favicon-darkmode.png`,
+    custom: `${env.STATIC_PATH}/favicon-dark.png`,
     fallback: faviconPngDarkmode,
   },
   favIco: {
@@ -38,7 +38,7 @@ const imgs: Ref<{ [key: string]: LogoImage }> = ref({
     fallback: faviconIco,
   },
   favIcoDark: {
-    custom: `${env.STATIC_PATH}/favicon-darkmode.ico`,
+    custom: `${env.STATIC_PATH}/favicon-dark.ico`,
     fallback: faviconIcoDarkmode,
   },
 });
