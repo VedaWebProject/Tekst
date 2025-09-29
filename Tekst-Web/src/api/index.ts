@@ -99,14 +99,14 @@ export function downloadData(blob: Blob, filename: string) {
 // export some common platform properties for use throughout codebase
 
 export const colorPresets = [
-  '#384a71', // indigo
-  '#386C71', // teal
-  '#38714b', // green
-  '#716938', // olive
-  '#715938', // coffee
-  '#713839', // dark red
-  '#71384e', // aubergine
-  '#6c3871', // violet
+  '#274891ff', // indigo
+  '#197c85ff', // teal
+  '#2d7e48ff', // green
+  '#75881eff', // olive
+  '#5e4724ff', // coffee
+  '#862628ff', // dark red
+  '#9b344eff', // raspberry
+  '#823c88ff', // violet
 ];
 
 export const resourceTypes = [
