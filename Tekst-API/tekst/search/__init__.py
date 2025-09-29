@@ -1,7 +1,7 @@
 import asyncio
 
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from beanie import PydanticObjectId
@@ -456,8 +456,6 @@ async def search_quick(
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_quick: QuickSearchSettings = QuickSearchSettings(),
 ) -> SearchResults:
-    es: AsyncElasticsearch = await _get_es_client()
-
     # get (pre-)selection of target resources
     target_resources = await _get_resources(
         user=user,
@@ -522,6 +520,7 @@ async def search_quick(
     log.debug(f"Running ES query: {es_query}")
 
     # perform the search
+    es: AsyncElasticsearch = await _get_es_client()
     return SearchResults.from_es_results(
         results=await es.search(
             index=IDX_ALIAS,
@@ -545,7 +544,6 @@ async def search_advanced(
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
-    es: AsyncElasticsearch = await _get_es_client()
     accessible_resources_by_id = {
         str(res.id): res for res in await _get_resources(user=user)
     }
@@ -641,6 +639,7 @@ async def search_advanced(
     log.debug(f"Running ES query: {es_query}")
 
     # perform the search
+    es: AsyncElasticsearch = await _get_es_client()
     return SearchResults.from_es_results(
         results=await es.search(
             index=IDX_ALIAS,
@@ -656,6 +655,44 @@ async def search_advanced(
             timeout=_cfg.es.timeout_search_s,
         ),
         highlights_generators=highlights_generators,
+    )
+
+
+async def search_nearest_content_location(
+    *,
+    resource: ResourceBaseDocument,
+    location: LocationDocument,
+    direction: Literal["before", "after"],
+) -> LocationDocument | None:
+    text_doc = await TextDocument.get(resource.text_id)
+    query = {
+        "bool": {
+            "must": [
+                {"exists": {"field": f"resources.{str(resource.id)}"}},
+                {
+                    "range": {
+                        "position": {
+                            "lt" if direction == "before" else "gt": location.position
+                        }
+                    }
+                },
+            ]
+        }
+    }
+    sort = {"position": {"order": "desc" if direction == "before" else "asc"}}
+    es: AsyncElasticsearch = await _get_es_client()
+    results = await es.search(
+        index=f"{IDX_NAME_PREFIX}{text_doc.slug}_*",
+        query=query,
+        track_scores=False,
+        sort=sort,
+        source=False,
+        timeout=_cfg.es.timeout_search_s,
+    )
+    return (
+        await LocationDocument.get(results["hits"]["hits"][0]["_id"])
+        if results["hits"]["hits"]
+        else None
     )
 
 

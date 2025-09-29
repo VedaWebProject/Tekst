@@ -21,6 +21,7 @@ from tekst.models.resource import (
 )
 from tekst.models.text import TextDocument
 from tekst.resources import AnyContentRead
+from tekst.search import search_nearest_content_location
 
 
 router = APIRouter(
@@ -181,67 +182,16 @@ async def get_nearest_content_location(
     ):
         raise errors.E_400_INVALID_REQUEST_DATA
 
-    # get nearest location the given resource holds contents for
-    locations = (
-        await LocationDocument.find(
-            LocationDocument.text_id == resource_doc.text_id,
-            LocationDocument.level == resource_doc.level,
-            (LocationDocument.position < location_doc.position)
-            if direction == "before"
-            else (LocationDocument.position > location_doc.position),
-        )
-        .aggregate(
-            [
-                {
-                    "$lookup": {
-                        "from": "contents",
-                        "localField": "_id",
-                        "foreignField": "location_id",
-                        "let": {"location_id": "$_id", "resource_id": resource_doc.id},
-                        "pipeline": [
-                            {
-                                "$match": {
-                                    "$expr": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$location_id",
-                                                    "$$location_id",
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$resource_id",
-                                                    "$$resource_id",
-                                                ]
-                                            },
-                                        ]
-                                    }
-                                }
-                            },
-                            {"$project": {"_id": 1}},
-                        ],
-                        "as": "contents",
-                    }
-                },
-                {
-                    "$project": {
-                        "position": 1,
-                        "covered": {"$gt": [{"$size": "$contents"}, 0]},
-                    }
-                },
-                {"$match": {"covered": True}},
-                {"$sort": {"position": -1 if direction == "before" else 1}},
-                {"$limit": 1},
-            ],
-        )
-        .to_list()
+    target_loc = await search_nearest_content_location(
+        resource=resource_doc,
+        location=location_doc,
+        direction=direction,
     )
 
-    if not locations:  # pragma: no cover
+    if not target_loc:
         raise errors.E_404_NOT_FOUND
-
-    return await LocationDocument.get(locations[0].get("_id"))
+    else:
+        return target_loc
 
 
 @router.get(

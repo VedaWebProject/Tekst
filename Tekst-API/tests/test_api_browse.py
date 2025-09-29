@@ -113,12 +113,11 @@ async def test_get_location_data(
 @pytest.mark.anyio
 async def test_get_nearest_content_position(
     test_client: AsyncClient,
-    insert_test_data,
     assert_status,
     wrong_id,
     login,
+    use_indices,
 ):
-    await insert_test_data()
     resource = await ResourceBaseDocument.get(
         "67c043c0906e79b9062e22f4",
         with_children=True,
