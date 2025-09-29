@@ -1,3 +1,5 @@
 # Resources
 
---8<-- "resourcesView.md"
+{%
+    include-markdown "/includes/resourcesView.md"
+%}

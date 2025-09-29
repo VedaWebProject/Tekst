@@ -93,11 +93,15 @@ services:
       - test
 
   docs:
-    image: squidfunk/mkdocs-material:9.6.20
+    build:
+      dockerfile_inline: |
+        FROM squidfunk/mkdocs-material:9.6.20
+        RUN pip install mkdocs-include-markdown-plugin
+    image: localhost/tekst/mkdocs-material
     restart: unless-stopped
     volumes:
       - ../docs:/docs:ro
-      - ../Tekst-Web/i18n/help/enUS:/Tekst-Web/i18n/help/enUS:ro
+      - ../Tekst-Web/i18n/help/enUS:/includes:ro
     ports:
       - 127.0.0.1:8091:8000
     profiles:

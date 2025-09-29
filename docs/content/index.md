@@ -26,7 +26,7 @@ The above being said, nothing is stopping you from using Tekst in different cont
 1. your data revolves around a somewhat structured work or other phenomenon (e.g. book, movie, theatre play or even a simple sequence of years)
 2. the types of [resources](concepts.md#resources) Tekst offers are sufficiently able to represent the data you want to work with
 
-In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#deploy-via-docker-recommended).
+In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#docker-based-deployment-recommended).
 
 !!! info "Please note"
     Despite the alternative use cases mentioned, "texts" are used exemplary throughout this documentation and in the internal user interface of Tekst, as this is still the main use case.
