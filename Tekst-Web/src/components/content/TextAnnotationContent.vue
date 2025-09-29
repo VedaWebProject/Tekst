@@ -120,7 +120,7 @@ const groupColors = computed<Record<string, string>>(() =>
       g.key,
       toRgba(
         transparentize(
-          saturate(adjustHue('#ff0000', Math.abs(hashCode(g.key))), 1),
+          saturate(adjustHue('#ff0000', Math.abs(hashCode(Math.abs(hashCode(g.key)) % 360))), 1),
           theme.dark ? 0.82 : 0.92
         )
       ),
