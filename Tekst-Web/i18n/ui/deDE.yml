@@ -585,8 +585,8 @@ contents:
   tipBtnCompare: Andere Ressource auswählen, um mit ihr zu vergleichen
   tipBtnCopyOriginal: Aus Original-Ressource kopieren
   tipBtnApplyChanges: Inhalt für diese Belegstelle übernehmen
-  tipBtnPrevChange: Zum nächstgelegenen vorhergehenden Inhalt springen
-  tipBtnNextChange: Zum nächstgelegenen nachfolgenden Inhalt springen
+  tipBtnPrevChange: Zum vorherigen Inhalt springen
+  tipBtnNextChange: Zum nächsten Inhalt springen
   forComparison: '{title} (zum Vergleich)'
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
