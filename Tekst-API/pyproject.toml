@@ -1,6 +1,6 @@
 [project]
 name = "tekst"
-version = "0.32.1a0"
+version = "0.32.2a0"
 description = "An online text research platform"
 readme = "README.md"
 authors = [
