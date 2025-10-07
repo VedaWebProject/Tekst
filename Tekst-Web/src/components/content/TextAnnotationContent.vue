@@ -700,6 +700,10 @@ function generatePlaintextAnno(): string {
   margin-bottom: 2px;
 }
 
+.annotations > .anno-sequence:empty::before {
+  content: '–';
+}
+
 .annotations > .anno-sequence:empty {
   visibility: hidden;
 }
