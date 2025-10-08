@@ -20,7 +20,7 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 <!-- I know this is a sin – and it hurts me, too. But I need the bigger font on this. -->
 
-### 📖 [Click here for the _Tekst_ manual!](https://vedawebproject.github.io/Tekst)
+### Click here for the [📖 _Tekst_ manual](https://vedawebproject.github.io/Tekst)!
 
 
 ## Publications
@@ -35,14 +35,18 @@ Please see the [contributing guidelines](CONTRIBUTING.md).
 
 ## Development
 
-### Projects and technologies
+This is a monorepo containing the codebases of all parts of the Tekst platform. Where applicable, the different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
 
-This is a monorepo containing the codebases of the following parts of the Tekst platform:
+### Projects and technologies overview
 
-| Directory | Technologies |
-| --- | --- |
-| [`Tekst-API/`](Tekst-API) (server) | [Python](https://github.com/python/cpython), [Pydantic](https://github.com/pydantic/pydantic), [FastAPI](https://github.com/tiangolo/fastapi), [FastAPI-Users](https://github.com/fastapi-users/fastapi-users), [Beanie](https://github.com/BeanieODM/beanie), [MongoDB](https://github.com/mongodb/mongo), [Elasticsearch](https://github.com/elastic/elasticsearch), ... |
-| [`Tekst-Web/`](Tekst-Web) (client) | [TypeScript](https://github.com/microsoft/TypeScript), [Vue.js 3](https://github.com/vuejs/core), [Pinia](https://github.com/vuejs/pinia), [Naive UI](https://github.com/tusen-ai/naive-ui), [Vue I18n](https://github.com/intlify/vue-i18n), [OpenAPI-TypeScript & OpenAPI-Fetch](https://github.com/openapi-ts/openapi-typescript), ... |
-| [`docs/`](docs) (Documentation and user manual, to be found [here](https://vedawebproject.github.io/Tekst)) | [MkDocs](https://github.com/mkdocs/mkdocs), [Material for MkDocs](https://github.com/squidfunk/mkdocs-material), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions) |
+#### Tekst-API
+The server part of the Tekst platform: [`Tekst-API/`](Tekst-API) \
+[Python](https://github.com/python/cpython), [Pydantic](https://github.com/pydantic/pydantic), [FastAPI](https://github.com/tiangolo/fastapi), [FastAPI-Users](https://github.com/fastapi-users/fastapi-users), [Beanie](https://github.com/BeanieODM/beanie), [MongoDB](https://github.com/mongodb/mongo), [Elasticsearch](https://github.com/elastic/elasticsearch), ...
 
-Where applicable, the different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
+#### Tekst-Web
+The client part of the Tekst platform: [`Tekst-Web/`](Tekst-Web) \
+[TypeScript](https://github.com/microsoft/TypeScript), [Vue.js 3](https://github.com/vuejs/core), [Pinia](https://github.com/vuejs/pinia), [Naive UI](https://github.com/tusen-ai/naive-ui), [Vue I18n](https://github.com/intlify/vue-i18n), [OpenAPI-TypeScript & OpenAPI-Fetch](https://github.com/openapi-ts/openapi-typescript), ...
+
+#### Tekst Documentation
+The official docs for the Tekst platform (published [here](https://vedawebproject.github.io/Tekst)): [`docs/`](docs) \
+[MkDocs](https://github.com/mkdocs/mkdocs), [Material for MkDocs](https://github.com/squidfunk/mkdocs-material), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions), ...
