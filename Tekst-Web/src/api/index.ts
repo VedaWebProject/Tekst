@@ -160,8 +160,6 @@ export const resourceTypes = [
   },
 ];
 
-export const prioritizedMetadataKeys = ['author', 'year', 'language'];
-
 export const deeplSourceLanguages = [
   'ar',
   'bg',
@@ -294,6 +292,7 @@ export type LocationData = components['schemas']['LocationData'];
 // platform
 
 export type PlatformData = components['schemas']['PlatformData'];
+export type PlatformStateRead = components['schemas']['PlatformStateRead'];
 export type PlatformStateUpdate = components['schemas']['PlatformStateUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
 

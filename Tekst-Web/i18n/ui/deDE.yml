@@ -332,10 +332,6 @@ models:
     config: Konfiguration
   meta:
     modelLabel: Metadaten
-    author: Autor*in
-    year: Jahr
-    language: '@:common.language'
-    resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Plattform-Name
     platformSubtitle: Plattform-Untertitel
@@ -350,7 +346,6 @@ models:
     navSearchEntry: Beschriftung für "Suche" in Hauptnavigation
     navInfoEntry: Beschriftung für "Info" in Hauptnavigation
     registerIntroText: Einführungstext für Registrierungsseite
-    directJumpOnUniqueAliasSearch: Bei eindeutigem Treffer direkt zur Belegstelle springen
     uiColor: Primärfarbe der UI
     showLogoOnLoadingScreen: Zeige Logo in Ladebildschirm
     showLogoInHeader: Zeige Logo in Kopfzeile
@@ -364,6 +359,7 @@ models:
     contentFont: Standard-Schriftart für Inhalte
     oskModes: Bildschirmtastaturen
     oskModeFont: Tastatur-Schriftart
+    resMetaTranslations: Übersetzungen für Schlüssel von Ressourcen-Metadaten
   segment:
     modelLabel: Segment
     formRulesFeedback:
@@ -805,7 +801,7 @@ admin:
   platformSettings:
     nav:
       heading: Navigation
-      aliasSearch: Suche nach Belegstellen-Aliasen
+      aliasSearch: Bei eindeutigem Schnellsuche-Treffer für Belegstellen-Alias direkt zu Belegstelle springen
       customNavLabels: Benutzer*innendefinierte Navigations-Beschriftungen
     headingBrowseView: Lese-Ansicht
     headingAppearance: Aussehen

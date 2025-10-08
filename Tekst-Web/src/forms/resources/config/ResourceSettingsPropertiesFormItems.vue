@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { prioritizedMetadataKeys, type AnyResourceRead } from '@/api';
+import { type AnyResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import FormSection from '@/components/FormSection.vue';
@@ -8,20 +8,24 @@ import { resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t } from '@/i18n';
 import { TranslateIcon } from '@/icons';
+import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NIcon, NInput, NSelect } from 'naive-ui';
 import { computed, h } from 'vue';
 
 const model = defineModel<AnyResourceRead>({ required: true });
 
+const state = useStateStore();
+
 const metadataKeysOptions = computed(() =>
-  prioritizedMetadataKeys.map((k) => ({
+  state.pf?.state.resMetaTranslations.map((rmt) => ({
     label: () =>
       h('div', { style: 'display: flex; align-items: center; gap: 4px; padding: 4px' }, [
         h(NIcon, { component: TranslateIcon }),
-        $t(`models.meta.${k}`),
+        pickTranslation(rmt.translations, state.locale),
       ]),
-    value: k,
-    disabled: model.value.meta && !!model.value.meta.find((m) => m.key === k),
+    value: rmt.key,
+    disabled: model.value.meta && !!model.value.meta.find((m) => m.key === rmt.key),
   }))
 );
 </script>

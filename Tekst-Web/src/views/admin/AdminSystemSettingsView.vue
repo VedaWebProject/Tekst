@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { colorPresets, PATCH, resourceTypes, type PlatformStateUpdate } from '@/api';
+import {
+  colorPresets,
+  PATCH,
+  resourceTypes,
+  type PlatformStateRead,
+  type PlatformStateUpdate,
+} from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -10,7 +16,7 @@ import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
-import { platformSettingsFormRules } from '@/forms/formRules';
+import { platformSettingsFormRules, resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t, localeProfiles } from '@/i18n';
 import { SettingsIcon } from '@/icons';
@@ -21,6 +27,7 @@ import {
   NColorPicker,
   NDivider,
   NDynamicInput,
+  NFlex,
   NForm,
   NFormItem,
   NInput,
@@ -39,12 +46,12 @@ const { message } = useMessages();
 
 const tabsRef = ref<TabsInst>();
 
-const getFormModel = (): PlatformStateUpdate =>
-  cloneDeep(state.pf?.state || ({} as PlatformStateUpdate));
+const getFormModel = (): PlatformStateRead =>
+  cloneDeep(state.pf?.state || ({} as PlatformStateRead));
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
-const formModel = ref<PlatformStateUpdate>(getFormModel());
+const formModel = ref<PlatformStateRead>(getFormModel());
 
 const { changed, reset, getChanges } = useModelChanges(formModel);
 
@@ -213,41 +220,32 @@ watch(
 
         <!-- NAVIGATION -->
         <n-tab-pane :tab="$t('admin.platformSettings.nav.heading')" name="navigation">
-          <form-section :title="$t('admin.platformSettings.nav.aliasSearch')">
-            <n-form-item :show-label="false" :show-feedback="false">
-              <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
-              <labeled-switch
-                v-model="formModel.directJumpOnUniqueAliasSearch"
-                :label="$t('models.platformSettings.directJumpOnUniqueAliasSearch')"
-              />
-            </n-form-item>
-          </form-section>
-
+          <!-- CUSTOM NAV TRANSLATIONS -->
           <form-section :title="$t('admin.platformSettings.nav.customNavLabels')">
-            <!-- CUSTOM MAIN NAV BROWSE ENTRY -->
+            <!-- browse -->
             <translation-form-item
-              v-model="formModel.navBrowseEntry"
-              parent-form-path-prefix="navBrowseEntry"
+              v-model="formModel.navTranslations.browse"
+              parent-form-path-prefix="navTranslations.browse"
               :loading="loading"
               :main-form-label="$t('models.platformSettings.navBrowseEntry')"
               :translation-form-label="$t('models.platformSettings.navBrowseEntry')"
               :translation-form-rules="platformSettingsFormRules.navEntryTranslation"
             />
 
-            <!-- CUSTOM MAIN NAV SEARCH ENTRY -->
+            <!-- search -->
             <translation-form-item
-              v-model="formModel.navSearchEntry"
-              parent-form-path-prefix="navSearchEntry"
+              v-model="formModel.navTranslations.search"
+              parent-form-path-prefix="navTranslations.search"
               :loading="loading"
               :main-form-label="$t('models.platformSettings.navSearchEntry')"
               :translation-form-label="$t('models.platformSettings.navSearchEntry')"
               :translation-form-rules="platformSettingsFormRules.navEntryTranslation"
             />
 
-            <!-- CUSTOM MAIN NAV INFO ENTRY -->
+            <!-- info -->
             <translation-form-item
-              v-model="formModel.navInfoEntry"
-              parent-form-path-prefix="navInfoEntry"
+              v-model="formModel.navTranslations.info"
+              parent-form-path-prefix="navTranslations.info"
               :loading="loading"
               :main-form-label="$t('models.platformSettings.navInfoEntry')"
               :translation-form-label="$t('models.platformSettings.navInfoEntry')"
@@ -384,6 +382,67 @@ watch(
               </n-dynamic-input>
             </n-form-item>
           </form-section>
+
+          <!-- GROUPS -->
+          <form-section :title="$t('models.platformSettings.resMetaTranslations')">
+            <n-form-item :show-label="false" :show-feedback="false">
+              <n-dynamic-input
+                v-model:value="formModel.resMetaTranslations"
+                show-sort-button
+                :max="64"
+                :create-button-props="dynInputCreateBtnProps"
+                item-class="divided"
+                @create="
+                  () => ({
+                    key: undefined,
+                    translations: [{ locale: '*', translation: undefined }],
+                  })
+                "
+              >
+                <template #default="{ index }">
+                  <n-flex align="flex-start" style="width: 100%">
+                    <!-- METADATA KEY -->
+                    <n-form-item
+                      ignore-path-change
+                      :label="$t('common.key')"
+                      :path="`resMetaTranslations[${index}].key`"
+                      :rule="resourceSettingsFormRules.metaKey"
+                      style="flex: 1 200px"
+                    >
+                      <n-input v-model:value="formModel.resMetaTranslations[index].key" />
+                    </n-form-item>
+                    <!-- METADATA KEY TRANSLATION -->
+                    <translation-form-item
+                      v-model="formModel.resMetaTranslations[index].translations"
+                      ignore-path-change
+                      secondary
+                      :parent-form-path-prefix="`resMetaTranslations[${index}].translations`"
+                      style="flex: 2 300px"
+                      :main-form-label="$t('common.translation')"
+                      :translation-form-label="$t('common.translation', 2)"
+                      :translation-form-rules="resourceSettingsFormRules.metaValue"
+                    />
+                  </n-flex>
+                </template>
+                <template #action="{ index, create, remove, move }">
+                  <dynamic-input-controls
+                    top-offset
+                    :move-up-disabled="index === 0"
+                    :move-down-disabled="index === formModel.resMetaTranslations.length - 1"
+                    :insert-disabled="formModel.resMetaTranslations.length >= 64"
+                    :remove-disabled="formModel.resMetaTranslations.length <= 0"
+                    @move-up="() => move('up', index)"
+                    @move-down="() => move('down', index)"
+                    @remove="() => remove(index)"
+                    @insert="() => create(index)"
+                  />
+                </template>
+                <template #create-button-default>
+                  {{ $t('common.add') }}
+                </template>
+              </n-dynamic-input>
+            </n-form-item>
+          </form-section>
         </n-tab-pane>
 
         <!-- SEARCH -->
@@ -394,6 +453,13 @@ watch(
               <labeled-switch
                 v-model="formModel.indexUnpublishedResources"
                 :label="$t('models.platformSettings.indexUnpublishedResources')"
+              />
+            </n-form-item>
+            <!-- DIRECT JUMP ON UNIQUE ALIAS SEARCH -->
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.directJumpOnUniqueAliasSearch"
+                :label="$t('admin.platformSettings.nav.aliasSearch')"
               />
             </n-form-item>
           </form-section>

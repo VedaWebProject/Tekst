@@ -329,10 +329,6 @@ models:
     config: Configuration
   meta:
     modelLabel: Metadata
-    author: Author
-    year: Year
-    language: '@:common.language'
-    resourceType: '@:models.resource.resourceType'
   platformSettings:
     platformName: Platform Name
     platformSubtitle: Platform Subtitle
@@ -347,7 +343,6 @@ models:
     navSearchEntry: Label for "Search" in main navigation
     navInfoEntry: Label for "Info" in main navigation
     registerIntroText: Introduction text for register page
-    directJumpOnUniqueAliasSearch: Directly jump to location when an unambiguous alias is found
     uiColor: Primary UI Color
     showLogoOnLoadingScreen: Show logo on loading screen
     showLogoInHeader: Show logo in page header
@@ -361,6 +356,7 @@ models:
     contentFont: Default Content Font
     oskModes: On-screen Keyboards
     oskModeFont: Keyboard font
+    resMetaTranslations: Translations for Ressource Metadata Keys
   segment:
     modelLabel: Segment
     formRulesFeedback:
@@ -781,7 +777,7 @@ admin:
   platformSettings:
     nav:
       heading: Navigation
-      aliasSearch: Location Alias Search
+      aliasSearch: Directly jump to location when an unambiguous location alias is found via Quick Search
       customNavLabels: Custom Navigation Labels
     headingBrowseView: Browse View
     headingAppearance: Appearance

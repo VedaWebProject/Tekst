@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.32.2a0"
+    "version": "0.33.0a0"
   },
   "servers": [
     {
@@ -8137,7 +8137,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -8404,7 +8403,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -8634,8 +8632,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -9092,7 +9089,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -9354,7 +9350,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -9579,8 +9574,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -10973,7 +10967,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -11235,7 +11228,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -11460,8 +11452,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -12122,7 +12113,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -12384,7 +12374,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -12609,8 +12598,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -13600,7 +13588,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -13869,7 +13856,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -14101,8 +14087,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -14405,7 +14390,7 @@
           },
           "value": {
             "type": "string",
-            "maxLength": 128,
+            "maxLength": 512,
             "minLength": 1,
             "title": "Value",
             "description": "Value of this metadata entry"
@@ -14456,6 +14441,42 @@
           "parentId"
         ],
         "title": "MoveLocationRequestBody"
+      },
+      "NavTranslations": {
+        "properties": {
+          "browse": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Browse",
+            "description": "Custom label for main navigation browse entry",
+            "default": []
+          },
+          "search": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Search",
+            "description": "Custom label for main navigation search entry",
+            "default": []
+          },
+          "info": {
+            "items": {
+              "$ref": "#/components/schemas/MainNavEntryTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Info",
+            "description": "Custom label for main navigation info entry",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "NavTranslations"
       },
       "OskMode": {
         "properties": {
@@ -14914,7 +14935,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -15191,7 +15211,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -15431,8 +15450,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -15715,35 +15733,14 @@
             "description": "Directly jump to respective location when searching for unique location alias",
             "default": true
           },
-          "navBrowseEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Navbrowseentry",
-            "description": "Custom label for main navigation browse entry",
-            "default": []
-          },
-          "navSearchEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Navsearchentry",
-            "description": "Custom label for main navigation search entry",
-            "default": []
-          },
-          "navInfoEntry": {
-            "items": {
-              "$ref": "#/components/schemas/MainNavEntryTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "title": "Navinfoentry",
-            "description": "Custom label for main navigation info entry",
-            "default": []
+          "navTranslations": {
+            "$ref": "#/components/schemas/NavTranslations",
+            "description": "Custom labels for main navigation entries",
+            "default": {
+              "browse": [],
+              "search": [],
+              "info": []
+            }
           },
           "showResourceCategoryHeadings": {
             "type": "boolean",
@@ -15807,6 +15804,16 @@
             "type": "array",
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
+            "default": []
+          },
+          "resMetaTranslations": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceMetadataKey"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Resmetatranslations",
+            "description": "Custom labels for main navigation entries",
             "default": []
           },
           "indicesUpdatedAt": {
@@ -15989,55 +15996,16 @@
             "description": "Directly jump to respective location when searching for unique location alias",
             "optionalNullable": false
           },
-          "navBrowseEntry": {
+          "navTranslations": {
             "anyOf": [
               {
-                "items": {
-                  "$ref": "#/components/schemas/MainNavEntryTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
+                "$ref": "#/components/schemas/NavTranslations"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Navbrowseentry",
-            "description": "Custom label for main navigation browse entry",
-            "optionalNullable": false
-          },
-          "navSearchEntry": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MainNavEntryTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Navsearchentry",
-            "description": "Custom label for main navigation search entry",
-            "optionalNullable": false
-          },
-          "navInfoEntry": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MainNavEntryTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Navinfoentry",
-            "description": "Custom label for main navigation info entry",
+            "description": "Custom labels for main navigation entries",
             "optionalNullable": false
           },
           "showResourceCategoryHeadings": {
@@ -16163,6 +16131,23 @@
             ],
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
+            "optionalNullable": false
+          },
+          "resMetaTranslations": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ResourceMetadataKey"
+                },
+                "type": "array",
+                "maxItems": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resmetatranslations",
+            "description": "Custom labels for main navigation entries",
             "optionalNullable": false
           }
         },
@@ -16441,6 +16426,47 @@
           "tekst-json",
           "csv"
         ]
+      },
+      "ResourceMetadataKey": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceMetadataKeyTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Translations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "translations"
+        ],
+        "title": "ResourceMetadataKey"
+      },
+      "ResourceMetadataKeyTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "ResourceMetadataKeyTranslation"
       },
       "ResourceSearchQuery": {
         "properties": {
@@ -17048,7 +17074,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -17315,7 +17340,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -17545,8 +17569,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"
@@ -18381,7 +18404,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -18652,7 +18674,6 @@
             },
             "type": "array",
             "maxItems": 64,
-            "minItems": 0,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
@@ -18886,8 +18907,7 @@
                   "$ref": "#/components/schemas/MetadataEntry"
                 },
                 "type": "array",
-                "maxItems": 64,
-                "minItems": 0
+                "maxItems": 64
               },
               {
                 "type": "null"

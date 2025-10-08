@@ -39,7 +39,7 @@ const searchedResources = computed(() => {
 });
 
 const searchLabel = computed(
-  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search')
+  () => pickTranslation(state.pf?.state.navTranslations.search, state.locale) || $t('common.search')
 );
 
 const settings = computed(() => [

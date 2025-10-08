@@ -1,0 +1,29 @@
+{
+  "_id": { "$oid": "66223dee5d0407ae401d7422" },
+  "platform_name": "Tekst-Dev",
+  "platform_subtitle": [
+    { "locale": "enUS", "translation": "An online text research platform" },
+    { "locale": "deDE", "translation": "Eine Forschungsplattform für Texte" }
+  ],
+  "available_locales": ["deDE", "enUS"],
+  "fonts": [],
+  "default_text_id": { "$oid": "654b825533ee5737b297f8e3" },
+  "index_unpublished_resources": false,
+  "direct_jump_on_unique_alias_search": true,
+  "nav_browse_entry": [],
+  "nav_search_entry": [],
+  "nav_info_entry": [],
+  "show_resource_category_headings": true,
+  "prioritize_browse_level_resources": true,
+  "show_location_aliases": true,
+  "ui_color": "#316149",
+  "show_logo_on_loading_screen": true,
+  "show_logo_in_header": true,
+  "show_tekst_footer_hint": true,
+  "deny_resource_types": ["apiCall"],
+  "osk_modes": [
+    { "key": "example", "name": "Example Keymap" },
+    { "key": "example2", "name": "Example 2 Keymap" }
+  ],
+  "indices_updated_at": { "$date": "2025-09-29T11:25:04.870Z" }
+}

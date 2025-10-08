@@ -53,7 +53,7 @@ const formModel = ref<AdvancedSearchFormModel>({ queries: [] });
 const formRef = ref<FormInst | null>(null);
 
 const searchHeading = computed(
-  () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search')
+  () => pickTranslation(state.pf?.state.navTranslations.search, state.locale) || $t('common.search')
 );
 
 const resourceOptions = computed(() => {

@@ -35,6 +35,8 @@ async def migration(db: Database) -> None:
     for res in await db.resources.find({"resource_type": "locationMetadata"}).to_list():
         try:
             for group in res["config"]["special"]["entries_integration"]["groups"]:
+                if "name" not in group:
+                    continue
                 group["key"] = group["name"]
                 del group["name"]
             await db.resources.update_one(
@@ -47,7 +49,7 @@ async def migration(db: Database) -> None:
                     }
                 },
             )
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             log.error(e)
 
     # rename "locationMetadata" resources'
@@ -56,6 +58,8 @@ async def migration(db: Database) -> None:
     for res in await db.resources.find({"resource_type": "locationMetadata"}).to_list():
         try:
             for props in res["config"]["special"]["entries_integration"]["item_props"]:
+                if "name" not in props:
+                    continue
                 props["key"] = props["name"]
                 del props["name"]
             await db.resources.update_one(
@@ -68,7 +72,7 @@ async def migration(db: Database) -> None:
                     }
                 },
             )
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             log.error(e)
 
     # transform "textAnnotation" resources' "config.special.annotations.groups"

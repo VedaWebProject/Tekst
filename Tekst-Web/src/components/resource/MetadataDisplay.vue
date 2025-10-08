@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { prioritizedMetadataKeys, type Metadata, type MetadataEntry } from '@/api';
-import { $t, $te } from '@/i18n';
+import { type Metadata } from '@/api';
+import { useStateStore } from '@/stores';
+import { pickTranslation } from '@/utils';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -8,42 +9,29 @@ const props = defineProps<{
   font?: string;
 }>();
 
-const meta = computed<string[][] | null>(() => {
-  const m: string[][] = [];
-  const data = props.data || [];
+const state = useStateStore();
 
-  // prioritized keys first
-  prioritizedMetadataKeys.forEach((p: string) => {
-    const v = data.find((d) => d.key === p)?.value;
-    if (v) m.push([$te(`models.meta.${p}`) ? $t(`models.meta.${p}`) : p, v]);
-  });
-
-  return m.length > 0 ? m : null;
-});
-
-const metaExtra = computed<string[][] | null>(() => {
-  const m: string[][] = [];
-  const data = props.data || [];
-
-  data.forEach((e: MetadataEntry) => {
-    if (!prioritizedMetadataKeys.includes(e.key)) {
-      m.push([$te(`models.meta.${e.key}`) ? $t(`models.meta.${e.key}`) : e.key, e.value]);
-    }
-  });
-
-  return m.length > 0 ? m : null;
-});
+const meta = computed(
+  () =>
+    props.data?.map((meta) => {
+      const translation = pickTranslation(
+        state.pf?.state.resMetaTranslations.find((tr) => tr.key == meta.key)?.translations,
+        state.locale
+      );
+      return {
+        key: translation || meta.key,
+        value: meta.value,
+        translated: !!translation,
+      };
+    }) || []
+);
 </script>
 
 <template>
   <table>
-    <tr v-for="m in meta" :key="m[0]">
-      <td class="metadata-category">{{ m[0] ? `${m[0]}:` : '' }}</td>
-      <td :style="{ fontFamily: font }">{{ m[1] || '' }}</td>
-    </tr>
-    <tr v-for="m in metaExtra" :key="m[0]">
-      <td class="metadata-category i">{{ m[0] ? `${m[0]}:` : '' }}</td>
-      <td :style="{ fontFamily: font }">{{ m[1] || '' }}</td>
+    <tr v-for="m in meta" :key="m.key">
+      <td class="metadata-category" :class="{ i: !m.translated }">{{ m.key }}:</td>
+      <td :style="{ fontFamily: font }">{{ m.value }}</td>
     </tr>
   </table>
 </template>

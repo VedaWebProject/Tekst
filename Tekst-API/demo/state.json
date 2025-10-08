@@ -11,9 +11,11 @@
     "default_text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "index_unpublished_resources": false,
     "direct_jump_on_unique_alias_search": true,
-    "nav_browse_entry": [],
-    "nav_search_entry": [],
-    "nav_info_entry": [],
+    "nav_translations": {
+      "browse": [],
+      "search": [],
+      "info": []
+    },
     "show_resource_category_headings": true,
     "prioritize_browse_level_resources": true,
     "show_location_aliases": true,
@@ -25,6 +27,26 @@
     "osk_modes": [
       { "key": "example", "name": "Example Keymap" },
       { "key": "example2", "name": "Example 2 Keymap" }
+    ],
+    "res_meta_translations": [
+      {
+        "key": "author",
+        "translations": [{ "locale": "*", "translation": "Author*in" }]
+      },
+      {
+        "key": "year",
+        "translations": [
+          { "locale": "enUS", "translation": "Year" },
+          { "locale": "deDE", "translation": "Jahr" }
+        ]
+      },
+      {
+        "key": "language",
+        "translations": [
+          { "locale": "enUS", "translation": "Language" },
+          { "locale": "deDE", "translation": "Sprache" }
+        ]
+      }
     ],
     "indices_updated_at": { "$date": "2025-09-29T11:25:04.870Z" }
   }

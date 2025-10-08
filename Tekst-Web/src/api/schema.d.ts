@@ -4434,6 +4434,27 @@ export interface components {
       /** Parentid */
       parentId: string | null;
     };
+    /** NavTranslations */
+    NavTranslations: {
+      /**
+       * Browse
+       * @description Custom label for main navigation browse entry
+       * @default []
+       */
+      browse: components['schemas']['MainNavEntryTranslation'][];
+      /**
+       * Search
+       * @description Custom label for main navigation search entry
+       * @default []
+       */
+      search: components['schemas']['MainNavEntryTranslation'][];
+      /**
+       * Info
+       * @description Custom label for main navigation info entry
+       * @default []
+       */
+      info: components['schemas']['MainNavEntryTranslation'][];
+    };
     /** OskMode */
     OskMode: {
       /**
@@ -5053,23 +5074,14 @@ export interface components {
        */
       directJumpOnUniqueAliasSearch: boolean;
       /**
-       * Navbrowseentry
-       * @description Custom label for main navigation browse entry
-       * @default []
+       * @description Custom labels for main navigation entries
+       * @default {
+       *       "browse": [],
+       *       "search": [],
+       *       "info": []
+       *     }
        */
-      navBrowseEntry: components['schemas']['MainNavEntryTranslation'][];
-      /**
-       * Navsearchentry
-       * @description Custom label for main navigation search entry
-       * @default []
-       */
-      navSearchEntry: components['schemas']['MainNavEntryTranslation'][];
-      /**
-       * Navinfoentry
-       * @description Custom label for main navigation info entry
-       * @default []
-       */
-      navInfoEntry: components['schemas']['MainNavEntryTranslation'][];
+      navTranslations: components['schemas']['NavTranslations'];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -5127,6 +5139,12 @@ export interface components {
        * @default []
        */
       oskModes: components['schemas']['OskMode'][];
+      /**
+       * Resmetatranslations
+       * @description Custom labels for main navigation entries
+       * @default []
+       */
+      resMetaTranslations: components['schemas']['ResourceMetadataKey'][];
       /**
        * Indicesupdatedat
        * @description Time when indices were created
@@ -5187,21 +5205,8 @@ export interface components {
        * @description Directly jump to respective location when searching for unique location alias
        */
       directJumpOnUniqueAliasSearch?: boolean;
-      /**
-       * Navbrowseentry
-       * @description Custom label for main navigation browse entry
-       */
-      navBrowseEntry?: components['schemas']['MainNavEntryTranslation'][];
-      /**
-       * Navsearchentry
-       * @description Custom label for main navigation search entry
-       */
-      navSearchEntry?: components['schemas']['MainNavEntryTranslation'][];
-      /**
-       * Navinfoentry
-       * @description Custom label for main navigation info entry
-       */
-      navInfoEntry?: components['schemas']['MainNavEntryTranslation'][];
+      /** @description Custom labels for main navigation entries */
+      navTranslations?: components['schemas']['NavTranslations'];
       /**
        * Showresourcecategoryheadings
        * @description Show resource category headings in browse view
@@ -5247,6 +5252,11 @@ export interface components {
        * @description OSK modes available for use in platform client
        */
       oskModes?: components['schemas']['OskMode'][];
+      /**
+       * Resmetatranslations
+       * @description Custom labels for main navigation entries
+       */
+      resMetaTranslations?: components['schemas']['ResourceMetadataKey'][];
     };
     /** PlatformSubtitleTranslation */
     PlatformSubtitleTranslation: {
@@ -5383,6 +5393,19 @@ export interface components {
     };
     /** @enum {string} */
     ResourceExportFormat: 'json' | 'tekst-json' | 'csv';
+    /** ResourceMetadataKey */
+    ResourceMetadataKey: {
+      /** Key */
+      key: string;
+      /** Translations */
+      translations: components['schemas']['ResourceMetadataKeyTranslation'][];
+    };
+    /** ResourceMetadataKeyTranslation */
+    ResourceMetadataKeyTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
+    };
     /** ResourceSearchQuery */
     ResourceSearchQuery: {
       /** @description Common resource search query data */

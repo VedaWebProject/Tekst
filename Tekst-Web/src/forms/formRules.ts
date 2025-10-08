@@ -244,7 +244,7 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   metaKey: [requiredStringRule(() => $t('common.key'), 'blur'), minMaxCharsRule(1, 16, 'blur')],
   metaValue: [
     requiredStringRule(() => $t('common.value'), 'blur'),
-    minMaxCharsRule(1, 128, 'blur'),
+    minMaxCharsRule(1, 512, 'blur'),
   ],
   resourceType: [
     requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),

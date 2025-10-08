@@ -35,6 +35,36 @@ class MainNavEntryTranslation(TranslationBase):
     translation: ConStr(max_length=42)
 
 
+class NavTranslations(ModelBase):
+    browse: Annotated[
+        Translations[MainNavEntryTranslation],
+        Field(
+            description="Custom label for main navigation browse entry",
+        ),
+    ] = []
+    search: Annotated[
+        Translations[MainNavEntryTranslation],
+        Field(
+            description="Custom label for main navigation search entry",
+        ),
+    ] = []
+    info: Annotated[
+        Translations[MainNavEntryTranslation],
+        Field(
+            description="Custom label for main navigation info entry",
+        ),
+    ] = []
+
+
+class ResourceMetadataKeyTranslation(TranslationBase):
+    translation: ConStr(max_length=64)
+
+
+class ResourceMetadataKey(ModelBase):
+    key: str
+    translations: Translations[ResourceMetadataKeyTranslation]
+
+
 OskKey = Annotated[
     ConStr(
         max_length=32,
@@ -140,26 +170,12 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
-    nav_browse_entry: Annotated[
-        Translations[MainNavEntryTranslation],
+    nav_translations: Annotated[
+        NavTranslations,
         Field(
-            description="Custom label for main navigation browse entry",
+            description="Custom labels for main navigation entries",
         ),
-    ] = []
-
-    nav_search_entry: Annotated[
-        Translations[MainNavEntryTranslation],
-        Field(
-            description="Custom label for main navigation search entry",
-        ),
-    ] = []
-
-    nav_info_entry: Annotated[
-        Translations[MainNavEntryTranslation],
-        Field(
-            description="Custom label for main navigation info entry",
-        ),
-    ] = []
+    ] = NavTranslations()
 
     show_resource_category_headings: Annotated[
         bool,
@@ -225,6 +241,14 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         list[OskMode],
         Field(
             description="OSK modes available for use in platform client",
+        ),
+    ] = []
+
+    res_meta_translations: Annotated[
+        list[ResourceMetadataKey],
+        Field(
+            description="Custom labels for main navigation entries",
+            max_length=64,
         ),
     ] = []
 

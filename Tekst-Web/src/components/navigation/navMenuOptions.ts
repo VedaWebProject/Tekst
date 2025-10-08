@@ -77,7 +77,9 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const menuOptions = computed<MenuOption[]>(() => [
     {
       label: renderLink(
-        () => pickTranslation(state.pf?.state.navBrowseEntry, state.locale) || $t('common.browse'),
+        () =>
+          pickTranslation(state.pf?.state.navTranslations.browse, state.locale) ||
+          $t('common.browse'),
         {
           name: 'browse',
           params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
@@ -88,7 +90,9 @@ export function useMainMenuOptions(showIcons: boolean = true) {
     },
     {
       label: renderLink(
-        () => pickTranslation(state.pf?.state.navSearchEntry, state.locale) || $t('common.search'),
+        () =>
+          pickTranslation(state.pf?.state.navTranslations.search, state.locale) ||
+          $t('common.search'),
         { name: 'search' }
       ),
       key: 'search',
@@ -148,7 +152,8 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       ? [
           {
             label: () =>
-              pickTranslation(state.pf?.state.navInfoEntry, state.locale) || $t('common.info'),
+              pickTranslation(state.pf?.state.navTranslations.info, state.locale) ||
+              $t('common.info'),
             key: 'info',
             children: infoPagesOptions.value,
             icon: (showIcons && renderIcon(InfoIcon)) || undefined,

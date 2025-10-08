@@ -38,7 +38,7 @@ class MetadataEntry(TypedDict):
     ]
     value: Annotated[
         ConStr(
-            max_length=128,
+            max_length=512,
             cleanup="multiline",
         ),
         Field(
@@ -241,7 +241,6 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         list[MetadataEntry],
         Field(
             description="Arbitrary metadata",
-            min_length=0,
             max_length=64,
         ),
     ] = []

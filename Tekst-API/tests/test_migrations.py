@@ -517,3 +517,26 @@ async def test_0_30_0a0(
         for cmt in content["editors_comments"]:
             assert cmt.get("by")
             assert cmt.get("comment")
+
+
+@pytest.mark.anyio
+async def test_0_33_0a0(
+    database,
+    get_test_data,
+):
+    pf_state = get_test_data("migrations/0_33_0a0.json")
+    await database.state.insert_one(pf_state)
+
+    # run migration
+    await _migration_fn("0_33_0a0")(database)
+    pf_state = await database.state.find_one({})
+
+    # assert the data has been fixed by the migration
+    assert pf_state
+    assert "nav_browse_entry" not in pf_state
+    assert "nav_search_entry" not in pf_state
+    assert "nav_info_entry" not in pf_state
+    assert "nav_translations" in pf_state
+    assert pf_state["nav_translations"].get("browse") is not None
+    assert pf_state["nav_translations"].get("search") is not None
+    assert pf_state["nav_translations"].get("info") is not None
