@@ -6222,6 +6222,11 @@ export interface components {
        * @default false
        */
       wc: boolean;
+      /**
+       * Spc
+       * @description Special annotation query type
+       */
+      spc?: ('exists' | 'missing') | null;
     };
     /** TextAnnotationResourceConfig */
     TextAnnotationResourceConfig: {

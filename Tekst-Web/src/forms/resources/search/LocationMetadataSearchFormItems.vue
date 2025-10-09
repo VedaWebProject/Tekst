@@ -29,7 +29,7 @@ const metaValueStyle = {
 const aggregations = ref<KeyValueAggregations>([]);
 const entryOptions = computed(() => {
   const anyValueOption = {
-    label: () => $t('resources.types.locationMetadata.searchFields.any'),
+    label: () => `[${$t('search.advancedSearch.values.exists')}]`,
     value: '',
   };
   return (

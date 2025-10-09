@@ -129,10 +129,34 @@ class TextAnnotation(ResourceTypeABC):
         q_id = str(uuid4())
 
         annos_usr_q = query.resource_type_specific.annotations or []
+        tokens_field_path = f"resources.{res_id}.tokens"
+        annos_field_path = f"{tokens_field_path}.annotations"
         annos_es_q = []
 
         # process annotation queries
         for anno_q in annos_usr_q:
+            if not anno_q.key:  # pragma: no cover
+                continue
+
+            if anno_q.special == "missing":
+                # we're looking for tokens WITHOUT this annotation key
+                anno_k_q = {"term": {f"{annos_field_path}.key": anno_q.key}}
+                annos_es_q.append(
+                    {
+                        "bool": {
+                            "must_not": [
+                                {
+                                    "nested": {
+                                        "path": annos_field_path,
+                                        "query": anno_k_q,
+                                    }
+                                }
+                            ],
+                        },
+                    }
+                )
+                continue
+
             # preprocess value query to be list containing only truthy values
             anno_q.value = [
                 v
@@ -141,52 +165,42 @@ class TextAnnotation(ResourceTypeABC):
                 )
                 if v
             ]
-            if anno_q.key and not anno_q.value:
-                # only key is set (and no value): query for existence of key
-                anno_k_q = {
-                    "term": {f"resources.{res_id}.tokens.annotations.key": anno_q.key}
-                }
+
+            if anno_q.special == "exists" or not anno_q.value:
+                # only key is set (and no value) or query is explicitly meant to
+                # just check the existance of an annotation key (regardless of value)
+                anno_k_q = {"term": {f"{annos_field_path}.key": anno_q.key}}
                 annos_es_q.append(
                     {
                         "nested": {
-                            "path": f"resources.{res_id}.tokens.annotations",
+                            "path": annos_field_path,
                             "query": anno_k_q,
                         }
                     }
                 )
-            elif anno_q.key and anno_q.value:
-                # both key and value are set: query for specific key/value combination
+                continue
+
+            if anno_q.value:
+                # arbitrary values are set: query for specific key/value combinations
                 # key query
-                anno_k_q = {
-                    "term": {f"resources.{res_id}.tokens.annotations.key": anno_q.key}
-                }
+                anno_k_q = {"term": {f"{annos_field_path}.key": anno_q.key}}
                 # value(s) queries
                 anno_v_qs = [
                     {
                         "wildcard": {
-                            (
-                                f"resources.{res_id}.tokens.annotations"
-                                f".value{strict_suffix}"
-                            ): {
+                            (f"{annos_field_path}.value{strict_suffix}"): {
                                 "value": v,
                             }
                         }
                     }
                     if anno_q.wildcards
-                    else {
-                        "term": {
-                            (
-                                f"resources.{res_id}.tokens.annotations"
-                                f".value{strict_suffix}"
-                            ): v
-                        }
-                    }
+                    else {"term": {(f"{annos_field_path}.value{strict_suffix}"): v}}
                     for v in [v.strip() for v in anno_q.value]
                 ]
                 annos_es_q.append(
                     {
                         "nested": {
-                            "path": f"resources.{res_id}.tokens.annotations",
+                            "path": annos_field_path,
                             "query": {
                                 "bool": {
                                     "must": [anno_k_q, *anno_v_qs],
@@ -195,13 +209,14 @@ class TextAnnotation(ResourceTypeABC):
                         }
                     }
                 )
+                continue
 
         # add token and annotation queries to the ES queries
         if annos_es_q:
             es_queries.append(
                 {
                     "nested": {
-                        "path": f"resources.{res_id}.tokens",
+                        "path": tokens_field_path,
                         "inner_hits": {"name": q_id},
                         "query": {
                             "bool": {
@@ -577,6 +592,13 @@ class TextAnnotationQueryEntry(ModelBase):
             description="Whether to interpret wildcards in the annotation value query",
         ),
     ] = False
+    special: Annotated[
+        Literal["exists", "missing"] | None,
+        Field(
+            alias="spc",
+            description="Special annotation query type",
+        ),
+    ] = None
 
 
 class TextAnnotationSearchQuery(ModelBase):

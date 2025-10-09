@@ -18250,6 +18250,22 @@
             "title": "Wc",
             "description": "Whether to interpret wildcards in the annotation value query",
             "default": false
+          },
+          "spc": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "exists",
+                  "missing"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spc",
+            "description": "Special annotation query type"
           }
         },
         "type": "object",

@@ -514,8 +514,6 @@ resources:
         annotations: Annotations
         annotationKey: Annotation
         commaSepHint: comma-separated values
-      searchFields:
-        any: '[any value]'
       copyTokenAction: Copy token
       copyTokenFullAction: Copy token and annotations
       copyHintTip: Right click or long press to copy
@@ -525,8 +523,6 @@ resources:
       parenthesis: Metadata as key-value pairs
       contentFields:
         entries: Entries
-      searchFields:
-        any: '[any value]'
     audio:
       label: Audio
       parenthesis: audio playback
@@ -868,6 +864,9 @@ search:
         Constraining the location range for this search is not possible,
         because the selected target resources don't have a common reference text and/or
         don't share the same structure level.
+    values:
+      exists: exists
+      missing: missing
   settings:
     general:
       strict: Respect diacritics

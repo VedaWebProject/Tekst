@@ -322,7 +322,7 @@ async def test_advanced_text_annotation(
         expected_hits=0,
     )
 
-    # token from anno, with wildcard
+    # token form anno, with wildcard
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -360,6 +360,58 @@ async def test_advanced_text_annotation(
             },
         ),
         expected_hits=4,
+    )
+
+    # annotation key only, explicitly set to "exists"
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [
+                                {
+                                    "k": "type",
+                                    "v": "doesn't matter!",
+                                    "spc": "exists",
+                                }
+                            ],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=4,
+    )
+
+    # annotation key missing
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {"res": "67c0442e906e79b9062e22f6", "occ": "should"},
+                        "rts": {
+                            "type": "textAnnotation",
+                            "anno": [
+                                {
+                                    "k": "comment",
+                                    "v": "doesn't matter!",
+                                    "spc": "missing",
+                                }
+                            ],
+                        },
+                    }
+                ],
+            },
+        ),
+        expected_hits=3,
     )
 
     # annotation key and value

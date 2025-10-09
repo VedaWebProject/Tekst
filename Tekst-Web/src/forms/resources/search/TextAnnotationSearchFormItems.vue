@@ -13,6 +13,9 @@ import { groupAndSortItems, pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
+const _V_EXISTS = '#!V_EXISTS!#';
+const _V_MISSING = '#!V_MISSING!#';
+
 const props = defineProps<{
   resource: TextAnnotationResourceRead;
   queryIndex: number;
@@ -64,29 +67,51 @@ const annoOptions = computed(() => {
       // disable children that are already in use
       children: group.children.map((c) => ({
         ...c,
-        disabled: model.value.anno?.map((an) => an.k).includes(c.value),
+        disabled: !!model.value.anno?.map((an) => an.k).includes(c.value),
       })),
     })),
     valuesOptions: [
-      // "any value" option
+      // "exists" value option
       {
-        label: () => $t('resources.types.textAnnotation.searchFields.any'),
-        value: '',
+        label: () => `[${$t('search.advancedSearch.values.exists')}]`,
+        value: _V_EXISTS,
+        disabled: !!model.value.anno
+          ?.filter((an) => an.k === a.k)
+          .map((an) => an.v)
+          .flat()
+          ?.includes(_V_MISSING),
+      },
+      // "missing" value option
+      {
+        label: () => `[${$t('search.advancedSearch.values.missing')}]`,
+        value: _V_MISSING,
+        disabled: !!model.value.anno
+          ?.filter((an) => an.k === a.k)
+          .map((an) => an.v)
+          .flat()
+          ?.includes(_V_EXISTS),
       },
       // existing values from aggregations
       ...(aggregations.value
         // find possible values for the selected key
         .find((agg) => agg.key === a.k)
-        ?.values?.filter(
-          // filter out already selected values
-          (v) =>
-            !model.value.anno
+        ?.values // map anno key-value pairs to options
+        .map((v) => ({
+          label: v,
+          value: v,
+          disabled:
+            !!model.value.anno
               ?.filter((an) => an.k === a.k)
               .map((an) => an.v)
-              ?.includes(v)
-        )
-        // map anno key-value pairs to options
-        .map((v) => ({ label: v, value: v, style: annoValueStyle })) || []),
+              .flat()
+              ?.includes(_V_EXISTS) ||
+            !!model.value.anno
+              ?.filter((an) => an.k === a.k)
+              .map((an) => an.v)
+              .flat()
+              ?.includes(_V_MISSING),
+          style: annoValueStyle,
+        })) || []),
     ],
   }));
 
@@ -95,6 +120,20 @@ const annoOptions = computed(() => {
 
 function getAnnoValueSelectStyle(value?: string) {
   return value ? annoValueStyle : undefined;
+}
+
+function validateValueSelections() {
+  model.value.anno?.forEach((anno) => {
+    if (!!anno.v?.includes(_V_EXISTS)) {
+      anno.v = [_V_EXISTS];
+      anno.spc = 'exists';
+    } else if (!!anno.v?.includes(_V_MISSING)) {
+      anno.v = [_V_MISSING];
+      anno.spc = 'missing';
+    } else {
+      delete anno.spc;
+    }
+  });
 }
 
 onMounted(async () => {
@@ -154,6 +193,7 @@ onMounted(async () => {
                 :style="getAnnoValueSelectStyle(annotationItem.v)"
                 :options="annoOptions[annotationItemIndex].valuesOptions"
                 :placeholder="$t('common.value')"
+                @update:value="validateValueSelections"
               />
             </n-form-item>
 

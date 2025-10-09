@@ -525,8 +525,6 @@ resources:
         annotations: Annotationen
         annotationKey: Annotation
         commaSepHint: comma-separated values
-      searchFields:
-        any: '[beliebiger Wert]'
       copyTokenAction: Token kopieren
       copyTokenFullAction: Token und Annotationen kopieren
       copyHintTip: Rechtsklick order halten zum Kopieren
@@ -536,8 +534,6 @@ resources:
       parenthesis: Metadaten als Schlüssel-Wert-Paare
       contentFields:
         entries: Einträge
-      searchFields:
-        any: '[beliebiger Wert]'
     audio:
       label: Audio
       parenthesis: Audiowiedergabe
@@ -892,6 +888,9 @@ search:
         Es ist nicht möglich den Suchbereich dieser Suche einzuschränken,
         da die gewählten Zielressourcen keinen gemeinsamen Referenztext haben und/oder
         sich nicht auf die selbe Strukturebene beziehen.
+    values:
+      exists: existiert
+      missing: fehlt
   settings:
     general:
       strict: Berücksichtige Diakritika
