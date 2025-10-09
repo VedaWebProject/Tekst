@@ -67,7 +67,7 @@ const resourceOptions = computed(() => {
       h(
         'div',
         {
-          class: 'text-small b',
+          class: 'text-small',
           style: {
             color: theme.getTextColors(tId).base,
             padding: '8px',
