@@ -10,7 +10,7 @@ RUN cd Tekst-Web && npm install && npm run build-only -- --base=./
 
 # PYTHON ALPINE BASE IMAGE
 
-FROM python:3.14-alpine3.21 AS py-base
+FROM python:3.13-alpine3.21 AS py-base
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONUNBUFFERED=1 \
