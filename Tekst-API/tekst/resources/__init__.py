@@ -29,6 +29,7 @@ from tekst.models.content import (
     ContentBaseUpdate,
     EditorsComment,
 )
+from tekst.models.correction import CorrectionDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -37,6 +38,7 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.text import TextDocument
+from tekst.models.user import UserDocument
 from tekst.types import ConStr, SchemaOptionalNullable
 
 
@@ -657,3 +659,67 @@ AnyResourceSearchQuery = Annotated[
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
 ]
+
+
+async def prepare_resource_read(
+    resource_doc: ResourceBaseDocument,
+    for_user: UserDocument | None = None,
+) -> AnyResourceRead:
+    """
+    A helper function that returns a fully prepared resource read instance for clients
+    """
+    # convert resource document to resource type's read model instance
+    resource = (
+        resource_types_mgr.get(resource_doc.resource_type)
+        .resource_model()
+        .read_model()(
+            **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
+        )
+    )
+
+    # include writable flag
+    resource.writable = bool(
+        for_user
+        and (
+            for_user.is_superuser
+            or (
+                (
+                    for_user.id == resource.owner_id
+                    or for_user.id in resource_doc.shared_write
+                )
+                and not resource.public
+                and not resource.proposed
+            )
+        )
+    )
+
+    # include owner user data in each resource model (if an owner id is set)
+    if resource.owner_id:
+        resource.owner = await UserDocument.get(resource.owner_id)
+
+    # include corrections count if user is owner of the resource
+    # or, if resource has no owner, user is superuser
+    if for_user and (
+        for_user.is_superuser
+        or for_user.id == resource.owner_id
+        or for_user.id in resource.shared_write
+    ):
+        resource.corrections = await CorrectionDocument.find(
+            CorrectionDocument.resource_id == resource.id
+        ).count()
+
+    # include shared-with user data in each resource model (if any)
+    if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
+        if resource.shared_read:
+            resource.shared_read_users = await UserDocument.find(
+                In(UserDocument.id, resource.shared_read)
+            ).to_list()
+        if resource.shared_write:
+            resource.shared_write_users = await UserDocument.find(
+                In(UserDocument.id, resource.shared_write)
+            ).to_list()
+    else:
+        resource.shared_read = []
+        resource.shared_write = []
+
+    return resource

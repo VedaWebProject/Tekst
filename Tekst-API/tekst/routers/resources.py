@@ -36,82 +36,20 @@ from tekst.models.resource import (
     res_exp_fmt_info,
 )
 from tekst.models.text import TextDocument
-from tekst.models.user import UserDocument, UserRead, UserReadPublic
+from tekst.models.user import UserDocument, UserRead
 from tekst.resources import (
     RES_EXCLUDE_FIELDS_EXP_IMP,
     AnyResourceCreate,
     AnyResourceRead,
     AnyResourceUpdate,
     call_resource_precompute_hooks,
+    prepare_resource_read,
     resource_types_mgr,
 )
 from tekst.search import set_index_ood
 from tekst.state import StateDep
 from tekst.types import ResourceTypeName
 from tekst.utils import client_hash
-
-
-async def _preprocess_res_read(
-    resource_doc: ResourceBaseDocument,
-    for_user: UserRead | None = None,
-) -> AnyResourceRead:
-    # convert resource document to resource type's read model instance
-    resource = (
-        resource_types_mgr.get(resource_doc.resource_type)
-        .resource_model()
-        .read_model()(
-            **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
-        )
-    )
-
-    # include writable flag
-    resource.writable = bool(
-        for_user
-        and (
-            for_user.is_superuser
-            or (
-                (
-                    for_user.id == resource.owner_id
-                    or for_user.id in resource_doc.shared_write
-                )
-                and not resource.public
-                and not resource.proposed
-            )
-        )
-    )
-
-    # include owner user data in each resource model (if an owner id is set)
-    if resource.owner_id:
-        owner = await UserDocument.get(resource.owner_id)
-        if owner:
-            resource.owner = UserReadPublic.model_from(owner)
-
-    # include corrections count if user is owner of the resource
-    # or, if resource has no owner, user is superuser
-    if for_user and (
-        for_user.is_superuser
-        or for_user.id == resource.owner_id
-        or for_user.id in resource.shared_write
-    ):
-        resource.corrections = await CorrectionDocument.find(
-            CorrectionDocument.resource_id == resource.id
-        ).count()
-
-    # include shared-with user data in each resource model (if any)
-    if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
-        if resource.shared_read:
-            resource.shared_read_users = await UserDocument.find(
-                In(UserDocument.id, resource.shared_read)
-            ).to_list()
-        if resource.shared_write:
-            resource.shared_write_users = await UserDocument.find(
-                In(UserDocument.id, resource.shared_write)
-            ).to_list()
-    else:
-        resource.shared_read = []
-        resource.shared_write = []
-
-    return resource
 
 
 router = APIRouter(
@@ -191,7 +129,7 @@ async def create_resource(
     resource_doc.owner_id = user.id  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.post(
@@ -270,7 +208,7 @@ async def create_resource_version(
         )
         .create()
     )
-    return await _preprocess_res_read(version_doc, user)
+    return await prepare_resource_read(version_doc, user)
 
 
 @router.patch(
@@ -351,7 +289,7 @@ async def update_resource(
     # update document
     await resource_doc.apply_updates(updates)
 
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.get(
@@ -412,7 +350,8 @@ async def find_resources(
 
     # return processed results, enrich with user-specific access flags etc.
     return [
-        await _preprocess_res_read(resource_doc, user) for resource_doc in resource_docs
+        await prepare_resource_read(resource_doc, user)
+        for resource_doc in resource_docs
     ]
 
 
@@ -437,7 +376,7 @@ async def get_resource(
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.delete(
@@ -542,7 +481,7 @@ async def transfer_resource(
 
     # if the target user is already the owner, return the resource
     if target_user_id == resource_doc.owner_id:
-        return await _preprocess_res_read(resource_doc, user)
+        return await prepare_resource_read(resource_doc, user)
 
     # check user resources limit
     if (
@@ -568,7 +507,7 @@ async def transfer_resource(
             ],
         }
     )
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.post(
@@ -596,7 +535,7 @@ async def propose_resource(
     if not user.is_superuser and user.id != resource_doc.owner_id:
         raise errors.E_403_FORBIDDEN
     if resource_doc.proposed:
-        return await _preprocess_res_read(resource_doc, user)
+        return await prepare_resource_read(resource_doc, user)
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PROPOSE_PUBLIC
     if resource_doc.original_id:
@@ -615,7 +554,7 @@ async def propose_resource(
         username=user.name if "name" in user.public_fields else user.username,
         resource_title=pick_translation(resource_doc.title),
     )
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.post(
@@ -648,7 +587,7 @@ async def unpropose_resource(
             ResourceBaseDocument.public: False,
         }
     )
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.post(
@@ -673,7 +612,7 @@ async def publish_resource(
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
     if resource_doc.public:
-        return await _preprocess_res_read(resource_doc, user)
+        return await prepare_resource_read(resource_doc, user)
     if not resource_doc.proposed:
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
@@ -702,7 +641,7 @@ async def publish_resource(
         resource_title=pick_translation(resource_doc.title),
     )
 
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.post(
@@ -742,7 +681,7 @@ async def unpublish_resource(
         by_public_resource=True,  # act as if resource public, to force ood status
     )
 
-    return await _preprocess_res_read(resource_doc, user)
+    return await prepare_resource_read(resource_doc, user)
 
 
 @router.get(
