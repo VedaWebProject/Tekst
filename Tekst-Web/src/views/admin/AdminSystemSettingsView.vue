@@ -326,6 +326,7 @@ watch(
                       :label="$t('common.key')"
                       :path="`oskModes[${index}].key`"
                       :rule="platformSettingsFormRules.oskModeKey"
+                      style="flex: 1 100px"
                     >
                       <n-input
                         v-model:value="formModel.oskModes[index].key"
@@ -338,7 +339,7 @@ watch(
                       :label="$t('common.name')"
                       :path="`oskModes[${index}].name`"
                       :rule="platformSettingsFormRules.oskModeName"
-                      style="flex: 2"
+                      style="flex: 2 200px"
                     >
                       <n-input
                         v-model:value="formModel.oskModes[index].name"
@@ -351,6 +352,7 @@ watch(
                       ignore-path-change
                       :path="`oskModes[${index}].font`"
                       :label="$t('models.platformSettings.oskModeFont')"
+                      style="flex: 1 200px"
                     >
                       <n-select
                         v-model:value="formModel.oskModes[index].font"
@@ -358,7 +360,6 @@ watch(
                         :options="oskFontOptions"
                         :placeholder="$t('common.default')"
                         :consistent-menu-width="false"
-                        style="min-width: 200px"
                         @keydown.enter.prevent
                       />
                     </n-form-item>

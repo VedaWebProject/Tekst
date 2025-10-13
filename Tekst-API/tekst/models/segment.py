@@ -39,6 +39,14 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             description="Locale indicating the translation language of this segment",
         ),
     ]
+    restriction: Annotated[
+        Literal["none", "user", "superuser"],
+        Field(
+            description=(
+                "Whether access is unrestricted or restricted to superusers or users"
+            ),
+        ),
+    ] = "none"
     title: Annotated[
         ConStr(
             max_length=32,

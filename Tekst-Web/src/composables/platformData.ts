@@ -26,7 +26,7 @@ export function usePlatformData() {
     }
   }
 
-  function getSegmentId(key?: string, locale?: string) {
+  function _getSegmentId(key?: string, locale?: string) {
     if (!key) return undefined;
     if (key.startsWith('system')) {
       const segments = pfData.value?.systemSegments.filter((s) => s.key === key) || [];
@@ -48,7 +48,7 @@ export function usePlatformData() {
 
   async function getSegment(key?: string, locale?: string) {
     if (!key) return undefined;
-    const targetId = getSegmentId(key, locale);
+    const targetId = _getSegmentId(key, locale);
     if (!targetId) return undefined;
     if (key.startsWith('system')) {
       return pfData.value?.systemSegments.find((s) => s.id === targetId);

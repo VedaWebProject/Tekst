@@ -13,7 +13,9 @@ from tekst.platform import cleanup_task
 async def test_platform_data(
     test_client: AsyncClient,
     assert_status,
+    insert_test_data,
 ):
+    await insert_test_data()
     resp = await test_client.get("/platform")
     assert_status(200, resp)
     assert resp.json()["tekst"]["version"] == package_metadata["version"]
@@ -23,21 +25,31 @@ async def test_platform_data(
 async def test_web_init_data(
     test_client: AsyncClient,
     assert_status,
+    insert_test_data,
     login,
 ):
+    await insert_test_data()
     # anonymous
     resp = await test_client.get("/platform/web-init")
     assert_status(200, resp)
     assert "platform" in resp.json()
     assert "user" in resp.json()
     assert resp.json()["user"] is None
-
+    assert len(resp.json()["platform"]["infoSegments"]) == 2
     # logged in
     await login()
     resp = await test_client.get("/platform/web-init")
     assert_status(200, resp)
     assert "user" in resp.json()
     assert resp.json()["user"] is not None
+    assert len(resp.json()["platform"]["infoSegments"]) == 4
+    # logged in as admin
+    await login(is_superuser=True)
+    resp = await test_client.get("/platform/web-init")
+    assert_status(200, resp)
+    assert "user" in resp.json()
+    assert resp.json()["user"] is not None
+    assert len(resp.json()["platform"]["infoSegments"]) == 6
 
 
 @pytest.mark.anyio

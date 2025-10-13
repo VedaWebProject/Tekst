@@ -148,6 +148,7 @@ async def insert_test_data(
             "state",
             "texts",
             "users",
+            "segments",
         ]
         for collection in collections:
             test_data = get_test_data(f"collections/{collection}.json")

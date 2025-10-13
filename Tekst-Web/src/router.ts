@@ -41,7 +41,6 @@ const AdminSystemUsersView = () => import('@/views/admin/AdminSystemUsersView.vu
 const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsView.vue');
 const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMaintenanceView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
-const AdminSystemInfoPagesView = () => import('@/views/admin/AdminSystemInfoPagesView.vue');
 
 async function _resolveLocation(locationQuery: LocationQuery): Promise<LocationRead | null> {
   const { data, error } = await GET('/locations', {
@@ -296,12 +295,14 @@ const router = createRouter({
         {
           path: 'pages',
           name: 'adminInfoPages',
-          component: AdminSystemInfoPagesView,
+          component: AdminSystemSegmentsView,
+          props: { segmentType: 'info' },
         },
         {
           path: 'segments',
           name: 'adminSegments',
           component: AdminSystemSegmentsView,
+          props: { segmentType: 'system' },
         },
         {
           path: 'users',

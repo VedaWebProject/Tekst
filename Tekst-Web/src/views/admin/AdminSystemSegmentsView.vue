@@ -8,10 +8,11 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
-import { systemSegmentFormRules } from '@/forms/formRules';
+import { infoSegmentFormRules, systemSegmentFormRules } from '@/forms/formRules';
 import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
-import { AddIcon, FileOpenIcon, SegmentsIcon } from '@/icons';
+import { AddIcon, FileOpenIcon, InfoIcon, SegmentsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
+import { cloneDeep } from 'lodash-es';
 import {
   NButton,
   NEmpty,
@@ -25,12 +26,16 @@ import {
   type FormInst,
   type InputInst,
 } from 'naive-ui';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+const props = defineProps<{ segmentType: 'info' | 'system' }>();
 
 const state = useStateStore();
-const { loadPlatformData } = usePlatformData();
+const { loadPlatformData, getSegment } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
+const route = useRoute();
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -45,24 +50,43 @@ const {
 } = useModelChanges(segmentModel);
 
 const segmentOptions = computed(() =>
-  [...new Set(state.pf?.systemSegments.map((s) => s.key))].map((key) => {
-    const groupSegments = state.pf?.systemSegments.filter((s) => s.key === key) || [];
-    return {
-      type: 'group',
-      label: $t(`admin.segments.systemKeys.${key}`),
-      key,
-      children: groupSegments.map((s) => ({
-        label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
-        value: s.id,
-      })),
-    };
-  })
+  props.segmentType == 'info'
+    ? [...new Set(state.pf?.infoSegments.map((p) => p.key))].map((key) => {
+        const groupSegments = state.pf?.infoSegments.filter((s) => s.key === key) || [];
+        const currLocaleSegment =
+          groupSegments.find((s) => s.locale === state.locale) ||
+          groupSegments.find((s) => s.locale === 'enUS') ||
+          groupSegments[0];
+        return {
+          type: 'group',
+          label: currLocaleSegment.title || currLocaleSegment.key,
+          key,
+          children: groupSegments.map((s) => ({
+            label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
+            value: s.id,
+          })),
+        };
+      })
+    : [...new Set(state.pf?.systemSegments.map((s) => s.key))].map((key) => {
+        const groupSegments = state.pf?.systemSegments.filter((s) => s.key === key) || [];
+        return {
+          type: 'group',
+          label: $t(`admin.segments.systemKeys.${key}`),
+          key,
+          children: groupSegments.map((s) => ({
+            label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
+            value: s.id,
+          })),
+        };
+      })
 );
 
 const localeOptions = computed(() =>
   state.translationLocaleOptions.map((tlo) => ({
     ...tlo,
-    disabled: !!state.pf?.systemSegments.find(
+    disabled: !!(
+      props.segmentType == 'info' ? state.pf?.infoSegments : state.pf?.systemSegments
+    )?.find(
       (p) =>
         p.locale === tlo.value &&
         p.key === segmentModel.value?.key &&
@@ -70,6 +94,16 @@ const localeOptions = computed(() =>
     ),
   }))
 );
+
+const segmentSelectPlaceholder = computed(() => {
+  if (props.segmentType === 'info') {
+    return modelChanged.value ? $t('admin.infoPages.newPage') : $t('admin.infoPages.phSelectPage');
+  } else {
+    return modelChanged.value
+      ? $t('admin.segments.newSegment')
+      : $t('admin.segments.phSelectSegment');
+  }
+});
 
 const systemSegmentKeys = [
   'systemHome',
@@ -87,37 +121,41 @@ const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
   value: key,
 }));
 
-function getSegmentModel(segmentId?: string): ClientSegmentUpdate {
+async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
   if (!segmentId) {
     return {
       key: '',
-      title: undefined,
+      title: '',
       locale: '*',
+      restriction: 'none',
       editorMode: 'wysiwyg',
       html: '',
     };
   } else {
-    const selectedSegment = state.pf?.systemSegments.find((s) => s.id === segmentId);
-    if (!selectedSegment) {
-      return getSegmentModel();
+    let selectedSegment = null;
+    if (props.segmentType == 'info') {
+      const selectedSegmentSignature = state.pf?.infoSegments.find((s) => s.id === segmentId);
+      selectedSegment = await getSegment(
+        selectedSegmentSignature?.key,
+        selectedSegmentSignature?.locale || undefined
+      );
     } else {
-      return Object.assign({}, selectedSegment);
+      selectedSegment = state.pf?.systemSegments.find((s) => s.id === segmentId);
+    }
+    if (!selectedSegment) {
+      return await getSegmentModel();
+    } else {
+      return cloneDeep(selectedSegment);
     }
   }
 }
 
-function handleAddSegmentClick() {
-  selectedSegmentId.value = null;
-  segmentModel.value = getSegmentModel();
-  resetModelChanges();
+async function handleChangeSegment(id?: string) {
+  selectedSegmentId.value = id || null;
+  segmentModel.value = await getSegmentModel(id);
   formRef.value?.restoreValidation();
-  nextTick(() => firstInputRef.value?.focus());
-}
-
-function handleSelectSegment(id: string) {
-  segmentModel.value = getSegmentModel(id);
   resetModelChanges();
-  formRef.value?.restoreValidation();
+  if (!id) nextTick(() => firstInputRef.value?.focus());
 }
 
 async function handleSaveClick() {
@@ -175,7 +213,7 @@ async function createSegment() {
 
 function handleCancelClick() {
   if (!modelChanged.value) {
-    resetForm();
+    clearForm();
     return;
   }
   dialog.warning({
@@ -185,11 +223,11 @@ function handleCancelClick() {
     negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
-    onPositiveClick: resetForm,
+    onPositiveClick: clearForm,
   });
 }
 
-function resetForm() {
+function clearForm() {
   selectedSegmentId.value = null;
   segmentModel.value = undefined;
   resetModelChanges();
@@ -219,33 +257,52 @@ async function handleDeleteClick() {
           })
         );
       }
-      resetForm();
+      clearForm();
       loadPlatformData();
     },
   });
 }
+
+/*
+Reset view state when switching between system segments and info pages
+(this is necessary because we're reusing this view component for both routes and the
+component won't be re-rendered on route change)
+*/
+watch(
+  () => route.name,
+  () => {
+    clearForm();
+  }
+);
 </script>
 
 <template>
-  <icon-heading level="1" :icon="SegmentsIcon">
-    {{ $t('admin.segments.heading') }}
-    <help-button-widget help-key="adminSegmentsView" />
+  <icon-heading level="1" :icon="segmentType == 'info' ? InfoIcon : SegmentsIcon">
+    {{ segmentType === 'info' ? $t('admin.infoPages.heading') : $t('admin.segments.heading') }}
+    <help-button-widget
+      :help-key="segmentType === 'info' ? 'adminInfoPagesView' : 'adminSegmentsView'"
+    />
   </icon-heading>
+
+  model changed: {{ modelChanged }}
 
   <n-flex :wrap="false">
     <n-select
       v-model:value="selectedSegmentId"
       filterable
       size="large"
-      :disabled="modelChanged"
+      :disabled="modelChanged || !segmentOptions.length"
       :options="segmentOptions"
-      :placeholder="
-        modelChanged ? $t('admin.segments.newSegment') : $t('admin.segments.phSelectSegment')
-      "
+      :placeholder="segmentSelectPlaceholder"
       style="flex: 2"
-      @update:value="handleSelectSegment"
+      @update:value="handleChangeSegment"
     />
-    <n-button type="primary" :disabled="modelChanged" size="large" @click="handleAddSegmentClick">
+    <n-button
+      type="primary"
+      :disabled="modelChanged"
+      size="large"
+      @click="() => handleChangeSegment()"
+    >
       <template #icon>
         <n-icon :component="AddIcon" />
       </template>
@@ -257,7 +314,7 @@ async function handleDeleteClick() {
       <n-form
         ref="formRef"
         :model="segmentModel"
-        :rules="systemSegmentFormRules"
+        :rules="segmentType === 'info' ? infoSegmentFormRules : systemSegmentFormRules"
         :disabled="loading"
         label-placement="top"
         label-width="auto"
@@ -274,12 +331,19 @@ async function handleDeleteClick() {
           />
         </n-form-item>
         <!-- KEY -->
-        <n-form-item path="key" :label="$t('common.type')">
+        <n-form-item v-if="segmentType === 'info'" path="key" :label="$t('common.key')">
+          <n-input
+            v-model:value="segmentModel.key"
+            type="text"
+            :placeholder="$t('common.key')"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <n-form-item v-else path="key" :label="$t('common.type')">
           <n-select
             v-model:value="segmentModel.key"
             :options="systemSegmentKeyOptions"
             :consistent-menu-width="false"
-            style="min-width: 200px"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -291,7 +355,29 @@ async function handleDeleteClick() {
             :placeholder="$t('common.language')"
             :consistent-menu-width="false"
             :render-label="(o) => renderLanguageOptionLabel(localeOptions, o)"
-            style="min-width: 200px"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
+        <!-- RESTRICTION -->
+        <n-form-item path="restriction" :label="$t('admin.segments.restriction.showTo')" required>
+          <n-select
+            v-model:value="segmentModel.restriction"
+            :options="[
+              {
+                label: $t('admin.segments.restriction.none'),
+                value: 'none',
+              },
+              {
+                label: $t('admin.segments.restriction.user'),
+                value: 'user',
+              },
+              {
+                label: $t('admin.segments.restriction.superuser'),
+                value: 'superuser',
+              },
+            ]"
+            default-value="none"
+            :consistent-menu-width="false"
             @keydown.enter.prevent
           />
         </n-form-item>
@@ -323,7 +409,13 @@ async function handleDeleteClick() {
     </div>
   </template>
 
-  <n-empty v-else :description="$t('admin.segments.noSegment')" class="mt-lg">
+  <n-empty
+    v-else
+    :description="
+      segmentType === 'info' ? $t('admin.infoPages.noPage') : $t('admin.segments.noSegment')
+    "
+    class="mt-lg"
+  >
     <template #icon>
       <n-icon :component="FileOpenIcon" />
     </template>

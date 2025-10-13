@@ -2698,6 +2698,14 @@
         ],
         "summary": "Get segment",
         "operationId": "getSegment",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -9951,6 +9959,17 @@
             "$ref": "#/components/schemas/TranslationLocaleKey",
             "description": "Locale indicating the translation language of this segment"
           },
+          "restriction": {
+            "type": "string",
+            "enum": [
+              "none",
+              "user",
+              "superuser"
+            ],
+            "title": "Restriction",
+            "description": "Whether access is unrestricted or restricted to superusers or users",
+            "default": "none"
+          },
           "title": {
             "type": "string",
             "maxLength": 32,
@@ -10044,6 +10063,17 @@
             "$ref": "#/components/schemas/TranslationLocaleKey",
             "description": "Locale indicating the translation language of this segment"
           },
+          "restriction": {
+            "type": "string",
+            "enum": [
+              "none",
+              "user",
+              "superuser"
+            ],
+            "title": "Restriction",
+            "description": "Whether access is unrestricted or restricted to superusers or users",
+            "default": "none"
+          },
           "title": {
             "type": "string",
             "maxLength": 32,
@@ -10115,6 +10145,24 @@
               }
             ],
             "description": "Locale indicating the translation language of this segment",
+            "optionalNullable": false
+          },
+          "restriction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "user",
+                  "superuser"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Restriction",
+            "description": "Whether access is unrestricted or restricted to superusers or users",
             "optionalNullable": false
           },
           "title": {

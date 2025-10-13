@@ -1,0 +1,65 @@
+[
+  {
+    "_id": { "$oid": "68ecc8434d8f8e6fb2ba0cfc" },
+    "key": "info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "enUS",
+    "restriction": "none",
+    "title": "Public Info Page",
+    "html": "<h1>A public info page</h1><p>This is a public info page</p>"
+  },
+  {
+    "_id": { "$oid": "68ecc8b04d8f8e6fb2ba0cfd" },
+    "key": "info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "deDE",
+    "restriction": "none",
+    "title": "Öffentliche Info-Seite",
+    "html": "<h1>Eine öffentliche Info-Seite</h1><p>Die ist eine öffentliche Info-Seite</p>"
+  },
+  {
+    "_id": { "$oid": "68ecc8ef4d8f8e6fb2ba0cfe" },
+    "key": "user_info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "enUS",
+    "restriction": "user",
+    "title": "User Info Page",
+    "html": "<h1>A user info page</h1><p>This is a user info page.</p><p></p>"
+  },
+  {
+    "_id": { "$oid": "68ecc9404d8f8e6fb2ba0cff" },
+    "key": "user_info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "deDE",
+    "restriction": "user",
+    "title": "Benutzer*innen Info-Seite",
+    "html": "<h1>Eine Benutzer*innen Info-Seite</h1><p>Dies ist eine Benutzer*innen Info-Seite</p><p></p>"
+  },
+  {
+    "_id": { "$oid": "68eccec34d8f8e6fb2ba0d00" },
+    "key": "admin_info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "enUS",
+    "restriction": "superuser",
+    "title": "Admin info page",
+    "html": "<h1>Admin Info Page</h1><p>This is an admin info page.</p><p></p>"
+  },
+  {
+    "_id": { "$oid": "68eccf0c4d8f8e6fb2ba0d01" },
+    "key": "admin_info_page",
+    "editor_mode": "wysiwyg",
+    "locale": "deDE",
+    "restriction": "superuser",
+    "title": "Administrator*innen Info-Seite",
+    "html": "<h1>Administrator*innen Info-Seite</h1><p>Dies ist eine Administrator*innen Info-Seite</p>"
+  },
+  {
+    "_id": { "$oid": "68ecd61d4d8f8e6fb2ba0d02" },
+    "key": "systemSiteNotice",
+    "editor_mode": "wysiwyg",
+    "locale": "*",
+    "restriction": "none",
+    "title": "Site Notice",
+    "html": "<h1>Site Notice</h1><p>This could be a site notice.</p>"
+  }
+]

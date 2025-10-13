@@ -1,8 +1,9 @@
+from collections.abc import Mapping
 from datetime import UTC, datetime, timedelta
 from os.path import realpath
 from pathlib import Path
 
-from beanie.operators import LT
+from beanie.operators import GTE, LT, Eq, In, Or
 from bson import json_util
 
 from tekst import db, search
@@ -10,8 +11,11 @@ from tekst.auth import AccessTokenDocument, create_initial_superuser
 from tekst.config import TekstConfig, get_config
 from tekst.db import migrations
 from tekst.logs import log, log_op_end, log_op_start
+from tekst.models.common import PydanticObjectId
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
+from tekst.models.segment import ClientSegmentDocument, ClientSegmentHead
+from tekst.models.user import UserDocument
 from tekst.resources import call_resource_precompute_hooks
 from tekst.state import get_state, update_state
 
@@ -119,3 +123,61 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     return {
         "took": round(log_op_end(op_id), 2),
     }
+
+
+async def _get_segment_restriction_queries(
+    user: UserDocument | None = None,
+) -> tuple[Mapping]:
+    if user is None:
+        return (In(ClientSegmentDocument.restriction, ["none", None]),)
+    if user.is_superuser:
+        return tuple()
+    return (In(ClientSegmentDocument.restriction, ["none", "user"]),)
+
+
+async def get_segment(
+    *,
+    segment_id: PydanticObjectId | None = None,
+    user: UserDocument | None = None,
+) -> ClientSegmentDocument | None:
+    return await ClientSegmentDocument.find_one(
+        Eq(ClientSegmentDocument.id, segment_id),
+        *(await _get_segment_restriction_queries(user)),
+    )
+
+
+async def get_segments(
+    *,
+    system: bool | None = None,
+    user: UserDocument | None = None,
+    head_projection: bool = False,
+) -> list[ClientSegmentDocument]:
+    system_segments_queries = (
+        tuple()
+        if system is None
+        else (
+            GTE(ClientSegmentDocument.key, "system"),
+            LT(ClientSegmentDocument.key, "systen"),
+        )
+        if system
+        else (
+            Or(
+                LT(ClientSegmentDocument.key, "system"),
+                GTE(ClientSegmentDocument.key, "systen"),
+            ),
+        )
+    )
+    if not head_projection:
+        return await ClientSegmentDocument.find(
+            *system_segments_queries,
+            *(await _get_segment_restriction_queries(user)),
+        ).to_list()
+    else:
+        return (
+            await ClientSegmentDocument.find(
+                *system_segments_queries,
+                *(await _get_segment_restriction_queries(user)),
+            )
+            .project(ClientSegmentHead)
+            .to_list()
+        )

@@ -830,6 +830,11 @@ admin:
       systemSiteNotice: Site notice
       systemPrivacyPolicy: Privacy policy
       systemRegisterIntro: Intro text on "Register" page
+    restriction:
+      showTo: Show to
+      none: Everyone, including visitors
+      user: Registered users only
+      superuser: Administrators only
     noSegment: Please select a segment or create a new one!
     newSegment: New Segment
     phSelectSegment: Select segment

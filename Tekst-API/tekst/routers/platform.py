@@ -2,13 +2,13 @@ from operator import itemgetter
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import GTE, LT, NotIn, Or
+from beanie.operators import NotIn
 from fastapi import APIRouter, Header, Path, Query, status
 from fastapi.responses import FileResponse
 from humps import camelize
 from starlette.background import BackgroundTask
 
-from tekst import errors, tasks
+from tekst import errors, platform, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep
 from tekst.models.platform import (
@@ -22,12 +22,10 @@ from tekst.models.platform import (
 from tekst.models.segment import (
     ClientSegmentCreate,
     ClientSegmentDocument,
-    ClientSegmentHead,
     ClientSegmentRead,
     ClientSegmentUpdate,
 )
 from tekst.models.user import UserDocument
-from tekst.platform import cleanup_task
 from tekst.routers.texts import get_all_texts
 from tekst.state import get_state, update_state
 
@@ -43,26 +41,26 @@ router = APIRouter(
     response_model=PlatformData,
     status_code=status.HTTP_200_OK,
 )
-async def get_platform_data(ou: OptionalUserDep, cfg: ConfigDep) -> PlatformData:
+async def get_platform_data(
+    ou: OptionalUserDep,
+    cfg: ConfigDep,
+) -> PlatformData:
     """Returns data about the platform and its configuration"""
     return PlatformData(
         texts=await get_all_texts(ou),
         state=await get_state(),
         security=PlatformSecurityInfo(),
         # find segments with keys starting with "system"
-        system_segments=await ClientSegmentDocument.find(
-            GTE(ClientSegmentDocument.key, "system"),
-            LT(ClientSegmentDocument.key, "systen"),
-        ).to_list(),
+        system_segments=await platform.get_segments(
+            system=True,
+            user=ou,
+        ),
         # find segments with keys not starting with "system"
-        info_segments=await ClientSegmentDocument.find(
-            Or(
-                LT(ClientSegmentDocument.key, "system"),
-                GTE(ClientSegmentDocument.key, "systen"),
-            )
-        )
-        .project(ClientSegmentHead)
-        .to_list(),
+        info_segments=await platform.get_segments(
+            system=False,
+            user=ou,
+            head_projection=True,
+        ),
         tekst=camelize(cfg.tekst),
     )
 
@@ -124,9 +122,10 @@ async def update_platform_state(
     ),
 )
 async def get_segment(
+    ou: OptionalUserDep,
     segment_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> ClientSegmentDocument:
-    segment = await ClientSegmentDocument.get(segment_id)
+    segment = await platform.get_segment(segment_id=segment_id, user=ou)
     if not segment:
         raise errors.E_404_SEGMENT_NOT_FOUND
     return segment
@@ -353,7 +352,7 @@ async def delete_task(
 )
 async def run_platform_cleanup(su: SuperuserDep) -> tasks.TaskDocument:
     return await tasks.create_task(
-        cleanup_task,
+        platform.cleanup_task,
         tasks.TaskType.PLATFORM_CLEANUP,
         target_id=tasks.TaskType.PLATFORM_CLEANUP.value,
         user_id=su.id,

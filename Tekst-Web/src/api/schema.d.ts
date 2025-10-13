@@ -2403,6 +2403,13 @@ export interface components {
       /** @description Locale indicating the translation language of this segment */
       locale: components['schemas']['TranslationLocaleKey'];
       /**
+       * Restriction
+       * @description Whether access is unrestricted or restricted to superusers or users
+       * @default none
+       * @enum {string}
+       */
+      restriction: 'none' | 'user' | 'superuser';
+      /**
        * Title
        * @description Title of this segment
        */
@@ -2448,6 +2455,13 @@ export interface components {
       /** @description Locale indicating the translation language of this segment */
       locale: components['schemas']['TranslationLocaleKey'];
       /**
+       * Restriction
+       * @description Whether access is unrestricted or restricted to superusers or users
+       * @default none
+       * @enum {string}
+       */
+      restriction: 'none' | 'user' | 'superuser';
+      /**
        * Title
        * @description Title of this segment
        */
@@ -2474,6 +2488,11 @@ export interface components {
       editorMode?: 'wysiwyg' | 'html';
       /** @description Locale indicating the translation language of this segment */
       locale?: components['schemas']['TranslationLocaleKey'];
+      /**
+       * Restriction
+       * @description Whether access is unrestricted or restricted to superusers or users
+       */
+      restriction?: 'none' | 'user' | 'superuser';
       /**
        * Title
        * @description Title of this segment

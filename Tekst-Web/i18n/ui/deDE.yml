@@ -854,6 +854,11 @@ admin:
       systemSiteNotice: Impressum
       systemPrivacyPolicy: Datenschutzerklärung
       systemRegisterIntro: Einführungstext auf "Registrieren"-Seite
+    restriction:
+      showTo: Anzeigen für
+      none: Alle, auch Besucher*innen
+      user: Nur registrierte Nutzer*innen
+      superuser: Nur Administrator*innen
     noSegment: Bitte wählen Sie ein Segment aus oder erstellen Sie ein neues!
     newSegment: Neues Segment
     phSelectSegment: Segment auswählen
