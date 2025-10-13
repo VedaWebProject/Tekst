@@ -194,8 +194,8 @@ routes:
     adminMaintenance: '@:admin.maintenance.heading'
     verify: Verifizierung
     reset: Passwort zurücksetzen
-    siteNotice: '@:admin.system.segments.systemKeys.systemSiteNotice'
-    privacyPolicy: '@:admin.system.segments.systemKeys.systemPrivacyPolicy'
+    siteNotice: '@:admin.segments.systemKeys.systemSiteNotice'
+    privacyPolicy: '@:admin.segments.systemKeys.systemPrivacyPolicy'
 
 browse:
   location:
