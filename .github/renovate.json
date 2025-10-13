@@ -27,7 +27,7 @@
     },
     {
       "matchUpdateTypes": ["major", "minor"],
-      "matchPackageNames": ["typescript"],
+      "matchPackageNames": ["typescript", "python"],
       "automerge": false
     }
   ]
