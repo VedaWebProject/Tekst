@@ -1,11 +1,16 @@
-import { GET, type LocationRead } from '@/api';
+import { GET } from '@/api';
 import { useMessages } from '@/composables/messages';
 import env from '@/env';
 import { $t } from '@/i18n';
 import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
-import { createRouter, createWebHistory, type LocationQuery } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  type LocationQuery,
+  type RouteLocationNamedRaw,
+} from 'vue-router';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -42,7 +47,9 @@ const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsV
 const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMaintenanceView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 
-async function _resolveLocation(locationQuery: LocationQuery): Promise<LocationRead | null> {
+async function _resolveBrowseLocation(
+  locationQuery: LocationQuery
+): Promise<RouteLocationNamedRaw> {
   const { data, error } = await GET('/locations', {
     params: {
       query: {
@@ -58,9 +65,19 @@ async function _resolveLocation(locationQuery: LocationQuery): Promise<LocationR
     },
   });
   if (error || !data.length || data.length > 1) {
-    return null;
+    const { message } = useMessages();
+    message.warning('The location request could not be resolved or produced ambiguous results.');
+    return { name: 'browse' };
   } else {
-    return data[0];
+    const state = useStateStore();
+    while (!state.pf) await delay();
+    return {
+      name: 'browse',
+      params: {
+        textSlug: state.textById(data[0].textId)?.slug || '',
+        locId: data[0].id,
+      },
+    };
   }
 }
 
@@ -83,28 +100,16 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/texts/:textSlug/loc/:alias',
+      name: 'browseShare',
+      component: () => null,
+      beforeEnter: async (to) => await _resolveBrowseLocation(to.params),
+    },
+    {
       path: '/browse',
       name: 'browseResolve',
       component: () => null,
-      beforeEnter: async (to) => {
-        const loc = await _resolveLocation(to.query);
-        if (!loc) {
-          const { message } = useMessages();
-          message.warning(
-            'The location request could not be resolved or produced ambiguous results.'
-          );
-          return { name: 'browse' };
-        } else {
-          const state = useStateStore();
-          return {
-            name: 'browse',
-            params: {
-              textSlug: state.textById(loc.textId)?.slug || '',
-              locId: loc.id,
-            },
-          };
-        }
-      },
+      beforeEnter: async (to) => await _resolveBrowseLocation(to.query),
     },
     {
       path: '/search',
@@ -320,7 +325,7 @@ router.beforeEach(async (to, _from) => {
   if (to.meta.restricted) {
     const auth = useAuthStore();
     const state = useStateStore();
-    while (!state.init.authChecked) await delay(25); // wait for session check
+    while (!state.init.authChecked) await delay(); // wait for session check
     const ru = to.meta.restricted === 'user'; // route is restricted to users
     const rsu = to.meta.restricted === 'superuser'; // route is restricted to superusers
     const l = !!auth.user; // a user is logged in
@@ -340,7 +345,7 @@ router.beforeEach(async (to, _from) => {
   // detect invalid slug
   if ('textSlug' in to.params) {
     const state = useStateStore();
-    while (!state.pf) await delay(50);
+    while (!state.pf) await delay();
     if (!state.pf.texts.find((t) => t.slug === to.params.textSlug)) {
       const { message } = useMessages();
       message.warning($t('errors.invalidSlug', { slug: to.params.textSlug }));

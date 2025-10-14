@@ -112,7 +112,7 @@ export function useInitializeApp() {
       info: () => $t('init.ready'),
       action: async (success: boolean = true) => {
         state.init.initialized = true;
-        await delay(500); // delay end of init process for loading initial view in bg
+        await delay(250); // delay end of init process for loading initial view in bg
         state.init.loading = false;
         state.init.stepMsg = '';
         state.init.progress = 0;

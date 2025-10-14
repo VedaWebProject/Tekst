@@ -88,7 +88,7 @@ export function isInputFocused() {
   );
 }
 
-export async function delay(ms: number) {
+export async function delay(ms: number = 50) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 

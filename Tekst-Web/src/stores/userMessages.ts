@@ -106,9 +106,7 @@ export const useUserMessagesStore = defineStore('userMessages', () => {
 
   async function openConversation(withUserId: string, msgContent?: string) {
     const { user: withUser, loading, error } = useUser(withUserId);
-    while (loading.value) {
-      await delay(100);
-    }
+    while (loading.value) await delay();
     if (error.value || !withUser.value) {
       console.error(`Could not load user data for user ${withUserId}`);
       return;
