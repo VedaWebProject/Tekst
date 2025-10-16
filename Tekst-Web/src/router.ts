@@ -94,22 +94,22 @@ const router = createRouter({
       },
     },
     {
-      path: '/texts/:textSlug/browse/:locId',
+      path: '/texts/:textSlug?/browse/:locId?',
       name: 'browse',
       component: BrowseView,
       props: true,
-    },
-    {
-      path: '/bookmark/:textSlug/:alias',
-      name: 'bookmark',
-      component: () => null,
-      beforeEnter: async (to) => await _resolveBrowseLocation(to.params),
     },
     {
       path: '/browse',
       name: 'browseResolve',
       component: () => null,
       beforeEnter: async (to) => await _resolveBrowseLocation(to.query),
+    },
+    {
+      path: '/bookmark/:textSlug/:alias',
+      name: 'bookmark',
+      component: () => null,
+      beforeEnter: async (to) => await _resolveBrowseLocation(to.params),
     },
     {
       path: '/search',
