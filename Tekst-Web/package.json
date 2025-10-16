@@ -32,7 +32,7 @@
     "js-cookie": "^3.0.5",
     "known-css-properties": "^0.37.0",
     "normalize.css": "^8.0.1",
-    "openapi-fetch": "^0.14.0",
+    "openapi-fetch": "^0.15.0",
     "pinia": "^3.0.0",
     "thememirror": "^2.0.1",
     "vue": "^3.5.6",
