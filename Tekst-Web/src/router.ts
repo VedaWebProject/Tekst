@@ -94,14 +94,14 @@ const router = createRouter({
       },
     },
     {
-      path: '/texts/:textSlug?/browse/:locId?',
+      path: '/texts/:textSlug/browse/:locId',
       name: 'browse',
       component: BrowseView,
       props: true,
     },
     {
-      path: '/texts/:textSlug/loc/:alias',
-      name: 'browseShare',
+      path: '/bookmark/:textSlug/:alias',
+      name: 'bookmark',
       component: () => null,
       beforeEnter: async (to) => await _resolveBrowseLocation(to.params),
     },
