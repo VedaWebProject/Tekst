@@ -1307,10 +1307,12 @@ export interface components {
        * @default /
        */
       multiValueDelimiter: string;
-      /** @default {
+      /**
+       * @default {
        *       "groups": [],
        *       "itemProps": []
-       *     } */
+       *     }
+       */
       annoIntegration: components['schemas']['ItemIntegrationConfig'];
     };
     /** ApiCallContentCreate */
@@ -1521,7 +1523,8 @@ export interface components {
     };
     /** ApiCallResourceConfig */
     ApiCallResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -1529,13 +1532,16 @@ export interface components {
        *       "searchableQuick": false,
        *       "searchableAdv": false,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['ApiCallModGeneralConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "transform": {
        *         "deps": []
        *       }
-       *     } */
+       *     }
+       */
       special: components['schemas']['ApiCallSpecialConfig'];
     };
     /** ApiCallResourceCreate */
@@ -1599,7 +1605,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -1614,7 +1621,8 @@ export interface components {
        *           "deps": []
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ApiCallResourceConfig'];
     };
     /** ApiCallResourceRead */
@@ -1729,7 +1737,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -1744,7 +1753,8 @@ export interface components {
        *           "deps": []
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ApiCallResourceConfig'];
       /**
        * Coverage
@@ -1822,9 +1832,11 @@ export interface components {
     };
     /** ApiCallSpecialConfig */
     ApiCallSpecialConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "deps": []
-       *     } */
+       *     }
+       */
       transform: components['schemas']['ContentTransformConfig'];
     };
     /** AudioContentCreate */
@@ -1947,7 +1959,8 @@ export interface components {
     };
     /** AudioResourceConfig */
     AudioResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -1955,7 +1968,8 @@ export interface components {
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['GeneralResourceConfig'];
       special?: components['schemas']['ModelBase'] | null;
     };
@@ -2020,7 +2034,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -2030,7 +2045,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['AudioResourceConfig'];
     };
     /** AudioResourceRead */
@@ -2145,7 +2161,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -2155,7 +2172,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['AudioResourceConfig'];
       /**
        * Coverage
@@ -2825,7 +2843,8 @@ export interface components {
     };
     /** ExternalReferencesResourceConfig */
     ExternalReferencesResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -2833,7 +2852,8 @@ export interface components {
        *       "searchableQuick": false,
        *       "searchableAdv": false,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['GeneralResourceConfig'];
       special?: components['schemas']['ModelBase'] | null;
     };
@@ -2898,7 +2918,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -2908,7 +2929,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ExternalReferencesResourceConfig'];
     };
     /** ExternalReferencesResourceRead */
@@ -3023,7 +3045,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -3033,7 +3056,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ExternalReferencesResourceConfig'];
       /**
        * Coverage
@@ -3134,7 +3158,7 @@ export interface components {
       /**
        * Delimiter
        * @description Delimiter used for single-line display in focus view
-       * @default  /
+       * @default /
        */
       delimiter: string;
     };
@@ -3348,7 +3372,8 @@ export interface components {
     };
     /** ImagesResourceConfig */
     ImagesResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -3356,7 +3381,8 @@ export interface components {
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['GeneralResourceConfig'];
       special?: components['schemas']['ModelBase'] | null;
     };
@@ -3421,7 +3447,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -3431,7 +3458,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ImagesResourceConfig'];
     };
     /** ImagesResourceRead */
@@ -3546,7 +3574,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -3556,7 +3585,8 @@ export interface components {
        *         "showComments": false,
        *         "sortOrder": 10
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['ImagesResourceConfig'];
       /**
        * Coverage
@@ -4003,7 +4033,8 @@ export interface components {
     };
     /** LocationMetadataResourceConfig */
     LocationMetadataResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -4011,15 +4042,18 @@ export interface components {
        *       "searchableQuick": false,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['LocationMetadataModGeneralConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "embedAsTags": false,
        *       "entriesIntegration": {
        *         "groups": [],
        *         "itemProps": []
        *       }
-       *     } */
+       *     }
+       */
       special: components['schemas']['LocationMetadataSpecialConfig'];
     };
     /** LocationMetadataResourceCreate */
@@ -4083,7 +4117,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -4100,7 +4135,8 @@ export interface components {
        *           "itemProps": []
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['LocationMetadataResourceConfig'];
     };
     /** LocationMetadataResourceRead */
@@ -4215,7 +4251,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -4232,7 +4269,8 @@ export interface components {
        *           "itemProps": []
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['LocationMetadataResourceConfig'];
       /**
        * Coverage
@@ -4330,10 +4368,12 @@ export interface components {
        * @default false
        */
       embedAsTags?: boolean;
-      /** @default {
+      /**
+       * @default {
        *       "groups": [],
        *       "itemProps": []
-       *     } */
+       *     }
+       */
       entriesIntegration: components['schemas']['ItemIntegrationConfig'];
     };
     /** LocationRange */
@@ -4613,7 +4653,8 @@ export interface components {
     };
     /** PlainTextResourceConfig */
     PlainTextResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -4621,9 +4662,11 @@ export interface components {
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['GeneralResourceConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "searchReplacements": [],
        *       "contentCss": [],
        *       "focusView": {
@@ -4637,7 +4680,8 @@ export interface components {
        *       "deeplLinks": {
        *         "enabled": false
        *       }
-       *     } */
+       *     }
+       */
       special: components['schemas']['PlainTextSpecialConfig'];
     };
     /** PlainTextResourceCreate */
@@ -4701,7 +4745,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -4726,7 +4771,8 @@ export interface components {
        *         },
        *         "searchReplacements": []
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['PlainTextResourceConfig'];
     };
     /** PlainTextResourceRead */
@@ -4841,7 +4887,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -4866,7 +4913,8 @@ export interface components {
        *         },
        *         "searchReplacements": []
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['PlainTextResourceConfig'];
       /**
        * Coverage
@@ -4965,19 +5013,25 @@ export interface components {
       searchReplacements: components['schemas']['SearchReplacements'];
       /** @default [] */
       contentCss: components['schemas']['ContentCssProperties'];
-      /** @default {
+      /**
+       * @default {
        *       "singleLine": true,
        *       "delimiter": " / "
-       *     } */
+       *     }
+       */
       focusView: components['schemas']['FocusViewConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "enabled": false,
        *       "labellingType": "numbersOneBased"
-       *     } */
+       *     }
+       */
       lineLabelling: components['schemas']['LineLabellingConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "enabled": false
-       *     } */
+       *     }
+       */
       deeplLinks: components['schemas']['DeepLLinksConfig'];
     };
     /**
@@ -5645,7 +5699,8 @@ export interface components {
     };
     /** RichTextResourceConfig */
     RichTextResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "collapsibleContents": 400,
@@ -5654,12 +5709,15 @@ export interface components {
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['RichTextModGeneralConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "searchReplacements": [],
        *       "contentCss": []
-       *     } */
+       *     }
+       */
       special: components['schemas']['RichTextSpecialConfig'];
     };
     /** RichTextResourceCreate */
@@ -5723,7 +5781,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "collapsibleContents": 400,
        *         "defaultActive": true,
@@ -5738,7 +5797,8 @@ export interface components {
        *         "contentCss": [],
        *         "searchReplacements": []
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['RichTextResourceConfig'];
     };
     /** RichTextResourceRead */
@@ -5853,7 +5913,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "collapsibleContents": 400,
        *         "defaultActive": true,
@@ -5868,7 +5929,8 @@ export interface components {
        *         "contentCss": [],
        *         "searchReplacements": []
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['RichTextResourceConfig'];
       /**
        * Coverage
@@ -6249,7 +6311,8 @@ export interface components {
     };
     /** TextAnnotationResourceConfig */
     TextAnnotationResourceConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
@@ -6257,9 +6320,11 @@ export interface components {
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
-       *     } */
+       *     }
+       */
       general: components['schemas']['GeneralResourceConfig'];
-      /** @default {
+      /**
+       * @default {
        *       "annotations": {
        *         "annoIntegration": {
        *           "groups": [],
@@ -6267,7 +6332,8 @@ export interface components {
        *         },
        *         "multiValueDelimiter": "/"
        *       }
-       *     } */
+       *     }
+       */
       special: components['schemas']['TextAnnotationSpecialConfig'];
     };
     /** TextAnnotationResourceCreate */
@@ -6331,7 +6397,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -6350,7 +6417,8 @@ export interface components {
        *           "multiValueDelimiter": "/"
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['TextAnnotationResourceConfig'];
     };
     /** TextAnnotationResourceRead */
@@ -6465,7 +6533,8 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
-      /** @default {
+      /**
+       * @default {
        *       "general": {
        *         "defaultActive": true,
        *         "enableContentContext": false,
@@ -6484,7 +6553,8 @@ export interface components {
        *           "multiValueDelimiter": "/"
        *         }
        *       }
-       *     } */
+       *     }
+       */
       config: components['schemas']['TextAnnotationResourceConfig'];
       /**
        * Coverage
@@ -6576,13 +6646,15 @@ export interface components {
     };
     /** TextAnnotationSpecialConfig */
     TextAnnotationSpecialConfig: {
-      /** @default {
+      /**
+       * @default {
        *       "multiValueDelimiter": "/",
        *       "annoIntegration": {
        *         "groups": [],
        *         "itemProps": []
        *       }
-       *     } */
+       *     }
+       */
       annotations: components['schemas']['AnnotationsConfig'];
     };
     /** TextAnnotationToken */
