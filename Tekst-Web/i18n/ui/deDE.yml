@@ -200,7 +200,10 @@ routes:
 browse:
   location:
     goTo: Gehe zu Belegstelle
-    aliasesTip: Suchen Sie nach diesem Belegstellen-Alias in der Schnellsuche, um direkt zu dieser Belegstelle zu gelangen.
+    aliasesTip: |
+      Klicken Sie hier, um eine URL zur aktuellen Belegstelle mit diesem Belegstellen-Alias
+      zu kopieren. Tipp: Suchen Sie nach diesem Belegstellen-Alias in der Schnellsuche,
+      um direkt zu dieser Belegstelle zu gelangen.
     msgNoNearest: Es gibt keine weiteren Belegstellen mit Inhalten dieser Ressource in dieser Richtung.
   toolbar:
     tipSelectLocation: Belegstelle auswählen

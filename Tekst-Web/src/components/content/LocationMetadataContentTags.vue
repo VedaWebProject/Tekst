@@ -3,7 +3,7 @@ import type { LocationMetadataContentRead, LocationMetadataResourceRead } from '
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
-import { NTag } from 'naive-ui';
+import { NFlex, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -73,20 +73,22 @@ const contentsProcessed = computed(() => {
 </script>
 
 <template>
-  <template v-for="content in contentsProcessed" :key="content.id">
-    <template v-for="group in content.groups" :key="group.group">
-      <resource-info-widget
-        v-for="(item, index) in group.items"
-        :key="`${item.key || 'no_key'}_${index}`"
-        :resource="content.res"
-      >
-        <n-tag size="small" :color="tagColor" :title="item.title" class="loc-meta-tag">
-          <span v-if="item.key">{{ item.key }}: </span>
-          <span :style="{ 'font-family': content.font }">{{ item.value }}</span>
-        </n-tag>
-      </resource-info-widget>
+  <n-flex align="center" class="my-lg">
+    <template v-for="content in contentsProcessed" :key="content.id">
+      <template v-for="group in content.groups" :key="group.group">
+        <resource-info-widget
+          v-for="(item, index) in group.items"
+          :key="`${item.key || 'no_key'}_${index}`"
+          :resource="content.res"
+        >
+          <n-tag size="small" :color="tagColor" :title="item.title" class="loc-meta-tag">
+            <span v-if="item.key">{{ item.key }}: </span>
+            <span :style="{ 'font-family': content.font }">{{ item.value }}</span>
+          </n-tag>
+        </resource-info-widget>
+      </template>
     </template>
-  </template>
+  </n-flex>
 </template>
 
 <style scoped>

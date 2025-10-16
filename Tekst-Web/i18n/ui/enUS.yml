@@ -197,7 +197,9 @@ routes:
 browse:
   location:
     goTo: Go to location
-    aliasesTip: Search for this location alias in the Quick Search to directly jump to this location.
+    aliasesTip: |
+      Click here to copy a URL to the current location using this location alias.
+      Hint: Search for this location alias in the Quick Search to directly jump to this location.
     msgNoNearest: There are no more locations holding contents of this resource in this direction.
   toolbar:
     tipSelectLocation: Select location

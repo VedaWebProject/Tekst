@@ -4,13 +4,14 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
+import LocationAliasesWidget from '@/components/browse/LocationAliasesWidget.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import LocationMetadataContentTags from '@/components/content/LocationMetadataContentTags.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
-import { NButton, NEmpty, NFlex, NIcon, NTag } from 'naive-ui';
+import { NButton, NEmpty, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
 const props = defineProps<{
@@ -86,24 +87,12 @@ onMounted(() => {
     <help-button-widget help-key="browseView" />
   </icon-heading>
 
-  <!-- LOCATION ALIASES -->
-  <n-flex v-if="showLocAliases" align="center" class="my-lg">
-    <n-tag
-      v-for="alias in browse.locationPathHead?.aliases"
-      :key="alias"
-      size="small"
-      class="loc-alias-tag"
-      :title="$t('browse.location.aliasesTip')"
-    >
-      {{ alias }}
-    </n-tag>
-  </n-flex>
-
-  <!-- EMBED LOCATION METADATA AS TAGS -->
-  <n-flex v-if="!!embeddedMetadata.length" align="center" class="my-lg">
-    <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
-  </n-flex>
-
+  <location-aliases-widget
+    v-if="showLocAliases"
+    :aliases="browse.locationPathHead?.aliases || undefined"
+    :text-slug="state.textSlug"
+  />
+  <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
   <browse-toolbar v-if="browse.locationPath.length" />
 
   <div
