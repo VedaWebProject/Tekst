@@ -284,8 +284,6 @@ watch(
     />
   </icon-heading>
 
-  model changed: {{ modelChanged }}
-
   <n-flex :wrap="false">
     <n-select
       v-model:value="selectedSegmentId"
