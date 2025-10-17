@@ -36,7 +36,7 @@ theme:
   name: material
   language: en
   logo: assets/logo.png
-  favicon: assets/logo.png
+  favicon: assets/favicon.png
   features:
     - navigation.instant
     - navigation.instant.progress
@@ -56,15 +56,15 @@ theme:
         name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
-      accent: red
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: teal
-      accent: red
+      primary: black
+      accent: indigo
       toggle:
         icon: material/brightness-7
         name: Switch to light mode
