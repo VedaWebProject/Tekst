@@ -3585,12 +3585,19 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "ID of text to find resources for",
-              "example": "5eb7cf5a86d9755df3a6c593",
               "title": "Txt"
             },
             "description": "ID of text to find resources for"
@@ -3600,7 +3607,14 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Structure level to find resources for",
               "title": "Lvl"
             },

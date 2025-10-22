@@ -9185,9 +9185,9 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of text to find resources for */
-        txt?: string;
+        txt?: string | null;
         /** @description Structure level to find resources for */
-        lvl?: number;
+        lvl?: number | null;
         /** @description Type of resources to find */
         type?: string | null;
         limit?: number;

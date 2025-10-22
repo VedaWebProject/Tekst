@@ -300,14 +300,14 @@ async def update_resource(
 async def find_resources(
     user: OptionalUserDep,
     text_id: Annotated[
-        PydanticObjectId,
+        PydanticObjectId | None,
         Query(
             alias="txt",
             description="ID of text to find resources for",
         ),
     ] = None,
     level: Annotated[
-        int,
+        int | None,
         Query(
             alias="lvl",
             description="Structure level to find resources for",
