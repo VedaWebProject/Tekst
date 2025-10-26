@@ -476,7 +476,7 @@ wheels = [
 
 [[package]]
 name = "fastapi-users"
-version = "14.0.0"
+version = "15.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "email-validator" },
@@ -486,9 +486,9 @@ dependencies = [
     { name = "pyjwt", extra = ["crypto"] },
     { name = "python-multipart" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6c/7b/7b07c059fed69c132741a8ea3730f304172ad789f147eed1ae4071584e62/fastapi_users-14.0.0.tar.gz", hash = "sha256:6dceefbd2db87a17f791ef431d616bb5ce40cb123da7922969b704cbee5e7384", size = 120222, upload-time = "2024-11-03T13:21:13.986Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/ea/6c0ba809f29d22ad53ab25bbae4408f00b0a3375b71bd21c39dcc3a16044/fastapi_users-15.0.1.tar.gz", hash = "sha256:c822755c1288740a919636d3463797e54df91b53c1c6f4917693d499867d21a7", size = 120916, upload-time = "2025-10-25T06:52:45.735Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2d/06/040a09f2a0d3d10dc7dab3f38d26b3b44f1b4dff9316bad2111602847918/fastapi_users-14.0.0-py3-none-any.whl", hash = "sha256:e1230e044ddc2209b890b5b5c6fc1d13def961298d40e01c2d28f8bc2fe8c4c7", size = 38683, upload-time = "2024-11-03T13:21:12.481Z" },
+    { url = "https://files.pythonhosted.org/packages/59/7f/1bff91a48e755e659d0505f597a8e010ec92059f2219a838fd15887a89b2/fastapi_users-15.0.1-py3-none-any.whl", hash = "sha256:6f637eb2fc80be6bba396b77dded30fe4c22fa943349d2e0a1647894f8b21c16", size = 38624, upload-time = "2025-10-25T06:52:44.119Z" },
 ]
 
 [package.optional-dependencies]
@@ -498,15 +498,15 @@ beanie = [
 
 [[package]]
 name = "fastapi-users-db-beanie"
-version = "3.0.0"
+version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "beanie" },
     { name = "fastapi-users" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3d/61/fbc8d354ccc4fcbee4860a0d86f687f55d369e1d34fe604236771c13fcff/fastapi_users_db_beanie-3.0.0.tar.gz", hash = "sha256:5f8000d394ddc065a5eaf7244aa2ac3603acd6a2184d12fa6fa5237b78126369", size = 9617, upload-time = "2023-06-27T13:40:09.286Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/fb/31024d9490ef13fe25021984dfdc0d174a0325562a5ec9db2d0a0e8c471e/fastapi_users_db_beanie-4.0.0.tar.gz", hash = "sha256:c2331279359c5988ed427002fffbe5f6928d77df34ae96348db5fac68ba81fcf", size = 9979, upload-time = "2025-01-04T13:04:43.401Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/a2/a13218933868767409dcbec52d5ac3a3e4f5f291efd7797f23dac88c8e67/fastapi_users_db_beanie-3.0.0-py3-none-any.whl", hash = "sha256:4ed99cca9565cfa67bed436def0b27705142230409516915448494fbfc0fb031", size = 5498, upload-time = "2023-06-27T13:40:10.495Z" },
+    { url = "https://files.pythonhosted.org/packages/20/9a/a99e408dd929e133a9ef0768858e886b91328713e4b4464d1806d9042f51/fastapi_users_db_beanie-4.0.0-py3-none-any.whl", hash = "sha256:01db9a8dc1237f7bf604ac038c4fc0dfa7c920169ced03cb1fe75ca921aea39a", size = 5485, upload-time = "2025-01-04T13:04:45.265Z" },
 ]
 
 [[package]]
@@ -978,11 +978,11 @@ wheels = [
 
 [[package]]
 name = "pyjwt"
-version = "2.9.0"
+version = "2.10.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fb/68/ce067f09fca4abeca8771fe667d89cc347d1e99da3e093112ac329c6020e/pyjwt-2.9.0.tar.gz", hash = "sha256:7e1e5b56cc735432a7369cbfa0efe50fa113ebecdc04ae6922deba8b84582d0c", size = 78825, upload-time = "2024-08-01T15:01:08.445Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/46/bd74733ff231675599650d3e47f361794b22ef3e3770998dda30d3b63726/pyjwt-2.10.1.tar.gz", hash = "sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953", size = 87785, upload-time = "2024-11-28T03:43:29.933Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/84/0fdf9b18ba31d69877bd39c9cd6052b47f3761e9910c15de788e519f079f/PyJWT-2.9.0-py3-none-any.whl", hash = "sha256:3b02fb0f44517787776cf48f2ae25d8e14f300e6d7545a4315cee571a415e850", size = 22344, upload-time = "2024-08-01T15:01:06.481Z" },
+    { url = "https://files.pythonhosted.org/packages/61/ad/689f02752eeec26aed679477e80e632ef1b682313be70793d798c1d5fc8f/PyJWT-2.10.1-py3-none-any.whl", hash = "sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb", size = 22997, upload-time = "2024-11-28T03:43:27.893Z" },
 ]
 
 [package.optional-dependencies]
@@ -1095,11 +1095,11 @@ wheels = [
 
 [[package]]
 name = "python-multipart"
-version = "0.0.17"
+version = "0.0.20"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/40/22/edea41c2d4a22e666c0c7db7acdcbf7bc8c1c1f7d3b3ca246ec982fec612/python_multipart-0.0.17.tar.gz", hash = "sha256:41330d831cae6e2f22902704ead2826ea038d0419530eadff3ea80175aec5538", size = 36452, upload-time = "2024-10-31T07:09:15.884Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/87/f44d7c9f274c7ee665a29b885ec97089ec5dc034c7f3fafa03da9e39a09e/python_multipart-0.0.20.tar.gz", hash = "sha256:8dd0cab45b8e23064ae09147625994d090fa46f5b0d1e13af944c331a7fa9d13", size = 37158, upload-time = "2024-12-16T19:45:46.972Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b4/fb/275137a799169392f1fa88fff2be92f16eee38e982720a8aaadefc4a36b2/python_multipart-0.0.17-py3-none-any.whl", hash = "sha256:15dc4f487e0a9476cc1201261188ee0940165cffc94429b6fc565c4d3045cb5d", size = 24453, upload-time = "2024-10-31T07:09:13.279Z" },
+    { url = "https://files.pythonhosted.org/packages/45/58/38b5afbc1a800eeea951b9285d3912613f2603bdf897a4ab0f4bd7f405fc/python_multipart-0.0.20-py3-none-any.whl", hash = "sha256:8a62d3a8335e06589fe01f2a3e178cdcc632f3fbe0d492ad9ee0ec35aab1f104", size = 24546, upload-time = "2024-12-16T19:45:44.423Z" },
 ]
 
 [[package]]
@@ -1287,7 +1287,7 @@ requires-dist = [
     { name = "click", specifier = ">=8.1.6,<9.0.0" },
     { name = "elasticsearch", extras = ["async"], specifier = ">=9.0.1" },
     { name = "fastapi", specifier = ">=0.115.6" },
-    { name = "fastapi-users", extras = ["beanie"], specifier = ">=14.0.0,<15.0.0" },
+    { name = "fastapi-users", extras = ["beanie"], specifier = ">=15.0.1,<15.0.2" },
     { name = "jsonref", specifier = ">=1.1.0,<2.0.0" },
     { name = "pydantic-extra-types", specifier = ">=2.0.0,<3.0.0" },
     { name = "pydantic-settings", specifier = ">=2.0.2,<3.0.0" },
