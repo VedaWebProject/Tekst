@@ -44,6 +44,7 @@ const modalWidths = {
     :style="{ width: modalWidths[props.width], maxWidth: '95%' }"
     class="mx-auto my-md"
     :class="nodeClass"
+    :auto-focus="!state.smallScreen"
   >
     <template #header>
       <slot name="header">
