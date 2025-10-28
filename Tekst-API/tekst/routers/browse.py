@@ -12,10 +12,7 @@ from tekst.auth import (
 from tekst.models.bookmark import BookmarkCreate, BookmarkDocument, BookmarkRead
 from tekst.models.browse import LocationData
 from tekst.models.content import ContentBaseDocument
-from tekst.models.location import (
-    LocationDocument,
-    LocationRead,
-)
+from tekst.models.location import LocationDocument, LocationRead
 from tekst.models.resource import (
     ResourceBaseDocument,
 )
@@ -76,122 +73,6 @@ async def _get_content_context(
     content_docs.sort(key=lambda c: location_ids.index(c.location_id))
 
     return content_docs
-
-
-@router.get(
-    "/context",
-    response_model=list[AnyContentRead],
-    status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_404_RESOURCE_NOT_FOUND,
-        ]
-    ),
-)
-async def get_content_context(
-    user: OptionalUserDep,
-    resource_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="res",
-            description="ID of resource the requested contents belong to",
-        ),
-    ],
-    parent_location_id: Annotated[
-        PydanticObjectId | None,
-        Query(
-            alias="parent",
-            description="ID of parent location to get child contents for",
-        ),
-    ] = None,
-) -> list[ContentBaseDocument]:
-    """
-    Returns a list of all resource contents belonging to the resource
-    with the given ID, associated to locations that are children of the parent location
-    with the given ID.
-    """
-
-    resource = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    )
-
-    if not resource:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
-    return await _get_content_context(resource, parent_location_id)
-
-
-@router.get(
-    "/nearest-content-location",
-    status_code=status.HTTP_200_OK,
-    response_model=LocationRead,
-    responses=errors.responses(
-        [
-            errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_404_NOT_FOUND,
-            errors.E_400_INVALID_REQUEST_DATA,
-        ]
-    ),
-)
-async def get_nearest_content_location(
-    user: OptionalUserDep,
-    location_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="loc",
-            description="ID of the location to start from",
-        ),
-    ],
-    resource_id: Annotated[
-        PydanticObjectId,
-        Query(
-            alias="res",
-            description="ID of resource to return nearest location with content for",
-        ),
-    ],
-    direction: Annotated[
-        Literal["before", "after"],
-        Query(
-            alias="dir",
-            description=(
-                "Whether to look for the nearest preceding (before) "
-                "or subsequent (after) location with content"
-            ),
-        ),
-    ] = "after",
-) -> LocationDocument:
-    """
-    Finds the nearest location the given resource holds content for and returns it.
-    """
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
-    location_doc = await LocationDocument.get(location_id)
-    if not location_doc:
-        raise errors.E_404_LOCATION_NOT_FOUND
-    if (
-        location_doc.level != resource_doc.level
-        or location_doc.text_id != resource_doc.text_id
-    ):
-        raise errors.E_400_INVALID_REQUEST_DATA
-
-    target_loc = await search_nearest_content_location(
-        resource=resource_doc,
-        location=location_doc,
-        direction=direction,
-    )
-
-    if not target_loc:
-        raise errors.E_404_NOT_FOUND
-    else:
-        return target_loc
 
 
 @router.get(
@@ -365,26 +246,120 @@ async def get_location_data(
     )
 
 
-@router.delete(
-    "/bookmarks/{id}",
-    status_code=status.HTTP_204_NO_CONTENT,
+@router.get(
+    "/context",
+    response_model=list[AnyContentRead],
+    status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
-            errors.E_404_BOOKMARK_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
+            errors.E_404_RESOURCE_NOT_FOUND,
         ]
     ),
 )
-async def delete_bookmark(
-    user: UserDep,
-    bookmark_id: Annotated[PydanticObjectId, Path(alias="id")],
-) -> None:
-    bookmark_doc = await BookmarkDocument.get(bookmark_id)
-    if not bookmark_doc:
-        raise errors.E_404_BOOKMARK_NOT_FOUND
-    if user.id != bookmark_doc.user_id:
-        raise errors.E_403_FORBIDDEN
-    await bookmark_doc.delete()
+async def get_content_context(
+    user: OptionalUserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="res",
+            description="ID of resource the requested contents belong to",
+        ),
+    ],
+    parent_location_id: Annotated[
+        PydanticObjectId | None,
+        Query(
+            alias="parent",
+            description="ID of parent location to get child contents for",
+        ),
+    ] = None,
+) -> list[ContentBaseDocument]:
+    """
+    Returns a list of all resource contents belonging to the resource
+    with the given ID, associated to locations that are children of the parent location
+    with the given ID.
+    """
+
+    resource = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+
+    if not resource:
+        raise errors.E_404_RESOURCE_NOT_FOUND
+
+    return await _get_content_context(resource, parent_location_id)
+
+
+@router.get(
+    "/nearest-content-location",
+    status_code=status.HTTP_200_OK,
+    response_model=LocationRead,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_404_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
+        ]
+    ),
+)
+async def get_nearest_content_location(
+    user: OptionalUserDep,
+    location_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="loc",
+            description="ID of the location to start from",
+        ),
+    ],
+    resource_id: Annotated[
+        PydanticObjectId,
+        Query(
+            alias="res",
+            description="ID of resource to return nearest location with content for",
+        ),
+    ],
+    direction: Annotated[
+        Literal["before", "after"],
+        Query(
+            alias="dir",
+            description=(
+                "Whether to look for the nearest preceding (before) "
+                "or subsequent (after) location with content"
+            ),
+        ),
+    ] = "after",
+) -> LocationDocument:
+    """
+    Finds the nearest location the given resource holds content for and returns it.
+    """
+    resource_doc = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id,
+        await ResourceBaseDocument.access_conditions_read(user),
+        with_children=True,
+    )
+    if not resource_doc:
+        raise errors.E_404_RESOURCE_NOT_FOUND
+
+    location_doc = await LocationDocument.get(location_id)
+    if not location_doc:
+        raise errors.E_404_LOCATION_NOT_FOUND
+    if (
+        location_doc.level != resource_doc.level
+        or location_doc.text_id != resource_doc.text_id
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
+
+    target_loc = await search_nearest_content_location(
+        resource=resource_doc,
+        location=location_doc,
+        direction=direction,
+    )
+
+    if not target_loc:
+        raise errors.E_404_NOT_FOUND
+    else:
+        return target_loc
 
 
 @router.get(
@@ -458,3 +433,25 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
         location_labels=location_labels,
         comment=bookmark.comment,
     ).create()
+
+
+@router.delete(
+    "/bookmarks/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_404_BOOKMARK_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def delete_bookmark(
+    user: UserDep,
+    bookmark_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> None:
+    bookmark_doc = await BookmarkDocument.get(bookmark_id)
+    if not bookmark_doc:
+        raise errors.E_404_BOOKMARK_NOT_FOUND
+    if user.id != bookmark_doc.user_id:
+        raise errors.E_403_FORBIDDEN
+    await bookmark_doc.delete()

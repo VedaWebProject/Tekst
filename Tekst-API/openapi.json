@@ -12,6 +12,163 @@
     }
   ],
   "paths": {
+    "/browse": {
+      "get": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Get location data",
+        "description": "Returns the location path from the location with the given ID or text/level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
+        "operationId": "getLocationData",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of location to request data for",
+              "title": "Id"
+            },
+            "description": "ID of location to request data for"
+          },
+          {
+            "name": "txt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 24,
+                  "maxLength": 24,
+                  "pattern": "^[0-9a-f]{24}$",
+                  "example": "5eb7cf5a86d9755df3a6c593"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ID of text the target location belongs to (needed if no location ID is given)",
+              "title": "Txt"
+            },
+            "description": "ID of text the target location belongs to (needed if no location ID is given)"
+          },
+          {
+            "name": "lvl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Location level (only used if no location ID is given, text's default level is used by default)",
+              "title": "Lvl"
+            },
+            "description": "Location level (only used if no location ID is given, text's default level is used by default)"
+          },
+          {
+            "name": "pos",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Location position (only used if no location ID is given)",
+              "default": 0,
+              "title": "Pos"
+            },
+            "description": "Location position (only used if no location ID is given)"
+          },
+          {
+            "name": "res",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^[0-9a-f]{24}$",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              "description": "List of IDs of resources to return contents for (assumes all if none are given)",
+              "default": [],
+              "title": "Res"
+            },
+            "description": "List of IDs of resources to return contents for (assumes all if none are given)"
+          },
+          {
+            "name": "head",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only return contents for the head location of the path",
+              "default": false,
+              "title": "Head"
+            },
+            "description": "Only return contents for the head location of the path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationData"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/browse/context": {
       "get": {
         "tags": [
@@ -251,230 +408,6 @@
         }
       }
     },
-    "/browse": {
-      "get": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Get location data",
-        "description": "Returns the location path from the location with the given ID or text/level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
-        "operationId": "getLocationData",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "ID of location to request data for",
-              "title": "Id"
-            },
-            "description": "ID of location to request data for"
-          },
-          {
-            "name": "txt",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "ID of text the target location belongs to (needed if no location ID is given)",
-              "title": "Txt"
-            },
-            "description": "ID of text the target location belongs to (needed if no location ID is given)"
-          },
-          {
-            "name": "lvl",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Location level (only used if no location ID is given, text's default level is used by default)",
-              "title": "Lvl"
-            },
-            "description": "Location level (only used if no location ID is given, text's default level is used by default)"
-          },
-          {
-            "name": "pos",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Location position (only used if no location ID is given)",
-              "default": 0,
-              "title": "Pos"
-            },
-            "description": "Location position (only used if no location ID is given)"
-          },
-          {
-            "name": "res",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
-              },
-              "description": "List of IDs of resources to return contents for (assumes all if none are given)",
-              "default": [],
-              "title": "Res"
-            },
-            "description": "List of IDs of resources to return contents for (assumes all if none are given)"
-          },
-          {
-            "name": "head",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Only return contents for the head location of the path",
-              "default": false,
-              "title": "Head"
-            },
-            "description": "Only return contents for the head location of the path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationData"
-                }
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/browse/bookmarks/{id}": {
-      "delete": {
-        "tags": [
-          "browse"
-        ],
-        "summary": "Delete bookmark",
-        "operationId": "deleteBookmark",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/browse/bookmarks": {
       "get": {
         "tags": [
@@ -575,6 +508,73 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/browse/bookmarks/{id}": {
+      "delete": {
+        "tags": [
+          "browse"
+        ],
+        "summary": "Delete bookmark",
+        "operationId": "deleteBookmark",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 24,
+              "maxLength": 24,
+              "pattern": "^[0-9a-f]{24}$",
+              "example": "5eb7cf5a86d9755df3a6c593",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/contents": {
