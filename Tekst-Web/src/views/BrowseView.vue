@@ -15,8 +15,8 @@ import { NButton, NEmpty, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted, watch } from 'vue';
 
 const props = defineProps<{
-  textSlug: string;
-  locId: string;
+  textSlug?: string;
+  locId?: string;
 }>();
 
 const auth = useAuthStore();
