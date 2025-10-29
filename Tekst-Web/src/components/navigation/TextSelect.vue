@@ -3,7 +3,7 @@ import type { TextRead } from '@/api';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { ExpandArrowDownIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NButton, NDropdown, NFlex, NIcon, useThemeVars } from 'naive-ui';
+import { NButton, NDropdown, NIcon, useThemeVars } from 'naive-ui';
 import { computed, h, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -64,19 +64,19 @@ function handleSelect(text: TextRead) {
     placement="bottom-start"
   >
     <n-button
-      text
-      icon-placement="right"
+      ghost
       :color="themeVars.baseColor"
+      icon-placement="right"
       :focusable="false"
       :keyboard="false"
       :title="$t('common.textSelect')"
       class="text-select-btn"
       :style="{ cursor: !disabled ? 'pointer' : 'default' }"
     >
-      <n-flex align="center" :wrap="false" style="max-width: 100%">
-        <span class="text-title ellipsis text-large">{{ state.text?.title || '???' }}</span>
-        <n-icon v-if="!disabled" :component="ExpandArrowDownIcon" style="flex-shrink: 0" />
-      </n-flex>
+      <template v-if="!disabled" #icon>
+        <n-icon :component="ExpandArrowDownIcon" />
+      </template>
+      <div class="text-title ellipsis text-large">{{ state.text?.title || '???' }}</div>
     </n-button>
   </n-dropdown>
 </template>
@@ -85,6 +85,10 @@ function handleSelect(text: TextRead) {
 .text-select-btn {
   max-width: 100%;
   justify-content: flex-start;
+}
+
+.text-select-btn.n-button--ghost:hover {
+  background-color: #fff2;
 }
 
 .text-title {

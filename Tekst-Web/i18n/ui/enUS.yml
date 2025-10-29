@@ -35,7 +35,7 @@ common:
   expand: Expand
   collapse: Collapse
   showAttachments: Show attached contents
-  textSelect: Select the text you want to work with
+  textSelect: Select working text
   info: Info
   information: Information
   warning: Warning

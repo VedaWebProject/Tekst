@@ -35,7 +35,7 @@ common:
   expand: Ausklappen
   collapse: Einklappen
   showAttachments: Angehängte Inhalte anzeigen
-  textSelect: Wählen Sie den Text, mit dem Sie arbeiten möchten
+  textSelect: Arbeitstext auswählen
   info: Info
   information: Information
   warning: Warnung
