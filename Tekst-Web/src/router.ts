@@ -106,10 +106,12 @@ const router = createRouter({
       beforeEnter: async (to) => await _resolveBrowseLocation(to.query),
     },
     {
-      path: '/bookmark/:textSlug/:alias',
+      path: '/bookmark/:locId+',
       name: 'bookmark',
       component: () => null,
-      beforeEnter: async (to) => await _resolveBrowseLocation(to.params),
+      // only the first locId param is used here and expected to be a valid ID,
+      // the others are solely for holding pretty things to please the human eye
+      beforeEnter: async (to) => await _resolveBrowseLocation({ locId: to.params.locId[0] }),
     },
     {
       path: '/search',

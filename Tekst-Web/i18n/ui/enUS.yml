@@ -200,6 +200,8 @@ browse:
     aliasesTip: |
       Click here to copy a URL to the current location using this location alias.
       Hint: Search for this location alias in the Quick Search to directly jump to this location.
+    genericPermalinkTip: Click here to copy a URL to the current location.
+    shareLocUrl: Share location URL
     msgNoNearest: There are no more locations holding contents of this resource in this direction.
   toolbar:
     tipSelectLocation: Select location

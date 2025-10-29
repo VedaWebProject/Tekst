@@ -24,10 +24,6 @@ const browse = useBrowseStore();
 const state = useStateStore();
 const resources = useResourcesStore();
 
-const showLocAliases = computed(
-  () => state.pf?.state.showLocationAliases && !!browse.locationPathHead?.aliases?.length
-);
-
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
     browse.resourcesCategorized.map((c) => [
@@ -88,8 +84,9 @@ onMounted(() => {
   </icon-heading>
 
   <location-aliases-widget
-    v-if="showLocAliases"
-    :aliases="browse.locationPathHead?.aliases || undefined"
+    v-if="browse.locationPathHead"
+    :location-id="browse.locationPathHead.id"
+    :aliases="browse.locationPathHead.aliases || undefined"
     :text-slug="state.textSlug"
   />
   <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
