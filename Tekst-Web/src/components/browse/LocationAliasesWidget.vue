@@ -1,41 +1,47 @@
 <script setup lang="ts">
 import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import env from '@/env';
+import { $t } from '@/i18n';
 import { NFlex } from 'naive-ui';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   locationId: string;
   textSlug?: string;
   aliases?: string[];
 }>();
 
 const baseUrl = `${origin}/${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
+const data = computed(
+  () =>
+    props.aliases?.map((alias) => ({
+      text: alias,
+      tip: $t('browse.location.aliasesTip'),
+      url: encodeURI(
+        `${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}/${alias}`
+      ),
+    })) || [
+      {
+        text: $t('browse.location.shareLocUrl'),
+        tip: $t('browse.location.genericPermalinkTip'),
+        url: encodeURI(`${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}`),
+      },
+    ]
+);
 </script>
 
 <template>
   <n-flex align="center" class="my-lg">
-    <template v-if="!!aliases?.length">
-      <copy-to-clipboard-button
-        v-for="alias in aliases"
-        :key="alias"
-        tertiary
-        size="tiny"
-        :text="`${baseUrl}/bookmark/${locationId}/${textSlug || 'unknown'}/${alias}`"
-        :title="$t('browse.location.aliasesTip')"
-        show-msg
-      >
-        {{ alias }}
-      </copy-to-clipboard-button>
-    </template>
     <copy-to-clipboard-button
-      v-else
+      v-for="(alias, index) in data"
+      :key="`alias_${index}`"
       tertiary
       size="tiny"
-      :text="`${baseUrl}/bookmark/${locationId}/${textSlug || 'unknown'}`"
-      :title="$t('browse.location.genericPermalinkTip')"
+      :text="alias.url"
+      :title="alias.tip"
       show-msg
     >
-      {{ $t('browse.location.shareLocUrl') }}
+      {{ alias.text }}
     </copy-to-clipboard-button>
   </n-flex>
 </template>
