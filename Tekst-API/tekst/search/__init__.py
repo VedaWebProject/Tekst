@@ -676,6 +676,7 @@ async def search_nearest_content_location(
                         }
                     }
                 },
+                {"term": {"level": resource.level}},
             ]
         }
     }
