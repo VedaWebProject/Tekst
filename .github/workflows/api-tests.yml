@@ -54,8 +54,8 @@ jobs:
       - name: Start test service stack
         run: |
           docker compose -f ../dev/compose.yml --profile test -p tekst-testing up --detach
-          printf "Waiting for MongoDB service"; while ! $(curl -f http://127.0.0.1:27017 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
-          printf "Waiting for Elasticsearch service"; while ! $(curl -f http://127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+          printf "Waiting for MongoDB service"; while ! $(docker exec -i tekst-testing-mongo-1 mongosh --eval 'db.runCommand("ping")' > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+          printf "Waiting for Elasticsearch service"; while ! $(curl -f 127.0.0.1:9200 > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
       - name: Cancel on setup error
         if: failure()
         uses: andymckay/cancel-action@0.5
