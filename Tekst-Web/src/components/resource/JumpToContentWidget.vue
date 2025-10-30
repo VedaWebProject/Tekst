@@ -48,6 +48,11 @@ async function handleClick() {
 
 <template>
   <content-container-header-widget
+    v-if="
+      resource.level === browse.level &&
+      resource.config.general.searchableAdv &&
+      resource.config.general.searchableQuick
+    "
     :full="full"
     :title="
       direction === 'before' ? $t('contents.tipBtnPrevChange') : $t('contents.tipBtnNextChange')
