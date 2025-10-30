@@ -273,23 +273,6 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
 };
 
 export const commonResourceConfigFormRules: Record<string, FormItemRule[]> = {
-  sortOrder: [
-    {
-      required: true,
-      type: 'number',
-      message: () =>
-        $t('forms.rulesFeedback.isRequired', {
-          x: $t('common.sortOrder'),
-        }),
-      trigger: 'blur',
-    },
-    {
-      validator: (_: FormItemRule, value: number) =>
-        Number.isInteger(value) && value >= 0 && value <= 1000,
-      message: '0-1000',
-      trigger: 'blur',
-    },
-  ],
   itemName: [requiredStringRule(() => $t('common.name')), minMaxCharsRule(1, 32, 'blur')],
   itemGroupNameRequired: [
     requiredStringRule(() => $t('common.group')),

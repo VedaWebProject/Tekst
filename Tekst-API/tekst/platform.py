@@ -168,16 +168,21 @@ async def get_segments(
         )
     )
     if not head_projection:
-        return await ClientSegmentDocument.find(
-            *system_segments_queries,
-            *(await _get_segment_restriction_queries(user)),
-        ).to_list()
+        return (
+            await ClientSegmentDocument.find(
+                *system_segments_queries,
+                *(await _get_segment_restriction_queries(user)),
+            )
+            .sort(+ClientSegmentDocument.sort_order)
+            .to_list()
+        )
     else:
         return (
             await ClientSegmentDocument.find(
                 *system_segments_queries,
                 *(await _get_segment_restriction_queries(user)),
             )
+            .sort(+ClientSegmentDocument.sort_order)
             .project(ClientSegmentHead)
             .to_list()
         )

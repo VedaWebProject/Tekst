@@ -21,6 +21,7 @@ import {
   NFormItem,
   NIcon,
   NInput,
+  NInputNumber,
   NSelect,
   useDialog,
   type FormInst,
@@ -328,6 +329,7 @@ watch(
             @keydown.enter.prevent
           />
         </n-form-item>
+
         <!-- KEY -->
         <n-form-item v-if="segmentType === 'info'" path="key" :label="$t('common.key')">
           <n-input
@@ -345,6 +347,7 @@ watch(
             @keydown.enter.prevent
           />
         </n-form-item>
+
         <!-- LOCALE -->
         <n-form-item path="locale" :label="$t('common.language')">
           <n-select
@@ -356,6 +359,7 @@ watch(
             @keydown.enter.prevent
           />
         </n-form-item>
+
         <!-- RESTRICTION -->
         <n-form-item path="restriction" :label="$t('admin.segments.restriction.showTo')" required>
           <n-select
@@ -379,6 +383,17 @@ watch(
             @keydown.enter.prevent
           />
         </n-form-item>
+
+        <!-- SORT ORDER -->
+        <n-form-item v-if="segmentType === 'info'" path="sortOrder" :label="$t('common.sortOrder')">
+          <n-input-number
+            v-model:value="segmentModel.sortOrder"
+            :min="0"
+            :max="1000"
+            style="width: 100%"
+          />
+        </n-form-item>
+
         <!-- HTML -->
         <n-form-item path="html" :label="$t('common.content')">
           <html-editor

@@ -9991,6 +9991,14 @@
             "title": "Title",
             "description": "Title of this segment"
           },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)",
+            "default": 10
+          },
           "html": {
             "type": "string",
             "maxLength": 1048576,
@@ -10095,6 +10103,14 @@
             "title": "Title",
             "description": "Title of this segment"
           },
+          "sortOrder": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "description": "Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)",
+            "default": 10
+          },
           "html": {
             "type": "string",
             "maxLength": 1048576,
@@ -10192,6 +10208,21 @@
             ],
             "title": "Title",
             "description": "Title of this segment",
+            "optionalNullable": false
+          },
+          "sortOrder": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sortorder",
+            "description": "Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)",
             "optionalNullable": false
           },
           "html": {

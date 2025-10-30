@@ -27,18 +27,21 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             ),
         ),
     ]
+
     editor_mode: Annotated[
         Literal["wysiwyg", "html"],
         Field(
             description="Last used editor mode",
         ),
     ] = "wysiwyg"
+
     locale: Annotated[
         TranslationLocaleKey,
         Field(
             description="Locale indicating the translation language of this segment",
         ),
     ]
+
     restriction: Annotated[
         Literal["none", "user", "superuser"],
         Field(
@@ -47,6 +50,7 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             ),
         ),
     ] = "none"
+
     title: Annotated[
         ConStr(
             max_length=32,
@@ -56,6 +60,19 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
             description="Title of this segment",
         ),
     ]
+
+    sort_order: Annotated[
+        int,
+        Field(
+            description=(
+                "Sort order for displaying this segment among others "
+                "(only relevant for non-system segments aka. info pages!)"
+            ),
+            ge=0,
+            le=1000,
+        ),
+    ] = 10
+
     html: Annotated[
         ConStr(
             max_length=1048576,

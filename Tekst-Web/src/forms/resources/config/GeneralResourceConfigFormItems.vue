@@ -3,7 +3,6 @@ import { type AnyResourceRead, type GeneralResourceConfig, resourceTypes } from 
 import FormSection from '@/components/FormSection.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
-import { commonResourceConfigFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -113,7 +112,7 @@ function renderCCMark(value: number) {
     </n-form-item>
 
     <!-- SORT ORDER -->
-    <n-form-item path="config.general.sortOrder" :rule="commonResourceConfigFormRules.sortOrder">
+    <n-form-item path="config.general.sortOrder">
       <template #label>
         <n-flex align="center" :wrap="false">
           {{ $t('common.sortOrder') }}

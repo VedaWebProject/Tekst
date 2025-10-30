@@ -2433,6 +2433,12 @@ export interface components {
        */
       title: string;
       /**
+       * Sortorder
+       * @description Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)
+       * @default 10
+       */
+      sortOrder: number;
+      /**
        * Html
        * @description HTML content of this segment
        */
@@ -2485,6 +2491,12 @@ export interface components {
        */
       title: string;
       /**
+       * Sortorder
+       * @description Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)
+       * @default 10
+       */
+      sortOrder: number;
+      /**
        * Html
        * @description HTML content of this segment
        */
@@ -2516,6 +2528,11 @@ export interface components {
        * @description Title of this segment
        */
       title?: string;
+      /**
+       * Sortorder
+       * @description Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)
+       */
+      sortOrder?: number;
       /**
        * Html
        * @description HTML content of this segment
