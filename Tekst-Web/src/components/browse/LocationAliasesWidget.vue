@@ -5,7 +5,7 @@ import { NFlex } from 'naive-ui';
 
 defineProps<{
   locationId: string;
-  textSlug: string;
+  textSlug?: string;
   aliases?: string[];
 }>();
 
@@ -20,7 +20,7 @@ const baseUrl = `${origin}/${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
         :key="alias"
         tertiary
         size="tiny"
-        :text="`${baseUrl}/bookmark/${locationId}/${textSlug}/${alias}`"
+        :text="`${baseUrl}/bookmark/${locationId}/${textSlug || 'unknown'}/${alias}`"
         :title="$t('browse.location.aliasesTip')"
         show-msg
       >
@@ -31,7 +31,7 @@ const baseUrl = `${origin}/${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
       v-else
       tertiary
       size="tiny"
-      :text="`${baseUrl}/bookmark/${locationId}/${textSlug}`"
+      :text="`${baseUrl}/bookmark/${locationId}/${textSlug || 'unknown'}`"
       :title="$t('browse.location.genericPermalinkTip')"
       show-msg
     >

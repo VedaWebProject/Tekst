@@ -101,7 +101,7 @@ export const useStateStore = defineStore('state', () => {
   // current text
 
   const text = ref<TextRead>();
-  const textSlug = useSessionStorage<TextRead['slug']>('text', null, {
+  const textSlug = useSessionStorage<TextRead['slug'] | null>('text', null, {
     serializer: StorageSerializers.string,
   });
   const defaultText = computed(() => textById(pf.value?.state.defaultTextId) || pf.value?.texts[0]);

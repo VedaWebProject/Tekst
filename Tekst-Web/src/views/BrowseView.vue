@@ -87,7 +87,7 @@ onMounted(() => {
     v-if="browse.locationPathHead"
     :location-id="browse.locationPathHead.id"
     :aliases="browse.locationPathHead.aliases || undefined"
-    :text-slug="state.textSlug"
+    :text-slug="state.textSlug || undefined"
   />
   <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
   <browse-toolbar v-if="browse.locationPath.length" />
