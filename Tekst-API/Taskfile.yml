@@ -155,7 +155,7 @@ tasks:
   wait-for-mongodb:
     internal: true
     silent: true
-    cmd: printf "Waiting for MongoDB service"; while ! $(docker exec -i tekst-testing-mongo-1 mongosh --eval 'db.runCommand("ping")' > /dev/null 2>&1); do sleep 1; printf "."; done; printf "\n"
+    cmd: printf "Waiting for MongoDB service"; sleep 2; printf "\n"
 
   wait-for-elasticsearch:
     internal: true
