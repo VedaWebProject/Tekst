@@ -5,7 +5,6 @@ import type { Component } from 'vue';
 defineProps<{
   iconComponent: Component;
   title: string;
-  disabled?: boolean;
   full?: boolean;
   toggled?: boolean;
   highlight?: boolean;
@@ -22,20 +21,13 @@ defineProps<{
     :color="highlight && !toggled ? 'var(--error-color)' : undefined"
     :focusable="false"
     :title="!full ? title : undefined"
-    :disabled="disabled"
-    :class="{ 'block-left-align': full }"
+    :style="{ 'justify-content': full ? 'flex-start': undefined }"
   >
     <template #icon>
       <n-icon :component="iconComponent" />
     </template>
-    <template v-if="full" #default>
+    <span v-if="full">
       {{ title }}
-    </template>
+    </span>
   </n-button>
 </template>
-
-<style scoped>
-.block-left-align {
-  justify-content: flex-start;
-}
-</style>

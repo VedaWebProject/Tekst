@@ -50,8 +50,7 @@ async function handleClick() {
   <content-container-header-widget
     v-if="
       resource.level === browse.level &&
-      resource.config.general.searchableAdv &&
-      resource.config.general.searchableQuick
+      (resource.config.general.searchableAdv || resource.config.general.searchableQuick)
     "
     :full="full"
     :title="
