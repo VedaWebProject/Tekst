@@ -98,7 +98,12 @@ function handleSmallScreenWidgetsTriggered() {
       <!-- generic content widgets -->
       <location-content-context-widget :resource="resource" full @done="closeModal" />
       <correction-note-widget :resource="resource" full @done="closeModal" />
-      <content-comment-widget :resource="resource" full @done="closeModal" />
+      <content-comment-widget
+        v-model:show-comments="showComments"
+        :resource="resource"
+        full
+        @done="closeModal"
+      />
       <content-edit-widget :resource="resource" full @done="closeModal" />
       <resource-settings-widget :resource="resource" full @done="closeModal" />
       <jump-to-content-widget :resource="resource" direction="before" full @done="closeModal" />

@@ -2,7 +2,6 @@
 import type { AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { CommentIcon } from '@/icons';
-import { NBadge } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -25,18 +24,18 @@ const hasComments = computed(
 </script>
 
 <template>
-  <n-badge v-if="hasComments" :show="!showComments" dot :offset="[-5, 10]">
-    <content-container-header-widget
-      :full="full"
-      :title="$t('common.comment', 2)"
-      :icon-component="CommentIcon"
-      :toggled="showComments"
-      @click="
-        () => {
-          showComments = !showComments;
-          emit('done');
-        }
-      "
-    />
-  </n-badge>
+  <content-container-header-widget
+    v-if="hasComments"
+    :full="full"
+    :title="$t('common.comment', 2)"
+    :icon-component="CommentIcon"
+    :toggled="showComments"
+    :highlight="hasComments && !showComments"
+    @click="
+      () => {
+        showComments = !showComments;
+        emit('done');
+      }
+    "
+  />
 </template>

@@ -8,6 +8,7 @@ defineProps<{
   disabled?: boolean;
   full?: boolean;
   toggled?: boolean;
+  highlight?: boolean;
 }>();
 </script>
 
@@ -18,6 +19,7 @@ defineProps<{
     :type="toggled ? 'primary' : undefined"
     :block="full"
     :circle="!full"
+    :color="highlight && !toggled ? 'var(--error-color)' : undefined"
     :focusable="false"
     :title="!full ? title : undefined"
     :disabled="disabled"
