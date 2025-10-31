@@ -20,7 +20,7 @@ services:
       - es
 
   mongo:
-    image: mongo:8
+    image: mongo:8.2.1
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
@@ -48,7 +48,7 @@ services:
   es:
     build:
       dockerfile_inline: |
-        FROM docker.elastic.co/elasticsearch/elasticsearch-wolfi:9.0.3
+        FROM docker.elastic.co/elasticsearch/elasticsearch-wolfi:9.2.0
         RUN elasticsearch-plugin install analysis-icu
     image: localhost/tekst/es
     environment:
