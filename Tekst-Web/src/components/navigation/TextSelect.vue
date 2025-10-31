@@ -88,7 +88,11 @@ function handleSelect(text: TextRead) {
 }
 
 .text-select-btn.n-button--ghost:hover {
-  background-color: #fff2;
+  background-color: #ffffff1a;
+}
+
+.n-button :deep(.n-button__border) {
+  border: 1px solid var(--base-color-translucent);
 }
 
 .text-title {

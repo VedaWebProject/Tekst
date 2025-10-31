@@ -21,7 +21,7 @@
   --font-size-tiny: 13px;
   --font-size-mini: 12px;
 
-  --border-radius: 4px;
+  --border-radius: 3px;
   --block-box-shadow: 0 3px 6px 0px rgba(0, 0, 0, 0.04);
   --affix-box-shadow: 0 5px 12px 4px rgba(0, 0, 0, 0.15);
 }
