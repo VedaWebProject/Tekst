@@ -21,7 +21,7 @@ defineProps<{
     :color="highlight && !toggled ? 'var(--error-color)' : undefined"
     :focusable="false"
     :title="!full ? title : undefined"
-    :style="{ 'justify-content': full ? 'flex-start': undefined }"
+    :style="{ 'justify-content': full ? 'flex-start' : undefined }"
   >
     <template #icon>
       <n-icon :component="iconComponent" />

@@ -180,22 +180,6 @@ async def test_get_nearest_content_position(
     assert_status(404, resp)
 
     # fail to get nearest content location with location
-    # from different level then resource
-    location_wrong_level = await LocationDocument.find_one(
-        LocationDocument.level != resource.level,
-        LocationDocument.text_id == resource.text_id,
-    )
-    resp = await test_client.get(
-        "/browse/nearest-content-location",
-        params={
-            "res": res_id,
-            "loc": str(location_wrong_level.id),
-            "dir": "after",
-        },
-    )
-    assert_status(400, resp)
-
-    # fail to get nearest content location with location
     # from different text then resource
     location_wrong_text = await LocationDocument.find_one(
         LocationDocument.text_id != resource.text_id,

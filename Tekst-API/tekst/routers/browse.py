@@ -344,10 +344,7 @@ async def get_nearest_content_location(
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
         raise errors.E_404_LOCATION_NOT_FOUND
-    if (
-        location_doc.level != resource_doc.level
-        or location_doc.text_id != resource_doc.text_id
-    ):
+    if location_doc.text_id != resource_doc.text_id:
         raise errors.E_400_INVALID_REQUEST_DATA
 
     target_loc = await search_nearest_content_location(

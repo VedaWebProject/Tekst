@@ -676,8 +676,8 @@ async def search_nearest_content_location(
                         }
                     }
                 },
-                {"term": {"level": resource.level}},
-            ]
+            ],
+            "filter": [{"term": {"level": location.level}}],
         }
     }
     sort = {"position": {"order": "desc" if direction == "before" else "asc"}}
