@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { AnyResourceConfig, AnyResourceRead } from '@/api';
+import type { AnyResourceRead } from '@/api';
 import { specialConfigFormItems } from '@/forms/resources/config/mappings';
 
 defineProps<{
   resource: AnyResourceRead;
 }>();
 
-const model = defineModel<AnyResourceConfig['special']>({ required: true });
+const model = defineModel<Record<string, unknown>>({ required: true });
 </script>
 
 <template>

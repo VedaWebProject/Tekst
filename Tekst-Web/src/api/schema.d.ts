@@ -1971,8 +1971,6 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      /** Special */
-      special?: null;
     };
     /** AudioResourceCreate */
     AudioResourceCreate: {
@@ -2873,8 +2871,6 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      /** Special */
-      special?: null;
     };
     /** ExternalReferencesResourceCreate */
     ExternalReferencesResourceCreate: {
@@ -3403,8 +3399,6 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      /** Special */
-      special?: null;
     };
     /** ImagesResourceCreate */
     ImagesResourceCreate: {

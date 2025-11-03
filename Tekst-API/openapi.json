@@ -8980,10 +8980,6 @@
               "searchableAdv": true,
               "rtl": false
             }
-          },
-          "special": {
-            "type": "null",
-            "title": "Special"
           }
         },
         "type": "object",
@@ -10923,10 +10919,6 @@
               "searchableAdv": false,
               "rtl": false
             }
-          },
-          "special": {
-            "type": "null",
-            "title": "Special"
           }
         },
         "type": "object",
@@ -12063,10 +12055,6 @@
               "searchableAdv": true,
               "rtl": false
             }
-          },
-          "special": {
-            "type": "null",
-            "title": "Special"
           }
         },
         "type": "object",
