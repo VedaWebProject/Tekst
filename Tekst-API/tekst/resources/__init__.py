@@ -38,7 +38,7 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.text import TextDocument
-from tekst.models.user import UserDocument
+from tekst.models.user import UserDocument, UserReadPublic
 from tekst.types import ConStr, SchemaOptionalNullable
 
 
@@ -694,8 +694,8 @@ async def prepare_resource_read(
     )
 
     # include owner user data in each resource model (if an owner id is set)
-    if resource.owner_id:
-        resource.owner = await UserDocument.get(resource.owner_id)
+    if resource.owner_id and (owner_doc := (await UserDocument.get(resource.owner_id))):
+        resource.owner = UserReadPublic.model_from(owner_doc)
 
     # include corrections count if user is owner of the resource
     # or, if resource has no owner, user is superuser
