@@ -90,7 +90,7 @@ class GeneralResourceConfig(ModelBase):
 
 class ResourceConfigBase(ModelBase):
     general: GeneralResourceConfig = GeneralResourceConfig()
-    special: ModelBase | None = None
+    special: None = None
 
 
 # GENERIC RESOURCE CONFIG: ITEM DISPLAY (ORDER, GROUPING AND TRANSLATIONS)

@@ -8982,14 +8982,8 @@
             }
           },
           "special": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelBase"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "type": "null",
+            "title": "Special"
           }
         },
         "type": "object",
@@ -10931,14 +10925,8 @@
             }
           },
           "special": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelBase"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "type": "null",
+            "title": "Special"
           }
         },
         "type": "object",
@@ -12077,14 +12065,8 @@
             }
           },
           "special": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelBase"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "type": "null",
+            "title": "Special"
           }
         },
         "type": "object",
@@ -14495,11 +14477,6 @@
           "value"
         ],
         "title": "MetadataEntry"
-      },
-      "ModelBase": {
-        "properties": {},
-        "type": "object",
-        "title": "ModelBase"
       },
       "MoveLocationRequestBody": {
         "properties": {

@@ -1971,7 +1971,8 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      special?: components['schemas']['ModelBase'] | null;
+      /** Special */
+      special?: null;
     };
     /** AudioResourceCreate */
     AudioResourceCreate: {
@@ -2872,7 +2873,8 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      special?: components['schemas']['ModelBase'] | null;
+      /** Special */
+      special?: null;
     };
     /** ExternalReferencesResourceCreate */
     ExternalReferencesResourceCreate: {
@@ -3401,7 +3403,8 @@ export interface components {
        *     }
        */
       general: components['schemas']['GeneralResourceConfig'];
-      special?: components['schemas']['ModelBase'] | null;
+      /** Special */
+      special?: null;
     };
     /** ImagesResourceCreate */
     ImagesResourceCreate: {
@@ -4499,8 +4502,6 @@ export interface components {
        */
       value: string;
     };
-    /** ModelBase */
-    ModelBase: Record<string, never>;
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {
       /** Position */
