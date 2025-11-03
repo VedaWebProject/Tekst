@@ -16,7 +16,7 @@
 **/compose.yml
 **/.coverage
 **/.dockerignore
-**/Taskfile.yml
+**/.justfile
 docs/
 dev/
 assets/

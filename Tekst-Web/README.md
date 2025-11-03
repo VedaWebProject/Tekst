@@ -14,7 +14,7 @@ For general information on Tekst, visit the [Tekst repository](https://github.co
 3. You can now use
    - `npm run dev` to run the [Vite](https://vitejs.dev/) dev server
    - `npm run build` to build the project
-   - `npm run api-schema` to generate types from the Tekst-API OpenAPI schema
+   - `npm run types` to generate types from the Tekst-API OpenAPI schema
    - `npm run translations` to generate translation modules from the translation files
    - [...and so on](package.json)
-4. The project has some _very_ convenient tasks configured that can be run with [Task](https://taskfile.dev/) (a task runner). This is optional, but it helps _a lot_. You can install it form [here](https://taskfile.dev/installation/). Tasks can then be run via `task <taskname>`. You'll get a commented overview of the configured tasks if you run `task` without any arguments (or look [here](Taskfile.yml)).
+4. The project also has some _very_ convenient recipes configured that can be run with [just](https://just.systems/man/en/packages.html) (a task runner). This is optional, but it helps _a lot_. Recipes can then be run via `just <recipe name>`. You'll get a commented overview of the configured recipes if you run `just` without any arguments (or look [here](.justfile)).
