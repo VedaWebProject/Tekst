@@ -41,6 +41,7 @@ translations:
 
 # run full pre-commit toolchain
 all:
+  just install
   just fix
   npm run build
 
