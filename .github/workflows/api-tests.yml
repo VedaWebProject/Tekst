@@ -24,6 +24,9 @@ on:
       - ".github/workflows/api-tests.yml"
   workflow_dispatch:
 
+env:
+  CI: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -61,7 +64,11 @@ jobs:
         uses: andymckay/cancel-action@0.5
       - name: Run tests
         if: always()
-        run: TEKST_DEV_MODE=true TEKST_CUSTOM_ENV_FILE=.env.test TEKST_EMAIL__SMTP_STARTTLS=false uv run pytest && uv run coverage lcov
+        env:
+          TEKST_DEV_MODE: true
+          TEKST_CUSTOM_ENV_FILE: .env.test
+          TEKST_EMAIL__SMTP_STARTTLS: false
+        run: uv run pytest && uv run coverage lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
