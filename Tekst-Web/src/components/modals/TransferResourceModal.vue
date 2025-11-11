@@ -2,7 +2,7 @@
 import type { AnyResourceRead, PublicUserSearchFilters, UserReadPublic } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import UserDisplayText from '@/components/user/UserDisplayText.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
 import { useMessages } from '@/composables/messages';
 import { usePublicUserSearch } from '@/composables/publicUserSearch';
 import { $t } from '@/i18n';
@@ -44,7 +44,7 @@ const usersOptions = computed(() =>
   users.value.map((u) => ({
     value: u.id,
     user: u,
-    disabled: props.resource?.public && !u.isSuperuser,
+    disabled: (props.resource?.public && !u.isSuperuser) || props.resource?.ownerId === u.id,
   }))
 );
 
@@ -62,7 +62,7 @@ const formRules: Record<string, FormItemRule[]> = {
 };
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {
-  return h(UserDisplayText, { user: option.user as UserReadPublic });
+  return h(UserDisplay, { user: option.user as UserReadPublic, link: false });
 }
 
 async function handleOkClick() {
