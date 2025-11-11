@@ -38,7 +38,8 @@ const { pageLogo } = useLogo();
   <n-flex align="center" :size="size" :style="`font-size: var(--font-size-${size})`">
     <user-avatar
       v-if="showAvatar"
-      :avatar-url="!system ? user.avatarUrl || undefined : pageLogo"
+      :username="!!system ? 'system' : user.username"
+      :avatar-url="!system ? user.avatarUrl : pageLogo"
       :size="iconSizes[size]"
       style="flex-shrink: 0"
     />

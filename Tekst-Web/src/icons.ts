@@ -47,7 +47,6 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
-import HideImageOutlined from '@vicons/material/HideImageOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -201,7 +200,6 @@ export {
   MoveDownOutlined as MoveDownIcon,
   PersonAddOutlined as NewUserIcon,
   FolderOffOutlined as NoContentIcon,
-  HideImageOutlined as NoImageIcon,
   FindInPageOutlined as NothingFoundIcon,
   PauseFilled as PauseIcon,
   PushPinOutlined as PinIcon,

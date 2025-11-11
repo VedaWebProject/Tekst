@@ -2,20 +2,33 @@
 import { UserIcon } from '@/icons';
 import { NAvatar, NIcon } from 'naive-ui';
 import type { Size } from 'naive-ui/es/avatar/src/interface';
-import { h, type Component } from 'vue';
+import nyf from 'notyourface';
+import { computed, h } from 'vue';
 
-defineProps<{
-  avatarUrl?: string;
+const nyfOptions: Parameters<(typeof nyf)['dataURI']>[0] = {
+  complexity: 4,
+  cache: 512,
+  size: 128,
+};
+
+const props = defineProps<{
+  username?: string;
+  avatarUrl?: string | null;
   size?: Size;
-  fallbackIcon?: Component;
 }>();
+
+const avatar = computed(
+  () =>
+    props.avatarUrl ||
+    (props.username ? nyf.dataURI({ ...nyfOptions, seed: props.username }) : undefined)
+);
 </script>
 
 <template>
   <n-avatar
     round
-    :src="avatarUrl || undefined"
-    :render-fallback="() => h(NIcon, { component: fallbackIcon || UserIcon })"
+    :src="avatar"
+    :render-fallback="() => h(NIcon, { component: UserIcon })"
     :size="size"
     object-fit="cover"
     color="var(--primary-color-fade4)"
@@ -25,7 +38,5 @@ defineProps<{
       backgroundColor: 'var(--main-bg-color)',
       flexShrink: 0,
     }"
-  >
-    <n-icon v-if="!avatarUrl" :component="fallbackIcon || UserIcon" :size="size" />
-  </n-avatar>
+  />
 </template>

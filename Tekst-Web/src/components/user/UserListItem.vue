@@ -134,7 +134,11 @@ function handleActionSelect(o: DropdownOption & { action?: () => void }) {
   <n-list-item class="user-list-item">
     <n-thing content-indented>
       <template #avatar>
-        <user-avatar :avatar-url="targetUser.avatarUrl || undefined" :size="64" />
+        <user-avatar
+          :username="targetUser.username"
+          :avatar-url="targetUser.avatarUrl"
+          :size="64"
+        />
       </template>
       <template #header>
         <n-flex align="center">

@@ -99,7 +99,7 @@ function resetPagination() {
           >
             <n-list-item @click="navigate">
               <n-flex :wrap="false">
-                <user-avatar :avatar-url="user.avatarUrl || undefined" :size="64" />
+                <user-avatar :username="user.username" :avatar-url="user.avatarUrl" :size="64" />
                 <user-thing-header :user="user" />
               </n-flex>
             </n-list-item>

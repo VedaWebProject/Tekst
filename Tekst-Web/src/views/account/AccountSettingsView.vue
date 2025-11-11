@@ -16,7 +16,7 @@ import { useMessages } from '@/composables/messages';
 import { useModelChanges } from '@/composables/modelChanges';
 import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { ManageAccountIcon, NoImageIcon } from '@/icons';
+import { ManageAccountIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { validateUrlInput } from '@/utils';
 import type { FormInst, FormItemInst, FormItemRule } from 'naive-ui';
@@ -339,9 +339,9 @@ async function handleDeleteAccount() {
           @input-blur="validateUrlInput($event.target as HTMLInputElement)"
         />
         <user-avatar
-          :avatar-url="userDataFormModel.avatarUrl || undefined"
+          :username="auth.user?.username"
+          :avatar-url="userDataFormModel.avatarUrl"
           :size="32"
-          :fallback-icon="NoImageIcon"
           class="ml-md"
         />
       </n-form-item>

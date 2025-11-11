@@ -12,13 +12,7 @@ import {
   TextsIcon,
   UserIcon,
 } from '@/icons';
-import {
-  useAuthStore,
-  useResourcesStore,
-  useStateStore,
-  useThemeStore,
-  useUserMessagesStore,
-} from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { renderIcon } from '@/utils';
 import { NBadge, NButton, NDropdown, NFlex, NIcon } from 'naive-ui';
 import { computed, h, ref } from 'vue';
@@ -27,7 +21,6 @@ import { type RouteLocationRaw, RouterLink } from 'vue-router';
 const auth = useAuthStore();
 const userMessages = useUserMessagesStore();
 const state = useStateStore();
-const theme = useThemeStore();
 const resources = useResourcesStore();
 
 const tooltip = computed(() =>
@@ -160,24 +153,11 @@ function handleUserOptionSelect(key: string) {
         </n-flex>
       </template>
       <user-avatar
-        v-if="auth.user?.avatarUrl"
+        :username="auth.user.username"
         :avatar-url="auth.user.avatarUrl"
         size="large"
         class="avatar-btn"
       />
-      <n-button
-        v-else
-        type="primary"
-        circle
-        size="large"
-        :title="tooltip"
-        :focusable="false"
-        :color="theme.colors.primary.base"
-      >
-        <template #icon>
-          <n-icon :component="UserIcon" />
-        </template>
-      </n-button>
     </n-badge>
   </n-dropdown>
 
