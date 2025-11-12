@@ -79,7 +79,7 @@ def get_test_data(get_test_data_path) -> Callable[[str], Any]:
 
 
 @pytest.fixture(scope="session")
-async def db_client_override(config) -> db.DatabaseClient:
+async def db_client(config) -> db.DatabaseClient:
     """Dependency override for the database client dependency"""
     db_client = db.DatabaseClient(config.db.uri)
     yield db_client
@@ -87,26 +87,35 @@ async def db_client_override(config) -> db.DatabaseClient:
     db_client.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 async def database(
     config,
-    db_client_override,
+    db_client,
 ) -> db.Database:
     """DB driver for test session"""
-    yield db_client_override[config.db.name]
+    db = db_client[config.db.name]
+    for collection in await db.list_collection_names():
+        await db.drop_collection(collection)
+    yield db
+
+
+@pytest.fixture()
+async def clear_db(database) -> None:
+    for collection in await database.list_collection_names():
+        await database.drop_collection(collection)
 
 
 @pytest.fixture(scope="session")
 async def test_app(
     config,
-    db_client_override,
+    db_client,
 ):
     """Provides an app instance with overridden dependencies"""
-    app.dependency_overrides[db.get_db_client] = lambda: db_client_override
+    app.dependency_overrides[db.get_db_client] = lambda: db_client
     async with LifespanManager(app):
         yield app
     # cleanup data
-    await db_client_override.drop_database(config.db.name)
+    await db_client.drop_database(config.db.name)
 
 
 @pytest.fixture(scope="session")
@@ -129,7 +138,7 @@ async def test_client(
         yield client
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 async def insert_test_data(
     database,
     get_test_data,
@@ -140,6 +149,7 @@ async def insert_test_data(
     """
 
     async def _insert_test_data(*collections: str) -> dict[str, list[str]]:
+        # insert test collections
         ids = dict()
         collections = collections or [
             "contents",
@@ -191,16 +201,11 @@ def get_mock_user() -> Callable:
     return _get_mock_user
 
 
-@pytest.fixture(autouse=True)
-async def setup_teardown(database) -> Callable:
-    yield
-    # drop all DB collections
-    for collection in await database.list_collection_names():
-        await database.drop_collection(collection)
-
-
-@pytest.fixture(scope="session")
-async def register_test_user(get_mock_user) -> Callable:
+@pytest.fixture()
+async def register_test_user(
+    get_mock_user,
+    clear_db,
+) -> Callable:
     async def _register_test_user(
         *,
         is_active: bool = True,
@@ -223,10 +228,11 @@ async def register_test_user(get_mock_user) -> Callable:
     return _register_test_user
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 async def logout(
     config,
     test_client: AsyncClient,
+    clear_db,
 ) -> Callable:
     async def _logout() -> None:
         await test_client.post("/auth/cookie/logout")
@@ -235,12 +241,13 @@ async def logout(
     return _logout
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 async def login(
     config,
     test_client,
     logout,
     register_test_user,
+    clear_db,
 ) -> Callable:
     async def _login(
         user: dict | None = None,
@@ -251,7 +258,10 @@ async def login(
             user = await register_test_user(**kwargs)
         resp = await test_client.post(
             "/auth/cookie/login",
-            data={"username": user["email"], "password": user["password"]},
+            data={
+                "username": user["email"],
+                "password": user["password"],
+            },
         )
         if resp.status_code != 204:
             raise Exception(

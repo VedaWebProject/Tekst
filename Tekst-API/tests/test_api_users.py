@@ -184,7 +184,10 @@ async def test_update_user(
 
 
 @pytest.mark.anyio
-async def test_create_initial_superuser(config):
+async def test_create_initial_superuser(
+    config,
+    clear_db,
+):
     await create_initial_superuser()  # will abort because of dev mode
     prod_cfg = config.model_copy(deep=True)
     prod_cfg.dev_mode = False
@@ -192,7 +195,9 @@ async def test_create_initial_superuser(config):
 
 
 @pytest.mark.anyio
-async def test_create_duplicate_user(login):
+async def test_create_duplicate_user(
+    login,
+):
     with pytest.raises(HTTPException) as e:
         await login()
         await login()

@@ -43,9 +43,9 @@ async def test_admin_create_search_index(
 @pytest.mark.anyio
 async def test_get_indices_info(
     test_client: AsyncClient,
+    login,
     use_indices,
     assert_status,
-    login,
 ):
     await login(is_superuser=True)
     resp = await test_client.get("/search/index/info")

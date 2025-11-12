@@ -22,6 +22,7 @@ async def test_register_invalid_pw(
     test_client: AsyncClient,
     get_mock_user,
     assert_status,
+    clear_db,
 ):
     payload = get_mock_user()
 
@@ -60,6 +61,7 @@ async def test_register_username_exists(
     test_client: AsyncClient,
     get_mock_user,
     assert_status,
+    clear_db,
 ):
     payload = get_mock_user()
 
@@ -77,6 +79,7 @@ async def test_register_email_exists(
     test_client: AsyncClient,
     get_mock_user,
     assert_status,
+    clear_db,
 ):
     payload = get_mock_user()
 
@@ -97,6 +100,7 @@ async def test_login_session_cookie(
     register_test_user,
     test_client: AsyncClient,
     assert_status,
+    clear_db,
 ):
     user = await register_test_user()
     payload = {
@@ -120,6 +124,7 @@ async def test_login_persistent_cookie(
     register_test_user,
     test_client: AsyncClient,
     assert_status,
+    clear_db,
 ):
     user = await register_test_user()
     payload = {
@@ -157,6 +162,7 @@ async def test_login_fail_unverified(
     register_test_user,
     test_client: AsyncClient,
     assert_status,
+    clear_db,
 ):
     user = await register_test_user(is_verified=False)
     payload = {"username": user["email"], "password": user["password"]}

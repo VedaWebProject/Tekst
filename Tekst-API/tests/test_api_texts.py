@@ -74,6 +74,7 @@ async def test_create_text_unauthorized(
 async def test_create_text_unauthenticated(
     test_client: AsyncClient,
     assert_status,
+    clear_db,
 ):
     payload = {"title": "Meow", "slug": "meow", "levels": ["meow"]}
     resp = await test_client.post("/texts", json=payload)

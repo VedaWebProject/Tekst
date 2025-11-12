@@ -5,7 +5,10 @@ from tekst.platform import bootstrap
 
 
 @pytest.mark.anyio
-async def test_bootstrap_tabula_rasa(config):
+async def test_bootstrap_tabula_rasa(
+    config,
+    clear_db,
+):
     # run app bootstrap – will insert sample data, run precomputation hooks, ...
     await bootstrap(close_connections=False)
     # 2nd time to test bootstrap attempt on already set-up instance DB
@@ -51,6 +54,7 @@ async def test_migrate_no_state_coll(
 @pytest.mark.anyio
 async def test_migrate_none_pending(
     config,
+    clear_db,
 ):
     await bootstrap(close_connections=False)
     await migrations.migrate()  # no pending migrations
