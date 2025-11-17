@@ -12,7 +12,7 @@ import {
 } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
-const props = defineProps<{ flagsLabels: Record<string, string> }>();
+const props = defineProps<{ flagsLabels?: Record<string, string> }>();
 const search = defineModel<string | undefined>('search', { required: false, default: undefined });
 const flags = defineModel<string[]>('flags', { required: false, default: () => [] });
 const emit = defineEmits(['changed']);
@@ -20,15 +20,15 @@ const emit = defineEmits(['changed']);
 const searchInputRef = ref<InputInst | null>(null);
 
 const flagsOptions = computed(() =>
-  Object.entries(props.flagsLabels).map(([k, v]) => ({ label: v, value: k }))
+  Object.entries(props.flagsLabels || {}).map(([k, v]) => ({ label: v, value: k }))
 );
 const isUnfiltered = computed(
-  () => !search.value && flags.value.length === Object.keys(props.flagsLabels).length
+  () => !search.value && flags.value.length === Object.keys(props.flagsLabels || {}).length
 );
 
 function reset() {
   search.value = undefined;
-  flags.value = Object.entries(props.flagsLabels).map(([k]) => k);
+  flags.value = Object.entries(props.flagsLabels || {}).map(([k]) => k);
 }
 
 function handleFilterCollapseItemClick(data: { name: string; expanded: boolean }) {
@@ -75,20 +75,22 @@ onMounted(() => {
             <n-icon :component="SearchIcon" />
           </template>
         </n-input>
-        <n-select
-          v-model:value="flags"
-          :options="flagsOptions"
-          multiple
-          @update:value="emit('changed')"
-        />
-        <n-flex justify="flex-end">
-          <n-button secondary class="mt-md" @click="reset">
-            {{ $t('common.reset') }}
-            <template #icon>
-              <n-icon :component="JumpBackIcon" />
-            </template>
-          </n-button>
-        </n-flex>
+        <template v-if="!!flagsOptions.length">
+          <n-select
+            v-model:value="flags"
+            :options="flagsOptions"
+            multiple
+            @update:value="emit('changed')"
+          />
+          <n-flex justify="flex-end">
+            <n-button secondary class="mt-md" @click="reset">
+              {{ $t('common.reset') }}
+              <template #icon>
+                <n-icon :component="JumpBackIcon" />
+              </template>
+            </n-button>
+          </n-flex>
+        </template>
       </n-collapse-item>
     </n-collapse>
   </div>
