@@ -75,7 +75,8 @@ function handleSelect(text: TextRead) {
       />
       <div
         v-if="state.text?.subtitle && !state.smallScreen"
-        class="text-large i translucent ellipsis"
+        class="text-large i ellipsis"
+        style="color: var(--text-color-translucent)"
       >
         <translation-display :value="state.text?.subtitle" />
       </div>
