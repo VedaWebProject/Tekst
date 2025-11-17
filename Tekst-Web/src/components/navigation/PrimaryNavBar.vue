@@ -48,77 +48,79 @@ const titleLinkTo = computed(() => {
 </script>
 
 <template>
-  <n-flex
-    align="center"
-    :wrap="false"
-    class="navbar"
-    :class="state.smallScreen && 'navbar-smallscreen'"
-  >
-    <router-link :to="titleLinkTo">
-      <img
-        v-if="pageLogo && state.pf?.state.showLogoInHeader"
-        class="navbar-logo"
-        alt=""
-        :src="pageLogo"
-      />
-    </router-link>
-    <div class="navbar-title">
-      <router-link :to="titleLinkTo">
-        <div class="text-gigantic" style="line-height: 120%">
-          {{ state.pf?.state.platformName }}
-        </div>
-      </router-link>
-      <div v-if="!!state.pf?.state.platformSubtitle.length" class="translucent text-tiny">
-        <translation-display :value="state.pf.state.platformSubtitle" />
-      </div>
-    </div>
-
+  <div>
     <n-flex
-      v-if="!state.smallScreen"
-      justify="end"
-      align="flex-start"
-      style="flex: 2; align-self: stretch"
+      align="center"
+      :wrap="false"
+      class="navbar-top"
+      :class="state.smallScreen && 'navbar-smallscreen'"
     >
-      <theme-mode-switcher />
-      <locale-switcher />
-      <user-actions-button v-if="!!state.pf && (!state.pf.security.closedMode || !!auth.user)" />
+      <router-link :to="titleLinkTo">
+        <img
+          v-if="pageLogo && state.pf?.state.showLogoInHeader"
+          class="navbar-logo"
+          alt=""
+          :src="pageLogo"
+        />
+      </router-link>
+      <div class="navbar-title">
+        <router-link :to="titleLinkTo">
+          <div class="text-gigantic" style="line-height: 120%">
+            {{ state.pf?.state.platformName }}
+          </div>
+        </router-link>
+        <div v-if="!!state.pf?.state.platformSubtitle.length" class="translucent text-tiny">
+          <translation-display :value="state.pf.state.platformSubtitle" />
+        </div>
+      </div>
+
+      <n-flex
+        v-if="!state.smallScreen"
+        justify="end"
+        align="flex-start"
+        style="flex: 2; align-self: stretch"
+      >
+        <theme-mode-switcher />
+        <locale-switcher />
+        <user-actions-button v-if="!!state.pf && (!state.pf.security.closedMode || !!auth.user)" />
+      </n-flex>
+
+      <n-badge
+        v-else
+        :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
+        :offset="[-8, 6]"
+      >
+        <template #value>
+          <n-flex :wrap="false" size="small">
+            <n-icon v-if="!!resources.correctionsCountTotal" :component="CorrectionNoteIcon" />
+            <n-icon v-if="!!userMessages.unreadCount" :component="MessageIcon" />
+          </n-flex>
+        </template>
+        <n-button
+          quaternary
+          circle
+          size="large"
+          :focusable="false"
+          :keyboard="false"
+          @click="() => (menuOpen = !menuOpen)"
+        >
+          <template #icon>
+            <n-icon size="32" :component="HamburgerMenuIcon" />
+          </template>
+        </n-button>
+      </n-badge>
     </n-flex>
 
-    <n-badge
-      v-else
-      :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
-      :offset="[-8, 6]"
-    >
-      <template #value>
-        <n-flex :wrap="false" size="small">
-          <n-icon v-if="!!resources.correctionsCountTotal" :component="CorrectionNoteIcon" />
-          <n-icon v-if="!!userMessages.unreadCount" :component="MessageIcon" />
-        </n-flex>
-      </template>
-      <n-button
-        quaternary
-        circle
-        size="large"
-        :focusable="false"
-        :keyboard="false"
-        @click="() => (menuOpen = !menuOpen)"
-      >
-        <template #icon>
-          <n-icon size="32" :component="HamburgerMenuIcon" />
-        </template>
-      </n-button>
-    </n-badge>
-  </n-flex>
-
-  <n-flex align="center" class="navbar-menu">
-    <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
-    <drawer-menu v-else v-model:show="menuOpen" />
-    <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
-  </n-flex>
+    <n-flex align="center" class="navbar-menu">
+      <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
+      <drawer-menu v-else v-model:show="menuOpen" />
+      <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
+    </n-flex>
+  </div>
 </template>
 
 <style scoped>
-.navbar {
+.navbar-top {
   max-width: var(--max-app-width);
   margin: 0 auto;
   padding: var(--gap-lg);
@@ -128,11 +130,11 @@ const titleLinkTo = computed(() => {
   padding: var(--gap-lg);
 }
 
-.navbar a:any-link {
+.navbar-top a:any-link {
   color: var(--n-font-color);
 }
 
-.navbar a:hover {
+.navbar-top a:hover {
   color: var(--primary-color);
 }
 

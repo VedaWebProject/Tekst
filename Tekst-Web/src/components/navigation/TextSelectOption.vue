@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import { NIcon } from 'naive-ui';
+import { NFlex, NIcon } from 'naive-ui';
 
-import { DisabledVisibleIcon } from '@/icons';
+import { CheckIcon, DisabledVisibleIcon } from '@/icons';
 import { useThemeStore } from '@/stores';
 import { computed } from 'vue';
 
@@ -20,7 +20,7 @@ const indicatorStyle = computed(() => ({
 </script>
 
 <template>
-  <div class="text-select-option">
+  <n-flex align="stretch" class="text-select-option" :class="{ selected }">
     <div class="text-select-option-indicator" :style="indicatorStyle"></div>
     <div>
       <div>
@@ -34,19 +34,23 @@ const indicatorStyle = computed(() => ({
         {{ $t('models.text.isInactive') }}
       </div>
     </div>
-  </div>
+    <n-flex v-if="selected" justify="flex-end" align="center" style="flex-grow: 2">
+      <n-icon :component="CheckIcon" />
+    </n-flex>
+  </n-flex>
 </template>
 
 <style scoped>
 .text-select-option {
-  display: flex;
-  align-items: stretch;
-  gap: 12px;
   padding: 4px 6px;
   margin: 2px 6px;
   border-radius: 3px;
   cursor: pointer;
   transition: 0.2s;
+}
+
+.text-select-option.selected {
+  color: var(--primary-color);
 }
 
 .text-select-option:hover {

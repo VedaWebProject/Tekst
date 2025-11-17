@@ -84,35 +84,30 @@ em,
 h1 {
   font-size: var(--font-size-gigantic);
   font-weight: normal;
-  margin-top: 1.2rem;
   margin-bottom: 1.25rem;
 }
 
 h2 {
   font-size: var(--font-size-huge);
   font-weight: normal;
-  margin-top: 1.1rem;
   margin-bottom: 1rem;
 }
 
 h3 {
   font-size: var(--font-size-large);
   font-weight: normal;
-  margin-top: 1rem;
   margin-bottom: 0.9rem;
 }
 
 h4 {
   font-size: var(--font-size);
   font-weight: normal;
-  margin-top: 0.9rem;
   margin-bottom: 0.8rem;
 }
 
 h5 {
   font-size: var(--font-size-medium);
   font-weight: bold;
-  margin-top: 0.8rem;
   margin-bottom: 0.5rem;
 }
 
@@ -121,10 +116,10 @@ h2,
 h3,
 h4,
 h5 {
+  margin-top: 0.8rem;
   line-height: 1.25;
 }
 
-h1:first-child,
 h2:first-child,
 h3:first-child,
 h4:first-child,
@@ -314,7 +309,7 @@ table td {
 
 .primary-color-bg {
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--base-color);
   transition: 0.2s;
 }
 

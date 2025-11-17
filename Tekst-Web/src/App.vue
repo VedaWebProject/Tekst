@@ -2,6 +2,8 @@
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
+import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
+import TextSelect from '@/components/navigation/TextSelect.vue';
 import TasksWidget from '@/components/TasksWidget.vue';
 import MessagingModal from '@/components/userMessages/MessagingModal.vue';
 import { useFavicon } from '@/composables/favicon';
@@ -10,7 +12,6 @@ import { useTasks } from '@/composables/tasks';
 import { getLocaleProfile } from '@/i18n';
 import { ErrorIcon } from '@/icons';
 import PageFooter from '@/layout/PageFooter.vue';
-import PageHeader from '@/layout/PageHeader.vue';
 import { useStateStore, useThemeStore } from '@/stores';
 import {
   NBackTop,
@@ -51,8 +52,11 @@ useFavicon();
       <n-dialog-provider>
         <!-- app content when initialized -->
         <template v-if="state.init.initialized && !state.init.error">
-          <page-header />
+          <header>
+            <primary-nav-bar />
+          </header>
           <main>
+            <text-select />
             <div id="main-content">
               <router-view />
             </div>
@@ -90,11 +94,11 @@ useFavicon();
 
 <style scoped>
 main {
-  padding: var(--gap-lg) 0;
+  padding-bottom: var(--gap-lg);
   background-color: var(--main-bg-color);
   box-shadow:
-    inset 0 12px 12px -12px rgba(0, 0, 0, 0.4),
-    inset 0 -10px 12px -12px rgba(0, 0, 0, 0.1);
+    inset 0 12px 12px -12px rgba(0, 0, 0, 0.2),
+    inset 0 -10px 12px -12px rgba(0, 0, 0, 0.2);
 }
 
 #main-content {

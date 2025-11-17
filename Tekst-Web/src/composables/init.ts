@@ -70,7 +70,7 @@ export function useInitializeApp() {
           state.textBySlug(route.params.textSlug?.toString()) ||
           state.textBySlug(state.textSlug) ||
           state.defaultText;
-        if (route.params.hasOwnProperty('textSlug') && state.text?.slug !== route.params.textSlug) {
+        if ('textSlug' in route.params && state.text?.slug !== route.params.textSlug) {
           router.replace({
             params: {
               textSlug: state.text?.slug,

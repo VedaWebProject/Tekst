@@ -1,46 +1,44 @@
 <script setup lang="ts">
 import type { TextRead } from '@/api';
+import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
-import { ExpandArrowDownIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { NButton, NDropdown, NIcon, useThemeVars } from 'naive-ui';
+import { NFlex, NSelect, type SelectInst, type SelectOption } from 'naive-ui';
 import { computed, h, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
 const state = useStateStore();
+const router = useRouter();
 const browse = useBrowseStore();
-const themeVars = useThemeVars();
 
 const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
-const dropdownRef = ref();
+const selectRef = ref<SelectInst>();
 
-const renderLabel = (t: TextRead) => {
-  return () =>
-    h(TextSelectOption, {
-      text: t,
-      locale: state.locale,
-      selected: t.id === state.text?.id,
-      onClick: () => handleSelect(t),
-    });
+const renderLabel: SelectOption['render'] = (info) => {
+  return h(TextSelectOption, {
+    text: info.option.text as TextRead,
+    locale: state.locale,
+    selected: info.option.value === state.text?.id,
+    onClick: () => handleSelect(info.option.text as TextRead),
+  });
 };
 
-const options = computed(
+const options = computed<SelectOption[]>(
   () =>
     state.pf?.texts.map((t: TextRead) => ({
-      render: renderLabel(t),
-      key: t.id,
-      type: 'render',
-      show: t.id !== state.text?.id,
+      label: t.title,
+      value: t.id,
+      render: renderLabel,
+      text: t,
     })) || []
 );
 
 function handleSelect(text: TextRead) {
   if (state.text?.id === text.id) return;
-  dropdownRef.value.doUpdateShow(false);
+  selectRef.value?.blur();
   browse.locationPath = [];
 
-  if (router.currentRoute.value.params.hasOwnProperty('textSlug')) {
+  if ('textSlug' in router.currentRoute.value.params) {
     router.push({
       name: router.currentRoute.value.name,
       params: {
@@ -50,38 +48,46 @@ function handleSelect(text: TextRead) {
       },
     });
   } else {
-    state.text = state.textById(text.id);
+    state.text = text;
   }
 }
 </script>
 
 <template>
-  <n-dropdown
-    ref="dropdownRef"
-    trigger="click"
-    :options="options"
-    :disabled="disabled"
-    placement="bottom-start"
-  >
-    <n-button
-      ghost
-      :color="themeVars.baseColor"
-      icon-placement="right"
-      :focusable="false"
-      :keyboard="false"
-      :title="$t('common.textSelect')"
-      class="text-select-btn"
-      :style="{ cursor: !disabled ? 'pointer' : 'default' }"
+  <div v-if="!disabled && 'textSlug' in router.currentRoute.value.params" class="text-select">
+    <n-flex
+      size="large"
+      justify="space-between"
+      align="center"
+      :wrap="false"
+      class="text-select-inner"
     >
-      <template v-if="!disabled" #icon>
-        <n-icon :component="ExpandArrowDownIcon" />
-      </template>
-      <div class="text-title ellipsis text-large">{{ state.text?.title || '???' }}</div>
-    </n-button>
-  </n-dropdown>
+      <n-select
+        ref="selectRef"
+        :value="state.text?.id"
+        size="large"
+        :options="options"
+        :consistent-menu-width="false"
+        :style="{
+          width: state.smallScreen ? '100%' : 'unset',
+          minWidth: state.smallScreen ? undefined : '320px',
+        }"
+      />
+      <div
+        v-if="state.text?.subtitle && !state.smallScreen"
+        class="text-large i translucent ellipsis"
+      >
+        <translation-display :value="state.text?.subtitle" />
+      </div>
+    </n-flex>
+  </div>
 </template>
 
 <style scoped>
+.text-select {
+  background-color: var(--primary-color-fade5);
+}
+
 .text-select-btn {
   max-width: 100%;
   justify-content: flex-start;
@@ -112,5 +118,19 @@ function handleSelect(text: TextRead) {
 
 .text-info-btn:hover {
   opacity: 1;
+}
+
+.text-select-inner {
+  padding: var(--gap-md) var(--gap-lg);
+  max-width: var(--max-app-width);
+  margin: 0 auto;
+}
+
+.text-select-inner > * {
+  max-width: 100%;
+}
+
+.text-select-inner :deep(.n-base-selection-input__content) {
+  padding-right: var(--gap-md);
 }
 </style>
