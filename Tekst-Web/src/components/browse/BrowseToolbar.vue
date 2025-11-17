@@ -2,7 +2,7 @@
 import BrowseLocationControls from '@/components/browse/BrowseLocationControls.vue';
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
-import { FocusViewOffIcon, FocusViewOnIcon, ResourceIcon } from '@/icons';
+import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
@@ -75,7 +75,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             @click="browse.focusView = !browse.focusView"
           >
             <template #icon>
-              <n-icon :component="browse.focusView ? FocusViewOnIcon : FocusViewOffIcon" />
+              <n-icon :component="browse.focusView ? ExpandIcon : CompressIcon" />
             </template>
           </n-button>
         </n-badge>
