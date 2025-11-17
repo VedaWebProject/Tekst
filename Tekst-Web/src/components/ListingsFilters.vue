@@ -65,6 +65,7 @@ onMounted(() => {
         <n-input
           ref="searchInputRef"
           v-model:value="search"
+          clearable
           :placeholder="$t('common.searchAction')"
           class="mb-md"
           round
