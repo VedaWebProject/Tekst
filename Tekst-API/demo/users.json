@@ -10,7 +10,6 @@
     "name": "Inactive Beaver",
     "affiliation": "Beaver Dam University",
     "locale": null,
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Beaver_%28PSF%29.jpg/287px-Beaver_%28PSF%29.jpg",
     "bio": "Beavers (genus Castor) are large, semiaquatic rodents of the Northern Hemisphere. There are two existing species: the North American beaver (Castor canadensis) and the Eurasian beaver (C. fiber). Beavers are the second-largest living rodents, after capybaras, weighing up to 50 kg (110 lb). They have stout bodies with large heads, long chisel-like incisors, brown or gray fur, hand-like front feet, webbed back feet, and tails that are flat and scaly. The two species differ in skull and tail shape and fur color. Beavers can be found in a number of freshwater habitats, such as rivers, streams, lakes and ponds. They are herbivorous, consuming tree bark, aquatic plants, grasses and sedges. (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
     "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
@@ -34,7 +33,6 @@
     "name": "Unverified Zebra",
     "affiliation": "Stripes University",
     "locale": null,
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Zebra_eating.JPG/306px-Zebra_eating.JPG",
     "bio": "Zebras (subgenus Hippotigris) are African equines with distinctive black-and-white striped coats. There are three living species: Grévy's zebra (Equus grevyi), the plains zebra (E. quagga), and the mountain zebra (E. zebra). Zebras share the genus Equus with horses and asses, the three groups being the only living members of the family Equidae. Zebra stripes come in different patterns, unique to each individual. Several theories have been proposed for the function of these stripes, with most evidence supporting them as a deterrent for biting flies. Zebras inhabit eastern and southern Africa and can be found in a variety of habitats such as savannahs, grasslands, woodlands, shrublands, and mountainous areas. (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
     "created_at": { "$date": "2024-02-09T10:27:22.844Z" },
@@ -82,7 +80,6 @@
     "name": "Admin Peacock",
     "affiliation": "Pretty Peacocks University",
     "locale": "enUS",
-    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Peacock.displaying.better.800pix.jpg/301px-Peacock.displaying.better.800pix.jpg",
     "bio": "Peafowl is a common name for two bird species in the genera Pavo and Afropavo within the tribe Pavonini of the family Phasianidae (the pheasants and their allies). Male peafowl are referred to as peacocks, and female peafowl are referred to as peahens, although peafowl of either sex are often referred to colloquially as \"peacocks\". (Wikipedia)",
     "public_fields": ["name", "affiliation", "bio"],
     "user_notification_triggers": [
