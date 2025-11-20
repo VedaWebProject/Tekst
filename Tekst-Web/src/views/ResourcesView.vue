@@ -11,17 +11,17 @@ import {
 import { dialogProps } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ListingsFilters from '@/components/ListingsFilters.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
 import ResourceListItem from '@/components/resource/ResourceListItem.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import { AddIcon, ResourceIcon } from '@/icons';
+import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { createReusableTemplate } from '@vueuse/core';
-import { NButton, NFlex, NIcon, NList, NPagination, NSpin, useDialog } from 'naive-ui';
+import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -37,7 +37,6 @@ const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
 const { addTask, startTasksPolling } = useTasks();
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
@@ -45,18 +44,18 @@ const loading = computed(() => actionsLoading.value || resources.loading);
 const transferTargetResource = ref<AnyResourceRead>();
 const showTransferModal = ref(false);
 
-const pagination = ref({
-  page: 1,
-  pageSize: 20,
-});
-
 const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
 const filtersSearch = ref<string>();
-const filtersFlags = ref<string[]>();
+const filtersSearchInputState = computed(() =>
+  !!filtersSearch.value?.length && !filteredData.value.length
+    ? 'error'
+    : !!filtersSearch.value?.length
+      ? 'warning'
+      : undefined
+);
 
-function filterData(resourcesData: AnyResourceRead[]) {
-  pagination.value.page = 1;
-  return resourcesData.filter((r) => {
+const filteredData = computed(() => {
+  return resources.ofText.filter((r) => {
     const resourceStringContent = filtersSearch.value
       ? [
           r.title.map((t) => t.translation).join(' '),
@@ -72,40 +71,10 @@ function filterData(resourcesData: AnyResourceRead[]) {
           .join(' ')
       : '';
     return (
-      (!filtersSearch.value ||
-        resourceStringContent.toLowerCase().includes(filtersSearch.value.toLowerCase())) &&
-      ((filtersFlags.value?.includes('proposed') && r.proposed) ||
-        (filtersFlags.value?.includes('notProposed') && !r.proposed)) &&
-      ((filtersFlags.value?.includes('public') && r.public) ||
-        (filtersFlags.value?.includes('notPublic') && !r.public)) &&
-      ((filtersFlags.value?.includes('ownedByMe') && r.ownerId === auth.user?.id) ||
-        (filtersFlags.value?.includes('notOwnedByMe') && r.ownerId !== auth.user?.id)) &&
-      ((filtersFlags.value?.includes('hasCorrections') && r.corrections) ||
-        (filtersFlags.value?.includes('hasNoCorrections') && !r.corrections))
+      !filtersSearch.value ||
+      resourceStringContent.toLowerCase().includes(filtersSearch.value.toLowerCase())
     );
   });
-}
-
-const filteredData = computed(() => filterData(resources.ofText));
-const paginatedData = computed(() => {
-  const start = (pagination.value.page - 1) * pagination.value.pageSize;
-  const end = start + pagination.value.pageSize;
-  return filteredData.value
-    .filter((r) => !!r) // just to prevent side effects of sort()
-    .sort((a, b) => {
-      // resource has correction notes
-      let diff = (b.corrections || 0) - (a.corrections || 0);
-      if (diff !== 0) return diff;
-      // resource is not published
-      diff = (!b.public ? 1 : 0) - (!a.public ? 1 : 0);
-      if (diff !== 0) return diff;
-      // resource is owned by me
-      diff = (b.ownerId === auth.user?.id ? 1 : 0) - (a.ownerId === auth.user?.id ? 1 : 0);
-      if (diff !== 0) return diff;
-      // otherwise, sort by ID (age ascending, effectively)
-      return b.id.localeCompare(a.id);
-    })
-    .slice(start, end);
 });
 
 async function handleTransferClick(resource: AnyResourceRead) {
@@ -376,49 +345,47 @@ onMounted(() => {
     <help-button-widget help-key="resourcesView" />
   </icon-heading>
 
-  <define-template>
-    <!-- Pagination -->
-    <n-flex justify="end" class="pagination-container">
-      <n-pagination
-        v-model:page-size="pagination.pageSize"
-        v-model:page="pagination.page"
-        :simple="state.smallScreen"
-        :page-sizes="[10, 20, 50, 100]"
-        :item-count="filteredData.length"
-        size="medium"
-        show-size-picker
-      />
-    </n-flex>
-  </define-template>
-
   <template v-if="resources.ofText && !resources.error && !loading">
-    <!-- Filters -->
-    <listings-filters
-      ref="filtersRef"
-      v-model:search="filtersSearch"
-      v-model:flags="filtersFlags"
-      :flags-labels="{
-        public: $t('resources.public'),
-        notPublic: $t('resources.notPublic'),
-        proposed: $t('resources.proposed'),
-        notProposed: $t('resources.notProposed'),
-        ownedByMe: $t('resources.ownedByMe'),
-        ownedByOthers: $t('resources.ownedByOthers'),
-        hasCorrections: $t('resources.hasCorrections'),
-        hasNoCorrections: $t('resources.hasNoCorrections'),
-      }"
-    />
+    <!-- Filter/Search -->
+    <n-input
+      v-model:value="filtersSearch"
+      round
+      clearable
+      :status="filtersSearchInputState"
+      :disabled="!resources.ofText.length"
+      :placeholder="$t('common.searchAction')"
+      class="mb-lg"
+    >
+      <template #prefix>
+        <n-icon :component="SearchIcon" />
+      </template>
+    </n-input>
 
     <!-- List Header -->
-    <n-flex justify="space-between" align="center">
-      <div class="text-small translucent ellipsis">
-        {{
-          $t('resources.msgFoundCount', {
-            count: filteredData.length,
-            total: resources.ofText.length,
-          })
-        }}
-      </div>
+    <button-shelf>
+      <template #start>
+        <div
+          class="text-small translucent ellipsis"
+          :style="{
+            color:
+              !!resources.ofText.length && !filteredData.length ? 'var(--error-color)' : undefined,
+          }"
+        >
+          {{
+            $t('resources.msgFoundCount', {
+              count: filteredData.length,
+              total: resources.ofText.length,
+            })
+          }}
+        </div>
+      </template>
+      <!-- Reset filters button -->
+      <n-button secondary :disabled="!filtersSearch?.length" @click="filtersSearch = ''">
+        <template #icon>
+          <n-icon :component="JumpBackIcon" />
+        </template>
+        {{ $t('common.reset') }}
+      </n-button>
       <!-- Create new resource button -->
       <n-button
         v-if="auth.user"
@@ -430,39 +397,35 @@ onMounted(() => {
         </template>
         {{ $t('resources.new') }}
       </n-button>
-    </n-flex>
+    </button-shelf>
 
     <!-- Resources List -->
     <div class="content-block">
-      <template v-if="paginatedData.length > 0">
-        <!-- Pagination -->
-        <reuse-template />
-        <n-list style="background-color: transparent">
-          <resource-list-item
-            v-for="item in paginatedData"
-            :key="item.id"
-            :resource="item"
-            :current-user="auth.user"
-            @transfer-click="handleTransferClick"
-            @propose-click="handleProposeClick"
-            @unpropose-click="handleUnproposeClick"
-            @publish-click="handlePublishClick"
-            @unpublish-click="handleUnpublishClick"
-            @settings-click="handleSettingsClick"
-            @contents-click="handleContentsClick"
-            @create-version-click="handleCreateVersionClick"
-            @delete-click="handleDeleteClick"
-            @download-template-click="handleDownloadTemplateClick"
-            @import-click="handleImportClick"
-            @req-version-integration-click="handleReqVersionIntegrationClick"
-          />
-        </n-list>
-        <!-- Pagination -->
-        <reuse-template />
-      </template>
-      <template v-else>
-        {{ $t('search.nothingFound') }}
-      </template>
+      <n-collapse v-if="filteredData.length" accordion class="my-sm">
+        <resource-list-item
+          v-for="item in filteredData"
+          :key="item.id"
+          :resource="item"
+          :user="auth.user"
+          @transfer-click="handleTransferClick"
+          @propose-click="handleProposeClick"
+          @unpropose-click="handleUnproposeClick"
+          @publish-click="handlePublishClick"
+          @unpublish-click="handleUnpublishClick"
+          @settings-click="handleSettingsClick"
+          @contents-click="handleContentsClick"
+          @create-version-click="handleCreateVersionClick"
+          @delete-click="handleDeleteClick"
+          @download-template-click="handleDownloadTemplateClick"
+          @import-click="handleImportClick"
+          @req-version-integration-click="handleReqVersionIntegrationClick"
+        />
+      </n-collapse>
+      <n-empty v-else :description="$t('search.nothingFound')" class="my-lg">
+        <template #icon>
+          <n-icon :component="NoContentIcon" />
+        </template>
+      </n-empty>
     </div>
   </template>
 

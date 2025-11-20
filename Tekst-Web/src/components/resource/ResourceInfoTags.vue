@@ -10,7 +10,7 @@ import {
   ResourceIcon,
   VersionIcon,
 } from '@/icons';
-import { useResourcesStore, useStateStore } from '@/stores';
+import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon, NTag } from 'naive-ui';
 import { computed } from 'vue';
@@ -19,7 +19,6 @@ const props = withDefaults(
   defineProps<{
     resource: AnyResourceRead;
     size?: 'small' | 'medium' | 'large';
-    reverse?: boolean;
   }>(),
   {
     size: 'small',
@@ -27,6 +26,7 @@ const props = withDefaults(
 );
 
 const state = useStateStore();
+const auth = useAuthStore();
 const resources = useResourcesStore();
 
 const originalTitle = pickTranslation(
@@ -63,14 +63,14 @@ const accessSharesTip = computed(() => {
 </script>
 
 <template>
-  <n-flex :size="size" :reverse="reverse">
-    <n-tag v-if="!resource.originalId" :type="publicationStatusType" :size="size">
+  <n-flex v-bind="$attrs" :size="size">
+    <n-tag v-if="!resource.originalId && !!auth.user" :type="publicationStatusType" :size="size">
       <template #icon>
         <n-icon :component="publicationStatusIcon" />
       </template>
       {{ publicationStatusText }}
     </n-tag>
-    <n-tag v-else type="info" :size="size">
+    <n-tag v-if="!!resource.originalId" type="info" :size="size">
       <template #icon>
         <n-icon :component="VersionIcon" />
       </template>
@@ -88,7 +88,7 @@ const accessSharesTip = computed(() => {
         $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })
       }}
     </n-tag>
-    <n-tag :size="size" :title="`${$t('common.level')}: ${state.textLevelLabels[resource.level]}`">
+    <n-tag :size="size" :title="$t('common.level')">
       <template #icon>
         <n-icon :component="LevelsIcon" />
       </template>

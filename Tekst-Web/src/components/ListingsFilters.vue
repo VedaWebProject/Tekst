@@ -27,7 +27,7 @@ const isUnfiltered = computed(
 );
 
 function reset() {
-  search.value = undefined;
+  search.value = '';
   flags.value = Object.entries(props.flagsLabels || {}).map(([k]) => k);
 }
 

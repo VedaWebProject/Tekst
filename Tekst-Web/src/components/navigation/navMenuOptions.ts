@@ -98,7 +98,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
-    ...(state.smallScreen && !!auth.user
+    ...(state.smallScreen
       ? [
           {
             label: renderLink(
@@ -145,6 +145,31 @@ export function useMainMenuOptions(showIcons: boolean = true) {
             }),
             key: 'community',
             icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+          },
+        ]
+      : []),
+    ...(!state.smallScreen
+      ? [
+          {
+            label: renderLink(
+              () =>
+                h('div', null, [
+                  $t('resources.heading'),
+                  h(
+                    NBadge,
+                    { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
+                    undefined
+                  ),
+                ]),
+              {
+                name: 'resources',
+                params: {
+                  textSlug: state.text?.slug || '',
+                },
+              }
+            ),
+            key: 'resources',
+            icon: renderIcon(ResourceIcon),
           },
         ]
       : []),

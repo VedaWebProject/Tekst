@@ -20,6 +20,7 @@ const props = withDefaults(
 const containerStyle = computed<CSSProperties>(() => ({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   flexWrap: props.wrap,
   gap: 'var(--gap-md)',
   marginTop: props.topGap ? 'var(--gap-lg)' : undefined,
@@ -44,6 +45,7 @@ const containerStyle = computed<CSSProperties>(() => ({
 <style scoped>
 .sub-group {
   display: flex;
+  align-items: center;
   gap: var(--gap-md);
 }
 </style>
