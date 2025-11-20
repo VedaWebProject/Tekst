@@ -398,7 +398,7 @@ resources:
   reqVersionIntegrationAction: Integration vorschlagen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
-  createVersionAction: Version dieser Ressource erstellen
+  createVersionAction: Version erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag widerrufen
   publishAction: Veröffentlichen

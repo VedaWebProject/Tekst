@@ -393,7 +393,7 @@ resources:
   reqVersionIntegrationAction: Propose integration
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
-  createVersionAction: Create version of this resource
+  createVersionAction: Create version
   proposeAction: Propose for publication
   unproposeAction: Revoke publication proposal
   publishAction: Publish
