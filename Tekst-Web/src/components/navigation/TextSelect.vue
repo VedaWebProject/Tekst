@@ -86,7 +86,7 @@ function handleSelect(text: TextRead) {
 
 <style scoped>
 .text-select {
-  background-color: var(--primary-color-fade5);
+  background-color: var(--main-bg-color);
 }
 
 .text-select-btn {
