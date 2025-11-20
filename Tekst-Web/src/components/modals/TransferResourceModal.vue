@@ -31,7 +31,7 @@ const { message } = useMessages();
 const initialUserSearchQuery = (): PublicUserSearchFilters => ({
   pg: 1,
   pgs: 9999,
-  emptyOk: false,
+  emptyOk: true,
 });
 
 const resourceTitle = computed(() => pickTranslation(props.resource?.title, state.locale));
@@ -94,7 +94,9 @@ async function handleOkClick() {
     <n-alert type="warning" :title="$t('common.warning')" class="mb-lg">
       {{ $t('resources.warnTransfer') }}
     </n-alert>
-    <div class="mb-lg">{{ resourceTitle }} – {{ $t('resources.transferAction') }}:</div>
+    <div class="mb-lg">
+      <b>{{ $t('models.resource.modelLabel') }}:</b> {{ resourceTitle }}
+    </div>
     <n-form
       ref="formRef"
       :model="formModel"
@@ -103,7 +105,7 @@ async function handleOkClick() {
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item path="userId" :label="$t('models.user.modelLabel')">
+      <n-form-item path="userId" :label="$t('resources.transferAction')">
         <n-select
           v-model:value="formModel.userId"
           filterable
