@@ -129,7 +129,7 @@ function handleTaskClick(id: string) {
 }
 
 #tasks-widget .task-list-header {
-  padding: 10px 16px;
+  padding: 4px 16px;
   background-color: var(--primary-color);
   margin: 0;
 }
