@@ -436,6 +436,7 @@ onMounted(() => {
   </div>
 
   <transfer-resource-modal
+    v-if="!!auth.user"
     :show="showTransferModal"
     :resource="transferTargetResource"
     :loading="actionsLoading"
