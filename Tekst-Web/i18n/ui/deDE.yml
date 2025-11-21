@@ -373,7 +373,7 @@ models:
 
 resources:
   heading: Ressourcen
-  msgFoundCount: '{count} Ressourcen gefunden ({total} insgesamt)'
+  msgFoundCount: '{count} von {total} Ressourcen gefunden'
   new: Neue Ressource
   versionOf: Version von "{title}"
   unknownOriginal: Unbekannte Original-Ressource
