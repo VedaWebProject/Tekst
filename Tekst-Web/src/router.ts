@@ -188,9 +188,6 @@ const router = createRouter({
       path: '/texts/:textSlug?/resources',
       name: 'resources',
       component: ResourcesView,
-      meta: {
-        restricted: 'user',
-      },
       props: true,
     },
     {

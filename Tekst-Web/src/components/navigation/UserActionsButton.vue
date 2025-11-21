@@ -8,7 +8,6 @@ import {
   LoginIcon,
   LogoutIcon,
   MessageIcon,
-  ResourceIcon,
   TextsIcon,
   UserIcon,
 } from '@/icons';
@@ -52,27 +51,6 @@ const userOptions = computed(() => [
     }),
     key: 'community',
     icon: renderIcon(CommunityIcon) || undefined,
-  },
-  {
-    label: renderLink(
-      () =>
-        h('div', null, [
-          $t('resources.heading'),
-          h(
-            NBadge,
-            { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
-            undefined
-          ),
-        ]),
-      {
-        name: 'resources',
-        params: {
-          textSlug: state.text?.slug || '',
-        },
-      }
-    ),
-    key: 'resources',
-    icon: renderIcon(ResourceIcon),
   },
   ...(!!auth.user?.isSuperuser
     ? [

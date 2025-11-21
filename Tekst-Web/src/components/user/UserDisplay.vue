@@ -50,9 +50,9 @@ const { pageLogo } = useLogo();
         :to="{ name: 'user', params: { username: user.username } }"
         @click.stop.prevent
       >
-        <user-display-text :user="user" />
+        <user-display-text :user="user" :show-affiliation="!system" />
       </router-link>
-      <user-display-text v-else :user="user" />
+      <user-display-text v-else :user="user" :show-affiliation="!system" />
       <n-icon
         v-if="user.isSuperuser"
         :component="AdminIcon"
