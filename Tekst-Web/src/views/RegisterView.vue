@@ -3,6 +3,7 @@ import type { UserCreate } from '@/api';
 import { POST } from '@/api';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import SegmentRenderer from '@/components/SegmentRenderer.vue';
+import UserAvatar from '@/components/user/UserAvatar.vue';
 import { useMessages } from '@/composables/messages';
 import { accountFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -157,6 +158,7 @@ onMounted(() => {
               :placeholder="$t('models.user.username')"
               @keydown.enter.prevent
             />
+            <user-avatar :username="formModel.username || undefined" :size="32" class="ml-md" />
           </n-form-item>
           <n-form-item path="password" :label="$t('models.user.password')">
             <n-input
