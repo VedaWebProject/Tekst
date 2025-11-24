@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useTasks } from '@/composables/tasks';
 import { $t, $te } from '@/i18n';
-import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
+import { CheckCircleIcon, ErrorIcon, HourglassIcon, UpdateIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import {
   NBadge,
-  NButton,
   NFlex,
   NFloatButton,
   NIcon,
@@ -13,7 +12,7 @@ import {
   useDialog,
   type DialogOptions,
 } from 'naive-ui';
-import { computed, type Component } from 'vue';
+import { type Component } from 'vue';
 
 const state = useStateStore();
 const { tasks, removeTask, showTasksList } = useTasks();
@@ -28,8 +27,6 @@ const statusThemes: Record<
   running: { icon: HourglassIcon, color: 'var(--info-color)', dialogType: 'info' },
   waiting: { icon: HourglassIcon, color: 'var(--info-color)', dialogType: 'default' },
 };
-
-const hasSuccessfulTasks = computed(() => tasks.value.some((t) => t.status === 'done'));
 
 function handleTaskClick(id: string) {
   const t = tasks.value.find((t) => t.id === id);
@@ -71,20 +68,9 @@ function handleTaskClick(id: string) {
     </n-badge>
     <template #menu>
       <div class="task-list">
-        <n-flex justify="space-between" align="center" :wrap="false" class="task-list-header">
+        <n-flex justify="flex-start" align="center" :wrap="false" class="task-list-header">
+          <n-icon :component="UpdateIcon" />
           <span class="b ellipsis" style="color: var(--base-color)">{{ $t('tasks.title') }}</span>
-          <n-button
-            v-if="hasSuccessfulTasks"
-            quaternary
-            circle
-            :focusable="false"
-            color="var(--base-color)"
-            @click="() => removeTask()"
-          >
-            <template #icon>
-              <n-icon :component="CheckCircleIcon" />
-            </template>
-          </n-button>
         </n-flex>
         <n-scrollbar style="max-height: 60vh">
           <n-flex
