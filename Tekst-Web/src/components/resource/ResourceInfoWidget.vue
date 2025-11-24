@@ -18,13 +18,14 @@ import {
   DownloadIcon,
   FormatQuoteIcon,
   InfoIcon,
+  LinkIcon,
   MetadataIcon,
   ResourceIcon,
   SiteNoticeIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NButton, NFlex } from 'naive-ui';
+import { NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
@@ -133,7 +134,10 @@ const showInfoModal = ref(false);
           target="_blank"
           rel="noopener noreferrer"
         >
-          {{ resource.license || resource.licenseUrl }} &nearr;
+          <n-flex align="center" size="small">
+            <n-icon :component="LinkIcon" />
+            <span>{{ resource.license || resource.licenseUrl }}</span>
+          </n-flex>
         </a>
         <span v-else>
           {{ resource.license }}

@@ -45,8 +45,10 @@ const fontStyle: CSSProperties = {
             :style="fontStyle"
             rel="noopener noreferrer"
           >
-            <n-icon v-if="focusView" :component="LinkIcon" size="24" />
-            <template v-else>{{ link.title }} &nearr;</template>
+            <n-flex align="center" size="small">
+              <n-icon :component="LinkIcon" :size="focusView ? 24 : undefined" />
+              <span v-if="!focusView">{{ link.title }}</span>
+            </n-flex>
           </a>
           <div
             v-if="!focusView && link.description"

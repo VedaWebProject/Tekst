@@ -114,7 +114,7 @@ async function loadCoverageData() {
                 <div class="range">
                   <code class="text-small">{{ range[0] }}</code>
                   <template v-if="range[0] !== range[1]">
-                    <b class="mx-sm">&rarr;</b>
+                    <b class="mx-sm">...</b>
                     <code class="text-small">{{ range[1] }}</code>
                   </template>
                 </div>
