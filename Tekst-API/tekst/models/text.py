@@ -121,8 +121,7 @@ class Text(ModelBase, ModelFactoryMixin):
         LocationLevel,
         Field(
             description=(
-                "Default structure level for the client "
-                "to use for browsing this text"
+                "Default structure level for the client to use for browsing this text"
             ),
         ),
     ] = 0

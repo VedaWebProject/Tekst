@@ -215,13 +215,13 @@ class LocationRange(ModelBase):
 
 class AdvancedSearchSettings(ModelBase):
     location_range: Annotated[
-        LocationRange,
+        LocationRange | None,
         Field(
             alias="rng",
             description="Search range",
         ),
         SchemaOptionalNonNullable,
-    ]
+    ] = None
 
 
 class QuickSearchRequestBody(ModelBase):

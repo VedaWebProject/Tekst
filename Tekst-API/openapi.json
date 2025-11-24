@@ -36,11 +36,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -58,11 +54,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -110,11 +102,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               "description": "List of IDs of resources to return contents for (assumes all if none are given)",
               "default": [],
@@ -191,13 +179,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of resource the requested contents belong to",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Res"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "ID of resource the requested contents belong to"
             },
             "description": "ID of resource the requested contents belong to"
           },
@@ -208,11 +191,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -322,13 +301,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of the location to start from",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Loc"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "ID of the location to start from"
             },
             "description": "ID of the location to start from"
           },
@@ -337,13 +311,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of resource to return nearest location with content for",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Res"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "ID of resource to return nearest location with content for"
             },
             "description": "ID of resource to return nearest location with content for"
           },
@@ -531,12 +500,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -756,11 +720,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               "description": "ID (or list of IDs) of resource(s) to return content data for",
               "default": [],
@@ -775,11 +735,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               "description": "ID (or list of IDs) of location(s) to return content data for",
               "default": [],
@@ -888,12 +844,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -989,12 +940,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -1149,12 +1095,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -1287,12 +1228,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Resourceid"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -1356,12 +1292,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -1486,11 +1417,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -1508,11 +1435,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -1530,11 +1453,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -1695,13 +1614,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "Location ID",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "Location ID"
             },
             "description": "Location ID"
           },
@@ -1775,13 +1689,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "Target text ID",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Txt"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "Target text ID"
             },
             "description": "Target text ID"
           },
@@ -1864,11 +1773,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -1886,11 +1791,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -1983,12 +1884,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2045,12 +1941,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2138,12 +2029,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2223,12 +2109,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2388,11 +2269,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -2510,11 +2387,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "const": "system",
@@ -2712,12 +2585,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2774,12 +2642,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -2866,12 +2729,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -3232,12 +3090,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -3587,11 +3440,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -3738,12 +3587,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -3861,12 +3705,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4011,12 +3850,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4112,12 +3946,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4189,12 +4018,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4203,12 +4027,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593",
-                "title": "Target User Id"
+                "$ref": "#/components/schemas/PydanticObjectId"
               }
             }
           }
@@ -4337,12 +4156,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4460,12 +4274,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4573,12 +4382,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4706,12 +4510,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4829,12 +4628,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4901,12 +4695,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -4985,13 +4774,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "description": "ID of the resource to export",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId",
+              "description": "ID of the resource to export"
             },
             "description": "ID of the resource to export"
           },
@@ -5013,11 +4797,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -5035,11 +4815,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "null"
@@ -5106,12 +4882,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -5172,12 +4943,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -5490,6 +5256,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Api Status Status Get"
                 }
@@ -5664,12 +5431,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -5747,12 +5509,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -5858,12 +5615,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -5962,12 +5714,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           },
           {
@@ -6086,12 +5833,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           },
           {
@@ -6193,12 +5935,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -6270,12 +6007,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -6332,12 +6064,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 24,
-              "maxLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593",
-              "title": "Id"
+              "$ref": "#/components/schemas/PydanticObjectId"
             }
           }
         ],
@@ -6730,11 +6457,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "minLength": 24,
-                  "maxLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 {
                   "type": "string"
@@ -7517,7 +7240,14 @@
       "AdvancedSearchSettings": {
         "properties": {
           "rng": {
-            "$ref": "#/components/schemas/LocationRange",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocationRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Search range",
             "optionalNullable": false
           }
@@ -7575,13 +7305,8 @@
       "ApiCallContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -7589,13 +7314,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -7723,21 +7443,11 @@
       "ApiCallContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -7745,13 +7455,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -8066,13 +7771,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -8088,17 +7788,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -8195,12 +7890,7 @@
       "ApiCallResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -8276,13 +7966,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -8298,42 +7983,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -8343,11 +8014,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -8529,17 +8196,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -8547,11 +8209,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -8568,11 +8226,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -8697,13 +8351,8 @@
       "AudioContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -8711,13 +8360,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -8774,21 +8418,11 @@
       "AudioContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -8796,13 +8430,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -9008,13 +8637,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -9030,17 +8654,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -9132,12 +8751,7 @@
       "AudioResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -9213,13 +8827,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -9235,42 +8844,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -9280,11 +8875,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -9461,17 +9052,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -9479,11 +9065,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -9500,11 +9082,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -9643,7 +9221,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "pattern": "password"
+                "pattern": "^password$"
               },
               {
                 "type": "null"
@@ -9657,6 +9235,7 @@
           },
           "password": {
             "type": "string",
+            "format": "password",
             "title": "Password"
           },
           "scope": {
@@ -9684,6 +9263,7 @@
                 "type": "null"
               }
             ],
+            "format": "password",
             "title": "Client Secret"
           }
         },
@@ -9801,13 +9381,8 @@
       "BookmarkCreate": {
         "properties": {
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "ID of the text location this bookmark refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text location this bookmark refers to"
           },
           "comment": {
             "anyOf": [
@@ -9833,39 +9408,19 @@
       "BookmarkRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "userId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Userid",
-            "description": "ID of user who created this bookmark",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of user who created this bookmark"
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of text this bookmark belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of text this bookmark belongs to"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "ID of the text location this bookmark refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text location this bookmark refers to"
           },
           "level": {
             "type": "integer",
@@ -10009,12 +9564,7 @@
       "ClientSegmentHead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "key": {
             "type": "string",
@@ -10046,12 +9596,7 @@
       "ClientSegmentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "key": {
             "type": "string",
@@ -10249,13 +9794,8 @@
             "optionalNullable": true
           },
           "res": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Res",
-            "description": "ID of the resource to search in",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the resource to search in"
           },
           "cmt": {
             "type": "string",
@@ -10279,7 +9819,8 @@
         },
         "type": "array",
         "maxItems": 64,
-        "minItems": 0
+        "minItems": 0,
+        "description": "List of CSS properties to apply to the contents of this resource"
       },
       "ContentCssProperty": {
         "properties": {
@@ -10340,22 +9881,12 @@
       "CorrectionCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "ID of the resource this correction refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the resource this correction refers to"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "ID of the location this correction refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the location this correction refers to"
           },
           "note": {
             "type": "string",
@@ -10376,30 +9907,15 @@
       "CorrectionRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "ID of the resource this correction refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the resource this correction refers to"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "ID of the location this correction refers to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the location this correction refers to"
           },
           "note": {
             "type": "string",
@@ -10409,13 +9925,8 @@
             "description": "Content of the correction note"
           },
           "userId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Userid",
-            "description": "ID of the user who created the correction note",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the user who created the correction note"
           },
           "position": {
             "type": "integer",
@@ -10628,13 +10139,8 @@
       "ExternalReferencesContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -10642,13 +10148,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -10705,21 +10206,11 @@
       "ExternalReferencesContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -10727,13 +10218,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -10947,13 +10433,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -10969,17 +10450,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -11071,12 +10547,7 @@
       "ExternalReferencesResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -11152,13 +10623,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -11174,42 +10640,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -11219,11 +10671,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -11400,17 +10848,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -11418,11 +10861,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -11439,11 +10878,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -11816,13 +11251,8 @@
       "ImagesContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -11830,13 +11260,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -11893,21 +11318,11 @@
       "ImagesContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -11915,13 +11330,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -12083,13 +11493,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -12105,17 +11510,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -12207,12 +11607,7 @@
       "ImagesResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -12288,13 +11683,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -12310,42 +11700,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -12355,11 +11731,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -12536,17 +11908,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -12554,11 +11921,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -12575,11 +11938,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -12718,17 +12077,12 @@
           "textId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Textid"
+            ]
           },
           "documents": {
             "type": "integer",
@@ -12787,7 +12141,8 @@
       "ItemGroupKey": {
         "type": "string",
         "maxLength": 32,
-        "minLength": 1
+        "minLength": 1,
+        "description": "Key of an item group"
       },
       "ItemIntegrationConfig": {
         "properties": {
@@ -12819,7 +12174,8 @@
       "ItemKey": {
         "type": "string",
         "maxLength": 32,
-        "minLength": 1
+        "minLength": 1,
+        "description": "Key of an item"
       },
       "ItemProps": {
         "properties": {
@@ -12930,28 +12286,18 @@
       "LocationCreate": {
         "properties": {
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this location belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this location belongs to"
           },
           "parentId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Parentid",
             "description": "ID of parent location"
           },
           "level": {
@@ -13017,33 +12363,23 @@
           "prev": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Prev",
             "description": "ID of the preceding location on the same level"
           },
           "next": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Next",
             "description": "ID of the subsequent location on the same level"
           },
           "contents": {
@@ -13100,13 +12436,8 @@
       "LocationMetadataContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -13114,13 +12445,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -13177,21 +12503,11 @@
       "LocationMetadataContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -13199,13 +12515,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -13351,12 +12662,14 @@
       "LocationMetadataEntryKey": {
         "type": "string",
         "maxLength": 32,
-        "minLength": 1
+        "minLength": 1,
+        "description": "Key of the entry"
       },
       "LocationMetadataEntryValue": {
         "type": "string",
         "maxLength": 256,
-        "minLength": 1
+        "minLength": 1,
+        "description": "Value of an entry"
       },
       "LocationMetadataModGeneralConfig": {
         "properties": {
@@ -13558,13 +12871,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -13580,17 +12888,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -13689,12 +12992,7 @@
       "LocationMetadataResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -13770,13 +13068,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -13792,42 +13085,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -13837,11 +13116,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -14025,17 +13300,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -14043,11 +13313,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -14064,11 +13330,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -14253,36 +13515,21 @@
       "LocationRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this location belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this location belongs to"
           },
           "parentId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Parentid",
             "description": "ID of parent location"
           },
           "level": {
@@ -14341,17 +13588,12 @@
           "parentId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Parentid",
             "description": "ID of parent location",
             "optionalNullable": true
           },
@@ -14479,17 +13721,12 @@
           "parentId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Parentid"
+            ]
           }
         },
         "type": "object",
@@ -14624,13 +13861,8 @@
       "PlainTextContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -14638,13 +13870,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -14698,21 +13925,11 @@
       "PlainTextContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -14720,13 +13937,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -14900,13 +14112,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -14922,17 +14129,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -15039,12 +14241,7 @@
       "PlainTextResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -15120,13 +14317,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -15142,42 +14334,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -15187,11 +14365,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -15383,17 +14557,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -15401,11 +14570,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -15422,11 +14587,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -15678,12 +14839,7 @@
       "PlatformStateRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "platformName": {
             "type": "string",
@@ -15766,17 +14922,12 @@
           "defaultTextId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Defaulttextid",
             "description": "Default text to load in UI"
           },
           "indexUnpublishedResources": {
@@ -16014,17 +15165,12 @@
           "defaultTextId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Defaulttextid",
             "description": "Default text to load in UI",
             "optionalNullable": true
           },
@@ -16244,7 +15390,8 @@
           "$ref": "#/components/schemas/PrivateUserProp"
         },
         "type": "array",
-        "maxItems": 3
+        "maxItems": 3,
+        "description": "Properties set to be private by this user"
       },
       "PublicUsersSearchResult": {
         "properties": {
@@ -16266,6 +15413,13 @@
         },
         "type": "object",
         "title": "PublicUsersSearchResult"
+      },
+      "PydanticObjectId": {
+        "type": "string",
+        "maxLength": 24,
+        "minLength": 24,
+        "pattern": "^[0-9a-f]{24}$",
+        "example": "5eb7cf5a86d9755df3a6c593"
       },
       "QuickSearchRequestBody": {
         "properties": {
@@ -16350,11 +15504,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array"
               },
@@ -16622,13 +15772,8 @@
       "RichTextContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -16636,13 +15781,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -16706,21 +15846,11 @@
       "RichTextContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -16728,13 +15858,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -17039,13 +16164,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -17061,17 +16181,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -17168,12 +16283,7 @@
       "RichTextResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -17249,13 +16359,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -17271,42 +16376,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -17316,11 +16407,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -17502,17 +16589,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -17520,11 +16602,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -17541,11 +16619,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -17696,12 +16770,7 @@
       "SearchHit": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "label": {
             "type": "string",
@@ -17712,12 +16781,7 @@
             "title": "Fulllabel"
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "level": {
             "type": "integer",
@@ -17792,7 +16856,8 @@
         },
         "type": "array",
         "maxItems": 16,
-        "minItems": 0
+        "minItems": 0,
+        "description": "List of regular expression replacements to apply to search index documents"
       },
       "SearchResults": {
         "properties": {
@@ -17852,12 +16917,7 @@
       "TaskRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "type": {
             "$ref": "#/components/schemas/TaskType",
@@ -17866,11 +16926,7 @@
           "targetId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
@@ -17886,17 +16942,12 @@
           "userId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Userid",
             "description": "ID of user who created this task (or none if this is a system task)"
           },
           "pickupKey": {
@@ -17951,6 +17002,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -18029,13 +17081,8 @@
       "TextAnnotationContentCreate": {
         "properties": {
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -18043,13 +17090,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -18105,21 +17147,11 @@
       "TextAnnotationContentRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "resourceId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Resourceid",
-            "description": "Resource ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Resource ID"
           },
           "resourceType": {
             "type": "string",
@@ -18127,13 +17159,8 @@
             "title": "Resourcetype"
           },
           "locationId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Locationid",
-            "description": "Text location ID",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "Text location ID"
           },
           "authorsComment": {
             "anyOf": [
@@ -18385,13 +17412,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -18407,17 +17429,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "citation": {
@@ -18518,12 +17535,7 @@
       "TextAnnotationResourceRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "writable": {
             "anyOf": [
@@ -18599,13 +17611,8 @@
             "default": []
           },
           "textId": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Textid",
-            "description": "ID of the text this resource belongs to",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the text this resource belongs to"
           },
           "level": {
             "type": "integer",
@@ -18621,42 +17628,28 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original"
           },
           "ownerId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Ownerid",
             "description": "User owning this resource"
           },
           "sharedRead": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -18666,11 +17659,7 @@
           },
           "sharedWrite": {
             "items": {
-              "type": "string",
-              "maxLength": 24,
-              "minLength": 24,
-              "pattern": "^[0-9a-f]{24}$",
-              "example": "5eb7cf5a86d9755df3a6c593"
+              "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
             "maxItems": 64,
@@ -18856,17 +17845,12 @@
           "originalId": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Originalid",
             "description": "If this is a version of another resource, this ID references the original",
             "optionalNullable": true
           },
@@ -18874,11 +17858,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -18895,11 +17875,7 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "maxLength": 24,
-                  "minLength": 24,
-                  "pattern": "^[0-9a-f]{24}$",
-                  "example": "5eb7cf5a86d9755df3a6c593"
+                  "$ref": "#/components/schemas/PydanticObjectId"
                 },
                 "type": "array",
                 "maxItems": 64
@@ -19070,7 +18046,8 @@
       "TextAnnotationValue": {
         "type": "string",
         "maxLength": 256,
-        "minLength": 1
+        "minLength": 1,
+        "description": "Value of an annotation"
       },
       "TextCreate": {
         "properties": {
@@ -19205,12 +18182,7 @@
       "TextRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "title": {
             "type": "string",
@@ -19708,27 +18680,17 @@
           "sender": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Sender",
             "description": "ID of the sender or None if this is a system message"
           },
           "recipient": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Recipient",
-            "description": "ID of the recipient",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the recipient"
           },
           "content": {
             "type": "string",
@@ -19748,37 +18710,22 @@
       "UserMessageRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "sender": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Sender",
             "description": "ID of the sender or None if this is a system message"
           },
           "recipient": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Recipient",
-            "description": "ID of the recipient",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId",
+            "description": "ID of the recipient"
           },
           "content": {
             "type": "string",
@@ -19802,17 +18749,12 @@
           "deleted": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Deleted",
             "description": "ID of the user who deleted the message or None if not deleted"
           }
         },
@@ -19831,17 +18773,12 @@
           "id": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 24,
-                "minLength": 24,
-                "pattern": "^[0-9a-f]{24}$",
-                "example": "5eb7cf5a86d9755df3a6c593"
+                "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Id",
             "description": "ID of the thread or None if the message is a system message"
           },
           "contact": {
@@ -19881,12 +18818,7 @@
       "UserRead": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "email": {
             "type": "string",
@@ -20032,12 +18964,7 @@
       "UserReadPublic": {
         "properties": {
           "id": {
-            "type": "string",
-            "maxLength": 24,
-            "minLength": 24,
-            "pattern": "^[0-9a-f]{24}$",
-            "title": "Id",
-            "example": "5eb7cf5a86d9755df3a6c593"
+            "$ref": "#/components/schemas/PydanticObjectId"
           },
           "username": {
             "type": "string",

@@ -84,7 +84,7 @@ async def db_client(config) -> db.DatabaseClient:
     db_client = db.DatabaseClient(config.db.uri)
     yield db_client
     # close db connection
-    db_client.close()
+    await db_client.close()
 
 
 @pytest.fixture()
@@ -280,9 +280,9 @@ def assert_status() -> Callable:
         expected_status: int,
         resp: Response,
     ) -> None:
-        assert (
-            resp.status_code == expected_status
-        ), f"HTTP {resp.status_code} -- {resp.text}"
+        assert resp.status_code == expected_status, (
+            f"HTTP {resp.status_code} -- {resp.text}"
+        )
 
     return _assert_status
 

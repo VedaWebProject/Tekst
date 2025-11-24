@@ -3,8 +3,8 @@ from typing import Any
 
 from beanie import init_beanie
 from bson.codec_options import CodecOptions
-from motor.motor_asyncio import AsyncIOMotorClient as DatabaseClient
-from motor.motor_asyncio import AsyncIOMotorDatabase as Database
+from pymongo.asynchronous.database import AsyncDatabase as Database
+from pymongo.asynchronous.mongo_client import AsyncMongoClient as DatabaseClient
 
 from tekst.auth import AccessTokenDocument
 from tekst.config import TekstConfig, get_config
@@ -94,4 +94,4 @@ async def init_odm(db: Database = get_db()) -> None:
 async def close() -> None:
     global _db_client
     if _db_client is not None:
-        _db_client.close()
+        await _db_client.close()

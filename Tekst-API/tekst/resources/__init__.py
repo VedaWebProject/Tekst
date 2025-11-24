@@ -711,13 +711,19 @@ async def prepare_resource_read(
     # include shared-with user data in each resource model (if any)
     if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
         if resource.shared_read:
-            resource.shared_read_users = await UserDocument.find(
-                In(UserDocument.id, resource.shared_read)
-            ).to_list()
+            resource.shared_read_users = [
+                UserReadPublic.model_from(u)
+                for u in await UserDocument.find(
+                    In(UserDocument.id, resource.shared_read)
+                ).to_list()
+            ]
         if resource.shared_write:
-            resource.shared_write_users = await UserDocument.find(
-                In(UserDocument.id, resource.shared_write)
-            ).to_list()
+            resource.shared_write_users = [
+                UserReadPublic.model_from(u)
+                for u in await UserDocument.find(
+                    In(UserDocument.id, resource.shared_write)
+                ).to_list()
+            ]
     else:
         resource.shared_read = []
         resource.shared_write = []

@@ -52,8 +52,7 @@ def _get_notification_templates(
 
 def _send_email(*, to: str, subject: str, txt: str, html: str):
     log.debug(
-        f"Sending mail to {to} via "
-        f"{_cfg.email.smtp_server}:{_cfg.email.smtp_port}..."
+        f"Sending mail to {to} via {_cfg.email.smtp_server}:{_cfg.email.smtp_port}..."
     )
     msg = MIMEMultipart("alternative")
     msg["From"] = _cfg.email.from_address

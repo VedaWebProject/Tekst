@@ -1317,23 +1317,15 @@ export interface components {
     };
     /** ApiCallContentCreate */
     ApiCallContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -1383,28 +1375,16 @@ export interface components {
     };
     /** ApiCallContentRead */
     ApiCallContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -1557,12 +1537,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -1573,11 +1549,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -1627,11 +1600,7 @@ export interface components {
     };
     /** ApiCallResourceRead */
     ApiCallResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -1660,12 +1629,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -1676,28 +1641,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -1788,21 +1747,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -1841,23 +1797,15 @@ export interface components {
     };
     /** AudioContentCreate */
     AudioContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'audio';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -1876,28 +1824,16 @@ export interface components {
     };
     /** AudioContentRead */
     AudioContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'audio';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -1985,12 +1921,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -2001,11 +1933,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -2050,11 +1979,7 @@ export interface components {
     };
     /** AudioResourceRead */
     AudioResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -2083,12 +2008,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -2099,28 +2020,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -2206,21 +2121,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -2267,7 +2179,10 @@ export interface components {
       grant_type?: string | null;
       /** Username */
       username: string;
-      /** Password */
+      /**
+       * Password
+       * Format: password
+       */
       password: string;
       /**
        * Scope
@@ -2276,7 +2191,10 @@ export interface components {
       scope: string;
       /** Client Id */
       client_id?: string | null;
-      /** Client Secret */
+      /**
+       * Client Secret
+       * Format: password
+       */
       client_secret?: string | null;
     };
     /** Body_import_resource_resources__id__import_post */
@@ -2336,12 +2254,8 @@ export interface components {
     };
     /** BookmarkCreate */
     BookmarkCreate: {
-      /**
-       * Locationid
-       * @description ID of the text location this bookmark refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description ID of the text location this bookmark refers to */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Comment
        * @description Comment associated with this bookmark
@@ -2350,29 +2264,13 @@ export interface components {
     };
     /** BookmarkRead */
     BookmarkRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Userid
-       * @description ID of user who created this bookmark
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      userId: string;
-      /**
-       * Textid
-       * @description ID of text this bookmark belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Locationid
-       * @description ID of the text location this bookmark refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description ID of user who created this bookmark */
+      userId: components['schemas']['PydanticObjectId'];
+      /** @description ID of text this bookmark belongs to */
+      textId: components['schemas']['PydanticObjectId'];
+      /** @description ID of the text location this bookmark refers to */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this bookmark refers to
@@ -2445,11 +2343,7 @@ export interface components {
     };
     /** ClientSegmentHead */
     ClientSegmentHead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /** Key */
       key: string;
       /** Title */
@@ -2458,11 +2352,7 @@ export interface components {
     };
     /** ClientSegmentRead */
     ClientSegmentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Key
        * @description Key of this segment. System segment keys must start with `system`.
@@ -2547,12 +2437,8 @@ export interface components {
        * @enum {string}
        */
       occ?: 'should' | 'must' | 'not';
-      /**
-       * Res
-       * @description ID of the resource to search in
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      res: string;
+      /** @description ID of the resource to search in */
+      res: components['schemas']['PydanticObjectId'];
       /**
        * Cmt
        * @description Author's/editor's comment search query
@@ -2560,6 +2446,7 @@ export interface components {
        */
       cmt?: string;
     };
+    /** @description List of CSS properties to apply to the contents of this resource */
     ContentCssProperties: components['schemas']['ContentCssProperty'][];
     /** ContentCssProperty */
     ContentCssProperty: {
@@ -2586,18 +2473,10 @@ export interface components {
     };
     /** CorrectionCreate */
     CorrectionCreate: {
-      /**
-       * Resourceid
-       * @description ID of the resource this correction refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Locationid
-       * @description ID of the location this correction refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description ID of the resource this correction refers to */
+      resourceId: components['schemas']['PydanticObjectId'];
+      /** @description ID of the location this correction refers to */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Note
        * @description Content of the correction note
@@ -2606,34 +2485,18 @@ export interface components {
     };
     /** CorrectionRead */
     CorrectionRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description ID of the resource this correction refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
-      /**
-       * Locationid
-       * @description ID of the location this correction refers to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description ID of the resource this correction refers to */
+      resourceId: components['schemas']['PydanticObjectId'];
+      /** @description ID of the location this correction refers to */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Note
        * @description Content of the correction note
        */
       note: string;
-      /**
-       * Userid
-       * @description ID of the user who created the correction note
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      userId: string;
+      /** @description ID of the user who created the correction note */
+      userId: components['schemas']['PydanticObjectId'];
       /**
        * Position
        * @description Position of the correction on the resource's level
@@ -2736,23 +2599,15 @@ export interface components {
     };
     /** ExternalReferencesContentCreate */
     ExternalReferencesContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -2771,28 +2626,16 @@ export interface components {
     };
     /** ExternalReferencesContentRead */
     ExternalReferencesContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -2885,12 +2728,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -2901,11 +2740,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -2950,11 +2786,7 @@ export interface components {
     };
     /** ExternalReferencesResourceRead */
     ExternalReferencesResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -2983,12 +2815,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -2999,28 +2827,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -3106,21 +2928,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -3287,23 +3106,15 @@ export interface components {
     };
     /** ImagesContentCreate */
     ImagesContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'images';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -3322,28 +3133,16 @@ export interface components {
     };
     /** ImagesContentRead */
     ImagesContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'images';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -3413,12 +3212,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -3429,11 +3224,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -3478,11 +3270,7 @@ export interface components {
     };
     /** ImagesResourceRead */
     ImagesResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -3511,12 +3299,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -3527,28 +3311,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -3634,21 +3412,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -3692,8 +3467,7 @@ export interface components {
     };
     /** IndexInfo */
     IndexInfo: {
-      /** Textid */
-      textId: string | null;
+      textId: components['schemas']['PydanticObjectId'] | null;
       /** Documents */
       documents: number;
       /** Size */
@@ -3714,6 +3488,7 @@ export interface components {
        */
       translations: components['schemas']['ItemsDisplayTranslation'][];
     };
+    /** @description Key of an item group */
     ItemGroupKey: string;
     /**
      * ItemIntegrationConfig
@@ -3733,6 +3508,7 @@ export interface components {
        */
       itemProps: components['schemas']['ItemProps'][];
     };
+    /** @description Key of an item */
     ItemKey: string;
     /** ItemProps */
     ItemProps: {
@@ -3789,17 +3565,10 @@ export interface components {
     };
     /** LocationCreate */
     LocationCreate: {
-      /**
-       * Textid
-       * @description ID of the text this location belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Parentid
-       * @description ID of parent location
-       */
-      parentId?: string | null;
+      /** @description ID of the text this location belongs to */
+      textId: components['schemas']['PydanticObjectId'];
+      /** @description ID of parent location */
+      parentId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Level
        * @description Index of structure level this location is on
@@ -3829,16 +3598,10 @@ export interface components {
        * @default []
        */
       locationPath: components['schemas']['LocationRead'][];
-      /**
-       * Prev
-       * @description ID of the preceding location on the same level
-       */
-      prev?: string | null;
-      /**
-       * Next
-       * @description ID of the subsequent location on the same level
-       */
-      next?: string | null;
+      /** @description ID of the preceding location on the same level */
+      prev?: components['schemas']['PydanticObjectId'] | null;
+      /** @description ID of the subsequent location on the same level */
+      next?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Contents
        * @description Contents of various resources on this location
@@ -3857,23 +3620,15 @@ export interface components {
     };
     /** LocationMetadataContentCreate */
     LocationMetadataContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -3892,28 +3647,16 @@ export interface components {
     };
     /** LocationMetadataContentRead */
     LocationMetadataContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -3961,7 +3704,9 @@ export interface components {
       /** Value */
       value: components['schemas']['LocationMetadataEntryValue'][];
     };
+    /** @description Key of the entry */
     LocationMetadataEntryKey: string;
+    /** @description Value of an entry */
     LocationMetadataEntryValue: string;
     /** LocationMetadataModGeneralConfig */
     LocationMetadataModGeneralConfig: {
@@ -4083,12 +3828,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -4099,11 +3840,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -4155,11 +3893,7 @@ export interface components {
     };
     /** LocationMetadataResourceRead */
     LocationMetadataResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -4188,12 +3922,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -4204,28 +3934,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -4318,21 +4042,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -4410,22 +4131,11 @@ export interface components {
     };
     /** LocationRead */
     LocationRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Textid
-       * @description ID of the text this location belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
-      /**
-       * Parentid
-       * @description ID of parent location
-       */
-      parentId?: string | null;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description ID of the text this location belongs to */
+      textId: components['schemas']['PydanticObjectId'];
+      /** @description ID of parent location */
+      parentId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Level
        * @description Index of structure level this location is on
@@ -4451,11 +4161,8 @@ export interface components {
     };
     /** LocationUpdate */
     LocationUpdate: {
-      /**
-       * Parentid
-       * @description ID of parent location
-       */
-      parentId?: string | null;
+      /** @description ID of parent location */
+      parentId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Level
        * @description Index of structure level this location is on
@@ -4502,8 +4209,7 @@ export interface components {
       position: number;
       /** After */
       after: boolean;
-      /** Parentid */
-      parentId: string | null;
+      parentId: components['schemas']['PydanticObjectId'] | null;
     };
     /** NavTranslations */
     NavTranslations: {
@@ -4565,23 +4271,15 @@ export interface components {
     };
     /** PlainTextContentCreate */
     PlainTextContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'plainText';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -4600,28 +4298,16 @@ export interface components {
     };
     /** PlainTextContentRead */
     PlainTextContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'plainText';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -4709,12 +4395,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -4725,11 +4407,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -4789,11 +4468,7 @@ export interface components {
     };
     /** PlainTextResourceRead */
     PlainTextResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -4822,12 +4497,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -4838,28 +4509,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -4960,21 +4625,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -5094,11 +4756,7 @@ export interface components {
     };
     /** PlatformStateRead */
     PlatformStateRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Platformname
        * @description Name of the platform
@@ -5141,11 +4799,8 @@ export interface components {
        * @description Default font family used for content (Tekst default content font used if not set)
        */
       contentFont?: null | string;
-      /**
-       * Defaulttextid
-       * @description Default text to load in UI
-       */
-      defaultTextId?: string | null;
+      /** @description Default text to load in UI */
+      defaultTextId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Indexunpublishedresources
        * @description Index unpublished resources
@@ -5275,11 +4930,8 @@ export interface components {
        * @description Default font family used for content (Tekst default content font used if not set)
        */
       contentFont?: null | string;
-      /**
-       * Defaulttextid
-       * @description Default text to load in UI
-       */
-      defaultTextId?: string | null;
+      /** @description Default text to load in UI */
+      defaultTextId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Indexunpublishedresources
        * @description Index unpublished resources
@@ -5351,6 +5003,7 @@ export interface components {
     };
     /** @enum {string} */
     PrivateUserProp: 'name' | 'affiliation' | 'bio';
+    /** @description Properties set to be private by this user */
     PrivateUserProps: components['schemas']['PrivateUserProp'][];
     /** PublicUsersSearchResult */
     PublicUsersSearchResult: {
@@ -5367,6 +5020,8 @@ export interface components {
        */
       total: number;
     };
+    /** @example 5eb7cf5a86d9755df3a6c593 */
+    PydanticObjectId: string;
     /** QuickSearchRequestBody */
     QuickSearchRequestBody: {
       /**
@@ -5433,7 +5088,7 @@ export interface components {
        * Txt
        * @description IDs of texts to search in
        */
-      txt?: string[] | null;
+      txt?: components['schemas']['PydanticObjectId'][] | null;
     };
     /** ResourceCategory */
     ResourceCategory: {
@@ -5528,23 +5183,15 @@ export interface components {
     };
     /** RichTextContentCreate */
     RichTextContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'richText';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -5570,28 +5217,16 @@ export interface components {
     };
     /** RichTextContentRead */
     RichTextContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'richText';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -5745,12 +5380,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -5761,11 +5392,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -5815,11 +5443,7 @@ export interface components {
     };
     /** RichTextResourceRead */
     RichTextResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -5848,12 +5472,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -5864,28 +5484,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -5976,21 +5590,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -6041,20 +5652,12 @@ export interface components {
     };
     /** SearchHit */
     SearchHit: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /** Label */
       label: string;
       /** Fulllabel */
       fullLabel: string;
-      /**
-       * Textid
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      textId: components['schemas']['PydanticObjectId'];
       /** Level */
       level: number;
       /** Position */
@@ -6082,6 +5685,7 @@ export interface components {
        */
       replacement: string;
     };
+    /** @description List of regular expression replacements to apply to search index documents */
     SearchReplacements: components['schemas']['SearchReplacement'][];
     /** SearchResults */
     SearchResults: {
@@ -6103,23 +5707,16 @@ export interface components {
     SortingPreset: 'relevance' | 'text_level_position' | 'text_level_relevance';
     /** TaskRead */
     TaskRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /** @description Type of the task */
       type: components['schemas']['TaskType'];
       /**
        * Targetid
        * @description ID of the target of the task or None if there is no target
        */
-      targetId?: string | null;
-      /**
-       * Userid
-       * @description ID of user who created this task (or none if this is a system task)
-       */
-      userId?: string | null;
+      targetId?: components['schemas']['PydanticObjectId'] | null | string;
+      /** @description ID of user who created this task (or none if this is a system task) */
+      userId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Pickupkey
        * @description Pickup key for accessing the task in case tasks are requested by a non-authenticated user
@@ -6151,7 +5748,9 @@ export interface components {
        * Result
        * @description Result data of the task
        */
-      result?: Record<string, never> | null;
+      result?: {
+        [key: string]: unknown;
+      } | null;
       /**
        * Error
        * @description Error ID if the task failed
@@ -6186,23 +5785,15 @@ export interface components {
     };
     /** TextAnnotationContentCreate */
     TextAnnotationContentCreate: {
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -6221,28 +5812,16 @@ export interface components {
     };
     /** TextAnnotationContentRead */
     TextAnnotationContentRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Resourceid
-       * @description Resource ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      resourceId: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description Resource ID */
+      resourceId: components['schemas']['PydanticObjectId'];
       /**
        * @description discriminator enum property added by openapi-typescript
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /**
-       * Locationid
-       * @description Text location ID
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      locationId: string;
+      /** @description Text location ID */
+      locationId: components['schemas']['PydanticObjectId'];
       /**
        * Authorscomment
        * @description Potentially multiline comment by the original author
@@ -6361,12 +5940,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -6377,11 +5952,8 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -6435,11 +6007,7 @@ export interface components {
     };
     /** TextAnnotationResourceRead */
     TextAnnotationResourceRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Writable
        * @description Whether this resource is writable for the requesting user
@@ -6468,12 +6036,8 @@ export interface components {
        * @default []
        */
       subtitle: components['schemas']['ResourceSubtitleTranslation'][];
-      /**
-       * Textid
-       * @description ID of the text this resource belongs to
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      textId: string;
+      /** @description ID of the text this resource belongs to */
+      textId: components['schemas']['PydanticObjectId'];
       /**
        * Level
        * @description Text level this resource belongs to
@@ -6484,28 +6048,22 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
-      /**
-       * Ownerid
-       * @description User owning this resource
-       */
-      ownerId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
+      /** @description User owning this resource */
+      ownerId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        * @default []
        */
-      sharedRead: string[];
+      sharedRead: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        * @default []
        */
-      sharedWrite: string[];
+      sharedWrite: components['schemas']['PydanticObjectId'][];
       /**
        * Public
        * @description Publication status of this resource
@@ -6600,21 +6158,18 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /**
-       * Originalid
-       * @description If this is a version of another resource, this ID references the original
-       */
-      originalId?: string | null;
+      /** @description If this is a version of another resource, this ID references the original */
+      originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
        */
-      sharedRead?: string[];
+      sharedRead?: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedwrite
        * @description Users with shared write access to this resource
        */
-      sharedWrite?: string[];
+      sharedWrite?: components['schemas']['PydanticObjectId'][];
       /**
        * Citation
        * @description Citation details for this resource
@@ -6678,6 +6233,7 @@ export interface components {
        */
       annotations: components['schemas']['TextAnnotationEntry'][];
     };
+    /** @description Value of an annotation */
     TextAnnotationValue: string;
     /** TextCreate */
     TextCreate: {
@@ -6763,11 +6319,7 @@ export interface components {
     };
     /** TextRead */
     TextRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Title
        * @description Title of this text
@@ -7001,17 +6553,10 @@ export interface components {
     };
     /** UserMessageCreate */
     UserMessageCreate: {
-      /**
-       * Sender
-       * @description ID of the sender or None if this is a system message
-       */
-      sender?: string | null;
-      /**
-       * Recipient
-       * @description ID of the recipient
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      recipient: string;
+      /** @description ID of the sender or None if this is a system message */
+      sender?: components['schemas']['PydanticObjectId'] | null;
+      /** @description ID of the recipient */
+      recipient: components['schemas']['PydanticObjectId'];
       /**
        * Content
        * @description Content of the message
@@ -7020,22 +6565,11 @@ export interface components {
     };
     /** UserMessageRead */
     UserMessageRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
-      /**
-       * Sender
-       * @description ID of the sender or None if this is a system message
-       */
-      sender?: string | null;
-      /**
-       * Recipient
-       * @description ID of the recipient
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      recipient: string;
+      id: components['schemas']['PydanticObjectId'];
+      /** @description ID of the sender or None if this is a system message */
+      sender?: components['schemas']['PydanticObjectId'] | null;
+      /** @description ID of the recipient */
+      recipient: components['schemas']['PydanticObjectId'];
       /**
        * Content
        * @description Content of the message
@@ -7053,21 +6587,15 @@ export interface components {
        * @default false
        */
       read: boolean;
-      /**
-       * Deleted
-       * @description ID of the user who deleted the message or None if not deleted
-       */
-      deleted?: string | null;
+      /** @description ID of the user who deleted the message or None if not deleted */
+      deleted?: components['schemas']['PydanticObjectId'] | null;
     } & {
       [key: string]: unknown;
     };
     /** UserMessageThread */
     UserMessageThread: {
-      /**
-       * Id
-       * @description ID of the thread or None if the message is a system message
-       */
-      id: string | null;
+      /** @description ID of the thread or None if the message is a system message */
+      id: components['schemas']['PydanticObjectId'] | null;
       /** @description User data for the other user participating in this thread */
       contact: components['schemas']['UserReadPublic'] | null;
       /**
@@ -7087,11 +6615,7 @@ export interface components {
      * @description A user registered in the system
      */
     UserRead: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /**
        * Email
        * Format: email
@@ -7161,11 +6685,7 @@ export interface components {
     };
     /** UserReadPublic */
     UserReadPublic: {
-      /**
-       * Id
-       * @example 5eb7cf5a86d9755df3a6c593
-       */
-      id: string;
+      id: components['schemas']['PydanticObjectId'];
       /** Username */
       username: string;
       /** Name */
@@ -7272,15 +6792,15 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of location to request data for */
-        id?: string | null;
+        id?: components['schemas']['PydanticObjectId'] | null;
         /** @description ID of text the target location belongs to (needed if no location ID is given) */
-        txt?: string | null;
+        txt?: components['schemas']['PydanticObjectId'] | null;
         /** @description Location level (only used if no location ID is given, text's default level is used by default) */
         lvl?: number | null;
         /** @description Location position (only used if no location ID is given) */
         pos?: number;
         /** @description List of IDs of resources to return contents for (assumes all if none are given) */
-        res?: string[];
+        res?: components['schemas']['PydanticObjectId'][];
         /** @description Only return contents for the head location of the path */
         head?: boolean;
       };
@@ -7323,9 +6843,9 @@ export interface operations {
     parameters: {
       query: {
         /** @description ID of resource the requested contents belong to */
-        res: string;
+        res: components['schemas']['PydanticObjectId'];
         /** @description ID of parent location to get child contents for */
-        parent?: string | null;
+        parent?: components['schemas']['PydanticObjectId'] | null;
       };
       header?: never;
       path?: never;
@@ -7375,9 +6895,9 @@ export interface operations {
     parameters: {
       query: {
         /** @description ID of the location to start from */
-        loc: string;
+        loc: components['schemas']['PydanticObjectId'];
         /** @description ID of resource to return nearest location with content for */
-        res: string;
+        res: components['schemas']['PydanticObjectId'];
         /** @description Whether to look for the nearest preceding (before) or subsequent (after) location with content */
         dir?: 'before' | 'after';
       };
@@ -7501,7 +7021,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7547,9 +7067,9 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID (or list of IDs) of resource(s) to return content data for */
-        res?: string[];
+        res?: components['schemas']['PydanticObjectId'][];
         /** @description ID (or list of IDs) of location(s) to return content data for */
-        location?: string[];
+        location?: components['schemas']['PydanticObjectId'][];
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -7669,7 +7189,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7717,7 +7237,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7764,7 +7284,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7884,7 +7404,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        resourceId: string;
+        resourceId: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7924,7 +7444,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -7961,11 +7481,11 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of location to find */
-        locId?: string | null;
+        locId?: components['schemas']['PydanticObjectId'] | null;
         /** @description ID of parent location to find children of */
-        parentId?: string | null;
+        parentId?: components['schemas']['PydanticObjectId'] | null;
         /** @description ID of text to find locations for */
-        textId?: string | null;
+        textId?: components['schemas']['PydanticObjectId'] | null;
         /** @description Slug of text to find locations for */
         textSlug?: string | null;
         /** @description Structure level to find locations for */
@@ -8071,7 +7591,7 @@ export interface operations {
       header?: never;
       path: {
         /** @description Location ID */
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
         /** @description Wheter to handle the given location as path root or head */
         by: 'root' | 'head';
       };
@@ -8112,7 +7632,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description Target text ID */
-        txt: string;
+        txt: components['schemas']['PydanticObjectId'];
         /** @description Structure level to find first and last locations for */
         lvl?: number;
       };
@@ -8155,9 +7675,9 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of text to find locations for (required if no parent ID is given) */
-        txt?: string | null;
+        txt?: components['schemas']['PydanticObjectId'] | null;
         /** @description ID of parent location to find children of */
-        parent?: string | null;
+        parent?: components['schemas']['PydanticObjectId'] | null;
         limit?: number;
       };
       header?: never;
@@ -8218,7 +7738,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8258,7 +7778,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8316,7 +7836,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8378,7 +7898,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8439,7 +7959,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of the thread to return messages for */
-        thread?: string | null;
+        thread?: components['schemas']['PydanticObjectId'] | null;
       };
       header?: never;
       path?: never;
@@ -8561,7 +8081,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string | 'system';
+        id: components['schemas']['PydanticObjectId'] | 'system';
       };
       cookie?: never;
     };
@@ -8699,7 +8219,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8739,7 +8259,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -8795,7 +8315,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9064,7 +8584,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9197,7 +8717,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description ID of text to find resources for */
-        txt?: string | null;
+        txt?: components['schemas']['PydanticObjectId'] | null;
         /** @description Structure level to find resources for */
         lvl?: number | null;
         /** @description Type of resources to find */
@@ -9329,7 +8849,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9395,7 +8915,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9443,7 +8963,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9499,7 +9019,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9559,13 +9079,13 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
     requestBody: {
       content: {
-        'application/json': string;
+        'application/json': components['schemas']['PydanticObjectId'];
       };
     };
     responses: {
@@ -9638,7 +9158,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9704,7 +9224,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9761,7 +9281,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9836,7 +9356,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9902,7 +9422,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -9951,7 +9471,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10005,14 +9525,14 @@ export interface operations {
         /** @description Export format */
         format?: components['schemas']['ResourceExportFormat'];
         /** @description ID of the location to start the export's location range from */
-        from?: string | null;
+        from?: components['schemas']['PydanticObjectId'] | null;
         /** @description ID of the location to end the export's location range at */
-        to?: string | null;
+        to?: components['schemas']['PydanticObjectId'] | null;
       };
       header?: never;
       path: {
         /** @description ID of the resource to export */
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10052,7 +9572,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10092,7 +9612,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10308,7 +9828,9 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': Record<string, never>;
+          'application/json': {
+            [key: string]: unknown;
+          };
         };
       };
       /** @description Service Unavailable */
@@ -10418,7 +9940,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10476,7 +9998,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10556,7 +10078,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10627,7 +10149,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
         /** @description Index to insert the level at */
         index: number;
       };
@@ -10700,7 +10222,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
         /** @description Level to delete */
         lvl: number;
       };
@@ -10769,7 +10291,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10809,7 +10331,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -10874,7 +10396,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        id: string;
+        id: components['schemas']['PydanticObjectId'];
       };
       cookie?: never;
     };
@@ -11106,7 +10628,7 @@ export interface operations {
       header?: never;
       path: {
         /** @description Username or ID */
-        user: string;
+        user: components['schemas']['PydanticObjectId'] | string;
       };
       cookie?: never;
     };

@@ -237,7 +237,7 @@ E_400_UPLOAD_INVALID_JSON = _error_instance(
 )
 
 E_422_UPLOAD_INVALID_DATA = _error_instance(
-    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
     key="uploadInvalidData",
     msg="Import data does not match schema",
 )

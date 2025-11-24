@@ -113,7 +113,7 @@ async def migrate() -> None:
             await pending[mig_ver](db)
         except Exception as e:  # pragma: no cover
             log.error(
-                f"Failed migrating DB from {curr_db_version} " f"to {str(mig_ver)}: {e}"
+                f"Failed migrating DB from {curr_db_version} to {str(mig_ver)}: {e}"
             )
             raise e
         curr_db_version = str(mig_ver)

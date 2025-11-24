@@ -212,7 +212,7 @@ async def get_public_user(
         user = await UserDocument.find_one(UserDocument.username == username_or_id)
     if not user:
         raise errors.E_404_USER_NOT_FOUND
-    return UserReadPublic(**user.model_dump())
+    return UserReadPublic.model_from(user)
 
 
 @router.get(
@@ -283,11 +283,14 @@ async def find_public_users(
     pgn = PaginationSettings(page=page, page_size=page_size)
     return PublicUsersSearchResult(
         users=(
-            await UserDocument.find(*db_query)
-            .sort(+UserDocument.name, +UserDocument.username)
-            .skip(pgn.mongo_skip())
-            .limit(pgn.mongo_limit())
-            .to_list()
+            [
+                UserReadPublic.model_from(u)
+                for u in await UserDocument.find(*db_query)
+                .sort(+UserDocument.name, +UserDocument.username)
+                .skip(pgn.mongo_skip())
+                .limit(pgn.mongo_limit())
+                .to_list()
+            ]
         ),
         total=total,
     )

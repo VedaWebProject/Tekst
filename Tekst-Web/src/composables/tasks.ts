@@ -74,7 +74,7 @@ const { resume, pause } = useTimeoutPoll(
             if (!error) {
               const filename =
                 response.headers.get('content-disposition')?.split('filename=')[1] ||
-                task.result?.filename ||
+                (task.result?.filename as string) ||
                 'export';
               message.info($t('common.downloadSaved', { filename }));
               downloadData(data, filename);

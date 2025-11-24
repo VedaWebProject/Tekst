@@ -25,8 +25,7 @@ _FMT_DEFAULT_DEV = (
     "%(levelprefix)s %(message)s (%(funcName)s @ %(filename)s:%(lineno)d)"
 )
 _FMT_ACCESS = (
-    "%(asctime)s - %(levelprefix)s %(client_addr)s"
-    ' - "%(request_line)s" %(status_code)s'
+    '%(asctime)s - %(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
 )
 _FMT_ACCESS_DEV = "%(levelprefix)s %(request_line)s - %(status_code)s"
 

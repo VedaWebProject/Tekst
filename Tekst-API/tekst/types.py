@@ -228,8 +228,7 @@ type SearchReplacements = Annotated[
     list[SearchReplacement],
     Field(
         description=(
-            "List of regular expression replacements "
-            "to apply to search index documents"
+            "List of regular expression replacements to apply to search index documents"
         ),
         min_length=0,
         max_length=16,

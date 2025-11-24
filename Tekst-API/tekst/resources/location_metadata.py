@@ -132,7 +132,7 @@ class LocationMetadata(ResourceTypeABC):
                 entry_v_q = (
                     {
                         "wildcard": {
-                            (f"resources.{res_id}.entries" f".value{strict_suffix}"): {
+                            (f"resources.{res_id}.entries.value{strict_suffix}"): {
                                 "value": entry_q.value,
                             }
                         }
@@ -141,7 +141,7 @@ class LocationMetadata(ResourceTypeABC):
                     else {
                         "term": {
                             (
-                                f"resources.{res_id}.entries" f".value{strict_suffix}"
+                                f"resources.{res_id}.entries.value{strict_suffix}"
                             ): entry_q.value
                         }
                     }
