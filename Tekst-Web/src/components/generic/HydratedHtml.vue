@@ -92,7 +92,6 @@ function hydrate(html: string | undefined) {
   dom.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
     if (!(el instanceof HTMLAnchorElement)) return;
     el.removeAttribute('href');
-    el.setAttribute('title', $t('browse.location.goTo'));
     el.addEventListener('click', handleLocationRefClick);
     el.classList.add('internal-ref-link');
   });
