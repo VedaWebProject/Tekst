@@ -97,6 +97,7 @@ async function handleOkClick() {
     <div class="mb-lg">
       <b>{{ $t('models.resource.modelLabel') }}:</b> {{ resourceTitle }}
     </div>
+
     <n-form
       ref="formRef"
       :model="formModel"
@@ -104,6 +105,7 @@ async function handleOkClick() {
       label-placement="top"
       label-width="auto"
       require-mark-placement="right-hanging"
+      class="gray-box"
     >
       <n-form-item path="userId" :label="$t('resources.transferAction')">
         <n-select

@@ -22,7 +22,7 @@ import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon } from '
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
-import { computed, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
@@ -76,6 +76,8 @@ const filteredData = computed(() => {
     );
   });
 });
+
+const expandedNames = ref<string[]>([]);
 
 async function handleTransferClick(resource: AnyResourceRead) {
   transferTargetResource.value = resource;
@@ -211,7 +213,7 @@ function handleSettingsClick(resource: AnyResourceRead) {
   });
 }
 
-function handleContentsClick(resource: AnyResourceRead) {
+function handleEditContentsClick(resource: AnyResourceRead) {
   router.push({
     name: 'resourceContents',
     params: { textSlug: props.textSlug, resId: resource.id },
@@ -240,6 +242,10 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
             title: pickTranslation(resource.title, state.locale),
           })
         );
+        expandedNames.value = [data.id];
+        nextTick(() => {
+          document.querySelector(`#res-list-item-${data.id}`)?.scrollIntoView();
+        });
       }
       actionsLoading.value = false;
     },
@@ -401,19 +407,26 @@ onMounted(() => {
 
     <!-- Resources List -->
     <div class="content-block">
-      <n-collapse v-if="filteredData.length" accordion class="my-sm">
+      <n-collapse
+        v-if="filteredData.length"
+        v-model:expanded-names="expandedNames"
+        accordion
+        class="my-sm"
+      >
         <resource-list-item
           v-for="item in filteredData"
+          :id="`res-list-item-${item.id}`"
           :key="item.id"
           :resource="item"
           :user="auth.user"
+          :shown="expandedNames.includes(item.id)"
           @transfer-click="handleTransferClick"
           @propose-click="handleProposeClick"
           @unpropose-click="handleUnproposeClick"
           @publish-click="handlePublishClick"
           @unpublish-click="handleUnpublishClick"
           @settings-click="handleSettingsClick"
-          @contents-click="handleContentsClick"
+          @edit-contents-click="handleEditContentsClick"
           @create-version-click="handleCreateVersionClick"
           @delete-click="handleDeleteClick"
           @download-template-click="handleDownloadTemplateClick"

@@ -1,31 +1,13 @@
 <script setup lang="ts">
 import { type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import HydratedHtml from '@/components/generic/HydratedHtml.vue';
-import IconHeading from '@/components/generic/IconHeading.vue';
-import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
-import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
-import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
-import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
-import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
-import UserDisplay from '@/components/user/UserDisplay.vue';
-import {
-  CoverageIcon,
-  DescIcon,
-  DownloadIcon,
-  FormatQuoteIcon,
-  InfoIcon,
-  LinkIcon,
-  MetadataIcon,
-  ResourceIcon,
-  SiteNoticeIcon,
-} from '@/icons';
-import { useAuthStore, useStateStore } from '@/stores';
+import ResourceInfoContent from '@/components/resource/ResourceInfoContent.vue';
+import { InfoIcon, ResourceIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NButton, NFlex, NIcon } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
@@ -35,11 +17,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['done']);
 
-const auth = useAuthStore();
 const state = useStateStore();
 
 const title = computed(() => pickTranslation(props.resource.title, state.locale));
-const descriptionHtml = computed(() => pickTranslation(props.resource.description, state.locale));
 const showInfoModal = ref(false);
 </script>
 
@@ -72,90 +52,7 @@ const showInfoModal = ref(false);
   </template>
 
   <generic-modal v-model:show="showInfoModal" :title="title" :icon="ResourceIcon" width="wide">
-    <n-flex v-if="!!auth.user" justify="space-between" class="mb-lg">
-      <user-display :user="resource.owner || undefined" size="small" :system="resource.public" />
-      <resource-info-tags :resource="resource" reverse />
-    </n-flex>
-
-    <!-- SUBTITLE -->
-    <p v-if="resource.subtitle.length">
-      <translation-display :value="resource.subtitle" />
-    </p>
-
-    <!-- DESCRIPTION -->
-    <div class="gray-box" v-if="!!descriptionHtml">
-      <icon-heading level="3" :icon="DescIcon">
-        {{ $t('common.description') }}
-      </icon-heading>
-      <collapsible-content>
-        <hydrated-html
-          :html="descriptionHtml"
-          :style="{ fontFamily: resource.contentFont }"
-          class="text-medium"
-        />
-      </collapsible-content>
-    </div>
-
-    <!-- METADATA -->
-    <div class="gray-box" v-if="resource.meta && Object.keys(resource.meta).length">
-      <icon-heading level="3" :icon="MetadataIcon">
-        {{ $t('models.meta.modelLabel') }}
-      </icon-heading>
-      <metadata-display :data="resource.meta" class="text-medium" />
-    </div>
-
-    <!-- CITATION -->
-    <div class="gray-box" v-if="resource.citation">
-      <icon-heading level="3" :icon="FormatQuoteIcon">
-        {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
-      </icon-heading>
-      <div :style="{ fontFamily: resource.contentFont }" class="text-medium">
-        {{ resource.citation }}
-      </div>
-    </div>
-
-    <!-- COVERAGE -->
-    <div class="gray-box">
-      <icon-heading level="3" :icon="CoverageIcon">
-        {{ $t('browse.contents.widgets.infoWidget.coverage') }}
-      </icon-heading>
-      <resource-coverage-widget :resource="resource" @navigate="showInfoModal = false" />
-    </div>
-
-    <!-- LICENSE -->
-    <div class="gray-box">
-      <icon-heading level="3" :icon="SiteNoticeIcon">
-        {{ $t('models.resource.license') }}
-      </icon-heading>
-      <template v-if="resource.license || resource.licenseUrl">
-        <a
-          v-if="resource.licenseUrl"
-          :href="resource.licenseUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <n-flex align="center" size="small">
-            <n-icon :component="LinkIcon" />
-            <span>{{ resource.license || resource.licenseUrl }}</span>
-          </n-flex>
-        </a>
-        <span v-else>
-          {{ resource.license }}
-        </span>
-      </template>
-      <i v-else>
-        {{ $t('browse.contents.widgets.infoWidget.noLicense') }}
-      </i>
-    </div>
-
-    <!-- EXPORT -->
-    <div class="gray-box">
-      <icon-heading level="3" :icon="DownloadIcon">
-        {{ $t('common.export') }}
-      </icon-heading>
-      <resource-export-widget :resource="resource" @done="showInfoModal = false" />
-    </div>
-
+    <resource-info-content :resource="resource" />
     <button-shelf top-gap>
       <n-button type="primary" @click="() => (showInfoModal = false)">
         {{ $t('common.close') }}

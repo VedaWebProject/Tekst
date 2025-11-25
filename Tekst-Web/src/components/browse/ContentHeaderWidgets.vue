@@ -8,6 +8,7 @@ import DeepLLinksWidget from '@/components/resource/DeepLLinksWidget.vue';
 import JumpToContentWidget from '@/components/resource/JumpToContentWidget.vue';
 import LocationContentContextWidget from '@/components/resource/LocationContentContextWidget.vue';
 import ResourceDeactivateWidget from '@/components/resource/ResourceDeactivateWidget.vue';
+import ResourceExportWidget from '@/components/resource/ResourceExportWidget.vue';
 import ResourceInfoWidget from '@/components/resource/ResourceInfoWidget.vue';
 import ResourceSettingsWidget from '@/components/resource/ResourceSettingsWidget.vue';
 import { MoreIcon } from '@/icons';
@@ -59,6 +60,7 @@ function handleSmallScreenWidgetsTriggered() {
     <resource-settings-widget :resource="resource" />
     <jump-to-content-widget :resource="resource" direction="before" />
     <jump-to-content-widget :resource="resource" direction="after" />
+    <resource-export-widget :resource="resource" />
     <resource-info-widget :resource="resource" />
     <resource-deactivate-widget :resource="resource" />
   </n-flex>
@@ -108,6 +110,7 @@ function handleSmallScreenWidgetsTriggered() {
       <resource-settings-widget :resource="resource" full @done="closeModal" />
       <jump-to-content-widget :resource="resource" direction="before" full @done="closeModal" />
       <jump-to-content-widget :resource="resource" direction="after" full @done="closeModal" />
+      <resource-export-widget :resource="resource" full @done="closeModal" />
       <resource-info-widget :resource="resource" full @done="closeModal" />
       <resource-deactivate-widget :resource="resource" full @done="closeModal" />
     </n-flex>
