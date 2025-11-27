@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import type { AnyResourceRead, ResourceCoverage } from '@/api';
+import { ErrorIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NCollapse, NCollapseItem, NProgress, NSpin, NThing, NVirtualList } from 'naive-ui';
+import {
+  NCollapse,
+  NCollapseItem,
+  NEmpty,
+  NIcon,
+  NProgress,
+  NSpin,
+  NThing,
+  NVirtualList,
+} from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -55,122 +65,125 @@ async function loadCoverageData() {
 </script>
 
 <template>
-  <div>
-    <n-collapse
-      accordion
-      default-expanded-names="overview"
-      @update:expanded-names="loadCoverageData"
+  <n-collapse accordion default-expanded-names="overview" @update:expanded-names="loadCoverageData">
+    <n-collapse-item
+      :title="$t('browse.contents.widgets.infoWidget.coverageOverview')"
+      name="overview"
     >
-      <n-collapse-item
-        :title="$t('browse.contents.widgets.infoWidget.coverageOverview')"
-        name="overview"
-      >
-        <template v-if="resource.coverage">
-          <div class="text-small mb-sm">
-            {{
-              $t('browse.contents.widgets.infoWidget.coverageStatement', {
-                present: resource.coverage[0],
-                total: resource.coverage[1],
-                level: state.textLevelLabels[resource.level],
-              })
-            }}
-          </div>
-          <n-progress
-            v-if="coveragePercent !== null"
-            type="line"
-            :percentage="coveragePercent"
-            :height="16"
-            :border-radius="3"
-            indicator-placement="inside"
-            color="var(--primary-color)"
-            rail-color="var(--primary-color-fade4)"
-          />
+      <template v-if="resource.coverage">
+        <div class="text-small mb-sm">
+          {{
+            $t('browse.contents.widgets.infoWidget.coverageStatement', {
+              present: resource.coverage[0],
+              total: resource.coverage[1],
+              level: state.textLevelLabels[resource.level],
+            })
+          }}
+        </div>
+        <n-progress
+          v-if="coveragePercent !== null"
+          type="line"
+          :percentage="coveragePercent"
+          :height="16"
+          :border-radius="3"
+          indicator-placement="inside"
+          color="var(--primary-color)"
+          rail-color="var(--primary-color-fade4)"
+        />
+      </template>
+      <n-empty v-else :description="$t('errors.notFound')" class="mb-lg">
+        <template #icon>
+          <n-icon :component="ErrorIcon" />
         </template>
-        <i v-else class="translucent text-medium">{{ $t('errors.notFound') }}</i>
-      </n-collapse-item>
-      <n-collapse-item
-        :title="$t('browse.contents.widgets.infoWidget.coverageRanges')"
-        name="ranges"
-      >
-        <template v-if="coverage && !coverageLoading">
-          <div
-            v-if="coverage.rangesCovered"
-            class="text-small mb-sm"
-            :style="{ color: 'var(--success-color)' }"
-          >
-            {{ $t('browse.contents.widgets.infoWidget.coverageRangesPresent') }}
-          </div>
-          <div v-else class="text-small mb-sm" :style="{ color: 'var(--error-color)' }">
-            {{ $t('browse.contents.widgets.infoWidget.coverageRangesMissing') }}
-          </div>
-          <div class="gray-box">
-            <n-virtual-list
-              style="max-height: 512px"
-              :item-size="42"
-              :items="coverage.ranges"
-              item-resizable
-            >
-              <template #default="{ item: range }">
-                <div class="range">
-                  <code class="text-small">{{ range[0] }}</code>
-                  <template v-if="range[0] !== range[1]">
-                    <b class="mx-sm">...</b>
-                    <code class="text-small">{{ range[1] }}</code>
-                  </template>
-                </div>
-              </template>
-            </n-virtual-list>
-          </div>
-        </template>
-        <n-spin v-else-if="coverageLoading" class="centered-spinner" />
-        <i v-else class="translucent text-medium">{{ $t('errors.notFound') }}</i>
-      </n-collapse-item>
-      <n-collapse-item
-        :title="$t('browse.contents.widgets.infoWidget.coverageDetails')"
-        name="details"
-      >
-        <div v-if="coverage && !coverageLoading" class="gray-box">
+      </n-empty>
+    </n-collapse-item>
+    <n-collapse-item :title="$t('browse.contents.widgets.infoWidget.coverageRanges')" name="ranges">
+      <template v-if="coverage && !coverageLoading">
+        <div
+          v-if="coverage.rangesCovered"
+          class="text-small mb-sm"
+          :style="{ color: 'var(--success-color)' }"
+        >
+          {{ $t('browse.contents.widgets.infoWidget.coverageRangesPresent') }}
+        </div>
+        <div v-else class="text-small mb-sm" :style="{ color: 'var(--error-color)' }">
+          {{ $t('browse.contents.widgets.infoWidget.coverageRangesMissing') }}
+        </div>
+        <div class="gray-box">
           <n-virtual-list
             style="max-height: 512px"
             :item-size="42"
-            :items="coverageDetailsItems"
+            :items="coverage.ranges"
             item-resizable
           >
-            <template #default="{ item }">
-              <n-thing>
-                <template #header>
-                  <span class="n">
-                    {{ item.title }}
-                  </span>
+            <template #default="{ item: range }">
+              <div class="range">
+                <code class="text-small">{{ range[0] }}</code>
+                <template v-if="range[0] !== range[1]">
+                  <b class="mx-sm">...</b>
+                  <code class="text-small">{{ range[1] }}</code>
                 </template>
-                <template #header-extra>
-                  <span class="mr-lg"> ({{ item.extra }}) </span>
-                </template>
-                <template #description>
-                  <div class="cov-block">
-                    <div
-                      v-for="location in item.locations"
-                      :key="location.id"
-                      class="cov-box"
-                      :style="{
-                        backgroundColor: location.covered
-                          ? 'var(--success-color)'
-                          : 'var(--error-color)',
-                      }"
-                      :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
-                      @click="() => handleDetailsLocationClick(location.locId)"
-                    ></div>
-                  </div>
-                </template>
-              </n-thing>
+              </div>
             </template>
           </n-virtual-list>
         </div>
-        <n-spin v-else-if="coverageLoading" class="centered-spinner" />
-        <i v-else class="translucent text-medium">{{ $t('errors.notFound') }}</i>
-      </n-collapse-item>
-    </n-collapse>
-  </div>
+      </template>
+      <n-spin v-else-if="coverageLoading" class="centered-spinner" />
+      <n-empty v-else :description="$t('errors.notFound')" class="mb-lg">
+        <template #icon>
+          <n-icon :component="ErrorIcon" />
+        </template>
+      </n-empty>
+    </n-collapse-item>
+    <n-collapse-item
+      :title="$t('browse.contents.widgets.infoWidget.coverageDetails')"
+      name="details"
+    >
+      <div v-if="coverage && !coverageLoading" class="gray-box">
+        <n-virtual-list
+          style="max-height: 512px"
+          :item-size="42"
+          :items="coverageDetailsItems"
+          item-resizable
+        >
+          <template #default="{ item }">
+            <n-thing>
+              <template #header>
+                <span class="n">
+                  {{ item.title }}
+                </span>
+              </template>
+              <template #header-extra>
+                <span class="mr-lg"> ({{ item.extra }}) </span>
+              </template>
+              <template #description>
+                <div class="cov-block">
+                  <div
+                    v-for="location in item.locations"
+                    :key="location.id"
+                    class="cov-box"
+                    :style="{
+                      backgroundColor: location.covered
+                        ? 'var(--success-color)'
+                        : 'var(--error-color)',
+                    }"
+                    :title="`${state.textLevelLabels[resource.level]}: ${location.label}`"
+                    @click="() => handleDetailsLocationClick(location.locId)"
+                  ></div>
+                </div>
+              </template>
+            </n-thing>
+          </template>
+        </n-virtual-list>
+      </div>
+      <n-spin v-else-if="coverageLoading" class="centered-spinner" />
+      <n-empty v-else :description="$t('errors.notFound')" class="mb-lg">
+        <template #icon>
+          <n-icon :component="ErrorIcon" />
+        </template>
+      </n-empty>
+    </n-collapse-item>
+  </n-collapse>
 </template>
 
 <style scoped>
@@ -190,6 +203,11 @@ async function loadCoverageData() {
 
 :deep(.n-collapse-item__content-inner) {
   padding-top: var(--gap-sm) !important;
+}
+
+/** prevent indenting collapse items if this component is nested in another collapse */
+.n-collapse .n-collapse-item .n-collapse-item {
+  margin-left: inherit;
 }
 
 /** Coverage details */
