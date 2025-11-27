@@ -1,6 +1,7 @@
 common:
   general: Allgemein
   default: standard
+  actions: Aktionen
   enabled: Aktiv
   on: 'an'
   off: 'aus'

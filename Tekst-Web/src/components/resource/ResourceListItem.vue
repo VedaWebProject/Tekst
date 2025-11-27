@@ -6,6 +6,7 @@ import { useResourcesStore, useStateStore } from '@/stores';
 import { NButton, NCollapseItem, NFlex, type DropdownOption } from 'naive-ui';
 import { computed, ref } from 'vue';
 
+import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceExportModal from '@/components/resource/ResourceExportModal.vue';
 import ResourceInfoContent from '@/components/resource/ResourceInfoContent.vue';
 import {
@@ -13,6 +14,7 @@ import {
   DeleteIcon,
   DownloadIcon,
   EditIcon,
+  MoreIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
@@ -246,28 +248,32 @@ function handleCorrectionsClick() {
     </template>
 
     <div :style="{ 'padding-left': !state.smallScreen ? '20px' : undefined }">
-      <div class="res-item-actions mb-lg">
-        <template v-for="optGroup in actionOptions" :key="optGroup.key">
-          <n-flex v-if="!!optGroup.children?.length" vertical>
-            <div class="text-small translucent">{{ optGroup.label }}</div>
-            <n-button
-              v-for="opt in optGroup.children"
-              :key="opt.key"
-              secondary
-              :type="opt.statusType as Type"
-              :disabled="!!opt.disabled"
-              @click="opt.action as () => void"
-            >
-              <template #icon>
-                <component :is="opt.icon" />
-              </template>
-              {{ opt.label }}
-            </n-button>
-          </n-flex>
-        </template>
-      </div>
-
       <resource-info-content :resource="resource" />
+      <div class="gray-box mb-lg">
+        <icon-heading level="3" :icon="MoreIcon">
+          {{ $t('common.actions') }}
+        </icon-heading>
+        <div class="res-item-actions">
+          <template v-for="optGroup in actionOptions" :key="optGroup.key">
+            <n-flex v-if="!!optGroup.children?.length" vertical>
+              <div class="text-small translucent">{{ optGroup.label }}</div>
+              <n-button
+                v-for="opt in optGroup.children"
+                :key="opt.key"
+                secondary
+                :type="opt.statusType as Type"
+                :disabled="!!opt.disabled"
+                @click="opt.action as () => void"
+              >
+                <template #icon>
+                  <component :is="opt.icon" />
+                </template>
+                {{ opt.label }}
+              </n-button>
+            </n-flex>
+          </template>
+        </div>
+      </div>
     </div>
 
     <resource-export-modal v-model:show="showExport" :resource="resource" />

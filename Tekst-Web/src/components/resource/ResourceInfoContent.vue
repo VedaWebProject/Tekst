@@ -34,16 +34,12 @@ const showInfoModal = ref(false);
 
 <template>
   <div>
-    <n-flex class="mb-lg">
+    <n-flex justify="space-between" class="mb-lg" style="flex-wrap: wrap-reverse">
       <!-- SUBTITLE -->
       <span v-if="resource.subtitle.length">
         <translation-display :value="resource.subtitle" />
       </span>
-      <resource-info-tags
-        :resource="resource"
-        reverse
-        style="flex: 2; justify-content: flex-start"
-      />
+      <resource-info-tags :resource="resource" reverse />
     </n-flex>
 
     <user-display

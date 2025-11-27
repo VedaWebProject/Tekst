@@ -1,6 +1,7 @@
 common:
   general: General
   default: default
+  actions: Actions
   enabled: Enabled
   on: 'on'
   off: 'off'
