@@ -79,13 +79,6 @@ async def create_correction(
     ).create()
 
     # notify the resource's owner (or admins if it's public) of the new correction
-    msg_specific_attrs = {
-        "from_user_name": user.name if "name" in user.public_fields else user.username,
-        "correction_note": correction.note,
-        "text_slug": (await TextDocument.get(resource_doc.text_id)).slug,
-        "resource_id": resource_doc.id,
-        "resource_title": pick_translation(resource_doc.title),
-    }
     if user.id != resource_doc.owner_id:
         to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
         if (
@@ -96,7 +89,13 @@ async def create_correction(
             await send_notification(
                 to_user,
                 TemplateIdentifier.EMAIL_NEW_CORRECTION,
-                **msg_specific_attrs,
+                from_user_name=user.name
+                if "name" in user.public_fields
+                else user.username,
+                correction_note=correction.note,
+                text_slug=(await TextDocument.get(resource_doc.text_id)).slug,
+                resource_id=resource_doc.id,
+                resource_title=pick_translation(resource_doc.title),
             )
 
     return correction_doc

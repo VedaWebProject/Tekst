@@ -36,6 +36,7 @@ type PrivateUserProps = Annotated[
 type UserNotificationTrigger = Literal[
     TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
     TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+    TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED.value,
     TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
     TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
 ]
@@ -135,6 +136,7 @@ class User(ModelBase, ModelFactoryMixin):
     user_notification_triggers: UserNotificationTriggers = [
         TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
         TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+        TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED.value,
         TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
         TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
     ]

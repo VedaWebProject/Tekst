@@ -6535,6 +6535,7 @@ export interface components {
        * @default [
        *       "messageReceived",
        *       "newCorrection",
+       *       "resourceTransferred",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]
@@ -6608,6 +6609,7 @@ export interface components {
     UserNotificationTrigger:
       | 'messageReceived'
       | 'newCorrection'
+      | 'resourceTransferred'
       | 'resourceProposed'
       | 'resourcePublished';
     /**
@@ -6662,6 +6664,7 @@ export interface components {
        * @default [
        *       "messageReceived",
        *       "newCorrection",
+       *       "resourceTransferred",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]

@@ -643,6 +643,7 @@ account:
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
       messageReceived: ich eine Nachricht von einer anderen Benutzer*in erhalte (per Email)
       newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde (per Email)
+      resourceTransferred: eine Ressource auf mich übertragen wurde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren

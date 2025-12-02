@@ -1,0 +1,6 @@
+Hello, {to_user_name}!
+
+The user "{username}" just transferred ownership of a resource to you on {platform_name}.
+The title of the transferred resource is "{resource_title}".
+
+See you on {platform_name}!

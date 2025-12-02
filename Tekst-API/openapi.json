@@ -18630,12 +18630,13 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 4,
+            "maxItems": 5,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
               "newCorrection",
+              "resourceTransferred",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -18811,6 +18812,7 @@
         "enum": [
           "messageReceived",
           "newCorrection",
+          "resourceTransferred",
           "resourceProposed",
           "resourcePublished"
         ]
@@ -18907,12 +18909,13 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 4,
+            "maxItems": 5,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
               "newCorrection",
+              "resourceTransferred",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -19202,7 +19205,7 @@
                   "$ref": "#/components/schemas/UserNotificationTrigger"
                 },
                 "type": "array",
-                "maxItems": 4
+                "maxItems": 5
               },
               {
                 "type": "null"

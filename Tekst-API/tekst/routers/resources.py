@@ -28,6 +28,7 @@ from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
+from tekst.models.notifications import TemplateIdentifier
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
@@ -37,6 +38,7 @@ from tekst.models.resource import (
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
+from tekst.notifications import send_notification
 from tekst.resources import (
     RES_EXCLUDE_FIELDS_EXP_IMP,
     AnyResourceCreate,
@@ -507,6 +509,20 @@ async def transfer_resource(
             ],
         }
     )
+
+    # notify target user
+    if (
+        target_user
+        and TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED.value
+        in target_user.user_notification_triggers
+    ):
+        await send_notification(
+            target_user,
+            TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED,
+            username=user.username,
+            resource_title=pick_translation(resource_doc.title, target_user.locale),
+        )
+
     return await prepare_resource_read(resource_doc, user)
 
 

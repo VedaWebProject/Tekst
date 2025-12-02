@@ -631,6 +631,7 @@ account:
       resourcePublished: a resource is published (via platform message)
       messageReceived: I receive a message from another user (via email)
       newCorrection: a new correction note on one of my resources has been created (via email)
+      resourceTransferred: ownership of a resource has been transferred to me (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators

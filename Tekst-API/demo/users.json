@@ -18,7 +18,8 @@
       "messageReceived",
       "resourceProposed",
       "resourcePublished",
-      "newCorrection"
+      "newCorrection",
+      "resourceTransferred"
     ],
     "seen": null
   },
@@ -41,7 +42,8 @@
       "messageReceived",
       "resourceProposed",
       "resourcePublished",
-      "newCorrection"
+      "newCorrection",
+      "resourceTransferred"
     ],
     "seen": null
   },
@@ -63,7 +65,8 @@
       "messageReceived",
       "resourceProposed",
       "resourcePublished",
-      "newCorrection"
+      "newCorrection",
+      "resourceTransferred"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": false,
@@ -86,7 +89,8 @@
       "resourceProposed",
       "resourcePublished",
       "messageReceived",
-      "newCorrection"
+      "newCorrection",
+      "resourceTransferred"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": true,
