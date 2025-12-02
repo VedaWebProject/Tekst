@@ -347,7 +347,9 @@ class ResourceTypeABC(ABC):
         text: TextDocument = await TextDocument.get(resource.text_id)
         res = camelize(
             resource.model_dump(
+                mode="json",
                 include={
+                    "id",
                     "title",
                     "subtitle",
                     "level",
