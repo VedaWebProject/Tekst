@@ -21,6 +21,7 @@ import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
+import { useUrlSearchParams } from '@vueuse/core';
 import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -37,6 +38,7 @@ const dialog = useDialog();
 const { message } = useMessages();
 const router = useRouter();
 const { addTask, startTasksPolling } = useTasks();
+const hashParams = useUrlSearchParams('hash-params');
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
@@ -342,6 +344,21 @@ onMounted(() => {
   ) {
     message.info($t('resources.msgCorrections'));
   }
+
+  // expand and scroll to the resource entry mentionen in the URL hash, if any
+  nextTick(() => {
+    if (hashParams.id) {
+      const targetRes = resources.ofText.find((r) => r.id === hashParams.id);
+      if (targetRes) {
+        expandedNames.value = [targetRes.id];
+        setTimeout(() => {
+          document
+            .querySelector(`#res-list-item-${targetRes.id}`)
+            ?.scrollIntoView({ behavior: 'smooth' });
+        }, 200);
+      }
+    }
+  });
 });
 </script>
 
@@ -412,6 +429,7 @@ onMounted(() => {
         v-model:expanded-names="expandedNames"
         accordion
         class="my-sm"
+        @update:expanded-names="(en: string) => (hashParams.id = en.toString())"
       >
         <resource-list-item
           v-for="item in filteredData"
