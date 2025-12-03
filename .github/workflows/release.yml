@@ -1,4 +1,4 @@
-name: Create source release and publish container image
+name: Release new version
 
 on:
   push:

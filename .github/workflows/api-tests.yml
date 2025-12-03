@@ -1,4 +1,4 @@
-name: Tekst-API tests
+name: Run Tekst-API tests
 
 on:
   push:

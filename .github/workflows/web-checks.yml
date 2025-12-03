@@ -1,4 +1,4 @@
-name: Tekst-Web code formatting, code style and build
+name: Check Tekst-Web build and code style
 
 on:
   push:

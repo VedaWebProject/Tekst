@@ -1,4 +1,4 @@
-name: Tekst-API code formatting and style checks
+name: Check Tekst-API code style
 
 on:
   push:
