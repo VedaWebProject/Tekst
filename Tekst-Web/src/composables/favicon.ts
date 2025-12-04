@@ -35,11 +35,6 @@ export function useFavicon() {
     }
   };
 
-  watchEffect(() => {
-    if (faviconPng.value) _apply(faviconPng.value);
-  });
-
-  watchEffect(() => {
-    if (faviconIco.value) _apply(faviconIco.value);
-  });
+  watchEffect(() => _apply(faviconPng.value));
+  watchEffect(() => _apply(faviconIco.value));
 }
