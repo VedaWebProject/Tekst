@@ -27,18 +27,18 @@ export function useLogo() {
   const darkPref = usePreferredDark();
   const pageLogo = computed(() =>
     theme.dark
-      ? custom.logoPngDark ?? custom.logoPng ?? tekstLogoDark
-      : custom.logoPng ?? tekstLogo
+      ? (custom.logoPngDark ?? custom.logoPng ?? tekstLogoDark)
+      : (custom.logoPng ?? tekstLogo)
   );
   const faviconPng = computed(() =>
     darkPref.value
-      ? custom.favPngDark ?? custom.favPng ?? tekstFaviconPngDark
-      : custom.favPng ?? custom.favPngDark ?? tekstFaviconPng
+      ? (custom.favPngDark ?? custom.favPng ?? tekstFaviconPngDark)
+      : (custom.favPng ?? custom.favPngDark ?? tekstFaviconPng)
   );
   const faviconIco = computed(() =>
     darkPref.value
-      ? custom.favIcoDark ?? custom.favIco ?? tekstFaviconIcoDark
-      : custom.favIco ?? custom.favIcoDark ?? tekstFaviconIco
+      ? (custom.favIcoDark ?? custom.favIco ?? tekstFaviconIcoDark)
+      : (custom.favIco ?? custom.favIcoDark ?? tekstFaviconIco)
   );
   return { pageLogo, faviconPng, faviconIco };
 }
