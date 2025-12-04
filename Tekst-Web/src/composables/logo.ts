@@ -1,70 +1,44 @@
-import faviconIcoDarkmode from '@/assets/favicon-dark.ico';
-import faviconPngDarkmode from '@/assets/favicon-dark.png';
-import faviconIco from '@/assets/favicon.ico';
-import faviconPng from '@/assets/favicon.png';
-import logoDarkmode from '@/assets/logo-dark.png';
-import logo from '@/assets/logo.png';
+import tekstFaviconIcoDark from '@/assets/favicon-dark.ico';
+import tekstFaviconPngDark from '@/assets/favicon-dark.png';
+import tekstFaviconIco from '@/assets/favicon.ico';
+import tekstFaviconPng from '@/assets/favicon.png';
+import tekstLogoDark from '@/assets/logo-dark.png';
+import tekstLogo from '@/assets/logo.png';
 import env from '@/env';
 import { useThemeStore } from '@/stores';
 import { useFetch, usePreferredDark } from '@vueuse/core';
-import { computed, ref, type Ref } from 'vue';
+import { computed } from 'vue';
 
-interface LogoImage {
-  url?: string;
-  custom: string;
-  fallback: string;
-}
+const _resolve = async (url: string): Promise<string | null> =>
+  (await useFetch(url).head()).statusCode.value === 200 ? url : null;
 
 // define possible custom images
-const imgs: Ref<{ [key: string]: LogoImage }> = ref({
-  logoPng: {
-    custom: `${env.STATIC_PATH}/logo.png`,
-    fallback: logo,
-  },
-  logoPngDark: {
-    custom: `${env.STATIC_PATH}/logo-dark.png`,
-    fallback: logoDarkmode,
-  },
-  favPng: {
-    custom: `${env.STATIC_PATH}/favicon.png`,
-    fallback: faviconPng,
-  },
-  favPngDark: {
-    custom: `${env.STATIC_PATH}/favicon-dark.png`,
-    fallback: faviconPngDarkmode,
-  },
-  favIco: {
-    custom: `${env.STATIC_PATH}/favicon.ico`,
-    fallback: faviconIco,
-  },
-  favIcoDark: {
-    custom: `${env.STATIC_PATH}/favicon-dark.ico`,
-    fallback: faviconIcoDarkmode,
-  },
-});
-
-// check whether custom images exist and set URLs accordingly
-Object.values(imgs.value).forEach(async (img) => {
-  img.url =
-    (await useFetch(img.custom).head()).statusCode.value === 200 ? img.custom : img.fallback;
-});
+const custom: Record<string, string | null> = {
+  logoPng: await _resolve(`${env.STATIC_PATH}/logo.png`),
+  logoPngDark: await _resolve(`${env.STATIC_PATH}/logo-dark.png`),
+  favPng: await _resolve(`${env.STATIC_PATH}/favicon.png`),
+  favPngDark: await _resolve(`${env.STATIC_PATH}/favicon-dark.png`),
+  favIco: await _resolve(`${env.STATIC_PATH}/favicon.ico`),
+  favIcoDark: await _resolve(`${env.STATIC_PATH}/favicon-dark.ico`),
+};
 
 export function useLogo() {
   const theme = useThemeStore();
   const darkPref = usePreferredDark();
   const pageLogo = computed(() =>
-    theme.dark ? imgs.value.logoPngDark.url || imgs.value.logoPng.url : imgs.value.logoPng.url
+    theme.dark
+      ? custom.logoPngDark ?? custom.logoPng ?? tekstLogoDark
+      : custom.logoPng ?? tekstLogo
   );
   const faviconPng = computed(() =>
     darkPref.value
-      ? imgs.value.favPngDark.url ||
-        imgs.value.logoPngDark.url ||
-        imgs.value.favPng.url ||
-        imgs.value.logoPng.url
-      : imgs.value.favPng.url || imgs.value.logoPng.url
+      ? custom.favPngDark ?? custom.favPng ?? tekstFaviconPngDark
+      : custom.favPng ?? custom.favPngDark ?? tekstFaviconPng
   );
   const faviconIco = computed(() =>
-    darkPref.value ? imgs.value.favIcoDark.url || imgs.value.favIco.url : imgs.value.favIco.url
+    darkPref.value
+      ? custom.favIcoDark ?? custom.favIco ?? tekstFaviconIcoDark
+      : custom.favIco ?? custom.favIcoDark ?? tekstFaviconIco
   );
   return { pageLogo, faviconPng, faviconIco };
 }
