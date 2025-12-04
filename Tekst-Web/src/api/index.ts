@@ -93,6 +93,7 @@ export function downloadData(blob: Blob, filename: string) {
     a.download = filename;
   }
   a.click();
+  window.URL.revokeObjectURL(a.href);
   a.remove();
 }
 
