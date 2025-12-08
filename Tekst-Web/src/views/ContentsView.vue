@@ -68,6 +68,10 @@ import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 
 type ContentFormModel = AnyContentCreate & { id: string };
 
+// this little hack is needed to make the imported object visible to the template,
+// as it has to be used in the script setup context before it can be used in the template.
+const _contentComponents = contentComponents;
+
 const props = defineProps<{
   textSlug?: string;
   resId: string;
@@ -542,7 +546,7 @@ whenever(ArrowRight, () => {
 
         <template v-if="!!compareResource.contents?.length">
           <component
-            :is="contentComponents[compareResource.resourceType]"
+            :is="_contentComponents[compareResource.resourceType]"
             :resource="compareResource"
             :dir="resource.config.general.rtl ? 'rtl' : undefined"
             show-comments

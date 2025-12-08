@@ -19,6 +19,10 @@ import { useElementHover } from '@vueuse/core';
 import { NFlex, NIcon, NSpin, NTag } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 
+// this little hack is needed to make the imported object visible to the template,
+// as it has to be used in the script setup context before it can be used in the template.
+const _contentComponents = contentComponents;
+
 const props = defineProps<{
   loading?: boolean;
   resource: AnyResourceRead;
@@ -176,7 +180,7 @@ watch(
       >
         <!-- content-specific component (that displays the actual content) -->
         <component
-          :is="contentComponents[resource.resourceType]"
+          :is="_contentComponents[resource.resourceType]"
           :resource="resource"
           :focus-view="browse.focusView"
           :show-comments="showComments && !browse.focusView"

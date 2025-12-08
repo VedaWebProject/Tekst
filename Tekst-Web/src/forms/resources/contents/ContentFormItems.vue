@@ -15,6 +15,10 @@ import {
   NInput,
 } from 'naive-ui';
 
+// this little hack is needed to make the imported object visible to the template,
+// as it has to be used in the script setup context before it can be used in the template.
+const _resourceContentFormItems = resourceContentFormItems;
+
 const props = defineProps<{
   resource: AnyResourceRead;
 }>();
@@ -30,7 +34,7 @@ const contentFontStyle = {
   <form-section v-if="model" :title="$t('common.content')">
     <!-- CONTENT -->
     <component
-      :is="resourceContentFormItems[model.resourceType]"
+      :is="_resourceContentFormItems[model.resourceType]"
       v-model="model"
       :resource="resource"
     />
