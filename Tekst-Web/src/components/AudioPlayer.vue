@@ -46,14 +46,6 @@ function pause() {
   playing.value = false;
 }
 
-function download() {
-  window.open(props.src, '_blank', 'noopener noreferrer');
-}
-
-function openTab(url: string) {
-  window.open(url, '_blank', 'noopener noreferrer');
-}
-
 watch(ended, (after) => {
   if (after) emit('ended', props.instanceId);
 });
@@ -106,7 +98,10 @@ onMounted(() => {
           circle
           size="small"
           :focusable="false"
-          @click="openTab(externalLink)"
+          tag="a"
+          :href="externalLink"
+          target="_blank"
+          style="color: var(--text-color)"
         >
           <template #icon>
             <n-icon :component="LinkIcon" />
@@ -118,7 +113,10 @@ onMounted(() => {
           size="small"
           :focusable="false"
           :disabled="error"
-          @click="download"
+          tag="a"
+          :href="src"
+          target="_blank"
+          style="color: var(--text-color)"
         >
           <template #icon>
             <n-icon :component="DownloadIcon" />
