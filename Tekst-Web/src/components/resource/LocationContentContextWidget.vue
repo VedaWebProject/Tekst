@@ -14,10 +14,6 @@ import { computed, ref } from 'vue';
 import { BookIcon, MergeIcon, ResourceIcon } from '@/icons';
 import { pickTranslation } from '@/utils';
 
-// this little hack is needed to make the imported object visible to the template,
-// as it has to be used in the script setup context before it can be used in the template.
-const _contentComponents = contentComponents;
-
 const props = defineProps<{
   resource: AnyResourceRead;
   full?: boolean;
@@ -82,7 +78,7 @@ async function handleClick() {
 
     <div v-else-if="contents.length" :dir="resource.config.general.rtl ? 'rtl' : undefined">
       <component
-        :is="_contentComponents[resource.resourceType]"
+        :is="contentComponents[resource.resourceType]"
         :resource="{ ...resource, contents: contents }"
         :show-comments="showComments"
         :dir="resource.config.general.rtl ? 'rtl' : undefined"
