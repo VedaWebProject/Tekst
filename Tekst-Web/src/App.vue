@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
+import GuidedTour from '@/components/GuidedTour.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
@@ -23,7 +24,7 @@ import {
   NIcon,
   NLoadingBarProvider,
 } from 'naive-ui';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { RouterView } from 'vue-router';
 
 const state = useStateStore();
@@ -38,6 +39,9 @@ const nUiDateLocale = computed(() => getLocaleProfile(state.locale)?.nUiDateLoca
 
 // favicon
 useFavicon();
+
+// guided tour
+const tourRef = ref();
 </script>
 
 <template>
@@ -52,7 +56,8 @@ useFavicon();
       <n-dialog-provider>
         <!-- app content when initialized -->
         <template v-if="state.init.initialized && !state.init.error">
-          <header>
+          <header data-tour-key="header">
+            <button @click="tourRef.start()">TOUR</button>
             <primary-nav-bar />
           </header>
           <main>
@@ -86,6 +91,7 @@ useFavicon();
         </n-flex>
       </n-dialog-provider>
       <app-loading-feedback />
+      <guided-tour ref="tourRef" />
     </n-loading-bar-provider>
     <global-messenger />
     <n-global-style />
