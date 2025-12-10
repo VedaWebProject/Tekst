@@ -919,6 +919,12 @@ help:
     heading: Guided Tour
     next: Next
     prev: Back
+    introTitle: '{platformName} Guided Tour'
+    introText: |
+      Welcome to the guided tour of the {platformName} platform! You'll now learn where to
+      find the most important features and how to use them. If you'd like a deep-dive into
+      a specific feature, you can always click the little "?" buttons throughout the website.
+      Or just read through the available help texts in the help overview. Let's begin!
 
 wysiwyg:
   blockTypes:

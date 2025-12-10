@@ -2,96 +2,89 @@
 import { $t } from '@/i18n';
 import { ArrowBackIcon, ArrowForwardIcon, CheckIcon, ClearIcon, TourIcon } from '@/icons';
 import { useStateStore } from '@/stores';
+import steps from '@/tour';
 import { delay } from '@/utils';
-import { useWindowSize } from '@vueuse/core';
+import { useElementBounding } from '@vueuse/core';
 import { NButton, NFlex, NIcon, NPopover, type PopoverInst } from 'naive-ui';
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch, type WatchHandle } from 'vue';
+import { useRouter } from 'vue-router';
 
-type TourStep = {
+type InternalTourStep = {
   key: string;
+  index: number;
+  routeName?: string;
   title?: string;
   content?: string;
   before?: () => Promise<void>;
   after?: () => Promise<void>;
 };
 
-type InternalTourStep = TourStep & {
-  index: number;
-};
-
-const props = withDefaults(
-  defineProps<{
-    steps?: TourStep[];
-  }>(),
-  {
-    steps: () => [
-      {
-        key: 'header',
-        title: 'The Page Header!',
-        content: $t('errors.loginUserNotVerified'),
-        before: async () => console.log('BEFORE STEP 1!'),
-        after: async () => console.log('AFTER STEP 1!'),
-      },
-      {
-        key: 'footer',
-        title: 'The Page Footer!',
-        content: $t('errors.logoutAfter401'),
-        before: async () => console.log('BEFORE STEP 2!'),
-        after: async () => console.log('AFTER STEP 2!'),
-      },
-    ],
-  }
-);
-
 const state = useStateStore();
-
-const { width: windowWidth, height: windowHeight } = useWindowSize({ type: 'visual' });
-watch([windowWidth, windowHeight], end);
+const router = useRouter();
 
 const tourSteps = computed<InternalTourStep[]>(() =>
-  props.steps.map((s, i) => ({ ...s, index: i }))
+  steps.map((s, i) => ({ ...s, title: s.title?.(), content: s.content?.(), index: i }))
 );
 const step = ref<InternalTourStep>();
 const show = ref(false);
 const popoverShow = ref(false);
 const popRef = ref<PopoverInst>();
 const targetMaskRef = ref<HTMLElement>();
+const activeElWatcher = ref<WatchHandle>();
+
+function lockTargetEl(el: HTMLElement, maskEl: HTMLElement) {
+  activeElWatcher.value?.stop();
+  const { width, height, x, y } = useElementBounding(el, { updateTiming: 'next-frame' });
+  activeElWatcher.value = watch(
+    [width, height, x, y],
+    () => {
+      maskEl.style.opacity = '0';
+      el.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+      maskEl.style.top = el.getBoundingClientRect().top - 8 + 'px';
+      maskEl.style.left = el.getBoundingClientRect().left - 8 + 'px';
+      maskEl.style.width = el.getBoundingClientRect().width + 16 + 'px';
+      maskEl.style.height = el.getBoundingClientRect().height + 16 + 'px';
+      maskEl.style.opacity = '1';
+      popRef.value?.syncPosition();
+    },
+    { immediate: true }
+  );
+}
 
 async function nextStep(offset: number = 1) {
   popoverShow.value = false;
+  await delay(200); // give transitions some time to finish
+  if (!targetMaskRef.value) return end();
   await step.value?.after?.();
-  if (step.value) await delay(100);
   step.value = step.value ? tourSteps.value[step.value.index + offset] : tourSteps.value[0];
-  const targetEl = step.value
-    ? document.querySelector(`[data-tour-key="${step.value.key}"]`)
-    : undefined;
-  if (!targetEl || !targetMaskRef.value) {
-    end();
-    return;
+  if (!step.value) return end();
+  if (step.value.routeName && router.currentRoute.value.name !== step.value.routeName) {
+    targetMaskRef.value.style.opacity = '0';
+    await router.replace({ name: step.value.routeName });
   }
-  targetMaskRef.value.style.visibility = 'hidden';
   await step.value.before?.();
-  targetEl.scrollIntoView();
-  targetMaskRef.value.style.top = targetEl.getBoundingClientRect().top + 'px';
-  targetMaskRef.value.style.left = targetEl.getBoundingClientRect().left + 'px';
-  targetMaskRef.value.style.width = targetEl.getBoundingClientRect().width + 'px';
-  targetMaskRef.value.style.height = targetEl.getBoundingClientRect().height + 'px';
-  targetMaskRef.value.style.visibility = 'visible';
-  popRef.value?.syncPosition();
+  const targetEl = step.value
+    ? (document.querySelector(`[data-tour-key="${step.value.key}"]`) as HTMLElement) || undefined
+    : undefined;
+  if (!targetEl) return end();
+  lockTargetEl(targetEl, targetMaskRef.value);
   popoverShow.value = true;
 }
 
 async function start() {
   document.body.style.height = '100%';
   document.body.style.overflow = 'hidden';
+  if (targetMaskRef.value) targetMaskRef.value.style.opacity = '0';
   show.value = true;
-  await delay(100);
   nextTick(nextStep);
 }
 
 async function end() {
+  step.value?.after?.();
+  activeElWatcher.value?.stop();
+  activeElWatcher.value = undefined;
   popoverShow.value = false;
-  await step.value?.after?.();
+  if (targetMaskRef.value) targetMaskRef.value.style.opacity = '0';
   await delay(200);
   step.value = undefined;
   document.body.style.height = 'initial';
@@ -101,21 +94,13 @@ async function end() {
 }
 
 defineExpose({ start, end });
-onMounted(end);
 </script>
 
 <template>
   <template v-if="show">
     <div id="tour-click-blocker"></div>
     <div id="tour-overlay" @click="end"></div>
-    <n-popover
-      ref="popRef"
-      trigger="manual"
-      :show="popoverShow"
-      :to="false"
-      style="z-index: 1851"
-      arrow-point-to-center
-    >
+    <n-popover ref="popRef" trigger="manual" :show="popoverShow" :to="false" style="z-index: 1851">
       <template #trigger>
         <div ref="targetMaskRef" id="tour-target-mask" @click="end"></div>
       </template>
@@ -193,7 +178,7 @@ onMounted(end);
 
 #tour-target-mask {
   position: fixed;
-  visibility: hidden;
+  opacity: 0;
   top: 0;
   left: 0;
   width: 0;
@@ -202,7 +187,7 @@ onMounted(end);
   overscroll-behavior: contain;
   box-shadow: 0 0 0 9999px #0006;
   border-radius: var(--border-radius);
-  transition: visibility 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 #tour-step-content {

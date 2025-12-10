@@ -55,7 +55,7 @@ useFavicon();
       <n-dialog-provider>
         <!-- app content when initialized -->
         <template v-if="state.init.initialized && !state.init.error">
-          <header data-tour-key="header">
+          <header>
             <primary-nav-bar />
           </header>
           <main>
