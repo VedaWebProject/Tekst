@@ -31,14 +31,7 @@ function handleLanguageSelect(localeCode: LocaleKey) {
     :options="options"
     @update:value="handleLanguageSelect"
   >
-    <n-button
-      secondary
-      circle
-      size="large"
-      icon-placement="left"
-      :title="$t('i18n.tipSwitcher')"
-      :focusable="false"
-    >
+    <n-button secondary circle size="large" :title="$t('i18n.tipSwitcher')" :focusable="false">
       <template #icon>
         <n-icon :component="LanguageIcon" />
       </template>

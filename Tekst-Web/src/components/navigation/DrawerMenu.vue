@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HelpWidget from '@/components/navigation/HelpWidget.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import LogoutButton from '@/components/navigation/LogoutButton.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
@@ -67,9 +68,10 @@ const allMenuOptions = computed(() => [
   <n-drawer v-model:show="show" :width="600" style="max-width: 90%">
     <n-drawer-content closable>
       <template #header>
-        <n-flex :size="32" justify="center" :wrap="false">
-          <theme-mode-switcher @click="() => (show = false)" />
+        <n-flex justify="center" size="large" :wrap="false">
           <locale-switcher />
+          <theme-mode-switcher @click="() => (show = false)" />
+          <help-widget @done="() => (show = false)" />
           <user-actions-button v-if="state.pf && !state.pf.security.closedMode && !auth.user" />
           <logout-button v-else-if="!!auth.user" @click="() => (show = false)" />
         </n-flex>

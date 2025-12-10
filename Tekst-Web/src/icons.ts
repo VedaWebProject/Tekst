@@ -47,6 +47,7 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
+import HelpCenterOutlined from '@vicons/material/HelpCenterOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -108,6 +109,7 @@ import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
 import SortOutlined from '@vicons/material/SortOutlined';
 import StarHalfFilled from '@vicons/material/StarHalfFilled';
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
+import TourOutlined from '@vicons/material/TourOutlined';
 import TranslateOutlined from '@vicons/material/TranslateOutlined';
 import UndoOutlined from '@vicons/material/UndoOutlined';
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
@@ -169,6 +171,7 @@ export {
   FormatQuoteFilled as FormatQuoteIcon,
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,
+  HelpCenterOutlined as HelpOverviewIcon,
   HorizontalRuleOutlined as HorizontalRuleIcon,
   HourglassTopOutlined as HourglassIcon,
   ImageOutlined as ImageIcon,
@@ -223,6 +226,7 @@ export {
   MiscellaneousServicesOutlined as SystemIcon,
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,
+  TourOutlined as TourIcon,
   TranslateOutlined as TranslateIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   FlagOutlined as UnproposedIcon,

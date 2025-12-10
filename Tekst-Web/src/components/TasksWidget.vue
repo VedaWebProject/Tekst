@@ -62,6 +62,7 @@ function handleTaskClick(id: string) {
     menu-trigger="click"
     :right="42"
     :bottom="state.backtopVisible ? 100 : 42"
+    :title="showTasksList ? $t('common.hide') : $t('tasks.title')"
   >
     <n-badge :value="tasks.length" :offset="[6, -8]">
       <n-icon :component="HourglassIcon" />

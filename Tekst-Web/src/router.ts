@@ -32,6 +32,7 @@ const ResourceCreateView = () => import('@/views/ResourceCreateView.vue');
 const ContentsView = () => import('@/views/ContentsView.vue');
 const CorrectionsView = () => import('@/views/CorrectionsView.vue');
 const CommunityView = () => import('@/views/CommunityView.vue');
+const HelpView = () => import('@/views/HelpView.vue');
 
 const AccountView = () => import('@/views/account/AccountView.vue');
 const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vue');
@@ -140,6 +141,11 @@ const router = createRouter({
       meta: {
         restricted: 'user',
       },
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: HelpView,
     },
     {
       path: '/site-notice',
