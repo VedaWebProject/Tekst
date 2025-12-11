@@ -58,6 +58,7 @@ async function handleHelpButtonClick() {
 
 <template>
   <n-button
+    v-bind="$attrs"
     secondary
     circle
     color="var(--primary-color)"

@@ -72,6 +72,7 @@ function handleSelect(text: TextRead) {
           width: state.smallScreen ? '100%' : 'unset',
           minWidth: state.smallScreen ? undefined : '320px',
         }"
+        data-tour-key="browseTextSelect"
       />
       <div
         v-if="state.text?.subtitle && !state.smallScreen"

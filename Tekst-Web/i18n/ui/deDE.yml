@@ -945,14 +945,6 @@ tour:
   heading: Geführte Tour
   next: Weiter
   prev: Zurück
-  introTitle: '{platformName}-Führung'
-  introText: |
-    Willkommen zur Führung durch die {platformName} platform!
-    Sie werden lernen, wo Sie die wichtigsten Funktionen finden und wie Sie sie benutzen.
-    Falls Sie zu einer bestimmten Funktionalität weitergehende Informationen benötigen,
-    können Sie jederzeit die kleinen "?"-Buttons anklicken, die überall auf der Plattform
-    zu finden sind. Oder Sie lesen die verfügbaren Hilfe-Texte in der Hilfe-Übersicht.
-    Lassen Sie uns anfangen!
 
 wysiwyg:
   blockTypes:

@@ -99,11 +99,10 @@ whenever(ArrowRight, () => {
         <n-icon :component="ArrowForwardIcon" />
       </template>
     </n-button>
+    <location-select-modal
+      v-model:show="showLocationSelectModal"
+      :current-location-path="browse.locationPath"
+      @submit="handleLocationSelect"
+    />
   </n-flex>
-
-  <location-select-modal
-    v-model:show="showLocationSelectModal"
-    :current-location-path="browse.locationPath"
-    @submit="handleLocationSelect"
-  />
 </template>

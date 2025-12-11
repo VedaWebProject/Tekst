@@ -9,6 +9,7 @@ import AutoFixHighOutlined from '@vicons/material/AutoFixHighOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
+import CampaignOutlined from '@vicons/material/CampaignOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import CheckCircleOutlined from '@vicons/material/CheckCircleOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
@@ -109,7 +110,6 @@ import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
 import SortOutlined from '@vicons/material/SortOutlined';
 import StarHalfFilled from '@vicons/material/StarHalfFilled';
 import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
-import TourOutlined from '@vicons/material/TourOutlined';
 import TranslateOutlined from '@vicons/material/TranslateOutlined';
 import UndoOutlined from '@vicons/material/UndoOutlined';
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
@@ -226,7 +226,7 @@ export {
   MiscellaneousServicesOutlined as SystemIcon,
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,
-  TourOutlined as TourIcon,
+  CampaignOutlined as TourIcon,
   TranslateOutlined as TranslateIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   FlagOutlined as UnproposedIcon,
