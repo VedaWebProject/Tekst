@@ -158,7 +158,7 @@ function handleSettingsSubmit() {
 </script>
 
 <template>
-  <div v-bind="$attrs">
+  <div v-bind="$attrs" data-tour-key="quickSearch">
     <n-popselect
       trigger="manual"
       :show="showLocationSelect"
@@ -192,12 +192,17 @@ function handleSettingsSubmit() {
                 showSettingsModal = true;
               }
             "
+            data-tour-key="quickSearchSettings"
           >
             <template #icon>
               <n-icon :component="SettingsIcon" />
             </template>
           </n-button>
-          <help-button-widget help-key="quickSearch" @click="quickSearchInputRef?.blur()" />
+          <help-button-widget
+            help-key="quickSearch"
+            @click="quickSearchInputRef?.blur()"
+            data-tour-key="quickSearchHelp"
+          />
         </template>
       </osk-input>
     </n-popselect>

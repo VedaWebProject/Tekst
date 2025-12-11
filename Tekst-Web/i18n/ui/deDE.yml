@@ -20,6 +20,7 @@ common:
   ok: OK
   select: Auswählen
   cancel: Abbrechen
+  hide: Verbergen
   save: Speichern
   close: Schließen
   reset: Zurücksetzen
@@ -56,7 +57,6 @@ common:
   search: Suche | Suchen
   searchAction: Suchen
   presentation: Darstellung
-  help: Hilfe
   register: Registrieren
   login: Anmelden
   logout: Abmelden
@@ -175,7 +175,7 @@ routes:
     browse: '{text}'
     search: '@:common.search'
     searchResults: '@:search.results.heading'
-    help: '@:common.help'
+    help: '@:help.heading'
     login: '@:common.login'
     register: '@:common.register'
     resources: Ressourcen – {text}
@@ -935,9 +935,16 @@ search:
   nothingFound: Nichts gefunden
 
 help:
+  heading: Hilfe-Übersicht
+  help: Hilfe
   msgFoundCount: '{count} Einträge gefunden'
   errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.
   msgNoHelpTextsFound: Es konnten keine Hilfe-Einträge gefunden werden.
+
+tour:
+  heading: Geführte Tour
+  next: Weiter
+  prev: Zurück
 
 wysiwyg:
   blockTypes:

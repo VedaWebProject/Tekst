@@ -58,11 +58,12 @@ async function handleHelpButtonClick() {
 
 <template>
   <n-button
+    v-bind="$attrs"
     secondary
     circle
     color="var(--primary-color)"
     :size="size"
-    :title="$t('common.help')"
+    :title="$t('help.help')"
     :focusable="false"
     :style="buttonStyle"
     @click.stop.prevent="handleHelpButtonClick"
@@ -75,7 +76,7 @@ async function handleHelpButtonClick() {
   <generic-modal
     v-model:show="showModal"
     width="wide"
-    :title="$t('common.help')"
+    :title="$t('help.help')"
     :icon="QuestionMarkIcon"
     heading-level="3"
     @after-leave="handleClose"

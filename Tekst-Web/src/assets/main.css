@@ -1,6 +1,4 @@
 html {
-  overflow-x: hidden;
-  overflow-y: scroll;
   box-sizing: border-box;
   margin: 0;
   font-size: var(--font-size);

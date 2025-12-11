@@ -54,7 +54,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       align="center"
       class="browse-toolbar primary-color-bg"
     >
-      <browse-location-controls :button-size="buttonSize" />
+      <browse-location-controls :button-size="buttonSize" data-tour-key="browseNav" />
 
       <div v-if="!state.smallScreen" class="browse-toolbar-middle browse-location-label text-small">
         <n-flex justify="center" align="center" :wrap="false">
@@ -72,6 +72,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :focusable="false"
             :color="browse.focusView ? '#fff5' : undefined"
             :bordered="false"
+            data-tour-key="browseFocus"
             @click="browse.focusView = !browse.focusView"
           >
             <template #icon>
@@ -91,6 +92,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
             :bordered="false"
+            data-tour-key="browseResourceSelect"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>

@@ -47,18 +47,18 @@ const transferTargetResource = ref<AnyResourceRead>();
 const showTransferModal = ref(false);
 
 const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
-const filtersSearch = ref<string>();
-const filtersSearchInputState = computed(() =>
-  !!filtersSearch.value?.length && !filteredData.value.length
+const searchInput = ref<string>();
+const searchInputState = computed(() =>
+  !!searchInput.value?.length && !filteredData.value.length
     ? 'error'
-    : !!filtersSearch.value?.length
+    : !!searchInput.value?.length
       ? 'warning'
       : undefined
 );
 
 const filteredData = computed(() => {
   return resources.ofText.filter((r) => {
-    const resourceStringContent = filtersSearch.value
+    const resourceStringContent = searchInput.value
       ? [
           r.title.map((t) => t.translation).join(' '),
           r.subtitle.map((s) => s.translation).join(' ') || '',
@@ -73,8 +73,8 @@ const filteredData = computed(() => {
           .join(' ')
       : '';
     return (
-      !filtersSearch.value ||
-      resourceStringContent.toLowerCase().includes(filtersSearch.value.toLowerCase())
+      !searchInput.value ||
+      resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase())
     );
   });
 });
@@ -371,10 +371,10 @@ onMounted(() => {
   <template v-if="resources.ofText && !resources.error && !loading">
     <!-- Filter/Search -->
     <n-input
-      v-model:value="filtersSearch"
+      v-model:value="searchInput"
       round
       clearable
-      :status="filtersSearchInputState"
+      :status="searchInputState"
       :disabled="!resources.ofText.length"
       :placeholder="$t('common.searchAction')"
       class="mb-lg"
@@ -403,7 +403,7 @@ onMounted(() => {
         </div>
       </template>
       <!-- Reset filters button -->
-      <n-button secondary :disabled="!filtersSearch?.length" @click="filtersSearch = ''">
+      <n-button secondary :disabled="!searchInput?.length" @click="searchInput = ''">
         <template #icon>
           <n-icon :component="JumpBackIcon" />
         </template>

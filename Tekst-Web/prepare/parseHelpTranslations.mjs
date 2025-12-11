@@ -41,9 +41,11 @@ for (const localeDir of localeDirs) {
   for (const mdFile of mdFiles) {
     const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
     const data = readFileSync(sourceFilePath, 'utf8');
-    const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but simple!
-    const html = marked.parse(data);
-    helpTranslations[mdFile.name.replace(/.md$/, '')] = { title: title, content: html };
+    const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but efficient!
+    const content = marked.parse(data);
+    const helpKey = mdFile.name.split('.')[0];
+    const scope = mdFile.name.split('.').length === 3 ? mdFile.name.split('.')[1] : 'v';
+    helpTranslations[helpKey] = { title, content, scope };
   }
   writeFileSync(path.join(TARGET_DIR, `${localeDir.name}.json`), JSON.stringify(helpTranslations));
   localeImports.push(

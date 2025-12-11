@@ -13,7 +13,7 @@ const privacyPolicy = computed(
 </script>
 
 <template>
-  <footer>
+  <footer data-tour-key="footer">
     <segment-renderer segment-key="systemFooterUpper" />
     <segment-renderer segment-key="systemFooterLower" />
     <div v-if="siteNotice || privacyPolicy" id="legal-container">

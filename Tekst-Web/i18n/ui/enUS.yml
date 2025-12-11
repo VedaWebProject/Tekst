@@ -20,6 +20,7 @@ common:
   ok: OK
   select: Select
   cancel: Cancel
+  hide: Hide
   save: Save
   close: Close
   reset: Reset
@@ -56,7 +57,6 @@ common:
   search: Search | Searches
   searchAction: Search
   presentation: Presentation
-  help: Help
   register: Register
   login: Login
   logout: Logout
@@ -172,7 +172,7 @@ routes:
     browse: '{text}'
     search: '@:common.search'
     searchResults: '@:search.results.heading'
-    help: '@:common.help'
+    help: '@:help.heading'
     login: '@:common.login'
     register: '@:common.register'
     resources: Resources – {text}
@@ -910,9 +910,76 @@ search:
   nothingFound: Nothing found
 
 help:
+  heading: Help Overview
+  help: Help
   msgFoundCount: Found {count} entries
   errorNotFound: This help text entry could not be loaded.
   msgNoHelpTextsFound: No help entries could be found.
+
+tour:
+  heading: Guided Tour
+  next: Next
+  prev: Back
+  intro:
+    title: '{platformName} Guided Tour'
+    text: |
+      Welcome to the guided tour of {platformName}!
+      You'll learn about the most important features of this platform and how to use them.
+      If you need more details on a specific topic,
+      you can always read through the available articles in the help overview
+      or just click the little "?" buttons throughout the website...
+  helpButtons:
+    title: 'Help Buttons'
+    text: ...like this one! – but now, let's begin!
+  browseView:
+    title: Reading and Browsing Content
+    text: |
+      You are looking at the main view for regular users of this platform.
+      It is where you can read and browse the contents of all the available resources.
+      This heading always shows you which location of the current working text you're looking at.
+  browseTextSelect:
+    title: Working Text Selector
+    text: |
+      Here you can select the text you want to work with.
+      This selection is also available in some other views that show text-specific content.
+  browseNav:
+    title: Navigating Locations
+    text: |
+      You can simply use these arrow buttons to jump to the next location
+      – or use your keyboard's arrow buttons.
+      Alternatively, click the book icon to select a specific structure level and location to browse to.
+      Hint: Some types of resources display buttons to directly jump to the nearest location
+      that holds contents for this resource. You'll find those right next to the respective contents.
+  browseFocus:
+    title: Focus View
+    text: |
+      Use the focus view to display content in a more condensed, distraction-free manner.
+      This is especially helpful when comparing the contents of specific resources.
+  browseResourceSelect:
+    title: Select Displayed Resources
+    text: |
+      This one is very important!
+      Click here to open the selection of available resources on the current working text
+      and activate all the resources you want to see content of.
+  browseBackTop:
+    title: To the Top!
+    text: You scrolled down quite a bit? Click here to jump back to the top of the page.
+  quickSearch:
+    title: Quick Search
+    text: |
+      You want to quickly retrieve information using a full-text search?
+      This is what the Quick Search is for. It is always available in the page header.
+      While you can just type in some term and press ENTER, the Quick Search actually
+      offers a wide variety of features to fine-tune your full-text search...
+  quickSearchSettings:
+    title: Quick Search Settings
+    text: ...some of which you can configure here, in the Quick Search settings!
+  quickSearchHelp:
+    title: Happy Power Users
+    text: |
+      And if you are really into full-text search,
+      go ahead and have a look into the Quick Search help article!
+      It exmplains how to use the special Quick Search syntax.
 
 wysiwyg:
   blockTypes:

@@ -9,6 +9,7 @@ import AutoFixHighOutlined from '@vicons/material/AutoFixHighOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
+import CampaignOutlined from '@vicons/material/CampaignOutlined';
 import ChatBubbleOutlineOutlined from '@vicons/material/ChatBubbleOutlineOutlined';
 import CheckCircleOutlined from '@vicons/material/CheckCircleOutlined';
 import ChecklistOutlined from '@vicons/material/ChecklistOutlined';
@@ -47,6 +48,7 @@ import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
+import HelpCenterOutlined from '@vicons/material/HelpCenterOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -169,6 +171,7 @@ export {
   FormatQuoteFilled as FormatQuoteIcon,
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,
+  HelpCenterOutlined as HelpOverviewIcon,
   HorizontalRuleOutlined as HorizontalRuleIcon,
   HourglassTopOutlined as HourglassIcon,
   ImageOutlined as ImageIcon,
@@ -223,6 +226,7 @@ export {
   MiscellaneousServicesOutlined as SystemIcon,
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,
+  CampaignOutlined as TourIcon,
   TranslateOutlined as TranslateIcon,
   PlaylistRemoveOutlined as UncheckAllIcon,
   FlagOutlined as UnproposedIcon,

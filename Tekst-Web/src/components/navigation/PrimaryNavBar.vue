@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import DrawerMenu from '@/components/navigation/DrawerMenu.vue';
+import HelpWidget from '@/components/navigation/HelpWidget.vue';
 import LocaleSwitcher from '@/components/navigation/LocaleSwitcher.vue';
 import NavigationMenu from '@/components/navigation/NavigationMenu.vue';
 import { useMainMenuOptions } from '@/components/navigation/navMenuOptions';
@@ -64,7 +65,7 @@ const titleLinkTo = computed(() => {
         />
       </router-link>
       <div class="navbar-title">
-        <router-link :to="titleLinkTo">
+        <router-link :to="titleLinkTo" data-tour-key="intro">
           <div class="text-gigantic" style="line-height: 120%">
             {{ state.pf?.state.platformName }}
           </div>
@@ -80,8 +81,9 @@ const titleLinkTo = computed(() => {
         align="flex-start"
         style="flex: 2; align-self: stretch"
       >
-        <theme-mode-switcher />
         <locale-switcher />
+        <theme-mode-switcher />
+        <help-widget />
         <user-actions-button v-if="!!state.pf && (!state.pf.security.closedMode || !!auth.user)" />
       </n-flex>
 
