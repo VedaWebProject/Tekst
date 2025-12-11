@@ -1,5 +1,5 @@
 # Resources
 
 {%
-    include-markdown "/includes/resourcesView.md"
+    include-markdown "/includes/resourcesView.v.md"
 %}
