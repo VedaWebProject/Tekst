@@ -3,16 +3,17 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useHelp } from '@/composables/help';
-import { useStateStore } from '@/stores';
-import { NIcon, NInput, NSpin } from 'naive-ui';
+import { useAuthStore, useStateStore } from '@/stores';
+import { NEmpty, NIcon, NInput, NSpin } from 'naive-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import type { HelpText } from '@/composables/help';
-import { HelpOverviewIcon, QuestionMarkIcon, SearchIcon } from '@/icons';
+import { HelpOverviewIcon, NoContentIcon, QuestionMarkIcon, SearchIcon } from '@/icons';
 
 const { getHelpTexts } = useHelp();
 
 const state = useStateStore();
+const auth = useAuthStore();
 const searchInput = ref('');
 const loading = ref(false);
 const showModal = ref(false);
@@ -38,7 +39,10 @@ function filterHelpTexts(ht: [string, HelpText][] | null, filter: string): [stri
 
 async function requestHelpTexts() {
   loading.value = true;
-  const ht = await getHelpTexts();
+  const ht = await getHelpTexts(
+    state.locale,
+    auth.user?.isSuperuser ? 's' : !!auth.user ? 'u' : 'v'
+  );
   helpTexts.value = Object.entries(ht).sort((a, b) => a[0].localeCompare(b[0])) as [
     string,
     HelpText,
@@ -85,10 +89,14 @@ onMounted(() => {
   <div
     class="text-small translucent mt-lg"
     :style="{
-      color: !helpTextsFiltered.length ? 'var(--error-color)' : undefined,
+      color: !loading && !helpTextsFiltered.length ? 'var(--error-color)' : undefined,
     }"
   >
-    {{ $t('help.msgFoundCount', { count: helpTextsFiltered?.length }) }}
+    {{
+      !loading
+        ? $t('help.msgFoundCount', { count: helpTextsFiltered?.length })
+        : $t('common.loading')
+    }}
   </div>
 
   <div class="content-block">
@@ -105,15 +113,17 @@ onMounted(() => {
       </li>
     </ul>
     <n-spin v-else-if="loading" class="centered-spinner" />
-    <div v-else>
-      {{ $t('help.msgNoHelpTextsFound') }}
-    </div>
+    <n-empty v-else :description="$t('help.msgNoHelpTextsFound')">
+      <template #icon>
+        <n-icon :component="NoContentIcon" />
+      </template>
+    </n-empty>
   </div>
 
   <generic-modal
     v-model:show="showModal"
     width="wide"
-    :title="$t('help.help')"
+    :title="$t('help.help') + '...'"
     :icon="QuestionMarkIcon"
     heading-level="3"
     @after-leave="helpTextContent = undefined"
