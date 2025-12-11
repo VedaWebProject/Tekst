@@ -129,7 +129,7 @@ defineExpose({ start, end });
               <n-icon :component="ArrowBackIcon" />
             </template>
             <template v-if="!state.smallScreen">
-              {{ $t('help.tour.prev') }}
+              {{ $t('tour.prev') }}
             </template>
           </n-button>
           <n-button v-if="step.index < tourSteps.length - 1" secondary size="small" @click="end">
@@ -147,7 +147,7 @@ defineExpose({ start, end });
             </template>
             <template v-if="!state.smallScreen">
               <template v-if="step.index < tourSteps.length - 1">
-                {{ $t('help.tour.next') }}
+                {{ $t('tour.next') }}
               </template>
               <template v-else>
                 {{ $t('common.ok') }}
@@ -172,8 +172,6 @@ defineExpose({ start, end });
   position: fixed;
   inset: 0px;
   z-index: 1849;
-  overflow: hidden;
-  overscroll-behavior: contain;
 }
 
 #tour-target-mask {
@@ -184,9 +182,11 @@ defineExpose({ start, end });
   width: 0;
   height: 0;
   z-index: 1850;
-  overscroll-behavior: contain;
-  box-shadow: 0 0 0 9999px #0006;
-  border-radius: var(--border-radius);
+  box-shadow:
+    0 0 3px 2px var(--base-color),
+    inset 0 0 5px 5px var(--base-color),
+    0 0 0 9999px #0007;
+  border-radius: 10px;
   transition: opacity 0.2s ease-in-out;
 }
 

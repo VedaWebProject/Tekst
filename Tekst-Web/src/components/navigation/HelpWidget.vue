@@ -13,7 +13,7 @@ const guidedTourRef = inject('guidedTourRef') as Ref<typeof GuidedTour>;
 
 const options = [
   {
-    label: () => $t('help.tour.heading'),
+    label: () => $t('tour.heading'),
     key: 'tour',
     icon: renderIcon(TourIcon),
   },

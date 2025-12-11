@@ -17,8 +17,8 @@ const steps: TourStep[] = [
   {
     key: 'intro',
     routeName: 'home',
-    title: () => $t('help.tour.introTitle', { platformName }),
-    content: () => $t('help.tour.introText', { platformName }),
+    title: () => $t('tour.introTitle', { platformName }),
+    content: () => $t('tour.introText', { platformName }),
   },
   // {
   //   key: 'searchSettings',
