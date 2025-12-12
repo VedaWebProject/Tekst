@@ -79,9 +79,11 @@ const filteredData = computed(() => {
       );
     })
     .sort((ra, rb) => {
-      const a = pickTranslation(ra.title, state.locale);
-      const b = pickTranslation(rb.title, state.locale);
-      return a.localeCompare(b);
+      const correctionsComp = (rb.corrections ?? 0) - (ra.corrections ?? 0);
+      const titleComp = pickTranslation(ra.title, state.locale).localeCompare(
+        pickTranslation(rb.title, state.locale)
+      );
+      return correctionsComp || titleComp;
     });
 });
 

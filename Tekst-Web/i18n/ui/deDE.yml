@@ -385,15 +385,11 @@ resources:
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
   msgCorrections: Es liegen Korrekturnotizen zu anderen Texten zur Prüfung für Sie vor.
-  ownedByMe: von mir
-  ownedByOthers: von anderen
-  hasCorrections: hat Korrekturnotizen
-  hasNoCorrections: hat keine Korrekturnotizen
+  hasCorrectionsTip: Es liegen Korrekturnotizen für diese Ressource vor
   public: '@:models.resource.public'
   notPublic: unveröffentlicht
   shared: Zugriff mit einer Benutzer*in geteilt | Zugriff mit {count} Benutzer*innen geteilt
   proposed: '@:models.resource.proposed'
-  notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   transferAction: An Benutzer*in übertragen
   reqVersionIntegrationAction: Integration vorschlagen

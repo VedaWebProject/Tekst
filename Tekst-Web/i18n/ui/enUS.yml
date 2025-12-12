@@ -380,15 +380,11 @@ resources:
     This doesn't mean it is a good idea to do so. Please make sure that whatever you
     do happens in agreement with the owner of this resource!
   msgCorrections: Correction notes on other texts are available for you to review.
-  ownedByMe: by me
-  ownedByOthers: by others
-  hasCorrections: has correction notes
-  hasNoCorrections: has no correction notes
+  hasCorrectionsTip: There are correction notes for this resource
   public: '@:models.resource.public'
   notPublic: unpublished
   shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
-  notProposed: '@:common.not @:models.resource.proposed'
   correctionNotesAction: Show correction notes
   transferAction: Transfer to user
   reqVersionIntegrationAction: Propose integration

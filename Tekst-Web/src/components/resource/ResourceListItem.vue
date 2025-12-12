@@ -3,7 +3,7 @@ import type { AnyResourceRead, UserRead } from '@/api';
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
-import { NButton, NCollapseItem, NFlex, type DropdownOption } from 'naive-ui';
+import { NBadge, NButton, NCollapseItem, NFlex, NIcon, type DropdownOption } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -116,18 +116,16 @@ const actionOptions = computed<DropdownOption[]>(() => [
       },
       ...(props.resource.writable
         ? [
-            ...(!!resources.correctionsCount[props.resource.id]
-              ? [
-                  {
-                    label:
-                      $t('resources.correctionNotesAction') +
-                      ` (${resources.correctionsCount[props.resource.id]})`,
-                    key: 'corrections',
-                    icon: renderIcon(CorrectionNoteIcon),
-                    action: handleCorrectionsClick,
-                  },
-                ]
-              : []),
+            {
+              label:
+                $t('resources.correctionNotesAction') +
+                ` (${resources.correctionsCount[props.resource.id]})`,
+              key: 'corrections',
+              icon: renderIcon(CorrectionNoteIcon),
+              action: handleCorrectionsClick,
+              disabled: resources.correctionsCount[props.resource.id] <= 0,
+              statusType: resources.correctionsCount[props.resource.id] > 0 ? 'warning' : undefined,
+            },
             {
               label: $t('browse.contents.widgets.contentEdit.title'),
               key: 'edit',
@@ -237,6 +235,16 @@ function handleCorrectionsClick() {
     <template #header>
       <n-flex align="center" style="width: 100%">
         <b>{{ resourceTitle }}</b>
+        <n-badge
+          :show="resources.correctionsCount[props.resource.id] > 0"
+          :title="$t('resources.hasCorrectionsTip')"
+        >
+          <template #value>
+            <n-flex :wrap="false" size="small">
+              <n-icon :component="CorrectionNoteIcon" />
+            </n-flex>
+          </template>
+        </n-badge>
         <resource-info-tags
           v-if="!state.smallScreen && !shown"
           :resource="resource"

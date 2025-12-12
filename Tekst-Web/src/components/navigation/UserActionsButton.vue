@@ -4,14 +4,13 @@ import { $t } from '@/i18n';
 import {
   AdminIcon,
   CommunityIcon,
-  CorrectionNoteIcon,
   LoginIcon,
   LogoutIcon,
   MessageIcon,
   TextsIcon,
   UserIcon,
 } from '@/icons';
-import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
+import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { renderIcon } from '@/utils';
 import { NBadge, NButton, NDropdown, NFlex, NIcon } from 'naive-ui';
 import { computed, h, ref } from 'vue';
@@ -20,7 +19,6 @@ import { type RouteLocationRaw, RouterLink } from 'vue-router';
 const auth = useAuthStore();
 const userMessages = useUserMessagesStore();
 const state = useStateStore();
-const resources = useResourcesStore();
 
 const tooltip = computed(() =>
   !!auth.user
@@ -120,14 +118,10 @@ function handleUserOptionSelect(key: string) {
     placement="bottom-end"
     @select="handleUserOptionSelect"
   >
-    <n-badge
-      :show="!!userMessages.unreadCount || !!resources.correctionsCountTotal"
-      :offset="[-8, 2]"
-    >
+    <n-badge :show="!!userMessages.unreadCount" :offset="[-8, 2]">
       <template #value>
         <n-flex :wrap="false" size="small">
-          <n-icon v-if="!!resources.correctionsCountTotal" :component="CorrectionNoteIcon" />
-          <n-icon v-if="!!userMessages.unreadCount" :component="MessageIcon" />
+          <n-icon :component="MessageIcon" />
         </n-flex>
       </template>
       <user-avatar
