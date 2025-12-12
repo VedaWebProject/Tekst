@@ -57,26 +57,32 @@ const searchInputState = computed(() =>
 );
 
 const filteredData = computed(() => {
-  return resources.ofText.filter((r) => {
-    const resourceStringContent = searchInput.value
-      ? [
-          r.title.map((t) => t.translation).join(' '),
-          r.subtitle.map((s) => s.translation).join(' ') || '',
-          r.owner?.name || '',
-          r.owner?.username || '',
-          r.owner?.affiliation || '',
-          r.description.map((d) => d.translation).join(' ') || '',
-          r.citation,
-          JSON.stringify(r.meta),
-        ]
-          .filter(Boolean)
-          .join(' ')
-      : '';
-    return (
-      !searchInput.value ||
-      resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase())
-    );
-  });
+  return resources.ofText
+    .filter((r) => {
+      const resourceStringContent = searchInput.value
+        ? [
+            r.title.map((t) => t.translation).join(' '),
+            r.subtitle.map((s) => s.translation).join(' ') || '',
+            r.owner?.name || '',
+            r.owner?.username || '',
+            r.owner?.affiliation || '',
+            r.description.map((d) => d.translation).join(' ') || '',
+            r.citation,
+            JSON.stringify(r.meta),
+          ]
+            .filter(Boolean)
+            .join(' ')
+        : '';
+      return (
+        !searchInput.value ||
+        resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase())
+      );
+    })
+    .sort((ra, rb) => {
+      const a = pickTranslation(ra.title, state.locale);
+      const b = pickTranslation(rb.title, state.locale);
+      return a.localeCompare(b);
+    });
 });
 
 const expandedNames = ref<string[]>([]);
