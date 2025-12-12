@@ -919,7 +919,7 @@ help:
 tour:
   heading: Guided Tour
   next: Next
-  prev: Back
+  prev: Previous
   intro:
     title: '{platformName} Guided Tour'
     text: |

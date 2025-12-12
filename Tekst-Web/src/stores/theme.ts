@@ -157,8 +157,8 @@ export const useThemeStore = defineStore('theme', () => {
       '--primary-color-fade4': colors.value.primary.fade4,
       '--primary-color-fade5': colors.value.primary.fade5,
 
-      '--base-color': dark.value ? '#242424' : '#FFFFFF',
-      '--base-color-translucent': transparentize(dark.value ? '#242424' : '#FFFFFF', 0.6),
+      '--base-color': dark.value ? '#303030' : '#FFFFFF',
+      '--base-color-translucent': transparentize(dark.value ? '#303030' : '#FFFFFF', 0.6),
       '--text-color': nuiBaseTheme.value.common.textColor1,
       '--text-color-translucent': transparentize(nuiBaseTheme.value.common.textColor1, 0.6),
 

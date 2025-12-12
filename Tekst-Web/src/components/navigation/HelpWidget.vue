@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import GuidedTour from '@/components/GuidedTour.vue';
+import { useGuidedTour } from '@/composables/tour';
 import { $t } from '@/i18n';
 import { HelpOverviewIcon, QuestionMarkIcon, TourIcon } from '@/icons';
-import { delay, renderIcon } from '@/utils';
+import { renderIcon } from '@/utils';
 import { NButton, NDropdown, NIcon } from 'naive-ui';
-import { inject, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['done']);
 const router = useRouter();
-const guidedTourRef = inject('guidedTourRef') as Ref<typeof GuidedTour>;
+const { start: startGuidedTour } = useGuidedTour();
 
 const options = [
   {
@@ -27,8 +26,7 @@ const options = [
 async function handleSelect(key: string) {
   emit('done');
   if (key === 'tour') {
-    await delay(200);
-    guidedTourRef.value.start();
+    startGuidedTour();
   } else if (key === 'help') {
     router.push({ name: 'help' });
   }
@@ -44,3 +42,66 @@ async function handleSelect(key: string) {
     </n-button>
   </n-dropdown>
 </template>
+
+<style>
+#driver-popover-content.driver-popover {
+  background-color: var(--base-color);
+  border-radius: var(--border-radius);
+  max-width: 380px;
+  box-shadow: var(--affix-box-shadow);
+}
+
+.driver-popover .driver-popover-arrow-side-left.driver-popover-arrow {
+  border-left-color: var(--base-color);
+}
+
+.driver-popover .driver-popover-arrow-side-right.driver-popover-arrow {
+  border-right-color: var(--base-color);
+}
+
+.driver-popover .driver-popover-arrow-side-top.driver-popover-arrow {
+  border-top-color: var(--base-color);
+}
+
+.driver-popover .driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-bottom-color: var(--base-color);
+}
+
+.driver-popover .driver-popover-title {
+  color: var(--text-color);
+  font-size: var(--font-size);
+  font-weight: normal;
+}
+
+.driver-popover .driver-popover-description {
+  color: var(--text-color);
+  font-size: var(--font-size-small);
+  font-weight: normal;
+}
+
+.driver-popover footer.driver-popover-footer {
+  margin-top: var(--gap-md);
+  padding-top: var(--gap-md);
+  border-top: 1px solid var(--main-bg-color);
+}
+
+.driver-popover .driver-popover-navigation-btns > button {
+  background-color: var(--primary-color);
+  color: var(--base-color);
+  text-shadow: none;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 12px 6px 12px;
+  font-size: var(--font-size-tiny);
+  transition: filter 0.2s ease-in-out;
+}
+
+.driver-popover .driver-popover-progress-text {
+  opacity: 0.9;
+  font-size: var(--font-size);
+}
+
+.driver-popover .driver-popover-navigation-btns > button:hover {
+  filter: brightness(1.15);
+}
+</style>

@@ -78,12 +78,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading
-    v-if="!!browse.locationPath.length"
-    level="1"
-    :icon="BookIcon"
-    data-tour-key="browseView"
-  >
+  <icon-heading v-if="!!browse.locationPath.length" level="1" :icon="BookIcon">
     <location-label />
     <help-button-widget help-key="browseView" data-tour-key="helpButtons" />
   </icon-heading>

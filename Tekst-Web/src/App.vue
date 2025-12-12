@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
-import GuidedTour from '@/components/GuidedTour.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
@@ -24,14 +23,12 @@ import {
   NIcon,
   NLoadingBarProvider,
 } from 'naive-ui';
-import { computed, provide, ref } from 'vue';
+import { computed } from 'vue';
 import { RouterView } from 'vue-router';
 
 const state = useStateStore();
 const theme = useThemeStore();
 const { showTasksWidget } = useTasks();
-const guidedTourRef = ref();
-provide('guidedTourRef', guidedTourRef);
 
 useInitializeApp();
 
@@ -93,7 +90,6 @@ useFavicon();
     </n-loading-bar-provider>
     <global-messenger />
     <n-global-style />
-    <guided-tour ref="guidedTourRef" />
   </n-config-provider>
 </template>
 

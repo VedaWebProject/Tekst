@@ -65,7 +65,7 @@ const titleLinkTo = computed(() => {
         />
       </router-link>
       <div class="navbar-title">
-        <router-link :to="titleLinkTo" data-tour-key="intro">
+        <router-link :to="titleLinkTo">
           <div class="text-gigantic" style="line-height: 120%">
             {{ state.pf?.state.platformName }}
           </div>
