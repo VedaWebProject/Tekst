@@ -89,6 +89,14 @@ const filteredData = computed(() => {
 
 const expandedNames = ref<string[]>([]);
 
+async function handleBrowseClick(resource: AnyResourceRead) {
+  router.push({
+    name: 'browse',
+    params: { textSlug: state.text?.slug || '' },
+    hash: `#res=${resource.id}`,
+  });
+}
+
 async function handleTransferClick(resource: AnyResourceRead) {
   transferTargetResource.value = resource;
   showTransferModal.value = true;
@@ -362,7 +370,7 @@ onMounted(() => {
         setTimeout(() => {
           document
             .querySelector(`#res-list-item-${targetRes.id}`)
-            ?.scrollIntoView({ behavior: 'smooth' });
+            ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
         }, 200);
       }
     }
@@ -446,6 +454,7 @@ onMounted(() => {
           :resource="item"
           :user="auth.user"
           :shown="expandedNames.includes(item.id)"
+          @browse-click="handleBrowseClick"
           @transfer-click="handleTransferClick"
           @propose-click="handleProposeClick"
           @unpropose-click="handleUnproposeClick"

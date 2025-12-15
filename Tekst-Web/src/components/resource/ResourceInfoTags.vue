@@ -64,17 +64,11 @@ const accessSharesTip = computed(() => {
 
 <template>
   <n-flex v-bind="$attrs" :size="size">
-    <n-tag v-if="!resource.originalId && !!auth.user" :type="publicationStatusType" :size="size">
-      <template #icon>
-        <n-icon :component="publicationStatusIcon" />
-      </template>
-      {{ publicationStatusText }}
-    </n-tag>
     <n-tag v-if="!!resource.originalId" type="info" :size="size">
       <template #icon>
         <n-icon :component="VersionIcon" />
       </template>
-      {{ $t('resources.versionOf', { title: originalTitle || $t('resources.unknownOriginal') }) }}
+      {{ $t('resources.versionOf', { title: originalTitle }) }}
     </n-tag>
     <n-tag
       v-if="!!(resource.sharedRead.length + resource.sharedWrite.length)"
@@ -88,17 +82,23 @@ const accessSharesTip = computed(() => {
         $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })
       }}
     </n-tag>
+    <n-tag :size="size" :title="$t('models.resource.resourceType')">
+      <template #icon>
+        <n-icon :component="ResourceIcon" />
+      </template>
+      {{ $t(`resources.types.${resource.resourceType}.label`) }}
+    </n-tag>
     <n-tag :size="size" :title="$t('common.level')">
       <template #icon>
         <n-icon :component="LevelsIcon" />
       </template>
       {{ state.textLevelLabels[resource.level] }}
     </n-tag>
-    <n-tag :size="size" :title="$t('models.resource.resourceType')">
+    <n-tag v-if="!resource.originalId && !!auth.user" :type="publicationStatusType" :size="size">
       <template #icon>
-        <n-icon :component="ResourceIcon" />
+        <n-icon :component="publicationStatusIcon" />
       </template>
-      {{ $t(`resources.types.${resource.resourceType}.label`) }}
+      {{ publicationStatusText }}
     </n-tag>
   </n-flex>
 </template>

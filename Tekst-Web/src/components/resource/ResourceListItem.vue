@@ -10,6 +10,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceExportModal from '@/components/resource/ResourceExportModal.vue';
 import ResourceInfoContent from '@/components/resource/ResourceInfoContent.vue';
 import {
+  BookIcon,
   CorrectionNoteIcon,
   DeleteIcon,
   DownloadIcon,
@@ -36,6 +37,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits([
+  'browseClick',
   'transferClick',
   'proposeClick',
   'unproposeClick',
@@ -66,6 +68,14 @@ const actionOptions = computed<DropdownOption[]>(() => [
     type: 'group',
     label: $t('common.general'),
     children: [
+      {
+        label:
+          pickTranslation(state.pf?.state.navTranslations.browse, state.locale) ||
+          $t('common.browse'),
+        key: 'browse',
+        icon: renderIcon(BookIcon),
+        action: () => emit('browseClick', props.resource),
+      },
       ...(!props.resource.originalId && props.user
         ? [
             {
@@ -248,8 +258,7 @@ function handleCorrectionsClick() {
         <resource-info-tags
           v-if="!state.smallScreen && !shown"
           :resource="resource"
-          justify="flex-start"
-          reverse
+          justify="flex-end"
           style="flex: 2"
         />
       </n-flex>

@@ -439,7 +439,6 @@ whenever(ArrowRight, () => {
     <resource-info-tags
       v-if="!state.smallScreen"
       :resource="resource"
-      reverse
       style="flex: 2; justify-content: end"
     />
   </icon-heading>

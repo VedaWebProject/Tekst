@@ -11,8 +11,10 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import { $t } from '@/i18n';
 import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
+import { useUrlSearchParams } from '@vueuse/core';
 import { NButton, NEmpty, NFlex, NIcon } from 'naive-ui';
-import { computed, onMounted, watch } from 'vue';
+import { computed, nextTick, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   textSlug?: string;
@@ -23,6 +25,8 @@ const auth = useAuthStore();
 const browse = useBrowseStore();
 const state = useStateStore();
 const resources = useResourcesStore();
+const router = useRouter();
+const hashParams = useUrlSearchParams('hash-params');
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
@@ -74,6 +78,19 @@ watch(
 
 onMounted(() => {
   browse.loadLocationData(props.locId, true);
+  // if route contains a hash "#res=some-res-ID",
+  // scroll to and disable all but target resource
+  nextTick(() => {
+    if (hashParams.res) {
+      browse.setResourcesActiveState([hashParams.res.toString()], true, true);
+      router.replace({ ...router.currentRoute.value, hash: undefined });
+      nextTick(() => {
+        const targetEl = document.getElementById(`content-of-res-${hashParams.res}`);
+        if (targetEl)
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+      });
+    }
+  });
 });
 </script>
 
@@ -131,6 +148,7 @@ onMounted(() => {
       <content-container
         v-for="resource in category.resources"
         :key="resource.id"
+        :id="`content-of-res-${resource.id}`"
         :loading="browse.loading"
         :resource="resource"
       />

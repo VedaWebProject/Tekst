@@ -374,9 +374,10 @@ models:
 resources:
   heading: Resources
   msgFoundCount: '{count} out of {total} resources found'
+  copyInfoUrl: Copy URL
+  copyInfoUrlTip: Copy the URL to these resource informations
   new: New Resource
   versionOf: Version of "{title}"
-  unknownOriginal: Unknown original resource
   msgNotYourResourceTitle: This is not your resource!
   msgNotYourResourceBody: |
     As an administrator, you are able to modify resources owned by other users.

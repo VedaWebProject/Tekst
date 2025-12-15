@@ -57,7 +57,11 @@ async function afterPaginate() {
   await search.searchSecondary();
   const resultsY = resultsContainer.value?.getBoundingClientRect().y || 0;
   if (resultsY < 0) {
-    resultsContainer.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    resultsContainer.value?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
   }
 }
 

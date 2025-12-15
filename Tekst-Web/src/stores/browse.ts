@@ -72,6 +72,10 @@ export const useBrowseStore = defineStore('browse', () => {
             textSlug: textSlug,
             locId: locationPathHead.value?.id,
           },
+          hash:
+            router.currentRoute.value.name === 'browse'
+              ? router.currentRoute.value.hash
+              : undefined,
         });
       }
     } else {

@@ -1,9 +1,9 @@
 import type { LocationRead, TextRead, Translation, TranslationLocaleKey } from '@/api';
+import type { components } from '@/api/schema';
+import { $t } from '@/i18n';
 import { uniqBy } from 'lodash-es';
 import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
-import type { components } from './api/schema';
-import { $t } from './i18n';
 
 export function hashCode(obj: unknown) {
   const string = JSON.stringify(obj);

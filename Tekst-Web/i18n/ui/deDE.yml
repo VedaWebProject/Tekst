@@ -378,9 +378,10 @@ models:
 resources:
   heading: Ressourcen
   msgFoundCount: '{count} von {total} Ressourcen gefunden'
+  copyInfoUrl: URL kopieren
+  copyInfoUrlTip: URL zu diesen Ressourcen-Informationen kopieren
   new: Neue Ressource
   versionOf: Version von "{title}"
-  unknownOriginal: Unbekannte Original-Ressource
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
   msgNotYourResourceBody: |
     Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
