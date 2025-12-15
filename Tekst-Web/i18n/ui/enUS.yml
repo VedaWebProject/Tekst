@@ -237,6 +237,9 @@ browse:
         title: Edit contents
       correctionNote:
         title: Create correction note
+        disabledTip: |
+          You cannot create a correction note because the target content is ambiguous.
+          Navigate to the structure level of this resource to create correction notes on its contents.
         info: |
           Do you have a short comment or correction to this content?
           You can write a correction note here. The person

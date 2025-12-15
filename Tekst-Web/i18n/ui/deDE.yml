@@ -241,6 +241,9 @@ browse:
         title: Inhalte bearbeiten
       correctionNote:
         title: Korrekturnotiz erstellen
+        disabledTip: |
+          Sie können keine Korrekturnotiz erstellen, da der Zielinhalt nicht eindeutig ist.
+          Navigieren Sie zur Strukturebene dieser Ressource, um Korrekturnotizen zu den Inhalten erstellen zu können.
         info: |
           Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
           Hier können Sie eine Korrekturnotiz verfassen. Die Person,

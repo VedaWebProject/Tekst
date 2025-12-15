@@ -12,7 +12,6 @@ import { computed, ref } from 'vue';
 const props = withDefaults(
   defineProps<{
     resource: AnyResourceRead;
-    locationId?: string;
     full?: boolean;
     showInfo?: boolean;
   }>(),
@@ -29,7 +28,12 @@ const resources = useResourcesStore();
 const { message } = useMessages();
 
 const promptModalRef = ref();
-const enabled = computed(() => !!auth.user && browse.level == props.resource.level);
+const enabled = computed(() => !!auth.user && props.resource.contents?.length === 1);
+const widgetTitle = computed(() =>
+  enabled.value
+    ? $t('browse.contents.widgets.correctionNote.title')
+    : $t('browse.contents.widgets.correctionNote.disabledTip')
+);
 
 function handleClick() {
   promptModalRef.value.open();
@@ -37,9 +41,9 @@ function handleClick() {
 }
 
 async function handleModalSubmit(note: string) {
-  const locId = props.locationId || browse.locationPathHead?.id;
+  const locId = browse.locationPath[props.resource.level]?.id;
   if (!locId) {
-    console.error('No location ID provided for correction note!');
+    console.error('Cannot determine current content location.');
     return;
   }
 
@@ -73,10 +77,11 @@ async function handleModalSubmit(note: string) {
 
 <template>
   <content-container-header-widget
-    v-if="enabled"
+    v-if="!!auth.user"
+    :disabled="!enabled"
     v-bind="$attrs"
     :full="full"
-    :title="$t('browse.contents.widgets.correctionNote.title')"
+    :title="widgetTitle"
     :icon-component="CorrectionNoteIcon"
     @click="handleClick"
   />
