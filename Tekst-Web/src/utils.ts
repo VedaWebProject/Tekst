@@ -77,7 +77,10 @@ export async function validateUrlInput(input: HTMLInputElement) {
 }
 
 export function isOverlayOpen() {
-  return document.querySelectorAll('.n-modal-body-wrapper, .n-image-preview-overlay').length > 0;
+  return (
+    document.querySelectorAll('.n-modal-body-wrapper, .n-image-preview-overlay, .driver-overlay')
+      .length > 0
+  );
 }
 
 export function isInputFocused() {

@@ -69,7 +69,6 @@ useFavicon();
             v-model:show="state.backtopVisible"
             :visibility-height="200"
             style="z-index: 2"
-            data-tour-key="browseBackTop"
           />
         </template>
         <!-- feedback on app init error -->

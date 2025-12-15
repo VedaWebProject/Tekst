@@ -80,7 +80,7 @@ onMounted(() => {
 <template>
   <icon-heading v-if="!!browse.locationPath.length" level="1" :icon="BookIcon">
     <location-label />
-    <help-button-widget help-key="browseView" data-tour-key="helpButtons" />
+    <help-button-widget help-key="browseView" />
   </icon-heading>
 
   <location-aliases-widget

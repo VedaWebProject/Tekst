@@ -26,12 +26,6 @@ const steps: TourStep[] = [
     text: () => $t('tour.intro.text', { platformName }),
   },
   {
-    key: 'helpButtons',
-    route: 'browse',
-    title: () => $t('tour.helpButtons.title'),
-    text: () => $t('tour.helpButtons.text'),
-  },
-  {
     route: 'browse',
     title: () => $t('tour.browseView.title'),
     text: () => $t('tour.browseView.text'),
@@ -59,13 +53,6 @@ const steps: TourStep[] = [
     route: 'browse',
     title: () => $t('tour.browseResourceSelect.title'),
     text: () => $t('tour.browseResourceSelect.text'),
-  },
-  {
-    key: 'browseBackTop',
-    route: 'browse',
-    title: () => $t('tour.browseBackTop.title'),
-    text: () => $t('tour.browseBackTop.text'),
-    before: async () => window.scrollTo(0, document.body.scrollHeight),
   },
   {
     key: 'quickSearch',
@@ -123,7 +110,7 @@ export function useGuidedTour() {
   const start = () => {
     driverObj.value = driver({
       steps,
-      allowKeyboardControl: false,
+      allowKeyboardControl: true,
       overlayColor: '#000',
       overlayOpacity: 0.5,
       showProgress: true,

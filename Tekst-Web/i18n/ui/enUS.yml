@@ -921,17 +921,15 @@ tour:
     text: |
       Welcome to the guided tour of {platformName}!
       You'll learn about the most important features of this platform and how to use them.
-      If you need more details on a specific topic,
+      If you prefer so, use your keyboard's arrow buttons instead of the buttons in this dialog.
+      Also, if you need more details on a specific topic,
       you can always read through the available articles in the help overview
-      or just click the little "?" buttons throughout the website...
-  helpButtons:
-    title: 'Help Buttons'
-    text: ...like this one! – but now, let's begin!
+      or just click the little "?" buttons throughout the website. Let's begin!
   browseView:
     title: Reading and Browsing Content
     text: |
-      You are looking at the main view for regular users of this platform.
-      It is where you can read and browse the contents of all the available resources.
+      You are now looking at the main view for regular users of this platform.
+      This is where you can read and browse the contents of all the available resources.
       This heading always shows you which location of the current working text you're looking at.
   browseTextSelect:
     title: Working Text Selector
@@ -957,9 +955,6 @@ tour:
       This one is very important!
       Click here to open the selection of available resources on the current working text
       and activate all the resources you want to see content of.
-  browseBackTop:
-    title: To the Top!
-    text: You scrolled down quite a bit? Click here to jump back to the top of the page.
   quickSearch:
     title: Quick Search
     text: |
