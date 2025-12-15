@@ -29,6 +29,9 @@ const showModal = ref(false);
 const loading = ref(false);
 const contents = ref<AnyContentRead[]>([]);
 
+const enabled = computed(
+  () => props.resource.config.general.enableContentContext && browse.level == props.resource.level
+);
 const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 
 async function handleClick() {
@@ -56,7 +59,7 @@ async function handleClick() {
 
 <template>
   <content-container-header-widget
-    v-if="resource.config.general.enableContentContext && browse.level == resource.level"
+    v-if="enabled"
     :title="$t('browse.contents.widgets.contextWidget.title')"
     :icon-component="MergeIcon"
     :full="full"
@@ -64,6 +67,7 @@ async function handleClick() {
   />
 
   <generic-modal
+    v-if="enabled"
     v-model:show="showModal"
     width="full"
     :title="resourceTitle"

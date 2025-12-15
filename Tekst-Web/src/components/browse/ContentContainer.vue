@@ -108,6 +108,7 @@ watch(
             v-if="contentContextLoaded"
             :component="MergeIcon"
             size="medium"
+            color="var(--warning-color)"
             :title="
               $t('browse.contents.isContentContext', {
                 level: state.textLevelLabels[props.resource.level],

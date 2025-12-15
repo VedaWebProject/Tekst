@@ -7,7 +7,7 @@ import { correctionFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { CorrectionNoteIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore } from '@/stores';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +29,7 @@ const resources = useResourcesStore();
 const { message } = useMessages();
 
 const promptModalRef = ref();
+const enabled = computed(() => !!auth.user && browse.level == props.resource.level);
 
 function handleClick() {
   promptModalRef.value.open();
@@ -72,7 +73,7 @@ async function handleModalSubmit(note: string) {
 
 <template>
   <content-container-header-widget
-    v-if="!!auth.user"
+    v-if="enabled"
     v-bind="$attrs"
     :full="full"
     :title="$t('browse.contents.widgets.correctionNote.title')"
@@ -81,6 +82,7 @@ async function handleModalSubmit(note: string) {
   />
 
   <prompt-modal
+    v-if="enabled"
     ref="promptModalRef"
     type="textarea-osk"
     :title="$t('browse.contents.widgets.correctionNote.title')"
