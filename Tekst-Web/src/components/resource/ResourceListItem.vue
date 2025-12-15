@@ -85,12 +85,6 @@ const actionOptions = computed<DropdownOption[]>(() => [
               action: () => emit('settingsClick', props.resource),
             },
             {
-              label: $t('resources.transferAction'),
-              key: 'transfer',
-              icon: renderIcon(UserIcon),
-              action: () => emit('transferClick', props.resource),
-            },
-            {
               label: $t('common.delete'),
               key: 'delete',
               icon: renderIcon(DeleteIcon),
@@ -216,6 +210,12 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   },
                 ]
               : []),
+            {
+              label: $t('resources.transferAction'),
+              key: 'transfer',
+              icon: renderIcon(UserIcon),
+              action: () => emit('transferClick', props.resource),
+            },
           ],
         },
       ]
