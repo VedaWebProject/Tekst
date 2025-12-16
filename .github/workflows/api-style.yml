@@ -3,22 +3,15 @@ name: Check Tekst-API code style
 on:
   push:
     branches:
-      - development
       - main
     paths:
-      - "Tekst-API/tekst/**"
-      - "Tekst-API/tests/**"
-      - "Tekst-API/pyproject.toml"
-      - "Tekst-API/uv.lock"
+      - "Tekst-API/**"
       - ".github/workflows/api-style.yml"
   pull_request:
     branches:
-      - development
+      - main
     paths:
-      - "Tekst-API/tekst/**"
-      - "Tekst-API/tests/**"
-      - "Tekst-API/pyproject.toml"
-      - "Tekst-API/uv.lock"
+      - "Tekst-API/**"
       - ".github/workflows/api-style.yml"
   workflow_dispatch:
 

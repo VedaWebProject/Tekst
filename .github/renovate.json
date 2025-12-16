@@ -5,7 +5,7 @@
     "schedule:daily",
     "schedule:automergeDaily"
   ],
-  "baseBranches": ["development"],
+  "baseBranches": ["main"],
   "prHourlyLimit": 10,
   "labels": ["dependencies"],
   "assignees": ["bkis"],
