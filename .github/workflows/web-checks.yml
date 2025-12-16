@@ -4,23 +4,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "Tekst-Web/public/**"
-      - "Tekst-Web/scripts/**"
-      - "Tekst-Web/src/**"
-      - "Tekst-Web/package.json"
-      - "Tekst-Web/package-lock.json"
-      - ".github/workflows/web-checks.yml"
   pull_request:
     branches:
       - main
-    paths:
-      - "Tekst-Web/public/**"
-      - "Tekst-Web/scripts/**"
-      - "Tekst-Web/src/**"
-      - "Tekst-Web/package.json"
-      - "Tekst-Web/package-lock.json"
-      - ".github/workflows/web-checks.yml"
   workflow_dispatch:
 
 jobs:
