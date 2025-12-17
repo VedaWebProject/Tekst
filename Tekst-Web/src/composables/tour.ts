@@ -26,31 +26,31 @@ const steps: TourStep[] = [
     text: () => $t('tour.intro.text', { platformName }),
   },
   {
-    route: 'browse',
+    route: { name: 'browse' },
     title: () => $t('tour.browseView.title'),
     text: () => $t('tour.browseView.text'),
   },
   {
     key: 'browseTextSelect',
-    route: 'browse',
+    route: { name: 'browse' },
     title: () => $t('tour.browseTextSelect.title'),
     text: () => $t('tour.browseTextSelect.text'),
   },
   {
     key: 'browseNav',
-    route: 'browse',
+    route: { name: 'browse' },
     title: () => $t('tour.browseNav.title'),
     text: () => $t('tour.browseNav.text'),
   },
   {
     key: 'browseFocus',
-    route: 'browse',
+    route: { name: 'browse' },
     title: () => $t('tour.browseFocus.title'),
     text: () => $t('tour.browseFocus.text'),
   },
   {
     key: 'browseResourceSelect',
-    route: 'browse',
+    route: { name: 'browse' },
     title: () => $t('tour.browseResourceSelect.title'),
     text: () => $t('tour.browseResourceSelect.text'),
   },
@@ -85,11 +85,14 @@ const steps: TourStep[] = [
 export function useGuidedTour() {
   const router = useRouter();
 
-  const stepTransition = async (oldStep: TourStep, newStep?: TourStep) => {
-    await oldStep.after?.();
+  const stepTransition = async (oldStep?: TourStep, newStep?: TourStep) => {
+    await oldStep?.after?.();
     if (!newStep) return;
-    if (newStep.route && router.currentRoute.value.name !== router.resolve(newStep.route).name) {
-      await router.push(newStep.route);
+    if (newStep.route) {
+      const targetRoute = router.resolve(newStep.route);
+      if (router.currentRoute.value.name !== targetRoute.name) {
+        await router.push(targetRoute);
+      }
     }
     await newStep.before?.();
     let waitedMs = 0;
@@ -135,6 +138,7 @@ export function useGuidedTour() {
         driverObj.value = undefined;
       },
     });
+    stepTransition(undefined, steps[0]);
     driverObj.value.drive();
   };
 
