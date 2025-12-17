@@ -27,7 +27,7 @@ async def test_bootstrap_auto_migrate_no_pending(
 
 
 @pytest.mark.anyio
-async def test_bootstrap_auto_migrate_pending(
+async def test_bootstrap_auto_migrate(
     config,
     database,
     insert_test_data,
@@ -38,6 +38,7 @@ async def test_bootstrap_auto_migrate_pending(
     # run app bootstrap with auto_migrate == True (with pending migrations)
     config.auto_migrate = True
     await bootstrap(config, close_connections=False)
+    await bootstrap(config, close_connections=False)  # no pending migrations
 
 
 @pytest.mark.anyio
@@ -52,11 +53,12 @@ async def test_migrate_no_state_coll(
 
 
 @pytest.mark.anyio
-async def test_migrate_none_pending(
-    config,
-    clear_db,
+async def test_migrate(
+    insert_test_data,
 ):
-    await bootstrap(close_connections=False)
+    await insert_test_data()
+    await bootstrap(close_connections=False)  # no automigrate
+    await migrations.migrate()  # pending migrations
     await migrations.migrate()  # no pending migrations
 
 

@@ -116,7 +116,7 @@ async def test_corrections_crud(
     assert len(resp.json()) == 0
 
     # create correction note on non-public resource (with specific owner)
-    resource.owner_id = PydanticObjectId(u["id"])
+    resource.owner_ids = [PydanticObjectId(u["id"])]
     resource.public = False
     await resource.replace()
     resp = await test_client.post(
@@ -124,7 +124,7 @@ async def test_corrections_crud(
         json={
             "resourceId": res_id,
             "locationId": loc_id,
-            "note": "This should trigger a notification to the resource owner.",
+            "note": "This should trigger a notification to the resource owner(s).",
         },
     )
     assert_status(201, resp)
@@ -133,7 +133,7 @@ async def test_corrections_crud(
     correction_id = resp.json()["id"]
 
     # fail to delete correction note with missing permissions
-    resource.owner_id = PydanticObjectId(su["id"])
+    resource.owner_ids = [PydanticObjectId(su["id"])]
     await resource.replace()
     await login(user=u)  # logs out admin, logs in existing normal user
     resp = await test_client.delete(f"/corrections/{correction_id}")

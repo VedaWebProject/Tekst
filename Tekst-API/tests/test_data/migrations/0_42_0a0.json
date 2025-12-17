@@ -1,0 +1,158 @@
+[
+  {
+    "_id": { "$oid": "654b825533ee5737b297f8f3" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [{ "locale": "*", "translation": "Warnung (Anschütz)" }],
+    "subtitle": [
+      {
+        "locale": "deDE",
+        "translation": "Der deutschsprachige Originaltext von 1824"
+      },
+      {
+        "locale": "enUS",
+        "translation": "The original German-language text from 1824"
+      }
+    ],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 2,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": { "$oid": "65c5fe0c691066aabd498239" },
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": "Anschütz, Ernst. Warnung. 1824.",
+    "meta": [
+      { "key": "author", "value": "Ernst Anschütz" },
+      { "key": "year", "value": "1824" },
+      { "key": "Original Title", "value": "Warnung" },
+      { "key": "language", "value": "DE" }
+    ],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "<p>This version includes repetition markers.</p>"
+      },
+      {
+        "locale": "deDE",
+        "translation": "<p>Diese Version enthält Wiederholungszeichen.</p>"
+      }
+    ],
+    "config": {
+      "general": {
+        "category": "versions",
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": true,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "special": {
+        "focus_view": { "single_line": false, "delimiter": " / " },
+        "search_replacements": [],
+        "content_css": [],
+        "line_labelling": {
+          "enabled": false,
+          "labelling_type": "numbersOneBased"
+        },
+        "deepl_links": { "enabled": true, "source_language": "de" }
+      }
+    },
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [12, 12]
+  },
+  {
+    "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Japanese Version" },
+      { "locale": "deDE", "translation": "Japanische Version" }
+    ],
+    "subtitle": [
+      {
+        "locale": "enUS",
+        "translation": "The original text in Japanese language"
+      },
+      {
+        "locale": "deDE",
+        "translation": "Der Originaltext in japanischer Sprache"
+      }
+    ],
+    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "level": 0,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": { "$oid": "65c5fe0c691066aabd498239" },
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": "Bashō, Matsuo (1686)",
+    "meta": [
+      { "key": "author", "value": "Matsuo Bashō" },
+      { "key": "year", "value": "1686" },
+      { "key": "language", "value": "JA" }
+    ],
+    "description": [],
+    "config": {
+      "general": {
+        "category": "versions",
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": true
+      },
+      "special": {
+        "focus_view_oneline": true,
+        "deepl_links": { "enabled": true, "source_language": "ja" }
+      }
+    },
+    "coverage": [3, 3]
+  },
+  {
+    "_id": { "$oid": "654ba525ec7833e469dde77e" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "English Translation" },
+      { "locale": "deDE", "translation": "Englische Übersetzung" }
+    ],
+    "subtitle": [],
+    "text_id": { "$oid": "654ba1f3ec7833e469dde765" },
+    "level": 0,
+    "resource_type": "plainText",
+    "original_id": null,
+    "owner_id": { "$oid": "65c5fe0c691066aabd498239" },
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "meta": [
+      { "key": "author", "value": "Robert Hass" },
+      { "key": "language", "value": "EN" }
+    ],
+    "description": [],
+    "config": {
+      "general": {
+        "category": "translations",
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": true,
+        "searchable_quick": true,
+        "searchable_adv": true,
+        "rtl": false
+      },
+      "special": {
+        "focus_view": { "single_line": false, "delimiter": " / " },
+        "search_replacements": [{ "pattern": "[aeiou]", "replacement": "o" }],
+        "line_labelling": {
+          "enabled": false,
+          "labelling_type": "numbersOneBased"
+        },
+        "deepl_links": { "enabled": false, "source_language": "en" }
+      }
+    },
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
+    "coverage": [3, 3]
+  }
+]

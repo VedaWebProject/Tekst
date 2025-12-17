@@ -78,25 +78,27 @@ async def create_correction(
         location_labels=location_labels,
     ).create()
 
-    # notify the resource's owner (or admins if it's public) of the new correction
-    if user.id != resource_doc.owner_id:
-        to_user: UserDocument = await UserDocument.get(resource_doc.owner_id)
-        if (
-            to_user
-            and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
-            in to_user.user_notification_triggers
-        ):
-            await send_notification(
-                to_user,
-                TemplateIdentifier.EMAIL_NEW_CORRECTION,
-                from_user_name=user.name
-                if "name" in user.public_fields
-                else user.username,
-                correction_note=correction.note,
-                text_slug=(await TextDocument.get(resource_doc.text_id)).slug,
-                resource_id=resource_doc.id,
-                resource_title=pick_translation(resource_doc.title),
-            )
+    # notify the resource's owner(s) (or admins if it's public) of the new correction
+    if user.id not in resource_doc.owner_ids:
+        for to_user in [
+            await UserDocument.get(owner_id) for owner_id in resource_doc.owner_ids
+        ]:
+            if (
+                to_user
+                and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
+                in to_user.user_notification_triggers
+            ):
+                await send_notification(
+                    to_user,
+                    TemplateIdentifier.EMAIL_NEW_CORRECTION,
+                    from_user_name=user.name
+                    if "name" in user.public_fields
+                    else user.username,
+                    correction_note=correction.note,
+                    text_slug=(await TextDocument.get(resource_doc.text_id)).slug,
+                    resource_id=resource_doc.id,
+                    resource_title=pick_translation(resource_doc.title),
+                )
 
     return correction_doc
 
@@ -121,7 +123,9 @@ async def get_corrections(
         resource_id,
         with_children=True,
     )
-    if not resource_doc or (user.id != resource_doc.owner_id and not user.is_superuser):
+    if not resource_doc or (
+        user.id not in resource_doc.owner_ids and not user.is_superuser
+    ):
         raise errors.E_404_RESOURCE_NOT_FOUND
     # return all corrections for the resource
     return await CorrectionDocument.find(
