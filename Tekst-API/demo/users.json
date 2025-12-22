@@ -19,7 +19,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "resourceTransferred"
+      "addedAsOwner"
     ],
     "seen": null
   },
@@ -43,7 +43,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "resourceTransferred"
+      "addedAsOwner"
     ],
     "seen": null
   },
@@ -66,7 +66,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "resourceTransferred"
+      "addedAsOwner"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": false,
@@ -90,7 +90,7 @@
       "resourcePublished",
       "messageReceived",
       "newCorrection",
-      "resourceTransferred"
+      "addedAsOwner"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": true,

@@ -29,7 +29,7 @@ async def test_create_resource(
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
-        "ownerId": user["id"],
+        "ownerIds": [user["id"]],
     }
 
     resp = await test_client.post(
@@ -43,7 +43,7 @@ async def test_create_resource(
         resp.json()["subtitle"][0]["translation"]
         == "This is a string with some space chars"
     )
-    assert resp.json()["ownerId"] == user.get("id")
+    assert user.get("id") in resp.json()["ownerIds"]
 
 
 @pytest.mark.anyio
@@ -66,7 +66,7 @@ async def test_create_resource_w_invalid_type(
         "textId": text_id,
         "level": 0,
         "resourceType": "foo",
-        "ownerId": user["id"],
+        "ownerIds": [user["id"]],
     }
 
     resp = await test_client.post(
@@ -95,7 +95,7 @@ async def test_create_too_many_resources(
                 "textId": text_id,
                 "level": 0,
                 "resourceType": "plainText",
-                "ownerId": user["id"],
+                "ownerIds": [user["id"]],
             },
         )
         if resp.status_code == 409:
@@ -127,7 +127,7 @@ async def test_create_resource_w_invalid_level(
             "textId": text_id,
             "level": 4,
             "resourceType": "plainText",
-            "ownerId": user["id"],
+            "ownerIds": [user["id"]],
         },
     )
     assert_status(400, resp)
@@ -174,14 +174,14 @@ async def test_create_resource_with_forged_owner_id(
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
-        "ownerId": "643d3cdc21efd6c46ae1527e",
+        "ownerIds": ["643d3cdc21efd6c46ae1527e"],
     }
     resp = await test_client.post(
         "/resources",
         json=payload,
     )
     assert_status(201, resp)
-    assert resp.json()["ownerId"] != payload["ownerId"]
+    assert payload["ownerIds"][0] not in resp.json()["ownerIds"]
 
 
 @pytest.mark.anyio
@@ -204,7 +204,7 @@ async def test_create_resource_with_denied_type(
             "textId": text_id,
             "level": 0,
             "resourceType": "plainText",
-            "ownerId": u["id"],
+            "ownerIds": [u["id"]],
         },
     )
     assert_status(403, resp)
@@ -236,8 +236,8 @@ async def test_create_resource_version(
     assert_status(201, resp)
     assert "id" in resp.json()
     assert "originalId" in resp.json()
-    assert "ownerId" in resp.json()
-    assert resp.json()["ownerId"] == user.get("id")
+    assert "ownerIds" in resp.json()
+    assert user.get("id") in resp.json()["ownerIds"]
 
     # fail to create new resource version of another version
     resp = await test_client.post(
@@ -284,7 +284,7 @@ async def test_update_resource(
     superuser = await login(is_superuser=True)
     other_user = await register_test_user()
 
-    # create new resource (because only owner can update(write))
+    # create new resource (because only owners can update(write))
     payload = {
         "title": [{"locale": "*", "translation": "Foo Bar Baz"}],
         "textId": text_id,
@@ -298,8 +298,8 @@ async def test_update_resource(
     assert_status(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
-    assert "ownerId" in resource_data
-    assert resource_data["ownerId"] == superuser.get("id")
+    assert "ownerIds" in resource_data
+    assert superuser.get("id") in resource_data["ownerIds"]
     assert resource_data.get("public") is False
 
     # update resource title
@@ -485,7 +485,7 @@ async def test_update_resource_searchability(
     assert_status(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
-    assert resource_data["ownerId"] == superuser.get("id")
+    assert superuser.get("id") in resource_data["ownerIds"]
     assert resource_data["public"] is False
     assert resource_data["config"]["general"]["searchableQuick"] is True
     assert resource_data["config"]["general"]["searchableAdv"] is True
@@ -724,7 +724,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
         "textId": text_id,
         "level": 0,
         "resourceType": "plainText",
-        "ownerId": owner.get("id"),
+        "ownerIds": [owner.get("id")],
     }
     resp = await test_client.post(
         "/resources",
@@ -733,7 +733,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
     assert_status(201, resp)
     resource_data = resp.json()
     assert "id" in resource_data
-    assert "ownerId" in resource_data
+    assert "ownerIds" in resource_data
     resource_id = resource_data["id"]
 
     # publish unproposed resource
@@ -991,7 +991,7 @@ async def test_delete_proposed_resource(
 
 
 @pytest.mark.anyio
-async def test_transfer_resource(
+async def test_set_resource_owners(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -1004,13 +1004,13 @@ async def test_transfer_resource(
 
     # register regular test user
     user = await register_test_user(is_superuser=False)
-    # register test superuser
+    # register test superuser and log in
     superuser = await login(is_superuser=True)
 
-    # transfer resource that is still public to test user
-    resp = await test_client.post(
-        f"/resources/{resource_id}/transfer",
-        json=user["id"],
+    # set regular user as owner of public resource
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[user["id"]],
     )
     assert_status(400, resp)
 
@@ -1020,46 +1020,56 @@ async def test_transfer_resource(
     )
     assert_status(200, resp)
 
-    # transfer resource w/ wrong ID
-    resp = await test_client.post(
-        f"/resources/{wrong_id}/transfer",
-        json=user["id"],
+    # use wrong res ID
+    resp = await test_client.patch(
+        f"/resources/{wrong_id}/owners",
+        json=[user["id"]],
     )
     assert_status(404, resp)
 
-    # transfer resource to user w/ wrong ID
-    resp = await test_client.post(
-        f"/resources/{resource_id}/transfer",
-        json=wrong_id,
+    # set wrong owner ID
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[wrong_id],
     )
     assert_status(400, resp)
 
-    # transfer resource without permission
+    # set owner without permission
     await login(user=user)
-    resp = await test_client.post(
-        f"/resources/{resource_id}/transfer",
-        json=user["id"],
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[user["id"]],
     )
     assert_status(403, resp)
 
-    # transfer resource to test user
+    # set regular user as owner
     await login(user=superuser)
-    resp = await test_client.post(
-        f"/resources/{resource_id}/transfer",
-        json=user["id"],
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[user["id"]],
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["ownerId"] == user["id"]
+    assert user["id"] in resp.json()["ownerIds"]
 
     # ....and do that again
-    resp = await test_client.post(
-        f"/resources/{resource_id}/transfer",
-        json=user["id"],
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[user["id"]],
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["ownerId"] == user["id"]
+    assert user["id"] in resp.json()["ownerIds"]
+
+    # ....and set both users as owners
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[user["id"], superuser["id"]],
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert user["id"] in resp.json()["ownerIds"]
+    assert superuser["id"] in resp.json()["ownerIds"]
 
 
 @pytest.mark.anyio
@@ -1424,9 +1434,22 @@ async def test_trigger_resource_precomputation(
     login,
     wait_for_task_success,
 ):
-    await insert_test_data("texts", "locations", "resources")
+    await insert_test_data("texts", "locations", "resources", "contents")
     await login(is_superuser=True)
 
+    # precompute (without "force", but no precomputed data yet)
+    resp = await test_client.get("/resources/precompute")
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # precompute (with "force", data is fresh already)
+    resp = await test_client.get("/resources/precompute", params={"force": True})
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # precompute (without "force", data is fresh already)
     resp = await test_client.get("/resources/precompute")
     assert_status(202, resp)
     assert "id" in resp.json()

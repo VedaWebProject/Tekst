@@ -564,3 +564,23 @@ async def test_0_33_0a0(
     assert pf_state["nav_translations"].get("browse") is not None
     assert pf_state["nav_translations"].get("search") is not None
     assert pf_state["nav_translations"].get("info") is not None
+
+
+@pytest.mark.anyio
+async def test_0_42_0a0(
+    database,
+    get_test_data,
+):
+    resources = get_test_data("migrations/0_42_0a0.json")
+    await database.resources.insert_many(resources)
+
+    # run migration
+    await _migration_fn("0_42_0a0")(database)
+
+    # assert the data has been fixed by the migration
+    for resource in await database.resources.find({}).to_list():
+        assert resource
+        assert "owner_id" not in resource
+        assert "owner_ids" in resource
+        assert isinstance(resource["owner_ids"], list)
+        assert len(resource["owner_ids"]) == 1

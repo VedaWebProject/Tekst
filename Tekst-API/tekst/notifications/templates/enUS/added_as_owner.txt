@@ -1,0 +1,5 @@
+Hello, {to_user_name}!
+
+The user "{username}" just added you as an owner of the resource "{resource_title}".
+
+See you on {platform_name}!

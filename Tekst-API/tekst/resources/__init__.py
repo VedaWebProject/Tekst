@@ -51,7 +51,7 @@ RES_EXCLUDE_FIELDS_EXP_IMP = {
     "level",
     "resource_type",
     "original_id",
-    "owner_id",
+    "owner_ids",
     "shared_read",
     "shared_write",
     "public",
@@ -686,7 +686,7 @@ async def prepare_resource_read(
             for_user.is_superuser
             or (
                 (
-                    for_user.id == resource.owner_id
+                    for_user.id in resource.owner_ids
                     or for_user.id in resource_doc.shared_write
                 )
                 and not resource.public
@@ -695,15 +695,21 @@ async def prepare_resource_read(
         )
     )
 
-    # include owner user data in each resource model (if an owner id is set)
-    if resource.owner_id and (owner_doc := (await UserDocument.get(resource.owner_id))):
-        resource.owner = UserReadPublic.model_from(owner_doc)
+    # include owner(s) user data in each resource model (if owner IDs are set)
+    if resource.owner_ids:
+        resource.owners = [
+            UserReadPublic.model_from(owner)
+            for owner in [
+                await UserDocument.get(owner_id) for owner_id in resource.owner_ids
+            ]
+            if owner
+        ]
 
     # include corrections count if user is owner of the resource
-    # or, if resource has no owner, user is superuser
+    # or, if resource has no owner(s), user is superuser
     if for_user and (
         for_user.is_superuser
-        or for_user.id == resource.owner_id
+        or for_user.id in resource.owner_ids
         or for_user.id in resource.shared_write
     ):
         resource.corrections = await CorrectionDocument.find(
@@ -711,7 +717,7 @@ async def prepare_resource_read(
         ).count()
 
     # include shared-with user data in each resource model (if any)
-    if for_user and (for_user.is_superuser or for_user.id == resource.owner_id):
+    if for_user and (for_user.is_superuser or for_user.id in resource.owner_ids):
         if resource.shared_read:
             resource.shared_read_users = [
                 UserReadPublic.model_from(u)

@@ -182,10 +182,10 @@ E_400_RESOURCE_PROPOSED_DELETE = _error_instance(
     msg="Cannot delete a proposed resource",
 )
 
-E_400_RESOURCE_PUBLIC_INVALID_TRANSFER = _error_instance(
+E_400_RESOURCE_PUBLIC_INVALID_OWNER = _error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="resourcePublicInvalidTransfer",
-    msg="Public resources may only be transferred to administrators",
+    key="resourcePublicInvalidOwner",
+    msg="Public resources may only be owned by administrators",
 )
 
 E_400_TARGET_USER_NON_EXISTENT = _error_instance(

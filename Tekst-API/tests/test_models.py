@@ -78,7 +78,7 @@ def test_resource_subtitle_validator():
             }
         ],
         text_id="5eb7cfb05e32e07750a1756a",
-        owner_id="5eb7cfb05e32e07750a1756a",  # nonsense
+        owner_ids=["5eb7cfb05e32e07750a1756a"],  # nonsense
         level=0,
         resource_type="plainText",
         subtitle=[

@@ -29,8 +29,9 @@ def _all_migrations() -> MigrationsDict:
 
 
 def pending_migrations(db_version: str) -> MigrationsDict:
+    db_v = Version(db_version)
     all_migrations = _all_migrations()
-    return {v: all_migrations[v] for v in all_migrations if v > Version(db_version)}
+    return {v: all_migrations[v] for v in all_migrations if v > db_v}
 
 
 async def check_for_migrations(
@@ -42,13 +43,12 @@ async def check_for_migrations(
         log.critical("No DB version found. Has bootstrap routine been run?")
         exit(1)
     sys_ver = Version(tekst_meta["version"])
-    db_ver = Version(db_version)
     pending = pending_migrations(db_version)
     latest_mig_ver = max(pending.keys()) if pending else Version(db_version)
 
     log.info("Checking system/DB compatibility...")
     log.debug(f"* Tekst version: {str(sys_ver)}")
-    log.debug(f"* DB version: {str(db_ver)}")
+    log.debug(f"* DB version: {db_version}")
     log.debug(f"* Latest migration version: {str(latest_mig_ver)}")
     log.debug(f"* Pending migrations: {', '.join([str(p) for p in pending]) or 'None'}")
 
