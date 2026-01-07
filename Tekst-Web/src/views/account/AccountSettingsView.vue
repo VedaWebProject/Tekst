@@ -50,7 +50,7 @@ const initialUserNotificationTriggersModel = () => ({
   resourcePublished: !!auth.user?.userNotificationTriggers.includes('resourcePublished'),
   messageReceived: !!auth.user?.userNotificationTriggers.includes('messageReceived'),
   newCorrection: !!auth.user?.userNotificationTriggers.includes('newCorrection'),
-  resourceTransferred: !!auth.user?.userNotificationTriggers.includes('resourceTransferred'),
+  addedAsOwner: !!auth.user?.userNotificationTriggers.includes('addedAsOwner'),
 });
 
 const initialAdminNotificationTriggersModel = () => ({

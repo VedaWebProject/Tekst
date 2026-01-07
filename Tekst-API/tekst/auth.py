@@ -1,4 +1,5 @@
 import contextlib
+import random
 import re
 
 from collections.abc import Callable
@@ -7,7 +8,7 @@ from typing import Annotated, Any
 import fastapi_users.models as fapi_users_models
 
 from beanie import Document, PydanticObjectId
-from beanie.operators import In, Pull
+from beanie.operators import Eq, Or, Pull, Set, Size
 from fastapi import (
     APIRouter,
     Depends,
@@ -239,36 +240,63 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_before_delete(
         self, user: UserDocument, request: Request | None = None
     ):
-        # find owned resources
-        resources_docs = await ResourceBaseDocument.find(
-            ResourceBaseDocument.owner_id == user.id,
+        # delete owned resources (and contents thereof)
+        # if no owners are left and resource is not public
+        async for res in ResourceBaseDocument.find(
+            Eq(ResourceBaseDocument.owner_ids, user.id),
+            Size(ResourceBaseDocument.owner_ids, 1),
+            Eq(ResourceBaseDocument.public, False),
             with_children=True,
-        ).to_list()
-        owned_resources_ids = [resource.id for resource in resources_docs]
+        ):
+            # delete contents
+            await ContentBaseDocument.find(
+                Eq(ContentBaseDocument.resource_id, res.id),
+                with_children=True,
+            ).delete()
+            # delete resource
+            await res.delete()
 
-        # delete contents of owned resources
-        await ContentBaseDocument.find(
-            In(ContentBaseDocument.resource_id, owned_resources_ids),
+        # remove from resource owners
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.owner_ids == user.id,
             with_children=True,
-        ).delete()
+        ).update(
+            Pull(ResourceBaseDocument.owner_ids == user.id),
+        )
 
-        # delete owned resources
-        await ResourceBaseDocument.find_one(
-            In(ResourceBaseDocument.id, owned_resources_ids),
+        # for all public resources that are left without an owner,
+        # set another (random) admin as owner to avoid public
+        # resources without owners
+        await ResourceBaseDocument.find(
+            Size(ResourceBaseDocument.owner_ids, 0),
+            Eq(ResourceBaseDocument.public, True),
             with_children=True,
-        ).delete()
+        ).update(
+            Set(
+                {
+                    ResourceBaseDocument.owner_ids: [
+                        random.choice(
+                            [
+                                u.id
+                                for u in await UserDocument.find(
+                                    Eq(UserDocument.is_superuser, True)
+                                ).to_list()
+                            ]
+                        )
+                    ]
+                }
+            ),
+        )
 
         # remove user ID from resource shares
         await ResourceBaseDocument.find(
-            ResourceBaseDocument.shared_read == user.id,
+            Or(
+                ResourceBaseDocument.shared_read == user.id,
+                ResourceBaseDocument.shared_write == user.id,
+            ),
             with_children=True,
         ).update(
             Pull(ResourceBaseDocument.shared_read == user.id),
-        )
-        await ResourceBaseDocument.find(
-            ResourceBaseDocument.shared_write == user.id,
-            with_children=True,
-        ).update(
             Pull(ResourceBaseDocument.shared_write == user.id),
         )
 

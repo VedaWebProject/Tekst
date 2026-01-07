@@ -40,20 +40,21 @@ const showInfoModal = ref(false);
 
 <template>
   <div>
-    <n-flex justify="space-between" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
+    <n-flex justify="flex-end" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
       <!-- SUBTITLE -->
-      <span v-if="resource.subtitle.length">
+      <span v-if="resource.subtitle.length" style="flex: 2">
         <translation-display :value="resource.subtitle" />
       </span>
       <resource-info-tags :resource="resource" />
     </n-flex>
 
-    <n-flex justify="space-between" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
+    <n-flex justify="flex-end" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
       <user-display
         v-if="!!auth.user"
-        :user="resource.owner || undefined"
+        :user="resource.owners || undefined"
         size="small"
         :system="resource.public"
+        style="flex: 2"
       />
       <copy-to-clipboard-button
         v-if="state.text"

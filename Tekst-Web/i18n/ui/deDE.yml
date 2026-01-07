@@ -338,6 +338,7 @@ models:
     share: Zugriff
     sharedRead: Lesezugriff
     sharedWrite: Schreibzugriff
+    owners: Besitzer*innen
     config: Konfiguration
   meta:
     modelLabel: Metadaten
@@ -395,7 +396,7 @@ resources:
   shared: Zugriff mit einer Benutzer*in geteilt | Zugriff mit {count} Benutzer*innen geteilt
   proposed: '@:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
-  transferAction: An Benutzer*in übertragen
+  setOwnersAction: Ressourcen-Besitzer*innen festlegen
   reqVersionIntegrationAction: Integration vorschlagen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
@@ -404,9 +405,9 @@ resources:
   unproposeAction: Veröffentlichungsvorschlag widerrufen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
-  warnTransfer: |
-    Wenn sie eine Ressource an eine andere Benutzer*in übertragen,
-    verlieren Sie Ihre Berechtigungen diese zu editieren,
+  warnSetOwners: |
+    Wenn Sie sich selbst als Benutzer*in einer Ressource entfernen,
+    verlieren Sie Ihre Berechtigungen, diese zu editieren,
     zu löschen, zur Veröffentlichung vorzuschlagen und Zugriffsrechte zu vergeben.
     Bitte fahren Sie nur fort, wenn Sie sich dessen bewusst sind!
   warnPropose: |
@@ -414,7 +415,7 @@ resources:
     Es ist sehr wichtig, dass Sie die Auswirkungen eines
     Veröffentlichungsvorschlags verstehen.
   warnUnpropose: |
-    Sind Sie sicher, dass Sie Ihren Veröffentlichungsvorschlag
+    Sind Sie sicher, dass Sie den Veröffentlichungsvorschlag
     für diese Ressource widerrufen wollen?
   warnPublish: |
     Sie sind im Begriff, diese Ressource zu veröffentlichen und
@@ -438,7 +439,7 @@ resources:
     Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalversion angelegt haben,
     können Sie dem Besitzer vorschlagen, diese oder Teile davon zu übernehmen.
     Möchten Sie fortfahren?
-  msgTransferred: Die Ressource "{title}" wurde an die Benutzer*in "{username}" übertragen.
+  msgOwnersSet: Neue Besitzer*innen für "{title}" festgelegt.
   msgProposed: Die Ressource "{title}" wurde zur Veröffentlichung vorgeschlagen.
   msgUnproposed: Die Veröffentlichungsvorschlag für die Ressource "{title}" wurde widerrufen.
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
@@ -457,7 +458,6 @@ resources:
     props: Eigenschaften
     coreInfo: Grundinformationen
     presentation: Darstellung
-    unavailableWhenPublished: Zugriffseinstellungen sind für veröffentlichte Ressourcen nicht verfügbar.
     sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource einzusehen oder zu vergeben.
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     config:
@@ -642,8 +642,8 @@ account:
       resourceProposed: jemand eine Ressource zur Veröffentlichung vorschlägt (per Plattform-Nachricht)
       resourcePublished: eine Ressource veröffentlicht wird (per Plattform-Nachricht)
       messageReceived: ich eine Nachricht von einer anderen Benutzer*in erhalte (per Email)
-      newCorrection: eine neue Korrekturnotiz zu einer meiner Ressourcen erstellt wurde (per Email)
-      resourceTransferred: eine Ressource auf mich übertragen wurde (per Email)
+      newCorrection: eine Korrekturnotiz zu einer meiner Ressourcen erstellt wird (per Email)
+      addedAsOwner: ich als Besitzer*in einer Ressource eingetragen werde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administratoren

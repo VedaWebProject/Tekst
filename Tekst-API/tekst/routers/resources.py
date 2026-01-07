@@ -128,7 +128,7 @@ async def create_resource(
         .document_model()
         .model_from(resource)
     )
-    resource_doc.owner_id = user.id  # force correct owner ID
+    resource_doc.owner_ids = [user.id]  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
     return await prepare_resource_read(resource_doc, user)
@@ -200,7 +200,7 @@ async def create_resource_version(
                     ResourceBaseDocument.id: None,
                     ResourceBaseDocument.title: version_title,
                     ResourceBaseDocument.original_id: resource_doc.id,
-                    ResourceBaseDocument.owner_id: user.id,
+                    ResourceBaseDocument.owner_ids: [user.id],
                     ResourceBaseDocument.proposed: False,
                     ResourceBaseDocument.public: False,
                     ResourceBaseDocument.shared_read: [],
@@ -240,8 +240,8 @@ async def update_resource(
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    # only allow shares modification for owner or superuser
-    if not user.is_superuser and resource_doc.owner_id != user.id:
+    # only allow shares modification for owner(s) or superusers
+    if not user.is_superuser and user.id not in resource_doc.owner_ids:
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
     # prevent shares for published resources
@@ -405,7 +405,7 @@ async def delete_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    if not user.is_superuser and user.id != resource_doc.owner_id:
+    if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PUBLIC_DELETE
@@ -443,8 +443,8 @@ async def delete_resource(
     ).delete()
 
 
-@router.post(
-    "/{id}/transfer",
+@router.patch(
+    "/{id}/owners",
     response_model=AnyResourceRead,
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
@@ -452,76 +452,76 @@ async def delete_resource(
             errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_403_FORBIDDEN,
-            errors.E_400_RESOURCE_PUBLIC_INVALID_TRANSFER,
+            errors.E_400_RESOURCE_PUBLIC_INVALID_OWNER,
             errors.E_400_TARGET_USER_NON_EXISTENT,
         ]
     ),
 )
-async def transfer_resource(
+async def update_resource_owners(
     user: UserDep,
     cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-    target_user_id: Annotated[PydanticObjectId, Body()],
+    owner_ids: Annotated[list[PydanticObjectId], Body(min_length=1)],
 ) -> AnyResourceRead:
     # check if resource exists
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
+    resource_doc: ResourceBaseDocument = await ResourceBaseDocument.get(
+        resource_id, with_children=True
+    )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    # check if user is allowed to transfer resource
-    if not user.is_superuser and user.id != resource_doc.owner_id:
+    # check if requesting user is allowed to change owners
+    if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
 
-    # check if target user exists
-    target_user: UserDocument = await UserDocument.get(target_user_id)
-    if not target_user:
-        raise errors.E_400_TARGET_USER_NON_EXISTENT
+    # check if target users exist, collect them
+    owners: list[UserDocument] = []
+    for new_owner_id in owner_ids:
+        owner = await UserDocument.get(new_owner_id)
+        if not owner:
+            raise errors.E_400_TARGET_USER_NON_EXISTENT
+        owners.append(owner)
 
-    # check if target user is superuser in case resource is public
-    if resource_doc.public and not target_user.is_superuser:
-        raise errors.E_400_RESOURCE_PUBLIC_INVALID_TRANSFER
+    # check if all target users are superusers in case resource is public
+    if resource_doc.public:
+        for u in owners:
+            if not u.is_superuser:
+                raise errors.E_400_RESOURCE_PUBLIC_INVALID_OWNER
 
-    # if the target user is already the owner, return the resource
-    if target_user_id == resource_doc.owner_id:
-        return await prepare_resource_read(resource_doc, user)
+    # check user(s) resources limit(s)
+    for u in owners:
+        if (
+            not u.is_superuser
+            and await ResourceBaseDocument.user_resource_count(u.id)
+            >= cfg.misc.max_resources_per_user
+        ):
+            raise errors.E_409_RESOURCES_LIMIT_REACHED  # pragma: no cover
 
-    # check user resources limit
-    if (
-        not target_user.is_superuser
-        and await ResourceBaseDocument.user_resource_count(target_user_id)
-        >= cfg.misc.max_resources_per_user
-    ):
-        raise errors.E_409_RESOURCES_LIMIT_REACHED  # pragma: no cover (a paint to test)
-
-    # all fine, transfer resource and remove target user ID from resource shares
+    # all fine, set owners and remove target user IDs from resource shares
     await resource_doc.set(
         {
-            ResourceBaseDocument.owner_id: target_user_id,
+            ResourceBaseDocument.owner_ids: owner_ids,
             ResourceBaseDocument.shared_read: [
-                u_id
-                for u_id in resource_doc.shared_read
-                if str(u_id) != str(target_user_id)
+                uid for uid in resource_doc.shared_read if uid not in owner_ids
             ],
             ResourceBaseDocument.shared_write: [
-                u_id
-                for u_id in resource_doc.shared_write
-                if str(u_id) != str(target_user_id)
+                uid for uid in resource_doc.shared_write if uid not in owner_ids
             ],
         }
     )
 
-    # notify target user
-    if (
-        target_user
-        and TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED.value
-        in target_user.user_notification_triggers
-    ):
-        await send_notification(
-            target_user,
-            TemplateIdentifier.EMAIL_RESOURCE_TRANSFERRED,
-            username=user.username,
-            resource_title=pick_translation(resource_doc.title, target_user.locale),
-        )
+    # notify target user(s)
+    for u in owners:
+        if (
+            TemplateIdentifier.EMAIL_ADDED_AS_OWNER.value
+            in u.user_notification_triggers
+        ):
+            await send_notification(
+                u,
+                TemplateIdentifier.EMAIL_ADDED_AS_OWNER,
+                username=user.username,
+                resource_title=pick_translation(resource_doc.title, u.locale),
+            )
 
     return await prepare_resource_read(resource_doc, user)
 
@@ -548,7 +548,7 @@ async def propose_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    if not user.is_superuser and user.id != resource_doc.owner_id:
+    if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     if resource_doc.proposed:
         return await prepare_resource_read(resource_doc, user)
@@ -594,7 +594,7 @@ async def unpropose_resource(
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
-    if not user.is_superuser and user.id != resource_doc.owner_id:
+    if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     # all fine, unpropose resource
     await resource_doc.set(
@@ -639,7 +639,7 @@ async def publish_resource(
         {
             ResourceBaseDocument.public: True,
             ResourceBaseDocument.proposed: False,
-            ResourceBaseDocument.owner_id: user.id,
+            ResourceBaseDocument.owner_ids: [user.id],
             ResourceBaseDocument.shared_read: [],
             ResourceBaseDocument.shared_write: [],
         }

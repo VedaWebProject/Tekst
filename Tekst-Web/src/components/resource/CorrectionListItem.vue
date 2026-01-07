@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DELETE, type AnyResourceRead, type CorrectionRead } from '@/api';
 import LocationLabel from '@/components/LocationLabel.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
 import { useMessages } from '@/composables/messages';
 import { useUser } from '@/composables/user';
 import { $t } from '@/i18n';
@@ -10,7 +11,6 @@ import { getFullLocationLabel, pickTranslation, utcToLocalTime } from '@/utils';
 import { NButton, NFlex, NIcon, NListItem, NThing, NTime } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import UserDisplay from '../user/UserDisplay.vue';
 
 const props = withDefaults(
   defineProps<{

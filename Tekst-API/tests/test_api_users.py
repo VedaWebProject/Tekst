@@ -147,13 +147,77 @@ async def test_user_deletes_self(
     login,
     test_client: AsyncClient,
     assert_status,
+    register_test_user,
+    insert_test_data,
 ):
-    await login()
-    # delete self
+    ### make sure user owns resources
+    inserted_ids = await insert_test_data()
+    u = await register_test_user()
+    su = await login(is_superuser=True)
+
+    # get res count
+    resp = await test_client.get("/resources")
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    res_count = len(resp.json())
+
+    # unpublish first resource
+    resp = await test_client.post(
+        f"/resources/{inserted_ids['resources'][0]}/unpublish",
+    )
+    assert_status(200, resp)
+    assert not resp.json()["public"]
+
+    # set superuser as owner of all but first resource
+    for res_id in inserted_ids["resources"][1:]:
+        resp = await test_client.patch(
+            f"/resources/{res_id}/owners",
+            json=[su["id"]],
+        )
+        assert_status(200, resp)
+        print(resp.json())
+        assert len(resp.json()["ownerIds"]) == 1
+        assert resp.json()["ownerIds"][0] == su["id"]
+
+    # set regular user as owner of first resource
+    resp = await test_client.patch(
+        f"/resources/{inserted_ids['resources'][0]}/owners",
+        json=[u["id"]],
+    )
+    assert_status(200, resp)
+    assert len(resp.json()["ownerIds"]) == 1
+    assert resp.json()["ownerIds"][0] == u["id"]
+
+    # delete self (as regular user)
+    await login(user=u)
     resp = await test_client.delete(
         "/users/me",
     )
     assert_status(204, resp)
+
+    # delete self (as superuser)
+    await login(user=su)
+    resp = await test_client.delete(
+        "/users/me",
+    )
+    assert_status(204, resp)
+
+    # compare res count
+    resp = await test_client.get("/resources")
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == res_count - 1
+
+
+@pytest.mark.anyio
+async def test_last_superuser_deletes_self(
+    login,
+    test_client: AsyncClient,
+    assert_status,
+):
+    await login(is_superuser=True)
+    resp = await test_client.delete("/users/me")
+    assert_status(403, resp)
 
 
 @pytest.mark.anyio

@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.41.2a0"
+    "version": "0.42.0a0"
   },
   "servers": [
     {
@@ -3997,13 +3997,13 @@
         }
       }
     },
-    "/resources/{id}/transfer": {
-      "post": {
+    "/resources/{id}/owners": {
+      "patch": {
         "tags": [
           "resources"
         ],
-        "summary": "Transfer resource",
-        "operationId": "transferResource",
+        "summary": "Update resource owners",
+        "operationId": "updateResourceOwners",
         "security": [
           {
             "APIKeyCookie": []
@@ -4027,7 +4027,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PydanticObjectId"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "minItems": 1,
+                "title": "Owner Ids"
               }
             }
           }
@@ -4077,7 +4082,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Transfer Resource Resources  Id  Transfer Post"
+                  "title": "Response Update Resource Owners Resources  Id  Owners Patch"
                 }
               }
             }
@@ -7904,15 +7909,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -7991,16 +8000,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -8765,15 +8773,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -8852,16 +8864,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -10561,15 +10572,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -10648,16 +10663,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -11621,15 +11635,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -11708,16 +11726,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -13006,15 +13023,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -13093,16 +13114,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -14255,15 +14275,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -14342,16 +14366,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -16297,15 +16320,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -16384,16 +16411,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -17549,15 +17575,19 @@
             "title": "Writable",
             "description": "Whether this resource is writable for the requesting user"
           },
-          "owner": {
+          "owners": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserReadPublic"
+                "items": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Owners",
             "description": "Public user data for user owning this resource"
           },
           "sharedReadUsers": {
@@ -17636,16 +17666,15 @@
             ],
             "description": "If this is a version of another resource, this ID references the original"
           },
-          "ownerId": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PydanticObjectId"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "User owning this resource"
+          "ownerIds": {
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Ownerids",
+            "description": "Users owning this resource",
+            "default": []
           },
           "sharedRead": {
             "items": {
@@ -18636,7 +18665,7 @@
             "default": [
               "messageReceived",
               "newCorrection",
-              "resourceTransferred",
+              "addedAsOwner",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -18812,7 +18841,7 @@
         "enum": [
           "messageReceived",
           "newCorrection",
-          "resourceTransferred",
+          "addedAsOwner",
           "resourceProposed",
           "resourcePublished"
         ]
@@ -18915,7 +18944,7 @@
             "default": [
               "messageReceived",
               "newCorrection",
-              "resourceTransferred",
+              "addedAsOwner",
               "resourceProposed",
               "resourcePublished"
             ]

@@ -3,22 +3,23 @@ import {
   DELETE,
   downloadData,
   GET,
+  PATCH,
   POST,
   withSelectedFile,
   type AnyResourceRead,
-  type UserReadPublic,
 } from '@/api';
 import { dialogProps } from '@/common';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
-import ListingsFilters from '@/components/ListingsFilters.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import TransferResourceModal from '@/components/modals/TransferResourceModal.vue';
+import PromptModal from '@/components/generic/PromptModal.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import ListingsFilters from '@/components/ListingsFilters.vue';
+import SetResourceOwnersModal from '@/components/modals/SetResourceOwnersModal.vue';
 import ResourceListItem from '@/components/resource/ResourceListItem.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon } from '@/icons';
+import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useUrlSearchParams } from '@vueuse/core';
@@ -43,8 +44,9 @@ const hashParams = useUrlSearchParams('hash-params');
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
 
-const transferTargetResource = ref<AnyResourceRead>();
-const showTransferModal = ref(false);
+const setResOwnersModalRef = ref<InstanceType<typeof SetResourceOwnersModal>>();
+
+const verIntegrPromptModelRef = ref();
 
 const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
 const searchInput = ref<string>();
@@ -59,24 +61,20 @@ const searchInputState = computed(() =>
 const filteredData = computed(() => {
   return resources.ofText
     .filter((r) => {
-      const resourceStringContent = searchInput.value
-        ? [
-            r.title.map((t) => t.translation).join(' '),
-            r.subtitle.map((s) => s.translation).join(' ') || '',
-            r.owner?.name || '',
-            r.owner?.username || '',
-            r.owner?.affiliation || '',
-            r.description.map((d) => d.translation).join(' ') || '',
-            r.citation,
-            JSON.stringify(r.meta),
-          ]
-            .filter(Boolean)
-            .join(' ')
-        : '';
-      return (
-        !searchInput.value ||
-        resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase())
-      );
+      if (!searchInput.value) return true;
+      const resourceStringContent = [
+        r.title.map((t) => t.translation).join(' '),
+        r.subtitle.map((s) => s.translation).join(' ') || '',
+        r.owners?.map((o) => o.name).join(' ') || '',
+        r.owners?.map((o) => o.username).join(' ') || '',
+        r.owners?.map((o) => o.affiliation).join(' ') || '',
+        r.description.map((d) => d.translation).join(' ') || '',
+        r.citation,
+        JSON.stringify(r.meta),
+      ]
+        .filter(Boolean)
+        .join(' ');
+      return resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase());
     })
     .sort((ra, rb) => {
       const correctionsComp = (rb.corrections ?? 0) - (ra.corrections ?? 0);
@@ -97,30 +95,26 @@ async function handleBrowseClick(resource: AnyResourceRead) {
   });
 }
 
-async function handleTransferClick(resource: AnyResourceRead) {
-  transferTargetResource.value = resource;
-  showTransferModal.value = true;
+async function handleSetOwnersClick(resource: AnyResourceRead) {
+  setResOwnersModalRef.value?.show(resource);
 }
 
-async function handleTransferResource(resource?: AnyResourceRead, user?: UserReadPublic) {
-  if (!resource || !user) return;
+async function handleSetOwners(resource?: AnyResourceRead, newOwnerIds?: string[]) {
+  if (!resource) return;
   actionsLoading.value = true;
-  const { data, error } = await POST('/resources/{id}/transfer', {
+  const { data, error } = await PATCH('/resources/{id}/owners', {
     params: { path: { id: resource.id } },
-    body: user.id,
+    body: newOwnerIds ?? [],
   });
   if (!error) {
     resources.replace(data);
     message.success(
-      $t('resources.msgTransferred', {
+      $t('resources.msgOwnersSet', {
         title: pickTranslation(resource.title, state.locale),
-        username: user.username,
       })
     );
   }
   filtersRef.value?.reset();
-  showTransferModal.value = false;
-  transferTargetResource.value = undefined;
   actionsLoading.value = false;
 }
 
@@ -262,7 +256,9 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
         );
         expandedNames.value = [data.id];
         nextTick(() => {
-          document.querySelector(`#res-list-item-${data.id}`)?.scrollIntoView();
+          document
+            .querySelector(`#res-list-item-${data.id}`)
+            ?.scrollIntoView({ behavior: 'smooth' });
         });
       }
       actionsLoading.value = false;
@@ -338,18 +334,37 @@ async function handleImportClick(resource: AnyResourceRead) {
 
 function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
   const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
-  if (!originalResource) {
-    console.error(`No original resource found for version ${resourceVersion}`);
-    return;
-  }
-  if (!originalResource.ownerId) {
-    console.error(`No owner ID found for original resource ${originalResource}`);
-    return;
-  }
+  if (!originalResource || !originalResource.owners?.length) return;
+  verIntegrPromptModelRef.value.open({
+    actionKey: resourceVersion.id,
+    selectOptions: originalResource.owners.map((o) => ({
+      label: o.username + (o.name ? ` (${o.name})` : ''),
+      value: o.id,
+    })),
+  });
+}
+
+function handleReqVersionIntegrationSelect(versionId: string, contactId: string) {
+  const resourceVersion = resources.all.find((r) => r.id === versionId);
+  if (!resourceVersion) return;
+  const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
+  if (!originalResource) return;
   const versionTitle = pickTranslation(resourceVersion.title, state.locale);
   const originalTitle = pickTranslation(originalResource.title, state.locale);
   const prepMsg = `> ${versionTitle} → ${originalTitle}\n\n`;
-  userMessages.openConversation(originalResource.ownerId, prepMsg);
+  userMessages.openConversation(contactId, prepMsg);
+}
+
+function handleCollapseUpdate(activeItemName?: string) {
+  // @ts-expect-error this is a valid property type but it's typed wrong in the library
+  hashParams.id = activeItemName;
+  setTimeout(
+    () =>
+      document
+        .querySelector(`#res-list-item-${activeItemName}`)
+        ?.scrollIntoView({ behavior: 'smooth' }),
+    220
+  );
 }
 
 onMounted(() => {
@@ -370,7 +385,7 @@ onMounted(() => {
         setTimeout(() => {
           document
             .querySelector(`#res-list-item-${targetRes.id}`)
-            ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            ?.scrollIntoView({ behavior: 'smooth' });
         }, 200);
       }
     }
@@ -445,7 +460,7 @@ onMounted(() => {
         v-model:expanded-names="expandedNames"
         accordion
         class="my-sm"
-        @update:expanded-names="(en: string) => (hashParams.id = en.toString())"
+        @update:expanded-names="(en: string[]) => handleCollapseUpdate(en[0])"
       >
         <resource-list-item
           v-for="item in filteredData"
@@ -455,7 +470,7 @@ onMounted(() => {
           :user="auth.user"
           :shown="expandedNames.includes(item.id)"
           @browse-click="handleBrowseClick"
-          @transfer-click="handleTransferClick"
+          @set-owners-click="handleSetOwnersClick"
           @propose-click="handleProposeClick"
           @unpropose-click="handleUnproposeClick"
           @publish-click="handlePublishClick"
@@ -483,13 +498,21 @@ onMounted(() => {
     {{ $t('errors.error') }}
   </div>
 
-  <transfer-resource-modal
+  <set-resource-owners-modal
     v-if="!!auth.user"
-    :show="showTransferModal"
-    :resource="transferTargetResource"
+    ref="setResOwnersModalRef"
     :loading="actionsLoading"
-    @update:show="(v?: boolean) => (showTransferModal = !!v)"
-    @submit="handleTransferResource"
+    @submit="handleSetOwners"
+  />
+
+  <prompt-modal
+    ref="verIntegrPromptModelRef"
+    type="select"
+    :title="'FOOOOO'"
+    :icon="UserIcon"
+    :input-label="'SElect one user!!1'"
+    :msg="'Who to send da request to????'"
+    @submit="handleReqVersionIntegrationSelect"
   />
 </template>
 

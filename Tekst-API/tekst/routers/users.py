@@ -56,6 +56,15 @@ async def delete_me(
     user_mgr: Annotated[UserManager, Depends(get_user_manager)],
     request: Request,
 ) -> None:
+    # check if user is last superuser left – if so, prevent deletion
+    if (
+        user.is_superuser
+        and (await UserDocument.find(Eq(UserDocument.is_superuser, True)).count()) == 1
+    ):
+        raise errors.update_values(
+            exc=errors.E_403_FORBIDDEN,
+            values={"errors": "Cannot delete the only superuser!"},
+        )
     await user_mgr.delete(user, request)
     return None
 

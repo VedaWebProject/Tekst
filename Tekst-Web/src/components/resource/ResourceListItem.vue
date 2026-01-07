@@ -38,7 +38,7 @@ const props = defineProps<{
 
 const emit = defineEmits([
   'browseClick',
-  'transferClick',
+  'setOwnersClick',
   'proposeClick',
   'unproposeClick',
   'publishClick',
@@ -58,7 +58,7 @@ const resources = useResourcesStore();
 
 const showExport = ref(false);
 
-const isOwner = computed(() => (props.user?.id ?? 'noid') === props.resource.ownerId);
+const isOwner = computed(() => !!props.resource.ownerIds?.includes(props.user?.id ?? 'noid'));
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.user?.isSuperuser);
 
 const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
@@ -163,7 +163,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.proposeAction'),
                     key: 'propose',
-                    disabled: !!props.resource.originalId || !isOwner.value,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(ProposedIcon),
                     action: () => emit('proposeClick', props.resource),
                     statusType: 'warning',
@@ -175,7 +175,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.unproposeAction'),
                     key: 'unpropose',
-                    disabled: !!props.resource.originalId || !isOwner.value,
+                    disabled: !!props.resource.originalId,
                     icon: renderIcon(UnproposedIcon),
                     action: () => emit('unproposeClick', props.resource),
                     statusType: 'error',
@@ -206,25 +206,30 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   },
                 ]
               : []),
-            ...(!!props.resource.originalId && props.resource.ownerId === props.user?.id
+            ...(!!props.resource.originalId &&
+            props.user &&
+            props.resource.ownerIds.includes(props.user.id)
               ? [
                   {
                     label: $t('resources.reqVersionIntegrationAction'),
                     key: 'reqVersionIntegration',
                     icon: renderIcon(ReviewIcon),
                     disabled:
-                      resources.all.find((r) => r.id === props.resource.originalId)?.ownerId ===
-                      props.resource.ownerId,
+                      resources.all
+                        .find((r) => r.id === props.resource.originalId)
+                        ?.ownerIds.includes(props.user.id) ||
+                      !resources.all.find((r) => r.id === props.resource.originalId)?.ownerIds
+                        .length,
                     action: () => emit('reqVersionIntegrationClick', props.resource),
                     statusType: 'success',
                   },
                 ]
               : []),
             {
-              label: $t('resources.transferAction'),
-              key: 'transfer',
+              label: $t('resources.setOwnersAction'),
+              key: 'setOwners',
               icon: renderIcon(UserIcon),
-              action: () => emit('transferClick', props.resource),
+              action: () => emit('setOwnersClick', props.resource),
             },
           ],
         },

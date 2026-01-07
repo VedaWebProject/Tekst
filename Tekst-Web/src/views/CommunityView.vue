@@ -4,7 +4,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
-import { usePublicUserSearch } from '@/composables/publicUserSearch';
+import { usePublicUserSearch } from '@/composables/user';
 import { $t } from '@/i18n';
 import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useStateStore } from '@/stores';

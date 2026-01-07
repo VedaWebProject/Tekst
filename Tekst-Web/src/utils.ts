@@ -1,4 +1,10 @@
-import type { LocationRead, TextRead, Translation, TranslationLocaleKey } from '@/api';
+import type {
+  LocationRead,
+  TextRead,
+  Translation,
+  TranslationLocaleKey,
+  UserReadPublic,
+} from '@/api';
 import type { components } from '@/api/schema';
 import { $t } from '@/i18n';
 import { uniqBy } from 'lodash-es';
@@ -139,4 +145,11 @@ export function groupAndSortItems(
     },
   ].filter((g) => !!g.items.length);
   return [...grouped, ...ungrouped];
+}
+
+export function userDisplayText(user: UserReadPublic, showAffiliation: boolean = true) {
+  return (
+    (user.name ? user.name : `@${user.username}`) +
+    (showAffiliation && user.affiliation ? ` (${user.affiliation})` : '')
+  );
 }

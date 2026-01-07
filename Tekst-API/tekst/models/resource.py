@@ -143,16 +143,17 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ] = None
 
-    owner_id: Annotated[
-        PydanticObjectId | None,
+    owner_ids: Annotated[
+        list[PydanticObjectId],
         Field(
-            description="User owning this resource",
+            description="Users owning this resource",
+            max_length=8,
         ),
         ExcludeFromModelVariants(
             update=True,
             create=True,
         ),
-    ] = None
+    ] = []
 
     shared_read: Annotated[
         list[PydanticObjectId],
@@ -308,7 +309,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
         restrict_shares_info = user is None or (
-            user.id != self.owner_id and not user.is_superuser
+            user.id not in self.owner_ids and not user.is_superuser
         )
         restrictions: dict[str, bool] = {
             "shared_read": restrict_shares_info,
@@ -544,7 +545,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             "text_id",
             "level",
             "resource_type",
-            "owner_id",
+            "owner_ids",
         ]
 
     @classmethod
@@ -565,7 +566,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             return And(
                 In(ResourceBaseDocument.text_id, active_texts_ids),
                 Or(
-                    ResourceBaseDocument.owner_id == user.id,
+                    ResourceBaseDocument.owner_ids == user.id,
                     Or(
                         ResourceBaseDocument.public == True,  # noqa: E712
                         ResourceBaseDocument.proposed == True,  # noqa: E712
@@ -593,7 +594,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             ResourceBaseDocument.public == False,  # noqa: E712
             ResourceBaseDocument.proposed == False,  # noqa: E712
             Or(
-                ResourceBaseDocument.owner_id == user.id,
+                ResourceBaseDocument.owner_ids == user.id,
                 ResourceBaseDocument.shared_write == user.id,
             ),
         )
@@ -603,7 +604,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
         if not user_id:
             return 0  # pragma: no cover
         return await ResourceBaseDocument.find(
-            ResourceBaseDocument.owner_id == user_id,
+            ResourceBaseDocument.owner_ids == user_id,
             with_children=True,
         ).count()
 
@@ -615,8 +616,8 @@ class ResourceReadExtras(ModelBase):
             description="Whether this resource is writable for the requesting user",
         ),
     ] = None
-    owner: Annotated[
-        UserReadPublic | None,
+    owners: Annotated[
+        list[UserReadPublic] | None,
         Field(
             description="Public user data for user owning this resource",
         ),

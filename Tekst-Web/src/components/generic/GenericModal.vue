@@ -36,6 +36,7 @@ const modalWidths = {
 <template>
   <n-modal
     v-model:show="show"
+    v-bind="$attrs"
     :to="to"
     display-directive="if"
     preset="card"

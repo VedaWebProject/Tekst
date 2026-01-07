@@ -658,7 +658,7 @@ export interface paths {
     patch: operations['updateResource'];
     trace?: never;
   };
-  '/resources/{id}/transfer': {
+  '/resources/{id}/owners': {
     parameters: {
       query?: never;
       header?: never;
@@ -667,12 +667,12 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Transfer resource */
-    post: operations['transferResource'];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
-    patch?: never;
+    /** Update resource owners */
+    patch: operations['updateResourceOwners'];
     trace?: never;
   };
   '/resources/{id}/propose': {
@@ -1606,8 +1606,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -1643,8 +1646,12 @@ export interface components {
       resourceType: 'apiCall';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -1985,8 +1992,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -2022,8 +2032,12 @@ export interface components {
       resourceType: 'audio';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -2792,8 +2806,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -2829,8 +2846,12 @@ export interface components {
       resourceType: 'externalReferences';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -3276,8 +3297,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -3313,8 +3337,12 @@ export interface components {
       resourceType: 'images';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -3899,8 +3927,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -3936,8 +3967,12 @@ export interface components {
       resourceType: 'locationMetadata';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -4474,8 +4509,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -4511,8 +4549,12 @@ export interface components {
       resourceType: 'plainText';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -5449,8 +5491,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -5486,8 +5531,12 @@ export interface components {
       resourceType: 'richText';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -6013,8 +6062,11 @@ export interface components {
        * @description Whether this resource is writable for the requesting user
        */
       writable?: boolean | null;
-      /** @description Public user data for user owning this resource */
-      owner?: components['schemas']['UserReadPublic'] | null;
+      /**
+       * Owners
+       * @description Public user data for user owning this resource
+       */
+      owners?: components['schemas']['UserReadPublic'][] | null;
       /**
        * Sharedreadusers
        * @description Public user data for users allowed to read this resource
@@ -6050,8 +6102,12 @@ export interface components {
       resourceType: 'textAnnotation';
       /** @description If this is a version of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
-      /** @description User owning this resource */
-      ownerId?: components['schemas']['PydanticObjectId'] | null;
+      /**
+       * Ownerids
+       * @description Users owning this resource
+       * @default []
+       */
+      ownerIds: components['schemas']['PydanticObjectId'][];
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -6535,7 +6591,7 @@ export interface components {
        * @default [
        *       "messageReceived",
        *       "newCorrection",
-       *       "resourceTransferred",
+       *       "addedAsOwner",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]
@@ -6609,7 +6665,7 @@ export interface components {
     UserNotificationTrigger:
       | 'messageReceived'
       | 'newCorrection'
-      | 'resourceTransferred'
+      | 'addedAsOwner'
       | 'resourceProposed'
       | 'resourcePublished';
     /**
@@ -6664,7 +6720,7 @@ export interface components {
        * @default [
        *       "messageReceived",
        *       "newCorrection",
-       *       "resourceTransferred",
+       *       "addedAsOwner",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]
@@ -9077,7 +9133,7 @@ export interface operations {
       };
     };
   };
-  transferResource: {
+  updateResourceOwners: {
     parameters: {
       query?: never;
       header?: never;
@@ -9088,7 +9144,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['PydanticObjectId'];
+        'application/json': components['schemas']['PydanticObjectId'][];
       };
     };
     responses: {
