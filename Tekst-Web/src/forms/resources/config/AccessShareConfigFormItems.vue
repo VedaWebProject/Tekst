@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type PublicUserSearchFilters, type UserReadPublic } from '@/api';
 import FormSection from '@/components/FormSection.vue';
-import UserDisplayText from '@/components/user/UserDisplayText.vue';
-import { usePublicUserSearch } from '@/composables/publicUserSearch';
+import UserDisplay from '@/components/user/UserDisplay.vue';
+import { usePublicUserSearch } from '@/composables/user';
 import { $t } from '@/i18n';
-import { UserIcon } from '@/icons';
 import { useAuthStore } from '@/stores';
-import { NAlert, NFormItem, NIcon, NSelect, NTag, type SelectOption } from 'naive-ui';
+import { NAlert, NFormItem, NSelect, NTag, type SelectOption } from 'naive-ui';
 import { computed, h, ref, type VNodeChild } from 'vue';
 
 const props = defineProps<{
@@ -36,7 +35,7 @@ const addedSharesUsersCache = ref<UserReadPublic[]>([]);
 const sharingAuthorized = computed(
   () =>
     auth.user?.isSuperuser ||
-    (auth.user && props.resource.owner && auth.user.id === props.resource.owner.id)
+    (auth.user && !!props.resource.ownerIds?.includes(auth.user.id))
 );
 
 function postprocessUserOptions(
@@ -53,7 +52,7 @@ function postprocessUserOptions(
         searchedUsers.value?.find((u) => u.id === id) ||
         addedSharesUsersCache.value.find((u) => u.id === id),
       disabled:
-        id === props.resource.owner?.id ||
+        props.resource.ownerIds.includes(id) ||
         (id === auth.user?.id && !auth.user?.isSuperuser) ||
         disabledIds.includes(id),
     }))
@@ -90,7 +89,7 @@ function handleUserSearch(query: string) {
 }
 
 function renderUserSelectLabel(option: SelectOption): VNodeChild {
-  return h(UserDisplayText, { user: option.user as UserReadPublic });
+  return h(UserDisplay, { user: option.user as UserReadPublic, link: false, size: 'small' });
 }
 
 function renderUserSelectTag(props: { option: SelectOption; handleClose: () => void }): VNodeChild {
@@ -107,8 +106,8 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       },
     },
     {
-      default: () => `@${(props.option.user as UserReadPublic).username}`,
-      icon: () => h(NIcon, null, { default: () => h(UserIcon) }),
+      default: () =>
+        h(UserDisplay, { user: props.option.user as UserReadPublic, link: false, size: 'small' }),
     }
   );
 }
@@ -118,14 +117,6 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
   <div>
     <n-alert v-if="!sharingAuthorized" type="warning" :title="$t('common.warning')" class="mb-lg">
       {{ $t('resources.settings.sharingUnauthorized') }}
-    </n-alert>
-    <n-alert
-      v-else-if="props.resource.public || props.resource.proposed"
-      type="warning"
-      :title="$t('common.important')"
-      class="mb-lg"
-    >
-      {{ $t('resources.settings.unavailableWhenPublished') }}
     </n-alert>
 
     <form-section v-if="sharingAuthorized" :title="$t('models.resource.sharedRead')">
@@ -137,7 +128,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
+          :disabled="!sharingAuthorized"
           max-tag-count="responsive"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
@@ -160,7 +151,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized || props.resource.public || props.resource.proposed"
+          :disabled="!sharingAuthorized"
           max-tag-count="responsive"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"

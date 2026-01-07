@@ -461,7 +461,7 @@ async def update_resource_owners(
     user: UserDep,
     cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
-    owner_ids: Annotated[list[PydanticObjectId], Body()],
+    owner_ids: Annotated[list[PydanticObjectId], Body(min_length=1)],
 ) -> AnyResourceRead:
     # check if resource exists
     resource_doc: ResourceBaseDocument = await ResourceBaseDocument.get(
@@ -470,7 +470,7 @@ async def update_resource_owners(
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    # check if user is allowed to change owners
+    # check if requesting user is allowed to change owners
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
 

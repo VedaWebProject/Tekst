@@ -10,6 +10,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NSelect,
   type FormItemInst,
   type FormItemRule,
   type InputInst,
@@ -19,10 +20,11 @@ import { ref, shallowRef, type Component } from 'vue';
 export interface PromptModalProps {
   actionKey?: string;
   initialValue?: string;
-  type?: 'input' | 'input-osk' | 'textarea' | 'textarea-osk';
+  type?: 'input' | 'input-osk' | 'textarea' | 'textarea-osk' | 'select';
   msg?: string;
   icon?: Component;
   inputLabel?: string;
+  selectOptions?: { label: string; value: string }[];
   title?: string;
   font?: string;
   oskModeKey?: string;
@@ -33,20 +35,9 @@ export interface PromptModalProps {
 }
 
 const props = withDefaults(defineProps<PromptModalProps>(), {
-  actionKey: undefined,
-  initialValue: undefined,
   type: 'input',
-  msg: undefined,
-  icon: undefined,
-  inputLabel: undefined,
-  title: undefined,
   multiline: false,
-  font: undefined,
-  oskModeKey: undefined,
-  placeholder: '',
-  rows: undefined,
   disableOkWhenNoValue: false,
-  validationRules: undefined,
 });
 const liveProps = shallowRef<PromptModalProps>(props);
 const emit = defineEmits(['submit', 'afterLeave']);
@@ -84,7 +75,7 @@ function handleSubmit() {
 }
 
 function handleInputReturn() {
-  if (liveProps.value.type === 'input' || liveProps.value.type === 'input-osk') {
+  if (liveProps.value.type !== 'textarea' && liveProps.value.type === 'textarea-osk') {
     handleSubmit();
   }
 }
@@ -135,6 +126,13 @@ function handleInputReturn() {
           :font="liveProps.font"
           :osk-key="liveProps.oskModeKey"
           @keydown.enter="handleInputReturn"
+        />
+        <n-select
+          v-else-if="liveProps.type === 'select'"
+          ref="inputRef"
+          v-model:value="formModel.input"
+          :options="liveProps.selectOptions"
+          :default-value="liveProps.selectOptions?.[0]?.value"
         />
       </n-form-item>
     </n-form>

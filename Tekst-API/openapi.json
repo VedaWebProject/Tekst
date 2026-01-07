@@ -4031,6 +4031,7 @@
                 "items": {
                   "$ref": "#/components/schemas/PydanticObjectId"
                 },
+                "minItems": 1,
                 "title": "Owner Ids"
               }
             }
@@ -8004,7 +8005,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -8868,7 +8869,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -10667,7 +10668,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -11730,7 +11731,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -13118,7 +13119,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -14370,7 +14371,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -16415,7 +16416,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []
@@ -17670,7 +17671,7 @@
               "$ref": "#/components/schemas/PydanticObjectId"
             },
             "type": "array",
-            "maxItems": 16,
+            "maxItems": 8,
             "title": "Ownerids",
             "description": "Users owning this resource",
             "default": []

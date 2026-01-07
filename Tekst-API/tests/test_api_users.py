@@ -210,6 +210,17 @@ async def test_user_deletes_self(
 
 
 @pytest.mark.anyio
+async def test_last_superuser_deletes_self(
+    login,
+    test_client: AsyncClient,
+    assert_status,
+):
+    await login(is_superuser=True)
+    resp = await test_client.delete("/users/me")
+    assert_status(403, resp)
+
+
+@pytest.mark.anyio
 async def test_update_user(
     login,
     register_test_user,

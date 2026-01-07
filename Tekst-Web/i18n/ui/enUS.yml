@@ -334,6 +334,7 @@ models:
     share: Access
     sharedRead: Read Access
     sharedWrite: Write Access
+    owners: Owners
     config: Configuration
   meta:
     modelLabel: Metadata
@@ -390,7 +391,7 @@ resources:
   shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
   correctionNotesAction: Show correction notes
-  transferAction: Transfer to user
+  setOwnersAction: Set resource owners
   reqVersionIntegrationAction: Propose integration
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
@@ -399,15 +400,15 @@ resources:
   unproposeAction: Revoke publication proposal
   publishAction: Publish
   unpublishAction: Revoke publication
-  warnTransfer: |
-    When transferring a resource to another user, you lose your ability to
+  warnSetOwners: |
+    When you remove yourself as a resource owner, you lose your ability to
     edit, delete, propose and grant access rights to this resource.
     Please only proceed if you are sure that this is what you want.
   warnPropose: |
     You are about to propose your resource for publication. It's very important that
     you understand the implications of a publication proposal.
   warnUnpropose: |
-    Are you sure you want to revoke your publication proposal for this resource?
+    Are you sure you want to revoke the publication proposal for this resource?
   warnPublish: |
     You are about to publish this resource, making it accessible to
     non-registered users. You will be set as the owner of this resource and assumed
@@ -426,7 +427,7 @@ resources:
     After making corrections or additions to the original resources contents,
     you may suggest to the owner to incorporate your changes or parts of them.
     Do you want to proceed?
-  msgTransferred: The resource "{title}" has been transferred to user "{username}".
+  msgOwnersSet: Ownership of "{title}" updated.
   msgProposed: The resource "{title}" has been proposed for publication.
   msgUnproposed: The publication proposal for the resource "{title}" has been revoked.
   msgPublished: The resource "{title}" has been published.
@@ -445,7 +446,6 @@ resources:
     props: Properties
     coreInfo: Core Information
     presentation: Presentation
-    unavailableWhenPublished: Access settings are unavailable for published resources.
     sharingUnauthorized: You are not authorized to view or change access settings for this resource.
     msgSaved: Your changes to the resource "{title}" have been saved.
     config:
@@ -630,8 +630,8 @@ account:
       resourceProposed: someone proposes a resource for publication (via platform message)
       resourcePublished: a resource is published (via platform message)
       messageReceived: I receive a message from another user (via email)
-      newCorrection: a new correction note on one of my resources has been created (via email)
-      resourceTransferred: ownership of a resource has been transferred to me (via email)
+      newCorrection: a correction note on one of my resources is created (via email)
+      addedAsOwner: I am marked as owner of a resource (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators

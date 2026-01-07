@@ -45,7 +45,7 @@ const getInitialModel = (): AnyResourceRead =>
     textId: state.text?.id || '',
     level: state.text?.defaultLevel || 0,
     resourceType: availableResourceTypes[0].name,
-    ownerId: auth.user?.id,
+    ownerIds: [auth.user?.id ?? ''],
     public: false,
     proposed: false,
     citation: undefined,
@@ -157,7 +157,7 @@ async function handleSaveClick() {
             </div>
           </template>
           <!-- RESOURCE TYPE -->
-          <n-form-item :label="$t('models.resource.resourceType')" path="resourceType">
+          <n-form-item :label="$t('models.resource.resourceType')" required>
             <n-select
               v-model:value="model.resourceType"
               :default-value="resourceTypeOptions[0]?.value"

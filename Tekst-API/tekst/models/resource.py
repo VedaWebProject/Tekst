@@ -147,7 +147,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         list[PydanticObjectId],
         Field(
             description="Users owning this resource",
-            max_length=16,
+            max_length=8,
         ),
         ExcludeFromModelVariants(
             update=True,

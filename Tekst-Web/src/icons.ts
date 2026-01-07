@@ -47,6 +47,7 @@ import FormatListNumberedOutlined from '@vicons/material/FormatListNumberedOutli
 import FormatQuoteFilled from '@vicons/material/FormatQuoteFilled';
 import FormatSizeOutlined from '@vicons/material/FormatSizeOutlined';
 import GavelOutlined from '@vicons/material/GavelOutlined';
+import GroupOutlined from '@vicons/material/GroupOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
 import HelpCenterOutlined from '@vicons/material/HelpCenterOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
@@ -109,7 +110,6 @@ import SkipNextFilled from '@vicons/material/SkipNextFilled';
 import SkipPreviousFilled from '@vicons/material/SkipPreviousFilled';
 import SortOutlined from '@vicons/material/SortOutlined';
 import StarHalfFilled from '@vicons/material/StarHalfFilled';
-import SupervisorAccountRound from '@vicons/material/SupervisorAccountRound';
 import TranslateOutlined from '@vicons/material/TranslateOutlined';
 import UndoOutlined from '@vicons/material/UndoOutlined';
 import UpdateOutlined from '@vicons/material/UpdateOutlined';
@@ -234,7 +234,7 @@ export {
   FileUploadOutlined as UploadIcon,
   PersonRemoveFilled as UserDowngradeIcon,
   PersonOutlined as UserIcon,
-  SupervisorAccountRound as UsersIcon,
+  GroupOutlined as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
   AltRouteOutlined as VersionIcon,
   AutoFixHighOutlined as WandIcon,

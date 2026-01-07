@@ -1,4 +1,4 @@
-import { resourceTypes, type Translation } from '@/api';
+import { type Translation } from '@/api';
 import { $t, localeProfiles } from '@/i18n';
 import type { FormItemRule } from 'naive-ui';
 
@@ -246,19 +246,6 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('common.value'), 'blur'),
     minMaxCharsRule(1, 512, 'blur'),
   ],
-  resourceType: [
-    requiredStringRule(() => $t('models.resource.resourceType'), 'blur'),
-    {
-      validator: (_: FormItemRule, value: string) =>
-        !!value && resourceTypes.map((rt) => rt.name).includes(value),
-      message: () =>
-        $t('forms.rulesFeedback.mustBeOneOf', {
-          x: $t('models.resource.resourceType'),
-          values: resourceTypes.map((rt) => rt.name).join(', '),
-        }),
-      trigger: 'blur',
-    },
-  ],
   level: [
     {
       required: true,
@@ -268,6 +255,18 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
           x: $t('common.level'),
         }),
       trigger: 'blur',
+    },
+  ],
+};
+
+export const resourceOwnershipRules: Record<string, FormItemRule[]> = {
+  ownerIds: [
+    {
+      validator: (_, v: string[]) => !!v && Array.isArray(v) && v.length >= 1 && v.length <= 8,
+      message: () =>
+        $t('forms.rulesFeedback.isRequired', {
+          x: $t('models.resource.owners'),
+        }),
     },
   ],
 };
