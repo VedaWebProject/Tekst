@@ -33,9 +33,7 @@ const {
 const addedSharesUsersCache = ref<UserReadPublic[]>([]);
 
 const sharingAuthorized = computed(
-  () =>
-    auth.user?.isSuperuser ||
-    (auth.user && !!props.resource.ownerIds?.includes(auth.user.id))
+  () => auth.user?.isSuperuser || (auth.user && !!props.resource.ownerIds?.includes(auth.user.id))
 );
 
 function postprocessUserOptions(

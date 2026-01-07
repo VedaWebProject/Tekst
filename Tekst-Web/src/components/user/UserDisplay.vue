@@ -102,23 +102,28 @@ function handleUserClick(user: UserReadPublic) {
         :render-label="renderOptionLabel"
         @select="(_, o) => handleUserClick(o.user as UserReadPublic)"
       >
-      <n-button text :focusable="false">
-            <n-flex align="center" size="small">
-              <div :style="{marginRight: `-${8 * (users.length -1)}px`}">
-            <user-avatar
-              v-for="(user, index) in users"
-              :key="user.id"
-              :username="user.username"
-              :avatar-url="user.avatarUrl"
-              :size="iconSizes[size]"
-              :style="{ position: 'relative', left: `-${8 * index}px`, outline: '2px solid var(--content-bg-color)' }"
-            /></div>
+        <n-button text :focusable="false">
+          <n-flex align="center" size="small">
+            <div :style="{ marginRight: `-${8 * (users.length - 1)}px` }">
+              <user-avatar
+                v-for="(user, index) in users"
+                :key="user.id"
+                :username="user.username"
+                :avatar-url="user.avatarUrl"
+                :size="iconSizes[size]"
+                :style="{
+                  position: 'relative',
+                  left: `-${8 * index}px`,
+                  outline: '2px solid var(--content-bg-color)',
+                }"
+              />
+            </div>
             <span>
               {{ userDisplayText(users[0], false) }}
               <b>+{{ users.length - 1 }}</b>
             </span>
           </n-flex>
-          </n-button>
+        </n-button>
       </n-dropdown>
     </template>
   </n-flex>

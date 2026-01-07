@@ -256,7 +256,9 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
         );
         expandedNames.value = [data.id];
         nextTick(() => {
-          document.querySelector(`#res-list-item-${data.id}`)?.scrollIntoView({ behavior: 'smooth' });
+          document
+            .querySelector(`#res-list-item-${data.id}`)
+            ?.scrollIntoView({ behavior: 'smooth' });
         });
       }
       actionsLoading.value = false;
@@ -353,13 +355,16 @@ function handleReqVersionIntegrationSelect(versionId: string, contactId: string)
   userMessages.openConversation(contactId, prepMsg);
 }
 
-function handleCollapseUpdate(activeItemName?: string){
+function handleCollapseUpdate(activeItemName?: string) {
   // @ts-expect-error this is a valid property type but it's typed wrong in the library
   hashParams.id = activeItemName;
-  setTimeout(() => document
-    .querySelector(`#res-list-item-${activeItemName}`)
-    ?.scrollIntoView({ behavior: 'smooth' }), 220)
-
+  setTimeout(
+    () =>
+      document
+        .querySelector(`#res-list-item-${activeItemName}`)
+        ?.scrollIntoView({ behavior: 'smooth' }),
+    220
+  );
 }
 
 onMounted(() => {
