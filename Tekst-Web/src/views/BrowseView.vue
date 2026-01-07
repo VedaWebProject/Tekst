@@ -122,7 +122,7 @@ onMounted(() => {
           !browse.focusView &&
           !!category.category.translation
         "
-        align="baseline"
+        align="center"
         class="mb-md"
       >
         <h2
@@ -136,7 +136,7 @@ onMounted(() => {
         </h2>
         <n-button
           v-if="!!catHiddenResCount[category.category.key || '']"
-          text
+          secondary
           :focusable="false"
           size="tiny"
           class="translucent"
