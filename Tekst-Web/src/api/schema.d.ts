@@ -6283,6 +6283,11 @@ export interface components {
     /** TextAnnotationToken */
     TextAnnotationToken: {
       /**
+       * Id
+       * @description Unique ID of the token (will be generated if unset)
+       */
+      id?: null | string;
+      /**
        * Annotations
        * @description List of annotations on a token
        * @default []
