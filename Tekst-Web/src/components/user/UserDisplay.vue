@@ -55,7 +55,13 @@ function handleUserClick(user: UserReadPublic) {
 </script>
 
 <template>
-  <n-flex align="center" :size="size" :style="`font-size: var(--font-size-${size})`" :wrap="false">
+  <n-flex
+    align="center"
+    :size="size"
+    :style="`font-size: var(--font-size-${size})`"
+    :wrap="false"
+    :title="$t('resources.ownerTip')"
+  >
     <template v-if="system">
       <user-avatar
         username="system"
@@ -63,15 +69,7 @@ function handleUserClick(user: UserReadPublic) {
         :size="iconSizes[size]"
         style="flex-shrink: 0"
       />
-      <n-dropdown
-        :options="options"
-        :render-label="renderOptionLabel"
-        @select="(_, o) => handleUserClick(o.user as UserReadPublic)"
-      >
-        <n-button text :focusable="false">
-          {{ state.pf?.state.platformName ?? '–' }}
-        </n-button>
-      </n-dropdown>
+      <span>{{ state.pf?.state.platformName ?? '–' }}</span>
     </template>
     <template v-else-if="users.length == 1">
       <user-avatar

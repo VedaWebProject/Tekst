@@ -53,7 +53,6 @@ const showInfoModal = ref(false);
         v-if="!!auth.user"
         :user="resource.owners || undefined"
         size="small"
-        :system="resource.public"
         style="flex: 2"
       />
       <copy-to-clipboard-button

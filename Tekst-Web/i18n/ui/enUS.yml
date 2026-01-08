@@ -379,6 +379,7 @@ resources:
   copyInfoUrlTip: Copy the URL to these resource informations
   new: New Resource
   versionOf: Version of "{title}"
+  ownerTip: Resource owner, responsible for content maintenance
   msgNotYourResourceTitle: This is not your resource!
   msgNotYourResourceBody: |
     As an administrator, you are able to modify resources owned by other users.
