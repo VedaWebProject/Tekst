@@ -234,6 +234,7 @@ class TextDocument(Text, DocumentBase):
 
     @classmethod
     async def get_active_texts_ids(cls):
+        """Returns list of IDs of all active (publicly listed) texts"""
         return [
             text.id
             for text in await TextDocument.find(

@@ -406,10 +406,9 @@ resources:
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
   warnSetOwners: |
-    Wenn Sie sich selbst als Benutzer*in einer Ressource entfernen,
-    verlieren Sie Ihre Berechtigungen, diese zu editieren,
-    zu löschen, zur Veröffentlichung vorzuschlagen und Zugriffsrechte zu vergeben.
-    Bitte fahren Sie nur fort, wenn Sie sich dessen bewusst sind!
+    Bitte lesen Sie den Hiletext über Berechtigungen für Ressourcen sorgfältig durch,
+    bevor Sie die Besitzer*innen einer Ressource ändern.
+    Klicken Sie dazu auf das Fragezeichen-Symbol
   warnPropose: |
     Sie sind dabei, Ihre Ressource zur Veröffentlichung vorzuschlagen.
     Es ist sehr wichtig, dass Sie die Auswirkungen eines
@@ -457,7 +456,7 @@ resources:
     heading: Ressourcen-Einstellungen
     props: Eigenschaften
     coreInfo: Grundinformationen
-    presentation: Darstellung
+    unavailableWhenNotPrivate: Zugriffseinstellungen sind für veröffentlichte und vorgeschlagene Ressourcen nicht verfügbar.
     sharingUnauthorized: Sie sind nicht authorisiert, Zugriffsrechte für diese Ressource einzusehen oder zu vergeben.
     msgSaved: Ihre Änderungen an der Ressource "{title}" wurden gespeichert.
     config:

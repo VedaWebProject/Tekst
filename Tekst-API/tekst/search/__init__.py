@@ -438,7 +438,7 @@ async def _get_resources(
         else {}
     )
     access_restr = (
-        await ResourceBaseDocument.access_conditions_read(user)
+        await ResourceBaseDocument.query_criteria_read(user)
         if check_read_access
         else {}
     )
