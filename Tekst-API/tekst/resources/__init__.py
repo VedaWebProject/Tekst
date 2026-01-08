@@ -689,7 +689,6 @@ async def prepare_resource_read(
                     for_user.id in resource.owner_ids
                     or for_user.id in resource_doc.shared_write
                 )
-                and not resource.public
                 and not resource.proposed
             )
         )

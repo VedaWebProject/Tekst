@@ -549,7 +549,11 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
         ]
 
     @classmethod
-    async def access_conditions_read(cls, user: UserRead | None) -> dict:
+    async def query_criteria_read(cls, user: UserRead | None) -> dict:
+        """
+        Returns DB query criteria to match resources
+        that the given user is allowed to read
+        """
         active_texts_ids = await TextDocument.get_active_texts_ids()
         # compose access condition for different user types
         if not user:
@@ -577,25 +581,39 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             )
 
     @classmethod
-    async def access_conditions_write(cls, user: UserRead | None) -> dict:
+    async def query_criteria_write(cls, user: UserRead | None) -> dict:
+        """
+        Returns DB query criteria to match resources
+        that the given user is allowed to write
+        """
         if not user:  # pragma: no cover (as this should never happen anyway)
             # not logged in, no user (don't match anything!)
             return Eq(ResourceBaseDocument.public, "THIS_WONT_MATCH")
 
         if user.is_superuser:
-            # superusers can write all resources
+            # superusers can do whatever
             return {}
-
-        active_texts_ids = await TextDocument.get_active_texts_ids()
 
         # compose conditions for logged in, regular users
         return And(
-            In(ResourceBaseDocument.text_id, active_texts_ids),
-            ResourceBaseDocument.public == False,  # noqa: E712
-            ResourceBaseDocument.proposed == False,  # noqa: E712
+            # user generally has to be owner or have write access
             Or(
                 ResourceBaseDocument.owner_ids == user.id,
                 ResourceBaseDocument.shared_write == user.id,
+            ),
+            # prevent editing of resources proposed for publication
+            Eq(ResourceBaseDocument.proposed, False),
+            # resource is either non-public and belongs to an active text
+            # or the user is an owner of the resource
+            Or(
+                And(
+                    In(
+                        ResourceBaseDocument.text_id,
+                        await TextDocument.get_active_texts_ids(),
+                    ),
+                    Eq(ResourceBaseDocument.public, False),
+                ),
+                Eq(ResourceBaseDocument.owner_ids, user.id),
             ),
         )
 

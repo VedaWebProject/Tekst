@@ -2,6 +2,7 @@
 import type { AnyResourceRead, PublicUserSearchFilters, UserReadPublic } from '@/api';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import { useMessages } from '@/composables/messages';
 import { usePublicUserSearch } from '@/composables/user';
@@ -47,7 +48,6 @@ const usersOptions = computed(() =>
   users.value.map((u) => ({
     value: u.id,
     user: u,
-    disabled: resource.value?.public && !u.isSuperuser,
   }))
 );
 
@@ -92,6 +92,7 @@ defineExpose({ show });
       class="mb-lg"
     >
       {{ $t('resources.warnSetOwners') }}
+      <help-button-widget help-key="resourcePermissions" />
     </n-alert>
     <div class="mb-lg">
       <b>{{ $t('models.resource.modelLabel') }}:</b> {{ resourceTitle }}

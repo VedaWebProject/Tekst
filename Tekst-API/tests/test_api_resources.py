@@ -991,7 +991,7 @@ async def test_delete_proposed_resource(
 
 
 @pytest.mark.anyio
-async def test_set_resource_owners(
+async def test_update_resource_owners(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -1003,16 +1003,34 @@ async def test_set_resource_owners(
     resource_id = inserted_ids["resources"][0]
 
     # register regular test user
-    user = await register_test_user(is_superuser=False)
+    u = await register_test_user(is_superuser=False)
+    # register regular unverified test user
+    uu = await register_test_user(is_superuser=False, is_verified=False)
     # register test superuser and log in
-    superuser = await login(is_superuser=True)
+    su = await login(is_superuser=True)
 
     # set regular user as owner of public resource
     resp = await test_client.patch(
         f"/resources/{resource_id}/owners",
-        json=[user["id"]],
+        json=[u["id"]],
     )
-    assert_status(400, resp)
+    assert_status(200, resp)
+
+    # try the same as said regular user
+    await login(user=u)
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[uu["id"]],
+    )
+    assert_status(403, resp)
+
+    # take ownership from regular user
+    await login(user=su)
+    resp = await test_client.patch(
+        f"/resources/{resource_id}/owners",
+        json=[su["id"]],
+    )
+    assert_status(200, resp)
 
     # unpublish resource
     resp = await test_client.post(
@@ -1023,7 +1041,7 @@ async def test_set_resource_owners(
     # use wrong res ID
     resp = await test_client.patch(
         f"/resources/{wrong_id}/owners",
-        json=[user["id"]],
+        json=[u["id"]],
     )
     assert_status(404, resp)
 
@@ -1035,41 +1053,41 @@ async def test_set_resource_owners(
     assert_status(400, resp)
 
     # set owner without permission
-    await login(user=user)
+    await login(user=u)
     resp = await test_client.patch(
         f"/resources/{resource_id}/owners",
-        json=[user["id"]],
+        json=[u["id"]],
     )
     assert_status(403, resp)
 
     # set regular user as owner
-    await login(user=superuser)
+    await login(user=su)
     resp = await test_client.patch(
         f"/resources/{resource_id}/owners",
-        json=[user["id"]],
+        json=[u["id"]],
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert user["id"] in resp.json()["ownerIds"]
+    assert u["id"] in resp.json()["ownerIds"]
 
     # ....and do that again
     resp = await test_client.patch(
         f"/resources/{resource_id}/owners",
-        json=[user["id"]],
+        json=[u["id"]],
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert user["id"] in resp.json()["ownerIds"]
+    assert u["id"] in resp.json()["ownerIds"]
 
     # ....and set both users as owners
     resp = await test_client.patch(
         f"/resources/{resource_id}/owners",
-        json=[user["id"], superuser["id"]],
+        json=[u["id"], su["id"]],
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert user["id"] in resp.json()["ownerIds"]
-    assert superuser["id"] in resp.json()["ownerIds"]
+    assert u["id"] in resp.json()["ownerIds"]
+    assert su["id"] in resp.json()["ownerIds"]
 
 
 @pytest.mark.anyio

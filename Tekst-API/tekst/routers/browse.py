@@ -182,7 +182,7 @@ async def get_location_data(
     # the location path (resource.level <= location_doc.level)
     target_resources = await ResourceBaseDocument.find(
         In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     ).to_list()
     content_docs = (
@@ -281,7 +281,7 @@ async def get_content_context(
 
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
 
@@ -335,7 +335,7 @@ async def get_nearest_content_location(
     """
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:

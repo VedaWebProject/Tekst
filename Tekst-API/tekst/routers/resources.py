@@ -162,7 +162,7 @@ async def create_resource_version(
     # check if resource exists
     resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:
@@ -234,20 +234,21 @@ async def update_resource(
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
         ResourceBaseDocument.resource_type == updates.resource_type,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    # only allow shares modification for owner(s) or superusers
-    if not user.is_superuser and user.id not in resource_doc.owner_ids:
+    # prevent shares modification by non-owners and non-superusers,
+    # generally prevent shares modification for proposed and public resources
+    if (
+        (not user.is_superuser and user.id not in resource_doc.owner_ids)
+        or resource_doc.proposed
+        or resource_doc.public
+    ):
         updates.shared_read = resource_doc.shared_read
         updates.shared_write = resource_doc.shared_write
-    # prevent shares for published resources
-    elif resource_doc.public:
-        updates.shared_read = []
-        updates.shared_write = []
     # else, validate shares combination
     else:
         # make sure shares are set on updates
@@ -343,7 +344,7 @@ async def find_resources(
     resource_docs = (
         await ResourceBaseDocument.find(
             example,
-            await ResourceBaseDocument.access_conditions_read(user),
+            await ResourceBaseDocument.query_criteria_read(user),
             with_children=True,
         )
         .limit(limit)
@@ -373,7 +374,7 @@ async def get_resource(
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:
@@ -452,7 +453,7 @@ async def delete_resource(
             errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_403_FORBIDDEN,
-            errors.E_400_RESOURCE_PUBLIC_INVALID_OWNER,
+            errors.E_403_RESOURCE_PUBLIC_INVALID_OWNER,
             errors.E_400_TARGET_USER_NON_EXISTENT,
         ]
     ),
@@ -473,6 +474,8 @@ async def update_resource_owners(
     # check if requesting user is allowed to change owners
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
+    if not user.is_superuser and (resource_doc.public or resource_doc.proposed):
+        raise errors.E_403_FORBIDDEN
 
     # check if target users exist, collect them
     owners: list[UserDocument] = []
@@ -481,12 +484,6 @@ async def update_resource_owners(
         if not owner:
             raise errors.E_400_TARGET_USER_NON_EXISTENT
         owners.append(owner)
-
-    # check if all target users are superusers in case resource is public
-    if resource_doc.public:
-        for u in owners:
-            if not u.is_superuser:
-                raise errors.E_400_RESOURCE_PUBLIC_INVALID_OWNER
 
     # check user(s) resources limit(s)
     for u in owners:
@@ -725,7 +722,7 @@ async def download_resource_template(
         raise errors.E_404_RESOURCE_NOT_FOUND
     if not await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     ).exists():
         raise errors.E_403_FORBIDDEN
@@ -795,7 +792,7 @@ async def _import_resource_task(
     # check if user has permission to write to this resource, if so, fetch from DB
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource_doc:
@@ -994,7 +991,7 @@ async def export_resource_contents_task(
     # check if user has permission to read this resource, if so, fetch from DB
     resource: ResourceBaseDocument = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource:
@@ -1167,7 +1164,7 @@ async def get_aggregations(
     # try to get resource doc to check if access is allowed for user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:
@@ -1204,7 +1201,7 @@ async def get_resource_coverage_data(
     # try to get resource doc to check if access is allowed for user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:

@@ -43,7 +43,7 @@ async def create_correction(
     # check if the resource this content belongs to is readable by user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == correction.resource_id,
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     )
     if not resource_doc:
@@ -155,7 +155,7 @@ async def delete_correction(
     # check if the requested resource is writable by this user
     resource_doc = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == correction_doc.resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource_doc:

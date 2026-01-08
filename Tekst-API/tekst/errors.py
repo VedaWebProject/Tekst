@@ -182,10 +182,10 @@ E_400_RESOURCE_PROPOSED_DELETE = _error_instance(
     msg="Cannot delete a proposed resource",
 )
 
-E_400_RESOURCE_PUBLIC_INVALID_OWNER = _error_instance(
-    status_code=status.HTTP_400_BAD_REQUEST,
+E_403_RESOURCE_PUBLIC_INVALID_OWNER = _error_instance(
+    status_code=status.HTTP_403_FORBIDDEN,
     key="resourcePublicInvalidOwner",
-    msg="Public resources may only be owned by administrators",
+    msg="Only superusers may set regular users as owners of public resources",
 )
 
 E_400_TARGET_USER_NON_EXISTENT = _error_instance(

@@ -117,8 +117,17 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
       {{ $t('resources.settings.sharingUnauthorized') }}
     </n-alert>
 
+    <n-alert
+      v-else-if="props.resource.public || props.resource.proposed"
+      type="info"
+      :title="$t('common.info')"
+      class="mb-lg"
+    >
+      {{ $t('resources.settings.unavailableWhenNotPrivate') }}
+    </n-alert>
+
     <form-section v-if="sharingAuthorized" :title="$t('models.resource.sharedRead')">
-      <n-form-item v-if="sharingAuthorized" path="sharedRead" :show-label="false">
+      <n-form-item path="sharedRead" :show-label="false">
         <n-select
           v-model:value="sharedRead"
           multiple
@@ -126,7 +135,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized"
+          :disabled="!sharingAuthorized || resource.public || resource.proposed"
           max-tag-count="responsive"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"
@@ -141,7 +150,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
     </form-section>
 
     <form-section v-if="sharingAuthorized" :title="$t('models.resource.sharedWrite')">
-      <n-form-item v-if="sharingAuthorized" path="sharedWrite" :show-label="false">
+      <n-form-item path="sharedWrite" :show-label="false">
         <n-select
           v-model:value="sharedWrite"
           multiple
@@ -149,7 +158,7 @@ function renderUserSelectTag(props: { option: SelectOption; handleClose: () => v
           clearable
           remote
           clear-filter-after-select
-          :disabled="!sharingAuthorized"
+          :disabled="!sharingAuthorized || resource.public || resource.proposed"
           max-tag-count="responsive"
           :render-label="renderUserSelectLabel"
           :render-tag="renderUserSelectTag"

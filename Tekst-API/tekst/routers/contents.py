@@ -43,7 +43,7 @@ async def create_content(
     # check if the resource this content belongs to is writable by user
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content.resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource:
@@ -95,7 +95,7 @@ async def get_content(
     resource_read_allowed = content_doc and (
         await ResourceBaseDocument.find_one(
             ResourceBaseDocument.id == content_doc.resource_id,
-            await ResourceBaseDocument.access_conditions_read(user),
+            await ResourceBaseDocument.query_criteria_read(user),
             with_children=True,
         ).exists()
     )
@@ -126,7 +126,7 @@ async def update_content(
     # check if the resource this content belongs to is writable by user
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource:
@@ -160,7 +160,7 @@ async def delete_content(
         raise errors.E_404_CONTENT_NOT_FOUND
     resource = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == content_doc.resource_id,
-        await ResourceBaseDocument.access_conditions_write(user),
+        await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource:
@@ -222,7 +222,7 @@ async def find_contents(
     # get readable resources as a subset of the requested ones (might be all resources)
     readable_resources = await ResourceBaseDocument.find(
         In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
-        await ResourceBaseDocument.access_conditions_read(user),
+        await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     ).to_list()
 

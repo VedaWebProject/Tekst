@@ -401,9 +401,9 @@ resources:
   publishAction: Publish
   unpublishAction: Revoke publication
   warnSetOwners: |
-    When you remove yourself as a resource owner, you lose your ability to
-    edit, delete, propose and grant access rights to this resource.
-    Please only proceed if you are sure that this is what you want.
+    Please carefully read and understand the help text regarding resource permissions
+    before changing the ownership of resources. To do so, click this little question
+    mark button
   warnPropose: |
     You are about to propose your resource for publication. It's very important that
     you understand the implications of a publication proposal.
@@ -445,7 +445,7 @@ resources:
     heading: Resource Settings
     props: Properties
     coreInfo: Core Information
-    presentation: Presentation
+    unavailableWhenNotPrivate: Access settings are unavailable for published and proposed resources.
     sharingUnauthorized: You are not authorized to view or change access settings for this resource.
     msgSaved: Your changes to the resource "{title}" have been saved.
     config:

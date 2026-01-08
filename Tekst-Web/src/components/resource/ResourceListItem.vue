@@ -225,12 +225,16 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   },
                 ]
               : []),
-            {
-              label: $t('resources.setOwnersAction'),
-              key: 'setOwners',
-              icon: renderIcon(UserIcon),
-              action: () => emit('setOwnersClick', props.resource),
-            },
+            ...(props.user?.isSuperuser || (!props.resource.public && !props.resource.proposed)
+              ? [
+                  {
+                    label: $t('resources.setOwnersAction'),
+                    key: 'setOwners',
+                    icon: renderIcon(UserIcon),
+                    action: () => emit('setOwnersClick', props.resource),
+                  },
+                ]
+              : []),
           ],
         },
       ]
