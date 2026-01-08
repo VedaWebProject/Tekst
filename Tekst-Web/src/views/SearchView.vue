@@ -79,20 +79,9 @@ const resourceOptions = computed(() => {
     children: resources.all
       .filter((r) => r.textId === tId)
       .filter((r) => r.config.general.searchableAdv)
-      .sort((a, b) => {
-        const categories =
-          state.pf?.texts.find((t) => t.id === a.textId)?.resourceCategories?.map((c) => c.key) ||
-          [];
-        const catA = categories.includes(a.config.general.category || '')
-          ? categories.indexOf(a.config.general.category || '')
-          : 99;
-        const catB = categories.includes(b.config.general.category || '')
-          ? categories.indexOf(b.config.general.category || '')
-          : 99;
-        const soA = a.config.general.sortOrder || 99;
-        const soB = b.config.general.sortOrder || 99;
-        return catA * 100 + soA - (catB * 100 + soB);
-      })
+      .sort((a, b) =>
+        pickTranslation(a.title, state.locale).localeCompare(pickTranslation(b.title, state.locale))
+      )
       .map((r) => ({
         label: pickTranslation(r.title, state.locale),
         value: r.id,
