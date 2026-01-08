@@ -53,6 +53,7 @@ interface AnnotationDisplay {
 }
 
 interface TokenDetails {
+  id?: string;
   form: string;
   comment?: string;
   annotations?: {
@@ -300,6 +301,7 @@ const contents = computed(() => {
       return {
         ...c,
         tokens: c.tokens.map((t, i) => ({
+          id: t.id,
           form:
             t.annotations
               .find((a) => a.key === 'form')
@@ -355,6 +357,7 @@ function handleTokenClick(token: Token) {
   if (!token.annotations.length) return;
   const annos = token.annotations.filter((a) => a.key !== 'comment');
   tokenDetails.value = {
+    id: token.id ?? undefined,
     form:
       token.annotations
         .find((a) => a.key === 'form')
@@ -622,6 +625,10 @@ function generatePlaintextAnno(): string {
           </template>
         </template>
       </n-table>
+
+      <div v-if="tokenDetails?.id" class="mt-lg text-mini translucent" style="text-align: center">
+        <b>ID:</b> {{ tokenDetails.id }}
+      </div>
     </generic-modal>
 
     <n-dropdown

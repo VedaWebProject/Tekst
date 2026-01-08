@@ -1,4 +1,6 @@
 import csv
+import random
+import string
 
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -6,6 +8,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
+from beanie.operators import Eq
 from pydantic import BeforeValidator, Field
 
 from tekst.logs import log, log_op_end, log_op_start
@@ -126,7 +129,7 @@ class TextAnnotation(ResourceTypeABC):
         es_queries = []
         strict_suffix = ".strict" if strict else ""
         res_id = str(query.common.resource_id)
-        q_id = str(uuid4())
+        q_id = uuid4().hex
 
         annos_usr_q = query.resource_type_specific.annotations or []
         tokens_field_path = f"resources.{res_id}.tokens"
@@ -300,6 +303,7 @@ class TextAnnotation(ResourceTypeABC):
                     "LOCATION",
                     "SORT",
                     "POSITION",
+                    "TOKEN_ID",
                     *anno_keys,
                     "AUTHORS_COMMENT",
                     "EDITORS_COMMENTS",
@@ -324,6 +328,7 @@ class TextAnnotation(ResourceTypeABC):
                             full_loc_labels.get(str(content.location_id), ""),
                             sort_num,
                             i,
+                            token.id,
                             *csv_annos,
                             content.authors_comment,
                             editors_comments,
@@ -495,18 +500,46 @@ class TextAnnotationResource(ResourceBase):
         precomp_doc.created_at = datetime.now(UTC)
         await precomp_doc.save()
 
+    async def _ensure_token_ids(self):
+        """Checks if all tokens have a token_id annotation, and if not, adds one"""
+        text_slug = None
+        alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
+        async for content in ContentBaseDocument.find(
+            Eq(ContentBaseDocument.resource_id, self.id),
+            with_children=True,
+        ):
+            dirty = False
+            for token in content.tokens:
+                if not token.id:
+                    if not text_slug:
+                        text_doc = await TextDocument.get(self.text_id)
+                        text_slug = text_doc.slug
+                    pre = f"{text_slug}_{self.id}_"
+                    suff = "".join(random.choices(alphabet, k=8))
+                    token.id = pre + suff
+                    dirty = True
+            if dirty:
+                await content.save()
+
     async def resource_precompute_hook(
         self,
         *,
         force: bool = False,
     ) -> None:
         await super().resource_precompute_hook(force=force)
+
+        # update aggregations
         op_id = log_op_start(f"Generate aggregations for resource {str(self.id)}")
         try:
             await self._update_aggregations(force=force)
         except Exception as e:  # pragma: no cover
             log_op_end(op_id, failed=True)
             raise e
+        log_op_end(op_id)
+
+        # ensure token IDs
+        op_id = log_op_start(f"Ensure token IDs for resource {str(self.id)}")
+        await self._ensure_token_ids()
         log_op_end(op_id)
 
 
@@ -538,6 +571,15 @@ class TextAnnotationEntry(ModelBase):
 
 
 class TextAnnotationToken(ModelBase):
+    id: Annotated[
+        ConStrOrNone(
+            max_length=256,
+            cleanup="oneline",
+        ),
+        Field(
+            description="Unique ID of the token (will be generated if unset)",
+        ),
+    ] = None
     annotations: Annotated[
         list[TextAnnotationEntry],
         Field(

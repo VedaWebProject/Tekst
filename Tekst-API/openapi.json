@@ -18058,6 +18058,20 @@
       },
       "TextAnnotationToken": {
         "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1
+              }
+            ],
+            "title": "Id",
+            "description": "Unique ID of the token (will be generated if unset)"
+          },
           "annotations": {
             "items": {
               "$ref": "#/components/schemas/TextAnnotationEntry"
