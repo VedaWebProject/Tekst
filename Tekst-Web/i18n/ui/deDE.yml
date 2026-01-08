@@ -383,6 +383,7 @@ resources:
   copyInfoUrlTip: URL zu diesen Ressourcen-Informationen kopieren
   new: Neue Ressource
   versionOf: Version von "{title}"
+  ownerTip: Ressourcen-Besitzer*in, verantwortlich für inhaltliche Pflege
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
   msgNotYourResourceBody: |
     Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
