@@ -8,7 +8,7 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from '@/icons';
-import { useBrowseStore, useSearchStore } from '@/stores';
+import { useBrowseStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
@@ -22,8 +22,16 @@ withDefaults(
   }
 );
 
+const state = useStateStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
+const theme = useThemeStore();
+
+const bgColor = computed(() =>
+  !!state.pf?.state.browseBarUsesTextColor
+    ? theme.getTextColors().fade4
+    : 'var(--primary-color-fade4)'
+);
 
 const resultNo = computed(
   () =>
@@ -70,7 +78,13 @@ onMounted(() => {
 
 <template>
   <div v-if="search.browseHits" class="bsr-container">
-    <n-flex justify="space-between" align="center" :wrap="false" class="bsr-toolbar">
+    <n-flex
+      justify="space-between"
+      align="center"
+      :wrap="false"
+      class="bsr-toolbar"
+      :style="{ backgroundColor: bgColor }"
+    >
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
         <n-button
@@ -189,7 +203,6 @@ onMounted(() => {
 
 .bsr-toolbar {
   padding: var(--gap-sm);
-  background-color: var(--primary-color-fade3);
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }

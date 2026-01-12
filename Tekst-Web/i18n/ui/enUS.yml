@@ -359,6 +359,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
+    browseBarUsesTextColor: Use current working text's accent color for browse toolbar
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Fonts
     uiFont: User Interface Font
