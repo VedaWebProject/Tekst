@@ -101,7 +101,7 @@ onMounted(() => {
   </icon-heading>
 
   <location-aliases-widget
-    v-if="browse.locationPathHead"
+    v-if="browse.locationPathHead && state.pf?.state.showLocationAliases"
     :location-id="browse.locationPathHead.id"
     :aliases="browse.locationPathHead.aliases || undefined"
     :text-slug="state.textSlug || undefined"
