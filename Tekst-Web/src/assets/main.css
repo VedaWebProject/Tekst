@@ -383,7 +383,7 @@ table td {
 }
 
 .divided {
-  border-bottom: 1px solid var(--main-bg-color);
+  border-bottom: 1px solid var(--primary-color);
   margin-bottom: var(--gap-md) !important;
 }
 
