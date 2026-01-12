@@ -3,14 +3,18 @@ import BrowseLocationControls from '@/components/browse/BrowseLocationControls.v
 import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsToolbar.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
-import { useBrowseStore, useSearchStore, useStateStore } from '@/stores';
+import { useBrowseStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
 const state = useStateStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
+const theme = useThemeStore();
 
+const bgColor = computed(() =>
+  !!state.pf?.state.browseBarUsesTextColor ? theme.getTextColors().base : 'var(--primary-color)'
+);
 const affixRef = ref();
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
@@ -52,7 +56,8 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       :wrap="false"
       justify="space-between"
       align="center"
-      class="browse-toolbar primary-color-bg"
+      class="browse-toolbar"
+      :style="{ backgroundColor: bgColor }"
     >
       <browse-location-controls :button-size="buttonSize" data-tour-key="browseNav" />
 
@@ -64,13 +69,16 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       </div>
 
       <div class="browse-toolbar-end">
-        <n-badge dot :offset="[0, 5]" :show="browse.focusView">
+        <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
-            type="primary"
+            quaternary
+            color="var(--base-color)"
+            :style="{
+              backgroundColor: browse.focusView ? 'var(--base-color-translucent)' : undefined,
+            }"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipFocusView')"
             :focusable="false"
-            :color="browse.focusView ? '#fff5' : undefined"
             :bordered="false"
             data-tour-key="browseFocus"
             @click="browse.focusView = !browse.focusView"
@@ -87,7 +95,8 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
           class="active-resources-badge"
         >
           <n-button
-            type="primary"
+            quaternary
+            color="var(--base-color)"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"

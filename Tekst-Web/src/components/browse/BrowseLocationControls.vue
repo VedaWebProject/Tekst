@@ -53,7 +53,8 @@ whenever(ArrowRight, () => {
   <!-- text location toolbar buttons -->
   <n-flex justify="space-between" align="center" :wrap="false">
     <n-button
-      type="primary"
+      quaternary
+      color="var(--base-color)"
       :focusable="false"
       :title="$t('browse.toolbar.tipPreviousLocation')"
       :size="buttonSize"
@@ -68,7 +69,8 @@ whenever(ArrowRight, () => {
 
     <n-badge value="!" :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <n-button
-        type="primary"
+        quaternary
+        color="var(--base-color)"
         :title="
           $t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
@@ -87,7 +89,8 @@ whenever(ArrowRight, () => {
     <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" />
 
     <n-button
-      type="primary"
+      quaternary
+      color="var(--base-color)"
       :focusable="false"
       :title="$t('browse.toolbar.tipNextLocation')"
       :size="buttonSize"

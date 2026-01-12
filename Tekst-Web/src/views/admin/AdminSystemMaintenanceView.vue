@@ -204,7 +204,7 @@ onBeforeMount(() => {
                 <th
                   colspan="2"
                   :style="{
-                    backgroundColor: theme.getTextColors(indexInfo.textId).fade5,
+                    backgroundColor: theme.getTextColors(indexInfo.textId ?? undefined).fade5,
                   }"
                 >
                   {{ state.textById(indexInfo.textId)?.title || '???' }}

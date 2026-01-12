@@ -41,7 +41,7 @@ import {
 import { computed, h, ref, watch } from 'vue';
 
 const state = useStateStore();
-const { loadPlatformData } = usePlatformData();
+const { pfData, loadPlatformData } = usePlatformData();
 const { message } = useMessages();
 
 const tabsRef = ref<TabsInst>();
@@ -101,11 +101,15 @@ async function handleSaveClick() {
   formRef.value
     ?.validate(async (validationError) => {
       if (validationError) return;
-      const { error } = await PATCH('/platform/state', {
+      const { data, error } = await PATCH('/platform/state', {
         body: getChanges() as PlatformStateUpdate,
       });
-      if (!error) {
-        await loadPlatformData();
+      if (!error && data) {
+        if (pfData.value) {
+          pfData.value.state = data;
+        } else {
+          await loadPlatformData();
+        }
         // If the current locale is invalid after updating the settings,
         // this call will fix it!
         await state.setLocale(state.locale);
@@ -276,6 +280,13 @@ watch(
               <labeled-switch
                 v-model="formModel.showLocationAliases"
                 :label="$t('models.platformSettings.showLocationAliases')"
+              />
+            </n-form-item>
+            <!-- USE CURRENT WORKING TEXT'S ACCENT COLOR FOR BROWSE TOOLBAR -->
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.browseBarUsesTextColor"
+                :label="$t('models.platformSettings.browseBarUsesTextColor')"
               />
             </n-form-item>
           </form-section>
