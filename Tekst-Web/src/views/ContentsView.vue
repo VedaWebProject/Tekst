@@ -443,10 +443,22 @@ whenever(ArrowRight, () => {
     />
   </icon-heading>
 
-  <button-shelf top-gap bottom-gap wrap="wrap-reverse" class="toolbar primary-color-bg">
+  <button-shelf
+    top-gap
+    bottom-gap
+    wrap="wrap-reverse"
+    class="toolbar"
+    :style="{
+      backgroundColor: !!state.pf?.state.browseBarUsesTextColor
+        ? theme.getTextColors().base
+        : 'var(--primary-color)',
+    }"
+  >
     <template #start>
       <n-button
-        type="primary"
+        quaternary
+        color="var(--base-color)"
+        :title="$t('browse.toolbar.tipPreviousLocation')"
         :disabled="loading || !prevLocationId"
         :focusable="false"
         @click="gotoLocation(prevLocationId)"
@@ -455,13 +467,22 @@ whenever(ArrowRight, () => {
           <n-icon :component="ArrowBackIcon" />
         </template>
       </n-button>
-      <n-button type="primary" :disabled="loading" :focusable="false" @click="handleJumpToClick()">
+      <n-button
+        quaternary
+        color="var(--base-color)"
+        :title="$t('browse.toolbar.tipSelectLocation')"
+        :disabled="loading"
+        :focusable="false"
+        @click="handleJumpToClick()"
+      >
         <template #icon>
           <n-icon :component="BookIcon" />
         </template>
       </n-button>
       <n-button
-        type="primary"
+        quaternary
+        color="var(--base-color)"
+        :title="$t('browse.toolbar.tipNextLocation')"
         :disabled="loading || !nextLocationId"
         :focusable="false"
         @click="gotoLocation(nextLocationId)"
@@ -479,7 +500,8 @@ whenever(ArrowRight, () => {
       @select="handleSelectcompareResource"
     >
       <n-button
-        type="primary"
+        quaternary
+        color="var(--base-color)"
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('contents.tipBtnCompare')"

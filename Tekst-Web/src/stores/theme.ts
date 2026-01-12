@@ -119,7 +119,7 @@ export const useThemeStore = defineStore('theme', () => {
     Object.fromEntries(state.pf?.texts.map((t) => [t.id, getColorShades(t.color)]) || [])
   );
 
-  function getTextColors(textId?: string | null) {
+  function getTextColors(textId: string | undefined = state.text?.id) {
     return _allTextColors.value[textId || ''] || getColorShades('#7A7A7A');
   }
 
