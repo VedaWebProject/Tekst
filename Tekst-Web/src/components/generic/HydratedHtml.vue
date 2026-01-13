@@ -92,7 +92,7 @@ function hydrate(html: string | undefined) {
   // INTERNAL LINKS/REFERENCES: iterate internal location links
   dom.querySelectorAll(_LOC_REF_SELECTOR).forEach((el) => {
     if (!(el instanceof HTMLAnchorElement)) return;
-    el.removeAttribute('href');
+    el.setAttribute('href', '#');
     el.addEventListener('click', handleLocationRefClick);
     el.classList.add('internal-ref-link');
   });
