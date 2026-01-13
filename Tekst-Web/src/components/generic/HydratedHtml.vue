@@ -4,16 +4,17 @@ import { ref, watchEffect, type CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
 
-const _LOC_REF_ATTR_MAP = {
+const _REF_ATTR_MAP = {
   textId: 'data-tekst-text-id',
   textSlug: 'data-tekst-text-slug',
   locId: 'data-tekst-location-id',
   alias: 'data-tekst-location-alias',
   lvl: 'data-tekst-location-level',
   pos: 'data-tekst-location-position',
+  info: 'data-tekst-info-page',
 };
 
-const _LOC_REF_SELECTOR = Object.values(_LOC_REF_ATTR_MAP)
+const _LOC_REF_SELECTOR = Object.values(_REF_ATTR_MAP)
   .map((attr) => `[${attr}]`)
   .join(',');
 
@@ -47,9 +48,9 @@ function handleLocationRefClick(e: MouseEvent) {
   emit('clickLocationRef');
   const el = e.target as HTMLElement;
   router.push({
-    name: 'browseResolve',
+    name: 'routeResolve',
     query: Object.fromEntries(
-      Object.entries(_LOC_REF_ATTR_MAP)
+      Object.entries(_REF_ATTR_MAP)
         .map(([k, v]) => [k, el.getAttribute(v)])
         .filter(([_, v]) => !!v)
     ),
