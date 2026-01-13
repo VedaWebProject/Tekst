@@ -32,6 +32,7 @@ _ALLOWED_ATTRIBUTES = {
         "data-tekst-location-alias",
         "data-tekst-location-level",
         "data-tekst-location-position",
+        "data-tekst-info-page",
     ],
     "button": [
         "type",
