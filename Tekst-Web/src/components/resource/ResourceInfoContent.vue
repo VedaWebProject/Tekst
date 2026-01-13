@@ -40,21 +40,7 @@ const showInfoModal = ref(false);
 
 <template>
   <div>
-    <n-flex justify="flex-end" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
-      <!-- SUBTITLE -->
-      <span v-if="resource.subtitle.length" style="flex: 2">
-        <translation-display :value="resource.subtitle" />
-      </span>
-      <resource-info-tags :resource="resource" />
-    </n-flex>
-
-    <n-flex justify="flex-end" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
-      <user-display
-        v-if="!!auth.user"
-        :user="resource.owners || undefined"
-        size="small"
-        style="flex: 2"
-      />
+    <n-flex justify="space-between" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
       <copy-to-clipboard-button
         v-if="state.text"
         tertiary
@@ -65,7 +51,19 @@ const showInfoModal = ref(false);
       >
         {{ $t('resources.copyInfoUrl') }}
       </copy-to-clipboard-button>
+      <resource-info-tags :resource="resource" />
     </n-flex>
+
+    <div v-if="resource.subtitle.length" class="mb-lg">
+      <translation-display :value="resource.subtitle" />
+    </div>
+
+    <user-display
+      v-if="!!auth.user"
+      :user="resource.owners || undefined"
+      size="small"
+      class="mb-lg"
+    />
 
     <!-- DESCRIPTION -->
     <div class="gray-box" v-if="!!descriptionHtml">
