@@ -48,17 +48,25 @@ const AdminSystemSettingsView = () => import('@/views/admin/AdminSystemSettingsV
 const AdminSystemMaintenanceView = () => import('@/views/admin/AdminSystemMaintenanceView.vue');
 const AdminSystemSegmentsView = () => import('@/views/admin/AdminSystemSegmentsView.vue');
 
-async function _resolveBrowseLocation(
-  locationQuery: LocationQuery
-): Promise<RouteLocationNamedRaw> {
+async function _resolveRouteRef(locationQuery: LocationQuery): Promise<RouteLocationNamedRaw> {
+  const queries = Object.fromEntries(
+    Object.entries(locationQuery)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
+  );
+
+  // if the query contains a ref to an info page, prioritize it and go to the info page
+  if ('info' in queries)
+    return {
+      name: 'info',
+      params: { pageKey: queries.info },
+    };
+
+  // otherwise, try to resolve the route ref to a browse location
   const { data, error } = await GET('/locations', {
     params: {
       query: {
-        ...Object.fromEntries(
-          Object.entries(locationQuery)
-            .filter(([_, v]) => v != null)
-            .map(([k, v]) => [k, String(v)])
-        ),
+        ...queries,
         // we limit to 2 because this way we know if we got ambiguous results
         // while avoiding to get unnecessarily huge responses...
         limit: 2,
@@ -101,10 +109,10 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/browse',
-      name: 'browseResolve',
+      path: '/goto',
+      name: 'routeResolve',
       component: () => null,
-      beforeEnter: async (to) => await _resolveBrowseLocation(to.query),
+      beforeEnter: async (to) => await _resolveRouteRef(to.query),
     },
     {
       path: '/bookmark/:locId+',
@@ -112,7 +120,7 @@ const router = createRouter({
       component: () => null,
       // only the first locId param is used here and expected to be a valid ID,
       // the others are solely for holding pretty things to please the human eye
-      beforeEnter: async (to) => await _resolveBrowseLocation({ locId: to.params.locId[0] }),
+      beforeEnter: async (to) => await _resolveRouteRef({ locId: to.params.locId[0] }),
     },
     {
       path: '/search',
