@@ -58,9 +58,9 @@ function handleUserClick(user: UserReadPublic) {
   <n-flex
     align="center"
     :size="size"
-    :style="`font-size: var(--font-size-${size})`"
     :wrap="false"
     :title="$t('resources.ownerTip')"
+    v-bind="$attrs"
   >
     <template v-if="system">
       <user-avatar
@@ -83,6 +83,7 @@ function handleUserClick(user: UserReadPublic) {
         text
         :focusable="false"
         @click.stop.prevent="() => handleUserClick(users[0])"
+        :size="size"
       >
         {{ userDisplayText(users[0]) }}
       </n-button>
@@ -100,7 +101,7 @@ function handleUserClick(user: UserReadPublic) {
         :render-label="renderOptionLabel"
         @select="(_, o) => handleUserClick(o.user as UserReadPublic)"
       >
-        <n-button text :focusable="false">
+        <n-button text :focusable="false" :size="size">
           <n-flex align="center" size="small">
             <div :style="{ marginRight: `-${8 * (users.length - 1)}px` }">
               <user-avatar
