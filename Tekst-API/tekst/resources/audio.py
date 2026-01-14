@@ -140,14 +140,10 @@ class Audio(ResourceTypeABC):
                     "SORT",
                     "URL",
                     "CAPTION",
-                    "AUTHORS_COMMENT",
-                    "EDITORS_COMMENTS",
+                    "COMMENTS",
                 ]
             )
             for content in contents:
-                editors_comments = await cls.editors_comments_for_csv(
-                    content.editors_comments
-                )
                 for audio_file in content.files:
                     csv_writer.writerow(
                         [
@@ -155,8 +151,7 @@ class Audio(ResourceTypeABC):
                             sort_num,
                             audio_file.url,
                             audio_file.caption,
-                            content.authors_comment,
-                            editors_comments,
+                            await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1

@@ -23,8 +23,7 @@ const fontStyle = {
 const contentProcessed = ref<
   {
     html?: string;
-    authorsComment?: AnyContentRead['authorsComment'];
-    editorsComments?: AnyContentRead['editorsComments'];
+    comments?: AnyContentRead['comments'];
   }[]
 >([]);
 const loading = ref(false);
@@ -86,8 +85,7 @@ async function updateContent(contents?: ApiCallContentRead[]) {
           !!content.transformContext ? JSON.parse(content.transformContext) : undefined,
           props.resource.config.special.transform.js
         ),
-        authorsComment: content.authorsComment,
-        editorsComments: content.editorsComments,
+        comments: content.comments,
       };
     } catch (e) {
       newHtml[i] = undefined;
@@ -126,8 +124,7 @@ onMounted(async () => {
       v-for="(content, i) in contentProcessed"
       :key="i"
       :show-comments="showComments"
-      :authors-comment="content?.authorsComment"
-      :editors-comments="content?.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <n-spin v-if="!focusView" :show="loading" size="small">

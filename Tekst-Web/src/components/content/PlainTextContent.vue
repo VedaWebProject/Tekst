@@ -64,8 +64,7 @@ const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
       v-for="(content, contentIndex) in contents"
       :key="content.id"
       :show-comments="showComments"
-      :authors-comment="content.authorsComment"
-      :editors-comments="content.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <div :class="{ 'mt-md': !focusView && contentIndex > 0 }" :style="customStyle">

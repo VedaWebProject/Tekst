@@ -4,8 +4,7 @@ import { CommentIcon } from '@/icons';
 import { NFlex, NIcon } from 'naive-ui';
 
 defineProps<{
-  authorsComment?: AnyContentRead['authorsComment'];
-  editorsComments?: AnyContentRead['editorsComments'];
+  comments?: AnyContentRead['comments'];
   showComments?: boolean;
   font?: string;
 }>();
@@ -15,37 +14,15 @@ defineProps<{
   <div class="common-content-display">
     <slot></slot>
 
-    <div
-      v-if="showComments && !!authorsComment"
-      :title="$t('resources.types.common.contentFields.authorsComment')"
-      class="comment-container text-small mt-lg"
-    >
+    <div v-if="showComments && !!comments" class="comments-container text-small mt-lg">
       <n-flex class="mb-sm translucent" align="center" :wrap="false">
         <n-icon :component="CommentIcon" />
-        <span>{{ $t('resources.types.common.contentFields.authorsComment') }}</span>
+        <span>{{ $t('resources.types.common.comments') }}</span>
       </n-flex>
-      <div class="pre-wrap text-small" :style="{ fontFamily: font, paddingLeft: '30px' }">
-        {{ authorsComment }}
-      </div>
-    </div>
-
-    <div v-if="showComments && !!editorsComments" class="comment-container text-small mt-lg">
-      <n-flex class="mb-sm translucent" align="center" :wrap="false">
-        <n-icon :component="CommentIcon" />
-        <span>{{ $t('resources.types.common.contentFields.editorsComments') }}</span>
-      </n-flex>
-      <n-flex vertical size="small" style="padding-left: 30px">
-        <div
-          v-for="(cmt, i) in editorsComments"
-          :key="i"
-          class="divided"
-          :style="{
-            fontFamily: font,
-            paddingBottom: i < editorsComments.length - 1 ? 'var(--gap-md)' : undefined,
-          }"
-        >
+      <n-flex vertical size="small">
+        <div v-for="(cmt, i) in comments" :key="i" class="comment" :style="{ fontFamily: font }">
           <div class="pre-wrap">{{ cmt.comment }}</div>
-          <div class="i font-ui">– {{ cmt.by }}</div>
+          <div v-if="cmt.by" class="i font-ui">– {{ cmt.by }}</div>
         </div>
       </n-flex>
     </div>
@@ -63,9 +40,21 @@ defineProps<{
   margin-bottom: 4px;
 }
 
-.common-content-display .comment-container {
-  padding: var(--gap-sm) var(--gap-md);
+.common-content-display .comments-container {
+  padding: var(--gap-sm) var(--gap-lg);
   border-radius: var(--border-radius);
   border: 1px dashed var(--text-color-translucent);
+}
+
+.comment {
+  border-bottom: 1px solid var(--main-bg-color);
+  margin-bottom: var(--gap-sm);
+  padding-bottom: var(--gap-sm);
+}
+
+.comment:last-child {
+  border-bottom: none;
+  margin-bottom: unset;
+  padding-bottom: unset;
 }
 </style>

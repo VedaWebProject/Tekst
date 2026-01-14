@@ -30,8 +30,6 @@ const contentsProcessed = computed(() => {
       ei: res.config.special.entriesIntegration,
       font: res.config.general.font || 'var(--font-family-content)',
       groups: groupAndSortItems(c.entries, res.config.special.entriesIntegration),
-      authorsComment: c.authorsComment,
-      editorsComments: c.editorsComments,
     });
   }
   // transform contents, group and sort entries

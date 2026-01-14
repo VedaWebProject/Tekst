@@ -27,8 +27,7 @@ const fontStyle: CSSProperties = {
       v-for="content in resource.contents"
       :key="content.id"
       :show-comments="showComments"
-      :authors-comment="content.authorsComment"
-      :editors-comments="content.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <n-flex :vertical="!focusView">

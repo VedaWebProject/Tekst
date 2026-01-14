@@ -1,7 +1,7 @@
-from typing import Annotated, TypedDict
+from typing import Annotated, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
-from pydantic import Field, field_validator
+from pydantic import BeforeValidator, Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -17,11 +17,13 @@ from tekst.types import (
 )
 
 
-class EditorsComment(TypedDict):
-    by: ConStr(
-        max_length=128,
-        cleanup="oneline",
-    )
+class ContentComment(TypedDict):
+    by: NotRequired[
+        ConStrOrNone(
+            max_length=128,
+            cleanup="oneline",
+        )
+    ]
     comment: ConStr(
         max_length=5000,
         cleanup="multiline",
@@ -58,22 +60,14 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
-    authors_comment: Annotated[
-        ConStrOrNone(
-            max_length=50000,
-            cleanup="multiline",
-        ),
+    comments: Annotated[
+        list[ContentComment] | None,
         Field(
-            description="Potentially multiline comment by the original author",
-        ),
-    ] = None
-    editors_comments: Annotated[
-        list[EditorsComment] | None,
-        Field(
-            description="Potentially multiline comments / working notes editors",
+            description="Potentially multiline comments on the content",
             min_length=1,
             max_length=64,
         ),
+        BeforeValidator(lambda v: v or None),
         SchemaOptionalNonNullable,
     ] = None
 
@@ -94,20 +88,21 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             )
         return v
 
-    @field_validator(
-        "editors_comments",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def pre_validate_editors_comments(cls, v) -> list | None:
-        if v is None:
-            return v
-        if type(v) is not list:  # pragma: no cover
-            return [v]
-        if len(v) == 0:
-            return None
-        return v
+    async def comments_for_csv(
+        self,
+    ) -> str:
+        if not self.comments:
+            return ""
+        return "\n\n".join(
+            [
+                (
+                    cmt["comment"]
+                    if not cmt.get("by")
+                    else f"{cmt['comment']}\n::comment by: {cmt['by']}::"
+                )
+                for cmt in self.comments
+            ]
+        )
 
 
 # generate document and update models for this base model,

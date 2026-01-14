@@ -12,15 +12,7 @@ const props = defineProps<{
 const showComments = defineModel<boolean>('showComments');
 const emit = defineEmits(['done']);
 
-const authorsComments = computed(
-  () => props.resource.contents?.map((c) => c.authorsComment).filter(Boolean) || []
-);
-const editorsComments = computed(
-  () => props.resource.contents?.map((c) => c.editorsComments).filter(Boolean) || []
-);
-const hasComments = computed(
-  () => !!authorsComments.value.length || !!editorsComments.value.length
-);
+const hasComments = computed(() => !!props.resource.contents?.some((c) => !!c.comments?.length));
 </script>
 
 <template>

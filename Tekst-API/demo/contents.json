@@ -373,7 +373,7 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "editors_comments": [
+    "comments": [
       {
         "by": "Tekst",
         "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\"."
@@ -933,7 +933,7 @@
     "resource_id": { "$oid": "6656cc7b81a66322c1bffb24" },
     "resource_type": "textAnnotation",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "editors_comments": [
+    "comments": [
       {
         "by": "Tekst",
         "comment": "This is the only occurrence of the entity \"Mouse\"!"

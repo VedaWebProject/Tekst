@@ -25,7 +25,7 @@ async def test_create_content(
         "resourceType": "plainText",
         "locationId": str(location.id),
         "text": "Ein Raabe geht im Feld spazieren.",
-        "authorsComment": "This is a comment",
+        "comments": [{"comment": "This is a comment"}],
     }
 
     # fail to create content with invalid resource type
@@ -55,7 +55,10 @@ async def test_create_content(
     assert_status(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == content_create_data["text"]
-    assert resp.json()["authorsComment"] == content_create_data["authorsComment"]
+    assert (
+        resp.json()["comments"][0]["comment"]
+        == content_create_data["comments"][0]["comment"]
+    )
     assert "id" in resp.json()
 
     # fail to create duplicate
@@ -160,29 +163,24 @@ async def test_update_content(
     assert resp.json()["id"] == str(content.id)
     assert resp.json()["text"] == "FOO BAR"
 
-    # update content w/ empty comment and note strings
+    # update content w/ empty comment strings
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
-        json={"resourceType": "plainText", "authorsComment": "", "editorsComments": []},
+        json={"resourceType": "plainText", "comments": [{"comment": ""}]},
     )
-    assert_status(200, resp)
-    assert isinstance(resp.json(), dict)
-    assert resp.json()["authorsComment"] is None
-    assert resp.json()["editorsComments"] is None
+    assert_status(422, resp)
 
-    # update content w/ None as comment and note
+    # update content w/ None as comment
     resp = await test_client.patch(
         f"/contents/{str(content.id)}",
         json={
             "resourceType": "plainText",
-            "authorsComment": None,
-            "editorsComments": None,
+            "comments": None,
         },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
-    assert resp.json()["authorsComment"] is None
-    assert resp.json()["editorsComments"] is None
+    assert resp.json()["comments"] is None
 
     # fail to update content with wrong ID
     resp = await test_client.patch(

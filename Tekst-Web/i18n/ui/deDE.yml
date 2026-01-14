@@ -467,7 +467,7 @@ resources:
         catUnlabelled: unbeschriftet
         defaultActive: Ressource ist standardmäßig aktiviert, wenn sie öffentlich ist
         enableContentContext: Ermögliche Anzeige von Inhalten im Kontext übergeordneter Ebene
-        showComments: Zeige standardmäßig Autor*innen/Editor*innen-Kommentare
+        showComments: Zeige standardmäßig Inhalts-Kommentare
         searchableQuick: Durchsuchbar über Schnellsuche
         searchableAdv: Durchsuchbar über Erweiterte Suche
         rtl: Rechts-nach-links Textrichtung für Inhalte
@@ -510,9 +510,7 @@ resources:
         js: Transformations-Funktionskörper (JavaScript)
   types:
     common:
-      contentFields:
-        authorsComment: Kommentar der Autor*in
-        editorsComments: Kommentare der Editor*innen / Arbeitsnotizen
+      comments: Kommentare
     plainText:
       label: Einfacher Text
       parenthesis: ungestalteter, einfacher Text
