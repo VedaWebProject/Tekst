@@ -5,29 +5,52 @@
     "schedule:weekly",
     "schedule:automergeDaily"
   ],
-  "baseBranches": ["main"],
+  "baseBranchPatterns": [
+    "main"
+  ],
   "prHourlyLimit": 10,
-  "labels": ["dependencies"],
-  "assignees": ["bkis"],
+  "labels": [
+    "dependencies"
+  ],
+  "assignees": [
+    "bkis"
+  ],
   "assigneesSampleSize": 1,
-  "reviewers": ["bkis"],
+  "reviewers": [
+    "bkis"
+  ],
   "reviewersSampleSize": 1,
   "automerge": true,
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
-      "labels": ["possibly breaking"],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "possibly breaking"
+      ],
       "automerge": false
     },
     {
-      "matchUpdateTypes": ["major", "minor"],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
       "matchCurrentVersion": "<1.0.0",
-      "labels": ["possibly breaking"],
+      "labels": [
+        "possibly breaking"
+      ],
       "automerge": false
     },
     {
-      "matchUpdateTypes": ["major", "minor"],
-      "matchPackageNames": ["typescript", "python"],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "matchPackageNames": [
+        "typescript",
+        "python"
+      ],
       "automerge": false
     }
   ]
