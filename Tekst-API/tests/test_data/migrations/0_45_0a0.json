@@ -1,0 +1,38 @@
+[
+  {
+    "_id": { "$oid": "67c044b4906e79b9062e22fb" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
+    "text": "Foö is the first word",
+    "authors_comment": "FOO"
+  },
+  {
+    "_id": { "$oid": "67c044be906e79b9062e22fd" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
+    "text": "Baz",
+    "editors_comments": [
+      {
+        "by": "Editor",
+        "comment": "BAR"
+      },
+      {
+        "by": "Editor",
+        "comment": "BAR"
+      }
+    ]
+  },
+  {
+    "_id": { "$oid": "67c044c6906e79b9062e22fe" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
+    "text": "Qux",
+    "authors_comment": "FOO"
+  }
+]

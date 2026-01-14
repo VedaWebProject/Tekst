@@ -56,7 +56,7 @@ class GeneralResourceConfig(ModelBase):
     show_comments: Annotated[
         bool,
         Field(
-            description="Show authors/editors comments by default (if any)",
+            description="Show content comments by default (if any)",
         ),
         SchemaOptionalNonNullable,
     ] = False

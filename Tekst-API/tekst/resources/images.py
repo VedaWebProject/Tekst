@@ -141,14 +141,10 @@ class Images(ResourceTypeABC):
                     "URL",
                     "THUMB_URL",
                     "CAPTION",
-                    "AUTHORS_COMMENT",
-                    "EDITORS_COMMENTS",
+                    "COMMENTS",
                 ]
             )
             for content in contents:
-                editors_comments = await cls.editors_comments_for_csv(
-                    content.editors_comments
-                )
                 for image_file in content.files:
                     csv_writer.writerow(
                         [
@@ -157,8 +153,7 @@ class Images(ResourceTypeABC):
                             image_file.url,
                             image_file.thumb_url,
                             image_file.caption,
-                            content.authors_comment,
-                            editors_comments,
+                            await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1

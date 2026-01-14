@@ -137,8 +137,7 @@ class RichText(ResourceTypeABC):
                     "LOCATION",
                     "SORT",
                     "HTML",
-                    "AUTHORS_COMMENT",
-                    "EDITORS_COMMENTS",
+                    "COMMENTS",
                 ]
             )
             for content in contents:
@@ -147,8 +146,7 @@ class RichText(ResourceTypeABC):
                         full_loc_labels.get(str(content.location_id), ""),
                         sort_num,
                         content.html,
-                        content.authors_comment,
-                        await cls.editors_comments_for_csv(content.editors_comments),
+                        await content.comments_for_csv(),
                     ]
                 )
                 sort_num += 1

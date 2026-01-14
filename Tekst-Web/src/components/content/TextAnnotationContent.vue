@@ -520,15 +520,14 @@ function generatePlaintextAnno(): string {
 
     <!-- CONTENT -->
     <common-content-display
-      v-for="(c, cIndex) in contents"
-      :key="c.id"
+      v-for="(content, cIndex) in contents"
+      :key="content.id"
       :show-comments="showComments"
-      :authors-comment="c.authorsComment"
-      :editors-comments="c.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <n-flex :size="4" class="anno-content">
-        <template v-for="(t, tIndex) in c.tokens" :key="tIndex">
+        <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
           <div
             class="token-container"
             :class="{

@@ -37,37 +37,20 @@ const contentFontStyle = {
 
     <!-- CONTENT METADATA FIELDS -->
     <n-collapse :default-expanded-names="['comments']" class="mt-md">
-      <n-collapse-item name="comments">
+      <n-collapse-item
+        name="comments"
+        style="border-top: 1px solid var(--primary-color-fade3); padding-top: var(--gap-md)"
+      >
         <template #header>
-          <n-badge dot :show="!!model.authorsComment || !!model.editorsComments" :offset="[6, 10]">
+          <n-badge dot :show="!!model.comments" :offset="[6, 10]">
             <b class="text-medium">{{ $t('common.comment', 2) }}</b>
           </n-badge>
         </template>
-        <!-- AUTHORS COMMENT -->
-        <n-form-item
-          :label="$t('resources.types.common.contentFields.authorsComment')"
-          path="authorsComment"
-          :rule="contentFormRules.common.authorsComment"
-        >
-          <n-input
-            v-model:value="model.authorsComment"
-            type="textarea"
-            :rows="3"
-            :maxlength="50000"
-            show-count
-            :placeholder="$t('common.comment')"
-            :style="contentFontStyle"
-          />
-        </n-form-item>
 
-        <!-- EDITORS COMMENT -->
-        <n-form-item
-          :label="$t('resources.types.common.contentFields.editorsComments')"
-          path="editorsComments"
-          class="parent-form-item"
-        >
+        <!-- COMMENTS -->
+        <n-form-item :show-label="false" path="comments" class="parent-form-item">
           <n-dynamic-input
-            v-model:value="model.editorsComments"
+            v-model:value="model.comments"
             :max="100"
             :create-button-props="dynInputCreateBtnProps"
             item-class="divided"
@@ -78,8 +61,8 @@ const contentFontStyle = {
                 <n-form-item
                   ignore-path-change
                   :label="$t('common.name')"
-                  :path="`editorsComments[${index}].by`"
-                  :rule="contentFormRules.common.editorsCommentBy"
+                  :path="`comments[${index}].by`"
+                  :rule="contentFormRules.common.commentBy"
                   style="flex: 2 200px"
                 >
                   <n-input v-model:value="value.by" :placeholder="$t('common.name')" />
@@ -87,8 +70,8 @@ const contentFontStyle = {
                 <n-form-item
                   ignore-path-change
                   :label="$t('common.comment')"
-                  :path="`editorsComments[${index}].comment`"
-                  :rule="contentFormRules.common.editorsComment"
+                  :path="`comments[${index}].comment`"
+                  :rule="contentFormRules.common.comment"
                   style="flex: 3 320px"
                 >
                   <n-input
@@ -108,9 +91,9 @@ const contentFontStyle = {
               <dynamic-input-controls
                 top-offset
                 movable
-                :insert-disabled="(model.editorsComments?.length || 0) >= 64"
+                :insert-disabled="(model.comments?.length || 0) >= 64"
                 :move-up-disabled="index === 0"
-                :move-down-disabled="index === (model.editorsComments?.length || 0) - 1"
+                :move-down-disabled="index === (model.comments?.length || 0) - 1"
                 @remove="() => remove(index)"
                 @insert="() => create(index)"
                 @move-up="move('up', index)"

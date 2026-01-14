@@ -40,7 +40,8 @@ async function handleModalSubmit(note: string) {
   if (!error) {
     if (
       auth.user &&
-      (auth.user.id === props.resource.ownerId || (auth.user.isSuperuser && props.resource.public))
+      (props.resource.ownerIds.includes(auth.user.id) ||
+        (auth.user.isSuperuser && props.resource.public))
     ) {
       const res = resources.all.find((r) => r.id === props.resource.id);
       if (!res) return;

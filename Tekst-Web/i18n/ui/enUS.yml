@@ -456,7 +456,7 @@ resources:
         catUnlabelled: unlabelled
         defaultActive: Resource is active by default when public
         enableContentContext: Enable viewing contents in context of parent level
-        showComments: Show authors/editors comments by default
+        showComments: Show content comments by default
         searchableQuick: Searchable via Quick Search
         searchableAdv: Searchable via Advanced Search
         rtl: Right-to-left content text direction
@@ -499,9 +499,7 @@ resources:
         js: Transformation function body (JavaScript)
   types:
     common:
-      contentFields:
-        authorsComment: Author's comment
-        editorsComments: Editors' comments / working notes
+      comments: Comments
     plainText:
       label: Plain Text
       parenthesis: unstyled plain text content

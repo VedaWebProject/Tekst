@@ -1327,15 +1327,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1386,15 +1381,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1416,15 +1406,10 @@ export interface components {
        */
       resourceType: 'apiCall';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1474,7 +1459,7 @@ export interface components {
       enableContentContext?: false;
       /**
        * Showcomments
-       * @description Show authors/editors comments by default (if any)
+       * @description Show content comments by default (if any)
        * @default false
        */
       showComments?: boolean;
@@ -1814,15 +1799,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of audio file objects
@@ -1842,15 +1822,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of audio file objects
@@ -1867,15 +1842,10 @@ export interface components {
        */
       resourceType: 'audio';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Files
        * @description List of audio file objects
@@ -2455,10 +2425,17 @@ export interface components {
       res: components['schemas']['PydanticObjectId'];
       /**
        * Cmt
-       * @description Author's/editor's comment search query
+       * @description Content comment search query
        * @default
        */
       cmt?: string;
+    };
+    /** ContentComment */
+    ContentComment: {
+      /** By */
+      by?: null | string;
+      /** Comment */
+      comment: string;
     };
     /** @description List of CSS properties to apply to the contents of this resource */
     ContentCssProperties: components['schemas']['ContentCssProperty'][];
@@ -2584,13 +2561,6 @@ export interface components {
       /** Locations */
       locations: number;
     };
-    /** EditorsComment */
-    EditorsComment: {
-      /** By */
-      by: string;
-      /** Comment */
-      comment: string;
-    };
     /** ErrorDetail */
     ErrorDetail: {
       /** Key */
@@ -2623,15 +2593,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Links
        * @description List of external reference link objects
@@ -2651,15 +2616,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Links
        * @description List of external reference link objects
@@ -2676,15 +2636,10 @@ export interface components {
        */
       resourceType: 'externalReferences';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Links
        * @description List of external reference link objects
@@ -3054,7 +3009,7 @@ export interface components {
       enableContentContext?: boolean;
       /**
        * Showcomments
-       * @description Show authors/editors comments by default (if any)
+       * @description Show content comments by default (if any)
        * @default false
        */
       showComments?: boolean;
@@ -3137,15 +3092,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of image file objects
@@ -3165,15 +3115,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of image file objects
@@ -3190,15 +3135,10 @@ export interface components {
        */
       resourceType: 'images';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Files
        * @description List of image file objects
@@ -3658,15 +3598,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3686,15 +3621,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3711,15 +3641,10 @@ export interface components {
        */
       resourceType: 'locationMetadata';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3774,7 +3699,7 @@ export interface components {
       enableContentContext?: false;
       /**
        * Showcomments
-       * @description Show authors/editors comments by default (if any)
+       * @description Show content comments by default (if any)
        * @default false
        */
       showComments?: boolean;
@@ -4316,15 +4241,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Text
        * @description Text content of the plain text content object
@@ -4344,15 +4264,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Text
        * @description Text content of the plain text content object
@@ -4369,15 +4284,10 @@ export interface components {
        */
       resourceType: 'plainText';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5246,15 +5156,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5281,15 +5186,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5313,15 +5213,10 @@ export interface components {
        */
       resourceType: 'richText';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5372,7 +5267,7 @@ export interface components {
       enableContentContext?: false;
       /**
        * Showcomments
-       * @description Show authors/editors comments by default (if any)
+       * @description Show content comments by default (if any)
        * @default false
        */
       showComments?: boolean;
@@ -5855,15 +5750,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5883,15 +5773,10 @@ export interface components {
       /** @description Text location ID */
       locationId: components['schemas']['PydanticObjectId'];
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][];
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -5908,15 +5793,10 @@ export interface components {
        */
       resourceType: 'textAnnotation';
       /**
-       * Authorscomment
-       * @description Potentially multiline comment by the original author
+       * Comments
+       * @description Potentially multiline comments on the content
        */
-      authorsComment?: null | string;
-      /**
-       * Editorscomments
-       * @description Potentially multiline comments / working notes editors
-       */
-      editorsComments?: components['schemas']['EditorsComment'][] | null;
+      comments?: components['schemas']['ContentComment'][] | null;
       /**
        * Tokens
        * @description List of annotated tokens in this content object

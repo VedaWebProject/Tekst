@@ -305,14 +305,10 @@ class TextAnnotation(ResourceTypeABC):
                     "POSITION",
                     "TOKEN_ID",
                     *anno_keys,
-                    "AUTHORS_COMMENT",
-                    "EDITORS_COMMENTS",
+                    "COMMENTS",
                 ]
             )
             for content in contents:
-                editors_comments = await cls.editors_comments_for_csv(
-                    content.editors_comments
-                )
                 for i, token in enumerate(content.tokens):
                     token_annos = {
                         anno.key: anno.value for anno in token.annotations or []
@@ -330,8 +326,7 @@ class TextAnnotation(ResourceTypeABC):
                             i,
                             token.id,
                             *csv_annos,
-                            content.authors_comment,
-                            editors_comments,
+                            await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1

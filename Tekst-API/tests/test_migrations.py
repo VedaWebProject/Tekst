@@ -584,3 +584,31 @@ async def test_0_42_0a0(
         assert "owner_ids" in resource
         assert isinstance(resource["owner_ids"], list)
         assert len(resource["owner_ids"]) == 1
+
+
+@pytest.mark.anyio
+async def test_0_45_0a0(
+    database,
+    get_test_data,
+):
+    contents = get_test_data("migrations/0_45_0a0.json")
+    await database.contents.insert_many(contents)
+
+    # run migration
+    await _migration_fn("0_45_0a0")(database)
+
+    # assert the data has been fixed by the migration
+    for content in await database.contents.find({}).to_list():
+        assert content
+        assert "authors_comment" not in content
+        assert "editors_comments" not in content
+        assert "comments" in content
+        assert isinstance(content["comments"], list)
+        assert len(content["comments"]) > 0
+        for comment in content["comments"]:
+            assert (
+                comment["by"] == "Author"
+                and comment["comment"] == "FOO"
+                or comment["by"] == "Editor"
+                and comment["comment"] == "BAR"
+            )

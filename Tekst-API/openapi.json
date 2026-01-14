@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.44.0a0"
+    "version": "0.45.0a0"
   },
   "servers": [
     {
@@ -7322,25 +7322,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -7350,8 +7336,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "calls": {
@@ -7463,25 +7449,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -7491,8 +7463,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "calls": {
@@ -7539,26 +7511,11 @@
             "const": "apiCall",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -7568,8 +7525,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "calls": {
@@ -7682,7 +7639,7 @@
           "showComments": {
             "type": "boolean",
             "title": "Showcomments",
-            "description": "Show authors/editors comments by default (if any)",
+            "description": "Show content comments by default (if any)",
             "default": false,
             "optionalNullable": false
           },
@@ -8371,25 +8328,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -8399,8 +8342,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "files": {
@@ -8441,25 +8384,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -8469,8 +8398,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "files": {
@@ -8502,26 +8431,11 @@
             "const": "audio",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -8531,8 +8445,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "files": {
@@ -9813,7 +9727,7 @@
             "maxLength": 512,
             "minLength": 0,
             "title": "Cmt",
-            "description": "Author's/editor's comment search query",
+            "description": "Content comment search query",
             "default": "",
             "optionalNullable": true
           }
@@ -9823,6 +9737,34 @@
           "res"
         ],
         "title": "CommonResourceSearchQueryData"
+      },
+      "ContentComment": {
+        "properties": {
+          "by": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              }
+            ],
+            "title": "By"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "comment"
+        ],
+        "title": "ContentComment"
       },
       "ContentCssProperties": {
         "items": {
@@ -10050,28 +9992,6 @@
         ],
         "title": "DeleteLocationResult"
       },
-      "EditorsComment": {
-        "properties": {
-          "by": {
-            "type": "string",
-            "maxLength": 128,
-            "minLength": 1,
-            "title": "By"
-          },
-          "comment": {
-            "type": "string",
-            "maxLength": 5000,
-            "minLength": 1,
-            "title": "Comment"
-          }
-        },
-        "type": "object",
-        "required": [
-          "by",
-          "comment"
-        ],
-        "title": "EditorsComment"
-      },
       "ErrorDetail": {
         "properties": {
           "key": {
@@ -10162,25 +10082,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -10190,8 +10096,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "links": {
@@ -10232,25 +10138,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -10260,8 +10152,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "links": {
@@ -10293,26 +10185,11 @@
             "const": "externalReferences",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -10322,8 +10199,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "links": {
@@ -11116,7 +10993,7 @@
           "showComments": {
             "type": "boolean",
             "title": "Showcomments",
-            "description": "Show authors/editors comments by default (if any)",
+            "description": "Show content comments by default (if any)",
             "default": false,
             "optionalNullable": false
           },
@@ -11277,25 +11154,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -11305,8 +11168,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "files": {
@@ -11347,25 +11210,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -11375,8 +11224,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "files": {
@@ -11408,26 +11257,11 @@
             "const": "images",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -11437,8 +11271,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "files": {
@@ -12465,25 +12299,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -12493,8 +12313,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "entries": {
@@ -12535,25 +12355,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -12563,8 +12369,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "entries": {
@@ -12596,26 +12402,11 @@
             "const": "locationMetadata",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -12625,8 +12416,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "entries": {
@@ -12758,7 +12549,7 @@
           "showComments": {
             "type": "boolean",
             "title": "Showcomments",
-            "description": "Show authors/editors comments by default (if any)",
+            "description": "Show content comments by default (if any)",
             "default": false,
             "optionalNullable": false
           },
@@ -13893,25 +13684,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -13921,8 +13698,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "text": {
@@ -13960,25 +13737,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -13988,8 +13751,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "text": {
@@ -14018,26 +13781,11 @@
             "const": "plainText",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -14047,8 +13795,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "text": {
@@ -15826,25 +15574,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -15854,8 +15588,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "html": {
@@ -15903,25 +15637,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -15931,8 +15651,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "html": {
@@ -15971,26 +15691,11 @@
             "const": "richText",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -16000,8 +15705,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "html": {
@@ -16114,7 +15819,7 @@
           "showComments": {
             "type": "boolean",
             "title": "Showcomments",
-            "description": "Show authors/editors comments by default (if any)",
+            "description": "Show content comments by default (if any)",
             "default": false,
             "optionalNullable": false
           },
@@ -17138,25 +16843,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -17166,8 +16857,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "tokens": {
@@ -17207,25 +16898,11 @@
             "$ref": "#/components/schemas/PydanticObjectId",
             "description": "Text location ID"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author"
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -17235,8 +16912,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
           "tokens": {
@@ -17267,26 +16944,11 @@
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
-          "authorsComment": {
-            "anyOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string",
-                "maxLength": 50000,
-                "minLength": 1
-              }
-            ],
-            "title": "Authorscomment",
-            "description": "Potentially multiline comment by the original author",
-            "optionalNullable": true
-          },
-          "editorsComments": {
+          "comments": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/EditorsComment"
+                  "$ref": "#/components/schemas/ContentComment"
                 },
                 "type": "array",
                 "maxItems": 64,
@@ -17296,8 +16958,8 @@
                 "type": "null"
               }
             ],
-            "title": "Editorscomments",
-            "description": "Potentially multiline comments / working notes editors",
+            "title": "Comments",
+            "description": "Potentially multiline comments on the content",
             "optionalNullable": true
           },
           "tokens": {

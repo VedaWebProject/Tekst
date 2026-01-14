@@ -473,7 +473,7 @@ async def test_delete_location(
         "resourceType": "plainText",
         "locationId": location["id"],
         "text": "Ein Raabe geht im Feld spazieren.",
-        "authorsComment": "This is a comment",
+        "comments": [{"comment": "This is a comment"}],
     }
     resp = await test_client.post(
         "/contents",
@@ -482,7 +482,7 @@ async def test_delete_location(
     assert_status(201, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["text"] == payload["text"]
-    assert resp.json()["authorsComment"] == payload["authorsComment"]
+    assert resp.json()["comments"][0]["comment"] == payload["comments"][0]["comment"]
     assert "id" in resp.json()
 
     # delete location

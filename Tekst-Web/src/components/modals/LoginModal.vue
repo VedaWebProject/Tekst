@@ -52,7 +52,6 @@ function handleLoginClick() {
         formModel.value.password || '',
         formModel.value.persistent || false
       );
-      resetForm();
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));
@@ -87,6 +86,7 @@ async function handleForgotPasswordClick() {
     :icon="LoginIcon"
     @close="auth.closeLoginModal(false)"
     @mask-click="auth.closeLoginModal(false)"
+    @after-leave="() => resetForm()"
   >
     <div v-show="auth.loginModalState.message" class="login-message mb-lg">
       {{ auth.loginModalState.message }}

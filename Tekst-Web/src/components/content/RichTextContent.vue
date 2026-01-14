@@ -30,8 +30,7 @@ const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
       v-for="content in resource.contents"
       :key="content.id"
       :show-comments="showComments"
-      :authors-comment="content.authorsComment"
-      :editors-comments="content.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <div

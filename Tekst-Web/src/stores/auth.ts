@@ -128,7 +128,7 @@ export const useAuthStore = defineStore('auth', () => {
       } else {
         message.success($t('account.welcomeFirstTime', { name: userData.name }), undefined, 30);
       }
-      closeLoginModal();
+      closeLoginModal(false);
       return true;
     } else {
       if (error.detail === 'LOGIN_USER_NOT_VERIFIED') {

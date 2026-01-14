@@ -24,8 +24,7 @@ const contents = computed(() =>
     props.resource.contents?.map((c) => ({
       id: c.id,
       groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
-      authorsComment: c.authorsComment,
-      editorsComments: c.editorsComments,
+      comments: c.comments,
     })) || []
   )
     // pick translations for groups and item keys, join values
@@ -64,8 +63,7 @@ const fontStyle = {
       v-for="content in contents"
       :key="content.id"
       :show-comments="showComments"
-      :authors-comment="content.authorsComment"
-      :editors-comments="content.editorsComments"
+      :comments="content.comments"
       :font="fontStyle.fontFamily"
     >
       <table>

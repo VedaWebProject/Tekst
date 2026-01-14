@@ -208,8 +208,7 @@ class LocationMetadata(ResourceTypeABC):
                     "LOCATION",
                     "SORT",
                     *keys,
-                    "AUTHORS_COMMENT",
-                    "EDITORS_COMMENTS",
+                    "COMMENTS",
                 ]
             )
             for content in contents:
@@ -220,8 +219,7 @@ class LocationMetadata(ResourceTypeABC):
                         full_loc_labels.get(str(content.location_id), ""),
                         sort_num,
                         *values,
-                        content.authors_comment,
-                        await cls.editors_comments_for_csv(content.editors_comments),
+                        await content.comments_for_csv(),
                     ]
                 )
                 sort_num += 1
