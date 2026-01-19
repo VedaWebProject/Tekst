@@ -9,7 +9,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
-import { DeleteIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
+import { DeleteIcon, EMailIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import {
@@ -42,6 +42,7 @@ const precomputedLoading = ref(false);
 const precomputedForce = ref(false);
 const cleanupLoading = ref(false);
 const tasksLoading = ref(false);
+const emailLoading = ref(false);
 
 const statusColors: Record<string, string> = {
   waiting: 'inherit',
@@ -120,6 +121,17 @@ async function updateAllTasksData() {
   tasksLoading.value = false;
 }
 
+async function sendTestEMail() {
+  emailLoading.value = true;
+  const { error } = await GET('/platform/test-email');
+  if (!error) {
+    message.success($t('common.ok'));
+  } else {
+    message.error($t('errors.unexpected'));
+  }
+  emailLoading.value = false;
+}
+
 async function loadIndexInfo() {
   indicesInfoLoading.value = true;
   const { data, error } = await GET('/search/index/info');
@@ -166,6 +178,7 @@ onBeforeMount(() => {
       type="line"
       :placement="state.smallScreen ? 'top' : 'left'"
       :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
+      :style="{ minHeight: '40vh' }"
     >
       <!-- SEARCH INDICES -->
       <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="indices">
@@ -407,6 +420,24 @@ onBeforeMount(() => {
               </tr>
             </tbody>
           </n-table>
+        </form-section>
+      </n-tab-pane>
+
+      <!-- TEST EMAIL SETUP -->
+      <n-tab-pane :tab="$t('admin.maintenance.email.heading')" name="email">
+        <form-section :title="$t('admin.maintenance.email.heading')" :show-box="false">
+          <n-button
+            type="primary"
+            :disabled="emailLoading"
+            :loading="emailLoading"
+            @click="sendTestEMail"
+          >
+            <template #icon>
+              <n-icon :component="EMailIcon" />
+            </template>
+            {{ $t('admin.maintenance.email.btn') }}
+          </n-button>
+          <p>{{ $t('admin.maintenance.email.desc') }}</p>
         </form-section>
       </n-tab-pane>
     </n-tabs>

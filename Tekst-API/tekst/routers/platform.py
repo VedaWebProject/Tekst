@@ -26,6 +26,7 @@ from tekst.models.segment import (
     ClientSegmentUpdate,
 )
 from tekst.models.user import UserDocument
+from tekst.notifications import send_test_email
 from tekst.routers.texts import get_all_texts
 from tekst.state import get_state, update_state
 
@@ -357,3 +358,17 @@ async def run_platform_cleanup(su: SuperuserDep) -> tasks.TaskDocument:
         target_id=tasks.TaskType.PLATFORM_CLEANUP.value,
         user_id=su.id,
     )
+
+
+@router.get(
+    "/test-email",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errors.responses(
+        [
+            errors.E_401_UNAUTHORIZED,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def send_test_email_to_admin(su: SuperuserDep) -> None:
+    await send_test_email(su)

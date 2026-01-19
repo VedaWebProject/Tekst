@@ -212,3 +212,14 @@ async def test_platform_cleanup(
 
     # there should be 0 access tokens, now
     assert await AccessTokenDocument.find().count() == 0
+
+
+@pytest.mark.anyio
+async def test_admin_test_email(
+    test_client: AsyncClient,
+    assert_status,
+    login,
+):
+    await login(is_superuser=True)
+    resp = await test_client.get("/platform/test-email")
+    assert_status(204, resp)

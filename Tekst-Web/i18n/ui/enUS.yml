@@ -823,6 +823,10 @@ admin:
       actionDeleteSystem: Delete system tasks
       actionDeleteAll: Delete all tasks
       actionDeleteAllSuccess: All background tasks have been deleted
+    email:
+      heading: EMail Setup
+      desc: The email setup can only be changed via the environment variables used for the API deployment.
+      btn: Send test email (to me)
     force: force
     forceTip: Force execution even for elements that are considered already up-to-date
   segments:

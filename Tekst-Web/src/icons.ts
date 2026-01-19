@@ -71,6 +71,7 @@ import LightModeOutlined from '@vicons/material/LightModeOutlined';
 import LinkOutlined from '@vicons/material/LinkOutlined';
 import LogInOutlined from '@vicons/material/LogInOutlined';
 import LogOutOutlined from '@vicons/material/LogOutOutlined';
+import MailOutlined from '@vicons/material/MailOutlined';
 import ManageAccountsOutlined from '@vicons/material/ManageAccountsOutlined';
 import ManageSearchOutlined from '@vicons/material/ManageSearchOutlined';
 import MarkChatReadRound from '@vicons/material/MarkChatReadRound';
@@ -153,6 +154,7 @@ export {
   DisabledVisibleRound as DisabledVisibleIcon,
   FileDownloadOutlined as DownloadIcon,
   EditOutlined as EditIcon,
+  MailOutlined as EMailIcon,
   ErrorOutlineOutlined as ErrorIcon,
   KeyboardArrowDownOutlined as ExpandArrowDownIcon,
   KeyboardArrowRightOutlined as ExpandArrowRightIcon,
