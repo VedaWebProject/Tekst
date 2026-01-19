@@ -847,6 +847,10 @@ admin:
       actionDeleteSystem: Systemprozesse löschen
       actionDeleteAll: Alle Prozesse löschen
       actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
+    email:
+      heading: EMail Setup
+      desc: Die EMail-Einstellungen können nur über die für das API-Deployment verwendeten Umgebungsvariablen geändert werden.
+      btn: Test-EMail senden (an mich)
     force: erzwingen
     forceTip: Erzwinge Durchführung auch für Elemente, die mutmaßlich bereits auf aktuell sind
   segments:

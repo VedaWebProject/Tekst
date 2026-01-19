@@ -3180,6 +3180,48 @@
         ]
       }
     },
+    "/platform/test-email": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Send test email to admin",
+        "operationId": "sendTestEmailToAdmin",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/resources/precompute": {
       "get": {
         "tags": [
