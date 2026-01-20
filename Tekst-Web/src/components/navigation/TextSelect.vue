@@ -4,6 +4,7 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
 import { useBrowseStore, useStateStore } from '@/stores';
 import { NFlex, NSelect, type SelectInst, type SelectOption } from 'naive-ui';
+import type { RenderLabel } from 'naive-ui/es/_internal/select-menu/src/interface';
 import { computed, h, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -14,12 +15,21 @@ const browse = useBrowseStore();
 const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
 const selectRef = ref<SelectInst>();
 
-const renderLabel: SelectOption['render'] = (info) => {
+const renderOptionLabel: SelectOption['render'] = (info) => {
   return h(TextSelectOption, {
     text: info.option.text as TextRead,
     locale: state.locale,
-    selected: info.option.value === state.text?.id,
+    selected: info.selected,
     onClick: () => handleSelect(info.option.text as TextRead),
+  });
+};
+
+const renderSelectLabel: RenderLabel = (opt: SelectOption & { text: TextRead }, _selected) => {
+  return h(TextSelectOption, {
+    text: opt.text,
+    locale: state.locale,
+    singleLine: true,
+    onClick: () => handleSelect(opt.text as TextRead),
   });
 };
 
@@ -28,7 +38,7 @@ const options = computed<SelectOption[]>(
     state.pf?.texts.map((t: TextRead) => ({
       label: t.title,
       value: t.id,
-      render: renderLabel,
+      render: renderOptionLabel,
       text: t,
     })) || []
 );
@@ -67,6 +77,7 @@ function handleSelect(text: TextRead) {
         :value="state.text?.id"
         size="large"
         :options="options"
+        :render-label="renderSelectLabel"
         :consistent-menu-width="false"
         :style="{
           width: state.smallScreen ? '100%' : 'unset',
@@ -90,19 +101,6 @@ function handleSelect(text: TextRead) {
   background-color: var(--main-bg-color);
 }
 
-.text-select-btn {
-  max-width: 100%;
-  justify-content: flex-start;
-}
-
-.text-select-btn.n-button--ghost:hover {
-  background-color: #ffffff1a;
-}
-
-.n-button :deep(.n-button__border) {
-  border: 1px solid var(--base-color-translucent);
-}
-
 .text-title {
   line-height: 150%;
   max-width: 100%;
@@ -112,14 +110,6 @@ function handleSelect(text: TextRead) {
   max-width: 100%;
   line-height: 150%;
   padding-bottom: 0.2em;
-}
-
-.text-info-btn {
-  opacity: 0.6;
-}
-
-.text-info-btn:hover {
-  opacity: 1;
 }
 
 .text-select-inner {

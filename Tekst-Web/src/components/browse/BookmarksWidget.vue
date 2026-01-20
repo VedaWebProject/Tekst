@@ -87,7 +87,7 @@ async function handleWidgetClick() {
 <template>
   <n-button
     quaternary
-    color="var(--base-color)"
+    color="#fff"
     :size="buttonSize"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"

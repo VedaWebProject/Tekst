@@ -54,7 +54,7 @@ whenever(ArrowRight, () => {
   <n-flex justify="space-between" align="center" :wrap="false">
     <n-button
       quaternary
-      color="var(--base-color)"
+      color="#fff"
       :focusable="false"
       :title="$t('browse.toolbar.tipPreviousLocation')"
       :size="buttonSize"
@@ -70,7 +70,7 @@ whenever(ArrowRight, () => {
     <n-badge value="!" :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <n-button
         quaternary
-        color="var(--base-color)"
+        color="#fff"
         :title="
           $t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
@@ -90,7 +90,7 @@ whenever(ArrowRight, () => {
 
     <n-button
       quaternary
-      color="var(--base-color)"
+      color="#fff"
       :focusable="false"
       :title="$t('browse.toolbar.tipNextLocation')"
       :size="buttonSize"
