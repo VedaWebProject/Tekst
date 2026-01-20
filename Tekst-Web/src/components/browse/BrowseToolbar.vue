@@ -15,6 +15,8 @@ const theme = useThemeStore();
 const affixRef = ref();
 const affixed = ref(false);
 
+const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
 );
@@ -63,14 +65,14 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
     >
       <browse-location-controls
         :button-size="buttonSize"
-        :color="theme.dark ? '#fff' : '#333'"
+        :color="toolbarTxtColor"
         data-tour-key="browseNav"
       />
 
       <div
         v-if="!state.smallScreen"
         class="browse-toolbar-middle browse-location-label"
-        :style="{ color: theme.dark ? '#fff' : '#333' }"
+        :style="{ color: toolbarTxtColor }"
         :title="affixed ? state.text?.title : undefined"
       >
         <n-flex justify="center" align="center" :wrap="false">
@@ -87,7 +89,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
             quaternary
-            :color="theme.dark ? '#fff' : '#333'"
+            :color="toolbarTxtColor"
             :style="{
               backgroundColor: browse.focusView ? 'var(--base-color-translucent)' : undefined,
             }"
@@ -111,7 +113,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         >
           <n-button
             quaternary
-            :color="theme.dark ? '#fff' : '#333'"
+            :color="toolbarTxtColor"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"

@@ -94,6 +94,8 @@ const originalResourceTitle = computed(() =>
   )
 );
 
+const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+
 const locationPath = ref<LocationRead[]>();
 const location = computed<LocationRead | undefined>(
   () => locationPath.value?.[resource.value?.level ?? locationPath.value.length - 1]
@@ -453,7 +455,7 @@ whenever(ArrowRight, () => {
     <template #start>
       <n-button
         quaternary
-        :color="theme.dark ? '#fff' : '#333'"
+        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         :disabled="loading || !prevLocationId"
         :focusable="false"
@@ -465,7 +467,7 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        :color="theme.dark ? '#fff' : '#333'"
+        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipSelectLocation')"
         :disabled="loading"
         :focusable="false"
@@ -477,7 +479,7 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        :color="theme.dark ? '#fff' : '#333'"
+        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipNextLocation')"
         :disabled="loading || !nextLocationId"
         :focusable="false"
@@ -497,7 +499,7 @@ whenever(ArrowRight, () => {
     >
       <n-button
         quaternary
-        :color="theme.dark ? '#fff' : '#333'"
+        :color="toolbarTxtColor"
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('contents.tipBtnCompare')"

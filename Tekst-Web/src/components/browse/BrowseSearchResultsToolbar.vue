@@ -37,6 +37,8 @@ const viewingSearchResult = computed(
   () => search.browseCurrHit?.id === browse.locationPathHead?.id
 );
 
+const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+
 async function skip(direction: 'previous' | 'next') {
   await search.browseSkipTo(direction);
   if (search.browseHitResourcesActive) {
@@ -82,7 +84,7 @@ onMounted(() => {
         <!-- skip to previous search result -->
         <n-button
           quaternary
-          :color="theme.dark ? '#fff' : '#333'"
+          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browsePrev')"
           :focusable="false"
@@ -97,7 +99,7 @@ onMounted(() => {
         <!-- go to search results -->
         <n-button
           quaternary
-          :color="theme.dark ? '#fff' : '#333'"
+          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.heading')"
           :focusable="false"
@@ -112,7 +114,7 @@ onMounted(() => {
         <!-- skip to next search result -->
         <n-button
           quaternary
-          :color="theme.dark ? '#fff' : '#333'"
+          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browseNext')"
           :focusable="false"
@@ -133,7 +135,7 @@ onMounted(() => {
         align="center"
         :wrap="false"
         class="bsr-toolbar-middle text-small"
-        :style="{ color: theme.dark ? '#fff' : '#333' }"
+        :style="{ color: toolbarTxtColor }"
       >
         <n-flex
           v-if="!search.loading"
@@ -164,7 +166,7 @@ onMounted(() => {
           <n-button
             :quaternary="!search.browseHitResourcesActive"
             :tertiary="search.browseHitResourcesActive"
-            :color="theme.dark ? '#fff' : '#333'"
+            :color="toolbarTxtColor"
             :size="buttonSize"
             :title="$t('search.results.browseHitResourcesActive')"
             :focusable="false"
@@ -179,7 +181,7 @@ onMounted(() => {
         <!-- stop browsing search results -->
         <n-button
           quaternary
-          :color="theme.dark ? '#fff' : '#333'"
+          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browseStop')"
           :focusable="false"
