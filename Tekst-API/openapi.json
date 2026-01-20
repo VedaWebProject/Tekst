@@ -9968,53 +9968,21 @@
           "sourceLanguage": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/DeepLSourceLanguage"
+                "type": "null"
               },
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1
               }
             ],
-            "description": "Source language"
+            "title": "Sourcelanguage",
+            "description": "DeepL source language code"
           }
         },
         "type": "object",
         "title": "DeepLLinksConfig",
         "description": "Resource configuration model for DeepL translation links.\nThe corresponding field MUST be named `deepl_links`!"
-      },
-      "DeepLSourceLanguage": {
-        "type": "string",
-        "enum": [
-          "ar",
-          "bg",
-          "cs",
-          "da",
-          "de",
-          "el",
-          "en",
-          "es",
-          "et",
-          "fi",
-          "fr",
-          "hu",
-          "id",
-          "it",
-          "ja",
-          "ko",
-          "lt",
-          "lv",
-          "nb",
-          "nl",
-          "pl",
-          "pt",
-          "ro",
-          "ru",
-          "sk",
-          "sl",
-          "sv",
-          "tr",
-          "uk",
-          "zh"
-        ]
       },
       "DeleteLocationResult": {
         "properties": {
