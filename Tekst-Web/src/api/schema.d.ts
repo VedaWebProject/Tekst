@@ -1477,7 +1477,7 @@ export interface components {
       /**
        * Showcomments
        * @description Show content comments by default (if any)
-       * @default false
+       * @default true
        */
       showComments?: boolean;
       /**
@@ -1510,7 +1510,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": false,
        *       "searchableAdv": false,
        *       "rtl": false
@@ -1588,7 +1588,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -1713,7 +1713,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -1894,7 +1894,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -1964,7 +1964,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -2084,7 +2084,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -2664,7 +2664,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": false,
        *       "searchableAdv": false,
        *       "rtl": false
@@ -2734,7 +2734,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -2854,7 +2854,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": false,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -2998,7 +2998,7 @@ export interface components {
       /**
        * Showcomments
        * @description Show content comments by default (if any)
-       * @default false
+       * @default true
        */
       showComments?: boolean;
       /**
@@ -3140,7 +3140,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -3210,7 +3210,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -3330,7 +3330,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       }
        *     }
@@ -3688,7 +3688,7 @@ export interface components {
       /**
        * Showcomments
        * @description Show content comments by default (if any)
-       * @default false
+       * @default true
        */
       showComments?: boolean;
       /**
@@ -3738,7 +3738,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": false,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -3818,7 +3818,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -3945,7 +3945,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": false,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -4289,7 +4289,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -4377,7 +4377,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -4512,7 +4512,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -5245,7 +5245,7 @@ export interface components {
       /**
        * Showcomments
        * @description Show content comments by default (if any)
-       * @default false
+       * @default true
        */
       showComments?: boolean;
       /**
@@ -5277,7 +5277,7 @@ export interface components {
        *       "defaultActive": true,
        *       "collapsibleContents": 400,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -5355,7 +5355,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -5480,7 +5480,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -5824,7 +5824,7 @@ export interface components {
        *       "sortOrder": 10,
        *       "defaultActive": true,
        *       "enableContentContext": false,
-       *       "showComments": false,
+       *       "showComments": true,
        *       "searchableQuick": true,
        *       "searchableAdv": true,
        *       "rtl": false
@@ -5906,7 +5906,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {
@@ -6035,7 +6035,7 @@ export interface components {
        *         "rtl": false,
        *         "searchableAdv": true,
        *         "searchableQuick": true,
-       *         "showComments": false,
+       *         "showComments": true,
        *         "sortOrder": 10
        *       },
        *       "special": {

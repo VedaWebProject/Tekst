@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.45.0a1"
+    "version": "0.46.0a0"
   },
   "servers": [
     {
@@ -7682,7 +7682,7 @@
             "type": "boolean",
             "title": "Showcomments",
             "description": "Show content comments by default (if any)",
-            "default": false,
+            "default": true,
             "optionalNullable": false
           },
           "searchableQuick": {
@@ -7734,7 +7734,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": false,
               "searchableAdv": false,
               "rtl": false
@@ -7871,7 +7871,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -8112,7 +8112,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -8568,7 +8568,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -8697,7 +8697,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -8933,7 +8933,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -10298,7 +10298,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": false,
               "searchableAdv": false,
               "rtl": false
@@ -10427,7 +10427,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -10663,7 +10663,7 @@
                 "rtl": false,
                 "searchableAdv": false,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -11004,7 +11004,7 @@
             "type": "boolean",
             "title": "Showcomments",
             "description": "Show content comments by default (if any)",
-            "default": false,
+            "default": true,
             "optionalNullable": false
           },
           "searchableQuick": {
@@ -11318,7 +11318,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -11447,7 +11447,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -11683,7 +11683,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               }
             }
@@ -12560,7 +12560,7 @@
             "type": "boolean",
             "title": "Showcomments",
             "description": "Show content comments by default (if any)",
-            "default": false,
+            "default": true,
             "optionalNullable": false
           },
           "searchableQuick": {
@@ -12646,7 +12646,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": false,
               "searchableAdv": true,
               "rtl": false
@@ -12785,7 +12785,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -13028,7 +13028,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": false,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -13839,7 +13839,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -13986,7 +13986,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -14237,7 +14237,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -15811,7 +15811,7 @@
             "type": "boolean",
             "title": "Showcomments",
             "description": "Show content comments by default (if any)",
-            "default": false,
+            "default": true,
             "optionalNullable": false
           },
           "searchableQuick": {
@@ -15862,7 +15862,7 @@
               "defaultActive": true,
               "collapsibleContents": 400,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -15999,7 +15999,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -16240,7 +16240,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -17065,7 +17065,7 @@
               "sortOrder": 10,
               "defaultActive": true,
               "enableContentContext": false,
-              "showComments": false,
+              "showComments": true,
               "searchableQuick": true,
               "searchableAdv": true,
               "rtl": false
@@ -17206,7 +17206,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
@@ -17451,7 +17451,7 @@
                 "rtl": false,
                 "searchableAdv": true,
                 "searchableQuick": true,
-                "showComments": false,
+                "showComments": true,
                 "sortOrder": 10
               },
               "special": {
