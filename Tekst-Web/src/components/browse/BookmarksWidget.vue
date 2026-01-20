@@ -15,6 +15,7 @@ import { useRouter } from 'vue-router';
 
 defineProps<{
   buttonSize?: 'small' | 'medium' | 'large';
+  color?: string;
 }>();
 
 const browse = useBrowseStore();
@@ -87,7 +88,7 @@ async function handleWidgetClick() {
 <template>
   <n-button
     quaternary
-    color="#fff"
+    :color="color"
     :size="buttonSize"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"

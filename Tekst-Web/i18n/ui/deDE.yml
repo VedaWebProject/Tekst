@@ -363,7 +363,6 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    browseBarUsesTextColor: Färbe Toolbar der Lese-Ansicht in der Farbe des aktuellen Arbeitstextes
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
     fonts: Benutzer*innendefinierte Schritarten
     uiFont: UI-Schriftart

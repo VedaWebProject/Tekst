@@ -8,7 +8,7 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from '@/icons';
-import { useBrowseStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
+import { useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
@@ -22,16 +22,9 @@ withDefaults(
   }
 );
 
-const state = useStateStore();
 const browse = useBrowseStore();
 const search = useSearchStore();
 const theme = useThemeStore();
-
-const bgColor = computed(() =>
-  !!state.pf?.state.browseBarUsesTextColor
-    ? theme.getTextColors().fade4
-    : 'var(--primary-color-fade4)'
-);
 
 const resultNo = computed(
   () =>
@@ -83,12 +76,13 @@ onMounted(() => {
       align="center"
       :wrap="false"
       class="bsr-toolbar"
-      :style="{ backgroundColor: bgColor }"
+      :style="{ backgroundColor: theme.dark ? '#444' : '#c5c5c5' }"
     >
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
         <n-button
           quaternary
+          :color="theme.dark ? '#fff' : '#333'"
           :size="buttonSize"
           :title="$t('search.results.browsePrev')"
           :focusable="false"
@@ -103,6 +97,7 @@ onMounted(() => {
         <!-- go to search results -->
         <n-button
           quaternary
+          :color="theme.dark ? '#fff' : '#333'"
           :size="buttonSize"
           :title="$t('search.results.heading')"
           :focusable="false"
@@ -117,6 +112,7 @@ onMounted(() => {
         <!-- skip to next search result -->
         <n-button
           quaternary
+          :color="theme.dark ? '#fff' : '#333'"
           :size="buttonSize"
           :title="$t('search.results.browseNext')"
           :focusable="false"
@@ -137,6 +133,7 @@ onMounted(() => {
         align="center"
         :wrap="false"
         class="bsr-toolbar-middle text-small"
+        :style="{ color: theme.dark ? '#fff' : '#333' }"
       >
         <n-flex
           v-if="!search.loading"
@@ -167,6 +164,7 @@ onMounted(() => {
           <n-button
             :quaternary="!search.browseHitResourcesActive"
             :tertiary="search.browseHitResourcesActive"
+            :color="theme.dark ? '#fff' : '#333'"
             :size="buttonSize"
             :title="$t('search.results.browseHitResourcesActive')"
             :focusable="false"
@@ -181,6 +179,7 @@ onMounted(() => {
         <!-- stop browsing search results -->
         <n-button
           quaternary
+          :color="theme.dark ? '#fff' : '#333'"
           :size="buttonSize"
           :title="$t('search.results.browseStop')"
           :focusable="false"
@@ -202,7 +201,7 @@ onMounted(() => {
 }
 
 .bsr-toolbar {
-  padding: var(--gap-sm);
+  padding: var(--gap-sm) var(--gap-md);
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }

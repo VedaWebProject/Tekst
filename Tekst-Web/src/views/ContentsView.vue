@@ -448,12 +448,12 @@ whenever(ArrowRight, () => {
     bottom-gap
     wrap="wrap-reverse"
     class="toolbar"
-    :style="{ backgroundColor: theme.dark ? '#555' : '#888' }"
+    :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
   >
     <template #start>
       <n-button
         quaternary
-        color="#fff"
+        :color="theme.dark ? '#fff' : '#333'"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         :disabled="loading || !prevLocationId"
         :focusable="false"
@@ -465,7 +465,7 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        color="#fff"
+        :color="theme.dark ? '#fff' : '#333'"
         :title="$t('browse.toolbar.tipSelectLocation')"
         :disabled="loading"
         :focusable="false"
@@ -477,7 +477,7 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        color="#fff"
+        :color="theme.dark ? '#fff' : '#333'"
         :title="$t('browse.toolbar.tipNextLocation')"
         :disabled="loading || !nextLocationId"
         :focusable="false"
@@ -497,7 +497,7 @@ whenever(ArrowRight, () => {
     >
       <n-button
         quaternary
-        color="#fff"
+        :color="theme.dark ? '#fff' : '#333'"
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('contents.tipBtnCompare')"

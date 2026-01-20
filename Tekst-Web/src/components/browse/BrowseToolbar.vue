@@ -59,13 +59,18 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       justify="space-between"
       align="center"
       class="browse-toolbar"
-      :style="{ backgroundColor: theme.dark ? '#555' : '#888' }"
+      :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
     >
-      <browse-location-controls :button-size="buttonSize" data-tour-key="browseNav" />
+      <browse-location-controls
+        :button-size="buttonSize"
+        :color="theme.dark ? '#fff' : '#333'"
+        data-tour-key="browseNav"
+      />
 
       <div
         v-if="!state.smallScreen"
-        class="browse-toolbar-middle browse-location-label text-small"
+        class="browse-toolbar-middle browse-location-label"
+        :style="{ color: theme.dark ? '#fff' : '#333' }"
         :title="affixed ? state.text?.title : undefined"
       >
         <n-flex justify="center" align="center" :wrap="false">
@@ -73,8 +78,8 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             class="text-color-indicator"
             :style="{ backgroundColor: theme.getTextColors().base }"
           ></div>
-          <b v-if="!affixed">{{ state.text?.title || '???' }}</b>
-          <b v-else><location-label /></b>
+          <span v-if="!affixed">{{ state.text?.title || '???' }}</span>
+          <span v-else><location-label /></span>
         </n-flex>
       </div>
 
@@ -82,7 +87,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
             quaternary
-            color="#fff"
+            :color="theme.dark ? '#fff' : '#333'"
             :style="{
               backgroundColor: browse.focusView ? 'var(--base-color-translucent)' : undefined,
             }"
@@ -106,7 +111,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         >
           <n-button
             quaternary
-            color="#fff"
+            :color="theme.dark ? '#fff' : '#333'"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
@@ -186,10 +191,6 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 
 .browse-toolbar-container.affixed .browse-toolbar {
   max-width: var(--max-app-width);
-}
-
-.browse-toolbar .browse-location-label {
-  color: #fff;
 }
 
 .browse-toolbar .browse-location-label .text-color-indicator {

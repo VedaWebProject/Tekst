@@ -200,13 +200,6 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = True
 
-    browse_bar_uses_text_color: Annotated[
-        bool,
-        Field(
-            description="Use current working text's accent color for browse toolbar",
-        ),
-    ] = False
-
     ui_color: Annotated[
         Color,
         ColorSerializer,
