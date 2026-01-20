@@ -682,6 +682,7 @@ function generatePlaintextAnno(): string {
 .token-lb {
   width: 100%;
   border: none;
+  border-top: 1px solid var(--main-bg-color);
   height: 0px;
   margin: 4px 0;
 }

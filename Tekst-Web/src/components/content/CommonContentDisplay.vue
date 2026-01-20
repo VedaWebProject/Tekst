@@ -33,7 +33,7 @@ defineProps<{
 .common-content-display:not(:last-child) {
   padding-bottom: var(--gap-md);
   margin-bottom: var(--gap-md);
-  border-bottom: 1px solid var(--main-bg-color);
+  border-bottom: 1px solid var(--primary-color-fade2);
 }
 
 .common-content-display:last-child {
