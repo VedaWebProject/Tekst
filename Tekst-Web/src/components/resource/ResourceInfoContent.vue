@@ -92,7 +92,7 @@ const showInfoModal = ref(false);
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
-      <div :style="{ fontFamily: resource.contentFont }" class="text-medium">
+      <div :style="{ fontFamily: resource.contentFont }" class="text-medium pre-wrap">
         {{ resource.citation }}
       </div>
     </div>
