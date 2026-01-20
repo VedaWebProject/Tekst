@@ -59,7 +59,7 @@ class GeneralResourceConfig(ModelBase):
             description="Show content comments by default (if any)",
         ),
         SchemaOptionalNonNullable,
-    ] = False
+    ] = True
 
     searchable_quick: Annotated[
         bool,
