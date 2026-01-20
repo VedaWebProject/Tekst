@@ -2,7 +2,7 @@
 import { CompressIcon, ExpandIcon } from '@/icons';
 import { useElementSize } from '@vueuse/core';
 import { NButton, NIcon } from 'naive-ui';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -20,14 +20,24 @@ const props = withDefaults(
 );
 
 const contentRef = ref<HTMLElement>();
+const containerRef = ref<HTMLElement>();
 const { height } = useElementSize(contentRef);
 const collapsed = defineModel<boolean>({ required: false, default: true });
 const isCollapsible = computed(() => props.collapsible && height.value > props.heightTreshPx);
 const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
+
+async function toggleCollapse(collapse: boolean) {
+  collapsed.value = collapse;
+  if (collapse) {
+    nextTick(() => {
+      containerRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+}
 </script>
 
 <template>
-  <div>
+  <div ref="containerRef">
     <div
       :class="{ collapsed: isCollapsed }"
       :style="{
@@ -47,7 +57,7 @@ const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
       class="mt-sm"
       :focusable="false"
       :size="showBtnText ? undefined : 'large'"
-      @click.stop.prevent="collapsed = !collapsed"
+      @click.stop.prevent="() => toggleCollapse(!collapsed)"
     >
       <template #icon>
         <n-icon :component="isCollapsed ? ExpandIcon : CompressIcon" />
