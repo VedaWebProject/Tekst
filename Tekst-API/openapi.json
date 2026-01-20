@@ -14750,12 +14750,6 @@
             "description": "Show location aliases in browse view",
             "default": true
           },
-          "browseBarUsesTextColor": {
-            "type": "boolean",
-            "title": "Browsebarusestextcolor",
-            "description": "Use current working text's accent color for browse toolbar",
-            "default": false
-          },
           "uiColor": {
             "type": "string",
             "format": "color",
@@ -15036,19 +15030,6 @@
             ],
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
-            "optionalNullable": false
-          },
-          "browseBarUsesTextColor": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Browsebarusestextcolor",
-            "description": "Use current working text's accent color for browse toolbar",
             "optionalNullable": false
           },
           "uiColor": {

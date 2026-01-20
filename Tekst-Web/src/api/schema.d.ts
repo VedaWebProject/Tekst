@@ -4781,12 +4781,6 @@ export interface components {
        */
       showLocationAliases: boolean;
       /**
-       * Browsebarusestextcolor
-       * @description Use current working text's accent color for browse toolbar
-       * @default false
-       */
-      browseBarUsesTextColor: boolean;
-      /**
        * Uicolor
        * Format: color
        * @description Primary color used in for client UI
@@ -4905,11 +4899,6 @@ export interface components {
        * @description Show location aliases in browse view
        */
       showLocationAliases?: boolean;
-      /**
-       * Browsebarusestextcolor
-       * @description Use current working text's accent color for browse toolbar
-       */
-      browseBarUsesTextColor?: boolean;
       /**
        * Uicolor
        * @description Primary color used in for client UI

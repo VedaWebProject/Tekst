@@ -14,6 +14,7 @@ import { ref } from 'vue';
 withDefaults(
   defineProps<{
     buttonSize?: 'small' | 'medium' | 'large';
+    color?: string;
   }>(),
   {
     buttonSize: 'large',
@@ -54,7 +55,7 @@ whenever(ArrowRight, () => {
   <n-flex justify="space-between" align="center" :wrap="false">
     <n-button
       quaternary
-      color="var(--base-color)"
+      :color="color"
       :focusable="false"
       :title="$t('browse.toolbar.tipPreviousLocation')"
       :size="buttonSize"
@@ -70,7 +71,7 @@ whenever(ArrowRight, () => {
     <n-badge value="!" :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <n-button
         quaternary
-        color="var(--base-color)"
+        :color="color"
         :title="
           $t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
@@ -86,11 +87,11 @@ whenever(ArrowRight, () => {
       </n-button>
     </n-badge>
 
-    <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" />
+    <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" :color="color" />
 
     <n-button
       quaternary
-      color="var(--base-color)"
+      :color="color"
       :focusable="false"
       :title="$t('browse.toolbar.tipNextLocation')"
       :size="buttonSize"

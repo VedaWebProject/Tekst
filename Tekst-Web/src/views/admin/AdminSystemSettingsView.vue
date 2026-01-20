@@ -282,13 +282,6 @@ watch(
                 :label="$t('models.platformSettings.showLocationAliases')"
               />
             </n-form-item>
-            <!-- USE CURRENT WORKING TEXT'S ACCENT COLOR FOR BROWSE TOOLBAR -->
-            <n-form-item :show-label="false" :show-feedback="false">
-              <labeled-switch
-                v-model="formModel.browseBarUsesTextColor"
-                :label="$t('models.platformSettings.browseBarUsesTextColor')"
-              />
-            </n-form-item>
           </form-section>
         </n-tab-pane>
 

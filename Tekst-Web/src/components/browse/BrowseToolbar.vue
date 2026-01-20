@@ -12,10 +12,11 @@ const browse = useBrowseStore();
 const search = useSearchStore();
 const theme = useThemeStore();
 
-const bgColor = computed(() =>
-  !!state.pf?.state.browseBarUsesTextColor ? theme.getTextColors().base : 'var(--primary-color)'
-);
 const affixRef = ref();
+const affixed = ref(false);
+
+const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
 );
@@ -34,7 +35,10 @@ onMounted(() => {
   nextTick(() => {
     if (affixRef.value) {
       new IntersectionObserver(
-        ([e]) => e.target.classList.toggle('affixed', e.intersectionRatio < 1),
+        ([e]) => {
+          affixed.value = e.intersectionRatio < 1;
+          e.target.classList.toggle('affixed', affixed.value);
+        },
         { threshold: [1] }
       ).observe(affixRef.value);
     }
@@ -57,22 +61,35 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       justify="space-between"
       align="center"
       class="browse-toolbar"
-      :style="{ backgroundColor: bgColor }"
+      :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
     >
-      <browse-location-controls :button-size="buttonSize" data-tour-key="browseNav" />
+      <browse-location-controls
+        :button-size="buttonSize"
+        :color="toolbarTxtColor"
+        data-tour-key="browseNav"
+      />
 
-      <div v-if="!state.smallScreen" class="browse-toolbar-middle browse-location-label text-small">
+      <div
+        v-if="!state.smallScreen"
+        class="browse-toolbar-middle browse-location-label"
+        :style="{ color: toolbarTxtColor }"
+        :title="affixed ? state.text?.title : undefined"
+      >
         <n-flex justify="center" align="center" :wrap="false">
-          <b style="text-align: center">{{ state.text?.title || '???' }}</b>
+          <div
+            class="text-color-indicator"
+            :style="{ backgroundColor: theme.getTextColors().base }"
+          ></div>
+          <span v-if="!affixed">{{ state.text?.title || '???' }}</span>
+          <span v-else><location-label /></span>
         </n-flex>
-        <div><location-label /></div>
       </div>
 
       <div class="browse-toolbar-end">
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
             quaternary
-            color="var(--base-color)"
+            :color="toolbarTxtColor"
             :style="{
               backgroundColor: browse.focusView ? 'var(--base-color-translucent)' : undefined,
             }"
@@ -96,7 +113,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         >
           <n-button
             quaternary
-            color="var(--base-color)"
+            :color="toolbarTxtColor"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
@@ -178,9 +195,10 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   max-width: var(--max-app-width);
 }
 
-.browse-toolbar .browse-location-label {
-  visibility: hidden;
-  color: var(--base-color);
+.browse-toolbar .browse-location-label .text-color-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
 }
 
 .browse-toolbar-container.affixed .browse-location-label {
