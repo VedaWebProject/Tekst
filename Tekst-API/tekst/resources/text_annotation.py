@@ -497,10 +497,14 @@ class TextAnnotationResource(ResourceBase):
 
     async def _ensure_token_ids(self):
         """Checks if all tokens have a token_id annotation, and if not, adds one"""
+        contents_changed = False
         text_slug = None
         alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
+        content_doc_model = TextAnnotation.content_model().document_model()
+
         async for content in ContentBaseDocument.find(
             Eq(ContentBaseDocument.resource_id, self.id),
+            Eq(content_doc_model.tokens.id, None),
             with_children=True,
         ):
             dirty = False
@@ -515,6 +519,10 @@ class TextAnnotationResource(ResourceBase):
                     dirty = True
             if dirty:
                 await content.save()
+                contents_changed = True
+
+        if contents_changed:
+            await self.contents_changed_hook()
 
     async def resource_precompute_hook(
         self,
