@@ -56,9 +56,12 @@ const metadataKeysOptions = computed(() =>
   <form-section :title="$t('models.resource.citation')">
     <n-form-item path="citation" :show-label="false">
       <n-input
+        type="textarea"
+        maxlength="4096"
+        show-count
         v-model:value="model.citation"
         :placeholder="$t('models.resource.citation')"
-        @keydown.enter.prevent
+        @keydown.enter.stop
       />
     </n-form-item>
   </form-section>
