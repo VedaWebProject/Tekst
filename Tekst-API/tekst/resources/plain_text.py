@@ -3,7 +3,7 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import AfterValidator, Field
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
@@ -19,6 +19,7 @@ from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     ConStr,
+    ConStrOrNone,
     ContentCssProperties,
     SchemaOptionalNullable,
     SearchReplacements,
@@ -186,40 +187,6 @@ class LineLabellingConfig(ModelBase):
     ] = "numbersOneBased"
 
 
-type DeepLSourceLanguage = Literal[
-    "ar",
-    "bg",
-    "cs",
-    "da",
-    "de",
-    "el",
-    "en",
-    "es",
-    "et",
-    "fi",
-    "fr",
-    "hu",
-    "id",
-    "it",
-    "ja",
-    "ko",
-    "lt",
-    "lv",
-    "nb",
-    "nl",
-    "pl",
-    "pt",
-    "ro",
-    "ru",
-    "sk",
-    "sl",
-    "sv",
-    "tr",
-    "uk",
-    "zh",
-]
-
-
 class DeepLLinksConfig(ModelBase):
     """
     Resource configuration model for DeepL translation links.
@@ -233,10 +200,14 @@ class DeepLLinksConfig(ModelBase):
         ),
     ] = False
     source_language: Annotated[
-        DeepLSourceLanguage | None,
-        Field(
-            description="Source language",
+        ConStrOrNone(
+            max_length=16,
+            cleanup="oneline",
         ),
+        Field(
+            description="DeepL source language code",
+        ),
+        AfterValidator(lambda x: x.lower() if x else None),
     ] = None
 
 

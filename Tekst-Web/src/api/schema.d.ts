@@ -2536,41 +2536,12 @@ export interface components {
        * @default false
        */
       enabled: boolean;
-      /** @description Source language */
-      sourceLanguage?: components['schemas']['DeepLSourceLanguage'] | null;
+      /**
+       * Sourcelanguage
+       * @description DeepL source language code
+       */
+      sourceLanguage?: null | string;
     };
-    /** @enum {string} */
-    DeepLSourceLanguage:
-      | 'ar'
-      | 'bg'
-      | 'cs'
-      | 'da'
-      | 'de'
-      | 'el'
-      | 'en'
-      | 'es'
-      | 'et'
-      | 'fi'
-      | 'fr'
-      | 'hu'
-      | 'id'
-      | 'it'
-      | 'ja'
-      | 'ko'
-      | 'lt'
-      | 'lv'
-      | 'nb'
-      | 'nl'
-      | 'pl'
-      | 'pt'
-      | 'ro'
-      | 'ru'
-      | 'sk'
-      | 'sl'
-      | 'sv'
-      | 'tr'
-      | 'uk'
-      | 'zh';
     /** DeleteLocationResult */
     DeleteLocationResult: {
       /** Contents */
