@@ -86,7 +86,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
 <template>
   <n-list-item style="padding: 0">
     <collapsible-content
-      :height-tresh-px="smallScreen ? 250 : 420"
+      :collapsed-height="smallScreen ? 250 : 420"
       :show-btn-text="!smallScreen"
       class="mb-sm"
     >

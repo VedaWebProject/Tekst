@@ -171,7 +171,7 @@ watch(
         v-if="hasContents"
         :collapsible="collapsible || contentContextLoaded"
         :collapsed="collapsed"
-        :height-tresh-px="resource.config.general.collapsibleContents || undefined"
+        :collapsed-height="resource.config.general.collapsibleContents || undefined"
         class="content-loadable"
         :class="{ 'content-loading': loading }"
       >
