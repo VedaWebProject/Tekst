@@ -7,14 +7,14 @@ import { computed, nextTick, ref } from 'vue';
 const props = withDefaults(
   defineProps<{
     collapsible?: boolean;
-    heightTreshPx?: number;
+    collapsedHeight?: number;
     collapseText?: string;
     expandText?: string;
     showBtnText?: boolean;
   }>(),
   {
     collapsible: true,
-    heightTreshPx: 150,
+    collapsedHeight: 300,
     showBtnText: true,
   }
 );
@@ -23,7 +23,9 @@ const contentRef = ref<HTMLElement>();
 const containerRef = ref<HTMLElement>();
 const { height } = useElementSize(contentRef);
 const collapsed = defineModel<boolean>({ required: false, default: true });
-const isCollapsible = computed(() => props.collapsible && height.value > props.heightTreshPx);
+const isCollapsible = computed(
+  () => props.collapsible && height.value > props.collapsedHeight * 1.5
+);
 const isCollapsed = computed(() => isCollapsible.value && collapsed.value);
 
 async function toggleCollapse(collapse: boolean) {
@@ -41,7 +43,7 @@ async function toggleCollapse(collapse: boolean) {
     <div
       :class="{ collapsed: isCollapsed }"
       :style="{
-        maxHeight: isCollapsed ? `${heightTreshPx}px` : undefined,
+        maxHeight: isCollapsed ? `${collapsedHeight}px` : undefined,
         overflow: 'hidden',
       }"
     >

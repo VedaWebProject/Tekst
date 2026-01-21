@@ -68,7 +68,7 @@ const metadataKeysOptions = computed(() =>
 
   <!-- DESCRIPTION -->
   <form-section :title="$t('common.description')">
-    <collapsible-content :height-tresh-px="240">
+    <collapsible-content :collapsed-height="240">
       <translation-form-item
         v-model="model.description"
         input-type="html"
