@@ -11,12 +11,12 @@ import {
 import { dialogProps } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import PromptModal from '@/components/generic/PromptModal.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ListingsFilters from '@/components/ListingsFilters.vue';
 import SetResourceOwnersModal from '@/components/modals/SetResourceOwnersModal.vue';
 import ResourceListItem from '@/components/resource/ResourceListItem.vue';
 import { useMessages } from '@/composables/messages';
+import { usePrompt } from '@/composables/prompt';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
@@ -40,13 +40,12 @@ const { message } = useMessages();
 const router = useRouter();
 const { addTask, startTasksPolling } = useTasks();
 const hashParams = useUrlSearchParams('hash-params');
+const prompt = usePrompt();
 
 const actionsLoading = ref(false);
 const loading = computed(() => actionsLoading.value || resources.loading);
 
 const setResOwnersModalRef = ref<InstanceType<typeof SetResourceOwnersModal>>();
-
-const verIntegrPromptModelRef = ref();
 
 const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
 const searchInput = ref<string>();
@@ -332,23 +331,25 @@ async function handleImportClick(resource: AnyResourceRead) {
   });
 }
 
-function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
+async function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
   const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
   if (!originalResource || !originalResource.owners?.length) return;
-  verIntegrPromptModelRef.value.open({
-    actionKey: resourceVersion.id,
-    selectOptions: originalResource.owners.map((o) => ({
-      label: o.username + (o.name ? ` (${o.name})` : ''),
-      value: o.id,
-    })),
-  });
-}
 
-function handleReqVersionIntegrationSelect(versionId: string, contactId: string) {
-  const resourceVersion = resources.all.find((r) => r.id === versionId);
-  if (!resourceVersion) return;
-  const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
-  if (!originalResource) return;
+  const contactOptions = originalResource.owners.map((o) => ({
+    label: o.name ? `${o.name} (@${o.username})` : `@${o.username}`,
+    value: o.id,
+  }));
+  const contactId = await prompt({
+    type: 'select',
+    icon: UserIcon,
+    title: $t('resources.reqVersionIntegration.action'),
+    msg: $t('resources.reqVersionIntegration.diagMsg'),
+    label: $t('resources.reqVersionIntegration.diagLabel'),
+    options: contactOptions,
+    defaultValue: contactOptions[0]?.value,
+  });
+
+  if (!contactId) return;
   const versionTitle = pickTranslation(resourceVersion.title, state.locale);
   const originalTitle = pickTranslation(originalResource.title, state.locale);
   const prepMsg = `> ${versionTitle} → ${originalTitle}\n\n`;
@@ -503,16 +504,6 @@ onMounted(() => {
     ref="setResOwnersModalRef"
     :loading="actionsLoading"
     @submit="handleSetOwners"
-  />
-
-  <prompt-modal
-    ref="verIntegrPromptModelRef"
-    type="select"
-    :title="'FOOOOO'"
-    :icon="UserIcon"
-    :input-label="'SElect one user!!1'"
-    :msg="'Who to send da request to????'"
-    @submit="handleReqVersionIntegrationSelect"
   />
 </template>
 

@@ -398,7 +398,6 @@ resources:
   proposed: '@:models.resource.proposed'
   correctionNotesAction: Korrekturnotizen anzeigen
   setOwnersAction: Ressourcen-Besitzer*innen festlegen
-  reqVersionIntegrationAction: Integration vorschlagen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
   createVersionAction: Version erstellen
@@ -406,6 +405,12 @@ resources:
   unproposeAction: Veröffentlichungsvorschlag widerrufen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
+  reqVersionIntegration:
+    action: Integration vorschlagen
+    diagMsg: |
+      Wählen Sie eine Besitzer*in der Originalressource dieser Version aus,
+      um die Integration der Änderungen in dieser Version vorzuschlagen!
+    diagLabel: Original-Besitzer*in kontaktieren
   warnSetOwners: |
     Bitte lesen Sie den Hiletext über Berechtigungen für Ressourcen sorgfältig durch,
     bevor Sie die Besitzer*innen einer Ressource ändern.

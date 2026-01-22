@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PromptModal from '@/components/generic/PromptModal.vue';
+import { usePrompt } from '@/composables/prompt';
 import { wysiwygEditorFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import {
@@ -31,7 +31,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { NButton, NFlex, NIcon, NSelect, type SelectOption } from 'naive-ui';
 import 'prosemirror-view/style/prosemirror.css';
-import { computed, h, onUnmounted, ref, watch, type Component, type CSSProperties } from 'vue';
+import { computed, h, onUnmounted, watch, type Component, type CSSProperties } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -48,8 +48,7 @@ const props = withDefaults(
 );
 const emit = defineEmits(['blur', 'focus', 'input']);
 const value = defineModel<string>('value', { default: '' });
-
-const promptModalRef = ref();
+const prompt = usePrompt();
 
 watch(
   () => value.value,
@@ -210,46 +209,40 @@ function renderBlockTypeLabel(option: SelectOption) {
   ];
 }
 
-function handleAddLinkClick() {
-  promptModalRef.value.open({
-    actionKey: 'addLink',
-    initialValue: editor.value?.getAttributes('link').href,
+async function handleAddLinkClick() {
+  const link = await prompt({
+    type: 'singleLineInput',
     title: $t('wysiwyg.linkPrompt.title'),
     icon: LinkIcon,
-    inputLabel: $t('wysiwyg.linkPrompt.inputLabel'),
-    validationRules: wysiwygEditorFormRules.linkUrl,
+    label: $t('wysiwyg.linkPrompt.inputLabel'),
+    rule: wysiwygEditorFormRules.linkUrl,
+    defaultValue: editor.value?.getAttributes('link').href,
   });
+  if (link === null) {
+    return;
+  } else if (link) {
+    editor.value?.chain().focus().extendMarkRange('link').setLink({ href: link }).run();
+  } else {
+    if (editor.value?.isActive('link')) {
+      editor.value?.chain().focus().unsetLink().run();
+    } else {
+      editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
+    }
+  }
 }
 
 async function handleAddImageClick() {
-  promptModalRef.value.open({
-    actionKey: 'addImage',
+  const src = await prompt({
+    type: 'singleLineInput',
     title: $t('wysiwyg.imagePrompt.title'),
     icon: ImageIcon,
-    inputLabel: $t('wysiwyg.imagePrompt.inputLabel'),
-    disableOkWhenNoValue: true,
-    validationRules: wysiwygEditorFormRules.imageUrl,
+    label: $t('wysiwyg.imagePrompt.inputLabel'),
+    rule: wysiwygEditorFormRules.imageUrl,
   });
-}
-
-async function handlePromptModalSubmit(actionKey: string, input: string) {
-  if (actionKey === 'addLink') {
-    // empty
-    if (input) {
-      // update link
-      editor.value?.chain().focus().extendMarkRange('link').setLink({ href: input }).run();
-    } else {
-      if (editor.value?.isActive('link')) {
-        editor.value?.chain().focus().unsetLink().run();
-      } else {
-        editor.value?.chain().focus().extendMarkRange('link').unsetLink().run();
-      }
-    }
-  } else if (actionKey === 'addImage') {
-    // empty
-    if (!input) return;
-    // update link
-    editor.value?.chain().focus().setImage({ src: input }).run();
+  if (!src) {
+    return;
+  } else {
+    editor.value?.chain().focus().setImage({ src }).run();
   }
 }
 
@@ -427,7 +420,6 @@ onUnmounted(() => {
     </div>
     <div v-if="editor" class="character-count">{{ editor.getHTML().length }} / {{ maxChars }}</div>
   </div>
-  <prompt-modal ref="promptModalRef" @submit="handlePromptModalSubmit" />
 </template>
 
 <style scoped>
