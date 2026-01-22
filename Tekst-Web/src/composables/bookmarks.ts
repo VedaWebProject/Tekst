@@ -27,7 +27,7 @@ export function useBookmarks() {
     }
   }
 
-  async function createBookmark(locationId: string, comment: string) {
+  async function createBookmark(locationId: string, comment?: string) {
     const { data, error } = await POST('/browse/bookmarks', {
       body: {
         locationId,

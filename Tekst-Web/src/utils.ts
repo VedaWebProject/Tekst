@@ -39,8 +39,8 @@ export function pickTranslation(
   );
 }
 
-export function renderIcon(icon?: Component, color?: string) {
-  return () => h(NIcon, { color }, { default: () => (icon ? h(icon) : null) });
+export function renderIcon(icon?: Component, color?: string, size?: string | number) {
+  return icon ? () => h(NIcon, { color, size }, { default: () => h(icon) }) : undefined;
 }
 
 export function utcToLocalTime(utcDateTimeString: string): Date {

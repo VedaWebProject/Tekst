@@ -393,7 +393,6 @@ resources:
   proposed: '@:models.resource.proposed'
   correctionNotesAction: Show correction notes
   setOwnersAction: Set resource owners
-  reqVersionIntegrationAction: Propose integration
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
   createVersionAction: Create version
@@ -401,6 +400,12 @@ resources:
   unproposeAction: Revoke publication proposal
   publishAction: Publish
   unpublishAction: Revoke publication
+  reqVersionIntegration:
+    action: Propose integration
+    diagMsg: |
+      Select an owner of this version's original resource to propose reviewing
+      and integrating the changes made in this version!
+    diagLabel: Original owner to contact
   warnSetOwners: |
     Please carefully read and understand the help text regarding resource permissions
     before changing the ownership of resources. To do so, click this little question

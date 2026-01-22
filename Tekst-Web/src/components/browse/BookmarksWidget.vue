@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { type BookmarkRead } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
-import PromptModal from '@/components/generic/PromptModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
 import { useMessages } from '@/composables/messages';
-import { bookmarkFormRules } from '@/forms/formRules';
+import { usePrompt } from '@/composables/prompt';
 import { $t } from '@/i18n';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -23,6 +22,7 @@ const state = useStateStore();
 const { message } = useMessages();
 const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
+const prompt = usePrompt();
 
 const filterString = ref<string>();
 const filteredBookmarks = computed(() =>
@@ -37,7 +37,6 @@ const filteredBookmarks = computed(() =>
 );
 
 const showModal = ref(false);
-const promptModalRef = ref();
 const loading = ref(false);
 
 const maxCountReached = computed(() => bookmarks.value.length >= 1000);
@@ -51,7 +50,7 @@ async function handleDeleteBookmark(bookmarkId: string) {
   loading.value = false;
 }
 
-function handleCreateBookmarkClick() {
+async function handleCreateBookmarkClick() {
   if (loading.value || maxCountReached.value) {
     return;
   }
@@ -59,12 +58,18 @@ function handleCreateBookmarkClick() {
     message.error($t('errors.bookmarkExists'));
     return;
   }
-  promptModalRef.value.open();
-}
-
-async function handleCreateModalSubmit(comment: string) {
   loading.value = true;
-  await createBookmark(browse.locationPathHead?.id || '', comment);
+  const comment = await prompt({
+    type: 'multiLineInput',
+    icon: BookmarksIcon,
+    title: $t('browse.bookmarks.commentModalTitle'),
+    label: $t('browse.bookmarks.commentModalInputLabel'),
+    rows: 3,
+    maxLength: 1000,
+  });
+  if (comment !== null) {
+    await createBookmark(browse.locationPathHead?.id || '', comment);
+  }
   loading.value = false;
 }
 
@@ -187,18 +192,6 @@ async function handleWidgetClick() {
       </template>
     </n-empty>
   </generic-modal>
-
-  <prompt-modal
-    ref="promptModalRef"
-    type="textarea"
-    action-key="createBookmark"
-    :title="$t('browse.bookmarks.commentModalTitle')"
-    :icon="BookmarksIcon"
-    :input-label="$t('browse.bookmarks.commentModalInputLabel')"
-    :rows="3"
-    :validation-rules="bookmarkFormRules.comment"
-    @submit="(_, v) => handleCreateModalSubmit(v)"
-  />
 </template>
 
 <style scoped>

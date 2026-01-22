@@ -161,13 +161,6 @@ export const locationFormRules: Record<string, FormItemRule[]> = {
   ],
 };
 
-export const correctionFormRules: Record<string, FormItemRule[]> = {
-  note: [
-    requiredStringRule(() => $t('browse.contents.widgets.correctionNote.lblNote'), 'blur'),
-    minMaxCharsRule(1, 2000, 'blur'),
-  ],
-};
-
 export const systemSegmentFormRules: Record<string, FormItemRule[]> = {
   title: [requiredStringRule(() => $t('common.title'), 'blur'), minMaxCharsRule(0, 32, 'blur')],
   key: [requiredStringRule(() => $t('common.key'), 'blur')],
@@ -500,10 +493,6 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
   externalReferences: {
     caption: [minMaxCharsRule(0, 512, 'blur')],
   },
-};
-
-export const bookmarkFormRules: Record<string, FormItemRule[]> = {
-  comment: [minMaxCharsRule(0, 1000, 'blur')],
 };
 
 export const wysiwygEditorFormRules: Record<string, FormItemRule[]> = {

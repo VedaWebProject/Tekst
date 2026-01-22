@@ -90,7 +90,12 @@ function handleClose() {
 </script>
 
 <template>
-  <n-input ref="targetInputRef" v-model:value="model" :input-props="{ style: fontStyle }">
+  <n-input
+    ref="targetInputRef"
+    v-model:value="model"
+    v-bind="$attrs"
+    :input-props="{ style: fontStyle }"
+  >
     <template #prefix>
       <slot name="prefix"></slot>
     </template>

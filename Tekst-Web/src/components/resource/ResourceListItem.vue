@@ -158,12 +158,11 @@ const actionOptions = computed<DropdownOption[]>(() => [
           type: 'group',
           label: $t('common.status'),
           children: [
-            ...(!props.resource.proposed && !props.resource.public
+            ...(!props.resource.proposed && !props.resource.public && !props.resource.originalId
               ? [
                   {
                     label: $t('resources.proposeAction'),
                     key: 'propose',
-                    disabled: !!props.resource.originalId,
                     icon: renderIcon(ProposedIcon),
                     action: () => emit('proposeClick', props.resource),
                     statusType: 'warning',
@@ -211,7 +210,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
             props.resource.ownerIds.includes(props.user.id)
               ? [
                   {
-                    label: $t('resources.reqVersionIntegrationAction'),
+                    label: $t('resources.reqVersionIntegration.action'),
                     key: 'reqVersionIntegration',
                     icon: renderIcon(ReviewIcon),
                     disabled:
