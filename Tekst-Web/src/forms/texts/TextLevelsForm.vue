@@ -12,12 +12,13 @@ import { textFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t, getLocaleProfile } from '@/i18n';
 import { DeleteIcon, EditIcon } from '@/icons';
-import { useStateStore } from '@/stores';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { NAlert, NButton, NFlex, NForm, NIcon, useDialog, type FormInst } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 const state = useStateStore();
 const { loadPlatformData } = usePlatformData();
+const resources = useResourcesStore();
 const { message } = useMessages();
 const dialog = useDialog();
 
@@ -76,7 +77,8 @@ function handleDeleteClick(level: number) {
         params: { path: { id: state.text?.id || '', lvl: level } },
       });
       if (!error) {
-        loadPlatformData();
+        await loadPlatformData();
+        await resources.load();
         state.text = data;
         message.success(
           $t('texts.levels.msgDeleteSuccess', {
@@ -112,7 +114,7 @@ async function handleModalSubmit() {
           body: formModel.value.translations,
         });
         if (!error) {
-          loadPlatformData();
+          await loadPlatformData();
           state.text = data;
           message.success(
             $t('texts.levels.msgInsertSuccess', { position: editModalLevel.value + 1 })
@@ -133,7 +135,7 @@ async function handleModalSubmit() {
           body: textUpdates,
         });
         if (!error) {
-          loadPlatformData();
+          await loadPlatformData();
           state.text = data;
           message.success(
             $t('texts.levels.msgEditSuccess', { position: editModalLevel.value + 1 })
