@@ -710,8 +710,9 @@ texts:
     warnDeleteLevel: |
       Das Löschen einer Textebene hat weitreichende Folgen:
       Alle Daten, die mit dieser Textebene verbunden sind,
-      werden mit ihr gelöscht. Dies betrifft alle (!) Ressourcen auf dieser
-      Ebene - egal, welche Benutzer*in diese erstellt hat!
+      werden mit ihr gelöscht. Dies betrifft sowohl alle (!) Ressourcen auf dieser
+      Ebene – egal, welche Benutzer*innen diese erstellt haben – als auch alle Fundstellen
+      auf dieser Ebene, wodurch diese nicht mehr über existierende Links/URLs erreichbar sind.
       Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
       zu verbinden, aber Sie werden das Ergebnis
       anschließend mit Hilfe der Einstellungen für die Belegstellen des Textes
@@ -750,6 +751,8 @@ texts:
       Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
       die von anderen Benutzer*innen angelegt wurden. Die Belegstelle wird danach nicht mehr
       über ihre ursprüngliche ID adressierbar sein.
+      Selbst wenn Sie die Fundstelle später neu erstellen, wird Sie eine andere ID erhalten und
+      kursierende Links/URLs, die auf diese Fundstelle verweisen, werden nicht mehr funktionieren.
       Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
     tipDeleteLocation: Belegstelle "{location}" löschen
     infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
