@@ -356,7 +356,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -397,7 +397,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -453,7 +453,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -505,7 +505,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -551,7 +551,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -597,7 +597,7 @@ async function handleDeleteAccount() {
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :loading="loading"
@@ -635,7 +635,7 @@ async function handleDeleteAccount() {
         @keydown.enter.prevent
       />
     </n-form-item>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         type="error"
         :focusable="false"

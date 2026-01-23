@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
       {{ $t('browse.contents.widgets.exportWidget.rangeError') }}
     </n-alert>
 
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button
         secondary
         :disabled="!isLocationRangeValid || !fromLocationPath.length || !toLocationPath.length"

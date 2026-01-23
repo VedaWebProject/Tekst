@@ -53,7 +53,7 @@ const showInfoModal = ref(false);
 
   <generic-modal v-model:show="showInfoModal" :title="title" :icon="ResourceIcon" width="wide">
     <resource-info-content :resource="resource" />
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button type="primary" @click="() => (showInfoModal = false)">
         {{ $t('common.close') }}
       </n-button>

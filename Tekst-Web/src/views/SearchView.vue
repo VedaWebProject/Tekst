@@ -356,7 +356,7 @@ whenever(ctrlEnter, () => {
     </template>
   </n-empty>
 
-  <button-shelf v-if="!!resources.all.length" top-gap>
+  <button-shelf v-if="!!resources.all.length" class="mt-lg">
     <n-button
       type="primary"
       :title="`${$t('common.searchAction')} (${$t('common.ctrlEnter')})`"

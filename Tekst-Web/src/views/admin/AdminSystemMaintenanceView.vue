@@ -13,6 +13,7 @@ import { DeleteIcon, EMailIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from 
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import {
+  NAlert,
   NButton,
   NDivider,
   NFlex,
@@ -183,7 +184,7 @@ onBeforeMount(() => {
       <!-- SEARCH INDICES -->
       <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="indices">
         <form-section :title="$t('admin.maintenance.indices.heading')" :show-box="false">
-          <button-shelf bottom-gap>
+          <button-shelf class="mb-lg">
             <template #start>
               <n-button
                 type="primary"
@@ -268,7 +269,8 @@ onBeforeMount(() => {
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
         <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false">
-          <button-shelf bottom-gap>
+          <n-alert type="info">{{ $t('admin.maintenance.precomputed.description') }}</n-alert>
+          <button-shelf class="my-lg">
             <template #start>
               <n-button
                 type="primary"
@@ -288,7 +290,6 @@ onBeforeMount(() => {
               />
             </template>
           </button-shelf>
-          <p>{{ $t('admin.maintenance.precomputed.description') }}</p>
         </form-section>
       </n-tab-pane>
 
@@ -313,7 +314,7 @@ onBeforeMount(() => {
       <!-- SYSTEM BACKGROUND TASKS -->
       <n-tab-pane :tab="$t('tasks.title')" name="tasks">
         <form-section :title="$t('tasks.title')" :show-box="false">
-          <button-shelf bottom-gap>
+          <button-shelf class="mb-lg">
             <template #start>
               <n-button
                 type="primary"

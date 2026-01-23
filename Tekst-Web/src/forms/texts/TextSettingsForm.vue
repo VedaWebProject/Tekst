@@ -277,7 +277,7 @@ onBeforeRouteUpdate((to, from) => {
       </form-section>
     </n-form>
 
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button secondary :disabled="loading || !modelChanged" @click="resetForm">
         {{ $t('common.reset') }}
       </n-button>

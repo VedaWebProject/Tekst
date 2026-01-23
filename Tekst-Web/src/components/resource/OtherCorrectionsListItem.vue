@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowBackIcon, ArrowForwardIcon } from '@/icons';
+import { ArrowBackIcon, ArrowForwardIcon, WarningIcon } from '@/icons';
 import { NButton, NFlex, NIcon, NListItem, NThing } from 'naive-ui';
 
 defineProps<{
@@ -21,14 +21,15 @@ const emit = defineEmits(['prevClick', 'nextClick']);
   >
     <n-thing :content-indented="!smallScreen" description-style="font-size: var(--font-size-tiny)">
       <template #header>
-        {{ $t('contents.corrections.otherTitle') }}
+        <n-flex align="center" :wrap="false">
+          <n-icon :component="WarningIcon" color="var(--warning-color)" />
+          <span>{{ $t('contents.corrections.otherTitle') }}</span>
+        </n-flex>
       </template>
       <template #header-extra>
         <n-flex align="center" :wrap="false" style="height: 100%">
           <n-button
             secondary
-            type="primary"
-            size="small"
             :focusable="false"
             :disabled="loading || prevDisabled"
             :loading="loading"
@@ -41,8 +42,6 @@ const emit = defineEmits(['prevClick', 'nextClick']);
           </n-button>
           <n-button
             secondary
-            type="primary"
-            size="small"
             :focusable="false"
             :disabled="loading || nextDisabled"
             :loading="loading"
