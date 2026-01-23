@@ -181,7 +181,7 @@ async function handleSaveClick() {
         <resource-settings-properties-form-items v-model="model" />
       </n-form>
 
-      <button-shelf top-gap>
+      <button-shelf class="mt-lg">
         <n-button secondary @click="handleResetClick">{{ $t('common.reset') }}</n-button>
         <n-button type="primary" @click="handleSaveClick">{{ $t('common.save') }}</n-button>
       </button-shelf>

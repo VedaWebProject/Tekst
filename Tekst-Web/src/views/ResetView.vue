@@ -108,7 +108,7 @@ onMounted(() => {
           />
         </n-form-item>
       </n-form>
-      <button-shelf top-gap>
+      <button-shelf class="mt-lg">
         <n-button type="primary" :loading="loading" :disabled="loading" @click="handlePasswordSave">
           {{ $t('common.save') }}
         </n-button>

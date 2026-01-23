@@ -4,14 +4,10 @@ import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    topGap?: boolean;
-    bottomGap?: boolean;
     wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
     groupWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   }>(),
   {
-    topGap: false,
-    bottomGap: false,
     wrap: 'wrap',
     groupWrap: 'wrap',
   }
@@ -23,8 +19,6 @@ const containerStyle = computed<CSSProperties>(() => ({
   alignItems: 'center',
   flexWrap: props.wrap,
   gap: 'var(--gap-md)',
-  marginTop: props.topGap ? 'var(--gap-lg)' : undefined,
-  marginBottom: props.bottomGap ? 'var(--gap-lg)' : undefined,
 }));
 </script>
 

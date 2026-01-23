@@ -232,7 +232,7 @@ async function handleModalSubmit() {
         />
       </n-form>
 
-      <button-shelf top-gap>
+      <button-shelf class="mt-lg">
         <n-button secondary :disabled="loading" @click="showEditModal = false">
           {{ $t('common.cancel') }}
         </n-button>

@@ -93,7 +93,7 @@ async function handleClick() {
       {{ $t('browse.contents.widgets.contextWidget.noContext') }}
     </span>
 
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button type="primary" @click="() => (showModal = false)">
         {{ $t('common.close') }}
       </n-button>

@@ -404,7 +404,7 @@ watch(
         </n-form-item>
       </n-form>
 
-      <button-shelf top-gap>
+      <button-shelf class="mt-lg">
         <template #start>
           <n-button v-if="selectedSegmentId" secondary type="error" @click="handleDeleteClick">
             {{ $t('common.delete') }}

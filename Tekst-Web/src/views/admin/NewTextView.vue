@@ -165,7 +165,7 @@ async function handleSave() {
       </n-form-item>
     </n-form>
 
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button type="primary" :disabled="loading" :loading="loading" @click="handleSave">
         {{ $t('common.save') }}
       </n-button>

@@ -108,7 +108,7 @@ defineExpose({ open });
         />
       </n-form-item>
     </n-form>
-    <button-shelf top-gap>
+    <button-shelf class="mt-lg">
       <n-button secondary @click="show = false">
         {{ $t('common.cancel') }}
       </n-button>
