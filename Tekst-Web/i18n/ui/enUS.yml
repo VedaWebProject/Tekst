@@ -694,7 +694,8 @@ texts:
     warnDeleteLevel: |
       Deleting a text level has far-reaching consequences: All data associated
       with this text level will be deleted with it. This includes all (!) resources
-      on this level, regardless of the user who created it!
+      on this level – regardless of the users who created them – as well as all locations
+      on this level, making them unavailable via existing links/URLs.
       The application will try its best to re-connect adjacent levels,
       but you will have to adjust the result to your needs using the text's
       locations settings afterwards. This cannot be undone.
@@ -726,6 +727,8 @@ texts:
       If you delete this location, all data associated with it or its child locations will
       be deleted with it. This may affect contents of multiple resources,
       even ones created by other users. The location will not be available under its original ID anymore.
+      Even if you recreate the location later, it will get a different ID
+      and circulating links/URLs to this location will break.
       This cannot be undone. Are you sure you want to proceed?
     tipDeleteLocation: Delete location "{location}"
     infoDeletedLocation: Deleted location "{location}" (total of {locations} locations and {contents} contents)
