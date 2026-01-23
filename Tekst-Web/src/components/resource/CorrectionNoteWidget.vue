@@ -13,6 +13,7 @@ const props = withDefaults(
     resource: AnyResourceRead;
     full?: boolean;
     showInfo?: boolean;
+    locationId?: string;
   }>(),
   {
     showInfo: true,
@@ -51,7 +52,7 @@ async function handleClick() {
 
   if (!note) return;
 
-  const locId = browse.locationPath[props.resource.level]?.id;
+  const locId = props.locationId ?? browse.locationPath[props.resource.level]?.id;
   if (!locId) {
     console.error('Cannot determine current content location.');
     return;

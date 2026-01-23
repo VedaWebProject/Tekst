@@ -33,9 +33,7 @@ import {
   ArrowBackIcon,
   ArrowForwardIcon,
   BookIcon,
-  ClearIcon,
   CompareIcon,
-  CorrectionNoteIcon,
   EditIcon,
   MoveDownIcon,
   NoContentIcon,
@@ -227,6 +225,9 @@ async function loadLocationData() {
         },
       });
     }
+    // attach loaded content to resource for correction
+    // widget to know there actually is content
+    resource.value.contents = initialContentModel.value ? [initialContentModel.value] : [];
   } else {
     // requested location does not exist, go back to first content at first location
     router.replace({
@@ -446,10 +447,8 @@ whenever(ArrowRight, () => {
   </icon-heading>
 
   <button-shelf
-    top-gap
-    bottom-gap
     wrap="wrap-reverse"
-    class="toolbar"
+    class="my-lg toolbar"
     :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
   >
     <template #start>
@@ -549,6 +548,7 @@ whenever(ArrowRight, () => {
       <n-alert
         v-if="compareResource"
         :show-icon="false"
+        closable
         class="mb-lg"
         @after-leave="compareResourceId = undefined"
       >
@@ -573,7 +573,6 @@ whenever(ArrowRight, () => {
         <button-shelf class="mt-sm">
           <n-button
             secondary
-            type="primary"
             :title="$t('contents.tipBtnPrevChange')"
             :disabled="loading"
             @click="() => handleNearestChangeClick('before')"
@@ -585,7 +584,6 @@ whenever(ArrowRight, () => {
           <n-button
             v-if="compareResource.resourceType == resource.resourceType"
             secondary
-            type="primary"
             :title="$t('contents.tipBtnApplyChanges')"
             :disabled="loading || !compareResource.contents?.length"
             @click="copyFromComparison"
@@ -596,7 +594,6 @@ whenever(ArrowRight, () => {
           </n-button>
           <n-button
             secondary
-            type="primary"
             :title="$t('contents.tipBtnNextChange')"
             :disabled="loading"
             @click="() => handleNearestChangeClick('after')"
@@ -605,21 +602,13 @@ whenever(ArrowRight, () => {
               <n-icon :component="SkipNextIcon" />
             </template>
           </n-button>
-          <n-button secondary :title="$t('common.close')" @click="compareResourceId = undefined">
-            <template #icon>
-              <n-icon :component="ClearIcon" />
-            </template>
-          </n-button>
         </button-shelf>
       </n-alert>
 
       <!-- CORRECTION NOTES -->
       <n-alert v-if="resource && !!corrections.length" :show-icon="false" class="mb-lg">
-        <n-collapse class="corrections">
+        <n-collapse class="corrections" :trigger-areas="['arrow', 'main']">
           <n-collapse-item name="corrections">
-            <template #arrow>
-              <n-icon :component="CorrectionNoteIcon" color="var(--error-color)" size="24" />
-            </template>
             <template #header>
               <n-flex align="center">
                 <b class="text-small ml-sm">{{ $t('contents.corrections.notes') }}</b>
@@ -647,20 +636,20 @@ whenever(ArrowRight, () => {
                 @next-click="() => gotoLocation(nextCorrection?.locationId)"
               />
             </n-list>
+            <template #header-extra>
+              <!-- ADD NEW CORRECTION NOTE -->
+              <correction-note-widget
+                v-if="location"
+                :resource="resource"
+                :location-id="location.id"
+                full
+                :show-info="false"
+                color="var(--error-color)"
+              />
+            </template>
           </n-collapse-item>
         </n-collapse>
       </n-alert>
-
-      <!-- ADD NEW CORRECTION NOTE -->
-      <correction-note-widget
-        v-if="location"
-        :resource="resource"
-        :location-id="location.id"
-        full
-        :show-info="false"
-        class="mb-lg"
-        style="justify-content: center"
-      />
 
       <!-- CONTENT FORM -->
       <template v-if="contentModel">
@@ -675,7 +664,7 @@ whenever(ArrowRight, () => {
           <content-form-items v-model="contentModel" :resource="resource" />
         </n-form>
 
-        <button-shelf top-gap>
+        <button-shelf class="mt-lg">
           <template #start>
             <n-button
               secondary

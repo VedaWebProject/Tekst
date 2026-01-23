@@ -36,13 +36,13 @@ const contentFontStyle = {
     />
 
     <!-- CONTENT METADATA FIELDS -->
-    <n-collapse :default-expanded-names="['comments']" class="mt-md">
+    <n-collapse display-directive="show" :default-expanded-names="['comments']" class="mt-md">
       <n-collapse-item
         name="comments"
         style="border-top: 1px solid var(--primary-color-fade3); padding-top: var(--gap-md)"
       >
         <template #header>
-          <n-badge dot :show="!!model.comments" :offset="[6, 10]">
+          <n-badge dot :show="!!model.comments?.length" :offset="[6, 10]">
             <b class="text-medium">{{ $t('common.comment', 2) }}</b>
           </n-badge>
         </template>
@@ -79,6 +79,7 @@ const contentFontStyle = {
                     type="textarea"
                     :rows="3"
                     :maxlength="5000"
+                    :minlength="1"
                     show-count
                     :placeholder="$t('common.comment')"
                     :style="contentFontStyle"
