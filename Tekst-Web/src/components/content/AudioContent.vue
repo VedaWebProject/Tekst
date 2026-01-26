@@ -22,19 +22,12 @@ const fontStyle: CSSProperties = {
   fontFamily: props.resource.config.general.font || 'var(--font-family-ui)',
 };
 
-function handlePlay(playerInstanceId: string) {
-  playerRefs.value.forEach((p) => {
-    if (p.id !== playerInstanceId) {
-      p.ref.pause();
-    }
-  });
+function handlePlay(playerId: string) {
+  playerRefs.value.filter((p) => p.id !== playerId).forEach((p) => p.ref.pause());
 }
 
-function handleEnded(playerInstanceId: string) {
-  const index = playerRefs.value.findIndex((p) => p.id === playerInstanceId);
-  if (index !== -1 && index < playerRefs.value.length - 1) {
-    playerRefs.value[index + 1].ref.play(true);
-  }
+function handleEnded(playerIndex: number) {
+  playerRefs.value[playerIndex + 1]?.ref.play(true);
 }
 
 onBeforeUpdate(() => {
@@ -69,7 +62,7 @@ onBeforeUpdate(() => {
           :caption="file.caption || undefined"
           :font-style="fontStyle"
           @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
-          @ended="() => handleEnded(`player-${content.id}-${fileIndex}`)"
+          @ended="() => handleEnded(fileIndex)"
         />
       </n-flex>
     </common-content-display>
