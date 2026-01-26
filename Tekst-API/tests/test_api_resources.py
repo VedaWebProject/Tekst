@@ -1268,15 +1268,6 @@ async def test_import_resource(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # upload valid resource data file
-    resp = await test_client.post(
-        f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", import_sample_string, "application/json")},
-    )
-    assert_status(202, resp)
-    assert "id" in resp.json()
-    assert await wait_for_task_success(resp.json()["id"])
-
     # fail to upload resource data without write permissions
     await login()
     resp = await test_client.post(
@@ -1313,6 +1304,55 @@ async def test_import_resource(
     assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
+
+    # upload valid resource data file
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.json", import_sample_string, "application/json")},
+    )
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # upload update to valid resource data
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={
+            "file": (
+                "foo.json",
+                json.dumps(
+                    {
+                        "contents": [
+                            {
+                                "locationId": additional_location_id,
+                                "text": "Frustrationstoleranz",
+                            },
+                        ],
+                        "resourceId": resource_id,
+                    }
+                ),
+                "application/json",
+            )
+        },
+    )
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # check if content doc was updated correctly:
+    # find all contents of resource
+    resp = await test_client.get(
+        "/contents",
+        params={"res": [resource_id], "limit": 100},
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    # check if target content is a-okay
+    for c in resp.json():
+        if c["locationId"] == additional_location_id:
+            assert c["text"] == "Frustrationstoleranz"
+            break
 
 
 @pytest.mark.anyio
