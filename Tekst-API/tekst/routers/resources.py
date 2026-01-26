@@ -828,8 +828,7 @@ async def _import_resource_task(
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
-    doc_model: ContentBaseDocument = content_model.document_model()
-    content_update_model = content_model.update_model()
+    content_doc_model: ContentBaseDocument = content_model.document_model()
 
     created_count = 0
     updated_count = 0
@@ -857,24 +856,28 @@ async def _import_resource_task(
                 raise errors.E_400_IMPORT_ID_NON_EXISTENT
 
             # check if this content already exists
-            content_doc = await doc_model.find_one(
-                doc_model.resource_id == resource_doc.id,
-                doc_model.location_id == loc_id,
+            content_doc = await content_doc_model.find_one(
+                content_doc_model.resource_id == resource_doc.id,
+                content_doc_model.location_id == loc_id,
             )
 
-            # validate content against model
+            # create ready-to-write content model instances
+            # and validate content against model
             try:
                 if content_doc:
-                    await content_doc.apply_updates(
-                        content_update_model(
-                            resource_type=resource_doc.resource_type,
-                            **content,
-                        ),
-                        write_to_db=False,
+                    # this is an update to an existing content document
+                    # (we replace it COMPLETELY but keep the ID)
+                    new_content_doc = content_doc_model(
+                        id=content_doc.id,
+                        resource_type=resource_doc.resource_type,
+                        resource_id=resource_doc.id,
+                        location_id=loc_id,
+                        **content,
                     )
-                    contents.append((content_doc, True))
+                    contents.append((new_content_doc, True))
                 else:
-                    content_doc = doc_model(
+                    # this is a new content document
+                    content_doc = content_doc_model(
                         resource_type=resource_doc.resource_type,
                         resource_id=resource_doc.id,
                         location_id=loc_id,

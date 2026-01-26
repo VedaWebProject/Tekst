@@ -127,8 +127,6 @@ class DocumentBase(Document):
     async def apply_updates(
         self,
         updates_model: ModelBase,
-        *,
-        write_to_db: bool = True,
     ) -> "DocumentBase":
         """
         Custom method to apply updates to the document, excluding any fields that are
@@ -148,10 +146,7 @@ class DocumentBase(Document):
             # set attribute
             setattr(self, field, getattr(updates_model, field))
 
-        if write_to_db:
-            return await self.replace()
-        else:
-            return self
+        return await self.replace()
 
     @classmethod
     def _validate_against_field(

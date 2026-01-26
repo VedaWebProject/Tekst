@@ -118,7 +118,7 @@ async def test_find_contents(
     )["resources"][0]
     await login(is_superuser=True)
 
-    # find all contents
+    # find all contents of resource
     resp = await test_client.get(
         "/contents",
         params={"res": [resource_id], "limit": 100},
@@ -127,7 +127,7 @@ async def test_find_contents(
     assert isinstance(resp.json(), list)
     assert len(resp.json()) > 0
 
-    # find all contents of resource
+    # find all contents
     resp = await test_client.get(
         "/contents",
         params={"limit": 100},
