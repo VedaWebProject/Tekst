@@ -71,7 +71,7 @@
   },
   "overrides": {
     "@vue/eslint-config-typescript": {
-      "typescript-eslint": "8.53.0"
+      "typescript-eslint": "8.53.1"
     }
   }
 }
