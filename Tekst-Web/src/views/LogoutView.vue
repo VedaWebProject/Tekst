@@ -10,5 +10,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-spin class="centered-spinner my-lg" />
+  <n-spin class="centered-spin my-lg" />
 </template>

@@ -3,6 +3,7 @@ import random
 import re
 
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Annotated, Any
 
 import fastapi_users.models as fapi_users_models
@@ -45,6 +46,7 @@ from fastapi_users_db_beanie.access_token import (
 from humps import decamelize
 
 from tekst.config import TekstConfig, get_config
+from tekst.counters import counter_incr
 from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
@@ -184,6 +186,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             else:
                 await send_notification(user, TemplateIdentifier.EMAIL_SUPERUSER_UNSET)
         if "password" in update_dict:
+            await counter_incr("changed_passwords")
             await send_notification(
                 user,
                 TemplateIdentifier.EMAIL_PASSWORD_RESET,
@@ -195,12 +198,14 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         request: Request | None = None,
         response: Response | None = None,
     ):
+        await counter_incr("logins")
         if not user.seen:
             if user.seen is None:
                 user.seen = False
             else:
                 user.seen = True
-            await user.replace()
+        user.last_login = datetime.now(UTC)
+        await user.replace()
 
     async def on_after_request_verify(
         self, user: UserDocument, token: str, request: Request | None = None
@@ -222,6 +227,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_forgot_password(
         self, user: UserDocument, token: str, request: Request | None = None
     ):
+        await counter_incr("forgotten_passwords")
         await send_notification(
             user,
             TemplateIdentifier.EMAIL_PASSWORD_FORGOT,
@@ -232,6 +238,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     async def on_after_reset_password(
         self, user: UserDocument, request: Request | None = None
     ):
+        await counter_incr("reset_passwords")
         await send_notification(  # pragma: no cover
             user,
             TemplateIdentifier.EMAIL_PASSWORD_RESET,
@@ -304,6 +311,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         await UserMessageDocument.find(UserMessageDocument.sender == user.id).delete()
 
     async def on_after_delete(self, user: UserDocument, request: Request | None = None):
+        await counter_incr("deleted_users")
         await send_notification(
             user,
             TemplateIdentifier.EMAIL_DELETED,

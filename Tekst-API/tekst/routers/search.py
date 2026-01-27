@@ -5,11 +5,12 @@ from pathlib import Path as PathObj
 from typing import Annotated, Any, Union
 from uuid import uuid4
 
-from fastapi import APIRouter, Body, Request, status
+from fastapi import APIRouter, BackgroundTasks, Body, Request, status
 
 from tekst import errors, search, tasks
 from tekst.auth import OptionalUserDep, SuperuserDep
 from tekst.config import ConfigDep, TekstConfig
+from tekst.counters import counter_incr
 from tekst.i18n import pick_translation
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
@@ -39,7 +40,7 @@ router = APIRouter(
         ]
     ),
 )
-async def perform_search(
+async def handle_search(
     user: OptionalUserDep,
     body: Annotated[
         Union[  # noqa: UP007
@@ -48,26 +49,15 @@ async def perform_search(
         ],
         Body(discriminator="search_type"),
     ],
+    background_tasks: BackgroundTasks,
 ) -> SearchResults:
     if (
         body.settings_general.pagination.es_from()
         + body.settings_general.pagination.es_size()
     ) > 10000:
         raise errors.E_400_REQUESTED_TOO_MANY_SEARCH_RESULTS
-    if body.search_type == "quick":
-        return await search.search_quick(
-            user=user,
-            user_query=body.query,
-            settings_general=body.settings_general,
-            settings_quick=body.settings_quick,
-        )
-    elif body.search_type == "advanced":
-        return await search.search_advanced(
-            user=user,
-            queries=body.queries,
-            settings_general=body.settings_general,
-            settings_advanced=body.settings_advanced,
-        )
+    background_tasks.add_task(counter_incr, f"search_{body.search_type}")
+    return await search.search(user, body)
 
 
 @router.get(
@@ -122,7 +112,7 @@ async def _export_search_results_task(
 
     # perform search, transform data into target export data format
     hits = []
-    while (results := await perform_search(user, req_body)).hits:
+    while (results := await search.search(user, req_body)).hits:
         # transform hits into actual search results export data
         for hit in results.hits:
             text = texts_by_ids.get(str(hit.text_id))

@@ -75,6 +75,7 @@ common:
   translation: Übersetzung | Übersetzungen
   system: System
   details: Details
+  total: gesamt
   loading: Lade...
   url: URL
   downloadSaved: Datei gespeichert als {filename}.
@@ -158,7 +159,7 @@ tasks:
     resource_export: Ressourcen-Export erstellen
     search_export: Suchergebnisse exportieren
     broadcast_user_ntfc: Benutzer*innen-Benachrichtigungen versenden
-    broadcast_admin_ntfc: Administratoren-Benachrichtigungen versenden
+    broadcast_admin_ntfc: Administrator*innen-Benachrichtigungen versenden
     precompute_data: Generierung vorberechneter Daten
     structure_update: Textstruktur aktualisieren
     platform_cleanup: Bereinigung interner Plattformdaten
@@ -305,7 +306,7 @@ models:
     isInactive: inaktiv
     isVerified: verifiziert
     isUnverified: unverifiziert
-    isSuperuser: Administrator
+    isSuperuser: Administrator*in
     formRulesFeedback:
       emailInvalid: '@:models.user.email ist zu offensichtlich ungültig'
       usernameChars: 'Erlaubte Zeichen: a-z, A-Z, 0-9 und - _'
@@ -363,7 +364,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
-    denyResourceTypes: Erstellung dieser Ressourcentypen nur Administratoren erlauben
+    denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
     fonts: Benutzer*innendefinierte Schritarten
     uiFont: UI-Schriftart
     contentFont: Standard-Schriftart für Inhalte
@@ -386,7 +387,7 @@ resources:
   ownerTip: Ressourcen-Besitzer*in, verantwortlich für inhaltliche Pflege
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
   msgNotYourResourceBody: |
-    Als Administrator sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
+    Als Administrator*in sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
     Das bedeutet nicht, dass es eine gute Idee ist, dies zu tun. Bitte stellen Sie
     sicher, dass jede Ihrer Änderungen im Einverständnis mit dem Besitzer dieser
     Ressource geschieht!
@@ -427,7 +428,7 @@ resources:
     sie auch für nicht registrierte Benutzer*innen zugänglich zu machen.
     Sie werden als Besitzer der Ressource eingetragen und damit die hauptsächliche
     Ansprechperson für andere Benutzer*innen in Belangen zu dieser Ressource.
-    Veröffentlichte Ressourcen können auf andere Administratoren übertragen werden.
+    Veröffentlichte Ressourcen können auf andere Administrator*innen übertragen werden.
     Es ist sehr wichtig, dass Sie sich über die Auswirkungen der Veröffentlichung
     von Ressourcen im Klaren sind.
   warnUnpublish: |
@@ -649,7 +650,7 @@ account:
       addedAsOwner: ich als Besitzer*in einer Ressource eingetragen werde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
-      heading: Benachrichtigungen für Administratoren
+      heading: Benachrichtigungen für Administrator*innen
       userAwaitsActivation: eine Benutzer*in auf die Aktivierung des Kontos wartet (per Email)
       newCorrection: eine neue Korrekturnotiz zu einer öffentlichen Ressource erstellt wurde (per Email)
       msgSaveSuccess: Einstellungen zu Benutzer*innen-Email-Benachrichtigungen gespeichert.
@@ -766,6 +767,28 @@ texts:
     importSuccess: Neue Textstruktur erfolgreich hochgeladen und verarbeitet
     updateInfo: Geänderte Beschriftungen und Aliase für Belegstellen werden im Hintergrund verarbeitet. Die Suchindizes werden im Hintergrund aktualisiert. @:common.takeAWhile
 
+stats:
+  heading: Statistiken
+  onlySu: Nur sichtbar für Administrator*innen
+  general:
+    msgSent: Gesendete Nachrichten
+    emailsSent: Gesendete Emails
+  activity:
+    heading: Nutzer*innen-Aktivität
+    pastWeek: Aktiv vergangene 7 Tage
+    pastMonth: Aktiv vergangene 30 Tage
+    pastYear: Aktiv vergangene 365 Tage
+    active: Jetzt aktiv
+    logins: Anmeldungen gesamt
+    changedPws: Geänderte Passwörter
+    forgottenPws: Vergessene Passwörter
+    resetPws: Zurückgesetzte Passwörter
+    deletedUsers: Gelöschte Konten
+    statsRequests: Statistik-Anfragen
+  search:
+    quick: Schnellsuchen
+    advanced: Erweiterte Suchen
+
 admin:
   heading: Administration
   optionGroupLabel: Administration
@@ -785,13 +808,13 @@ admin:
       setInactive: Konto deaktivieren
       setVerified: E-Mail als verifiziert markieren
       setUnverified: E-Mail-Verifizierung zurücksetzen
-      setSuperuser: Zu Administrator befördern
+      setSuperuser: Zu Administrator*in befördern
       unsetSuperuser: Zu normaler Benutzer*in herabstufen
       deleteUser: Benutzer*in löschen
     confirmMsg:
       areYouSure: Sind Sie sicher, dass Sie
       setUser: '@:admin.users.confirmMsg.areYouSure {username} zu einer normalen Benutzer*in herabstufen möchten?'
-      setSuperuser: '@:admin.users.confirmMsg.areYouSure {username} Administratorenrechte zuteilen möchten?'
+      setSuperuser: '@:admin.users.confirmMsg.areYouSure {username} Administrator*innenrechte zuteilen möchten?'
       setInactive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} deaktivieren möchten?'
       setActive: '@:admin.users.confirmMsg.areYouSure das Konto von {username} aktivieren möchten?'
       setUnverified: '@:admin.users.confirmMsg.areYouSure die E-Mail-Verifizierung von {username} zurücksetzen möchten?'
@@ -801,7 +824,7 @@ admin:
     heading: Neuer Text
     headerInfoAlert: |
       Hier können Sie einen neuen Text anlegen. Dafür müssen Sie nur die grundlegendsten Angaben machen.
-      Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administratoren zugänglich.
+      Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administrator*innen zugänglich.
       Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Einstellungen vornehmen können,
       bevor Sie den Text öffentlich verfügbar machen.
     btnProceed: Fortfahren

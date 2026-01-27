@@ -8,7 +8,7 @@ from fastapi_users import (
 from fastapi_users_db_beanie import (
     BeanieBaseUser,
 )
-from pydantic import Field, model_validator
+from pydantic import AwareDatetime, Field, model_validator
 from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
@@ -143,6 +143,7 @@ class User(ModelBase, ModelFactoryMixin):
     admin_notification_triggers: AdminNotificationTriggers = [
         TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
     ]
+    last_login: AwareDatetime | None = None
     seen: bool | None = None
 
 

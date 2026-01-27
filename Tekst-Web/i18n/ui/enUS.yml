@@ -75,6 +75,7 @@ common:
   translation: Translation | Translations
   system: System
   details: Details
+  total: total
   loading: Loading...
   url: URL
   downloadSaved: File saved as {filename}.
@@ -741,6 +742,28 @@ texts:
       msgSuccess: '@:common.location "{label}" saved'
     importSuccess: New text structure uploaded and processed successfully
     updateInfo: Modified labels and aliases for locations are processed in the background. @:common.takeAWhile
+
+stats:
+  heading: Statistics
+  onlySu: Only visible to administrators
+  general:
+    msgSent: Messages Sent
+    emailsSent: Emails Sent
+  activity:
+    heading: User Activity
+    pastWeek: Active Past 7 Days
+    pastMonth: Active Past 30 Days
+    pastYear: Active Past 365 Days
+    active: Active Now
+    logins: Total Sign-Ins
+    changedPws: Changed Passwords
+    forgottenPws: Forgotten Passwords
+    resetPws: Reset Passwords
+    deletedUsers: Deleted Accounts
+    statsRequests: Statistics Requests
+  search:
+    quick: Quick Searches
+    advanced: Advanced Searches
 
 admin:
   heading: Administration

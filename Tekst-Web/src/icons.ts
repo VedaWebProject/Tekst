@@ -7,6 +7,7 @@ import ArrowUpwardOutlined from '@vicons/material/ArrowUpwardOutlined';
 import AutoAwesomeMosaicOutlined from '@vicons/material/AutoAwesomeMosaicOutlined';
 import AutoFixHighOutlined from '@vicons/material/AutoFixHighOutlined';
 import BackspaceOutlined from '@vicons/material/BackspaceOutlined';
+import BarChartOutlined from '@vicons/material/BarChartOutlined';
 import BlockOutlined from '@vicons/material/BlockOutlined';
 import BookmarksOutlined from '@vicons/material/BookmarksOutlined';
 import CampaignOutlined from '@vicons/material/CampaignOutlined';
@@ -225,6 +226,7 @@ export {
   SkipPreviousFilled as SkipPreviousIcon,
   SortOutlined as SortIcon,
   StarHalfFilled as StarHalfIcon,
+  BarChartOutlined as StatsIcon,
   MiscellaneousServicesOutlined as SystemIcon,
   LibraryBooksOutlined as TextsIcon,
   VerticalAlignTopOutlined as TopIcon,

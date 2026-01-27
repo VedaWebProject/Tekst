@@ -15,14 +15,16 @@ from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.search import (
+    AdvancedSearchRequestBody,
     AdvancedSearchSettings,
     GeneralSearchSettings,
     IndexInfo,
+    QuickSearchRequestBody,
     QuickSearchSettings,
     SearchResults,
 )
 from tekst.models.text import TextDocument
-from tekst.models.user import UserRead
+from tekst.models.user import UserDocument, UserRead
 from tekst.resources import (
     AnyResourceSearchQuery,
     resource_types_mgr,
@@ -450,7 +452,7 @@ async def _get_resources(
     ).to_list()
 
 
-async def search_quick(
+async def _search_quick(
     user: UserRead | None,
     user_query: str | None = None,
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
@@ -538,7 +540,7 @@ async def search_quick(
     )
 
 
-async def search_advanced(
+async def _search_advanced(
     user: UserRead | None,
     queries: list[AnyResourceSearchQuery],
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
@@ -656,6 +658,26 @@ async def search_advanced(
         ),
         highlights_generators=highlights_generators,
     )
+
+
+async def search(
+    user: UserDocument | None,
+    body: QuickSearchRequestBody | AdvancedSearchRequestBody,
+) -> SearchResults:
+    if body.search_type == "quick":
+        return await _search_quick(
+            user=user,
+            user_query=body.query,
+            settings_general=body.settings_general,
+            settings_quick=body.settings_quick,
+        )
+    elif body.search_type == "advanced":
+        return await _search_advanced(
+            user=user,
+            queries=body.queries,
+            settings_general=body.settings_general,
+            settings_advanced=body.settings_advanced,
+        )
 
 
 async def search_nearest_content_location(

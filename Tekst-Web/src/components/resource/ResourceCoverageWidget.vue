@@ -128,7 +128,7 @@ async function loadCoverageData() {
           </n-virtual-list>
         </div>
       </template>
-      <n-spin v-else-if="coverageLoading" class="centered-spinner" />
+      <n-spin v-else-if="coverageLoading" class="centered-spin" />
       <n-empty v-else :description="$t('errors.notFound')" class="mb-lg">
         <template #icon>
           <n-icon :component="ErrorIcon" />
@@ -176,7 +176,7 @@ async function loadCoverageData() {
           </template>
         </n-virtual-list>
       </div>
-      <n-spin v-else-if="coverageLoading" class="centered-spinner" />
+      <n-spin v-else-if="coverageLoading" class="centered-spin" />
       <n-empty v-else :description="$t('errors.notFound')" class="mb-lg">
         <template #icon>
           <n-icon :component="ErrorIcon" />

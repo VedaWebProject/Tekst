@@ -598,6 +598,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/platform/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get stats */
+    get: operations['getStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/resources/precompute': {
     parameters: {
       query?: never;
@@ -5637,6 +5654,53 @@ export interface components {
     };
     /** @enum {string} */
     SortingPreset: 'relevance' | 'text_level_position' | 'text_level_relevance';
+    /** SuperuserStats */
+    SuperuserStats: {
+      /** Contents */
+      contents: number;
+      /** Locations */
+      locations: number;
+      /** Resources */
+      resources: number;
+      /** Texts */
+      texts: number;
+      /** Users */
+      users: number;
+      /** Activeuserscountpastweek */
+      activeUsersCountPastWeek: number;
+      /** Activeuserscountpastmonth */
+      activeUsersCountPastMonth: number;
+      /** Activeuserscountpastyear */
+      activeUsersCountPastYear: number;
+      /** Searchquick */
+      searchQuick: number;
+      /** Searchadvanced */
+      searchAdvanced: number;
+      /** Statsrequests */
+      statsRequests: number;
+      /** Bookmarks */
+      bookmarks: number;
+      /** Corrections */
+      corrections: number;
+      /** Emails */
+      emails: number;
+      /** Messages */
+      messages: number;
+      /** Messagesuser */
+      messagesUser: number;
+      /** Logins */
+      logins: number;
+      /** Activesessions */
+      activeSessions: number;
+      /** Changedpasswords */
+      changedPasswords: number;
+      /** Forgottenpasswords */
+      forgottenPasswords: number;
+      /** Resetpasswords */
+      resetPasswords: number;
+      /** Deletedusers */
+      deletedUsers: number;
+    };
     /** TaskRead */
     TaskRead: {
       id: components['schemas']['PydanticObjectId'];
@@ -6478,6 +6542,8 @@ export interface components {
        *     ]
        */
       adminNotificationTriggers: components['schemas']['AdminNotificationTrigger'][];
+      /** Lastlogin */
+      lastLogin?: string | null;
       /** Seen */
       seen?: boolean | null;
     };
@@ -6607,6 +6673,8 @@ export interface components {
        *     ]
        */
       adminNotificationTriggers: components['schemas']['AdminNotificationTrigger'][];
+      /** Lastlogin */
+      lastLogin?: string | null;
       /** Seen */
       seen?: boolean | null;
       /**
@@ -6633,6 +6701,31 @@ export interface components {
       /** Issuperuser */
       isSuperuser: boolean;
       publicFields: components['schemas']['PrivateUserProps'];
+    };
+    /** UserStats */
+    UserStats: {
+      /** Contents */
+      contents: number;
+      /** Locations */
+      locations: number;
+      /** Resources */
+      resources: number;
+      /** Texts */
+      texts: number;
+      /** Users */
+      users: number;
+      /** Activeuserscountpastweek */
+      activeUsersCountPastWeek: number;
+      /** Activeuserscountpastmonth */
+      activeUsersCountPastMonth: number;
+      /** Activeuserscountpastyear */
+      activeUsersCountPastYear: number;
+      /** Searchquick */
+      searchQuick: number;
+      /** Searchadvanced */
+      searchAdvanced: number;
+      /** Statsrequests */
+      statsRequests: number;
     };
     /** UserUpdate */
     UserUpdate: {
@@ -6684,6 +6777,8 @@ export interface components {
        * @description Events that trigger admin notifications for this user
        */
       adminNotificationTriggers?: components['schemas']['AdminNotificationTrigger'][];
+      /** Lastlogin */
+      lastLogin?: string | null;
       /** Seen */
       seen?: boolean | null;
     };
@@ -8628,6 +8723,28 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+    };
+  };
+  getStats: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['UserStats']
+            | components['schemas']['SuperuserStats'];
         };
       };
     };

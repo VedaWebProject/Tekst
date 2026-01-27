@@ -15,6 +15,7 @@ from humps import decamelize
 
 from tekst import tasks
 from tekst.config import TekstConfig, get_config
+from tekst.counters import counter_incr
 from tekst.logs import log
 from tekst.models.message import UserMessageDocument
 from tekst.models.notifications import TemplateIdentifier
@@ -50,7 +51,7 @@ def _get_notification_templates(
     return templates
 
 
-def _send_email(*, to: str, subject: str, txt: str, html: str):
+async def _send_email(*, to: str, subject: str, txt: str, html: str):
     log.debug(
         f"Sending mail to {to} via {_cfg.email.smtp_server}:{_cfg.email.smtp_port}..."
     )
@@ -75,6 +76,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
                 smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
+            await counter_incr("emails")
     except Exception as e:  # pragma: no cover
         log.error(
             f"Error sending email via "
@@ -113,7 +115,7 @@ async def send_notification(
     # send
     if template_id.name.startswith("EMAIL_"):
         # send as email
-        _send_email(
+        await _send_email(
             to=to_user.email,
             subject=msg_parts.get("subject", ""),
             txt=msg_parts.get("txt", ""),
@@ -127,6 +129,7 @@ async def send_notification(
             content=msg,
             created_at=datetime.now(UTC),
         ).create()
+        await counter_incr("messages_total")
 
 
 async def _broadcast_user_notification(

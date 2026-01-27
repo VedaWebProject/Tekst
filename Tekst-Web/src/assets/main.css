@@ -336,7 +336,7 @@ table td {
   font-family: 'Courier New', Courier, monospace;
 }
 
-.centered-spinner {
+.centered-spin {
   width: 100%;
   display: flex;
   justify-content: center;

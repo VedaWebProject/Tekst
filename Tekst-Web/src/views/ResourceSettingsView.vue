@@ -159,5 +159,5 @@ async function handleSaveClick() {
     </div>
   </template>
 
-  <n-spin v-else-if="loading" class="centered-spinner" />
+  <n-spin v-else-if="loading" class="centered-spin" />
 </template>

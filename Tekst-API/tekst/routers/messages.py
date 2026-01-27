@@ -3,13 +3,14 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or, Set
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Path, Query, status
 
 from tekst import errors
 from tekst.auth import (
     UserDep,
 )
 from tekst.config import TekstConfig, get_config
+from tekst.counters import counter_incr
 from tekst.models.message import (
     UserMessageCreate,
     UserMessageDocument,
@@ -40,8 +41,7 @@ router = APIRouter(
     ),
 )
 async def send_message(
-    user: UserDep,
-    message: UserMessageCreate,
+    user: UserDep, message: UserMessageCreate, background_tasks: BackgroundTasks
 ) -> UserMessageRead:
     """Creates a message for the specified recipient"""
     # check if sender == recipient
@@ -78,6 +78,9 @@ async def send_message(
             username=user.name if "name" in user.public_fields else user.username,
             message_content=message.content,
         )
+
+    # increment total user messages counter
+    background_tasks.add_task(counter_incr, "messages_user")
 
     # return created message
     return message_doc

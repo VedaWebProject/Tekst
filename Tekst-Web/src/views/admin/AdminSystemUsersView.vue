@@ -196,7 +196,7 @@ onMounted(() => {
     }"
   />
 
-  <n-spin v-if="loading" class="centered-spinner" :description="$t('common.loading')" />
+  <n-spin v-if="loading" class="centered-spin" :description="$t('common.loading')" />
   <n-empty v-else-if="error" :description="$t('errors.unexpected')">
     <template #icon>
       <n-icon :component="ErrorIcon" />

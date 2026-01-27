@@ -112,7 +112,7 @@ onMounted(() => {
         </span>
       </li>
     </ul>
-    <n-spin v-else-if="loading" class="centered-spinner" />
+    <n-spin v-else-if="loading" class="centered-spin" />
     <n-empty v-else :description="$t('help.msgNoHelpTextsFound')">
       <template #icon>
         <n-icon :component="NoContentIcon" />
