@@ -8,7 +8,7 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from '@/icons';
-import { useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
+import { useBrowseStore, useSearchStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
@@ -24,7 +24,6 @@ withDefaults(
 
 const browse = useBrowseStore();
 const search = useSearchStore();
-const theme = useThemeStore();
 
 const resultNo = computed(
   () =>
@@ -36,8 +35,6 @@ const resultNo = computed(
 const viewingSearchResult = computed(
   () => search.browseCurrHit?.id === browse.locationPathHead?.id
 );
-
-const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
 
 async function skip(direction: 'previous' | 'next') {
   await search.browseSkipTo(direction);
@@ -78,13 +75,12 @@ onMounted(() => {
       align="center"
       :wrap="false"
       class="bsr-toolbar"
-      :style="{ backgroundColor: theme.dark ? '#444' : '#c5c5c5' }"
+      :style="{ backgroundColor: 'var(--primary-color-fade3)' }"
     >
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
         <n-button
           quaternary
-          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browsePrev')"
           :focusable="false"
@@ -99,7 +95,6 @@ onMounted(() => {
         <!-- go to search results -->
         <n-button
           quaternary
-          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.heading')"
           :focusable="false"
@@ -114,7 +109,6 @@ onMounted(() => {
         <!-- skip to next search result -->
         <n-button
           quaternary
-          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browseNext')"
           :focusable="false"
@@ -135,7 +129,6 @@ onMounted(() => {
         align="center"
         :wrap="false"
         class="bsr-toolbar-middle text-small"
-        :style="{ color: toolbarTxtColor }"
       >
         <n-flex
           v-if="!search.loading"
@@ -162,11 +155,10 @@ onMounted(() => {
 
       <n-flex :wrap="false">
         <!-- keep active resources in sync with relevant resources from current hit? -->
-        <n-badge dot :offset="[0, 5]" :show="search.browseHitResourcesActive">
+        <n-badge dot :offset="[-2, 5]" :show="search.browseHitResourcesActive">
           <n-button
             :quaternary="!search.browseHitResourcesActive"
             :tertiary="search.browseHitResourcesActive"
-            :color="toolbarTxtColor"
             :size="buttonSize"
             :title="$t('search.results.browseHitResourcesActive')"
             :focusable="false"
@@ -181,7 +173,6 @@ onMounted(() => {
         <!-- stop browsing search results -->
         <n-button
           quaternary
-          :color="toolbarTxtColor"
           :size="buttonSize"
           :title="$t('search.results.browseStop')"
           :focusable="false"

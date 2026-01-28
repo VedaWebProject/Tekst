@@ -60,7 +60,7 @@ export const accountFormRules: Record<string, FormItemRule[]> = {
     },
     {
       validator: (_: FormItemRule, value: string) =>
-        !!value && /[a-z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value),
+        !!value && /[a-z]/.test(value) && /[A-Z]/.test(value) && /\d/.test(value),
       message: () => $t('models.user.formRulesFeedback.passwordChars'),
       trigger: ['input', 'blur'],
     },
