@@ -84,6 +84,7 @@ async def _send_email(*, to: str, subject: str, txt: str, html: str):
             f"(StartTLS: {_cfg.email.smtp_starttls})"
         )
         log.error(e)
+        raise e
 
 
 async def send_notification(
