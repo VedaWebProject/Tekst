@@ -871,8 +871,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Perform search */
-    post: operations['performSearch'];
+    /** Handle search */
+    post: operations['handleSearch'];
     delete?: never;
     options?: never;
     head?: never;
@@ -9732,7 +9732,7 @@ export interface operations {
       };
     };
   };
-  performSearch: {
+  handleSearch: {
     parameters: {
       query?: never;
       header?: never;
