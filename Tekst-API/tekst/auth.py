@@ -53,7 +53,7 @@ from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
 from tekst.notifications import (
-    TemplateIdentifier,
+    Notification,
     broadcast_admin_notification,
     send_notification,
 )
@@ -163,7 +163,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         if not _cfg.security.users_active_by_default and not user.is_active:
             await broadcast_admin_notification(
-                TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION,
+                Notification.EMAIL_USER_AWAITS_ACTIVATION,
                 username=user.username,
                 name=user.name,
                 affiliation=user.affiliation,
@@ -177,19 +177,19 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         if "is_active" in update_dict:
             if update_dict.get("is_active"):
-                await send_notification(user, TemplateIdentifier.EMAIL_ACTIVATED)
+                await send_notification(user, Notification.EMAIL_ACTIVATED)
             else:
-                await send_notification(user, TemplateIdentifier.EMAIL_DEACTIVATED)
+                await send_notification(user, Notification.EMAIL_DEACTIVATED)
         if "is_superuser" in update_dict:
             if update_dict.get("is_superuser"):
-                await send_notification(user, TemplateIdentifier.EMAIL_SUPERUSER_SET)
+                await send_notification(user, Notification.EMAIL_SUPERUSER_SET)
             else:
-                await send_notification(user, TemplateIdentifier.EMAIL_SUPERUSER_UNSET)
+                await send_notification(user, Notification.EMAIL_SUPERUSER_UNSET)
         if "password" in update_dict:
             await counter_incr("changed_passwords")
             await send_notification(
                 user,
-                TemplateIdentifier.EMAIL_PASSWORD_RESET,
+                Notification.EMAIL_PASSWORD_RESET,
             )
 
     async def on_after_login(
@@ -212,7 +212,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
     ):
         await send_notification(  # pragma: no cover
             user,
-            TemplateIdentifier.EMAIL_VERIFY,
+            Notification.EMAIL_VERIFY,
             token=token,
             token_lifetime_hours=int(
                 _cfg.security.verification_token_lifetime / 60 / 60
@@ -220,9 +220,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         )
 
     async def on_after_verify(self, user: UserDocument, request: Request | None = None):
-        await send_notification(
-            user, TemplateIdentifier.EMAIL_VERIFIED
-        )  # pragma: no cover
+        await send_notification(user, Notification.EMAIL_VERIFIED)  # pragma: no cover
 
     async def on_after_forgot_password(
         self, user: UserDocument, token: str, request: Request | None = None
@@ -230,7 +228,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         await counter_incr("forgotten_passwords")
         await send_notification(
             user,
-            TemplateIdentifier.EMAIL_PASSWORD_FORGOT,
+            Notification.EMAIL_PASSWORD_FORGOT,
             token=token,
             token_lifetime_hours=int(_cfg.security.reset_pw_token_lifetime / 60 / 60),
         )
@@ -239,9 +237,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         self, user: UserDocument, request: Request | None = None
     ):
         await counter_incr("reset_passwords")
-        await send_notification(  # pragma: no cover
+        await send_notification(
             user,
-            TemplateIdentifier.EMAIL_PASSWORD_RESET,
+            Notification.EMAIL_PASSWORD_RESET,
         )
 
     async def on_before_delete(
@@ -314,7 +312,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         await counter_incr("deleted_users")
         await send_notification(
             user,
-            TemplateIdentifier.EMAIL_DELETED,
+            Notification.EMAIL_DELETED,
         )
         pass
 

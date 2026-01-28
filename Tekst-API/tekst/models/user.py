@@ -17,7 +17,7 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.types import ConStr, ConStrOrNone, HttpUrlOrNone
 
 
@@ -34,11 +34,11 @@ type PrivateUserProps = Annotated[
 
 
 type UserNotificationTrigger = Literal[
-    TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
-    TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
-    TemplateIdentifier.EMAIL_ADDED_AS_OWNER.value,
-    TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
-    TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
+    Notification.EMAIL_MESSAGE_RECEIVED.value,
+    Notification.EMAIL_NEW_CORRECTION.value,
+    Notification.EMAIL_ADDED_AS_OWNER.value,
+    Notification.USRMSG_RESOURCE_PROPOSED.value,
+    Notification.USRMSG_RESOURCE_PUBLISHED.value,
 ]
 UserNotificationTriggers = Annotated[
     list[UserNotificationTrigger],
@@ -49,8 +49,8 @@ UserNotificationTriggers = Annotated[
 ]
 
 type AdminNotificationTrigger = Literal[
-    TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
-    TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
+    Notification.EMAIL_USER_AWAITS_ACTIVATION.value,
+    Notification.EMAIL_NEW_CORRECTION.value,
 ]
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],
@@ -134,14 +134,14 @@ class User(ModelBase, ModelFactoryMixin):
     ] = None
     public_fields: PrivateUserProps = []
     user_notification_triggers: UserNotificationTriggers = [
-        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value,
-        TemplateIdentifier.EMAIL_NEW_CORRECTION.value,
-        TemplateIdentifier.EMAIL_ADDED_AS_OWNER.value,
-        TemplateIdentifier.USRMSG_RESOURCE_PROPOSED.value,
-        TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED.value,
+        Notification.EMAIL_MESSAGE_RECEIVED.value,
+        Notification.EMAIL_NEW_CORRECTION.value,
+        Notification.EMAIL_ADDED_AS_OWNER.value,
+        Notification.USRMSG_RESOURCE_PROPOSED.value,
+        Notification.USRMSG_RESOURCE_PUBLISHED.value,
     ]
     admin_notification_triggers: AdminNotificationTriggers = [
-        TemplateIdentifier.EMAIL_USER_AWAITS_ACTIVATION.value,
+        Notification.EMAIL_USER_AWAITS_ACTIVATION.value,
     ]
     last_login: AwareDatetime | None = None
     seen: bool | None = None

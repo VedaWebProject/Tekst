@@ -175,14 +175,41 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
-async def test_forgot_password(
-    login,
+async def test_forgot_reset_password(
+    register_test_user,
     test_client: AsyncClient,
     assert_status,
+    get_emails,
 ):
-    user = await login(is_active=True, is_verified=True)
+    user = await register_test_user()
+
+    # get all emails
+    emails = await get_emails(2)
+    assert isinstance(emails, dict)
+
+    # report forgotten password
     resp = await test_client.post(
         "/auth/forgot-password",
         json={"email": user["email"]},
     )
     assert_status(202, resp)
+
+    # check emails
+    emails_count_before = len(emails["messages"])
+    emails = await get_emails()
+    print(emails)
+    assert len(emails["messages"]) == emails_count_before + 1
+
+    # reset password
+    token = emails["messages"][0]["HTML"].split("token=")[1].split('"')[0]
+    new_password = "oiuOIU876"
+    resp = await test_client.post(
+        "/auth/reset-password",
+        json={"token": token, "password": new_password},
+    )
+    assert_status(200, resp)
+
+    # check emails
+    emails_count_before = len(emails["messages"])
+    emails = await get_emails()
+    assert len(emails["messages"]) == emails_count_before + 1

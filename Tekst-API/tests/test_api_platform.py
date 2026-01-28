@@ -223,3 +223,23 @@ async def test_admin_test_email(
     await login(is_superuser=True)
     resp = await test_client.get("/platform/test-email")
     assert_status(204, resp)
+
+
+@pytest.mark.anyio
+async def test_get_stats(
+    test_client: AsyncClient,
+    assert_status,
+    login,
+):
+    # as user
+    await login()
+    resp = await test_client.get("/platform/stats")
+    assert_status(200, resp)
+    assert "statsRequests" in resp.json()
+    assert resp.json()["statsRequests"] == 0
+    # as superuser
+    await login(is_superuser=True)
+    resp = await test_client.get("/platform/stats")
+    assert_status(200, resp)
+    assert "statsRequests" in resp.json()
+    assert resp.json()["statsRequests"] == 1

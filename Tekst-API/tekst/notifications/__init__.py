@@ -18,7 +18,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.counters import counter_incr
 from tekst.logs import log
 from tekst.models.message import UserMessageDocument
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.user import (
     UserDocument,
     UserRead,
@@ -32,7 +32,7 @@ _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
 
 @lru_cache(maxsize=128)
 def _get_notification_templates(
-    template_id: TemplateIdentifier, locale: str = "enUS"
+    template_id: Notification, locale: str = "enUS"
 ) -> dict[str, str]:
     template_id = decamelize(template_id.value)
     templates = dict()
@@ -88,7 +88,7 @@ async def _send_email(*, to: str, subject: str, txt: str, html: str):
 
 async def send_notification(
     to_user: UserRead,
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ):
     if not to_user or not template_id:  # pragma: no cover
@@ -133,7 +133,7 @@ async def send_notification(
 
 
 async def _broadcast_user_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ) -> None:
     if not template_id.name.startswith("USRMSG_"):  # pragma: no cover
@@ -155,7 +155,7 @@ async def _broadcast_user_notification(
 
 
 async def broadcast_user_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ):
     await tasks.create_task(
@@ -169,7 +169,7 @@ async def broadcast_user_notification(
 
 
 async def _broadcast_admin_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     exclude_users: list[PydanticObjectId] = [],
     **kwargs,
 ) -> None:
@@ -178,16 +178,16 @@ async def _broadcast_admin_notification(
         Eq(UserDocument.admin_notification_triggers, template_id.value),
         NotIn(UserDocument.id, exclude_users),
     ).to_list():
-        await asyncio.sleep(5)
         await send_notification(
             to_user=admin,
             template_id=template_id,
             **kwargs,
         )
+        await asyncio.sleep(1)
 
 
 async def broadcast_admin_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     *,
     exclude_users: list[PydanticObjectId] = [],
     **kwargs,
@@ -204,4 +204,4 @@ async def broadcast_admin_notification(
 
 
 async def send_test_email(to_user: UserRead):
-    await send_notification(to_user, TemplateIdentifier.EMAIL_TEST)
+    await send_notification(to_user, Notification.EMAIL_TEST)

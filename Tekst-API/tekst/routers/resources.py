@@ -28,7 +28,7 @@ from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBaseDocument,
@@ -509,13 +509,10 @@ async def update_resource_owners(
 
     # notify target user(s)
     for u in owners:
-        if (
-            TemplateIdentifier.EMAIL_ADDED_AS_OWNER.value
-            in u.user_notification_triggers
-        ):
+        if Notification.EMAIL_ADDED_AS_OWNER.value in u.user_notification_triggers:
             await send_notification(
                 u,
-                TemplateIdentifier.EMAIL_ADDED_AS_OWNER,
+                Notification.EMAIL_ADDED_AS_OWNER,
                 username=user.username,
                 resource_title=pick_translation(resource_doc.title, u.locale),
             )
@@ -563,7 +560,7 @@ async def propose_resource(
     )
     # notify users about the new proposal
     await notifications.broadcast_user_notification(
-        notifications.TemplateIdentifier.USRMSG_RESOURCE_PROPOSED,
+        notifications.Notification.USRMSG_RESOURCE_PROPOSED,
         username=user.name if "name" in user.public_fields else user.username,
         resource_title=pick_translation(resource_doc.title),
     )
@@ -650,7 +647,7 @@ async def publish_resource(
 
     # notify users about the new publication
     await notifications.broadcast_user_notification(
-        notifications.TemplateIdentifier.USRMSG_RESOURCE_PUBLISHED,
+        notifications.Notification.USRMSG_RESOURCE_PUBLISHED,
         resource_title=pick_translation(resource_doc.title),
     )
 

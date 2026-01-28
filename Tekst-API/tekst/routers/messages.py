@@ -17,7 +17,7 @@ from tekst.models.message import (
     UserMessageRead,
     UserMessageThread,
 )
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.notifications import send_notification
 from tekst.state import get_state
@@ -68,13 +68,10 @@ async def send_message(
     await message_doc.create()
 
     # send notification email to recipient
-    if (
-        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value
-        in user.user_notification_triggers
-    ):
+    if Notification.EMAIL_MESSAGE_RECEIVED.value in user.user_notification_triggers:
         await send_notification(
             to_user=UserRead.model_from(await UserDocument.get(message.recipient)),
-            template_id=TemplateIdentifier.EMAIL_MESSAGE_RECEIVED,
+            template_id=Notification.EMAIL_MESSAGE_RECEIVED,
             username=user.name if "name" in user.public_fields else user.username,
             message_content=message.content,
         )
