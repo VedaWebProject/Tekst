@@ -39,6 +39,8 @@ jobs:
           sudo sysctl -w vm.swappiness=1
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
+      - name: Create SSL cert for emails
+        run: cd ../dev/smtp-ssl && ./generate.sh
       - name: Start test service stack
         run: |
           docker compose -f ../dev/compose.yml --profile test -p tekst-test up --detach
