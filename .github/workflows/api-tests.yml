@@ -51,7 +51,7 @@ jobs:
         if: always()
         env:
           TEKST_CUSTOM_ENV_FILE: .env.test
-        run: TEKST_CUSTOM_ENV_FILE=.env.test uv run pytest && uv run coverage lcov
+        run: uv run pytest && uv run coverage lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
