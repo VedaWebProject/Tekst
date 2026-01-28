@@ -1,16 +1,22 @@
+from datetime import UTC, datetime, timedelta
 from operator import itemgetter
-from typing import Annotated
+from typing import Annotated, Union
 
 from beanie import PydanticObjectId
 from beanie.operators import NotIn
-from fastapi import APIRouter, Header, Path, Query, status
+from fastapi import APIRouter, BackgroundTasks, Header, Path, Query, status
 from fastapi.responses import FileResponse
 from humps import camelize
 from starlette.background import BackgroundTask
 
 from tekst import errors, platform, tasks
-from tekst.auth import OptionalUserDep, SuperuserDep
+from tekst.auth import AccessTokenDocument, OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep
+from tekst.counters import counter_get, counter_incr
+from tekst.models.bookmark import BookmarkDocument
+from tekst.models.content import ContentBaseDocument
+from tekst.models.correction import CorrectionDocument
+from tekst.models.location import LocationDocument
 from tekst.models.platform import (
     ClientInitData,
     PlatformData,
@@ -19,12 +25,15 @@ from tekst.models.platform import (
     PlatformStateRead,
     PlatformStateUpdate,
 )
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import (
     ClientSegmentCreate,
     ClientSegmentDocument,
     ClientSegmentRead,
     ClientSegmentUpdate,
 )
+from tekst.models.stats import SuperuserStats, UserStats
+from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.notifications import send_test_email
 from tekst.routers.texts import get_all_texts
@@ -372,3 +381,57 @@ async def run_platform_cleanup(su: SuperuserDep) -> tasks.TaskDocument:
 )
 async def send_test_email_to_admin(su: SuperuserDep) -> None:
     await send_test_email(su)
+
+
+@router.get(
+    "/stats",
+    status_code=status.HTTP_200_OK,
+    response_model=Union[UserStats, SuperuserStats],  # noqa: UP007
+)
+async def get_stats(
+    user: UserDep,
+    cfg: ConfigDep,
+    background_tasks: BackgroundTasks,
+) -> UserStats | SuperuserStats:
+    background_tasks.add_task(counter_incr, "stats_requests")
+    # collect stats available for any registered user
+    stats = UserStats(
+        contents=await ContentBaseDocument.find_all(with_children=True).count(),
+        locations=await LocationDocument.find_all().count(),
+        resources=await ResourceBaseDocument.find_all(with_children=True).count(),
+        texts=await TextDocument.find_all().count(),
+        users=await UserDocument.find_all().count(),
+        active_users_count_past_week=await UserDocument.find(
+            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=7)
+        ).count(),
+        active_users_count_past_month=await UserDocument.find(
+            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=30)
+        ).count(),
+        active_users_count_past_year=await UserDocument.find(
+            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=356)
+        ).count(),
+        search_quick=await counter_get("search_quick"),
+        search_advanced=await counter_get("search_advanced"),
+        stats_requests=await counter_get("stats_requests"),
+    )
+    if not user.is_superuser:
+        return stats
+    # collect stats available for superusers only
+    stats = SuperuserStats(
+        **stats.model_dump(),
+        bookmarks=await BookmarkDocument.find_all().count(),
+        corrections=await CorrectionDocument.find_all().count(),
+        emails=await counter_get("emails"),
+        messages=await counter_get("messages_total"),
+        messages_user=await counter_get("messages_user"),
+        logins=await counter_get("logins"),
+        active_sessions=await AccessTokenDocument.find(
+            AccessTokenDocument.created_at
+            > (datetime.now(UTC) - timedelta(seconds=cfg.security.auth_cookie_lifetime))
+        ).count(),
+        changed_passwords=await counter_get("changed_passwords"),
+        forgotten_passwords=await counter_get("forgotten_passwords"),
+        reset_passwords=await counter_get("reset_passwords"),
+        deleted_users=await counter_get("deleted_users"),
+    )
+    return stats

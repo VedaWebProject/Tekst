@@ -9,7 +9,7 @@ from tekst.auth import UserDep
 from tekst.i18n import pick_translation
 from tekst.models.correction import CorrectionCreate, CorrectionDocument, CorrectionRead
 from tekst.models.location import LocationDocument
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
@@ -85,12 +85,12 @@ async def create_correction(
         ]:
             if (
                 to_user
-                and TemplateIdentifier.EMAIL_NEW_CORRECTION.value
+                and Notification.EMAIL_NEW_CORRECTION.value
                 in to_user.user_notification_triggers
             ):
                 await send_notification(
                     to_user,
-                    TemplateIdentifier.EMAIL_NEW_CORRECTION,
+                    Notification.EMAIL_NEW_CORRECTION,
                     from_user_name=user.name
                     if "name" in user.public_fields
                     else user.username,

@@ -150,7 +150,7 @@ whenever(Enter, () => {
         </n-flex>
       </n-flex>
 
-      <n-spin v-else-if="loading" class="content-loader" />
+      <n-spin v-else-if="loading" class="centered-spin" />
 
       <div v-else-if="error">
         {{

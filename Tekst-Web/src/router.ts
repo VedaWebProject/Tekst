@@ -39,6 +39,7 @@ const AccountSettingsView = () => import('@/views/account/AccountSettingsView.vu
 const AccountMessagesView = () => import('@/views/account/AccountMessagesView.vue');
 const VerifyView = () => import('@/views/VerifyView.vue');
 const ResetView = () => import('@/views/ResetView.vue');
+const StatsView = () => import('@/views/StatsView.vue');
 
 const TextView = () => import('@/views/admin/TextView.vue');
 const NewTextView = () => import('@/views/admin/NewTextView.vue');
@@ -208,6 +209,14 @@ const router = createRouter({
       path: '/community',
       name: 'community',
       component: CommunityView,
+      meta: {
+        restricted: 'user',
+      },
+    },
+    {
+      path: '/stats',
+      name: 'stats',
+      component: StatsView,
       meta: {
         restricted: 'user',
       },

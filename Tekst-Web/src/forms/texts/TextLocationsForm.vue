@@ -514,7 +514,7 @@ onMounted(() => {
         </n-spin>
       </div>
 
-      <n-spin v-else-if="loading" class="centered-spinner" :description="$t('common.loading')" />
+      <n-spin v-else-if="loading" class="centered-spin" :description="$t('common.loading')" />
     </form-section>
     <edit-location-modal ref="editModalRef" @submit="handleAddEditSubmit" />
   </div>

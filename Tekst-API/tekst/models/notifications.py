@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TemplateIdentifier(Enum):
+class Notification(Enum):
     EMAIL_TEST = "test"
     EMAIL_VERIFY = "verify"
     EMAIL_VERIFIED = "verified"

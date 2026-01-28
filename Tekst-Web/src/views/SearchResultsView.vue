@@ -153,7 +153,7 @@ onBeforeMount(() => {
     <reuse-template />
     <n-spin
       v-if="search.loading"
-      class="centered-spinner"
+      class="centered-spin"
       :description="`${$t('search.results.searching')}...`"
     />
     <n-list v-else-if="results.length" style="background-color: transparent" :show-divider="false">

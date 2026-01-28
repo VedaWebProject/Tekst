@@ -468,6 +468,8 @@ export type PlatformData = components['schemas']['PlatformData'];
 export type PlatformStateRead = components['schemas']['PlatformStateRead'];
 export type PlatformStateUpdate = components['schemas']['PlatformStateUpdate'];
 export type ResourceCoverage = components['schemas']['ResourceCoverage'];
+export type UserStats = components['schemas']['UserStats'];
+export type SuperuserStats = components['schemas']['SuperuserStats'];
 
 // client segments
 

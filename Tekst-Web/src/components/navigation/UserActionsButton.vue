@@ -7,6 +7,7 @@ import {
   LoginIcon,
   LogoutIcon,
   MessageIcon,
+  StatsIcon,
   TextsIcon,
   UserIcon,
 } from '@/icons';
@@ -48,7 +49,7 @@ const userOptions = computed(() => [
       name: 'community',
     }),
     key: 'community',
-    icon: renderIcon(CommunityIcon) || undefined,
+    icon: renderIcon(CommunityIcon),
   },
   ...(!!auth.user?.isSuperuser
     ? [
@@ -75,6 +76,13 @@ const userOptions = computed(() => [
         },
       ]
     : []),
+  {
+    label: renderLink(() => $t('stats.heading'), {
+      name: 'stats',
+    }),
+    key: 'stats',
+    icon: renderIcon(StatsIcon),
+  },
   {
     type: 'divider',
     key: 'divider',

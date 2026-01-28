@@ -15,9 +15,10 @@ from humps import decamelize
 
 from tekst import tasks
 from tekst.config import TekstConfig, get_config
+from tekst.counters import counter_incr
 from tekst.logs import log
 from tekst.models.message import UserMessageDocument
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.user import (
     UserDocument,
     UserRead,
@@ -31,7 +32,7 @@ _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
 
 @lru_cache(maxsize=128)
 def _get_notification_templates(
-    template_id: TemplateIdentifier, locale: str = "enUS"
+    template_id: Notification, locale: str = "enUS"
 ) -> dict[str, str]:
     template_id = decamelize(template_id.value)
     templates = dict()
@@ -50,7 +51,7 @@ def _get_notification_templates(
     return templates
 
 
-def _send_email(*, to: str, subject: str, txt: str, html: str):
+async def _send_email(*, to: str, subject: str, txt: str, html: str):
     log.debug(
         f"Sending mail to {to} via {_cfg.email.smtp_server}:{_cfg.email.smtp_port}..."
     )
@@ -75,6 +76,7 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
                 smtp.login(_cfg.email.smtp_user, _cfg.email.smtp_password)
             smtp.send_message(msg)
             log.debug("Email apparently sent successfully.")
+            await counter_incr("emails")
     except Exception as e:  # pragma: no cover
         log.error(
             f"Error sending email via "
@@ -82,11 +84,14 @@ def _send_email(*, to: str, subject: str, txt: str, html: str):
             f"(StartTLS: {_cfg.email.smtp_starttls})"
         )
         log.error(e)
+        # re-raise exception only in dev mode
+        if _cfg.dev_mode:  # pragma: no cover
+            raise e
 
 
 async def send_notification(
     to_user: UserRead,
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ):
     if not to_user or not template_id:  # pragma: no cover
@@ -113,7 +118,7 @@ async def send_notification(
     # send
     if template_id.name.startswith("EMAIL_"):
         # send as email
-        _send_email(
+        await _send_email(
             to=to_user.email,
             subject=msg_parts.get("subject", ""),
             txt=msg_parts.get("txt", ""),
@@ -127,10 +132,11 @@ async def send_notification(
             content=msg,
             created_at=datetime.now(UTC),
         ).create()
+        await counter_incr("messages_total")
 
 
 async def _broadcast_user_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ) -> None:
     if not template_id.name.startswith("USRMSG_"):  # pragma: no cover
@@ -152,7 +158,7 @@ async def _broadcast_user_notification(
 
 
 async def broadcast_user_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     **kwargs,
 ):
     await tasks.create_task(
@@ -166,7 +172,7 @@ async def broadcast_user_notification(
 
 
 async def _broadcast_admin_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     exclude_users: list[PydanticObjectId] = [],
     **kwargs,
 ) -> None:
@@ -175,16 +181,16 @@ async def _broadcast_admin_notification(
         Eq(UserDocument.admin_notification_triggers, template_id.value),
         NotIn(UserDocument.id, exclude_users),
     ).to_list():
-        await asyncio.sleep(5)
         await send_notification(
             to_user=admin,
             template_id=template_id,
             **kwargs,
         )
+        await asyncio.sleep(1)
 
 
 async def broadcast_admin_notification(
-    template_id: TemplateIdentifier,
+    template_id: Notification,
     *,
     exclude_users: list[PydanticObjectId] = [],
     **kwargs,
@@ -201,4 +207,4 @@ async def broadcast_admin_notification(
 
 
 async def send_test_email(to_user: UserRead):
-    await send_notification(to_user, TemplateIdentifier.EMAIL_TEST)
+    await send_notification(to_user, Notification.EMAIL_TEST)

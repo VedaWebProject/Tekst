@@ -86,7 +86,7 @@ async function handleHelpButtonClick() {
       :delay="100"
       :description="$t('common.loading')"
       content-style="width: 100%;"
-      class="centered-spinner"
+      class="centered-spin"
       style="padding: 0"
     >
       <div v-if="helpText" v-html="helpText.content"></div>

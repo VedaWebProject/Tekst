@@ -3,20 +3,21 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or, Set
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Path, Query, status
 
 from tekst import errors
 from tekst.auth import (
     UserDep,
 )
 from tekst.config import TekstConfig, get_config
+from tekst.counters import counter_incr
 from tekst.models.message import (
     UserMessageCreate,
     UserMessageDocument,
     UserMessageRead,
     UserMessageThread,
 )
-from tekst.models.notifications import TemplateIdentifier
+from tekst.models.notifications import Notification
 from tekst.models.user import UserDocument, UserRead, UserReadPublic
 from tekst.notifications import send_notification
 from tekst.state import get_state
@@ -40,8 +41,7 @@ router = APIRouter(
     ),
 )
 async def send_message(
-    user: UserDep,
-    message: UserMessageCreate,
+    user: UserDep, message: UserMessageCreate, background_tasks: BackgroundTasks
 ) -> UserMessageRead:
     """Creates a message for the specified recipient"""
     # check if sender == recipient
@@ -68,16 +68,16 @@ async def send_message(
     await message_doc.create()
 
     # send notification email to recipient
-    if (
-        TemplateIdentifier.EMAIL_MESSAGE_RECEIVED.value
-        in user.user_notification_triggers
-    ):
+    if Notification.EMAIL_MESSAGE_RECEIVED.value in user.user_notification_triggers:
         await send_notification(
             to_user=UserRead.model_from(await UserDocument.get(message.recipient)),
-            template_id=TemplateIdentifier.EMAIL_MESSAGE_RECEIVED,
+            template_id=Notification.EMAIL_MESSAGE_RECEIVED,
             username=user.name if "name" in user.public_fields else user.username,
             message_content=message.content,
         )
+
+    # increment total user messages counter
+    background_tasks.add_task(counter_incr, "messages_user")
 
     # return created message
     return message_doc

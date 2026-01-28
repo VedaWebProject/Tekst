@@ -49,8 +49,9 @@ export const $te: typeof i18n.global.te = i18n.global.te;
 i18n.global.locale.value = 'enUS';
 await setI18nLocale(); // load and set initial (default) locale
 
-export function getLocaleProfile(localeKey: string): LocaleProfile | undefined {
-  return localeProfiles.find((lp) => lp.key === localeKey);
+export function getLocaleProfile(localeKey: string): LocaleProfile {
+  return (localeProfiles.find((lp) => lp.key === localeKey) ??
+    localeProfiles.find((lp) => lp.key === 'enUS')) as LocaleProfile;
 }
 
 export async function setI18nLocale(

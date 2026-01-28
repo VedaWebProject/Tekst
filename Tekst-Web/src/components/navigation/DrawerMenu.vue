@@ -68,7 +68,7 @@ const allMenuOptions = computed(() => [
   <n-drawer v-model:show="show" :width="600" style="max-width: 90%">
     <n-drawer-content closable>
       <template #header>
-        <n-flex justify="center" size="large" :wrap="false">
+        <n-flex justify="center" size="large">
           <locale-switcher />
           <theme-mode-switcher @click="() => (show = false)" />
           <help-widget @done="() => (show = false)" />

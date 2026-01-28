@@ -3222,6 +3222,43 @@
         ]
       }
     },
+    "/platform/stats": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Get stats",
+        "operationId": "getStats",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/UserStats"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuperuserStats"
+                    }
+                  ],
+                  "title": "Response Get Stats Platform Stats Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/resources/precompute": {
       "get": {
         "tags": [
@@ -5033,8 +5070,8 @@
         "tags": [
           "search"
         ],
-        "summary": "Perform search",
-        "operationId": "performSearch",
+        "summary": "Handle search",
+        "operationId": "handleSearch",
         "requestBody": {
           "content": {
             "application/json": {
@@ -16655,6 +16692,124 @@
           "text_level_relevance"
         ]
       },
+      "SuperuserStats": {
+        "properties": {
+          "contents": {
+            "type": "integer",
+            "title": "Contents"
+          },
+          "locations": {
+            "type": "integer",
+            "title": "Locations"
+          },
+          "resources": {
+            "type": "integer",
+            "title": "Resources"
+          },
+          "texts": {
+            "type": "integer",
+            "title": "Texts"
+          },
+          "users": {
+            "type": "integer",
+            "title": "Users"
+          },
+          "activeUsersCountPastWeek": {
+            "type": "integer",
+            "title": "Activeuserscountpastweek"
+          },
+          "activeUsersCountPastMonth": {
+            "type": "integer",
+            "title": "Activeuserscountpastmonth"
+          },
+          "activeUsersCountPastYear": {
+            "type": "integer",
+            "title": "Activeuserscountpastyear"
+          },
+          "searchQuick": {
+            "type": "integer",
+            "title": "Searchquick"
+          },
+          "searchAdvanced": {
+            "type": "integer",
+            "title": "Searchadvanced"
+          },
+          "statsRequests": {
+            "type": "integer",
+            "title": "Statsrequests"
+          },
+          "bookmarks": {
+            "type": "integer",
+            "title": "Bookmarks"
+          },
+          "corrections": {
+            "type": "integer",
+            "title": "Corrections"
+          },
+          "emails": {
+            "type": "integer",
+            "title": "Emails"
+          },
+          "messages": {
+            "type": "integer",
+            "title": "Messages"
+          },
+          "messagesUser": {
+            "type": "integer",
+            "title": "Messagesuser"
+          },
+          "logins": {
+            "type": "integer",
+            "title": "Logins"
+          },
+          "activeSessions": {
+            "type": "integer",
+            "title": "Activesessions"
+          },
+          "changedPasswords": {
+            "type": "integer",
+            "title": "Changedpasswords"
+          },
+          "forgottenPasswords": {
+            "type": "integer",
+            "title": "Forgottenpasswords"
+          },
+          "resetPasswords": {
+            "type": "integer",
+            "title": "Resetpasswords"
+          },
+          "deletedUsers": {
+            "type": "integer",
+            "title": "Deletedusers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contents",
+          "locations",
+          "resources",
+          "texts",
+          "users",
+          "activeUsersCountPastWeek",
+          "activeUsersCountPastMonth",
+          "activeUsersCountPastYear",
+          "searchQuick",
+          "searchAdvanced",
+          "statsRequests",
+          "bookmarks",
+          "corrections",
+          "emails",
+          "messages",
+          "messagesUser",
+          "logins",
+          "activeSessions",
+          "changedPasswords",
+          "forgottenPasswords",
+          "resetPasswords",
+          "deletedUsers"
+        ],
+        "title": "SuperuserStats"
+      },
       "TaskRead": {
         "properties": {
           "id": {
@@ -18368,6 +18523,18 @@
               "userAwaitsActivation"
             ]
           },
+          "lastLogin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastlogin"
+          },
           "seen": {
             "anyOf": [
               {
@@ -18647,6 +18814,18 @@
               "userAwaitsActivation"
             ]
           },
+          "lastLogin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastlogin"
+          },
           "seen": {
             "anyOf": [
               {
@@ -18755,6 +18934,69 @@
           "publicFields"
         ],
         "title": "UserReadPublic"
+      },
+      "UserStats": {
+        "properties": {
+          "contents": {
+            "type": "integer",
+            "title": "Contents"
+          },
+          "locations": {
+            "type": "integer",
+            "title": "Locations"
+          },
+          "resources": {
+            "type": "integer",
+            "title": "Resources"
+          },
+          "texts": {
+            "type": "integer",
+            "title": "Texts"
+          },
+          "users": {
+            "type": "integer",
+            "title": "Users"
+          },
+          "activeUsersCountPastWeek": {
+            "type": "integer",
+            "title": "Activeuserscountpastweek"
+          },
+          "activeUsersCountPastMonth": {
+            "type": "integer",
+            "title": "Activeuserscountpastmonth"
+          },
+          "activeUsersCountPastYear": {
+            "type": "integer",
+            "title": "Activeuserscountpastyear"
+          },
+          "searchQuick": {
+            "type": "integer",
+            "title": "Searchquick"
+          },
+          "searchAdvanced": {
+            "type": "integer",
+            "title": "Searchadvanced"
+          },
+          "statsRequests": {
+            "type": "integer",
+            "title": "Statsrequests"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contents",
+          "locations",
+          "resources",
+          "texts",
+          "users",
+          "activeUsersCountPastWeek",
+          "activeUsersCountPastMonth",
+          "activeUsersCountPastYear",
+          "searchQuick",
+          "searchAdvanced",
+          "statsRequests"
+        ],
+        "title": "UserStats"
       },
       "UserUpdate": {
         "properties": {
@@ -18946,6 +19188,19 @@
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "optionalNullable": false
+          },
+          "lastLogin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastlogin",
+            "optionalNullable": true
           },
           "seen": {
             "anyOf": [

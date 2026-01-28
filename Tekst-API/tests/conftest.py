@@ -4,6 +4,7 @@ from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
+import httpx
 import pytest
 
 from asgi_lifespan import LifespanManager
@@ -285,6 +286,33 @@ def assert_status() -> Callable:
         )
 
     return _assert_status
+
+
+@pytest.fixture(scope="session")
+def get_emails() -> Callable:
+    async def _get_emails(delay: int = 1) -> dict:
+        """
+        See schema of returned messages overview here:
+        https://mailpit.axllent.org/docs/api-v1/view.html#get-/api/v1/messages
+        See schema of each message summary here:
+        https://mailpit.axllent.org/docs/api-v1/view.html#get-/api/v1/message/-ID-
+        """
+        emails = None
+        await asyncio.sleep(delay)  # wait a bit for emails to arrive
+        async with httpx.AsyncClient() as client:
+            r = await client.get("http://127.0.0.1:8025/api/v1/messages?limit=3")
+            emails = r.json()
+            emails["messages"] = [
+                (
+                    await client.get(
+                        f"http://localhost:8025/api/v1/message/{msg['ID']}"
+                    )
+                ).json()
+                for msg in emails["messages"]
+            ]
+        return emails
+
+    return _get_emails
 
 
 @pytest.fixture(scope="session")
