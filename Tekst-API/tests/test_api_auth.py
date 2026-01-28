@@ -175,7 +175,7 @@ async def test_login_fail_unverified(
 
 
 @pytest.mark.anyio
-async def test_forgot_reset_password(
+async def test_forgot_and_reset_password(
     register_test_user,
     test_client: AsyncClient,
     assert_status,
