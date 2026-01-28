@@ -84,7 +84,9 @@ async def _send_email(*, to: str, subject: str, txt: str, html: str):
             f"(StartTLS: {_cfg.email.smtp_starttls})"
         )
         log.error(e)
-        raise e
+        # re-raise exception only in dev mode
+        if _cfg.dev_mode:  # pragma: no cover
+            raise e
 
 
 async def send_notification(
