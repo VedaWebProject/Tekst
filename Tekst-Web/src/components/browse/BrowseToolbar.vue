@@ -15,7 +15,7 @@ const theme = useThemeStore();
 const affixRef = ref();
 const affixed = ref(false);
 
-const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+const toolbarTxtColor = computed(() => (theme.dark ? '#333' : '#fff'));
 
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
@@ -61,7 +61,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
       justify="space-between"
       align="center"
       class="browse-toolbar"
-      :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
+      :style="{ backgroundColor: 'var(--primary-color-fade1)' }"
     >
       <browse-location-controls
         :button-size="buttonSize"
@@ -69,21 +69,20 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         data-tour-key="browseNav"
       />
 
-      <div
+      <n-flex
+        justify="center"
+        align="center"
+        size="small"
+        :wrap="false"
         v-if="!state.smallScreen"
         class="browse-toolbar-middle browse-location-label"
         :style="{ color: toolbarTxtColor }"
         :title="affixed ? state.text?.title : undefined"
       >
-        <n-flex justify="center" align="center" :wrap="false">
-          <div
-            class="text-color-indicator"
-            :style="{ backgroundColor: theme.getTextColors().base }"
-          ></div>
-          <span v-if="!affixed">{{ state.text?.title || '???' }}</span>
-          <span v-else><location-label /></span>
-        </n-flex>
-      </div>
+        <!-- <div class="text-color-indicator" :style="{ backgroundColor: theme.getTextColors().base }"></div> -->
+        <b>{{ state.text?.slug.toUpperCase() }}</b>
+        <span class="ellipsis"><location-label /></span>
+      </n-flex>
 
       <div class="browse-toolbar-end">
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
@@ -91,7 +90,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             quaternary
             :color="toolbarTxtColor"
             :style="{
-              backgroundColor: browse.focusView ? 'var(--base-color-translucent)' : undefined,
+              backgroundColor: browse.focusView ? '#fff4' : undefined,
             }"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipFocusView')"
@@ -146,6 +145,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   border-radius: var(--border-radius);
   box-shadow: var(--block-box-shadow);
   transition: none;
+  background-color: var(--base-color);
 }
 
 .browse-toolbar-container > div:only-child {
@@ -180,10 +180,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
 }
 
 .browse-toolbar-middle {
-  flex: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
 }
 
 .browse-toolbar-end {
@@ -195,18 +192,11 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
   max-width: var(--max-app-width);
 }
 
-.browse-toolbar .browse-location-label .text-color-indicator {
+/* .browse-toolbar .browse-location-label .text-color-indicator {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-}
-
-.browse-toolbar-container.affixed .browse-location-label {
-  visibility: initial;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+} */
 
 .n-badge.active-resources-badge :deep(.n-badge-sup) {
   color: var(--text-color);

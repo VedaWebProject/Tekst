@@ -449,7 +449,7 @@ whenever(ArrowRight, () => {
   <button-shelf
     wrap="wrap-reverse"
     class="my-lg toolbar"
-    :style="{ backgroundColor: theme.dark ? '#555' : '#d5d5d5' }"
+    :style="{ backgroundColor: 'var(--primary-color-fade3)' }"
   >
     <template #start>
       <n-button

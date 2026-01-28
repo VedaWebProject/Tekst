@@ -33,10 +33,6 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
     feedbackHeightLarge: '20px',
     labelFontWeight: 'bold',
   },
-  Badge: {
-    fontSize: 'var(--font-size-mini)',
-    color: '#cc3d39',
-  },
   Thing: {
     titleFontWeight: 'normal',
     fontSize: 'var(--font-size)',
@@ -65,6 +61,10 @@ const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
     ..._COMMON_OVERRIDES.common,
     bodyColor: '#FFFFFF',
   },
+  Badge: {
+    fontSize: 'var(--font-size-mini)',
+    color: '#df221c',
+  },
 };
 
 const _DARK_OVERRIDES: GlobalThemeOverrides = {
@@ -72,6 +72,10 @@ const _DARK_OVERRIDES: GlobalThemeOverrides = {
   common: {
     ..._COMMON_OVERRIDES.common,
     bodyColor: '#232323',
+  },
+  Badge: {
+    fontSize: 'var(--font-size-mini)',
+    color: '#ff4e48',
   },
   Button: {
     ..._COMMON_OVERRIDES.Button,
