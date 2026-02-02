@@ -114,6 +114,9 @@ async function handleSave() {
       </n-form-item>
 
       <!-- SLUG -->
+      <n-alert type="warning" :title="$t('models.text.slug')" class="mb-md">
+        {{ $t('models.text.slugInitWarning') }}
+      </n-alert>
       <n-form-item path="slug" :label="$t('models.text.slug')">
         <n-input
           v-model:value="model.slug"
