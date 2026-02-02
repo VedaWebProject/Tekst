@@ -18019,6 +18019,12 @@
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
             "default": false
+          },
+          "slugInLocLabels": {
+            "type": "boolean",
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
+            "default": false
           }
         },
         "type": "object",
@@ -18151,6 +18157,12 @@
             "type": "boolean",
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
+            "default": false
+          },
+          "slugInLocLabels": {
+            "type": "boolean",
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
             "default": false
           },
           "indexUtd": {
@@ -18376,6 +18388,19 @@
             ],
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
+            "optionalNullable": false
+          },
+          "slugInLocLabels": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
             "optionalNullable": false
           }
         },

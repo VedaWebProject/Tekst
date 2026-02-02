@@ -80,7 +80,6 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
         :title="affixed ? state.text?.title : undefined"
       >
         <!-- <div class="text-color-indicator" :style="{ backgroundColor: theme.getTextColors().base }"></div> -->
-        <b>{{ state.text?.slug.toUpperCase() }}</b>
         <span class="ellipsis"><location-label /></span>
       </n-flex>
 

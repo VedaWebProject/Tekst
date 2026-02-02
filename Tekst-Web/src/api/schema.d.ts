@@ -6300,6 +6300,12 @@ export interface components {
        * @default false
        */
       fullLocLabelAsHitHeading: boolean;
+      /**
+       * Sluginloclabels
+       * @description Whether to prefix full location labels with this text's slug
+       * @default false
+       */
+      slugInLocLabels: boolean;
     };
     /** TextLevelTranslation */
     TextLevelTranslation: {
@@ -6384,6 +6390,12 @@ export interface components {
        */
       fullLocLabelAsHitHeading: boolean;
       /**
+       * Sluginloclabels
+       * @description Whether to prefix full location labels with this text's slug
+       * @default false
+       */
+      slugInLocLabels: boolean;
+      /**
        * Indexutd
        * @description The search index for this text is up-to-date
        * @default false
@@ -6463,6 +6475,11 @@ export interface components {
        * @description Whether to use the full location label as the hit heading in the search results
        */
       fullLocLabelAsHitHeading?: boolean;
+      /**
+       * Sluginloclabels
+       * @description Whether to prefix full location labels with this text's slug
+       */
+      slugInLocLabels?: boolean;
     };
     /** @enum {string} */
     TranslationLocaleKey: 'deDE' | 'enUS' | '*';
