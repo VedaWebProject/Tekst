@@ -151,10 +151,10 @@ async function handleWidgetClick() {
         @click="handleBookmarkSelect(bookmark)"
       >
         <n-thing
-          :content-indented="!state.smallScreen"
+          :content-indented="state.vw >= 900"
           description-style="font-size: var(--font-size-tiny)"
         >
-          <template v-if="!state.smallScreen" #avatar>
+          <template v-if="state.vw >= 900" #avatar>
             <n-icon :component="BookIcon" size="large" />
           </template>
           <template #header>

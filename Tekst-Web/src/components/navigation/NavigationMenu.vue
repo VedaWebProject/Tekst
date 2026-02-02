@@ -24,7 +24,7 @@ const state = useStateStore();
 
 const menuWrapperStyle = computed(() => ({
   display: 'flex',
-  justifyContent: state.smallScreen ? 'flex-start' : 'center',
+  justifyContent: state.vw < 900 ? 'flex-start' : 'center',
 }));
 </script>
 

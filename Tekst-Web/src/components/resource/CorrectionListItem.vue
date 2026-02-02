@@ -91,7 +91,7 @@ function handleMessageClick() {
     @click="handleCorrectionClick(correction)"
   >
     <n-thing
-      :content-indented="!state.smallScreen"
+      :content-indented="state.vw >= 900"
       description-style="font-size: var(--font-size-tiny)"
     >
       <template #header>

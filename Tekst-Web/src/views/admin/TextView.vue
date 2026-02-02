@@ -96,8 +96,8 @@ watch(
     <n-tabs
       ref="tabsRef"
       type="line"
-      :placement="state.smallScreen ? 'top' : 'left'"
-      :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
+      :placement="state.vw < 900 ? 'top' : 'left'"
+      :pane-class="state.vw < 900 ? 'mt-md' : 'ml-lg'"
     >
       <!-- SETTINGS -->
       <n-tab-pane :tab="$t('common.settings')" name="settings">

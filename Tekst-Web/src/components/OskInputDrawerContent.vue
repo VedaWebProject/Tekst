@@ -99,7 +99,7 @@ whenever(Enter, () => {
                 v-if="!!key.char"
                 :key="keyIndex"
                 :focusable="false"
-                :size="state.smallScreen ? undefined : 'large'"
+                :size="state.vw < 900 ? undefined : 'large'"
                 :style="fontStyle"
                 class="key"
                 @click="handleInput(shiftActive && key.shift ? key.shift : key.char)"
@@ -114,7 +114,7 @@ whenever(Enter, () => {
         <n-flex v-if="shiftCharsPresent" justify="center" align="center" size="small">
           <n-button
             :type="capsLock ? 'primary' : undefined"
-            :size="state.smallScreen ? undefined : 'large'"
+            :size="state.vw < 900 ? undefined : 'large'"
             :focusable="false"
             class="key"
             :class="{ locked: capsLock }"
@@ -126,7 +126,7 @@ whenever(Enter, () => {
           </n-button>
           <n-button
             :type="shift ? 'primary' : undefined"
-            :size="state.smallScreen ? undefined : 'large'"
+            :size="state.vw < 900 ? undefined : 'large'"
             :focusable="false"
             :disabled="capsLock"
             class="key"
@@ -138,7 +138,7 @@ whenever(Enter, () => {
             </template>
           </n-button>
           <n-button
-            :size="state.smallScreen ? undefined : 'large'"
+            :size="state.vw < 900 ? undefined : 'large'"
             :disabled="!oskInput.length"
             class="key"
             @click="oskInput.pop()"
@@ -166,7 +166,7 @@ whenever(Enter, () => {
         <div
           :style="oskInputResult ? fontStyle : undefined"
           style="line-height: 1.5em"
-          :class="{ 'text-large': !state.smallScreen }"
+          :class="{ 'text-large': state.vw >= 900 }"
         >
           {{ oskInputResult || $t('osk.inputPlaceholder') }}
         </div>

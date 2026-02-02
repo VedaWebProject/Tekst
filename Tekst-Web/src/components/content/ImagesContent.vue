@@ -21,7 +21,7 @@ const props = withDefaults(
 const state = useStateStore();
 
 const imageSize = computed(() =>
-  state.smallScreen ? (props.focusView ? '60px' : '80px') : props.focusView ? '60px' : '200px'
+  state.vw < 900 ? (props.focusView ? '60px' : '80px') : props.focusView ? '60px' : '200px'
 );
 const fontStyle: CSSProperties = {
   fontFamily: props.resource.config.general.font || 'var(--font-family-ui)',
@@ -53,7 +53,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
         <n-image-group :render-toolbar="renderToolbar">
           <n-flex :vertical="!focusView">
             <figure v-for="(image, index) in content.files" :key="index" class="image-container">
-              <n-flex align="stretch" :wrap="state.smallScreen" :size="[18, 0]">
+              <n-flex align="stretch" :wrap="state.vw < 900" :size="[18, 0]">
                 <n-image
                   lazy
                   :src="image.thumbUrl || image.url"

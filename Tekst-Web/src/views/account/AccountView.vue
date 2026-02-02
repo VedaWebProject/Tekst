@@ -9,6 +9,6 @@ const { menuOptions } = useAccountMenuOptions();
 </script>
 
 <template>
-  <navigation-menu v-if="!state.smallScreen" :options="menuOptions" embed center />
+  <navigation-menu v-if="state.vw >= 900" :options="menuOptions" embed center />
   <router-view></router-view>
 </template>

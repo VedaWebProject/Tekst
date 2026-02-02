@@ -24,7 +24,7 @@ const { addTask, startTasksPolling } = useTasks();
 const { message } = useMessages();
 
 const resultsContainer = ref<HTMLElement | null>(null);
-const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
+const paginationSlots = computed(() => (state.vw < 900 ? 4 : 9));
 
 const loadingExport = ref(false);
 
@@ -48,7 +48,7 @@ const results = computed<SearchResultProps[]>(
             ? (r.score / search.results?.maxScore) * 100
             : undefined,
         highlight: r.highlight,
-        smallScreen: state.smallScreen,
+        smallScreen: state.vw < 900,
       };
     }) || []
 );
@@ -103,7 +103,7 @@ onBeforeMount(() => {
         v-if="search.results?.hits.length"
         v-model:page="search.settingsGeneral.pgn.pg"
         v-model:page-size="search.settingsGeneral.pgn.pgs"
-        :simple="state.smallScreen"
+        :simple="state.vw < 900"
         :page-sizes="[10, 25, 50]"
         :default-page-size="10"
         :page-slot="paginationSlots"

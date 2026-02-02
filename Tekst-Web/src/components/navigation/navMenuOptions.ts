@@ -70,7 +70,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         { style: { fontSize: 'var(--font-size-medium)' } }
       ),
       key: `page_${p.key}`,
-      icon: (showIcons && state.smallScreen && renderIcon(InfoIcon)) || undefined,
+      icon: (showIcons && state.vw < 900 && renderIcon(InfoIcon)) || undefined,
     }));
   });
 
@@ -98,7 +98,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
-    ...(state.smallScreen
+    ...(state.vw < 900
       ? [
           {
             label: renderLink(
@@ -123,7 +123,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(state.smallScreen && !!auth.user?.isSuperuser
+    ...(state.vw < 900 && !!auth.user?.isSuperuser
       ? [
           {
             label: renderLink(() => $t('common.text', 2), {
@@ -137,7 +137,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(state.smallScreen && !!auth.user
+    ...(state.vw < 900 && !!auth.user
       ? [
           {
             label: renderLink(() => $t('common.community'), {
@@ -148,7 +148,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(!state.smallScreen
+    ...(state.vw >= 900
       ? [
           {
             label: renderLink(
@@ -220,7 +220,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
       key: 'accountMessages',
       icon: (showIcons && renderIcon(MessageIcon)) || undefined,
     },
-    ...(state.smallScreen
+    ...(state.vw < 900
       ? [
           {
             key: 'logoutDivider',
