@@ -56,7 +56,7 @@ const localeOptions = computed(() =>
       v-model:value="model"
       :min="minItems"
       :max="localeOptions.length"
-      :item-class="state.smallScreen ? undefined : 'mb-0'"
+      :item-class="state.vw < 900 ? undefined : 'mb-0'"
       :default-value="[]"
       :create-button-props="dynInputCreateBtnProps"
       @create="

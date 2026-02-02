@@ -25,7 +25,7 @@ export const useStateStore = defineStore('state', () => {
   const { pfData: pf } = usePlatformData();
   const route = useRoute();
   const auth = useAuthStore();
-  const { width: windowWidth } = useWindowSize({ type: 'visual' });
+  const { width: vw } = useWindowSize({ type: 'visual' });
   const { locale: i18nLocale } = useI18n({ useScope: 'global' });
 
   // app init
@@ -138,10 +138,6 @@ export const useStateStore = defineStore('state', () => {
     () => text.value?.levels.map((l) => pickTranslation(l, locale.value)) || []
   );
 
-  // responsiveness
-
-  const smallScreen = computed(() => windowWidth.value < 900);
-
   // detect touch device
   const isTouchDevice = ref(true);
   window.addEventListener(
@@ -174,7 +170,7 @@ export const useStateStore = defineStore('state', () => {
     pf,
     fonts,
     init,
-    smallScreen,
+    vw,
     isTouchDevice,
     backtopVisible,
     setPageTitle,

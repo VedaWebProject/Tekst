@@ -264,7 +264,7 @@ function handleCorrectionsClick() {
           </template>
         </n-badge>
         <resource-info-tags
-          v-if="!state.smallScreen && !shown"
+          v-if="state.vw >= 900 && !shown"
           :resource="resource"
           justify="flex-end"
           style="flex: 2"
@@ -272,7 +272,7 @@ function handleCorrectionsClick() {
       </n-flex>
     </template>
 
-    <div :style="{ 'padding-left': !state.smallScreen ? '20px' : undefined }">
+    <div :style="{ 'padding-left': state.vw >= 900 ? '20px' : undefined }">
       <resource-info-content :resource="resource" />
       <div class="gray-box mb-lg">
         <icon-heading level="3" :icon="MoreIcon">

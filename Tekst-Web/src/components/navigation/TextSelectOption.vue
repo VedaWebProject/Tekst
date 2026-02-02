@@ -25,6 +25,7 @@ const indicatorStyle = computed(() => ({
     :align="singleLine ? 'center' : 'stretch'"
     class="opt"
     :class="{ selected, 'menu-opt': !singleLine }"
+    :wrap="false"
   >
     <div
       class="opt-indicator"
@@ -32,7 +33,7 @@ const indicatorStyle = computed(() => ({
       :style="indicatorStyle"
     ></div>
     <div>
-      <div>
+      <div class="ellipsis">
         {{ text.title }}
       </div>
       <div v-if="text.subtitle?.length && !singleLine" class="text-small translucent">

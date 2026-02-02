@@ -17,7 +17,7 @@ const state = useStateStore();
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 const defaultPage = 1;
-const paginationSlots = computed(() => (state.smallScreen ? 4 : 9));
+const paginationSlots = computed(() => (state.vw < 900 ? 4 : 9));
 
 const initialFilters = (): PublicUserSearchFilters => ({
   q: '',
@@ -46,7 +46,7 @@ function resetPagination() {
       <n-pagination
         v-model:page="filters.pg"
         v-model:page-size="filters.pgs"
-        :simple="state.smallScreen"
+        :simple="state.vw < 900"
         :default-page-size="10"
         :page-slot="paginationSlots"
         :disabled="loading"

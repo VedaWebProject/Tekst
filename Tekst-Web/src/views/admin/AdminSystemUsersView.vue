@@ -169,9 +169,9 @@ onMounted(() => {
       <n-pagination
         v-model:page="page"
         v-model:page-size="pageSize"
-        :simple="state.smallScreen"
+        :simple="state.vw < 900"
         :default-page-size="10"
-        :page-slot="state.smallScreen ? 4 : 9"
+        :page-slot="state.vw < 900 ? 4 : 9"
         :disabled="loading"
         :item-count="total"
         :page-sizes="[10, 25, 50]"

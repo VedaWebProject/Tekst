@@ -125,7 +125,7 @@ async function handleSearch() {
 
   loading.value = false;
 
-  if (!state.smallScreen) {
+  if (state.vw >= 900) {
     quickSearchInputRef.value?.select();
   } else {
     quickSearchInputRef.value?.blur();

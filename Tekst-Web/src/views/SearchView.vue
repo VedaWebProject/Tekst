@@ -134,10 +134,10 @@ watchEffect(async () => {
 
 function renderResourceOptionLabel(option: SelectOption): VNodeChild {
   return h(NFlex, { align: 'center', wrap: false, class: 'mr-lg' }, () => [
-    !state.smallScreen && h(NIcon, { component: ResourceIcon, color: option.textColor as string }),
+    state.vw >= 900 && h(NIcon, { component: ResourceIcon, color: option.textColor as string }),
     h('div', { style: 'white-space: nowrap' }, option.label as string),
     h('div', { style: 'flex: 2' }),
-    !state.smallScreen &&
+    state.vw >= 900 &&
       h(
         NTag,
         { size: 'small', style: 'cursor: pointer; font-weight: normal' },

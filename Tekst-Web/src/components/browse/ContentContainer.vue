@@ -162,7 +162,7 @@ watch(
         v-model:show-comments="showComments"
         :resource="resource"
         :opacity="headerWidgetsOpacity"
-        :small-screen="state.smallScreen"
+        :small-screen="state.vw < 900"
       />
     </n-flex>
 

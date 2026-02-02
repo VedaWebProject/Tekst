@@ -116,7 +116,7 @@ async function handleSaveClick() {
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags
-      v-if="!state.smallScreen"
+      v-if="state.vw >= 900"
       :resource="resource"
       style="flex: 2; justify-content: end"
     />

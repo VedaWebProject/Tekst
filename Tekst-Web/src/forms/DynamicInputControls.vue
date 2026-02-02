@@ -36,7 +36,7 @@ defineEmits(['moveUp', 'moveDown', 'insert', 'remove']);
 
 const state = useStateStore();
 
-const vertical = computed(() => state.smallScreen && !props.secondary);
+const vertical = computed(() => state.vw < 900 && !props.secondary);
 
 const btnProps = computed<ButtonProps>(() => ({
   secondary: !props.secondary,

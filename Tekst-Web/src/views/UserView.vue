@@ -46,7 +46,7 @@ watchEffect(() => {
   </div>
 
   <div v-else-if="user && !error" class="content-block">
-    <n-thing :content-indented="!state.smallScreen">
+    <n-thing :content-indented="state.vw >= 900">
       <template #avatar>
         <user-avatar :username="user.username" :avatar-url="user.avatarUrl" :size="64" />
       </template>

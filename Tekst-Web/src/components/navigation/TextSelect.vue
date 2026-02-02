@@ -80,13 +80,13 @@ function handleSelect(text: TextRead) {
         :render-label="renderSelectLabel"
         :consistent-menu-width="false"
         :style="{
-          width: state.smallScreen ? '100%' : 'unset',
-          minWidth: state.smallScreen ? undefined : '320px',
+          width: state.vw < 900 ? '100%' : 'unset',
+          minWidth: state.vw < 900 ? undefined : '320px',
         }"
         data-tour-key="browseTextSelect"
       />
       <div
-        v-if="state.text?.subtitle && !state.smallScreen"
+        v-if="state.text?.subtitle && state.vw >= 900"
         class="text-large i ellipsis"
         style="color: var(--text-color-translucent)"
       >

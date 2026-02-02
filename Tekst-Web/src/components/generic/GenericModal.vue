@@ -40,12 +40,12 @@ const modalWidths = {
     :to="to"
     display-directive="if"
     preset="card"
-    :size="state.smallScreen ? 'small' : undefined"
+    :size="state.vw < 900 ? 'small' : undefined"
     :bordered="false"
     :style="{ width: modalWidths[props.width], maxWidth: '95%' }"
     class="mx-auto my-md"
     :class="nodeClass"
-    :auto-focus="!state.smallScreen"
+    :auto-focus="state.vw >= 900"
   >
     <template #header>
       <slot name="header">
