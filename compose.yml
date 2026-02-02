@@ -20,7 +20,7 @@ services:
       - es
 
   mongo:
-    image: mongo:8.2.3
+    image: mongo:8.2.4
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
