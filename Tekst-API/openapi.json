@@ -14824,6 +14824,12 @@
               "apiCall"
             ]
           },
+          "extendCitations": {
+            "type": "boolean",
+            "title": "Extendcitations",
+            "description": "Suffix resource citations with URL and date",
+            "default": true
+          },
           "oskModes": {
             "items": {
               "$ref": "#/components/schemas/OskMode"
@@ -15137,6 +15143,19 @@
             ],
             "title": "Denyresourcetypes",
             "description": "Resource types regular users are not allowed to create",
+            "optionalNullable": false
+          },
+          "extendCitations": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extendcitations",
+            "description": "Suffix resource citations with URL and date",
             "optionalNullable": false
           },
           "oskModes": {

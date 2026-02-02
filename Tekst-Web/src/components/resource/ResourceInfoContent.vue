@@ -7,6 +7,8 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
+import env from '@/env';
+import { getLocaleProfile } from '@/i18n';
 import {
   CoverageIcon,
   DescIcon,
@@ -29,6 +31,15 @@ const state = useStateStore();
 
 const descriptionHtml = computed(() => pickTranslation(props.resource.description, state.locale));
 const showInfoModal = ref(false);
+
+const citation = computed(() => {
+  if (!props.resource.citation) return;
+  const url = `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`;
+  const suffix = state.pf?.state.extendCitations
+    ? `. ${url}. ${new Date().toLocaleDateString(getLocaleProfile(state.locale).displayShort)}`
+    : '';
+  return `${props.resource.citation}${suffix}`;
+});
 </script>
 
 <template>
@@ -67,12 +78,12 @@ const showInfoModal = ref(false);
     </div>
 
     <!-- CITATION -->
-    <div class="gray-box" v-if="resource.citation">
+    <div class="gray-box" v-if="citation">
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
       <div :style="{ fontFamily: resource.contentFont }" class="text-medium pre-wrap">
-        {{ resource.citation }}
+        {{ citation }}
       </div>
     </div>
 

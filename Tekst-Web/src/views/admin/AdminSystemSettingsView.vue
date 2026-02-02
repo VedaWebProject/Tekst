@@ -301,6 +301,16 @@ watch(
             </n-form-item>
           </form-section>
 
+          <!-- SUFFIX RESOURCE CITATIONS WITH URL AND DATE -->
+          <form-section :title="$t('models.resource.citation')">
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.extendCitations"
+                :label="$t('models.platformSettings.extendCitations')"
+              />
+            </n-form-item>
+          </form-section>
+
           <!-- OSK -->
           <form-section
             :title="$t('models.platformSettings.oskModes')"
