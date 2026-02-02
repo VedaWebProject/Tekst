@@ -72,7 +72,7 @@ watch(
       align="center"
       :wrap="false"
       :size="[12, 0]"
-      class="content-header mb-sm"
+      class="content-header"
       :class="{ 'mb-0': browse.focusView || !hasContents }"
     >
       <n-flex align="center" :gap="12" :class="{ translucent: !hasContents }" style="flex: 2">
@@ -172,7 +172,7 @@ watch(
         :collapsible="collapsible || contentContextLoaded"
         :collapsed="collapsed"
         :collapsed-height="resource.config.general.collapsibleContents || undefined"
-        class="content-loadable"
+        class="content-loadable mt-sm"
         :class="{ 'content-loading': loading }"
       >
         <!-- content-specific component (that displays the actual content) -->
