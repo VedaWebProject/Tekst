@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { AnyResourceRead, UserRead } from '@/api';
-import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
-import { $t } from '@/i18n';
-import { useResourcesStore, useStateStore } from '@/stores';
-import { NBadge, NButton, NCollapseItem, NFlex, NIcon, type DropdownOption } from 'naive-ui';
-import { computed, ref } from 'vue';
-
+import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceExportModal from '@/components/resource/ResourceExportModal.vue';
 import ResourceInfoContent from '@/components/resource/ResourceInfoContent.vue';
+import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
+import env from '@/env';
+import { $t } from '@/i18n';
 import {
   BookIcon,
   CorrectionNoteIcon,
@@ -26,8 +24,11 @@ import {
   UserIcon,
   VersionIcon,
 } from '@/icons';
+import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
+import { NBadge, NButton, NCollapseItem, NFlex, NIcon, type DropdownOption } from 'naive-ui';
 import type { Type } from 'naive-ui/es/button/src/interface';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
@@ -61,7 +62,11 @@ const showExport = ref(false);
 const isOwner = computed(() => !!props.resource.ownerIds?.includes(props.user?.id ?? 'noid'));
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.user?.isSuperuser);
 
-const resourceTitle = computed(() => pickTranslation(props.resource.title, state.locale));
+const resTitle = computed(() => pickTranslation(props.resource.title, state.locale));
+const resInfoUrl = computed(
+  () =>
+    `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`
+);
 
 const actionOptions = computed<DropdownOption[]>(() => [
   {
@@ -252,7 +257,7 @@ function handleCorrectionsClick() {
   <n-collapse-item class="res-item" :name="resource.id">
     <template #header>
       <n-flex align="center" style="width: 100%">
-        <b>{{ resourceTitle }}</b>
+        <b>{{ resTitle }}</b>
         <n-badge
           :show="resources.correctionsCount[props.resource.id] > 0"
           :title="$t('resources.hasCorrectionsTip')"
@@ -272,7 +277,32 @@ function handleCorrectionsClick() {
       </n-flex>
     </template>
 
-    <div :style="{ 'padding-left': state.vw >= 900 ? '20px' : undefined }">
+    <n-flex justify="space-between" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
+      <n-flex size="small">
+        <n-button secondary size="tiny" @click="emit('browseClick', props.resource)">
+          <template #icon>
+            <n-icon :component="BookIcon" />
+          </template>
+          {{
+            pickTranslation(state.pf?.state.navTranslations.browse, state.locale) ||
+            $t('common.browse')
+          }}
+        </n-button>
+        <copy-to-clipboard-button
+          v-if="state.text"
+          tertiary
+          size="tiny"
+          :text="resInfoUrl"
+          :title="$t('resources.copyInfoUrlTip')"
+          show-msg
+        >
+          {{ $t('resources.copyInfoUrl') }}
+        </copy-to-clipboard-button>
+      </n-flex>
+      <resource-info-tags :resource="resource" />
+    </n-flex>
+
+    <div>
       <resource-info-content :resource="resource" />
       <div class="gray-box mb-lg">
         <icon-heading level="3" :icon="MoreIcon">
