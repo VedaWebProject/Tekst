@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { type AnyResourceRead } from '@/api';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
-import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
-import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
-import env from '@/env';
 import {
   CoverageIcon,
   DescIcon,
@@ -31,29 +28,11 @@ const auth = useAuthStore();
 const state = useStateStore();
 
 const descriptionHtml = computed(() => pickTranslation(props.resource.description, state.locale));
-const resInfoUrl = computed(
-  () =>
-    `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`
-);
 const showInfoModal = ref(false);
 </script>
 
 <template>
   <div>
-    <n-flex justify="space-between" align="center" class="mb-lg" style="flex-wrap: wrap-reverse">
-      <copy-to-clipboard-button
-        v-if="state.text"
-        tertiary
-        size="tiny"
-        :text="resInfoUrl"
-        :title="$t('resources.copyInfoUrlTip')"
-        show-msg
-      >
-        {{ $t('resources.copyInfoUrl') }}
-      </copy-to-clipboard-button>
-      <resource-info-tags :resource="resource" />
-    </n-flex>
-
     <div v-if="resource.subtitle.length" class="mb-lg">
       <translation-display :value="resource.subtitle" />
     </div>
