@@ -369,6 +369,7 @@ models:
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
+    extendCitations: Hänge automatisch Ressourcen-URL und aktuelles Datum an Zitation an
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben

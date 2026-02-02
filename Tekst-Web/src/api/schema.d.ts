@@ -4831,6 +4831,12 @@ export interface components {
        */
       denyResourceTypes: string[];
       /**
+       * Extendcitations
+       * @description Suffix resource citations with URL and date
+       * @default true
+       */
+      extendCitations: boolean;
+      /**
        * Oskmodes
        * @description OSK modes available for use in platform client
        * @default []
@@ -4941,6 +4947,11 @@ export interface components {
        * @description Resource types regular users are not allowed to create
        */
       denyResourceTypes?: string[];
+      /**
+       * Extendcitations
+       * @description Suffix resource citations with URL and date
+       */
+      extendCitations?: boolean;
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client

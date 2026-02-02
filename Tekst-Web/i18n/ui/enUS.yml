@@ -365,6 +365,7 @@ models:
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
     showResourceCategoryHeadings: Show category headings
+    extendCitations: Automatically add resource URL and current date to citations
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
@@ -373,7 +374,7 @@ models:
     contentFont: Default Content Font
     oskModes: On-screen Keyboards
     oskModeFont: Keyboard font
-    resMetaTranslations: Translations for Ressource Metadata Keys
+    resMetaTranslations: Translations for Resource Metadata Keys
   segment:
     modelLabel: Segment
     formRulesFeedback:
