@@ -53,14 +53,17 @@ export function getFullLocationLabel(
   text?: TextRead
 ) {
   if (!text) return '';
-  return locationPath
-    .map((n) => {
-      if (!n.label) return '';
-      const lvlLabel = textLevelLabels[n.level] || '';
-      const locationPrefix = text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
-      return locationPrefix + n.label;
-    })
-    .join(text?.locDelim || ', ');
+  return (
+    (text.slugInLocLabels ? `${text.slug.toUpperCase()} ` : '') +
+    locationPath
+      .map((n) => {
+        if (!n.label) return '';
+        const lvlLabel = textLevelLabels[n.level] || '';
+        const locationPrefix = text?.labeledLocation && lvlLabel ? `${lvlLabel}: ` : '';
+        return locationPrefix + n.label;
+      })
+      .join(text?.locDelim || ', ')
+  );
 }
 
 export async function checkUrl(url?: string, method: 'GET' | 'HEAD' = 'HEAD'): Promise<boolean> {

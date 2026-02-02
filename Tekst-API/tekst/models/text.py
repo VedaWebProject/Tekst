@@ -192,6 +192,15 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ] = False
 
+    slug_in_loc_labels: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether to prefix full location labels with this text's slug"
+            ),
+        ),
+    ] = False
+
     index_utd: Annotated[
         bool,
         Field(

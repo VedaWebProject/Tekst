@@ -191,10 +191,18 @@ onBeforeRouteUpdate((to, from) => {
         </n-form-item>
 
         <!-- USE FULL LOCATION LABEL AS SEARCH HIT HEADING -->
-        <n-form-item :show-label="false">
+        <n-form-item :show-label="false" :show-feedback="false">
           <labeled-switch
             v-model="model.fullLocLabelAsHitHeading"
             :label="$t('models.text.fullLocLabelAsHitHeading')"
+          />
+        </n-form-item>
+
+        <!-- PREFIX FULL LOCATION LABELS WITH TEXT SLUG -->
+        <n-form-item :show-label="false">
+          <labeled-switch
+            v-model="model.slugInLocLabels"
+            :label="$t('models.text.slugInLocLabels')"
           />
         </n-form-item>
 

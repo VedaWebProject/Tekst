@@ -320,6 +320,7 @@ models:
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
+    slugInLocLabels: Stelle Belegstellen-Bezeichnungen Text-Identifikator voran
     color: Farbe für visuelle Abhebung
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
