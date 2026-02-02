@@ -315,7 +315,13 @@ models:
       passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
     slug: Identifikator
-    slugChangeWarning: Das Ändern des Identifikators des Textes wird alle existierenden URLs mit dem alten Identifikator ungültig machen! Benutzer haben möglicherweise URLs mit dem alten Identifikator gespeichert oder geteilt!
+    slugChangeWarning: |
+      Das Ändern des Identifikators des Textes wird alle existierenden URLs mit dem alten Identifikator ungültig machen!
+      Nutzer*innen haben möglicherweise URLs mit dem alten Identifikator gespeichert oder geteilt!
+    slugInitWarning: |
+      Bitte wählen Sie eine kurze, prägnante Zeichenfolge (z.B. eine Abkürzung), die diesen Text repräsentiert.
+      Es wird stark davon abgeraten, den Identifikator nachträglich zu ändern, da er in URLs
+      (und möglicherweise in der grafischen Oberfläche) genutzt wird und eine Änderung existierende URLs/Links ungültig macht!
     defaultLevel: Standardebene
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)

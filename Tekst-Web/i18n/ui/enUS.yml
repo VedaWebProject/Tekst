@@ -311,7 +311,13 @@ models:
       passwordRepNoMatch: Passwords don't match
   text:
     slug: Identifier
-    slugChangeWarning: Changing the text's identifier will invalidate all existing URLs using the old identifier! Users might have bookmarked or shared the URL using the old identifier!
+    slugChangeWarning: |
+      Changing the text's identifier will invalidate all existing URLs using the old identifier!
+      Users might have bookmarked or shared the URL using the old identifier!
+    slugInitWarning: |
+      Please choose a short, concise string (e.g. an abbreviation) that represents this text.
+      It's strongly discouraged to change the identifier later, because it's used in URLs
+      (and possibly the user interface) and will thus break circulating URLs/Links!
     defaultLevel: Default level
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)
