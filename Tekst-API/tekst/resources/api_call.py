@@ -261,7 +261,7 @@ class ApiCallContent(ContentBase):
     ]
     transform_context: Annotated[
         ConStrOrNone(
-            max_length=10240,
+            max_length=81920,
         ),
         Field(
             description=(
