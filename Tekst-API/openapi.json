@@ -7436,7 +7436,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
@@ -7563,7 +7563,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
@@ -7633,7 +7633,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
