@@ -16,6 +16,7 @@ const title = computed(() =>
 
 <template>
   <n-button
+    id="theme-mode-switcher"
     secondary
     circle
     size="large"
@@ -23,6 +24,7 @@ const title = computed(() =>
     :title="title"
     :focusable="false"
     @click="theme.toggleThemeMode"
+    data-tour-key="themeSwitcher"
   >
     <template #icon>
       <n-icon :component="icon" />

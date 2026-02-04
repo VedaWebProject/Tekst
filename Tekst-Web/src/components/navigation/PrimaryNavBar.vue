@@ -105,6 +105,7 @@ const titleLinkTo = computed(() => {
           :focusable="false"
           :keyboard="false"
           @click="() => (menuOpen = !menuOpen)"
+          id="hamburger-btn"
         >
           <template #icon>
             <n-icon size="32" :component="HamburgerMenuIcon" />
