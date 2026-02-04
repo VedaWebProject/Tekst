@@ -963,25 +963,26 @@ tour:
   next: Next
   prev: Previous
   intro:
-    title: '{platformName} Guided Tour'
+    title: '{platformName}: Guided Tour'
     text: |
       Welcome to the guided tour of {platformName}!
       You'll learn about the most important features of this platform and how to use them.
       If you prefer so, use your keyboard's arrow buttons instead of the buttons in this dialog.
-      Also, if you need more details on a specific topic,
-      you can always read through the available articles in the help overview
-      or just click the little "?" buttons throughout the website. Let's begin!
+      Let's begin!
+  browseNavBtn:
+    title: Reading and Browsing Content
+    text: At first, we'll follow this main menu item to get to read and browse some contents...
   browseView:
     title: Reading and Browsing Content
     text: |
       You are now looking at the main view for regular users of this platform.
       This is where you can read and browse the contents of all the available resources.
-      This heading always shows you which location of the current working text you're looking at.
+      The heading always shows you which location of the current working text you're looking at.
   browseTextSelect:
     title: Working Text Selector
     text: |
       Here you can select the text you want to work with.
-      This selection is also available in some other views that show text-specific content.
+      This selection is also available in some other views that show text-specific things.
   browseNav:
     title: Navigating Locations
     text: |
@@ -995,12 +996,15 @@ tour:
     text: |
       Use the focus view to display content in a more condensed, distraction-free manner.
       This is especially helpful when comparing the contents of specific resources.
-  browseResourceSelect:
+  browseResourceDrawer:
     title: Select Displayed Resources
     text: |
       This one is very important!
-      Click here to open the selection of available resources on the current working text
-      and activate all the resources you want to see content of.
+      Click here to open the selection of available resources on the current working text...
+  browseResourceDrawerOpen:
+    title: Select Displayed Resources
+    text: |
+      ...and activate all the resources you want to see content of!
   quickSearch:
     title: Quick Search
     text: |
@@ -1017,6 +1021,45 @@ tour:
       And if you are really into full-text search,
       go ahead and have a look into the Quick Search help article!
       It exmplains how to use the special Quick Search syntax.
+  helpButtons:
+    title: Inline Help Buttons
+    text: |
+      By the way, you'll find these little help buttons in numerous places.
+      Click them to read helpful instructions on their respective topics.
+  helpOverview:
+    title: Help Overview
+    text: If you prefer searching for a specific help topic, you can do so in the help overview!
+  searchNavBtn:
+    title: Advanced Search
+    text: Now let's advance to the Advanced Search!
+  searchView:
+    title: Advanced Search
+    text: |
+      Here you can search the contents of each resource with much more fine-grained control.
+      You can read about how to use the Advanced Search using the familiar
+      little help button next the heading. Take your time to do so later,
+      as we won't be covering those details here in this tour.
+  resourcesNavBtn:
+    title: Resources Overview
+    text: The next place to get to via the main navigation is the resources overview...
+  resourcesView:
+    title: Resources Overview
+    text: |
+      If you don't want to browse any contents but rather read about the properties
+      of all the available resources in one central overview, this is the place to go.
+      And look! Just like many other features of this platform,
+      the resources overview has one of those little help buttons!
+  themeSwitcher:
+    title: Theme Switcher
+    text: |
+      Having spent some time here, you might want to adjust the theme of the interface
+      to your liking!
+  outro:
+    title: From here, you can do it on your own!
+    text: |
+      That's it for our little guided tour. Go and explore the site by yourself and
+      remember the little help buttons – they will hopefully clear up any remaining
+      questions you might have.
 
 wysiwyg:
   blockTypes:

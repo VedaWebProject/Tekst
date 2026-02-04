@@ -86,6 +86,7 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
       <div class="browse-toolbar-end">
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
+            id="focus-view-toggle"
             quaternary
             :color="toolbarTxtColor"
             :style="{
@@ -116,7 +117,7 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
             :bordered="false"
-            data-tour-key="browseResourceSelect"
+            data-tour-key="browseResourceDrawer"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>

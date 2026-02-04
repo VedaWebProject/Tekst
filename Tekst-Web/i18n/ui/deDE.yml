@@ -986,6 +986,104 @@ tour:
   heading: Geführte Tour
   next: Weiter
   prev: Zurück
+  intro:
+    title: '{platformName}: Geführte Tour'
+    text: |
+      Willkommen zur geführten Tour von {platformName}!
+      Sie werden die wichtigsten Funktionen dieser Plattform kennenlernen und erfahren, wie Sie diese nutzen können.
+      Wenn Sie möchten, können Sie die Pfeiltasten Ihrer Tastatur anstelle der Schaltflächen in diesem Dialog verwenden.
+      Lassen Sie uns beginnen!
+  browseNavBtn:
+    title: Lesen und Stöbern in Inhalten
+    text: Zuerst folgen wir diesem Hauptmenüpunkt, um einige Inhalte zu lesen und zu durchstöbern...
+  browseView:
+    title: Lesen und Stöbern in Inhalten
+    text: |
+      Sie sehen jetzt die Hauptansicht für reguläre Benutzer dieser Plattform.
+      Hier können Sie die Inhalte aller verfügbaren Ressourcen lesen und durchstöbern.
+      Die Überschrift zeigt Ihnen immer, an welchem Ort des aktuellen Arbeitsinhalts Sie sich befinden.
+  browseTextSelect:
+    title: Arbeitstext-Auswahl
+    text: |
+      Hier können Sie den Text auswählen, mit dem Sie arbeiten möchten.
+      Diese Auswahl ist auch in einigen anderen Ansichten verfügbar, die textspezifische Inhalte anzeigen.
+  browseNav:
+    title: Navigieren zu Belegstellen
+    text: |
+      Sie können einfach diese Pfeiltasten verwenden, um zur nächsten Belegstelle zu springen – oder
+      die Pfeiltasten Ihrer Tastatur benutzen.
+      Alternativ können Sie auf das Buchsymbol klicken, um eine spezifische Strukturebene und
+      Belegstelle auszuwählen, zu der Sie navigieren möchten.
+      Hinweis: Einige Arten von Ressourcen zeigen Schaltflächen an, um direkt zum nächsten Standort zu springen,
+      der Inhalte für diese Ressource enthält. Sie finden diese direkt neben den jeweiligen Inhalten.
+  browseFocus:
+    title: Fokusansicht
+    text: |
+      Verwenden Sie die Fokusansicht, um Inhalte auf eine konzentrierte, ablenkungsfreie Weise anzuzeigen.
+      Dies ist besonders hilfreich, wenn Sie die Inhalte spezifischer Ressourcen vergleichen möchten.
+  browseResourceDrawer:
+    title: Angezeigte Ressourcen auswählen
+    text: |
+      Dies ist sehr wichtig!
+      Klicken Sie hier, um die Auswahl der verfügbaren Ressourcen für den aktuellen Arbeitsinhalt zu öffnen...
+  browseResourceDrawerOpen:
+    title: Angezeigte Ressourcen auswählen
+    text: |
+      ...und aktivieren Sie alle Ressourcen, deren Inhalte Sie sehen möchten!
+  quickSearch:
+    title: Schnellsuche
+    text: |
+      Möchten Sie Informationen schnell über eine Volltextsuche abrufen?
+      Dazu dient die Schnellsuche. Sie ist immer in der Seitenüberschrift verfügbar.
+      Während Sie einfach einen Begriff eintippen und ENTER drücken können, bietet die Schnellsuche tatsächlich
+      eine Vielzahl von Funktionen zur Feinabstimmung Ihrer Volltextsuche...
+  quickSearchSettings:
+    title: Schnellsucheinstellungen
+    text: ...einige davon können Sie hier in den Schnellsucheinstellungen konfigurieren!
+  quickSearchHelp:
+    title: Glückliche Power-User
+    text: |
+      Und wenn Sie wirklich in die Volltextsuche eintauchen wollen,
+      schauen Sie sich den Hilfeartikel an!
+      Er erklärt, wie Sie die spezielle Syntax der Schnellsuche verwenden.
+  helpButtons:
+    title: In-Line Hilfe-Buttons
+    text: |
+      Übrigens finden Sie diese kleinen Hilfe-Buttons an zahlreichen Stellen.
+      Klicken Sie darauf, um hilfreiche Anweisungen zu den jeweiligen Themen zu lesen.
+  helpOverview:
+    title: Hilfeübersicht
+    text: Wenn Sie ein bestimmtes Hilfethema suchen möchten, können Sie dies in der Hilfeübersicht tun!
+  searchNavBtn:
+    title: Erweiterte Suche
+    text: Lassen Sie uns zur erweiterten Suche übergehen!
+  searchView:
+    title: Erweiterte Suche
+    text: |
+      Hier können Sie die Inhalte jeder Ressource mit mehr Präzision durchsuchen.
+      Wie genau das funktioniert, erfahren Sie über den kleinen Hilfe-Button neben der Überschrift.
+      Nehmen Sie sich später die Zeit dazu, wir machen zunächst an einer anderen Stelle weiter.
+  resourcesNavBtn:
+    title: Ressourcenübersicht
+    text: Der nächste Ort, den wir über die Hauptnavigation erreichen, ist die Ressourcenübersicht...
+  resourcesView:
+    title: Ressourcenübersicht
+    text: |
+      Wenn Sie keine Inhalte durchstöbern, sondern lieber etwas über die Eigenschaften
+      aller verfügbaren Ressourcen in einer zentralen Übersicht lesen möchten, ist dies der richtige Ort.
+      Und genau wie viele andere Funktionen dieser Plattform,
+      hat die Ressourcenübersicht einen dieser kleinen Hilfe-Buttons!
+  themeSwitcher:
+    title: Farbschema-Wechsel
+    text: |
+      Nachdem Sie etwas mehr Zeit hier verbracht haben,
+      möchten Sie vielleicht das Farbschema der Benutzeroberfläche nach Ihrem Geschmack anpassen!
+  outro:
+    title: Von hier aus schaffen Sie es selbst!
+    text: |
+      Das war unsere kleine geführte Tour. Gehen Sie und erkunden Sie die Seite selbst und
+      denken Sie an die kleinen Hilfe-Buttons – sie werden hoffentlich alle verbleibenden
+      Fragen, die Sie haben könnten, klären.
 
 wysiwyg:
   blockTypes:
