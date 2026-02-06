@@ -63,7 +63,7 @@ const accessSharesTip = computed(() => {
 </script>
 
 <template>
-  <n-flex v-bind="$attrs" :size="size">
+  <n-flex v-bind="$attrs" :size="size" :wrap="false">
     <n-tag v-if="!!resource.originalId" type="info" :size="size">
       <template #icon>
         <n-icon :component="VersionIcon" />

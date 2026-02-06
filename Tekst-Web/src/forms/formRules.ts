@@ -441,7 +441,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 102400, 'blur'),
     ],
     transformContext: [
-      minMaxCharsRule(0, 10240, 'blur'),
+      minMaxCharsRule(0, 81920, 'blur'),
       {
         validator: (_: FormItemRule, value: string) => {
           try {

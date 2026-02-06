@@ -162,8 +162,8 @@ watch(
       <n-tabs
         ref="tabsRef"
         type="line"
-        :placement="state.smallScreen ? 'top' : 'left'"
-        :pane-class="state.smallScreen ? 'mt-md' : 'ml-lg'"
+        :placement="state.vw < 900 ? 'top' : 'left'"
+        :pane-class="state.vw < 900 ? 'mt-md' : 'ml-lg'"
       >
         <!-- GENERAL -->
         <n-tab-pane :tab="$t('common.general')" name="general">
@@ -297,6 +297,16 @@ watch(
                 max-tag-count="responsive"
                 :options="resourceTypeOptions"
                 placeholder="–"
+              />
+            </n-form-item>
+          </form-section>
+
+          <!-- SUFFIX RESOURCE CITATIONS WITH URL AND DATE -->
+          <form-section :title="$t('models.resource.citation')">
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.extendCitations"
+                :label="$t('models.platformSettings.extendCitations')"
               />
             </n-form-item>
           </form-section>

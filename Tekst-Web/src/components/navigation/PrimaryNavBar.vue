@@ -54,7 +54,7 @@ const titleLinkTo = computed(() => {
       align="center"
       :wrap="false"
       class="navbar-top"
-      :class="state.smallScreen && 'navbar-smallscreen'"
+      :class="state.vw < 900 && 'navbar-smallscreen'"
     >
       <router-link :to="titleLinkTo">
         <img
@@ -76,7 +76,7 @@ const titleLinkTo = computed(() => {
       </div>
 
       <n-flex
-        v-if="!state.smallScreen"
+        v-if="state.vw >= 900"
         justify="end"
         align="flex-start"
         style="flex: 2; align-self: stretch"
@@ -105,6 +105,7 @@ const titleLinkTo = computed(() => {
           :focusable="false"
           :keyboard="false"
           @click="() => (menuOpen = !menuOpen)"
+          id="hamburger-btn"
         >
           <template #icon>
             <n-icon size="32" :component="HamburgerMenuIcon" />
@@ -114,9 +115,9 @@ const titleLinkTo = computed(() => {
     </n-flex>
 
     <n-flex align="center" class="navbar-menu">
-      <navigation-menu v-if="!state.smallScreen" :options="mainMenuOptions" style="flex: 6 1" />
+      <navigation-menu v-if="state.vw >= 900" :options="mainMenuOptions" style="flex: 6 1" />
       <drawer-menu v-else v-model:show="menuOpen" />
-      <quick-search :class="{ 'my-sm': state.smallScreen }" style="flex: 1 1 300px" />
+      <quick-search :class="{ 'my-sm': state.vw < 900 }" style="flex: 1 1 300px" />
     </n-flex>
   </div>
 </template>

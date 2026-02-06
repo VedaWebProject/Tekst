@@ -120,7 +120,7 @@ function handleUserOptionSelect(key: string) {
 
 <template>
   <n-dropdown
-    v-if="!!auth.user && !state.smallScreen"
+    v-if="!!auth.user && state.vw >= 900"
     :options="userOptions"
     trigger="hover"
     placement="bottom-end"

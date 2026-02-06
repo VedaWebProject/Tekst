@@ -440,7 +440,7 @@ whenever(ArrowRight, () => {
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags
-      v-if="!state.smallScreen"
+      v-if="state.vw >= 900"
       :resource="resource"
       style="flex: 2; justify-content: end"
     />
@@ -629,7 +629,7 @@ whenever(ArrowRight, () => {
                 v-if="otherCorrectionsCount"
                 :other-count="otherCorrectionsCount"
                 :loading="loading"
-                :small-screen="state.smallScreen"
+                :small-screen="state.vw < 900"
                 :prev-disabled="!prevCorrection"
                 :next-disabled="!nextCorrection"
                 @prev-click="() => gotoLocation(prevCorrection?.locationId)"

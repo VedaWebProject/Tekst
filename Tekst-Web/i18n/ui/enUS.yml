@@ -311,11 +311,18 @@ models:
       passwordRepNoMatch: Passwords don't match
   text:
     slug: Identifier
-    slugChangeWarning: Changing the text's identifier will invalidate all existing URLs using the old identifier! Users might have bookmarked or shared the URL using the old identifier!
+    slugChangeWarning: |
+      Changing the text's identifier will invalidate all existing URLs using the old identifier!
+      Users might have bookmarked or shared the URL using the old identifier!
+    slugInitWarning: |
+      Please choose a short, concise string (e.g. an abbreviation) that represents this text.
+      It's strongly discouraged to change the identifier later, because it's used in URLs
+      (and possibly the user interface) and will thus break circulating URLs/Links!
     defaultLevel: Default level
     locDelim: Location delimiter
     labeledLocation: Include level names in location labels (does not apply to search results)
     fullLocLabelAsHitHeading: Use full location label as search result heading
+    slugInLocLabels: Prefix full location labels with short text identifier
     color: Color for visual distinction
     resourceCategories: Resource Categories
     isActive: Publicly listed
@@ -358,6 +365,7 @@ models:
     showLogoInHeader: Show logo in page header
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
     showResourceCategoryHeadings: Show category headings
+    extendCitations: Automatically add resource URL and current date to citations
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
@@ -366,7 +374,7 @@ models:
     contentFont: Default Content Font
     oskModes: On-screen Keyboards
     oskModeFont: Keyboard font
-    resMetaTranslations: Translations for Ressource Metadata Keys
+    resMetaTranslations: Translations for Resource Metadata Keys
   segment:
     modelLabel: Segment
     formRulesFeedback:
@@ -955,60 +963,103 @@ tour:
   next: Next
   prev: Previous
   intro:
-    title: '{platformName} Guided Tour'
+    title: '{platformName}: Guided Tour'
     text: |
       Welcome to the guided tour of {platformName}!
       You'll learn about the most important features of this platform and how to use them.
       If you prefer so, use your keyboard's arrow buttons instead of the buttons in this dialog.
-      Also, if you need more details on a specific topic,
-      you can always read through the available articles in the help overview
-      or just click the little "?" buttons throughout the website. Let's begin!
+      Let's begin!
+  browseNavBtn:
+    title: Reading and Browsing Content
+    text: At first, we'll follow this main menu item to get to read and browse some contents...
   browseView:
     title: Reading and Browsing Content
     text: |
       You are now looking at the main view for regular users of this platform.
       This is where you can read and browse the contents of all the available resources.
-      This heading always shows you which location of the current working text you're looking at.
+      The heading always shows you which location of the current working text you're looking at.
   browseTextSelect:
     title: Working Text Selector
     text: |
       Here you can select the text you want to work with.
-      This selection is also available in some other views that show text-specific content.
+      This selection is also available in some other text-specific views.
   browseNav:
     title: Navigating Locations
     text: |
-      You can simply use these arrow buttons to jump to the next location
-      – or use your keyboard's arrow buttons.
+      You can simply use these arrow buttons to jump to the
+      next or previous location – or use your keyboard's arrow buttons.
       Alternatively, click the book icon to select a specific structure level and location to browse to.
       Hint: Some types of resources display buttons to directly jump to the nearest location
-      that holds contents for this resource. You'll find those right next to the respective contents.
+      this resource provides contents for. You'll find those right next to the respective contents,
+      among numerous other useful functionalities.
   browseFocus:
     title: Focus View
     text: |
-      Use the focus view to display content in a more condensed, distraction-free manner.
-      This is especially helpful when comparing the contents of specific resources.
-  browseResourceSelect:
+      Use the focus view to display content in a more compact, distraction-free manner.
+      This is especially helpful when comparing contents of different resources.
+  browseResourceDrawer:
     title: Select Displayed Resources
     text: |
       This one is very important!
-      Click here to open the selection of available resources on the current working text
-      and activate all the resources you want to see content of.
+      Click here to open the selection of resources on the current working text...
+  browseResourceDrawerOpen:
+    title: Select Displayed Resources
+    text: |
+      ...and choose which resources do show or hide!
   quickSearch:
     title: Quick Search
     text: |
       You want to quickly retrieve information using a full-text search?
       This is what the Quick Search is for. It is always available in the page header.
-      While you can just type in some term and press ENTER, the Quick Search actually
-      offers a wide variety of features to fine-tune your full-text search...
+      While you can just type some search term and press ENTER, the Quick Search actually
+      offers a wide variety of features to fine-tune your full-text search.
   quickSearchSettings:
-    title: Quick Search Settings
+    title: 'Quick Search: Settings'
     text: ...some of which you can configure here, in the Quick Search settings!
   quickSearchHelp:
     title: Happy Power Users
     text: |
-      And if you are really into full-text search,
+      If want to make the most of the full-text search,
       go ahead and have a look into the Quick Search help article!
-      It exmplains how to use the special Quick Search syntax.
+      Among other things, it covers the special Quick Search syntax.
+  helpButtons:
+    title: Inne Help Buttons
+    text: |
+      By the way, you'll find these little help buttons in numerous places.
+      Click them to read helpful instructions on their respective topics.
+  helpOverview:
+    title: Help Overview
+    text: If you prefer searching for a specific topic, you can do so in the help overview!
+  searchNavBtn:
+    title: Advanced Search
+    text: Now let's advance to the Advanced Search!
+  searchView:
+    title: Advanced Search
+    text: |
+      Here you can search the contents of each resource with much more fine-grained control.
+      You can read about how to use the Advanced Search using the familiar
+      little help button next the heading. Take your time to do so later,
+      as we won't cover the details here in this tour.
+  resourcesNavBtn:
+    title: Resources Overview
+    text: The next place to get to via the main navigation is the resources overview...
+  resourcesView:
+    title: Resources Overview
+    text: |
+      If you don't want to browse any contents but rather read about the properties
+      of all the available resources in one central overview, this is the place to go.
+      And  just like many other features of this platform, this one has a help button!
+  themeSwitcher:
+    title: Theme Switcher
+    text: |
+      Having spent some time here, you might want to adjust the theme of the interface
+      to your liking!
+  outro:
+    title: From here, you can do it on your own!
+    text: |
+      That's it for our little guided tour. Go and explore the site by yourself and
+      remember the little help buttons – they will hopefully clear up any remaining
+      questions you might have.
 
 wysiwyg:
   blockTypes:

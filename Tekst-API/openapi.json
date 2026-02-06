@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.47.0a0"
+    "version": "0.48.1a0"
   },
   "servers": [
     {
@@ -14,9 +14,7 @@
   "paths": {
     "/browse": {
       "get": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Get location data",
         "description": "Returns the location path from the location with the given ID or text/level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
         "operationId": "getLocationData",
@@ -159,9 +157,7 @@
     },
     "/browse/context": {
       "get": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Get content context",
         "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.",
         "operationId": "getContentContext",
@@ -281,9 +277,7 @@
     },
     "/browse/nearest-content-location": {
       "get": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Get nearest content location",
         "description": "Finds the nearest location the given resource holds content for and returns it.",
         "operationId": "getNearestContentLocation",
@@ -321,10 +315,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "before",
-                "after"
-              ],
+              "enum": ["before", "after"],
               "type": "string",
               "description": "Whether to look for the nearest preceding (before) or subsequent (after) location with content",
               "default": "after",
@@ -379,9 +370,7 @@
     },
     "/browse/bookmarks": {
       "get": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Get user bookmarks",
         "description": "Returns all bookmarks that belong to the requesting user",
         "operationId": "getUserBookmarks",
@@ -411,9 +400,7 @@
         ]
       },
       "post": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Create bookmark",
         "description": "Creates a bookmark for the requesting user",
         "operationId": "createBookmark",
@@ -481,9 +468,7 @@
     },
     "/browse/bookmarks/{id}": {
       "delete": {
-        "tags": [
-          "browse"
-        ],
+        "tags": ["browse"],
         "summary": "Delete bookmark",
         "operationId": "deleteBookmark",
         "security": [
@@ -543,9 +528,7 @@
     },
     "/contents": {
       "post": {
-        "tags": [
-          "contents"
-        ],
+        "tags": ["contents"],
         "summary": "Create content",
         "operationId": "createContent",
         "security": [
@@ -698,9 +681,7 @@
         }
       },
       "get": {
-        "tags": [
-          "contents"
-        ],
+        "tags": ["contents"],
         "summary": "Find contents",
         "description": "Returns a list of all resource contents matching the given criteria.\n\nRespects restricted resources and inactive texts.\nAs the resulting list may contain contents of different types, the\nreturned content objects cannot be typed to their precise resource content type.",
         "operationId": "findContents",
@@ -824,9 +805,7 @@
     },
     "/contents/{id}": {
       "get": {
-        "tags": [
-          "contents"
-        ],
+        "tags": ["contents"],
         "summary": "Get content",
         "description": "A generic route for retrieving a content by ID from the database",
         "operationId": "getContent",
@@ -921,9 +900,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "contents"
-        ],
+        "tags": ["contents"],
         "summary": "Update content",
         "operationId": "updateContent",
         "security": [
@@ -1076,9 +1053,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "contents"
-        ],
+        "tags": ["contents"],
         "summary": "Delete content",
         "operationId": "deleteContent",
         "security": [
@@ -1138,9 +1113,7 @@
     },
     "/corrections": {
       "post": {
-        "tags": [
-          "corrections"
-        ],
+        "tags": ["corrections"],
         "summary": "Create correction",
         "description": "Creates a correction note referring to a specific content",
         "operationId": "createCorrection",
@@ -1208,9 +1181,7 @@
     },
     "/corrections/{resourceId}": {
       "get": {
-        "tags": [
-          "corrections"
-        ],
+        "tags": ["corrections"],
         "summary": "Get corrections",
         "description": "Returns a list of all corrections for a specific resource",
         "operationId": "getCorrections",
@@ -1272,9 +1243,7 @@
     },
     "/corrections/{id}": {
       "delete": {
-        "tags": [
-          "corrections"
-        ],
+        "tags": ["corrections"],
         "summary": "Delete correction",
         "description": "Deletes a specific correction note",
         "operationId": "deleteCorrection",
@@ -1325,9 +1294,7 @@
     },
     "/locations": {
       "post": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Create location",
         "description": "Creates a new location. The position will be automatically set to the last position\nof the location's parent (or the first parent before that has children).",
         "operationId": "createLocation",
@@ -1403,9 +1370,7 @@
         }
       },
       "get": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Find locations",
         "description": "Finds locations by various combinations of location properties.\nA full combined label including all parent location's labels is added to each\nreturned location object if add_full_labels is set to true.",
         "operationId": "findLocations",
@@ -1602,9 +1567,7 @@
     },
     "/locations/{id}/path-options/{by}": {
       "get": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Get path options by head id",
         "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as head or root.",
         "operationId": "getPathOptionsByHeadId",
@@ -1624,10 +1587,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": [
-                "root",
-                "head"
-              ],
+              "enum": ["root", "head"],
               "type": "string",
               "description": "Wheter to handle the given location as path root or head",
               "title": "By"
@@ -1678,9 +1638,7 @@
     },
     "/locations/first-last-paths": {
       "get": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Get first and last locations paths",
         "operationId": "getFirstAndLastLocationsPaths",
         "parameters": [
@@ -1752,9 +1710,7 @@
     },
     "/locations/children": {
       "get": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Get children",
         "operationId": "getChildren",
         "security": [
@@ -1873,9 +1829,7 @@
     },
     "/locations/{id}": {
       "get": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Get location",
         "operationId": "getLocation",
         "parameters": [
@@ -1922,9 +1876,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Update location",
         "operationId": "updateLocation",
         "security": [
@@ -2009,9 +1961,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Delete location",
         "description": "Deletes the specified location. Also deletes any associated contents,\nchild locations and contents associated with child locations.",
         "operationId": "deleteLocation",
@@ -2089,9 +2039,7 @@
     },
     "/locations/{id}/move": {
       "post": {
-        "tags": [
-          "locations"
-        ],
+        "tags": ["locations"],
         "summary": "Move location",
         "description": "Moves the specified location to a new position on its level.",
         "operationId": "moveLocation",
@@ -2179,9 +2127,7 @@
     },
     "/messages": {
       "post": {
-        "tags": [
-          "messages"
-        ],
+        "tags": ["messages"],
         "summary": "Send message",
         "description": "Creates a message for the specified recipient",
         "operationId": "sendMessage",
@@ -2247,9 +2193,7 @@
         }
       },
       "get": {
-        "tags": [
-          "messages"
-        ],
+        "tags": ["messages"],
         "summary": "Get thread messages",
         "description": "Returns all messages belonging to the specified thread",
         "operationId": "getThreadMessages",
@@ -2321,9 +2265,7 @@
     },
     "/messages/threads": {
       "get": {
-        "tags": [
-          "messages"
-        ],
+        "tags": ["messages"],
         "summary": "Get threads",
         "description": "Returns all message threads involving the requesting user",
         "operationId": "getThreads",
@@ -2365,9 +2307,7 @@
     },
     "/messages/threads/{id}": {
       "delete": {
-        "tags": [
-          "messages"
-        ],
+        "tags": ["messages"],
         "summary": "Delete thread",
         "description": "Marks all received messages from the given user as deleted or actually deletes them,\ndepending on the current deletion status",
         "operationId": "deleteThread",
@@ -2437,9 +2377,7 @@
     },
     "/platform": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get platform data",
         "description": "Returns data about the platform and its configuration",
         "operationId": "getPlatformData",
@@ -2467,9 +2405,7 @@
     },
     "/platform/web-init": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get client init data",
         "description": "Returns data the client needs to initialize",
         "operationId": "getClientInitData",
@@ -2497,9 +2433,7 @@
     },
     "/platform/state": {
       "patch": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Update platform state",
         "operationId": "updatePlatformState",
         "requestBody": {
@@ -2566,9 +2500,7 @@
     },
     "/platform/segments/{id}": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get segment",
         "operationId": "getSegment",
         "security": [
@@ -2623,9 +2555,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Update segment",
         "operationId": "updateSegment",
         "security": [
@@ -2710,9 +2640,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Delete segment",
         "operationId": "deleteSegment",
         "security": [
@@ -2782,9 +2710,7 @@
     },
     "/platform/segments": {
       "post": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Create segment",
         "operationId": "createSegment",
         "requestBody": {
@@ -2861,9 +2787,7 @@
     },
     "/platform/tasks": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get all tasks status",
         "operationId": "getAllTasksStatus",
         "responses": {
@@ -2902,9 +2826,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Delete all tasks",
         "operationId": "deleteAllTasks",
         "responses": {
@@ -2944,9 +2866,7 @@
     },
     "/platform/tasks/user": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get user tasks",
         "operationId": "getUserTasks",
         "security": [
@@ -3018,9 +2938,7 @@
     },
     "/platform/tasks/download": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Download task artifact",
         "operationId": "downloadTaskArtifact",
         "parameters": [
@@ -3071,9 +2989,7 @@
     },
     "/platform/tasks/{id}": {
       "delete": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Delete task",
         "operationId": "deleteTask",
         "security": [
@@ -3133,9 +3049,7 @@
     },
     "/platform/cleanup": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Run platform cleanup",
         "operationId": "runPlatformCleanup",
         "responses": {
@@ -3182,9 +3096,7 @@
     },
     "/platform/test-email": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Send test email to admin",
         "operationId": "sendTestEmailToAdmin",
         "responses": {
@@ -3224,9 +3136,7 @@
     },
     "/platform/stats": {
       "get": {
-        "tags": [
-          "platform"
-        ],
+        "tags": ["platform"],
         "summary": "Get stats",
         "operationId": "getStats",
         "responses": {
@@ -3261,9 +3171,7 @@
     },
     "/resources/precompute": {
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Trigger cache precomputation",
         "operationId": "triggerCachePrecomputation",
         "security": [
@@ -3332,9 +3240,7 @@
     },
     "/resources": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Create resource",
         "operationId": "createResource",
         "security": [
@@ -3497,9 +3403,7 @@
         }
       },
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Find resources",
         "description": "Returns a list of all resources matching the given criteria.\n\nAs the resulting list of resources may contain resources of different types, the\nreturned resource objects cannot be typed to their precise resource type.",
         "operationId": "findResources",
@@ -3647,9 +3551,7 @@
     },
     "/resources/{id}/version": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Create resource version",
         "operationId": "createResourceVersion",
         "security": [
@@ -3765,9 +3667,7 @@
     },
     "/resources/{id}": {
       "patch": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Update resource",
         "operationId": "updateResource",
         "security": [
@@ -3910,9 +3810,7 @@
         }
       },
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Get resource",
         "operationId": "getResource",
         "security": [
@@ -4006,9 +3904,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Delete resource",
         "operationId": "deleteResource",
         "security": [
@@ -4078,9 +3974,7 @@
     },
     "/resources/{id}/owners": {
       "patch": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Update resource owners",
         "operationId": "updateResourceOwners",
         "security": [
@@ -4221,9 +4115,7 @@
     },
     "/resources/{id}/propose": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Propose resource",
         "operationId": "proposeResource",
         "security": [
@@ -4339,9 +4231,7 @@
     },
     "/resources/{id}/unpropose": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Unpropose resource",
         "operationId": "unproposeResource",
         "security": [
@@ -4447,9 +4337,7 @@
     },
     "/resources/{id}/publish": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Publish resource",
         "operationId": "publishResource",
         "security": [
@@ -4575,9 +4463,7 @@
     },
     "/resources/{id}/unpublish": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Unpublish resource",
         "operationId": "unpublishResource",
         "security": [
@@ -4693,9 +4579,7 @@
     },
     "/resources/{id}/template": {
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Download resource template",
         "operationId": "downloadResourceTemplate",
         "security": [
@@ -4760,9 +4644,7 @@
     },
     "/resources/{id}/import": {
       "post": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Import resource",
         "operationId": "importResource",
         "security": [
@@ -4839,9 +4721,7 @@
     },
     "/resources/{id}/export": {
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Export resource contents",
         "operationId": "exportResourceContents",
         "security": [
@@ -4947,9 +4827,7 @@
     },
     "/resources/{id}/aggregations": {
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Get aggregations",
         "operationId": "getAggregations",
         "security": [
@@ -5008,9 +4886,7 @@
     },
     "/resources/{id}/coverage": {
       "get": {
-        "tags": [
-          "resources"
-        ],
+        "tags": ["resources"],
         "summary": "Get resource coverage data",
         "operationId": "getResourceCoverageData",
         "security": [
@@ -5067,9 +4943,7 @@
     },
     "/search": {
       "post": {
-        "tags": [
-          "search"
-        ],
+        "tags": ["search"],
         "summary": "Handle search",
         "operationId": "handleSearch",
         "requestBody": {
@@ -5141,9 +5015,7 @@
     },
     "/search/index/create": {
       "get": {
-        "tags": [
-          "search"
-        ],
+        "tags": ["search"],
         "summary": "Create search index",
         "operationId": "createSearchIndex",
         "security": [
@@ -5212,9 +5084,7 @@
     },
     "/search/index/info": {
       "get": {
-        "tags": [
-          "search"
-        ],
+        "tags": ["search"],
         "summary": "Get search index info",
         "operationId": "getSearchIndexInfo",
         "responses": {
@@ -5265,9 +5135,7 @@
     },
     "/search/export": {
       "post": {
-        "tags": [
-          "search"
-        ],
+        "tags": ["search"],
         "summary": "Export search results",
         "operationId": "exportSearchResults",
         "requestBody": {
@@ -5329,9 +5197,7 @@
     },
     "/status": {
       "get": {
-        "tags": [
-          "status"
-        ],
+        "tags": ["status"],
         "summary": "Api status",
         "operationId": "apiStatus",
         "responses": {
@@ -5362,9 +5228,7 @@
     },
     "/texts": {
       "get": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Get all texts",
         "description": "Returns a list of all texts.\nOnly users with admin permissions will see inactive texts.",
         "operationId": "getAllTexts",
@@ -5416,9 +5280,7 @@
         }
       },
       "post": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Create text",
         "operationId": "createText",
         "security": [
@@ -5495,9 +5357,7 @@
     },
     "/texts/{id}/template": {
       "get": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Download structure template",
         "description": "Download the structure template for a text to help compose a structure\ndefinition (or locations updates if there already is a structure)\nthat can later be uploaded to the server.",
         "operationId": "downloadStructureTemplate",
@@ -5573,9 +5433,7 @@
     },
     "/texts/{id}/structure": {
       "post": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Import text structure",
         "description": "Uploads the structure definition for a text to apply as a structure of locations",
         "operationId": "importTextStructure",
@@ -5679,9 +5537,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Update text structure",
         "description": "Uploads updated locations data.\nOnly existing locations (with a correct ID) will be updated.",
         "operationId": "updateTextStructure",
@@ -5779,9 +5635,7 @@
     },
     "/texts/{id}/level/{index}": {
       "post": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Insert level",
         "operationId": "insertLevel",
         "security": [
@@ -5898,9 +5752,7 @@
     },
     "/texts/{id}/level/{lvl}": {
       "delete": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Delete level",
         "operationId": "deleteLevel",
         "security": [
@@ -6000,9 +5852,7 @@
     },
     "/texts/{id}": {
       "delete": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Delete text",
         "operationId": "deleteText",
         "security": [
@@ -6080,9 +5930,7 @@
         }
       },
       "get": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Get text",
         "operationId": "getText",
         "parameters": [
@@ -6129,9 +5977,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "texts"
-        ],
+        "tags": ["texts"],
         "summary": "Update text",
         "operationId": "updateText",
         "security": [
@@ -6218,9 +6064,7 @@
     },
     "/users/me": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Me",
         "operationId": "users:currentUser",
         "responses": {
@@ -6248,9 +6092,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Delete me",
         "operationId": "deleteMe",
         "responses": {
@@ -6278,9 +6120,7 @@
         ]
       },
       "patch": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Update me",
         "operationId": "users:patchCurrentUser",
         "requestBody": {
@@ -6357,9 +6197,7 @@
     },
     "/users": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Find users",
         "operationId": "findUsers",
         "security": [
@@ -6527,9 +6365,7 @@
     },
     "/users/public/{user}": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Get public user info",
         "description": "Returns public information on the user with the specified username or ID",
         "operationId": "getPublicUser",
@@ -6589,9 +6425,7 @@
     },
     "/users/public": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Find public users",
         "description": "Returns a list of public users matching the given query.\n\nOnly returns active user accounts. The query is considered to match a full token\n(e.g. first name, last name, username, a word in the affiliation field).",
         "operationId": "findPublicUsers",
@@ -6691,9 +6525,7 @@
     },
     "/auth/cookie/login": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Login",
         "operationId": "auth:cookie.login",
         "requestBody": {
@@ -6757,9 +6589,7 @@
     },
     "/auth/cookie/logout": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Logout",
         "operationId": "auth:cookie.logout",
         "responses": {
@@ -6790,9 +6620,7 @@
     },
     "/auth/register": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Register",
         "operationId": "register:register",
         "requestBody": {
@@ -6858,9 +6686,7 @@
     },
     "/auth/request-verify-token": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Request verify token",
         "operationId": "verify:requestToken",
         "requestBody": {
@@ -6897,9 +6723,7 @@
     },
     "/auth/verify": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Verify",
         "operationId": "verify:verify",
         "requestBody": {
@@ -6962,9 +6786,7 @@
     },
     "/auth/forgot-password": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Forgot password",
         "operationId": "reset:forgotPassword",
         "requestBody": {
@@ -7001,9 +6823,7 @@
     },
     "/auth/reset-password": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Reset password",
         "operationId": "reset:resetPassword",
         "requestBody": {
@@ -7067,9 +6887,7 @@
     },
     "/users/{id}": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Get user",
         "operationId": "users:user",
         "security": [
@@ -7124,9 +6942,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Update user",
         "operationId": "users:patchUser",
         "security": [
@@ -7218,9 +7034,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Delete user",
         "operationId": "users:deleteUser",
         "security": [
@@ -7273,10 +7087,7 @@
     "schemas": {
       "AdminNotificationTrigger": {
         "type": "string",
-        "enum": [
-          "userAwaitsActivation",
-          "newCorrection"
-        ]
+        "enum": ["userAwaitsActivation", "newCorrection"]
       },
       "AdvancedSearchRequestBody": {
         "properties": {
@@ -7436,7 +7247,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
@@ -7446,12 +7257,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "calls"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "calls"],
         "title": "ApiCallContentCreate"
       },
       "ApiCallContentItem": {
@@ -7471,12 +7277,7 @@
           },
           "method": {
             "type": "string",
-            "enum": [
-              "GET",
-              "POST",
-              "QUERY",
-              "SEARCH"
-            ],
+            "enum": ["GET", "POST", "QUERY", "SEARCH"],
             "title": "Method",
             "default": "GET"
           },
@@ -7504,10 +7305,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "endpoint"
-        ],
+        "required": ["key", "endpoint"],
         "title": "ApiCallContentItem"
       },
       "ApiCallContentRead": {
@@ -7563,7 +7361,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
@@ -7574,13 +7372,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "calls"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "calls"],
         "title": "ApiCallContentRead"
       },
       "ApiCallContentUpdate": {
@@ -7633,7 +7425,7 @@
               },
               {
                 "type": "string",
-                "maxLength": 10240,
+                "maxLength": 81920,
                 "minLength": 1
               }
             ],
@@ -7643,9 +7435,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ApiCallContentUpdate"
       },
       "ApiCallModGeneralConfig": {
@@ -7920,12 +7710,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "ApiCallResourceCreate"
       },
       "ApiCallResourceRead": {
@@ -8186,13 +7971,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "ApiCallResourceRead"
       },
       "ApiCallResourceUpdate": {
@@ -8375,9 +8154,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ApiCallResourceUpdate"
       },
       "ApiCallSpecialConfig": {
@@ -8437,12 +8214,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "files"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "files"],
         "title": "AudioContentCreate"
       },
       "AudioContentRead": {
@@ -8494,13 +8266,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "files"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "files"],
         "title": "AudioContentRead"
       },
       "AudioContentUpdate": {
@@ -8548,9 +8314,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "AudioContentUpdate"
       },
       "AudioFile": {
@@ -8592,9 +8356,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "title": "AudioFile"
       },
       "AudioResourceConfig": {
@@ -8741,12 +8503,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "AudioResourceCreate"
       },
       "AudioResourceRead": {
@@ -9002,13 +8759,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "AudioResourceRead"
       },
       "AudioResourceUpdate": {
@@ -9191,9 +8942,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "AudioResourceUpdate"
       },
       "AudioSearchQuery": {
@@ -9214,9 +8963,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "AudioSearchQuery"
       },
       "Body_auth_cookie_login_auth_cookie_login_post": {
@@ -9272,10 +9019,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
+        "required": ["username", "password"],
         "title": "Body_auth_cookie_login_auth_cookie_login_post"
       },
       "Body_import_resource_resources__id__import_post": {
@@ -9288,9 +9032,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "file"
-        ],
+        "required": ["file"],
         "title": "Body_import_resource_resources__id__import_post"
       },
       "Body_import_text_structure_texts__id__structure_post": {
@@ -9303,9 +9045,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "file"
-        ],
+        "required": ["file"],
         "title": "Body_import_text_structure_texts__id__structure_post"
       },
       "Body_reset_forgot_password_auth_forgot_password_post": {
@@ -9317,9 +9057,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "email"
-        ],
+        "required": ["email"],
         "title": "Body_reset_forgot_password_auth_forgot_password_post"
       },
       "Body_reset_reset_password_auth_reset_password_post": {
@@ -9334,10 +9072,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "token",
-          "password"
-        ],
+        "required": ["token", "password"],
         "title": "Body_reset_reset_password_auth_reset_password_post"
       },
       "Body_update_text_structure_texts__id__structure_patch": {
@@ -9350,9 +9085,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "file"
-        ],
+        "required": ["file"],
         "title": "Body_update_text_structure_texts__id__structure_patch"
       },
       "Body_verify_request_token_auth_request_verify_token_post": {
@@ -9364,9 +9097,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "email"
-        ],
+        "required": ["email"],
         "title": "Body_verify_request_token_auth_request_verify_token_post"
       },
       "Body_verify_verify_auth_verify_post": {
@@ -9377,9 +9108,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "token"
-        ],
+        "required": ["token"],
         "title": "Body_verify_verify_auth_verify_post"
       },
       "BookmarkCreate": {
@@ -9404,9 +9133,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locationId"
-        ],
+        "required": ["locationId"],
         "title": "BookmarkCreate"
       },
       "BookmarkRead": {
@@ -9493,9 +9220,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "platform"
-        ],
+        "required": ["platform"],
         "title": "ClientInitData"
       },
       "ClientSegmentCreate": {
@@ -9510,10 +9235,7 @@
           },
           "editorMode": {
             "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
-            ],
+            "enum": ["wysiwyg", "html"],
             "title": "Editormode",
             "description": "Last used editor mode",
             "default": "wysiwyg"
@@ -9524,11 +9246,7 @@
           },
           "restriction": {
             "type": "string",
-            "enum": [
-              "none",
-              "user",
-              "superuser"
-            ],
+            "enum": ["none", "user", "superuser"],
             "title": "Restriction",
             "description": "Whether access is unrestricted or restricted to superusers or users",
             "default": "none"
@@ -9557,12 +9275,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "locale",
-          "title",
-          "html"
-        ],
+        "required": ["key", "locale", "title", "html"],
         "title": "ClientSegmentCreate"
       },
       "ClientSegmentHead": {
@@ -9590,11 +9303,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "key",
-          "locale"
-        ],
+        "required": ["id", "key", "locale"],
         "title": "ClientSegmentHead"
       },
       "ClientSegmentRead": {
@@ -9612,10 +9321,7 @@
           },
           "editorMode": {
             "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
-            ],
+            "enum": ["wysiwyg", "html"],
             "title": "Editormode",
             "description": "Last used editor mode",
             "default": "wysiwyg"
@@ -9626,11 +9332,7 @@
           },
           "restriction": {
             "type": "string",
-            "enum": [
-              "none",
-              "user",
-              "superuser"
-            ],
+            "enum": ["none", "user", "superuser"],
             "title": "Restriction",
             "description": "Whether access is unrestricted or restricted to superusers or users",
             "default": "none"
@@ -9660,13 +9362,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "key",
-          "locale",
-          "title",
-          "html"
-        ],
+        "required": ["id", "key", "locale", "title", "html"],
         "title": "ClientSegmentRead"
       },
       "ClientSegmentUpdate": {
@@ -9691,10 +9387,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "wysiwyg",
-                  "html"
-                ]
+                "enum": ["wysiwyg", "html"]
               },
               {
                 "type": "null"
@@ -9720,11 +9413,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "none",
-                  "user",
-                  "superuser"
-                ]
+                "enum": ["none", "user", "superuser"]
               },
               {
                 "type": "null"
@@ -9787,11 +9476,7 @@
         "properties": {
           "occ": {
             "type": "string",
-            "enum": [
-              "should",
-              "must",
-              "not"
-            ],
+            "enum": ["should", "must", "not"],
             "title": "Occ",
             "description": "The occurrence type of the search query",
             "default": "must",
@@ -9812,9 +9497,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "res"
-        ],
+        "required": ["res"],
         "title": "CommonResourceSearchQueryData"
       },
       "ContentComment": {
@@ -9840,9 +9523,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "comment"
-        ],
+        "required": ["comment"],
         "title": "ContentComment"
       },
       "ContentCssProperties": {
@@ -9872,10 +9553,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "prop",
-          "value"
-        ],
+        "required": ["prop", "value"],
         "title": "ContentCssProperty"
       },
       "ContentTransformConfig": {
@@ -9929,11 +9607,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "locationId",
-          "note"
-        ],
+        "required": ["resourceId", "locationId", "note"],
         "title": "CorrectionCreate"
       },
       "CorrectionRead": {
@@ -10033,10 +9707,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "contents",
-          "locations"
-        ],
+        "required": ["contents", "locations"],
         "title": "DeleteLocationResult"
       },
       "ErrorDetail": {
@@ -10086,9 +9757,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key"
-        ],
+        "required": ["key"],
         "title": "ErrorDetail"
       },
       "ErrorModel": {
@@ -10109,9 +9778,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "detail"
-        ],
+        "required": ["detail"],
         "title": "ErrorModel"
       },
       "ExternalReferencesContentCreate": {
@@ -10159,12 +9826,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "links"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "links"],
         "title": "ExternalReferencesContentCreate"
       },
       "ExternalReferencesContentRead": {
@@ -10216,13 +9878,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "links"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "links"],
         "title": "ExternalReferencesContentRead"
       },
       "ExternalReferencesContentUpdate": {
@@ -10270,9 +9926,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ExternalReferencesContentUpdate"
       },
       "ExternalReferencesLink": {
@@ -10321,10 +9975,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "url",
-          "title"
-        ],
+        "required": ["url", "title"],
         "title": "ExternalReferencesLink"
       },
       "ExternalReferencesResourceConfig": {
@@ -10471,12 +10122,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "ExternalReferencesResourceCreate"
       },
       "ExternalReferencesResourceRead": {
@@ -10732,13 +10378,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "ExternalReferencesResourceRead"
       },
       "ExternalReferencesResourceUpdate": {
@@ -10921,9 +10561,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ExternalReferencesResourceUpdate"
       },
       "ExternalReferencesSearchQuery": {
@@ -10945,9 +10583,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "ExternalReferencesSearchQuery"
       },
       "FocusViewConfig": {
@@ -11181,9 +10817,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "title": "ImageFile"
       },
       "ImagesContentCreate": {
@@ -11231,12 +10865,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "files"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "files"],
         "title": "ImagesContentCreate"
       },
       "ImagesContentRead": {
@@ -11288,13 +10917,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "files"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "files"],
         "title": "ImagesContentRead"
       },
       "ImagesContentUpdate": {
@@ -11342,9 +10965,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ImagesContentUpdate"
       },
       "ImagesResourceConfig": {
@@ -11491,12 +11112,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "ImagesResourceCreate"
       },
       "ImagesResourceRead": {
@@ -11752,13 +11368,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "ImagesResourceRead"
       },
       "ImagesResourceUpdate": {
@@ -11941,9 +11551,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "ImagesResourceUpdate"
       },
       "ImagesSearchQuery": {
@@ -11965,9 +11573,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "ImagesSearchQuery"
       },
       "IndexInfo": {
@@ -12030,10 +11636,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
+        "required": ["key", "translations"],
         "title": "ItemGroup"
       },
       "ItemGroupKey": {
@@ -12101,10 +11704,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
+        "required": ["key", "translations"],
         "title": "ItemProps"
       },
       "ItemsDisplayTranslation": {
@@ -12121,10 +11721,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ItemsDisplayTranslation"
       },
       "LineLabellingConfig": {
@@ -12153,10 +11750,7 @@
       },
       "LocaleKey": {
         "type": "string",
-        "enum": [
-          "deDE",
-          "enUS"
-        ]
+        "enum": ["deDE", "enUS"]
       },
       "LocationCoverage": {
         "properties": {
@@ -12175,10 +11769,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locId",
-          "label"
-        ],
+        "required": ["locId", "label"],
         "title": "LocationCoverage"
       },
       "LocationCreate": {
@@ -12239,12 +11830,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "textId",
-          "level",
-          "position",
-          "label"
-        ],
+        "required": ["textId", "level", "position", "label"],
         "title": "LocationCreate"
       },
       "LocationData": {
@@ -12376,12 +11962,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "entries"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "entries"],
         "title": "LocationMetadataContentCreate"
       },
       "LocationMetadataContentRead": {
@@ -12487,9 +12068,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "LocationMetadataContentUpdate"
       },
       "LocationMetadataEntry": {
@@ -12508,10 +12087,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
+        "required": ["key", "value"],
         "title": "LocationMetadataEntry"
       },
       "LocationMetadataEntryKey": {
@@ -12670,9 +12246,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "k"
-        ],
+        "required": ["k"],
         "title": "LocationMetadataQueryEntry"
       },
       "LocationMetadataResourceConfig": {
@@ -12836,12 +12410,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "LocationMetadataResourceCreate"
       },
       "LocationMetadataResourceRead": {
@@ -13104,13 +12673,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "LocationMetadataResourceRead"
       },
       "LocationMetadataResourceUpdate": {
@@ -13293,9 +12856,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "LocationMetadataResourceUpdate"
       },
       "LocationMetadataSearchQuery": {
@@ -13319,9 +12880,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "LocationMetadataSearchQuery"
       },
       "LocationMetadataSpecialConfig": {
@@ -13363,11 +12922,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "lvl",
-          "from",
-          "to"
-        ],
+        "required": ["lvl", "from", "to"],
         "title": "LocationRange"
       },
       "LocationRead": {
@@ -13432,13 +12987,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "textId",
-          "level",
-          "position",
-          "label"
-        ],
+        "required": ["id", "textId", "level", "position", "label"],
         "title": "LocationRead"
       },
       "LocationUpdate": {
@@ -13536,10 +13085,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "MainNavEntryTranslation"
       },
       "MetadataEntry": {
@@ -13560,10 +13106,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
+        "required": ["key", "value"],
         "title": "MetadataEntry"
       },
       "MoveLocationRequestBody": {
@@ -13588,11 +13131,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "position",
-          "after",
-          "parentId"
-        ],
+        "required": ["position", "after", "parentId"],
         "title": "MoveLocationRequestBody"
       },
       "NavTranslations": {
@@ -13662,10 +13201,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "name"
-        ],
+        "required": ["key", "name"],
         "title": "OskMode"
       },
       "PaginationSettings": {
@@ -13710,10 +13246,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "label",
-          "locations"
-        ],
+        "required": ["label", "locations"],
         "title": "ParentCoverage"
       },
       "PlainTextContentCreate": {
@@ -13758,12 +13291,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "text"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "text"],
         "title": "PlainTextContentCreate"
       },
       "PlainTextContentRead": {
@@ -13812,13 +13340,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "text"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "text"],
         "title": "PlainTextContentRead"
       },
       "PlainTextContentUpdate": {
@@ -13863,9 +13385,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "PlainTextContentUpdate"
       },
       "PlainTextResourceConfig": {
@@ -14045,12 +13565,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "PlainTextResourceCreate"
       },
       "PlainTextResourceRead": {
@@ -14321,13 +13836,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "PlainTextResourceRead"
       },
       "PlainTextResourceUpdate": {
@@ -14510,9 +14019,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "PlainTextResourceUpdate"
       },
       "PlainTextSearchQuery": {
@@ -14534,9 +14041,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "PlainTextSearchQuery"
       },
       "PlainTextSpecialConfig": {
@@ -14691,10 +14196,7 @@
             "minItems": 1,
             "title": "Availablelocales",
             "description": "Locales available for use in platform client",
-            "default": [
-              "deDE",
-              "enUS"
-            ]
+            "default": ["deDE", "enUS"]
           },
           "fonts": {
             "items": {
@@ -14820,9 +14322,13 @@
             "maxItems": 64,
             "title": "Denyresourcetypes",
             "description": "Resource types regular users are not allowed to create",
-            "default": [
-              "apiCall"
-            ]
+            "default": ["apiCall"]
+          },
+          "extendCitations": {
+            "type": "boolean",
+            "title": "Extendcitations",
+            "description": "Suffix resource citations with URL and date",
+            "default": true
           },
           "oskModes": {
             "items": {
@@ -14873,9 +14379,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "title": "PlatformStateRead"
       },
       "PlatformStateUpdate": {
@@ -15139,6 +14643,19 @@
             "description": "Resource types regular users are not allowed to create",
             "optionalNullable": false
           },
+          "extendCitations": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extendcitations",
+            "description": "Suffix resource citations with URL and date",
+            "optionalNullable": false
+          },
           "oskModes": {
             "anyOf": [
               {
@@ -15189,19 +14706,12 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "PlatformSubtitleTranslation"
       },
       "PrivateUserProp": {
         "type": "string",
-        "enum": [
-          "name",
-          "affiliation",
-          "bio"
-        ]
+        "enum": ["name", "affiliation", "bio"]
       },
       "PrivateUserProps": {
         "items": {
@@ -15288,10 +14798,7 @@
         "properties": {
           "op": {
             "type": "string",
-            "enum": [
-              "AND",
-              "OR"
-            ],
+            "enum": ["AND", "OR"],
             "title": "Op",
             "description": "Default operator",
             "default": "OR",
@@ -15357,10 +14864,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
+        "required": ["key", "translations"],
         "title": "ResourceCategory"
       },
       "ResourceCategoryTranslation": {
@@ -15377,10 +14881,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ResourceCategoryTranslation"
       },
       "ResourceCoverage": {
@@ -15416,13 +14917,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "covered",
-          "total",
-          "ranges",
-          "rangesCovered",
-          "details"
-        ],
+        "required": ["covered", "total", "ranges", "rangesCovered", "details"],
         "title": "ResourceCoverage"
       },
       "ResourceDescriptionTranslation": {
@@ -15439,19 +14934,12 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ResourceDescriptionTranslation"
       },
       "ResourceExportFormat": {
         "type": "string",
-        "enum": [
-          "json",
-          "tekst-json",
-          "csv"
-        ]
+        "enum": ["json", "tekst-json", "csv"]
       },
       "ResourceMetadataKey": {
         "properties": {
@@ -15469,10 +14957,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "translations"
-        ],
+        "required": ["key", "translations"],
         "title": "ResourceMetadataKey"
       },
       "ResourceMetadataKeyTranslation": {
@@ -15488,10 +14973,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ResourceMetadataKeyTranslation"
       },
       "ResourceSearchQuery": {
@@ -15541,10 +15023,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "cmn",
-          "rts"
-        ],
+        "required": ["cmn", "rts"],
         "title": "ResourceSearchQuery"
       },
       "ResourceSubtitleTranslation": {
@@ -15561,10 +15040,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ResourceSubtitleTranslation"
       },
       "ResourceTitleTranslation": {
@@ -15581,10 +15057,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "ResourceTitleTranslation"
       },
       "RichTextContentCreate": {
@@ -15629,22 +15102,14 @@
           },
           "editorMode": {
             "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
-            ],
+            "enum": ["wysiwyg", "html"],
             "title": "Editormode",
             "description": "Last used editor mode for this content",
             "default": "wysiwyg"
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "html"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "html"],
         "title": "RichTextContentCreate"
       },
       "RichTextContentRead": {
@@ -15692,10 +15157,7 @@
           },
           "editorMode": {
             "type": "string",
-            "enum": [
-              "wysiwyg",
-              "html"
-            ],
+            "enum": ["wysiwyg", "html"],
             "title": "Editormode",
             "description": "Last used editor mode for this content",
             "default": "wysiwyg"
@@ -15703,13 +15165,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "html"
-        ],
+        "required": ["id", "resourceId", "resourceType", "locationId", "html"],
         "title": "RichTextContentRead"
       },
       "RichTextContentUpdate": {
@@ -15756,10 +15212,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "wysiwyg",
-                  "html"
-                ]
+                "enum": ["wysiwyg", "html"]
               },
               {
                 "type": "null"
@@ -15771,9 +15224,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "RichTextContentUpdate"
       },
       "RichTextModGeneralConfig": {
@@ -16047,12 +15498,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "RichTextResourceCreate"
       },
       "RichTextResourceRead": {
@@ -16313,13 +15759,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "RichTextResourceRead"
       },
       "RichTextResourceUpdate": {
@@ -16502,9 +15942,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "RichTextResourceUpdate"
       },
       "RichTextSearchQuery": {
@@ -16526,9 +15964,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "RichTextSearchQuery"
       },
       "RichTextSpecialConfig": {
@@ -16622,10 +16058,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "pattern",
-          "replacement"
-        ],
+        "required": ["pattern", "replacement"],
         "title": "SearchReplacement"
       },
       "SearchReplacements": {
@@ -16656,10 +16089,7 @@
           },
           "totalHitsRelation": {
             "type": "string",
-            "enum": [
-              "eq",
-              "gte"
-            ],
+            "enum": ["eq", "gte"],
             "title": "Totalhitsrelation"
           },
           "maxScore": {
@@ -16686,11 +16116,7 @@
       },
       "SortingPreset": {
         "type": "string",
-        "enum": [
-          "relevance",
-          "text_level_position",
-          "text_level_relevance"
-        ]
+        "enum": ["relevance", "text_level_position", "text_level_relevance"]
       },
       "SuperuserStats": {
         "properties": {
@@ -16855,12 +16281,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "waiting",
-              "running",
-              "done",
-              "failed"
-            ],
+            "enum": ["waiting", "running", "done", "failed"],
             "title": "Status",
             "description": "Status of the task"
           },
@@ -16937,13 +16358,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "type",
-          "pickupKey",
-          "status",
-          "startTime"
-        ],
+        "required": ["id", "type", "pickupKey", "status", "startTime"],
         "title": "TaskRead"
       },
       "TaskType": {
@@ -16969,9 +16384,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "detail"
-        ],
+        "required": ["detail"],
         "title": "TekstErrorModel"
       },
       "TextAnnotationContentCreate": {
@@ -17018,12 +16431,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceId",
-          "resourceType",
-          "locationId",
-          "tokens"
-        ],
+        "required": ["resourceId", "resourceType", "locationId", "tokens"],
         "title": "TextAnnotationContentCreate"
       },
       "TextAnnotationContentRead": {
@@ -17127,9 +16535,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "TextAnnotationContentUpdate"
       },
       "TextAnnotationEntry": {
@@ -17153,10 +16559,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "key",
-          "value"
-        ],
+        "required": ["key", "value"],
         "title": "TextAnnotationEntry"
       },
       "TextAnnotationQueryEntry": {
@@ -17193,10 +16596,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "exists",
-                  "missing"
-                ]
+                "enum": ["exists", "missing"]
               },
               {
                 "type": "null"
@@ -17207,9 +16607,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "k"
-        ],
+        "required": ["k"],
         "title": "TextAnnotationQueryEntry"
       },
       "TextAnnotationResourceConfig": {
@@ -17377,12 +16775,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["title", "textId", "level", "resourceType"],
         "title": "TextAnnotationResourceCreate"
       },
       "TextAnnotationResourceRead": {
@@ -17647,13 +17040,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "textId",
-          "level",
-          "resourceType"
-        ],
+        "required": ["id", "title", "textId", "level", "resourceType"],
         "title": "TextAnnotationResourceRead"
       },
       "TextAnnotationResourceUpdate": {
@@ -17836,9 +17223,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "resourceType"
-        ],
+        "required": ["resourceType"],
         "title": "TextAnnotationResourceUpdate"
       },
       "TextAnnotationSearchQuery": {
@@ -17862,9 +17247,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "title": "TextAnnotationSearchQuery"
       },
       "TextAnnotationSpecialConfig": {
@@ -18019,14 +17402,16 @@
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
             "default": false
+          },
+          "slugInLocLabels": {
+            "type": "boolean",
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
+            "default": false
           }
         },
         "type": "object",
-        "required": [
-          "title",
-          "slug",
-          "levels"
-        ],
+        "required": ["title", "slug", "levels"],
         "title": "TextCreate"
       },
       "TextLevelTranslation": {
@@ -18043,10 +17428,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "TextLevelTranslation"
       },
       "TextRead": {
@@ -18153,6 +17535,12 @@
             "description": "Whether to use the full location label as the hit heading in the search results",
             "default": false
           },
+          "slugInLocLabels": {
+            "type": "boolean",
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
+            "default": false
+          },
           "indexUtd": {
             "type": "boolean",
             "title": "Indexutd",
@@ -18162,12 +17550,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "slug",
-          "levels"
-        ],
+        "required": ["id", "title", "slug", "levels"],
         "title": "TextRead"
       },
       "TextSubtitleTranslation": {
@@ -18184,10 +17567,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
+        "required": ["locale", "translation"],
         "title": "TextSubtitleTranslation"
       },
       "TextUpdate": {
@@ -18377,6 +17757,19 @@
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
             "optionalNullable": false
+          },
+          "slugInLocLabels": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sluginloclabels",
+            "description": "Whether to prefix full location labels with this text's slug",
+            "optionalNullable": false
           }
         },
         "type": "object",
@@ -18384,11 +17777,7 @@
       },
       "TranslationLocaleKey": {
         "type": "string",
-        "enum": [
-          "deDE",
-          "enUS",
-          "*"
-        ]
+        "enum": ["deDE", "enUS", "*"]
       },
       "UserCreate": {
         "properties": {
@@ -18519,9 +17908,7 @@
             "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
-            "default": [
-              "userAwaitsActivation"
-            ]
+            "default": ["userAwaitsActivation"]
           },
           "lastLogin": {
             "anyOf": [
@@ -18548,13 +17935,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "email",
-          "password",
-          "username",
-          "name",
-          "affiliation"
-        ],
+        "required": ["email", "password", "username", "name", "affiliation"],
         "title": "UserCreate",
         "description": "Dataset for creating a new user"
       },
@@ -18584,10 +17965,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "recipient",
-          "content"
-        ],
+        "required": ["recipient", "content"],
         "title": "UserMessageCreate"
       },
       "UserMessageRead": {
@@ -18643,12 +18021,7 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "id",
-          "recipient",
-          "content",
-          "createdAt"
-        ],
+        "required": ["id", "recipient", "content", "createdAt"],
         "title": "UserMessageRead"
       },
       "UserMessageThread": {
@@ -18682,11 +18055,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "contact",
-          "unread"
-        ],
+        "required": ["id", "contact", "unread"],
         "title": "UserMessageThread"
       },
       "UserNotificationTrigger": {
@@ -18810,9 +18179,7 @@
             "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
-            "default": [
-              "userAwaitsActivation"
-            ]
+            "default": ["userAwaitsActivation"]
           },
           "lastLogin": {
             "anyOf": [
@@ -19265,11 +18632,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       }
     },

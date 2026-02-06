@@ -45,14 +45,14 @@ onMounted(() => {
   });
 });
 
-const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
+const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
 </script>
 
 <template>
   <div ref="affixRef" :wrap="false" class="browse-toolbar-container mb-lg">
     <browse-search-results-toolbar
       v-if="search.browseHits"
-      :small-screen="state.smallScreen"
+      :small-screen="state.vw < 900"
       :button-size="buttonSize"
     />
     <n-flex
@@ -74,19 +74,19 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
         align="center"
         size="small"
         :wrap="false"
-        v-if="!state.smallScreen"
+        v-if="state.vw > 400"
         class="browse-toolbar-middle browse-location-label"
         :style="{ color: toolbarTxtColor }"
         :title="affixed ? state.text?.title : undefined"
       >
         <!-- <div class="text-color-indicator" :style="{ backgroundColor: theme.getTextColors().base }"></div> -->
-        <b>{{ state.text?.slug.toUpperCase() }}</b>
         <span class="ellipsis"><location-label /></span>
       </n-flex>
 
       <div class="browse-toolbar-end">
         <n-badge dot :offset="[-2, 5]" :show="browse.focusView">
           <n-button
+            id="focus-view-toggle"
             quaternary
             :color="toolbarTxtColor"
             :style="{
@@ -117,7 +117,7 @@ const buttonSize = computed(() => (state.smallScreen ? 'small' : 'large'));
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
             :bordered="false"
-            data-tour-key="browseResourceSelect"
+            data-tour-key="browseResourceDrawer"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>

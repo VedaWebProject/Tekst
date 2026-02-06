@@ -315,11 +315,18 @@ models:
       passwordRepNoMatch: Passwörter stimmen nicht überein
   text:
     slug: Identifikator
-    slugChangeWarning: Das Ändern des Identifikators des Textes wird alle existierenden URLs mit dem alten Identifikator ungültig machen! Benutzer haben möglicherweise URLs mit dem alten Identifikator gespeichert oder geteilt!
+    slugChangeWarning: |
+      Das Ändern des Identifikators des Textes wird alle existierenden URLs mit dem alten Identifikator ungültig machen!
+      Nutzer*innen haben möglicherweise URLs mit dem alten Identifikator gespeichert oder geteilt!
+    slugInitWarning: |
+      Bitte wählen Sie eine kurze, prägnante Zeichenfolge (z.B. eine Abkürzung), die diesen Text repräsentiert.
+      Es wird stark davon abgeraten, den Identifikator nachträglich zu ändern, da er in URLs
+      (und möglicherweise in der grafischen Oberfläche) genutzt wird und eine Änderung existierende URLs/Links ungültig macht!
     defaultLevel: Standardebene
     locDelim: Belegstellentrennzeichen
     labeledLocation: Ebenen in Belegstellen-Bezeichnungen einbeziehen (gilt nicht für Suchergebnisse)
     fullLocLabelAsHitHeading: Vollständige Belegstellennamen als Titel von Suchergebnissen verwenden
+    slugInLocLabels: Stelle Belegstellen-Bezeichnungen Text-Identifikator voran
     color: Farbe für visuelle Abhebung
     resourceCategories: Ressourcen-Kategorien
     isActive: Öffentlich gelistet
@@ -362,6 +369,7 @@ models:
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
+    extendCitations: Hänge automatisch Ressourcen-URL und aktuelles Datum an Zitation an
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
@@ -978,6 +986,105 @@ tour:
   heading: Geführte Tour
   next: Weiter
   prev: Zurück
+  intro:
+    title: '{platformName}: Geführte Tour'
+    text: |
+      Willkommen zur geführten Tour durch {platformName}!
+      Sie werden die wichtigsten Funktionen der Plattform kennenlernen und erfahren, wie Sie diese nutzen können.
+      Wenn Sie möchten, können Sie die Pfeiltasten Ihrer Tastatur anstelle der Schaltflächen in diesem Dialog verwenden.
+      Fangen wir an!
+  browseNavBtn:
+    title: Lesen und Blättern in Inhalten
+    text: Zuerst folgen wir diesem Hauptmenüpunkt, um in die Ansicht zum Lesen und Blättern in Inhalten zu gelangen...
+  browseView:
+    title: Lesen und Blättern in Inhalten
+    text: |
+      Sie sehen jetzt die Hauptansicht für reguläre Nutzer*innen dieser Plattform.
+      Hier haben Sie Zugriff auf die Inhalte aller verfügbaren Ressourcen.
+      Die Überschrift zeigt stets an, an welcher Belegstelle des aktuellen Arbeitstextes Sie sich befinden.
+  browseTextSelect:
+    title: Arbeitstext-Auswahl
+    text: |
+      Hier können Sie den Text auswählen, mit dem Sie arbeiten möchten.
+      Diese Auswahl ist auch in einigen anderen, textspezifischen Ansichten verfügbar.
+  browseNav:
+    title: Belegstellen Navigieren
+    text: |
+      Sie können einfach diese Pfeiltasten verwenden,
+      um zur nächsten oder vorherigen Belegstelle zu springen – oder die Pfeiltasten Ihrer Tastatur benutzen.
+      Alternativ können Sie auf das Buchsymbol klicken, um eine spezifische Strukturebene und
+      Belegstelle auszuwählen, zu der Sie navigieren möchten.
+      Hinweis: Einige Arten von Ressourcen zeigen Schaltflächen an, um direkt zur nächsten Belegstelle zu springen,
+      für welche die jeweilige Ressource Inhalte bereitstellt.
+      Sie finden diese zusammen mit einer Vielzahl weiterer nützlicher Funktionen direkt neben den jeweiligen Inhalten.
+  browseFocus:
+    title: Fokus-Ansicht
+    text: |
+      Verwenden Sie die Fokus-Ansicht, um Inhalte auf eine kompakte, ablenkungsarme Weise anzuzeigen.
+      Dies ist besonders hilfreich, wenn Sie die Inhalte spezifischer Ressourcen vergleichen möchten.
+  browseResourceDrawer:
+    title: Anzuzeigende Ressourcen auswählen
+    text: |
+      Dieser Button ist sehr wichtig!
+      Klicken Sie hier, um die Auswahl der verfügbaren Ressourcen zum aktuellen Arbeitstext zu öffnen...
+  browseResourceDrawerOpen:
+    title: Angezeigte Ressourcen auswählen
+    text: |
+      ...und auszuwählen, welche sie ein- oder ausblenden möchten!
+  quickSearch:
+    title: Schnellsuche
+    text: |
+      Möchten Sie Informationen einfach über eine Volltextsuche abrufen?
+      Dazu dient die Schnellsuche. Sie ist immer im Kopf der Seite verfügbar.
+      Während Sie einfach einen Suchbegriff eintippen und ENTER drücken können,
+      bietet die Schnellsuche tatsächlich auch eine Vielzahl von Funktionen zur
+      Feinabstimmung Ihrer Volltextsuche.
+  quickSearchSettings:
+    title: 'Schnellsuche: Einstellungen'
+    text: ...einige davon können Sie hier in den Einstellungen der Schnellsuche konfigurieren!
+  quickSearchHelp:
+    title: Glückliche Power-User
+    text: |
+      Wenn Sie die Funktionen der Volltextsuche voll ausschöpfen wollen,
+      schauen Sie sich den entsprechenden Hilfetext dazu an!
+      Er erklärt unter anderem die spezielle Syntax der Schnellsuche.
+  helpButtons:
+    title: Hilfe-Buttons
+    text: |
+      Übrigens finden Sie diese kleinen Hilfe-Buttons an zahlreichen Stellen.
+      Klicken Sie darauf, um hilfreiche Anweisungen zu den jeweiligen Themen zu lesen.
+  helpOverview:
+    title: Hilfeübersicht
+    text: Wenn Sie ein bestimmtes Thema suchen möchten, können Sie dies in der Hilfeübersicht tun!
+  searchNavBtn:
+    title: Erweiterte Suche
+    text: Lassen Sie uns zur erweiterten Suche übergehen!
+  searchView:
+    title: Erweiterte Suche
+    text: |
+      Hier können Sie die Inhalte jeder Ressource mit mehr Präzision durchsuchen.
+      Wie genau das funktioniert, erfahren Sie auch hier über den kleinen Hilfe-Button neben der Überschrift.
+      Nehmen Sie sich gern später die Zeit dazu, wir übergehen die Details an dieser Stelle.
+  resourcesNavBtn:
+    title: Ressourcenübersicht
+    text: Der nächste Ort, den wir über die Hauptnavigation erreichen, ist die Ressourcenübersicht...
+  resourcesView:
+    title: Ressourcenübersicht
+    text: |
+      Wenn Sie keine Inhalte anschauen, sondern lieber etwas über die Eigenschaften
+      der verfügbaren Ressourcen in einer zentralen Übersicht lesen möchten, ist dies der richtige Ort.
+      Und genau wie viele andere Funktionen dieser Plattform, hat auch diese einen Hilfe-Button!
+  themeSwitcher:
+    title: Farbschema-Wechsel
+    text: |
+      Nachdem Sie hier etwas mehr Zeit verbracht haben,
+      möchten Sie vielleicht das Farbschema der Benutzeroberfläche nach Ihrem Geschmack ändern!
+  outro:
+    title: Von hier aus schaffen Sie es selbst!
+    text: |
+      Das war unsere kleine geführte Tour. Erkunden Sie als nächstes selbst die Seite und
+      denken Sie an die kleinen Hilfe-Buttons – sie werden hoffentlich alle verbleibenden
+      Fragen klären.
 
 wysiwyg:
   blockTypes:

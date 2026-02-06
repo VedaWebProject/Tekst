@@ -70,7 +70,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         { style: { fontSize: 'var(--font-size-medium)' } }
       ),
       key: `page_${p.key}`,
-      icon: (showIcons && state.smallScreen && renderIcon(InfoIcon)) || undefined,
+      icon: (showIcons && state.vw < 900 && renderIcon(InfoIcon)) || undefined,
     }));
   });
 
@@ -83,7 +83,8 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         {
           name: 'browse',
           params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
-        }
+        },
+        { 'data-tour-key': 'browseNavBtn' }
       ),
       key: 'browse',
       icon: (showIcons && renderIcon(BookIcon)) || undefined,
@@ -93,37 +94,35 @@ export function useMainMenuOptions(showIcons: boolean = true) {
         () =>
           pickTranslation(state.pf?.state.navTranslations.search, state.locale) ||
           $t('common.search'),
-        { name: 'search' }
+        { name: 'search' },
+        { 'data-tour-key': 'searchNavBtn' }
       ),
       key: 'search',
       icon: (showIcons && renderIcon(SearchIcon)) || undefined,
     },
-    ...(state.smallScreen
-      ? [
-          {
-            label: renderLink(
-              () =>
-                h('div', null, [
-                  $t('resources.heading'),
-                  h(
-                    NBadge,
-                    { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
-                    undefined
-                  ),
-                ]),
-              {
-                name: 'resources',
-                params: {
-                  textSlug: state.text?.slug || '',
-                },
-              }
+    {
+      label: renderLink(
+        () =>
+          h('div', null, [
+            $t('resources.heading'),
+            h(
+              NBadge,
+              { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
+              undefined
             ),
-            key: 'resources',
-            icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
+          ]),
+        {
+          name: 'resources',
+          params: {
+            textSlug: state.text?.slug || '',
           },
-        ]
-      : []),
-    ...(state.smallScreen && !!auth.user?.isSuperuser
+        },
+        { 'data-tour-key': 'resourcesNavBtn' }
+      ),
+      key: 'resources',
+      icon: (showIcons && renderIcon(ResourceIcon)) || undefined,
+    },
+    ...(state.vw < 900 && !!auth.user?.isSuperuser
       ? [
           {
             label: renderLink(() => $t('common.text', 2), {
@@ -137,7 +136,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(state.smallScreen && !!auth.user
+    ...(state.vw < 900 && !!auth.user
       ? [
           {
             label: renderLink(() => $t('common.community'), {
@@ -148,31 +147,32 @@ export function useMainMenuOptions(showIcons: boolean = true) {
           },
         ]
       : []),
-    ...(!state.smallScreen
-      ? [
-          {
-            label: renderLink(
-              () =>
-                h('div', null, [
-                  $t('resources.heading'),
-                  h(
-                    NBadge,
-                    { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
-                    undefined
-                  ),
-                ]),
-              {
-                name: 'resources',
-                params: {
-                  textSlug: state.text?.slug || '',
-                },
-              }
-            ),
-            key: 'resources',
-            icon: renderIcon(ResourceIcon),
-          },
-        ]
-      : []),
+    // ...(state.vw >= 900
+    //   ? [
+    //       {
+    //         label: renderLink(
+    //           () =>
+    //             h('div', null, [
+    //               $t('resources.heading'),
+    //               h(
+    //                 NBadge,
+    //                 { dot: true, offset: [4, -10], show: !!resources.correctionsCountTotal },
+    //                 undefined
+    //               ),
+    //             ]),
+    //           {
+    //             name: 'resources',
+    //             params: {
+    //               textSlug: state.text?.slug || '',
+    //             },
+    //           },
+    //           { 'data-tour-key': 'resourcesNavBtn' }
+    //         ),
+    //         key: 'resources',
+    //         icon: renderIcon(ResourceIcon),
+    //       },
+    //     ]
+    //   : []),
     ...(infoPagesOptions.value.length
       ? [
           {
@@ -220,7 +220,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
       key: 'accountMessages',
       icon: (showIcons && renderIcon(MessageIcon)) || undefined,
     },
-    ...(state.smallScreen
+    ...(state.vw < 900
       ? [
           {
             key: 'logoutDivider',
