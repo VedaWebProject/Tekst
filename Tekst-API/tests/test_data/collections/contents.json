@@ -106,7 +106,7 @@
     "tokens": [
       {
         "annotations": [
-          { "key": "form", "value": ["Foo"] },
+          { "key": "form", "value": ["Foo", "Hwhat"] },
           { "key": "vowels", "value": ["two"] },
           { "key": "type", "value": ["Token"] },
           { "key": "comment", "value": ["This is a comment!"] }
