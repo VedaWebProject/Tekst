@@ -989,71 +989,73 @@ tour:
   intro:
     title: '{platformName}: Geführte Tour'
     text: |
-      Willkommen zur geführten Tour von {platformName}!
-      Sie werden die wichtigsten Funktionen dieser Plattform kennenlernen und erfahren, wie Sie diese nutzen können.
+      Willkommen zur geführten Tour durch {platformName}!
+      Sie werden die wichtigsten Funktionen der Plattform kennenlernen und erfahren, wie Sie diese nutzen können.
       Wenn Sie möchten, können Sie die Pfeiltasten Ihrer Tastatur anstelle der Schaltflächen in diesem Dialog verwenden.
-      Lassen Sie uns beginnen!
+      Fangen wir an!
   browseNavBtn:
-    title: Lesen und Stöbern in Inhalten
-    text: Zuerst folgen wir diesem Hauptmenüpunkt, um einige Inhalte zu lesen und zu durchstöbern...
+    title: Lesen und Blättern in Inhalten
+    text: Zuerst folgen wir diesem Hauptmenüpunkt, um in die Ansicht zum Lesen und Blättern in Inhalten zu gelangen...
   browseView:
-    title: Lesen und Stöbern in Inhalten
+    title: Lesen und Blättern in Inhalten
     text: |
-      Sie sehen jetzt die Hauptansicht für reguläre Benutzer dieser Plattform.
-      Hier können Sie die Inhalte aller verfügbaren Ressourcen lesen und durchstöbern.
-      Die Überschrift zeigt Ihnen immer, an welchem Ort des aktuellen Arbeitsinhalts Sie sich befinden.
+      Sie sehen jetzt die Hauptansicht für reguläre Nutzer*innen dieser Plattform.
+      Hier haben Sie Zugriff auf die Inhalte aller verfügbaren Ressourcen.
+      Die Überschrift zeigt stets an, an welcher Belegstelle des aktuellen Arbeitstextes Sie sich befinden.
   browseTextSelect:
     title: Arbeitstext-Auswahl
     text: |
       Hier können Sie den Text auswählen, mit dem Sie arbeiten möchten.
-      Diese Auswahl ist auch in einigen anderen Ansichten verfügbar, die textspezifische Inhalte anzeigen.
+      Diese Auswahl ist auch in einigen anderen, textspezifischen Ansichten verfügbar.
   browseNav:
-    title: Navigieren zu Belegstellen
+    title: Belegstellen Navigieren
     text: |
-      Sie können einfach diese Pfeiltasten verwenden, um zur nächsten Belegstelle zu springen – oder
-      die Pfeiltasten Ihrer Tastatur benutzen.
+      Sie können einfach diese Pfeiltasten verwenden,
+      um zur nächsten oder vorherigen Belegstelle zu springen – oder die Pfeiltasten Ihrer Tastatur benutzen.
       Alternativ können Sie auf das Buchsymbol klicken, um eine spezifische Strukturebene und
       Belegstelle auszuwählen, zu der Sie navigieren möchten.
-      Hinweis: Einige Arten von Ressourcen zeigen Schaltflächen an, um direkt zum nächsten Standort zu springen,
-      der Inhalte für diese Ressource enthält. Sie finden diese direkt neben den jeweiligen Inhalten.
+      Hinweis: Einige Arten von Ressourcen zeigen Schaltflächen an, um direkt zur nächsten Belegstelle zu springen,
+      für welche die jeweilige Ressource Inhalte bereitstellt.
+      Sie finden diese zusammen mit einer Vielzahl weiterer nützlicher Funktionen direkt neben den jeweiligen Inhalten.
   browseFocus:
-    title: Fokusansicht
+    title: Fokus-Ansicht
     text: |
-      Verwenden Sie die Fokusansicht, um Inhalte auf eine konzentrierte, ablenkungsfreie Weise anzuzeigen.
+      Verwenden Sie die Fokus-Ansicht, um Inhalte auf eine kompakte, ablenkungsarme Weise anzuzeigen.
       Dies ist besonders hilfreich, wenn Sie die Inhalte spezifischer Ressourcen vergleichen möchten.
   browseResourceDrawer:
-    title: Angezeigte Ressourcen auswählen
+    title: Anzuzeigende Ressourcen auswählen
     text: |
-      Dies ist sehr wichtig!
-      Klicken Sie hier, um die Auswahl der verfügbaren Ressourcen für den aktuellen Arbeitsinhalt zu öffnen...
+      Dieser Button ist sehr wichtig!
+      Klicken Sie hier, um die Auswahl der verfügbaren Ressourcen zum aktuellen Arbeitstext zu öffnen...
   browseResourceDrawerOpen:
     title: Angezeigte Ressourcen auswählen
     text: |
-      ...und aktivieren Sie alle Ressourcen, deren Inhalte Sie sehen möchten!
+      ...und auszuwählen, welche sie ein- oder ausblenden möchten!
   quickSearch:
     title: Schnellsuche
     text: |
-      Möchten Sie Informationen schnell über eine Volltextsuche abrufen?
-      Dazu dient die Schnellsuche. Sie ist immer in der Seitenüberschrift verfügbar.
-      Während Sie einfach einen Begriff eintippen und ENTER drücken können, bietet die Schnellsuche tatsächlich
-      eine Vielzahl von Funktionen zur Feinabstimmung Ihrer Volltextsuche...
+      Möchten Sie Informationen einfach über eine Volltextsuche abrufen?
+      Dazu dient die Schnellsuche. Sie ist immer im Kopf der Seite verfügbar.
+      Während Sie einfach einen Suchbegriff eintippen und ENTER drücken können,
+      bietet die Schnellsuche tatsächlich auch eine Vielzahl von Funktionen zur
+      Feinabstimmung Ihrer Volltextsuche.
   quickSearchSettings:
-    title: Schnellsucheinstellungen
-    text: ...einige davon können Sie hier in den Schnellsucheinstellungen konfigurieren!
+    title: 'Schnellsuche: Einstellungen'
+    text: ...einige davon können Sie hier in den Einstellungen der Schnellsuche konfigurieren!
   quickSearchHelp:
     title: Glückliche Power-User
     text: |
-      Und wenn Sie wirklich in die Volltextsuche eintauchen wollen,
-      schauen Sie sich den Hilfeartikel an!
-      Er erklärt, wie Sie die spezielle Syntax der Schnellsuche verwenden.
+      Wenn Sie die Funktionen der Volltextsuche voll ausschöpfen wollen,
+      schauen Sie sich den entsprechenden Hilfetext dazu an!
+      Er erklärt unter anderem die spezielle Syntax der Schnellsuche.
   helpButtons:
-    title: In-Line Hilfe-Buttons
+    title: Hilfe-Buttons
     text: |
       Übrigens finden Sie diese kleinen Hilfe-Buttons an zahlreichen Stellen.
       Klicken Sie darauf, um hilfreiche Anweisungen zu den jeweiligen Themen zu lesen.
   helpOverview:
     title: Hilfeübersicht
-    text: Wenn Sie ein bestimmtes Hilfethema suchen möchten, können Sie dies in der Hilfeübersicht tun!
+    text: Wenn Sie ein bestimmtes Thema suchen möchten, können Sie dies in der Hilfeübersicht tun!
   searchNavBtn:
     title: Erweiterte Suche
     text: Lassen Sie uns zur erweiterten Suche übergehen!
@@ -1061,29 +1063,28 @@ tour:
     title: Erweiterte Suche
     text: |
       Hier können Sie die Inhalte jeder Ressource mit mehr Präzision durchsuchen.
-      Wie genau das funktioniert, erfahren Sie über den kleinen Hilfe-Button neben der Überschrift.
-      Nehmen Sie sich später die Zeit dazu, wir machen zunächst an einer anderen Stelle weiter.
+      Wie genau das funktioniert, erfahren Sie auch hier über den kleinen Hilfe-Button neben der Überschrift.
+      Nehmen Sie sich gern später die Zeit dazu, wir übergehen die Details an dieser Stelle.
   resourcesNavBtn:
     title: Ressourcenübersicht
     text: Der nächste Ort, den wir über die Hauptnavigation erreichen, ist die Ressourcenübersicht...
   resourcesView:
     title: Ressourcenübersicht
     text: |
-      Wenn Sie keine Inhalte durchstöbern, sondern lieber etwas über die Eigenschaften
-      aller verfügbaren Ressourcen in einer zentralen Übersicht lesen möchten, ist dies der richtige Ort.
-      Und genau wie viele andere Funktionen dieser Plattform,
-      hat die Ressourcenübersicht einen dieser kleinen Hilfe-Buttons!
+      Wenn Sie keine Inhalte anschauen, sondern lieber etwas über die Eigenschaften
+      der verfügbaren Ressourcen in einer zentralen Übersicht lesen möchten, ist dies der richtige Ort.
+      Und genau wie viele andere Funktionen dieser Plattform, hat auch diese einen Hilfe-Button!
   themeSwitcher:
     title: Farbschema-Wechsel
     text: |
-      Nachdem Sie etwas mehr Zeit hier verbracht haben,
-      möchten Sie vielleicht das Farbschema der Benutzeroberfläche nach Ihrem Geschmack anpassen!
+      Nachdem Sie hier etwas mehr Zeit verbracht haben,
+      möchten Sie vielleicht das Farbschema der Benutzeroberfläche nach Ihrem Geschmack ändern!
   outro:
     title: Von hier aus schaffen Sie es selbst!
     text: |
-      Das war unsere kleine geführte Tour. Gehen Sie und erkunden Sie die Seite selbst und
+      Das war unsere kleine geführte Tour. Erkunden Sie als nächstes selbst die Seite und
       denken Sie an die kleinen Hilfe-Buttons – sie werden hoffentlich alle verbleibenden
-      Fragen, die Sie haben könnten, klären.
+      Fragen klären.
 
 wysiwyg:
   blockTypes:
