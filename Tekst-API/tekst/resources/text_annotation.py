@@ -243,13 +243,16 @@ class TextAnnotation(ResourceTypeABC):
                     hl_strings.extend(hl_v)
             for ih in hit.get("inner_hits", {}).values():
                 for ih_hit in ih.get("hits", {}).get("hits", []):
-                    values = [
-                        a["value"] for a in ih_hit["_source"]["annotations"] or []
-                    ]
-                    values_strings = [
-                        ", ".join(v) if isinstance(v, list) else v for v in values
-                    ]
-                    hl_strings.append("; ".join(values_strings))
+                    values = []
+                    for a in ih_hit["_source"]["annotations"] or []:
+                        if isinstance(a["value"], list):
+                            values.append("/".join(a["value"]))
+                        else:
+                            values.append(a["value"])
+                        # emphasize form
+                        if a["key"] == "form":
+                            values[-1] = f"<b>{values[-1]}</b>"
+                    hl_strings.append("; ".join(values))
             return hl_strings
 
         return _highlights_generator
