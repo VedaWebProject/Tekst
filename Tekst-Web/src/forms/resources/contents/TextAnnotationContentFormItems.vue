@@ -180,7 +180,6 @@ onMounted(async () => {
                     />
                     <n-input
                       v-else
-                      :ref="`cmSepInputRef_${tokenItemIndex}_${annotationItemIndex}`"
                       :default-value="(annotationItem.value || []).join(', ')"
                       :disabled="!annotationItem.key"
                       :placeholder="$t('resources.types.textAnnotation.contentFields.commaSepHint')"
