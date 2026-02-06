@@ -10,7 +10,7 @@ import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
+import { NDynamicInput, NFlex, NFormItem, NInput, NSelect, NSwitch } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
 const _V_EXISTS = '#!V_EXISTS!#';
@@ -184,6 +184,7 @@ onMounted(async () => {
               style="flex: 2 200px"
             >
               <n-select
+                v-if="!!annoOptions[annotationItemIndex].valuesOptions.length"
                 v-model:value="annotationItem.v"
                 filterable
                 clearable
@@ -194,6 +195,13 @@ onMounted(async () => {
                 :options="annoOptions[annotationItemIndex].valuesOptions"
                 :placeholder="$t('common.value')"
                 @update:value="validateValueSelections"
+              />
+              <n-input
+                v-else
+                :default-value="(annotationItem.value || []).join(', ')"
+                :disabled="!annotationItem.k"
+                :placeholder="$t('common.value')"
+                @change="(value) => (annotationItem.v = value)"
               />
             </n-form-item>
 
