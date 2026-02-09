@@ -208,6 +208,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
       trigger: 'blur',
     },
   ],
+  globalCitationSuffix: [minMaxCharsRule(0, 10240, 'blur')],
   navEntryTranslation: [minMaxCharsRule(1, 42, 'blur')],
   registerIntroTextTranslation: [minMaxCharsRule(1, 5000, 'blur')],
   oskModeKey: [requiredStringRule(() => $t('common.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
@@ -227,7 +228,7 @@ export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
     requiredStringRule(() => $t('common.subtitle'), 'blur'),
     minMaxCharsRule(1, 512, 'blur'),
   ],
-  citation: [minMaxCharsRule(0, 4096, 'blur')],
+  citation: [minMaxCharsRule(0, 10240, 'blur')],
   license: [minMaxCharsRule(0, 512, 'blur')],
   licenseUrl: [minMaxCharsRule(0, 1024, 'blur')],
   descriptionTranslation: [

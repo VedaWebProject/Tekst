@@ -4831,11 +4831,10 @@ export interface components {
        */
       denyResourceTypes: string[];
       /**
-       * Extendcitations
-       * @description Suffix resource citations with URL and date
-       * @default true
+       * Globalcitationsuffix
+       * @description Global suffix for all resource citation hints
        */
-      extendCitations: boolean;
+      globalCitationSuffix?: null | string;
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
@@ -4948,10 +4947,10 @@ export interface components {
        */
       denyResourceTypes?: string[];
       /**
-       * Extendcitations
-       * @description Suffix resource citations with URL and date
+       * Globalcitationsuffix
+       * @description Global suffix for all resource citation hints
        */
-      extendCitations?: boolean;
+      globalCitationSuffix?: null | string;
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
