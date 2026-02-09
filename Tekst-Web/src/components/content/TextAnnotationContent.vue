@@ -10,7 +10,7 @@ import {
   ColorOffIcon,
   CommentIcon,
   CopyIcon,
-  MetadataIcon,
+  LabelIcon,
 } from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import {
@@ -574,7 +574,7 @@ function generatePlaintextAnno(): string {
     <generic-modal
       v-model:show="showDetailsModal"
       :title="tokenDetails?.form"
-      :icon="MetadataIcon"
+      :icon="LabelIcon"
       heading-level="3"
       :header-style="{
         'font-family': resource.config.general.font || 'var(--font-family-content)',

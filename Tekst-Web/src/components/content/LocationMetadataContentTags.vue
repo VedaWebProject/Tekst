@@ -71,7 +71,7 @@ const contentsProcessed = computed(() => {
 </script>
 
 <template>
-  <n-flex align="center" class="my-lg">
+  <n-flex align="center">
     <template v-for="content in contentsProcessed" :key="content.id">
       <template v-for="group in content.groups" :key="group.group">
         <resource-info-widget

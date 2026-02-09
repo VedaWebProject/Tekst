@@ -100,13 +100,17 @@ onMounted(() => {
     <help-button-widget help-key="browseView" data-tour-key="helpButtons" />
   </icon-heading>
 
-  <location-aliases-widget
-    v-if="browse.locationPathHead && state.pf?.state.showLocationAliases"
-    :location-id="browse.locationPathHead.id"
-    :aliases="browse.locationPathHead.aliases || undefined"
-    :text-slug="state.textSlug || undefined"
-  />
-  <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
+  <n-flex class="my-lg">
+    <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
+    <location-aliases-widget
+      v-if="browse.locationPathHead"
+      :location-id="browse.locationPathHead.id"
+      :aliases="browse.locationPathHead.aliases || undefined"
+      :text-slug="state.textSlug || undefined"
+      :unwrap="state.pf?.state.showLocationAliases"
+    />
+  </n-flex>
+
   <browse-toolbar v-if="browse.locationPath.length" />
 
   <div
