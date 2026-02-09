@@ -203,7 +203,7 @@ browse:
       Click here to copy a URL to the current location using this location alias.
       Hint: Search for this location alias in the Quick Search to directly jump to this location.
     genericPermalinkTip: Click here to copy a URL to the current location.
-    shareLocUrl: Share location URL
+    copyLocUrl: Copy location URL
     msgNoNearest: There are no more locations holding contents of this resource in this direction.
   toolbar:
     tipSelectLocation: Select location
@@ -367,7 +367,7 @@ models:
     showResourceCategoryHeadings: Show category headings
     globalCitationSuffix: Global suffix for citations
     prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
-    showLocationAliases: Show location aliases
+    showLocationAliases: Display location aliases directly on the page
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Fonts
     uiFont: User Interface Font
@@ -828,7 +828,7 @@ admin:
     headingRestrictedResTypes: Restricted Resource Types
     msgSaved: Platform settings saved.
     defaultTextPlaceholder: Automatic
-    globalCitationSuffixPH: Use <res-url> for resource URL and <curr-date> for the current date!
+    globalCitationSuffixPH: Use {'<'}res-url{'>'} for resource URL and {'<'}curr-date{'>'} for the current date!
   maintenance:
     heading: Maintenance
     indices:

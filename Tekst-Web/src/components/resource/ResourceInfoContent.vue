@@ -13,8 +13,8 @@ import {
   CoverageIcon,
   DescIcon,
   FormatQuoteIcon,
+  LabelIcon,
   LinkIcon,
-  MetadataIcon,
   SiteNoticeIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
@@ -76,7 +76,7 @@ const citation = computed(() => {
 
     <!-- METADATA -->
     <div v-if="resource.meta && Object.keys(resource.meta).length" class="gray-box">
-      <icon-heading level="3" :icon="MetadataIcon">
+      <icon-heading level="3" :icon="LabelIcon">
         {{ $t('models.meta.modelLabel') }}
       </icon-heading>
       <metadata-display :data="resource.meta" class="text-medium" />
