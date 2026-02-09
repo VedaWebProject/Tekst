@@ -8,7 +8,7 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from '@/icons';
-import { useBrowseStore, useSearchStore } from '@/stores';
+import { useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
@@ -24,6 +24,7 @@ withDefaults(
 
 const browse = useBrowseStore();
 const search = useSearchStore();
+const theme = useThemeStore();
 
 const resultNo = computed(
   () =>
@@ -75,7 +76,7 @@ onMounted(() => {
       align="center"
       :wrap="false"
       class="bsr-toolbar"
-      :style="{ backgroundColor: 'var(--primary-color-fade3)' }"
+      :style="{ backgroundColor: 'var(--primary-color-fade1)' }"
     >
       <n-flex :wrap="false">
         <!-- skip to previous search result -->
@@ -86,6 +87,7 @@ onMounted(() => {
           :focusable="false"
           :disabled="search.loading || resultNo === 1"
           :bordered="false"
+          :theme-overrides="theme.toolbarBtnTheme"
           @click="() => skip('previous')"
         >
           <template #icon>
@@ -100,6 +102,7 @@ onMounted(() => {
           :focusable="false"
           :disabled="search.loading"
           :bordered="false"
+          :theme-overrides="theme.toolbarBtnTheme"
           @click="gotoSearchResults"
         >
           <template #icon>
@@ -114,6 +117,7 @@ onMounted(() => {
           :focusable="false"
           :disabled="search.loading || resultNo === search.results?.totalHits"
           :bordered="false"
+          :theme-overrides="theme.toolbarBtnTheme"
           @click="() => skip('next')"
         >
           <template #icon>
@@ -129,6 +133,7 @@ onMounted(() => {
         align="center"
         :wrap="false"
         class="bsr-toolbar-middle text-small"
+        :style="{ color: theme.toolbarBtnTheme.textColor }"
       >
         <n-flex
           v-if="!search.loading"
@@ -157,12 +162,17 @@ onMounted(() => {
         <!-- keep active resources in sync with relevant resources from current hit? -->
         <n-badge dot :offset="[-2, 5]" :show="search.browseHitResourcesActive">
           <n-button
-            :quaternary="!search.browseHitResourcesActive"
-            :tertiary="search.browseHitResourcesActive"
+            quaternary
+            :style="{
+              backgroundColor: search.browseHitResourcesActive
+                ? theme.toolbarBtnTheme.colorQuaternaryHover
+                : undefined,
+            }"
             :size="buttonSize"
             :title="$t('search.results.browseHitResourcesActive')"
             :focusable="false"
             :bordered="false"
+            :theme-overrides="theme.toolbarBtnTheme"
             @click="() => switchBrowseHitResourcesActive(!search.browseHitResourcesActive)"
           >
             <template #icon>
@@ -177,6 +187,7 @@ onMounted(() => {
           :title="$t('search.results.browseStop')"
           :focusable="false"
           :bordered="false"
+          :theme-overrides="theme.toolbarBtnTheme"
           @click="stopBrowsing"
         >
           <template #icon>

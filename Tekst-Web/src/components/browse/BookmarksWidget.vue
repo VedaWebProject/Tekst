@@ -7,18 +7,18 @@ import { useMessages } from '@/composables/messages';
 import { usePrompt } from '@/composables/prompt';
 import { $t } from '@/i18n';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, NoContentIcon, SearchIcon } from '@/icons';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import { NButton, NEmpty, NFlex, NIcon, NInput, NList, NListItem, NThing } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 defineProps<{
   buttonSize?: 'small' | 'medium' | 'large';
-  color?: string;
 }>();
 
 const browse = useBrowseStore();
 const state = useStateStore();
+const theme = useThemeStore();
 const { message } = useMessages();
 const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
@@ -93,11 +93,11 @@ async function handleWidgetClick() {
 <template>
   <n-button
     quaternary
-    :color="color"
     :size="buttonSize"
     :focusable="false"
     :title="$t('browse.bookmarks.bookmarks')"
     :bordered="false"
+    :theme-overrides="theme.toolbarBtnTheme"
     @click.stop.prevent="handleWidgetClick"
   >
     <template #icon>

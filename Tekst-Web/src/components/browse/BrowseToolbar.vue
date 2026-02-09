@@ -15,8 +15,6 @@ const theme = useThemeStore();
 const affixRef = ref();
 const affixed = ref(false);
 
-const toolbarTxtColor = computed(() => (theme.dark ? '#333' : '#fff'));
-
 const resourcesCount = computed(
   () => browse.resourcesCategorized.map((c) => c.resources).flat().length
 );
@@ -61,13 +59,9 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
       justify="space-between"
       align="center"
       class="browse-toolbar"
-      :style="{ backgroundColor: 'var(--primary-color-fade1)' }"
+      :style="{ backgroundColor: 'var(--primary-color)' }"
     >
-      <browse-location-controls
-        :button-size="buttonSize"
-        :color="toolbarTxtColor"
-        data-tour-key="browseNav"
-      />
+      <browse-location-controls :button-size="buttonSize" data-tour-key="browseNav" />
 
       <n-flex
         justify="center"
@@ -76,7 +70,7 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
         :wrap="false"
         v-if="state.vw > 400"
         class="browse-toolbar-middle browse-location-label"
-        :style="{ color: toolbarTxtColor }"
+        :style="{ color: theme.toolbarBtnTheme.textColor }"
         :title="affixed ? state.text?.title : undefined"
       >
         <!-- <div class="text-color-indicator" :style="{ backgroundColor: theme.getTextColors().base }"></div> -->
@@ -88,15 +82,17 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
           <n-button
             id="focus-view-toggle"
             quaternary
-            :color="toolbarTxtColor"
             :style="{
-              backgroundColor: browse.focusView ? '#fff4' : undefined,
+              backgroundColor: browse.focusView
+                ? theme.toolbarBtnTheme.colorQuaternaryHover
+                : undefined,
             }"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipFocusView')"
             :focusable="false"
             :bordered="false"
             data-tour-key="browseFocus"
+            :theme-overrides="theme.toolbarBtnTheme"
             @click="browse.focusView = !browse.focusView"
           >
             <template #icon>
@@ -112,12 +108,12 @@ const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
         >
           <n-button
             quaternary
-            :color="toolbarTxtColor"
             :size="buttonSize"
             :title="$t('browse.toolbar.tipOpenResourceList')"
             :focusable="false"
             :bordered="false"
             data-tour-key="browseResourceDrawer"
+            :theme-overrides="theme.toolbarBtnTheme"
             @click="browse.showResourceToggleDrawer = true"
           >
             <template #icon>

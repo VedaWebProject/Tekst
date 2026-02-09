@@ -92,7 +92,7 @@ const originalResourceTitle = computed(() =>
   )
 );
 
-const toolbarTxtColor = computed(() => (theme.dark ? '#fff' : '#333'));
+const toolbarTxtColor = computed(() => (theme.dark ? '#333' : '#fff'));
 
 const locationPath = ref<LocationRead[]>();
 const location = computed<LocationRead | undefined>(
@@ -449,15 +449,16 @@ whenever(ArrowRight, () => {
   <button-shelf
     wrap="wrap-reverse"
     class="my-lg toolbar"
-    :style="{ backgroundColor: 'var(--primary-color-fade3)' }"
+    :style="{ backgroundColor: 'var(--primary-color)' }"
   >
     <template #start>
       <n-button
         quaternary
-        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipPreviousLocation')"
         :disabled="loading || !prevLocationId"
         :focusable="false"
+        :color="toolbarTxtColor"
+        :theme-overrides="theme.toolbarBtnTheme"
         @click="gotoLocation(prevLocationId)"
       >
         <template #icon>
@@ -466,10 +467,11 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipSelectLocation')"
         :disabled="loading"
         :focusable="false"
+        :color="toolbarTxtColor"
+        :theme-overrides="theme.toolbarBtnTheme"
         @click="handleJumpToClick()"
       >
         <template #icon>
@@ -478,10 +480,11 @@ whenever(ArrowRight, () => {
       </n-button>
       <n-button
         quaternary
-        :color="toolbarTxtColor"
         :title="$t('browse.toolbar.tipNextLocation')"
         :disabled="loading || !nextLocationId"
         :focusable="false"
+        :color="toolbarTxtColor"
+        :theme-overrides="theme.toolbarBtnTheme"
         @click="gotoLocation(nextLocationId)"
       >
         <template #icon>
@@ -498,10 +501,11 @@ whenever(ArrowRight, () => {
     >
       <n-button
         quaternary
-        :color="toolbarTxtColor"
         :disabled="loading || !compareResourceOptions.length"
         :focusable="false"
         :title="$t('contents.tipBtnCompare')"
+        :color="toolbarTxtColor"
+        :theme-overrides="theme.toolbarBtnTheme"
       >
         <template #icon>
           <n-icon :component="CompareIcon" />
