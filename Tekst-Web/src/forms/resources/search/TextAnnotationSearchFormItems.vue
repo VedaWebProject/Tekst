@@ -96,7 +96,7 @@ const annoOptions = computed(() => {
         // find possible values for the selected key
         .find((agg) => agg.key === a.k)
         ?.values // map anno key-value pairs to options
-        .map((v) => ({
+        ?.map((v) => ({
           label: v,
           value: v,
           disabled:
