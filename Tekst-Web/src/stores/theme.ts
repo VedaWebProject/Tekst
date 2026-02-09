@@ -9,7 +9,7 @@ import {
   toRgba,
   transparentize,
 } from 'color2k';
-import type { GlobalThemeOverrides } from 'naive-ui';
+import type { ButtonProps, GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
 import { computed, watchEffect } from 'vue';
@@ -151,6 +151,11 @@ export const useThemeStore = defineStore('theme', () => {
     };
   });
 
+  const toolbarBtnTheme = computed<NonNullable<ButtonProps['themeOverrides']>>(() => ({
+    colorQuaternaryHover: dark.value ? '#0002' : '#fff2',
+    textColor: dark.value ? '#333' : '#fff',
+  }));
+
   // set/update global CSS vars for use in CSS contexts
   watchEffect(() => {
     Object.entries({
@@ -192,5 +197,6 @@ export const useThemeStore = defineStore('theme', () => {
     nuiThemeOverrides,
     colors,
     getTextColors,
+    toolbarBtnTheme,
   };
 });

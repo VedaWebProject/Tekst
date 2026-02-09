@@ -24,7 +24,7 @@
     "default_level": 2,
     "loc_delim": " > ",
     "labeled_location": true,
-    "color": "#274891",
+    "color": "#134F86",
     "sort_order": 10,
     "is_active": true,
     "resource_categories": [
@@ -82,7 +82,7 @@
     "default_level": 0,
     "loc_delim": "/",
     "labeled_location": true,
-    "color": "#823c88",
+    "color": "#A2313C",
     "sort_order": 10,
     "is_active": true,
     "resource_categories": [

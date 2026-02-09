@@ -5,7 +5,7 @@ import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import { $t } from '@/i18n';
 import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
 import router from '@/router';
-import { useAuthStore, useBrowseStore } from '@/stores';
+import { useAuthStore, useBrowseStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
@@ -14,7 +14,6 @@ import { ref } from 'vue';
 withDefaults(
   defineProps<{
     buttonSize?: 'small' | 'medium' | 'large';
-    color?: string;
   }>(),
   {
     buttonSize: 'large',
@@ -23,6 +22,7 @@ withDefaults(
 
 const auth = useAuthStore();
 const browse = useBrowseStore();
+const theme = useThemeStore();
 
 const { ArrowLeft, ArrowRight } = useMagicKeys();
 
@@ -55,12 +55,12 @@ whenever(ArrowRight, () => {
   <n-flex justify="space-between" align="center" :wrap="false">
     <n-button
       quaternary
-      :color="color"
       :focusable="false"
       :title="$t('browse.toolbar.tipPreviousLocation')"
       :size="buttonSize"
       :bordered="false"
       :disabled="!browse.prevLocationId"
+      :theme-overrides="theme.toolbarBtnTheme"
       @click="() => gotoLocation(browse.prevLocationId)"
     >
       <template #icon>
@@ -71,7 +71,6 @@ whenever(ArrowRight, () => {
     <n-badge value="!" :show="!browse.isOnDefaultLevel && !browse.loadingLocationData">
       <n-button
         quaternary
-        :color="color"
         :title="
           $t('browse.toolbar.tipSelectLocation') +
           (!browse.isOnDefaultLevel ? ' (' + $t('browse.toolbar.tipNotOnDefaultLevel') + ')' : '')
@@ -79,6 +78,7 @@ whenever(ArrowRight, () => {
         :focusable="false"
         :size="buttonSize"
         :bordered="false"
+        :theme-overrides="theme.toolbarBtnTheme"
         @click="showLocationSelectModal = true"
       >
         <template #icon>
@@ -87,16 +87,16 @@ whenever(ArrowRight, () => {
       </n-button>
     </n-badge>
 
-    <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" :color="color" />
+    <bookmarks-widget v-if="!!auth.user" :button-size="buttonSize" />
 
     <n-button
       quaternary
-      :color="color"
       :focusable="false"
       :title="$t('browse.toolbar.tipNextLocation')"
       :size="buttonSize"
       :bordered="false"
       :disabled="!browse.nextLocationId"
+      :theme-overrides="theme.toolbarBtnTheme"
       @click="() => gotoLocation(browse.nextLocationId)"
     >
       <template #icon>
