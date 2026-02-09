@@ -1,3 +1,4 @@
+import type { PlatformData } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { delay } from '@/utils';
@@ -18,9 +19,6 @@ type TourStep = DriveStep & {
   after?: () => Promise<void>;
 };
 
-const pf = usePlatformData();
-const platformName = pf.pfData.value?.state.platformName ?? 'Tekst';
-
 const _openHamburgerMenu = async () => {
   window.scrollTo(0, 0);
   const hamburgerBtn = document.getElementById('hamburger-btn');
@@ -38,11 +36,11 @@ const _closeHamburgerMenu = async () => {
   }
 };
 
-const getSteps = () =>
+const getSteps = (pfData?: PlatformData) =>
   [
     {
-      title: () => $t('tour.intro.title', { platformName }),
-      text: () => $t('tour.intro.text', { platformName }),
+      title: () => $t('tour.intro.title', { platformName: pfData?.state.platformName ?? 'Tekst' }),
+      text: () => $t('tour.intro.text', { platformName: pfData?.state.platformName ?? 'Tekst' }),
     },
     {
       key: 'browseNavBtn',
@@ -199,6 +197,7 @@ const getSteps = () =>
   }));
 
 export function useGuidedTour() {
+  const pf = usePlatformData();
   const router = useRouter();
 
   const stepTransition = async (oldStep?: TourStep, newStep?: TourStep) => {
@@ -227,7 +226,7 @@ export function useGuidedTour() {
   const driverObj = ref<Driver>();
 
   const start = () => {
-    const steps = getSteps();
+    const steps = getSteps(pf.pfData.value);
     driverObj.value = driver({
       steps,
       allowKeyboardControl: true,
