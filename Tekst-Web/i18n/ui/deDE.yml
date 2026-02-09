@@ -79,6 +79,7 @@ common:
   loading: Lade...
   url: URL
   downloadSaved: Datei gespeichert als {filename}.
+  dirtyFormConfirm: Sie haben ungespeicherte Änderungen. Wollen Sie dieses Formular wirklich schließen?
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
     Hilfetexten zu diesem Thema gelesen und verstanden haben.
