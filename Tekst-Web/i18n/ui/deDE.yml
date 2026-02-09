@@ -369,7 +369,7 @@ models:
     showLogoInHeader: Zeige Logo in Kopfzeile
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
-    extendCitations: Hänge automatisch Ressourcen-URL und aktuelles Datum an Zitation an
+    globalCitationSuffix: Globales Suffix für Zitationen
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
@@ -388,6 +388,7 @@ models:
 resources:
   heading: Ressourcen
   msgFoundCount: '{count} von {total} Ressourcen gefunden'
+  viewContents: Inhalte anzeigen
   copyInfoUrl: URL kopieren
   copyInfoUrlTip: URL zu diesen Ressourcen-Informationen kopieren
   new: Neue Ressource
@@ -851,6 +852,7 @@ admin:
     headingRestrictedResTypes: Eingeschränkte Ressourcen-Typen
     msgSaved: Plattform-Einstellungen gespeichert.
     defaultTextPlaceholder: Automatisch
+    globalCitationSuffixPH: Setzen Sie <res-url> für die Ressourcen-URL und <curr-date> für das aktuelle Datum ein!
   maintenance:
     heading: Wartung
     indices:

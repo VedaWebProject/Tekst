@@ -60,7 +60,7 @@ const metadataKeysOptions = computed(() =>
         maxlength="4096"
         show-count
         v-model:value="model.citation"
-        :placeholder="$t('models.resource.citation')"
+        :placeholder="$t('admin.platformSettings.globalCitationSuffixPH')"
         @keydown.enter.stop
       />
     </n-form-item>

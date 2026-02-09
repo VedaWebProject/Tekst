@@ -201,7 +201,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     citation: Annotated[
         ConStrOrNone(
-            max_length=4096,
+            max_length=10240,
             cleanup="multiline",
         ),
         Field(

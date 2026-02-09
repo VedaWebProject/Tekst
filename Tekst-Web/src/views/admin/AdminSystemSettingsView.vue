@@ -301,12 +301,16 @@ watch(
             </n-form-item>
           </form-section>
 
-          <!-- SUFFIX RESOURCE CITATIONS WITH URL AND DATE -->
-          <form-section :title="$t('models.resource.citation')">
-            <n-form-item :show-label="false" :show-feedback="false">
-              <labeled-switch
-                v-model="formModel.extendCitations"
-                :label="$t('models.platformSettings.extendCitations')"
+          <!-- GLOBAL CITATION SUFFIX -->
+          <form-section :title="$t('models.resource.citation')" help-key="adminSettingsCitation">
+            <n-form-item :label="$t('models.platformSettings.globalCitationSuffix')">
+              <n-input
+                type="textarea"
+                maxlength="10240"
+                show-count
+                v-model:value="formModel.globalCitationSuffix"
+                :placeholder="$t('admin.platformSettings.globalCitationSuffixPH')"
+                @keydown.enter.stop
               />
             </n-form-item>
           </form-section>

@@ -33,12 +33,17 @@ const descriptionHtml = computed(() => pickTranslation(props.resource.descriptio
 const showInfoModal = ref(false);
 
 const citation = computed(() => {
-  if (!props.resource.citation) return;
-  const url = `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`;
-  const suffix = state.pf?.state.extendCitations
-    ? `. ${url}. ${new Date().toLocaleDateString(getLocaleProfile(state.locale).displayShort)}`
-    : '';
-  return `${props.resource.citation}${suffix}`;
+  const cit = props.resource.citation ?? '';
+  const suff = state.pf?.state.globalCitationSuffix ?? '';
+  return (`${cit} ${suff}`.trim() || null)
+    ?.replace(
+      /\<curr-date\>/g,
+      new Date().toLocaleDateString(getLocaleProfile(state.locale).displayShort)
+    )
+    .replace(
+      /\<res-url\>/g,
+      `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`
+    );
 });
 </script>
 
@@ -56,7 +61,7 @@ const citation = computed(() => {
     />
 
     <!-- DESCRIPTION -->
-    <div class="gray-box" v-if="!!descriptionHtml">
+    <div v-if="!!descriptionHtml" class="gray-box">
       <icon-heading level="3" :icon="DescIcon">
         {{ $t('common.description') }}
       </icon-heading>
@@ -70,7 +75,7 @@ const citation = computed(() => {
     </div>
 
     <!-- METADATA -->
-    <div class="gray-box" v-if="resource.meta && Object.keys(resource.meta).length">
+    <div v-if="resource.meta && Object.keys(resource.meta).length" class="gray-box">
       <icon-heading level="3" :icon="MetadataIcon">
         {{ $t('models.meta.modelLabel') }}
       </icon-heading>
@@ -78,7 +83,7 @@ const citation = computed(() => {
     </div>
 
     <!-- CITATION -->
-    <div class="gray-box" v-if="citation">
+    <div v-if="citation" class="gray-box">
       <icon-heading level="3" :icon="FormatQuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
