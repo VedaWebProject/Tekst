@@ -1,6 +1,6 @@
 [project]
 name = "tekst"
-version = "0.48.1a0"
+version = "0.48.2a0"
 description = "An online text research platform"
 readme = "README.md"
 authors = [
@@ -16,7 +16,7 @@ dependencies = [
     "pyhumps<4.0.0,>=3.8.0",
     "click<9.0.0,>=8.1.6",
     "beanie<2.2.0,>=2.0.0",
-    "fastapi-users[beanie]>=15.0.3,<15.0.4",
+    "fastapi-users[beanie]>=15.0.4,<15.0.5",
     "starlette-csrf<4.0.0,>=3.0.0",
     "pydantic-settings<3.0.0,>=2.0.2",
     "pydantic-extra-types<3.0.0,>=2.0.0",

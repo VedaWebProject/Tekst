@@ -237,12 +237,15 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         ),
     ] = ["apiCall"]
 
-    extend_citations: Annotated[
-        bool,
-        Field(
-            description="Suffix resource citations with URL and date",
+    global_citation_suffix: Annotated[
+        ConStrOrNone(
+            max_length=10240,
+            cleanup="multiline",
         ),
-    ] = True
+        Field(
+            description="Global suffix for all resource citation hints",
+        ),
+    ] = None
 
     osk_modes: Annotated[
         list[OskMode],

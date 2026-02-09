@@ -283,10 +283,7 @@ function handleCorrectionsClick() {
           <template #icon>
             <n-icon :component="BookIcon" />
           </template>
-          {{
-            pickTranslation(state.pf?.state.navTranslations.browse, state.locale) ||
-            $t('common.browse')
-          }}
+          {{ $t('resources.viewContents') }}
         </n-button>
         <copy-to-clipboard-button
           v-if="state.text"

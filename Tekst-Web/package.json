@@ -1,6 +1,6 @@
 {
   "name": "tekst",
-  "version": "0.48.1-alpha.0",
+  "version": "0.48.2-alpha.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -34,7 +34,7 @@
     "known-css-properties": "^0.37.0",
     "normalize.css": "^8.0.1",
     "notyourface": "^1.0.4",
-    "openapi-fetch": "^0.15.0",
+    "openapi-fetch": "^0.16.0",
     "pinia": "^3.0.0",
     "thememirror": "^2.0.1",
     "vue": "^3.5.6",
