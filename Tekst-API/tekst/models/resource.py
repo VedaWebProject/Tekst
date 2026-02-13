@@ -275,12 +275,13 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     @model_validator(mode="after")
     def model_postprocess(self: "ResourceBase"):
         # resource versions are not searchable
-        self.config.general.searchable_quick = (
-            self.config.general.searchable_quick and not self.original_id
-        )
-        self.config.general.searchable_adv = (
-            self.config.general.searchable_adv and not self.original_id
-        )
+        if self.config and self.config.general:
+            self.config.general.searchable_quick = (
+                self.config.general.searchable_quick and not self.original_id
+            )
+            self.config.general.searchable_adv = (
+                self.config.general.searchable_adv and not self.original_id
+            )
         return self
 
     @field_validator("subtitle", mode="after")
