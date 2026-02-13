@@ -272,7 +272,8 @@ async def _populate_index(
             text_ids=[text.id],
             check_read_access=False,
         )
-        if res.config.general.searchable_quick or res.config.general.searchable_adv
+        if (res.config.general.searchable_quick or res.config.general.searchable_adv)
+        and not res.original_id
     ]
 
     # Initialize stack with all level 0 locations (sorted) of the current text.

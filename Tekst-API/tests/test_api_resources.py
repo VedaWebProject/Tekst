@@ -247,30 +247,6 @@ async def test_create_resource_version(
 
 
 @pytest.mark.anyio
-async def test_create_too_many_resource_versions(
-    test_client: AsyncClient,
-    insert_test_data,
-    assert_status,
-    login,
-):
-    resource_id = (await insert_test_data("texts", "locations", "resources"))[
-        "resources"
-    ][0]
-    await login()
-
-    error = None
-    for i in range(100):
-        resp = await test_client.post(
-            f"/resources/{resource_id}/version",
-        )
-        if resp.status_code == 409:
-            error = resp.json()
-            break
-    assert error is not None
-    assert error["detail"]["key"] == "resourcesLimitReached"
-
-
-@pytest.mark.anyio
 async def test_update_resource(
     test_client: AsyncClient,
     insert_test_data,

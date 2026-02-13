@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, Or
-from pydantic import AwareDatetime, Field, field_validator
+from pydantic import AwareDatetime, Field, field_validator, model_validator
 from typing_extensions import TypedDict
 
 from tekst.i18n import TranslationBase, Translations
@@ -271,6 +271,18 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             create=True,
         ),
     ] = datetime.fromtimestamp(0, UTC)
+
+    @model_validator(mode="after")
+    def model_postprocess(self: "ResourceBase"):
+        # resource versions are not searchable
+        if self.config and self.config.general:
+            self.config.general.searchable_quick = (
+                self.config.general.searchable_quick and not self.original_id
+            )
+            self.config.general.searchable_adv = (
+                self.config.general.searchable_adv and not self.original_id
+            )
+        return self
 
     @field_validator("subtitle", mode="after")
     @classmethod

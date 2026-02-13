@@ -140,7 +140,6 @@ async def create_resource(
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
-            errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_400_RESOURCE_VERSION_OF_VERSION,
         ]
@@ -151,14 +150,6 @@ async def create_resource_version(
     cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
-    # check user resources limit
-    if (
-        not user.is_superuser
-        and await ResourceBaseDocument.user_resource_count(user.id)
-        >= cfg.misc.max_resources_per_user
-    ):
-        raise errors.E_409_RESOURCES_LIMIT_REACHED
-
     # check if resource exists
     resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == resource_id,
@@ -189,27 +180,20 @@ async def create_resource_version(
         for tt in resource_doc.title
     ]
 
-    # create version
-    version_doc = (
-        await resource_types_mgr.get(resource_doc.resource_type)
-        .resource_model()
-        .document_model()
-        .model_from(
-            resource_doc.model_copy(
-                update={
-                    ResourceBaseDocument.id: None,
-                    ResourceBaseDocument.title: version_title,
-                    ResourceBaseDocument.original_id: resource_doc.id,
-                    ResourceBaseDocument.owner_ids: [user.id],
-                    ResourceBaseDocument.proposed: False,
-                    ResourceBaseDocument.public: False,
-                    ResourceBaseDocument.shared_read: [],
-                    ResourceBaseDocument.shared_write: [],
-                }
-            )
-        )
-        .create()
-    )
+    # create modified copy of resource doc
+    version_doc: ResourceBaseDocument = await resource_doc.model_copy(
+        update={
+            ResourceBaseDocument.id: None,
+            ResourceBaseDocument.title: version_title,
+            ResourceBaseDocument.original_id: resource_doc.id,
+            ResourceBaseDocument.owner_ids: [user.id],
+            ResourceBaseDocument.proposed: False,
+            ResourceBaseDocument.public: False,
+            ResourceBaseDocument.shared_read: [],
+            ResourceBaseDocument.shared_write: [],
+        }
+    ).create()
+
     return await prepare_resource_read(version_doc, user)
 
 
@@ -450,7 +434,6 @@ async def delete_resource(
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
-            errors.E_409_RESOURCES_LIMIT_REACHED,
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_403_FORBIDDEN,
             errors.E_403_RESOURCE_PUBLIC_INVALID_OWNER,
@@ -484,15 +467,6 @@ async def update_resource_owners(
         if not owner:
             raise errors.E_400_TARGET_USER_NON_EXISTENT
         owners.append(owner)
-
-    # check user(s) resources limit(s)
-    for u in owners:
-        if (
-            not u.is_superuser
-            and await ResourceBaseDocument.user_resource_count(u.id)
-            >= cfg.misc.max_resources_per_user
-        ):
-            raise errors.E_409_RESOURCES_LIMIT_REACHED  # pragma: no cover
 
     # all fine, set owners and remove target user IDs from resource shares
     await resource_doc.set(

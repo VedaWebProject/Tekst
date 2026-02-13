@@ -33,18 +33,20 @@ const preventContentContext = computed(() =>
     .includes(props.resource.resourceType)
 );
 
-const preventQuickSearchable = computed(() =>
-  resourceTypes
-    .filter((rt) => !rt.searchableQuick)
-    .map((rt) => rt.name)
-    .includes(props.resource.resourceType)
+const preventQuickSearchable = computed(
+  () =>
+    resourceTypes
+      .filter((rt) => !rt.searchableQuick)
+      .map((rt) => rt.name)
+      .includes(props.resource.resourceType) || !!props.resource.originalId
 );
 
-const preventAdvSearchable = computed(() =>
-  resourceTypes
-    .filter((rt) => !rt.searchableAdv)
-    .map((rt) => rt.name)
-    .includes(props.resource.resourceType)
+const preventAdvSearchable = computed(
+  () =>
+    resourceTypes
+      .filter((rt) => !rt.searchableAdv)
+      .map((rt) => rt.name)
+      .includes(props.resource.resourceType) || !!props.resource.originalId
 );
 
 const oskOptions = computed(
