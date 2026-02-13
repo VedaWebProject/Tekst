@@ -2,10 +2,11 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, Path, status
+from fastapi import APIRouter, BackgroundTasks, Path, status
 
 from tekst import errors
 from tekst.auth import UserDep
+from tekst.counters import counter_incr
 from tekst.i18n import pick_translation
 from tekst.models.correction import CorrectionCreate, CorrectionDocument, CorrectionRead
 from tekst.models.location import LocationDocument
@@ -37,6 +38,7 @@ router = APIRouter(
 async def create_correction(
     correction: CorrectionCreate,
     user: UserDep,
+    background_tasks: BackgroundTasks,
 ) -> CorrectionDocument:
     """Creates a correction note referring to a specific content"""
 
@@ -99,6 +101,9 @@ async def create_correction(
                     resource_id=resource_doc.id,
                     resource_title=pick_translation(resource_doc.title),
                 )
+
+    # count created correction notes
+    background_tasks.add_task(counter_incr, "correction_notes")
 
     return correction_doc
 

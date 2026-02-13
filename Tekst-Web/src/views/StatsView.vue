@@ -140,7 +140,13 @@ onMounted(() => {
           :value="(stats as SuperuserStats).corrections.toLocaleString(localeCode)"
           class="su-stat"
           :title="$t('stats.onlySu')"
-        />
+        >
+          <template #suffix>
+            <span class="text-medium ml-sm">
+              {{ (stats as SuperuserStats).correctionsAllTime }} {{ $t('common.total') }}
+            </span>
+          </template>
+        </n-statistic>
         <n-statistic
           v-if="auth.user?.isSuperuser"
           :label="$t('browse.bookmarks.bookmarks')"
