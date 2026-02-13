@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type UserRead } from '@/api';
 import { $t } from '@/i18n';
-import { ProposedIcon, PublicOffIcon } from '@/icons';
+import { NoContentIcon, ProposedIcon, PublicOffIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon, NSwitch, NTag } from 'naive-ui';
@@ -17,20 +17,10 @@ const active = defineModel<boolean>('active');
 const state = useStateStore();
 
 const resTitle = computed(() => pickTranslation(props.resource.title, state.locale));
-
-const infoTooltip = computed(() =>
-  props.disabled ? $t('browse.locationResourceNoData') : undefined
-);
 </script>
 
 <template>
-  <n-flex
-    align="center"
-    :wrap="false"
-    class="item mb-sm"
-    :class="disabled && 'disabled'"
-    :title="infoTooltip"
-  >
+  <n-flex align="center" :wrap="false" class="item mb-sm">
     <div class="item-main">
       <n-flex justify="space-between" align="center" :wrap="false">
         <n-flex align="center" :wrap="false">
@@ -42,6 +32,7 @@ const infoTooltip = computed(() =>
             :component="ProposedIcon"
             :title="$t('resources.proposed')"
             color="var(--warning-color)"
+            style="cursor: help"
           />
           <n-icon
             v-else-if="user && !resource.public"
@@ -49,6 +40,14 @@ const infoTooltip = computed(() =>
             :component="PublicOffIcon"
             :title="$t('resources.notPublic')"
             color="var(--error-color)"
+            style="cursor: help"
+          />
+          <n-icon
+            v-if="disabled"
+            size="medium"
+            :component="NoContentIcon"
+            :title="$t('browse.locationResourceNoData')"
+            style="cursor: help"
           />
         </n-flex>
         <n-tag
@@ -66,11 +65,6 @@ const infoTooltip = computed(() =>
 .item > .item-main {
   min-width: 1px;
   flex: 2;
-}
-
-.item.disabled > .item-main {
-  opacity: 0.5;
-  cursor: help;
 }
 
 .item-extra {
