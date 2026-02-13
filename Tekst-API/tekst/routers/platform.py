@@ -421,6 +421,7 @@ async def get_stats(
         **stats.model_dump(),
         bookmarks=await BookmarkDocument.find_all().count(),
         corrections=await CorrectionDocument.find_all().count(),
+        corrections_all_time=await counter_get("correction_notes"),
         emails=await counter_get("emails"),
         messages=await counter_get("messages_total"),
         messages_user=await counter_get("messages_user"),

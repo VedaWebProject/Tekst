@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.48.4a0"
+    "version": "0.48.5a0"
   },
   "servers": [
     {
@@ -16755,6 +16755,10 @@
             "type": "integer",
             "title": "Corrections"
           },
+          "correctionsAllTime": {
+            "type": "integer",
+            "title": "Correctionsalltime"
+          },
           "emails": {
             "type": "integer",
             "title": "Emails"
@@ -16807,6 +16811,7 @@
           "statsRequests",
           "bookmarks",
           "corrections",
+          "correctionsAllTime",
           "emails",
           "messages",
           "messagesUser",

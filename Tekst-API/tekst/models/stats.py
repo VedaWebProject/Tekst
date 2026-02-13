@@ -26,6 +26,7 @@ class UserStats(ModelBase):
 class SuperuserStats(UserStats):
     bookmarks: int
     corrections: int
+    corrections_all_time: int
     emails: int
     messages: int
     messages_user: int
