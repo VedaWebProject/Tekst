@@ -3720,16 +3720,6 @@
               }
             }
           },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
           "404": {
             "content": {
               "application/json": {
@@ -4165,16 +4155,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Conflict"
           },
           "404": {
             "content": {
