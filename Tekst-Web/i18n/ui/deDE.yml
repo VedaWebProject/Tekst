@@ -204,8 +204,8 @@ browse:
   location:
     goTo: Gehe zu Belegstelle
     aliasesTip: |
-      Klicken Sie hier, um eine URL zur aktuellen Belegstelle mit diesem Belegstellen-Alias
-      zu kopieren. Tipp: Suchen Sie nach diesem Belegstellen-Alias in der Schnellsuche,
+      Klicken Sie hier, um eine URL zur aktuellen Belegstelle mit diesem Belegstellen-Alias zu kopieren.
+      Tipp: Suchen Sie nach diesem Belegstellen-Alias in der Schnellsuche,
       um direkt zu dieser Belegstelle zu gelangen.
     genericPermalinkTip: Klicken Sie hier, um eine URL zur aktuellen Belegstelle zu kopieren.
     copyLocUrl: Belegstellen-URL kopieren
@@ -722,7 +722,7 @@ texts:
       Das Löschen einer Textebene hat weitreichende Folgen:
       Alle Daten, die mit dieser Textebene verbunden sind,
       werden mit ihr gelöscht. Dies betrifft sowohl alle (!) Ressourcen auf dieser
-      Ebene – egal, welche Benutzer*innen diese erstellt haben – als auch alle Fundstellen
+      Ebene – egal, welche Benutzer*innen diese erstellt haben – als auch alle Belegstellen
       auf dieser Ebene, wodurch diese nicht mehr über existierende Links/URLs erreichbar sind.
       Die Anwendung wird ihr Bestes tun, um angrenzende Ebenen sinnvoll miteinander
       zu verbinden, aber Sie werden das Ergebnis
@@ -762,8 +762,8 @@ texts:
       Dies kann Inhalte mehrerer Ressourcen betreffen – auch jener,
       die von anderen Benutzer*innen angelegt wurden. Die Belegstelle wird danach nicht mehr
       über ihre ursprüngliche ID adressierbar sein.
-      Selbst wenn Sie die Fundstelle später neu erstellen, wird Sie eine andere ID erhalten und
-      kursierende Links/URLs, die auf diese Fundstelle verweisen, werden nicht mehr funktionieren.
+      Selbst wenn Sie die Belegstelle später neu erstellen, wird Sie eine andere ID erhalten und
+      kursierende Links/URLs, die auf diese Belegstelle verweisen, werden nicht mehr funktionieren.
       Dies kann nicht rückgängig gemacht werden. Sind Sie sich sicher, dass Sie fortfahren wollen?
     tipDeleteLocation: Belegstelle "{location}" löschen
     infoDeletedLocation: Belegstelle "{location}" gelöscht (insgesamt {locations} Belegstellen und {contents} Inhalte)
@@ -938,7 +938,7 @@ search:
       not: ausgeschlossen
     wc: Interpretiere Platzhalter (* und ?) für dieses Feld
     range:
-      title: Fundstellen-Bereich
+      title: Belegstellen-Bereich
       unconstrained: Uneingeschränkt
       msgImpossible: |
         Es ist nicht möglich den Suchbereich dieser Suche einzuschränken,
