@@ -10,7 +10,7 @@ services:
       - dev
 
   mongo:
-    image: mongo:8.2.4
+    image: mongo:8.2.5
     restart: unless-stopped
     init: true
     volumes:
