@@ -1,8 +1,8 @@
 # What is Tekst?
 
-&#x203C;&#xFE0F; **The Tekst platform as well as this documentation are still work-in-progress.** &#x203C;&#xFE0F;
-
-<img src="assets/home_header.jpg" width="100%" title="We couldn't pay a designer for this, sorry." alt="An unpleasing AI slop showing a stack of books transitioning into what is supposed to graphically represent something like digital data flow but does an unfortunate job and looks like a public transport network plan instead" />
+!!! warning "Work-in-progress"
+    The Tekst platform as well as this documentation are still work-in-progress.
+    Very soon, the first public instance will go online and replace the current [VedaWeb](https://vedaweb.uni-koeln.de) platform.
 
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts ([and more](#alternative-use-cases)). It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project, where it constitutes the technical basis of the *VedaWeb* research platform.
 

@@ -2,7 +2,7 @@
 
 The Tekst-API offers a simple CLI, e.g. for bootstrapping the API before startup, triggering certain maintenance routines or migrating the database after an upgrade of Tekst.
 
-!!! warning "Important"
+!!! info "Info"
     If the Tekst-API is running in a container, the commands below have to be **prefixed** with...
 
     ```sh
@@ -11,7 +11,14 @@ The Tekst-API offers a simple CLI, e.g. for bootstrapping the API before startup
 
     ...where `$container` is the name of the container!
 
-To get an overview of the available commands and their arguments, you can also run `python -m tekst --help`.
+**TL;DR:** You probably want to set up the main maintenance routine to run once a day. This can be done by setting up the following cron job:
+
+```
+0 0 * * * docker exec -i tekst-tekst-1 python -m tekst maintenance >> /var/log/cron.log 2>&1
+```
+
+The example above assumes you are running a Docker-based deployment and the name of the container running Tekst is `tekst-tekst-1`.
+To get an overview of the available CLI commands and their arguments, you can also run `python -m tekst --help`.
 
 
 ## `bootstrap`
