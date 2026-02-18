@@ -617,7 +617,8 @@ type AnnoValueQuery = ConStrOrNone(
 
 class TextAnnotationQueryEntry(ModelBase):
     key: Annotated[
-        ConStr(
+        ConStrOrNone(
+            min_length=0,
             max_length=32,
             cleanup="oneline",
         ),
@@ -625,7 +626,7 @@ class TextAnnotationQueryEntry(ModelBase):
             alias="k",
             description="Key of the annotation to search for",
         ),
-    ]
+    ] = None
     value: Annotated[
         AnnoValueQuery | list[AnnoValueQuery],
         Field(

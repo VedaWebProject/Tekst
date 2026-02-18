@@ -3735,7 +3735,7 @@ export interface components {
        * K
        * @description Metadata entry key query
        */
-      k: string;
+      k?: null | string;
       /**
        * V
        * @description Metadata entry value query
@@ -5875,7 +5875,7 @@ export interface components {
        * K
        * @description Key of the annotation to search for
        */
-      k: string;
+      k?: null | string;
       /**
        * V
        * @description Value(s) of the annotation to search for
