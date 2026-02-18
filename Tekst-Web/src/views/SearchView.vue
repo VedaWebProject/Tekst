@@ -215,8 +215,8 @@ function handleSearch() {
     });
 }
 
-function initQueries() {
-  if (search.currentRequest?.type === 'advanced') {
+function initQueries(reset?: boolean) {
+  if (!reset && search.currentRequest?.type === 'advanced') {
     formModel.value.queries = search.currentRequest.q.map((q) => ({
       ...q,
       resource: resources.all.find((r) => r.id === q.cmn.res),
@@ -358,8 +358,15 @@ whenever(ctrlEnter, () => {
 
   <button-shelf v-if="!!resources.all.length" class="mt-lg">
     <n-button
+      secondary
+      :disabled="!formModel.queries.length"
+      @click.stop.prevent="() => initQueries(true)"
+    >
+      {{ $t('common.reset') }}
+    </n-button>
+    <n-button
       type="primary"
-      :title="`${$t('common.searchAction')} (${$t('common.ctrlEnter')})`"
+      :title="$t('common.ctrlEnter')"
       :disabled="!formModel.queries.length"
       @click.stop.prevent="handleSearch"
     >

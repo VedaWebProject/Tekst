@@ -472,13 +472,6 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
   },
   textAnnotation: {
     token: [minMaxCharsRule(0, 512, 'blur')],
-    annotationKey: [
-      requiredStringRule(
-        () => $t('resources.types.textAnnotation.contentFields.annotationKey'),
-        'blur'
-      ),
-      minMaxCharsRule(1, 32, 'blur'),
-    ],
     annotationValue: [minMaxCharsRule(0, 256, 'blur')],
   },
   locationMetadata: {

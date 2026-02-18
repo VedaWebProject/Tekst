@@ -162,7 +162,6 @@ onMounted(async () => {
             :show-label="false"
             ignore-path-change
             :path="`queries[${queryIndex}].rts.anno[${annotationItemIndex}].k`"
-            :rule="searchFormRules.textAnnotation.annotationKey"
           >
             <n-select
               v-model:value="annotationItem.k"
