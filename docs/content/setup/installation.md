@@ -131,4 +131,4 @@ The following steps are just a rough outline of the deployment process:
 
 It's a good idea to periodically update the search indices and the precomputed cache (daily is recommended). Also, the internal cleanup routine should be run from time to time. The most obvious way to do this is by using a [cron job](https://en.wikipedia.org/wiki/Cron).
 
-The CLI Tekst-API offers as an interface for this are documented in the section about the [Tekst-API CLI](../administration/cli.md).
+The CLI that Tekst-API provides for such things is documented [here](../administration/cli.md).
