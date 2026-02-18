@@ -103,10 +103,11 @@ onMounted(() => {
   <n-flex class="my-lg">
     <location-metadata-content-tags v-if="!!embeddedMetadata.length" :contents="embeddedMetadata" />
     <location-aliases-widget
-      v-if="browse.locationPathHead && state.pf?.state.showLocationAliases"
+      v-if="browse.locationPathHead"
       :location-id="browse.locationPathHead.id"
       :aliases="browse.locationPathHead.aliases || undefined"
       :text-slug="state.textSlug || undefined"
+      :explode="state.pf?.state.showLocationAliases"
     />
   </n-flex>
 

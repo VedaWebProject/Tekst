@@ -9,29 +9,33 @@ const props = defineProps<{
   locationId: string;
   textSlug?: string;
   aliases?: string[];
+  explode?: boolean;
 }>();
 
 const baseUrl = `${origin}/${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
+const locUrl = computed(
+  () => `${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}`
+);
+const locUrlEncoded = computed(() => encodeURI(locUrl.value));
+
 const data = computed(
   () =>
     props.aliases?.map((alias) => ({
       text: alias,
       tip: $t('browse.location.aliasesTip'),
-      url: encodeURI(
-        `${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}/${alias}`
-      ),
+      url: encodeURI(`${locUrl.value}/${alias}`),
     })) || [
       {
         text: $t('browse.location.copyLocUrl'),
         tip: $t('browse.location.genericPermalinkTip'),
-        url: encodeURI(`${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}`),
+        url: locUrlEncoded.value,
       },
     ]
 );
 </script>
 
 <template>
-  <n-flex align="center">
+  <n-flex v-if="explode" align="center">
     <copy-to-clipboard-button
       v-for="(alias, index) in data"
       :key="`alias_${index}`"
@@ -44,4 +48,14 @@ const data = computed(
       {{ alias.text }}
     </copy-to-clipboard-button>
   </n-flex>
+  <copy-to-clipboard-button
+    v-else
+    tertiary
+    size="tiny"
+    :text="locUrlEncoded"
+    :title="$t('browse.location.genericPermalinkTip')"
+    show-msg
+  >
+    {{ $t('browse.location.copyLocUrl') }}
+  </copy-to-clipboard-button>
 </template>
