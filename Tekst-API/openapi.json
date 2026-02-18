@@ -12622,9 +12622,16 @@
       "LocationMetadataQueryEntry": {
         "properties": {
           "k": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 0
+              }
+            ],
             "title": "K",
             "description": "Metadata entry key query"
           },
@@ -12650,9 +12657,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "k"
-        ],
         "title": "LocationMetadataQueryEntry"
       },
       "LocationMetadataResourceConfig": {
@@ -17176,9 +17180,16 @@
       "TextAnnotationQueryEntry": {
         "properties": {
           "k": {
-            "type": "string",
-            "maxLength": 32,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 0
+              }
+            ],
             "title": "K",
             "description": "Key of the annotation to search for"
           },
@@ -17221,9 +17232,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "k"
-        ],
         "title": "TextAnnotationQueryEntry"
       },
       "TextAnnotationResourceConfig": {
