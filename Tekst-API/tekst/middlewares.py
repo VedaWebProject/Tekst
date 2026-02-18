@@ -5,6 +5,10 @@ from starlette.requests import Request
 
 
 class CookieTypeChoiceMiddleware(BaseHTTPMiddleware):
+    """
+    Controls whether session cookies or persistent cookies are to be set
+    """
+
     _TRUTHY_VALS = ("true", "on", "1", "yes")
 
     def __init__(
