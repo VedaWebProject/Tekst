@@ -12,7 +12,6 @@ const state = useStateStore();
 const router = useRouter();
 const browse = useBrowseStore();
 
-const disabled = computed(() => !state.pf?.texts || state.pf.texts.length <= 1);
 const selectRef = ref<SelectInst>();
 
 const renderOptionLabel: SelectOption['render'] = (info) => {
@@ -64,7 +63,10 @@ function handleSelect(text: TextRead) {
 </script>
 
 <template>
-  <div v-if="!disabled && 'textSlug' in router.currentRoute.value.params" class="text-select">
+  <div
+    v-if="!!options.length && 'textSlug' in router.currentRoute.value.params"
+    class="text-select"
+  >
     <n-flex
       size="large"
       justify="space-between"
@@ -73,6 +75,7 @@ function handleSelect(text: TextRead) {
       class="text-select-inner"
     >
       <n-select
+        v-if="options.length > 1"
         ref="selectRef"
         :value="state.text?.id"
         size="large"
@@ -85,6 +88,7 @@ function handleSelect(text: TextRead) {
         }"
         data-tour-key="browseTextSelect"
       />
+      <div v-else class="text-large">{{ state.text?.title ?? '' }}</div>
       <div
         v-if="state.text?.subtitle && state.vw >= 900"
         class="text-large i ellipsis"
