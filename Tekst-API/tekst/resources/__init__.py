@@ -219,18 +219,23 @@ class ResourceTypeABC(ABC):
     ) -> list[dict[str, Any]]:
         es_queries = []
         strict_suffix = ".strict" if strict else ""
-        if query.common.comment.strip("* "):
-            es_queries.append(
-                {
-                    "simple_query_string": {
-                        "fields": [
-                            f"resources.{str(query.common.resource_id)}.comment{strict_suffix}"
-                        ],
-                        "query": query.common.comment,
-                        "analyze_wildcard": True,
+        res_id_str = str(query.common.resource_id)
+        if query.common.comment:
+            cmt_field = f"resources.{res_id_str}.comment{strict_suffix}"
+            if query.common.comment.strip() == "*":
+                # we construct a match-all regex query to
+                # force highlighting on the entire field value
+                es_queries.append({"regexp": {f"{cmt_field}": r"[\s\S]*"}})
+            elif query.common.comment.strip():
+                es_queries.append(
+                    {
+                        "simple_query_string": {
+                            "fields": [cmt_field],
+                            "query": query.common.comment,
+                            "analyze_wildcard": True,
+                        }
                     }
-                }
-            )
+                )
         return [
             *es_queries,
             *(cls.rtype_es_queries(query=query, strict=strict) or []),
@@ -238,7 +243,7 @@ class ResourceTypeABC(ABC):
             # the target resource potentially has data for
             {
                 "exists": {
-                    "field": f"resources.{str(query.common.resource_id)}",
+                    "field": f"resources.{res_id_str}",
                 }
             },
         ]
