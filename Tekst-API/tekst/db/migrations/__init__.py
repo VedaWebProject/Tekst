@@ -71,7 +71,7 @@ async def check_for_migrations(
 
 
 async def migrate() -> None:
-    log.info("Running DB migrations...")
+    log.warning("Running DB migrations now.")
 
     db = get_db()
     if db is None:  # pragma: no cover
@@ -126,12 +126,24 @@ async def migrate() -> None:
 
     # mark content as changed for all resources
     # to enforce complete regeneration of precomputed cache
+    log.warning(
+        "Invalidating precomputed cache. "
+        "This will cause the precomputed cache to be regenerated the next time ",
+        "the bootstrap or maintenance routines are run, which may or may not take ",
+        "a very long time depending on the size of the database.",
+    )
     await db.resources.update_many(
         {},
         {"$set": {"contents_changed_at": datetime.now(UTC)}},
     )
 
     # mark search index as out-of-date for all texts to enforce regeneration
+    log.warning(
+        "Invalidating search indices. "
+        "This will cause all search indices to be recreated the next time ",
+        "the bootstrap or maintenance routines are run, which may or may not take ",
+        "a very long time depending on the size of the database.",
+    )
     await db.texts.update_many(
         {},
         {"$set": {"index_utd": False}},
