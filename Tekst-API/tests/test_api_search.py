@@ -692,7 +692,7 @@ async def test_advanced_plain_text(
         expected_hits=0,
     )
 
-    # search in location comment field
+    # search specific string in content comment field
     _assert_search_resp(
         await test_client.post(
             "/search",
@@ -703,7 +703,28 @@ async def test_advanced_plain_text(
                         "cmn": {
                             "res": "67c043c0906e79b9062e22f4",
                             "occ": "should",
-                            "cmt": "com*",
+                            "cmt": "thi*",
+                        },
+                        "rts": {"type": "plainText"},
+                    }
+                ],
+            },
+        ),
+        expected_hits=2,
+    )
+
+    # find all existing content comment fields
+    _assert_search_resp(
+        await test_client.post(
+            "/search",
+            json={
+                "type": "advanced",
+                "q": [
+                    {
+                        "cmn": {
+                            "res": "67c043c0906e79b9062e22f4",
+                            "occ": "should",
+                            "cmt": "*",
                         },
                         "rts": {"type": "plainText"},
                     }

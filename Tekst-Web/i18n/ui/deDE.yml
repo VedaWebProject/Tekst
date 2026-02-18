@@ -372,7 +372,7 @@ models:
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     globalCitationSuffix: Globales Suffix für Zitationen
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
-    showLocationAliases: Zeige Belegstellen-Aliase direkt auf der Seite
+    showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
     fonts: Benutzer*innendefinierte Schritarten
     uiFont: UI-Schriftart

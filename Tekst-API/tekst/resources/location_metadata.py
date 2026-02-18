@@ -115,6 +115,9 @@ class LocationMetadata(ResourceTypeABC):
 
         # process entries queries
         for entry_q in entries_usr_q:
+            if not entry_q.key:
+                continue  # pragma: no cover
+
             if entry_q.key and not entry_q.value:
                 # only key is set (and no value): query for existence of key
                 entry_k_q = {"term": {f"resources.{res_id}.entries.key": entry_q.key}}
@@ -453,7 +456,8 @@ class LocationMetadataContent(ContentBase):
 
 class LocationMetadataQueryEntry(ModelBase):
     key: Annotated[
-        ConStr(
+        ConStrOrNone(
+            min_length=0,
             max_length=32,
             cleanup="oneline",
         ),
@@ -461,7 +465,7 @@ class LocationMetadataQueryEntry(ModelBase):
             alias="k",
             description="Metadata entry key query",
         ),
-    ]
+    ] = None
     value: Annotated[
         ConStrOrNone(
             min_length=0,

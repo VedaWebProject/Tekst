@@ -73,6 +73,7 @@ function getEntryValueSelectStyle(value?: string) {
 }
 
 onMounted(async () => {
+  model.value.entries = model.value.entries || [{ k: '', v: undefined, wc: false }];
   aggregations.value = await resources.getAggregations(props.resource.id);
 });
 </script>
@@ -97,7 +98,6 @@ onMounted(async () => {
             :show-label="false"
             ignore-path-change
             :path="`queries[${queryIndex}].rts.entries[${index}].k`"
-            :rule="searchFormRules.textAnnotation.annotationKey"
           >
             <n-select
               v-model:value="value.k"
