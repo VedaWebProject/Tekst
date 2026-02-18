@@ -116,7 +116,7 @@ class LocationMetadata(ResourceTypeABC):
         # process entries queries
         for entry_q in entries_usr_q:
             if not entry_q.key:
-                continue
+                continue  # pragma: no cover
 
             if entry_q.key and not entry_q.value:
                 # only key is set (and no value): query for existence of key
