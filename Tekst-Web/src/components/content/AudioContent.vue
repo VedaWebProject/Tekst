@@ -26,8 +26,14 @@ function handlePlay(playerId: string) {
   playerRefs.value.filter((p) => p.id !== playerId).forEach((p) => p.ref.pause());
 }
 
-function handleEnded(playerIndex: number) {
-  playerRefs.value[playerIndex + 1]?.ref.play(true);
+function handleEnded(contentIndex: number, fileIndex: number) {
+  playerRefs.value
+    .find(
+      (pref) =>
+        pref.id === `player-${contentIndex}-${fileIndex + 1}` ||
+        pref.id === `player-${contentIndex + 1}-0`
+    )
+    ?.ref.play(true);
 }
 
 onBeforeUpdate(() => {
@@ -38,7 +44,7 @@ onBeforeUpdate(() => {
 <template>
   <div>
     <common-content-display
-      v-for="content in resource.contents"
+      v-for="(content, contentIndex) in resource.contents"
       :key="content.id"
       :show-comments="showComments"
       :comments="content.comments"
@@ -51,7 +57,7 @@ onBeforeUpdate(() => {
             (el) =>
               el &&
               playerRefs.push({
-                id: `player-${content.id}-${fileIndex}`,
+                id: `player-${contentIndex}-${fileIndex}`,
                 ref: el as InstanceType<typeof AudioPlayer>,
               })
           "
@@ -61,8 +67,8 @@ onBeforeUpdate(() => {
           :compact="focusView"
           :caption="file.caption || undefined"
           :font-style="fontStyle"
-          @play="() => handlePlay(`player-${content.id}-${fileIndex}`)"
-          @ended="() => handleEnded(fileIndex)"
+          @play="() => handlePlay(`player-${contentIndex}-${fileIndex}`)"
+          @ended="() => handleEnded(contentIndex, fileIndex)"
         />
       </n-flex>
     </common-content-display>
