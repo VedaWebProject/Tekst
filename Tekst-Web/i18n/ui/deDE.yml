@@ -79,6 +79,7 @@ common:
   loading: Lade...
   url: URL
   downloadSaved: Datei gespeichert als {filename}.
+  areYouSure: Sind Sie sich sicher?
   dirtyFormConfirm: Sie haben ungespeicherte Änderungen. Wollen Sie dieses Formular wirklich schließen?
   areYouSureHelpTextHint: |
     Bitte vergewissern Sie sich, dass Sie die entsprechende Passage in den
@@ -374,7 +375,7 @@ models:
     prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
-    fonts: Benutzer*innendefinierte Schritarten
+    fonts: Eigene Schritarten
     uiFont: UI-Schriftart
     contentFont: Standard-Schriftart für Inhalte
     oskModes: Bildschirmtastaturen
@@ -832,11 +833,6 @@ admin:
       deleteUser: '@:admin.users.confirmMsg.areYouSure den Account {username} und alle damit verknüpften Daten löschen möchten?'
   newText:
     heading: Neuer Text
-    headerInfoAlert: |
-      Hier können Sie einen neuen Text anlegen. Dafür müssen Sie nur die grundlegendsten Angaben machen.
-      Zunächst wird der Text nicht öffentlich gelistet und ist nur für Administrator*innen zugänglich.
-      Sie werden im Anschluss zu einer Ansicht weitergeleitet, in der Sie weitere Einstellungen vornehmen können,
-      bevor Sie den Text öffentlich verfügbar machen.
     btnProceed: Fortfahren
     btnFinish: Abschließen
     msgSaveSuccess: Der neue Text "{title}" wurde erfolgreich erstellt. Sie können jetzt Einstellungen dafür vornehmen.
@@ -844,7 +840,7 @@ admin:
     nav:
       heading: Navigation
       aliasSearch: Bei eindeutigem Schnellsuche-Treffer für Belegstellen-Alias direkt zu Belegstelle springen
-      customNavLabels: Benutzer*innendefinierte Navigations-Beschriftungen
+      customNavLabels: Abweichende Navigations-Beschriftungen
     headingBrowseView: Lese-Ansicht
     headingAppearance: Aussehen
     headingFonts: Schriftarten
@@ -889,7 +885,7 @@ admin:
       actionDeleteAll: Alle Prozesse löschen
       actionDeleteAllSuccess: Alle @:tasks.title wurden gelöscht
     email:
-      heading: EMail Setup
+      heading: EMail-Setup
       desc: Die EMail-Einstellungen können nur über die für das API-Deployment verwendeten Umgebungsvariablen geändert werden.
       btn: Test-EMail senden (an mich)
     force: erzwingen

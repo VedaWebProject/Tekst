@@ -1,4 +1,4 @@
-## Exportformate
+# Exportformate
 
 - **JSON:** Umfassende Exportdaten als JSON - ein Format, das gut zur Weiterverarbeitung geeignet ist
 - **Tekst-JSON:** Spezieller JSON-Export, der für den Wieder-Import in die Plattform geeignet ist

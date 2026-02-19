@@ -1,4 +1,4 @@
-## Vorschlag für Veröffentlichung
+# Vorschlag für Veröffentlichung
 
 Indem Sie eine von Ihnen erstellte Ressource zur Veröffentlichung vorschlagen, stellen Sie sie allen registrierten Benutzer\*innen der Plattform zur Verfügung, damit diese Ihre Arbeit begutachten, kommentieren und Änderungen oder Ergänzungen vorschlagen können. Die Administratoren der Plattform werden über Ihren Vorschlag informiert und können Ihre Ressource auf der Plattform veröffentlichen, um sie auch nicht registrierten Benutzer\*innen zugänglich zu machen.
 

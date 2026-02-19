@@ -220,6 +220,148 @@ watch(
               />
             </n-form-item>
           </form-section>
+
+          <!-- FONTS -->
+          <form-section
+            :title="$t('admin.platformSettings.headingFonts')"
+            help-key="adminSettingsCustomFonts"
+          >
+            <!-- custom fonts -->
+            <n-form-item
+              v-if="formModel.fonts"
+              :label="$t('models.platformSettings.fonts')"
+              class="parent-form-item"
+            >
+              <n-dynamic-input
+                v-model:value="formModel.fonts"
+                show-sort-button
+                :min="0"
+                :max="64"
+                :create-button-props="dynInputCreateBtnProps"
+                @create="() => ''"
+              >
+                <template #default="{ index }">
+                  <n-form-item
+                    ignore-path-change
+                    :label="$t('common.name')"
+                    :path="`fonts[${index}]`"
+                    :rule="platformSettingsFormRules.fontName"
+                    style="flex: 2"
+                  >
+                    <n-input
+                      v-model:value="formModel.fonts[index]"
+                      :placeholder="$t('common.name')"
+                      @keydown.enter.prevent
+                      :style="{
+                        fontFamily: [formModel.fonts[index], 'var(--font-family-ui)']
+                          .filter((f) => !!f)
+                          .join(', '),
+                      }"
+                    />
+                  </n-form-item>
+                </template>
+                <template #action="{ index, create, remove }">
+                  <dynamic-input-controls
+                    top-offset
+                    :movable="false"
+                    :insert-disabled="(formModel.fonts.length || 0) >= 64"
+                    @remove="() => remove(index)"
+                    @insert="() => create(index)"
+                  />
+                </template>
+                <template #create-button-default>
+                  {{ $t('common.add') }}
+                </template>
+              </n-dynamic-input>
+            </n-form-item>
+          </form-section>
+
+          <!-- OSK -->
+          <form-section
+            :title="$t('models.platformSettings.oskModes')"
+            help-key="adminSettingsOskModes"
+          >
+            <n-form-item v-if="formModel.oskModes" :show-label="false">
+              <n-dynamic-input
+                v-model:value="formModel.oskModes"
+                show-sort-button
+                :min="0"
+                :max="64"
+                :create-button-props="dynInputCreateBtnProps"
+                @create="() => ({ key: '', name: '', font: '' })"
+              >
+                <template #default="{ index }">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: flex-start;
+                      gap: 12px;
+                      flex: 2;
+                      flex-wrap: wrap;
+                    "
+                  >
+                    <n-form-item
+                      ignore-path-change
+                      :label="$t('common.key')"
+                      :path="`oskModes[${index}].key`"
+                      :rule="platformSettingsFormRules.oskModeKey"
+                      style="flex: 1 100px"
+                    >
+                      <n-input
+                        v-model:value="formModel.oskModes[index].key"
+                        :placeholder="$t('common.key')"
+                        @keydown.enter.prevent
+                      />
+                    </n-form-item>
+                    <n-form-item
+                      ignore-path-change
+                      :label="$t('common.name')"
+                      :path="`oskModes[${index}].name`"
+                      :rule="platformSettingsFormRules.oskModeName"
+                      style="flex: 2 200px"
+                    >
+                      <n-input
+                        v-model:value="formModel.oskModes[index].name"
+                        :placeholder="$t('common.name')"
+                        @keydown.enter.prevent
+                      />
+                    </n-form-item>
+                    <n-form-item
+                      v-if="!!oskFontOptions.length"
+                      ignore-path-change
+                      :path="`oskModes[${index}].font`"
+                      :label="$t('models.platformSettings.oskModeFont')"
+                      style="flex: 1 200px"
+                    >
+                      <n-select
+                        v-model:value="formModel.oskModes[index].font"
+                        clearable
+                        :options="oskFontOptions"
+                        :placeholder="$t('common.default')"
+                        :consistent-menu-width="false"
+                        @keydown.enter.prevent
+                      />
+                    </n-form-item>
+                  </div>
+                </template>
+                <template #action="{ index, create, remove, move }">
+                  <dynamic-input-controls
+                    top-offset
+                    :move-up-disabled="index === 0"
+                    :move-down-disabled="index === formModel.oskModes.length - 1"
+                    :insert-disabled="(formModel.fonts?.length || 0) >= 64"
+                    @move-up="() => move('up', index)"
+                    @move-down="() => move('down', index)"
+                    @remove="() => remove(index)"
+                    @insert="() => create(index)"
+                  />
+                </template>
+                <template #create-button-default>
+                  {{ $t('common.add') }}
+                </template>
+              </n-dynamic-input>
+            </n-form-item>
+          </form-section>
         </n-tab-pane>
 
         <!-- NAVIGATION -->
@@ -315,94 +457,7 @@ watch(
             </n-form-item>
           </form-section>
 
-          <!-- OSK -->
-          <form-section
-            :title="$t('models.platformSettings.oskModes')"
-            help-key="adminSettingsOskModes"
-          >
-            <n-form-item v-if="formModel.oskModes" :show-label="false">
-              <n-dynamic-input
-                v-model:value="formModel.oskModes"
-                show-sort-button
-                :min="0"
-                :max="64"
-                :create-button-props="dynInputCreateBtnProps"
-                @create="() => ({ key: '', name: '', font: '' })"
-              >
-                <template #default="{ index }">
-                  <div
-                    style="
-                      display: flex;
-                      align-items: flex-start;
-                      gap: 12px;
-                      flex: 2;
-                      flex-wrap: wrap;
-                    "
-                  >
-                    <n-form-item
-                      ignore-path-change
-                      :label="$t('common.key')"
-                      :path="`oskModes[${index}].key`"
-                      :rule="platformSettingsFormRules.oskModeKey"
-                      style="flex: 1 100px"
-                    >
-                      <n-input
-                        v-model:value="formModel.oskModes[index].key"
-                        :placeholder="$t('common.key')"
-                        @keydown.enter.prevent
-                      />
-                    </n-form-item>
-                    <n-form-item
-                      ignore-path-change
-                      :label="$t('common.name')"
-                      :path="`oskModes[${index}].name`"
-                      :rule="platformSettingsFormRules.oskModeName"
-                      style="flex: 2 200px"
-                    >
-                      <n-input
-                        v-model:value="formModel.oskModes[index].name"
-                        :placeholder="$t('common.name')"
-                        @keydown.enter.prevent
-                      />
-                    </n-form-item>
-                    <n-form-item
-                      v-if="!!oskFontOptions.length"
-                      ignore-path-change
-                      :path="`oskModes[${index}].font`"
-                      :label="$t('models.platformSettings.oskModeFont')"
-                      style="flex: 1 200px"
-                    >
-                      <n-select
-                        v-model:value="formModel.oskModes[index].font"
-                        clearable
-                        :options="oskFontOptions"
-                        :placeholder="$t('common.default')"
-                        :consistent-menu-width="false"
-                        @keydown.enter.prevent
-                      />
-                    </n-form-item>
-                  </div>
-                </template>
-                <template #action="{ index, create, remove, move }">
-                  <dynamic-input-controls
-                    top-offset
-                    :move-up-disabled="index === 0"
-                    :move-down-disabled="index === formModel.oskModes.length - 1"
-                    :insert-disabled="(formModel.fonts?.length || 0) >= 64"
-                    @move-up="() => move('up', index)"
-                    @move-down="() => move('down', index)"
-                    @remove="() => remove(index)"
-                    @insert="() => create(index)"
-                  />
-                </template>
-                <template #create-button-default>
-                  {{ $t('common.add') }}
-                </template>
-              </n-dynamic-input>
-            </n-form-item>
-          </form-section>
-
-          <!-- GROUPS -->
+          <!-- METADATA TRANSLATIONS -->
           <form-section :title="$t('models.platformSettings.resMetaTranslations')">
             <n-form-item :show-label="false" :show-feedback="false">
               <n-dynamic-input
@@ -486,58 +541,41 @@ watch(
 
         <!-- APPEARANCE -->
         <n-tab-pane :tab="$t('admin.platformSettings.headingAppearance')" name="appearance">
-          <!-- FONTS -->
-          <form-section
-            :title="$t('admin.platformSettings.headingFonts')"
-            help-key="adminSettingsCustomFonts"
-          >
-            <!-- custom fonts -->
-            <n-form-item
-              v-if="formModel.fonts"
-              :label="$t('models.platformSettings.fonts')"
-              class="parent-form-item"
-            >
-              <n-dynamic-input
-                v-model:value="formModel.fonts"
-                show-sort-button
-                :min="0"
-                :max="64"
-                :create-button-props="dynInputCreateBtnProps"
-                @create="() => ''"
-              >
-                <template #default="{ index }">
-                  <n-form-item
-                    ignore-path-change
-                    :label="$t('common.name')"
-                    :path="`fonts[${index}]`"
-                    :rule="platformSettingsFormRules.fontName"
-                    style="flex: 2"
-                  >
-                    <n-input
-                      v-model:value="formModel.fonts[index]"
-                      :placeholder="$t('common.name')"
-                      @keydown.enter.prevent
-                      :style="{
-                        fontFamily: [formModel.fonts[index], 'var(--font-family-ui)']
-                          .filter((f) => !!f)
-                          .join(', '),
-                      }"
-                    />
-                  </n-form-item>
-                </template>
-                <template #action="{ index, create, remove }">
-                  <dynamic-input-controls
-                    top-offset
-                    :movable="false"
-                    :insert-disabled="(formModel.fonts.length || 0) >= 64"
-                    @remove="() => remove(index)"
-                    @insert="() => create(index)"
-                  />
-                </template>
-                <template #create-button-default>
-                  {{ $t('common.add') }}
-                </template>
-              </n-dynamic-input>
+          <!-- BRANDING -->
+          <form-section :title="$t('admin.platformSettings.headingBranding')">
+
+            <!-- UI COLOR -->
+            <n-form-item path="uiColor" :label="$t('models.platformSettings.uiColor')">
+              <n-color-picker
+                v-model:value="formModel.uiColor"
+                :modes="['hex']"
+                :show-alpha="false"
+                :swatches="colorPresets"
+              />
+            </n-form-item>
+
+            <!-- SHOW LOGO ON LOADING SCREEN -->
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.showLogoOnLoadingScreen"
+                :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
+              />
+            </n-form-item>
+
+            <!-- SHOW LOGO IN HEADER -->
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.showLogoInHeader"
+                :label="$t('models.platformSettings.showLogoInHeader')"
+              />
+            </n-form-item>
+
+            <!-- SHOW TEKST FOOTER HINT -->
+            <n-form-item :show-label="false">
+              <labeled-switch
+                v-model="formModel.showTekstFooterHint"
+                :label="$t('models.platformSettings.showTekstFooterHint')"
+              />
             </n-form-item>
 
             <!-- ui font -->
@@ -559,40 +597,6 @@ watch(
                 :options="fontOptions"
                 :placeholder="$t('common.default')"
                 :render-label="renderFontLabel"
-              />
-            </n-form-item>
-          </form-section>
-
-          <!-- BRANDING -->
-          <form-section :title="$t('admin.platformSettings.headingBranding')">
-            <!-- UI COLOR -->
-            <n-form-item path="uiColor" :label="$t('models.platformSettings.uiColor')">
-              <n-color-picker
-                v-model:value="formModel.uiColor"
-                :modes="['hex']"
-                :show-alpha="false"
-                :swatches="colorPresets"
-              />
-            </n-form-item>
-            <!-- SHOW LOGO ON LOADING SCREEN -->
-            <n-form-item :show-label="false" :show-feedback="false">
-              <labeled-switch
-                v-model="formModel.showLogoOnLoadingScreen"
-                :label="$t('models.platformSettings.showLogoOnLoadingScreen')"
-              />
-            </n-form-item>
-            <!-- SHOW LOGO IN HEADER -->
-            <n-form-item :show-label="false" :show-feedback="false">
-              <labeled-switch
-                v-model="formModel.showLogoInHeader"
-                :label="$t('models.platformSettings.showLogoInHeader')"
-              />
-            </n-form-item>
-            <!-- SHOW TEKST FOOTER HINT -->
-            <n-form-item :show-label="false" :show-feedback="false">
-              <labeled-switch
-                v-model="formModel.showTekstFooterHint"
-                :label="$t('models.platformSettings.showTekstFooterHint')"
               />
             </n-form-item>
           </form-section>

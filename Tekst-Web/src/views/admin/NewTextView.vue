@@ -88,10 +88,6 @@ async function handleSave() {
     <help-button-widget help-key="adminNewTextView" />
   </icon-heading>
 
-  <n-alert :title="$t('common.information')" type="info" closable>
-    {{ $t('admin.newText.headerInfoAlert') }}
-  </n-alert>
-
   <div class="content-block">
     <n-form
       ref="formRef"
