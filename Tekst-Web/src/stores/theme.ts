@@ -83,7 +83,9 @@ const _DARK_OVERRIDES: GlobalThemeOverrides = {
   },
   Card: {
     ..._COMMON_OVERRIDES.Card,
-    colorEmbedded: '#2a2a2a',
+    colorEmbedded: '#333',
+    colorModal: '#333',
+    colorEmbeddedModal: '#333',
   },
 };
 
