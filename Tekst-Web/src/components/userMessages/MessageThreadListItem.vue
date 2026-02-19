@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { UserMessageThread } from '@/api';
 import UserDisplay from '@/components/user/UserDisplay.vue';
+import { $t } from '@/i18n';
 import { DeleteIcon } from '@/icons';
-import { NBadge, NButton, NFlex, NIcon, NListItem } from 'naive-ui';
+import { renderIcon } from '@/utils';
+import { NBadge, NButton, NFlex, NIcon, NListItem, useDialog } from 'naive-ui';
 
 const props = defineProps<{
   thread: UserMessageThread;
@@ -10,9 +12,17 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits(['deleteThread']);
+const dialog = useDialog();
 
 function handleDeleteClick() {
-  emits('deleteThread', props.thread.id || 'system');
+  dialog.create({
+    title: $t('common.delete'),
+    icon: renderIcon(DeleteIcon),
+    content: $t('common.areYouSure'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
+    onPositiveClick: () => emits('deleteThread', props.thread.id || 'system'),
+  });
 }
 </script>
 

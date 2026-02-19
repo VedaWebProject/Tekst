@@ -87,6 +87,10 @@ const _DARK_OVERRIDES: GlobalThemeOverrides = {
     colorModal: '#333',
     colorEmbeddedModal: '#333',
   },
+  Dialog: {
+    ..._COMMON_OVERRIDES.Dialog,
+    color: '#333',
+  },
 };
 
 export declare type ThemeMode = 'light' | 'dark';

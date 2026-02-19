@@ -1,3 +1,3 @@
-## TODO
+# Globale Plattform-Einstellungen
 
-Dieser Hilfe-Text existiert _leider_ noch nicht.
+In dieser Ansicht können Sie plattformweite, administrative Einstellungen vornehmen. Einige Einstellungen, welche weiterer Erklärungen bedürfen, sind an entsprechender Stelle mit eigenen Hilfe-Texten ausgestattet.

@@ -79,6 +79,7 @@ common:
   loading: Loading...
   url: URL
   downloadSaved: File saved as {filename}.
+  areYouSure: Are you sure?
   dirtyFormConfirm: You have unsaved changes. Are you sure you want to close this form?
   areYouSureHelpTextHint: |
     Please make sure you have read and understood the corresponding passage in the
@@ -808,11 +809,6 @@ admin:
       deleteUser: '@:admin.users.confirmMsg.areYouSure delete the user account {username} and all the data associated with it?'
   newText:
     heading: New Text
-    headerInfoAlert: |
-      Here you can create a new text. For this, you need to provide only the most basic information.
-      Initially, the text is not listed publicly and is only accessible to administrators.
-      You will then be redirected to a view where you can make further settings
-      before making the text publicly available.
     btnProceed: Proceed
     btnFinish: Finish
     msgSaveSuccess: The new text "{title}" was successfully created. You may now configure its details.
