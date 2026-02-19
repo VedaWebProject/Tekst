@@ -20,7 +20,7 @@ import {
   pickTranslation,
   renderIcon,
 } from '@/utils';
-import { useClipboard } from '@vueuse/core';
+import { useClipboard, useStorage } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
 import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from 'naive-ui';
 import type { CSSProperties } from 'vue';
@@ -164,12 +164,13 @@ const fontStyle = computed(() => ({
 const annoLineNumbers = computed(() =>
   Array.from(Array(displayTemplates.value.filter((tmpl) => tmpl.type === 'br').length + 1).keys())
 );
-const colorAnnoLinesChoice = ref(
-  props.resource.config.special.annotations.annoIntegration.groups.length > 1
+const coloredGroupsChoice = useStorage(
+  'colorAnnoGroups',
+  props.resource.config.special.annotations.annoIntegration.groups.length > 1,
+  sessionStorage
 );
-const colorAnnoLines = computed(
-  () => colorAnnoLinesChoice.value && annoCfg.value.groups.length > 1
-);
+
+const coloredGroups = computed(() => coloredGroupsChoice.value && annoCfg.value.groups.length > 1);
 
 const displayTemplates = computed<AnnotationDisplayTemplate[]>(() => {
   if (!props.resource.config.special.annotations.displayTemplate) return [];
@@ -481,14 +482,14 @@ function generatePlaintextAnno(): string {
         <template v-for="group in annoCfg.groups">
           <n-button
             v-if="presentGroups.includes(group.key)"
-            :tertiary="!colorAnnoLines"
-            :type="colorAnnoLines ? 'primary' : undefined"
+            :tertiary="!coloredGroups"
+            :type="coloredGroups ? 'primary' : undefined"
             :key="group.key"
             size="tiny"
             :focusable="false"
             :disabled="annoCfg.groups.length == 1"
-            :color="colorAnnoLines ? groupColors[group.key] : undefined"
-            :text-color="colorAnnoLines ? nuiTheme.textColor1 : undefined"
+            :color="coloredGroups ? groupColors[group.key] : undefined"
+            :text-color="coloredGroups ? nuiTheme.textColor1 : undefined"
             @click="toggleAnnoGroup(group.key)"
           >
             <template #icon>
@@ -502,10 +503,10 @@ function generatePlaintextAnno(): string {
           size="tiny"
           :focusable="false"
           :disabled="annoCfg.groups.length < 2"
-          @click="colorAnnoLinesChoice = !colorAnnoLinesChoice"
+          @click="coloredGroupsChoice = !coloredGroupsChoice"
         >
           <template #icon>
-            <n-icon :component="colorAnnoLinesChoice ? ColorOffIcon : ColorIcon" />
+            <n-icon :component="coloredGroupsChoice ? ColorOffIcon : ColorIcon" />
           </template>
         </n-button>
       </template>
@@ -557,7 +558,7 @@ function generatePlaintextAnno(): string {
                     :style="{
                       ...anno.style,
                       backgroundColor:
-                        colorAnnoLines && !!anno.group ? groupColors[anno.group] : undefined,
+                        coloredGroups && !!anno.group ? groupColors[anno.group] : undefined,
                     }"
                   >
                     {{ anno.content }}
