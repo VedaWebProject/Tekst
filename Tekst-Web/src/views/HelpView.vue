@@ -31,10 +31,13 @@ const searchInputState = computed(() =>
 );
 
 function filterHelpTexts(ht: [string, HelpText][] | null, filter: string): [string, HelpText][] {
-  if (!ht) return [];
-  return ht
-    .filter((h) => (filter ? h[1].content.indexOf(filter) !== -1 : true))
-    .sort((a, b) => (a[1].title || '').localeCompare(b[1].title || ''));
+  return (
+    ht
+      ?.filter((h) =>
+        filter ? h[1].content.toLowerCase().indexOf(filter.toLowerCase()) !== -1 : true
+      )
+      .sort((a, b) => (a[1].title || '').localeCompare(b[1].title || '')) ?? []
+  );
 }
 
 async function requestHelpTexts() {
