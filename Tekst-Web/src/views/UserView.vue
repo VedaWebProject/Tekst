@@ -55,32 +55,28 @@ watchEffect(() => {
         <user-thing-header :user="user" />
       </template>
 
-      <template v-if="auth.user && user.id !== auth.user.id && user.isActive" #header-extra>
-        <n-button
-          type="primary"
-          circle
-          size="large"
-          :title="
-            $t('account.messages.btnSendMessageToUser', {
-              username: user.name || `@${user.username}`,
-            })
-          "
-          @click="() => userMessages.openConversation(user?.id || '?')"
-        >
-          <template #icon>
-            <n-icon :component="MessageIcon" />
-          </template>
-        </n-button>
-      </template>
+      <n-button
+        v-if="auth.user && user.id !== auth.user.id && user.isActive"
+        type="primary"
+        class="my-md"
+        @click="() => userMessages.openConversation(user?.id || '?')"
+      >
+        <template #icon>
+          <n-icon :component="MessageIcon" />
+        </template>
+        {{
+          $t('account.messages.btnSendMessageToUser', {
+            username: user.name ?? `@${user.username}`,
+          })
+        }}
+      </n-button>
 
-      <template #default>
-        <p v-if="user.bio" class="pre-wrap">
-          {{ user.bio }}
-        </p>
-        <p v-else class="translucent text-small i">
-          {{ $t('account.profileNoBio') }}
-        </p>
-      </template>
+      <p v-if="user.bio" class="pre-wrap">
+        {{ user.bio }}
+      </p>
+      <p v-else class="translucent text-small i">
+        {{ $t('account.profileNoBio') }}
+      </p>
     </n-thing>
   </div>
 </template>
