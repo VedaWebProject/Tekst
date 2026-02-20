@@ -392,6 +392,7 @@ resources:
   new: New Resource
   versionOf: Version of "{title}"
   ownerTip: Resource owner, responsible for content maintenance
+  filterTip: Filter by title, subtitle, description, owners, metadata, "published", "unpublished", "proposed", citation, type, level
   msgNotYourResourceTitle: This is not your resource!
   msgNotYourResourceBody: |
     As an administrator, you are able to modify resources owned by other users.
@@ -954,7 +955,6 @@ help:
   heading: Help Overview
   help: Help
   msgFoundCount: Found {count} entries
-  errorNotFound: This help text entry could not be loaded.
   msgNoHelpTextsFound: No help entries could be found.
 
 tour:

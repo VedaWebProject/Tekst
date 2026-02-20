@@ -396,6 +396,7 @@ resources:
   new: Neue Ressource
   versionOf: Version von "{title}"
   ownerTip: Ressourcen-Besitzer*in, verantwortlich für inhaltliche Pflege
+  filterTip: Filtern nach Titel, Untertitel, Beschreibung, Besitzer*innen, Metadaten, "veröffentlicht", "unveröffentlicht", "vorgeschlagen", Zitation, Typ, Ebene
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
   msgNotYourResourceBody: |
     Als Administrator*in sind sie in der Lage, Ressourcen von anderen Benutzer*innen zu bearbeiten.
@@ -978,7 +979,6 @@ help:
   heading: Hilfe-Übersicht
   help: Hilfe
   msgFoundCount: '{count} Einträge gefunden'
-  errorNotFound: Dieser Hilfe-Text konnte nicht geladen werden.
   msgNoHelpTextsFound: Es konnten keine Hilfe-Einträge gefunden werden.
 
 tour:
