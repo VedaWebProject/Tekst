@@ -41,7 +41,7 @@ for (const localeDir of localeDirs) {
   for (const mdFile of mdFiles) {
     const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
     const data = readFileSync(sourceFilePath, 'utf8');
-    const title = data.match(/(?<=^#+ ).*$/m)[0]; // ugly, but efficient!
+    const title = data.match(/(?<=^#+ ).*$/m)[0]?.replace(/\\\*/, '*'); // ugly, but efficient!
     const content = marked.parse(data);
     const helpKey = mdFile.name.split('.')[0];
     const scope = mdFile.name.split('.').length === 3 ? mdFile.name.split('.')[1] : 'v';
