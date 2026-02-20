@@ -24,6 +24,8 @@ const languageOptions = deeplSourceLanguages.map((l) => ({ label: l, value: l })
     <!-- source language -->
     <n-form-item :label="$t('resources.settings.config.plainText.deeplLinks.sourceLanguage')">
       <n-select
+        filterable
+        :placeholder="$t('common.select')"
         v-model:value="model.sourceLanguage"
         :disabled="!model.enabled"
         :options="languageOptions"

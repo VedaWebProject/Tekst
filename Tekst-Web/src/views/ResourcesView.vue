@@ -66,14 +66,15 @@ function stringifyResourceProps(res: AnyResourceRead) {
     res.owners?.map((o) => o.affiliation).join(' ') || '',
     res.description.map((d) => d.translation).join(' ') || '',
     res.citation,
-    ...res.meta.map(m => 'm:'+m.value),
+    ...res.meta.map((m) => 'm:' + m.value),
     res.public ? $t('resources.public') : $t('resources.notPublic'),
     res.proposed ? $t('resources.proposed') : null,
     $t(`resources.types.${res.resourceType}.label`),
     state.textLevelLabels[res.level],
   ]
     .filter(Boolean)
-    .join(' ').toLowerCase();
+    .join(' ')
+    .toLowerCase();
 }
 
 const filteredData = computed(() =>
@@ -81,7 +82,11 @@ const filteredData = computed(() =>
     .filter(
       (r) =>
         !searchInput.value ||
-        searchInput.value.toLowerCase().split(/[, ]+/).filter(Boolean).every(f => stringifyResourceProps(r).includes(f))
+        searchInput.value
+          .toLowerCase()
+          .split(/[, ]+/)
+          .filter(Boolean)
+          .every((f) => stringifyResourceProps(r).includes(f))
     )
     .sort((ra, rb) => {
       const correctionsComp = (rb.corrections ?? 0) - (ra.corrections ?? 0);
