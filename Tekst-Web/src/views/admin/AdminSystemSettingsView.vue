@@ -543,7 +543,6 @@ watch(
         <n-tab-pane :tab="$t('admin.platformSettings.headingAppearance')" name="appearance">
           <!-- BRANDING -->
           <form-section :title="$t('admin.platformSettings.headingBranding')">
-
             <!-- UI COLOR -->
             <n-form-item path="uiColor" :label="$t('models.platformSettings.uiColor')">
               <n-color-picker

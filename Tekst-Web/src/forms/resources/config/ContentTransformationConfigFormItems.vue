@@ -4,11 +4,10 @@ import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import CodeEditor from '@/components/generic/CodeEditor.vue';
-import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { typeSpecificResourceConfigFormRules } from '@/forms/formRules';
 import { javascript } from '@codemirror/lang-javascript';
-import { NDynamicInput, NFlex, NFormItem, NInput } from 'naive-ui';
+import { NDynamicInput, NFormItem, NInput } from 'naive-ui';
 
 defineProps<{ resource: AnyResourceRead }>();
 const model = defineModel<components['schemas']['ContentTransformConfig']>({
@@ -17,15 +16,9 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
 </script>
 
 <template>
-  <form-section :title="$t('resources.settings.config.transformation.heading')">
+  <form-section :title="$t('resources.settings.config.transformation.heading')" help-key="apiCallTransformation">
     <!-- TRANSFORM FN JS DEPENDENCIES -->
-    <n-form-item class="parent-form-item">
-      <template #label>
-        <n-flex align="center">
-          {{ $t('resources.settings.config.transformation.deps') }}
-          <help-button-widget help-key="apiCallTransformDeps" />
-        </n-flex>
-      </template>
+    <n-form-item :label="$t('resources.settings.config.transformation.deps')" class="parent-form-item">
       <n-dynamic-input
         v-model:value="model.deps"
         show-sort-button
@@ -67,16 +60,13 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
     <!-- RESPONSE TRANSFORM JS FN BODY -->
     <n-form-item
       path="config.special.transform.js"
+      :label="$t('resources.settings.config.transformation.js')"
       :rule="typeSpecificResourceConfigFormRules['apiCall'].js"
     >
-      <template #label>
-        <n-flex align="center">
-          {{ $t('resources.settings.config.transformation.js') }}
-          <help-button-widget help-key="apiCallTransformJs" />
-        </n-flex>
-      </template>
-      <div class="codemirror-container">
-        <code-editor v-model="model.js" :language="javascript" />
+    <div class="codemirror-container">
+      <code class="translucent">{{'async function transform(this: {data: string, context: unknown}) {'}}</code>
+      <code-editor v-model="model.js" :language="javascript" />
+      <code class="translucent">{{'}'}}</code>
       </div>
     </n-form-item>
   </form-section>
