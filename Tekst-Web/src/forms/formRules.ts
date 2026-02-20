@@ -222,7 +222,7 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
 export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
   titleTranslation: [
     requiredStringRule(() => $t('common.title'), 'blur'),
-    minMaxCharsRule(1, 64, 'blur'),
+    minMaxCharsRule(1, 128, 'blur'),
   ],
   subtitleTranslation: [
     requiredStringRule(() => $t('common.subtitle'), 'blur'),
