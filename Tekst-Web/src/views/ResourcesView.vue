@@ -57,32 +57,40 @@ const searchInputState = computed(() =>
       : undefined
 );
 
-const filteredData = computed(() => {
-  return resources.ofText
-    .filter((r) => {
-      if (!searchInput.value) return true;
-      const resourceStringContent = [
-        r.title.map((t) => t.translation).join(' '),
-        r.subtitle.map((s) => s.translation).join(' ') || '',
-        r.owners?.map((o) => o.name).join(' ') || '',
-        r.owners?.map((o) => o.username).join(' ') || '',
-        r.owners?.map((o) => o.affiliation).join(' ') || '',
-        r.description.map((d) => d.translation).join(' ') || '',
-        r.citation,
-        JSON.stringify(r.meta),
-      ]
-        .filter(Boolean)
-        .join(' ');
-      return resourceStringContent.toLowerCase().includes(searchInput.value.toLowerCase());
-    })
+function stringifyResourceProps(res: AnyResourceRead) {
+  return [
+    res.title.map((t) => t.translation).join(' '),
+    res.subtitle.map((s) => s.translation).join(' ') || '',
+    res.owners?.map((o) => o.name).join(' ') || '',
+    res.owners?.map((o) => o.username).join(' ') || '',
+    res.owners?.map((o) => o.affiliation).join(' ') || '',
+    res.description.map((d) => d.translation).join(' ') || '',
+    res.citation,
+    ...res.meta.map(m => 'm:'+m.value),
+    res.public ? $t('resources.public') : $t('resources.notPublic'),
+    res.proposed ? $t('resources.proposed') : null,
+    $t(`resources.types.${res.resourceType}.label`),
+    state.textLevelLabels[res.level],
+  ]
+    .filter(Boolean)
+    .join(' ').toLowerCase();
+}
+
+const filteredData = computed(() =>
+  resources.ofText
+    .filter(
+      (r) =>
+        !searchInput.value ||
+        searchInput.value.toLowerCase().split(/[, ]+/).filter(Boolean).every(f => stringifyResourceProps(r).includes(f))
+    )
     .sort((ra, rb) => {
       const correctionsComp = (rb.corrections ?? 0) - (ra.corrections ?? 0);
       const titleComp = pickTranslation(ra.title, state.locale).localeCompare(
         pickTranslation(rb.title, state.locale)
       );
       return correctionsComp || titleComp;
-    });
-});
+    })
+);
 
 const expandedNames = ref<string[]>([]);
 
@@ -408,7 +416,8 @@ onMounted(() => {
       clearable
       :status="searchInputState"
       :disabled="!resources.ofText.length"
-      :placeholder="$t('common.searchAction')"
+      :placeholder="$t('resources.filterTip')"
+      :title="$t('resources.filterTip')"
       class="mb-lg"
     >
       <template #prefix>
