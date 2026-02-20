@@ -3,11 +3,11 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import type { HelpText } from '@/composables/help';
 import { useHelp } from '@/composables/help';
 import { $t } from '@/i18n';
-import { NButton, NIcon, NSpin } from 'naive-ui';
+import { NButton, NEmpty, NIcon, NSpin } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed, ref } from 'vue';
 
-import { QuestionMarkIcon } from '@/icons';
+import { ErrorIcon, QuestionMarkIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -90,7 +90,11 @@ async function handleHelpButtonClick() {
       style="padding: 0"
     >
       <div v-if="helpText" v-html="helpText.content"></div>
-      <div v-else-if="!loading">{{ $t('help.errorNotFound') }}</div>
+      <n-empty v-else-if="!loading" :description="$t('errors.notFound') ">
+        <template #icon>
+          <n-icon :component="ErrorIcon" />
+        </template>
+      </n-empty>
     </n-spin>
   </generic-modal>
 </template>
