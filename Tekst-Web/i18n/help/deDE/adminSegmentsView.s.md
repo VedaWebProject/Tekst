@@ -8,14 +8,14 @@ Klicken Sie oben rechts auf das Plus-Symbol, um ein neues Segment anzulegen. Der
 
 Der **Typ** des Seitensegments bestimmt, wo und wie der Inhalt in die Oberfläche der Anwendung eingebunden wird:
 
-- **Startseite**: Inhalt der Startseite. Ist keine Startseite angelegt, wird die Lese-Ansicht als Startseite angezeigt.
+- **Startseite**: Inhalt der Startseite. Ist keine Startseite angelegt, wird die Leseansicht als Startseite angezeigt.
 - **Ende von HTML head**: Wird ans Ende des HTML `<head>`-Tags eingebunden.
 - **Ende von HTML body**: Wird ans Ende des HTML `<body>`-Tags eingebunden.
 - **Seiten-Fußzeile (oberer Teil)**: Wird am Anfang der Fußzeile der Seite eingebunden.
 - **Seiten-Fußzeile (unterer Teil)**: Wird am Ende der Fußzeile der Seite eingebunden.
 - **Impressum**: Wird als Inhalt für das Impressum eingebunden.
 - **Datenschutzerklärung**: Wird als Inhalt für die Datenschutzerklärung eingebunden.
-- **Einführungstext auf Registrieren-Seite**: Stellen Sie hier Informationen zum Registrations- und Freischaltungs-Verfahren zur Verfügung. Erläutern Sie ihren Nutzer\*innen hier zum Beispiel, nach welchen Kriterien Konten vergeben werden und wie lange dies üblicherweise dauert.
+- **Einführungstext auf Registrieren-Seite**: Stellen Sie hier Informationen zum Registrations- und Freischaltungsverfahren zur Verfügung. Erläutern Sie ihren Nutzer\*innen hier zum Beispiel, nach welchen Kriterien Konten vergeben werden und wie lange dies üblicherweise dauert.
 
 Unter "**Anzeigen für**" können Sie festlegen, welcher Grupe von Nutzer\*innen das Segment angezeigt werden soll. Standardmäßig wird ein neues Segment allen Nutzer\*innen – auch nicht angemeldeten – angezeigt.
 

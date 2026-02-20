@@ -12,7 +12,7 @@ In dieser Übersicht erfahren Sie Details zum Zustand der Suchindizes und könne
 
 Vorberechnete Daten sind aufwenig zu berechnende Daten, die von der Anwendung vorab erzeugt werden, um sie fertig abrufbar zu haben, wenn sie tatsächlich gebraucht werden. Sie werden automatisch erstellt, wenn Sie neue Inhalte erstellen oder bestehende Inhalte ändern. Da es je nach Konfiguration des Systems einige Zeit dauern kann, bis die Daten neu berechnet werden, kann es sein, dass die vorberechneten Daten nicht immer aktuell sind.
 
-Zu den vorberechneten Daten gehören beispielsweise die Fundstellen-Abdeckung von Ressourcen und Aggregationen von Annotationsdaten.
+Zu den vorberechneten Daten gehören beispielsweise die Fundstellenabdeckung von Ressourcen und Aggregationen von Annotationsdaten.
 
 ## Interne Bereinigung
 
