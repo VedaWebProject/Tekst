@@ -96,7 +96,7 @@ async function handleSaveClick() {
 <template>
   <icon-heading v-if="resource" level="1" :icon="SettingsIcon">
     {{ $t('resources.settings.heading') }}
-    <help-button-widget help-key="ResourceSettingsView" />
+    <help-button-widget help-key="resourceSettingsView" />
   </icon-heading>
 
   <router-link
