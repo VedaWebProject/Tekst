@@ -34,7 +34,7 @@ function filterHelpTexts(ht: [string, HelpText][] | null, filter: string): [stri
   return (
     ht
       ?.filter((h) =>
-        filter ? h[1].content.toLowerCase().indexOf(filter.toLowerCase()) !== -1 : true
+        filter ? h[1].content.toLowerCase().includes(filter.toLowerCase()) : true
       )
       .sort((a, b) => (a[1].title || '').localeCompare(b[1].title || '')) ?? []
   );
