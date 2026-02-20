@@ -22,7 +22,7 @@ import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { useUrlSearchParams } from '@vueuse/core';
+import { refDebounced, useUrlSearchParams } from '@vueuse/core';
 import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -49,10 +49,11 @@ const setResOwnersModalRef = ref<InstanceType<typeof SetResourceOwnersModal>>();
 
 const filtersRef = ref<InstanceType<typeof ListingsFilters> | null>(null);
 const searchInput = ref<string>();
+const searchInputDebounced = refDebounced(searchInput, 300);
 const searchInputState = computed(() =>
-  !!searchInput.value?.length && !filteredData.value.length
+  !!searchInputDebounced.value?.length && !filteredData.value.length
     ? 'error'
-    : !!searchInput.value?.length
+    : !!searchInputDebounced.value?.length
       ? 'warning'
       : undefined
 );
@@ -81,8 +82,8 @@ const filteredData = computed(() =>
   resources.ofText
     .filter(
       (r) =>
-        !searchInput.value ||
-        searchInput.value
+        !searchInputDebounced.value ||
+        searchInputDebounced.value
           .toLowerCase()
           .split(/[, ]+/)
           .filter(Boolean)
@@ -424,6 +425,7 @@ onMounted(() => {
       :placeholder="$t('resources.filterTip')"
       :title="$t('resources.filterTip')"
       class="mb-lg"
+      @update:value="expandedNames = []"
     >
       <template #prefix>
         <n-icon :component="SearchIcon" />
