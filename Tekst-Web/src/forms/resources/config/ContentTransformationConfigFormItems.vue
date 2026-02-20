@@ -16,9 +16,15 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
 </script>
 
 <template>
-  <form-section :title="$t('resources.settings.config.transformation.heading')" help-key="apiCallTransformation">
+  <form-section
+    :title="$t('resources.settings.config.transformation.heading')"
+    help-key="apiCallTransformation"
+  >
     <!-- TRANSFORM FN JS DEPENDENCIES -->
-    <n-form-item :label="$t('resources.settings.config.transformation.deps')" class="parent-form-item">
+    <n-form-item
+      :label="$t('resources.settings.config.transformation.deps')"
+      class="parent-form-item"
+    >
       <n-dynamic-input
         v-model:value="model.deps"
         show-sort-button
@@ -63,10 +69,12 @@ const model = defineModel<components['schemas']['ContentTransformConfig']>({
       :label="$t('resources.settings.config.transformation.js')"
       :rule="typeSpecificResourceConfigFormRules['apiCall'].js"
     >
-    <div class="codemirror-container">
-      <code class="translucent">{{'async function transform(this: {data: string, context: unknown}) {'}}</code>
-      <code-editor v-model="model.js" :language="javascript" />
-      <code class="translucent">{{'}'}}</code>
+      <div class="codemirror-container">
+        <code class="translucent">{{
+          'async function transform(this: {data: string, context: unknown}) {'
+        }}</code>
+        <code-editor v-model="model.js" :language="javascript" />
+        <code class="translucent">{{ '}' }}</code>
       </div>
     </n-form-item>
   </form-section>

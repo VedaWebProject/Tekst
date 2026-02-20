@@ -98,13 +98,13 @@ h3 {
 }
 
 h4 {
-  font-size: var(--font-size);
-  font-weight: normal;
-  margin-bottom: 0.8rem;
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 h5 {
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-small);
   font-weight: bold;
   margin-bottom: 0.5rem;
 }

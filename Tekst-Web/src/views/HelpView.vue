@@ -33,9 +33,7 @@ const searchInputState = computed(() =>
 function filterHelpTexts(ht: [string, HelpText][] | null, filter: string): [string, HelpText][] {
   return (
     ht
-      ?.filter((h) =>
-        filter ? h[1].content.toLowerCase().includes(filter.toLowerCase()) : true
-      )
+      ?.filter((h) => (filter ? h[1].content.toLowerCase().includes(filter.toLowerCase()) : true))
       .sort((a, b) => (a[1].title || '').localeCompare(b[1].title || '')) ?? []
   );
 }
