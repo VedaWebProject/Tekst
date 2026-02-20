@@ -15587,7 +15587,7 @@
           },
           "translation": {
             "type": "string",
-            "maxLength": 64,
+            "maxLength": 128,
             "minLength": 1,
             "title": "Translation",
             "description": "Title translation for this resource"

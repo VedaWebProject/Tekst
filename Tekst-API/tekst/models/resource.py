@@ -50,7 +50,7 @@ class MetadataEntry(TypedDict):
 class ResourceTitleTranslation(TranslationBase):
     translation: Annotated[
         ConStr(
-            max_length=64,
+            max_length=128,
             cleanup="oneline",
         ),
         Field(
