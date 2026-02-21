@@ -21,7 +21,7 @@ Ist diese Funktion aktiviert, werden eingegebene oder fehlende (!) Diakritika be
 
 ### Alle Begriffe müssen vorkommen
 
-Mit "_Alle Begriffe müssen vorkommen_" lässt sich bestimmen, wie einzelne Suchbegriffe logisch miteinander verknüpft sein sollen. Ist die Funktion aktiviert, werden ausschließlich Belegstellen mit Inhalten gefunden, in denen alle eingegebenen Suchbegriffe vorkommen. Andernfalls werden die Belegstellen mit den meisten Treffern einen höheren Rang in den Suchergebnissen erhalten, also solche mit weniger Treffern.
+Mit "_Alle Begriffe müssen vorkommen_" lässt sich bestimmen, wie einzelne Suchbegriffe logisch miteinander verknüpft sein sollen. Ist die Funktion aktiviert, werden ausschließlich Belegstellen mit Inhalten gefunden, in denen alle eingegebenen Suchbegriffe vorkommen. Andernfalls werden die Belegstellen mit den meisten Treffern einen höheren Rang in den Suchergebnissen erhalten, als solche mit weniger Treffern.
 
 ### Interpretiere Reguläre Ausdrücke
 
