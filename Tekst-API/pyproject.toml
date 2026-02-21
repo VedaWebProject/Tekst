@@ -1,6 +1,6 @@
 [project]
 name = "tekst"
-version = "0.48.7a0"
+version = "0.49.0b0"
 description = "An online text research platform"
 readme = "README.md"
 authors = [
@@ -34,7 +34,7 @@ keywords = [
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Operating System :: OS Independent",
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     # Audience
     "Intended Audience :: Science/Research",
     "Intended Audience :: Education",
