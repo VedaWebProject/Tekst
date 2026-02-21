@@ -10,7 +10,7 @@ Die Überschrift dieser Ansicht zeigt immer die volle Bezeichnung des aktuellen 
 
 ## Belegstellenaliasse
 
-Falls vorhanden, werden unter der Unterschrift unter anderem Belegstellenaliasse angezeigt. Sie können durch einen Klick darauf eine URL zur aktuellen Belegstelle unter Verwendung des angeklickten Alias kopieren. Außerdem lassen sich Belegstellen-Aliasse in der Schnellsuche (oben rechts im Kopf der Seite) eingeben, um direkt zur entsprechenden Belegstelle zu springen.
+Falls vorhanden, werden unter der Überschrift unter anderem Belegstellenaliasse angezeigt. Sie können durch einen Klick darauf eine URL zur aktuellen Belegstelle unter Verwendung des Alias kopieren. Außerdem lassen sich Belegstellen-Aliasse in der Schnellsuche (oben rechts im Kopf der Seite) eingeben, um direkt zur entsprechenden Belegstelle zu springen.
 
 ## Die Werkzeugleiste
 

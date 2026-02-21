@@ -8,7 +8,7 @@ Mit dem Filter-Eingabefeld können Sie Ressourcen nach einer Vielzahl von Kriter
 
 ## Aktionen
 
-Das letzte Element in jeder Ressourcen-Information ist die Aktionsleiste. Hier können Sie je nach Berechtigung verschiedene Aktionen ausführen, die im Folgenden kurz erläutert sind. Der Buchstabe in Klammern am Ende der Überschrift gibt jeweils an, welche Nutzer\*innenrolle für die jeweilige Aktion mindestens erforderlich ist. Dabei steht `v` für einfache Besucher, `u` für registrierte und angemeldete Nutzerinnen, `o` für Besitzer\*innen der jeweiligen Ressource und `s` für Administrator\*innen (Superuser) der Plattform.
+Das letzte Element in jeder Ressourcen-Information ist das Aktionsmenü. Hier können Sie je nach Berechtigung verschiedene Aktionen ausführen, die im Folgenden kurz erläutert sind. Der Buchstabe in Klammern am Ende der Überschrift gibt jeweils an, welche Nutzer\*innenrolle für die jeweilige Aktion mindestens erforderlich ist. Dabei steht `v` für einfache Besucher, `u` für registrierte und angemeldete Nutzerinnen, `o` für Besitzer\*innen der jeweiligen Ressource und `s` für Administrator\*innen (Superuser) der Plattform.
 
 ### Lesen (`v`)
 
@@ -16,7 +16,7 @@ Zeigt diese Ressource isoliert in der Leseansicht an.
 
 ### Version erstellen (`u`)
 
-Wenn Sie die Absicht haben, eine größere Menge Änderungen oder Ergänzungen an einer bestehenden Ressource vorzuschlagen, ist eine Ressourcen-Version ein guter Weg, um diese Änderungen zu sammeln und dann als Ganzes zu übermitteln. Die Besitzer\*in der Originalressource kann so besonders leicht Ihre Vorschläge einzeln prüfen und gegebenenfalls übernehmen.
+Wenn Sie die Absicht haben, eine größere Menge Änderungen oder Ergänzungen an einer bestehenden Ressource vorzuschlagen, ist eine Ressourcen-Version ein guter Weg, um diese Änderungen zu sammeln und dann als Ganzes zu übermitteln. Eine Ressourcen-Version funktioniert wie eine vollwertige Ressource, aber sie kann nicht veröffentlicht werden und die Besitzer\*in der Originalressource kann besonders leicht Änderungen bzw. Vorschläge einzeln prüfen und gegebenenfalls übernehmen.
 
 Für vereinzelte Änderungen ist es einfacher, in der Leseansicht am entsprechenden Inhalt direkt die Funktion "Korrekturvorschlag" zu nutzen.
 

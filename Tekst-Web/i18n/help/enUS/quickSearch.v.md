@@ -1,31 +1,46 @@
 # Quick Search
 
-The quick search is a full-text search of all available resources of the selected texts. Which resources are available for the quick search depends on your access permissions as well as the type and configuration of the resources.
+The quick search is a full-text search across all available resources of the selected texts. Which resources are available for quick search depends on your access rights and the type and configuration of the resources.
 
 ## Operators
 
-- `+` signifies AND operation
-- `|` signifies OR operation
+- `+` AND operator
+- `|` OR operator
 - `-` negates a single token
-- `"` wraps a sequence of tokens to signify a phrase for searching
-- `*` at the end of a term signifies a prefix query
-- `(` and `)` signify search operator precedence
-- `~N` after a word signifies edit distance (fuzziness), where `N` is a digit
-- `~N` after a phrase signifies slop amount, where `N` is a digit
-
+- `"` encloses a sequence of tokens to indicate a phrase for the search
+- `*` at the end of a term for a prefix search
+- `(` and `)` indicate the precedence of search operators
+- `~N` after a word for edit distance (fuzziness), where `N` is a digit
+- `~N` after a phrase for word distance, where `N` is a digit
 
 ## Settings
 
-### Texts
-Decides which texts are searched. By default, all available texts are selected. This setting is automatically reset whenever you change your working text.
+### Respect Diacritics
 
-### All terms must occur
-With “_All terms must occur_” you can decide how individual search terms should be logically linked to each other. If the function is activated, only locations with contents that contain hits for all the search terms entered will be found. Otherwise, the locations with the most hits will be given a higher rank in the search results than those with fewer hits.
+If this feature is activated, entered or missing (!) diacritics will be considered during the search, and only content with the same use of diacritics will be found.
+
+### All Terms Must Occur
+
+With this setting you can define how individual search terms should logically be connected by default. If this function is activated, only locations containing all entered search terms will be found. Otherwise, locations with the most hits will rank higher in the search results than those with fewer hits.
 
 ### Interpret Regular Expressions
-The Quick Search is capable of running search queries based on a Regular Expression. Switching this setting _on_ will **disable the standard search operators listed above**!
 
-The expression _must_ match a whole term in any case, so don't use anchors (`^` at the beginning and `$` at the end of the expression). For an overview of the available RegExp syntax, please see [the Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html).
+Quick search can handle search queries using a regular expression. This feature **deactivates the standard search operators** listed above!
 
-### Respect diacritics
-If this function is activated, entered or missing (!) diacritics are taken into account in the search and only content with the same use of diacritics is found.
+The expression _must_ correspond to an entire term — so do not use boundary anchors (`^` at the beginning and `$` at the end of the expression). An overview of the available RegExp syntax can be found in the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html).
+
+### Include Content from Higher-Level Locations
+
+If this option is activated, the contents of all higher-level locations will also apply to each child location. For example, a verse in a poem will be found if the search yields a hit in content from the parent stanza.
+
+### Find Locations at All Levels
+
+If this option is activated, locations at all structural levels will be found, not just those from the default level.
+
+### Text Selection
+
+Defines which texts will be searched. By default, all available texts are selected. This setting will automatically reset when you change your working text.
+
+## Location Aliases
+
+In addition to search terms, location aliases can also be entered in the quick search, allowing you to quickly jump to a specific location using known aliases.
