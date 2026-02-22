@@ -9,7 +9,7 @@ A collaborative, web-based research platform for aligning, linking, publishing, 
 ![Tekst-Web code checks status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/web-checks.yml?label=client%20checks)
 
 > [!IMPORTANT]
-> Tekst is currently in an open beta phase. We're test-driving it as the technical basis of the new [VedaWeb platform](https://vedaweb.uni-koeln.de), the first public instance of Tekst. You are welcome to follow further development in this very repository, leave a star to signal you interest in our work or [get in touch](https://github.com/VedaWebProject/Tekst/issues) if you find any errors.
+> Tekst is currently in an open beta phase. We're test-driving it as the technical basis of the new [VedaWeb platform](https://vedaweb.uni-koeln.de), the first public instance of Tekst. You are welcome to follow further development in this very repository, leave a star to signal your interest in our work or [get in touch](https://github.com/VedaWebProject/Tekst/issues) if you find any errors.
 
 Tekst has been initially developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project on Old Indic texts, where it constitutes the technical basis of the research platform "VedaWeb", which was created in its new form as part of the project's efforts.
 
