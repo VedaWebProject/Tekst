@@ -1004,17 +1004,17 @@ tour:
   browseResourceDrawerOpen:
     title: Select Displayed Resources
     text: |
-      ...and choose which resources do show or hide!
+      ...and choose which resources to show or hide!
   quickSearch:
     title: Quick Search
     text: |
       You want to quickly retrieve information using a full-text search?
-      This is what the Quick Search is for. It is always available in the page header.
-      While you can just type some search term and press ENTER, the Quick Search actually
-      offers a wide variety of features to fine-tune your full-text search.
+      This is what the Quick Search is for. It is always available in the page header
+      and understands simple search terms as well as a powerful search syntax.
+      There is also a variety of settings you can use to fine-tune your full-text search...
   quickSearchSettings:
     title: 'Quick Search: Settings'
-    text: ...some of which you can configure here, in the Quick Search settings!
+    text: ... You can find them here, in the Quick Search settings!
   quickSearchHelp:
     title: Happy Power Users
     text: |
@@ -1022,7 +1022,7 @@ tour:
       go ahead and have a look into the Quick Search help article!
       Among other things, it covers the special Quick Search syntax.
   helpButtons:
-    title: Inne Help Buttons
+    title: Help Buttons
     text: |
       By the way, you'll find these little help buttons in numerous places.
       Click them to read helpful instructions on their respective topics.

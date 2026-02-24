@@ -1034,13 +1034,12 @@ tour:
     title: Schnellsuche
     text: |
       Möchten Sie Informationen einfach über eine Volltextsuche abrufen?
-      Dazu dient die Schnellsuche. Sie ist immer im Kopf der Seite verfügbar.
-      Während Sie einfach einen Suchbegriff eintippen und ENTER drücken können,
-      bietet die Schnellsuche tatsächlich auch eine Vielzahl von Funktionen zur
-      Feinabstimmung Ihrer Volltextsuche.
+      Dazu dient die Schnellsuche. Sie ist immer im Kopf der Seite verfügbar
+      und versteht sowohl einfache Suchbegriffe als auch eine leistungsstarke Anfragesyntax.
+      Außerdem bietet sie eine Vielzahl von Einstellungen zur Feinabstimmung Ihrer Volltextsuche...
   quickSearchSettings:
     title: 'Schnellsuche: Einstellungen'
-    text: ...einige davon können Sie hier in den Einstellungen der Schnellsuche konfigurieren!
+    text: ... Sie finden Sie hier, in den Einstellungen der Schnellsuche!
   quickSearchHelp:
     title: Glückliche Power-User
     text: |
