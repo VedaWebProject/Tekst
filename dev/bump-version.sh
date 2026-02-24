@@ -9,7 +9,7 @@ script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # bump client version first
 cd "$script_dir/../Tekst-Web"
-npm version "pre$1" --git-tag-version false --preid alpha # TODO: remove after pre-stable phase: "pre..." and --preid
+npm version "pre$1" --git-tag-version false --preid beta # TODO: remove after pre-stable phase: "pre..." and --preid
 
 # remember new client version
 new_version=$(npx -c 'node -p "process.env.npm_package_version"')
