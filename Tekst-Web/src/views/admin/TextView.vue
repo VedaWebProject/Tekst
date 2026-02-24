@@ -52,8 +52,12 @@ async function handleDelete() {
       });
       if (!error) {
         message.success($t('texts.settings.msgDeleted', { title: state.text?.title || '?' }));
+        // switch to different working text
+        state.text =
+          state.text?.id !== state.defaultText?.id
+            ? state.defaultText
+            : (state.pf?.texts.find((t) => t.id !== state.text?.id) ?? state.pf?.texts[0]);
         await loadPlatformData();
-        state.text = state.defaultText;
         router.replace({ name: 'home' });
       }
       loading.value = false;
