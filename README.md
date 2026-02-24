@@ -1,12 +1,12 @@
 # Tekst <!-- omit in toc -->
 
-<img width="64" height="64" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px; z-index: 9" src="Tekst-Web/src/assets/logo.png" alt="Tekst logo"/>
+<img width="64" height="64" align="right" style="position: absolute;  top: 0; right: 0; padding: 12px; z-index: 9" src="assets/logo.png" alt="Tekst logo"/>
 
 A collaborative, web-based research platform for aligning, linking, publishing, exploring and enriching resources on natural language texts.
 
-![Tekst-API tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/api-tests.yml?label=API%20tests)
+[![Tekst-API tests status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/api-tests.yml?label=API%20tests)](https://github.com/VedaWebProject/Tekst/actions/workflows/api-tests.yml)
 [![Tekst-API tests coverage](https://img.shields.io/coverallsCoverage/github/VedaWebProject/Tekst?branch=main&label=API%20tests%20coverage)](https://coveralls.io/github/VedaWebProject/Tekst?branch=main)
-![Tekst-Web code checks status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/web-checks.yml?label=client%20checks)
+[![Tekst-Web code checks status](https://img.shields.io/github/actions/workflow/status/VedaWebProject/Tekst/web-checks.yml?label=client%20checks)](https://github.com/VedaWebProject/Tekst/actions/workflows/web-checks.yml)
 
 > [!IMPORTANT]
 > Tekst is currently in an open beta phase. We're test-driving it as the technical basis of the new [VedaWeb platform](https://vedaweb.uni-koeln.de), the first public instance of Tekst. You are welcome to follow further development in this very repository, leave a star to signal your interest in our work or [get in touch](https://github.com/VedaWebProject/Tekst/issues) if you find any errors.
