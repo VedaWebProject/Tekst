@@ -1,9 +1,12 @@
-# What is Tekst?
-
-!!! warning "Work-in-progress"
-    While the Tekst platform is already in its open beta phase, this manual is still very much work-in-progress. We'll try to complete it as soon as possible, but please bear with us if you encounter any incomplete information.
+# Introduction
 
 Tekst is a collaborative, web-based research platform for aligning, displaying, linking, exploring, and enriching resources on natural language texts. It is developed within the scope of the [VedaWeb 2.0](https://vedaweb.uni-koeln.de/) research project, where it constitutes the technical basis of the *VedaWeb* research platform.
+
+!!! note "Git Repository"
+    You are looking for Tekst's Git repository? [It's over here.](https://github.com/VedaWebProject/Tekst)
+
+!!! important "Work-in-progress"
+    While the Tekst platform is already in its open beta phase, this manual is still very much work-in-progress. We'll try to complete it as soon as possible, but please bear with us if you encounter any incomplete information.
 
 ## Use cases
 
