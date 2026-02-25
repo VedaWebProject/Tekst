@@ -144,7 +144,11 @@ export const useThemeStore = defineStore('theme', () => {
 
   const nuiThemeOverrides = computed(() => {
     const primary = toRgba(colors.value.primary.base);
-    const baseOverrides = merge(_COMMON_OVERRIDES, dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES);
+    const baseOverrides = merge(
+      {},
+      _COMMON_OVERRIDES,
+      dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES
+    );
     return {
       ...baseOverrides,
       common: {
