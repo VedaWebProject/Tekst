@@ -20,7 +20,7 @@ You are looking for information on concepts, use cases, features, setup, deploym
 
 <!-- I know this is a sin – and it hurts me, too. But I need the bigger font on this and want to avoid more HTML in this README. -->
 
-### Click here for the [📖 _Tekst_ manual](https://vedawebproject.github.io/Tekst)!
+### 📖 [Click here for the _Tekst_ manual!](https://vedawebproject.github.io/Tekst)
 
 
 ## Publications
@@ -37,7 +37,7 @@ Please see the [contributing guidelines](CONTRIBUTING.md).
 
 This is a monorepo containing the codebases of all parts of the Tekst platform. Where applicable, the different project directories contain their own respective `README.md` files covering the development tooling and overall project setup.
 
-### Projects and technologies overview
+### Projects and technologies
 
 #### Tekst-API
 The server part of the Tekst platform: [`Tekst-API/`](Tekst-API) \

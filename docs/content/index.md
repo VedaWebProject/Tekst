@@ -18,23 +18,27 @@ In the end, giving it a try on your local machine [is relatively easy](setup/ins
 This list is far from exhaustive, but includes some features that might be decisive in certain scenarios:
 
 - Manage multiple independent, potentially differently structured texts
-- Publish data from various multi-modal resources, aligned to the structure of their respective common reference text
-  - Plain text
-  - Rich text
-  - Text annotations
-  - Images
-  - Audio
-  - External references
-  - Integration of external APIs
-  - Arbitrary key-value metadata
 - Run it as a closed, internally curated publishing platform or as an open platform for a selected research community to encourage user contributions
 - Built-in user management with authentication and a combination of role-based and ownership-based authorization
 - Built-in [i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization) with an extensible set of languages (contributions are welcome!)
-- Customize logos, UI colors, fonts, on-screen keyboards, ...
+- Encouraging user contributons and collaboration by enabling user to
+    - submit quick correction notes
+    - create versions of existing resources to compose and propose deviating data
+    - create own resources, propose them for publication and have them reviewed by the community
 - Per-resource data export (full or range-based) as JSON or CSV
 - Dozens of specialized usability features, developed with real-world needs of humanities researchers in mind
 - Extensively typed and documented server API (via [OpenAPI](https://spec.openapis.org/oas/v3.0.2) specification) and built-in interactive API documentation (via [Swagger UI](https://github.com/swagger-api/swagger-ui) and/or [ReDoc](https://github.com/Redocly/redoc)), all thanks to [FastAPI](https://github.com/tiangolo/fastapi)
+- Customize logos, UI colors, fonts, on-screen keyboards, ...
 - Built-in user messaging system
+- Publish data from various multi-modal resources, aligned to the structure of their respective common reference text
+    - Plain text
+    - Rich text
+    - Text annotations
+    - Images
+    - Audio
+    - External references
+    - Integration of external APIs
+    - Arbitrary key-value metadata
 - ...
 
 ## Caveats
