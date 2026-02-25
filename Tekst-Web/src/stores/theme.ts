@@ -9,6 +9,7 @@ import {
   toRgba,
   transparentize,
 } from 'color2k';
+import { merge } from 'lodash-es';
 import type { ButtonProps, GlobalThemeOverrides } from 'naive-ui';
 import { darkTheme, lightTheme } from 'naive-ui';
 import { defineStore } from 'pinia';
@@ -56,9 +57,7 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
 };
 
 const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
-  ..._COMMON_OVERRIDES,
   common: {
-    ..._COMMON_OVERRIDES.common,
     bodyColor: '#FFFFFF',
   },
   Badge: {
@@ -68,28 +67,29 @@ const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
 };
 
 const _DARK_OVERRIDES: GlobalThemeOverrides = {
-  ..._COMMON_OVERRIDES,
   common: {
-    ..._COMMON_OVERRIDES.common,
     bodyColor: '#232323',
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
     color: '#ff4e48',
   },
-  Button: {
-    ..._COMMON_OVERRIDES.Button,
-    textColorPrimary: '#232323FF',
-  },
   Card: {
-    ..._COMMON_OVERRIDES.Card,
     colorEmbedded: '#333',
     colorModal: '#333',
     colorEmbeddedModal: '#333',
   },
   Dialog: {
-    ..._COMMON_OVERRIDES.Dialog,
     color: '#333',
+  },
+  Drawer: {
+    color: '#333',
+  },
+  Table: {
+    thColor: '#6661',
+    thColorModal: '#AAA1',
+    tdColor: '#0001',
+    tdColorModal: '#0001',
   },
 };
 
@@ -144,7 +144,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   const nuiThemeOverrides = computed(() => {
     const primary = toRgba(colors.value.primary.base);
-    const baseOverrides = dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES;
+    const baseOverrides = merge(_COMMON_OVERRIDES, dark.value ? _DARK_OVERRIDES : _LIGHT_OVERRIDES);
     return {
       ...baseOverrides,
       common: {
