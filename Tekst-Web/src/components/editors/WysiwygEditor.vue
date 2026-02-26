@@ -25,6 +25,7 @@ import {
 } from '@/icons';
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
 import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit';
@@ -32,6 +33,40 @@ import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { NButton, NFlex, NIcon, NSelect, type SelectOption } from 'naive-ui';
 import 'prosemirror-view/style/prosemirror.css';
 import { computed, h, onUnmounted, watch, type Component, type CSSProperties } from 'vue';
+
+const _WHITELIST_ATTRS = {
+  a: [
+    'data-tekst-text-id',
+    'data-tekst-text-slug',
+    'data-tekst-location-id',
+    'data-tekst-location-alias',
+    'data-tekst-location-level',
+    'data-tekst-location-position',
+    'data-tekst-info-page',
+  ],
+};
+
+const CustomLink = Link.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      ...Object.fromEntries(
+        _WHITELIST_ATTRS.a.map((attr) => [
+          attr,
+          {
+            attr: {
+              default: null,
+              parseHTML: (element: HTMLElement) => {
+                return element.hasAttribute(attr) ? element.getAttribute(attr) : null;
+              },
+            },
+          },
+        ])
+      ),
+      href: { default: '#' },
+    };
+  },
+});
 
 const props = withDefaults(
   defineProps<{
@@ -64,11 +99,12 @@ const editor = useEditor({
   extensions: [
     StarterKit.configure({
       heading: {
-        levels: [1, 2, 3, 4],
+        levels: [1, 2, 3, 4, 5],
       },
-      link: {
-        openOnClick: false,
-      },
+      link: false,
+    }),
+    CustomLink.configure({
+      openOnClick: false,
     }),
     TextAlign.configure({
       types: ['heading', 'paragraph'],
