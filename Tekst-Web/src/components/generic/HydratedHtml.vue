@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { $t } from '@/i18n';
+import { $t, getLocaleProfile, i18n } from '@/i18n';
 import { ref, watchEffect, type CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
@@ -102,7 +102,13 @@ function hydrate(html: string | undefined) {
 }
 
 watchEffect(() => {
-  hydrate(props.html);
+  // replace current date placeholder
+  hydrate(
+    props.html.replace(
+      /\{\{curr_date\}\}/g,
+      new Date().toLocaleDateString(getLocaleProfile(i18n.global.locale).displayShort)
+    )
+  );
 });
 </script>
 
