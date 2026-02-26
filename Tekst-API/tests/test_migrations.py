@@ -612,3 +612,29 @@ async def test_0_45_0a0(
                 or comment["by"] == "Editor"
                 and comment["comment"] == "BAR"
             )
+
+
+@pytest.mark.anyio
+async def test_0_49_4b0(
+    database,
+    get_test_data,
+):
+    test_data = get_test_data("migrations/0_49_4b0.json")
+    await database.resources.insert_many(test_data["resources"])
+    await database.state.insert_many(test_data["state"])
+
+    # run migration
+    await _migration_fn("0_49_4b0")(database)
+
+    # assert the data has been fixed by the migration
+    resources = await database.resources.find({}).to_list()
+    assert resources
+    for res in resources:
+        assert res
+        assert "citation" in res
+        assert res["citation"] == r"FOO {{curr_date}} BAR {{res_url}}"
+
+    pf_state = await database.state.find_one()
+    assert pf_state
+    assert "global_citation_suffix" in pf_state
+    assert pf_state["global_citation_suffix"] == r"FOO {{curr_date}} BAR {{res_url}}"

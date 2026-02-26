@@ -826,7 +826,7 @@ admin:
     headingRestrictedResTypes: Restricted Resource Types
     msgSaved: Platform settings saved.
     defaultTextPlaceholder: Automatic
-    globalCitationSuffixPH: Use {'<'}res-url{'>'} for resource URL and {'<'}curr-date{'>'} for the current date!
+    globalCitationSuffixPH: Use {'{{'}res_url{'}}'} for resource URL and {'{{'}curr_date{'}}'} for the current date!
   maintenance:
     heading: Maintenance
     indices:

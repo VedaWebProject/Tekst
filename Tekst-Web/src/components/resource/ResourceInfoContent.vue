@@ -37,11 +37,11 @@ const citation = computed(() => {
   const suff = state.pf?.state.globalCitationSuffix ?? '';
   return (`${cit} ${suff}`.trim() || null)
     ?.replace(
-      /\<curr-date\>/g,
+      /\{\{curr_date\}\}/g,
       new Date().toLocaleDateString(getLocaleProfile(state.locale).displayShort)
     )
     .replace(
-      /\<res-url\>/g,
+      /\{\{res_url\}\}/g,
       `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`
     );
 });
