@@ -1,9 +1,42 @@
 import { readdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { marked } from 'marked';
 import path from 'path';
+import jsdom from 'jsdom';
 
 const SOURCE_DIR = path.normalize('i18n/help/');
 const TARGET_DIR = path.normalize('src/assets/i18n/help/');
+
+function addTOC(html) {
+  if (!html) return '';
+  const { document } = new jsdom.JSDOM(html).window;
+  const ul = document.createElement('ul');
+  ul.style.padding = '0px';
+  ul.style.marginTop = '0.25rem';
+  const headings = document.querySelectorAll('h2,h3,h4,h5,h6');
+  if (headings.length <= 2) return document.body.innerHTML;
+  headings.forEach((h) => {
+    const hSlug = 'helptext-' + h.innerHTML.replace(/\W+/g, '-').toLowerCase();
+    h.setAttribute('id', hSlug);
+    const level = Number.parseInt(h.tagName.charAt(1));
+    const li = document.createElement('li');
+    li.style.paddingLeft = `${level - 1}rem`;
+    li.style.fontSize = `${14 + 8 / level}px`;
+    li.style.listStylePosition = 'inside';
+    const a = document.createElement('a');
+    a.innerHTML = h.innerHTML.toString();
+    a.setAttribute('href', `#${hSlug}`);
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+  const mainHeading = document.getElementsByTagName('h1')[0];
+  // insert TOC into document
+  if (mainHeading) {
+    mainHeading.after(ul);
+  } else {
+    document.prepend(ul);
+  }
+  return document.body.innerHTML;
+}
 
 const localeDirs = readdirSync(SOURCE_DIR, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory()
@@ -42,7 +75,7 @@ for (const localeDir of localeDirs) {
     const sourceFilePath = path.join(mdFile.parentPath, mdFile.name);
     const data = readFileSync(sourceFilePath, 'utf8');
     const title = data.match(/(?<=^#+ ).*$/m)[0]?.replace(/\\\*/, '*'); // ugly, but efficient!
-    const content = marked.parse(data);
+    const content = addTOC(marked.parse(data));
     const helpKey = mdFile.name.split('.')[0];
     const scope = mdFile.name.split('.').length === 3 ? mdFile.name.split('.')[1] : 'v';
     helpTranslations[helpKey] = { title, content, scope };
