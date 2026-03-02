@@ -79,6 +79,7 @@ const resourceOptions = computed(() => {
     children: resources.all
       .filter((r) => r.textId === tId)
       .filter((r) => r.config.general.searchableAdv)
+      .filter((r) => r.public || !!state.pf?.state.indexUnpublishedResources)
       .sort((a, b) =>
         pickTranslation(a.title, state.locale).localeCompare(pickTranslation(b.title, state.locale))
       )
