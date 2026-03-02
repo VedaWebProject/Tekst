@@ -24,6 +24,7 @@ import {
   SearchIcon,
   SegmentsIcon,
   SettingsIcon,
+  StatsIcon,
   TextsIcon,
   UserIcon,
   UsersIcon,
@@ -144,6 +145,13 @@ export function useMainMenuOptions(showIcons: boolean = true) {
             }),
             key: 'community',
             icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+          },
+          {
+            label: renderLink(() => $t('stats.heading'), {
+              name: 'stats',
+            }),
+            key: 'stats',
+            icon: (showIcons && renderIcon(StatsIcon)) || undefined,
           },
         ]
       : []),
