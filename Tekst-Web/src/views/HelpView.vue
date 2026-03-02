@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import GenericModal from '@/components/generic/GenericModal.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import { useHelp } from '@/composables/help';
@@ -8,7 +7,7 @@ import { NEmpty, NIcon, NInput, NSpin } from 'naive-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import type { HelpText } from '@/composables/help';
-import { HelpOverviewIcon, NoContentIcon, QuestionMarkIcon, SearchIcon } from '@/icons';
+import { HelpOverviewIcon, NoContentIcon, SearchIcon } from '@/icons';
 
 const { getHelpTexts } = useHelp();
 
@@ -16,12 +15,10 @@ const state = useStateStore();
 const auth = useAuthStore();
 const searchInput = ref('');
 const loading = ref(false);
-const showModal = ref(false);
 const helpTexts = ref<[string, HelpText][]>([]);
 const helpTextsFiltered = computed<[string, HelpText][]>(() =>
   filterHelpTexts(helpTexts.value, searchInput.value)
 );
-const helpTextContent = ref<string>();
 const searchInputState = computed(() =>
   !!searchInput.value?.length && !helpTextsFiltered.value.length
     ? 'error'
@@ -49,11 +46,6 @@ async function requestHelpTexts() {
     HelpText,
   ][];
   loading.value = false;
-}
-
-function handleClick(textKey: string) {
-  helpTextContent.value = helpTextsFiltered.value?.find((h) => h[0] === textKey)?.[1].content;
-  showModal.value = true;
 }
 
 watch(
@@ -103,14 +95,15 @@ onMounted(() => {
   <div class="content-block">
     <ul v-if="helpTextsFiltered">
       <li
-        v-for="[textKey, text] of helpTextsFiltered"
-        :key="textKey"
-        :title="text.title || textKey"
+        v-for="[helpKey, text] of helpTextsFiltered"
+        :key="helpKey"
+        :title="text.title || helpKey"
         class="mb-sm"
       >
-        <span class="help-topic" @click.stop.prevent="handleClick(textKey)">
-          {{ text.title || textKey }}
-        </span>
+        <help-button-widget :help-key="helpKey" :link="text.title || helpKey" />
+        <!-- <span class="help-topic" @click.stop.prevent="handleClick(helpKey)">
+          {{ text.title || helpKey }}
+        </span> -->
       </li>
     </ul>
     <n-spin v-else-if="loading" class="centered-spin" />
@@ -120,17 +113,6 @@ onMounted(() => {
       </template>
     </n-empty>
   </div>
-
-  <generic-modal
-    v-model:show="showModal"
-    width="wide"
-    :title="$t('help.help') + '...'"
-    :icon="QuestionMarkIcon"
-    heading-level="3"
-    @after-leave="helpTextContent = undefined"
-  >
-    <div v-html="helpTextContent"></div>
-  </generic-modal>
 </template>
 
 <style scoped>
