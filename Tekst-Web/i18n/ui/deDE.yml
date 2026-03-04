@@ -50,6 +50,7 @@ common:
   location: Belegstelle | Belegstellen
   level: Ebene | Ebenen
   content: Inhalt | Inhalte
+  archived: archiviert
   meta: Meta
   browse: Lesen
   platform: Plattform

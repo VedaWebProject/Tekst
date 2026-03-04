@@ -50,6 +50,7 @@ common:
   location: Location | Locations
   level: Level | Levels
   content: Content | Contents
+  archived: archived
   meta: Meta
   browse: Browse
   platform: Platform

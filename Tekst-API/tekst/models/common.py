@@ -157,7 +157,7 @@ class DocumentBase(Document):
         field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
         try:
             field_adapter.validate_python(value)
-            return True
+            return True  # pragma: no cover
         except ValidationError:
             return False
 

@@ -1,3 +1,4 @@
+from datetime import UTC, datetime
 from typing import Annotated, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
@@ -18,12 +19,15 @@ from tekst.types import (
 
 
 class ContentComment(TypedDict):
+    """A comment on a content"""
+
     by: NotRequired[
         ConStrOrNone(
             max_length=128,
             cleanup="oneline",
         )
     ]
+
     comment: ConStr(
         max_length=5000,
         cleanup="multiline",
@@ -42,6 +46,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     resource_type: Annotated[
         ResourceTypeName,
         Field(
@@ -51,6 +56,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     location_id: Annotated[
         PydanticObjectId,
         Field(
@@ -60,6 +66,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     comments: Annotated[
         list[ContentComment] | None,
         Field(
@@ -71,11 +78,16 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         SchemaOptionalNonNullable,
     ] = None
 
-    @field_validator(
-        "resource_type",
-        mode="after",
-        check_fields=False,
-    )
+    archive_ts: Annotated[
+        datetime | None,
+        Field(description="Timestamp of the content archival"),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
+    ] = None
+
+    @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resources import resource_types_mgr
@@ -114,9 +126,22 @@ class ContentBaseDocument(ContentBase, DocumentBase):
         name = "contents"
         is_root = True
         indexes = [
-            "resource_id",
-            "location_id",
+            [
+                "resource_id",
+                "location_id",
+                "archive_ts",
+            ]
         ]
+
+    async def archive_copy(self):
+        """
+        Archives this content by creating a copy, assigning it an `archive_ts`
+        (sets an archival timestamp) and saving it with a new ID.
+        """
+        copy = self.model_copy(deep=True)
+        copy.id = None
+        copy.archive_ts = datetime.now(UTC)
+        await copy.save()
 
 
 ContentBaseUpdate = ContentBase.update_model()

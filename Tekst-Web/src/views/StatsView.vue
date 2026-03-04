@@ -65,7 +65,14 @@ onMounted(() => {
         <n-statistic
           :label="$t('common.content', 2)"
           :value="stats.contents.toLocaleString(localeCode)"
-        />
+        >
+          <template v-if="auth.user?.isSuperuser" #suffix>
+            <span class="text-medium ml-sm su-stat" :title="$t('stats.onlySu')">
+              {{ (stats as SuperuserStats).archivedContents.toLocaleString(localeCode) }}
+              {{ $t('common.archived') }}
+            </span>
+          </template>
+        </n-statistic>
         <n-statistic
           :label="$t('admin.users.heading')"
           :value="stats.users.toLocaleString(localeCode)"
@@ -207,7 +214,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.su-stat :deep(.n-statistic__label) {
+.su-stat :deep(.n-statistic__label),
+:deep(.n-statistic-value__suffix .su-stat) {
   color: var(--info-color);
 }
 </style>

@@ -324,6 +324,7 @@ async def _populate_index(
         for content in await ContentBaseDocument.find(
             Eq(ContentBaseDocument.location_id, loc.id),
             In(ContentBaseDocument.resource_id, target_resource_ids),
+            Eq(ContentBaseDocument.archive_ts, None),
             with_children=True,
         ).to_list():
             # add resource level and content to location index document

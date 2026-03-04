@@ -532,7 +532,8 @@ async def delete_location(
         # delete associated contents
         contents_deleted += (
             await ContentBaseDocument.find(
-                In(ContentBaseDocument.location_id, target_ids), with_children=True
+                In(ContentBaseDocument.location_id, target_ids),
+                with_children=True,
             ).delete()
         ).deleted_count
 
