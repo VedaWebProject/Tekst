@@ -316,6 +316,7 @@ class ResourceTypeABC(ABC):
                 data,
                 fp=fp,
                 ensure_ascii=False,
+                default=str,
             )
 
     @classmethod

@@ -1420,6 +1420,11 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
+      /**
        * Calls
        * @description List of API calls to make for this content
        */
@@ -1860,6 +1865,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Files
        * @description List of audio file objects
@@ -2464,7 +2474,10 @@ export interface components {
        */
       cmt?: string;
     };
-    /** ContentComment */
+    /**
+     * ContentComment
+     * @description A comment on a content
+     */
     ContentComment: {
       /** By */
       by?: null | string;
@@ -2625,6 +2638,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Links
        * @description List of external reference link objects
@@ -3124,6 +3142,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Files
        * @description List of image file objects
@@ -3630,6 +3653,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -4273,6 +4301,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5195,6 +5228,11 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
+      /**
        * Html
        * @description HTML content of the rich text content object
        */
@@ -5688,6 +5726,8 @@ export interface components {
       searchAdvanced: number;
       /** Statsrequests */
       statsRequests: number;
+      /** Archivedcontents */
+      archivedContents: number;
       /** Bookmarks */
       bookmarks: number;
       /** Corrections */
@@ -5830,6 +5870,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Tokens
        * @description List of annotated tokens in this content object

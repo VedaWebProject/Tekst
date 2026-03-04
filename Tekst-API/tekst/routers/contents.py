@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In, Not
+from beanie.operators import NE, Eq, In, Not
 from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
@@ -51,8 +51,9 @@ async def create_content(
 
     # check for duplicates
     if await ContentBaseDocument.find_one(
-        ContentBaseDocument.resource_id == content.resource_id,
-        ContentBaseDocument.location_id == content.location_id,
+        Eq(ContentBaseDocument.resource_id, content.resource_id),
+        Eq(ContentBaseDocument.location_id, content.location_id),
+        Eq(ContentBaseDocument.archive_ts, None),
         with_children=True,
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
@@ -137,7 +138,9 @@ async def update_content(
     # mark the text's index as out-of-date
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
-    # apply updates, return the updated document
+    # archive copy of existing content
+    await content_doc.archive_copy()
+    # apply updates to content, save, return updated document
     return await content_doc.apply_updates(updates)
 
 
@@ -171,7 +174,9 @@ async def delete_content(
     # mark the text's index as out-of-date
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
-    # all fine, delete content
+    # all fine, archive a copy of the content
+    await content_doc.archive_copy()
+    # ...and delete the original
     await content_doc.delete()
 
 
@@ -196,6 +201,10 @@ async def find_contents(
             description="ID (or list of IDs) of location(s) to return content data for",
         ),
     ] = [],
+    archived: Annotated[
+        bool | None,
+        Query(description="Include archived content"),
+    ] = False,
     limit: Annotated[int, Query(description="Return at most <limit> items")] = 4096,
 ) -> list[AnyContentDocument]:
     """
@@ -234,6 +243,13 @@ async def find_contents(
             In(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],
+            ),
+            (
+                {}
+                if archived is None
+                else Eq(ContentBaseDocument.archive_ts, None)
+                if archived is False
+                else NE(ContentBaseDocument.archive_ts, None)
             ),
             with_children=True,
         )

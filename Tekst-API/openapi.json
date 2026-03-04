@@ -744,6 +744,25 @@
             "description": "ID (or list of IDs) of location(s) to return content data for"
           },
           {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Include archived content",
+              "default": false,
+              "title": "Archived"
+            },
+            "description": "Include archived content"
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -7526,6 +7545,19 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
+          },
           "calls": {
             "items": {
               "$ref": "#/components/schemas/ApiCallContentItem"
@@ -8460,6 +8492,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "files": {
             "items": {
@@ -9823,7 +9868,8 @@
         "required": [
           "comment"
         ],
-        "title": "ContentComment"
+        "title": "ContentComment",
+        "description": "A comment on a content"
       },
       "ContentCssProperties": {
         "items": {
@@ -10182,6 +10228,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "links": {
             "items": {
@@ -11254,6 +11313,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "files": {
             "items": {
@@ -12399,6 +12471,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "entries": {
             "items": {
@@ -13785,6 +13870,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "text": {
             "type": "string",
@@ -15696,6 +15794,19 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
+          },
           "html": {
             "type": "string",
             "maxLength": 102400,
@@ -16751,6 +16862,10 @@
             "type": "integer",
             "title": "Statsrequests"
           },
+          "archivedContents": {
+            "type": "integer",
+            "title": "Archivedcontents"
+          },
           "bookmarks": {
             "type": "integer",
             "title": "Bookmarks"
@@ -16813,6 +16928,7 @@
           "searchQuick",
           "searchAdvanced",
           "statsRequests",
+          "archivedContents",
           "bookmarks",
           "corrections",
           "correctionsAllTime",
@@ -17079,6 +17195,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "tokens": {
             "items": {

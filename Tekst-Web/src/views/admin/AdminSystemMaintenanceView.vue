@@ -6,7 +6,6 @@ import { DELETE, GET, type IndexInfoResponse, type TaskRead } from '@/api';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { DeleteIcon, EMailIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
@@ -15,7 +14,6 @@ import { utcToLocalTime } from '@/utils';
 import {
   NAlert,
   NButton,
-  NDivider,
   NFlex,
   NIcon,
   NTable,
@@ -38,9 +36,7 @@ const tabsRef = ref<TabsInst>();
 const allTasks = ref<TaskRead[]>([]);
 const indicesInfo = ref<IndexInfoResponse>();
 const indicesInfoLoading = ref(false);
-const indicesForce = ref(false);
 const precomputedLoading = ref(false);
-const precomputedForce = ref(false);
 const cleanupLoading = ref(false);
 const tasksLoading = ref(false);
 const emailLoading = ref(false);
@@ -52,30 +48,28 @@ const statusColors: Record<string, string> = {
   failed: 'var(--error-color)',
 };
 
-async function createIndex() {
+async function createIndex(force: boolean = false) {
   indicesInfoLoading.value = true;
   const { data, error } = await GET('/search/index/create', {
-    params: { query: { force: indicesForce.value } },
+    params: { query: { force } },
   });
   if (!error) {
     addTask(data);
     message.info($t('admin.maintenance.indices.actionCreateStarted'));
     startTasksPolling();
-    indicesForce.value = false;
   }
   indicesInfoLoading.value = false;
 }
 
-async function triggerPrecomputation() {
+async function triggerPrecomputation(force: boolean = false) {
   precomputedLoading.value = true;
   const { data, error } = await GET('/resources/precompute', {
-    params: { query: { force: precomputedForce.value } },
+    params: { query: { force } },
   });
   if (!error) {
     addTask(data);
     message.info($t('admin.maintenance.precomputed.actionStarted'));
     startTasksPolling();
-    precomputedForce.value = false;
   }
   precomputedLoading.value = false;
 }
@@ -186,7 +180,22 @@ onBeforeMount(() => {
         <form-section :title="$t('admin.maintenance.indices.heading')" :show-box="false">
           <button-shelf class="mb-lg">
             <template #start>
+              <n-button type="primary" :disabled="indicesInfoLoading" @click="() => createIndex()">
+                <template #icon>
+                  <n-icon :component="UpdateIcon" />
+                </template>
+                {{ $t('admin.maintenance.indices.actionCreate') }}
+              </n-button>
+              <n-button type="warning" :disabled="indicesInfoLoading" :title="$t('admin.maintenance.forceTip')" @click="() => createIndex(true)">
+                <template #icon>
+                  <n-icon :component="UpdateIcon" />
+                </template>
+                {{ $t('admin.maintenance.indices.actionCreate') }}
+                ({{$t('admin.maintenance.force')}})
+              </n-button>
+          </template>
               <n-button
+                secondary
                 type="primary"
                 :disabled="indicesInfoLoading"
                 :loading="indicesInfoLoading"
@@ -197,19 +206,6 @@ onBeforeMount(() => {
                 </template>
                 {{ $t('common.refresh') }}
               </n-button>
-              <n-divider vertical style="height: 100%" />
-              <n-button type="primary" :disabled="indicesInfoLoading" @click="createIndex">
-                <template #icon>
-                  <n-icon :component="UpdateIcon" />
-                </template>
-                {{ $t('admin.maintenance.indices.actionCreate') }}
-              </n-button>
-              <labeled-switch
-                v-model="indicesForce"
-                :label="$t('admin.maintenance.force')"
-                :title="$t('admin.maintenance.forceTip')"
-              />
-            </template>
           </button-shelf>
 
           <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
@@ -268,34 +264,42 @@ onBeforeMount(() => {
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
-        <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false">
-          <n-alert type="info">{{ $t('admin.maintenance.precomputed.description') }}</n-alert>
-          <button-shelf class="my-lg">
+        <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false" class="mb-lg" >
+          <button-shelf >
             <template #start>
               <n-button
                 type="primary"
                 :disabled="precomputedLoading"
                 :loading="precomputedLoading"
-                @click="triggerPrecomputation"
+                @click="() => triggerPrecomputation()"
               >
                 <template #icon>
                   <n-icon :component="UpdateIcon" />
                 </template>
                 {{ $t('common.run') }}
               </n-button>
-              <labeled-switch
-                v-model="precomputedForce"
-                :label="$t('admin.maintenance.force')"
+              <n-button
+                type="warning"
+                :disabled="precomputedLoading"
+                :loading="precomputedLoading"
                 :title="$t('admin.maintenance.forceTip')"
-              />
+                @click="() => triggerPrecomputation(true)"
+              >
+                <template #icon>
+                  <n-icon :component="UpdateIcon" />
+                </template>
+                {{ $t('common.run') }}
+                ({{ $t('admin.maintenance.force') }})
+              </n-button>
             </template>
           </button-shelf>
         </form-section>
+        <n-alert type="info">{{ $t('admin.maintenance.precomputed.description') }}</n-alert>
       </n-tab-pane>
 
       <!-- INTERNAL CLEANUP -->
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
-        <form-section :title="$t('admin.maintenance.cleanup.heading')" :show-box="false">
+        <form-section :title="$t('admin.maintenance.cleanup.heading')" :show-box="false" class="mb-lg" >
           <n-button
             type="primary"
             :disabled="cleanupLoading"
@@ -307,16 +311,16 @@ onBeforeMount(() => {
             </template>
             {{ $t('common.run') }}
           </n-button>
-          <p>{{ $t('admin.maintenance.cleanup.description') }}</p>
         </form-section>
+        <n-alert type="info">{{ $t('admin.maintenance.cleanup.description') }}</n-alert>
       </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
       <n-tab-pane :tab="$t('tasks.title')" name="tasks">
         <form-section :title="$t('tasks.title')" :show-box="false">
           <button-shelf class="mb-lg">
-            <template #start>
               <n-button
+                secondary
                 type="primary"
                 :disabled="tasksLoading"
                 :loading="tasksLoading"
@@ -327,7 +331,6 @@ onBeforeMount(() => {
                 </template>
                 {{ $t('common.refresh') }}
               </n-button>
-            </template>
             <n-button
               secondary
               type="error"
@@ -426,7 +429,7 @@ onBeforeMount(() => {
 
       <!-- TEST EMAIL SETUP -->
       <n-tab-pane :tab="$t('admin.maintenance.email.heading')" name="email">
-        <form-section :title="$t('admin.maintenance.email.heading')" :show-box="false">
+        <form-section :title="$t('admin.maintenance.email.heading')" :show-box="false" class="mb-lg">
           <n-button
             type="primary"
             :disabled="emailLoading"
@@ -438,8 +441,8 @@ onBeforeMount(() => {
             </template>
             {{ $t('admin.maintenance.email.btn') }}
           </n-button>
-          <p>{{ $t('admin.maintenance.email.desc') }}</p>
         </form-section>
+        <n-alert type="info">{{ $t('admin.maintenance.email.desc') }}</n-alert>
       </n-tab-pane>
     </n-tabs>
   </div>

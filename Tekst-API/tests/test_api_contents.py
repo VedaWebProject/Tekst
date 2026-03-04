@@ -1,5 +1,6 @@
 import pytest
 
+from beanie.operators import NE, Eq
 from httpx import AsyncClient
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
@@ -148,7 +149,9 @@ async def test_update_content(
     await insert_test_data("texts", "locations", "resources", "contents")
     resource = await ResourceBaseDocument.find_one(with_children=True)
     content = await ContentBaseDocument.find_one(
-        ContentBaseDocument.resource_id == resource.id, with_children=True
+        Eq(ContentBaseDocument.resource_id, resource.id),
+        Eq(ContentBaseDocument.archive_ts, None),
+        with_children=True,
     )
     await login(is_superuser=True)
 
@@ -162,6 +165,15 @@ async def test_update_content(
     assert "id" in resp.json()
     assert resp.json()["id"] == str(content.id)
     assert resp.json()["text"] == "FOO BAR"
+
+    # check if the old content has been archived
+    archived_content = await ContentBaseDocument.find(
+        Eq(ContentBaseDocument.resource_id, content.resource_id),
+        Eq(ContentBaseDocument.location_id, content.location_id),
+        NE(ContentBaseDocument.archive_ts, None),
+        with_children=True,
+    ).first_or_none()
+    assert archived_content
 
     # update content w/ empty comment strings
     resp = await test_client.patch(
@@ -245,3 +257,10 @@ async def test_delete_content(
         f"/contents/{content_id}",
     )
     assert_status(204, resp)
+
+    # check if it actually has been archived
+    archived_count = await ContentBaseDocument.find(
+        NE(ContentBaseDocument.archive_ts, None),
+        with_children=True,
+    ).count()
+    assert archived_count == 1

@@ -1,7 +1,7 @@
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import In, NotIn
+from beanie.operators import Eq, In, NotIn
 from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
@@ -51,6 +51,7 @@ async def _get_content_context(
     content_docs = await ContentBaseDocument.find(
         ContentBaseDocument.resource_id == resource.id,
         In(ContentBaseDocument.location_id, location_ids),
+        Eq(ContentBaseDocument.archive_ts, None),
         with_children=True,
     ).to_list()
 
@@ -63,6 +64,7 @@ async def _get_content_context(
             NotIn(
                 ContentBaseDocument.location_id, [u.location_id for u in content_docs]
             ),
+            Eq(ContentBaseDocument.archive_ts, None),
             with_children=True,
         ).to_list()
     else:
@@ -192,6 +194,7 @@ async def get_location_data(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in target_resources],
             ),
+            Eq(ContentBaseDocument.archive_ts, None),
             with_children=True,
         )
         .limit(contents_fetch_limit)
