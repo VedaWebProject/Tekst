@@ -4,7 +4,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from beanie.operators import Eq
 from pydantic import BeforeValidator, Field
 
 from tekst.logs import log, log_op_end, log_op_start
@@ -322,7 +321,7 @@ class LocationMetadataResource(ResourceBase):
         precomp_doc.data = (
             await ContentBaseDocument.find(
                 ContentBaseDocument.resource_id == self.id,
-                Eq(ContentBaseDocument.archive_ts, None),
+                ContentBaseDocument.archived_query_criteria(False),
                 with_children=True,
             )
             .aggregate(

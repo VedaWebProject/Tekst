@@ -4,7 +4,6 @@ import {
   type AnyContentUpdate,
   type AnyResourceRead,
   type CorrectionRead,
-  DELETE,
   GET,
   type LocationDataQuery,
   type LocationRead,
@@ -135,6 +134,7 @@ const compareResourceOptions = computed(() =>
     }))
 );
 
+const loadingArchive = ref(false);
 const loadingDelete = ref(false);
 const loadingSave = ref(false);
 const loadingData = ref(false);
@@ -142,6 +142,7 @@ const loadingNav = ref(false);
 const loading = computed(
   () =>
     resources.loading ||
+    loadingArchive.value ||
     loadingDelete.value ||
     loadingSave.value ||
     loadingData.value ||
@@ -205,16 +206,16 @@ async function loadLocationData() {
     prevLocationId.value = locationData.prev || undefined;
     nextLocationId.value = locationData.next || undefined;
     // process received contents
-    initialContentModel.value =
-      locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
-      (!!resource.value?.originalId &&
-        locationData.contents?.find((u) => u.resourceId === resource.value?.originalId)) ||
+    const maybeContent =
+      locationData.contents[resource.value.id]?.[0] ??
+      locationData.contents[resource.value.originalId ?? '']?.[0] ??
       undefined;
-    const compareContent = locationData.contents?.find(
-      (u) => u.resourceId === compareResource.value?.id
-    );
+    initialContentModel.value =
+      !!maybeContent && maybeContent.resourceType !== 'none' ? maybeContent : undefined;
+    const compareContent = locationData.contents[compareResource.value?.id ?? '']?.[0];
     if (compareResource.value) {
-      compareResource.value.contents = compareContent ? [compareContent] : [];
+      compareResource.value.contents =
+        compareContent?.resourceType !== 'none' ? [compareContent] : [];
     }
     resetForm();
     // add location ID to URL params if not already present
@@ -301,30 +302,28 @@ async function handleJumpToClick() {
   showJumpToModal.value = true;
 }
 
-async function deleteContent() {
-  if (!contentModel.value) return;
-  loadingDelete.value = true;
-  const { error } = await DELETE('/contents/{id}', {
-    params: { path: { id: contentModel.value.id } },
-  });
-  if (!error) {
-    resources.resetCoverage(resource.value?.id);
-    await loadLocationData();
-    message.success($t('contents.msgDeleted'));
-  }
-  loadingDelete.value = false;
-}
-
-async function handleDeleteContentClick() {
+async function handleArchiveContentClick() {
   if (!contentModel.value) return;
   dialog.warning({
     title: $t('common.warning'),
-    content: $t('contents.confirmDelete'),
+    content: $t('contents.confirmArchive'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
-    onPositiveClick: deleteContent,
+    onPositiveClick: async () => {
+      if (!contentModel.value) return;
+      loadingArchive.value = true;
+      const { error } = await POST('/contents/{id}/archive', {
+        params: { path: { id: contentModel.value.id } },
+      });
+      if (!error) {
+        resources.resetCoverage(resource.value?.id);
+        await loadLocationData();
+        message.success($t('contents.msgArchived'));
+      }
+      loadingArchive.value = false;
+    },
   });
 }
 
@@ -672,12 +671,12 @@ whenever(ArrowRight, () => {
           <template #start>
             <n-button
               secondary
-              type="error"
+              type="warning"
               :disabled="loading || !contentModel.id || contentModel.resourceId !== resource.id"
-              :loading="loadingDelete"
-              @click="handleDeleteContentClick"
+              :loading="loadingArchive"
+              @click="handleArchiveContentClick"
             >
-              {{ $t('common.delete') }}
+              {{ $t('common.archive') }}
             </n-button>
           </template>
           <n-button secondary :disabled="!changed || loading" @click="resetForm">

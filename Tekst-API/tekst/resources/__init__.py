@@ -27,6 +27,7 @@ from tekst.models.content import (
     ContentBase,
     ContentBaseDocument,
     ContentBaseUpdate,
+    MissingContent,
 )
 from tekst.models.correction import CorrectionDocument
 from tekst.models.resource import (
@@ -601,6 +602,20 @@ AnyContentRead = Annotated[
                 rt.content_model().read_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
+        )
+    ],
+    Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
+]
+
+AnyContentReadOrMissing = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().read_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+            + [MissingContent]
         )
     ],
     Body(discriminator="resource_type"),

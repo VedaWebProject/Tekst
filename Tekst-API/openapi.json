@@ -235,6 +235,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/TextAnnotationContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/MissingContent"
                       }
                     ],
                     "discriminator": {
@@ -247,7 +250,8 @@
                         "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
-                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead",
+                        "none": "#/components/schemas/MissingContent"
                       }
                     }
                   },
@@ -1121,6 +1125,114 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}/archive": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Archive content",
+        "operationId": "archiveContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
+                      "audio": "#/components/schemas/AudioContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                      "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  },
+                  "title": "Response Archive Content Contents  Id  Archive Post"
+                }
+              }
+            }
           },
           "404": {
             "content": {
@@ -12333,50 +12445,60 @@
             "description": "ID of the subsequent location on the same level"
           },
           "contents": {
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ApiCallContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/AudioContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ExternalReferencesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ImagesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/LocationMetadataContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/PlainTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/RichTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/TextAnnotationContentRead"
+            "additionalProperties": {
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ApiCallContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AudioContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImagesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LocationMetadataContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlainTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RichTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MissingContent"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallContentRead",
+                    "audio": "#/components/schemas/AudioContentRead",
+                    "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                    "images": "#/components/schemas/ImagesContentRead",
+                    "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                    "none": "#/components/schemas/MissingContent",
+                    "plainText": "#/components/schemas/PlainTextContentRead",
+                    "richText": "#/components/schemas/RichTextContentRead",
+                    "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                  }
                 }
-              ],
-              "discriminator": {
-                "propertyName": "resourceType",
-                "mapping": {
-                  "apiCall": "#/components/schemas/ApiCallContentRead",
-                  "audio": "#/components/schemas/AudioContentRead",
-                  "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
-                  "images": "#/components/schemas/ImagesContentRead",
-                  "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
-                  "plainText": "#/components/schemas/PlainTextContentRead",
-                  "richText": "#/components/schemas/RichTextContentRead",
-                  "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
-                }
-              }
+              },
+              "type": "array"
             },
-            "type": "array",
+            "propertyNames": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "object",
             "title": "Contents",
-            "description": "Contents of various resources on this location",
+            "description": "Contents of various resources on this location, by resource ID",
             "default": []
           }
         },
@@ -13634,6 +13756,29 @@
           "value"
         ],
         "title": "MetadataEntry"
+      },
+      "MissingContent": {
+        "properties": {
+          "resourceId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "none",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId"
+        ],
+        "title": "MissingContent",
+        "description": "A model representing a missing content."
       },
       "MoveLocationRequestBody": {
         "properties": {

@@ -1,7 +1,8 @@
 from datetime import UTC, datetime
-from typing import Annotated, NotRequired, TypedDict
+from typing import Annotated, Any, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
+from beanie.operators import NE, And, Eq, Exists, Or
 from pydantic import BeforeValidator, Field, field_validator
 
 from tekst.models.common import (
@@ -133,15 +134,39 @@ class ContentBaseDocument(ContentBase, DocumentBase):
             ]
         ]
 
-    async def archive_copy(self):
+    @classmethod
+    def archived_query_criteria(cls, archived: bool) -> dict[str, Any]:
+        if archived:
+            return And(
+                Exists(ContentBaseDocument.archive_ts, True),
+                NE(ContentBaseDocument.archive_ts, None),
+            )
+        else:
+            return Or(
+                Exists(ContentBaseDocument.archive_ts, False),
+                Eq(ContentBaseDocument.archive_ts, None),
+            )
+
+    async def archive(self) -> "ContentBaseDocument":
         """
-        Archives this content by creating a copy, assigning it an `archive_ts`
-        (sets an archival timestamp) and saving it with a new ID.
+        Archives this content by assigning it an archival timestamp (`archive_ts`).
+        Returns an unsaved copy of the content (without ID).
         """
         copy = self.model_copy(deep=True)
         copy.id = None
-        copy.archive_ts = datetime.now(UTC)
-        await copy.save()
+        self.archive_ts = datetime.now(UTC)
+        await self.replace()
+        return copy
 
 
 ContentBaseUpdate = ContentBase.update_model()
+
+
+class MissingContent(ModelBase):
+    """
+    A model representing a missing content.
+    """
+
+    resource_id: PydanticObjectId
+    resource_type: Literal["none"]
+    location_id: PydanticObjectId

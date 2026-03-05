@@ -26,6 +26,7 @@ import { NAlert, NButton, NDropdown, NFlex, NIcon, NTable, useThemeVars } from '
 import type { CSSProperties } from 'vue';
 import { computed, nextTick, ref } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const _TOKEN_PLACEHOLDER = '[…]';
 
@@ -92,7 +93,8 @@ const annoCfg = computed(() => props.resource.config.special.annotations.annoInt
 const presentGroups = computed(() => {
   const keys = new Set(
     props.resource.contents
-      ?.map((c) => c.tokens)
+      ?.filter((c) => !!c)
+      .map((c) => c.tokens)
       .flat()
       .map((t) => t.annotations)
       .flat()
@@ -298,6 +300,7 @@ function applyDisplayTemplate(tokens: Token[]): AnnotationDisplay[][][] {
 const contents = computed(() => {
   const out =
     props.resource.contents?.map((c) => {
+      if (!c) return null;
       const displays = applyDisplayTemplate(c.tokens);
       return {
         ...c,
@@ -321,6 +324,7 @@ const contents = computed(() => {
   const emptyLines: boolean[] = annoLineNumbers.value.map(
     (ln) =>
       !out
+        .filter((c) => !!c)
         .map((c) => c.tokens)
         .flat()
         .map((t) =>
@@ -335,13 +339,17 @@ const contents = computed(() => {
   );
 
   // return contents with empty lines removed from their tokens' annotation displays
-  return out.map((c) => ({
-    ...c,
-    tokens: c.tokens.map((t) => ({
-      ...t,
-      annoDisplay: t.annoDisplay.filter((_, ln) => !emptyLines[ln]),
-    })),
-  }));
+  return out.map((c) =>
+    c == null
+      ? null
+      : {
+          ...c,
+          tokens: c.tokens.map((t) => ({
+            ...t,
+            annoDisplay: t.annoDisplay.filter((_, ln) => !emptyLines[ln]),
+          })),
+        }
+  );
 });
 
 function getAnnotationStyle(fmtFlags?: AnnotationDisplayFormatFlags): CSSProperties | undefined {
@@ -442,6 +450,10 @@ function generatePlaintextAnno(): string {
 
   // for each content...
   contents.value.forEach((c, contentIndex) => {
+    if (!c) {
+      out.push('\n\n[' + $t('contents.noContent') + ']\n\n');
+      return;
+    }
     // preprocess data
     const tokenLines: { form: string; annoLines: string[]; maxLen: number }[][] = [[]];
     c.tokens.forEach((t) => {
@@ -520,57 +532,66 @@ function generatePlaintextAnno(): string {
     </n-flex>
 
     <!-- CONTENT -->
-    <common-content-display
-      v-for="(content, cIndex) in contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+    <template
+      v-for="(content, contentIndex) in contents"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <n-flex :size="4" class="anno-content">
-        <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
-          <div
-            class="token-container"
-            :class="{
-              'token-with-annos': !!t.annotations.length,
-              'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
-              'token-content-copied':
-                tokenContentCopied && tokenContextIndex === `${cIndex}-${tIndex}`,
-            }"
-            :title="$t('resources.types.textAnnotation.copyHintTip')"
-            @click="handleTokenClick(t)"
-            @contextmenu.prevent.stop="(e) => handleTokenRightClick(e, t, `${cIndex}-${tIndex}`)"
-          >
-            <div class="b i" :style="fontStyle">
-              {{ t.form }}
-            </div>
-            <div class="annotations">
-              <div
-                v-for="(annoLine, lineIndex) in t.annoDisplay"
-                :key="lineIndex"
-                class="anno-sequence"
-              >
-                <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
-                  <span
-                    v-if="
-                      !anno.group || !annoCfg.groups.length || activeAnnoGroups.includes(anno.group)
-                    "
-                    :style="{
-                      ...anno.style,
-                      backgroundColor:
-                        coloredGroups && !!anno.group ? groupColors[anno.group] : undefined,
-                    }"
-                  >
-                    {{ anno.content }}
-                  </span>
-                </template>
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <n-flex :size="4" class="anno-content">
+          <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
+            <div
+              class="token-container"
+              :class="{
+                'token-with-annos': !!t.annotations.length,
+                'token-with-comment': !!t.annotations.find((a) => a.key === 'comment'),
+                'token-content-copied':
+                  tokenContentCopied && tokenContextIndex === `${contentIndex}-${tIndex}`,
+              }"
+              :title="$t('resources.types.textAnnotation.copyHintTip')"
+              @click="handleTokenClick(t)"
+              @contextmenu.prevent.stop="
+                (e) => handleTokenRightClick(e, t, `${contentIndex}-${tIndex}`)
+              "
+            >
+              <div class="b i" :style="fontStyle">
+                {{ t.form }}
+              </div>
+              <div class="annotations">
+                <div
+                  v-for="(annoLine, lineIndex) in t.annoDisplay"
+                  :key="lineIndex"
+                  class="anno-sequence"
+                >
+                  <template v-for="(anno, annoIndex) in annoLine" :key="annoIndex">
+                    <span
+                      v-if="
+                        !anno.group ||
+                        !annoCfg.groups.length ||
+                        activeAnnoGroups.includes(anno.group)
+                      "
+                      :style="{
+                        ...anno.style,
+                        backgroundColor:
+                          coloredGroups && !!anno.group ? groupColors[anno.group] : undefined,
+                      }"
+                    >
+                      {{ anno.content }}
+                    </span>
+                  </template>
+                </div>
               </div>
             </div>
-          </div>
-          <hr v-if="t.eol" class="token-lb" />
-        </template>
-      </n-flex>
-    </common-content-display>
+            <hr v-if="t.eol" class="token-lb" />
+          </template>
+        </n-flex>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
 
     <generic-modal
       v-model:show="showDetailsModal"

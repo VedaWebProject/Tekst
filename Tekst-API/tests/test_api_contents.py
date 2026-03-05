@@ -1,6 +1,6 @@
 import pytest
 
-from beanie.operators import NE, Eq
+from beanie.operators import Eq
 from httpx import AsyncClient
 from tekst.models.content import ContentBaseDocument
 from tekst.models.location import LocationDocument
@@ -150,41 +150,42 @@ async def test_update_content(
     resource = await ResourceBaseDocument.find_one(with_children=True)
     content = await ContentBaseDocument.find_one(
         Eq(ContentBaseDocument.resource_id, resource.id),
-        Eq(ContentBaseDocument.archive_ts, None),
+        ContentBaseDocument.archived_query_criteria(False),
         with_children=True,
     )
+    assert content
+    content = content.model_dump()
     await login(is_superuser=True)
 
     # update content
     resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
+        f"/contents/{content['id']}",
         json={"resourceType": "plainText", "text": "FOO BAR"},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "id" in resp.json()
-    assert resp.json()["id"] == str(content.id)
+    assert resp.json()["id"] != content["id"]
     assert resp.json()["text"] == "FOO BAR"
+    content = resp.json()
 
     # check if the old content has been archived
-    archived_content = await ContentBaseDocument.find(
-        Eq(ContentBaseDocument.resource_id, content.resource_id),
-        Eq(ContentBaseDocument.location_id, content.location_id),
-        NE(ContentBaseDocument.archive_ts, None),
+    archived_count = await ContentBaseDocument.find(
+        ContentBaseDocument.archived_query_criteria(True),
         with_children=True,
-    ).first_or_none()
-    assert archived_content
+    ).count()
+    assert archived_count == 1
 
     # update content w/ empty comment strings
     resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
+        f"/contents/{content['id']}",
         json={"resourceType": "plainText", "comments": [{"comment": ""}]},
     )
     assert_status(422, resp)
 
     # update content w/ None as comment
     resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
+        f"/contents/{content['id']}",
         json={
             "resourceType": "plainText",
             "comments": None,
@@ -193,6 +194,7 @@ async def test_update_content(
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert resp.json()["comments"] is None
+    content = resp.json()
 
     # fail to update content with wrong ID
     resp = await test_client.patch(
@@ -203,7 +205,7 @@ async def test_update_content(
 
     # fail to update content with bogus resource type
     resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
+        f"/contents/{content['id']}",
         json={
             "resourceType": "bogus",
             "text": "FOO BAR",
@@ -215,7 +217,7 @@ async def test_update_content(
     await login(is_superuser=False)
     location = await LocationDocument.find_one(LocationDocument.level == resource.level)
     resp = await test_client.patch(
-        f"/contents/{str(content.id)}",
+        f"/contents/{content['id']}",
         json={
             "resourceId": str(resource.id),
             "locationId": str(location.id),
@@ -227,7 +229,7 @@ async def test_update_content(
 
 
 @pytest.mark.anyio
-async def test_delete_content(
+async def test_archive_and_delete_content(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -236,16 +238,46 @@ async def test_delete_content(
 ):
     inserted_ids = await insert_test_data("texts", "locations", "resources", "contents")
     content_id = inserted_ids["contents"][0]
+    user = await login(is_superuser=False)
     superuser = await login(is_superuser=True)
 
+    # fail to archive content with wrong ID
+    await login(user=superuser)
+    resp = await test_client.post(
+        f"/contents/{wrong_id}/archive",
+    )
+    assert_status(404, resp)
+
+    # fail to archive without write access
+    await login(user=user)
+    resp = await test_client.post(
+        f"/contents/{content_id}/archive",
+    )
+    assert_status(403, resp)
+
+    # archive content
+    await login(user=superuser)
+    resp = await test_client.post(
+        f"/contents/{content_id}/archive",
+    )
+    assert_status(200, resp)
+
+    # check if it actually has been archived
+    archived_count = await ContentBaseDocument.find(
+        ContentBaseDocument.archived_query_criteria(True),
+        with_children=True,
+    ).count()
+    assert archived_count == 1
+
     # fail to delete with wrong ID
+    await login(user=superuser)
     resp = await test_client.delete(
         f"/contents/{wrong_id}",
     )
     assert_status(404, resp)
 
     # fail to delete without write access
-    await login(is_superuser=False)
+    await login(user=user)
     resp = await test_client.delete(
         f"/contents/{content_id}",
     )
@@ -257,10 +289,3 @@ async def test_delete_content(
         f"/contents/{content_id}",
     )
     assert_status(204, resp)
-
-    # check if it actually has been archived
-    archived_count = await ContentBaseDocument.find(
-        NE(ContentBaseDocument.archive_ts, None),
-        with_children=True,
-    ).count()
-    assert archived_count == 1

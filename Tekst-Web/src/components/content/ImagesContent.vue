@@ -6,6 +6,7 @@ import { NFlex, NIcon, NImage, NImageGroup } from 'naive-ui';
 import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
 import { computed, type CSSProperties } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -42,50 +43,55 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
 
 <template>
   <div>
-    <common-content-display
-      v-for="content in resource.contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+    <template
+      v-for="(content, contentIndex) in resource.contents"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <n-flex vertical :wrap="false" class="images-content">
-        <n-image-group :render-toolbar="renderToolbar">
-          <n-flex :vertical="!focusView">
-            <figure v-for="(image, index) in content.files" :key="index" class="image-container">
-              <n-flex align="stretch" :wrap="state.vw < 900" :size="[18, 0]">
-                <n-image
-                  lazy
-                  :src="image.thumbUrl || image.url"
-                  :preview-src="image.url"
-                  :alt="image.caption || undefined"
-                  :title="image.caption"
-                  :width="focusView ? undefined : imageSize"
-                  :height="focusView ? imageSize : undefined"
-                >
-                  <template #placeholder>
-                    {{ $t('common.loading') }}
-                  </template>
-                </n-image>
-                <figcaption v-if="!focusView" class="caption" :style="fontStyle">
-                  <span class="text-small">{{ image.caption }}</span>
-                  <a
-                    v-if="image.sourceUrl"
-                    :href="image.sourceUrl"
-                    :title="image.sourceUrl"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="source-link mx-sm"
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <n-flex vertical :wrap="false" class="images-content">
+          <n-image-group :render-toolbar="renderToolbar">
+            <n-flex :vertical="!focusView">
+              <figure v-for="(image, index) in content.files" :key="index" class="image-container">
+                <n-flex align="stretch" :wrap="state.vw < 900" :size="[18, 0]">
+                  <n-image
+                    lazy
+                    :src="image.thumbUrl || image.url"
+                    :preview-src="image.url"
+                    :alt="image.caption || undefined"
+                    :title="image.caption"
+                    :width="focusView ? undefined : imageSize"
+                    :height="focusView ? imageSize : undefined"
                   >
-                    <n-icon :component="LinkIcon" />
-                  </a>
-                </figcaption>
-              </n-flex>
-            </figure>
-          </n-flex>
-        </n-image-group>
-      </n-flex>
-    </common-content-display>
+                    <template #placeholder>
+                      {{ $t('common.loading') }}
+                    </template>
+                  </n-image>
+                  <figcaption v-if="!focusView" class="caption" :style="fontStyle">
+                    <span class="text-small">{{ image.caption }}</span>
+                    <a
+                      v-if="image.sourceUrl"
+                      :href="image.sourceUrl"
+                      :title="image.sourceUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="source-link mx-sm"
+                    >
+                      <n-icon :component="LinkIcon" />
+                    </a>
+                  </figcaption>
+                </n-flex>
+              </figure>
+            </n-flex>
+          </n-image-group>
+        </n-flex>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>
 
