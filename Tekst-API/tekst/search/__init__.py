@@ -637,7 +637,7 @@ async def _search_advanced(
     # at least one "should" match if there is no "must". It's complicated, I know.
     # See: https://www.elastic.co/docs/reference/query-languages
     #      /query-dsl/query-dsl-bool-query#bool-min-should-match
-    if es_query["bool"].get("filter") and not es_query["bool"].get("must"):
+    elif es_query["bool"].get("filter") and not es_query["bool"].get("must"):
         es_query["bool"]["minimum_should_match"] = 1
 
     log.debug(f"Running ES query: {es_query}")

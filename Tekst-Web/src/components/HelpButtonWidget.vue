@@ -3,11 +3,10 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import type { HelpText } from '@/composables/help';
 import { useHelp } from '@/composables/help';
 import { $t } from '@/i18n';
+import { ErrorIcon, QuestionMarkIcon } from '@/icons';
 import { NButton, NEmpty, NIcon, NSpin } from 'naive-ui';
 import type { Size } from 'naive-ui/es/button/src/interface';
 import { computed, ref } from 'vue';
-
-import { ErrorIcon, QuestionMarkIcon } from '@/icons';
 
 const props = withDefaults(
   defineProps<{
@@ -15,6 +14,7 @@ const props = withDefaults(
     size?: Size;
     gapLeft?: boolean;
     gapRight?: boolean;
+    link?: string;
   }>(),
   {
     size: 'tiny',
@@ -46,7 +46,10 @@ async function loadHelp() {
 }
 
 async function handleClose() {
+  // unset current help text
   helpText.value = undefined;
+  // remove hash from url
+  window.location.hash = '';
 }
 
 async function handleHelpButtonClick() {
@@ -57,7 +60,11 @@ async function handleHelpButtonClick() {
 </script>
 
 <template>
+  <a v-if="props.link" v-bind="$attrs" @click.stop.prevent="handleHelpButtonClick">
+    {{ props.link }}
+  </a>
   <n-button
+    v-else
     v-bind="$attrs"
     secondary
     circle
