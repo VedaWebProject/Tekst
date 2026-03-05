@@ -405,7 +405,7 @@ class TextAnnotationResource(ResourceBase):
         precomp_doc.data = (
             await ContentBaseDocument.find(
                 Eq(ContentBaseDocument.resource_id, self.id),
-                Eq(ContentBaseDocument.archive_ts, None),
+                ContentBaseDocument.archived_query_criteria(False),
                 with_children=True,
             )
             .aggregate(

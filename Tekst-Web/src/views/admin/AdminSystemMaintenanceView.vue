@@ -186,26 +186,31 @@ onBeforeMount(() => {
                 </template>
                 {{ $t('admin.maintenance.indices.actionCreate') }}
               </n-button>
-              <n-button type="warning" :disabled="indicesInfoLoading" :title="$t('admin.maintenance.forceTip')" @click="() => createIndex(true)">
+              <n-button
+                type="warning"
+                :disabled="indicesInfoLoading"
+                :title="$t('admin.maintenance.forceTip')"
+                @click="() => createIndex(true)"
+              >
                 <template #icon>
                   <n-icon :component="UpdateIcon" />
                 </template>
                 {{ $t('admin.maintenance.indices.actionCreate') }}
-                ({{$t('admin.maintenance.force')}})
+                ({{ $t('admin.maintenance.force') }})
               </n-button>
-          </template>
-              <n-button
-                secondary
-                type="primary"
-                :disabled="indicesInfoLoading"
-                :loading="indicesInfoLoading"
-                @click="loadIndexInfo"
-              >
-                <template #icon>
-                  <n-icon :component="RefreshIcon" />
-                </template>
-                {{ $t('common.refresh') }}
-              </n-button>
+            </template>
+            <n-button
+              secondary
+              type="primary"
+              :disabled="indicesInfoLoading"
+              :loading="indicesInfoLoading"
+              @click="loadIndexInfo"
+            >
+              <template #icon>
+                <n-icon :component="RefreshIcon" />
+              </template>
+              {{ $t('common.refresh') }}
+            </n-button>
           </button-shelf>
 
           <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
@@ -264,8 +269,12 @@ onBeforeMount(() => {
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
-        <form-section :title="$t('admin.maintenance.precomputed.heading')" :show-box="false" class="mb-lg" >
-          <button-shelf >
+        <form-section
+          :title="$t('admin.maintenance.precomputed.heading')"
+          :show-box="false"
+          class="mb-lg"
+        >
+          <button-shelf>
             <template #start>
               <n-button
                 type="primary"
@@ -299,7 +308,11 @@ onBeforeMount(() => {
 
       <!-- INTERNAL CLEANUP -->
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
-        <form-section :title="$t('admin.maintenance.cleanup.heading')" :show-box="false" class="mb-lg" >
+        <form-section
+          :title="$t('admin.maintenance.cleanup.heading')"
+          :show-box="false"
+          class="mb-lg"
+        >
           <n-button
             type="primary"
             :disabled="cleanupLoading"
@@ -319,18 +332,18 @@ onBeforeMount(() => {
       <n-tab-pane :tab="$t('tasks.title')" name="tasks">
         <form-section :title="$t('tasks.title')" :show-box="false">
           <button-shelf class="mb-lg">
-              <n-button
-                secondary
-                type="primary"
-                :disabled="tasksLoading"
-                :loading="tasksLoading"
-                @click="updateAllTasksData"
-              >
-                <template #icon>
-                  <n-icon :component="RefreshIcon" />
-                </template>
-                {{ $t('common.refresh') }}
-              </n-button>
+            <n-button
+              secondary
+              type="primary"
+              :disabled="tasksLoading"
+              :loading="tasksLoading"
+              @click="updateAllTasksData"
+            >
+              <template #icon>
+                <n-icon :component="RefreshIcon" />
+              </template>
+              {{ $t('common.refresh') }}
+            </n-button>
             <n-button
               secondary
               type="error"
@@ -429,7 +442,11 @@ onBeforeMount(() => {
 
       <!-- TEST EMAIL SETUP -->
       <n-tab-pane :tab="$t('admin.maintenance.email.heading')" name="email">
-        <form-section :title="$t('admin.maintenance.email.heading')" :show-box="false" class="mb-lg">
+        <form-section
+          :title="$t('admin.maintenance.email.heading')"
+          :show-box="false"
+          class="mb-lg"
+        >
           <n-button
             type="primary"
             :disabled="emailLoading"

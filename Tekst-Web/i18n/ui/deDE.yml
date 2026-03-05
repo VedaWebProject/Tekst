@@ -28,6 +28,8 @@ common:
   insert: Einfügen
   remove: Entfernen
   delete: Löschen
+  archive: Archivieren
+  archived: archiviert
   copy: Copy
   moveUp: Nach oben bewegen
   moveDown: Nach unten bewegen
@@ -50,7 +52,6 @@ common:
   location: Belegstelle | Belegstellen
   level: Ebene | Ebenen
   content: Inhalt | Inhalte
-  archived: archiviert
   meta: Meta
   browse: Lesen
   platform: Plattform
@@ -606,9 +607,14 @@ contents:
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
   msgSaved: Der Inhalt für diese Belegstelle wurde gespeichert.
+  msgArchived: Der Inhalt für diese Belegstelle wurde archiviert.
   msgDeleted: Der Inhalt für diese Belegstelle wurde gelöscht.
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:common.takeAWhile
-  confirmDelete: Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle löschen möchten?
+  confirmArchive: |
+    Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle archivieren wollen?
+    Er wird nicht mehr in Suchergebnissen oder der Leseansicht angezeigt, kann aber
+    weiterhin als archivierte Version aufgerufen werden.
+    Sie können ihn später wiederherstellen.
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Belegstelle!
   msgNoOwnContentBody: |
     Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Belegstelle.

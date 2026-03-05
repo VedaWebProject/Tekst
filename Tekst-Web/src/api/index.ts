@@ -397,6 +397,8 @@ export const deeplTargetLanguages = [
 
 // general
 
+type MaybeMissingContent<T> = T | null;
+
 export type TekstErrorModel = components['schemas']['TekstErrorModel'];
 export type ErrorDetail = components['schemas']['ErrorDetail'];
 export type ErrorModel = components['schemas']['ErrorModel'];
@@ -484,7 +486,7 @@ export type PlainTextContentCreate = components['schemas']['PlainTextContentCrea
 export type PlainTextResourceCreate = components['schemas']['PlainTextResourceCreate'];
 export type PlainTextResourceRead = components['schemas']['PlainTextResourceRead'] &
   ResourceReadExtras & {
-    contents?: PlainTextContentRead[];
+    contents?: MaybeMissingContent<PlainTextContentRead>[];
   };
 
 export type RichTextContentRead = components['schemas']['RichTextContentRead'];
@@ -492,7 +494,7 @@ export type RichTextContentCreate = components['schemas']['RichTextContentCreate
 export type RichTextResourceCreate = components['schemas']['RichTextResourceCreate'];
 export type RichTextResourceRead = components['schemas']['RichTextResourceRead'] &
   ResourceReadExtras & {
-    contents?: RichTextContentRead[];
+    contents?: MaybeMissingContent<RichTextContentRead>[];
   };
 
 export type TextAnnotationContentRead = components['schemas']['TextAnnotationContentRead'];
@@ -500,7 +502,7 @@ export type TextAnnotationContentCreate = components['schemas']['TextAnnotationC
 export type TextAnnotationResourceCreate = components['schemas']['TextAnnotationResourceCreate'];
 export type TextAnnotationResourceRead = components['schemas']['TextAnnotationResourceRead'] &
   ResourceReadExtras & {
-    contents?: TextAnnotationContentRead[];
+    contents?: MaybeMissingContent<TextAnnotationContentRead>[];
   };
 
 export type LocationMetadataContentRead = components['schemas']['LocationMetadataContentRead'];
@@ -509,7 +511,7 @@ export type LocationMetadataResourceCreate =
   components['schemas']['LocationMetadataResourceCreate'];
 export type LocationMetadataResourceRead = components['schemas']['LocationMetadataResourceRead'] &
   ResourceReadExtras & {
-    contents?: LocationMetadataContentRead[];
+    contents?: MaybeMissingContent<LocationMetadataContentRead>[];
   };
 
 export type AudioContentRead = components['schemas']['AudioContentRead'];
@@ -517,7 +519,7 @@ export type AudioContentCreate = components['schemas']['AudioContentCreate'];
 export type AudioResourceCreate = components['schemas']['AudioResourceCreate'];
 export type AudioResourceRead = components['schemas']['AudioResourceRead'] &
   ResourceReadExtras & {
-    contents?: AudioContentRead[];
+    contents?: MaybeMissingContent<AudioContentRead>[];
   };
 
 export type ImagesContentRead = components['schemas']['ImagesContentRead'];
@@ -525,7 +527,7 @@ export type ImagesContentCreate = components['schemas']['ImagesContentCreate'];
 export type ImagesResourceCreate = components['schemas']['ImagesResourceCreate'];
 export type ImagesResourceRead = components['schemas']['ImagesResourceRead'] &
   ResourceReadExtras & {
-    contents?: ImagesContentRead[];
+    contents?: MaybeMissingContent<ImagesContentRead>[];
   };
 
 export type ExternalReferencesContentRead = components['schemas']['ExternalReferencesContentRead'];
@@ -536,7 +538,7 @@ export type ExternalReferencesResourceCreate =
 export type ExternalReferencesResourceRead =
   components['schemas']['ExternalReferencesResourceRead'] &
     ResourceReadExtras & {
-      contents?: ExternalReferencesContentRead[];
+      contents?: MaybeMissingContent<ExternalReferencesContentRead>[];
     };
 
 export type ApiCallContentRead = components['schemas']['ApiCallContentRead'];
@@ -544,7 +546,7 @@ export type ApiCallContentCreate = components['schemas']['ApiCallContentCreate']
 export type ApiCallResourceCreate = components['schemas']['ApiCallResourceCreate'];
 export type ApiCallResourceRead = components['schemas']['ApiCallResourceRead'] &
   ResourceReadExtras & {
-    contents?: ApiCallContentRead[];
+    contents?: MaybeMissingContent<ApiCallContentRead>[];
   };
 
 export type AnyContentCreate =
@@ -559,7 +561,7 @@ export type AnyResourceCreate =
 export type AnyResourceRead =
   paths['/resources/{id}']['get']['responses']['200']['content']['application/json'] &
     ResourceReadExtras & {
-      contents?: AnyContentRead[];
+      contents?: MaybeMissingContent<AnyContentRead>[];
     };
 export type AnyResourceUpdate =
   paths['/resources/{id}']['patch']['requestBody']['content']['application/json'];

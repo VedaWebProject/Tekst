@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import NE, Eq, In, Not
+from beanie.operators import Eq, In, Not
 from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
@@ -53,7 +53,7 @@ async def create_content(
     if await ContentBaseDocument.find_one(
         Eq(ContentBaseDocument.resource_id, content.resource_id),
         Eq(ContentBaseDocument.location_id, content.location_id),
-        Eq(ContentBaseDocument.archive_ts, None),
+        ContentBaseDocument.archived_query_criteria(False),
         with_children=True,
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
@@ -138,10 +138,10 @@ async def update_content(
     # mark the text's index as out-of-date
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
-    # archive copy of existing content
-    await content_doc.archive_copy()
-    # apply updates to content, save, return updated document
-    return await content_doc.apply_updates(updates)
+    # archive existing content, obtain an unsaved copy
+    content_copy = await content_doc.archive()
+    # save updated copy
+    return await content_copy.apply_updates(updates)
 
 
 @router.delete(
@@ -173,11 +173,43 @@ async def delete_content(
     await resource.contents_changed_hook()
     # mark the text's index as out-of-date
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
-
-    # all fine, archive a copy of the content
-    await content_doc.archive_copy()
-    # ...and delete the original
+    # ...and delete the content
     await content_doc.delete()
+
+
+@router.post(
+    "/{id}/archive",
+    status_code=status.HTTP_200_OK,
+    response_model=AnyContentRead,
+    responses=errors.responses(
+        [
+            errors.E_404_CONTENT_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def archive_content(
+    user: UserDep,
+    content_id: Annotated[PydanticObjectId, Path(alias="id")],
+) -> AnyContentDocument:
+    content_doc = await ContentBaseDocument.get(content_id, with_children=True)
+    if not content_doc:
+        raise errors.E_404_CONTENT_NOT_FOUND
+    resource = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == content_doc.resource_id,
+        await ResourceBaseDocument.query_criteria_write(user),
+        with_children=True,
+    )
+    if not resource:
+        raise errors.E_403_FORBIDDEN
+
+    # call the resource's hook for changed contents
+    await resource.contents_changed_hook()
+    # mark the text's index as out-of-date
+    await set_index_ood(resource.text_id, by_public_resource=resource.public)
+    # all fine, archive the content
+    await content_doc.archive()
+    return content_doc
 
 
 @router.get(
@@ -247,9 +279,7 @@ async def find_contents(
             (
                 {}
                 if archived is None
-                else Eq(ContentBaseDocument.archive_ts, None)
-                if archived is False
-                else NE(ContentBaseDocument.archive_ts, None)
+                else ContentBaseDocument.archived_query_criteria(archived)
             ),
             with_children=True,
         )

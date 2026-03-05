@@ -5,7 +5,7 @@ from pydantic import Field
 
 from tekst.models.common import ModelBase
 from tekst.models.location import LocationRead
-from tekst.resources import AnyContentRead
+from tekst.resources import AnyContentReadOrMissing
 
 
 class LocationData(ModelBase):
@@ -30,8 +30,10 @@ class LocationData(ModelBase):
         ),
     ] = None
     contents: Annotated[
-        list[AnyContentRead],
+        dict[PydanticObjectId, list[AnyContentReadOrMissing]],
         Field(
-            description="Contents of various resources on this location",
+            description=(
+                "Contents of various resources on this location, by resource ID"
+            ),
         ),
     ] = []

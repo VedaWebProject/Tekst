@@ -887,16 +887,20 @@ async def _import_resource_task(
         # process updates
         updated_count = len(updates)
         while updates:
-            existing_content_doc, import_conent = updates.pop()
-            new_content_doc = content_doc_model(
-                id=existing_content_doc.id,
-                resource_type=existing_content_doc.resource_type,
-                resource_id=existing_content_doc.resource_id,
-                location_id=existing_content_doc.location_id,
-                **import_content,
+            existing_content_doc, import_content = updates.pop()
+            content_copy = await existing_content_doc.archive()
+            new_content = content_doc_model(
+                id=None,
+                resource_type=content_copy.resource_type,
+                resource_id=content_copy.id,
+                location_id=loc_id,
+                **{
+                    k: v
+                    for k, v in import_content.items()
+                    if k not in ("resource_type", "resource_id", "location_id")
+                },
             )
-            await existing_content_doc.archive_copy()
-            await new_content_doc.replace()
+            await new_content.save()
         del updates
 
         # write resource props and config import data

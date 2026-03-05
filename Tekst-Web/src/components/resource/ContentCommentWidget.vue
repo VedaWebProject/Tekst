@@ -12,7 +12,7 @@ const props = defineProps<{
 const showComments = defineModel<boolean>('showComments');
 const emit = defineEmits(['done']);
 
-const hasComments = computed(() => !!props.resource.contents?.some((c) => !!c.comments?.length));
+const hasComments = computed(() => !!props.resource.contents?.some((c) => !!c?.comments?.length));
 </script>
 
 <template>

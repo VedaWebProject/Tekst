@@ -152,6 +152,23 @@ export interface paths {
     patch: operations['updateContent'];
     trace?: never;
   };
+  '/contents/{id}/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Archive content */
+    post: operations['archiveContent'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/corrections': {
     parameters: {
       query?: never;
@@ -3600,19 +3617,22 @@ export interface components {
       next?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Contents
-       * @description Contents of various resources on this location
+       * @description Contents of various resources on this location, by resource ID
        * @default []
        */
-      contents: (
-        | components['schemas']['ApiCallContentRead']
-        | components['schemas']['AudioContentRead']
-        | components['schemas']['ExternalReferencesContentRead']
-        | components['schemas']['ImagesContentRead']
-        | components['schemas']['LocationMetadataContentRead']
-        | components['schemas']['PlainTextContentRead']
-        | components['schemas']['RichTextContentRead']
-        | components['schemas']['TextAnnotationContentRead']
-      )[];
+      contents: {
+        [key: string]: (
+          | components['schemas']['ApiCallContentRead']
+          | components['schemas']['AudioContentRead']
+          | components['schemas']['ExternalReferencesContentRead']
+          | components['schemas']['ImagesContentRead']
+          | components['schemas']['LocationMetadataContentRead']
+          | components['schemas']['PlainTextContentRead']
+          | components['schemas']['RichTextContentRead']
+          | components['schemas']['TextAnnotationContentRead']
+          | components['schemas']['MissingContent']
+        )[];
+      };
     };
     /** LocationMetadataContentCreate */
     LocationMetadataContentCreate: {
@@ -4195,6 +4215,19 @@ export interface components {
        * @description Value of this metadata entry
        */
       value: string;
+    };
+    /**
+     * MissingContent
+     * @description A model representing a missing content.
+     */
+    MissingContent: {
+      resourceId: components['schemas']['PydanticObjectId'];
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'none';
+      locationId: components['schemas']['PydanticObjectId'];
     };
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {
@@ -6969,6 +7002,7 @@ export interface operations {
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
+            | components['schemas']['MissingContent']
           )[];
         };
       };
@@ -7171,6 +7205,8 @@ export interface operations {
         res?: components['schemas']['PydanticObjectId'][];
         /** @description ID (or list of IDs) of location(s) to return content data for */
         location?: components['schemas']['PydanticObjectId'][];
+        /** @description Include archived content */
+        archived?: boolean | null;
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -7419,6 +7455,53 @@ export interface operations {
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
         };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  archiveContent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
       /** @description Forbidden */
       403: {
