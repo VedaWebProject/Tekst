@@ -235,6 +235,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/TextAnnotationContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/MissingContent"
                       }
                     ],
                     "discriminator": {
@@ -247,7 +250,8 @@
                         "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
-                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead",
+                        "none": "#/components/schemas/MissingContent"
                       }
                     }
                   },
@@ -744,6 +748,25 @@
             "description": "ID (or list of IDs) of location(s) to return content data for"
           },
           {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Include archived content",
+              "default": false,
+              "title": "Archived"
+            },
+            "description": "Include archived content"
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -808,6 +831,137 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/archive": {
+      "get": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Get archived contents",
+        "description": "Returns all archived content for the given resource and location,\nsorted by archival timestamp in descending order",
+        "operationId": "getArchivedContents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "locId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "max": 10240,
+              "default": 1024,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/ApiCallContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/AudioContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ImagesContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/LocationMetadataContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlainTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/RichTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextAnnotationContentRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "resourceType",
+                      "mapping": {
+                        "apiCall": "#/components/schemas/ApiCallContentRead",
+                        "audio": "#/components/schemas/AudioContentRead",
+                        "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                        "images": "#/components/schemas/ImagesContentRead",
+                        "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                        "plainText": "#/components/schemas/PlainTextContentRead",
+                        "richText": "#/components/schemas/RichTextContentRead",
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                      }
+                    }
+                  },
+                  "title": "Response Get Archived Contents Contents Archive Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -1102,6 +1256,114 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}/archive": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Archive content",
+        "operationId": "archiveContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
+                      "audio": "#/components/schemas/AudioContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                      "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  },
+                  "title": "Response Archive Content Contents  Id  Archive Post"
+                }
+              }
+            }
           },
           "404": {
             "content": {
@@ -7526,6 +7788,19 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
+          },
           "calls": {
             "items": {
               "$ref": "#/components/schemas/ApiCallContentItem"
@@ -8460,6 +8735,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "files": {
             "items": {
@@ -9823,7 +10111,8 @@
         "required": [
           "comment"
         ],
-        "title": "ContentComment"
+        "title": "ContentComment",
+        "description": "A comment on a content"
       },
       "ContentCssProperties": {
         "items": {
@@ -10182,6 +10471,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "links": {
             "items": {
@@ -11255,6 +11557,19 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
+          },
           "files": {
             "items": {
               "$ref": "#/components/schemas/ImageFile"
@@ -12261,50 +12576,60 @@
             "description": "ID of the subsequent location on the same level"
           },
           "contents": {
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ApiCallContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/AudioContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ExternalReferencesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ImagesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/LocationMetadataContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/PlainTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/RichTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/TextAnnotationContentRead"
+            "additionalProperties": {
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ApiCallContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AudioContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImagesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LocationMetadataContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlainTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RichTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MissingContent"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallContentRead",
+                    "audio": "#/components/schemas/AudioContentRead",
+                    "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                    "images": "#/components/schemas/ImagesContentRead",
+                    "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                    "none": "#/components/schemas/MissingContent",
+                    "plainText": "#/components/schemas/PlainTextContentRead",
+                    "richText": "#/components/schemas/RichTextContentRead",
+                    "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                  }
                 }
-              ],
-              "discriminator": {
-                "propertyName": "resourceType",
-                "mapping": {
-                  "apiCall": "#/components/schemas/ApiCallContentRead",
-                  "audio": "#/components/schemas/AudioContentRead",
-                  "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
-                  "images": "#/components/schemas/ImagesContentRead",
-                  "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
-                  "plainText": "#/components/schemas/PlainTextContentRead",
-                  "richText": "#/components/schemas/RichTextContentRead",
-                  "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
-                }
-              }
+              },
+              "type": "array"
             },
-            "type": "array",
+            "propertyNames": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "object",
             "title": "Contents",
-            "description": "Contents of various resources on this location",
+            "description": "Contents of various resources on this location, by resource ID",
             "default": []
           }
         },
@@ -12399,6 +12724,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "entries": {
             "items": {
@@ -13550,6 +13888,29 @@
         ],
         "title": "MetadataEntry"
       },
+      "MissingContent": {
+        "properties": {
+          "resourceId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "none",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId"
+        ],
+        "title": "MissingContent",
+        "description": "A model representing a missing content."
+      },
       "MoveLocationRequestBody": {
         "properties": {
           "position": {
@@ -13785,6 +14146,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "text": {
             "type": "string",
@@ -15696,6 +16070,19 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
+          },
           "html": {
             "type": "string",
             "maxLength": 102400,
@@ -16751,6 +17138,10 @@
             "type": "integer",
             "title": "Statsrequests"
           },
+          "archivedContents": {
+            "type": "integer",
+            "title": "Archivedcontents"
+          },
           "bookmarks": {
             "type": "integer",
             "title": "Bookmarks"
@@ -16813,6 +17204,7 @@
           "searchQuick",
           "searchAdvanced",
           "statsRequests",
+          "archivedContents",
           "bookmarks",
           "corrections",
           "correctionsAllTime",
@@ -17079,6 +17471,19 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "archiveTs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivets",
+            "description": "Timestamp of the content archival"
           },
           "tokens": {
             "items": {

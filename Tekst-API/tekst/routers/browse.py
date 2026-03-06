@@ -11,13 +11,13 @@ from tekst.auth import (
 )
 from tekst.models.bookmark import BookmarkCreate, BookmarkDocument, BookmarkRead
 from tekst.models.browse import LocationData
-from tekst.models.content import ContentBaseDocument
+from tekst.models.content import ContentBaseDocument, MissingContent
 from tekst.models.location import LocationDocument, LocationRead
 from tekst.models.resource import (
     ResourceBaseDocument,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import AnyContentRead
+from tekst.resources import AnyContentReadOrMissing
 from tekst.search import search_nearest_content_location
 
 
@@ -30,7 +30,7 @@ router = APIRouter(
 async def _get_content_context(
     resource: ResourceBaseDocument,
     parent_location_id: PydanticObjectId | None,
-) -> list[ContentBaseDocument]:
+) -> list[ContentBaseDocument | MissingContent]:
     """
     Returns a list of all resource contents belonging to locations that are children
     of the given parent location, sorted by reference location position.
@@ -48,31 +48,47 @@ async def _get_content_context(
     ]
 
     # find direct contents of the requested resource for the requested locations
-    content_docs = await ContentBaseDocument.find(
-        ContentBaseDocument.resource_id == resource.id,
-        In(ContentBaseDocument.location_id, location_ids),
-        with_children=True,
-    ).to_list()
+    content_docs_by_loc = {
+        content.location_id: content
+        for content in await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource.id,
+            In(ContentBaseDocument.location_id, location_ids),
+            ContentBaseDocument.archived_query_criteria(False),
+            with_children=True,
+        ).to_list()
+    }
 
     # if the resource is a version, we also have to find the original's contents
     # that are missing in the requested resource version
     if resource.original_id:
-        original_content_docs = await ContentBaseDocument.find(
-            ContentBaseDocument.resource_id == resource.original_id,
-            In(ContentBaseDocument.location_id, location_ids),
-            NotIn(
-                ContentBaseDocument.location_id, [u.location_id for u in content_docs]
-            ),
-            with_children=True,
-        ).to_list()
+        original_content_docs_by_loc = {
+            content.location_id: content
+            for content in await ContentBaseDocument.find(
+                ContentBaseDocument.resource_id == resource.original_id,
+                In(ContentBaseDocument.location_id, location_ids),
+                NotIn(ContentBaseDocument.location_id, content_docs_by_loc.keys()),
+                ContentBaseDocument.archived_query_criteria(False),
+                with_children=True,
+            ).to_list()
+        }
     else:
-        original_content_docs = []
+        original_content_docs_by_loc = {}
 
     # combine contents lists, sort by reference location position, return
-    content_docs.extend(original_content_docs)
-    content_docs.sort(key=lambda c: location_ids.index(c.location_id))
-
-    return content_docs
+    return [
+        content_docs_by_loc.get(
+            loc_id,
+            original_content_docs_by_loc.get(
+                loc_id,
+                MissingContent(
+                    resource_id=resource.id,
+                    resource_type="none",
+                    location_id=loc_id,
+                ),
+            ),
+        )
+        for loc_id in location_ids
+    ]
 
 
 @router.get(
@@ -147,7 +163,7 @@ async def get_location_data(
     """
     # limit for number of contents fetched from DB per request
     # (internal constant to conveniently adjust it later if needed)
-    contents_fetch_limit = 512
+    contents_fetch_limit = 1024
 
     # find target location
     location_doc = None
@@ -185,18 +201,19 @@ async def get_location_data(
         await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     ).to_list()
-    content_docs = (
-        await ContentBaseDocument.find(
-            In(ContentBaseDocument.location_id, location_ids or []),
-            In(
-                ContentBaseDocument.resource_id,
-                [resource.id for resource in target_resources],
-            ),
-            with_children=True,
-        )
-        .limit(contents_fetch_limit)
-        .to_list()
-    )
+
+    contents = {}
+    async for content in ContentBaseDocument.find(
+        In(ContentBaseDocument.location_id, location_ids or []),
+        In(
+            ContentBaseDocument.resource_id,
+            [resource.id for resource in target_resources],
+        ),
+        ContentBaseDocument.archived_query_criteria(False),
+        with_children=True,
+    ).limit(contents_fetch_limit):
+        contents[content.resource_id] = [content]
+
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)
     for res in [
@@ -205,7 +222,7 @@ async def get_location_data(
         if res.level == location_doc.level + 1
         and res.config.general.enable_content_context
     ]:
-        content_docs.extend(await _get_content_context(res, location_doc.id))
+        contents[res.id] = await _get_content_context(res, location_doc.id)
 
     # find IDs of previous and next location on same level
     prev_loc = (
@@ -242,13 +259,13 @@ async def get_location_data(
         location_path=location_path,
         previous_loc_id=prev_loc.id if prev_loc else None,
         next_loc_id=next_loc.id if next_loc else None,
-        contents=content_docs,
+        contents=contents,
     )
 
 
 @router.get(
     "/context",
-    response_model=list[AnyContentRead],
+    response_model=list[AnyContentReadOrMissing],
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
@@ -272,7 +289,7 @@ async def get_content_context(
             description="ID of parent location to get child contents for",
         ),
     ] = None,
-) -> list[ContentBaseDocument]:
+) -> list[ContentBaseDocument | MissingContent]:
     """
     Returns a list of all resource contents belonging to the resource
     with the given ID, associated to locations that are children of the parent location

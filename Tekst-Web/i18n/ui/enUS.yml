@@ -78,6 +78,7 @@ common:
   total: total
   loading: Loading...
   url: URL
+  backToOverview: Back to overview
   downloadSaved: File saved as {filename}.
   areYouSure: Are you sure?
   dirtyFormConfirm: You have unsaved changes. Are you sure you want to close this form?
@@ -454,7 +455,6 @@ resources:
   msgDeleted: The resource "{title}" has been deleted.
   msgCreatedVersion: A new version of the resource "{title}" has been created.
   phSearchUsers: Search for users...
-  backToOverview: Go to resources overview
   create:
     heading: New Resource on "{text}"
     headingTypeAndLevel: Resource Type and Level
@@ -593,10 +593,20 @@ contents:
   forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content
-  msgSaved: The content for this location has been saved.
+  archivedContentsTitle: Archived Contents
+  archive: Archive
+  archived: archived
+  msgArchived: The content for this location has been archived.
+  msgNoArchivedContents: No archived contents found for this location.
+  confirmArchive: |
+    Are you sure you want to archive the content for this location?
+    It won't be shown in search results or the reading view anymore, but can still be
+    accessed as an archived version. You will also be able to restore it later.
+  msgSaved: |
+    The changes to this content have been saved.
+    If there was a previous version, it has been archived automatically.
   msgDeleted: The content for this location has been deleted.
   msgImportInfo: The import will be processed in the background. @:common.takeAWhile
-  confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |
     This version of "{originalResourceTitle}" has no own content for this location.

@@ -6,7 +6,7 @@ from typing import Annotated, Any
 from uuid import uuid4
 
 from beanie import PydanticObjectId
-from beanie.operators import GTE, LTE, In
+from beanie.operators import GTE, LTE, Eq, In
 from fastapi import (
     APIRouter,
     Body,
@@ -794,31 +794,31 @@ async def _import_resource_task(
         raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
 
     # check if "contents" is a list
-    if not isinstance(import_data.get("contents"), list):
+    if not isinstance(import_data.get("contents", []), list):
         raise errors.E_422_UPLOAD_INVALID_DATA
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     content_doc_model: ContentBaseDocument = content_model.document_model()
 
-    created_count = 0
-    updated_count = 0
-    contents = []  # [(<content_doc: ContentBaseDocument>, <is_update: bool>)]
+    # prepare lists to collect different import content types
+    updates: list[tuple] = []  # (existing_content_doc, import_content: dict)
+    inserts: list[content_doc_model] = []
 
     try:
         # check import data
         while import_data.get("contents"):
-            content = import_data["contents"].pop(0)
+            import_content = import_data["contents"].pop()
 
             # check if location ID is valid
-            if not content.get("locationId") or not PydanticObjectId.is_valid(
-                content.get("locationId")
+            if not import_content.get("locationId") or not PydanticObjectId.is_valid(
+                import_content["locationId"]
             ):
                 raise errors.E_400_IMPORT_ID_NON_EXISTENT
-            loc_id = PydanticObjectId(content.get("locationId"))
+            loc_id = PydanticObjectId(import_content["locationId"])
             # remove location ID from content data
             # to pass update model validation
-            del content["locationId"]
+            del import_content["locationId"]
 
             # check if location exists
             if not await LocationDocument.find_one(
@@ -826,35 +826,30 @@ async def _import_resource_task(
             ).exists():
                 raise errors.E_400_IMPORT_ID_NON_EXISTENT
 
-            # check if this content already exists
-            content_doc = await content_doc_model.find_one(
-                content_doc_model.resource_id == resource_doc.id,
-                content_doc_model.location_id == loc_id,
+            # fetch possible existing content
+            existing_content_doc = await ContentBaseDocument.find_one(
+                ContentBaseDocument.resource_id == resource_doc.id,
+                ContentBaseDocument.location_id == loc_id,
+                with_children=True,
             )
 
-            # create ready-to-write content model instances
-            # and validate content against model
+            # create updates and inserts "todo" lists
+            # and validate contents against model
             try:
-                if content_doc:
+                if existing_content_doc:
                     # this is an update to an existing content document
-                    # (we replace it COMPLETELY but keep the ID)
-                    new_content_doc = content_doc_model(
-                        id=content_doc.id,
-                        resource_type=resource_doc.resource_type,
-                        resource_id=resource_doc.id,
-                        location_id=loc_id,
-                        **content,
-                    )
-                    contents.append((new_content_doc, True))
+                    updates.append((existing_content_doc, import_content))
                 else:
                     # this is a new content document
-                    content_doc = content_doc_model(
-                        resource_type=resource_doc.resource_type,
-                        resource_id=resource_doc.id,
-                        location_id=loc_id,
-                        **content,
+                    inserts.append(
+                        content_doc_model(
+                            id=None,
+                            resource_type=resource_doc.resource_type,
+                            resource_id=resource_doc.id,
+                            location_id=loc_id,
+                            **import_content,
+                        )
                     )
-                    contents.append((content_doc, False))
             except Exception as e:
                 print(e)
                 raise errors.update_values(
@@ -878,16 +873,35 @@ async def _import_resource_task(
                 resource_type=resource_doc.resource_type,
             )
         )
+        del import_data
 
-        # write content import data
-        while contents:
-            content_doc, is_update = contents.pop(0)
-            if is_update:
-                await content_doc.replace()
-                updated_count += 1
-            else:
-                await content_doc.save()
-                created_count += 1
+        # process inserts
+        if inserts:
+            inserted_count = len(
+                (await content_doc_model.insert_many(inserts)).inserted_ids
+            )
+        else:
+            inserted_count = 0
+        del inserts
+
+        # process updates
+        updated_count = len(updates)
+        while updates:
+            existing_content_doc, import_content = updates.pop()
+            content_copy = await existing_content_doc.archive()
+            new_content = content_doc_model(
+                id=None,
+                resource_type=content_copy.resource_type,
+                resource_id=content_copy.id,
+                location_id=loc_id,
+                **{
+                    k: v
+                    for k, v in import_content.items()
+                    if k not in ("resource_type", "resource_id", "location_id")
+                },
+            )
+            await new_content.save()
+        del updates
 
         # write resource props and config import data
         # (will be skipped if anything went wrong with content import)
@@ -895,7 +909,6 @@ async def _import_resource_task(
     except Exception as e:
         raise e
     finally:
-        del import_data, contents
         # call the resource's hook for changed contents
         await resource_doc.contents_changed_hook()
         # mark the text's index as out-of-date
@@ -905,7 +918,7 @@ async def _import_resource_task(
         )
 
     return {
-        "created": created_count,
+        "created": inserted_count,
         "updated": updated_count,
     }
 
@@ -1004,9 +1017,9 @@ async def export_resource_contents_task(
     # get target contents
     content_doc_model = target_res_type.content_model().document_model()
     contents = await content_doc_model.find(
-        content_doc_model.resource_id == resource.id,
+        Eq(content_doc_model.resource_id, resource.id),
         In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
-        with_children=True,
+        Eq(content_doc_model.archive_ts, None),
     ).to_list()
 
     # sort target contents

@@ -130,6 +130,27 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/contents/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get archived contents
+     * @description Returns all archived content for the given resource and location,
+     *     sorted by archival timestamp in descending order
+     */
+    get: operations['getArchivedContents'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/contents/{id}': {
     parameters: {
       query?: never;
@@ -150,6 +171,23 @@ export interface paths {
     head?: never;
     /** Update content */
     patch: operations['updateContent'];
+    trace?: never;
+  };
+  '/contents/{id}/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Archive content */
+    post: operations['archiveContent'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
   '/corrections': {
@@ -1420,6 +1458,11 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
+      /**
        * Calls
        * @description List of API calls to make for this content
        */
@@ -1860,6 +1903,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Files
        * @description List of audio file objects
@@ -2464,7 +2512,10 @@ export interface components {
        */
       cmt?: string;
     };
-    /** ContentComment */
+    /**
+     * ContentComment
+     * @description A comment on a content
+     */
     ContentComment: {
       /** By */
       by?: null | string;
@@ -2625,6 +2676,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Links
        * @description List of external reference link objects
@@ -3125,6 +3181,11 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
+      /**
        * Files
        * @description List of image file objects
        */
@@ -3577,19 +3638,22 @@ export interface components {
       next?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Contents
-       * @description Contents of various resources on this location
+       * @description Contents of various resources on this location, by resource ID
        * @default []
        */
-      contents: (
-        | components['schemas']['ApiCallContentRead']
-        | components['schemas']['AudioContentRead']
-        | components['schemas']['ExternalReferencesContentRead']
-        | components['schemas']['ImagesContentRead']
-        | components['schemas']['LocationMetadataContentRead']
-        | components['schemas']['PlainTextContentRead']
-        | components['schemas']['RichTextContentRead']
-        | components['schemas']['TextAnnotationContentRead']
-      )[];
+      contents: {
+        [key: string]: (
+          | components['schemas']['ApiCallContentRead']
+          | components['schemas']['AudioContentRead']
+          | components['schemas']['ExternalReferencesContentRead']
+          | components['schemas']['ImagesContentRead']
+          | components['schemas']['LocationMetadataContentRead']
+          | components['schemas']['PlainTextContentRead']
+          | components['schemas']['RichTextContentRead']
+          | components['schemas']['TextAnnotationContentRead']
+          | components['schemas']['MissingContent']
+        )[];
+      };
     };
     /** LocationMetadataContentCreate */
     LocationMetadataContentCreate: {
@@ -3630,6 +3694,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -4168,6 +4237,19 @@ export interface components {
        */
       value: string;
     };
+    /**
+     * MissingContent
+     * @description A model representing a missing content.
+     */
+    MissingContent: {
+      resourceId: components['schemas']['PydanticObjectId'];
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'none';
+      locationId: components['schemas']['PydanticObjectId'];
+    };
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {
       /** Position */
@@ -4273,6 +4355,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5195,6 +5282,11 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
+      /**
        * Html
        * @description HTML content of the rich text content object
        */
@@ -5688,6 +5780,8 @@ export interface components {
       searchAdvanced: number;
       /** Statsrequests */
       statsRequests: number;
+      /** Archivedcontents */
+      archivedContents: number;
       /** Bookmarks */
       bookmarks: number;
       /** Corrections */
@@ -5830,6 +5924,11 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Archivets
+       * @description Timestamp of the content archival
+       */
+      archiveTs?: string | null;
       /**
        * Tokens
        * @description List of annotated tokens in this content object
@@ -6924,6 +7023,7 @@ export interface operations {
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
+            | components['schemas']['MissingContent']
           )[];
         };
       };
@@ -7126,6 +7226,8 @@ export interface operations {
         res?: components['schemas']['PydanticObjectId'][];
         /** @description ID (or list of IDs) of location(s) to return content data for */
         location?: components['schemas']['PydanticObjectId'][];
+        /** @description Include archived content */
+        archived?: boolean | null;
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -7222,6 +7324,66 @@ export interface operations {
       };
       /** @description Conflict */
       409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getArchivedContents: {
+    parameters: {
+      query: {
+        resId: components['schemas']['PydanticObjectId'];
+        locId: components['schemas']['PydanticObjectId'];
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': (
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead']
+          )[];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
         headers: {
           [name: string]: unknown;
         };
@@ -7357,6 +7519,63 @@ export interface operations {
           | components['schemas']['TextAnnotationContentUpdate'];
       };
     };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  archiveContent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {

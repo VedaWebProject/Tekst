@@ -396,7 +396,10 @@ async def get_stats(
     background_tasks.add_task(counter_incr, "stats_requests")
     # collect stats available for any registered user
     stats = UserStats(
-        contents=await ContentBaseDocument.find_all(with_children=True).count(),
+        contents=await ContentBaseDocument.find(
+            ContentBaseDocument.archived_query_criteria(False),
+            with_children=True,
+        ).count(),
         locations=await LocationDocument.find_all().count(),
         resources=await ResourceBaseDocument.find_all(with_children=True).count(),
         texts=await TextDocument.find_all().count(),
@@ -419,6 +422,10 @@ async def get_stats(
     # collect stats available for superusers only
     stats = SuperuserStats(
         **stats.model_dump(),
+        archived_contents=await ContentBaseDocument.find(
+            ContentBaseDocument.archived_query_criteria(True),
+            with_children=True,
+        ).count(),
         bookmarks=await BookmarkDocument.find_all().count(),
         corrections=await CorrectionDocument.find_all().count(),
         corrections_all_time=await counter_get("correction_notes"),
@@ -436,3 +443,31 @@ async def get_stats(
         deleted_users=await counter_get("deleted_users"),
     )
     return stats
+
+
+# @router.get(
+#     "/dev-fill-archive",
+#     status_code=status.HTTP_204_NO_CONTENT,
+# )
+# async def dev_fill_archive(su: SuperuserDep):
+#     """
+#     Creates 20.000 archived copies of each content in the "contents" collection for
+#     testing purposes. Only for use during development!
+#     """
+#     stack = []
+#     async for content in ContentBaseDocument.find(
+#         ContentBaseDocument.archived_query_criteria(False), with_children=True
+#     ):
+#         for i in range(20000):
+#             new = content.model_copy(
+#                 update={
+#                     "id": None,
+#                     "archive_ts": datetime.now(UTC) - timedelta(days=i),
+#                 }
+#             )
+#             stack.append(new)
+#             if len(stack) > 5000:
+#                 await ContentBaseDocument.insert_many(stack)
+#                 stack = []
+#     if stack:
+#         await ContentBaseDocument.insert_many(stack)

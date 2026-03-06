@@ -5,6 +5,7 @@ import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { useScriptTag } from '@vueuse/core';
 import { NSpin } from 'naive-ui';
 import { nextTick, onMounted, ref, watch } from 'vue';
+import MissingContent from './MissingContent.vue';
 
 type ResponseData = { key: string; data: string }[];
 
@@ -60,7 +61,7 @@ async function execTransformJs(
   }
 }
 
-async function updateContent(contents?: ApiCallContentRead[]) {
+async function updateContent(contents?: ApiCallResourceRead['contents']) {
   if (!contents?.length) return;
   loading.value = true;
   const newHtml = Array(contents.length).fill(undefined);
@@ -97,7 +98,7 @@ async function updateContent(contents?: ApiCallContentRead[]) {
 }
 
 watch(
-  () => props.resource.contents?.map((c) => c.id).join('-'),
+  () => props.resource.contents?.map((c) => c?.id ?? 'missing').join('-'),
   (contentIds) => {
     if (!contentIds) {
       contentProcessed.value = [];
@@ -120,31 +121,33 @@ onMounted(async () => {
 
 <template>
   <div>
-    <common-content-display
-      v-for="(content, i) in contentProcessed"
-      :key="i"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
-    >
-      <n-spin v-if="!focusView" :show="loading" size="small">
-        <div
-          v-if="content?.html !== undefined"
-          :class="`content-loadable res-${resource.id}` + (loading ? ' content-loading' : '')"
-        >
-          <hydrated-html
-            :html="content?.html"
-            :style="fontStyle"
-            :node-class="`res-${resource.id}`"
-          />
+    <template v-for="(content, contentIndex) in contentProcessed" :key="contentIndex">
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <n-spin v-if="!focusView" :show="loading" size="small">
+          <div
+            v-if="content?.html !== undefined"
+            :class="`content-loadable res-${resource.id}` + (loading ? ' content-loading' : '')"
+          >
+            <hydrated-html
+              :html="content?.html"
+              :style="fontStyle"
+              :node-class="`res-${resource.id}`"
+            />
+          </div>
+          <div v-else class="translucent i font-ui">
+            {{ $t('errors.notFound') }}
+          </div>
+        </n-spin>
+        <div v-else class="translucent i font-ui text-small">
+          {{ $t('contents.msgContentNoFocusView') }}
         </div>
-        <div v-else class="translucent i font-ui">
-          {{ $t('errors.notFound') }}
-        </div>
-      </n-spin>
-      <div v-else class="translucent i font-ui text-small">
-        {{ $t('contents.msgContentNoFocusView') }}
-      </div>
-    </common-content-display>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>

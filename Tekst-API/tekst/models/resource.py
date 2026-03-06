@@ -409,6 +409,41 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 precomputed_type="coverage",
             )
 
+        contents_lookup_pipeline = [
+            {
+                "$match": {
+                    "$expr": {
+                        "$and": [
+                            {
+                                "$eq": [
+                                    "$location_id",
+                                    "$$location_id",
+                                ]
+                            },
+                            {
+                                "$eq": [
+                                    "$resource_id",
+                                    "$$resource_id",
+                                ]
+                            },
+                            {
+                                "$or": [
+                                    {
+                                        "$eq": [
+                                            {"$type": "$archive_ts"},
+                                            "missing",
+                                        ]
+                                    },
+                                    {"$eq": ["$archive_ts", None]},
+                                ]
+                            },
+                        ]
+                    }
+                }
+            },
+            {"$project": {"_id": 1}},
+        ]
+
         data: list[dict] = (
             await LocationDocument.find(
                 LocationDocument.text_id == self.text_id,
@@ -422,30 +457,11 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                             "from": "contents",
                             "localField": "_id",
                             "foreignField": "location_id",
-                            "let": {"location_id": "$_id", "resource_id": self.id},
-                            "pipeline": [
-                                {
-                                    "$match": {
-                                        "$expr": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$location_id",
-                                                        "$$location_id",
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$resource_id",
-                                                        "$$resource_id",
-                                                    ]
-                                                },
-                                            ]
-                                        }
-                                    }
-                                },
-                                {"$project": {"_id": 1}},
-                            ],
+                            "let": {
+                                "location_id": "$_id",
+                                "resource_id": self.id,
+                            },
+                            "pipeline": contents_lookup_pipeline,
                             "as": "contents",
                         }
                     },

@@ -321,6 +321,7 @@ class LocationMetadataResource(ResourceBase):
         precomp_doc.data = (
             await ContentBaseDocument.find(
                 ContentBaseDocument.resource_id == self.id,
+                ContentBaseDocument.archived_query_criteria(False),
                 with_children=True,
             )
             .aggregate(

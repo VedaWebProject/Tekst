@@ -1,6 +1,8 @@
-from typing import Annotated, NotRequired, TypedDict
+from datetime import UTC, datetime
+from typing import Annotated, Any, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
+from beanie.operators import NE, And, Eq, Exists, Or
 from pydantic import BeforeValidator, Field, field_validator
 
 from tekst.models.common import (
@@ -18,12 +20,15 @@ from tekst.types import (
 
 
 class ContentComment(TypedDict):
+    """A comment on a content"""
+
     by: NotRequired[
         ConStrOrNone(
             max_length=128,
             cleanup="oneline",
         )
     ]
+
     comment: ConStr(
         max_length=5000,
         cleanup="multiline",
@@ -42,6 +47,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     resource_type: Annotated[
         ResourceTypeName,
         Field(
@@ -51,6 +57,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     location_id: Annotated[
         PydanticObjectId,
         Field(
@@ -60,6 +67,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     comments: Annotated[
         list[ContentComment] | None,
         Field(
@@ -71,11 +79,16 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         SchemaOptionalNonNullable,
     ] = None
 
-    @field_validator(
-        "resource_type",
-        mode="after",
-        check_fields=False,
-    )
+    archive_ts: Annotated[
+        datetime | None,
+        Field(description="Timestamp of the content archival"),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
+    ] = None
+
+    @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resources import resource_types_mgr
@@ -114,9 +127,46 @@ class ContentBaseDocument(ContentBase, DocumentBase):
         name = "contents"
         is_root = True
         indexes = [
-            "resource_id",
-            "location_id",
+            [
+                "resource_id",
+                "location_id",
+                "archive_ts",
+            ]
         ]
+
+    @classmethod
+    def archived_query_criteria(cls, archived: bool) -> dict[str, Any]:
+        if archived:
+            return And(
+                Exists(ContentBaseDocument.archive_ts, True),
+                NE(ContentBaseDocument.archive_ts, None),
+            )
+        else:
+            return Or(
+                Exists(ContentBaseDocument.archive_ts, False),
+                Eq(ContentBaseDocument.archive_ts, None),
+            )
+
+    async def archive(self) -> "ContentBaseDocument":
+        """
+        Archives this content by assigning it an archival timestamp (`archive_ts`).
+        Returns an unsaved copy of the content (without ID).
+        """
+        copy = self.model_copy(deep=True)
+        copy.id = None
+        self.archive_ts = datetime.now(UTC)
+        await self.replace()
+        return copy
 
 
 ContentBaseUpdate = ContentBase.update_model()
+
+
+class MissingContent(ModelBase):
+    """
+    A model representing a missing content.
+    """
+
+    resource_id: PydanticObjectId
+    resource_type: Literal["none"]
+    location_id: PydanticObjectId
