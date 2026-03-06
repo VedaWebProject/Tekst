@@ -51,6 +51,7 @@ import GavelOutlined from '@vicons/material/GavelOutlined';
 import GroupOutlined from '@vicons/material/GroupOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
 import HelpCenterOutlined from '@vicons/material/HelpCenterOutlined';
+import HistoryOutlined from '@vicons/material/HistoryOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -175,6 +176,7 @@ export {
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,
   HelpCenterOutlined as HelpOverviewIcon,
+  HistoryOutlined as HistoryIcon,
   HorizontalRuleOutlined as HorizontalRuleIcon,
   HourglassTopOutlined as HourglassIcon,
   ImageOutlined as ImageIcon,

@@ -69,7 +69,7 @@ onMounted(() => {
           <template v-if="auth.user?.isSuperuser" #suffix>
             <span class="text-medium ml-sm su-stat" :title="$t('stats.onlySu')">
               {{ (stats as SuperuserStats).archivedContents.toLocaleString(localeCode) }}
-              {{ $t('common.archived') }}
+              {{ $t('contents.archived') }}
             </span>
           </template>
         </n-statistic>

@@ -130,6 +130,27 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/contents/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get archived contents
+     * @description Returns all archived content for the given resource and location,
+     *     sorted by archival timestamp in descending order
+     */
+    get: operations['getArchivedContents'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/contents/{id}': {
     parameters: {
       query?: never;
@@ -7321,6 +7342,66 @@ export interface operations {
       };
     };
   };
+  getArchivedContents: {
+    parameters: {
+      query: {
+        resId: components['schemas']['PydanticObjectId'];
+        locId: components['schemas']['PydanticObjectId'];
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': (
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead']
+          )[];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   getContent: {
     parameters: {
       query?: never;
@@ -7497,11 +7578,21 @@ export interface operations {
     requestBody?: never;
     responses: {
       /** @description Successful Response */
-      204: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
+        };
       };
       /** @description Forbidden */
       403: {

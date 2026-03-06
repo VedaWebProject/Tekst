@@ -845,6 +845,137 @@
         }
       }
     },
+    "/contents/archive": {
+      "get": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Get archived contents",
+        "description": "Returns all archived content for the given resource and location,\nsorted by archival timestamp in descending order",
+        "operationId": "getArchivedContents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "locId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "max": 10240,
+              "default": 1024,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/ApiCallContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/AudioContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ImagesContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/LocationMetadataContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PlainTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/RichTextContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextAnnotationContentRead"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "resourceType",
+                      "mapping": {
+                        "apiCall": "#/components/schemas/ApiCallContentRead",
+                        "audio": "#/components/schemas/AudioContentRead",
+                        "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                        "images": "#/components/schemas/ImagesContentRead",
+                        "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                        "plainText": "#/components/schemas/PlainTextContentRead",
+                        "richText": "#/components/schemas/RichTextContentRead",
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                      }
+                    }
+                  },
+                  "title": "Response Get Archived Contents Contents Archive Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/contents/{id}": {
       "get": {
         "tags": [

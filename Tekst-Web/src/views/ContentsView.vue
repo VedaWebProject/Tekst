@@ -11,6 +11,7 @@ import {
   POST,
 } from '@/api';
 import { dialogProps } from '@/common';
+import ArchiveWidget from '@/components/browse/ArchiveWidget.vue';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -431,7 +432,7 @@ whenever(ArrowRight, () => {
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
       </template>
-      {{ $t('resources.backToOverview') }}
+      {{ $t('common.backToOverview') }}
     </n-button>
   </router-link>
 
@@ -609,7 +610,7 @@ whenever(ArrowRight, () => {
       </n-alert>
 
       <!-- CORRECTION NOTES -->
-      <n-alert v-if="resource && !!corrections.length" :show-icon="false" class="mb-lg">
+      <n-alert v-if="!!corrections.length" :show-icon="false" class="mb-lg">
         <n-collapse class="corrections" :trigger-areas="['arrow', 'main']">
           <n-collapse-item name="corrections">
             <template #header>
@@ -676,8 +677,17 @@ whenever(ArrowRight, () => {
               :loading="loadingArchive"
               @click="handleArchiveContentClick"
             >
-              {{ $t('common.archive') }}
+              {{ $t('contents.archive') }}
             </n-button>
+            <archive-widget
+              v-if="locId"
+              :resource="resource"
+              :location-id="locId"
+              :disabled="loading || contentModel.resourceId !== resource.id"
+              :loading="loadingArchive"
+              secondary
+              type="primary"
+            />
           </template>
           <n-button secondary :disabled="!changed || loading" @click="resetForm">
             {{ $t('common.reset') }}

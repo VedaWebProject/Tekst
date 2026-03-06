@@ -7,6 +7,7 @@ from fastapi import APIRouter, Path, Query, status
 from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.models.content import ContentBaseDocument
+from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.resources import (
     AnyContentCreate,
@@ -74,6 +75,47 @@ async def create_content(
         .document_model()
         .model_from(content)
         .create()
+    )
+
+
+@router.get(
+    "/archive",
+    response_model=list[AnyContentRead],
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_CONTENT_NOT_FOUND,
+            errors.E_403_FORBIDDEN,
+        ]
+    ),
+)
+async def get_archived_contents(
+    user: OptionalUserDep,
+    resource_id: Annotated[PydanticObjectId, Query(alias="resId")],
+    location_id: Annotated[PydanticObjectId, Query(alias="locId")],
+    limit: Annotated[int, Query(max=10240)] = 1024,
+) -> list[AnyContentDocument]:
+    """
+    Returns all archived content for the given resource and location,
+    sorted by archival timestamp in descending order
+    """
+    # check if passed IDs are valid
+    if not await LocationDocument.find_one(LocationDocument.id == location_id).exists():
+        raise errors.E_404_LOCATION_NOT_FOUND
+    if not await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == resource_id, with_children=True
+    ).exists():
+        raise errors.E_404_RESOURCE_NOT_FOUND
+    # get archived contents
+    return (
+        await ContentBaseDocument.find(
+            ContentBaseDocument.resource_id == resource_id,
+            ContentBaseDocument.location_id == location_id,
+            ContentBaseDocument.archived_query_criteria(True),
+            with_children=True,
+        )
+        .sort(-ContentBaseDocument.archive_ts)
+        .to_list(limit)
     )
 
 
