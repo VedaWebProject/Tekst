@@ -163,7 +163,7 @@ async def get_location_data(
     """
     # limit for number of contents fetched from DB per request
     # (internal constant to conveniently adjust it later if needed)
-    contents_fetch_limit = 512
+    contents_fetch_limit = 1024
 
     # find target location
     location_doc = None

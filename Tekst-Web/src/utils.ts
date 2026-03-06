@@ -6,7 +6,7 @@ import type {
   UserReadPublic,
 } from '@/api';
 import type { components } from '@/api/schema';
-import { $t } from '@/i18n';
+import { $t, getLocaleProfile } from '@/i18n';
 import { uniqBy } from 'lodash-es';
 import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
@@ -45,6 +45,24 @@ export function renderIcon(icon?: Component, color?: string, size?: string | num
 
 export function utcToLocalTime(utcDateTimeString: string): Date {
   return new Date(utcDateTimeString + (!utcDateTimeString.toUpperCase().endsWith('Z') ? 'Z' : ''));
+}
+
+export function utcToDateString(
+  utcTimeString?: string | null,
+  localeCode: Intl.UnicodeBCP47LocaleIdentifier = 'en-US'
+): string {
+  if (!utcTimeString) return '';
+  return utcToLocalTime(utcTimeString).toLocaleDateString(
+    getLocaleProfile(localeCode).displayShort
+  );
+}
+
+export function utcToDateTimeString(
+  utcTimeString?: string | null,
+  localeCode: Intl.UnicodeBCP47LocaleIdentifier = 'en-US'
+): string {
+  if (!utcTimeString) return '';
+  return utcToLocalTime(utcTimeString).toLocaleString(getLocaleProfile(localeCode).displayShort);
 }
 
 export function getFullLocationLabel(
