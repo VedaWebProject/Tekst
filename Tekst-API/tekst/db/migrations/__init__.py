@@ -63,7 +63,7 @@ async def check_for_migrations(
     log.critical(
         "Found pending DB migrations. "
         "The data in your database might not be compatible with "
-        "the currently running version of Tekst."
+        "the currently running version of Tekst. "
         "Please run the DB migrations before starting Tekst."
     )  # pragma: no cover
     exit(1)  # pragma: no cover

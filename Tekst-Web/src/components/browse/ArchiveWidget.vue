@@ -11,7 +11,7 @@ import { utcToDateTimeString } from '@/utils';
 import { NButton, NEmpty, NFlex, NIcon, NSpin } from 'naive-ui';
 import { ref } from 'vue';
 
-type AnyContentWithLocalArchiveTs = AnyContentRead & { archiveTsLocal?: string };
+type AnyContentArchiveExtras = AnyContentRead & { createdAtStr?: string, distanceStr: string, distanceRel: number, };
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -23,9 +23,31 @@ const { message } = useMessages();
 
 const showModal = ref(false);
 const loading = ref(false);
-const selectedContent = ref<AnyContentWithLocalArchiveTs>();
-const archivedContents = ref<AnyContentWithLocalArchiveTs[]>([]);
+const selectedContent = ref<AnyContentArchiveExtras>();
+const archivedContents = ref<AnyContentArchiveExtras[]>([]);
 const title = ref($t('contents.archivedContentsTitle'));
+
+function getContentLifetimeMs(contents: AnyContentRead[]){
+  const byAge = contents.map(c => c.createdAt).sort((a, b) => b.localeCompare(a));
+  return Math.abs(Math.ceil((new Date(byAge[byAge.length - 1]).getTime() - new Date(byAge[0]).getTime())));
+}
+
+function getTimeDistanceString(ms: number) {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const years = Math.floor(days / 365);
+  const months = Math.floor((days % 365) / 30); // Remaining months
+  const remainingDays = days % 30; // Remaining days
+
+  const result = [];
+  if (years > 0) result.push(years + ' ' + $t('common.years'));
+  if (months > 0) result.push(months + ' ' + $t('common.months'));
+  if (remainingDays > 0) result.push(remainingDays + ' ' + $t('common.days'));
+
+  return result.join(', ');
+}
 
 function handleWidgetClick() {
   loading.value = true;
@@ -45,8 +67,20 @@ async function loadArchiveData() {
   if (!error) {
     archivedContents.value = data.map((c) => ({
       ...c,
-      archiveTsLocal: utcToDateTimeString(c.archiveTs, state.locale),
+      createdAtStr: utcToDateTimeString(c.createdAt, state.locale),
+      distanceStr: '0',
+      distanceRel: 0,
     }));
+
+    // compute time distances
+    const maxTimespanMs = getContentLifetimeMs(data);
+    archivedContents.value.forEach((c, i) => {
+      if (i < archivedContents.value.length - 1) {
+        const distanceMs = getContentLifetimeMs([c, data[i + 1]]);
+        c.distanceStr = getTimeDistanceString(distanceMs);
+        c.distanceRel = distanceMs / maxTimespanMs;
+      };
+    });
   } else {
     archivedContents.value = [];
     message.error($t('errors.unexpected'));
@@ -54,9 +88,9 @@ async function loadArchiveData() {
   loading.value = false;
 }
 
-function handleItemClick(content: AnyContentWithLocalArchiveTs) {
+function handleItemClick(content: AnyContentArchiveExtras) {
   selectedContent.value = content;
-  title.value = content.archiveTsLocal ?? $t('contents.archivedContentsTitle');
+  title.value = content.createdAtStr ?? $t('contents.archivedContentsTitle');
 }
 
 function handleBackToOverview() {
@@ -107,14 +141,14 @@ function cleanup() {
     <n-spin v-else-if="loading" class="centered-spin" />
     <template v-else-if="!selectedContent">
       <n-flex v-if="archivedContents?.length" vertical size="large">
-        <n-button
-          v-for="content in archivedContents"
-          :key="content.id"
-          secondary
-          @click="handleItemClick(content)"
-        >
-          {{ content.archiveTsLocal }}
-        </n-button>
+        <template v-for="content in archivedContents" :key="content.id">
+          <n-button secondary @click="handleItemClick(content)">
+            {{ content.createdAtStr }}
+          </n-button>
+          <div v-if="content.distanceRel" class="time-gap text-tiny" :style="{lineHeight: (12 + (content.distanceRel * 120)) + 'px'}">
+            {{ content.distanceStr }}
+          </div>
+        </template>
       </n-flex>
       <n-empty v-else-if="!loading" :description="$t('contents.msgNoArchivedContents')">
         <template #icon>
@@ -130,3 +164,12 @@ function cleanup() {
     </button-shelf>
   </generic-modal>
 </template>
+
+<style scoped>
+.time-gap {
+  color: var(--primary-color);
+  margin-left: 1rem;
+  padding-left: .5rem;
+  border-left: 1px dashed var(--primary-color);
+}
+</style>

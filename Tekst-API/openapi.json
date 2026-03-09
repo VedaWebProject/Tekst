@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.49.4b0"
+    "version": "0.50.0b0"
   },
   "servers": [
     {
@@ -851,7 +851,7 @@
           "contents"
         ],
         "summary": "Get archived contents",
-        "description": "Returns all archived content for the given resource and location,\nsorted by archival timestamp in descending order",
+        "description": "Returns all archived content for the given resource and location,\nsorted by creation timestamp in descending order",
         "operationId": "getArchivedContents",
         "security": [
           {
@@ -7788,18 +7788,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "calls": {
             "items": {
@@ -8736,18 +8736,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "files": {
             "items": {
@@ -10472,18 +10472,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "links": {
             "items": {
@@ -11557,18 +11557,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "files": {
             "items": {
@@ -12725,18 +12725,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "entries": {
             "items": {
@@ -14147,18 +14147,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "text": {
             "type": "string",
@@ -16070,18 +16070,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "html": {
             "type": "string",
@@ -17472,18 +17472,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
-          "archiveTs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Archivets",
-            "description": "Timestamp of the content archival"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation",
+            "default": "2026-03-09T15:25:39.977091Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "tokens": {
             "items": {

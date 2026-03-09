@@ -36,7 +36,8 @@ from tekst.types import (
 class ModelBase(BaseModel):
     model_config = ConfigDict(
         alias_generator=camelize,
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         from_attributes=True,
     )
 
@@ -128,7 +129,7 @@ class DocumentBase(Document):
         self,
         updates_model: ModelBase,
         *,
-        save: bool = True,
+        insert: bool = False,
     ) -> "DocumentBase":
         """
         Custom method to apply updates to the document, excluding any fields that are
@@ -148,10 +149,10 @@ class DocumentBase(Document):
             # set attribute
             setattr(self, field, getattr(updates_model, field))
 
-        if save:
-            return await self.save()
+        if insert:
+            return await self.save()  # same as self.insert()
         else:
-            return self  # pragma: no cover
+            return self.replace()  # raises exception if document does not exist
 
     @classmethod
     def _validate_against_field(

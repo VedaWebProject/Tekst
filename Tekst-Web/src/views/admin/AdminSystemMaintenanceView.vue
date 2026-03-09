@@ -121,8 +121,6 @@ async function sendTestEMail() {
   const { error } = await GET('/platform/test-email');
   if (!error) {
     message.success($t('common.ok'));
-  } else {
-    message.error($t('errors.unexpected'));
   }
   emailLoading.value = false;
 }

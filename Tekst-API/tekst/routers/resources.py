@@ -1019,7 +1019,7 @@ async def export_resource_contents_task(
     contents = await content_doc_model.find(
         Eq(content_doc_model.resource_id, resource.id),
         In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
-        Eq(content_doc_model.archive_ts, None),
+        Eq(content_doc_model.archived, False),
     ).to_list()
 
     # sort target contents

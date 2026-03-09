@@ -54,7 +54,7 @@ async def create_content(
     if await ContentBaseDocument.find_one(
         Eq(ContentBaseDocument.resource_id, content.resource_id),
         Eq(ContentBaseDocument.location_id, content.location_id),
-        ContentBaseDocument.archived_query_criteria(False),
+        Eq(ContentBaseDocument.archived, False),
         with_children=True,
     ).exists():
         raise errors.E_409_CONTENT_CONFLICT
@@ -97,7 +97,7 @@ async def get_archived_contents(
 ) -> list[AnyContentDocument]:
     """
     Returns all archived content for the given resource and location,
-    sorted by archival timestamp in descending order
+    sorted by creation timestamp in descending order
     """
     # check if passed IDs are valid
     if not await LocationDocument.find_one(LocationDocument.id == location_id).exists():
@@ -111,10 +111,10 @@ async def get_archived_contents(
         await ContentBaseDocument.find(
             ContentBaseDocument.resource_id == resource_id,
             ContentBaseDocument.location_id == location_id,
-            ContentBaseDocument.archived_query_criteria(True),
+            Eq(ContentBaseDocument.archived, True),
             with_children=True,
         )
-        .sort(-ContentBaseDocument.archive_ts)
+        .sort(-ContentBaseDocument.created_at)
         .to_list(limit)
     )
 
@@ -183,7 +183,7 @@ async def update_content(
     # archive existing content, obtain an unsaved copy
     content_copy = await content_doc.archive()
     # save updated copy
-    return await content_copy.apply_updates(updates)
+    return await content_copy.apply_updates(updates, insert=True)
 
 
 @router.delete(
@@ -318,11 +318,7 @@ async def find_contents(
                 ContentBaseDocument.resource_id,
                 [resource.id for resource in readable_resources],
             ),
-            (
-                {}
-                if archived is None
-                else ContentBaseDocument.archived_query_criteria(archived)
-            ),
+            ({} if archived is None else Eq(ContentBaseDocument.archived, archived),),
             with_children=True,
         )
         .limit(limit)

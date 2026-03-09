@@ -78,6 +78,9 @@ common:
   total: gesamt
   loading: Lade...
   url: URL
+  years: Jahre
+  months: Monate
+  days: Tage
   backToOverview: Zurück zur Übersicht
   downloadSaved: Datei gespeichert als {filename}.
   areYouSure: Sind Sie sich sicher?

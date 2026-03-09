@@ -78,6 +78,9 @@ common:
   total: total
   loading: Loading...
   url: URL
+  years: years
+  months: months
+  days: days
   backToOverview: Back to overview
   downloadSaved: File saved as {filename}.
   areYouSure: Are you sure?

@@ -1458,10 +1458,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1904,10 +1912,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Files
        * @description List of audio file objects
@@ -2677,10 +2693,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Links
        * @description List of external reference link objects
@@ -3181,10 +3205,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Files
        * @description List of image file objects
@@ -3695,10 +3727,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -4356,10 +4396,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5282,10 +5330,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5925,10 +5981,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
-       * Archivets
+       * Createdat
+       * Format: date-time
        * @description Timestamp of the content archival
+       * @default 2026-03-09T13:51:54.268165Z
        */
-      archiveTs?: string | null;
+      createdAt: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Tokens
        * @description List of annotated tokens in this content object

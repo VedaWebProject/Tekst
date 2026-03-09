@@ -414,29 +414,9 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 "$match": {
                     "$expr": {
                         "$and": [
-                            {
-                                "$eq": [
-                                    "$location_id",
-                                    "$$location_id",
-                                ]
-                            },
-                            {
-                                "$eq": [
-                                    "$resource_id",
-                                    "$$resource_id",
-                                ]
-                            },
-                            {
-                                "$or": [
-                                    {
-                                        "$eq": [
-                                            {"$type": "$archive_ts"},
-                                            "missing",
-                                        ]
-                                    },
-                                    {"$eq": ["$archive_ts", None]},
-                                ]
-                            },
+                            {"$eq": ["$location_id", "$$location_id"]},
+                            {"$eq": ["$resource_id", "$$resource_id"]},
+                            {"$eq": ["$archived", False]},
                         ]
                     }
                 }

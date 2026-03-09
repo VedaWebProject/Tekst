@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   type AnyContentCreate,
+  type AnyContentRead,
   type AnyContentUpdate,
   type AnyResourceRead,
   type CorrectionRead,
@@ -64,7 +65,7 @@ import {
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 
-type ContentFormModel = AnyContentCreate & { id: string };
+type ContentFormModel = AnyContentRead & { id: string };
 
 const props = defineProps<{
   textSlug?: string;

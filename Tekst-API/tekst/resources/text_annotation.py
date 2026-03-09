@@ -405,7 +405,7 @@ class TextAnnotationResource(ResourceBase):
         precomp_doc.data = (
             await ContentBaseDocument.find(
                 Eq(ContentBaseDocument.resource_id, self.id),
-                ContentBaseDocument.archived_query_criteria(False),
+                Eq(ContentBaseDocument.archived, False),
                 with_children=True,
             )
             .aggregate(
@@ -509,7 +509,7 @@ class TextAnnotationResource(ResourceBase):
         async for content in content_doc_model.find(
             Eq(content_doc_model.resource_id, self.id),
             Eq(content_doc_model.tokens.id, None),
-            Eq(content_doc_model.archive_ts, None),
+            Eq(content_doc_model.archives, False),
         ):
             dirty = False
             for token in content.tokens:

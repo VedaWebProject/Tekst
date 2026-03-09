@@ -1,9 +1,8 @@
 from datetime import UTC, datetime
-from typing import Annotated, Any, Literal, NotRequired, TypedDict
+from typing import Annotated, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
-from beanie.operators import NE, And, Eq, Exists, Or
-from pydantic import BeforeValidator, Field, field_validator
+from pydantic import AwareDatetime, BeforeValidator, Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -79,14 +78,27 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         SchemaOptionalNonNullable,
     ] = None
 
-    archive_ts: Annotated[
-        datetime | None,
-        Field(description="Timestamp of the content archival"),
+    created_at: Annotated[
+        AwareDatetime,
+        Field(
+            description="Timestamp of the content creation",
+        ),
         ExcludeFromModelVariants(
             create=True,
             update=True,
         ),
-    ] = None
+    ] = datetime.now(UTC)
+
+    archived: Annotated[
+        bool,
+        Field(
+            description="Whether the content is archived",
+        ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
+    ] = False
 
     @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
@@ -130,31 +142,19 @@ class ContentBaseDocument(ContentBase, DocumentBase):
             [
                 "resource_id",
                 "location_id",
-                "archive_ts",
+                "created_at",
+                "archived",
             ]
         ]
 
-    @classmethod
-    def archived_query_criteria(cls, archived: bool) -> dict[str, Any]:
-        if archived:
-            return And(
-                Exists(ContentBaseDocument.archive_ts, True),
-                NE(ContentBaseDocument.archive_ts, None),
-            )
-        else:
-            return Or(
-                Exists(ContentBaseDocument.archive_ts, False),
-                Eq(ContentBaseDocument.archive_ts, None),
-            )
-
     async def archive(self) -> "ContentBaseDocument":
         """
-        Archives this content by assigning it an archival timestamp (`archive_ts`).
-        Returns an unsaved copy of the content (without ID).
+        Archives this content and returns an unsaved copy (without ID) with an updated
+        `created_at` datetime value set to now (UTC).
         """
-        copy = self.model_copy(deep=True)
+        copy = self.model_copy(deep=True, update={"created_at": datetime.now(UTC)})
         copy.id = None
-        self.archive_ts = datetime.now(UTC)
+        self.archived = True
         await self.replace()
         return copy
 

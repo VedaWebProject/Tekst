@@ -150,7 +150,7 @@ async def test_update_content(
     resource = await ResourceBaseDocument.find_one(with_children=True)
     content = await ContentBaseDocument.find_one(
         Eq(ContentBaseDocument.resource_id, resource.id),
-        ContentBaseDocument.archived_query_criteria(False),
+        Eq(ContentBaseDocument.archived, False),
         with_children=True,
     )
     assert content
@@ -171,7 +171,7 @@ async def test_update_content(
 
     # check if the old content has been archived
     archived_count = await ContentBaseDocument.find(
-        ContentBaseDocument.archived_query_criteria(True),
+        Eq(ContentBaseDocument.archived, True),
         with_children=True,
     ).count()
     assert archived_count == 1
@@ -264,7 +264,7 @@ async def test_archive_and_delete_content(
 
     # check if it actually has been archived
     archived_count = await ContentBaseDocument.find(
-        ContentBaseDocument.archived_query_criteria(True),
+        Eq(ContentBaseDocument.archived, True),
         with_children=True,
     ).count()
     assert archived_count == 1
