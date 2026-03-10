@@ -52,9 +52,6 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         Field(
             description="A string identifying one of the available resource types",
         ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
     ]
 
     location_id: Annotated[
@@ -82,12 +79,13 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         AwareDatetime,
         Field(
             description="Timestamp of the content creation",
+            default_factory=lambda: datetime.now(UTC),
         ),
         ExcludeFromModelVariants(
             create=True,
             update=True,
         ),
-    ] = datetime.now(UTC)
+    ]
 
     archived: Annotated[
         bool,
@@ -170,3 +168,16 @@ class MissingContent(ModelBase):
     resource_id: PydanticObjectId
     resource_type: Literal["none"]
     location_id: PydanticObjectId
+
+
+class ContentArchiveSignature(ModelBase):
+    class Settings:
+        projection = {
+            "id": "$_id",
+            "created_at": 1,
+            "archived": 1,
+        }
+
+    id: PydanticObjectId
+    created_at: AwareDatetime
+    archived: bool

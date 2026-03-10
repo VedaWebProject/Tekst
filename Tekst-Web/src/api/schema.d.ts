@@ -139,8 +139,9 @@ export interface paths {
     };
     /**
      * Get archived contents
-     * @description Returns all archived content for the given resource and location,
-     *     sorted by archival timestamp in descending order
+     * @description Returns all content (including archived content)
+     *     for the given resource and location,
+     *     sorted by creation timestamp in descending order.
      */
     get: operations['getArchivedContents'];
     put?: never;
@@ -184,6 +185,27 @@ export interface paths {
     put?: never;
     /** Archive content */
     post: operations['archiveContent'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/contents/{id}/restore': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Restore archived content
+     * @description Restores the archived content with the given ID, archives any content currently
+     *     present for the same resource/location.
+     */
+    post: operations['restoreArchivedContent'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1460,10 +1482,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -1914,10 +1935,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -2528,6 +2548,17 @@ export interface components {
        */
       cmt?: string;
     };
+    /** ContentArchiveSignature */
+    ContentArchiveSignature: {
+      id: components['schemas']['PydanticObjectId'];
+      /**
+       * Createdat
+       * Format: date-time
+       */
+      createdAt: string;
+      /** Archived */
+      archived: boolean;
+    };
     /**
      * ContentComment
      * @description A comment on a content
@@ -2695,10 +2726,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -3207,10 +3237,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -3729,10 +3758,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -4398,10 +4426,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -5332,10 +5359,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -5983,10 +6009,9 @@ export interface components {
       /**
        * Createdat
        * Format: date-time
-       * @description Timestamp of the content archival
-       * @default 2026-03-09T13:51:54.268165Z
+       * @description Timestamp of the content creation
        */
-      createdAt: string;
+      createdAt?: string;
       /**
        * Archived
        * @description Whether the content is archived
@@ -7425,16 +7450,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': (
-            | components['schemas']['ApiCallContentRead']
-            | components['schemas']['AudioContentRead']
-            | components['schemas']['ExternalReferencesContentRead']
-            | components['schemas']['ImagesContentRead']
-            | components['schemas']['LocationMetadataContentRead']
-            | components['schemas']['PlainTextContentRead']
-            | components['schemas']['RichTextContentRead']
-            | components['schemas']['TextAnnotationContentRead']
-          )[];
+          'application/json': components['schemas']['ContentArchiveSignature'][];
         };
       };
       /** @description Forbidden */
@@ -7516,7 +7532,9 @@ export interface operations {
   };
   deleteContent: {
     parameters: {
-      query?: never;
+      query?: {
+        deleteArchive?: boolean;
+      };
       header?: never;
       path: {
         id: components['schemas']['PydanticObjectId'];
@@ -7660,6 +7678,63 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  restoreArchivedContent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
         headers: {
           [name: string]: unknown;
         };

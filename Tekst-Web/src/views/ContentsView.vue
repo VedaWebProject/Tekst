@@ -5,6 +5,7 @@ import {
   type AnyContentUpdate,
   type AnyResourceRead,
   type CorrectionRead,
+  DELETE,
   GET,
   type LocationDataQuery,
   type LocationRead,
@@ -329,6 +330,34 @@ async function handleArchiveContentClick() {
   });
 }
 
+async function handleDeleteContentClick() {
+  if (!contentModel.value) return;
+  dialog.warning({
+    title: $t('common.warning'),
+    content: $t('contents.confirmDelete'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
+    closable: false,
+    ...dialogProps,
+    onPositiveClick: async () => {
+      if (!contentModel.value) return;
+      loadingDelete.value = true;
+      const { error } = await DELETE('/contents/{id}', {
+        params: {
+          path: { id: contentModel.value.id },
+          query: {deleteArchive: true}
+        },
+      });
+      if (!error) {
+        resources.resetCoverage(resource.value?.id);
+        await loadLocationData();
+        message.success($t('contents.msgDeleted'));
+      }
+      loadingDelete.value = false;
+    },
+  });
+}
+
 function handleAddContentClick() {
   if (resource.value && location.value) {
     contentModel.value = {
@@ -378,6 +407,12 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
   } else {
     message.info($t('browse.location.msgNoNearest'));
   }
+}
+
+function handleRestoredContent(content: AnyContentRead){
+  contentModel.value = content;
+  reset();
+  formRef.value?.restoreValidation();
 }
 
 // watch for position change and resources data updates
@@ -668,13 +703,28 @@ whenever(ArrowRight, () => {
         >
           <content-form-items v-model="contentModel" :resource="resource" />
         </n-form>
+      </template>
+
+      <n-flex v-else vertical align="center" class="my-lg">
+        <n-empty :description="$t('contents.noContent')" class="mb-lg">
+          <template #icon>
+            <n-icon :component="NoContentIcon" />
+          </template>
+        </n-empty>
+        <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
+          <template #icon>
+            <n-icon :component="AddIcon" />
+          </template>
+          {{ $t('contents.btnAddContent') }}
+        </n-button>
+      </n-flex>
 
         <button-shelf class="mt-lg">
           <template #start>
             <n-button
               secondary
               type="warning"
-              :disabled="loading || !contentModel.id || contentModel.resourceId !== resource.id"
+              :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
               :loading="loadingArchive"
               @click="handleArchiveContentClick"
             >
@@ -684,17 +734,29 @@ whenever(ArrowRight, () => {
               v-if="locId"
               :resource="resource"
               :location-id="locId"
-              :disabled="loading || contentModel.resourceId !== resource.id"
+              :disabled="loading"
               :loading="loadingArchive"
               secondary
               type="primary"
+              @restore="handleRestoredContent"
             />
+            <n-button
+              v-if="auth.user && (auth.user.isSuperuser || resource.ownerIds.includes(auth.user.id))"
+              secondary
+              type="error"
+              :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
+              :loading="loadingDelete"
+              @click="handleDeleteContentClick"
+            >
+              {{ $t('common.delete') }}
+            </n-button>
           </template>
+
           <n-button secondary :disabled="!changed || loading" @click="resetForm">
             {{ $t('common.reset') }}
           </n-button>
           <n-button
-            v-if="!changed && resource.originalId && contentModel.resourceId == resource.originalId"
+            v-if="!changed && resource.originalId && contentModel?.resourceId == resource.originalId"
             type="primary"
             :title="$t('contents.tipBtnCopyOriginal')"
             :disabled="loading"
@@ -712,21 +774,6 @@ whenever(ArrowRight, () => {
             {{ $t('common.save') }}
           </n-button>
         </button-shelf>
-      </template>
-
-      <n-flex v-else vertical align="center" class="mb-lg">
-        <n-empty :description="$t('contents.noContent')" class="mb-lg">
-          <template #icon>
-            <n-icon :component="NoContentIcon" />
-          </template>
-        </n-empty>
-        <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
-          <template #icon>
-            <n-icon :component="AddIcon" />
-          </template>
-          {{ $t('contents.btnAddContent') }}
-        </n-button>
-      </n-flex>
     </div>
   </template>
 

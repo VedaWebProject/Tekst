@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
+import { GET, POST, type AnyContentRead, type AnyResourceRead, type ContentArchiveSignature } from '@/api';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
@@ -11,25 +11,28 @@ import { utcToDateTimeString } from '@/utils';
 import { NButton, NEmpty, NFlex, NIcon, NSpin } from 'naive-ui';
 import { ref } from 'vue';
 
-type AnyContentArchiveExtras = AnyContentRead & { createdAtStr?: string, distanceStr: string, distanceRel: number, };
+type AnyContentArchiveItem = ContentArchiveSignature & { createdAtStr?: string, distanceMs: number, distanceStr: string, distanceRel: number, };
 
 const props = defineProps<{
   resource: AnyResourceRead;
   locationId: AnyContentRead['locationId'];
 }>();
 
+const emit = defineEmits<{
+  restore: [value: AnyContentRead]
+}>()
+
 const state = useStateStore();
 const { message } = useMessages();
 
 const showModal = ref(false);
 const loading = ref(false);
-const selectedContent = ref<AnyContentArchiveExtras>();
-const archivedContents = ref<AnyContentArchiveExtras[]>([]);
+const selectedContent = ref<AnyContentRead>();
+const archiveItems = ref<AnyContentArchiveItem[]>([]);
 const title = ref($t('contents.archivedContentsTitle'));
 
-function getContentLifetimeMs(contents: AnyContentRead[]){
-  const byAge = contents.map(c => c.createdAt).sort((a, b) => b.localeCompare(a));
-  return Math.abs(Math.ceil((new Date(byAge[byAge.length - 1]).getTime() - new Date(byAge[0]).getTime())));
+function getTsDistanceMs(utcStr1: string, utcStr2: string){
+  return Math.ceil(Math.abs(new Date(utcStr1).getTime() - new Date(utcStr2).getTime()));
 }
 
 function getTimeDistanceString(ms: number) {
@@ -65,32 +68,53 @@ async function loadArchiveData() {
     },
   });
   if (!error) {
-    archivedContents.value = data.map((c) => ({
-      ...c,
-      createdAtStr: utcToDateTimeString(c.createdAt, state.locale),
+    archiveItems.value = data.map((a) => ({
+      ...a,
+      createdAtStr: utcToDateTimeString(a.createdAt, state.locale),
+      distanceMs: 0,
       distanceStr: '0',
       distanceRel: 0,
     }));
 
     // compute time distances
-    const maxTimespanMs = getContentLifetimeMs(data);
-    archivedContents.value.forEach((c, i) => {
-      if (i < archivedContents.value.length - 1) {
-        const distanceMs = getContentLifetimeMs([c, data[i + 1]]);
-        c.distanceStr = getTimeDistanceString(distanceMs);
-        c.distanceRel = distanceMs / maxTimespanMs;
+    let maxDistanceMs = 0;
+    archiveItems.value.forEach((a, i) => {
+      if (i < archiveItems.value.length - 1) {
+        a.distanceMs = getTsDistanceMs(a.createdAt, data[i + 1].createdAt);
+        maxDistanceMs = a.distanceMs > maxDistanceMs ? a.distanceMs : maxDistanceMs;
+        a.distanceStr = getTimeDistanceString(a.distanceMs);
       };
     });
+    archiveItems.value.forEach((a) => {
+      a.distanceRel = maxDistanceMs > 0 ? a.distanceMs / maxDistanceMs : 0;
+    });
   } else {
-    archivedContents.value = [];
+    archiveItems.value = [];
     message.error($t('errors.unexpected'));
   }
   loading.value = false;
 }
 
-function handleItemClick(content: AnyContentArchiveExtras) {
-  selectedContent.value = content;
-  title.value = content.createdAtStr ?? $t('contents.archivedContentsTitle');
+async function handleItemClick(archiveItem: AnyContentArchiveItem) {
+  loading.value = true;
+  const {data, error} = await GET('/contents/{id}', {params: {path: {id: archiveItem.id}}});
+  if (!error){
+    selectedContent.value = data;
+    title.value = archiveItem.createdAtStr ?? $t('contents.archivedContentsTitle');
+  }
+  loading.value = false;
+}
+
+async function restoreArchivedContent(archivedContent: AnyContentRead) {
+  if (!archivedContent.archived) return;
+  loading.value = true;
+  const {data, error} = await POST('/contents/{id}/restore', {params: {path: {id: archivedContent.id}}});
+  if (!error){
+    emit('restore', data);
+    message.success($t('contents.msgRestored'));
+  }
+  loading.value = false;
+  showModal.value = false
 }
 
 function handleBackToOverview() {
@@ -100,7 +124,7 @@ function handleBackToOverview() {
 
 function cleanup() {
   selectedContent.value = undefined;
-  archivedContents.value = [];
+  archiveItems.value = [];
   title.value = $t('contents.archivedContentsTitle');
 }
 </script>
@@ -118,7 +142,8 @@ function cleanup() {
     @after-enter="loadArchiveData"
     @after-leave="cleanup"
   >
-    <div v-if="selectedContent">
+    <n-spin v-if="loading" class="centered-spin" />
+    <div v-else-if="selectedContent">
       <button-shelf>
         <template #start>
           <n-button text icon-placement="left" @click="handleBackToOverview">
@@ -138,15 +163,17 @@ function cleanup() {
         class="my-lg"
       />
     </div>
-    <n-spin v-else-if="loading" class="centered-spin" />
     <template v-else-if="!selectedContent">
-      <n-flex v-if="archivedContents?.length" vertical size="large">
-        <template v-for="content in archivedContents" :key="content.id">
-          <n-button secondary @click="handleItemClick(content)">
-            {{ content.createdAtStr }}
+      <n-flex v-if="archiveItems?.length > 1" vertical size="large">
+        <template v-for="item in archiveItems" :key="item.id">
+          <n-button v-if="!item.archived" secondary disabled>
+            {{ $t('common.today') }}
           </n-button>
-          <div v-if="content.distanceRel" class="time-gap text-tiny" :style="{lineHeight: (12 + (content.distanceRel * 120)) + 'px'}">
-            {{ content.distanceStr }}
+          <n-button v-else secondary @click="handleItemClick(item)">
+            {{ item.createdAtStr }}
+          </n-button>
+          <div v-if="item.distanceRel" class="time-gap translucent text-tiny" :style="{lineHeight: (12 + (item.distanceRel * 120)) + 'px'}">
+            {{ item.distanceStr }}
           </div>
         </template>
       </n-flex>
@@ -158,7 +185,10 @@ function cleanup() {
     </template>
 
     <button-shelf class="mt-lg">
-      <n-button secondary @click="showModal = false">
+      <n-button v-if="!!selectedContent" secondary type="warning" @click="restoreArchivedContent(selectedContent)">
+        {{ $t('contents.restore') }}
+      </n-button>
+      <n-button type="primary" @click="showModal = false">
         {{ $t('common.close') }}
       </n-button>
     </button-shelf>
@@ -167,9 +197,8 @@ function cleanup() {
 
 <style scoped>
 .time-gap {
-  color: var(--primary-color);
   margin-left: 1rem;
   padding-left: .5rem;
-  border-left: 1px dashed var(--primary-color);
+  border-left: 1px dashed var(--text-color);
 }
 </style>

@@ -471,7 +471,7 @@ export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
 export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
 export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
 
-// resources
+// resources and contents
 
 export type ResourceType = AnyResourceRead['resourceType'];
 export type SearchableResourceType = Exclude<ResourceType, 'apiCall'>;
@@ -480,6 +480,7 @@ type ResourceReadExtras = {
   corrections?: number;
   contentFont?: string;
 };
+export type ContentArchiveSignature = components['schemas']['ContentArchiveSignature'];
 
 export type PlainTextContentRead = components['schemas']['PlainTextContentRead'];
 export type PlainTextContentCreate = components['schemas']['PlainTextContentCreate'];

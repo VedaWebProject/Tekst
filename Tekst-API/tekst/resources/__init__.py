@@ -46,7 +46,7 @@ from tekst.types import ConStr, SchemaOptionalNullable
 resource_types_mgr: "ResourceTypesManager" = None
 
 # resource base model fields to exclude from export/import
-RES_EXCLUDE_FIELDS_EXP_IMP = {
+RES_EXCLUDE_EXP_IMP = {
     "text_id",
     "level",
     "resource_type",
@@ -305,7 +305,7 @@ class ResourceTypeABC(ABC):
         data = camelize(
             resource.model_dump(
                 mode="json",
-                exclude=RES_EXCLUDE_FIELDS_EXP_IMP,
+                exclude=RES_EXCLUDE_EXP_IMP,
                 by_alias=True,
                 exclude_none=True,
                 exclude_unset=True,
@@ -393,6 +393,7 @@ class ResourceTypeABC(ABC):
                 res,
                 fp=fp,
                 ensure_ascii=False,
+                default=str,
             )
 
     @classmethod

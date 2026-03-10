@@ -509,7 +509,7 @@ class TextAnnotationResource(ResourceBase):
         async for content in content_doc_model.find(
             Eq(content_doc_model.resource_id, self.id),
             Eq(content_doc_model.tokens.id, None),
-            Eq(content_doc_model.archives, False),
+            Eq(content_doc_model.archived, False),
         ):
             dirty = False
             for token in content.tokens:

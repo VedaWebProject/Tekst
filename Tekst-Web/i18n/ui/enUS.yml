@@ -81,6 +81,7 @@ common:
   years: years
   months: months
   days: days
+  today: today
   backToOverview: Back to overview
   downloadSaved: File saved as {filename}.
   areYouSure: Are you sure?
@@ -605,10 +606,17 @@ contents:
     Are you sure you want to archive the content for this location?
     It won't be shown in search results or the reading view anymore, but can still be
     accessed as an archived version. You will also be able to restore it later.
+  restore: Restore
+  msgRestored: The content for this location has been restored from the archive.
+  confirmDelete: |
+    Are you sure you want to delete the content for this location? You may archive it instead.
+    Deleting it will also delete all archived versions of this content,
+    making it completely unavailable. URLs referncing this content will cease to work.
+    This action cannot be undone.
+  msgDeleted: The content for this location has been deleted.
   msgSaved: |
     The changes to this content have been saved.
     If there was a previous version, it has been archived automatically.
-  msgDeleted: The content for this location has been deleted.
   msgImportInfo: The import will be processed in the background. @:common.takeAWhile
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |

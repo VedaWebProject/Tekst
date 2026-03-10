@@ -851,7 +851,7 @@
           "contents"
         ],
         "summary": "Get archived contents",
-        "description": "Returns all archived content for the given resource and location,\nsorted by creation timestamp in descending order",
+        "description": "Returns all content (including archived content)\nfor the given resource and location,\nsorted by creation timestamp in descending order.",
         "operationId": "getArchivedContents",
         "security": [
           {
@@ -884,8 +884,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "max": 10240,
-              "default": 1024,
+              "max": 102400,
+              "default": 10240,
               "title": "Limit"
             }
           }
@@ -898,45 +898,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/ApiCallContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/AudioContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/ExternalReferencesContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/ImagesContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/LocationMetadataContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/PlainTextContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/RichTextContentRead"
-                      },
-                      {
-                        "$ref": "#/components/schemas/TextAnnotationContentRead"
-                      }
-                    ],
-                    "discriminator": {
-                      "propertyName": "resourceType",
-                      "mapping": {
-                        "apiCall": "#/components/schemas/ApiCallContentRead",
-                        "audio": "#/components/schemas/AudioContentRead",
-                        "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
-                        "images": "#/components/schemas/ImagesContentRead",
-                        "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
-                        "plainText": "#/components/schemas/PlainTextContentRead",
-                        "richText": "#/components/schemas/RichTextContentRead",
-                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
-                      }
-                    }
+                    "$ref": "#/components/schemas/ContentArchiveSignature"
                   },
                   "title": "Response Get Archived Contents Contents Archive Get"
                 }
@@ -1251,6 +1213,16 @@
             "schema": {
               "$ref": "#/components/schemas/PydanticObjectId"
             }
+          },
+          {
+            "name": "deleteArchive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Deletearchive"
+            }
           }
         ],
         "responses": {
@@ -1384,6 +1356,115 @@
               }
             },
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}/restore": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Restore archived content",
+        "description": "Restores the archived content with the given ID, archives any content currently\npresent for the same resource/location.",
+        "operationId": "restoreArchivedContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
+                      "audio": "#/components/schemas/AudioContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                      "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  },
+                  "title": "Response Restore Archived Content Contents  Id  Restore Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -7792,8 +7873,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -8740,8 +8820,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -10085,6 +10164,29 @@
         ],
         "title": "CommonResourceSearchQueryData"
       },
+      "ContentArchiveSignature": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "archived"
+        ],
+        "title": "ContentArchiveSignature"
+      },
       "ContentComment": {
         "properties": {
           "by": {
@@ -10476,8 +10578,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -11561,8 +11662,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -12729,8 +12829,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -14151,8 +14250,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -16074,8 +16172,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -17476,8 +17573,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-03-09T15:25:39.977091Z"
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",

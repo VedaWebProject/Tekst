@@ -34,7 +34,7 @@
     "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
-    "_id": { "$oid": "67c044b9906e79b9062e22fc" },
+    "_id": { "$oid": "69b02c723683be4e62b14f03" },
     "_class_id": "ContentBaseDocument.PlainTextContentDocument",
     "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "resource_type": "plainText",
@@ -44,7 +44,7 @@
     "created_at": { "$date": "2024-03-09T13:30:48.446Z" }
   },
   {
-    "_id": { "$oid": "67c044b9906e79b9062e22fc" },
+    "_id": { "$oid": "69b02c7d3683be4e62b14f04" },
     "_class_id": "ContentBaseDocument.PlainTextContentDocument",
     "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "resource_type": "plainText",

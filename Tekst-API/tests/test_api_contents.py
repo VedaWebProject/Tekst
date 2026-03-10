@@ -174,7 +174,7 @@ async def test_update_content(
         Eq(ContentBaseDocument.archived, True),
         with_children=True,
     ).count()
-    assert archived_count == 1
+    assert archived_count == 3
 
     # update content w/ empty comment strings
     resp = await test_client.patch(
@@ -262,12 +262,12 @@ async def test_archive_and_delete_content(
     )
     assert_status(200, resp)
 
-    # check if it actually has been archived
+    # check if it has actually been archived
     archived_count = await ContentBaseDocument.find(
         Eq(ContentBaseDocument.archived, True),
         with_children=True,
     ).count()
-    assert archived_count == 1
+    assert archived_count == 3
 
     # fail to delete with wrong ID
     await login(user=superuser)

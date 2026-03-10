@@ -202,17 +202,20 @@ async def get_location_data(
         with_children=True,
     ).to_list()
 
-    contents = {}
-    async for content in ContentBaseDocument.find(
-        In(ContentBaseDocument.location_id, location_ids or []),
-        In(
-            ContentBaseDocument.resource_id,
-            [resource.id for resource in target_resources],
-        ),
-        Eq(ContentBaseDocument.archived, False),
-        with_children=True,
-    ).limit(contents_fetch_limit):
-        contents[content.resource_id] = [content]
+    contents = {
+        content.resource_id: [content]
+        for content in await ContentBaseDocument.find(
+            In(ContentBaseDocument.location_id, location_ids or []),
+            In(
+                ContentBaseDocument.resource_id,
+                [resource.id for resource in target_resources],
+            ),
+            Eq(ContentBaseDocument.archived, False),
+            with_children=True,
+        )
+        .limit(contents_fetch_limit)
+        .to_list()
+    }
 
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)

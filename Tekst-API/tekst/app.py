@@ -27,7 +27,7 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
 async def startup_routine(app: FastAPI) -> None:
-    setup_routes(app)
+    setup_routes(app, dev_mode=_cfg.dev_mode)
 
     if not _NO_SERVICES:
         # init DB connection and ODM

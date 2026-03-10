@@ -25,7 +25,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.i18n import pick_translation
 from tekst.logs import log
-from tekst.models.content import ContentBaseDocument
+from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.notifications import Notification
@@ -40,7 +40,7 @@ from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserRead
 from tekst.notifications import send_notification
 from tekst.resources import (
-    RES_EXCLUDE_FIELDS_EXP_IMP,
+    RES_EXCLUDE_EXP_IMP,
     AnyResourceCreate,
     AnyResourceRead,
     AnyResourceUpdate,
@@ -800,8 +800,11 @@ async def _import_resource_task(
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     content_doc_model: ContentBaseDocument = content_model.document_model()
+    content_create_model: ContentBase = content_model.create_model()
+    content_update_model: ContentBaseUpdate = content_model.update_model()
 
-    # prepare lists to collect different import content types
+    # prepare lists to collect contents to update and insert separately,
+    # as they are handled differently
     updates: list[tuple] = []  # (existing_content_doc, import_content: dict)
     inserts: list[content_doc_model] = []
 
@@ -828,8 +831,9 @@ async def _import_resource_task(
 
             # fetch possible existing content
             existing_content_doc = await ContentBaseDocument.find_one(
-                ContentBaseDocument.resource_id == resource_doc.id,
-                ContentBaseDocument.location_id == loc_id,
+                Eq(ContentBaseDocument.resource_id, resource_doc.id),
+                Eq(ContentBaseDocument.location_id, loc_id),
+                Eq(ContentBaseDocument.archived, False),
                 with_children=True,
             )
 
@@ -838,16 +842,21 @@ async def _import_resource_task(
             try:
                 if existing_content_doc:
                     # this is an update to an existing content document
-                    updates.append((existing_content_doc, import_content))
+                    content_updates = content_update_model(
+                        resource_type=existing_content_doc.resource_type,
+                        **import_content,
+                    )
+                    updates.append((existing_content_doc, content_updates.model_dump()))
                 else:
                     # this is a new content document
                     inserts.append(
-                        content_doc_model(
-                            id=None,
-                            resource_type=resource_doc.resource_type,
-                            resource_id=resource_doc.id,
-                            location_id=loc_id,
-                            **import_content,
+                        content_doc_model.model_from(
+                            content_create_model(
+                                resource_id=resource_doc.id,
+                                location_id=loc_id,
+                                resource_type=resource_doc.resource_type,
+                                **import_content,
+                            )
                         )
                     )
             except Exception as e:
@@ -866,9 +875,7 @@ async def _import_resource_task(
             .resource_model()
             .update_model()(
                 **{
-                    k: v
-                    for k, v in import_data.items()
-                    if k not in RES_EXCLUDE_FIELDS_EXP_IMP
+                    k: v for k, v in import_data.items() if k not in RES_EXCLUDE_EXP_IMP
                 },
                 resource_type=resource_doc.resource_type,
             )
@@ -886,22 +893,26 @@ async def _import_resource_task(
 
         # process updates
         updated_count = len(updates)
+        updates_stack = []
         while updates:
-            existing_content_doc, import_content = updates.pop()
+            existing_content_doc, content_updates = updates.pop()
             content_copy = await existing_content_doc.archive()
-            new_content = content_doc_model(
-                id=None,
-                resource_type=content_copy.resource_type,
-                resource_id=content_copy.id,
-                location_id=loc_id,
-                **{
-                    k: v
-                    for k, v in import_content.items()
-                    if k not in ("resource_type", "resource_id", "location_id")
-                },
+            updates_stack.append(
+                content_doc_model(
+                    resource_id=content_copy.resource_id,
+                    location_id=content_copy.location_id,
+                    **content_updates,
+                )
             )
-            await new_content.save()
+            if len(updates_stack) > 100:
+                await content_doc_model.insert_many(updates_stack)
+                updates_stack = []
+
+        if len(updates_stack):
+            await content_doc_model.insert_many(updates_stack)
+
         del updates
+        del updates_stack
 
         # write resource props and config import data
         # (will be skipped if anything went wrong with content import)

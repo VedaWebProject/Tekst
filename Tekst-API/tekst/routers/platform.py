@@ -443,28 +443,3 @@ async def get_stats(
         deleted_users=await counter_get("deleted_users"),
     )
     return stats
-
-
-# @router.get(
-#     "/dev-fill-archive",
-#     status_code=status.HTTP_204_NO_CONTENT,
-# )
-# async def dev_fill_archive(su: SuperuserDep):
-#     """
-#     Creates 20.000 archived copies of each content in the "contents" collection for
-#     testing purposes. Only for use during development!
-#     """
-#     stack = []
-#     async for content in ContentBaseDocument.find(
-#         Eq(ContentBaseDocument.archived, False), with_children=True
-#     ):
-#         for i in range(20000):
-#             new = content.model_copy(
-#                 update={"id": None, "archived": True}
-#             )
-#             stack.append(new)
-#             if len(stack) > 5000:
-#                 await ContentBaseDocument.insert_many(stack)
-#                 stack = []
-#     if stack:
-#         await ContentBaseDocument.insert_many(stack)

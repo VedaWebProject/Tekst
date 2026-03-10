@@ -152,7 +152,7 @@ class DocumentBase(Document):
         if insert:
             return await self.save()  # same as self.insert()
         else:
-            return self.replace()  # raises exception if document does not exist
+            return await self.replace()  # raises exception if document does not exist
 
     @classmethod
     def _validate_against_field(
@@ -257,6 +257,10 @@ class ModelFactoryMixin:
             for name, field in cls.model_fields.items():
                 if name.endswith("_type"):
                     continue  # don't make fields optional that end on "_type"
+                if cls._field_excluded_from_model_variant(name, "update"):
+                    # don't manipulate fields that will be
+                    # excluded from the target model anyway
+                    continue
                 type_annos = (
                     (field.annotation,)
                     if get_origin(field.annotation) not in (Union, UnionType)
