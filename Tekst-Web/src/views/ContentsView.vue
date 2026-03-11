@@ -345,7 +345,7 @@ async function handleDeleteContentClick() {
       const { error } = await DELETE('/contents/{id}', {
         params: {
           path: { id: contentModel.value.id },
-          query: {deleteArchive: true}
+          query: { deleteArchive: true },
         },
       });
       if (!error) {
@@ -409,7 +409,7 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
   }
 }
 
-function handleRestoredContent(content: AnyContentRead){
+function handleRestoredContent(content: AnyContentRead) {
   contentModel.value = content;
   reset();
   formRef.value?.restoreValidation();
@@ -719,61 +719,60 @@ whenever(ArrowRight, () => {
         </n-button>
       </n-flex>
 
-        <button-shelf class="mt-lg">
-          <template #start>
-            <n-button
-              secondary
-              type="warning"
-              :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
-              :loading="loadingArchive"
-              @click="handleArchiveContentClick"
-            >
-              {{ $t('contents.archive') }}
-            </n-button>
-            <archive-widget
-              v-if="locId"
-              :resource="resource"
-              :location-id="locId"
-              :disabled="loading"
-              :loading="loadingArchive"
-              secondary
-              type="primary"
-              @restore="handleRestoredContent"
-            />
-            <n-button
-              v-if="auth.user && (auth.user.isSuperuser || resource.ownerIds.includes(auth.user.id))"
-              secondary
-              type="error"
-              :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
-              :loading="loadingDelete"
-              @click="handleDeleteContentClick"
-            >
-              {{ $t('common.delete') }}
-            </n-button>
-          </template>
-
-          <n-button secondary :disabled="!changed || loading" @click="resetForm">
-            {{ $t('common.reset') }}
-          </n-button>
+      <button-shelf class="mt-lg">
+        <template #start>
           <n-button
-            v-if="!changed && resource.originalId && contentModel?.resourceId == resource.originalId"
-            type="primary"
-            :title="$t('contents.tipBtnCopyOriginal')"
+            secondary
+            type="warning"
+            :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
+            :loading="loadingArchive"
+            @click="handleArchiveContentClick"
+          >
+            {{ $t('contents.archiveAction') }}
+          </n-button>
+          <archive-widget
+            v-if="locId"
+            :resource="resource"
+            :location-id="locId"
             :disabled="loading"
-            @click="handleSaveClick"
-          >
-            {{ $t('common.copy') }}
-          </n-button>
+            :loading="loadingArchive"
+            secondary
+            @restore="handleRestoredContent"
+          />
           <n-button
-            v-else
-            type="primary"
-            :disabled="loading || !changed"
-            :loading="loadingSave"
-            @click="handleSaveClick"
+            v-if="auth.user && (auth.user.isSuperuser || resource.ownerIds.includes(auth.user.id))"
+            secondary
+            type="error"
+            :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
+            :loading="loadingDelete"
+            @click="handleDeleteContentClick"
           >
-            {{ $t('common.save') }}
+            {{ $t('common.delete') }}
           </n-button>
-        </button-shelf>
+        </template>
+
+        <n-button secondary :disabled="!changed || loading" @click="resetForm">
+          {{ $t('common.reset') }}
+        </n-button>
+        <n-button
+          v-if="!changed && resource.originalId && contentModel?.resourceId == resource.originalId"
+          type="primary"
+          :title="$t('contents.tipBtnCopyOriginal')"
+          :disabled="loading"
+          @click="handleSaveClick"
+        >
+          {{ $t('common.copy') }}
+        </n-button>
+        <n-button
+          v-else
+          type="primary"
+          :disabled="loading || !changed"
+          :loading="loadingSave"
+          @click="handleSaveClick"
+        >
+          {{ $t('common.save') }}
+        </n-button>
+      </button-shelf>
     </div>
   </template>
 

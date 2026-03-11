@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { GET, POST, type AnyContentRead, type AnyResourceRead, type ContentArchiveSignature } from '@/api';
+import {
+  GET,
+  POST,
+  type AnyContentRead,
+  type AnyResourceRead,
+  type ContentArchiveSignature,
+} from '@/api';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
@@ -11,7 +17,12 @@ import { utcToDateTimeString } from '@/utils';
 import { NButton, NEmpty, NFlex, NIcon, NSpin } from 'naive-ui';
 import { ref } from 'vue';
 
-type AnyContentArchiveItem = ContentArchiveSignature & { createdAtStr?: string, distanceMs: number, distanceStr: string, distanceRel: number, };
+type AnyContentArchiveItem = ContentArchiveSignature & {
+  createdAtStr?: string;
+  distanceMs: number;
+  distanceStr: string;
+  distanceRel: number;
+};
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -19,8 +30,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  restore: [value: AnyContentRead]
-}>()
+  restore: [value: AnyContentRead];
+}>();
 
 const state = useStateStore();
 const { message } = useMessages();
@@ -29,9 +40,9 @@ const showModal = ref(false);
 const loading = ref(false);
 const selectedContent = ref<AnyContentRead>();
 const archiveItems = ref<AnyContentArchiveItem[]>([]);
-const title = ref($t('contents.archivedContentsTitle'));
+const title = ref($t('contents.archiveWidgetTitle'));
 
-function getTsDistanceMs(utcStr1: string, utcStr2: string){
+function getTsDistanceMs(utcStr1: string, utcStr2: string) {
   return Math.ceil(Math.abs(new Date(utcStr1).getTime() - new Date(utcStr2).getTime()));
 }
 
@@ -83,7 +94,7 @@ async function loadArchiveData() {
         a.distanceMs = getTsDistanceMs(a.createdAt, data[i + 1].createdAt);
         maxDistanceMs = a.distanceMs > maxDistanceMs ? a.distanceMs : maxDistanceMs;
         a.distanceStr = getTimeDistanceString(a.distanceMs);
-      };
+      }
     });
     archiveItems.value.forEach((a) => {
       a.distanceRel = maxDistanceMs > 0 ? a.distanceMs / maxDistanceMs : 0;
@@ -97,10 +108,10 @@ async function loadArchiveData() {
 
 async function handleItemClick(archiveItem: AnyContentArchiveItem) {
   loading.value = true;
-  const {data, error} = await GET('/contents/{id}', {params: {path: {id: archiveItem.id}}});
-  if (!error){
+  const { data, error } = await GET('/contents/{id}', { params: { path: { id: archiveItem.id } } });
+  if (!error) {
     selectedContent.value = data;
-    title.value = archiveItem.createdAtStr ?? $t('contents.archivedContentsTitle');
+    title.value = archiveItem.createdAtStr ?? $t('contents.archiveWidgetTitle');
   }
   loading.value = false;
 }
@@ -108,30 +119,32 @@ async function handleItemClick(archiveItem: AnyContentArchiveItem) {
 async function restoreArchivedContent(archivedContent: AnyContentRead) {
   if (!archivedContent.archived) return;
   loading.value = true;
-  const {data, error} = await POST('/contents/{id}/restore', {params: {path: {id: archivedContent.id}}});
-  if (!error){
+  const { data, error } = await POST('/contents/{id}/restore', {
+    params: { path: { id: archivedContent.id } },
+  });
+  if (!error) {
     emit('restore', data);
     message.success($t('contents.msgRestored'));
   }
   loading.value = false;
-  showModal.value = false
+  showModal.value = false;
 }
 
 function handleBackToOverview() {
   selectedContent.value = undefined;
-  title.value = $t('contents.archivedContentsTitle');
+  title.value = $t('contents.archiveWidgetTitle');
 }
 
 function cleanup() {
   selectedContent.value = undefined;
   archiveItems.value = [];
-  title.value = $t('contents.archivedContentsTitle');
+  title.value = $t('contents.archiveWidgetTitle');
 }
 </script>
 
 <template>
   <n-button v-bind="$attrs" @click.stop.prevent="handleWidgetClick">
-    {{ $t('contents.archivedContentsTitle') }}
+    {{ $t('contents.archiveWidgetTitle') }}
   </n-button>
 
   <generic-modal
@@ -172,7 +185,11 @@ function cleanup() {
           <n-button v-else secondary @click="handleItemClick(item)">
             {{ item.createdAtStr }}
           </n-button>
-          <div v-if="item.distanceRel" class="time-gap translucent text-tiny" :style="{lineHeight: (12 + (item.distanceRel * 120)) + 'px'}">
+          <div
+            v-if="item.distanceRel"
+            class="time-gap translucent text-tiny"
+            :style="{ lineHeight: 12 + item.distanceRel * 120 + 'px' }"
+          >
             {{ item.distanceStr }}
           </div>
         </template>
@@ -185,7 +202,12 @@ function cleanup() {
     </template>
 
     <button-shelf class="mt-lg">
-      <n-button v-if="!!selectedContent" secondary type="warning" @click="restoreArchivedContent(selectedContent)">
+      <n-button
+        v-if="!!selectedContent"
+        secondary
+        type="warning"
+        @click="restoreArchivedContent(selectedContent)"
+      >
         {{ $t('contents.restore') }}
       </n-button>
       <n-button type="primary" @click="showModal = false">
@@ -198,7 +220,7 @@ function cleanup() {
 <style scoped>
 .time-gap {
   margin-left: 1rem;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
   border-left: 1px dashed var(--text-color);
 }
 </style>

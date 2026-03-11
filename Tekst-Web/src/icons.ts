@@ -204,7 +204,9 @@ export {
   MoveDownOutlined as MoveDownIcon,
   PersonAddOutlined as NewUserIcon,
   FolderOffOutlined as NoContentIcon,
-  FindInPageOutlined as NothingFoundIcon, AltRouteOutlined as PatchIcon, PauseFilled as PauseIcon,
+  FindInPageOutlined as NothingFoundIcon,
+  AltRouteOutlined as PatchIcon,
+  PauseFilled as PauseIcon,
   PushPinOutlined as PinIcon,
   PlayArrowFilled as PlayIcon,
   PrivacyTipOutlined as PrivacyIcon,
@@ -240,6 +242,7 @@ export {
   PersonRemoveFilled as UserDowngradeIcon,
   PersonOutlined as UserIcon,
   GroupOutlined as UsersIcon,
-  VerifiedUserOutlined as VerifiedUserIcon, AutoFixHighOutlined as WandIcon,
-  WarningAmberOutlined as WarningIcon
+  VerifiedUserOutlined as VerifiedUserIcon,
+  AutoFixHighOutlined as WandIcon,
+  WarningAmberOutlined as WarningIcon,
 };

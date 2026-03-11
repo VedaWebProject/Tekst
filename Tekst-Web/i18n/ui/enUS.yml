@@ -597,8 +597,8 @@ contents:
   forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content
-  archivedContentsTitle: Archived Contents
-  archive: Archive
+  archiveWidgetTitle: Archived Versions
+  archiveAction: Archive
   archived: archived
   msgArchived: The content for this location has been archived.
   msgNoArchivedContents: No archived contents found for this location.

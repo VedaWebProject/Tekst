@@ -608,8 +608,8 @@ contents:
   forComparison: '{title} (zum Vergleich)'
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
-  archivedContentsTitle: Archivierte Inhalte
-  archive: Archivieren
+  archiveWidgetTitle: Archivierte Versionen
+  archiveAction: Archivieren
   archived: archiviert
   msgArchived: Der Inhalt für diese Belegstelle wurde archiviert.
   msgNoArchivedContents: Keine archivierten Inhalte für diese Belegstelle gefunden.
