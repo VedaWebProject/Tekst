@@ -135,17 +135,17 @@ async def create_resource(
 
 
 @router.post(
-    "/{id}/version",
+    "/{id}/patch",
     response_model=AnyResourceRead,
     status_code=status.HTTP_201_CREATED,
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_400_RESOURCE_VERSION_OF_VERSION,
+            errors.E_400_RESOURCE_PATCH_OF_PATCH,
         ]
     ),
 )
-async def create_resource_version(
+async def create_resource_patch(
     user: UserDep,
     cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
@@ -159,32 +159,32 @@ async def create_resource_version(
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
 
-    # check if resource is already a version
+    # check if resource is already a patch
     if resource_doc.original_id:
-        raise errors.E_400_RESOURCE_VERSION_OF_VERSION
+        raise errors.E_400_RESOURCE_PATCH_OF_PATCH
 
-    # generate version title
-    version_title_suffix = " v" + str(
+    # generate patch title
+    patch_title_suffix = " v" + str(
         await ResourceBaseDocument.find(
             ResourceBaseDocument.original_id == resource_id,
             with_children=True,
         ).count()
         + 2
     )
-    version_title = [
+    patch_title = [
         {
             "locale": tt.get("locale", "*"),
-            "translation": tt.get("translation", "")[0 : 64 - len(version_title_suffix)]
-            + version_title_suffix,
+            "translation": tt.get("translation", "")[0 : 64 - len(patch_title_suffix)]
+            + patch_title_suffix,
         }
         for tt in resource_doc.title
     ]
 
     # create modified copy of resource doc
-    version_doc: ResourceBaseDocument = await resource_doc.model_copy(
+    patch_doc: ResourceBaseDocument = await resource_doc.model_copy(
         update={
             ResourceBaseDocument.id: None,
-            ResourceBaseDocument.title: version_title,
+            ResourceBaseDocument.title: patch_title,
             ResourceBaseDocument.original_id: resource_doc.id,
             ResourceBaseDocument.owner_ids: [user.id],
             ResourceBaseDocument.proposed: False,
@@ -194,7 +194,7 @@ async def create_resource_version(
         }
     ).create()
 
-    return await prepare_resource_read(version_doc, user)
+    return await prepare_resource_read(patch_doc, user)
 
 
 @router.patch(
@@ -398,7 +398,7 @@ async def delete_resource(
         raise errors.E_400_RESOURCE_PROPOSED_DELETE
 
     # all fine
-    # turn versions of this resource into original resources
+    # turn patches of this resource into original resources
     await ResourceBaseDocument.find(
         ResourceBaseDocument.original_id == resource_id,
         with_children=True,
@@ -502,7 +502,7 @@ async def update_resource_owners(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_403_FORBIDDEN,
-            errors.E_400_RESOURCE_VERSION_PROPOSE,
+            errors.E_400_RESOURCE_PATCH_PROPOSE,
         ]
     ),
 )
@@ -523,7 +523,7 @@ async def propose_resource(
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PROPOSE_PUBLIC
     if resource_doc.original_id:
-        raise errors.E_400_RESOURCE_VERSION_PROPOSE
+        raise errors.E_400_RESOURCE_PATCH_PROPOSE
     # all fine, propose resource
     await resource_doc.set(
         {
@@ -582,7 +582,7 @@ async def unpropose_resource(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
             errors.E_400_RESOURCE_PUBLISH_UNPROPOSED,
-            errors.E_400_RESOUCE_VERSION_PUBLISH,
+            errors.E_400_RESOUCE_PATCH_PUBLISH,
             errors.E_401_UNAUTHORIZED,
             errors.E_403_FORBIDDEN,
         ]
@@ -600,7 +600,7 @@ async def publish_resource(
     if not resource_doc.proposed:
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.original_id:
-        raise errors.E_400_RESOUCE_VERSION_PUBLISH
+        raise errors.E_400_RESOUCE_PATCH_PUBLISH
 
     # all fine, publish resource
     await resource_doc.set(
@@ -904,7 +904,7 @@ async def _import_resource_task(
                     **content_updates,
                 )
             )
-            if len(updates_stack) > 100:
+            if len(updates_stack) > 500:  # pragma: no cover
                 await content_doc_model.insert_many(updates_stack)
                 updates_stack = []
 

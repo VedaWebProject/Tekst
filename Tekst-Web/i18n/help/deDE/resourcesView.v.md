@@ -14,11 +14,11 @@ Das letzte Element in jeder Ressourcen-Information ist das Aktionsmenü. Hier k�
 
 Zeigt diese Ressource isoliert in der Leseansicht an.
 
-### Version erstellen (`u`)
+### Ausbesserung erstellen (`u`)
 
-Wenn Sie die Absicht haben, eine größere Menge Änderungen oder Ergänzungen an einer bestehenden Ressource vorzuschlagen, ist eine Ressourcen-Version ein guter Weg, um diese Änderungen zu sammeln und dann als Ganzes zu übermitteln. Eine Ressourcen-Version funktioniert wie eine vollwertige Ressource, aber sie kann nicht veröffentlicht werden und die Besitzer\*in der Originalressource kann besonders leicht Änderungen bzw. Vorschläge einzeln prüfen und gegebenenfalls übernehmen.
+Wenn Sie die Absicht haben, eine größere Menge Änderungen oder Ergänzungen an einer bestehenden Ressource vorzuschlagen, ist eine Ressourcen-Ausbesserung ein guter Weg, um diese Änderungen zu sammeln und dann als Ganzes zu übermitteln. Eine Ressourcen-Ausbesserung funktioniert wie eine vollwertige Ressource, aber sie kann nicht veröffentlicht werden und die Besitzer\*in der Originalressource kann besonders leicht Änderungen bzw. Vorschläge einzeln prüfen und gegebenenfalls übernehmen.
 
-Für vereinzelte Änderungen ist es einfacher, in der Leseansicht am entsprechenden Inhalt direkt die Funktion "Korrekturvorschlag" zu nutzen.
+Für vereinzelte Änderungen ist es einfacher, in der Leseansicht am entsprechenden Inhalt direkt die Funktion "Korrekturnotiz" zu nutzen.
 
 ### Einstellungen (`o`)
 

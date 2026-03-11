@@ -3988,13 +3988,13 @@
         }
       }
     },
-    "/resources/{id}/version": {
+    "/resources/{id}/patch": {
       "post": {
         "tags": [
           "resources"
         ],
-        "summary": "Create resource version",
-        "operationId": "createResourceVersion",
+        "summary": "Create resource patch",
+        "operationId": "createResourcePatch",
         "security": [
           {
             "APIKeyCookie": []
@@ -4058,7 +4058,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Create Resource Version Resources  Id  Version Post"
+                  "title": "Response Create Resource Patch Resources  Id  Patch Post"
                 }
               }
             }
@@ -8170,7 +8170,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -8369,7 +8369,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -8581,7 +8581,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -9008,7 +9008,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -9202,7 +9202,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -9409,7 +9409,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -10774,7 +10774,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -10968,7 +10968,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -11175,7 +11175,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -11806,7 +11806,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -12000,7 +12000,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -12207,7 +12207,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -13170,7 +13170,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -13371,7 +13371,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -13585,7 +13585,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -14406,7 +14406,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -14615,7 +14615,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -14837,7 +14837,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -16459,7 +16459,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -16658,7 +16658,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -16870,7 +16870,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -17811,7 +17811,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -18014,7 +18014,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -18230,7 +18230,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {

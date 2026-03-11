@@ -58,8 +58,8 @@ async def _get_content_context(
         ).to_list()
     }
 
-    # if the resource is a version, we also have to find the original's contents
-    # that are missing in the requested resource version
+    # if the resource is a patch, we also have to find the original's contents
+    # that are missing in the requested resource patch
     if resource.original_id:
         original_content_docs_by_loc = {
             content.location_id: content

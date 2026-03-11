@@ -716,7 +716,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/resources/{id}/version': {
+  '/resources/{id}/patch': {
     parameters: {
       query?: never;
       header?: never;
@@ -725,8 +725,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create resource version */
-    post: operations['createResourceVersion'];
+    /** Create resource patch */
+    post: operations['createResourcePatch'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1640,7 +1640,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -1735,7 +1735,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -1845,7 +1845,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -2028,7 +2028,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -2118,7 +2118,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -2223,7 +2223,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -2824,7 +2824,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -2914,7 +2914,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -3019,7 +3019,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -3312,7 +3312,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -3402,7 +3402,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -3507,7 +3507,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -3935,7 +3935,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -4032,7 +4032,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -4144,7 +4144,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -4519,7 +4519,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -4624,7 +4624,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -4744,7 +4744,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -5518,7 +5518,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -5613,7 +5613,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -5723,7 +5723,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -6133,7 +6133,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -6232,7 +6232,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -6346,7 +6346,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -9316,7 +9316,7 @@ export interface operations {
       };
     };
   };
-  createResourceVersion: {
+  createResourcePatch: {
     parameters: {
       query?: never;
       header?: never;

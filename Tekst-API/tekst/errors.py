@@ -146,10 +146,10 @@ E_400_RESOURCE_INVALID_LEVEL = _error_instance(
     msg="The level of the resource is invalid",
 )
 
-E_400_RESOURCE_VERSION_OF_VERSION = _error_instance(
+E_400_RESOURCE_PATCH_OF_PATCH = _error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="resourceVersionOfVersion",
-    msg="The resource is already a version of another resource",
+    key="resourcePatchOfPatch",
+    msg="The resource is already a patch of another resource",
 )
 
 E_400_INVALID_REQUEST_DATA = _error_instance(
@@ -200,10 +200,10 @@ E_403_FORBIDDEN = _error_instance(
     msg="You have no permission to perform this action",
 )
 
-E_400_RESOURCE_VERSION_PROPOSE = _error_instance(
+E_400_RESOURCE_PATCH_PROPOSE = _error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="resourceVersionPropose",
-    msg="Cannot propose a resource version",
+    key="resourcePatchPropose",
+    msg="Cannot propose a resource patch",
 )
 
 E_400_RESOURCE_PUBLISH_UNPROPOSED = _error_instance(
@@ -218,10 +218,10 @@ E_400_RESOURCE_PROPOSE_PUBLIC = _error_instance(
     msg="Cannot propose a published resource",
 )
 
-E_400_RESOUCE_VERSION_PUBLISH = _error_instance(
+E_400_RESOUCE_PATCH_PUBLISH = _error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="resourceVersionPublish",
-    msg="Cannot publish a resource version",
+    key="resourcePatchPublish",
+    msg="Cannot publish a resource patch",
 )
 
 E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON = _error_instance(

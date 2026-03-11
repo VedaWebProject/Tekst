@@ -33,7 +33,8 @@ def setup_routes(app: FastAPI, dev_mode: bool = False) -> None:
     # register routers that aren't auth-related
     for router in _get_routers():
         if not dev_mode and router.prefix == "/dev":
-            continue  # skip dev router in prod
+            # skip dev router in prod
+            continue  # pragma: no cover
         log.debug(f"Registering router: {router.prefix or '/'}")
         app.include_router(router)
     # register auth-related routers (must happen after other routers are registered)

@@ -39,10 +39,10 @@ import {
   EditIcon,
   MoveDownIcon,
   NoContentIcon,
+  PatchIcon,
   ResourceIcon,
   SkipNextIcon,
   SkipPreviousIcon,
-  VersionIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
@@ -130,7 +130,7 @@ const compareResourceOptions = computed(() =>
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
         ? renderIcon(
-            VersionIcon,
+            PatchIcon,
             r.originalId === resource.value?.id ? theme.colors.text.base : undefined
           )
         : renderIcon(ResourceIcon),
@@ -472,7 +472,7 @@ whenever(ArrowRight, () => {
     </n-button>
   </router-link>
 
-  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
+  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? PatchIcon : ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags

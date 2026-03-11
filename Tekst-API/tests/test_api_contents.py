@@ -107,6 +107,50 @@ async def test_get_content(
 
 
 @pytest.mark.anyio
+async def test_get_archived_content(
+    test_client: AsyncClient,
+    insert_test_data,
+    assert_status,
+    login,
+    wrong_id,
+):
+    await insert_test_data("texts", "locations", "resources", "contents")
+    await login(is_superuser=True)
+
+    # get  all contents, including archived contents
+    resp = await test_client.get(
+        "/contents/archive",
+        params={
+            "resId": "67c043c0906e79b9062e22f4",
+            "locId": "67c040bb906e79b9062e22e9",
+        },
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 3
+
+    # fail to get archive data with wrong resource ID
+    resp = await test_client.get(
+        "/contents/archive",
+        params={
+            "resId": wrong_id,
+            "locId": "67c040bb906e79b9062e22e9",
+        },
+    )
+    assert_status(404, resp)
+
+    # fail to get archive data with wrong location ID
+    resp = await test_client.get(
+        "/contents/archive",
+        params={
+            "resId": "67c043c0906e79b9062e22f4",
+            "locId": wrong_id,
+        },
+    )
+    assert_status(404, resp)
+
+
+@pytest.mark.anyio
 async def test_find_contents(
     test_client: AsyncClient,
     insert_test_data,
@@ -229,7 +273,7 @@ async def test_update_content(
 
 
 @pytest.mark.anyio
-async def test_archive_and_delete_content(
+async def test_archive_restore_delete_content(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -261,6 +305,8 @@ async def test_archive_and_delete_content(
         f"/contents/{content_id}/archive",
     )
     assert_status(200, resp)
+    archived_id = resp.json()["id"]
+    assert archived_id
 
     # check if it has actually been archived
     archived_count = await ContentBaseDocument.find(
@@ -268,6 +314,31 @@ async def test_archive_and_delete_content(
         with_children=True,
     ).count()
     assert archived_count == 3
+
+    # fail to restore content from archive with wrong ID
+    resp = await test_client.post(
+        f"/contents/{wrong_id}/restore",
+    )
+    assert_status(404, resp)
+
+    # restore content from archive
+    resp = await test_client.post(
+        f"/contents/{archived_id}/restore",
+    )
+    assert_status(200, resp)
+    content_id = resp.json()["id"]
+    assert content_id
+
+    # fail to restore unarchived content
+    unarchived_content = await ContentBaseDocument.find_one(
+        Eq(ContentBaseDocument.archived, False),
+        with_children=True,
+    )
+    assert unarchived_content
+    resp = await test_client.post(
+        f"/contents/{str(unarchived_content.id)}/restore",
+    )
+    assert_status(400, resp)
 
     # fail to delete with wrong ID
     await login(user=superuser)
@@ -285,7 +356,15 @@ async def test_archive_and_delete_content(
 
     # delete content
     await login(user=superuser)
+    resp = await test_client.delete(f"/contents/{content_id}")
+    assert_status(204, resp)
+
+    # get ID of next content
+    content_id = inserted_ids["contents"][2]
+
+    # delete content including archived contents
+    await login(user=superuser)
     resp = await test_client.delete(
-        f"/contents/{content_id}",
+        f"/contents/{content_id}", params={"deleteArchive": True}
     )
     assert_status(204, resp)

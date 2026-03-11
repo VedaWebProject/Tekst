@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In, Not
+from beanie.operators import Eq, In, Not, Set
 from fastapi import APIRouter, BackgroundTasks, Path, Query, status
 
 from tekst import errors
@@ -289,7 +289,13 @@ async def archive_content(
     ),
 )
 async def restore_archived_content(
-    content_id: Annotated[PydanticObjectId, Path(alias="id")], user: UserDep
+    content_id: Annotated[
+        PydanticObjectId,
+        Path(
+            alias="id",
+        ),
+    ],
+    user: UserDep,
 ) -> AnyContentDocument:
     """
     Restores the archived content with the given ID, archives any content currently
@@ -307,23 +313,25 @@ async def restore_archived_content(
             with_children=True,
         ).exists()
     )
-    if not archived_content_doc or not resource_read_allowed:
+    if not resource_read_allowed:
         raise errors.E_404_CONTENT_NOT_FOUND
     # check if content is archived
     if not archived_content_doc.archived:
         raise errors.update_values(
             errors.E_400_INVALID_REQUEST_DATA,
-            {"detail": f"Content {content_id} is not archived"},
+            {
+                "detail": f"Content {content_id} is not archived, "
+                "so it cannot be restored from archive."
+            },
         )
-    # get any current content and archive it
-    current_content_doc: ContentBaseDocument = await ContentBaseDocument.find_one(
+    # archive any current content for the same resource/location
+    await ContentBaseDocument.find(
         Eq(ContentBaseDocument.resource_id, archived_content_doc.resource_id),
         Eq(ContentBaseDocument.location_id, archived_content_doc.location_id),
         Eq(ContentBaseDocument.archived, False),
         with_children=True,
-    )
-    if current_content_doc:
-        await current_content_doc.archive()
+    ).update(Set({ContentBaseDocument.archived: True}))
+
     # restore formerly archived content as current content
     return await archived_content_doc.model_copy(
         update={
@@ -369,7 +377,7 @@ async def find_contents(
     returned content objects cannot be typed to their precise resource content type.
     """
 
-    # preprocess resource_ids to add IDs of original resources in case we have versions
+    # preprocess resource_ids to add IDs of original resources in case we have patches
     if resource_ids:
         resource_ids.append(
             [

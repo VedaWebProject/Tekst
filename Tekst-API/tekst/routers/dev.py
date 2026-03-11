@@ -27,7 +27,7 @@ async def dev_fill_archive(
         conint(ge=1, le=10000),
         Query(alias="n"),
     ] = 100,
-):
+):  # pragma: no cover
     """
     Creates n archived copies of each unarchived content in the "contents"
     collection for testing purposes. Only present during development!

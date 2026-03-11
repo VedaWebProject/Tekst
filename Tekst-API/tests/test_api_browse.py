@@ -45,18 +45,18 @@ async def test_get_content_context(
     )
     assert_status(404, resp)
 
-    # context of resource version
+    # context of resource patch
     await login()
     resp = await test_client.post(
-        f"/resources/{str(resource.id)}/version",
+        f"/resources/{str(resource.id)}/patch",
     )
     assert_status(201, resp)
     assert "id" in resp.json()
-    version_id = resp.json()["id"]
+    patch_id = resp.json()["id"]
     resp = await test_client.get(
         "/browse/context",
         params={
-            "res": version_id,
+            "res": patch_id,
             "parent": str(location.parent_id),
         },
     )

@@ -399,7 +399,7 @@ resources:
   copyInfoUrl: URL kopieren
   copyInfoUrlTip: URL zu diesen Ressourcen-Informationen kopieren
   new: Neue Ressource
-  versionOf: Version von "{title}"
+  patchFor: Ausbesserung für "{title}"
   ownerTip: Ressourcen-Besitzer*in, verantwortlich für inhaltliche Pflege
   filterTip: Filtern nach Titel, Untertitel, Beschreibung, Besitzer*innen, Metadaten, "veröffentlicht", "unveröffentlicht", "vorgeschlagen", Zitation, Typ, Ebene
   msgNotYourResourceTitle: Das ist nicht Ihre Ressource!
@@ -418,16 +418,16 @@ resources:
   setOwnersAction: Ressourcen-Besitzer*innen festlegen
   downloadTemplateAction: Importvorlage herunterladen
   importAction: Vorbereitete Inhalte importieren
-  createVersionAction: Version erstellen
+  createPatchAction: Ausbesserung erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag widerrufen
   publishAction: Veröffentlichen
   unpublishAction: Veröffentlichung aufheben
-  reqVersionIntegration:
+  reqPatchIntegration:
     action: Integration vorschlagen
     diagMsg: |
-      Wählen Sie eine Besitzer*in der Originalressource dieser Version aus,
-      um die Integration der Änderungen in dieser Version vorzuschlagen!
+      Wählen Sie eine Besitzer*in der Originalressource dieser Ausbesserung aus,
+      um die Integration der Änderungen in dieser Ausbesserung vorzuschlagen!
     diagLabel: Original-Besitzer*in kontaktieren
   warnSetOwners: |
     Bitte lesen Sie den Hiletext über Berechtigungen für Ressourcen sorgfältig durch,
@@ -455,11 +455,11 @@ resources:
     Sind Sie sicher, dass Sie diese Ressource und alle
     mit ihr verbundenen Daten löschen wollen?
     Dies kann nicht rückgängig gemacht werden.
-  infoCreateVersion: |
-    Sie sind dabei, eine neue Version der Ressource "{title}" zu erstellen.
-    Diese neue Version wird für Belegstellen, für die sie keine eigenen Inhalte enthält,
-    die Inhalte der Originalversion anzeigen. Sie enthält zunächst keine eigenen Inhalte.
-    Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalversion angelegt haben,
+  infoCreatePatch: |
+    Sie sind dabei, eine neue Ausbesserung für die Ressource "{title}" zu erstellen.
+    Diese neue Ausbesserung wird für Belegstellen, für die sie keine eigenen Inhalte enthält,
+    die Inhalte der Originalressource anzeigen. Sie enthält zunächst keine eigenen Inhalte.
+    Wenn Sie Korrekturen oder Ergänzungen zu Inhalten der Originalressource angelegt haben,
     können Sie dem Besitzer vorschlagen, diese oder Teile davon zu übernehmen.
     Möchten Sie fortfahren?
   msgOwnersSet: Neue Besitzer*innen für "{title}" festgelegt.
@@ -468,7 +468,7 @@ resources:
   msgPublished: Die Ressource "{title}" wurde veröffentlicht.
   msgUnpublished: Die Veröffentlichung der Ressource "{title}" wurde aufgehoben.
   msgDeleted: Die Ressource "{title}" wurde gelöscht.
-  msgCreatedVersion: Eine neue Version der Ressource "{title}" wurde erstellt.
+  msgCreatedPatch: Eine neue Ausbesserung der Ressource "{title}" wurde erstellt.
   phSearchUsers: Benutzer*in suchen...
   create:
     heading: Neue Ressource zu "{text}"
@@ -632,9 +632,9 @@ contents:
   msgImportInfo: Der Import wird im Hintergrund verarbeitet. @:common.takeAWhile
   msgNoOwnContentTitle: Kein eigner Inhalt für diese Belegstelle!
   msgNoOwnContentBody: |
-    Diese Version von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Belegstelle.
+    Diese Ausbesserung von "{originalResourceTitle}" hat keinen eignen Inhalt für diese Belegstelle.
     Sie sehen hier Inhalt der Original-Ressource. Sie können diesen kopieren
-    oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Version speichern.
+    oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Ausbesserung speichern.
   msgContentNoFocusView: Dieser Inhalt kann in der Fokus-Ansicht nicht angezeigt werden.
   warnUrlInvalid: 'Diese URL scheint ungültig oder nicht erreichbar zu sein: {url}'
   corrections:

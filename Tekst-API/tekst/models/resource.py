@@ -137,7 +137,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         PydanticObjectId | None,
         Field(
             description=(
-                "If this is a version of another resource,"
+                "If this is a patch of another resource,"
                 " this ID references the original"
             ),
         ),
@@ -274,7 +274,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     @model_validator(mode="after")
     def model_postprocess(self: "ResourceBase"):
-        # resource versions are not searchable
+        # resource patches are not searchable
         if self.config and self.config.general:
             self.config.general.searchable_quick = (
                 self.config.general.searchable_quick and not self.original_id
