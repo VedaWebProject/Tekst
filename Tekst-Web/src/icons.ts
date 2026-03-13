@@ -124,6 +124,7 @@ import WarningAmberOutlined from '@vicons/material/WarningAmberOutlined';
 export {
   AddOutlined as AddIcon,
   ShieldOutlined as AdminIcon,
+  HistoryOutlined as ArchiveIcon,
   ArrowBackOutlined as ArrowBackIcon,
   ArrowDownwardOutlined as ArrowDownIcon,
   ArrowForwardOutlined as ArrowForwardIcon,
@@ -176,7 +177,6 @@ export {
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,
   HelpCenterOutlined as HelpOverviewIcon,
-  HistoryOutlined as HistoryIcon,
   HorizontalRuleOutlined as HorizontalRuleIcon,
   HourglassTopOutlined as HourglassIcon,
   ImageOutlined as ImageIcon,

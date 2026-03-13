@@ -11,7 +11,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, HistoryIcon, NoContentIcon } from '@/icons';
+import { ArchiveIcon, ArrowBackIcon, NoContentIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { utcToDateTimeString } from '@/utils';
 import { NButton, NEmpty, NFlex, NIcon, NSpin } from 'naive-ui';
@@ -40,7 +40,7 @@ const showModal = ref(false);
 const loading = ref(false);
 const selectedContent = ref<AnyContentRead>();
 const archiveItems = ref<AnyContentArchiveItem[]>([]);
-const title = ref($t('contents.archiveWidgetTitle'));
+const title = ref($t('contents.archive.widgetTitle'));
 
 function getTsDistanceMs(utcStr1: string, utcStr2: string) {
   return Math.ceil(Math.abs(new Date(utcStr1).getTime() - new Date(utcStr2).getTime()));
@@ -111,7 +111,7 @@ async function handleItemClick(archiveItem: AnyContentArchiveItem) {
   const { data, error } = await GET('/contents/{id}', { params: { path: { id: archiveItem.id } } });
   if (!error) {
     selectedContent.value = data;
-    title.value = archiveItem.createdAtStr ?? $t('contents.archiveWidgetTitle');
+    title.value = archiveItem.createdAtStr ?? $t('contents.archive.widgetTitle');
   }
   loading.value = false;
 }
@@ -124,7 +124,7 @@ async function restoreArchivedContent(archivedContent: AnyContentRead) {
   });
   if (!error) {
     emit('restore', data);
-    message.success($t('contents.msgRestored'));
+    message.success($t('contents.archive.msgRestored'));
   }
   loading.value = false;
   showModal.value = false;
@@ -132,25 +132,29 @@ async function restoreArchivedContent(archivedContent: AnyContentRead) {
 
 function handleBackToOverview() {
   selectedContent.value = undefined;
-  title.value = $t('contents.archiveWidgetTitle');
+  title.value = $t('contents.archive.widgetTitle');
 }
 
 function cleanup() {
   selectedContent.value = undefined;
   archiveItems.value = [];
-  title.value = $t('contents.archiveWidgetTitle');
+  title.value = $t('contents.archive.widgetTitle');
 }
 </script>
 
 <template>
-  <n-button v-bind="$attrs" @click.stop.prevent="handleWidgetClick">
-    {{ $t('contents.archiveWidgetTitle') }}
+  <n-button
+    v-bind="$attrs"
+    :title="$t('contents.archive.widgetTip')"
+    @click.stop.prevent="handleWidgetClick"
+  >
+    {{ $t('contents.archive.widgetTitle') }}
   </n-button>
 
   <generic-modal
     v-model:show="showModal"
     :title="title"
-    :icon="HistoryIcon"
+    :icon="ArchiveIcon"
     width="wide"
     @after-enter="loadArchiveData"
     @after-leave="cleanup"
@@ -177,10 +181,11 @@ function cleanup() {
       />
     </div>
     <template v-else-if="!selectedContent">
-      <n-flex v-if="archiveItems?.length > 1" vertical size="large">
+      <n-flex vertical size="large">
         <template v-for="item in archiveItems" :key="item.id">
-          <n-button v-if="!item.archived" secondary disabled>
-            {{ $t('common.today') }}
+          <n-button v-if="!item.archived" dashed disabled>
+            {{ item.createdAtStr }}
+            ({{ $t('common.latest') }})
           </n-button>
           <n-button v-else secondary @click="handleItemClick(item)">
             {{ item.createdAtStr }}
@@ -190,11 +195,15 @@ function cleanup() {
             class="time-gap translucent text-tiny"
             :style="{ lineHeight: 12 + item.distanceRel * 120 + 'px' }"
           >
-            {{ item.distanceStr }}
+            ~ {{ item.distanceStr }}
           </div>
         </template>
       </n-flex>
-      <n-empty v-else-if="!loading" :description="$t('contents.msgNoArchivedContents')">
+      <n-empty
+        v-if="!loading"
+        :description="$t('contents.archive.msgNoArchivedContents')"
+        class="mt-lg"
+      >
         <template #icon>
           <n-icon :component="NoContentIcon" />
         </template>
@@ -208,7 +217,7 @@ function cleanup() {
         type="warning"
         @click="restoreArchivedContent(selectedContent)"
       >
-        {{ $t('contents.restore') }}
+        {{ $t('contents.archive.restore') }}
       </n-button>
       <n-button type="primary" @click="showModal = false">
         {{ $t('common.close') }}

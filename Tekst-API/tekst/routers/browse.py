@@ -1,7 +1,8 @@
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In, NotIn
+from beanie.operators import LTE, Eq, In, NotIn
 from fastapi import APIRouter, Path, Query, status
 
 from tekst import errors
@@ -154,6 +155,16 @@ async def get_location_data(
             description="Only return contents for the head location of the path",
         ),
     ] = False,
+    archive_ts: Annotated[
+        int | None,
+        Query(
+            alias="ts",
+            description=(
+                "UTC timestamp in milliseconds to get contents "
+                "that were current at that point in time"
+            ),
+        ),
+    ] = None,
 ) -> LocationData:
     """
     Returns the location path from the location with the given ID or text/level/position
@@ -164,6 +175,16 @@ async def get_location_data(
     # limit for number of contents fetched from DB per request
     # (internal constant to conveniently adjust it later if needed)
     contents_fetch_limit = 1024
+
+    # preprocess archive UTC TS
+    archive_ts = (
+        None
+        if archive_ts is None
+        else datetime.fromtimestamp(
+            archive_ts / 1000,
+            tz=UTC,
+        )
+    )
 
     # find target location
     location_doc = None
@@ -202,20 +223,39 @@ async def get_location_data(
         with_children=True,
     ).to_list()
 
-    contents = {
-        content.resource_id: [content]
-        for content in await ContentBaseDocument.find(
-            In(ContentBaseDocument.location_id, location_ids or []),
-            In(
-                ContentBaseDocument.resource_id,
-                [resource.id for resource in target_resources],
-            ),
-            Eq(ContentBaseDocument.archived, False),
-            with_children=True,
-        )
-        .limit(contents_fetch_limit)
-        .to_list()
-    }
+    if archive_ts is None:
+        # just query for most recent contents (we can do that in one DB request)
+        contents = {
+            content.resource_id: [content]
+            for content in await ContentBaseDocument.find(
+                In(ContentBaseDocument.location_id, location_ids or []),
+                In(
+                    ContentBaseDocument.resource_id,
+                    [resource.id for resource in target_resources],
+                ),
+                Eq(ContentBaseDocument.archived, False),
+                with_children=True,
+            )
+            .limit(contents_fetch_limit)
+            .to_list()
+        }
+    else:
+        # for each resource/location combination,
+        # get the content that fits the requested timestamp
+        contents = {}
+        for resource in target_resources:
+            content = (
+                await ContentBaseDocument.find(
+                    In(ContentBaseDocument.location_id, location_ids or []),
+                    Eq(ContentBaseDocument.resource_id, resource.id),
+                    LTE(ContentBaseDocument.created_at, archive_ts),
+                    with_children=True,
+                )
+                .sort(-ContentBaseDocument.created_at)
+                .first_or_none()
+            )
+            if content:
+                contents[resource.id] = [content]
 
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)

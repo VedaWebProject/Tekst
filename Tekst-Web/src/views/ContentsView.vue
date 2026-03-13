@@ -309,7 +309,7 @@ async function handleArchiveContentClick() {
   if (!contentModel.value) return;
   dialog.warning({
     title: $t('common.warning'),
-    content: $t('contents.confirmArchive'),
+    content: $t('contents.archive.confirmArchive'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
@@ -323,7 +323,7 @@ async function handleArchiveContentClick() {
       if (!error) {
         resources.resetCoverage(resource.value?.id);
         await loadLocationData();
-        message.success($t('contents.msgArchived'));
+        message.success($t('contents.archive.msgArchived'));
       }
       loadingArchive.value = false;
     },
@@ -728,7 +728,7 @@ whenever(ArrowRight, () => {
             :loading="loadingArchive"
             @click="handleArchiveContentClick"
           >
-            {{ $t('contents.archiveAction') }}
+            {{ $t('contents.archive.action') }}
           </n-button>
           <archive-widget
             v-if="locId"

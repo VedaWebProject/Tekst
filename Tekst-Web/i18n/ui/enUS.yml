@@ -81,7 +81,7 @@ common:
   years: years
   months: months
   days: days
-  today: today
+  latest: latest
   backToOverview: Back to overview
   downloadSaved: File saved as {filename}.
   areYouSure: Are you sure?
@@ -231,6 +231,7 @@ browse:
     showNonPublicResources: Show unpublished resources
     activateCategory: Show all resources in this category
     deactivateCategory: Hide all resources in this category
+  archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
   textNoLocations: This text's setup seems incomplete. There are no locations defined.
@@ -597,17 +598,6 @@ contents:
   forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content
-  archiveWidgetTitle: Archived Versions
-  archiveAction: Archive
-  archived: archived
-  msgArchived: The content for this location has been archived.
-  msgNoArchivedContents: No archived contents found for this location.
-  confirmArchive: |
-    Are you sure you want to archive the content for this location?
-    It won't be shown in search results or the reading view anymore, but can still be
-    accessed as an archived version. You will also be able to restore it later.
-  restore: Restore
-  msgRestored: The content for this location has been restored from the archive.
   confirmDelete: |
     Are you sure you want to delete the content for this location? You may archive it instead.
     Deleting it will also delete all archived versions of this content,
@@ -625,6 +615,27 @@ contents:
     or make changes and save them as content of this resource patch.
   msgContentNoFocusView: This content cannot be displayed in focus view.
   warnUrlInvalid: 'The URL seems to be invalid or unreachable: {url}'
+  archive:
+    widgetTitle: Archived Versions
+    widgetTip: View archived content versions
+    action: Archive
+    archived: archived
+    msgArchived: The content for this location has been archived.
+    msgNoArchivedContents: No archived contents found for this location.
+    confirmArchive: |
+      Are you sure you want to archive the content for this location?
+      It won't be shown in search results or the reading view anymore, but can still be
+      accessed as an archived version. You will also be able to restore it later.
+    warnBrowseArchive: |
+      You are viewing contents from {date}.
+      Some of the contents shown may be archived versions that are not up to date – those
+      are marked with a yellow symbol.
+      Other contents might be missing because they didn't exist at this date, yet.
+      If you want to see the current state of the contents, click the button below this message.
+    loadCurrentContents: Load current contents
+    archivedContentTip: Archived version from {date}
+    restore: Restore
+    msgRestored: The content for this location has been restored from the archive.
   corrections:
     notes: Correction Notes
     otherTitle: Other locations

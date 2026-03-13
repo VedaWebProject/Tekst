@@ -5,6 +5,7 @@ import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import contentComponents from '@/components/content/mappings';
 import { $t } from '@/i18n';
 import {
+  ArchiveIcon,
   HourglassIcon,
   LevelsIcon,
   MergeIcon,
@@ -14,7 +15,7 @@ import {
   WarningIcon,
 } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
-import { pickTranslation } from '@/utils';
+import { pickTranslation, utcToDateTimeString } from '@/utils';
 import { useElementHover } from '@vueuse/core';
 import { NFlex, NIcon, NSpin, NTag } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
@@ -88,26 +89,36 @@ watch(
         </div>
         <!-- RESOURCE STATUS HINTS -->
         <n-flex v-if="!browse.focusView" align="center" :wrap="false">
+          <!-- icon hint: archived content -->
+          <n-icon
+            v-if="!!resource.contents?.some((c) => c?.archived)"
+            :component="ArchiveIcon"
+            color="var(--warning-color)"
+            :title="
+              resource.contents?.length === 1
+                ? $t('contents.archive.archivedContentTip', {
+                    date: utcToDateTimeString(resource.contents[0]?.createdAt, state.locale),
+                  })
+                : $t('contents.archive.archived')
+            "
+          />
           <!-- icon hint: publication status -->
           <n-icon
             v-if="!resource.public && !resource.proposed"
             :component="PublicOffIcon"
             color="var(--error-color)"
             :title="$t('resources.notPublic')"
-            size="medium"
           />
           <n-icon
             v-else-if="resource.proposed"
             :component="ProposedIcon"
             color="var(--warning-color)"
             :title="$t('resources.proposed')"
-            size="medium"
           />
           <!-- icon hint: this is combined content (context) from original level -->
           <n-icon
             v-if="contentContextLoaded"
             :component="MergeIcon"
-            size="medium"
             color="var(--warning-color)"
             :title="
               $t('browse.contents.isContentContext', {
@@ -124,13 +135,11 @@ watch(
                 (onChildLevel && resource.config.general.enableContentContext))
             "
             :component="NoContentIcon"
-            size="medium"
           />
           <!-- icon hint: cannot display possible content from original level -->
           <n-icon
             v-else-if="!loading && !hasContents"
             :component="WarningIcon"
-            size="medium"
             :title="$t('browse.contents.cannotShowContext')"
           />
           <n-tag

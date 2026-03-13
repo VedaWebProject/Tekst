@@ -121,6 +121,24 @@
               "title": "Head"
             },
             "description": "Only return contents for the head location of the path"
+          },
+          {
+            "name": "ts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "UTC timestamp in milliseconds to get contents that were current at that point in time",
+              "title": "Ts"
+            },
+            "description": "UTC timestamp in milliseconds to get contents that were current at that point in time"
           }
         ],
         "responses": {

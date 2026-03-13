@@ -20,7 +20,13 @@ import { usePrompt } from '@/composables/prompt';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
-import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
+import {
+  useAuthStore,
+  useBrowseStore,
+  useResourcesStore,
+  useStateStore,
+  useUserMessagesStore,
+} from '@/stores';
 import { pickTranslation } from '@/utils';
 import { refDebounced, useUrlSearchParams } from '@vueuse/core';
 import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
@@ -33,6 +39,7 @@ const props = defineProps<{
 
 const state = useStateStore();
 const auth = useAuthStore();
+const browse = useBrowseStore();
 const resources = useResourcesStore();
 const userMessages = useUserMessagesStore();
 const dialog = useDialog();
@@ -103,8 +110,8 @@ const expandedNames = ref<string[]>([]);
 async function handleBrowseClick(resource: AnyResourceRead) {
   router.push({
     name: 'browse',
-    params: { textSlug: state.text?.slug || '' },
-    hash: `#res=${resource.id}`,
+    params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
+    query: { res: resource.id },
   });
 }
 

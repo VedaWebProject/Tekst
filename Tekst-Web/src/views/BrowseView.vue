@@ -2,19 +2,20 @@
 import type { LocationMetadataContentRead } from '@/api';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
+import BrowseArchiveWidget from '@/components/browse/BrowseArchiveWidget.vue';
 import BrowseToolbar from '@/components/browse/BrowseToolbar.vue';
 import ContentContainer from '@/components/browse/ContentContainer.vue';
 import LocationAliasesWidget from '@/components/browse/LocationAliasesWidget.vue';
 import ResourceToggleDrawer from '@/components/browse/ResourceToggleDrawer.vue';
 import LocationMetadataContentTags from '@/components/content/LocationMetadataContentTags.vue';
+import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
-import { $t } from '@/i18n';
-import { BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
+import { $t, getLocaleProfile } from '@/i18n';
+import { ArchiveIcon, BookIcon, ErrorIcon, HourglassIcon, NoContentIcon } from '@/icons';
 import { useAuthStore, useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
 import { useUrlSearchParams } from '@vueuse/core';
-import { NButton, NEmpty, NFlex, NIcon } from 'naive-ui';
-import { computed, nextTick, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { NAlert, NButton, NEmpty, NFlex, NIcon } from 'naive-ui';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
   textSlug?: string;
@@ -25,8 +26,14 @@ const auth = useAuthStore();
 const browse = useBrowseStore();
 const state = useStateStore();
 const resources = useResourcesStore();
-const router = useRouter();
-const hashParams = useUrlSearchParams('hash-params');
+const params = useUrlSearchParams('history');
+
+const archiveTs = ref<number>();
+const archiveDateStr = computed(() =>
+  archiveTs.value
+    ? new Date(archiveTs.value).toLocaleString(getLocaleProfile(state.locale).displayShort)
+    : undefined
+);
 
 const catHiddenResCount = computed<Record<string, number>>(() =>
   Object.fromEntries(
@@ -61,11 +68,23 @@ function handleShowAllClick(categoryKey?: string) {
   );
 }
 
+function handleArchiveToggle(ts?: number) {
+  if (ts) {
+    params.ts = ts.toString();
+    archiveTs.value = ts;
+  } else {
+    // @ts-expect-error this is a valid property type but it's typed wrong in the library
+    params.ts = null;
+    archiveTs.value = undefined;
+  }
+  browse.loadLocationData(props.locId, true, ts);
+}
+
 // load fresh location data everytime the browse location changes in the URL
 watch(
   () => props.locId,
   async (newLocId) => {
-    await browse.loadLocationData(newLocId);
+    await browse.loadLocationData(newLocId, false);
   }
 );
 
@@ -77,17 +96,29 @@ watch(
 );
 
 onMounted(() => {
-  browse.loadLocationData(props.locId, true);
-  // if route contains a hash "#res=some-res-ID",
-  // scroll to and disable all but target resource
-  nextTick(() => {
-    if (hashParams.res) {
-      browse.setResourcesActiveState([hashParams.res.toString()], true, true);
-      router.replace({ ...router.currentRoute.value, hash: undefined });
+  nextTick(async () => {
+    // process archive timestamp if one is given
+    if (params.ts) {
+      try {
+        archiveTs.value = parseInt(params.ts.toString());
+      } catch {
+        // @ts-expect-error this is a valid property type but it's typed wrong in the library
+        params.ts = null;
+        archiveTs.value = undefined;
+      }
+    }
+    await browse.loadLocationData(props.locId, true, archiveTs.value);
+
+    // if route contains a hash "#res=some-res-ID",
+    // scroll to target resource and disable all others
+    if (params.res) {
+      browse.setResourcesActiveState([params.res.toString()], true, true);
       nextTick(() => {
-        const targetEl = document.getElementById(`content-of-res-${hashParams.res}`);
+        const targetEl = document.getElementById(`content-of-res-${params.res}`);
         if (targetEl)
           targetEl.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        // @ts-expect-error this is a valid property type but it's typed wrong in the library
+        params.res = null;
       });
     }
   });
@@ -109,9 +140,27 @@ onMounted(() => {
       :text-slug="state.textSlug || undefined"
       :explode="state.pf?.state.showLocationAliases"
     />
+    <browse-archive-widget :default="archiveTs" @submit="handleArchiveToggle" />
   </n-flex>
 
   <browse-toolbar v-if="browse.locationPath.length" />
+
+  <n-alert
+    v-if="!!archiveDateStr"
+    type="warning"
+    :title="$t('common.warning') + ': ' + $t('contents.archive.widgetTitle')"
+    class="my-lg"
+  >
+    <template #icon>
+      <n-icon :component="ArchiveIcon" />
+    </template>
+    {{ $t('contents.archive.warnBrowseArchive', { date: archiveDateStr }) }}
+    <button-shelf class="mt-sm">
+      <n-button type="warning" @click="handleArchiveToggle()">
+        {{ $t('contents.archive.loadCurrentContents') }}
+      </n-button>
+    </button-shelf>
+  </n-alert>
 
   <div
     v-if="browse.resourcesCategorized.length"

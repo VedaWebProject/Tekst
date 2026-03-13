@@ -81,7 +81,7 @@ common:
   years: Jahre
   months: Monate
   days: Tage
-  today: heute
+  latest: aktuell
   backToOverview: Zurück zur Übersicht
   downloadSaved: Datei gespeichert als {filename}.
   areYouSure: Sind Sie sich sicher?
@@ -608,18 +608,6 @@ contents:
   forComparison: '{title} (zum Vergleich)'
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
-  archiveWidgetTitle: Archivierte Versionen
-  archiveAction: Archivieren
-  archived: archiviert
-  msgArchived: Der Inhalt für diese Belegstelle wurde archiviert.
-  msgNoArchivedContents: Keine archivierten Inhalte für diese Belegstelle gefunden.
-  confirmArchive: |
-    Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle archivieren wollen?
-    Er wird nicht mehr in Suchergebnissen oder der Leseansicht angezeigt, kann aber
-    weiterhin als archivierte Version aufgerufen werden.
-    Sie können ihn später wiederherstellen.
-  restore: Wiederherstellen
-  msgRestored: Der Inhalt für diese Belegstelle wurde aus dem Archiv wiederhergestellt.
   confirmDelete: |
     Möchten Sie den Inhalt für diese Belegstelle wirklich löschen? Sie können ihn stattdessen auch archivieren.
     Wenn Sie den Inhalt löschen, werden auch alle archivierten Versionen des Inhalts gelöscht,
@@ -637,6 +625,28 @@ contents:
     oder Änderungen vornehmen und sie als Inhalt dieser Ressourcen-Ausbesserung speichern.
   msgContentNoFocusView: Dieser Inhalt kann in der Fokus-Ansicht nicht angezeigt werden.
   warnUrlInvalid: 'Diese URL scheint ungültig oder nicht erreichbar zu sein: {url}'
+  archive:
+    widgetTitle: Archivierte Versionen
+    widgetTip: Archivierte Versionen von Inhalten anzeigen
+    action: Archivieren
+    archived: archiviert
+    msgArchived: Der Inhalt für diese Belegstelle wurde archiviert.
+    msgNoArchivedContents: Keine archivierten Inhalte für diese Belegstelle gefunden.
+    confirmArchive: |
+      Sind Sie sicher, dass Sie den Inhalt für diese Belegstelle archivieren wollen?
+      Er wird nicht mehr in Suchergebnissen oder der Leseansicht angezeigt, kann aber
+      weiterhin als archivierte Version aufgerufen werden.
+      Sie können ihn später wiederherstellen.
+    warnBrowseArchive: |
+      Sie sehen Inhalte vom {date}.
+      Einige der angezeigten Inhalte sind möglicherweise archivierte Versionen,
+      die nicht mehr aktuell sind – diese sind mit einem gelben Symbol gekennzeichnet.
+      Andere Inhalte fehlen möglicherweise, da sie zu diesem Zeitpunkt noch nicht existierten.
+      Wenn Sie den aktuellen Stand der Inhalte sehen möchten, klicken Sie auf den Button unter diesem Hinweis.
+    loadCurrentContents: Aktuelle Inhalte laden
+    archivedContentTip: Archivierte Version von {date}
+    restore: Wiederherstellen
+    msgRestored: Der Inhalt für diese Belegstelle wurde aus dem Archiv wiederhergestellt.
   corrections:
     notes: Korrekturnotizen
     otherTitle: Andere Belegstellen
