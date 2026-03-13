@@ -20,7 +20,13 @@ import { usePrompt } from '@/composables/prompt';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
-import { useAuthStore, useResourcesStore, useStateStore, useUserMessagesStore } from '@/stores';
+import {
+  useAuthStore,
+  useBrowseStore,
+  useResourcesStore,
+  useStateStore,
+  useUserMessagesStore,
+} from '@/stores';
 import { pickTranslation } from '@/utils';
 import { refDebounced, useUrlSearchParams } from '@vueuse/core';
 import { NButton, NCollapse, NEmpty, NIcon, NInput, NSpin, useDialog } from 'naive-ui';
@@ -33,6 +39,7 @@ const props = defineProps<{
 
 const state = useStateStore();
 const auth = useAuthStore();
+const browse = useBrowseStore();
 const resources = useResourcesStore();
 const userMessages = useUserMessagesStore();
 const dialog = useDialog();
@@ -103,8 +110,8 @@ const expandedNames = ref<string[]>([]);
 async function handleBrowseClick(resource: AnyResourceRead) {
   router.push({
     name: 'browse',
-    params: { textSlug: state.text?.slug || '' },
-    hash: `#res=${resource.id}`,
+    params: { textSlug: state.text?.slug, locId: browse.locationPathHead?.id },
+    query: { res: resource.id },
   });
 }
 
@@ -245,10 +252,10 @@ function handleEditContentsClick(resource: AnyResourceRead) {
   });
 }
 
-function handleCreateVersionClick(resource: AnyResourceRead) {
+function handleCreatePatchClick(resource: AnyResourceRead) {
   dialog.warning({
     title: $t('common.information'),
-    content: $t('resources.infoCreateVersion', {
+    content: $t('resources.infoCreatePatch', {
       title: pickTranslation(resource.title, state.locale),
     }),
     positiveText: $t('common.yes'),
@@ -257,13 +264,13 @@ function handleCreateVersionClick(resource: AnyResourceRead) {
     ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
-      const { data, error } = await POST('/resources/{id}/version', {
+      const { data, error } = await POST('/resources/{id}/patch', {
         params: { path: { id: resource.id } },
       });
       if (!error) {
         resources.add(data);
         message.success(
-          $t('resources.msgCreatedVersion', {
+          $t('resources.msgCreatedPatch', {
             title: pickTranslation(resource.title, state.locale),
           })
         );
@@ -345,8 +352,8 @@ async function handleImportClick(resource: AnyResourceRead) {
   });
 }
 
-async function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead) {
-  const originalResource = resources.all.find((r) => r.id === resourceVersion.originalId);
+async function handleReqPatchIntegrationClick(resourcePatch: AnyResourceRead) {
+  const originalResource = resources.all.find((r) => r.id === resourcePatch.originalId);
   if (!originalResource || !originalResource.owners?.length) return;
 
   const contactOptions = originalResource.owners.map((o) => ({
@@ -356,17 +363,17 @@ async function handleReqVersionIntegrationClick(resourceVersion: AnyResourceRead
   const contactId = await prompt({
     type: 'select',
     icon: UserIcon,
-    title: $t('resources.reqVersionIntegration.action'),
-    msg: $t('resources.reqVersionIntegration.diagMsg'),
-    label: $t('resources.reqVersionIntegration.diagLabel'),
+    title: $t('resources.reqPatchIntegration.action'),
+    msg: $t('resources.reqPatchIntegration.diagMsg'),
+    label: $t('resources.reqPatchIntegration.diagLabel'),
     options: contactOptions,
     defaultValue: contactOptions[0]?.value,
   });
 
   if (!contactId) return;
-  const versionTitle = pickTranslation(resourceVersion.title, state.locale);
+  const patchTitle = pickTranslation(resourcePatch.title, state.locale);
   const originalTitle = pickTranslation(originalResource.title, state.locale);
-  const prepMsg = `> ${versionTitle} → ${originalTitle}\n\n`;
+  const prepMsg = `> ${patchTitle} → ${originalTitle}\n\n`;
   userMessages.openConversation(contactId, prepMsg);
 }
 
@@ -494,11 +501,11 @@ onMounted(() => {
           @unpublish-click="handleUnpublishClick"
           @settings-click="handleSettingsClick"
           @edit-contents-click="handleEditContentsClick"
-          @create-version-click="handleCreateVersionClick"
+          @create-patch-click="handleCreatePatchClick"
           @delete-click="handleDeleteClick"
           @download-template-click="handleDownloadTemplateClick"
           @import-click="handleImportClick"
-          @req-version-integration-click="handleReqVersionIntegrationClick"
+          @req-patch-integration-click="handleReqPatchIntegrationClick"
         />
       </n-collapse>
       <n-empty v-else :description="$t('search.nothingFound')" class="my-lg">

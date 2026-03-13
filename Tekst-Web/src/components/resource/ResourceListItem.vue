@@ -14,6 +14,7 @@ import {
   DownloadIcon,
   EditIcon,
   MoreIcon,
+  PatchIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
@@ -22,7 +23,6 @@ import {
   UnproposedIcon,
   UploadIcon,
   UserIcon,
-  VersionIcon,
 } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
@@ -44,10 +44,10 @@ const emit = defineEmits([
   'unproposeClick',
   'publishClick',
   'unpublishClick',
-  'reqVersionIntegrationClick',
+  'reqPatchIntegrationClick',
   'settingsClick',
   'editContentsClick',
-  'createVersionClick',
+  'createPatchClick',
   'deleteClick',
   'downloadTemplateClick',
   'importClick',
@@ -84,10 +84,10 @@ const actionOptions = computed<DropdownOption[]>(() => [
       ...(!props.resource.originalId && props.user
         ? [
             {
-              label: $t('resources.createVersionAction'),
-              key: 'version',
-              icon: renderIcon(VersionIcon),
-              action: () => emit('createVersionClick', props.resource),
+              label: $t('resources.createPatchAction'),
+              key: 'patch',
+              icon: renderIcon(PatchIcon),
+              action: () => emit('createPatchClick', props.resource),
             },
           ]
         : []),
@@ -215,8 +215,8 @@ const actionOptions = computed<DropdownOption[]>(() => [
             props.resource.ownerIds.includes(props.user.id)
               ? [
                   {
-                    label: $t('resources.reqVersionIntegration.action'),
-                    key: 'reqVersionIntegration',
+                    label: $t('resources.reqPatchIntegration.action'),
+                    key: 'reqPatchtegration',
                     icon: renderIcon(ReviewIcon),
                     disabled:
                       resources.all
@@ -224,7 +224,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                         ?.ownerIds.includes(props.user.id) ||
                       !resources.all.find((r) => r.id === props.resource.originalId)?.ownerIds
                         .length,
-                    action: () => emit('reqVersionIntegrationClick', props.resource),
+                    action: () => emit('reqPatchIntegrationClick', props.resource),
                     statusType: 'success',
                   },
                 ]

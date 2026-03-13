@@ -34,7 +34,8 @@ class ConfigSubSection(BaseModel):
 
     model_config = ConfigDict(
         alias_generator=camelize,
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         from_attributes=True,
         validate_assignment=True,  # should only happen in tests anyway
     )
@@ -301,7 +302,8 @@ class TekstConfig(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="TEKST_",
         env_nested_delimiter="__",
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         case_sensitive=False,
         protected_namespaces=("model_",),
         validate_assignment=True,  # should only happen in tests anyway

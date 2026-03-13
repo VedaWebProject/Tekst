@@ -27,6 +27,7 @@ from tekst.models.content import (
     ContentBase,
     ContentBaseDocument,
     ContentBaseUpdate,
+    MissingContent,
 )
 from tekst.models.correction import CorrectionDocument
 from tekst.models.resource import (
@@ -45,7 +46,7 @@ from tekst.types import ConStr, SchemaOptionalNullable
 resource_types_mgr: "ResourceTypesManager" = None
 
 # resource base model fields to exclude from export/import
-RES_EXCLUDE_FIELDS_EXP_IMP = {
+RES_EXCLUDE_EXP_IMP = {
     "text_id",
     "level",
     "resource_type",
@@ -304,7 +305,7 @@ class ResourceTypeABC(ABC):
         data = camelize(
             resource.model_dump(
                 mode="json",
-                exclude=RES_EXCLUDE_FIELDS_EXP_IMP,
+                exclude=RES_EXCLUDE_EXP_IMP,
                 by_alias=True,
                 exclude_none=True,
                 exclude_unset=True,
@@ -316,6 +317,7 @@ class ResourceTypeABC(ABC):
                 data,
                 fp=fp,
                 ensure_ascii=False,
+                default=str,
             )
 
     @classmethod
@@ -391,6 +393,7 @@ class ResourceTypeABC(ABC):
                 res,
                 fp=fp,
                 ensure_ascii=False,
+                default=str,
             )
 
     @classmethod
@@ -600,6 +603,20 @@ AnyContentRead = Annotated[
                 rt.content_model().read_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
+        )
+    ],
+    Body(discriminator="resource_type"),
+    Field(discriminator="resource_type"),
+]
+
+AnyContentReadOrMissing = Annotated[
+    Union[  # noqa: UP007
+        tuple(
+            [
+                rt.content_model().read_model()
+                for rt in resource_types_mgr.get_all().values()
+            ]
+            + [MissingContent]
         )
     ],
     Body(discriminator="resource_type"),

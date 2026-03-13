@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.49.4b0"
+    "version": "0.50.0b0"
   },
   "servers": [
     {
@@ -121,6 +121,24 @@
               "title": "Head"
             },
             "description": "Only return contents for the head location of the path"
+          },
+          {
+            "name": "ts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "UTC timestamp in milliseconds to get contents that were current at that point in time",
+              "title": "Ts"
+            },
+            "description": "UTC timestamp in milliseconds to get contents that were current at that point in time"
           }
         ],
         "responses": {
@@ -235,6 +253,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/TextAnnotationContentRead"
+                      },
+                      {
+                        "$ref": "#/components/schemas/MissingContent"
                       }
                     ],
                     "discriminator": {
@@ -247,7 +268,8 @@
                         "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
                         "plainText": "#/components/schemas/PlainTextContentRead",
                         "richText": "#/components/schemas/RichTextContentRead",
-                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                        "textAnnotation": "#/components/schemas/TextAnnotationContentRead",
+                        "none": "#/components/schemas/MissingContent"
                       }
                     }
                   },
@@ -744,6 +766,25 @@
             "description": "ID (or list of IDs) of location(s) to return content data for"
           },
           {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Include archived content",
+              "default": false,
+              "title": "Archived"
+            },
+            "description": "Include archived content"
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -808,6 +849,99 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/archive": {
+      "get": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Get archived contents",
+        "description": "Returns all content (including archived content)\nfor the given resource and location,\nsorted by creation timestamp in descending order.",
+        "operationId": "getArchivedContents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "locId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "max": 102400,
+              "default": 10240,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContentArchiveSignature"
+                  },
+                  "title": "Response Get Archived Contents Contents Archive Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -1097,6 +1231,16 @@
             "schema": {
               "$ref": "#/components/schemas/PydanticObjectId"
             }
+          },
+          {
+            "name": "deleteArchive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Deletearchive"
+            }
           }
         ],
         "responses": {
@@ -1122,6 +1266,223 @@
               }
             },
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}/archive": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Archive content",
+        "operationId": "archiveContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
+                      "audio": "#/components/schemas/AudioContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                      "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  },
+                  "title": "Response Archive Content Contents  Id  Archive Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contents/{id}/restore": {
+      "post": {
+        "tags": [
+          "contents"
+        ],
+        "summary": "Restore archived content",
+        "description": "Restores the archived content with the given ID, archives any content currently\npresent for the same resource/location.",
+        "operationId": "restoreArchivedContent",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextContentRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallContentRead",
+                      "audio": "#/components/schemas/AudioContentRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                      "images": "#/components/schemas/ImagesContentRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                      "plainText": "#/components/schemas/PlainTextContentRead",
+                      "richText": "#/components/schemas/RichTextContentRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                    }
+                  },
+                  "title": "Response Restore Archived Content Contents  Id  Restore Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
           },
           "422": {
             "description": "Validation Error",
@@ -3645,13 +4006,13 @@
         }
       }
     },
-    "/resources/{id}/version": {
+    "/resources/{id}/patch": {
       "post": {
         "tags": [
           "resources"
         ],
-        "summary": "Create resource version",
-        "operationId": "createResourceVersion",
+        "summary": "Create resource patch",
+        "operationId": "createResourcePatch",
         "security": [
           {
             "APIKeyCookie": []
@@ -3715,7 +4076,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Create Resource Version Resources  Id  Version Post"
+                  "title": "Response Create Resource Patch Resources  Id  Patch Post"
                 }
               }
             }
@@ -7526,6 +7887,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "calls": {
             "items": {
               "$ref": "#/components/schemas/ApiCallContentItem"
@@ -7815,7 +8188,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -8014,7 +8387,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -8226,7 +8599,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -8461,6 +8834,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "files": {
             "items": {
               "$ref": "#/components/schemas/AudioFile"
@@ -8641,7 +9026,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -8835,7 +9220,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -9042,7 +9427,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -9797,6 +10182,29 @@
         ],
         "title": "CommonResourceSearchQueryData"
       },
+      "ContentArchiveSignature": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "archived"
+        ],
+        "title": "ContentArchiveSignature"
+      },
       "ContentComment": {
         "properties": {
           "by": {
@@ -9823,7 +10231,8 @@
         "required": [
           "comment"
         ],
-        "title": "ContentComment"
+        "title": "ContentComment",
+        "description": "A comment on a content"
       },
       "ContentCssProperties": {
         "items": {
@@ -10183,6 +10592,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "links": {
             "items": {
               "$ref": "#/components/schemas/ExternalReferencesLink"
@@ -10371,7 +10792,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -10565,7 +10986,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -10772,7 +11193,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -11255,6 +11676,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "files": {
             "items": {
               "$ref": "#/components/schemas/ImageFile"
@@ -11391,7 +11824,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -11585,7 +12018,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -11792,7 +12225,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -12261,50 +12694,60 @@
             "description": "ID of the subsequent location on the same level"
           },
           "contents": {
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ApiCallContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/AudioContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ExternalReferencesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/ImagesContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/LocationMetadataContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/PlainTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/RichTextContentRead"
-                },
-                {
-                  "$ref": "#/components/schemas/TextAnnotationContentRead"
+            "additionalProperties": {
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ApiCallContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AudioContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ExternalReferencesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImagesContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/LocationMetadataContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PlainTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RichTextContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextAnnotationContentRead"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MissingContent"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "resourceType",
+                  "mapping": {
+                    "apiCall": "#/components/schemas/ApiCallContentRead",
+                    "audio": "#/components/schemas/AudioContentRead",
+                    "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
+                    "images": "#/components/schemas/ImagesContentRead",
+                    "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
+                    "none": "#/components/schemas/MissingContent",
+                    "plainText": "#/components/schemas/PlainTextContentRead",
+                    "richText": "#/components/schemas/RichTextContentRead",
+                    "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
+                  }
                 }
-              ],
-              "discriminator": {
-                "propertyName": "resourceType",
-                "mapping": {
-                  "apiCall": "#/components/schemas/ApiCallContentRead",
-                  "audio": "#/components/schemas/AudioContentRead",
-                  "externalReferences": "#/components/schemas/ExternalReferencesContentRead",
-                  "images": "#/components/schemas/ImagesContentRead",
-                  "locationMetadata": "#/components/schemas/LocationMetadataContentRead",
-                  "plainText": "#/components/schemas/PlainTextContentRead",
-                  "richText": "#/components/schemas/RichTextContentRead",
-                  "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
-                }
-              }
+              },
+              "type": "array"
             },
-            "type": "array",
+            "propertyNames": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "object",
             "title": "Contents",
-            "description": "Contents of various resources on this location",
+            "description": "Contents of various resources on this location, by resource ID",
             "default": []
           }
         },
@@ -12399,6 +12842,18 @@
             "title": "Comments",
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
           },
           "entries": {
             "items": {
@@ -12733,7 +13188,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -12934,7 +13389,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -13148,7 +13603,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -13550,6 +14005,29 @@
         ],
         "title": "MetadataEntry"
       },
+      "MissingContent": {
+        "properties": {
+          "resourceId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "resourceType": {
+            "type": "string",
+            "const": "none",
+            "title": "Resourcetype"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          }
+        },
+        "type": "object",
+        "required": [
+          "resourceId",
+          "resourceType",
+          "locationId"
+        ],
+        "title": "MissingContent",
+        "description": "A model representing a missing content."
+      },
       "MoveLocationRequestBody": {
         "properties": {
           "position": {
@@ -13786,6 +14264,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "text": {
             "type": "string",
             "maxLength": 102400,
@@ -13934,7 +14424,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -14143,7 +14633,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -14365,7 +14855,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -15696,6 +16186,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "html": {
             "type": "string",
             "maxLength": 102400,
@@ -15975,7 +16477,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -16174,7 +16676,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -16386,7 +16888,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {
@@ -16751,6 +17253,10 @@
             "type": "integer",
             "title": "Statsrequests"
           },
+          "archivedContents": {
+            "type": "integer",
+            "title": "Archivedcontents"
+          },
           "bookmarks": {
             "type": "integer",
             "title": "Bookmarks"
@@ -16813,6 +17319,7 @@
           "searchQuick",
           "searchAdvanced",
           "statsRequests",
+          "archivedContents",
           "bookmarks",
           "corrections",
           "correctionsAllTime",
@@ -17080,6 +17587,18 @@
             "description": "Potentially multiline comments on the content",
             "optionalNullable": false
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp of the content creation"
+          },
+          "archived": {
+            "type": "boolean",
+            "title": "Archived",
+            "description": "Whether the content is archived",
+            "default": false
+          },
           "tokens": {
             "items": {
               "$ref": "#/components/schemas/TextAnnotationToken"
@@ -17310,7 +17829,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "citation": {
             "anyOf": [
@@ -17513,7 +18032,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original"
+            "description": "If this is a patch of another resource, this ID references the original"
           },
           "ownerIds": {
             "items": {
@@ -17729,7 +18248,7 @@
                 "type": "null"
               }
             ],
-            "description": "If this is a version of another resource, this ID references the original",
+            "description": "If this is a patch of another resource, this ID references the original",
             "optionalNullable": true
           },
           "sharedRead": {

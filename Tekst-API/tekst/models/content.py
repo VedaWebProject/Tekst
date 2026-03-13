@@ -1,7 +1,8 @@
-from typing import Annotated, NotRequired, TypedDict
+from datetime import UTC, datetime
+from typing import Annotated, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
-from pydantic import BeforeValidator, Field, field_validator
+from pydantic import AwareDatetime, BeforeValidator, Field, field_validator
 
 from tekst.models.common import (
     DocumentBase,
@@ -18,12 +19,15 @@ from tekst.types import (
 
 
 class ContentComment(TypedDict):
+    """A comment on a content"""
+
     by: NotRequired[
         ConStrOrNone(
             max_length=128,
             cleanup="oneline",
         )
     ]
+
     comment: ConStr(
         max_length=5000,
         cleanup="multiline",
@@ -42,15 +46,14 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     resource_type: Annotated[
         ResourceTypeName,
         Field(
             description="A string identifying one of the available resource types",
         ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
     ]
+
     location_id: Annotated[
         PydanticObjectId,
         Field(
@@ -60,6 +63,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     comments: Annotated[
         list[ContentComment] | None,
         Field(
@@ -71,11 +75,30 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         SchemaOptionalNonNullable,
     ] = None
 
-    @field_validator(
-        "resource_type",
-        mode="after",
-        check_fields=False,
-    )
+    created_at: Annotated[
+        AwareDatetime,
+        Field(
+            description="Timestamp of the content creation",
+            default_factory=lambda: datetime.now(UTC),
+        ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
+    ]
+
+    archived: Annotated[
+        bool,
+        Field(
+            description="Whether the content is archived",
+        ),
+        ExcludeFromModelVariants(
+            create=True,
+            update=True,
+        ),
+    ] = False
+
+    @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
     def validate_resource_type_name(cls, v):
         from tekst.resources import resource_types_mgr
@@ -114,9 +137,47 @@ class ContentBaseDocument(ContentBase, DocumentBase):
         name = "contents"
         is_root = True
         indexes = [
-            "resource_id",
-            "location_id",
+            [
+                "resource_id",
+                "location_id",
+                "created_at",
+                "archived",
+            ]
         ]
+
+    async def archive(self) -> "ContentBaseDocument":
+        """
+        Archives this content and returns an unsaved copy (without ID) with an updated
+        `created_at` datetime value set to now (UTC).
+        """
+        copy = self.model_copy(deep=True, update={"created_at": datetime.now(UTC)})
+        copy.id = None
+        self.archived = True
+        await self.replace()
+        return copy
 
 
 ContentBaseUpdate = ContentBase.update_model()
+
+
+class MissingContent(ModelBase):
+    """
+    A model representing a missing content.
+    """
+
+    resource_id: PydanticObjectId
+    resource_type: Literal["none"]
+    location_id: PydanticObjectId
+
+
+class ContentArchiveSignature(ModelBase):
+    class Settings:
+        projection = {
+            "id": "$_id",
+            "created_at": 1,
+            "archived": 1,
+        }
+
+    id: PydanticObjectId
+    created_at: AwareDatetime
+    archived: bool

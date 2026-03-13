@@ -130,6 +130,28 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/contents/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get archived contents
+     * @description Returns all content (including archived content)
+     *     for the given resource and location,
+     *     sorted by creation timestamp in descending order.
+     */
+    get: operations['getArchivedContents'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/contents/{id}': {
     parameters: {
       query?: never;
@@ -150,6 +172,44 @@ export interface paths {
     head?: never;
     /** Update content */
     patch: operations['updateContent'];
+    trace?: never;
+  };
+  '/contents/{id}/archive': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Archive content */
+    post: operations['archiveContent'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/contents/{id}/restore': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Restore archived content
+     * @description Restores the archived content with the given ID, archives any content currently
+     *     present for the same resource/location.
+     */
+    post: operations['restoreArchivedContent'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
   '/corrections': {
@@ -656,7 +716,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/resources/{id}/version': {
+  '/resources/{id}/patch': {
     parameters: {
       query?: never;
       header?: never;
@@ -665,8 +725,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create resource version */
-    post: operations['createResourceVersion'];
+    /** Create resource patch */
+    post: operations['createResourcePatch'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1420,6 +1480,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Calls
        * @description List of API calls to make for this content
        */
@@ -1568,7 +1640,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -1663,7 +1735,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -1773,7 +1845,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'apiCall';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -1861,6 +1933,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Files
        * @description List of audio file objects
        */
@@ -1944,7 +2028,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -2034,7 +2118,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -2139,7 +2223,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'audio';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -2464,7 +2548,21 @@ export interface components {
        */
       cmt?: string;
     };
-    /** ContentComment */
+    /** ContentArchiveSignature */
+    ContentArchiveSignature: {
+      id: components['schemas']['PydanticObjectId'];
+      /**
+       * Createdat
+       * Format: date-time
+       */
+      createdAt: string;
+      /** Archived */
+      archived: boolean;
+    };
+    /**
+     * ContentComment
+     * @description A comment on a content
+     */
     ContentComment: {
       /** By */
       by?: null | string;
@@ -2626,6 +2724,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Links
        * @description List of external reference link objects
        */
@@ -2714,7 +2824,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -2804,7 +2914,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -2909,7 +3019,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'externalReferences';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -3125,6 +3235,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Files
        * @description List of image file objects
        */
@@ -3190,7 +3312,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -3280,7 +3402,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -3385,7 +3507,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'images';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -3577,19 +3699,22 @@ export interface components {
       next?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Contents
-       * @description Contents of various resources on this location
+       * @description Contents of various resources on this location, by resource ID
        * @default []
        */
-      contents: (
-        | components['schemas']['ApiCallContentRead']
-        | components['schemas']['AudioContentRead']
-        | components['schemas']['ExternalReferencesContentRead']
-        | components['schemas']['ImagesContentRead']
-        | components['schemas']['LocationMetadataContentRead']
-        | components['schemas']['PlainTextContentRead']
-        | components['schemas']['RichTextContentRead']
-        | components['schemas']['TextAnnotationContentRead']
-      )[];
+      contents: {
+        [key: string]: (
+          | components['schemas']['ApiCallContentRead']
+          | components['schemas']['AudioContentRead']
+          | components['schemas']['ExternalReferencesContentRead']
+          | components['schemas']['ImagesContentRead']
+          | components['schemas']['LocationMetadataContentRead']
+          | components['schemas']['PlainTextContentRead']
+          | components['schemas']['RichTextContentRead']
+          | components['schemas']['TextAnnotationContentRead']
+          | components['schemas']['MissingContent']
+        )[];
+      };
     };
     /** LocationMetadataContentCreate */
     LocationMetadataContentCreate: {
@@ -3630,6 +3755,18 @@ export interface components {
        * @description Potentially multiline comments on the content
        */
       comments?: components['schemas']['ContentComment'][];
+      /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -3798,7 +3935,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -3895,7 +4032,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -4007,7 +4144,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'locationMetadata';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -4168,6 +4305,19 @@ export interface components {
        */
       value: string;
     };
+    /**
+     * MissingContent
+     * @description A model representing a missing content.
+     */
+    MissingContent: {
+      resourceId: components['schemas']['PydanticObjectId'];
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      resourceType: 'none';
+      locationId: components['schemas']['PydanticObjectId'];
+    };
     /** MoveLocationRequestBody */
     MoveLocationRequestBody: {
       /** Position */
@@ -4274,6 +4424,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Text
        * @description Text content of the plain text content object
        */
@@ -4357,7 +4519,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -4462,7 +4624,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -4582,7 +4744,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'plainText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -5195,6 +5357,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Html
        * @description HTML content of the rich text content object
        */
@@ -5344,7 +5518,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -5439,7 +5613,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -5549,7 +5723,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'richText';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -5688,6 +5862,8 @@ export interface components {
       searchAdvanced: number;
       /** Statsrequests */
       statsRequests: number;
+      /** Archivedcontents */
+      archivedContents: number;
       /** Bookmarks */
       bookmarks: number;
       /** Corrections */
@@ -5831,6 +6007,18 @@ export interface components {
        */
       comments?: components['schemas']['ContentComment'][];
       /**
+       * Createdat
+       * Format: date-time
+       * @description Timestamp of the content creation
+       */
+      createdAt?: string;
+      /**
+       * Archived
+       * @description Whether the content is archived
+       * @default false
+       */
+      archived: boolean;
+      /**
        * Tokens
        * @description List of annotated tokens in this content object
        */
@@ -5945,7 +6133,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
@@ -6044,7 +6232,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
@@ -6158,7 +6346,7 @@ export interface components {
        * @enum {string}
        */
       resourceType: 'textAnnotation';
-      /** @description If this is a version of another resource, this ID references the original */
+      /** @description If this is a patch of another resource, this ID references the original */
       originalId?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
@@ -6924,6 +7112,7 @@ export interface operations {
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead']
+            | components['schemas']['MissingContent']
           )[];
         };
       };
@@ -7126,6 +7315,8 @@ export interface operations {
         res?: components['schemas']['PydanticObjectId'][];
         /** @description ID (or list of IDs) of location(s) to return content data for */
         location?: components['schemas']['PydanticObjectId'][];
+        /** @description Include archived content */
+        archived?: boolean | null;
         /** @description Return at most <limit> items */
         limit?: number;
       };
@@ -7240,6 +7431,57 @@ export interface operations {
       };
     };
   };
+  getArchivedContents: {
+    parameters: {
+      query: {
+        resId: components['schemas']['PydanticObjectId'];
+        locId: components['schemas']['PydanticObjectId'];
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ContentArchiveSignature'][];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   getContent: {
     parameters: {
       query?: never;
@@ -7290,7 +7532,9 @@ export interface operations {
   };
   deleteContent: {
     parameters: {
-      query?: never;
+      query?: {
+        deleteArchive?: boolean;
+      };
       header?: never;
       path: {
         id: components['schemas']['PydanticObjectId'];
@@ -7377,6 +7621,120 @@ export interface operations {
       };
       /** @description Forbidden */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  archiveContent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  restoreArchivedContent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallContentRead']
+            | components['schemas']['AudioContentRead']
+            | components['schemas']['ExternalReferencesContentRead']
+            | components['schemas']['ImagesContentRead']
+            | components['schemas']['LocationMetadataContentRead']
+            | components['schemas']['PlainTextContentRead']
+            | components['schemas']['RichTextContentRead']
+            | components['schemas']['TextAnnotationContentRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
         headers: {
           [name: string]: unknown;
         };
@@ -8958,7 +9316,7 @@ export interface operations {
       };
     };
   };
-  createResourceVersion: {
+  createResourcePatch: {
     parameters: {
       query?: never;
       header?: never;

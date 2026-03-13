@@ -404,7 +404,8 @@ class TextAnnotationResource(ResourceBase):
         # group annotations
         precomp_doc.data = (
             await ContentBaseDocument.find(
-                ContentBaseDocument.resource_id == self.id,
+                Eq(ContentBaseDocument.resource_id, self.id),
+                Eq(ContentBaseDocument.archived, False),
                 with_children=True,
             )
             .aggregate(
@@ -505,10 +506,10 @@ class TextAnnotationResource(ResourceBase):
         alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
         content_doc_model = TextAnnotation.content_model().document_model()
 
-        async for content in ContentBaseDocument.find(
-            Eq(ContentBaseDocument.resource_id, self.id),
+        async for content in content_doc_model.find(
+            Eq(content_doc_model.resource_id, self.id),
             Eq(content_doc_model.tokens.id, None),
-            with_children=True,
+            Eq(content_doc_model.archived, False),
         ):
             dirty = False
             for token in content.tokens:

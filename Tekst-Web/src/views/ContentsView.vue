@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   type AnyContentCreate,
+  type AnyContentRead,
   type AnyContentUpdate,
   type AnyResourceRead,
   type CorrectionRead,
@@ -12,6 +13,7 @@ import {
   POST,
 } from '@/api';
 import { dialogProps } from '@/common';
+import ArchiveWidget from '@/components/browse/ArchiveWidget.vue';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -37,10 +39,10 @@ import {
   EditIcon,
   MoveDownIcon,
   NoContentIcon,
+  PatchIcon,
   ResourceIcon,
   SkipNextIcon,
   SkipPreviousIcon,
-  VersionIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
@@ -64,7 +66,7 @@ import {
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 
-type ContentFormModel = AnyContentCreate & { id: string };
+type ContentFormModel = AnyContentRead & { id: string };
 
 const props = defineProps<{
   textSlug?: string;
@@ -128,13 +130,14 @@ const compareResourceOptions = computed(() =>
       disabled: r.id === compareResourceId.value,
       icon: r.originalId
         ? renderIcon(
-            VersionIcon,
+            PatchIcon,
             r.originalId === resource.value?.id ? theme.colors.text.base : undefined
           )
         : renderIcon(ResourceIcon),
     }))
 );
 
+const loadingArchive = ref(false);
 const loadingDelete = ref(false);
 const loadingSave = ref(false);
 const loadingData = ref(false);
@@ -142,6 +145,7 @@ const loadingNav = ref(false);
 const loading = computed(
   () =>
     resources.loading ||
+    loadingArchive.value ||
     loadingDelete.value ||
     loadingSave.value ||
     loadingData.value ||
@@ -205,16 +209,16 @@ async function loadLocationData() {
     prevLocationId.value = locationData.prev || undefined;
     nextLocationId.value = locationData.next || undefined;
     // process received contents
-    initialContentModel.value =
-      locationData.contents?.find((u) => u.resourceId === resource.value?.id) ||
-      (!!resource.value?.originalId &&
-        locationData.contents?.find((u) => u.resourceId === resource.value?.originalId)) ||
+    const maybeContent =
+      locationData.contents[resource.value.id]?.[0] ??
+      locationData.contents[resource.value.originalId ?? '']?.[0] ??
       undefined;
-    const compareContent = locationData.contents?.find(
-      (u) => u.resourceId === compareResource.value?.id
-    );
+    initialContentModel.value =
+      !!maybeContent && maybeContent.resourceType !== 'none' ? maybeContent : undefined;
+    const compareContent = locationData.contents[compareResource.value?.id ?? '']?.[0];
     if (compareResource.value) {
-      compareResource.value.contents = compareContent ? [compareContent] : [];
+      compareResource.value.contents =
+        compareContent?.resourceType !== 'none' ? [compareContent] : [];
     }
     resetForm();
     // add location ID to URL params if not already present
@@ -301,18 +305,29 @@ async function handleJumpToClick() {
   showJumpToModal.value = true;
 }
 
-async function deleteContent() {
+async function handleArchiveContentClick() {
   if (!contentModel.value) return;
-  loadingDelete.value = true;
-  const { error } = await DELETE('/contents/{id}', {
-    params: { path: { id: contentModel.value.id } },
+  dialog.warning({
+    title: $t('common.warning'),
+    content: $t('contents.archive.confirmArchive'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
+    closable: false,
+    ...dialogProps,
+    onPositiveClick: async () => {
+      if (!contentModel.value) return;
+      loadingArchive.value = true;
+      const { error } = await POST('/contents/{id}/archive', {
+        params: { path: { id: contentModel.value.id } },
+      });
+      if (!error) {
+        resources.resetCoverage(resource.value?.id);
+        await loadLocationData();
+        message.success($t('contents.archive.msgArchived'));
+      }
+      loadingArchive.value = false;
+    },
   });
-  if (!error) {
-    resources.resetCoverage(resource.value?.id);
-    await loadLocationData();
-    message.success($t('contents.msgDeleted'));
-  }
-  loadingDelete.value = false;
 }
 
 async function handleDeleteContentClick() {
@@ -324,7 +339,22 @@ async function handleDeleteContentClick() {
     negativeText: $t('common.no'),
     closable: false,
     ...dialogProps,
-    onPositiveClick: deleteContent,
+    onPositiveClick: async () => {
+      if (!contentModel.value) return;
+      loadingDelete.value = true;
+      const { error } = await DELETE('/contents/{id}', {
+        params: {
+          path: { id: contentModel.value.id },
+          query: { deleteArchive: true },
+        },
+      });
+      if (!error) {
+        resources.resetCoverage(resource.value?.id);
+        await loadLocationData();
+        message.success($t('contents.msgDeleted'));
+      }
+      loadingDelete.value = false;
+    },
   });
 }
 
@@ -377,6 +407,12 @@ async function handleNearestChangeClick(direction: 'before' | 'after') {
   } else {
     message.info($t('browse.location.msgNoNearest'));
   }
+}
+
+function handleRestoredContent(content: AnyContentRead) {
+  contentModel.value = content;
+  reset();
+  formRef.value?.restoreValidation();
 }
 
 // watch for position change and resources data updates
@@ -432,11 +468,11 @@ whenever(ArrowRight, () => {
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
       </template>
-      {{ $t('resources.backToOverview') }}
+      {{ $t('common.backToOverview') }}
     </n-button>
   </router-link>
 
-  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? VersionIcon : ResourceIcon">
+  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? PatchIcon : ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags
@@ -610,7 +646,7 @@ whenever(ArrowRight, () => {
       </n-alert>
 
       <!-- CORRECTION NOTES -->
-      <n-alert v-if="resource && !!corrections.length" :show-icon="false" class="mb-lg">
+      <n-alert v-if="!!corrections.length" :show-icon="false" class="mb-lg">
         <n-collapse class="corrections" :trigger-areas="['arrow', 'main']">
           <n-collapse-item name="corrections">
             <template #header>
@@ -667,44 +703,9 @@ whenever(ArrowRight, () => {
         >
           <content-form-items v-model="contentModel" :resource="resource" />
         </n-form>
-
-        <button-shelf class="mt-lg">
-          <template #start>
-            <n-button
-              secondary
-              type="error"
-              :disabled="loading || !contentModel.id || contentModel.resourceId !== resource.id"
-              :loading="loadingDelete"
-              @click="handleDeleteContentClick"
-            >
-              {{ $t('common.delete') }}
-            </n-button>
-          </template>
-          <n-button secondary :disabled="!changed || loading" @click="resetForm">
-            {{ $t('common.reset') }}
-          </n-button>
-          <n-button
-            v-if="!changed && resource.originalId && contentModel.resourceId == resource.originalId"
-            type="primary"
-            :title="$t('contents.tipBtnCopyOriginal')"
-            :disabled="loading"
-            @click="handleSaveClick"
-          >
-            {{ $t('common.copy') }}
-          </n-button>
-          <n-button
-            v-else
-            type="primary"
-            :disabled="loading || !changed"
-            :loading="loadingSave"
-            @click="handleSaveClick"
-          >
-            {{ $t('common.save') }}
-          </n-button>
-        </button-shelf>
       </template>
 
-      <n-flex v-else vertical align="center" class="mb-lg">
+      <n-flex v-else vertical align="center" class="my-lg">
         <n-empty :description="$t('contents.noContent')" class="mb-lg">
           <template #icon>
             <n-icon :component="NoContentIcon" />
@@ -717,6 +718,61 @@ whenever(ArrowRight, () => {
           {{ $t('contents.btnAddContent') }}
         </n-button>
       </n-flex>
+
+      <button-shelf class="mt-lg">
+        <template #start>
+          <n-button
+            secondary
+            type="warning"
+            :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
+            :loading="loadingArchive"
+            @click="handleArchiveContentClick"
+          >
+            {{ $t('contents.archive.action') }}
+          </n-button>
+          <archive-widget
+            v-if="locId"
+            :resource="resource"
+            :location-id="locId"
+            :disabled="loading"
+            :loading="loadingArchive"
+            secondary
+            @restore="handleRestoredContent"
+          />
+          <n-button
+            v-if="auth.user && (auth.user.isSuperuser || resource.ownerIds.includes(auth.user.id))"
+            secondary
+            type="error"
+            :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
+            :loading="loadingDelete"
+            @click="handleDeleteContentClick"
+          >
+            {{ $t('common.delete') }}
+          </n-button>
+        </template>
+
+        <n-button secondary :disabled="!changed || loading" @click="resetForm">
+          {{ $t('common.reset') }}
+        </n-button>
+        <n-button
+          v-if="!changed && resource.originalId && contentModel?.resourceId == resource.originalId"
+          type="primary"
+          :title="$t('contents.tipBtnCopyOriginal')"
+          :disabled="loading"
+          @click="handleSaveClick"
+        >
+          {{ $t('common.copy') }}
+        </n-button>
+        <n-button
+          v-else
+          type="primary"
+          :disabled="loading || !changed"
+          :loading="loadingSave"
+          @click="handleSaveClick"
+        >
+          {{ $t('common.save') }}
+        </n-button>
+      </button-shelf>
     </div>
   </template>
 

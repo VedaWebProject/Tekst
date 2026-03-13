@@ -28,7 +28,7 @@ const resources = useResourcesStore();
 const { message } = useMessages();
 const prompt = usePrompt();
 
-const enabled = computed(() => !!auth.user && props.resource.contents?.length === 1);
+const enabled = computed(() => !!auth.user && (props.resource.contents?.length ?? 0) <= 1);
 const widgetTitle = computed(() =>
   enabled.value
     ? $t('browse.contents.widgets.correctionNote.title')

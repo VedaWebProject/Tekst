@@ -211,7 +211,7 @@ async def test_create_resource_with_denied_type(
 
 
 @pytest.mark.anyio
-async def test_create_resource_version(
+async def test_create_resource_patch(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -223,15 +223,15 @@ async def test_create_resource_version(
     ][0]
     user = await login()
 
-    # create new resource version (fail with wrong resource ID)
+    # create new resource patch (fail with wrong resource ID)
     resp = await test_client.post(
-        f"/resources/{wrong_id}/version",
+        f"/resources/{wrong_id}/patch",
     )
     assert_status(404, resp)
 
-    # create new resource version
+    # create new resource patch
     resp = await test_client.post(
-        f"/resources/{resource_id}/version",
+        f"/resources/{resource_id}/patch",
     )
     assert_status(201, resp)
     assert "id" in resp.json()
@@ -239,9 +239,9 @@ async def test_create_resource_version(
     assert "ownerIds" in resp.json()
     assert user.get("id") in resp.json()["ownerIds"]
 
-    # fail to create new resource version of another version
+    # fail to create new resource patch of another patch
     resp = await test_client.post(
-        f"/resources/{resp.json()['id']}/version",
+        f"/resources/{resp.json()['id']}/patch",
     )
     assert_status(400, resp)
 
@@ -730,16 +730,16 @@ async def test_propose_unpropose_publish_unpublish_resource(
     )
     assert_status(404, resp)
 
-    # fail to propose resource version
-    # create new resource version
+    # fail to propose resource patch
+    # create new resource patch
     resp = await test_client.post(
-        f"/resources/{resource_id}/version",
+        f"/resources/{resource_id}/patch",
     )
     assert_status(201, resp)
     assert "id" in resp.json()
-    version_id = resp.json()["id"]
+    patch_id = resp.json()["id"]
     resp = await test_client.post(
-        f"/resources/{version_id}/propose",
+        f"/resources/{patch_id}/propose",
     )
     assert_status(400, resp)
 
@@ -763,16 +763,16 @@ async def test_propose_unpropose_publish_unpublish_resource(
     )
     assert_status(404, resp)
 
-    # fail to publish resource version
+    # fail to publish resource patch
     # (this should be actually be impossible anyway,
-    # because we can't even propose a version... so we create
+    # because we can't even propose a patch... so we create
     # an invalid resource state on purpose, here)
     await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == PydanticObjectId(version_id),
+        ResourceBaseDocument.id == PydanticObjectId(patch_id),
         with_children=True,
     ).set({ResourceBaseDocument.proposed: True})
     resp = await test_client.post(
-        f"/resources/{version_id}/publish",
+        f"/resources/{patch_id}/publish",
     )
     assert_status(400, resp)
 

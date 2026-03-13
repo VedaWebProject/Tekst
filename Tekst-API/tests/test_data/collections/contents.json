@@ -19,7 +19,9 @@
         "by": "Editor Two",
         "comment": "This is another editor's comment!"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044b9906e79b9062e22fc" },
@@ -27,7 +29,29 @@
     "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
-    "text": "Bar"
+    "text": "Bar",
+    "archived": true,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
+  },
+  {
+    "_id": { "$oid": "69b02c723683be4e62b14f03" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
+    "text": "Bar",
+    "archived": true,
+    "created_at": { "$date": "2024-03-09T13:30:48.446Z" }
+  },
+  {
+    "_id": { "$oid": "69b02c7d3683be4e62b14f04" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
+    "text": "Bar",
+    "archived": false,
+    "created_at": { "$date": "2025-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044be906e79b9062e22fd" },
@@ -45,7 +69,9 @@
         "by": "Editor Two",
         "comment": "This is another editor's comment!"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044c6906e79b9062e22fe" },
@@ -59,7 +85,9 @@
         "by": "Author",
         "comment": "The word \"Qux\" truly deserves a comment!"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044e3906e79b9062e22ff" },
@@ -68,7 +96,9 @@
     "resource_type": "richText",
     "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
     "html": "<h1>Foo</h1><p>Foo</p>",
-    "editor_mode": "wysiwyg"
+    "editor_mode": "wysiwyg",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044f0906e79b9062e2300" },
@@ -77,7 +107,9 @@
     "resource_type": "richText",
     "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
     "html": "<h1>Bar</h1><p>Bar</p>",
-    "editor_mode": "wysiwyg"
+    "editor_mode": "wysiwyg",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c044f8906e79b9062e2301" },
@@ -86,7 +118,9 @@
     "resource_type": "richText",
     "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
     "html": "<h1>Baz</h1><p>Baz</p>",
-    "editor_mode": "wysiwyg"
+    "editor_mode": "wysiwyg",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04501906e79b9062e2302" },
@@ -95,7 +129,9 @@
     "resource_type": "richText",
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
     "html": "<h1>Qux</h1><p>Qux</p>",
-    "editor_mode": "wysiwyg"
+    "editor_mode": "wysiwyg",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04530906e79b9062e2303" },
@@ -118,7 +154,9 @@
         "by": "Author",
         "comment": "This one has a comment!"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04541906e79b9062e2304" },
@@ -134,7 +172,9 @@
           { "key": "vowels", "value": ["one"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0454e906e79b9062e2305" },
@@ -150,7 +190,9 @@
           { "key": "vowels", "value": ["one"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04564906e79b9062e2306" },
@@ -166,7 +208,9 @@
           { "key": "vowels", "value": ["one"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22722" },
@@ -177,7 +221,9 @@
     "entries": [
       { "key": "word", "value": ["foo"] },
       { "key": "something", "value": ["something"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22723" },
@@ -188,7 +234,9 @@
     "entries": [
       { "key": "word", "value": ["bar"] },
       { "key": "something", "value": ["something else"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22724" },
@@ -199,7 +247,9 @@
     "entries": [
       { "key": "word", "value": ["baz"] },
       { "key": "something", "value": ["something completely different"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22725" },
@@ -210,7 +260,9 @@
     "entries": [
       { "key": "word", "value": ["qux"] },
       { "key": "something", "value": ["something else entirely"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c045ad906e79b9062e2307" },
@@ -224,7 +276,9 @@
         "source_url": "https://example.com/foo",
         "caption": "Foo"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c045bc906e79b9062e2308" },
@@ -238,7 +292,9 @@
         "source_url": "https://example.com/bar",
         "caption": "Bar"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c045cc906e79b9062e2309" },
@@ -252,7 +308,9 @@
         "source_url": "https://example.com/baz",
         "caption": "Baz"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c045dc906e79b9062e230a" },
@@ -266,7 +324,9 @@
         "source_url": "https://example.com/qux",
         "caption": "Qux"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04607906e79b9062e230b" },
@@ -274,7 +334,11 @@
     "resource_id": { "$oid": "67c0444e906e79b9062e22f8" },
     "resource_type": "images",
     "location_id": { "$oid": "67c040a0906e79b9062e22e8" },
-    "files": [{ "url": "https://images.example.com/foo.png", "caption": "Foo" }]
+    "files": [
+      { "url": "https://images.example.com/foo.png", "caption": "Foo" }
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0461a906e79b9062e230c" },
@@ -282,7 +346,11 @@
     "resource_id": { "$oid": "67c0444e906e79b9062e22f8" },
     "resource_type": "images",
     "location_id": { "$oid": "67c040bb906e79b9062e22e9" },
-    "files": [{ "url": "https://images.example.com/bar.png", "caption": "Bar" }]
+    "files": [
+      { "url": "https://images.example.com/bar.png", "caption": "Bar" }
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04621906e79b9062e230d" },
@@ -290,7 +358,11 @@
     "resource_id": { "$oid": "67c0444e906e79b9062e22f8" },
     "resource_type": "images",
     "location_id": { "$oid": "67c042c1906e79b9062e22ec" },
-    "files": [{ "url": "https://images.example.com/baz.png", "caption": "Baz" }]
+    "files": [
+      { "url": "https://images.example.com/baz.png", "caption": "Baz" }
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0462b906e79b9062e230e" },
@@ -298,7 +370,11 @@
     "resource_id": { "$oid": "67c0444e906e79b9062e22f8" },
     "resource_type": "images",
     "location_id": { "$oid": "67c042cf906e79b9062e22ed" },
-    "files": [{ "url": "https://images.example.com/qux.png", "caption": "Qux" }]
+    "files": [
+      { "url": "https://images.example.com/qux.png", "caption": "Qux" }
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04643906e79b9062e230f" },
@@ -312,7 +388,9 @@
         "title": "Foo",
         "description": "Foo"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0464d906e79b9062e2310" },
@@ -326,7 +404,9 @@
         "title": "Bar",
         "description": "Bar"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04655906e79b9062e2311" },
@@ -340,7 +420,9 @@
         "title": "Baz",
         "description": "Baz"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0465f906e79b9062e2312" },
@@ -354,7 +436,9 @@
         "title": "Qux",
         "description": "Qux"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0467e906e79b9062e2313" },
@@ -370,7 +454,9 @@
         "content_type": "application/json",
         "query": "id=foo"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04685906e79b9062e2314" },
@@ -386,7 +472,9 @@
         "content_type": "application/json",
         "query": "id=bar"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0468b906e79b9062e2315" },
@@ -402,7 +490,9 @@
         "content_type": "application/json",
         "query": "id=baz"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04695906e79b9062e2316" },
@@ -418,7 +508,9 @@
         "content_type": "application/json",
         "query": "id=qux"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04793906e79b9062e2343" },
@@ -426,7 +518,9 @@
     "resource_id": { "$oid": "67c04781906e79b9062e2342" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c042fa906e79b9062e22ef" },
-    "text": "Qux"
+    "text": "Qux",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c04798906e79b9062e2344" },
@@ -434,7 +528,9 @@
     "resource_id": { "$oid": "67c04781906e79b9062e2342" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c042fd906e79b9062e22f0" },
-    "text": "Baz"
+    "text": "Baz",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c0479c906e79b9062e2345" },
@@ -442,7 +538,9 @@
     "resource_id": { "$oid": "67c04781906e79b9062e2342" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c0433c906e79b9062e22f2" },
-    "text": "Bar"
+    "text": "Bar",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c047a5906e79b9062e2346" },
@@ -450,6 +548,8 @@
     "resource_id": { "$oid": "67c04781906e79b9062e2342" },
     "resource_type": "plainText",
     "location_id": { "$oid": "67c04348906e79b9062e22f3" },
-    "text": "Foo"
+    "text": "Foo",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   }
 ]

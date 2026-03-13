@@ -27,12 +27,14 @@ class Location(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ]
+
     parent_id: Annotated[
         PydanticObjectId | None,
         Field(
             description="ID of parent location",
         ),
     ] = None
+
     level: Annotated[
         int,
         Field(
@@ -41,6 +43,7 @@ class Location(ModelBase, ModelFactoryMixin):
             description="Index of structure level this location is on",
         ),
     ]
+
     position: Annotated[
         int,
         Field(
@@ -48,12 +51,14 @@ class Location(ModelBase, ModelFactoryMixin):
             description="Position among all text locations on this level",
         ),
     ]
+
     label: Annotated[
         LocationLabel,
         Field(
             description="Label for identifying this text location in level context",
         ),
     ]
+
     aliases: Annotated[
         list[LocationAlias] | None,
         Field(
@@ -96,24 +101,28 @@ class LocationImport(ModelBase):
             description="ID of parent location",
         ),
     ] = None
+
     level: Annotated[
         LocationLevel,
         Field(
             description="Index of structure level this location is on",
         ),
     ]
+
     position: Annotated[
         LocationPosition,
         Field(
             description="Position among all text locations on this level",
         ),
     ]
+
     label: Annotated[
         LocationLabel,
         Field(
             description="Label for identifying this text location in level context",
         ),
     ]
+
     aliases: Annotated[
         list[LocationAlias] | None,
         Field(

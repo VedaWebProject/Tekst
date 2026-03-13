@@ -78,6 +78,11 @@ common:
   total: total
   loading: Loading...
   url: URL
+  years: years
+  months: months
+  days: days
+  latest: latest
+  backToOverview: Back to overview
   downloadSaved: File saved as {filename}.
   areYouSure: Are you sure?
   dirtyFormConfirm: You have unsaved changes. Are you sure you want to close this form?
@@ -226,6 +231,7 @@ browse:
     showNonPublicResources: Show unpublished resources
     activateCategory: Show all resources in this category
     deactivateCategory: Hide all resources in this category
+  archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
   textNoLocations: This text's setup seems incomplete. There are no locations defined.
@@ -390,7 +396,7 @@ resources:
   copyInfoUrl: Copy URL
   copyInfoUrlTip: Copy the URL to these resource informations
   new: New Resource
-  versionOf: Version of "{title}"
+  patchFor: Patch for "{title}"
   ownerTip: Resource owner, responsible for content maintenance
   filterTip: Filter by title, subtitle, description, owners, metadata, "published", "unpublished", "proposed", citation, type, level
   msgNotYourResourceTitle: This is not your resource!
@@ -408,16 +414,16 @@ resources:
   setOwnersAction: Set resource owners
   downloadTemplateAction: Download import template
   importAction: Import prepared contents
-  createVersionAction: Create version
+  createPatchAction: Create patch
   proposeAction: Propose for publication
   unproposeAction: Revoke publication proposal
   publishAction: Publish
   unpublishAction: Revoke publication
-  reqVersionIntegration:
+  reqPatchIntegration:
     action: Propose integration
     diagMsg: |
-      Select an owner of this version's original resource to propose reviewing
-      and integrating the changes made in this version!
+      Select an owner of this patch's original resource to propose reviewing
+      and integrating the changes made in this patch!
     diagLabel: Original owner to contact
   warnSetOwners: |
     Please carefully read and understand the help text regarding resource permissions
@@ -439,9 +445,9 @@ resources:
   warnDelete: |
     Are you sure you want to delete this resource and all data associated with it?
     This cannot be undone.
-  infoCreateVersion: |
-    You are about to create a new version of the resource "{title}".
-    This new version will display contents from the original resource for locations
+  infoCreatePatch: |
+    You are about to create a new patch for the resource "{title}".
+    This new patch will display contents from the original resource for locations
     without any own content. Initially, it won't have any contents itself.
     After making corrections or additions to the original resources contents,
     you may suggest to the owner to incorporate your changes or parts of them.
@@ -452,9 +458,8 @@ resources:
   msgPublished: The resource "{title}" has been published.
   msgUnpublished: The publication of the resource "{title}" has been revoked.
   msgDeleted: The resource "{title}" has been deleted.
-  msgCreatedVersion: A new version of the resource "{title}" has been created.
+  msgCreatedPatch: A new patch for the resource "{title}" has been created.
   phSearchUsers: Search for users...
-  backToOverview: Go to resources overview
   create:
     heading: New Resource on "{text}"
     headingTypeAndLevel: Resource Type and Level
@@ -593,17 +598,44 @@ contents:
   forComparison: '{title} (for comparison)'
   noContent: There is no content for this location.
   btnAddContent: Add content
-  msgSaved: The content for this location has been saved.
+  confirmDelete: |
+    Are you sure you want to delete the content for this location? You may archive it instead.
+    Deleting it will also delete all archived versions of this content,
+    making it completely unavailable. URLs referncing this content will cease to work.
+    This action cannot be undone.
   msgDeleted: The content for this location has been deleted.
+  msgSaved: |
+    The changes to this content have been saved.
+    If there was a previous version, it has been archived automatically.
   msgImportInfo: The import will be processed in the background. @:common.takeAWhile
-  confirmDelete: Are you sure you want to delete the content for this location?
   msgNoOwnContentTitle: No own content for this location!
   msgNoOwnContentBody: |
-    This version of "{originalResourceTitle}" has no own content for this location.
+    This patch for "{originalResourceTitle}" has no own content for this location.
     You are shown content from the original resource. You may copy it
-    or make changes and save them as content of this resource version.
+    or make changes and save them as content of this resource patch.
   msgContentNoFocusView: This content cannot be displayed in focus view.
   warnUrlInvalid: 'The URL seems to be invalid or unreachable: {url}'
+  archive:
+    widgetTitle: Archived Versions
+    widgetTip: View archived content versions
+    action: Archive
+    archived: archived
+    msgArchived: The content for this location has been archived.
+    msgNoArchivedContents: No archived contents found for this location.
+    confirmArchive: |
+      Are you sure you want to archive the content for this location?
+      It won't be shown in search results or the reading view anymore, but can still be
+      accessed as an archived version. You will also be able to restore it later.
+    warnBrowseArchive: |
+      You are viewing contents from {date}.
+      Some of the contents shown may be archived versions that are not up to date – those
+      are marked with a yellow symbol.
+      Other contents might be missing because they didn't exist at this date, yet.
+      If you want to see the current state of the contents, click the button below this message.
+    loadCurrentContents: Load current contents
+    archivedContentTip: Archived version from {date}
+    restore: Restore
+    msgRestored: The content for this location has been restored from the archive.
   corrections:
     notes: Correction Notes
     otherTitle: Other locations

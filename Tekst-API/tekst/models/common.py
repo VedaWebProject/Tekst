@@ -36,7 +36,8 @@ from tekst.types import (
 class ModelBase(BaseModel):
     model_config = ConfigDict(
         alias_generator=camelize,
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
         from_attributes=True,
     )
 
@@ -127,6 +128,8 @@ class DocumentBase(Document):
     async def apply_updates(
         self,
         updates_model: ModelBase,
+        *,
+        insert: bool = False,
     ) -> "DocumentBase":
         """
         Custom method to apply updates to the document, excluding any fields that are
@@ -146,7 +149,10 @@ class DocumentBase(Document):
             # set attribute
             setattr(self, field, getattr(updates_model, field))
 
-        return await self.replace()
+        if insert:
+            return await self.save()  # same as self.insert()
+        else:
+            return await self.replace()  # raises exception if document does not exist
 
     @classmethod
     def _validate_against_field(
@@ -157,7 +163,7 @@ class DocumentBase(Document):
         field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
         try:
             field_adapter.validate_python(value)
-            return True
+            return True  # pragma: no cover
         except ValidationError:
             return False
 
@@ -251,6 +257,10 @@ class ModelFactoryMixin:
             for name, field in cls.model_fields.items():
                 if name.endswith("_type"):
                     continue  # don't make fields optional that end on "_type"
+                if cls._field_excluded_from_model_variant(name, "update"):
+                    # don't manipulate fields that will be
+                    # excluded from the target model anyway
+                    continue
                 type_annos = (
                     (field.annotation,)
                     if get_origin(field.annotation) not in (Union, UnionType)
