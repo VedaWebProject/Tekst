@@ -231,6 +231,10 @@ browse:
     showNonPublicResources: Show unpublished resources
     activateCategory: Show all resources in this category
     deactivateCategory: Hide all resources in this category
+  contentCitation:
+    title: Content Citation
+    full: Full resource citation with content URL
+    urlOnly: Content URL
   archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location

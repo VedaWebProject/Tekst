@@ -13,7 +13,6 @@ import {
   FormatItalicIcon,
   FormatListBulletedIcon,
   FormatListNumberedIcon,
-  FormatQuoteIcon,
   FormatSizeIcon,
   HorizontalRuleIcon,
   ImageIcon,
@@ -21,6 +20,7 @@ import {
   JumpForwardIcon,
   KeyboardReturnIcon,
   LinkIcon,
+  QuoteIcon,
   ShortTextIcon,
 } from '@/icons';
 import CharacterCount from '@tiptap/extension-character-count';
@@ -197,7 +197,7 @@ const blockTypeOptions = computed(() => [
     value: 'blockQuote',
     action: () => editor.value?.chain().focus().toggleBlockquote().run(),
     isActive: () => editor.value?.isActive('blockquote'),
-    iconComponent: FormatQuoteIcon,
+    iconComponent: QuoteIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.codeBlock'),

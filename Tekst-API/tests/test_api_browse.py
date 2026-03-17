@@ -90,7 +90,25 @@ async def test_get_location_data(
     # higher level
     resp = await test_client.get(
         "/browse",
-        params={"txt": text_id, "lvl": 1, "pos": 0},
+        params={
+            "txt": text_id,
+            "lvl": 1,
+            "pos": 0,
+        },
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert len(resp.json()["locationPath"]) > 0
+    assert len(resp.json()["contents"]) > 2
+
+    # ... with archive timestamp
+    resp = await test_client.get(
+        "/browse",
+        params={
+            "txt": text_id,
+            "is": "67c040bb906e79b9062e22e9",
+            "ts": 1710077448446,
+        },
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)

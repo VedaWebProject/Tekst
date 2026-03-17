@@ -40,6 +40,7 @@ function copyToClipboard() {
     :disabled="!isSupported || !text"
     @click="copyToClipboard"
     :title="title || $t('common.copy')"
+    :focusable="false"
   >
     <template #icon>
       <n-icon :component="CopyIcon" />

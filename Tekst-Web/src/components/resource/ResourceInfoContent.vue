@@ -9,18 +9,12 @@ import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import env from '@/env';
 import { getLocaleProfile } from '@/i18n';
-import {
-  CoverageIcon,
-  DescIcon,
-  FormatQuoteIcon,
-  LabelIcon,
-  LinkIcon,
-  SiteNoticeIcon,
-} from '@/icons';
+import { CoverageIcon, DescIcon, LabelIcon, LinkIcon, QuoteIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
+import CopyToClipboardButton from '../generic/CopyToClipboardButton.vue';
 
 const props = defineProps<{
   resource: AnyResourceRead;
@@ -84,11 +78,12 @@ const citation = computed(() => {
 
     <!-- CITATION -->
     <div v-if="citation" class="gray-box">
-      <icon-heading level="3" :icon="FormatQuoteIcon">
+      <icon-heading level="3" :icon="QuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
       </icon-heading>
       <div :style="{ fontFamily: resource.contentFont }" class="text-medium pre-wrap">
         {{ citation }}
+        <copy-to-clipboard-button secondary :text="citation" size="tiny" class="ml-sm" show-msg />
       </div>
     </div>
 
