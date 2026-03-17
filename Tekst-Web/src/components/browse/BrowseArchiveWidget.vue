@@ -56,6 +56,7 @@ function handleSubmit() {
     v-model:show="showModal"
     :title="$t('contents.archive.widgetTitle')"
     :icon="ArchiveIcon"
+    width="narrow"
   >
     <n-date-picker
       v-model:value="ts"
@@ -64,6 +65,7 @@ function handleSubmit() {
       size="large"
       type="date"
       :is-date-disabled="(timestamp: number) => timestamp > Date.now()"
+      style="width: 100%; justify-content: center; padding: var(--gap-lg) 0"
     />
     <button-shelf class="mt-lg">
       <n-button secondary @click="showModal = false">

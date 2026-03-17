@@ -109,7 +109,7 @@ onMounted(() => {
     }
     await browse.loadLocationData(props.locId, true, archiveTs.value);
 
-    // if route contains a hash "#res=some-res-ID",
+    // if route contains a query param "res=some-res-ID",
     // scroll to target resource and disable all others
     if (params.res) {
       browse.setResourcesActiveState([params.res.toString()], true, true);
