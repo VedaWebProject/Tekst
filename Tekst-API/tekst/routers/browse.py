@@ -155,7 +155,7 @@ async def get_location_data(
             description="Only return contents for the head location of the path",
         ),
     ] = False,
-    current_at_ts: Annotated[
+    archive_ts: Annotated[
         int | None,
         Query(
             alias="ts",
@@ -175,16 +175,6 @@ async def get_location_data(
     # limit for number of contents fetched from DB per request
     # (internal constant to conveniently adjust it later if needed)
     contents_fetch_limit = 1024
-
-    # preprocess archive UTC TS
-    current_at = (
-        None
-        if current_at_ts is None
-        else datetime.fromtimestamp(
-            current_at_ts / 1000,
-            tz=UTC,
-        )
-    )
 
     # find target location
     location_doc = None
@@ -223,7 +213,7 @@ async def get_location_data(
         with_children=True,
     ).to_list()
 
-    if current_at is None:
+    if archive_ts is None:
         # just query for most recent contents (we can do that in one DB request)
         contents = {
             content.resource_id: [content]
@@ -248,7 +238,10 @@ async def get_location_data(
                 await ContentBaseDocument.find(
                     In(ContentBaseDocument.location_id, location_ids or []),
                     Eq(ContentBaseDocument.resource_id, resource.id),
-                    LTE(ContentBaseDocument.created_at, current_at),
+                    LTE(
+                        ContentBaseDocument.created_at,
+                        datetime.fromtimestamp(archive_ts / 1000, tz=UTC),
+                    ),
                     with_children=True,
                 )
                 .sort(-ContentBaseDocument.created_at)

@@ -234,7 +234,7 @@ browse:
   contentCitation:
     title: Content Citation
     full: Full resource citation with content URL
-    urlOnly: Content URL
+    urlOnly: Content URL only
   archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
