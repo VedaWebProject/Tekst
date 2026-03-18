@@ -32,7 +32,7 @@ const citation = computed(() => props.resource.citation + ' – URL: ' + browseU
         <b>{{ $t('browse.contentCitation.full') }}</b>
       </template>
       <template #header-extra>
-        <copy-to-clipboard-button size="small" :text="citation" show-msg />
+        <copy-to-clipboard-button secondary size="small" :text="citation" show-msg />
       </template>
       <template #description>
         <p class="text-tiny">{{ citation }}</p>
@@ -44,10 +44,12 @@ const citation = computed(() => props.resource.citation + ' – URL: ' + browseU
         <b>{{ $t('browse.contentCitation.urlOnly') }}</b>
       </template>
       <template #header-extra>
-        <copy-to-clipboard-button size="small" :text="browseUrl" show-msg />
+        <copy-to-clipboard-button secondary size="small" :text="browseUrl" show-msg />
       </template>
       <template #description>
-        <p class="text-tiny">{{ browseUrl }}</p>
+        <a :href="browseUrl" target="_blank" rel="noreferrer" class="text-tiny"
+          ><p>{{ browseUrl }}</p></a
+        >
       </template>
     </n-thing>
   </div>

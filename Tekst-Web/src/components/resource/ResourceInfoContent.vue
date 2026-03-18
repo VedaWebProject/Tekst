@@ -101,12 +101,7 @@ const citation = computed(() => {
         {{ $t('models.resource.license') }}
       </icon-heading>
       <template v-if="resource.license || resource.licenseUrl">
-        <a
-          v-if="resource.licenseUrl"
-          :href="resource.licenseUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a v-if="resource.licenseUrl" :href="resource.licenseUrl" target="_blank" rel="noreferrer">
           <n-flex align="center" size="small">
             <n-icon :component="LinkIcon" />
             <span>{{ resource.license || resource.licenseUrl }}</span>

@@ -234,7 +234,7 @@ browse:
   contentCitation:
     title: Content Citation
     full: Full resource citation with content URL
-    urlOnly: Content URL only
+    urlOnly: URL for this content
   archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
@@ -622,6 +622,7 @@ contents:
   archive:
     widgetTitle: Archived Versions
     widgetTip: View archived content versions
+    browseWidgetInfo: Select a date below to load content versions that were current at that point in time.
     action: Archive
     archived: archived
     msgArchived: The content for this location has been archived.

@@ -78,7 +78,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                       :href="image.sourceUrl"
                       :title="image.sourceUrl"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noreferrer"
                       class="source-link mx-sm"
                     >
                       <n-icon :component="LinkIcon" />

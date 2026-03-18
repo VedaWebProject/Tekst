@@ -43,42 +43,42 @@ function handleSmallScreenWidgetsTriggered() {
 
 <template>
   <n-flex
-    v-if="!smallScreen"
-    justify="center"
+    justify="flex-end"
     align="center"
     :wrap="false"
     class="content-header-widgets"
     :style="{ opacity }"
+    style="flex: 2"
     size="small"
   >
-    <!-- resource-type-specific widgets -->
-    <deep-l-links-widget :resource="resource" />
-    <!-- generic widgets -->
-    <location-content-context-widget :resource="resource" :show-comments="showComments" />
-    <content-comment-widget v-model:show-comments="showComments" :resource="resource" />
-    <correction-note-widget :resource="resource" />
-    <content-edit-widget :resource="resource" />
-    <resource-settings-widget :resource="resource" />
-    <jump-to-content-widget :resource="resource" direction="before" />
-    <jump-to-content-widget :resource="resource" direction="after" />
-    <resource-export-widget :resource="resource" />
-    <content-citation-widget :resource="resource" />
-    <resource-info-widget :resource="resource" />
-    <resource-deactivate-widget :resource="resource" />
-  </n-flex>
-
-  <n-button
-    v-else
-    quaternary
-    circle
-    :focusable="false"
-    :style="{ opacity }"
-    @click.stop.prevent="handleSmallScreenWidgetsTriggered"
-  >
-    <template #icon>
-      <n-icon :component="MoreIcon" />
+    <template v-if="!smallScreen">
+      <!-- resource-type-specific widgets -->
+      <deep-l-links-widget :resource="resource" />
+      <!-- generic widgets -->
+      <location-content-context-widget :resource="resource" :show-comments="showComments" />
+      <content-comment-widget v-model:show-comments="showComments" :resource="resource" />
+      <correction-note-widget :resource="resource" />
+      <content-edit-widget :resource="resource" />
+      <resource-settings-widget :resource="resource" />
+      <jump-to-content-widget :resource="resource" direction="before" />
+      <jump-to-content-widget :resource="resource" direction="after" />
+      <resource-export-widget :resource="resource" />
+      <content-citation-widget :resource="resource" />
+      <resource-info-widget :resource="resource" />
+      <resource-deactivate-widget :resource="resource" />
     </template>
-  </n-button>
+    <n-button
+      v-else
+      quaternary
+      circle
+      :focusable="false"
+      @click.stop.prevent="handleSmallScreenWidgetsTriggered"
+    >
+      <template #icon>
+        <n-icon :component="MoreIcon" />
+      </template>
+    </n-button>
+  </n-flex>
 
   <generic-modal
     v-if="smallScreen"

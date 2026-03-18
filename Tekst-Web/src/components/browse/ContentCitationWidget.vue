@@ -23,7 +23,8 @@ function handleClick() {
     title: $t('browse.contentCitation.title'),
     titleStyle: { fontSize: '1.25rem' },
     contentClass: 'my-lg',
-    content: () => [h(ContentCitationWidgetContent, { resource: props.resource })],
+    content: () => h(ContentCitationWidgetContent, { resource: props.resource }),
+    style: 'width: 600px',
   });
 
   emit('done');

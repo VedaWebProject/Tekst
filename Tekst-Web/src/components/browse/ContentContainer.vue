@@ -63,20 +63,23 @@ watch(
 
 <template>
   <div
-    v-if="resource.active && (hasContents || !browse.focusView)"
+    v-if="resource.active"
     ref="contentContainerRef"
     class="content-block"
     :class="{ empty: !hasContents }"
+    :style="{
+      border: !hasContents && !browse.focusView ? '2px dashed var(--main-bg-color)' : undefined,
+    }"
     :title="contentContainerTitle"
   >
     <n-flex
+      justify="space-between"
       align="center"
-      :wrap="false"
       :size="[12, 0]"
-      class="content-header"
       :class="{ 'mb-0': browse.focusView || !hasContents }"
+      style="flex-wrap: wrap-reverse"
     >
-      <n-flex align="center" :gap="12" :class="{ translucent: !hasContents }" style="flex: 2">
+      <n-flex :gap="12" :class="{ translucent: !hasContents }">
         <!-- RESOURCE TITLE -->
         <div
           :class="{
@@ -88,7 +91,7 @@ watch(
           {{ resourceTitle }}
         </div>
         <!-- RESOURCE STATUS HINTS -->
-        <n-flex v-if="!browse.focusView" align="center" :wrap="false">
+        <n-flex align="center" :wrap="false">
           <!-- icon hint: archived content -->
           <n-icon
             v-if="!!resource.contents?.some((c) => c?.archived)"
@@ -102,6 +105,7 @@ watch(
                 : $t('contents.archive.archived')
             "
           />
+
           <!-- icon hint: publication status -->
           <n-icon
             v-if="!resource.public && !resource.proposed"
@@ -115,6 +119,7 @@ watch(
             color="var(--warning-color)"
             :title="$t('resources.proposed')"
           />
+
           <!-- icon hint: this is combined content (context) from original level -->
           <n-icon
             v-if="contentContextLoaded"
@@ -126,6 +131,7 @@ watch(
               })
             "
           />
+
           <!-- icon hint: no content -->
           <n-icon
             v-else-if="
@@ -136,6 +142,7 @@ watch(
             "
             :component="NoContentIcon"
           />
+
           <!-- icon hint: cannot display possible content from original level -->
           <n-icon
             v-else-if="!loading && !hasContents"
@@ -152,18 +159,13 @@ watch(
             </template>
             {{ state.textLevelLabels[props.resource.level] }}
           </n-tag>
-        </n-flex>
-        <!-- RESOURCE CONTENT LOADING INDICATOR -->
-        <n-flex
-          v-if="loading && !hasContents && !browse.focusView"
-          align="center"
-          size="small"
-          :wrap="false"
-          class="mx-lg text-small translucent"
-          style="flex: 2"
-        >
-          <n-icon :component="HourglassIcon" />
-          <span>{{ $t('common.loading') }}</span>
+
+          <!-- RESOURCE CONTENT LOADING INDICATOR -->
+          <n-icon
+            v-if="loading && !hasContents"
+            :component="HourglassIcon"
+            :title="$t('common.loading')"
+          />
         </n-flex>
       </n-flex>
       <!-- CONTENT WIDGETS -->
@@ -228,7 +230,6 @@ watch(
 
 .content-block.empty {
   background-color: var(--main-bg-color);
-  border: 2px dashed var(--main-bg-color);
   box-shadow: none;
   padding: 12px var(--gap-lg);
 }

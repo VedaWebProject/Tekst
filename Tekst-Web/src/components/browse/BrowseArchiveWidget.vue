@@ -58,6 +58,7 @@ function handleSubmit() {
     :icon="ArchiveIcon"
     width="narrow"
   >
+    <p class="mb-lg">{{ $t('contents.archive.browseWidgetInfo') }}</p>
     <n-date-picker
       v-model:value="ts"
       panel

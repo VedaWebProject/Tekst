@@ -46,7 +46,7 @@ const fontStyle: CSSProperties = {
               "
               style="line-height: 1.2"
               :style="fontStyle"
-              rel="noopener noreferrer"
+              rel="noreferrer"
             >
               <n-flex align="center" size="small">
                 <n-icon :component="LinkIcon" :size="focusView ? 24 : undefined" />

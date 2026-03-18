@@ -52,7 +52,7 @@ const show = computed(
 );
 
 function handleOptionSelect(_: string, option: SelectBaseOption) {
-  window.open(option.url as string, '_blank', 'noopener noreferrer');
+  window.open(option.url as string, '_blank', 'noreferrer');
   emit('done');
 }
 
