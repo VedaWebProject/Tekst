@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Translation } from '@/api';
 import { DELETE, PATCH, POST } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
@@ -63,14 +63,12 @@ function handleEditClick(level: number) {
 function handleDeleteClick(level: number) {
   const targetLevelLabel = getLevelLabel(levels.value[level]);
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
-    content: $t('texts.levels.warnDeleteLevel', {
-      levelLabel: targetLevelLabel,
-    }),
+    content: $t('texts.levels.warnDeleteLevel', { levelLabel: targetLevelLabel }),
     positiveText: $t('common.delete'),
     negativeText: $t('common.cancel'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       loading.value = true;
       const { data, error } = await DELETE('/texts/{id}/level/{lvl}', {

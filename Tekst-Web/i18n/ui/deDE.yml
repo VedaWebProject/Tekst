@@ -708,7 +708,9 @@ account:
     msgVerifyEmailWarning: Bitte verifizieren Sie Ihre @:models.user.email! Wir haben Ihnen einen Verifizierungs-Link gesendet.
     msgPasswordSaveSuccess: '@:models.user.password gespeichert.'
     msgPasswordChangeWarning: Wenn Sie fortfahren, werden Sie abgemeldet und müssen sich mit Ihrem neuen Passwort wieder anmelden.
-    msgDeleteAccountWarning: Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, ebenfalls gelöscht. Sind Sie sich sicher?
+    msgDeleteAccountWarning: |
+      Wenn Sie Ihr Konto löschen, werden alle Daten, die damit verbunden sind, ebenfalls gelöscht
+      (sofern diese mit keinem anderen Konto verbunden sind). Sind Sie sich sicher?
     msgUserDataSaveSuccess: Benutzer*innendaten gespeichert.
     phDeleteAccountSafetyInput: Geben Sie "{username}" ein, um Ihre Entscheidung zu bestätigen
   messages:

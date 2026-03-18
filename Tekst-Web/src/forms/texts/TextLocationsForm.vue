@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DELETE, downloadData, GET, PATCH, POST, withSelectedFile } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import FormSection from '@/components/FormSection.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
@@ -203,10 +203,10 @@ async function handleDeleteClick(location: LocationTreeOption) {
     return;
   }
   const d = dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('texts.locations.warnDeleteLocation', { locationLabel: location.label }),
     positiveText: $t('common.delete'),
-    ...dialogProps,
     onPositiveClick: async () => {
       d.loading = true;
       await deleteLocation(location);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/schema';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import WysiwygEditor from '@/components/editors/WysiwygEditor.vue';
 import CodeEditor from '@/components/generic/CodeEditor.vue';
 import { $t } from '@/i18n';
@@ -41,23 +41,23 @@ function handleChangeTab(value: 'wysiwyg' | 'html') {
   if (value === 'html') {
     // show info about HTML sanitization when switching to HTML mode
     dialog.warning({
+      ...commonDialogOptions,
       title: $t('common.warning'),
       content: $t('htmlEditor.warnSwitchToHTML'),
       positiveText: $t('common.ok'),
       negativeText: $t('common.cancel'),
       closable: false,
-      ...dialogProps,
       onPositiveClick: () => (editorMode.value = value),
     });
   } else {
     // switching to WYSIWYG is a potentially destructive operation
     dialog.warning({
+      ...commonDialogOptions,
       title: $t('common.warning'),
       content: $t('htmlEditor.warnSwitchToWysiwyg'),
       positiveText: $t('common.yes'),
       negativeText: $t('common.no'),
       closable: false,
-      ...dialogProps,
       onPositiveClick: () => (editorMode.value = value),
     });
   }

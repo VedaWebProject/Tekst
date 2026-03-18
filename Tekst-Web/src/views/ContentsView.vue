@@ -12,7 +12,7 @@ import {
   PATCH,
   POST,
 } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import ArchiveWidget from '@/components/browse/ArchiveWidget.vue';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -313,7 +313,7 @@ async function handleArchiveContentClick() {
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
+    ...commonDialogOptions,
     onPositiveClick: async () => {
       if (!contentModel.value) return;
       loadingArchive.value = true;
@@ -333,12 +333,12 @@ async function handleArchiveContentClick() {
 async function handleDeleteContentClick() {
   if (!contentModel.value) return;
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('contents.confirmDelete'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       if (!contentModel.value) return;
       loadingDelete.value = true;
@@ -722,6 +722,7 @@ whenever(ArrowRight, () => {
       <button-shelf class="mt-lg">
         <template #start>
           <n-button
+            v-if="resource.public && !resource.originalId"
             secondary
             type="warning"
             :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"

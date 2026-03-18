@@ -1,3 +1,4 @@
+import { commonDialogOptions } from '@/common';
 import { $t } from '@/i18n';
 import { useDialog } from 'naive-ui';
 import { computed, ref, type Ref } from 'vue';
@@ -19,6 +20,7 @@ export function useModelChanges(model: Ref<Record<string, unknown> | undefined>)
       !changed.value ||
       (await new Promise((resolve) =>
         dialog.warning({
+          ...commonDialogOptions,
           title: $t('common.warning'),
           content: $t('common.dirtyFormConfirm'),
           positiveText: $t('common.yes'),

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { UserMessageThread } from '@/api';
+import { commonDialogOptions } from '@/common';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import { $t } from '@/i18n';
 import { DeleteIcon } from '@/icons';
@@ -16,6 +17,7 @@ const dialog = useDialog();
 
 function handleDeleteClick() {
   dialog.create({
+    ...commonDialogOptions,
     title: $t('common.delete'),
     icon: renderIcon(DeleteIcon),
     content: $t('common.areYouSure'),

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AnyResourceRead } from '@/api';
+import { commonDialogOptions } from '@/common';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import { $t } from '@/i18n';
 import { QuoteIcon } from '@/icons';
@@ -19,9 +20,9 @@ const dialog = useDialog();
 
 function handleClick() {
   dialog.create({
+    ...commonDialogOptions,
     icon: renderIcon(QuoteIcon, undefined, 'large'),
     title: $t('browse.contentCitation.title'),
-    titleStyle: { fontSize: '1.25rem' },
     contentClass: 'my-lg',
     content: () => h(ContentCitationWidgetContent, { resource: props.resource }),
     style: 'width: 600px',

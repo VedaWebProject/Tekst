@@ -1,4 +1,4 @@
-import type { ButtonProps } from 'naive-ui';
+import type { ButtonProps, DialogProps } from 'naive-ui';
 
 const dialogButtonPropsCommon: ButtonProps = {
   size: 'medium',
@@ -16,9 +16,10 @@ const dialogButtonPropsNegative: ButtonProps = {
   ghost: false,
 };
 
-export const dialogProps = {
+export const commonDialogOptions: DialogProps = {
   positiveButtonProps: dialogButtonPropsPositive,
   negativeButtonProps: dialogButtonPropsNegative,
+  titleStyle: 'font-weight: bold',
 };
 
 export const dynInputCreateBtnProps: ButtonProps = { dashed: false, ghost: false, secondary: true };

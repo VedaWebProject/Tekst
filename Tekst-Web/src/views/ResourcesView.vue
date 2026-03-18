@@ -8,7 +8,7 @@ import {
   withSelectedFile,
   type AnyResourceRead,
 } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
@@ -140,12 +140,12 @@ async function handleSetOwners(resource?: AnyResourceRead, newOwnerIds?: string[
 
 function handleProposeClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('resources.warnPropose') + ' ' + $t('common.areYouSureHelpTextHint'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/propose', {
@@ -165,12 +165,12 @@ function handleProposeClick(resource: AnyResourceRead) {
 
 function handleUnproposeClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('resources.warnUnpropose'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/unpropose', {
@@ -190,12 +190,12 @@ function handleUnproposeClick(resource: AnyResourceRead) {
 
 function handlePublishClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('resources.warnPublish') + ' ' + $t('common.areYouSureHelpTextHint'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/publish', {
@@ -215,12 +215,12 @@ function handlePublishClick(resource: AnyResourceRead) {
 
 function handleUnpublishClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('resources.warnUnpublish'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/unpublish', {
@@ -254,6 +254,7 @@ function handleEditContentsClick(resource: AnyResourceRead) {
 
 function handleCreatePatchClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.information'),
     content: $t('resources.infoCreatePatch', {
       title: pickTranslation(resource.title, state.locale),
@@ -261,7 +262,6 @@ function handleCreatePatchClick(resource: AnyResourceRead) {
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { data, error } = await POST('/resources/{id}/patch', {
@@ -288,12 +288,12 @@ function handleCreatePatchClick(resource: AnyResourceRead) {
 
 function handleDeleteClick(resource: AnyResourceRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('resources.warnDelete'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       actionsLoading.value = true;
       const { error } = await DELETE('/resources/{id}', {

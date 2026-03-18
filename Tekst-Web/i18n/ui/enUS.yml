@@ -605,7 +605,7 @@ contents:
   confirmDelete: |
     Are you sure you want to delete the content for this location? You may archive it instead.
     Deleting it will also delete all archived versions of this content,
-    making it completely unavailable. URLs referncing this content will cease to work.
+    making it completely unavailable. URLs referencing this content will become invalid.
     This action cannot be undone.
   msgDeleted: The content for this location has been deleted.
   msgSaved: |
@@ -697,7 +697,9 @@ account:
     msgVerifyEmailWarning: Please verify your email address! We just sent you a verification link.
     msgPasswordSaveSuccess: '@:models.user.password saved.'
     msgPasswordChangeWarning: If you proceed, you will be logged out and have to log in again using your changed password.
-    msgDeleteAccountWarning: If you delete your account, all data associated with it will be deleted, too. Are you sure you want to delete your account?
+    msgDeleteAccountWarning: |
+      If you delete your account, all data associated with it (and with no other account)
+      will be deleted, too. Are you sure you want to delete your account?
     msgUserDataSaveSuccess: User data saved.
     phDeleteAccountSafetyInput: Type "{username}" to confirm your decision
   messages:
