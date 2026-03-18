@@ -6,7 +6,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
     "meta": null,
-    "text": "Fuchs, du hast die Gans gestohlen,"
+    "text": "Fuchs, du hast die Gans gestohlen,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f5" },
@@ -15,7 +17,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
     "meta": null,
-    "text": "|: gib sie wieder her! :|"
+    "text": "|: gib sie wieder her! :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f6" },
@@ -24,7 +28,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
     "meta": null,
-    "text": "|: Sonst wird sie der Jäger holen"
+    "text": "|: Sonst wird sie der Jäger holen",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f7" },
@@ -33,7 +39,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
     "meta": null,
-    "text": "mit dem Schießgewehr. :|"
+    "text": "mit dem Schießgewehr. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f8" },
@@ -42,7 +50,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
     "meta": null,
-    "text": "Seine große, lange Flinte"
+    "text": "Seine große, lange Flinte",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8f9" },
@@ -51,7 +61,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
     "meta": null,
-    "text": "|: schießt auf dich den Schrot, :|"
+    "text": "|: schießt auf dich den Schrot, :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fa" },
@@ -60,7 +72,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
     "meta": null,
-    "text": "|: dass dich färbt die rote Tinte"
+    "text": "|: dass dich färbt die rote Tinte",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fb" },
@@ -69,7 +83,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
     "meta": null,
-    "text": "und dann bist du tot. :|"
+    "text": "und dann bist du tot. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fc" },
@@ -78,7 +94,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
     "meta": null,
-    "text": "Liebes Füchslein, lass dir raten,"
+    "text": "Liebes Füchslein, lass dir raten,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fd" },
@@ -87,7 +105,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
     "meta": null,
-    "text": "|: sei doch nur kein Dieb; :|"
+    "text": "|: sei doch nur kein Dieb; :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8fe" },
@@ -96,7 +116,9 @@
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
     "resource_type": "plainText",
     "meta": null,
-    "text": "|: nimm, du brauchst nicht Gänsebraten,"
+    "text": "|: nimm, du brauchst nicht Gänsebraten,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654b825533ee5737b297f8ff" },
@@ -105,7 +127,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
     "meta": null,
-    "text": "mit der Maus vorlieb. :|"
+    "text": "mit der Maus vorlieb. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba432ec7833e469dde77b" },
@@ -114,7 +138,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
-    "text": "古池や"
+    "text": "古池や",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba486ec7833e469dde77c" },
@@ -123,7 +149,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
-    "text": "蛙飛び込む"
+    "text": "蛙飛び込む",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba49eec7833e469dde77d" },
@@ -132,7 +160,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
-    "text": "水の音"
+    "text": "水の音",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba553ec7833e469dde77f" },
@@ -141,7 +171,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
-    "text": "sound of water."
+    "text": "sound of water.",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba570ec7833e469dde780" },
@@ -150,7 +182,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
-    "text": "a frog jumps in,"
+    "text": "a frog jumps in,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba587ec7833e469dde781" },
@@ -159,7 +193,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
-    "text": "The old pond-"
+    "text": "The old pond-",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba68eec7833e469dde783" },
@@ -168,7 +204,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba282ec7833e469dde766" },
     "meta": null,
-    "text": "Furu ike ya"
+    "text": "Furu ike ya",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba6a7ec7833e469dde784" },
@@ -177,7 +215,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba287ec7833e469dde767" },
     "meta": null,
-    "text": "kawazu tobikomu"
+    "text": "kawazu tobikomu",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "654ba6b9ec7833e469dde785" },
@@ -186,7 +226,9 @@
     "resource_type": "plainText",
     "location_id": { "$oid": "654ba288ec7833e469dde768" },
     "meta": null,
-    "text": "mizu no oto"
+    "text": "mizu no oto",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6641cfceaffa6cb96bc85a57" },
@@ -213,7 +255,9 @@
         "source_url": "https://www.metmuseum.org/art/collection/search/888603",
         "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6641d3dbaffa6cb96bc85a5a" },
@@ -237,7 +281,9 @@
         "title": "Sheet music",
         "description": "JPG; Wikimedia Commons user BiografieFuzzi, https://creativecommons.org/licenses/by-sa/3.0/"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6641d613affa6cb96bc85a5d" },
@@ -261,7 +307,9 @@
         "source_url": "https://commons.wikimedia.org/wiki/File:Glockenspiel_1._Mai_Fuchs_du_hast_die_Gans_gestohlen.ogg",
         "caption": "Glockenspiel (Florian Schachner), https://creativecommons.org/licenses/by-sa/4.0/"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717c6ba9e65342c8e4943" },
@@ -269,7 +317,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "text": "Fox, you stole the goose,"
+    "text": "Fox, you stole the goose,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717cdba9e65342c8e4945" },
@@ -277,7 +327,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "text": "|: Give it back! :|"
+    "text": "|: Give it back! :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717d4ba9e65342c8e4947" },
@@ -285,7 +337,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
-    "text": "|: Otherwise the hunter will get it,"
+    "text": "|: Otherwise the hunter will get it,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717dbba9e65342c8e4949" },
@@ -293,7 +347,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "text": "with the rifle. :|"
+    "text": "with the rifle. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717e9ba9e65342c8e494d" },
@@ -301,7 +357,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "text": "|: shoots the buckshot at you, :|"
+    "text": "|: shoots the buckshot at you, :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717f0ba9e65342c8e494f" },
@@ -309,7 +367,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "text": "|: so that the ink will stain you red"
+    "text": "|: so that the ink will stain you red",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717f6ba9e65342c8e4951" },
@@ -317,7 +377,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "text": "and then you are dead. :|"
+    "text": "and then you are dead. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "664717fdba9e65342c8e4953" },
@@ -325,7 +387,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "text": "Dear little vixen, take it from me,"
+    "text": "Dear little vixen, take it from me,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471804ba9e65342c8e4955" },
@@ -333,7 +397,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "text": "|: Don't be a thief; :|"
+    "text": "|: Don't be a thief; :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6647180bba9e65342c8e4957" },
@@ -341,7 +407,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "text": "|: You don't need roast goose,"
+    "text": "|: You don't need roast goose,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471812ba9e65342c8e4959" },
@@ -349,15 +417,9 @@
     "resource_id": { "$oid": "664717b0ba9e65342c8e4941" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "text": "make do with the mouse. :|"
-  },
-  {
-    "_id": { "$oid": "66471b7fba9e65342c8e4963" },
-    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
-    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
-    "resource_type": "plainText",
-    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
-    "text": "Fuchs, du hast die Gans gestohlen,"
+    "text": "make do with the mouse. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471b86ba9e65342c8e4965" },
@@ -365,7 +427,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
-    "text": "|: gib sie wieder her! :|"
+    "text": "|: gib sie wieder her! :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471b8dba9e65342c8e4967" },
@@ -379,7 +443,9 @@
         "comment": "In the original version (\"Warnung\" by Ernst Anschütz) it is \"sie\" instead of \"dich\"."
       }
     ],
-    "text": "|: Sonst wird dich der Jäger holen,"
+    "text": "|: Sonst wird dich der Jäger holen,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471b96ba9e65342c8e496a" },
@@ -387,7 +453,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
-    "text": "mit dem Schießgewehr. :|"
+    "text": "mit dem Schießgewehr. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471bdbba9e65342c8e496f" },
@@ -395,7 +463,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
-    "text": "Seine große, lange Flinte"
+    "text": "Seine große, lange Flinte",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471be2ba9e65342c8e4971" },
@@ -403,7 +473,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
-    "text": "|: schießt auf dich den Schrot, :|"
+    "text": "|: schießt auf dich den Schrot, :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471beaba9e65342c8e4974" },
@@ -411,7 +483,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
-    "text": "|: dass dich färbt die rote Tinte"
+    "text": "|: dass dich färbt die rote Tinte",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471bf0ba9e65342c8e4976" },
@@ -419,7 +493,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
-    "text": "und dann bist du tot. :|"
+    "text": "und dann bist du tot. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471bf6ba9e65342c8e4978" },
@@ -427,7 +503,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
-    "text": "Liebes Füchslein, lass dir raten,"
+    "text": "Liebes Füchslein, lass dir raten,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471bfcba9e65342c8e497a" },
@@ -435,7 +513,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
-    "text": "|: sei doch nur kein Dieb; :|"
+    "text": "|: sei doch nur kein Dieb; :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471c02ba9e65342c8e497c" },
@@ -443,7 +523,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
-    "text": "|: nimm, du brauchst nicht Gänsebraten,"
+    "text": "|: nimm, du brauchst nicht Gänsebraten,",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471c0dba9e65342c8e497f" },
@@ -451,7 +533,9 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "location_id": { "$oid": "654b825533ee5737b297f8f2" },
-    "text": "mit der Maus vorlieb. :|"
+    "text": "mit der Maus vorlieb. :|",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "66471ef0ba9e65342c8e49a0" },
@@ -475,7 +559,9 @@
         "title": "Gänsedieb",
         "description": "Altes Kinderspiel, das auf der Melodie des selben Volksliedes beruht – Wikipedia"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656cdd681a66322c1bffb26" },
@@ -527,7 +613,9 @@
           { "key": "len", "value": ["9"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656ce6881a66322c1bffb28" },
@@ -562,7 +650,9 @@
           { "key": "len", "value": ["3"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656cea581a66322c1bffb2a" },
@@ -611,7 +701,9 @@
           { "key": "len", "value": ["5"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656ced381a66322c1bffb2d" },
@@ -638,7 +730,9 @@
           { "key": "len", "value": ["12"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656cf0781a66322c1bffb30" },
@@ -673,7 +767,9 @@
           { "key": "len", "value": ["6"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656cfac81a66322c1bffb33" },
@@ -714,7 +810,9 @@
           { "key": "len", "value": ["6"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d00681a66322c1bffb35" },
@@ -761,7 +859,9 @@
           { "key": "len", "value": ["5"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d02081a66322c1bffb37" },
@@ -802,7 +902,9 @@
           { "key": "len", "value": ["3"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d04081a66322c1bffb39" },
@@ -845,7 +947,9 @@
           { "key": "len", "value": ["5"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d05881a66322c1bffb3b" },
@@ -884,7 +988,9 @@
           { "key": "len", "value": ["4"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d07181a66322c1bffb3d" },
@@ -925,7 +1031,9 @@
           { "key": "len", "value": ["11"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "6656d09c81a66322c1bffb3f" },
@@ -966,7 +1074,9 @@
           { "key": "len", "value": ["7"] }
         ]
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67472cd03d0d7622956981ca" },
@@ -975,7 +1085,9 @@
     "resource_type": "richText",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
     "html": "<pre><code>G                  G\nFuchs, du hast die Gans gestohlen\n\nC              G    C              G\nGib sie wieder her! Gib sie wieder her!\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\nD7                  G           D7              G\nSonst wird dich der Jäger holen mit dem Schießgewehr\n\n    \nG            G\nSeine große, lange Flinte\n\nC                    G       C                    G\nSchießt auf dich den Schrot, schießt auf dich den Schrot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\nD7                  G          D7               G\nDass dich färbt die rote Tinte und dann bist du tot\n\n    \nG                 G\nLiebes Füchslein, lass dir raten\n\nC                 G     C                 G\nSei doch nur kein Dieb! Sei doch nur kein Dieb!\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n\nD7                      G            D7              G\nNimm, du brauchst nicht Gänsebraten, mit der Maus vorlieb\n</code></pre>",
-    "editor_mode": "html"
+    "editor_mode": "html",
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b67e9e69aa8f1c75df5" },
@@ -991,7 +1103,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=0"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b6de9e69aa8f1c75df6" },
@@ -1007,7 +1121,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=1"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b73e9e69aa8f1c75df7" },
@@ -1023,7 +1139,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=2"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b7ae9e69aa8f1c75df8" },
@@ -1039,7 +1157,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=3"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b7fe9e69aa8f1c75df9" },
@@ -1055,7 +1175,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=4"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b85e9e69aa8f1c75dfa" },
@@ -1071,7 +1193,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=5"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b8be9e69aa8f1c75dfb" },
@@ -1087,7 +1211,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=6"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b91e9e69aa8f1c75dfc" },
@@ -1103,7 +1229,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=7"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b96e9e69aa8f1c75dfd" },
@@ -1119,7 +1247,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=8"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96b9ce9e69aa8f1c75dfe" },
@@ -1135,7 +1265,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=9"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96ba4e9e69aa8f1c75dff" },
@@ -1151,7 +1283,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=10"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67c96baae9e69aa8f1c75e00" },
@@ -1167,7 +1301,9 @@
         "content_type": "application/json",
         "query": "limit=1&skip=11"
       }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbc8fc2e51e7949ae22722" },
@@ -1179,7 +1315,9 @@
       { "key": "stanza_no_num", "value": ["1"] },
       { "key": "stanza_no_word", "value": ["one"] },
       { "key": "something", "value": ["something"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbca3e2e51e7949ae2272a" },
@@ -1191,7 +1329,9 @@
       { "key": "stanza_no_num", "value": ["2"] },
       { "key": "stanza_no_word", "value": ["two"] },
       { "key": "something", "value": ["something else"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
   },
   {
     "_id": { "$oid": "67dbca622e51e7949ae2272b" },
@@ -1203,6 +1343,38 @@
       { "key": "stanza_no_num", "value": ["3"] },
       { "key": "stanza_no_word", "value": ["three"] },
       { "key": "something", "value": ["something completely different"] }
-    ]
+    ],
+    "archived": false,
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
+  },
+  {
+    "_id": { "$oid": "69aecc90abe448ff5bc2bb25" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "created_at": { "$date": "2026-03-07T13:30:48.446Z" },
+    "archived": true,
+    "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "69aecea350506e702976a72b" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "created_at": { "$date": "2026-03-08T13:44:03.157Z" },
+    "archived": true,
+    "text": "Fuchs, du hast die Banane gestohlen,"
+  },
+  {
+    "_id": { "$oid": "69aecea950506e702976a72c" },
+    "_class_id": "ContentBaseDocument.PlainTextContentDocument",
+    "archived": false,
+    "created_at": { "$date": "2026-03-09T13:44:09.466Z" },
+    "location_id": { "$oid": "654b825533ee5737b297f8e5" },
+    "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
+    "resource_type": "plainText",
+    "text": "Fuchs, du hast die Gans gestohlen,"
   }
 ]

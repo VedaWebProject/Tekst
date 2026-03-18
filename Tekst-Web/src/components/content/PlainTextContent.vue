@@ -3,6 +3,7 @@ import type { LineLabellingConfig, PlainTextResourceRead } from '@/api';
 import { NFlex } from 'naive-ui';
 import { computed } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -33,19 +34,28 @@ const getLineLabel = (index: number, labellingType: LineLabellingConfig['labelli
 const multiContents = computed(() => (props.resource.contents?.length || 0) > 1);
 
 const contents = computed(() =>
-  props.resource.contents?.map((c) => ({
-    ...c,
-    lines: (props.focusView &&
-    (props.resource.config.special.focusView.singleLine || multiContents.value)
-      ? [c.text.replace(/(\r\n|\r|\n)+/g, props.resource.config.special.focusView.delimiter || ' ')]
-      : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
-    ).map((l, i) => ({
-      label: !props.focusView
-        ? getLineLabel(i, props.resource.config.special.lineLabelling.labellingType)
-        : null,
-      text: l,
-    })),
-  }))
+  props.resource.contents?.map((c) =>
+    !c
+      ? null
+      : {
+          ...c,
+          lines: (props.focusView &&
+          (props.resource.config.special.focusView.singleLine || multiContents.value)
+            ? [
+                c.text.replace(
+                  /(\r\n|\r|\n)+/g,
+                  props.resource.config.special.focusView.delimiter || ' '
+                ),
+              ]
+            : c.text.split(/(\r\n|\r|\n)+/g).filter((l) => l.trim().length > 0)
+          ).map((l, i) => ({
+            label: !props.focusView
+              ? getLineLabel(i, props.resource.config.special.lineLabelling.labellingType)
+              : null,
+            text: l,
+          })),
+        }
+  )
 );
 
 const fontStyle = {
@@ -60,24 +70,34 @@ const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
 
 <template>
   <div>
-    <common-content-display
+    <template
       v-for="(content, contentIndex) in contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <div :class="{ 'mt-md': !focusView && contentIndex > 0 }" :style="customStyle">
-        <n-flex v-for="(line, index) in content.lines" :key="index" align="baseline" :wrap="false">
-          <div
-            v-if="resource.config.special.lineLabelling.enabled && line.label != null"
-            class="text-color-primary font-ui text-small"
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <div :class="{ 'mt-md': !focusView && contentIndex > 0 }" :style="customStyle">
+          <n-flex
+            v-for="(line, index) in content.lines"
+            :key="index"
+            align="baseline"
+            :wrap="false"
           >
-            {{ line.label }}
-          </div>
-          <div>{{ line.text }}</div>
-        </n-flex>
-      </div>
-    </common-content-display>
+            <div
+              v-if="resource.config.special.lineLabelling.enabled && line.label != null"
+              class="text-color-primary font-ui text-small"
+            >
+              {{ line.label }}
+            </div>
+            <div>{{ line.text }}</div>
+          </n-flex>
+        </div>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>

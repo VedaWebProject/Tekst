@@ -14,9 +14,9 @@ The last element in each resource information area is the actions menu. Here you
 
 Displays this resource in isolation in the reading view.
 
-### Create Version (`u`)
+### Create Patches (`u`)
 
-If you intend to propose a large number of changes or additions to an existing resource, creating a resource version is a good way to collect these changes and submit them as a whole. A resource version functions like a full-fledged resource but cannot be published, and the owner of the original resource can easily review and potentially accept individual changes or suggestions.
+If you intend to propose a large number of changes or additions to an existing resource, creating a resource patch is a good way to collect these changes and submit them as a whole. A resource patch functions like a full-fledged resource but cannot be published, and the owner of the original resource can easily review and potentially accept individual changes or suggestions.
 
 For isolated changes, it is simpler to directly use the "Correction Note" function on the respective content in the reading view.
 

@@ -4,6 +4,7 @@ import AudioPlayer from '@/components/AudioPlayer.vue';
 import { NFlex } from 'naive-ui';
 import { onBeforeUpdate, ref, type CSSProperties } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -43,34 +44,39 @@ onBeforeUpdate(() => {
 
 <template>
   <div>
-    <common-content-display
+    <template
       v-for="(content, contentIndex) in resource.contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <n-flex :vertical="!focusView" size="large">
-        <audio-player
-          v-for="(file, fileIndex) in content.files"
-          :ref="
-            (el) =>
-              el &&
-              playerRefs.push({
-                id: `player-${contentIndex}-${fileIndex}`,
-                ref: el as InstanceType<typeof AudioPlayer>,
-              })
-          "
-          :key="fileIndex"
-          :src="file.url"
-          :external-link="file.sourceUrl || undefined"
-          :compact="focusView"
-          :caption="file.caption || undefined"
-          :font-style="fontStyle"
-          @play="() => handlePlay(`player-${contentIndex}-${fileIndex}`)"
-          @ended="() => handleEnded(contentIndex, fileIndex)"
-        />
-      </n-flex>
-    </common-content-display>
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <n-flex :vertical="!focusView" size="large">
+          <audio-player
+            v-for="(file, fileIndex) in content.files"
+            :ref="
+              (el) =>
+                el &&
+                playerRefs.push({
+                  id: `player-${contentIndex}-${fileIndex}`,
+                  ref: el as InstanceType<typeof AudioPlayer>,
+                })
+            "
+            :key="fileIndex"
+            :src="file.url"
+            :external-link="file.sourceUrl || undefined"
+            :compact="focusView"
+            :caption="file.caption || undefined"
+            :font-style="fontStyle"
+            @play="() => handlePlay(`player-${contentIndex}-${fileIndex}`)"
+            @ended="() => handleEnded(contentIndex, fileIndex)"
+          />
+        </n-flex>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>

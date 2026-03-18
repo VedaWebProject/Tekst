@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DELETE } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { usePlatformData } from '@/composables/platformData';
@@ -39,12 +39,12 @@ const textCanBeDeleted = computed(() => {
 
 async function handleDelete() {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('texts.settings.warnDeleteText', { title: state.text?.title || '?' }),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       loading.value = true;
       const { error } = await DELETE('/texts/{id}', {

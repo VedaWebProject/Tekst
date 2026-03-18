@@ -8,7 +8,7 @@ import { createI18n } from 'vue-i18n';
 export interface LocaleProfile {
   key: LocaleKey;
   displayFull: string;
-  displayShort: string;
+  displayShort: Intl.UnicodeBCP47LocaleIdentifier;
   icon: string;
   nUiLangLocale: NLocale;
   nUiDateLocale: NDateLocale;

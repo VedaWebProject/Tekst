@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { commonDialogOptions } from '@/common';
 import { useTasks } from '@/composables/tasks';
 import { $t, $te } from '@/i18n';
 import { CheckCircleIcon, ErrorIcon, HourglassIcon, UpdateIcon } from '@/icons';
@@ -41,6 +42,7 @@ function handleTaskClick(id: string) {
       .filter(Boolean)
       .join('\n---\n');
     dialog.create({
+      ...commonDialogOptions,
       type: statusThemes[t.status].dialogType,
       title: $t(`tasks.types.${t.type}`) + ' – ' + $t(`tasks.statuses.${t.status}`),
       content: errorDetails,

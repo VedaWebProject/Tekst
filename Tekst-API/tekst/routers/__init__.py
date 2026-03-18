@@ -19,7 +19,7 @@ def _get_routers() -> Iterator[APIRouter]:
             yield module.router
 
 
-def setup_routes(app: FastAPI) -> None:
+def setup_routes(app: FastAPI, dev_mode: bool = False) -> None:
     """
     Connects the API routers defined in this module to the passed application instance.
     Also, generates operation IDs based on endpoint function names for each route
@@ -29,9 +29,13 @@ def setup_routes(app: FastAPI) -> None:
     :param app: FastAPI app instance
     :type app: FastAPI
     """
-    log.info("Setting up API routes...")
+    log.info("Setting up API routes")
     # register routers that aren't auth-related
     for router in _get_routers():
+        if not dev_mode and router.prefix == "/dev":
+            # skip dev router in prod
+            continue  # pragma: no cover
+        log.debug(f"Registering router: {router.prefix or '/'}")
         app.include_router(router)
     # register auth-related routers (must happen after other routers are registered)
     setup_auth_routes(app)

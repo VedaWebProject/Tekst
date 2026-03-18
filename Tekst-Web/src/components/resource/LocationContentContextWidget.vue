@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GET, type AnyContentRead, type AnyResourceRead } from '@/api';
+import { GET, type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -27,7 +27,7 @@ const browse = useBrowseStore();
 
 const showModal = ref(false);
 const loading = ref(false);
-const contents = ref<AnyContentRead[]>([]);
+const contents = ref<AnyResourceRead['contents']>([]);
 
 const enabled = computed(
   () => props.resource.config.general.enableContentContext && browse.level == props.resource.level
@@ -49,7 +49,7 @@ async function handleClick() {
   });
 
   if (!error) {
-    contents.value = contentsData;
+    contents.value = contentsData.map((c) => (c.resourceType === 'none' ? null : c));
   } else {
     showModal.value = false;
   }
@@ -80,7 +80,7 @@ async function handleClick() {
 
     <n-spin v-if="loading" class="centered-spin" />
 
-    <div v-else-if="contents.length" :dir="resource.config.general.rtl ? 'rtl' : undefined">
+    <div v-else-if="contents?.length" :dir="resource.config.general.rtl ? 'rtl' : undefined">
       <component
         :is="contentComponents[resource.resourceType]"
         :resource="{ ...resource, contents: contents }"

@@ -3,6 +3,7 @@ import type { RichTextResourceRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import { computed } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -26,24 +27,29 @@ const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
 
 <template>
   <div>
-    <common-content-display
-      v-for="content in resource.contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+    <template
+      v-for="(content, contentIndex) in resource.contents"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <div
-        :class="{
-          'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
-        }"
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
       >
-        <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
-        <div v-else class="translucent i font-ui text-small">
-          {{ $t('contents.msgContentNoFocusView') }}
+        <div
+          :class="{
+            'rich-text-content-wrapper': resource.contents?.length && resource.contents?.length > 1,
+          }"
+        >
+          <hydrated-html v-if="!focusView" :html="content.html" :style="cutomStyle" />
+          <div v-else class="translucent i font-ui text-small">
+            {{ $t('contents.msgContentNoFocusView') }}
+          </div>
         </div>
-      </div>
-    </common-content-display>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>
 

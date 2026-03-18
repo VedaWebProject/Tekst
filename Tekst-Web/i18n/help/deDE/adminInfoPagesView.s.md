@@ -6,7 +6,7 @@ Info-Seiten geben Ihnen die Möglichkeit, Ihren Nutzer\*innen zusätzliche, stat
 
 Klicken Sie oben rechts auf das Plus-Symbol, um eine neue Seite anzulegen. Der **Titel** einer Seite wird automatisch als Überschrift ersten Ranges über dem Inhalt der Seite angezeigt.
 
-Der **Schlüssel** ist eine kurze Zeichenfolge, die die Seite im System identifiziert. Wenn Sie eine Seite in mehreren Sprachen anlegen wollen, müssen die Schlüssel der verschiedenen Versionen identisch sein. So kann das System die verschiedenen Versionen einer Seite als eine Einheit behandeln und je nach Spracheinstellung der Nutzer\*innen die richtige Version anzeigen.
+Der **Schlüssel** ist eine kurze Zeichenfolge, die die Seite im System identifiziert. Wenn Sie eine Seite in mehreren Sprachen anlegen wollen, müssen die Schlüssel identisch sein. So kann das System die verschiedensprachigen Versionen einer Seite als eine Einheit behandeln und je nach Spracheinstellung der Nutzer\*innen die richtige anzeigen.
 
 Unter "**Anzeigen für**" können Sie festlegen, welcher Grupe von Nutzer\*innen die Seite angezeigt werden soll. Standardmäßig wird eine neue Seite allen Nutzer\*innen – auch nicht angemeldeten – angezeigt.
 

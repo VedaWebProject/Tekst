@@ -4,11 +4,11 @@ import { $t } from '@/i18n';
 import {
   CommunityIcon,
   LevelsIcon,
+  PatchIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
   ResourceIcon,
-  VersionIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -66,9 +66,9 @@ const accessSharesTip = computed(() => {
   <n-flex v-bind="$attrs" :size="size" :wrap="false">
     <n-tag v-if="!!resource.originalId" type="info" :size="size">
       <template #icon>
-        <n-icon :component="VersionIcon" />
+        <n-icon :component="PatchIcon" />
       </template>
-      {{ $t('resources.versionOf', { title: originalTitle }) }}
+      {{ $t('resources.patchFor', { title: originalTitle }) }}
     </n-tag>
     <n-tag
       v-if="!!(resource.sharedRead.length + resource.sharedWrite.length)"

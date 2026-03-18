@@ -44,7 +44,7 @@ onBeforeMount(async () => {
       <template #icon>
         <n-icon :component="ArrowBackIcon" />
       </template>
-      {{ $t('resources.backToOverview') }}
+      {{ $t('common.backToOverview') }}
     </n-button>
   </router-link>
 

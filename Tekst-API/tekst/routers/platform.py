@@ -3,7 +3,7 @@ from operator import itemgetter
 from typing import Annotated, Union
 
 from beanie import PydanticObjectId
-from beanie.operators import NotIn
+from beanie.operators import Eq, NotIn
 from fastapi import APIRouter, BackgroundTasks, Header, Path, Query, status
 from fastapi.responses import FileResponse
 from humps import camelize
@@ -396,7 +396,10 @@ async def get_stats(
     background_tasks.add_task(counter_incr, "stats_requests")
     # collect stats available for any registered user
     stats = UserStats(
-        contents=await ContentBaseDocument.find_all(with_children=True).count(),
+        contents=await ContentBaseDocument.find(
+            Eq(ContentBaseDocument.archived, False),
+            with_children=True,
+        ).count(),
         locations=await LocationDocument.find_all().count(),
         resources=await ResourceBaseDocument.find_all(with_children=True).count(),
         texts=await TextDocument.find_all().count(),
@@ -419,6 +422,10 @@ async def get_stats(
     # collect stats available for superusers only
     stats = SuperuserStats(
         **stats.model_dump(),
+        archived_contents=await ContentBaseDocument.find(
+            Eq(ContentBaseDocument.archived, True),
+            with_children=True,
+        ).count(),
         bookmarks=await BookmarkDocument.find_all().count(),
         corrections=await CorrectionDocument.find_all().count(),
         corrections_all_time=await counter_get("correction_notes"),

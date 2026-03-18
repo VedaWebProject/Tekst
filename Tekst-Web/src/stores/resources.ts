@@ -1,9 +1,9 @@
 import {
   GET,
-  type AnyContentRead,
   type AnyResourceRead,
   type CorrectionRead,
   type KeyValueAggregations,
+  type LocationData,
   type ResourceCoverage,
 } from '@/api';
 import { useStateStore } from '@/stores';
@@ -133,9 +133,9 @@ export const useResourcesStore = defineStore('resources', () => {
     }
   }
 
-  function applyContents(contents: AnyContentRead[]) {
+  function applyContents(contents: LocationData['contents']) {
     resourcesAll.value.forEach((r) => {
-      r.contents = contents.filter((c) => c.resourceId === r.id);
+      r.contents = contents[r.id]?.map((c) => (c.resourceType === 'none' ? null : c)) ?? [];
     });
   }
 

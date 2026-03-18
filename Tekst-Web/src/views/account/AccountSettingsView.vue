@@ -6,7 +6,7 @@ import type {
   UserUpdateUserNotificationTriggers,
 } from '@/api';
 import { DELETE, POST } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -160,12 +160,12 @@ function handleEmailSave() {
           updateEmail();
         } else {
           dialog.warning({
+            ...commonDialogOptions,
             title: $t('common.warning'),
             content: $t('account.settings.msgEmailChangeWarning'),
             positiveText: $t('common.save'),
             negativeText: $t('common.cancel'),
             closable: false,
-            ...dialogProps,
             onPositiveClick: updateEmail,
           });
         }
@@ -181,12 +181,12 @@ async function handlePasswordSave() {
     ?.validate(async (errors) => {
       if (errors) return;
       dialog.warning({
+        ...commonDialogOptions,
         title: $t('common.warning'),
         content: $t('account.settings.msgPasswordChangeWarning'),
         positiveText: $t('common.save'),
         negativeText: $t('common.cancel'),
         closable: false,
-        ...dialogProps,
         onPositiveClick: async () => {
           if (
             !(await updateUser({
@@ -266,13 +266,22 @@ async function handlePublicFieldsSave() {
 
 async function handleDeleteAccount() {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('account.settings.msgDeleteAccountWarning'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    positiveButtonProps: { ...dialogProps.positiveButtonProps, type: 'error' },
-    negativeButtonProps: { ...dialogProps.negativeButtonProps, type: 'success' },
+    positiveButtonProps: {
+      ...commonDialogOptions.positiveButtonProps,
+      type: 'error',
+      size: 'tiny',
+    },
+    negativeButtonProps: {
+      ...commonDialogOptions.negativeButtonProps,
+      type: 'success',
+      size: 'large',
+    },
     onPositiveClick: async () => {
       loading.value = true;
       const { error } = await DELETE('/users/me', {});

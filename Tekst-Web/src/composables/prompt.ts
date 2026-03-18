@@ -1,3 +1,4 @@
+import { commonDialogOptions } from '@/common';
 import OskInput from '@/components/OskInput.vue';
 import { $t } from '@/i18n';
 import { renderIcon } from '@/utils';
@@ -230,6 +231,7 @@ export function usePrompt() {
     const typeDef = _getPromptType(cfg);
     return new Promise<typeof typeDef.returnType | null>((promptResolve) => {
       dialog.create({
+        ...commonDialogOptions,
         ...cfg,
         type: 'default',
         icon: renderIcon(cfg.icon, undefined, 'large'),

@@ -51,6 +51,7 @@ import GavelOutlined from '@vicons/material/GavelOutlined';
 import GroupOutlined from '@vicons/material/GroupOutlined';
 import GroupsOutlined from '@vicons/material/GroupsOutlined';
 import HelpCenterOutlined from '@vicons/material/HelpCenterOutlined';
+import HistoryOutlined from '@vicons/material/HistoryOutlined';
 import HorizontalRuleOutlined from '@vicons/material/HorizontalRuleOutlined';
 import HourglassTopOutlined from '@vicons/material/HourglassTopOutlined';
 import ImageOutlined from '@vicons/material/ImageOutlined';
@@ -123,6 +124,7 @@ import WarningAmberOutlined from '@vicons/material/WarningAmberOutlined';
 export {
   AddOutlined as AddIcon,
   ShieldOutlined as AdminIcon,
+  HistoryOutlined as ArchiveIcon,
   ArrowBackOutlined as ArrowBackIcon,
   ArrowDownwardOutlined as ArrowDownIcon,
   ArrowForwardOutlined as ArrowForwardIcon,
@@ -171,7 +173,6 @@ export {
   FormatItalicOutlined as FormatItalicIcon,
   FormatListBulletedOutlined as FormatListBulletedIcon,
   FormatListNumberedOutlined as FormatListNumberedIcon,
-  FormatQuoteFilled as FormatQuoteIcon,
   FormatSizeOutlined as FormatSizeIcon,
   MenuOutlined as HamburgerMenuIcon,
   HelpCenterOutlined as HelpOverviewIcon,
@@ -203,6 +204,7 @@ export {
   PersonAddOutlined as NewUserIcon,
   FolderOffOutlined as NoContentIcon,
   FindInPageOutlined as NothingFoundIcon,
+  AltRouteOutlined as PatchIcon,
   PauseFilled as PauseIcon,
   PushPinOutlined as PinIcon,
   PlayArrowFilled as PlayIcon,
@@ -211,6 +213,7 @@ export {
   PublicOutlined as PublicIcon,
   PublicOffOutlined as PublicOffIcon,
   QuestionMarkOutlined as QuestionMarkIcon,
+  FormatQuoteFilled as QuoteIcon,
   RefreshOutlined as RefreshIcon,
   LayersOutlined as ResourceIcon,
   RateReviewOutlined as ReviewIcon,
@@ -240,7 +243,6 @@ export {
   PersonOutlined as UserIcon,
   GroupOutlined as UsersIcon,
   VerifiedUserOutlined as VerifiedUserIcon,
-  AltRouteOutlined as VersionIcon,
   AutoFixHighOutlined as WandIcon,
   WarningAmberOutlined as WarningIcon,
 };

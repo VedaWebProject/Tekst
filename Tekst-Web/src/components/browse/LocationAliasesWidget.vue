@@ -12,7 +12,7 @@ const props = defineProps<{
   explode?: boolean;
 }>();
 
-const baseUrl = `${origin}/${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
+const baseUrl = `${origin}${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
 const locUrl = computed(
   () => `${baseUrl}/bookmark/${props.locationId}/${props.textSlug || 'unknown'}`
 );

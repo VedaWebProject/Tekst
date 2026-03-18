@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UserRead, UserSearchFilters, UserUpdate } from '@/api';
 import { DELETE, PATCH, POST } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import ListingsFilters from '@/components/ListingsFilters.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -62,6 +62,7 @@ async function updateUser(user: UserRead, updates: UserUpdate) {
 
 function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: user.isSuperuser
       ? $t('admin.users.confirmMsg.setUser', { username: user.username })
@@ -69,13 +70,13 @@ function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: () => updateUser(user, { isSuperuser: setSuperuser }),
   });
 }
 
 function handleActiveClick(user: UserRead, setActive: boolean) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: user.isActive
       ? $t('admin.users.confirmMsg.setInactive', { username: user.username })
@@ -83,7 +84,6 @@ function handleActiveClick(user: UserRead, setActive: boolean) {
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isActive: setActive });
       // if just activated but still unverified, send verification mail
@@ -103,6 +103,7 @@ function handleActiveClick(user: UserRead, setActive: boolean) {
 
 function handleVerifiedClick(user: UserRead, setVerified: boolean) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: user.isVerified
       ? $t('admin.users.confirmMsg.setUnverified', { username: user.username })
@@ -110,7 +111,6 @@ function handleVerifiedClick(user: UserRead, setVerified: boolean) {
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       const updatedUser = await updateUser(user, { isVerified: setVerified });
       if (updatedUser && !updatedUser.isVerified) {
@@ -129,12 +129,12 @@ function handleVerifiedClick(user: UserRead, setVerified: boolean) {
 
 function handleDeleteClick(user: UserRead) {
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('admin.users.confirmMsg.deleteUser', { username: user.username }),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       const { error } = await DELETE('/users/{id}', { params: { path: { id: user.id } } });
       if (!error) {

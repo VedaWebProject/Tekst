@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DELETE, PATCH, POST, type ClientSegmentCreate, type ClientSegmentUpdate } from '@/api';
-import { dialogProps } from '@/common';
+import { commonDialogOptions } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -218,12 +218,12 @@ function handleCancelClick() {
     return;
   }
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('admin.segments.warnCancel'),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: clearForm,
   });
 }
@@ -239,22 +239,22 @@ async function handleDeleteClick() {
   if (!selectedSegmentId.value) return;
 
   dialog.warning({
+    ...commonDialogOptions,
     title: $t('common.warning'),
     content: $t('admin.segments.warnDelete', {
-      title: segmentModel.value?.title || segmentModel.value?.key || '',
+      title: segmentModel.value?.title ?? segmentModel.value?.key ?? '',
     }),
     positiveText: $t('common.yes'),
     negativeText: $t('common.no'),
     closable: false,
-    ...dialogProps,
     onPositiveClick: async () => {
       const { error } = await DELETE('/platform/segments/{id}', {
-        params: { path: { id: selectedSegmentId.value || '' } },
+        params: { path: { id: selectedSegmentId.value ?? '' } },
       });
       if (!error) {
         message.success(
           $t('admin.segments.msgDeleted', {
-            title: segmentModel.value?.title || segmentModel.value?.key || '',
+            title: segmentModel.value?.title ?? segmentModel.value?.key ?? '',
           })
         );
       }

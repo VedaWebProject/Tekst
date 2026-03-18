@@ -84,7 +84,7 @@ const isLocationRangeValid = computed(
     fromLocation.value.position <= toLocation.value.position
 );
 
-const collapseExpandedModel = ref<string[]>([]);
+const locRangeCollapseExpanded = ref<string[]>([]);
 
 async function startExport() {
   const { data, error } = await GET('/resources/{id}/export', {
@@ -112,7 +112,7 @@ async function selectFullLocationRange() {
   if (!error) {
     fromLocationPath.value = data[0];
     toLocationPath.value = data[1];
-    collapseExpandedModel.value = [];
+    locRangeCollapseExpanded.value = [];
   }
 }
 
@@ -135,7 +135,10 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <div class="gray-box">
-      <n-form-item :label="$t('browse.contents.widgets.exportWidget.format')">
+      <n-form-item
+        :label="$t('browse.contents.widgets.exportWidget.format')"
+        :show-feedback="false"
+      >
         <template #label>
           <n-flex align="center">
             <span>{{ $t('browse.contents.widgets.exportWidget.format') }}</span>
@@ -144,8 +147,9 @@ onBeforeUnmount(() => {
         </template>
         <n-select v-model:value="format" :options="formatOptions" />
       </n-form-item>
-
-      <n-collapse v-model:expanded-names="collapseExpandedModel">
+    </div>
+    <div class="gray-box">
+      <n-collapse v-model:expanded-names="locRangeCollapseExpanded">
         <n-collapse-item
           :title="fromLocationTitle"
           name="fromLocation"
@@ -161,17 +165,17 @@ onBeforeUnmount(() => {
           <location-select-form v-model="toLocationPath" :allow-level-change="false" />
         </n-collapse-item>
       </n-collapse>
-    </div>
 
-    <n-alert
-      v-if="!isLocationRangeValid"
-      type="error"
-      :title="$t('common.error')"
-      :closable="false"
-      class="mt-lg"
-    >
-      {{ $t('browse.contents.widgets.exportWidget.rangeError') }}
-    </n-alert>
+      <n-alert
+        v-if="!isLocationRangeValid"
+        type="error"
+        :title="$t('common.error')"
+        :closable="false"
+        class="mt-lg"
+      >
+        {{ $t('browse.contents.widgets.exportWidget.rangeError') }}
+      </n-alert>
+    </div>
 
     <button-shelf class="mt-lg">
       <n-button

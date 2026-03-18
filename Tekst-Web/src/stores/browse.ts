@@ -39,7 +39,8 @@ export const useBrowseStore = defineStore('browse', () => {
 
   async function loadLocationData(
     locId: string | undefined = route.params.locId?.toString(),
-    force: boolean = false
+    force: boolean = false,
+    ts?: number
   ) {
     if (route.name !== 'browse') return;
     loadingLocationData.value = true;
@@ -51,7 +52,10 @@ export const useBrowseStore = defineStore('browse', () => {
     // request location data
     const { data: locationData, error } = await GET('/browse', {
       params: {
-        query: locId ? { id: locId } : { txt: state.text?.id },
+        query: {
+          ...(locId ? { id: locId } : { txt: state.text?.id }),
+          ts,
+        },
       },
     });
     if (!error && !!locationData.locationPath?.length) {

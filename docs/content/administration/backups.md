@@ -56,3 +56,6 @@ If MongoDB runs bare-metal:
 ```sh
 /usr/bin/mongorestore --uri $uri --drop --gzip --archive=$file
 ```
+
+!!! example "Changed DB name"
+    If the source database you want to restore had a different name than the target database, you have to specify the `--nsFrom` and `--nsTo` options of `mongorestore`, e.g. `--nsFrom=source_db_name.* --nsTo=target_db_name.*`

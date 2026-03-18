@@ -4,6 +4,7 @@ import { useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
 import { computed } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
+import MissingContent from './MissingContent.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -21,35 +22,44 @@ const state = useStateStore();
 const contents = computed(() =>
   // transform contents, group and sort entries
   (
-    props.resource.contents?.map((c) => ({
-      id: c.id,
-      groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
-      comments: c.comments,
-    })) || []
+    props.resource.contents?.map((c) =>
+      c == null
+        ? null
+        : {
+            id: c.id,
+            groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
+            comments: c.comments,
+          }
+    ) || []
   )
     // pick translations for groups and item keys, join values
-    .map((c) => ({
-      ...c,
-      id: c.id,
-      groups: c.groups.map((g) => ({
-        group:
-          pickTranslation(
-            props.resource.config.special.entriesIntegration.groups.find((gg) => gg.key === g.group)
-              ?.translations,
-            state.locale
-          ) || g.group,
-        items: g.items.map((i) => ({
-          key:
-            pickTranslation(
-              props.resource.config.special.entriesIntegration.itemProps.find(
-                (props) => props.key === i.key
-              )?.translations,
-              state.locale
-            ) || i.key,
-          value: i.value.join(', '),
-        })),
-      })),
-    }))
+    .map((c) =>
+      c == null
+        ? null
+        : {
+            ...c,
+            id: c.id,
+            groups: c.groups.map((g) => ({
+              group:
+                pickTranslation(
+                  props.resource.config.special.entriesIntegration.groups.find(
+                    (gg) => gg.key === g.group
+                  )?.translations,
+                  state.locale
+                ) || g.group,
+              items: g.items.map((i) => ({
+                key:
+                  pickTranslation(
+                    props.resource.config.special.entriesIntegration.itemProps.find(
+                      (props) => props.key === i.key
+                    )?.translations,
+                    state.locale
+                  ) || i.key,
+                value: i.value.join(', '),
+              })),
+            })),
+          }
+    )
 );
 
 const fontStyle = {
@@ -59,33 +69,40 @@ const fontStyle = {
 
 <template>
   <div>
-    <common-content-display
-      v-for="content in contents"
-      :key="content.id"
-      :show-comments="showComments"
-      :comments="content.comments"
-      :font="fontStyle.fontFamily"
+    <template
+      v-for="(content, contentIndex) in contents"
+      :key="content?.id ?? `${contentIndex}_missing`"
     >
-      <table>
-        <template v-for="(group, index) in content.groups" :key="group.group">
-          <tr>
-            <td colspan="2" class="group-header text-small b">
-              <div :class="{ 'mt-sm': index > 0 }">
-                {{ group.group || $t('common.other') }}
-              </div>
-            </td>
-          </tr>
-          <tr v-for="entry in group.items" :key="entry.key">
-            <td style="padding-right: var(--gap-sm)">{{ entry.key }}</td>
-            <td
-              :style="{ fontFamily: resource.config.general.font || 'var(--font-family-content)' }"
-            >
-              {{ entry.value }}
-            </td>
-          </tr>
-        </template>
-      </table>
-    </common-content-display>
+      <common-content-display
+        v-if="content"
+        :show-comments="showComments"
+        :comments="content.comments"
+        :font="fontStyle.fontFamily"
+      >
+        <table>
+          <template v-for="(group, index) in content.groups" :key="group.group">
+            <tr>
+              <td colspan="2" class="group-header text-small b">
+                <div :class="{ 'mt-sm': index > 0 }">
+                  {{ group.group || $t('common.other') }}
+                </div>
+              </td>
+            </tr>
+            <tr v-for="entry in group.items" :key="entry.key">
+              <td style="padding-right: var(--gap-sm)">{{ entry.key }}</td>
+              <td
+                :style="{
+                  fontFamily: resource.config.general.font || 'var(--font-family-content)',
+                }"
+              >
+                {{ entry.value }}
+              </td>
+            </tr>
+          </template>
+        </table>
+      </common-content-display>
+      <missing-content v-else />
+    </template>
   </div>
 </template>
 
