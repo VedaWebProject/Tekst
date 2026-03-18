@@ -8,7 +8,7 @@ async def migration(db: Database) -> None:
         {},
         {
             "$set": {
-                "created_at": datetime.now(UTC),
+                "created_at": datetime.min.replace(tzinfo=UTC),  # earliest possible
                 "archived": False,
             }
         },
