@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from datetime import UTC, datetime
 from types import UnionType
 from typing import (
     Any,
@@ -130,6 +131,7 @@ class DocumentBase(Document):
         updates_model: ModelBase,
         *,
         insert: bool = False,
+        update_created_at: bool = False,
     ) -> "DocumentBase":
         """
         Custom method to apply updates to the document, excluding any fields that are
@@ -148,6 +150,9 @@ class DocumentBase(Document):
                 continue
             # set attribute
             setattr(self, field, getattr(updates_model, field))
+
+        if update_created_at:
+            setattr(self, "created_at", datetime.now(UTC))
 
         if insert:
             return await self.save()  # same as self.insert()

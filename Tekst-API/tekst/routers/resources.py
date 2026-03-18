@@ -896,11 +896,18 @@ async def _import_resource_task(
         updates_stack = []
         while updates:
             existing_content_doc, content_updates = updates.pop()
-            content_copy = await existing_content_doc.archive()
+            loc_id = existing_content_doc.location_id
+            if resource_doc.public and not resource_doc.original_id:
+                # archive the existing content doc if the resource
+                # is public (and not a resource patch)
+                await existing_content_doc.archive()
+            else:
+                # otherwise, delete it
+                await existing_content_doc.delete()  # pragma: no cover
             updates_stack.append(
                 content_doc_model(
-                    resource_id=content_copy.resource_id,
-                    location_id=content_copy.location_id,
+                    resource_id=resource_doc.id,
+                    location_id=loc_id,
                     **content_updates,
                 )
             )

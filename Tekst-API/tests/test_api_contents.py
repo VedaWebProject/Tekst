@@ -199,7 +199,7 @@ async def test_update_content(
     )
     assert content
     content = content.model_dump()
-    await login(is_superuser=True)
+    su = await login(is_superuser=True)
 
     # update content
     resp = await test_client.patch(
@@ -270,6 +270,31 @@ async def test_update_content(
         },
     )
     assert_status(403, resp)
+
+    # update content of non-public resource (existing content isn't archived)
+    archived_count_before = await ContentBaseDocument.find(
+        Eq(ContentBaseDocument.resource_id, resource.id),
+        Eq(ContentBaseDocument.archived, True),
+        with_children=True,
+    ).count()
+    resource.public = False
+    await resource.replace()
+    await login(user=su)
+    resp = await test_client.patch(
+        f"/contents/{content['id']}",
+        json={"resourceType": "plainText", "text": "QUX"},
+    )
+    assert_status(200, resp)
+    assert isinstance(resp.json(), dict)
+    assert "id" in resp.json()
+    assert resp.json()["id"] == content["id"]
+    assert resp.json()["text"] == "QUX"
+    archived_count_after = await ContentBaseDocument.find(
+        Eq(ContentBaseDocument.resource_id, resource.id),
+        Eq(ContentBaseDocument.archived, True),
+        with_children=True,
+    ).count()
+    assert archived_count_before == archived_count_after
 
 
 @pytest.mark.anyio

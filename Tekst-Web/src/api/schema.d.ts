@@ -7047,6 +7047,8 @@ export interface operations {
         res?: components['schemas']['PydanticObjectId'][];
         /** @description Only return contents for the head location of the path */
         head?: boolean;
+        /** @description UTC timestamp in milliseconds to get contents that were current at that point in time */
+        ts?: number | null;
       };
       header?: never;
       path?: never;
@@ -7674,6 +7676,15 @@ export interface operations {
             | components['schemas']['PlainTextContentRead']
             | components['schemas']['RichTextContentRead']
             | components['schemas']['TextAnnotationContentRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Forbidden */

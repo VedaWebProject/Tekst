@@ -169,7 +169,9 @@ async def update_content(
     updates: AnyContentUpdate,
     user: UserDep,
 ) -> AnyContentDocument:
-    content_doc = await ContentBaseDocument.get(content_id, with_children=True)
+    content_doc: ContentBaseDocument = await ContentBaseDocument.get(
+        content_id, with_children=True
+    )
     if not content_doc:
         raise errors.E_404_CONTENT_NOT_FOUND
     # check if the resource this content belongs to is writable by user
@@ -186,10 +188,15 @@ async def update_content(
     # mark the text's index as out-of-date
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
-    # archive existing content, obtain an unsaved copy
-    content_copy = await content_doc.archive()
-    # save updated copy
-    return await content_copy.apply_updates(updates, insert=True)
+    # handle content archival if this belongs to a public, non-patch resource
+    if resource.public and not resource.original_id:
+        # archive existing content, obtain an unsaved copy
+        content_copy = await content_doc.archive()
+        # apply updates to the copy and insert it
+        return await content_copy.apply_updates(updates, insert=True)
+    else:
+        # don't archive existing content, just update the existing object
+        return await content_doc.apply_updates(updates, update_created_at=True)
 
 
 @router.delete(
@@ -250,6 +257,7 @@ async def delete_content(
         [
             errors.E_404_CONTENT_NOT_FOUND,
             errors.E_403_FORBIDDEN,
+            errors.E_400_INVALID_REQUEST_DATA,
         ]
     ),
 )
@@ -267,6 +275,16 @@ async def archive_content(
     )
     if not resource:
         raise errors.E_403_FORBIDDEN
+    if not resource.public:  # pragma: no cover
+        raise errors.update_values(
+            errors.E_400_INVALID_REQUEST_DATA,
+            {"detail": "Content archival only allowed for published resources"},
+        )
+    if resource.original_id:  # pragma: no cover
+        raise errors.update_values(
+            errors.E_400_INVALID_REQUEST_DATA,
+            {"detail": "Content archival not possible for patch resources"},
+        )
 
     # call the resource's hook for changed contents
     await resource.contents_changed_hook()
