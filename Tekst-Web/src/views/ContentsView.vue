@@ -13,7 +13,7 @@ import {
   POST,
 } from '@/api';
 import { commonDialogOptions } from '@/common';
-import ArchiveWidget from '@/components/browse/ArchiveWidget.vue';
+import ContentArchiveWidget from '@/components/browse/ContentArchiveWidget.vue';
 import contentComponents from '@/components/content/mappings';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -731,7 +731,7 @@ whenever(ArrowRight, () => {
           >
             {{ $t('contents.archive.action') }}
           </n-button>
-          <archive-widget
+          <content-archive-widget
             v-if="locId"
             :resource="resource"
             :location-id="locId"

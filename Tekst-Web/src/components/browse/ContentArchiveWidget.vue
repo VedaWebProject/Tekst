@@ -200,7 +200,7 @@ function cleanup() {
         </template>
       </n-flex>
       <n-empty
-        v-if="!loading"
+        v-if="!loading && !archiveItems.some((it) => it.archived)"
         :description="$t('contents.archive.msgNoArchivedContents')"
         class="mt-lg"
       >
