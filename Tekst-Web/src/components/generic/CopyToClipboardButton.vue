@@ -3,9 +3,7 @@ import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
 import { CopyIcon } from '@/icons';
 import { useClipboard } from '@vueuse/core';
-import { NButton, NIcon } from 'naive-ui';
-import type { Type } from 'naive-ui/es/button/src/interface';
-import { useAttrs } from 'vue';
+import { NButton, NIcon, type ButtonType } from 'naive-ui';
 
 const props = withDefaults(
   defineProps<{
@@ -13,6 +11,7 @@ const props = withDefaults(
     copiedDuring?: number;
     title?: string;
     showMsg?: boolean;
+    type?: ButtonType;
   }>(),
   {
     copiedDuring: 1000,
@@ -20,8 +19,6 @@ const props = withDefaults(
 );
 
 const { message } = useMessages();
-
-const attrs: Record<string, unknown> = useAttrs();
 const { copy, copied, isSupported } = useClipboard({ copiedDuring: 1000 });
 
 function copyToClipboard() {
@@ -36,7 +33,7 @@ function copyToClipboard() {
 
 <template>
   <n-button
-    :type="copied ? 'success' : (attrs.type as Type | undefined)"
+    :type="copied ? 'success' : props.type"
     :disabled="!isSupported || !text"
     @click="copyToClipboard"
     :title="title || $t('common.copy')"

@@ -4,7 +4,7 @@ import BrowseSearchResultsToolbar from '@/components/browse/BrowseSearchResultsT
 import LocationLabel from '@/components/LocationLabel.vue';
 import { CompressIcon, ExpandIcon, ResourceIcon } from '@/icons';
 import { useBrowseStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
-import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
+import { NBadge, NButton, NFlex, NIcon, type ButtonSize } from 'naive-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
 const state = useStateStore();
@@ -43,7 +43,7 @@ onMounted(() => {
   });
 });
 
-const buttonSize = computed(() => (state.vw < 900 ? 'small' : 'large'));
+const buttonSize = computed<ButtonSize>(() => (state.vw < 900 ? 'small' : 'large'));
 </script>
 
 <template>

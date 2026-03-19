@@ -4,14 +4,13 @@ import type { HelpText } from '@/composables/help';
 import { useHelp } from '@/composables/help';
 import { $t } from '@/i18n';
 import { ErrorIcon, QuestionMarkIcon } from '@/icons';
-import { NButton, NEmpty, NIcon, NSpin } from 'naive-ui';
-import type { Size } from 'naive-ui/es/button/src/interface';
+import { NButton, NEmpty, NIcon, NSpin, type ButtonSize } from 'naive-ui';
 import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
     helpKey: string;
-    size?: Size;
+    size?: ButtonSize;
     gapLeft?: boolean;
     gapRight?: boolean;
     link?: string;

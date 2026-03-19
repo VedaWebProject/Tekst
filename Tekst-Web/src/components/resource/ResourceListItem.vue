@@ -26,8 +26,15 @@ import {
 } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
-import { NBadge, NButton, NCollapseItem, NFlex, NIcon, type DropdownOption } from 'naive-ui';
-import type { Type } from 'naive-ui/es/button/src/interface';
+import {
+  NBadge,
+  NButton,
+  NCollapseItem,
+  NFlex,
+  NIcon,
+  type ButtonType,
+  type DropdownOption,
+} from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -313,7 +320,7 @@ function handleCorrectionsClick() {
                 v-for="opt in optGroup.children"
                 :key="opt.key"
                 secondary
-                :type="opt.statusType as Type"
+                :type="opt.statusType as ButtonType"
                 :disabled="!!opt.disabled"
                 @click="opt.action as () => void"
               >

@@ -30,7 +30,7 @@ import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { NButton, NFlex, NIcon, NSelect, type SelectOption } from 'naive-ui';
+import { NButton, NFlex, NIcon, NSelect, type ButtonSize, type SelectOption } from 'naive-ui';
 import 'prosemirror-view/style/prosemirror.css';
 import { computed, h, onUnmounted, watch, type Component, type CSSProperties } from 'vue';
 
@@ -70,7 +70,7 @@ const CustomLink = Link.extend({
 
 const props = withDefaults(
   defineProps<{
-    toolbarSize?: 'small' | 'medium' | 'large';
+    toolbarSize?: ButtonSize;
     maxChars?: number;
     font?: string;
     rtl?: boolean;
@@ -217,7 +217,7 @@ const currentBlockType = computed(
 );
 
 const toolbarStyles = computed<CSSProperties>(() => ({
-  fontSize: { small: 18, medium: 22, large: 24 }[props.toolbarSize],
+  fontSize: { tiny: 16, small: 18, medium: 22, large: 24 }[props.toolbarSize],
 }));
 
 function renderToolbarIcon(icon?: Component) {

@@ -9,13 +9,13 @@ import {
   SkipPreviousIcon,
 } from '@/icons';
 import { useBrowseStore, useSearchStore, useThemeStore } from '@/stores';
-import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
+import { NBadge, NButton, NFlex, NIcon, type ButtonSize } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 
 withDefaults(
   defineProps<{
     smallScreen?: boolean;
-    buttonSize?: 'small' | 'large';
+    buttonSize?: ButtonSize;
   }>(),
   {
     buttonSize: 'large',

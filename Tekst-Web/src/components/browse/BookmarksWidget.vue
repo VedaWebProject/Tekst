@@ -8,12 +8,22 @@ import { usePrompt } from '@/composables/prompt';
 import { $t } from '@/i18n';
 import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, NoContentIcon, SearchIcon } from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
-import { NButton, NEmpty, NFlex, NIcon, NInput, NList, NListItem, NThing } from 'naive-ui';
+import {
+  NButton,
+  NEmpty,
+  NFlex,
+  NIcon,
+  NInput,
+  NList,
+  NListItem,
+  NThing,
+  type ButtonSize,
+} from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 defineProps<{
-  buttonSize?: 'small' | 'medium' | 'large';
+  buttonSize?: ButtonSize;
 }>();
 
 const browse = useBrowseStore();

@@ -8,12 +8,12 @@ import router from '@/router';
 import { useAuthStore, useBrowseStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { NBadge, NButton, NFlex, NIcon } from 'naive-ui';
+import { NBadge, NButton, NFlex, NIcon, type ButtonSize } from 'naive-ui';
 import { ref } from 'vue';
 
 withDefaults(
   defineProps<{
-    buttonSize?: 'small' | 'medium' | 'large';
+    buttonSize?: ButtonSize;
   }>(),
   {
     buttonSize: 'large',
