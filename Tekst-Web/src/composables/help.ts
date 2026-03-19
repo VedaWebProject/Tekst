@@ -27,7 +27,17 @@ export function useHelp() {
     if (!helpTexts[locale]) {
       if (helpTranslationsModules[locale]) {
         try {
-          helpTexts[locale] = (await helpTranslationsModules[locale]()).default;
+          const data = (await helpTranslationsModules[locale]()).default;
+          // force full document location into TOC anchor links to make sure that
+          // the browser doesn't mess up the anchor href
+          // ... unfortunately this seems to be a problem :(
+          for (const key in data) {
+            data[key].content = data[key].content.replaceAll(
+              /href="#([^"]+)"/g,
+              `href="${document.location.toString()}#$1"`
+            );
+          }
+          helpTexts[locale] = data;
         } catch {
           console.error(`Could not load help text translations for locale '${locale}'.`);
           return Promise.reject('Locale not found');
