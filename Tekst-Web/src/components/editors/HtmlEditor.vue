@@ -6,14 +6,14 @@ import CodeEditor from '@/components/generic/CodeEditor.vue';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
 import { html } from '@codemirror/lang-html';
-import { NTabPane, NTabs, type TabsInst, useDialog } from 'naive-ui';
+import { type ButtonSize, NTabPane, NTabs, type TabsInst, useDialog } from 'naive-ui';
 import { ref, watch } from 'vue';
 
 type EditorMode = components['schemas']['ClientSegmentRead']['editorMode'];
 
 withDefaults(
   defineProps<{
-    toolbarSize?: 'small' | 'medium' | 'large';
+    toolbarSize?: ButtonSize;
     maxChars?: number;
     wysiwygFont?: string;
     rtl?: boolean;

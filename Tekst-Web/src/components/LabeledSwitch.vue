@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import { NFlex, NIcon, NSwitch } from 'naive-ui';
+import { NFlex, NIcon, NSwitch, type SwitchSize } from 'naive-ui';
 import { computed, type Component } from 'vue';
 
 const props = withDefaults(
@@ -12,7 +12,7 @@ const props = withDefaults(
     iconOn?: Component;
     iconOff?: Component;
     round?: boolean;
-    size?: 'small' | 'medium' | 'large';
+    size?: SwitchSize;
     disabled?: boolean;
     loading?: boolean;
     focusable?: boolean;
