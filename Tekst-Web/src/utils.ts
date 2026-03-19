@@ -10,6 +10,7 @@ import { $t, getLocaleProfile } from '@/i18n';
 import { uniqBy } from 'lodash-es';
 import { NIcon } from 'naive-ui';
 import { h, type Component } from 'vue';
+import env from './env';
 
 export function hashCode(obj: unknown) {
   const string = JSON.stringify(obj);
@@ -173,4 +174,42 @@ export function userDisplayText(user: UserReadPublic, showAffiliation: boolean =
     (user.name ? user.name : `@${user.username}`) +
     (showAffiliation && user.affiliation ? ` (${user.affiliation})` : '')
   );
+}
+
+/**
+ * Replaces the `{{res_url}}` placeholder in the given text with the info URL of the given resource.
+ * Removes the placeholder if the resource ID or text slug are not provided.
+ * @param text Text to replace the placeholder in
+ * @param textSlug Slug of the target working text
+ * @param resourceId  ID of the resource to link to
+ * @returns Text with the placeholder replaced or removed.
+ */
+export function replaceResUrlPh(text?: string | null, textSlug?: string, resourceId?: string) {
+  if (!textSlug || !resourceId) {
+    console.warn('replaceResUrlPh: textSlug or resourceId is undefined');
+    return text?.replace(/\{\{\s*res_url\s*\}\}/g, '') ?? '';
+  } else {
+    return (
+      text?.replace(
+        /\{\{\s*res_url\s*\}\}/g,
+        `${origin}${env.WEB_PATH_STRIPPED}/texts/${textSlug}/resources#id=${resourceId}`
+      ) ?? ''
+    ).trim();
+  }
+}
+
+/**
+ * Replaces the `{{curr_date}}` placeholder with the current date in the specified locale.
+ * If the locale is not specified, `enUS` is used.
+ * @param text
+ * @param locale
+ * @returns Text with the `{{curr_date}}` placeholder replaced with the current date.
+ */
+export function replaceCurrDatePh(text?: string | null, locale?: string) {
+  return (
+    text?.replace(
+      /\{\{\s*curr_date\s*\}\}/g,
+      new Date().toLocaleDateString(getLocaleProfile(locale ?? 'enUS').displayShort)
+    ) ?? ''
+  ).trim();
 }

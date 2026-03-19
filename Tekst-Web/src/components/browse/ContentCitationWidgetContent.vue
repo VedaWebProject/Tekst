@@ -4,6 +4,7 @@ import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vu
 import env from '@/env';
 import { $t } from '@/i18n';
 import { useStateStore } from '@/stores';
+import { replaceCurrDatePh, replaceResUrlPh } from '@/utils';
 import { NDivider, NThing } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -22,7 +23,14 @@ const browseUrl = computed(() => {
     queryPart
   );
 });
-const citation = computed(() => props.resource.citation + ' – URL: ' + browseUrl.value);
+const citation = computed(() => {
+  const citation = replaceResUrlPh(
+    replaceCurrDatePh(props.resource.citation, state.locale),
+    state.text?.slug,
+    props.resource.id
+  );
+  return `${citation} – ${$t('common.location')}: ${browseUrl.value}`;
+});
 </script>
 
 <template>

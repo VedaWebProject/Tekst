@@ -16,19 +16,12 @@
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 2,
     "resource_type": "plainText",
-    "original_id": null,
     "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
     "shared_read": [],
     "shared_write": [],
     "public": true,
     "proposed": false,
-    "citation": "Anschütz, Ernst. Warnung. 1824.",
-    "meta": [
-      { "key": "author", "value": "Ernst Anschütz" },
-      { "key": "year", "value": "1824" },
-      { "key": "Original Title", "value": "Warnung" },
-      { "key": "language", "value": "DE" }
-    ],
+    "citation": "Anschütz, Ernst. Warnung. 1824. {{res_url}} ({{curr_date}})",
     "description": [
       {
         "locale": "enUS",
@@ -39,20 +32,27 @@
         "translation": "<p>Diese Version enthält Wiederholungszeichen.</p>"
       }
     ],
+    "meta": [
+      { "key": "author", "value": "Ernst Anschütz" },
+      { "key": "year", "value": "1824" },
+      { "key": "Original Title", "value": "Warnung" },
+      { "key": "language", "value": "DE" }
+    ],
     "config": {
       "general": {
         "category": "versions",
         "sort_order": 10,
         "default_active": true,
         "enable_content_context": true,
+        "show_comments": true,
         "searchable_quick": true,
         "searchable_adv": true,
         "rtl": false
       },
       "special": {
-        "focus_view": { "single_line": false, "delimiter": " / " },
         "search_replacements": [],
         "content_css": [],
+        "focus_view": { "single_line": false, "delimiter": " / " },
         "line_labelling": {
           "enabled": false,
           "labelling_type": "numbersOneBased"
@@ -60,8 +60,8 @@
         "deepl_links": { "enabled": true, "source_language": "de" }
       }
     },
-    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" },
-    "coverage": [12, 12]
+    "coverage": [12, 12],
+    "contents_changed_at": { "$date": "1970-01-02T00:00:00Z" }
   },
   {
     "_id": { "$oid": "654ba3a6ec7833e469dde77a" },
@@ -478,14 +478,13 @@
     "text_id": { "$oid": "654b825533ee5737b297f8e3" },
     "level": 2,
     "resource_type": "textAnnotation",
-    "original_id": null,
     "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
     "shared_read": [],
     "shared_write": [],
     "public": true,
     "proposed": false,
-    "meta": [],
     "description": [],
+    "meta": [],
     "config": {
       "general": {
         "category": "annotations",
@@ -585,8 +584,8 @@
         }
       }
     },
-    "contents_changed_at": { "$date": "2025-04-10T13:23:31.760Z" },
-    "coverage": [12, 12]
+    "coverage": [12, 12],
+    "contents_changed_at": { "$date": "2026-03-19T10:39:20.799Z" }
   },
   {
     "_id": { "$oid": "67472c393d0d7622956981c9" },
