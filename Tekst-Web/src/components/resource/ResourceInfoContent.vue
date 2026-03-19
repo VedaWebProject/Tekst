@@ -7,11 +7,9 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
-import env from '@/env';
-import { getLocaleProfile } from '@/i18n';
 import { CoverageIcon, DescIcon, LabelIcon, LinkIcon, QuoteIcon, SiteNoticeIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
-import { pickTranslation } from '@/utils';
+import { pickTranslation, replaceCurrDatePh, replaceResUrlPh } from '@/utils';
 import { NFlex, NIcon } from 'naive-ui';
 import { computed, ref } from 'vue';
 import CopyToClipboardButton from '../generic/CopyToClipboardButton.vue';
@@ -27,17 +25,9 @@ const descriptionHtml = computed(() => pickTranslation(props.resource.descriptio
 const showInfoModal = ref(false);
 
 const citation = computed(() => {
-  const cit = props.resource.citation ?? '';
-  const suff = state.pf?.state.globalCitationSuffix ?? '';
-  return (`${cit} ${suff}`.trim() || null)
-    ?.replace(
-      /\{\{curr_date\}\}/g,
-      new Date().toLocaleDateString(getLocaleProfile(state.locale).displayShort)
-    )
-    .replace(
-      /\{\{res_url\}\}/g,
-      `${origin}${env.WEB_PATH_STRIPPED}/texts/${state.text?.slug || '???'}/resources#id=${props.resource.id}`
-    );
+  const cit =
+    `${props.resource.citation ?? ''} ${state.pf?.state.globalCitationSuffix ?? ''}`.trim();
+  return replaceResUrlPh(replaceCurrDatePh(cit, state.locale), state.text?.slug, props.resource.id);
 });
 </script>
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { $t, getLocaleProfile, i18n } from '@/i18n';
+import { $t } from '@/i18n';
+import { useStateStore } from '@/stores';
+import { replaceCurrDatePh } from '@/utils';
 import { ref, watchEffect, type CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
 import GenericModal from './GenericModal.vue';
@@ -31,6 +33,7 @@ const props = withDefaults(
 
 const emit = defineEmits(['clickLocationRef']);
 
+const state = useStateStore();
 const router = useRouter();
 
 const domParser = new DOMParser();
@@ -103,12 +106,7 @@ function hydrate(html: string | undefined) {
 
 watchEffect(() => {
   // replace current date placeholder
-  hydrate(
-    props.html.replace(
-      /\{\{curr_date\}\}/g,
-      new Date().toLocaleDateString(getLocaleProfile(i18n.global.locale).displayShort)
-    )
-  );
+  hydrate(replaceCurrDatePh(props.html, state.locale));
 });
 </script>
 
