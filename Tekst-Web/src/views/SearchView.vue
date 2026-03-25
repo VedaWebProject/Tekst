@@ -168,9 +168,9 @@ function handleResourceChange(
 function getNewSearchItem(): AdvancedSearchFormModelItem | undefined {
   const resId =
     resourceOptions.value.find((ro) => ro.key === state.text?.id)?.children[0]?.value ||
-    resources.ofText[0]?.id;
+    resources.currText[0]?.id;
   const resource =
-    resources.all.find((r) => r.id === resId) || resources.ofText[0] || resources.all[0];
+    resources.all.find((r) => r.id === resId) || resources.currText[0] || resources.all[0];
   if (!resource) return undefined;
   return {
     cmn: { res: resource.id, occ: 'must' },

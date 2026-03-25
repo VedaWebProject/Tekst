@@ -15,7 +15,7 @@ export const useResourcesStore = defineStore('resources', () => {
   const state = useStateStore();
 
   const resourcesAll = ref<AnyResourceRead[]>([]);
-  const resourcesOfText = computed(() =>
+  const ofCurrentText = computed(() =>
     resourcesAll.value.filter((r) => r.textId === state.text?.id)
   );
   const resourceTitles = computed(() =>
@@ -40,6 +40,10 @@ export const useResourcesStore = defineStore('resources', () => {
   function clearPrecomputedData() {
     coverage.value = {};
     aggregations.value = {};
+  }
+
+  function ofText(textId: string | undefined = state.text?.id) {
+    return resourcesAll.value.filter((r) => r.textId === textId);
   }
 
   function processResources(resources: AnyResourceRead[]) {
@@ -185,7 +189,8 @@ export const useResourcesStore = defineStore('resources', () => {
 
   return {
     all: resourcesAll,
-    ofText: resourcesOfText,
+    currText: ofCurrentText,
+    ofText,
     resourceTitles,
     getAggregations,
     applyContents,

@@ -10,6 +10,7 @@ import { computed } from 'vue';
 const props = defineProps<{
   text: TextRead;
   locale: string;
+  resourcesCount: number;
   selected?: boolean;
   singleLine?: boolean;
 }>();
@@ -38,6 +39,9 @@ const indicatorStyle = computed(() => ({
       </div>
       <div v-if="text.subtitle?.length && !singleLine" class="text-small translucent">
         <translation-display :value="text.subtitle" />
+      </div>
+      <div v-if="!singleLine" class="text-small translucent">
+        {{ resourcesCount }} {{ $t('models.resource.modelLabel', resourcesCount) }}
       </div>
       <div v-if="!text.isActive && !singleLine" class="text-small translucent i">
         <n-icon :component="DisabledVisibleIcon" />

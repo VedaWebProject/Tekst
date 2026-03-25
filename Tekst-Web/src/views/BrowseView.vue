@@ -47,7 +47,7 @@ const catHiddenResCount = computed<Record<string, number>>(() =>
 const embeddedMetadata =
   computed<LocationMetadataContentRead[]>(
     () =>
-      resources.ofText
+      resources.currText
         .filter(
           (r) =>
             r.resourceType === 'locationMetadata' &&

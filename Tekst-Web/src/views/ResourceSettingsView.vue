@@ -48,7 +48,7 @@ onBeforeRouteUpdate((to, from) => {
 
 // watch route for resource ID and react to resource data updates
 watch(
-  [() => props.id, () => resources.ofText],
+  [() => props.id, () => resources.currText],
   ([newId, newResources]) => {
     if (!newId || !newResources.length) return;
     resource.value = newResources.find((l) => l.id === newId);

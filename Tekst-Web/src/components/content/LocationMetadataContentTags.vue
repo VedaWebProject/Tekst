@@ -22,7 +22,9 @@ const tagColor = {
 const contentsProcessed = computed(() => {
   const processed = [];
   for (const c of props.contents) {
-    const res = resources.ofText.find((r) => r.id === c.resourceId) as LocationMetadataResourceRead;
+    const res = resources.currText.find(
+      (r) => r.id === c.resourceId
+    ) as LocationMetadataResourceRead;
     processed.push({
       id: c.id,
       res,
