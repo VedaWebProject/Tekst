@@ -62,8 +62,10 @@ class UserMessageDocument(UserMessage, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "messages"
         indexes = [
-            "recipient",
-            "sender",
+            [
+                "recipient",
+                "sender",
+            ]
         ]
 
 

@@ -14,8 +14,10 @@ class PrecomputedDataDocument(ModelBase, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "precomputed"
         indexes = [
-            "precomputed_type",
-            "ref_id",
+            [
+                "precomputed_type",
+                "ref_id",
+            ]
         ]
 
     ref_id: Annotated[
