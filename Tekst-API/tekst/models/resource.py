@@ -550,10 +550,12 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
         name = "resources"
         is_root = True
         indexes = [
-            "text_id",
-            "level",
-            "resource_type",
-            "owner_ids",
+            [
+                "text_id",
+                "level",
+                "resource_type",
+                "owner_ids",
+            ]
         ]
 
     @classmethod
