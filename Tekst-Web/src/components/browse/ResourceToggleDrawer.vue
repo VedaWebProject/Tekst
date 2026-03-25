@@ -15,7 +15,7 @@ const browse = useBrowseStore();
 const resources = useResourcesStore();
 
 const showNonPublicResourcesToggle = computed(
-  () => !!resources.ofText.filter((r) => !r.public).length
+  () => !!resources.currText.filter((r) => !r.public).length
 );
 const categoryActivationState = computed(() =>
   browse.resourcesCategorized.map((c) => c.resources.every((r) => r.active))

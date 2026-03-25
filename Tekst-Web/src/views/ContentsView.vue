@@ -89,7 +89,7 @@ const resource = ref<AnyResourceRead>();
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 const originalResourceTitle = computed(() =>
   pickTranslation(
-    resources.ofText.find((r) => r.id === resource.value?.originalId)?.title,
+    resources.currText.find((r) => r.id === resource.value?.originalId)?.title,
     state.locale
   )
 );
@@ -109,7 +109,7 @@ const { changed, reset, getChanges } = useModelChanges(contentModel);
 
 const compareResourceId = ref<string>();
 const compareResource = computed<AnyResourceRead | undefined>(() =>
-  resources.ofText.find((r) => r.id === compareResourceId.value)
+  resources.currText.find((r) => r.id === compareResourceId.value)
 );
 const compareResourceTitle = computed(() =>
   $t('contents.forComparison', {
@@ -117,7 +117,7 @@ const compareResourceTitle = computed(() =>
   })
 );
 const compareResourceOptions = computed(() =>
-  resources.ofText
+  resources.currText
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
     .sort(
       (a, b) =>
@@ -417,7 +417,7 @@ function handleRestoredContent(content: AnyContentRead) {
 
 // watch for position change and resources data updates
 watch(
-  [() => resources.ofText, () => props.locId],
+  [() => resources.currText, () => props.locId],
   async ([newResources]) => {
     if (!newResources.length) {
       return;

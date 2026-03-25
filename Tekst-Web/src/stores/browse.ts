@@ -114,7 +114,7 @@ export const useBrowseStore = defineStore('browse', () => {
     const categorized =
       state.text?.resourceCategories?.map((c) => ({
         category: { key: c.key, translation: pickTranslation(c.translations, state.locale) },
-        resources: resources.ofText
+        resources: resources.currText
           .filter(
             (r) =>
               r.config.general.category === c.key &&
@@ -129,7 +129,7 @@ export const useBrowseStore = defineStore('browse', () => {
           key: undefined,
           translation: $t('browse.uncategorized'),
         },
-        resources: resources.ofText.filter(
+        resources: resources.currText.filter(
           (r) =>
             !categorized.find((c) => c.category.key === r.config.general.category) &&
             (showNonPublicResources.value || r.public) &&
