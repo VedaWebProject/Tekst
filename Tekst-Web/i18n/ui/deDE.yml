@@ -610,6 +610,13 @@ contents:
   tipBtnPrevChange: Zum vorherigen Inhalt springen
   tipBtnNextChange: Zum nächsten Inhalt springen
   forComparison: '{title} (zum Vergleich)'
+  fromOriginalResourceHint: |
+    Dies ist eine Ressourcen-Ausbesserung.
+    Die angezeigten Inhalte stammen ganz oder teilweise
+    aus der Originalressource zu dieser Ausbesserung.
+  fromOriginalResourceTip: |
+    Dies ist Inhalt aus der Originalressource zu dieser Ausbesserung.
+    Diese Ausbesserung enthält keinen eigenen Inhalt für diese Belegstelle.
   noContent: Für diese Belegstelle liegen keine Inhalte vor.
   btnAddContent: Inhalt hinzufügen
   confirmDelete: |

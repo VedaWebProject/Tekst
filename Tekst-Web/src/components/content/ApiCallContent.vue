@@ -2,6 +2,7 @@
 import type { AnyContentRead, ApiCallContentRead, ApiCallResourceRead } from '@/api';
 import CommonContentDisplay from '@/components/content/CommonContentDisplay.vue';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
+import { $t } from '@/i18n';
 import { useScriptTag } from '@vueuse/core';
 import { NSpin } from 'naive-ui';
 import { nextTick, onMounted, ref, watch } from 'vue';
@@ -23,6 +24,7 @@ const fontStyle = {
 
 const contentProcessed = ref<
   {
+    resourceId: string;
     html?: string;
     comments?: AnyContentRead['comments'];
   }[]
@@ -64,7 +66,7 @@ async function execTransformJs(
 async function updateContent(contents?: ApiCallResourceRead['contents']) {
   if (!contents?.length) return;
   loading.value = true;
-  const newHtml = Array(contents.length).fill(undefined);
+  const newHtml: typeof contentProcessed.value = Array(contents.length).fill(undefined);
   for (const [i, content] of contents.entries()) {
     if (!content) continue;
     try {
@@ -81,6 +83,7 @@ async function updateContent(contents?: ApiCallResourceRead['contents']) {
         });
       }
       newHtml[i] = {
+        resourceId: content.resourceId,
         html: await execTransformJs(
           transformInput,
           !!content.transformContext ? JSON.parse(content.transformContext) : undefined,
@@ -89,7 +92,10 @@ async function updateContent(contents?: ApiCallResourceRead['contents']) {
         comments: content.comments,
       };
     } catch (e) {
-      newHtml[i] = undefined;
+      newHtml[i] = {
+        resourceId: content.resourceId,
+        html: `<div style="color: var(--error-color)">${$t('errors.unexpected')}</div>`,
+      };
       console.log(e);
     }
   }
@@ -127,6 +133,7 @@ onMounted(async () => {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <n-spin v-if="!focusView" :show="loading" size="small">
           <div

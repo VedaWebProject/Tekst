@@ -52,6 +52,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <n-flex vertical :wrap="false" class="images-content">
           <n-image-group :render-toolbar="renderToolbar">

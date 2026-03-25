@@ -29,6 +29,7 @@ const contents = computed(() =>
             id: c.id,
             groups: groupAndSortItems(c.entries, props.resource.config.special.entriesIntegration),
             comments: c.comments,
+            resourceId: c.resourceId,
           }
     ) || []
   )
@@ -78,6 +79,7 @@ const fontStyle = {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <table>
           <template v-for="(group, index) in content.groups" :key="group.group">

@@ -7,24 +7,31 @@ defineProps<{
   comments?: AnyContentRead['comments'];
   showComments?: boolean;
   font?: string;
+  fromOriginalResource?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="common-content-display">
-    <slot></slot>
+  <div
+    class="common-content-display"
+    :class="{ 'from-org': fromOriginalResource }"
+    :title="fromOriginalResource ? $t('contents.fromOriginalResourceTip') : undefined"
+  >
+    <div :class="{ translucent: fromOriginalResource }">
+      <slot></slot>
 
-    <div v-if="showComments && !!comments" class="comments-container text-small mt-lg">
-      <n-flex class="mb-sm translucent" align="center" :wrap="false">
-        <n-icon :component="CommentIcon" />
-        <span>{{ $t('resources.types.common.comments') }}</span>
-      </n-flex>
-      <n-flex vertical size="small">
-        <div v-for="(cmt, i) in comments" :key="i" class="comment" :style="{ fontFamily: font }">
-          <div class="pre-wrap">{{ cmt.comment }}</div>
-          <div v-if="cmt.by" class="i font-ui">– {{ cmt.by }}</div>
-        </div>
-      </n-flex>
+      <div v-if="showComments && !!comments" class="comments-container text-small mt-lg">
+        <n-flex class="mb-sm translucent" align="center" :wrap="false">
+          <n-icon :component="CommentIcon" />
+          <span>{{ $t('resources.types.common.comments') }}</span>
+        </n-flex>
+        <n-flex vertical size="small">
+          <div v-for="(cmt, i) in comments" :key="i" class="comment" :style="{ fontFamily: font }">
+            <div class="pre-wrap">{{ cmt.comment }}</div>
+            <div v-if="cmt.by" class="i font-ui">– {{ cmt.by }}</div>
+          </div>
+        </n-flex>
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +51,14 @@ defineProps<{
   padding: var(--gap-sm) var(--gap-lg);
   border-radius: var(--border-radius);
   border: 1px dashed var(--text-color-translucent);
+}
+
+.common-content-display.from-org {
+  padding-left: var(--gap-sm);
+  border-left: dotted 3px var(--warning-color);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  cursor: help;
 }
 
 .comment {

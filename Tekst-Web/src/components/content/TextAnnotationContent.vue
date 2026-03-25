@@ -541,6 +541,7 @@ function generatePlaintextAnno(): string {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <n-flex :size="4" class="anno-content">
           <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
