@@ -194,9 +194,11 @@ async function loadLocationData() {
     params: {
       query: {
         res: [
-          resource.value.id,
-          ...(compareResource.value?.id ? [compareResource.value.id] : []),
-          ...(resource.value.originalId ? [resource.value.originalId] : []),
+          ...new Set([
+            resource.value.id,
+            ...(compareResource.value?.id ? [compareResource.value.id] : []),
+            ...(resource.value.originalId ? [resource.value.originalId] : []),
+          ]),
         ],
         head: true,
         ...locQuery,
@@ -756,18 +758,11 @@ whenever(ArrowRight, () => {
           {{ $t('common.reset') }}
         </n-button>
         <n-button
-          v-if="!changed && resource.originalId && contentModel?.resourceId == resource.originalId"
           type="primary"
-          :title="$t('contents.tipBtnCopyOriginal')"
-          :disabled="loading"
-          @click="handleSaveClick"
-        >
-          {{ $t('common.copy') }}
-        </n-button>
-        <n-button
-          v-else
-          type="primary"
-          :disabled="loading || !changed"
+          :disabled="
+            loading ||
+            (!changed && (!resource.originalId || contentModel?.resourceId != resource.originalId))
+          "
           :loading="loadingSave"
           @click="handleSaveClick"
         >

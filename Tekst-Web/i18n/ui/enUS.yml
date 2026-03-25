@@ -600,6 +600,12 @@ contents:
   tipBtnPrevChange: Go to previous content
   tipBtnNextChange: Go to next content
   forComparison: '{title} (for comparison)'
+  fromOriginalResourceHint: |
+    This is a resource patch.
+    The contents shown are partially or entirely taken from this patch's original resource.
+  fromOriginalResourceTip: |
+    This is content from this patch's original resource.
+    This patch does not have any own content for this location.
   noContent: There is no content for this location.
   btnAddContent: Add content
   confirmDelete: |

@@ -250,6 +250,16 @@ async def get_location_data(
             if content:
                 contents[resource.id] = [content]
 
+    # for each target resource, if it's a resource patch, add the original resource's
+    # content if the patch doesn't have own contents
+    for resource in target_resources:
+        if (
+            resource.original_id
+            and resource.id not in contents
+            and resource.original_id in contents
+        ):
+            contents[resource.id] = contents[resource.original_id]
+
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)
     for res in [
