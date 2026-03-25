@@ -147,12 +147,11 @@ async def test_user_deletes_self(
     login,
     test_client: AsyncClient,
     assert_status,
-    register_test_user,
     insert_test_data,
 ):
     ### make sure user owns resources
     inserted_ids = await insert_test_data()
-    u = await register_test_user()
+    u = await login()
     su = await login(is_superuser=True)
 
     # get res count
@@ -195,6 +194,14 @@ async def test_user_deletes_self(
     )
     assert_status(204, resp)
 
+    # compare res count
+    # (resource owned by deleted user should be deleted now)
+    resp = await test_client.get("/resources")
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == res_count - 1
+    res_count = len(resp.json())
+
     # delete self (as superuser)
     await login(user=su)
     resp = await test_client.delete(
@@ -203,6 +210,7 @@ async def test_user_deletes_self(
     assert_status(204, resp)
 
     # compare res count
+    # (resource patch owned by deleted superuser should be deleted now)
     resp = await test_client.get("/resources")
     assert_status(200, resp)
     assert isinstance(resp.json(), list)
