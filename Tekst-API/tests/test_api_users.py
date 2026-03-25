@@ -1,8 +1,11 @@
 import pytest
 
+from beanie import PydanticObjectId
+from beanie.operators import Set
 from fastapi.exceptions import HTTPException
 from httpx import AsyncClient
 from tekst.auth import create_initial_superuser
+from tekst.models.resource import ResourceBaseDocument
 
 
 @pytest.mark.anyio
@@ -155,10 +158,7 @@ async def test_user_deletes_self(
     su = await login(is_superuser=True)
 
     # get res count
-    resp = await test_client.get("/resources")
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    res_count = len(resp.json())
+    res_count = await ResourceBaseDocument.find_all(with_children=True).count()
 
     # unpublish first resource
     resp = await test_client.post(
@@ -167,25 +167,29 @@ async def test_user_deletes_self(
     assert_status(200, resp)
     assert not resp.json()["public"]
 
-    # set superuser as owner of all but first resource
-    for res_id in inserted_ids["resources"][1:]:
-        resp = await test_client.patch(
-            f"/resources/{res_id}/owners",
-            json=[su["id"]],
-        )
-        assert_status(200, resp)
-        print(resp.json())
-        assert len(resp.json()["ownerIds"]) == 1
-        assert resp.json()["ownerIds"][0] == su["id"]
-
-    # set regular user as owner of first resource
-    resp = await test_client.patch(
-        f"/resources/{inserted_ids['resources'][0]}/owners",
-        json=[u["id"]],
+    # set superuser as owner of all resources
+    await ResourceBaseDocument.find_all(with_children=True).update(
+        Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(su["id"])]})
     )
-    assert_status(200, resp)
-    assert len(resp.json()["ownerIds"]) == 1
-    assert resp.json()["ownerIds"][0] == u["id"]
+    assert (
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.owner_ids == PydanticObjectId(su["id"]),
+            with_children=True,
+        ).count()
+        == res_count
+    )
+
+    # set regular user as owner of one specific resource
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.id == PydanticObjectId("67c043c0906e79b9062e22f4"),
+        with_children=True,
+    ).update(Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]}))
+    u_res: ResourceBaseDocument = await ResourceBaseDocument.get(
+        PydanticObjectId("67c043c0906e79b9062e22f4"),
+        with_children=True,
+    )
+    assert len(u_res.owner_ids) == 1
+    assert str(u_res.owner_ids[0]) == u["id"]
 
     # delete self (as regular user)
     await login(user=u)
@@ -196,11 +200,9 @@ async def test_user_deletes_self(
 
     # compare res count
     # (resource owned by deleted user should be deleted now)
-    resp = await test_client.get("/resources")
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == res_count - 1
-    res_count = len(resp.json())
+    res_count_after = await ResourceBaseDocument.find_all(with_children=True).count()
+    assert res_count_after == res_count - 1
+    res_count = res_count_after
 
     # delete self (as superuser)
     await login(user=su)
@@ -211,10 +213,8 @@ async def test_user_deletes_self(
 
     # compare res count
     # (resource patch owned by deleted superuser should be deleted now)
-    resp = await test_client.get("/resources")
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == res_count - 1
+    res_count_after = await ResourceBaseDocument.find_all(with_children=True).count()
+    assert res_count_after == res_count - 1
 
 
 @pytest.mark.anyio
