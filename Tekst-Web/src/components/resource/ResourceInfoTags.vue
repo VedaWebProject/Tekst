@@ -30,7 +30,7 @@ const auth = useAuthStore();
 const resources = useResourcesStore();
 
 const originalTitle = pickTranslation(
-  resources.ofText.find((r) => r.id == props.resource.originalId)?.title,
+  resources.currText.find((r) => r.id == props.resource.originalId)?.title,
   state.locale
 );
 
@@ -64,12 +64,6 @@ const accessSharesTip = computed(() => {
 
 <template>
   <n-flex v-bind="$attrs" :size="size" :wrap="false">
-    <n-tag v-if="!!resource.originalId" type="info" :size="size">
-      <template #icon>
-        <n-icon :component="PatchIcon" />
-      </template>
-      {{ $t('resources.patchFor', { title: originalTitle }) }}
-    </n-tag>
     <n-tag
       v-if="!!(resource.sharedRead.length + resource.sharedWrite.length)"
       :size="size"
@@ -99,6 +93,12 @@ const accessSharesTip = computed(() => {
         <n-icon :component="publicationStatusIcon" />
       </template>
       {{ publicationStatusText }}
+    </n-tag>
+    <n-tag v-if="!!resource.originalId" type="info" :size="size">
+      <template #icon>
+        <n-icon :component="PatchIcon" />
+      </template>
+      {{ $t('resources.patchFor', { title: originalTitle }) }}
     </n-tag>
   </n-flex>
 </template>

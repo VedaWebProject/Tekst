@@ -19,7 +19,7 @@ const resources = useResourcesStore();
 const router = useRouter();
 
 const resourceId = computed(() => props.resId);
-const resource = computed(() => resources.ofText.find((r) => r.id === resourceId.value));
+const resource = computed(() => resources.currText.find((r) => r.id === resourceId.value));
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 
 // change route if text changes

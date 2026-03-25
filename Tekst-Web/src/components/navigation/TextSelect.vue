@@ -2,7 +2,7 @@
 import type { TextRead } from '@/api';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import TextSelectOption from '@/components/navigation/TextSelectOption.vue';
-import { useBrowseStore, useStateStore } from '@/stores';
+import { useBrowseStore, useResourcesStore, useStateStore } from '@/stores';
 import { NFlex, NSelect, type SelectInst, type SelectOption } from 'naive-ui';
 import type { RenderLabel } from 'naive-ui/es/_internal/select-menu/src/interface';
 import { computed, h, ref } from 'vue';
@@ -11,15 +11,18 @@ import { useRouter } from 'vue-router';
 const state = useStateStore();
 const router = useRouter();
 const browse = useBrowseStore();
+const resources = useResourcesStore();
 
 const selectRef = ref<SelectInst>();
 
 const renderOptionLabel: SelectOption['render'] = (info) => {
+  const text = info.option.text as TextRead;
   return h(TextSelectOption, {
-    text: info.option.text as TextRead,
+    text,
     locale: state.locale,
+    resourcesCount: resources.ofText(text.id).length,
     selected: info.selected,
-    onClick: () => handleSelect(info.option.text as TextRead),
+    onClick: () => handleSelect(text),
   });
 };
 
@@ -27,6 +30,7 @@ const renderSelectLabel: RenderLabel = (opt: SelectOption & { text: TextRead }, 
   return h(TextSelectOption, {
     text: opt.text,
     locale: state.locale,
+    resourcesCount: resources.ofText(opt.text.id).length,
     singleLine: true,
     onClick: () => handleSelect(opt.text as TextRead),
   });

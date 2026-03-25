@@ -86,7 +86,7 @@ function stringifyResourceProps(res: AnyResourceRead) {
 }
 
 const filteredData = computed(() =>
-  resources.ofText
+  resources.currText
     .filter(
       (r) =>
         !searchInputDebounced.value ||
@@ -392,7 +392,7 @@ function handleCollapseUpdate(activeItemName?: string) {
 onMounted(() => {
   // inform user in case there are corrections for resources of another text
   if (
-    !resources.ofText.some((r) => !!r.corrections) &&
+    !resources.currText.some((r) => !!r.corrections) &&
     resources.all.filter((r) => r.textId !== state.text?.id).some((r) => !!r.corrections)
   ) {
     message.info($t('resources.msgCorrections'));
@@ -401,7 +401,7 @@ onMounted(() => {
   // expand and scroll to the resource entry mentionen in the URL hash, if any
   nextTick(() => {
     if (hashParams.id) {
-      const targetRes = resources.ofText.find((r) => r.id === hashParams.id);
+      const targetRes = resources.currText.find((r) => r.id === hashParams.id);
       if (targetRes) {
         expandedNames.value = [targetRes.id];
         setTimeout(() => {
@@ -421,14 +421,14 @@ onMounted(() => {
     <help-button-widget help-key="resourcesView" />
   </icon-heading>
 
-  <template v-if="resources.ofText && !resources.error && !loading">
+  <template v-if="resources.currText && !resources.error && !loading">
     <!-- Filter/Search -->
     <n-input
       v-model:value="searchInput"
       round
       clearable
       :status="searchInputState"
-      :disabled="!resources.ofText.length"
+      :disabled="!resources.currText.length"
       :placeholder="$t('resources.filterTip')"
       :title="$t('resources.filterTip')"
       class="mb-lg"
@@ -446,13 +446,15 @@ onMounted(() => {
           class="text-small translucent ellipsis"
           :style="{
             color:
-              !!resources.ofText.length && !filteredData.length ? 'var(--error-color)' : undefined,
+              !!resources.currText.length && !filteredData.length
+                ? 'var(--error-color)'
+                : undefined,
           }"
         >
           {{
             $t('resources.msgFoundCount', {
               count: filteredData.length,
-              total: resources.ofText.length,
+              total: resources.currText.length,
             })
           }}
         </div>
