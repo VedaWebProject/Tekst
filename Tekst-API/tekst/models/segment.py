@@ -87,8 +87,10 @@ class ClientSegmentDocument(ClientSegment, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "segments"
         indexes = [
-            "key",
-            "locale",
+            [
+                "key",
+                "locale",
+            ]
         ]
 
 
