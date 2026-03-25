@@ -68,8 +68,10 @@ class CorrectionDocument(Correction, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "corrections"
         indexes = [
-            "resource_id",
-            "location_id",
+            [
+                "resource_id",
+                "location_id",
+            ]
         ]
 
 

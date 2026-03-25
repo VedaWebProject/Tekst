@@ -142,10 +142,12 @@ class TaskDocument(Task, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "tasks"
         indexes = [
-            "task_type",
-            "user_id",
-            "pickup_key",
-            "target_id",
+            [
+                "task_type",
+                "user_id",
+                "pickup_key",
+                "target_id",
+            ]
         ]
 
 
