@@ -2,11 +2,13 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from beanie.operators import Set
+from beanie import PydanticObjectId
+from beanie.operators import Eq, Set
 from httpx import AsyncClient
 from tekst import package_metadata
 from tekst.auth import AccessTokenDocument
-from tekst.platform import cleanup_task
+from tekst.models.content import ContentBaseDocument
+from tekst.models.message import UserMessageDocument
 
 
 @pytest.mark.anyio
@@ -175,7 +177,43 @@ async def test_crud_segment(
 
 
 @pytest.mark.anyio
-async def test_platform_cleanup(
+async def test_platform_cleanup_access_tokens(
+    test_client: AsyncClient,
+    insert_test_data,
+    assert_status,
+    login,
+    wait_for_task_success,
+    config,
+):
+    await insert_test_data()
+    await login()  # login as regular user
+
+    # there should be 1 access token, now
+    assert await AccessTokenDocument.find().count() == 1
+
+    # manipulate all access tokens to be 20 hours old
+    # (access token lifetime is set to 1 hour in tests config)
+    await AccessTokenDocument.find().update(
+        Set({AccessTokenDocument.created_at: datetime.now(UTC) - timedelta(hours=20)})
+    )
+
+    await login(is_superuser=True)  # login as superuser
+
+    # there should be 2 access tokens, now
+    assert await AccessTokenDocument.find().count() == 2
+
+    # run cleanup
+    resp = await test_client.get("/platform/cleanup")
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # there should be 1 access token left, now
+    assert await AccessTokenDocument.find().count() == 1
+
+
+@pytest.mark.anyio
+async def test_platform_cleanup_user_messages(
     test_client: AsyncClient,
     insert_test_data,
     assert_status,
@@ -186,32 +224,131 @@ async def test_platform_cleanup(
     await insert_test_data()
     await login(is_superuser=True)
 
-    # start cleanup task (should work but do nothing)
+    # create stale user message
+    await UserMessageDocument(
+        sender="69c510aef0e54419806c7a24",
+        recipient="69c510b8f0e54419806c7a25",
+        content="FOO BAR",
+        created_at=(
+            datetime.now(UTC)
+            - timedelta(days=config.misc.usrmsg_force_delete_after_days + 1)
+        ),
+    ).save()
+
+    # there should be 1 message, now
+    assert await UserMessageDocument.find().count() == 1
+
+    # run cleanup
     resp = await test_client.get("/platform/cleanup")
     assert_status(202, resp)
     assert "id" in resp.json()
     assert await wait_for_task_success(resp.json()["id"])
 
-    # manipulate the access token of our session to be 2 hours old
-    # (access token lifetime is set to 1 hour in tests config)
-    await AccessTokenDocument.find().update(
-        Set({AccessTokenDocument.created_at: datetime.now(UTC) - timedelta(hours=2)})
+    # there should be 0 messages left, now
+    assert await UserMessageDocument.find().count() == 0
+
+
+@pytest.mark.anyio
+async def test_platform_cleanup_archive_duplicates(
+    test_client: AsyncClient,
+    insert_test_data,
+    assert_status,
+    login,
+    wait_for_task_success,
+    config,
+):
+    await insert_test_data()
+    await login(is_superuser=True)
+
+    # get a target content
+    content = await ContentBaseDocument.get(
+        PydanticObjectId("67c04798906e79b9062e2344"),
+        with_children=True,
+    )
+    assert content
+
+    # check that there are no archived versions for the target content, yet
+    assert (
+        await ContentBaseDocument.find(
+            Eq(ContentBaseDocument.resource_id, content.resource_id),
+            Eq(ContentBaseDocument.location_id, content.location_id),
+            Eq(ContentBaseDocument.archived, True),
+            with_children=True,
+        ).count()
+        == 0
     )
 
-    # try to start cleanup task again
-    # (our session should be invalid by now, so we can't)
+    # create archived versions of target content
+    for i, text in enumerate(["a", "a", "a", "b", "c", "d", "e", "e", "e"]):
+        await content.model_copy(
+            update={
+                "id": None,
+                "text": text,
+                "created_at": content.created_at - timedelta(days=i + 1),
+                "archived": True,
+            }
+        ).save()
+
+    # check archived contents count
+    assert (
+        await ContentBaseDocument.find(
+            Eq(ContentBaseDocument.resource_id, content.resource_id),
+            Eq(ContentBaseDocument.location_id, content.location_id),
+            Eq(ContentBaseDocument.archived, True),
+            with_children=True,
+        ).count()
+        == 9
+    )
+
+    # run cleanup
     resp = await test_client.get("/platform/cleanup")
-    assert_status(401, resp)
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
 
-    # there should be 1 access tokens, now
-    assert await AccessTokenDocument.find().count() == 1
+    # check archived contents
+    # 5 of the 9 created should be left
+    assert (
+        "".join(
+            [
+                c.text
+                for c in await ContentBaseDocument.find(
+                    Eq(ContentBaseDocument.resource_id, content.resource_id),
+                    Eq(ContentBaseDocument.location_id, content.location_id),
+                    Eq(ContentBaseDocument.archived, True),
+                    with_children=True,
+                )
+                .sort(-ContentBaseDocument.created_at)
+                .to_list()
+            ]
+        )
+        == "abcde"
+    )
 
-    # start cleanup task again – this time without going through API auth because
-    # our token isn't valid anymore...
-    await cleanup_task()
+    # run cleanup again
+    resp = await test_client.get("/platform/cleanup")
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
 
-    # there should be 0 access tokens, now
-    assert await AccessTokenDocument.find().count() == 0
+    # check archived contents count
+    # again, 5 of the 9 created should be left
+    assert (
+        "".join(
+            [
+                c.text
+                for c in await ContentBaseDocument.find(
+                    Eq(ContentBaseDocument.resource_id, content.resource_id),
+                    Eq(ContentBaseDocument.location_id, content.location_id),
+                    Eq(ContentBaseDocument.archived, True),
+                    with_children=True,
+                )
+                .sort(-ContentBaseDocument.created_at)
+                .to_list()
+            ]
+        )
+        == "abcde"
+    )
 
 
 @pytest.mark.anyio
