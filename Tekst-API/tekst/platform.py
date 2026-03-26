@@ -5,6 +5,7 @@ from pathlib import Path
 
 from beanie.operators import GTE, LT, Eq, In, Or
 from bson import json_util
+from deepdiff.diff import DeepDiff
 
 from tekst import db, search
 from tekst.auth import AccessTokenDocument, create_initial_superuser
@@ -12,6 +13,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.db import migrations
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import PydanticObjectId
+from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
 from tekst.models.segment import ClientSegmentDocument, ClientSegmentHead
@@ -103,7 +105,7 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     op_id = log_op_start("Platform Cleanup", level="INFO")
 
     # delete outdated access tokens
-    log.debug("Deleting outdated access tokens...")
+    log.info("Cleanup: Deleting outdated access tokens...")
     await AccessTokenDocument.find(
         LT(
             AccessTokenDocument.created_at,
@@ -112,13 +114,62 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
     ).delete()
 
     # delete stale user messages
-    log.debug("Deleting stale user messages...")
+    log.info("Cleanup: Deleting stale user messages...")
     await UserMessageDocument.find(
         LT(
             UserMessageDocument.created_at,
             datetime.now(UTC) - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
         ),
     ).delete()
+
+    # delete adjacent content archive duplicates (keep oldest instance)
+    log.info("Cleanup: Deleting adjacent content archive duplicates...")
+    exclude_from_comparison = {
+        "id",
+        "_id",
+        "resource_id",
+        "location_id",
+        "resource_type",
+        "created_at",
+        "archived",
+    }
+    async for content in ContentBaseDocument.find(
+        Eq(ContentBaseDocument.archived, False),
+        with_children=True,
+    ):
+        archived_versions = (
+            await ContentBaseDocument.find(
+                Eq(ContentBaseDocument.resource_id, content.resource_id),
+                Eq(ContentBaseDocument.location_id, content.location_id),
+                Eq(ContentBaseDocument.archived, True),
+                with_children=True,
+            )
+            .sort(+ContentBaseDocument.created_at)  # oldest first
+            .to_list()
+        )
+        to_delete = []
+        curr_v = None
+        for v in archived_versions:
+            if curr_v is None:
+                curr_v = v
+                continue
+            if not DeepDiff(
+                curr_v.model_dump(
+                    exclude=exclude_from_comparison,
+                    exclude_computed_fields=True,
+                ),
+                v.model_dump(
+                    exclude=exclude_from_comparison,
+                    exclude_computed_fields=True,
+                ),
+            ):
+                to_delete.append(v)
+            else:
+                curr_v = v
+        await ContentBaseDocument.find(
+            In(ContentBaseDocument.id, [v.id for v in to_delete]),
+            with_children=True,
+        ).delete()
 
     return {
         "took": round(log_op_end(op_id), 2),
