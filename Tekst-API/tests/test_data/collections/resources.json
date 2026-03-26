@@ -60,7 +60,7 @@
     "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
     "shared_read": [],
     "shared_write": [],
-    "public": true,
+    "public": false,
     "proposed": false,
     "meta": [],
     "description": [

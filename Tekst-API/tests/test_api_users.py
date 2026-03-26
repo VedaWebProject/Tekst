@@ -152,20 +152,13 @@ async def test_user_deletes_self(
     assert_status,
     insert_test_data,
 ):
-    ### make sure user owns resources
-    inserted_ids = await insert_test_data()
-    u = await login()
-    su = await login(is_superuser=True)
+    await insert_test_data()
+    u = await login()  # log in as (and thus create) regular user
+    su = await login(is_superuser=True)  # log in as (and thus create) superuser
+    target_res_id = PydanticObjectId("67c043c0906e79b9062e22f4")
 
-    # get res count
-    res_count = await ResourceBaseDocument.find_all(with_children=True).count()
-
-    # unpublish first resource
-    resp = await test_client.post(
-        f"/resources/{inserted_ids['resources'][0]}/unpublish",
-    )
-    assert_status(200, resp)
-    assert not resp.json()["public"]
+    # get resource count
+    res_count_before = await ResourceBaseDocument.find_all(with_children=True).count()
 
     # set superuser as owner of all resources
     await ResourceBaseDocument.find_all(with_children=True).update(
@@ -176,33 +169,63 @@ async def test_user_deletes_self(
             ResourceBaseDocument.owner_ids == PydanticObjectId(su["id"]),
             with_children=True,
         ).count()
-        == res_count
+        == res_count_before
     )
 
-    # set regular user as owner of one specific resource
-    await ResourceBaseDocument.find(
-        ResourceBaseDocument.id == PydanticObjectId("67c043c0906e79b9062e22f4"),
+    # unpublish target resource
+    await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == target_res_id,
         with_children=True,
-    ).update(Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]}))
-    u_res: ResourceBaseDocument = await ResourceBaseDocument.get(
-        PydanticObjectId("67c043c0906e79b9062e22f4"),
+    ).update(Set({ResourceBaseDocument.public: False}))
+    assert (
+        await ResourceBaseDocument.get(
+            target_res_id,
+            with_children=True,
+        )
+    ).public is False
+
+    # check that patch for target resource exists and is owned by superuser su
+    target_resource_patch = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.original_id == target_res_id,
         with_children=True,
     )
-    assert len(u_res.owner_ids) == 1
-    assert str(u_res.owner_ids[0]) == u["id"]
+    assert target_resource_patch
+    assert target_resource_patch.owner_ids[0] == PydanticObjectId(su["id"])
+
+    # set regular user as owner of target resource
+    await ResourceBaseDocument.find(
+        ResourceBaseDocument.id == target_res_id,
+        with_children=True,
+    ).update(Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]}))
+    target_resource: ResourceBaseDocument = await ResourceBaseDocument.get(
+        target_res_id,
+        with_children=True,
+    )
+    assert len(target_resource.owner_ids) == 1
+    assert target_resource.owner_ids[0] == PydanticObjectId(u["id"])
 
     # delete self (as regular user)
     await login(user=u)
-    resp = await test_client.delete(
-        "/users/me",
-    )
+    resp = await test_client.delete("/users/me")
     assert_status(204, resp)
 
-    # compare res count
-    # (resource owned by deleted user should be deleted now)
-    res_count_after = await ResourceBaseDocument.find_all(with_children=True).count()
-    assert res_count_after == res_count - 1
-    res_count = res_count_after
+    # target resource formerly owned by deleted user should be deleted now, too
+    assert not await ResourceBaseDocument.get(
+        target_res_id,
+        with_children=True,
+    )
+
+    # former patch of target resource should be a full-fledged resource now
+    # (and is owned by superuser su)
+    former_target_resource_patch = await ResourceBaseDocument.get(
+        target_resource_patch.id,
+        with_children=True,
+    )
+    assert former_target_resource_patch  # exists
+    assert former_target_resource_patch.original_id is None  # not a patch anymore
+    assert former_target_resource_patch.owner_ids[0] == PydanticObjectId(
+        su["id"]
+    )  # owner = su
 
     # delete self (as superuser)
     await login(user=su)
@@ -211,14 +234,26 @@ async def test_user_deletes_self(
     )
     assert_status(204, resp)
 
-    # compare res count
-    # (resource patch owned by deleted superuser should be deleted now)
-    res_count_after = await ResourceBaseDocument.find_all(with_children=True).count()
-    assert res_count_after == res_count - 1
+    # former patch of target resource should be deleted now, too
+    assert (
+        await ResourceBaseDocument.get(
+            target_resource_patch.id,
+            with_children=True,
+        )
+        is None
+    )
+
+    # check resource count (should be 2 less that at the beginning of test case)
+    assert (
+        await ResourceBaseDocument.find_all(
+            with_children=True,
+        ).count()
+        == res_count_before - 2
+    )
 
 
 @pytest.mark.anyio
-async def test_last_superuser_deletes_self(
+async def test_last_superuser_deletes_self_fails(
     login,
     test_client: AsyncClient,
     assert_status,

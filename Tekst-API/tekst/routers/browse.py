@@ -205,14 +205,15 @@ async def get_location_data(
         else [location_path[-1].id]
     )
 
-    # collect contents for target resources belonging to locations present in
-    # the location path (resource.level <= location_doc.level)
+    # get target resources
     target_resources = await ResourceBaseDocument.find(
         In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
         await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     ).to_list()
 
+    # collect contents for target resources belonging to locations present in
+    # the location path (resource.level <= location_doc.level)
     if archive_ts is None:
         # just query for most recent contents (we can do that in one DB request)
         contents = {

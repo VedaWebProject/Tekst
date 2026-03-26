@@ -1,5 +1,6 @@
 import pytest
 
+from beanie import PydanticObjectId
 from httpx import AsyncClient
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -71,14 +72,18 @@ async def test_get_location_data(
     insert_test_data,
     assert_status,
     wrong_id,
+    login,
 ):
-    text_id = (await insert_test_data())["texts"][0]
-    assert len(text_id) > 0
+    await insert_test_data()
+    target_text_id = PydanticObjectId("67c03aed5dbf06b9624fd57e")
+    target_text = await TextDocument.get(target_text_id)
+    assert target_text is not None
+    await login(is_superuser=True)
 
     # get level 0 path and contents
     resp = await test_client.get(
         "/browse",
-        params={"txt": text_id, "lvl": 0, "pos": 0},
+        params={"txt": str(target_text_id), "lvl": 0, "pos": 0},
     )
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
@@ -87,11 +92,11 @@ async def test_get_location_data(
         len([v for v in resp.json()["contents"].values()][0]) == 2
     )  # because enable_content_context=True
 
-    # higher level
+    # get level 1 path and contents
     resp = await test_client.get(
         "/browse",
         params={
-            "txt": text_id,
+            "txt": str(target_text_id),
             "lvl": 1,
             "pos": 0,
         },
@@ -105,8 +110,8 @@ async def test_get_location_data(
     resp = await test_client.get(
         "/browse",
         params={
-            "txt": text_id,
-            "is": "67c040bb906e79b9062e22e9",
+            "txt": str(target_text_id),
+            "id": "67c040bb906e79b9062e22e9",
             "ts": 1710077448446,
         },
     )
@@ -118,14 +123,21 @@ async def test_get_location_data(
     # fail w/ invalid text ID
     resp = await test_client.get(
         "/browse",
-        params={"txt": wrong_id, "lvl": 1, "pos": 0},
+        params={
+            "txt": wrong_id,
+            "lvl": 1,
+            "pos": 0,
+        },
     )
     assert_status(404, resp)
 
     # fail w/ invalid location ID
     resp = await test_client.get(
         "/browse",
-        params={"txt": text_id, "id": wrong_id},
+        params={
+            "txt": str(target_text_id),
+            "id": wrong_id,
+        },
     )
     assert_status(404, resp)
 
