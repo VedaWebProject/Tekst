@@ -2,13 +2,13 @@
 import type { AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import {
-  CommunityIcon,
-  LevelsIcon,
-  PatchIcon,
-  ProposedIcon,
-  PublicIcon,
-  PublicOffIcon,
-  ResourceIcon,
+    CommunityIcon,
+    LevelsIcon,
+    PatchIcon,
+    ProposedIcon,
+    PublicIcon,
+    PublicOffIcon,
+    ResourceIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -30,7 +30,7 @@ const auth = useAuthStore();
 const resources = useResourcesStore();
 
 const originalTitle = pickTranslation(
-  resources.currText.find((r) => r.id == props.resource.originalId)?.title,
+  resources.currText.find((r) => r.id == props.resource.patchFor)?.title,
   state.locale
 );
 
@@ -88,13 +88,13 @@ const accessSharesTip = computed(() => {
       </template>
       {{ state.textLevelLabels[resource.level] }}
     </n-tag>
-    <n-tag v-if="!resource.originalId && !!auth.user" :type="publicationStatusType" :size="size">
+    <n-tag v-if="!resource.patchFor && !!auth.user" :type="publicationStatusType" :size="size">
       <template #icon>
         <n-icon :component="publicationStatusIcon" />
       </template>
       {{ publicationStatusText }}
     </n-tag>
-    <n-tag v-if="!!resource.originalId" type="info" :size="size">
+    <n-tag v-if="!!resource.patchFor" type="info" :size="size">
       <template #icon>
         <n-icon :component="PatchIcon" />
       </template>

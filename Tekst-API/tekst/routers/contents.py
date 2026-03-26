@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In, Not, Set
+from beanie.operators import Eq, In, Not
 from fastapi import APIRouter, BackgroundTasks, Path, Query, status
 
 from tekst import errors
@@ -189,7 +189,7 @@ async def update_content(
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
     # handle content archival if this belongs to a public, non-patch resource
-    if resource.public and not resource.original_id:
+    if resource.public and not resource.patch_for:
         # archive existing content, obtain an unsaved copy
         content_copy = await content_doc.archive()
         # apply updates to the copy and insert it
@@ -280,7 +280,7 @@ async def archive_content(
             errors.E_400_INVALID_REQUEST_DATA,
             {"detail": "Content archival only allowed for published resources"},
         )
-    if resource.original_id:  # pragma: no cover
+    if resource.patch_for:  # pragma: no cover
         raise errors.update_values(
             errors.E_400_INVALID_REQUEST_DATA,
             {"detail": "Content archival not possible for resource patches"},
@@ -348,7 +348,7 @@ async def restore_archived_content(
         Eq(ContentBaseDocument.location_id, archived_content_doc.location_id),
         Eq(ContentBaseDocument.archived, False),
         with_children=True,
-    ).update(Set({ContentBaseDocument.archived: True}))
+    ).set({ContentBaseDocument.archived: True})
 
     # restore formerly archived content as current content
     return await archived_content_doc.model_copy(
@@ -399,10 +399,10 @@ async def find_contents(
     if resource_ids:
         resource_ids.append(
             [
-                res.original_id
+                res.patch_for
                 for res in await ResourceBaseDocument.find(
                     In(ResourceBaseDocument.id, resource_ids),
-                    Not(Eq(ResourceBaseDocument.original_id, None)),
+                    Not(Eq(ResourceBaseDocument.patch_for, None)),
                     with_children=True,
                 ).to_list()
             ]

@@ -257,9 +257,9 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
         ):
             # turn patches of this resource into original resources
             await ResourceBaseDocument.find(
-                ResourceBaseDocument.original_id == res.id,
+                ResourceBaseDocument.patch_for == res.id,
                 with_children=True,
-            ).set({ResourceBaseDocument.original_id: None})
+            ).set({ResourceBaseDocument.patch_for: None})
 
             # delete contents belonging to the resource
             await ContentBaseDocument.find(

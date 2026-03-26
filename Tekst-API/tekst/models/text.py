@@ -4,11 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq
-from pydantic import (
-    ConfigDict,
-    Field,
-    field_validator,
-)
+from pydantic import Field, field_validator
 from pydantic_extra_types.color import Color
 from typing_extensions import TypedDict
 
@@ -320,5 +316,4 @@ class LocationDefinition(ModelBase):
 
 
 class TextStructureImportData(ModelBase):
-    model_config = ConfigDict(extra="allow")
     locations: list[LocationDefinition] = []

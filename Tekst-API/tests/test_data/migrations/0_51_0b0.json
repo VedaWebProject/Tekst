@@ -1,0 +1,62 @@
+[
+  {
+    "_id": { "$oid": "66471de0ba9e65342c8e4995" },
+    "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Various External Resources" },
+      { "locale": "deDE", "translation": "Verschiedene Externe Ressourcen" }
+    ],
+    "subtitle": [],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 0,
+    "resource_type": "externalReferences",
+    "original_id": null,
+    "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "description": [],
+    "config": {
+      "general": {
+        "category": "links",
+        "sort_order": 15,
+        "default_active": true,
+        "enable_content_context": false
+      }
+    },
+    "coverage": [1, 1]
+  },
+  {
+    "_id": { "$oid": "66471de0ba9e65342c8aaaaa" },
+    "_class_id": "ResourceBaseDocument.ExternalReferencesResourceDocument",
+    "title": [
+      { "locale": "enUS", "translation": "Various External Resources v2" },
+      { "locale": "deDE", "translation": "Verschiedene Externe Ressourcen v2" }
+    ],
+    "subtitle": [],
+    "text_id": { "$oid": "654b825533ee5737b297f8e3" },
+    "level": 0,
+    "resource_type": "externalReferences",
+    "original_id": { "$oid": "66471de0ba9e65342c8e4995" },
+    "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
+    "shared_read": [],
+    "shared_write": [],
+    "public": true,
+    "proposed": false,
+    "citation": null,
+    "meta": [],
+    "description": [],
+    "config": {
+      "general": {
+        "category": "links",
+        "sort_order": 15,
+        "default_active": true,
+        "enable_content_context": false
+      }
+    },
+    "coverage": [1, 1]
+  }
+]

@@ -8,32 +8,32 @@ import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import env from '@/env';
 import { $t } from '@/i18n';
 import {
-  BookIcon,
-  CorrectionNoteIcon,
-  DeleteIcon,
-  DownloadIcon,
-  EditIcon,
-  MoreIcon,
-  PatchIcon,
-  ProposedIcon,
-  PublicIcon,
-  PublicOffIcon,
-  ReviewIcon,
-  SettingsIcon,
-  UnproposedIcon,
-  UploadIcon,
-  UserIcon,
+    BookIcon,
+    CorrectionNoteIcon,
+    DeleteIcon,
+    DownloadIcon,
+    EditIcon,
+    MoreIcon,
+    PatchIcon,
+    ProposedIcon,
+    PublicIcon,
+    PublicOffIcon,
+    ReviewIcon,
+    SettingsIcon,
+    UnproposedIcon,
+    UploadIcon,
+    UserIcon,
 } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
 import {
-  NBadge,
-  NButton,
-  NCollapseItem,
-  NFlex,
-  NIcon,
-  type ButtonType,
-  type DropdownOption,
+    NBadge,
+    NButton,
+    NCollapseItem,
+    NFlex,
+    NIcon,
+    type ButtonType,
+    type DropdownOption,
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -88,7 +88,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
         icon: renderIcon(BookIcon),
         action: () => emit('browseClick', props.resource),
       },
-      ...(!props.resource.originalId && props.user
+      ...(!props.resource.patchFor && props.user
         ? [
             {
               label: $t('resources.createPatchAction'),
@@ -170,7 +170,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
           type: 'group',
           label: $t('common.status'),
           children: [
-            ...(!props.resource.proposed && !props.resource.public && !props.resource.originalId
+            ...(!props.resource.proposed && !props.resource.public && !props.resource.patchFor
               ? [
                   {
                     label: $t('resources.proposeAction'),
@@ -186,7 +186,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.unproposeAction'),
                     key: 'unpropose',
-                    disabled: !!props.resource.originalId,
+                    disabled: !!props.resource.patchFor,
                     icon: renderIcon(UnproposedIcon),
                     action: () => emit('unproposeClick', props.resource),
                     statusType: 'error',
@@ -198,7 +198,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.publishAction'),
                     key: 'publish',
-                    disabled: !!props.resource.originalId,
+                    disabled: !!props.resource.patchFor,
                     icon: renderIcon(PublicIcon),
                     action: () => emit('publishClick', props.resource),
                     statusType: 'success',
@@ -210,14 +210,14 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.unpublishAction'),
                     key: 'unpublish',
-                    disabled: !!props.resource.originalId,
+                    disabled: !!props.resource.patchFor,
                     icon: renderIcon(PublicOffIcon),
                     action: () => emit('unpublishClick', props.resource),
                     statusType: 'error',
                   },
                 ]
               : []),
-            ...(!!props.resource.originalId &&
+            ...(!!props.resource.patchFor &&
             props.user &&
             props.resource.ownerIds.includes(props.user.id)
               ? [
@@ -227,9 +227,9 @@ const actionOptions = computed<DropdownOption[]>(() => [
                     icon: renderIcon(ReviewIcon),
                     disabled:
                       resources.all
-                        .find((r) => r.id === props.resource.originalId)
+                        .find((r) => r.id === props.resource.patchFor)
                         ?.ownerIds.includes(props.user.id) ||
-                      !resources.all.find((r) => r.id === props.resource.originalId)?.ownerIds
+                      !resources.all.find((r) => r.id === props.resource.patchFor)?.ownerIds
                         .length,
                     action: () => emit('reqPatchIntegrationClick', props.resource),
                     statusType: 'success',

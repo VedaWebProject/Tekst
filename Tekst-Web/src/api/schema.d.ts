@@ -1641,7 +1641,7 @@ export interface components {
        */
       resourceType: 'apiCall';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -1736,7 +1736,7 @@ export interface components {
        */
       resourceType: 'apiCall';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -1846,7 +1846,7 @@ export interface components {
        */
       resourceType: 'apiCall';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -2029,7 +2029,7 @@ export interface components {
        */
       resourceType: 'audio';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -2119,7 +2119,7 @@ export interface components {
        */
       resourceType: 'audio';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -2224,7 +2224,7 @@ export interface components {
        */
       resourceType: 'audio';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -2825,7 +2825,7 @@ export interface components {
        */
       resourceType: 'externalReferences';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -2915,7 +2915,7 @@ export interface components {
        */
       resourceType: 'externalReferences';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -3020,7 +3020,7 @@ export interface components {
        */
       resourceType: 'externalReferences';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -3313,7 +3313,7 @@ export interface components {
        */
       resourceType: 'images';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -3403,7 +3403,7 @@ export interface components {
        */
       resourceType: 'images';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -3508,7 +3508,7 @@ export interface components {
        */
       resourceType: 'images';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -3936,7 +3936,7 @@ export interface components {
        */
       resourceType: 'locationMetadata';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -4033,7 +4033,7 @@ export interface components {
        */
       resourceType: 'locationMetadata';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -4145,7 +4145,7 @@ export interface components {
        */
       resourceType: 'locationMetadata';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -4520,7 +4520,7 @@ export interface components {
        */
       resourceType: 'plainText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -4625,7 +4625,7 @@ export interface components {
        */
       resourceType: 'plainText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -4745,7 +4745,7 @@ export interface components {
        */
       resourceType: 'plainText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -5519,7 +5519,7 @@ export interface components {
        */
       resourceType: 'richText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -5614,7 +5614,7 @@ export interface components {
        */
       resourceType: 'richText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -5724,7 +5724,7 @@ export interface components {
        */
       resourceType: 'richText';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource
@@ -6134,7 +6134,7 @@ export interface components {
        */
       resourceType: 'textAnnotation';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Citation
        * @description Citation details for this resource
@@ -6233,7 +6233,7 @@ export interface components {
        */
       resourceType: 'textAnnotation';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Ownerids
        * @description Users owning this resource
@@ -6347,7 +6347,7 @@ export interface components {
        */
       resourceType: 'textAnnotation';
       /** @description If this is a patch of another resource, this ID references the original */
-      originalId?: components['schemas']['PydanticObjectId'] | null;
+      patchFor?: components['schemas']['PydanticObjectId'] | null;
       /**
        * Sharedread
        * @description Users with shared read access to this resource

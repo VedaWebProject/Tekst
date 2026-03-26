@@ -235,7 +235,7 @@ async def test_create_resource_patch(
     )
     assert_status(201, resp)
     assert "id" in resp.json()
-    assert "originalId" in resp.json()
+    assert "patchFor" in resp.json()
     assert "ownerIds" in resp.json()
     assert user.get("id") in resp.json()["ownerIds"]
 
@@ -877,7 +877,7 @@ async def test_delete_resource(
 
     # get patch for target resource
     target_resource_patch = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.original_id == target_resource_id,
+        ResourceBaseDocument.patch_for == target_resource_id,
         with_children=True,
     )
     assert target_resource_patch is not None
@@ -886,7 +886,7 @@ async def test_delete_resource(
     await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == target_resource_id,
         with_children=True,
-    ).update(Set({ResourceBaseDocument.public: False}))
+    ).set({ResourceBaseDocument.public: False})
     assert (
         await ResourceBaseDocument.find_one(
             ResourceBaseDocument.id == target_resource_id,
@@ -941,7 +941,7 @@ async def test_delete_resource(
             target_resource_patch.id,
             with_children=True,
         )
-    ).original_id is None
+    ).patch_for is None
 
 
 @pytest.mark.anyio
@@ -1479,7 +1479,7 @@ async def test_export_content(
     await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == PydanticObjectId(target_res_ids[0]),
         with_children=True,
-    ).update(Set({ResourceBaseDocument.public: False}))
+    ).set({ResourceBaseDocument.public: False})
     # request export
     resp = await test_client.get(
         f"/resources/{target_res_ids[0]}/export",

@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.50.2b0"
+    "version": "0.51.0b0"
   },
   "servers": [
     {
@@ -8189,7 +8189,7 @@
             "const": "apiCall",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -8388,7 +8388,7 @@
             "const": "apiCall",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -8600,7 +8600,7 @@
             "const": "apiCall",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -9027,7 +9027,7 @@
             "const": "audio",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -9221,7 +9221,7 @@
             "const": "audio",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -9428,7 +9428,7 @@
             "const": "audio",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -10793,7 +10793,7 @@
             "const": "externalReferences",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -10987,7 +10987,7 @@
             "const": "externalReferences",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -11194,7 +11194,7 @@
             "const": "externalReferences",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -11825,7 +11825,7 @@
             "const": "images",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -12019,7 +12019,7 @@
             "const": "images",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -12226,7 +12226,7 @@
             "const": "images",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -13189,7 +13189,7 @@
             "const": "locationMetadata",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -13390,7 +13390,7 @@
             "const": "locationMetadata",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -13604,7 +13604,7 @@
             "const": "locationMetadata",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -14425,7 +14425,7 @@
             "const": "plainText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -14634,7 +14634,7 @@
             "const": "plainText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -14856,7 +14856,7 @@
             "const": "plainText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -16478,7 +16478,7 @@
             "const": "richText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -16677,7 +16677,7 @@
             "const": "richText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -16889,7 +16889,7 @@
             "const": "richText",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -17830,7 +17830,7 @@
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -18033,7 +18033,7 @@
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"
@@ -18249,7 +18249,7 @@
             "const": "textAnnotation",
             "title": "Resourcetype"
           },
-          "originalId": {
+          "patchFor": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/PydanticObjectId"

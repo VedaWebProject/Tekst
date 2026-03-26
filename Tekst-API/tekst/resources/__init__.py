@@ -50,7 +50,7 @@ RES_EXCLUDE_EXP_IMP = {
     "text_id",
     "level",
     "resource_type",
-    "original_id",
+    "patch_for",
     "owner_ids",
     "shared_read",
     "shared_write",

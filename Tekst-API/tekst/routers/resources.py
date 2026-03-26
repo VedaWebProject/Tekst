@@ -160,13 +160,13 @@ async def create_resource_patch(
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if resource is already a patch
-    if resource_doc.original_id:
+    if resource_doc.patch_for:
         raise errors.E_400_RESOURCE_PATCH_OF_PATCH
 
     # generate patch title
     patch_title_suffix = " v" + str(
         await ResourceBaseDocument.find(
-            ResourceBaseDocument.original_id == resource_id,
+            ResourceBaseDocument.patch_for == resource_id,
             with_children=True,
         ).count()
         + 2
@@ -185,7 +185,7 @@ async def create_resource_patch(
         update={
             ResourceBaseDocument.id: None,
             ResourceBaseDocument.title: patch_title,
-            ResourceBaseDocument.original_id: resource_doc.id,
+            ResourceBaseDocument.patch_for: resource_doc.id,
             ResourceBaseDocument.owner_ids: [user.id],
             ResourceBaseDocument.proposed: False,
             ResourceBaseDocument.public: False,
@@ -400,9 +400,9 @@ async def delete_resource(
     # all fine
     # turn patches of this resource into original resources
     await ResourceBaseDocument.find(
-        ResourceBaseDocument.original_id == resource_id,
+        ResourceBaseDocument.patch_for == resource_id,
         with_children=True,
-    ).set({ResourceBaseDocument.original_id: None})
+    ).set({ResourceBaseDocument.patch_for: None})
 
     # delete contents belonging to the resource
     await ContentBaseDocument.find(
@@ -522,7 +522,7 @@ async def propose_resource(
         return await prepare_resource_read(resource_doc, user)
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PROPOSE_PUBLIC
-    if resource_doc.original_id:
+    if resource_doc.patch_for:
         raise errors.E_400_RESOURCE_PATCH_PROPOSE
     # all fine, propose resource
     await resource_doc.set(
@@ -599,7 +599,7 @@ async def publish_resource(
         return await prepare_resource_read(resource_doc, user)
     if not resource_doc.proposed:
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
-    if resource_doc.original_id:
+    if resource_doc.patch_for:
         raise errors.E_400_RESOUCE_PATCH_PUBLISH
 
     # all fine, publish resource
@@ -897,7 +897,7 @@ async def _import_resource_task(
         while updates:
             existing_content_doc, content_updates = updates.pop()
             loc_id = existing_content_doc.location_id
-            if resource_doc.public and not resource_doc.original_id:
+            if resource_doc.public and not resource_doc.patch_for:
                 # archive the existing content doc if the resource
                 # is public (and not a resource patch)
                 await existing_content_doc.archive()
