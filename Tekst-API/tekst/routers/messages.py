@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import And, Eq, In, Or, Set
+from beanie.operators import And, Eq, In, Or
 from fastapi import APIRouter, BackgroundTasks, Depends, Path, Query, status
 
 from tekst import errors
@@ -129,7 +129,7 @@ async def get_thread_messages(
     await UserMessageDocument.find(
         Eq(UserMessageDocument.sender, thread_id),
         Eq(UserMessageDocument.recipient, user.id),
-    ).update(Set({UserMessageDocument.read: True}))
+    ).set({UserMessageDocument.read: True})
 
     return messages
 

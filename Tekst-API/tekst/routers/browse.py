@@ -61,11 +61,11 @@ async def _get_content_context(
 
     # if the resource is a patch, we also have to find the original's contents
     # that are missing in the requested resource patch
-    if resource.original_id:
+    if resource.patch_for:
         original_content_docs_by_loc = {
             content.location_id: content
             for content in await ContentBaseDocument.find(
-                ContentBaseDocument.resource_id == resource.original_id,
+                Eq(ContentBaseDocument.resource_id, resource.patch_for),
                 In(ContentBaseDocument.location_id, location_ids),
                 NotIn(ContentBaseDocument.location_id, content_docs_by_loc.keys()),
                 Eq(ContentBaseDocument.archived, False),
@@ -255,11 +255,11 @@ async def get_location_data(
     # content if the patch doesn't have own contents
     for resource in target_resources:
         if (
-            resource.original_id
+            resource.patch_for
             and resource.id not in contents
-            and resource.original_id in contents
+            and resource.patch_for in contents
         ):
-            contents[resource.id] = contents[resource.original_id]
+            contents[resource.id] = contents[resource.patch_for]
 
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)

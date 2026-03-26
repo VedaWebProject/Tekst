@@ -51,7 +51,7 @@
   {
     "_id": { "$oid": "67c043c0906e79b9aaaaaaaa" },
     "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
-    "original_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "patch_for": { "$oid": "67c043c0906e79b9062e22f4" },
     "title": [{ "locale": "*", "translation": "Plain Text v2" }],
     "subtitle": [],
     "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },

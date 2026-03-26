@@ -79,7 +79,7 @@ const fontStyle = {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
-        :from-original-resource="content.resourceId == resource.originalId"
+        :from-original-resource="content.resourceId == resource.patchFor"
       >
         <table>
           <template v-for="(group, index) in content.groups" :key="group.group">
