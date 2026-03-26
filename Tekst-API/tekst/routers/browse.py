@@ -205,14 +205,15 @@ async def get_location_data(
         else [location_path[-1].id]
     )
 
-    # collect contents for target resources belonging to locations present in
-    # the location path (resource.level <= location_doc.level)
+    # get target resources
     target_resources = await ResourceBaseDocument.find(
         In(ResourceBaseDocument.id, resource_ids) if resource_ids else {},
         await ResourceBaseDocument.query_criteria_read(user),
         with_children=True,
     ).to_list()
 
+    # collect contents for target resources belonging to locations present in
+    # the location path (resource.level <= location_doc.level)
     if archive_ts is None:
         # just query for most recent contents (we can do that in one DB request)
         contents = {
@@ -249,6 +250,16 @@ async def get_location_data(
             )
             if content:
                 contents[resource.id] = [content]
+
+    # for each target resource, if it's a resource patch, add the original resource's
+    # content if the patch doesn't have own contents
+    for resource in target_resources:
+        if (
+            resource.original_id
+            and resource.id not in contents
+            and resource.original_id in contents
+        ):
+            contents[resource.id] = contents[resource.original_id]
 
     # add combined contents (content context) of resources that are on the subordinate
     # level of the target location (if the resources are configured to support this!)

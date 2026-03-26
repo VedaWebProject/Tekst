@@ -862,23 +862,37 @@ async def test_delete_resource(
     login,
     wrong_id,
 ):
-    inserted_ids = await insert_test_data("texts", "locations", "resources")
-    text_id = inserted_ids["texts"][0]
-    resource_id = inserted_ids["resources"][0]
+    await insert_test_data("texts", "locations", "resources")
+    target_text_id = PydanticObjectId("67c03aed5dbf06b9624fd57e")
+    target_resource_id = PydanticObjectId("67c043c0906e79b9062e22f4")
 
-    # get all accessible resources
-    resp = await test_client.get("/resources", params={"txt": text_id})
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    resources_count = len(resp.json())
+    # register test superuser
+    su = await login(is_superuser=True)
 
-    # register test users
-    user = await login(is_superuser=True)
+    # count all resources for target text (including one resource patch)
+    resources_count = await ResourceBaseDocument.find(
+        ResourceBaseDocument.text_id == target_text_id,
+        with_children=True,
+    ).count()
 
-    # unpublish resource
-    resp = await test_client.post(
-        f"/resources/{resource_id}/unpublish",
+    # get patch for target resource
+    target_resource_patch = await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.original_id == target_resource_id,
+        with_children=True,
     )
+    assert target_resource_patch is not None
+
+    # unpublish target resource
+    await ResourceBaseDocument.find_one(
+        ResourceBaseDocument.id == target_resource_id,
+        with_children=True,
+    ).update(Set({ResourceBaseDocument.public: False}))
+    assert (
+        await ResourceBaseDocument.find_one(
+            ResourceBaseDocument.id == target_resource_id,
+            with_children=True,
+        )
+    ).public is False
 
     # try to delete resource w/ wrong ID
     resp = await test_client.delete(
@@ -891,24 +905,43 @@ async def test_delete_resource(
 
     # try to delete resource as non-owner/non-superuser
     resp = await test_client.delete(
-        f"/resources/{resource_id}",
+        f"/resources/{str(target_resource_id)}",
     )
     assert_status(403, resp)
 
     # become superuser again
-    await login(user=user)
+    await login(user=su)
 
     # delete resource
     resp = await test_client.delete(
-        f"/resources/{resource_id}",
+        f"/resources/{str(target_resource_id)}",
     )
     assert_status(204, resp)
 
-    # get all accessible resources again
-    resp = await test_client.get("/resources", params={"txt": text_id})
-    assert_status(200, resp)
-    assert isinstance(resp.json(), list)
-    assert len(resp.json()) == resources_count - 1
+    # check if deleted
+    assert (
+        await ResourceBaseDocument.find_one(
+            ResourceBaseDocument.id == target_resource_id,
+            with_children=True,
+        )
+    ) is None
+
+    # check count again (should be -1)
+    assert (
+        await ResourceBaseDocument.find(
+            ResourceBaseDocument.text_id == target_text_id,
+            with_children=True,
+        ).count()
+        == resources_count - 1
+    )
+
+    # check if former target resource patch is a full resource now
+    assert (
+        await ResourceBaseDocument.get(
+            target_resource_patch.id,
+            with_children=True,
+        )
+    ).original_id is None
 
 
 @pytest.mark.anyio

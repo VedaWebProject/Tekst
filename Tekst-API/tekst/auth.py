@@ -49,6 +49,7 @@ from tekst.config import TekstConfig, get_config
 from tekst.counters import counter_incr
 from tekst.logs import log
 from tekst.models.content import ContentBaseDocument
+from tekst.models.correction import CorrectionDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.resource import ResourceBaseDocument
 from tekst.models.user import UserCreate, UserDocument, UserRead, UserUpdate
@@ -57,6 +58,7 @@ from tekst.notifications import (
     broadcast_admin_notification,
     send_notification,
 )
+from tekst.search import set_index_ood
 
 
 _cfg: TekstConfig = get_config()
@@ -253,13 +255,34 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             Eq(ResourceBaseDocument.public, False),
             with_children=True,
         ):
-            # delete contents
+            # turn patches of this resource into original resources
+            await ResourceBaseDocument.find(
+                ResourceBaseDocument.original_id == res.id,
+                with_children=True,
+            ).set({ResourceBaseDocument.original_id: None})
+
+            # delete contents belonging to the resource
             await ContentBaseDocument.find(
-                Eq(ContentBaseDocument.resource_id, res.id),
+                ContentBaseDocument.resource_id == res.id,
                 with_children=True,
             ).delete()
-            # delete resource
-            await res.delete()
+
+            # delete correction notes belonging to the resource
+            await CorrectionDocument.find(
+                CorrectionDocument.resource_id == res.id,
+            ).delete()
+
+            # mark the text's index as out-of-date
+            await set_index_ood(
+                res.text_id,
+                by_public_resource=res.public,
+            )
+
+            # delete resource itself
+            await ResourceBaseDocument.find_one(
+                ResourceBaseDocument.id == res.id,
+                with_children=True,
+            ).delete()
 
         # remove from resource owners
         await ResourceBaseDocument.find(
@@ -314,7 +337,6 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             user,
             Notification.EMAIL_DELETED,
         )
-        pass
 
     async def validate_password(
         self,

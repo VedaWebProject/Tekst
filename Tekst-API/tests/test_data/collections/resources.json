@@ -49,6 +49,56 @@
     "contents_changed_at": { "$date": "2025-02-27T10:56:06.171Z" }
   },
   {
+    "_id": { "$oid": "67c043c0906e79b9aaaaaaaa" },
+    "_class_id": "ResourceBaseDocument.PlainTextResourceDocument",
+    "original_id": { "$oid": "67c043c0906e79b9062e22f4" },
+    "title": [{ "locale": "*", "translation": "Plain Text v2" }],
+    "subtitle": [],
+    "text_id": { "$oid": "67c03aed5dbf06b9624fd57e" },
+    "level": 1,
+    "resource_type": "plainText",
+    "owner_ids": [{ "$oid": "65c5fe0c691066aabd498239" }],
+    "shared_read": [],
+    "shared_write": [],
+    "public": false,
+    "proposed": false,
+    "meta": [],
+    "description": [
+      {
+        "locale": "enUS",
+        "translation": "<p>This is a test!</p>"
+      },
+      {
+        "locale": "deDE",
+        "translation": "<p>Dies ist ein Test!</p>"
+      }
+    ],
+    "config": {
+      "general": {
+        "sort_order": 10,
+        "default_active": true,
+        "enable_content_context": true,
+        "searchable_quick": false,
+        "searchable_adv": false,
+        "rtl": false
+      },
+      "special": {
+        "focus_view": {
+          "single_line": false,
+          "delimiter": " / "
+        },
+        "search_replacements": [{ "pattern": "o", "replacement": "a" }],
+        "content_css": [],
+        "line_labelling": {
+          "enabled": false,
+          "labelling_type": "numbersOneBased"
+        },
+        "deepl_links": { "enabled": false }
+      }
+    },
+    "contents_changed_at": { "$date": "2025-02-27T10:56:06.171Z" }
+  },
+  {
     "_id": { "$oid": "67c04415906e79b9062e22f5" },
     "_class_id": "ResourceBaseDocument.RichTextResourceDocument",
     "title": [{ "locale": "*", "translation": "Formatted Text" }],

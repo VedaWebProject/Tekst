@@ -10,6 +10,7 @@ import {
   LevelsIcon,
   MergeIcon,
   NoContentIcon,
+  PatchIcon,
   ProposedIcon,
   PublicOffIcon,
   WarningIcon,
@@ -21,8 +22,8 @@ import { NFlex, NIcon, NSpin, NTag } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
-  loading?: boolean;
   resource: AnyResourceRead;
+  loading?: boolean;
 }>();
 
 const browse = useBrowseStore();
@@ -45,6 +46,12 @@ const isContentContainerHovered = useElementHover(contentContainerRef, {
 });
 const headerWidgetsOpacity = computed<number>(() =>
   isContentContainerHovered.value || state.isTouchDevice ? 1 : browse.focusView ? 0 : 0.2
+);
+
+const containsOriginalContent = computed(
+  () =>
+    !!props.resource.originalId &&
+    props.resource.contents?.some((c) => !!c && c.resourceId !== props.resource.id)
 );
 
 const collapsible = computed(
@@ -124,12 +131,19 @@ watch(
           <n-icon
             v-if="contentContextLoaded"
             :component="MergeIcon"
-            color="var(--warning-color)"
             :title="
               $t('browse.contents.isContentContext', {
                 level: state.textLevelLabels[props.resource.level],
               })
             "
+          />
+
+          <!-- icon hint: this content is (partly?) from an original resource -->
+          <n-icon
+            v-if="containsOriginalContent"
+            :component="PatchIcon"
+            color="var(--warning-color)"
+            :title="$t('contents.fromOriginalResourceHint')"
           />
 
           <!-- icon hint: no content -->

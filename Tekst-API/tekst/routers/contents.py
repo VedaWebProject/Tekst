@@ -283,7 +283,7 @@ async def archive_content(
     if resource.original_id:  # pragma: no cover
         raise errors.update_values(
             errors.E_400_INVALID_REQUEST_DATA,
-            {"detail": "Content archival not possible for patch resources"},
+            {"detail": "Content archival not possible for resource patches"},
         )
 
     # call the resource's hook for changed contents

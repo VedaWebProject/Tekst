@@ -36,6 +36,7 @@ const cutomStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <div
           :class="{

@@ -33,6 +33,7 @@ const fontStyle: CSSProperties = {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
+        :from-original-resource="content.resourceId == resource.originalId"
       >
         <n-flex :vertical="!focusView">
           <div v-for="(link, index) in content.links" :key="index">
