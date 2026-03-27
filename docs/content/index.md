@@ -59,3 +59,8 @@ Depending on your requirements, you might want to consider the following list of
 - SEO: The web client is a [SPA](https://en.wikipedia.org/wiki/Single-page_application) that is rendered in the browser (no SSR). As a result, visibility to search engines is somewhat limited.
 - No built-in functionality for uploading and managing media files. If you want to integrate image- or audio-based resources, you will have to host the respective media files yourself and link to them from your resources.
 - _...get in touch if you find anything that should be added to this list, we mean it!_
+
+## Publications
+
+- **DHd 2026**: We talked about Tekst's concept of integrating multimodal data alongside textual resources using the structure of reference texts in a [talk at the **DHd 2026** conference](https://doi.org/10.5281/zenodo.18696589) (Digital Humanities im deutschsprachigen Raum 2026: Nicht nur Text, nicht nur Daten. Vienna, Austria, 23-27 February 2026).
+- **DH 2023**: We presented our vision for a collaborative text research platform in [a talk at the international **DH 2023** conference](https://doi.org/10.5281/zenodo.8107794) (Digital Humanities 2023: Collaboration as Opportunity. Graz, Austria, 10-14 July 2023).
