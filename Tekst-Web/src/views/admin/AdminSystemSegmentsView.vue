@@ -12,6 +12,7 @@ import { infoSegmentFormRules, systemSegmentFormRules } from '@/forms/formRules'
 import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
 import { AddIcon, FileOpenIcon, InfoIcon, SegmentsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
+import { useUrlSearchParams } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
 import {
   NButton,
@@ -27,16 +28,19 @@ import {
   type FormInst,
   type InputInst,
 } from 'naive-ui';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const props = defineProps<{ segmentType: 'info' | 'system' }>();
+const props = defineProps<{
+  segmentType: 'info' | 'system';
+}>();
 
 const state = useStateStore();
 const { loadPlatformData, getSegment } = usePlatformData();
 const { message } = useMessages();
 const dialog = useDialog();
 const route = useRoute();
+const hashParams = useUrlSearchParams('hash-params');
 
 const loading = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -156,7 +160,14 @@ async function handleChangeSegment(id?: string) {
   segmentModel.value = await getSegmentModel(id);
   formRef.value?.restoreValidation();
   resetModelChanges();
-  if (!id) nextTick(() => firstInputRef.value?.focus());
+  if (!id) {
+    nextTick(() => {
+      delete hashParams.page;
+      firstInputRef.value?.focus();
+    });
+  } else {
+    hashParams.page = id;
+  }
 }
 
 async function handleSaveClick() {
@@ -206,6 +217,7 @@ async function createSegment() {
       })
     );
     selectedSegmentId.value = data.id;
+    hashParams.page = data.id;
     segmentModel.value = data;
     resetModelChanges();
     loadPlatformData();
@@ -275,6 +287,14 @@ watch(
     clearForm();
   }
 );
+
+onMounted(() => {
+  nextTick(() => {
+    if (hashParams.page) {
+      handleChangeSegment(hashParams.page.toString());
+    }
+  });
+});
 </script>
 
 <template>

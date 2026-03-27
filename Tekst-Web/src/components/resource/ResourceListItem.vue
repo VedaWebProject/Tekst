@@ -8,32 +8,32 @@ import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
 import env from '@/env';
 import { $t } from '@/i18n';
 import {
-    BookIcon,
-    CorrectionNoteIcon,
-    DeleteIcon,
-    DownloadIcon,
-    EditIcon,
-    MoreIcon,
-    PatchIcon,
-    ProposedIcon,
-    PublicIcon,
-    PublicOffIcon,
-    ReviewIcon,
-    SettingsIcon,
-    UnproposedIcon,
-    UploadIcon,
-    UserIcon,
+  BookIcon,
+  CorrectionNoteIcon,
+  DeleteIcon,
+  DownloadIcon,
+  EditIcon,
+  MoreIcon,
+  PatchIcon,
+  ProposedIcon,
+  PublicIcon,
+  PublicOffIcon,
+  ReviewIcon,
+  SettingsIcon,
+  UnproposedIcon,
+  UploadIcon,
+  UserIcon,
 } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
 import {
-    NBadge,
-    NButton,
-    NCollapseItem,
-    NFlex,
-    NIcon,
-    type ButtonType,
-    type DropdownOption,
+  NBadge,
+  NButton,
+  NCollapseItem,
+  NFlex,
+  NIcon,
+  type ButtonType,
+  type DropdownOption,
 } from 'naive-ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -229,8 +229,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                       resources.all
                         .find((r) => r.id === props.resource.patchFor)
                         ?.ownerIds.includes(props.user.id) ||
-                      !resources.all.find((r) => r.id === props.resource.patchFor)?.ownerIds
-                        .length,
+                      !resources.all.find((r) => r.id === props.resource.patchFor)?.ownerIds.length,
                     action: () => emit('reqPatchIntegrationClick', props.resource),
                     statusType: 'success',
                   },

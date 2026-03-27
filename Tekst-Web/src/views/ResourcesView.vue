@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
-    DELETE,
-    downloadData,
-    GET,
-    PATCH,
-    POST,
-    withSelectedFile,
-    type AnyResourceRead,
+  DELETE,
+  downloadData,
+  GET,
+  PATCH,
+  POST,
+  withSelectedFile,
+  type AnyResourceRead,
 } from '@/api';
 import { commonDialogOptions } from '@/common';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
@@ -21,11 +21,11 @@ import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
 import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
 import {
-    useAuthStore,
-    useBrowseStore,
-    useResourcesStore,
-    useStateStore,
-    useUserMessagesStore,
+  useAuthStore,
+  useBrowseStore,
+  useResourcesStore,
+  useStateStore,
+  useUserMessagesStore,
 } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { refDebounced, useUrlSearchParams } from '@vueuse/core';

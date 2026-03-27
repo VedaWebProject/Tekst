@@ -3,8 +3,9 @@ import type { ClientSegmentRead } from '@/api';
 import HydratedHtml from '@/components/generic/HydratedHtml.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { usePlatformData } from '@/composables/platformData';
-import { useStateStore } from '@/stores';
-import { NSpin } from 'naive-ui';
+import { EditIcon } from '@/icons';
+import { useAuthStore, useStateStore } from '@/stores';
+import { NButton, NIcon, NSpin } from 'naive-ui';
 import { ref, watchEffect, type Component } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -14,11 +15,16 @@ const props = defineProps<{
 }>();
 
 const state = useStateStore();
+const auth = useAuthStore();
 const loading = ref(false);
 const { getSegment } = usePlatformData();
 const router = useRouter();
 
 const page = ref<ClientSegmentRead>();
+
+function handleEditClick() {
+  router.push({ name: 'adminInfoPages', hash: page.value ? `#page=${page.value.id}` : undefined });
+}
 
 watchEffect(async () => {
   loading.value = true;
@@ -35,6 +41,18 @@ watchEffect(async () => {
   <template v-else-if="page">
     <icon-heading v-if="page.title" level="1" :icon="icon">
       {{ page.title }}
+      <n-button
+        v-if="!!auth.user?.isSuperuser"
+        circle
+        quaternary
+        size="small"
+        :title="$t('admin.infoPages.editPage')"
+        @click="handleEditClick"
+      >
+        <template #icon>
+          <n-icon :component="EditIcon" />
+        </template>
+      </n-button>
     </icon-heading>
     <div class="content-block" style="padding: 1.2rem">
       <hydrated-html :html="page.html" />

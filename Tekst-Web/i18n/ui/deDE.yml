@@ -966,6 +966,7 @@ admin:
     newPage: Neue Seite
     phSelectPage: Seite auswählen
     noPage: Bitte wählen Sie eine Info-Seite aus oder erstellen Sie eine neue!
+    editPage: Diese Seite bearbeiten
 
 search:
   quickSearch:
