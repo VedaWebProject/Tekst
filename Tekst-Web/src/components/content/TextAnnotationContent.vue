@@ -4,21 +4,21 @@ import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vu
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { $t } from '@/i18n';
 import {
-  CheckIcon,
-  ClearIcon,
-  ColorIcon,
-  ColorOffIcon,
-  CommentIcon,
-  CopyIcon,
-  LabelIcon,
+    CheckIcon,
+    ClearIcon,
+    ColorIcon,
+    ColorOffIcon,
+    CommentIcon,
+    CopyIcon,
+    LabelIcon,
 } from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import {
-  getFullLocationLabel,
-  groupAndSortItems,
-  hashCode,
-  pickTranslation,
-  renderIcon,
+    getFullLocationLabel,
+    groupAndSortItems,
+    hashCode,
+    pickTranslation,
+    renderIcon,
 } from '@/utils';
 import { useClipboard, useStorage } from '@vueuse/core';
 import { adjustHue, saturate, toRgba, transparentize } from 'color2k';
@@ -541,7 +541,7 @@ function generatePlaintextAnno(): string {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
-        :from-original-resource="content.resourceId == resource.originalId"
+        :from-original-resource="content.resourceId == resource.patchFor"
       >
         <n-flex :size="4" class="anno-content">
           <template v-for="(t, tIndex) in content.tokens" :key="tIndex">

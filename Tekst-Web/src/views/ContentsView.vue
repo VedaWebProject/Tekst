@@ -89,7 +89,7 @@ const resource = ref<AnyResourceRead>();
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));
 const originalResourceTitle = computed(() =>
   pickTranslation(
-    resources.currText.find((r) => r.id === resource.value?.originalId)?.title,
+    resources.currText.find((r) => r.id === resource.value?.patchFor)?.title,
     state.locale
   )
 );
@@ -121,17 +121,17 @@ const compareResourceOptions = computed(() =>
     .filter((r) => r.id !== resource.value?.id && r.level === resource.value?.level)
     .sort(
       (a, b) =>
-        (a.originalId === resource.value?.id ? 1 : 0) +
-        (b.originalId === resource.value?.id ? 1 : 0)
+        (a.patchFor === resource.value?.id ? 1 : 0) +
+        (b.patchFor === resource.value?.id ? 1 : 0)
     )
     .map((r) => ({
       label: pickTranslation(r.title, state.locale),
       key: r.id,
       disabled: r.id === compareResourceId.value,
-      icon: r.originalId
+      icon: r.patchFor
         ? renderIcon(
             PatchIcon,
-            r.originalId === resource.value?.id ? theme.colors.text.base : undefined
+            r.patchFor === resource.value?.id ? theme.colors.text.base : undefined
           )
         : renderIcon(ResourceIcon),
     }))
@@ -197,7 +197,7 @@ async function loadLocationData() {
           ...new Set([
             resource.value.id,
             ...(compareResource.value?.id ? [compareResource.value.id] : []),
-            ...(resource.value.originalId ? [resource.value.originalId] : []),
+            ...(resource.value.patchFor ? [resource.value.patchFor] : []),
           ]),
         ],
         head: true,
@@ -213,7 +213,7 @@ async function loadLocationData() {
     // process received contents
     const maybeContent =
       locationData.contents[resource.value.id]?.[0] ??
-      locationData.contents[resource.value.originalId ?? '']?.[0] ??
+      locationData.contents[resource.value.patchFor ?? '']?.[0] ??
       undefined;
     initialContentModel.value =
       !!maybeContent && maybeContent.resourceType !== 'none' ? maybeContent : undefined;
@@ -430,8 +430,8 @@ watch(
         router.replace({ name: 'resources', params: { textSlug: state.text?.slug } });
         return;
       }
-      if (resource.value.originalId) {
-        compareResourceId.value = resource.value.originalId;
+      if (resource.value.patchFor) {
+        compareResourceId.value = resource.value.patchFor;
       }
     }
     await loadLocationData();
@@ -474,7 +474,7 @@ whenever(ArrowRight, () => {
     </n-button>
   </router-link>
 
-  <icon-heading v-if="resource" level="2" :icon="resource.originalId ? PatchIcon : ResourceIcon">
+  <icon-heading v-if="resource" level="2" :icon="resource.patchFor ? PatchIcon : ResourceIcon">
     {{ resourceTitle }}
     <resource-info-widget :resource="resource" />
     <resource-info-tags
@@ -574,8 +574,8 @@ whenever(ArrowRight, () => {
       <n-alert
         v-if="
           contentModel &&
-          resource.originalId &&
-          contentModel.resourceId == resource.originalId &&
+          resource.patchFor &&
+          contentModel.resourceId == resource.patchFor &&
           originalResourceTitle
         "
         type="info"
@@ -724,7 +724,7 @@ whenever(ArrowRight, () => {
       <button-shelf class="mt-lg">
         <template #start>
           <n-button
-            v-if="resource.public && !resource.originalId"
+            v-if="resource.public && !resource.patchFor"
             secondary
             type="warning"
             :disabled="loading || !contentModel?.id || contentModel?.resourceId !== resource.id"
@@ -761,7 +761,7 @@ whenever(ArrowRight, () => {
           type="primary"
           :disabled="
             loading ||
-            (!changed && (!resource.originalId || contentModel?.resourceId != resource.originalId))
+            (!changed && (!resource.patchFor || contentModel?.resourceId != resource.patchFor))
           "
           :loading="loadingSave"
           @click="handleSaveClick"

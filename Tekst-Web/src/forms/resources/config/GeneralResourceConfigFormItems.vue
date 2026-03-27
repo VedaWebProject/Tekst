@@ -38,7 +38,7 @@ const preventQuickSearchable = computed(
     resourceTypes
       .filter((rt) => !rt.searchableQuick)
       .map((rt) => rt.name)
-      .includes(props.resource.resourceType) || !!props.resource.originalId
+      .includes(props.resource.resourceType) || !!props.resource.patchFor
 );
 
 const preventAdvSearchable = computed(
@@ -46,7 +46,7 @@ const preventAdvSearchable = computed(
     resourceTypes
       .filter((rt) => !rt.searchableAdv)
       .map((rt) => rt.name)
-      .includes(props.resource.resourceType) || !!props.resource.originalId
+      .includes(props.resource.resourceType) || !!props.resource.patchFor
 );
 
 const oskOptions = computed(

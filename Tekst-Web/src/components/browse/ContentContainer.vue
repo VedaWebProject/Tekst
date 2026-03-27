@@ -50,7 +50,7 @@ const headerWidgetsOpacity = computed<number>(() =>
 
 const containsOriginalContent = computed(
   () =>
-    !!props.resource.originalId &&
+    !!props.resource.patchFor &&
     props.resource.contents?.some((c) => !!c && c.resourceId !== props.resource.id)
 );
 

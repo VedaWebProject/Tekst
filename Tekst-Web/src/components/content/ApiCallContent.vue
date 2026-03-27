@@ -133,7 +133,7 @@ onMounted(async () => {
         :show-comments="showComments"
         :comments="content.comments"
         :font="fontStyle.fontFamily"
-        :from-original-resource="content.resourceId == resource.originalId"
+        :from-original-resource="content.resourceId == resource.patchFor"
       >
         <n-spin v-if="!focusView" :show="loading" size="small">
           <div

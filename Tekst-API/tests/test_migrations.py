@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from importlib import import_module
 
 import pytest
@@ -638,3 +639,44 @@ async def test_0_49_4b0(
     assert pf_state
     assert "global_citation_suffix" in pf_state
     assert pf_state["global_citation_suffix"] == r"FOO {{curr_date}} BAR {{res_url}}"
+
+
+@pytest.mark.anyio
+async def test_0_50_0b0(
+    database,
+    get_test_data,
+):
+    test_data = get_test_data("migrations/0_50_0b0.json")
+    await database.contents.insert_many(test_data)
+
+    # run migration
+    await _migration_fn("0_50_0b0")(database)
+
+    # assert the data has been fixed by the migration
+    contents = await database.contents.find({}).to_list()
+    assert contents
+    for c in contents:
+        assert c["created_at"]
+        assert c["created_at"].replace(tzinfo=UTC) < datetime.min.replace(
+            tzinfo=UTC
+        ) + timedelta(seconds=1)
+        assert c["archived"] is False
+
+
+@pytest.mark.anyio
+async def test_0_51_0b0(
+    database,
+    get_test_data,
+):
+    test_data = get_test_data("migrations/0_51_0b0.json")
+    await database.resources.insert_many(test_data)
+
+    # run migration
+    await _migration_fn("0_51_0b0")(database)
+
+    # assert the data has been fixed by the migration
+    resources = await database.resources.find({}).to_list()
+    assert resources
+    for res in resources:
+        assert "original_id" not in res
+        assert "patch_for" in res

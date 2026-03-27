@@ -1,7 +1,6 @@
 import pytest
 
 from beanie import PydanticObjectId
-from beanie.operators import Set
 from fastapi.exceptions import HTTPException
 from httpx import AsyncClient
 from tekst.auth import create_initial_superuser
@@ -161,8 +160,8 @@ async def test_user_deletes_self(
     res_count_before = await ResourceBaseDocument.find_all(with_children=True).count()
 
     # set superuser as owner of all resources
-    await ResourceBaseDocument.find_all(with_children=True).update(
-        Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(su["id"])]})
+    await ResourceBaseDocument.find_all(with_children=True).set(
+        {ResourceBaseDocument.owner_ids: [PydanticObjectId(su["id"])]}
     )
     assert (
         await ResourceBaseDocument.find(
@@ -176,7 +175,7 @@ async def test_user_deletes_self(
     await ResourceBaseDocument.find_one(
         ResourceBaseDocument.id == target_res_id,
         with_children=True,
-    ).update(Set({ResourceBaseDocument.public: False}))
+    ).set({ResourceBaseDocument.public: False})
     assert (
         await ResourceBaseDocument.get(
             target_res_id,
@@ -186,7 +185,7 @@ async def test_user_deletes_self(
 
     # check that patch for target resource exists and is owned by superuser su
     target_resource_patch = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.original_id == target_res_id,
+        ResourceBaseDocument.patch_for == target_res_id,
         with_children=True,
     )
     assert target_resource_patch
@@ -196,7 +195,7 @@ async def test_user_deletes_self(
     await ResourceBaseDocument.find(
         ResourceBaseDocument.id == target_res_id,
         with_children=True,
-    ).update(Set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]}))
+    ).set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]})
     target_resource: ResourceBaseDocument = await ResourceBaseDocument.get(
         target_res_id,
         with_children=True,
@@ -222,7 +221,7 @@ async def test_user_deletes_self(
         with_children=True,
     )
     assert former_target_resource_patch  # exists
-    assert former_target_resource_patch.original_id is None  # not a patch anymore
+    assert former_target_resource_patch.patch_for is None  # not a patch anymore
     assert former_target_resource_patch.owner_ids[0] == PydanticObjectId(
         su["id"]
     )  # owner = su

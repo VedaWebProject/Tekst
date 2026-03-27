@@ -5,7 +5,7 @@ from tempfile import NamedTemporaryFile
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import In, Or, Set, Unset
+from beanie.operators import In, Or, Unset
 from fastapi import (
     APIRouter,
     Body,
@@ -465,7 +465,7 @@ async def insert_level(
         # make dummy location parent of all locations on level "index+1" (if exists)
         await LocationDocument.find(
             LocationDocument.text_id == text_id, LocationDocument.level == index + 1
-        ).update(Set({LocationDocument.parent_id: dummy_location.id}))
+        ).set({LocationDocument.parent_id: dummy_location.id})
     else:
         parent_level_locations = (
             await LocationDocument.find(
@@ -494,7 +494,7 @@ async def insert_level(
                 LocationDocument.text_id == text_id,
                 LocationDocument.level == index + 1,
                 LocationDocument.parent_id == parent_level_location.id,
-            ).update(Set({LocationDocument.parent_id: dummy_location.id}))
+            ).set({LocationDocument.parent_id: dummy_location.id})
 
     return text_doc
 

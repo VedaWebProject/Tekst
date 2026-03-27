@@ -133,7 +133,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ),
     ]
 
-    original_id: Annotated[
+    patch_for: Annotated[
         PydanticObjectId | None,
         Field(
             description=(
@@ -277,10 +277,10 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         # resource patches are not searchable
         if self.config and self.config.general:
             self.config.general.searchable_quick = (
-                self.config.general.searchable_quick and not self.original_id
+                self.config.general.searchable_quick and not self.patch_for
             )
             self.config.general.searchable_adv = (
-                self.config.general.searchable_adv and not self.original_id
+                self.config.general.searchable_adv and not self.patch_for
             )
         return self
 
