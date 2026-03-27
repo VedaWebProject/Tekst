@@ -7,10 +7,10 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - "Tekst-API/**"
-      - "dev/**"
-      - ".github/workflows/api-tests.yml"
+  #    paths:
+  #      - "Tekst-API/**"
+  #      - "dev/**"
+  #      - ".github/workflows/api-tests.yml"
   workflow_dispatch:
 
 env:
