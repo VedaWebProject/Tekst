@@ -40,8 +40,11 @@ function handleSubmit() {
 
 <template>
   <n-button
+    v-bind="$attrs"
+    circle
     secondary
     size="tiny"
+    color="var(--primary-color)"
     :focusable="false"
     :title="$t('contents.archive.widgetTip')"
     @click.stop.prevent="handleWidgetClick"
@@ -49,7 +52,6 @@ function handleSubmit() {
     <template #icon>
       <n-icon :component="ArchiveIcon" />
     </template>
-    {{ $t('contents.archive.widgetTitle') }}
   </n-button>
 
   <generic-modal
