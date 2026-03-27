@@ -1,5 +1,3 @@
 # Resources
 
-{%
-    include-markdown "/includes/resourcesView.v.md"
-%}
+--8<-- "includes/resourcesView.v.md"
