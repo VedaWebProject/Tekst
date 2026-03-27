@@ -23,7 +23,11 @@ const router = useRouter();
 const page = ref<ClientSegmentRead>();
 
 function handleEditClick() {
-  router.push({ name: 'adminInfoPages', hash: page.value ? `#page=${page.value.id}` : undefined });
+  if (!page.value) return;
+  // the only system segment that is rendered with
+  // the InfoPageView component is the home page
+  const name = page.value.key.startsWith('system') ? 'adminSegments' : 'adminInfoPages';
+  router.push({ name, hash: `#page=${page.value.id}` });
 }
 
 watchEffect(async () => {
