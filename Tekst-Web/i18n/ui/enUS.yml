@@ -941,6 +941,7 @@ admin:
     newPage: New Page
     phSelectPage: Select page
     noPage: Please select an info page or create a new one!
+    editPage: Edit this page
 
 search:
   quickSearch:
