@@ -33,9 +33,9 @@ The instructions below will help you deploy a stack consisting of everything Tek
 
 1. Create a directory to store your Tekst deployment data in and enter it:
 
-   ```sh
-   mkdir my-tekst-instance && cd my-tekst-instance
-   ```
+    ```sh
+    mkdir my-tekst-instance && cd my-tekst-instance
+    ```
 
 2. Copy the compose file template from [here](https://raw.githubusercontent.com/VedaWebProject/Tekst/refs/heads/main/compose.yml) and save it as `compose.yml`:
 

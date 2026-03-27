@@ -41,13 +41,13 @@ This is a monorepo containing the codebases of all parts of the Tekst platform. 
 ### Projects and technologies
 
 #### Tekst-API
-The server part of the Tekst platform: [`Tekst-API/`](Tekst-API) \
+The server part of the Tekst platform, located in [`Tekst-API/`](Tekst-API). \
 [Python](https://github.com/python/cpython), [Pydantic](https://github.com/pydantic/pydantic), [FastAPI](https://github.com/tiangolo/fastapi), [FastAPI-Users](https://github.com/fastapi-users/fastapi-users), [Beanie](https://github.com/BeanieODM/beanie), [MongoDB](https://github.com/mongodb/mongo), [Elasticsearch](https://github.com/elastic/elasticsearch), ...
 
 #### Tekst-Web
-The client part of the Tekst platform: [`Tekst-Web/`](Tekst-Web) \
+The client part of the Tekst platform, located in [`Tekst-Web/`](Tekst-Web). \
 [TypeScript](https://github.com/microsoft/TypeScript), [Vue.js 3](https://github.com/vuejs/core), [Pinia](https://github.com/vuejs/pinia), [Naive UI](https://github.com/tusen-ai/naive-ui), [Vue I18n](https://github.com/intlify/vue-i18n), [OpenAPI-TypeScript & OpenAPI-Fetch](https://github.com/openapi-ts/openapi-typescript), ...
 
 #### Tekst Documentation
-The official docs for the Tekst platform (published [here](https://vedawebproject.github.io/Tekst)): [`docs/`](docs) \
-[MkDocs](https://github.com/mkdocs/mkdocs), [Material for MkDocs](https://github.com/squidfunk/mkdocs-material), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions), ...
+The official [manual and technical documentation](https://vedawebproject.github.io/Tekst) for the Tekst platform, located in [`docs/`](docs). \
+[Zensical](https://github.com/zensical/zensical), [PyMdown Extensions](https://github.com/facelessuser/pymdown-extensions), ...
