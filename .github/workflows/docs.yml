@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - run: sudo mkdir /includes && sudo cp ../Tekst-Web/i18n/help/enUS/** /includes/
+      - run: sudo mkdir includes && sudo cp ../Tekst-Web/i18n/help/enUS/** includes/
       - run: pip install zensical
       - run: zensical build --clean
       - uses: actions/upload-pages-artifact@v4
