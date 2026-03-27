@@ -1,4 +1,4 @@
-# Resource Overview
+# Resources Overview
 
 This overview centrally displays all available information about the resources of the current working text. Depending on whether you are logged in with an account and what permissions you have, different functions will be available to you here.
 
