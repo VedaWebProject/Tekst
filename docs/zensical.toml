@@ -53,7 +53,7 @@ nav = [
         "setup/customization.md"
     ]},
     { "User Guide" = [
-        "usage/resources.md"
+        "usage/resources_overview.md"
     ]},
     { "Administration" = [
         "administration/maintenance.md",
