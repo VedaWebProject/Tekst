@@ -129,6 +129,7 @@ onMounted(() => {
   <icon-heading v-if="!!browse.locationPath.length" level="1" :icon="BookIcon">
     <location-label />
     <help-button-widget help-key="browseView" data-tour-key="helpButtons" />
+    <browse-archive-widget :default="archiveTs" @submit="handleArchiveToggle" />
   </icon-heading>
 
   <n-flex class="my-lg">
@@ -140,7 +141,6 @@ onMounted(() => {
       :text-slug="state.textSlug || undefined"
       :explode="state.pf?.state.showLocationAliases"
     />
-    <browse-archive-widget :default="archiveTs" @submit="handleArchiveToggle" />
   </n-flex>
 
   <browse-toolbar v-if="browse.locationPath.length" />

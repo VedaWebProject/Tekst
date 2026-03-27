@@ -2,13 +2,13 @@
 import type { AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import {
-    CommunityIcon,
-    LevelsIcon,
-    PatchIcon,
-    ProposedIcon,
-    PublicIcon,
-    PublicOffIcon,
-    ResourceIcon,
+  CommunityIcon,
+  LevelsIcon,
+  PatchIcon,
+  ProposedIcon,
+  PublicIcon,
+  PublicOffIcon,
+  ResourceIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
