@@ -214,13 +214,18 @@ onBeforeMount(() => {
           <n-table size="small" style="table-layout: fixed" :bordered="false" class="mb-lg">
             <template v-for="(indexInfo, i) in indicesInfo" :key="`${i}_${indexInfo.textId}`">
               <tr>
-                <th
-                  colspan="2"
-                  :style="{
-                    backgroundColor: theme.getTextColors(indexInfo.textId ?? undefined).fade4,
-                  }"
-                >
-                  {{ state.textById(indexInfo.textId)?.title || '???' }}
+                <th colspan="2">
+                  <n-flex align="center" size="small">
+                    <div
+                      class="text-color-indicator"
+                      :style="{
+                        backgroundColor: theme.getTextColors(indexInfo.textId ?? undefined).base,
+                      }"
+                    ></div>
+                    <b class="text-medium">{{
+                      state.textById(indexInfo.textId)?.title || '???'
+                    }}</b>
+                  </n-flex>
                 </th>
               </tr>
               <template v-for="(value, key) in indexInfo" :key="key">
@@ -473,6 +478,11 @@ onBeforeMount(() => {
 }
 
 .content-block :deep(.n-table),
+.content-block :deep(.n-table th) {
+  font-weight: normal;
+}
+
+.content-block :deep(.n-table),
 .content-block :deep(.n-table td) {
   background-color: transparent;
 }
@@ -522,5 +532,11 @@ onBeforeMount(() => {
 
 .index-utd::after {
   content: ' ✔';
+}
+
+.text-color-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
 }
 </style>
