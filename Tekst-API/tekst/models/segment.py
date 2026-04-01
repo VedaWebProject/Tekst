@@ -4,6 +4,7 @@ from beanie import PydanticObjectId
 from pydantic import (
     BaseModel,
     Field,
+    StringConstraints,
 )
 
 from tekst.i18n import TranslationLocaleKey
@@ -12,12 +13,14 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.types import ConStr
+from tekst.types import SingleLineString
 
 
 class ClientSegment(ModelBase, ModelFactoryMixin):
     key: Annotated[
-        ConStr(
+        str,
+        StringConstraints(
+            min_length=1,
             max_length=32,
             pattern=r"[a-zA-Z0-9\-_]+",
         ),
@@ -30,16 +33,12 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
 
     editor_mode: Annotated[
         Literal["wysiwyg", "html"],
-        Field(
-            description="Last used editor mode",
-        ),
+        Field(description="Last used editor mode"),
     ] = "wysiwyg"
 
     locale: Annotated[
         TranslationLocaleKey,
-        Field(
-            description="Locale indicating the translation language of this segment",
-        ),
+        Field(description="Locale indicating the translation language of this segment"),
     ]
 
     restriction: Annotated[
@@ -52,13 +51,10 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
     ] = "none"
 
     title: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Title of this segment",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        Field(description="Title of this segment"),
     ]
 
     sort_order: Annotated[
@@ -74,12 +70,9 @@ class ClientSegment(ModelBase, ModelFactoryMixin):
     ] = 10
 
     html: Annotated[
-        ConStr(
-            max_length=1048576,
-        ),
-        Field(
-            description="HTML content of this segment",
-        ),
+        str,
+        StringConstraints(max_length=1048576),
+        Field(description="HTML content of this segment"),
     ]
 
 
@@ -99,7 +92,7 @@ ClientSegmentRead = ClientSegment.read_model()
 ClientSegmentUpdate = ClientSegment.update_model()
 
 
-class ClientSegmentHead(BaseModel):
+class ClientSegmentSignature(BaseModel):
     class Settings:
         projection = {
             "id": "$_id",

@@ -16,7 +16,10 @@ async def get_temp_dir() -> Iterator[str]:
         del dir
 
 
-def client_hash(request: Request, behind_reverse_proxy: bool = False) -> str | None:
+def client_hash(
+    request: Request,
+    behind_reverse_proxy: bool = False,
+) -> str | None:
     """
     Returns the hashed value of either the last entry of the `X-Forwarded-For` header
     (if `behind_reverse_proxy` is `True`) or the client host – or `None` if neither

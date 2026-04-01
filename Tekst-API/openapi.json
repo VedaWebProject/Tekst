@@ -1866,7 +1866,8 @@
                 {
                   "type": "integer",
                   "maximum": 32,
-                  "minimum": 0
+                  "minimum": 0,
+                  "description": "Structure level of a location"
                 },
                 {
                   "type": "null"
@@ -1885,7 +1886,8 @@
               "anyOf": [
                 {
                   "type": "integer",
-                  "minimum": 0
+                  "minimum": 0,
+                  "description": "Position of a location on its structure level"
                 },
                 {
                   "type": "null"
@@ -1903,12 +1905,12 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "null"
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 32
                 },
                 {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 32
+                  "type": "null"
                 }
               ],
               "description": "Alias of location(s) to find",
@@ -3336,13 +3338,13 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string",
-                  "maxLength": 2048
+                  "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "maxLength": 2048,
               "description": "Comma-separated pickup keys for accessing the tasks in case they are requested by a non-authenticated user",
               "title": "Pickup-Keys"
             },
@@ -6961,7 +6963,6 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 0,
               "maxLength": 128,
               "description": "Query string to search in user data",
               "default": "",
@@ -7693,12 +7694,11 @@
       "AnnoValueQuery": {
         "anyOf": [
           {
-            "type": "null"
+            "type": "string",
+            "maxLength": 256
           },
           {
-            "type": "string",
-            "maxLength": 256,
-            "minLength": 0
+            "type": "null"
           }
         ]
       },
@@ -7707,12 +7707,12 @@
           "displayTemplate": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 4096,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Displaytemplate",
@@ -7783,16 +7783,16 @@
           "transformContext": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 81920,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Transformcontext",
-            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
+            "description": "Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": false
           }
         },
@@ -7841,12 +7841,12 @@
           "query": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 102400,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Query",
@@ -7922,16 +7922,16 @@
           "transformContext": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 81920,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Transformcontext",
-            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
+            "description": "Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": false
           }
         },
@@ -7992,16 +7992,16 @@
           "transformContext": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 81920,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Transformcontext",
-            "description": "Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.",
+            "description": "Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.",
             "optionalNullable": true
           }
         },
@@ -8016,12 +8016,12 @@
           "category": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 16,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Category",
@@ -8059,16 +8059,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font family"
+            "title": "Font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -8203,12 +8203,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -8227,12 +8227,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -8241,12 +8241,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -8444,12 +8444,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -8468,12 +8468,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -8482,12 +8482,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -8649,12 +8649,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -8681,12 +8681,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -8696,12 +8696,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -8940,12 +8940,12 @@
           "sourceUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Sourceurl",
@@ -8954,12 +8954,12 @@
           "caption": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 8192,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Caption",
@@ -9041,12 +9041,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -9065,12 +9065,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -9079,12 +9079,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -9277,12 +9277,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -9301,12 +9301,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -9315,12 +9315,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -9477,12 +9477,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -9509,12 +9509,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -9524,12 +9524,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -9582,7 +9582,6 @@
           "caption": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Caption",
             "default": "",
             "optionalNullable": true
@@ -9766,12 +9765,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1000,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Comment",
@@ -9824,12 +9823,12 @@
           "comment": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1000,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Comment",
@@ -9926,7 +9925,6 @@
           "html": {
             "type": "string",
             "maxLength": 1048576,
-            "minLength": 1,
             "title": "Html",
             "description": "HTML content of this segment"
           }
@@ -9939,38 +9937,6 @@
           "html"
         ],
         "title": "ClientSegmentCreate"
-      },
-      "ClientSegmentHead": {
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/PydanticObjectId"
-          },
-          "key": {
-            "type": "string",
-            "title": "Key"
-          },
-          "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title"
-          },
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "key",
-          "locale"
-        ],
-        "title": "ClientSegmentHead"
       },
       "ClientSegmentRead": {
         "properties": {
@@ -10028,7 +9994,6 @@
           "html": {
             "type": "string",
             "maxLength": 1048576,
-            "minLength": 1,
             "title": "Html",
             "description": "HTML content of this segment"
           }
@@ -10043,6 +10008,38 @@
           "html"
         ],
         "title": "ClientSegmentRead"
+      },
+      "ClientSegmentSignature": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/PydanticObjectId"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "key",
+          "locale"
+        ],
+        "title": "ClientSegmentSignature"
       },
       "ClientSegmentUpdate": {
         "properties": {
@@ -10143,8 +10140,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 1048576,
-                "minLength": 1
+                "maxLength": 1048576
               },
               {
                 "type": "null"
@@ -10179,7 +10175,6 @@
           "cmt": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Cmt",
             "description": "Content comment search query",
             "default": "",
@@ -10220,12 +10215,12 @@
           "by": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 128,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "By"
@@ -10250,7 +10245,6 @@
         },
         "type": "array",
         "maxItems": 64,
-        "minItems": 0,
         "description": "List of CSS properties to apply to the contents of this resource"
       },
       "ContentCssProperty": {
@@ -10287,19 +10281,17 @@
             },
             "type": "array",
             "maxItems": 32,
-            "minItems": 0,
             "title": "Deps",
             "default": []
           },
           "js": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 102400
               },
               {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 0
+                "type": "null"
               }
             ],
             "title": "Js",
@@ -10404,12 +10396,12 @@
           "sourceLanguage": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 16,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Sourcelanguage",
@@ -10447,11 +10439,10 @@
           "msg": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string",
-                "minLength": 1
+                "type": "null"
               }
             ],
             "title": "Msg"
@@ -10705,12 +10696,12 @@
           "description": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 4096,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Description",
@@ -10719,12 +10710,12 @@
           "altRef": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Altref",
@@ -10807,12 +10798,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -10831,12 +10822,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -10845,12 +10836,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -11043,12 +11034,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -11067,12 +11058,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -11081,12 +11072,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -11243,12 +11234,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -11275,12 +11266,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -11290,12 +11281,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -11348,7 +11339,6 @@
           "text": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Text",
             "description": "Text to search for",
             "default": "",
@@ -11387,12 +11377,12 @@
           "category": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 16,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Category",
@@ -11430,16 +11420,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font family"
+            "title": "Font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -11551,12 +11541,12 @@
           "thumbUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Thumburl",
@@ -11565,12 +11555,12 @@
           "sourceUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Sourceurl",
@@ -11579,12 +11569,12 @@
           "caption": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 8192,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Caption",
@@ -11839,12 +11829,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -11863,12 +11853,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -11877,12 +11867,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -12075,12 +12065,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -12099,12 +12089,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -12113,12 +12103,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -12275,12 +12265,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -12307,12 +12297,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -12322,12 +12312,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -12380,7 +12370,6 @@
           "caption": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Caption",
             "description": "Caption content search query",
             "default": "",
@@ -12758,7 +12747,7 @@
             "type": "object",
             "title": "Contents",
             "description": "Contents of various resources on this location, by resource ID",
-            "default": []
+            "default": {}
           }
         },
         "type": "object",
@@ -12976,12 +12965,12 @@
           "category": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 16,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Category",
@@ -13019,16 +13008,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font family"
+            "title": "Font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -13089,12 +13078,11 @@
           "k": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32
               },
               {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 0
+                "type": "null"
               }
             ],
             "title": "K",
@@ -13103,12 +13091,11 @@
           "v": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 256
               },
               {
-                "type": "string",
-                "maxLength": 256,
-                "minLength": 0
+                "type": "null"
               }
             ],
             "title": "V",
@@ -13203,12 +13190,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -13227,12 +13214,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -13241,12 +13228,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -13446,12 +13433,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -13470,12 +13457,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -13484,12 +13471,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -13653,12 +13640,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -13685,12 +13672,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -13700,12 +13687,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -14076,7 +14063,6 @@
             "type": "array",
             "maxItems": 3,
             "title": "Browse",
-            "description": "Custom label for main navigation browse entry",
             "default": []
           },
           "search": {
@@ -14086,7 +14072,6 @@
             "type": "array",
             "maxItems": 3,
             "title": "Search",
-            "description": "Custom label for main navigation search entry",
             "default": []
           },
           "info": {
@@ -14096,7 +14081,6 @@
             "type": "array",
             "maxItems": 3,
             "title": "Info",
-            "description": "Custom label for main navigation info entry",
             "default": []
           }
         },
@@ -14121,16 +14105,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font family"
+            "title": "Font"
           }
         },
         "type": "object",
@@ -14144,6 +14128,7 @@
         "properties": {
           "pg": {
             "type": "integer",
+            "minimum": 1.0,
             "title": "Pg",
             "description": "Page number",
             "default": 1,
@@ -14439,12 +14424,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -14463,12 +14448,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -14477,12 +14462,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -14690,12 +14675,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -14714,12 +14699,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -14728,12 +14713,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -14905,12 +14890,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -14937,12 +14922,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -14952,12 +14937,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -15010,7 +14995,6 @@
           "text": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Text",
             "description": "Text content search query",
             "default": "",
@@ -15082,7 +15066,7 @@
           },
           "infoSegments": {
             "items": {
-              "$ref": "#/components/schemas/ClientSegmentHead"
+              "$ref": "#/components/schemas/ClientSegmentSignature"
             },
             "type": "array",
             "title": "Infosegments"
@@ -15196,12 +15180,13 @@
           "uiFont": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Uifont",
@@ -15210,12 +15195,13 @@
           "contentFont": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Contentfont",
@@ -15276,7 +15262,7 @@
             "format": "color",
             "title": "Uicolor",
             "description": "Primary color used in for client UI",
-            "default": "#305D97"
+            "default": "#305d97"
           },
           "showLogoOnLoadingScreen": {
             "type": "boolean",
@@ -15311,12 +15297,12 @@
           "globalCitationSuffix": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Globalcitationsuffix",
@@ -15357,12 +15343,12 @@
           "dbVersion": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 64,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Dbversion",
@@ -15451,12 +15437,13 @@
           "uiFont": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Uifont",
@@ -15466,12 +15453,13 @@
           "contentFont": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Contentfont",
@@ -15640,12 +15628,12 @@
           "globalCitationSuffix": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Globalcitationsuffix",
@@ -15764,7 +15752,6 @@
           "q": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
             "title": "Q",
             "description": "Query string",
             "default": "*",
@@ -16306,12 +16293,12 @@
           "category": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 16,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Category",
@@ -16350,16 +16337,16 @@
           "font": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 32,
-                "minLength": 1
+                "minLength": 1,
+                "description": "Name of a font family"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Font",
-            "description": "Name of a font family"
+            "title": "Font"
           },
           "enableContentContext": {
             "type": "boolean",
@@ -16492,12 +16479,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -16516,12 +16503,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -16530,12 +16517,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -16733,12 +16720,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -16757,12 +16744,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -16771,12 +16758,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -16938,12 +16925,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -16970,12 +16957,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -16985,12 +16972,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -17043,7 +17030,7 @@
           "html": {
             "type": "string",
             "maxLength": 512,
-            "minLength": 0,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML text content search query",
             "default": "",
@@ -17141,7 +17128,7 @@
           "replacement": {
             "type": "string",
             "maxLength": 64,
-            "minLength": 0,
+            "minLength": 1,
             "title": "Replacement",
             "description": "Replacement string"
           }
@@ -17159,7 +17146,6 @@
         },
         "type": "array",
         "maxItems": 16,
-        "minItems": 0,
         "description": "List of regular expression replacements to apply to search index documents"
       },
       "SearchResults": {
@@ -17360,11 +17346,10 @@
                 "$ref": "#/components/schemas/PydanticObjectId"
               },
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string",
-                "minLength": 1
+                "type": "null"
               }
             ],
             "title": "Targetid",
@@ -17446,11 +17431,10 @@
           "error": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string",
-                "minLength": 1
+                "type": "null"
               }
             ],
             "title": "Error",
@@ -17459,11 +17443,10 @@
           "errorDetails": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string",
-                "minLength": 1
+                "type": "null"
               }
             ],
             "title": "Errordetails",
@@ -17711,12 +17694,11 @@
           "k": {
             "anyOf": [
               {
-                "type": "null"
+                "type": "string",
+                "maxLength": 32
               },
               {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 0
+                "type": "null"
               }
             ],
             "title": "K",
@@ -17844,12 +17826,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -17868,12 +17850,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -17882,12 +17864,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -18089,12 +18071,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -18113,12 +18095,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -18127,12 +18109,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -18298,12 +18280,12 @@
           "citation": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 10240,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Citation",
@@ -18330,12 +18312,12 @@
           "license": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 512,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "License",
@@ -18345,12 +18327,12 @@
           "licenseUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 1024,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Licenseurl",
@@ -18439,12 +18421,12 @@
           "id": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 256,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Id",
@@ -18516,13 +18498,12 @@
             "maximum": 32.0,
             "minimum": 0.0,
             "title": "Defaultlevel",
-            "description": "Default structure level for the client to use for browsing this text",
+            "description": "Structure level of a location",
             "default": 0
           },
           "locDelim": {
             "type": "string",
             "maxLength": 3,
-            "minLength": 1,
             "pattern": "[^\\n\\r]+",
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
@@ -18539,7 +18520,7 @@
             "format": "color",
             "title": "Color",
             "description": "Accent color used for this text in the client UI",
-            "default": "#38714B"
+            "default": "#38714b"
           },
           "sortOrder": {
             "type": "integer",
@@ -18655,13 +18636,12 @@
             "maximum": 32.0,
             "minimum": 0.0,
             "title": "Defaultlevel",
-            "description": "Default structure level for the client to use for browsing this text",
+            "description": "Structure level of a location",
             "default": 0
           },
           "locDelim": {
             "type": "string",
             "maxLength": 3,
-            "minLength": 1,
             "pattern": "[^\\n\\r]+",
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
@@ -18678,7 +18658,7 @@
             "format": "color",
             "title": "Color",
             "description": "Accent color used for this text in the client UI",
-            "default": "#38714B"
+            "default": "#38714b"
           },
           "sortOrder": {
             "type": "integer",
@@ -18837,7 +18817,7 @@
               }
             ],
             "title": "Defaultlevel",
-            "description": "Default structure level for the client to use for browsing this text",
+            "description": "Structure level of a location",
             "optionalNullable": false
           },
           "locDelim": {
@@ -18845,7 +18825,6 @@
               {
                 "type": "string",
                 "maxLength": 3,
-                "minLength": 1,
                 "pattern": "[^\\n\\r]+"
               },
               {
@@ -19042,12 +19021,12 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Avatarurl",
@@ -19056,12 +19035,12 @@
           "bio": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2000,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Bio",
@@ -19333,12 +19312,12 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Avatarurl",
@@ -19347,12 +19326,12 @@
           "bio": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2000,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Bio",
@@ -19468,12 +19447,12 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Avatarurl"
@@ -19693,12 +19672,12 @@
           "avatarUrl": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2083,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Avatarurl",
@@ -19708,12 +19687,12 @@
           "bio": {
             "anyOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "maxLength": 2000,
                 "minLength": 1
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Bio",

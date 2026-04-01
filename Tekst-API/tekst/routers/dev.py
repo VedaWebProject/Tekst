@@ -5,7 +5,6 @@ from typing import Annotated
 
 from beanie.operators import Eq
 from fastapi import APIRouter, Query, status
-from pydantic import conint
 
 from tekst.auth import SuperuserDep
 from tekst.models.content import ContentBaseDocument
@@ -24,8 +23,8 @@ router = APIRouter(
 async def dev_fill_archive(
     su: SuperuserDep,
     copies_per_content: Annotated[
-        conint(ge=1, le=10000),
-        Query(alias="n"),
+        int,
+        Query(alias="n", ge=1, le=10000),
     ] = 100,
 ):  # pragma: no cover
     """

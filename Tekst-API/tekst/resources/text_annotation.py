@@ -9,7 +9,7 @@ from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from beanie.operators import Eq
-from pydantic import BeforeValidator, Field
+from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import ModelBase
@@ -26,9 +26,10 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
+    MultiLineString,
     SchemaOptionalNullable,
+    SingleLineString,
 )
 
 
@@ -60,9 +61,7 @@ class TextAnnotation(ResourceTypeABC):
                     "annotations": {
                         "type": "nested",
                         "properties": {
-                            "key": {
-                                "type": "keyword",
-                            },
+                            "key": {"type": "keyword"},
                             "value": {
                                 "type": "keyword",
                                 "normalizer": "no_diacritics_normalizer",
@@ -92,8 +91,10 @@ class TextAnnotation(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "TextAnnotationContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
+        if not isinstance(content, TextAnnotationContent):  # pragma: no cover
+            raise ValueError(f"Expected TextAnnotationContent, got {type(content)}")
         token_forms = []
         for token in content.tokens:
             for anno in token.annotations:
@@ -123,7 +124,7 @@ class TextAnnotation(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "TextAnnotationSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -205,9 +206,7 @@ class TextAnnotation(ResourceTypeABC):
                         "nested": {
                             "path": annos_field_path,
                             "query": {
-                                "bool": {
-                                    "must": [anno_k_q, *anno_v_qs],
-                                },
+                                "bool": {"must": [anno_k_q, *anno_v_qs]},
                             },
                         }
                     }
@@ -222,9 +221,7 @@ class TextAnnotation(ResourceTypeABC):
                         "path": tokens_field_path,
                         "inner_hits": {"name": q_id},
                         "query": {
-                            "bool": {
-                                "must": annos_es_q,
-                            },
+                            "bool": {"must": annos_es_q},
                         }
                         if len(annos_es_q) > 1
                         else annos_es_q[0],
@@ -262,12 +259,12 @@ class TextAnnotation(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["TextAnnotationContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -337,10 +334,10 @@ class TextAnnotation(ResourceTypeABC):
 
 class AnnotationsConfig(ModelBase):
     display_template: Annotated[
-        ConStrOrNone(
-            max_length=4096,
-            cleanup="multiline",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=4096),
+        MultiLineString,
+        EmptyStrToNone,
         Field(
             description=(
                 "Template string used for displaying the annotations in the web "
@@ -350,13 +347,10 @@ class AnnotationsConfig(ModelBase):
         ),
     ] = None
     multi_value_delimiter: Annotated[
-        ConStr(
-            max_length=3,
-            cleanup="oneline",
-        ),
-        Field(
-            description="String used to delimit multiple values for an annotation",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=3),
+        SingleLineString,
+        Field(description="String used to delimit multiple values for an annotation"),
     ] = "/"
     anno_integration: ItemIntegrationConfig = ItemIntegrationConfig()
 
@@ -382,7 +376,11 @@ class TextAnnotationResource(ResourceBase):
         *,
         force: bool = False,
     ) -> None:
-        max_values_per_anno = 250
+        if not isinstance(self, ResourceBaseDocument):  # pragma: no cover
+            raise RuntimeError("_update_aggregations can only be called on a document")
+
+        # omit annotations with more than n distinct values
+        distinct_v_thresh = 250
         # get precomputed resource aggregations data, if present
         precomp_doc = await PrecomputedDataDocument.find_one(
             PrecomputedDataDocument.ref_id == self.id,
@@ -395,6 +393,10 @@ class TextAnnotationResource(ResourceBase):
                 )
                 return
         else:
+            if not self.id:  # pragma: no cover
+                raise RuntimeError(
+                    "Resource must be saved before aggregations can be created"
+                )
             # create new aggregations document
             precomp_doc = PrecomputedDataDocument(
                 ref_id=self.id,
@@ -453,7 +455,7 @@ class TextAnnotationResource(ResourceBase):
                                     "if": {
                                         "$gt": [
                                             {"$size": "$values"},
-                                            max_values_per_anno,
+                                            distinct_v_thresh,
                                         ]
                                     },
                                     "then": "$$REMOVE",
@@ -551,20 +553,19 @@ class TextAnnotationResource(ResourceBase):
 
 
 type TextAnnotationValue = Annotated[
-    ConStr(max_length=256, cleanup="oneline"),
+    str,
+    StringConstraints(min_length=1, max_length=256),
+    SingleLineString,
     Field(description="Value of an annotation"),
 ]
 
 
 class TextAnnotationEntry(ModelBase):
     key: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key of the annotation",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        Field(description="Key of the annotation"),
     ]
     value: Annotated[
         list[TextAnnotationValue],
@@ -579,13 +580,11 @@ class TextAnnotationEntry(ModelBase):
 
 class TextAnnotationToken(ModelBase):
     id: Annotated[
-        ConStrOrNone(
-            max_length=256,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Unique ID of the token (will be generated if unset)",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="Unique ID of the token (will be generated if unset)"),
     ] = None
     annotations: Annotated[
         list[TextAnnotationEntry],
@@ -609,20 +608,18 @@ class TextAnnotationContent(ContentBase):
     ]
 
 
-type AnnoValueQuery = ConStrOrNone(
-    min_length=0,
-    max_length=256,
-    cleanup="oneline",
-)
+type AnnoValueQuery = Annotated[
+    str | None,
+    StringConstraints(max_length=256),
+    SingleLineString,
+]
 
 
 class TextAnnotationQueryEntry(ModelBase):
     key: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=32,
-            cleanup="oneline",
-        ),
+        str | None,
+        StringConstraints(max_length=32),
+        SingleLineString,
         Field(
             alias="k",
             description="Key of the annotation to search for",

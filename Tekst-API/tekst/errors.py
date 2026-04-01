@@ -1,10 +1,9 @@
-from typing import Any, Literal
+from typing import Any
 
 from fastapi import HTTPException, status
 
 from tekst.config import TekstConfig, get_config
 from tekst.models.common import ModelBase
-from tekst.types import ConStrOrNone
 
 
 _cfg: TekstConfig = get_config()
@@ -12,7 +11,7 @@ _cfg: TekstConfig = get_config()
 
 class ErrorDetail(ModelBase):
     key: str
-    msg: ConStrOrNone() = None
+    msg: str | None = None
     values: dict[str, str | int | float | bool] | None = None
 
 
@@ -21,18 +20,24 @@ class TekstErrorModel(ModelBase):
 
 
 class TekstHTTPException(HTTPException):
+    detail: TekstErrorModel | None = None
+
     def __init__(
         self,
         status_code: int,
         detail: TekstErrorModel | None = None,
         headers: dict[str, str] | None = None,
     ) -> None:
-        super().__init__(status_code=status_code, detail=detail, headers=headers)
+        super().__init__(
+            status_code=status_code,
+            detail=detail,
+            headers=headers,
+        )
 
 
 def responses(
     errors: list[TekstHTTPException],
-) -> dict[int, dict[Literal["model"], type[TekstErrorModel]]]:
+) -> dict[int | str, dict[str, Any]]:
     d = {}
     for error in errors:
         if error.status_code not in d:
@@ -65,10 +70,8 @@ def update_values(
     exc: TekstHTTPException,
     values: dict[str, Any],
 ) -> TekstHTTPException:
-    if "values" in exc.detail.detail:  # pragma: no cover
-        exc.detail.detail.values.update(values)
-    else:
-        exc.detail.detail.values = values
+    if exc.detail and isinstance(exc.detail, TekstErrorModel):
+        exc.detail.detail.values = (exc.detail.detail.values or {}).update(values)
     return exc
 
 
@@ -84,9 +87,7 @@ E_409_RESOURCES_LIMIT_REACHED = _error_instance(
     status_code=status.HTTP_409_CONFLICT,
     key="resourcesLimitReached",
     msg="Resources limit reached for this user",
-    values={
-        "limit": _cfg.misc.max_resources_per_user,
-    },
+    values={"limit": _cfg.misc.max_resources_per_user},
 )
 
 E_404_NOT_FOUND = _error_instance(
@@ -123,9 +124,7 @@ E_409_BOOKMARKS_LIMIT_REACHED = _error_instance(
     status_code=status.HTTP_409_CONFLICT,
     key="bookmarksLimitReached",
     msg="User cannot have more than 1000 bookmarks",
-    values={
-        "limit": 1000,
-    },
+    values={"limit": 1000},
 )
 
 E_404_LOCATION_NOT_FOUND = _error_instance(

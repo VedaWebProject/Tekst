@@ -1,7 +1,7 @@
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import AwareDatetime, Field, field_validator
+from pydantic import AwareDatetime, Field, StringConstraints, field_validator
 from pydantic_extra_types.color import Color
 
 from tekst.config import TekstConfig, get_config
@@ -12,15 +12,15 @@ from tekst.models.common import (
     ModelBase,
     ModelFactoryMixin,
 )
-from tekst.models.segment import ClientSegmentHead, ClientSegmentRead
+from tekst.models.segment import ClientSegmentRead, ClientSegmentSignature
 from tekst.models.text import TextRead
 from tekst.models.user import UserRead
 from tekst.types import (
     ColorSerializer,
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
     FontFamilyValue,
-    FontFamilyValueOrNone,
+    MultiLineString,
+    SingleLineString,
 )
 
 
@@ -28,36 +28,21 @@ _cfg: TekstConfig = get_config()  # get (possibly cached) config data
 
 
 class PlatformSubtitleTranslation(TranslationBase):
-    translation: ConStr(max_length=128)
+    translation: Annotated[str, StringConstraints(min_length=1, max_length=128)]
 
 
 class MainNavEntryTranslation(TranslationBase):
-    translation: ConStr(max_length=42)
+    translation: Annotated[str, StringConstraints(min_length=1, max_length=42)]
 
 
 class NavTranslations(ModelBase):
-    browse: Annotated[
-        Translations[MainNavEntryTranslation],
-        Field(
-            description="Custom label for main navigation browse entry",
-        ),
-    ] = []
-    search: Annotated[
-        Translations[MainNavEntryTranslation],
-        Field(
-            description="Custom label for main navigation search entry",
-        ),
-    ] = []
-    info: Annotated[
-        Translations[MainNavEntryTranslation],
-        Field(
-            description="Custom label for main navigation info entry",
-        ),
-    ] = []
+    browse: Translations[MainNavEntryTranslation] = []
+    search: Translations[MainNavEntryTranslation] = []
+    info: Translations[MainNavEntryTranslation] = []
 
 
 class ResourceMetadataKeyTranslation(TranslationBase):
-    translation: ConStr(max_length=64)
+    translation: Annotated[str, StringConstraints(min_length=1, max_length=64)]
 
 
 class ResourceMetadataKey(ModelBase):
@@ -66,33 +51,28 @@ class ResourceMetadataKey(ModelBase):
 
 
 OskKey = Annotated[
-    ConStr(
-        max_length=32,
-    ),
-    Field(
-        description="Key identifying an OSK mode",
-    ),
+    str,
+    StringConstraints(min_length=1, max_length=32),
+    Field(description="Key identifying an OSK mode"),
 ]
 
 
 class OskMode(ModelBase):
     key: OskKey
-    name: ConStr(
-        max_length=32,
-    )
-    font: FontFamilyValueOrNone = None
+    name: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=32),
+    ]
+    font: FontFamilyValue | None = None
 
 
 class PlatformState(ModelBase, ModelFactoryMixin):
     """Platform state model holding platform settings and state data"""
 
     platform_name: Annotated[
-        ConStr(
-            max_length=32,
-        ),
-        Field(
-            description="Name of the platform",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        Field(description="Name of the platform"),
     ] = _cfg.api_doc.title or "Tekst"
 
     platform_subtitle: Annotated[
@@ -103,10 +83,10 @@ class PlatformState(ModelBase, ModelFactoryMixin):
             ),
         ),
     ] = [
-        {
-            "locale": "*",
-            "translation": _cfg.api_doc.summary or "An online text research platform",
-        }
+        PlatformSubtitleTranslation(
+            locale="*",
+            translation=_cfg.api_doc.summary or "An online text research platform",
+        )
     ]
 
     available_locales: Annotated[
@@ -127,7 +107,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = []
 
     ui_font: Annotated[
-        FontFamilyValueOrNone,
+        FontFamilyValue | None,
         Field(
             description=(
                 "Font family used for non-content UI "
@@ -137,7 +117,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = None
 
     content_font: Annotated[
-        FontFamilyValueOrNone,
+        FontFamilyValue | None,
         Field(
             description=(
                 "Default font family used for content "
@@ -148,16 +128,12 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 
     default_text_id: Annotated[
         PydanticObjectId | None,
-        Field(
-            description="Default text to load in UI",
-        ),
+        Field(description="Default text to load in UI"),
     ] = None
 
     index_unpublished_resources: Annotated[
         bool,
-        Field(
-            description="Index unpublished resources",
-        ),
+        Field(description="Index unpublished resources"),
     ] = False
 
     direct_jump_on_unique_alias_search: Annotated[
@@ -172,16 +148,12 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 
     nav_translations: Annotated[
         NavTranslations,
-        Field(
-            description="Custom labels for main navigation entries",
-        ),
+        Field(description="Custom labels for main navigation entries"),
     ] = NavTranslations()
 
     show_resource_category_headings: Annotated[
         bool,
-        Field(
-            description="Show resource category headings in browse view",
-        ),
+        Field(description="Show resource category headings in browse view"),
     ] = True
 
     prioritize_browse_level_resources: Annotated[
@@ -195,38 +167,28 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 
     show_location_aliases: Annotated[
         bool,
-        Field(
-            description="Show location aliases in browse view",
-        ),
+        Field(description="Show location aliases in browse view"),
     ] = True
 
     ui_color: Annotated[
         Color,
         ColorSerializer,
-        Field(
-            description="Primary color used in for client UI",
-        ),
-    ] = "#305D97"
+        Field(description="Primary color used in for client UI"),
+    ] = Color("#305D97")
 
     show_logo_on_loading_screen: Annotated[
         bool,
-        Field(
-            description="Show logo on loading screen",
-        ),
+        Field(description="Show logo on loading screen"),
     ] = True
 
     show_logo_in_header: Annotated[
         bool,
-        Field(
-            description="Show logo in page header",
-        ),
+        Field(description="Show logo in page header"),
     ] = True
 
     show_tekst_footer_hint: Annotated[
         bool,
-        Field(
-            description="Show a small hint to the Tekst software in the footer",
-        ),
+        Field(description="Show a small hint to the Tekst software in the footer"),
     ] = True
 
     deny_resource_types: Annotated[
@@ -238,20 +200,16 @@ class PlatformState(ModelBase, ModelFactoryMixin):
     ] = ["apiCall"]
 
     global_citation_suffix: Annotated[
-        ConStrOrNone(
-            max_length=10240,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Global suffix for all resource citation hints",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=10240),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Global suffix for all resource citation hints"),
     ] = None
 
     osk_modes: Annotated[
         list[OskMode],
-        Field(
-            description="OSK modes available for use in platform client",
-        ),
+        Field(description="OSK modes available for use in platform client"),
     ] = []
 
     res_meta_translations: Annotated[
@@ -264,27 +222,17 @@ class PlatformState(ModelBase, ModelFactoryMixin):
 
     indices_updated_at: Annotated[
         AwareDatetime | None,
-        Field(
-            description="Time when indices were created",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-            create=True,
-        ),
+        Field(description="Time when indices were created"),
+        ExcludeFromModelVariants(update=True, create=True),
     ] = None
 
     db_version: Annotated[
-        ConStrOrNone(
-            max_length=64,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Version string of DB data",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-            create=True,
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=64),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="Version string of DB data"),
+        ExcludeFromModelVariants(update=True, create=True),
     ] = None
 
     @field_validator("deny_resource_types", mode="after")
@@ -327,7 +275,7 @@ class PlatformData(ModelBase):
     state: PlatformStateRead
     security: PlatformSecurityInfo
     system_segments: list[ClientSegmentRead]
-    info_segments: list[ClientSegmentHead]
+    info_segments: list[ClientSegmentSignature]
     tekst: dict[str, str]
 
 

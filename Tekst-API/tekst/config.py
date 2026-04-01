@@ -17,13 +17,14 @@ from pydantic import (
     DirectoryPath,
     EmailStr,
     Field,
+    StringConstraints,
     computed_field,
     field_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
-from tekst.types import ConStr, ConStrOrNone, HttpUrl, HttpUrlOrNone
+from tekst.types import EmptyStrToNone, HttpUrl, MultiLineString, SingleLineString
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
@@ -88,14 +89,18 @@ class MongoDBConfig(ConfigSubSection):
     protocol: str = "mongodb"
     host: str = "127.0.0.1"
     port: int = 27017
-    user: ConStrOrNone(
-        cleanup="oneline",
-        max_length=64,
-    ) = None
-    password: ConStrOrNone(
-        cleanup="oneline",
-        max_length=64,
-    ) = None
+    user: Annotated[
+        str | None,
+        StringConstraints(max_length=64),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    password: Annotated[
+        str | None,
+        StringConstraints(max_length=64),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
     name: str = "tekst"
     unicode_nf: Literal["NFC", "NFKC", "NFD", "NFKD"] | None = "NFC"
 
@@ -159,20 +164,25 @@ class ElasticsearchConfig(ConfigSubSection):
 class SecurityConfig(ConfigSubSection):
     """Security config sub section model"""
 
-    secret: ConStr(
-        min_length=16,
-        max_length=512,
-        cleanup="oneline",
-    ) = token_hex(32)
+    secret: Annotated[
+        str,
+        StringConstraints(
+            min_length=16,
+            max_length=512,
+        ),
+        SingleLineString,
+    ] = token_hex(32)
     closed_mode: bool = False
     users_active_by_default: bool = False
 
     enable_cookie_auth: bool = True
     auth_cookie_name: str = "tekstuserauth"
-    auth_cookie_domain: ConStrOrNone(
-        cleanup="oneline",
-        max_length=64,
-    ) = None
+    auth_cookie_domain: Annotated[
+        str | None,
+        StringConstraints(max_length=64),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
     auth_cookie_lifetime: Annotated[
         int,
         Field(ge=3600),
@@ -197,32 +207,41 @@ class SecurityConfig(ConfigSubSection):
         Field(ge=600),
     ] = 86400  # 24h
 
-    init_admin_email: ConStrOrNone(
-        max_length=256,
-        cleanup="oneline",
-    ) = None
-    init_admin_password: ConStrOrNone(
-        max_length=256,
-        cleanup="oneline",
-    ) = None
+    init_admin_email: Annotated[
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    init_admin_password: Annotated[
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
 
 
 class EMailConfig(ConfigSubSection):
     """Email-related things config sub section model"""
 
-    smtp_server: ConStr(
-        max_length=256,
-        cleanup="oneline",
-    ) = "127.0.0.1"
+    smtp_server: Annotated[
+        str,
+        StringConstraints(max_length=256),
+        SingleLineString,
+    ] = "127.0.0.1"
     smtp_port: int | None = 25
-    smtp_user: ConStrOrNone(
-        max_length=256,
-        cleanup="oneline",
-    ) = None
-    smtp_password: ConStrOrNone(
-        max_length=256,
-        cleanup="oneline",
-    ) = None
+    smtp_user: Annotated[
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    smtp_password: Annotated[
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
     smtp_starttls: bool = True
     from_address: str = "noreply@example-tekst-instance.org"
 
@@ -234,34 +253,48 @@ class ApiDocConfig(ConfigSubSection):
     swaggerui_url: str = "/docs"
     redoc_url: str = "/redoc"
 
-    title: ConStr(
-        max_length=32,
-        cleanup="oneline",
-    ) = "Tekst"
-    summary: ConStrOrNone(
-        max_length=256,
-        cleanup="oneline",
-    ) = None
-    description: ConStrOrNone(
-        max_length=4096,
-        cleanup="multiline",
-    ) = None
-    terms_url: HttpUrlOrNone = None
-    contact_name: ConStrOrNone(
-        max_length=64,
-        cleanup="oneline",
-    ) = None
-    contact_email: EmailStr | None = None
-    contact_url: HttpUrlOrNone = None
-    license_name: ConStrOrNone(
-        max_length=32,
-        cleanup="oneline",
-    ) = None
-    license_id: ConStrOrNone(
-        max_length=32,
-        cleanup="oneline",
-    ) = None
-    license_url: HttpUrlOrNone = None
+    title: Annotated[
+        str,
+        StringConstraints(max_length=32),
+        SingleLineString,
+    ] = "Tekst"
+    summary: Annotated[
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    description: Annotated[
+        str | None,
+        StringConstraints(max_length=4096),
+        MultiLineString,
+        EmptyStrToNone,
+    ] = None
+    terms_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    contact_name: Annotated[
+        str | None,
+        StringConstraints(max_length=64),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    contact_email: Annotated[
+        EmailStr | None,
+        EmptyStrToNone,
+    ] = None
+    contact_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    license_name: Annotated[
+        str | None,
+        StringConstraints(max_length=32),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    license_id: Annotated[
+        str | None,
+        StringConstraints(max_length=32),
+        SingleLineString,
+        EmptyStrToNone,
+    ] = None
+    license_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
 
 
 class CORSConfig(ConfigSubSection):
@@ -290,7 +323,7 @@ class MiscConfig(ConfigSubSection):
 
     @computed_field
     @property
-    def demo_data_path(self) -> str:
+    def demo_data_path(self) -> Path:
         return Path(realpath(__file__)).parent.parent / "demo"
 
 
@@ -319,7 +352,7 @@ class TekstConfig(BaseSettings):
     auto_migrate: bool = False
     xsrf: bool = True
 
-    temp_files_dir: DirectoryPath = "/tmp/tekst_tmp"
+    temp_files_dir: DirectoryPath = Path("/tmp/tekst_tmp")
 
     # config sub sections
     db: MongoDBConfig = MongoDBConfig()  # MongoDB-related config
@@ -358,7 +391,7 @@ class TekstConfig(BaseSettings):
         except Exception as e:
             print(e)
             raise ValueError(
-                f"Temporary directoy is not valid or writable: {path}"
+                f"Temporary directoy is not valid or writable: {str(v)}"
             ) from e
         return path
 

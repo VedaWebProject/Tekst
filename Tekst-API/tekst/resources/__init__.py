@@ -15,7 +15,7 @@ import jsonref
 from beanie.operators import In
 from fastapi import Body
 from humps import camelize
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
@@ -39,11 +39,11 @@ from tekst.models.resource import (
 )
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument, UserReadPublic
-from tekst.types import ConStr, SchemaOptionalNullable
+from tekst.types import (
+    SchemaOptionalNullable,
+    SingleLineString,
+)
 
-
-# global variable to hold resource type manager instance
-resource_types_mgr: "ResourceTypesManager" = None
 
 # resource base model fields to exclude from export/import
 RES_EXCLUDE_EXP_IMP = {
@@ -93,9 +93,7 @@ async def call_resource_precompute_hooks(
     ).to_list():
         await resource.resource_precompute_hook(force=force)
 
-    return {
-        "took": round(log_op_end(op_id), 2),
-    }
+    return {"took": round(log_op_end(op_id), 2)}
 
 
 class CommonResourceSearchQueryData(ModelBase):
@@ -115,11 +113,9 @@ class CommonResourceSearchQueryData(ModelBase):
         ),
     ]
     comment: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
         Field(
             alias="cmt",
             description="Content comment search query",
@@ -182,9 +178,7 @@ class ResourceTypeABC(ABC):
             strict_analyzer=strict_analyzer,
         )
         return dict(
-            native={
-                "type": "boolean",
-            },
+            native={"type": "boolean"},
             comment={
                 "type": "text",
                 "analyzer": "standard_no_diacritics",
@@ -242,11 +236,7 @@ class ResourceTypeABC(ABC):
             *(cls.rtype_es_queries(query=query, strict=strict) or []),
             # ensure we only find locations that
             # the target resource potentially has data for
-            {
-                "exists": {
-                    "field": f"resources.{res_id_str}",
-                }
-            },
+            {"exists": {"field": f"resources.{res_id_str}"}},
         ]
 
     @classmethod
@@ -257,7 +247,7 @@ class ResourceTypeABC(ABC):
             proxies=False,
             lazy_load=False,
         )
-        schema_excludes = camelize({"id", "resource_id", "resource_type"})
+        schema_excludes = camelize(["id", "resource_id", "resource_type"])
         template = {
             "__README": get_resource_template_readme(),
             "_contentSchema": {
@@ -408,7 +398,7 @@ class ResourceTypeABC(ABC):
 
     @classmethod
     @abstractmethod
-    def search_query_model(cls) -> type["ResourceSearchQuery"] | None:
+    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
         """
         Returns the search query model for search
         queries targeting this type of resource
@@ -443,7 +433,7 @@ class ResourceTypeABC(ABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "ResourceSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         """
@@ -482,7 +472,8 @@ class ResourceTypesManager:
     __resource_types: dict[str, ResourceTypeABC] = dict()
 
     def register(
-        self, resource_type_class: type[ResourceTypeABC], resource_type_name: str
+        self,
+        resource_type_class: type[ResourceTypeABC],
     ):
         # create resource/content document models
         resource_type_class.resource_model().document_model(ResourceBaseDocument)
@@ -490,7 +481,7 @@ class ResourceTypesManager:
         resource_type_class.content_model().document_model(ContentBaseDocument)
         resource_type_class.content_model().update_model(ContentBaseUpdate)
         # register instance
-        self.__resource_types[resource_type_name] = resource_type_class()
+        self.__resource_types[resource_type_class.get_key()] = resource_type_class()
 
     def get(self, resource_type_name: str) -> ResourceTypeABC:
         return self.__resource_types.get(resource_type_name)
@@ -501,14 +492,19 @@ class ResourceTypesManager:
     def list_names(self) -> list[str]:
         return list(self.__resource_types.keys())
 
+    def is_initialized(self) -> bool:
+        return len(self.__resource_types) > 0
+
+
+# global variable to hold resource type manager instance
+resource_types_mgr: ResourceTypesManager = ResourceTypesManager()
+
 
 def init_resource_types_mgr() -> None:
     global resource_types_mgr
-    if resource_types_mgr is not None:  # pragma: no cover
+    if resource_types_mgr.is_initialized():  # pragma: no cover
         return
     log.info("Registering resource types...")
-    # init manager
-    manager = ResourceTypesManager()
     # get internal resource type module names
     lt_modules = [mod.name for mod in pkgutil.iter_modules(__path__)]
     for lt_module in lt_modules:
@@ -532,8 +528,7 @@ def init_resource_types_mgr() -> None:
                 res_type_class.content_model().update_model()
                 # register resource type instance with resource type manager
                 log.debug(f"Registering resource type: {res_type_class.get_name()}")
-                manager.register(res_type_class, res_type_class.get_key())
-    resource_types_mgr = manager
+                resource_types_mgr.register(res_type_class)
 
 
 init_resource_types_mgr()
@@ -548,7 +543,7 @@ AnyResourceCreate = Annotated[
                 rt.resource_model().create_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -561,7 +556,7 @@ AnyResourceRead = Annotated[
                 rt.resource_model().read_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -574,7 +569,7 @@ AnyResourceUpdate = Annotated[
                 rt.resource_model().update_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -590,7 +585,7 @@ AnyContentCreate = Annotated[
                 rt.content_model().create_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -603,7 +598,7 @@ AnyContentRead = Annotated[
                 rt.content_model().read_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -617,7 +612,7 @@ AnyContentReadOrMissing = Annotated[
                 for rt in resource_types_mgr.get_all().values()
             ]
             + [MissingContent]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -630,7 +625,7 @@ AnyContentUpdate = Annotated[
                 rt.content_model().update_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -643,7 +638,7 @@ AnyContentDocument = Annotated[
                 rt.content_model().document_model()
                 for rt in resource_types_mgr.get_all().values()
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
@@ -660,7 +655,7 @@ AnyResourceSearchQuery = Annotated[
                 for rt in resource_types_mgr.get_all().values()
                 if rt.search_query_model() is not None
             ]
-        )
+        )  # ty:ignore[invalid-type-form]
     ],
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),

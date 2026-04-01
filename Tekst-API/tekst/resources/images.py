@@ -3,28 +3,24 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
-from tekst.models.common import (
-    ModelBase,
-)
-from tekst.models.content import ContentBase
+from tekst.models.common import ModelBase
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
 )
-from tekst.models.resource_configs import (
-    ResourceConfigBase,
-)
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
     HttpUrl,
-    HttpUrlOrNone,
+    MultiLineString,
     SchemaOptionalNullable,
+    SingleLineString,
 )
 
 
@@ -66,7 +62,7 @@ class Images(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "ImagesContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
         return {
             "caption": [
@@ -79,7 +75,7 @@ class Images(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "ImagesSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -105,12 +101,12 @@ class Images(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["ImagesContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -175,30 +171,24 @@ class ImagesResource(ResourceBase):
 class ImageFile(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(
-            description="URL of the image file",
-        ),
+        Field(description="URL of the image file"),
     ]
     thumb_url: Annotated[
-        HttpUrlOrNone,
-        Field(
-            description="URL of the image file thumbnail",
-        ),
+        HttpUrl | None,
+        EmptyStrToNone,
+        Field(description="URL of the image file thumbnail"),
     ] = None
     source_url: Annotated[
-        HttpUrlOrNone,
-        Field(
-            description="URL of the source website of the image",
-        ),
+        HttpUrl | None,
+        EmptyStrToNone,
+        Field(description="URL of the source website of the image"),
     ] = None
     caption: Annotated[
-        ConStrOrNone(
-            max_length=8192,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Caption of the image",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=8192),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Caption of the image"),
     ] = None
 
 
@@ -225,13 +215,9 @@ class ImagesSearchQuery(ModelBase):
         ),
     ]
     caption: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Caption content search query",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
+        Field(description="Caption content search query"),
         SchemaOptionalNullable,
     ] = ""

@@ -1,4 +1,4 @@
-import type { ClientSegmentHead } from '@/api';
+import type { ClientSegmentSignature } from '@/api';
 import { $t } from '@/i18n';
 import {
   useAuthStore,
@@ -49,7 +49,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
   const resources = useResourcesStore();
 
   const infoPagesOptions = computed(() => {
-    const pages: ClientSegmentHead[] = [];
+    const pages: ClientSegmentSignature[] = [];
     // add pages with current locale
     pages.push(...(state.pf?.infoSegments.filter((p) => p.locale === state.locale) || []));
     // add pages without locale

@@ -1,15 +1,14 @@
-from typing import Literal, TypeVar, get_args
+from typing import Annotated, Literal, TypeVar, get_args
 
-from pydantic import conlist
+from annotated_types import MaxLen
 from typing_extensions import TypedDict
 
 
 # LOCALE AND TRANSLATION TYPES
 
 # type alias for available locale/language setting identifiers
-_platform_locales = ("deDE", "enUS")
-type LocaleKey = Literal[_platform_locales]
-type TranslationLocaleKey = Literal[_platform_locales + ("*",)]
+type LocaleKey = Literal["deDE", "enUS"]
+type TranslationLocaleKey = Literal["deDE", "enUS", "*"]
 
 
 class TranslationBase(TypedDict):
@@ -17,13 +16,16 @@ class TranslationBase(TypedDict):
 
 
 T = TypeVar("T", bound=TranslationBase)
-Translations = conlist(
-    T,
-    max_length=len(get_args(TranslationLocaleKey.__value__)),
-)
+Translations = Annotated[
+    list[T],
+    MaxLen(len(get_args(TranslationLocaleKey.__value__))),
+]
 
 
-def pick_translation(translations: Translations, locale_key: LocaleKey = "enUS") -> str:
+def pick_translation(
+    translations: list[TranslationBase],
+    locale_key: LocaleKey = "enUS",
+) -> str:
     prio = [locale_key, "*", "enUS"]
     sorted_translations = sorted(
         translations,

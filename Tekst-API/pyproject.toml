@@ -100,6 +100,11 @@ indent-style = "space"
 line-ending = "lf"
 skip-magic-trailing-comma = false
 
+# ty
+
+[tool.ty.rules]
+all = "warn"
+
 # pytest
 
 [tool.pytest.ini_options]

@@ -3,26 +3,25 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import AfterValidator, Field
+from pydantic import AfterValidator, Field, StringConstraints
 
 from tekst.models.common import ModelBase
-from tekst.models.content import ContentBase
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
 )
-from tekst.models.resource_configs import (
-    ResourceConfigBase,
-)
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
     ContentCssProperties,
+    EmptyStrToNone,
+    MultiLineString,
     SchemaOptionalNullable,
     SearchReplacements,
+    SingleLineString,
 )
 
 
@@ -64,7 +63,7 @@ class PlainText(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "PlainTextContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
         return content.model_dump(include={"text"})
 
@@ -72,7 +71,7 @@ class PlainText(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "PlainTextSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -98,12 +97,12 @@ class PlainText(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["PlainTextContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -118,6 +117,8 @@ class PlainText(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        if not text:  # pragma: no cover
+            raise ValueError(f"Text with ID '{resource.text_id}' not found")
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -150,29 +151,24 @@ class PlainText(ResourceTypeABC):
 class FocusViewConfig(ModelBase):
     single_line: Annotated[
         bool,
-        Field(
-            description="Show contents as single line of text when in focus view",
-        ),
+        Field(description="Show contents as single line of text when in focus view"),
     ] = True
     delimiter: Annotated[
-        ConStr(
+        str,
+        StringConstraints(
             min_length=1,
             max_length=3,
-            strip=False,
+            strip_whitespace=False,
             pattern=r"[^\n\r]+",
         ),
-        Field(
-            description=("Delimiter used for single-line display in focus view"),
-        ),
+        Field(description="Delimiter used for single-line display in focus view"),
     ] = " / "
 
 
 class LineLabellingConfig(ModelBase):
     enabled: Annotated[
         bool,
-        Field(
-            description="Enable/disable line labelling",
-        ),
+        Field(description="Enable/disable line labelling"),
     ] = False
     labelling_type: Annotated[
         Literal[
@@ -181,9 +177,7 @@ class LineLabellingConfig(ModelBase):
             "lettersLowercase",
             "lettersUppercase",
         ],
-        Field(
-            description="Line labelling type",
-        ),
+        Field(description="Line labelling type"),
     ] = "numbersOneBased"
 
 
@@ -195,18 +189,14 @@ class DeepLLinksConfig(ModelBase):
 
     enabled: Annotated[
         bool,
-        Field(
-            description="Enable/disable quick translation links to DeepL",
-        ),
+        Field(description="Enable/disable quick translation links to DeepL"),
     ] = False
     source_language: Annotated[
-        ConStrOrNone(
-            max_length=16,
-            cleanup="oneline",
-        ),
-        Field(
-            description="DeepL source language code",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=16),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="DeepL source language code"),
         AfterValidator(lambda x: x.lower() if x else None),
     ] = None
 
@@ -242,13 +232,10 @@ class PlainTextContent(ContentBase):
 
     resource_type: Literal["plainText"]  # camelCased resource type classname
     text: Annotated[
-        ConStr(
-            max_length=102400,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Text content of the plain text content object",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=102400),
+        MultiLineString,
+        Field(description="Text content of the plain text content object"),
     ]
 
 
@@ -261,13 +248,9 @@ class PlainTextSearchQuery(ModelBase):
         ),
     ]
     text: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Text content search query",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
+        Field(description="Text content search query"),
         SchemaOptionalNullable,
     ] = ""

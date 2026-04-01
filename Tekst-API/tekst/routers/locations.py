@@ -3,7 +3,7 @@ from typing import Annotated, Literal
 from beanie import PydanticObjectId
 from beanie.operators import And, In, NotIn
 from fastapi import APIRouter, Path, Query, status
-from pydantic import Field, conint
+from pydantic import Field, StringConstraints
 
 from tekst import errors
 from tekst.auth import SuperuserDep
@@ -22,7 +22,12 @@ from tekst.models.text import (
     TextSlug,
 )
 from tekst.search import set_index_ood
-from tekst.types import ConStrOrNone, LocationLevel, LocationPosition
+from tekst.types import (
+    EmptyStrToNone,
+    LocationLevel,
+    LocationPosition,
+    SingleLineString,
+)
 
 
 router = APIRouter(
@@ -169,14 +174,11 @@ async def find_locations(
         ),
     ] = None,
     alias: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Query(
-            description="Alias of location(s) to find",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        EmptyStrToNone,
+        Query(description="Alias of location(s) to find"),
     ] = None,
     add_full_labels: Annotated[
         bool,
@@ -186,12 +188,11 @@ async def find_locations(
         ),
     ] = False,
     limit: Annotated[
-        conint(
-            ge=1,
-            le=100,
-        ),
+        int,
         Query(
             description="Return at most <limit> locations",
+            ge=1,
+            le=100,
         ),
     ] = 100,
 ) -> list[LocationDocument]:
@@ -200,6 +201,7 @@ async def find_locations(
     A full combined label including all parent location's labels is added to each
     returned location object if add_full_labels is set to true.
     """
+    print(alias)
     text_doc = None
     locations = []
 
@@ -280,9 +282,7 @@ async def get_path_options_by_head_id(
     ],
     by: Annotated[
         Literal["root", "head"],
-        Path(
-            description="Wheter to handle the given location as path root or head",
-        ),
+        Path(description="Wheter to handle the given location as path root or head"),
     ],
 ) -> list[list[LocationDocument]]:
     """

@@ -4,10 +4,11 @@ from types import UnionType
 from typing import (
     Any,
     Literal,
+    Self,
     Union,
     get_args,
     get_origin,
-)  # noqa: UP035
+)
 from unicodedata import normalize
 
 from beanie import Document, PydanticObjectId
@@ -54,31 +55,8 @@ class ModelBase(BaseModel):
             return None
 
     @classmethod
-    def model_from(cls, obj: BaseModel) -> BaseModel:
+    def model_from(cls, obj: BaseModel) -> Self:
         return cls.model_validate(obj, from_attributes=True)
-
-    @classmethod
-    def _field_excluded_from_model_variant(
-        cls,
-        field_name: str,
-        model_variant: Literal["create", "update"],
-    ) -> bool:
-        """
-        Returns `True` if the field with the given name should be excluded from the
-        model variant with the given name. This is the case if the field is annotated
-        with `ExcludeFromModelVariants` with the given model variant set to `True`.
-        """
-        for meta in cls.model_fields[field_name].metadata:
-            if isinstance(
-                meta,
-                ExcludeFromModelVariants,
-            ) and getattr(
-                meta,
-                model_variant,
-                False,
-            ):
-                return True
-        return False
 
 
 class NoAliasEncoder(Encoder):
@@ -173,17 +151,45 @@ class DocumentBase(Document):
             return False
 
 
+def _field_excluded_from_model_variant(
+    model_type: type[BaseModel],
+    field_name: str,
+    model_variant: Literal["create", "update"],
+) -> bool:
+    """
+    Returns `True` if the field with the given name should be excluded from the
+    model variant with the given name. This is the case if the field is annotated
+    with `ExcludeFromModelVariants` with the given model variant set to `True`.
+    """
+    for meta in model_type.model_fields[field_name].metadata:
+        if isinstance(
+            meta,
+            ExcludeFromModelVariants,
+        ) and getattr(
+            meta,
+            model_variant,
+            False,
+        ):
+            return True
+    return False
+
+
+def _apply_field_exclusions(
+    model_type: type[BaseModel],
+    model_variant: Literal["create", "update"],
+) -> None:
+    for field_name, field in list(model_type.model_fields.items()):
+        if _field_excluded_from_model_variant(model_type, field_name, model_variant):
+            field.default = PydanticUndefined
+            del model_type.model_fields[field_name]
+    model_type.model_rebuild(force=True)
+
+
 class CreateBase(BaseModel):
     @classmethod
     def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
         super().__pydantic_init_subclass__(**kwargs)
-
-        for name, field in list(cls.model_fields.items()):
-            if cls._field_excluded_from_model_variant(name, "create"):
-                field.default = PydanticUndefined
-                del cls.model_fields[name]
-
-        cls.model_rebuild(force=True)
+        _apply_field_exclusions(cls, "create")
 
 
 class ReadBase(BaseModel):
@@ -195,22 +201,17 @@ class UpdateBase(BaseModel):
     @classmethod
     def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
         super().__pydantic_init_subclass__(**kwargs)
-
-        for name, field in list(cls.model_fields.items()):
-            if cls._field_excluded_from_model_variant(name, "update"):
-                del cls.model_fields[name]
-
-        cls.model_rebuild(force=True)
+        _apply_field_exclusions(cls, "update")
 
 
 # MODEL FACTORY MIXIN
 
 
 class ModelFactoryMixin:
-    _document_model: type[DocumentBase] = None
-    _create_model: type[ModelBase] = None
-    _read_model: type[ReadBase] = None
-    _update_model: type[ModelBase] = None
+    _document_model: type[DocumentBase] | None = None
+    _create_model: type[ModelBase] | None = None
+    _read_model: type[ReadBase] | None = None
+    _update_model: type[ModelBase] | None = None
 
     @classmethod
     def _is_origin_cls(cls, attr: str) -> bool:
@@ -226,7 +227,7 @@ class ModelFactoryMixin:
         return (bases,) if type(bases) is not tuple else bases
 
     @classmethod
-    def document_model(cls, bases: type | tuple[type] = DocumentBase) -> type:
+    def document_model(cls, bases: type | tuple[type] = DocumentBase) -> type[Document]:
         if not cls._document_model or not cls._is_origin_cls("_document_model"):
             cls._document_model = create_model(
                 f"{cls.__name__}Document",
@@ -246,7 +247,7 @@ class ModelFactoryMixin:
         return cls._create_model
 
     @classmethod
-    def read_model(cls, bases: type | tuple[type] = ReadBase) -> type[ReadBase]:
+    def read_model(cls, bases: type | tuple[type] = ReadBase) -> type[ModelBase]:
         if not cls._read_model or not cls._is_origin_cls("_read_model"):
             cls._read_model = create_model(
                 f"{cls.__name__}Read",
@@ -262,7 +263,7 @@ class ModelFactoryMixin:
             for name, field in cls.model_fields.items():
                 if name.endswith("_type"):
                     continue  # don't make fields optional that end on "_type"
-                if cls._field_excluded_from_model_variant(name, "update"):
+                if _field_excluded_from_model_variant(cls, name, "update"):
                     # don't manipulate fields that will be
                     # excluded from the target model anyway
                     continue

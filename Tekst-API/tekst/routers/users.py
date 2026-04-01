@@ -5,6 +5,7 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.operators import NE, Eq, Or, RegEx
 from fastapi import APIRouter, Depends, Path, Query, Request, status
+from pydantic import StringConstraints
 
 from tekst import errors
 from tekst.auth import (
@@ -20,7 +21,7 @@ from tekst.models.user import (
     UserReadPublic,
     UsersSearchResult,
 )
-from tekst.types import ConStr
+from tekst.types import SingleLineString
 
 
 def _get_user_text_query(query_str: str) -> dict:
@@ -237,11 +238,9 @@ async def get_public_user(
 async def find_public_users(
     u: UserDep,
     query: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=128,
-            cleanup="oneline",
-        ),
+        str,
+        StringConstraints(max_length=128),
+        SingleLineString,
         Query(
             alias="q",
             description="Query string to search in user data",

@@ -3,7 +3,7 @@ import pytest
 from pydantic import ValidationError
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
-from tekst.models.resource_configs import ItemIntegrationConfig
+from tekst.models.resource_configs import ItemGroup, ItemIntegrationConfig, ItemProps
 from tekst.models.text import Text, TextCreate, TextDocument, TextRead, TextUpdate
 from tekst.models.user import UserReadPublic
 
@@ -11,7 +11,7 @@ from tekst.models.user import UserReadPublic
 def test_basic_validation():
     with pytest.raises(ValidationError) as error:
         TextRead()
-        assert "missing" in error.value
+        assert "missing" in str(error)
 
 
 def test_serialization(get_test_data):
@@ -183,30 +183,30 @@ async def test_apply_updates(test_app):
 def test_item_integration_config():
     ii_cfg = ItemIntegrationConfig(
         groups=[
-            {"key": "foo", "translations": [{"locale": "*", "translation": "Foo"}]},
-            {"key": "bar", "translations": [{"locale": "*", "translation": "Bar"}]},
+            ItemGroup(key="foo", translations=[{"locale": "*", "translation": "Foo"}]),
+            ItemGroup(key="bar", translations=[{"locale": "*", "translation": "Bar"}]),
         ],
         item_props=[
-            {
-                "key": "one",
-                "translations": [{"locale": "*", "translation": "One"}],
-                "group": "bar",
-            },
-            {
-                "key": "two",
-                "translations": [{"locale": "*", "translation": "Two"}],
-                "group": "bar",
-            },
-            {
-                "key": "three",
-                "translations": [{"locale": "*", "translation": "Three"}],
-                "group": "foo",
-            },
-            {
-                "key": "four",
-                "translations": [{"locale": "*", "translation": "Four"}],
-                "group": "foo",
-            },
+            ItemProps(
+                key="one",
+                translations=[{"locale": "*", "translation": "One"}],
+                group="bar",
+            ),
+            ItemProps(
+                key="two",
+                translations=[{"locale": "*", "translation": "Two"}],
+                group="bar",
+            ),
+            ItemProps(
+                key="three",
+                translations=[{"locale": "*", "translation": "Three"}],
+                group="foo",
+            ),
+            ItemProps(
+                key="four",
+                translations=[{"locale": "*", "translation": "Four"}],
+                group="foo",
+            ),
         ],
     )
 

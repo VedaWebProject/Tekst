@@ -1,24 +1,24 @@
 import asyncio
 import traceback
 
-from collections.abc import Awaitable
+from collections.abc import Awaitable, Callable
 from datetime import UTC, datetime, timedelta
 from enum import Enum
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, ParamSpec, TypeVar
 from uuid import uuid4
 
 from beanie import PydanticObjectId
 from beanie.operators import LT, NE, Eq, In
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
-from pydantic import AwareDatetime, Field
+from pydantic import AwareDatetime, Field, StringConstraints
 
 from tekst import errors
 from tekst.config import TekstConfig, get_config
+from tekst.errors import TekstHTTPException
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
 from tekst.models.user import UserRead
-from tekst.types import ConStr, ConStrOrNone
 
 
 class TaskType(Enum):
@@ -67,10 +67,8 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ]
     target_id: Annotated[
-        PydanticObjectId | ConStrOrNone(),
-        Field(
-            description="ID of the target of the task or None if there is no target",
-        ),
+        PydanticObjectId | str | None,
+        Field(description="ID of the target of the task or None if there is no target"),
     ] = None
     user_id: Annotated[
         PydanticObjectId | None,
@@ -81,9 +79,8 @@ class Task(ModelBase, ModelFactoryMixin):
         ),
     ] = None
     pickup_key: Annotated[
-        ConStr(
-            max_length=64,
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=64),
         Field(
             description=(
                 "Pickup key for accessing the task in case tasks "
@@ -93,49 +90,38 @@ class Task(ModelBase, ModelFactoryMixin):
     ]
     status: Annotated[
         Literal["waiting", "running", "done", "failed"],
-        Field(
-            description="Status of the task",
-        ),
+        Field(description="Status of the task"),
     ]
     start_time: Annotated[
         AwareDatetime,
-        Field(
-            description="Time when the task was started",
-        ),
+        Field(description="Time when the task was started"),
     ]
     end_time: Annotated[
         AwareDatetime | None,
-        Field(
-            description="Time when the task has ended",
-        ),
+        Field(description="Time when the task has ended"),
     ] = None
     duration_seconds: Annotated[
         float | None,
-        Field(
-            description="Duration of the finished task in seconds",
-        ),
+        Field(description="Duration of the finished task in seconds"),
     ] = None
     result: Annotated[
         dict[str, Any] | None,
-        Field(
-            description="Result data of the task",
-        ),
+        Field(description="Result data of the task"),
     ] = None
     error: Annotated[
-        ConStrOrNone(),
-        Field(
-            description="Error ID if the task failed",
-        ),
+        str | None,
+        Field(description="Error ID if the task failed"),
     ] = None
     error_details: Annotated[
-        ConStrOrNone(),
-        Field(
-            description="Error details if the task failed",
-        ),
+        str | None,
+        Field(description="Error details if the task failed"),
     ] = None
 
 
 TaskRead = Task.read_model()
+P = ParamSpec("P")
+R = TypeVar("R")
+AsyncFunc = Callable[P, Awaitable[R]]
 
 
 class TaskDocument(Task, DocumentBase):
@@ -153,7 +139,7 @@ class TaskDocument(Task, DocumentBase):
 
 async def _run_task(
     *,
-    task: Awaitable,
+    task: AsyncFunc,
     task_doc: TaskDocument,
     task_kwargs: dict[str, Any] = {},
 ) -> None:
@@ -162,7 +148,11 @@ async def _run_task(
         f"with target ID {str(task_doc.target_id)}"
     )
     try:
-        if await is_locked(task_doc.task_type, task_doc.id, task_doc.target_id):
+        if task_doc.id and await is_locked(
+            task_doc.task_type,
+            task_doc.id,
+            task_doc.target_id,
+        ):
             log.warning(
                 f"Task '{task_doc.task_type.value}' with target ID "
                 f"{task_doc.target_id} already running. Task will be ended as 'failed'."
@@ -176,13 +166,13 @@ async def _run_task(
         except Exception as _:  # pragma: no cover
             task_doc.result = {"msg": str(result)}
             log.warning(f"Could not JSON encode task result for task: {str(task_doc)}")
-    except Exception as e:
+    except TekstHTTPException as e:
         log_op_end(op_id, failed=True)
         task_doc.status = "failed"
         try:
-            task_doc.error = e.detail.detail.key
+            task_doc.error = e.detail.detail.key  # ty:ignore[unresolved-attribute]
             task_doc.error_details = (
-                str(e.detail.detail.values) if e.detail.detail.values else None
+                str(e.detail.detail.values) if e.detail.detail.values else None  # ty:ignore[unresolved-attribute]
             )
         except Exception:  # pragma: no cover
             task_doc.error_details = str(e) if e else None
@@ -202,7 +192,7 @@ async def _run_task(
 
 
 async def create_task(
-    task: Awaitable,
+    task: AsyncFunc,
     task_type: TaskType,
     *,
     target_id: PydanticObjectId | str | None = None,
@@ -312,6 +302,4 @@ async def _auto_delete_task_delayed_task(
 
 
 def _auto_delete_task_delayed(task_doc: TaskDocument) -> None:
-    asyncio.create_task(
-        _auto_delete_task_delayed_task(task_doc),
-    )
+    asyncio.create_task(_auto_delete_task_delayed_task(task_doc))

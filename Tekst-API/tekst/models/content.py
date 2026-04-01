@@ -2,7 +2,13 @@ from datetime import UTC, datetime
 from typing import Annotated, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
-from pydantic import AwareDatetime, BeforeValidator, Field, field_validator
+from pydantic import (
+    AwareDatetime,
+    BeforeValidator,
+    Field,
+    StringConstraints,
+    field_validator,
+)
 
 from tekst.models.common import (
     DocumentBase,
@@ -11,10 +17,11 @@ from tekst.models.common import (
     ModelFactoryMixin,
 )
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
+    MultiLineString,
     ResourceTypeName,
     SchemaOptionalNonNullable,
+    SingleLineString,
 )
 
 
@@ -22,16 +29,19 @@ class ContentComment(TypedDict):
     """A comment on a content"""
 
     by: NotRequired[
-        ConStrOrNone(
-            max_length=128,
-            cleanup="oneline",
-        )
+        Annotated[
+            str | None,
+            StringConstraints(min_length=1, max_length=128),
+            SingleLineString,
+            EmptyStrToNone,
+        ]
     ]
 
-    comment: ConStr(
-        max_length=5000,
-        cleanup="multiline",
-    )
+    comment: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=5000),
+        MultiLineString,
+    ]
 
 
 class ContentBase(ModelBase, ModelFactoryMixin):
@@ -39,29 +49,19 @@ class ContentBase(ModelBase, ModelFactoryMixin):
 
     resource_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="Resource ID",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="Resource ID"),
+        ExcludeFromModelVariants(update=True),
     ]
 
     resource_type: Annotated[
         ResourceTypeName,
-        Field(
-            description="A string identifying one of the available resource types",
-        ),
+        Field(description="A string identifying one of the available resource types"),
     ]
 
     location_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="Text location ID",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="Text location ID"),
+        ExcludeFromModelVariants(update=True),
     ]
 
     comments: Annotated[
@@ -89,9 +89,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
 
     archived: Annotated[
         bool,
-        Field(
-            description="Whether the content is archived",
-        ),
+        Field(description="Whether the content is archived"),
         ExcludeFromModelVariants(
             create=True,
             update=True,
@@ -111,9 +109,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             )
         return v
 
-    async def comments_for_csv(
-        self,
-    ) -> str:
+    async def comments_for_csv(self) -> str:
         if not self.comments:
             return ""
         return "\n\n".join(

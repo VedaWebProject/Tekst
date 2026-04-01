@@ -1387,14 +1387,14 @@ export interface components {
       /** @description Search range */
       rng?: components['schemas']['LocationRange'];
     };
-    AnnoValueQuery: null | string;
+    AnnoValueQuery: string | null;
     /** AnnotationsConfig */
     AnnotationsConfig: {
       /**
        * Displaytemplate
        * @description Template string used for displaying the annotations in the web client(if missing, all annotations are displayed with key and value,separated by commas)
        */
-      displayTemplate?: null | string;
+      displayTemplate?: string | null;
       /**
        * Multivaluedelimiter
        * @description String used to delimit multiple values for an annotation
@@ -1432,7 +1432,7 @@ export interface components {
       calls: components['schemas']['ApiCallContentItem'][];
       /**
        * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       * @description Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
       transformContext?: string;
     };
@@ -1498,7 +1498,7 @@ export interface components {
       calls: components['schemas']['ApiCallContentItem'][];
       /**
        * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       * @description Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
       transformContext?: string;
     } & {
@@ -1523,9 +1523,9 @@ export interface components {
       calls?: components['schemas']['ApiCallContentItem'][];
       /**
        * Transformcontext
-       * @description Extra data that will be made available to the transformation script. This has to be a valid, string-encoded JSON object.
+       * @description Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      transformContext?: null | string;
+      transformContext?: string | null;
     };
     /** ApiCallModGeneralConfig */
     ApiCallModGeneralConfig: {
@@ -1533,7 +1533,7 @@ export interface components {
        * Category
        * @description Resource category key
        */
-      category?: null | string;
+      category?: string | null;
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
@@ -1551,11 +1551,8 @@ export interface components {
        * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
       collapsibleContents?: number | null;
-      /**
-       * Font
-       * @description Name of a font family
-       */
-      font?: null | string;
+      /** Font */
+      font?: string | null;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for API call resources)
@@ -1646,7 +1643,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -1657,12 +1654,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1771,7 +1768,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -1782,12 +1779,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1861,7 +1858,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -1871,12 +1868,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -1981,12 +1978,12 @@ export interface components {
        * Sourceurl
        * @description URL of the source website of the image
        */
-      sourceUrl?: null | string;
+      sourceUrl?: string | null;
       /**
        * Caption
        * @description Caption of the audio file
        */
-      caption?: null | string;
+      caption?: string | null;
     };
     /** AudioResourceConfig */
     AudioResourceConfig: {
@@ -2034,7 +2031,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -2045,12 +2042,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2154,7 +2151,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -2165,12 +2162,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2239,7 +2236,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -2249,12 +2246,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2362,7 +2359,7 @@ export interface components {
        * Comment
        * @description Comment associated with this bookmark
        */
-      comment?: null | string;
+      comment?: string | null;
     };
     /** BookmarkRead */
     BookmarkRead: {
@@ -2392,7 +2389,7 @@ export interface components {
        * Comment
        * @description Comment associated with this bookmark
        */
-      comment?: null | string;
+      comment?: string | null;
     } & {
       [key: string]: unknown;
     };
@@ -2443,15 +2440,6 @@ export interface components {
        */
       html: string;
     };
-    /** ClientSegmentHead */
-    ClientSegmentHead: {
-      id: components['schemas']['PydanticObjectId'];
-      /** Key */
-      key: string;
-      /** Title */
-      title?: string | null;
-      locale: components['schemas']['TranslationLocaleKey'];
-    };
     /** ClientSegmentRead */
     ClientSegmentRead: {
       id: components['schemas']['PydanticObjectId'];
@@ -2494,6 +2482,15 @@ export interface components {
       html: string;
     } & {
       [key: string]: unknown;
+    };
+    /** ClientSegmentSignature */
+    ClientSegmentSignature: {
+      id: components['schemas']['PydanticObjectId'];
+      /** Key */
+      key: string;
+      /** Title */
+      title?: string | null;
+      locale: components['schemas']['TranslationLocaleKey'];
     };
     /** ClientSegmentUpdate */
     ClientSegmentUpdate: {
@@ -2565,7 +2562,7 @@ export interface components {
      */
     ContentComment: {
       /** By */
-      by?: null | string;
+      by?: string | null;
       /** Comment */
       comment: string;
     };
@@ -2655,7 +2652,7 @@ export interface components {
        * Sourcelanguage
        * @description DeepL source language code
        */
-      sourceLanguage?: null | string;
+      sourceLanguage?: string | null;
     };
     /** DeleteLocationResult */
     DeleteLocationResult: {
@@ -2669,7 +2666,7 @@ export interface components {
       /** Key */
       key: string;
       /** Msg */
-      msg?: null | string;
+      msg?: string | null;
       /** Values */
       values?: {
         [key: string]: string | number | boolean;
@@ -2777,12 +2774,12 @@ export interface components {
        * Description
        * @description Description of the link
        */
-      description?: null | string;
+      description?: string | null;
       /**
        * Altref
        * @description Additional, alternate reference data
        */
-      altRef?: null | string;
+      altRef?: string | null;
     };
     /** ExternalReferencesResourceConfig */
     ExternalReferencesResourceConfig: {
@@ -2830,7 +2827,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -2841,12 +2838,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -2950,7 +2947,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -2961,12 +2958,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3035,7 +3032,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -3045,12 +3042,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3093,7 +3090,7 @@ export interface components {
        * Category
        * @description Resource category key
        */
-      category?: null | string;
+      category?: string | null;
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
@@ -3111,11 +3108,8 @@ export interface components {
        * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
       collapsibleContents?: number | null;
-      /**
-       * Font
-       * @description Name of a font family
-       */
-      font?: null | string;
+      /** Font */
+      font?: string | null;
       /**
        * Enablecontentcontext
        * @description Show combined contents of this resource on the parent level
@@ -3183,17 +3177,17 @@ export interface components {
        * Thumburl
        * @description URL of the image file thumbnail
        */
-      thumbUrl?: null | string;
+      thumbUrl?: string | null;
       /**
        * Sourceurl
        * @description URL of the source website of the image
        */
-      sourceUrl?: null | string;
+      sourceUrl?: string | null;
       /**
        * Caption
        * @description Caption of the image
        */
-      caption?: null | string;
+      caption?: string | null;
     };
     /** ImagesContentCreate */
     ImagesContentCreate: {
@@ -3318,7 +3312,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -3329,12 +3323,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3438,7 +3432,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -3449,12 +3443,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3523,7 +3517,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -3533,12 +3527,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -3700,7 +3694,7 @@ export interface components {
       /**
        * Contents
        * @description Contents of various resources on this location, by resource ID
-       * @default []
+       * @default {}
        */
       contents: {
         [key: string]: (
@@ -3809,7 +3803,7 @@ export interface components {
        * Category
        * @description Resource category key
        */
-      category?: null | string;
+      category?: string | null;
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
@@ -3827,11 +3821,8 @@ export interface components {
        * @description Minimum height in pixels from which contents should be collapsible (unsetting this will disable collapsibility)
        */
       collapsibleContents?: number | null;
-      /**
-       * Font
-       * @description Name of a font family
-       */
-      font?: null | string;
+      /** Font */
+      font?: string | null;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for location metadata resources)
@@ -3872,12 +3863,12 @@ export interface components {
        * K
        * @description Metadata entry key query
        */
-      k?: null | string;
+      k?: string | null;
       /**
        * V
        * @description Metadata entry value query
        */
-      v?: null | string;
+      v?: string | null;
       /**
        * Wc
        * @description Whether to interpret wildcards in the metadata value query
@@ -3941,7 +3932,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -3952,12 +3943,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4068,7 +4059,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -4079,12 +4070,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4160,7 +4151,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -4170,12 +4161,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4330,19 +4321,16 @@ export interface components {
     NavTranslations: {
       /**
        * Browse
-       * @description Custom label for main navigation browse entry
        * @default []
        */
       browse: components['schemas']['MainNavEntryTranslation'][];
       /**
        * Search
-       * @description Custom label for main navigation search entry
        * @default []
        */
       search: components['schemas']['MainNavEntryTranslation'][];
       /**
        * Info
-       * @description Custom label for main navigation info entry
        * @default []
        */
       info: components['schemas']['MainNavEntryTranslation'][];
@@ -4356,11 +4344,8 @@ export interface components {
       key: string;
       /** Name */
       name: string;
-      /**
-       * Font
-       * @description Name of a font family
-       */
-      font?: null | string;
+      /** Font */
+      font?: string | null;
     };
     /** PaginationSettings */
     PaginationSettings: {
@@ -4525,7 +4510,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -4536,12 +4521,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4660,7 +4645,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -4671,12 +4656,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4760,7 +4745,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -4770,12 +4755,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -4839,7 +4824,7 @@ export interface components {
       /** Systemsegments */
       systemSegments: components['schemas']['ClientSegmentRead'][];
       /** Infosegments */
-      infoSegments: components['schemas']['ClientSegmentHead'][];
+      infoSegments: components['schemas']['ClientSegmentSignature'][];
       /** Tekst */
       tekst: {
         [key: string]: string;
@@ -4912,12 +4897,12 @@ export interface components {
        * Uifont
        * @description Font family used for non-content UI (Tekst default UI font used if not set)
        */
-      uiFont?: null | string;
+      uiFont?: string | null;
       /**
        * Contentfont
        * @description Default font family used for content (Tekst default content font used if not set)
        */
-      contentFont?: null | string;
+      contentFont?: string | null;
       /** @description Default text to load in UI */
       defaultTextId?: components['schemas']['PydanticObjectId'] | null;
       /**
@@ -4963,7 +4948,7 @@ export interface components {
        * Uicolor
        * Format: color
        * @description Primary color used in for client UI
-       * @default #305D97
+       * @default #305d97
        */
       uiColor: string;
       /**
@@ -4996,7 +4981,7 @@ export interface components {
        * Globalcitationsuffix
        * @description Global suffix for all resource citation hints
        */
-      globalCitationSuffix?: null | string;
+      globalCitationSuffix?: string | null;
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
@@ -5018,7 +5003,7 @@ export interface components {
        * Dbversion
        * @description Version string of DB data
        */
-      dbVersion?: null | string;
+      dbVersion?: string | null;
     } & {
       [key: string]: unknown;
     };
@@ -5048,12 +5033,12 @@ export interface components {
        * Uifont
        * @description Font family used for non-content UI (Tekst default UI font used if not set)
        */
-      uiFont?: null | string;
+      uiFont?: string | null;
       /**
        * Contentfont
        * @description Default font family used for content (Tekst default content font used if not set)
        */
-      contentFont?: null | string;
+      contentFont?: string | null;
       /** @description Default text to load in UI */
       defaultTextId?: components['schemas']['PydanticObjectId'] | null;
       /**
@@ -5112,7 +5097,7 @@ export interface components {
        * Globalcitationsuffix
        * @description Global suffix for all resource citation hints
        */
-      globalCitationSuffix?: null | string;
+      globalCitationSuffix?: string | null;
       /**
        * Oskmodes
        * @description OSK modes available for use in platform client
@@ -5412,7 +5397,7 @@ export interface components {
        * Category
        * @description Resource category key
        */
-      category?: null | string;
+      category?: string | null;
       /**
        * Sortorder
        * @description Sort order for displaying this resource among others
@@ -5431,11 +5416,8 @@ export interface components {
        * @default 400
        */
       collapsibleContents: number | null;
-      /**
-       * Font
-       * @description Name of a font family
-       */
-      font?: null | string;
+      /** Font */
+      font?: string | null;
       /**
        * Enablecontentcontext
        * @description Whether contents of this resource should be available for the parent level (always false for rich text resources)
@@ -5524,7 +5506,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -5535,12 +5517,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5649,7 +5631,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -5660,12 +5642,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5739,7 +5721,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -5749,12 +5731,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -5898,7 +5880,7 @@ export interface components {
        * Targetid
        * @description ID of the target of the task or None if there is no target
        */
-      targetId?: components['schemas']['PydanticObjectId'] | null | string;
+      targetId?: components['schemas']['PydanticObjectId'] | string | null;
       /** @description ID of user who created this task (or none if this is a system task) */
       userId?: components['schemas']['PydanticObjectId'] | null;
       /**
@@ -5939,12 +5921,12 @@ export interface components {
        * Error
        * @description Error ID if the task failed
        */
-      error?: null | string;
+      error?: string | null;
       /**
        * Errordetails
        * @description Error details if the task failed
        */
-      errorDetails?: null | string;
+      errorDetails?: string | null;
     } & {
       [key: string]: unknown;
     };
@@ -6063,7 +6045,7 @@ export interface components {
        * K
        * @description Key of the annotation to search for
        */
-      k?: null | string;
+      k?: string | null;
       /**
        * V
        * @description Value(s) of the annotation to search for
@@ -6139,7 +6121,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -6150,12 +6132,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -6268,7 +6250,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -6279,12 +6261,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -6362,7 +6344,7 @@ export interface components {
        * Citation
        * @description Citation details for this resource
        */
-      citation?: null | string;
+      citation?: string | null;
       /**
        * Description
        * @description Plain text, potentially multiline description on this resource
@@ -6372,12 +6354,12 @@ export interface components {
        * License
        * @description License used for contents of this resource
        */
-      license?: null | string;
+      license?: string | null;
       /**
        * Licenseurl
        * @description Link to license used for contents of this resource
        */
-      licenseUrl?: null | string;
+      licenseUrl?: string | null;
       /**
        * Meta
        * @description Arbitrary metadata
@@ -6418,7 +6400,7 @@ export interface components {
        * Id
        * @description Unique ID of the token (will be generated if unset)
        */
-      id?: null | string;
+      id?: string | null;
       /**
        * Annotations
        * @description List of annotations on a token
@@ -6453,7 +6435,7 @@ export interface components {
       levels: components['schemas']['TextLevelTranslation'][][];
       /**
        * Defaultlevel
-       * @description Default structure level for the client to use for browsing this text
+       * @description Structure level of a location
        * @default 0
        */
       defaultLevel: number;
@@ -6473,7 +6455,7 @@ export interface components {
        * Color
        * Format: color
        * @description Accent color used for this text in the client UI
-       * @default #38714B
+       * @default #38714b
        */
       color: string;
       /**
@@ -6542,7 +6524,7 @@ export interface components {
       levels: components['schemas']['TextLevelTranslation'][][];
       /**
        * Defaultlevel
-       * @description Default structure level for the client to use for browsing this text
+       * @description Structure level of a location
        * @default 0
        */
       defaultLevel: number;
@@ -6562,7 +6544,7 @@ export interface components {
        * Color
        * Format: color
        * @description Accent color used for this text in the client UI
-       * @default #38714B
+       * @default #38714b
        */
       color: string;
       /**
@@ -6637,7 +6619,7 @@ export interface components {
       levels?: components['schemas']['TextLevelTranslation'][][];
       /**
        * Defaultlevel
-       * @description Default structure level for the client to use for browsing this text
+       * @description Structure level of a location
        */
       defaultLevel?: number;
       /**
@@ -6731,12 +6713,12 @@ export interface components {
        * Avatarurl
        * @description URL of this user's avatar picture
        */
-      avatarUrl?: null | string;
+      avatarUrl?: string | null;
       /**
        * Bio
        * @description Biography of this user
        */
-      bio?: null | string;
+      bio?: string | null;
       /** @default [] */
       publicFields: components['schemas']['PrivateUserProps'];
       /**
@@ -6862,12 +6844,12 @@ export interface components {
        * Avatarurl
        * @description URL of this user's avatar picture
        */
-      avatarUrl?: null | string;
+      avatarUrl?: string | null;
       /**
        * Bio
        * @description Biography of this user
        */
-      bio?: null | string;
+      bio?: string | null;
       /** @default [] */
       publicFields: components['schemas']['PrivateUserProps'];
       /**
@@ -6910,7 +6892,7 @@ export interface components {
       /** Affiliation */
       affiliation?: string | null;
       /** Avatarurl */
-      avatarUrl?: null | string;
+      avatarUrl?: string | null;
       /** Bio */
       bio?: string | null;
       /** Isactive */
@@ -6977,12 +6959,12 @@ export interface components {
        * Avatarurl
        * @description URL of this user's avatar picture
        */
-      avatarUrl?: null | string;
+      avatarUrl?: string | null;
       /**
        * Bio
        * @description Biography of this user
        */
-      bio?: null | string;
+      bio?: string | null;
       publicFields?: components['schemas']['PrivateUserProps'];
       /**
        * Usernotificationtriggers
@@ -7918,7 +7900,7 @@ export interface operations {
         /** @description Position value of locations to find */
         pos?: number | null;
         /** @description Alias of location(s) to find */
-        alias?: null | string;
+        alias?: string | null;
         /** @description Add full combined label to each location */
         fullLabels?: boolean;
         /** @description Return at most <limit> locations */

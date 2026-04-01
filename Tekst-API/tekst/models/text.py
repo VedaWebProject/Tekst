@@ -4,7 +4,7 @@ from typing import Annotated
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq
-from pydantic import Field, field_validator
+from pydantic import Field, StringConstraints, field_validator
 from pydantic_extra_types.color import Color
 from typing_extensions import TypedDict
 
@@ -16,75 +16,67 @@ from tekst.models.common import (
     ModelFactoryMixin,
 )
 from tekst.models.location import LocationDocument
-from tekst.types import ColorSerializer, ConStr, LocationLabel, LocationLevel
+from tekst.types import (
+    ColorSerializer,
+    LocationLabel,
+    LocationLevel,
+    SingleLineString,
+)
 
 
 class TextSubtitleTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=128,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Subtitle translation for a text",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=128),
+        SingleLineString,
+        Field(description="Subtitle translation for a text"),
     ]
 
 
 class TextLevelTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Translation of a text level label",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        Field(description="Translation of a text level label"),
     ]
 
 
 class ResourceCategoryTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Translation of a resource category",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        Field(description="Translation of a resource category"),
     ]
 
 
 class ResourceCategory(TypedDict):
     key: Annotated[
-        ConStr(
-            max_length=16,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key identifying this resource category",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=16),
+        SingleLineString,
+        Field(description="Key identifying this resource category"),
     ]
     translations: Translations[ResourceCategoryTranslation]
 
 
 TextTitle = Annotated[
-    ConStr(
-        max_length=64,
-        cleanup="oneline",
-    ),
+    str,
+    StringConstraints(min_length=1, max_length=64),
+    SingleLineString,
     Field(description="Title of this text"),
 ]
 
 TextSlug = Annotated[
-    ConStr(
+    str,
+    StringConstraints(
+        min_length=1,
         max_length=16,
-        cleanup="oneline",
         pattern=r"^[a-z0-9]+$",
     ),
-    Field(
-        description="A short identifier for use in URLs and internal operations",
-    ),
+    SingleLineString,
+    Field(description="A short identifier for use in URLs and internal operations"),
 ]
 
 
@@ -113,24 +105,16 @@ class Text(ModelBase, ModelFactoryMixin):
         ),
     ]
 
-    default_level: Annotated[
-        LocationLevel,
-        Field(
-            description=(
-                "Default structure level for the client to use for browsing this text"
-            ),
-        ),
-    ] = 0
+    default_level: LocationLevel = 0
 
     loc_delim: Annotated[
-        ConStr(
+        str,
+        StringConstraints(
             max_length=3,
-            strip=False,
+            strip_whitespace=False,
             pattern=r"[^\n\r]+",
         ),
-        Field(
-            description="Delimiter for displaying text locations",
-        ),
+        Field(description="Delimiter for displaying text locations"),
     ] = ", "
 
     labeled_location: Annotated[
@@ -146,10 +130,8 @@ class Text(ModelBase, ModelFactoryMixin):
     color: Annotated[
         Color,
         ColorSerializer,
-        Field(
-            description="Accent color used for this text in the client UI",
-        ),
-    ] = "#38714B"
+        Field(description="Accent color used for this text in the client UI"),
+    ] = Color("#38714B")
 
     sort_order: Annotated[
         int,
@@ -199,9 +181,7 @@ class Text(ModelBase, ModelFactoryMixin):
 
     index_utd: Annotated[
         bool,
-        Field(
-            description="The search index for this text is up-to-date",
-        ),
+        Field(description="The search index for this text is up-to-date"),
         ExcludeFromModelVariants(
             update=True,
             create=True,
@@ -238,7 +218,7 @@ class TextDocument(Text, DocumentBase):
         bson_encoders = {Color: lambda c: c.as_hex()}
 
     @classmethod
-    async def get_active_texts_ids(cls):
+    async def get_active_texts_ids(cls) -> list[PydanticObjectId]:
         """Returns list of IDs of all active (publicly listed) texts"""
         return [
             text.id
@@ -284,17 +264,15 @@ class TextDocument(Text, DocumentBase):
         return location_labels
 
 
-TextCreate = Text.create_model()
-TextRead = Text.read_model()
-TextUpdate = Text.update_model()
+TextCreate: type[ModelBase] = Text.create_model()
+TextRead: type[ModelBase] = Text.read_model()
+TextUpdate: type[ModelBase] = Text.update_model()
 
 
 class InsertLevelRequest(ModelBase):
     translations: Annotated[
         Translations[TextLevelTranslation],
-        Field(
-            description="Translation(s) for the label of the level to insert",
-        ),
+        Field(description="Translation(s) for the label of the level to insert"),
     ]
 
 
@@ -303,9 +281,7 @@ class MoveLocationRequestBody(ModelBase):
     after: bool
     parent_id: Annotated[
         PydanticObjectId | None,
-        Field(
-            alias="parentId",
-        ),
+        Field(alias="parentId"),
     ]
 
 

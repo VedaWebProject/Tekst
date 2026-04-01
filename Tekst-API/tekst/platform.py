@@ -1,8 +1,8 @@
-from collections.abc import Mapping
 from datetime import UTC, datetime, timedelta
 from os.path import realpath
 from pathlib import Path
 
+from beanie.odm.operators.find import BaseFindOperator
 from beanie.operators import GTE, LT, Eq, In, Or
 from bson import json_util
 from deepdiff.diff import DeepDiff
@@ -16,8 +16,8 @@ from tekst.models.common import PydanticObjectId
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
-from tekst.models.segment import ClientSegmentDocument, ClientSegmentHead
-from tekst.models.user import UserDocument
+from tekst.models.segment import ClientSegmentDocument, ClientSegmentSignature
+from tekst.models.user import UserRead
 from tekst.resources import call_resource_precompute_hooks
 from tekst.state import get_state, update_state
 
@@ -144,7 +144,10 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
                 Eq(ContentBaseDocument.archived, True),
                 with_children=True,
             )
-            .sort(+ContentBaseDocument.created_at)  # oldest first
+            .sort(
+                # oldest first!
+                +ContentBaseDocument.created_at  # ty:ignore[unsupported-operator]
+            )
             .to_list()
         )
         to_delete = []
@@ -171,25 +174,23 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
             with_children=True,
         ).delete()
 
-    return {
-        "took": round(log_op_end(op_id), 2),
-    }
+    return {"took": round(log_op_end(op_id), 2)}
 
 
 async def _get_segment_restriction_queries(
-    user: UserDocument | None = None,
-) -> tuple[Mapping]:
+    user: UserRead | None = None,
+) -> tuple[BaseFindOperator] | tuple[dict]:
     if user is None:
         return (In(ClientSegmentDocument.restriction, ["none", None]),)
     if user.is_superuser:
-        return tuple()
+        return ({},)
     return (In(ClientSegmentDocument.restriction, ["none", "user"]),)
 
 
 async def get_segment(
     *,
     segment_id: PydanticObjectId | None = None,
-    user: UserDocument | None = None,
+    user: UserRead | None = None,
 ) -> ClientSegmentDocument | None:
     return await ClientSegmentDocument.find_one(
         Eq(ClientSegmentDocument.id, segment_id),
@@ -197,43 +198,50 @@ async def get_segment(
     )
 
 
-async def get_segments(
-    *,
-    system: bool | None = None,
-    user: UserDocument | None = None,
-    head_projection: bool = False,
-) -> list[ClientSegmentDocument]:
-    system_segments_queries = (
-        tuple()
+def _get_segments_query(system: bool | None = None) -> list[BaseFindOperator]:
+    return (
+        []
         if system is None
-        else (
+        else [
             GTE(ClientSegmentDocument.key, "system"),
             LT(ClientSegmentDocument.key, "systen"),
-        )
+        ]
         if system
-        else (
+        else [
             Or(
                 LT(ClientSegmentDocument.key, "system"),
                 GTE(ClientSegmentDocument.key, "systen"),
-            ),
-        )
+            )
+        ]
     )
-    if not head_projection:
-        return (
-            await ClientSegmentDocument.find(
-                *system_segments_queries,
-                *(await _get_segment_restriction_queries(user)),
-            )
-            .sort(+ClientSegmentDocument.sort_order)
-            .to_list()
+
+
+async def get_segments_signatures(
+    *,
+    system: bool | None = None,
+    user: UserRead | None = None,
+) -> list[ClientSegmentSignature]:
+    return (
+        await ClientSegmentDocument.find(
+            *_get_segments_query(system),
+            *(await _get_segment_restriction_queries(user)),
         )
-    else:
-        return (
-            await ClientSegmentDocument.find(
-                *system_segments_queries,
-                *(await _get_segment_restriction_queries(user)),
-            )
-            .sort(+ClientSegmentDocument.sort_order)
-            .project(ClientSegmentHead)
-            .to_list()
+        .sort(+ClientSegmentDocument.sort_order)
+        .project(ClientSegmentSignature)
+        .to_list()
+    )
+
+
+async def get_segments(
+    *,
+    system: bool | None = None,
+    user: UserRead | None = None,
+) -> list[ClientSegmentDocument]:
+    return (
+        await ClientSegmentDocument.find(
+            *_get_segments_query(system),
+            *(await _get_segment_restriction_queries(user)),
         )
+        .sort(+ClientSegmentDocument.sort_order)
+        .to_list()
+    )

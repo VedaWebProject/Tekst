@@ -3,7 +3,7 @@ from operator import itemgetter
 from typing import Annotated, Union
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, NotIn
+from beanie.operators import GTE, Eq, NotIn
 from fastapi import APIRouter, BackgroundTasks, Header, Path, Query, status
 from fastapi.responses import FileResponse
 from humps import camelize
@@ -38,6 +38,7 @@ from tekst.models.user import UserDocument
 from tekst.notifications import send_test_email
 from tekst.routers.texts import get_all_texts
 from tekst.state import get_state, update_state
+from tekst.types import EmptyStrToNone
 
 
 router = APIRouter(
@@ -61,16 +62,10 @@ async def get_platform_data(
         state=await get_state(),
         security=PlatformSecurityInfo(),
         # find segments with keys starting with "system"
-        system_segments=await platform.get_segments(
-            system=True,
-            user=ou,
-        ),
-        # find segments with keys not starting with "system"
-        info_segments=await platform.get_segments(
-            system=False,
-            user=ou,
-            head_projection=True,
-        ),
+        system_segments=await platform.get_segments(system=True, user=ou),
+        # find segments signatures with keys not starting with "system"
+        # (info pages we want to show in the menu, no need for the contents now)
+        info_segments=await platform.get_segments_signatures(system=False, user=ou),
         tekst=camelize(cfg.tekst),
     )
 
@@ -83,7 +78,7 @@ async def get_platform_data(
 async def get_client_init_data(
     ou: OptionalUserDep,
     cfg: ConfigDep,
-) -> PlatformData:
+) -> ClientInitData:
     """Returns data the client needs to initialize"""
     return ClientInitData(
         platform=await get_platform_data(ou, cfg),
@@ -246,6 +241,7 @@ async def get_user_tasks(
     user: OptionalUserDep,
     pickup_keys: Annotated[
         str | None,
+        EmptyStrToNone,
         Header(
             description=(
                 "Comma-separated pickup keys for accessing the tasks in case they "
@@ -405,13 +401,13 @@ async def get_stats(
         texts=await TextDocument.find_all().count(),
         users=await UserDocument.find_all().count(),
         active_users_count_past_week=await UserDocument.find(
-            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=7)
+            GTE(UserDocument.last_login, datetime.now(UTC) - timedelta(days=7))
         ).count(),
         active_users_count_past_month=await UserDocument.find(
-            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=30)
+            GTE(UserDocument.last_login, datetime.now(UTC) - timedelta(days=30))
         ).count(),
         active_users_count_past_year=await UserDocument.find(
-            UserDocument.last_login >= datetime.now(UTC) - timedelta(days=356)
+            GTE(UserDocument.last_login, datetime.now(UTC) - timedelta(days=356))
         ).count(),
         search_quick=await counter_get("search_quick"),
         search_advanced=await counter_get("search_advanced"),

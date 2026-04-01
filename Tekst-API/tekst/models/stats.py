@@ -1,7 +1,5 @@
 from tekst.config import TekstConfig, get_config
-from tekst.models.common import (
-    ModelBase,
-)
+from tekst.models.common import ModelBase
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
