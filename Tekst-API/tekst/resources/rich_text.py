@@ -3,7 +3,7 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
@@ -16,12 +16,12 @@ from tekst.models.text import TextDocument
 from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
     CollapsibleContentsConfigValue,
-    ConStr,
     ContentCssProperties,
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
     SchemaOptionalNullable,
     SearchReplacements,
+    SingleLineString,
 )
 from tekst.utils.html import get_html_text, sanitize_html
 
@@ -64,17 +64,17 @@ class RichText(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "RichTextContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
-        return {
-            "html": get_html_text(content.html),
-        }
+        if not isinstance(content, RichTextContent):  # pragma: no cover
+            raise ValueError(f"Expected RichTextContent, got {type(content)}")
+        return {"html": get_html_text(content.html)}
 
     @classmethod
     def rtype_es_queries(
         cls,
         *,
-        query: "RichTextSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -194,12 +194,9 @@ class RichTextContent(ContentBase):
 
     resource_type: Literal["richText"]  # camelCased resource type classname
     html: Annotated[
-        ConStr(
-            max_length=102400,
-        ),
-        Field(
-            description="HTML content of the rich text content object",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=102400),
+        Field(description="HTML content of the rich text content object"),
     ]
     editor_mode: Annotated[
         Literal["wysiwyg", "html"],
@@ -221,13 +218,9 @@ class RichTextSearchQuery(ModelBase):
         ),
     ]
     html: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="HTML text content search query",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=512),
+        SingleLineString,
+        Field(description="HTML text content search query"),
         SchemaOptionalNullable,
     ] = ""

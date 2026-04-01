@@ -218,9 +218,7 @@ async def create_indices_task(
     # update last global indexing time
     await update_state(indices_updated_at=datetime.now(UTC))
 
-    return {
-        "took": round(log_op_end(op_id), 2),
-    }
+    return {"took": round(log_op_end(op_id), 2)}
 
 
 async def create_indices(
@@ -235,9 +233,7 @@ async def create_indices(
         tasks.TaskType.INDICES_CREATE_UPDATE,
         target_id=tasks.TaskType.INDICES_CREATE_UPDATE.value,
         user_id=user.id if user else None,
-        task_kwargs={
-            "force": force,
-        },
+        task_kwargs={"force": force},
     )
 
 
@@ -509,15 +505,7 @@ async def _search_quick(
                 "must": [
                     es_query,  # original content query from above
                 ],
-                "filter": [
-                    {
-                        "term": {
-                            "default_level": {
-                                "value": True,
-                            }
-                        }
-                    }
-                ],
+                "filter": [{"term": {"default_level": {"value": True}}}],
             }
         }
 
@@ -648,9 +636,7 @@ async def _search_advanced(
         results=await es.search(
             index=IDX_ALIAS,
             query=es_query,
-            highlight={
-                "fields": {"*": {}},
-            },
+            highlight={"fields": {"*": {}}},
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),
             track_scores=True,

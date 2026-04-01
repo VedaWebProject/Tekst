@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.models.common import (
     DocumentBase,
@@ -9,15 +9,13 @@ from tekst.models.common import (
     ModelFactoryMixin,
     PydanticObjectId,
 )
-from tekst.types import ConStrOrNone
+from tekst.types import EmptyStrToNone, MultiLineString
 
 
 class Bookmark(ModelBase, ModelFactoryMixin):
     user_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of user who created this bookmark",
-        ),
+        Field(description="ID of user who created this bookmark"),
         ExcludeFromModelVariants(
             create=True,
             update=True,
@@ -25,9 +23,7 @@ class Bookmark(ModelBase, ModelFactoryMixin):
     ]
     text_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of text this bookmark belongs to",
-        ),
+        Field(description="ID of text this bookmark belongs to"),
         ExcludeFromModelVariants(
             create=True,
             update=True,
@@ -35,12 +31,8 @@ class Bookmark(ModelBase, ModelFactoryMixin):
     ]
     location_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of the text location this bookmark refers to",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="ID of the text location this bookmark refers to"),
+        ExcludeFromModelVariants(update=True),
     ]
     level: Annotated[
         int,
@@ -66,34 +58,26 @@ class Bookmark(ModelBase, ModelFactoryMixin):
     ]
     location_labels: Annotated[
         list[str],
-        Field(
-            description="Text location labels from root to target location",
-        ),
+        Field(description="Text location labels from root to target location"),
         ExcludeFromModelVariants(
             create=True,
             update=True,
         ),
     ]
     comment: Annotated[
-        ConStrOrNone(
-            max_length=1000,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Comment associated with this bookmark",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=1000),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Comment associated with this bookmark"),
+        ExcludeFromModelVariants(update=True),
     ] = None
 
 
 class BookmarkDocument(Bookmark, DocumentBase):
     class Settings(DocumentBase.Settings):
         name = "bookmarks"
-        indexes = [
-            "user_id",
-        ]
+        indexes = ["user_id"]
 
 
 BookmarkRead = Bookmark.read_model()

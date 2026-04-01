@@ -20,19 +20,13 @@ class Location(ModelBase, ModelFactoryMixin):
 
     text_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of the text this location belongs to",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="ID of the text this location belongs to"),
+        ExcludeFromModelVariants(update=True),
     ]
 
     parent_id: Annotated[
         PydanticObjectId | None,
-        Field(
-            description="ID of parent location",
-        ),
+        Field(description="ID of parent location"),
     ] = None
 
     level: Annotated[
@@ -54,9 +48,7 @@ class Location(ModelBase, ModelFactoryMixin):
 
     label: Annotated[
         LocationLabel,
-        Field(
-            description="Label for identifying this text location in level context",
-        ),
+        Field(description="Label for identifying this text location in level context"),
     ]
 
     aliases: Annotated[
@@ -99,35 +91,25 @@ class LocationImport(ModelBase):
 
     parent_id: Annotated[
         PydanticObjectId | None,
-        Field(
-            description="ID of parent location",
-        ),
+        Field(description="ID of parent location"),
     ] = None
 
     level: Annotated[
         LocationLevel,
-        Field(
-            description="Index of structure level this location is on",
-        ),
+        Field(description="Index of structure level this location is on"),
     ]
 
     position: Annotated[
         LocationPosition,
-        Field(
-            description="Position among all text locations on this level",
-        ),
+        Field(description="Position among all text locations on this level"),
     ]
 
     label: Annotated[
         LocationLabel,
-        Field(
-            description="Label for identifying this text location in level context",
-        ),
+        Field(description="Label for identifying this text location in level context"),
     ]
 
     aliases: Annotated[
         list[LocationAlias] | None,
-        Field(
-            description="List of aliases for this location",
-        ),
+        Field(description="List of aliases for this location"),
     ] = None

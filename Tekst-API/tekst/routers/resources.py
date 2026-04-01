@@ -25,7 +25,7 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.i18n import pick_translation
 from tekst.logs import log
-from tekst.models.content import ContentBase, ContentBaseDocument, ContentBaseUpdate
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.notifications import Notification
@@ -382,9 +382,7 @@ async def delete_resource(
     user: UserDep,
     resource_id: Annotated[
         PydanticObjectId,
-        Path(
-            alias="id",
-        ),
+        Path(alias="id"),
     ],
 ) -> None:
     resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
@@ -799,9 +797,9 @@ async def _import_resource_task(
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
-    content_doc_model: ContentBaseDocument = content_model.document_model()
-    content_create_model: ContentBase = content_model.create_model()
-    content_update_model: ContentBaseUpdate = content_model.update_model()
+    content_doc_model: type[ContentBaseDocument] = content_model.document_model()
+    content_create_model: type[ContentBase] = content_model.create_model()
+    content_update_model: type[ContentBase] = content_model.update_model()
 
     # prepare lists to collect contents to update and insert separately,
     # as they are handled differently
@@ -1161,9 +1159,7 @@ async def get_aggregations(
     user: OptionalUserDep,
     resource_id: Annotated[
         PydanticObjectId,
-        Path(
-            alias="id",
-        ),
+        Path(alias="id"),
     ],
 ) -> list[Any]:
     # try to get resource doc to check if access is allowed for user

@@ -12,10 +12,6 @@ from tekst.logs import log
 MigrationsDict = dict[Version, Callable[[Database], None]]
 
 
-def _sort_migrations(migrations: MigrationsDict) -> MigrationsDict:
-    return {key: migrations[key] for key in sorted(migrations)}
-
-
 def _all_migrations() -> MigrationsDict:
     all_migrations = dict()
     for mig_mod in iter_modules(__path__):
@@ -24,7 +20,7 @@ def _all_migrations() -> MigrationsDict:
         mig_name = mig_mod.name.replace("migration_", "").replace("_", ".")
         mig_fn = import_module(f"{__name__}.{mig_mod.name}").migration
         all_migrations[Version(mig_name)] = mig_fn
-    return _sort_migrations(all_migrations)
+    return {key: all_migrations[key] for key in sorted(all_migrations)}
 
 
 def pending_migrations(db_version: str) -> MigrationsDict:

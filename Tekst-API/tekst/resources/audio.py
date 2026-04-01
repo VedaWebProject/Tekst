@@ -3,28 +3,24 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
-from tekst.models.common import (
-    ModelBase,
-)
+from tekst.models.common import ModelBase
 from tekst.models.content import ContentBase
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
 )
-from tekst.models.resource_configs import (
-    ResourceConfigBase,
-)
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
     HttpUrl,
-    HttpUrlOrNone,
+    MultiLineString,
     SchemaOptionalNullable,
+    SingleLineString,
 )
 
 
@@ -40,7 +36,7 @@ class Audio(ResourceTypeABC):
         return AudioContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ResourceSearchQuery]:
         return AudioSearchQuery
 
     @classmethod
@@ -66,7 +62,7 @@ class Audio(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "AudioContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
         return {
             "caption": [
@@ -79,7 +75,7 @@ class Audio(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "AudioSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -173,24 +169,19 @@ class AudioResource(ResourceBase):
 class AudioFile(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(
-            description="URL of the audio file",
-        ),
+        Field(description="URL of the audio file"),
     ]
     source_url: Annotated[
-        HttpUrlOrNone,
-        Field(
-            description="URL of the source website of the image",
-        ),
+        HttpUrl | None,
+        EmptyStrToNone,
+        Field(description="URL of the source website of the image"),
     ] = None
     caption: Annotated[
-        ConStrOrNone(
-            max_length=8192,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Caption of the audio file",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=8192),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Caption of the audio file"),
     ] = None
 
 
@@ -217,10 +208,8 @@ class AudioSearchQuery(ModelBase):
         ),
     ]
     caption: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
         SchemaOptionalNullable,
     ] = ""

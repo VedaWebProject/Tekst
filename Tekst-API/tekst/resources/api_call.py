@@ -3,10 +3,10 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, StringConstraints, model_validator
 
 from tekst.models.common import ModelBase
-from tekst.models.content import ContentBase
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -19,11 +19,11 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
     ExcludeFromModelVariants,
     HttpUrl,
     SchemaOptionalNonNullable,
+    SingleLineString,
 )
 
 
@@ -53,7 +53,7 @@ class ApiCall(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "ApiCallContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
         return None  # pragma: no cover
 
@@ -71,12 +71,12 @@ class ApiCall(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["ApiCallContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -91,6 +91,8 @@ class ApiCall(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        if not text:  # pragma: no cover
+            raise ValueError(f"Text with ID '{resource.text_id}' not found")
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -179,16 +181,12 @@ class ApiCallModGeneralConfig(GeneralResourceConfig):
 class ContentTransformConfig(ModelBase):
     deps: Annotated[
         list[HttpUrl],
-        Field(
-            min_length=0,
-            max_length=32,
-        ),
+        Field(max_length=32),
     ] = []
     js: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=102400,
-        ),
+        str | None,
+        StringConstraints(max_length=102400),
+        EmptyStrToNone,
         SchemaOptionalNonNullable,
     ] = None
 
@@ -220,23 +218,20 @@ class ApiCallResource(ResourceBase):
 
 class ApiCallContentItem(ModelBase):
     key: Annotated[
-        ConStr(
-            max_length=32,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key of this content item",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=32),
+        SingleLineString,
+        Field(description="Key of this content item"),
     ]
     endpoint: HttpUrl
     method: Literal["GET", "POST", "QUERY", "SEARCH"] = "GET"
-    content_type: ConStr(
-        max_length=64,
-    ) = "application/json"
+    content_type: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=64),
+    ] = "application/json"
     query: Annotated[
-        ConStrOrNone(
-            max_length=102400,
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=102400),
         Field(
             description=(
                 "Query payload to use for the API call. This can be a URL query string,"
@@ -260,12 +255,12 @@ class ApiCallContent(ContentBase):
         ),
     ]
     transform_context: Annotated[
-        ConStrOrNone(
-            max_length=81920,
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=81920),
+        EmptyStrToNone,
         Field(
             description=(
-                "Extra data that will be made available to the transformation script. "
+                "Extra data that will be available to the transformation script. "
                 "This has to be a valid, string-encoded JSON object."
             ),
         ),

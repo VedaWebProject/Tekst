@@ -3,10 +3,10 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.models.common import ModelBase
-from tekst.models.content import ContentBase
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
@@ -19,10 +19,11 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
+    EmptyStrToNone,
     HttpUrl,
+    MultiLineString,
     SchemaOptionalNullable,
+    SingleLineString,
 )
 
 
@@ -64,7 +65,7 @@ class ExternalReferences(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "ExternalReferencesContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
         return {
             "text": [
@@ -83,7 +84,7 @@ class ExternalReferences(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "ExternalReferencesSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -109,12 +110,12 @@ class ExternalReferences(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["ExternalReferencesContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -185,36 +186,27 @@ class ExternalReferencesResource(ResourceBase):
 class ExternalReferencesLink(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(
-            description="URL of the link",
-        ),
+        Field(description="URL of the link"),
     ]
     title: Annotated[
-        ConStr(
-            max_length=128,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Title/text of the link",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=128),
+        SingleLineString,
+        Field(description="Title/text of the link"),
     ]
     description: Annotated[
-        ConStrOrNone(
-            max_length=4096,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Description of the link",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=4096),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Description of the link"),
     ] = None
     alt_ref: Annotated[
-        ConStrOrNone(
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Additional, alternate reference data",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=512),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="Additional, alternate reference data"),
     ] = None
 
 
@@ -241,13 +233,9 @@ class ExternalReferencesSearchQuery(ModelBase):
         ),
     ]
     text: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Text to search for",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
+        Field(description="Text to search for"),
         SchemaOptionalNullable,
     ] = ""

@@ -1,27 +1,25 @@
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, StringConstraints
 
 from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
 from tekst.types import (
     CollapsibleContentsConfigValue,
-    ConStr,
-    ConStrOrNone,
-    FontFamilyValueOrNone,
+    EmptyStrToNone,
+    FontFamilyValue,
     SchemaOptionalNonNullable,
+    SingleLineString,
 )
 
 
 class GeneralResourceConfig(ModelBase):
     category: Annotated[
-        ConStrOrNone(
-            max_length=16,
-        ),
-        Field(
-            description="Resource category key",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=16),
+        EmptyStrToNone,
+        Field(description="Resource category key"),
     ] = None
 
     sort_order: Annotated[
@@ -35,44 +33,38 @@ class GeneralResourceConfig(ModelBase):
 
     default_active: Annotated[
         bool,
-        Field(
-            description="Whether this resource is active by default when public",
-        ),
+        Field(description="Whether this resource is active by default when public"),
         SchemaOptionalNonNullable,
     ] = True
 
     collapsible_contents: CollapsibleContentsConfigValue = None
 
-    font: FontFamilyValueOrNone = None
+    font: FontFamilyValue | None = None
 
     enable_content_context: Annotated[
         bool,
         Field(
-            description="Show combined contents of this resource on the parent level",
+            description="Show combined contents of this resource on the parent level"
         ),
         SchemaOptionalNonNullable,
     ] = False
 
     show_comments: Annotated[
         bool,
-        Field(
-            description="Show content comments by default (if any)",
-        ),
+        Field(description="Show content comments by default (if any)"),
         SchemaOptionalNonNullable,
     ] = True
 
     searchable_quick: Annotated[
         bool,
-        Field(
-            description="Whether this resource should be included in quick search",
-        ),
+        Field(description="Whether this resource should be included in quick search"),
         SchemaOptionalNonNullable,
     ] = True
 
     searchable_adv: Annotated[
         bool,
         Field(
-            description="Whether this resource should accessible via advanced search",
+            description="Whether this resource should accessible via advanced search"
         ),
         SchemaOptionalNonNullable,
     ] = True
@@ -80,7 +72,7 @@ class GeneralResourceConfig(ModelBase):
     rtl: Annotated[
         bool,
         Field(
-            description="Whether to display text contents in right-to-left direction",
+            description="Whether to display text contents in right-to-left direction"
         ),
         SchemaOptionalNonNullable,
     ] = False
@@ -97,22 +89,25 @@ class ResourceConfigBase(ModelBase):
 
 class ItemsDisplayTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=128,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Translation of an item or item group name",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=128),
+        SingleLineString,
+        Field(description="Translation of an item or item group name"),
     ]
 
 
 type ItemKey = Annotated[
-    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of an item")
+    str,
+    StringConstraints(min_length=1, max_length=32),
+    SingleLineString,
+    Field(description="Key of an item"),
 ]
 
 type ItemGroupKey = Annotated[
-    ConStr(max_length=32, cleanup="oneline"), Field(description="Key of an item group")
+    str,
+    StringConstraints(min_length=1, max_length=32),
+    SingleLineString,
+    Field(description="Key of an item group"),
 ]
 
 

@@ -467,7 +467,7 @@ export type SuperuserStats = components['schemas']['SuperuserStats'];
 export type ClientSegmentRead = components['schemas']['ClientSegmentRead'];
 export type ClientSegmentCreate = components['schemas']['ClientSegmentCreate'];
 export type ClientSegmentUpdate = components['schemas']['ClientSegmentUpdate'];
-export type ClientSegmentHead = components['schemas']['ClientSegmentHead'];
+export type ClientSegmentSignature = components['schemas']['ClientSegmentSignature'];
 
 // resources and contents
 

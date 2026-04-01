@@ -2,13 +2,9 @@ from datetime import UTC, datetime
 from typing import Annotated, Literal, get_args
 
 from beanie import Document, PydanticObjectId
-from fastapi_users import (
-    schemas,
-)
-from fastapi_users_db_beanie import (
-    BeanieBaseUser,
-)
-from pydantic import AwareDatetime, Field, model_validator
+from fastapi_users import schemas
+from fastapi_users_db_beanie import BeanieBaseUser
+from pydantic import AwareDatetime, Field, StringConstraints, model_validator
 from pymongo import IndexModel
 
 from tekst.config import TekstConfig, get_config
@@ -18,7 +14,12 @@ from tekst.models.common import (
     ModelFactoryMixin,
 )
 from tekst.models.notifications import Notification
-from tekst.types import ConStr, ConStrOrNone, HttpUrlOrNone
+from tekst.types import (
+    EmptyStrToNone,
+    HttpUrl,
+    MultiLineString,
+    SingleLineString,
+)
 
 
 _cfg: TekstConfig = get_config()
@@ -66,7 +67,7 @@ class UserReadPublic(ModelBase):
     username: str
     name: str | None = None
     affiliation: str | None = None
-    avatar_url: HttpUrlOrNone = None
+    avatar_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
     bio: str | None = None
     is_active: bool
     is_superuser: bool
@@ -84,53 +85,41 @@ class User(ModelBase, ModelFactoryMixin):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
-        ConStr(
+        str,
+        StringConstraints(
             min_length=4,
             max_length=16,
             pattern=r"[a-zA-Z0-9\-_]+",
         ),
-        Field(
-            description="Public username of this user",
-        ),
+        Field(description="Public username of this user"),
     ]
     name: Annotated[
-        ConStr(
-            max_length=64,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Full name of this user",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=64),
+        SingleLineString,
+        Field(description="Full name of this user"),
     ]
     affiliation: Annotated[
-        ConStr(
-            max_length=180,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Affiliation info of this user",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=180),
+        SingleLineString,
+        Field(description="Affiliation info of this user"),
     ]
     locale: Annotated[
         LocaleKey | None,
-        Field(
-            description="Key of the locale used by this user",
-        ),
+        Field(description="Key of the locale used by this user"),
     ] = None
     avatar_url: Annotated[
-        HttpUrlOrNone,
-        Field(
-            description="URL of this user's avatar picture",
-        ),
+        HttpUrl | None,
+        EmptyStrToNone,
+        Field(description="URL of this user's avatar picture"),
     ] = None
     bio: Annotated[
-        ConStrOrNone(
-            max_length=2000,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Biography of this user",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=2000),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Biography of this user"),
     ] = None
     public_fields: PrivateUserProps = []
     user_notification_triggers: UserNotificationTriggers = [
@@ -184,28 +173,20 @@ UserUpdate = User.update_model(schemas.BaseUserUpdate)
 class UsersSearchResult(ModelBase):
     users: Annotated[
         list[UserRead],
-        Field(
-            description="Paginated users data",
-        ),
+        Field(description="Paginated users data"),
     ] = []
     total: Annotated[
         int,
-        Field(
-            description="Total number of search hits",
-        ),
+        Field(description="Total number of search hits"),
     ] = 0
 
 
 class PublicUsersSearchResult(ModelBase):
     users: Annotated[
         list[UserReadPublic],
-        Field(
-            description="Paginated public users data",
-        ),
+        Field(description="Paginated public users data"),
     ] = []
     total: Annotated[
         int,
-        Field(
-            description="Total number of search hits",
-        ),
+        Field(description="Total number of search hits"),
     ] = 0

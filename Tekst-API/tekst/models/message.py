@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import AwareDatetime, Field
+from pydantic import AwareDatetime, Field, StringConstraints
 
 from tekst.models.common import (
     DocumentBase,
@@ -10,49 +10,38 @@ from tekst.models.common import (
     PydanticObjectId,
 )
 from tekst.models.user import UserReadPublic
-from tekst.types import ConStr
+from tekst.types import MultiLineString
 
 
 class UserMessage(ModelBase, ModelFactoryMixin):
     sender: Annotated[
         PydanticObjectId | None,
-        Field(
-            description="ID of the sender or None if this is a system message",
-        ),
+        Field(description="ID of the sender or None if this is a system message"),
     ] = None
     recipient: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of the recipient",
-        ),
+        Field(description="ID of the recipient"),
     ]
     content: Annotated[
-        ConStr(
-            max_length=1000,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Content of the message",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=1000),
+        MultiLineString,
+        Field(description="Content of the message"),
     ]
     created_at: Annotated[
         AwareDatetime,
-        Field(
-            description="Time when the message was sent",
-        ),
+        Field(description="Time when the message was sent"),
         ExcludeFromModelVariants(create=True),
     ]
     read: Annotated[
         bool,
-        Field(
-            description="Whether the message has been read by the recipient",
-        ),
+        Field(description="Whether the message has been read by the recipient"),
         ExcludeFromModelVariants(create=True),
     ] = False
     deleted: Annotated[
         PydanticObjectId | None,
         Field(
-            description="ID of the user who deleted the message or None if not deleted",
+            description="ID of the user who deleted the message or None if not deleted"
         ),
         ExcludeFromModelVariants(create=True),
     ] = None
@@ -82,13 +71,9 @@ class UserMessageThread(ModelBase):
     ]
     contact: Annotated[
         UserReadPublic | None,
-        Field(
-            description="User data for the other user participating in this thread",
-        ),
+        Field(description="User data for the other user participating in this thread"),
     ]
     unread: Annotated[
         int,
-        Field(
-            description="Number of unread messages in this thread",
-        ),
+        Field(description="Number of unread messages in this thread"),
     ]

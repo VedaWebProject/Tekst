@@ -35,11 +35,7 @@ async def migration(db: Database) -> None:
     # for all resources, remove field "config.general"
     await db.resources.update_many(
         {},
-        {
-            "$unset": {
-                "config.general": "",
-            },
-        },
+        {"$unset": {"config.general": ""}},
     )
 
     # for all resources, rename "config.common" to "config.general"
@@ -121,9 +117,5 @@ async def migration(db: Database) -> None:
         res_type_snake = decamelize(res["resource_type"])
         await db.resources.update_one(
             {"_id": res["_id"]},
-            {
-                "$unset": {
-                    f"config.{res_type_snake}": "",
-                },
-            },
+            {"$unset": {f"config.{res_type_snake}": ""}},
         )

@@ -1,14 +1,18 @@
 from collections.abc import Callable
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, conint, field_validator
+from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
 )
 from tekst.resources import ResourceSearchQuery
-from tekst.types import ConStr, SchemaOptionalNonNullable, SchemaOptionalNullable
+from tekst.types import (
+    SchemaOptionalNonNullable,
+    SchemaOptionalNullable,
+    SingleLineString,
+)
 
 
 class SearchHit(ModelBase):
@@ -84,10 +88,8 @@ type SortingPreset = Literal["relevance", "text_level_position", "text_level_rel
 class PaginationSettings(ModelBase):
     page: Annotated[
         int,
-        conint(
-            ge=1,
-        ),
         Field(
+            ge=1,
             alias="pg",
             description="Page number",
         ),
@@ -233,11 +235,9 @@ class QuickSearchRequestBody(ModelBase):
         ),
     ] = "quick"
     query: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=512,
-            cleanup="oneline",
-        ),
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
         Field(
             alias="q",
             description="Query string",

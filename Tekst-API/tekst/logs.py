@@ -32,11 +32,7 @@ _FMT_ACCESS_DEV = "%(levelprefix)s %(request_line)s - %(status_code)s"
 _LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {
-        "exclude_api_status_endpoint_calls": {
-            "()": StatusEndpointFilter,
-        },
-    },
+    "filters": {"exclude_api_status_endpoint_calls": {"()": StatusEndpointFilter}},
     "formatters": {
         "default": {
             "()": "uvicorn.logging.DefaultFormatter",

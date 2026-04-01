@@ -1,6 +1,5 @@
 import re
 
-from packaging.version import Version
 from tekst import __version__
 from tekst.db.migrations import _all_migrations
 
@@ -50,19 +49,3 @@ def test_version_pep440():
 def test_migration_versions_pep440():
     for migration_version in _all_migrations():
         assert bool(re.match(_PEP440_VERSION_REGEX, str(migration_version)))
-
-
-def test_migration_sorting():
-    from tekst.db.migrations import _sort_migrations
-
-    migrations = {
-        Version("10.12.4a0"): lambda: 6,
-        Version("1.2.30"): lambda: 5,
-        Version("0.1.0"): lambda: 2,
-        Version("1.2.4"): lambda: 4,
-        Version("0.1.0a1"): lambda: 1,
-        Version("1.2.3"): lambda: 3,
-        Version("0.1.0a0"): lambda: 0,
-    }
-    migration_results = [migrations[ver]() for ver in _sort_migrations(migrations)]
-    assert migration_results == sorted(migration_results)

@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from beanie.operators import Eq
-from pydantic import BeforeValidator, Field
+from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import ModelBase
@@ -24,10 +24,9 @@ from tekst.models.resource_configs import (
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceSearchQuery, ResourceTypeABC
 from tekst.types import (
-    ConStr,
-    ConStrOrNone,
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
+    SingleLineString,
 )
 
 
@@ -56,9 +55,7 @@ class LocationMetadata(ResourceTypeABC):
             "entries": {
                 "type": "nested",
                 "properties": {
-                    "key": {
-                        "type": "keyword",
-                    },
+                    "key": {"type": "keyword"},
                     "value": {
                         "type": "keyword",
                         "normalizer": "no_diacritics_normalizer",
@@ -86,8 +83,10 @@ class LocationMetadata(ResourceTypeABC):
     @classmethod
     def _rtype_index_doc(
         cls,
-        content: "LocationMetadataContent",
+        content: ContentBase,
     ) -> dict[str, Any] | None:
+        if not isinstance(content, LocationMetadataContent):  # pragma: no cover
+            raise ValueError(f"Expected LocationMetadataContent, got {type(content)}")
         return {
             "entries": [
                 {
@@ -105,7 +104,7 @@ class LocationMetadata(ResourceTypeABC):
     def rtype_es_queries(
         cls,
         *,
-        query: "LocationMetadataSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         es_queries = []
@@ -155,9 +154,7 @@ class LocationMetadata(ResourceTypeABC):
                         "nested": {
                             "path": f"resources.{res_id}.entries",
                             "query": {
-                                "bool": {
-                                    "must": [entry_k_q, entry_v_q],
-                                },
+                                "bool": {"must": [entry_k_q, entry_v_q]},
                             },
                         }
                     }
@@ -257,19 +254,17 @@ class LocationMetadataModGeneralConfig(GeneralResourceConfig):
 
 
 type LocationMetadataEntryKey = Annotated[
-    ConStr(
-        max_length=32,
-        cleanup="oneline",
-    ),
+    str,
+    StringConstraints(min_length=1, max_length=32),
+    SingleLineString,
     Field(description="Key of the entry"),
 ]
 
 
 type LocationMetadataEntryValue = Annotated[
-    ConStr(
-        max_length=256,
-        cleanup="oneline",
-    ),
+    str,
+    StringConstraints(min_length=1, max_length=256),
+    SingleLineString,
     Field(description="Value of an entry"),
 ]
 
@@ -277,9 +272,7 @@ type LocationMetadataEntryValue = Annotated[
 class LocationMetadataSpecialConfig(ModelBase):
     embed_as_tags: Annotated[
         bool,
-        Field(
-            description="Display metadata as tags in browse view",
-        ),
+        Field(description="Display metadata as tags in browse view"),
         SchemaOptionalNonNullable,
     ] = False
     entries_integration: ItemIntegrationConfig = ItemIntegrationConfig()
@@ -458,22 +451,18 @@ class LocationMetadataContent(ContentBase):
 
 class LocationMetadataQueryEntry(ModelBase):
     key: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=32,
-            cleanup="oneline",
-        ),
+        str | None,
+        StringConstraints(max_length=32),
+        SingleLineString,
         Field(
             alias="k",
             description="Metadata entry key query",
         ),
     ] = None
     value: Annotated[
-        ConStrOrNone(
-            min_length=0,
-            max_length=256,
-            cleanup="oneline",
-        ),
+        str | None,
+        StringConstraints(max_length=256),
+        SingleLineString,
         Field(
             alias="v",
             description="Metadata entry value query",

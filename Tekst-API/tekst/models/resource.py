@@ -4,8 +4,15 @@ from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
+from beanie.odm.operators.find import BaseFindOperator
 from beanie.operators import And, Eq, In, Or
-from pydantic import AwareDatetime, Field, field_validator, model_validator
+from pydantic import (
+    AwareDatetime,
+    Field,
+    StringConstraints,
+    field_validator,
+    model_validator,
+)
 from typing_extensions import TypedDict
 
 from tekst.i18n import TranslationBase, Translations
@@ -21,66 +28,55 @@ from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
-from tekst.types import ConStr, ConStrOrNone, ResourceTypeName
+from tekst.types import (
+    EmptyStrToNone,
+    MultiLineString,
+    ResourceTypeName,
+    SingleLineString,
+)
 from tekst.utils.html import force_html, sanitize_html
 
 
 # class for one arbitrary metadate
 class MetadataEntry(TypedDict):
     key: Annotated[
-        ConStr(
-            max_length=16,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Key identifying this metadata entry",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=16),
+        SingleLineString,
+        Field(description="Key identifying this metadata entry"),
     ]
     value: Annotated[
-        ConStr(
-            max_length=512,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Value of this metadata entry",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=512),
+        MultiLineString,
+        Field(description="Value of this metadata entry"),
     ]
 
 
 class ResourceTitleTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=128,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Title translation for this resource",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=128),
+        SingleLineString,
+        Field(description="Title translation for this resource"),
     ]
 
 
 class ResourceSubtitleTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Subtitle translation for this resource",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=512),
+        SingleLineString,
+        Field(description="Subtitle translation for this resource"),
     ]
 
 
 class ResourceDescriptionTranslation(TranslationBase):
     translation: Annotated[
-        ConStr(
-            min_length=1,
-            max_length=102400,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Description translation HTML for this resource",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=102400),
+        MultiLineString,
+        Field(description="Description translation HTML for this resource"),
     ]
 
 
@@ -97,19 +93,13 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     subtitle: Annotated[
         Translations[ResourceSubtitleTranslation],
-        Field(
-            description="Short, concise subtitle of this resource",
-        ),
+        Field(description="Short, concise subtitle of this resource"),
     ] = []
 
     text_id: Annotated[
         PydanticObjectId,
-        Field(
-            description="ID of the text this resource belongs to",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="ID of the text this resource belongs to"),
+        ExcludeFromModelVariants(update=True),
     ]
 
     level: Annotated[
@@ -118,19 +108,13 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             ge=0,
             description="Text level this resource belongs to",
         ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        ExcludeFromModelVariants(update=True),
     ]
 
     resource_type: Annotated[
         ResourceTypeName,
-        Field(
-            description="A string identifying one of the available resource types",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-        ),
+        Field(description="A string identifying one of the available resource types"),
+        ExcludeFromModelVariants(update=True),
     ]
 
     patch_for: Annotated[
@@ -161,9 +145,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Users with shared read access to this resource",
             max_length=64,
         ),
-        ExcludeFromModelVariants(
-            create=True,
-        ),
+        ExcludeFromModelVariants(create=True),
     ] = []
 
     shared_write: Annotated[
@@ -172,16 +154,12 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             description="Users with shared write access to this resource",
             max_length=64,
         ),
-        ExcludeFromModelVariants(
-            create=True,
-        ),
+        ExcludeFromModelVariants(create=True),
     ] = []
 
     public: Annotated[
         bool,
-        Field(
-            description="Publication status of this resource",
-        ),
+        Field(description="Publication status of this resource"),
         ExcludeFromModelVariants(
             update=True,
             create=True,
@@ -190,9 +168,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
 
     proposed: Annotated[
         bool,
-        Field(
-            description="Whether this resource has been proposed for publication",
-        ),
+        Field(description="Whether this resource has been proposed for publication"),
         ExcludeFromModelVariants(
             update=True,
             create=True,
@@ -200,13 +176,11 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = False
 
     citation: Annotated[
-        ConStrOrNone(
-            max_length=10240,
-            cleanup="multiline",
-        ),
-        Field(
-            description="Citation details for this resource",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=10240),
+        MultiLineString,
+        EmptyStrToNone,
+        Field(description="Citation details for this resource"),
     ] = None
 
     description: Annotated[
@@ -219,23 +193,19 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
     ] = []
 
     license: Annotated[
-        ConStrOrNone(
-            max_length=512,
-            cleanup="oneline",
-        ),
-        Field(
-            description="License used for contents of this resource",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=512),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="License used for contents of this resource"),
     ] = None
 
     license_url: Annotated[
-        ConStrOrNone(
-            max_length=1024,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Link to license used for contents of this resource",
-        ),
+        str | None,
+        StringConstraints(min_length=1, max_length=1024),
+        SingleLineString,
+        EmptyStrToNone,
+        Field(description="Link to license used for contents of this resource"),
     ] = None
 
     meta: Annotated[
@@ -255,21 +225,13 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             max_length=2,
             description="Location coverage of this resource by contents, locations",
         ),
-        ExcludeFromModelVariants(
-            update=True,
-            create=True,
-        ),
+        ExcludeFromModelVariants(update=True, create=True),
     ] = None
 
     contents_changed_at: Annotated[
         AwareDatetime,
-        Field(
-            description="The last time contents of this resource changed",
-        ),
-        ExcludeFromModelVariants(
-            update=True,
-            create=True,
-        ),
+        Field(description="The last time contents of this resource changed"),
+        ExcludeFromModelVariants(update=True, create=True),
     ] = datetime.fromtimestamp(0, UTC)
 
     @model_validator(mode="after")
@@ -357,6 +319,108 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         """
         return []  # pragma: no cover
 
+
+# generate document and update models for this base model,
+# as those have to be used as bases for inheriting model's document/update models
+
+
+class ResourceBaseDocument(ResourceBase, DocumentBase):
+    class Settings(DocumentBase.Settings):
+        name = "resources"
+        is_root = True
+        indexes = [
+            [
+                "text_id",
+                "level",
+                "resource_type",
+                "owner_ids",
+            ]
+        ]
+
+    @classmethod
+    async def query_criteria_read(
+        cls,
+        user: UserRead | None,
+    ) -> BaseFindOperator | dict:
+        """
+        Returns DB query criteria to match resources
+        that the given user is allowed to read
+        """
+        active_texts_ids = await TextDocument.get_active_texts_ids()
+        # compose access condition for different user types
+        if not user:
+            # not logged in, no user
+            return And(
+                ResourceBaseDocument.public == True,  # noqa: E712
+                In(ResourceBaseDocument.text_id, active_texts_ids),
+            )
+        elif user.is_superuser:
+            # superusers can read all resources
+            return {}
+        else:
+            # logged in as regular user
+            return And(
+                In(ResourceBaseDocument.text_id, active_texts_ids),
+                Or(
+                    ResourceBaseDocument.owner_ids == user.id,
+                    Or(
+                        Eq(ResourceBaseDocument.public, True),
+                        Eq(ResourceBaseDocument.proposed, True),
+                        ResourceBaseDocument.shared_read == user.id,
+                        ResourceBaseDocument.shared_write == user.id,
+                    ),
+                ),
+            )
+
+    @classmethod
+    async def query_criteria_write(
+        cls,
+        user: UserRead | None,
+    ) -> BaseFindOperator | dict:
+        """
+        Returns DB query criteria to match resources
+        that the given user is allowed to write
+        """
+        if not user:  # pragma: no cover (as this should never happen anyway)
+            # not logged in, no user (don't match anything!)
+            return Eq(ResourceBaseDocument.public, "THIS_WONT_MATCH")
+
+        if user.is_superuser:
+            # superusers can do whatever
+            return {}
+
+        # compose conditions for logged in, regular users
+        return And(
+            # user generally has to be owner or have write access
+            Or(
+                ResourceBaseDocument.owner_ids == user.id,
+                ResourceBaseDocument.shared_write == user.id,
+            ),
+            # prevent editing of resources proposed for publication
+            Eq(ResourceBaseDocument.proposed, False),
+            # resource is either non-public and belongs to an active text
+            # or the user is an owner of the resource
+            Or(
+                And(
+                    In(
+                        ResourceBaseDocument.text_id,
+                        await TextDocument.get_active_texts_ids(),
+                    ),
+                    Eq(ResourceBaseDocument.public, False),
+                ),
+                Eq(ResourceBaseDocument.owner_ids, user.id),
+            ),
+        )
+
+    @classmethod
+    async def user_resource_count(cls, user_id: PydanticObjectId | None) -> int:
+        if not user_id:
+            return 0  # pragma: no cover
+        return await ResourceBaseDocument.find(
+            ResourceBaseDocument.owner_ids == user_id,
+            with_children=True,
+        ).count()
+
     async def contents_changed_hook(self) -> None:
         """
         Will be called whenever contents of a given resource are changed.
@@ -404,6 +468,8 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 return
         else:
             # create new coverage data document
+            if not self.id:  # pragma: no cover # this should never happen
+                raise RuntimeError("Resource must be saved before precomputing data")
             precomp_doc = PrecomputedDataDocument(
                 ref_id=self.id,
                 precomputed_type="coverage",
@@ -424,7 +490,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             {"$project": {"_id": 1}},
         ]
 
-        data: list[dict] = (
+        data: list[dict] | None = (
             await LocationDocument.find(
                 LocationDocument.text_id == self.text_id,
                 LocationDocument.level == self.level,
@@ -459,7 +525,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
             .to_list()
         )
 
-        text_doc: TextDocument = await TextDocument.get(self.text_id)
+        text_doc: TextDocument = await TextDocument.get(self.text_id)  # ty:ignore[invalid-assignment]
         # get all resource level location labels
         location_labels = await text_doc.full_location_labels(self.level)
         # get all parent level location labels
@@ -483,8 +549,12 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 }
             )
             covered_locations_count += 1 if location["covered"] else 0
+
         details = [
-            {"label": parent_location_labels.get(p_id), "locations": loc_cov}
+            ParentCoverage(
+                label=parent_location_labels.get(p_id),
+                locations=loc_cov,
+            )
             for p_id, loc_cov in coverage_per_parent.items()
         ]
 
@@ -541,126 +611,22 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         ).set({ResourceBaseDocument.coverage: [covered_locations_count, loc_count]})
 
 
-# generate document and update models for this base model,
-# as those have to be used as bases for inheriting model's document/update models
-
-
-class ResourceBaseDocument(ResourceBase, DocumentBase):
-    class Settings(DocumentBase.Settings):
-        name = "resources"
-        is_root = True
-        indexes = [
-            [
-                "text_id",
-                "level",
-                "resource_type",
-                "owner_ids",
-            ]
-        ]
-
-    @classmethod
-    async def query_criteria_read(cls, user: UserRead | None) -> dict:
-        """
-        Returns DB query criteria to match resources
-        that the given user is allowed to read
-        """
-        active_texts_ids = await TextDocument.get_active_texts_ids()
-        # compose access condition for different user types
-        if not user:
-            # not logged in, no user
-            return And(
-                ResourceBaseDocument.public == True,  # noqa: E712
-                In(ResourceBaseDocument.text_id, active_texts_ids),
-            )
-        elif user.is_superuser:
-            # superusers can read all resources
-            return {}
-        else:
-            # logged in as regular user
-            return And(
-                In(ResourceBaseDocument.text_id, active_texts_ids),
-                Or(
-                    ResourceBaseDocument.owner_ids == user.id,
-                    Or(
-                        ResourceBaseDocument.public == True,  # noqa: E712
-                        ResourceBaseDocument.proposed == True,  # noqa: E712
-                        ResourceBaseDocument.shared_read == user.id,
-                        ResourceBaseDocument.shared_write == user.id,
-                    ),
-                ),
-            )
-
-    @classmethod
-    async def query_criteria_write(cls, user: UserRead | None) -> dict:
-        """
-        Returns DB query criteria to match resources
-        that the given user is allowed to write
-        """
-        if not user:  # pragma: no cover (as this should never happen anyway)
-            # not logged in, no user (don't match anything!)
-            return Eq(ResourceBaseDocument.public, "THIS_WONT_MATCH")
-
-        if user.is_superuser:
-            # superusers can do whatever
-            return {}
-
-        # compose conditions for logged in, regular users
-        return And(
-            # user generally has to be owner or have write access
-            Or(
-                ResourceBaseDocument.owner_ids == user.id,
-                ResourceBaseDocument.shared_write == user.id,
-            ),
-            # prevent editing of resources proposed for publication
-            Eq(ResourceBaseDocument.proposed, False),
-            # resource is either non-public and belongs to an active text
-            # or the user is an owner of the resource
-            Or(
-                And(
-                    In(
-                        ResourceBaseDocument.text_id,
-                        await TextDocument.get_active_texts_ids(),
-                    ),
-                    Eq(ResourceBaseDocument.public, False),
-                ),
-                Eq(ResourceBaseDocument.owner_ids, user.id),
-            ),
-        )
-
-    @classmethod
-    async def user_resource_count(cls, user_id: PydanticObjectId | None) -> int:
-        if not user_id:
-            return 0  # pragma: no cover
-        return await ResourceBaseDocument.find(
-            ResourceBaseDocument.owner_ids == user_id,
-            with_children=True,
-        ).count()
-
-
 class ResourceReadExtras(ModelBase):
     writable: Annotated[
         bool | None,
-        Field(
-            description="Whether this resource is writable for the requesting user",
-        ),
+        Field(description="Whether this resource is writable for the requesting user"),
     ] = None
     owners: Annotated[
         list[UserReadPublic] | None,
-        Field(
-            description="Public user data for user owning this resource",
-        ),
+        Field(description="Public user data for user owning this resource"),
     ] = None
     shared_read_users: Annotated[
         list[UserReadPublic] | None,
-        Field(
-            description="Public user data for users allowed to read this resource",
-        ),
+        Field(description="Public user data for users allowed to read this resource"),
     ] = None
     shared_write_users: Annotated[
         list[UserReadPublic] | None,
-        Field(
-            description="Public user data for users allowed to write this resource",
-        ),
+        Field(description="Public user data for users allowed to write this resource"),
     ] = None
 
 
@@ -674,7 +640,7 @@ class LocationCoverage(ModelBase):
 
 
 class ParentCoverage(ModelBase):
-    label: str | None
+    label: Annotated[str | None, EmptyStrToNone]
     locations: list[LocationCoverage]
 
 

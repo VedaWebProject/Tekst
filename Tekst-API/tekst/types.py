@@ -1,19 +1,21 @@
-from re import Pattern
-from typing import Annotated, Literal, TypeAlias
+from typing import Annotated
 
+from annotated_types import BaseMetadata
 from pydantic import (
     BeforeValidator,
     Field,
     PlainSerializer,
     StringConstraints,
-    conint,
-    constr,
 )
+from pydantic.dataclasses import dataclass as pydantic_dataclass
 from pydantic.functional_validators import AfterValidator
 from typing_extensions import TypedDict
 
 from tekst.utils.strings import cleanup_spaces_multiline, cleanup_spaces_oneline
 
+
+### ANNOTATIONS
+### (validators and other type annotations like field info etc.)
 
 # These FieldInfo instances are to be used as type annotation metadata for fields
 # that should be marked as optional in the JSON schema. By default, any field
@@ -25,76 +27,13 @@ from tekst.utils.strings import cleanup_spaces_multiline, cleanup_spaces_oneline
 SchemaOptionalNullable = Field(json_schema_extra={"optionalNullable": True})
 SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
 
+# some extra string-manipulating validators
 
-# validators for internal use
+SingleLineString = AfterValidator(cleanup_spaces_oneline)
+MultiLineString = AfterValidator(cleanup_spaces_multiline)
+EmptyStrToNone = BeforeValidator(lambda v: v or None if isinstance(v, str) else v)
 
-_CleanupOneline = AfterValidator(cleanup_spaces_oneline)
-_CleanupMultiline = AfterValidator(cleanup_spaces_multiline)
-
-
-# GENERAL TYPES
-
-
-def _empty_str_to_none(v: str | None) -> None:
-    if v is None:
-        return None
-    if isinstance(v, str) and v.strip() == "":
-        return None
-    raise ValueError("Value is not an empty string nor None")
-
-
-# For this, we're intentionally not using a `TypeAliasType`
-# (via `type _EmptyStrToNone = ...`)
-# but just a plain old `TypeAlias`, because we actually don't want Pydantic to be able
-# to access the type alias name. This would lead to our API schema being "polluted"
-# with references to a useless "_EmptyStrToNone" type that is just `null` in the end.
-_EmptyStrToNone = Annotated[None, BeforeValidator(_empty_str_to_none)]
-
-
-def ConStr(  # noqa: N802
-    min_length: int = 1,
-    max_length: int | None = None,
-    strip: bool = True,
-    cleanup: Literal["oneline", "multiline"] | None = None,
-    pattern: str | Pattern[str] | None = None,
-) -> TypeAlias:
-    annotations = (
-        str,
-        StringConstraints(
-            min_length=min_length,
-            max_length=max_length,
-            strip_whitespace=strip,
-            pattern=pattern,
-        ),
-        _CleanupOneline if cleanup == "oneline" else None,
-        _CleanupMultiline if cleanup == "multiline" else None,
-    )
-    annotations = tuple([a for a in annotations if a is not None])
-    return Annotated[annotations]
-
-
-def ConStrOrNone(  # noqa: N802
-    min_length: int = 1,
-    max_length: int | None = None,
-    strip: bool = True,
-    cleanup: Literal["oneline", "multiline"] | None = None,
-    pattern: str | Pattern[str] | None = None,
-) -> TypeAlias:
-    return _EmptyStrToNone | ConStr(
-        min_length=min_length,
-        max_length=max_length,
-        strip=strip,
-        cleanup=cleanup,
-        pattern=pattern,
-    )
-
-
-HttpUrl = ConStr(
-    min_length=1,
-    max_length=2083,
-    cleanup="oneline",
-)
-HttpUrlOrNone = _EmptyStrToNone | HttpUrl
+# serializers
 
 ColorSerializer = PlainSerializer(
     lambda c: c.as_hex() if hasattr(c, "as_hex") else str(c),
@@ -102,41 +41,83 @@ ColorSerializer = PlainSerializer(
     when_used="unless-none",
 )
 
-
-# LOCATION-SPECIFIC PROPERTY TYPES
-
-LocationLevel = conint(
-    ge=0,
-    le=32,
-)
-
-LocationPosition = conint(
-    ge=0,
-)
-
-LocationLabel = ConStr(
-    max_length=256,
-    cleanup="oneline",
-)
-
-LocationAlias = constr(
-    min_length=1,
-    max_length=512,
-    strip_whitespace=True,
-)
+# manipulating model variants
 
 
-# RESOURCE-SPECIFIC PROPERTY TYPES
+@pydantic_dataclass(frozen=True)
+class ExcludeFromModelVariants(BaseMetadata):
+    """
+    Metadata class to be used as type annotation for fields that
+    should not be included in certain model types
+    """
 
-ResourceTypeName = constr(
-    min_length=1,
-    max_length=32,
-    strip_whitespace=True,
-)
+    create: bool = False
+    update: bool = False
 
 
-# TYPE ANNOTATIONS FOR FIELD THAT CAN BE PART OF
-# THE GENERAL TYPE-SPECIFIC RESOURCE CONFIGURATION
+### TYPES
+
+HttpUrl = Annotated[
+    str,
+    StringConstraints(min_length=1, max_length=2083),
+    SingleLineString,
+]
+
+
+# location-specific property types
+
+LocationLevel = Annotated[
+    int,
+    Field(
+        ge=0,
+        le=32,
+        description="Structure level of a location",
+    ),
+]
+
+LocationPosition = Annotated[
+    int,
+    Field(
+        ge=0,
+        description="Position of a location on its structure level",
+    ),
+]
+
+LocationLabel = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=256,
+        strip_whitespace=True,
+    ),
+    SingleLineString,
+]
+
+LocationAlias = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=512,
+        strip_whitespace=True,
+    ),
+    SingleLineString,
+]
+
+
+# resource-specific property types
+
+ResourceTypeName = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=32,
+        strip_whitespace=True,
+    ),
+]
+
+
+# type annotations for field that can be part of
+# the general type-specific resource configuration
 
 CollapsibleContentsConfigValue = Annotated[
     int | None,
@@ -151,44 +132,31 @@ CollapsibleContentsConfigValue = Annotated[
 ]
 
 FontFamilyValue = Annotated[
-    ConStr(
+    str,
+    StringConstraints(
+        min_length=1,
         max_length=32,
-        cleanup="oneline",
     ),
-    Field(
-        description="Name of a font family",
-    ),
-]
-
-FontFamilyValueOrNone = Annotated[
-    ConStrOrNone(
-        max_length=32,
-        cleanup="oneline",
-    ),
-    Field(
-        description="Name of a font family",
-    ),
+    SingleLineString,
+    Field(description="Name of a font family"),
 ]
 
 
 class ContentCssProperty(TypedDict):
     prop: Annotated[
-        ConStr(
+        str,
+        StringConstraints(
+            min_length=1,
             max_length=256,
-            cleanup="oneline",
         ),
-        Field(
-            description="A CSS property name",
-        ),
+        SingleLineString,
+        Field(description="A CSS property name"),
     ]
     value: Annotated[
-        ConStr(
-            max_length=256,
-            cleanup="oneline",
-        ),
-        Field(
-            description="A CSS property value",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=256),
+        SingleLineString,
+        Field(description="A CSS property value"),
     ]
 
 
@@ -196,7 +164,6 @@ type ContentCssProperties = Annotated[
     list[ContentCssProperty],
     Field(
         description="List of CSS properties to apply to the contents of this resource",
-        min_length=0,
         max_length=64,
     ),
 ]
@@ -204,23 +171,16 @@ type ContentCssProperties = Annotated[
 
 class SearchReplacement(TypedDict):
     pattern: Annotated[
-        ConStr(
-            max_length=64,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Regular expression to match (Java RegEx syntax)",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=64),
+        SingleLineString,
+        Field(description="Regular expression to match (Java RegEx syntax)"),
     ]
     replacement: Annotated[
-        ConStr(
-            min_length=0,
-            max_length=64,
-            cleanup="oneline",
-        ),
-        Field(
-            description="Replacement string",
-        ),
+        str,
+        StringConstraints(min_length=1, max_length=64),
+        SingleLineString,
+        Field(description="Replacement string"),
     ]
 
 
@@ -230,26 +190,6 @@ type SearchReplacements = Annotated[
         description=(
             "List of regular expression replacements to apply to search index documents"
         ),
-        min_length=0,
         max_length=16,
     ),
 ]
-
-
-# ANNOTATIONS FOR MODIFYING MODEL VARIANTS
-
-
-class ExcludeFromModelVariants:
-    """
-    Class to be used as type annotation metadata for fields that
-    should not be included in certain model types
-    """
-
-    def __init__(
-        self,
-        *,
-        create: bool = False,
-        update: bool = False,
-    ):
-        self.create = create
-        self.update = update

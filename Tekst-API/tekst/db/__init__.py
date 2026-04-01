@@ -16,9 +16,7 @@ from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
 from tekst.models.precomputed import PrecomputedDataDocument
-from tekst.models.resource import (
-    ResourceBaseDocument,
-)
+from tekst.models.resource import ResourceBaseDocument
 from tekst.models.segment import ClientSegmentDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
@@ -27,7 +25,7 @@ from tekst.tasks import TaskDocument
 
 
 _BSON_CODEC_OPTIONS = CodecOptions(tz_aware=True, tzinfo=UTC)
-_db_client: DatabaseClient = None
+_db_client: DatabaseClient | None = None
 
 
 def _init_db_client(db_uri: str | None = None) -> DatabaseClient:

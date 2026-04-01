@@ -11,9 +11,7 @@ from tekst.resources import AnyContentReadOrMissing
 class LocationData(ModelBase):
     location_path: Annotated[
         list[LocationRead],
-        Field(
-            description="Path of locations from level 0 to this location",
-        ),
+        Field(description="Path of locations from level 0 to this location"),
     ] = []
     previous_loc_id: Annotated[
         PydanticObjectId | None,
@@ -36,4 +34,4 @@ class LocationData(ModelBase):
                 "Contents of various resources on this location, by resource ID"
             ),
         ),
-    ] = []
+    ] = {}
