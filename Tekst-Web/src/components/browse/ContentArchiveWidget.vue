@@ -11,7 +11,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import { useMessages } from '@/composables/messages';
 import { $t } from '@/i18n';
-import { ArchiveIcon, ArrowBackIcon, NoContentIcon } from '@/icons';
+import { ArchiveIcon, ArrowLeftIcon, NoContentIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { utcToDateTimeString } from '@/utils';
 import { NButton, NEmpty, NFlex, NIcon, NSpin } from 'naive-ui';
@@ -165,7 +165,7 @@ function cleanup() {
         <template #start>
           <n-button text icon-placement="left" @click="handleBackToOverview">
             <template #icon>
-              <n-icon :component="ArrowBackIcon" />
+              <n-icon :component="ArrowLeftIcon" />
             </template>
             {{ $t('common.backToOverview') }}
           </n-button>

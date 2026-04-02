@@ -2,7 +2,7 @@
 import { commonDialogOptions } from '@/common';
 import { useTasks } from '@/composables/tasks';
 import { $t, $te } from '@/i18n';
-import { CheckCircleIcon, ErrorIcon, HourglassIcon, UpdateIcon } from '@/icons';
+import { CheckCircleIcon, ErrorIcon, HourglassIcon, TaskIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import {
   NBadge,
@@ -72,7 +72,7 @@ function handleTaskClick(id: string) {
     <template #menu>
       <div class="task-list">
         <n-flex justify="flex-start" align="center" :wrap="false" class="task-list-header">
-          <n-icon :component="UpdateIcon" />
+          <n-icon :component="TaskIcon" />
           <span class="b ellipsis" style="color: var(--base-color)">{{ $t('tasks.title') }}</span>
         </n-flex>
         <n-scrollbar style="max-height: 60vh">

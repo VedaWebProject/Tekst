@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useThemeStore } from '@/stores';
-import { NEllipsis, NIcon } from 'naive-ui';
+import { NEllipsis, NFlex, NIcon } from 'naive-ui';
 import { type CSSProperties, type Component } from 'vue';
 
 withDefaults(
@@ -30,6 +30,9 @@ const theme = useThemeStore();
     <template v-else>
       <slot></slot>
     </template>
+    <n-flex v-if="$slots['end']" justify="flex-end" style="flex: 2">
+      <slot name="end"></slot>
+    </n-flex>
   </component>
 </template>
 

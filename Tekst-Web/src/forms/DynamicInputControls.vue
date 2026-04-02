@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/i18n';
-import { AddIcon, ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@/icons';
+import { ArrowDownIcon, ArrowUpIcon, MinusIcon, PlusIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { NButton, NButtonGroup, NIcon, type ButtonProps } from 'naive-ui';
 import { computed } from 'vue';
@@ -94,7 +94,7 @@ const btnProps = computed<ButtonProps>(() => ({
         @click="$emit('insert')"
       >
         <template #icon>
-          <n-icon :component="AddIcon" />
+          <n-icon :component="PlusIcon" />
         </template>
       </n-button>
     </n-button-group>

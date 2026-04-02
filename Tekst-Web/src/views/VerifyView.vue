@@ -2,7 +2,7 @@
 import { POST } from '@/api';
 import { useErrors } from '@/composables/errors';
 import { $t } from '@/i18n';
-import { CheckCircleIcon, HourglassIcon, KeyOffIcon } from '@/icons';
+import { CheckCircleIcon, ErrorIcon, HourglassIcon } from '@/icons';
 import { NEmpty, NIcon } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -36,7 +36,7 @@ onMounted(async () => {
   </n-empty>
   <n-empty v-else-if="error" :description="error">
     <template #icon>
-      <n-icon :component="KeyOffIcon" />
+      <n-icon :component="ErrorIcon" />
     </template>
   </n-empty>
   <n-empty v-else :description="$t('account.verify.success')">

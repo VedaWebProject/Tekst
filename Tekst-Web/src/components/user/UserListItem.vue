@@ -35,7 +35,7 @@ const props = defineProps<{
 const emit = defineEmits([
   'setSuperuserClick',
   'unsetSuperuserClick',
-  'activateClick',
+  'toggleActive',
   'verifyClick',
   'deleteClick',
 ]);
@@ -60,7 +60,7 @@ const actionOptions = computed(() => [
               key: 'setInactive',
               icon: renderIcon(BlockCircleIcon, 'var(--error-color)'),
               disabled: targetUserIsCurrentUser.value,
-              action: () => emit('activateClick', props.targetUser, false),
+              action: () => emit('toggleActive', props.targetUser, false),
             },
           ]
         : [
@@ -69,7 +69,7 @@ const actionOptions = computed(() => [
               key: 'setActive',
               icon: renderIcon(CheckCircleIcon, 'var(--success-color)'),
               disabled: targetUserIsCurrentUser.value,
-              action: () => emit('activateClick', props.targetUser, true),
+              action: () => emit('toggleActive', props.targetUser, true),
             },
           ]),
       ...(props.targetUser.isVerified

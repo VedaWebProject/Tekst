@@ -13,15 +13,14 @@ import {
   FormatItalicIcon,
   FormatListBulletedIcon,
   FormatListNumberedIcon,
-  FormatSizeIcon,
+  HeadingIcon,
   HorizontalRuleIcon,
   ImageIcon,
-  JumpBackIcon,
-  JumpForwardIcon,
   KeyboardReturnIcon,
   LinkIcon,
   QuoteIcon,
-  ShortTextIcon,
+  RedoIcon,
+  UndoIcon,
 } from '@/icons';
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
@@ -148,35 +147,35 @@ const blockTypeOptions = computed(() => [
       editor.value?.chain().focus().setParagraph().run();
     },
     isActive: () => editor.value?.isActive('paragraph'),
-    iconComponent: ShortTextIcon,
+    iconComponent: FormatAlignLeftIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.heading', { level: 1 }),
     value: 'h1',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 1 }),
-    iconComponent: FormatSizeIcon,
+    iconComponent: HeadingIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.heading', { level: 2 }),
     value: 'h2',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 2 }),
-    iconComponent: FormatSizeIcon,
+    iconComponent: HeadingIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.heading', { level: 3 }),
     value: 'h3',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 3 }),
-    iconComponent: FormatSizeIcon,
+    iconComponent: HeadingIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.heading', { level: 4 }),
     value: 'h4',
     action: () => editor.value?.chain().focus().toggleHeading({ level: 4 }).run(),
     isActive: () => editor.value?.isActive('heading', { level: 4 }),
-    iconComponent: FormatSizeIcon,
+    iconComponent: HeadingIcon,
   },
   {
     label: $t('wysiwyg.blockTypes.bulletedList'),
@@ -432,7 +431,7 @@ onUnmounted(() => {
           :size="toolbarSize"
           :title="$t('wysiwyg.undo')"
           :disabled="!editor.can().chain().focus().undo().run()"
-          :render-icon="renderToolbarIcon(JumpBackIcon)"
+          :render-icon="renderToolbarIcon(UndoIcon)"
           :focusable="false"
           @click="editor.chain().focus().undo().run()"
         />
@@ -441,7 +440,7 @@ onUnmounted(() => {
           :size="toolbarSize"
           :title="$t('wysiwyg.redo')"
           :disabled="!editor.can().chain().focus().redo().run()"
-          :render-icon="renderToolbarIcon(JumpForwardIcon)"
+          :render-icon="renderToolbarIcon(RedoIcon)"
           :focusable="false"
           @click="editor.chain().focus().redo().run()"
         />

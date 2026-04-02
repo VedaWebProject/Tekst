@@ -2,18 +2,18 @@
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import { $t } from '@/i18n';
 import {
-  AdminIcon,
-  CommunityIcon,
+  AdminSettingsIcon,
   LoginIcon,
   LogoutIcon,
   MessageIcon,
   StatsIcon,
   TextsIcon,
   UserIcon,
+  UsersIcon,
 } from '@/icons';
 import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { renderIcon } from '@/utils';
-import { NBadge, NButton, NDropdown, NFlex, NIcon } from 'naive-ui';
+import { NBadge, NButton, NDropdown, NIcon } from 'naive-ui';
 import { computed, h, ref } from 'vue';
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
 
@@ -49,7 +49,7 @@ const userOptions = computed(() => [
       name: 'community',
     }),
     key: 'community',
-    icon: renderIcon(CommunityIcon),
+    icon: renderIcon(UsersIcon),
   },
   ...(!!auth.user?.isSuperuser
     ? [
@@ -72,7 +72,7 @@ const userOptions = computed(() => [
             name: 'admin',
           }),
           key: 'admin',
-          icon: renderIcon(AdminIcon),
+          icon: renderIcon(AdminSettingsIcon),
         },
       ]
     : []),
@@ -128,9 +128,7 @@ function handleUserOptionSelect(key: string) {
   >
     <n-badge :show="!!userMessages.unreadCount" :offset="[-8, 2]">
       <template #value>
-        <n-flex :wrap="false" size="small">
-          <n-icon :component="MessageIcon" />
-        </n-flex>
+        <n-icon :component="MessageIcon" />
       </template>
       <user-avatar
         :username="auth.user.username"

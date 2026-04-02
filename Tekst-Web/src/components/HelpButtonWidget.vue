@@ -3,7 +3,7 @@ import GenericModal from '@/components/generic/GenericModal.vue';
 import type { HelpText } from '@/composables/help';
 import { useHelp } from '@/composables/help';
 import { $t } from '@/i18n';
-import { ErrorIcon, QuestionMarkIcon } from '@/icons';
+import { ErrorIcon, FileQuestionMarkIcon } from '@/icons';
 import { NButton, NEmpty, NIcon, NSpin, type ButtonSize } from 'naive-ui';
 import { computed, ref } from 'vue';
 
@@ -74,16 +74,14 @@ async function handleHelpButtonClick() {
     :style="buttonStyle"
     @click.stop.prevent="handleHelpButtonClick"
   >
-    <template #icon>
-      <n-icon :component="QuestionMarkIcon" />
-    </template>
+    <b>?</b>
   </n-button>
 
   <generic-modal
     v-model:show="showModal"
     width="wide"
     :title="$t('help.help')"
-    :icon="QuestionMarkIcon"
+    :icon="FileQuestionMarkIcon"
     heading-level="3"
     @after-leave="handleClose"
   >

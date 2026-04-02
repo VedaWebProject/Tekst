@@ -74,7 +74,7 @@ function handleSetSuperuserClick(user: UserRead, setSuperuser: boolean) {
   });
 }
 
-function handleActiveClick(user: UserRead, setActive: boolean) {
+function handleToggleActive(user: UserRead, setActive: boolean) {
   dialog.warning({
     ...commonDialogOptions,
     title: $t('common.warning'),
@@ -228,7 +228,7 @@ onMounted(() => {
             :target-user="user"
             :platform-name="state.pf?.state.platformName || 'Tekst'"
             :current-user="auth.user"
-            @activate-click="handleActiveClick"
+            @toggle-active="handleToggleActive"
             @verify-click="handleVerifiedClick"
             @set-superuser-click="handleSetSuperuserClick"
             @delete-click="handleDeleteClick"

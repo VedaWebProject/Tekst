@@ -19,7 +19,7 @@ import { useMessages } from '@/composables/messages';
 import { usePrompt } from '@/composables/prompt';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import { AddIcon, JumpBackIcon, NoContentIcon, ResourceIcon, SearchIcon, UserIcon } from '@/icons';
+import { NoContentIcon, PlusIcon, ResourceIcon, SearchIcon, UndoIcon, UserIcon } from '@/icons';
 import {
   useAuthStore,
   useBrowseStore,
@@ -462,7 +462,7 @@ onMounted(() => {
       <!-- Reset filters button -->
       <n-button secondary :disabled="!searchInput?.length" @click="searchInput = ''">
         <template #icon>
-          <n-icon :component="JumpBackIcon" />
+          <n-icon :component="UndoIcon" />
         </template>
         {{ $t('common.reset') }}
       </n-button>
@@ -473,7 +473,7 @@ onMounted(() => {
         @click="router.push({ name: 'resourceCreate', params: { textSlug: props.textSlug } })"
       >
         <template #icon>
-          <n-icon :component="AddIcon" />
+          <n-icon :component="PlusIcon" />
         </template>
         {{ $t('resources.new') }}
       </n-button>

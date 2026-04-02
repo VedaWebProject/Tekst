@@ -7,7 +7,7 @@ import { NEmpty, NIcon, NInput, NSpin } from 'naive-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import type { HelpText } from '@/composables/help';
-import { HelpOverviewIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { FileQuestionMarkIcon, NoContentIcon, SearchIcon } from '@/icons';
 
 const { getHelpTexts } = useHelp();
 
@@ -62,7 +62,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading level="1" :icon="HelpOverviewIcon">
+  <icon-heading level="1" :icon="FileQuestionMarkIcon">
     {{ $t('help.heading') }}
     <help-button-widget help-key="helpView" />
   </icon-heading>

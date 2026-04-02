@@ -3,7 +3,7 @@ import IconHeading from '@/components/generic/IconHeading.vue';
 import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
 import { useUser } from '@/composables/user';
-import { MessageIcon, UserIcon } from '@/icons';
+import { MessagesIcon, UserIcon } from '@/icons';
 import { useAuthStore, useStateStore, useUserMessagesStore } from '@/stores';
 import { NButton, NIcon, NSpin, NThing } from 'naive-ui';
 import { computed, watchEffect } from 'vue';
@@ -62,7 +62,7 @@ watchEffect(() => {
         @click="() => userMessages.openConversation(user?.id || '?')"
       >
         <template #icon>
-          <n-icon :component="MessageIcon" />
+          <n-icon :component="MessagesIcon" />
         </template>
         {{
           $t('account.messages.btnSendMessageToUser', {

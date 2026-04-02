@@ -7,7 +7,7 @@ import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import MetadataDisplay from '@/components/resource/MetadataDisplay.vue';
 import ResourceCoverageWidget from '@/components/resource/ResourceCoverageWidget.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
-import { CoverageIcon, DescIcon, LabelIcon, LinkIcon, QuoteIcon, SiteNoticeIcon } from '@/icons';
+import { CoverageIcon, DescIcon, ExternalLinkIcon, LegalIcon, QuoteIcon, TagsIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { pickTranslation, replaceCurrDatePh, replaceResUrlPh } from '@/utils';
 import { NFlex, NIcon } from 'naive-ui';
@@ -60,7 +60,7 @@ const citation = computed(() => {
 
     <!-- METADATA -->
     <div v-if="resource.meta && Object.keys(resource.meta).length" class="gray-box">
-      <icon-heading level="3" :icon="LabelIcon">
+      <icon-heading level="3" :icon="TagsIcon">
         {{ $t('models.meta.modelLabel') }}
       </icon-heading>
       <metadata-display :data="resource.meta" class="text-medium" />
@@ -70,10 +70,18 @@ const citation = computed(() => {
     <div v-if="citation" class="gray-box">
       <icon-heading level="3" :icon="QuoteIcon">
         {{ $t('browse.contents.widgets.infoWidget.citeAs') }}
+        <template #end>
+          <copy-to-clipboard-button
+            secondary
+            :text="citation"
+            size="small"
+            class="ml-sm"
+            show-msg
+          />
+        </template>
       </icon-heading>
       <div :style="{ fontFamily: resource.contentFont }" class="text-medium pre-wrap">
         {{ citation }}
-        <copy-to-clipboard-button secondary :text="citation" size="tiny" class="ml-sm" show-msg />
       </div>
     </div>
 
@@ -87,13 +95,13 @@ const citation = computed(() => {
 
     <!-- LICENSE -->
     <div class="gray-box">
-      <icon-heading level="3" :icon="SiteNoticeIcon">
+      <icon-heading level="3" :icon="LegalIcon">
         {{ $t('models.resource.license') }}
       </icon-heading>
       <template v-if="resource.license || resource.licenseUrl">
         <a v-if="resource.licenseUrl" :href="resource.licenseUrl" target="_blank" rel="noreferrer">
           <n-flex align="center" size="small">
-            <n-icon :component="LinkIcon" />
+            <n-icon :component="ExternalLinkIcon" />
             <span>{{ resource.license || resource.licenseUrl }}</span>
           </n-flex>
         </a>

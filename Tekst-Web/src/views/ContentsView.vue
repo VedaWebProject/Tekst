@@ -31,15 +31,15 @@ import ContentFormItems from '@/forms/resources/contents/ContentFormItems.vue';
 import { defaultContentModels } from '@/forms/resources/contents/defaultContentModels';
 import { $t } from '@/i18n';
 import {
-  AddIcon,
-  ArrowBackIcon,
-  ArrowForwardIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   BookIcon,
   CompareIcon,
   EditIcon,
-  MoveDownIcon,
   NoContentIcon,
+  PasteIcon,
   PatchIcon,
+  PlusIcon,
   ResourceIcon,
   SkipNextIcon,
   SkipPreviousIcon,
@@ -467,7 +467,7 @@ whenever(ArrowRight, () => {
   <router-link :to="{ name: 'resources', params: { textSlug: state.text?.slug } }">
     <n-button text :focusable="false">
       <template #icon>
-        <n-icon :component="ArrowBackIcon" />
+        <n-icon :component="ArrowLeftIcon" />
       </template>
       {{ $t('common.backToOverview') }}
     </n-button>
@@ -499,7 +499,7 @@ whenever(ArrowRight, () => {
         @click="gotoLocation(prevLocationId)"
       >
         <template #icon>
-          <n-icon :component="ArrowBackIcon" />
+          <n-icon :component="ArrowLeftIcon" />
         </template>
       </n-button>
       <n-button
@@ -525,7 +525,7 @@ whenever(ArrowRight, () => {
         @click="gotoLocation(nextLocationId)"
       >
         <template #icon>
-          <n-icon :component="ArrowForwardIcon" />
+          <n-icon :component="ArrowRightIcon" />
         </template>
       </n-button>
     </template>
@@ -630,7 +630,7 @@ whenever(ArrowRight, () => {
             @click="copyFromComparison"
           >
             <template #icon>
-              <n-icon :component="MoveDownIcon" />
+              <n-icon :component="PasteIcon" />
             </template>
           </n-button>
           <n-button
@@ -714,7 +714,7 @@ whenever(ArrowRight, () => {
         </n-empty>
         <n-button type="primary" :disabled="loading" @click="handleAddContentClick">
           <template #icon>
-            <n-icon :component="AddIcon" />
+            <n-icon :component="PlusIcon" />
           </template>
           {{ $t('contents.btnAddContent') }}
         </n-button>

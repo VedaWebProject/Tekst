@@ -2,7 +2,7 @@
 import type { SearchHit, TextRead } from '@/api';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import { $t } from '@/i18n';
-import { BookIcon, LevelsIcon, StarHalfIcon, TextsIcon } from '@/icons';
+import { BookIcon, LevelsIcon, ScoreIcon, TextsIcon } from '@/icons';
 import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { lighten, toRgba, transparentize } from 'color2k';
 import { NFlex, NIcon, NListItem, NTag } from 'naive-ui';
@@ -117,7 +117,7 @@ const highlightsProcessed = computed<HighlightDisplayData[]>(() => {
               :color="{ textColor: scoreTagColor, borderColor: scoreTagBorderColor }"
             >
               <template #icon>
-                <n-icon class="translucent" :component="StarHalfIcon" />
+                <n-icon class="translucent" :component="ScoreIcon" />
               </template>
               {{ scorePercentDisplay }}
             </n-tag>

@@ -3,7 +3,7 @@ import type { LocationRead } from '@/api';
 import BookmarksWidget from '@/components/browse/BookmarksWidget.vue';
 import LocationSelectModal from '@/components/modals/LocationSelectModal.vue';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, ArrowForwardIcon, BookIcon } from '@/icons';
+import { ArrowLeftIcon, ArrowRightIcon, BookIcon } from '@/icons';
 import router from '@/router';
 import { useAuthStore, useBrowseStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen } from '@/utils';
@@ -64,7 +64,7 @@ whenever(ArrowRight, () => {
       @click="() => gotoLocation(browse.prevLocationId)"
     >
       <template #icon>
-        <n-icon :component="ArrowBackIcon" />
+        <n-icon :component="ArrowLeftIcon" />
       </template>
     </n-button>
 
@@ -100,7 +100,7 @@ whenever(ArrowRight, () => {
       @click="() => gotoLocation(browse.nextLocationId)"
     >
       <template #icon>
-        <n-icon :component="ArrowForwardIcon" />
+        <n-icon :component="ArrowRightIcon" />
       </template>
     </n-button>
     <location-select-modal

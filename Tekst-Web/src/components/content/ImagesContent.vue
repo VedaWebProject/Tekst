@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImagesResourceRead } from '@/api';
-import { LinkIcon } from '@/icons';
+import { ExternalLinkIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { NFlex, NIcon, NImage, NImageGroup } from 'naive-ui';
 import { type ImageRenderToolbarProps } from 'naive-ui/es/image/src/public-types';
@@ -82,7 +82,7 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                       rel="noreferrer"
                       class="source-link mx-sm"
                     >
-                      <n-icon :component="LinkIcon" />
+                      <n-icon :component="ExternalLinkIcon" />
                     </a>
                   </figcaption>
                 </n-flex>

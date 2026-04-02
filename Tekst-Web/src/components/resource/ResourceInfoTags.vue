@@ -2,13 +2,13 @@
 import type { AnyResourceRead } from '@/api';
 import { $t } from '@/i18n';
 import {
-  CommunityIcon,
   LevelsIcon,
   PatchIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
   ResourceIcon,
+  UsersIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
@@ -70,7 +70,7 @@ const accessSharesTip = computed(() => {
       :title="accessSharesTip"
     >
       <template #icon>
-        <n-icon :component="CommunityIcon" />
+        <n-icon :component="UsersIcon" />
       </template>
       {{
         $t('resources.shared', { count: resource.sharedRead.length + resource.sharedWrite.length })

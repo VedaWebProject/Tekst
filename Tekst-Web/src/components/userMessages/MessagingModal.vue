@@ -3,7 +3,7 @@ import type { UserMessageRead } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import UserDisplay from '@/components/user/UserDisplay.vue';
 import { $t } from '@/i18n';
-import { MarkChatReadIcon, MarkChatUnreadIcon, SendIcon } from '@/icons';
+import { MessageReadIcon, MessageUnreadIcon, SendIcon } from '@/icons';
 import { useAuthStore, useUserMessagesStore } from '@/stores';
 import { delay, utcToLocalTime } from '@/utils';
 import { useIntervalFn, useMagicKeys, whenever } from '@vueuse/core';
@@ -111,7 +111,7 @@ whenever(ctrlEnter, () => {
             <n-time v-if="msg.createdAt" :time="utcToLocalTime(msg.createdAt)" type="datetime" />
             <n-icon
               v-if="msg.sender === auth.user?.id"
-              :component="msg.read ? MarkChatReadIcon : MarkChatUnreadIcon"
+              :component="msg.read ? MessageReadIcon : MessageUnreadIcon"
               :title="$t(msg.read ? 'account.messages.read' : 'account.messages.unread')"
               :color="msg.read ? 'var(--success-color)' : 'inherit'"
             />

@@ -3,7 +3,7 @@ import type { TextRead } from '@/api';
 import TranslationDisplay from '@/components/generic/TranslationDisplay.vue';
 import { NFlex, NIcon } from 'naive-ui';
 
-import { CheckIcon, DisabledVisibleIcon } from '@/icons';
+import { BlockCircleIcon, CheckIcon } from '@/icons';
 import { useThemeStore } from '@/stores';
 import { computed } from 'vue';
 
@@ -44,7 +44,7 @@ const indicatorStyle = computed(() => ({
         {{ resourcesCount }} {{ $t('models.resource.modelLabel', resourcesCount) }}
       </div>
       <div v-if="!text.isActive && !singleLine" class="text-small translucent i">
-        <n-icon :component="DisabledVisibleIcon" />
+        <n-icon :component="BlockCircleIcon" />
         {{ $t('models.text.isInactive') }}
       </div>
     </div>

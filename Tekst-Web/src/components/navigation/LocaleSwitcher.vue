@@ -5,7 +5,7 @@ import { useStateStore } from '@/stores';
 import { NButton, NIcon, NPopselect } from 'naive-ui';
 import { computed } from 'vue';
 
-import { LanguageIcon } from '@/icons';
+import { LanguagesIcon } from '@/icons';
 
 const state = useStateStore();
 
@@ -33,7 +33,7 @@ function handleLanguageSelect(localeCode: LocaleKey) {
   >
     <n-button secondary circle size="large" :title="$t('i18n.tipSwitcher')" :focusable="false">
       <template #icon>
-        <n-icon :component="LanguageIcon" />
+        <n-icon :component="LanguagesIcon" />
       </template>
     </n-button>
   </n-popselect>

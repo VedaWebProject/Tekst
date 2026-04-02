@@ -6,7 +6,14 @@ import { useBookmarks } from '@/composables/bookmarks';
 import { useMessages } from '@/composables/messages';
 import { usePrompt } from '@/composables/prompt';
 import { $t } from '@/i18n';
-import { AddIcon, BookIcon, BookmarksIcon, DeleteIcon, NoContentIcon, SearchIcon } from '@/icons';
+import {
+  AddBookmarkIcon,
+  BookIcon,
+  BookmarkIcon,
+  DeleteIcon,
+  NoContentIcon,
+  SearchIcon,
+} from '@/icons';
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import {
   NButton,
@@ -71,7 +78,7 @@ async function handleCreateBookmarkClick() {
   loading.value = true;
   const comment = await prompt({
     type: 'multiLineInput',
-    icon: BookmarksIcon,
+    icon: BookmarkIcon,
     title: $t('browse.bookmarks.commentModalTitle'),
     label: $t('browse.bookmarks.commentModalInputLabel'),
     rows: 3,
@@ -111,7 +118,7 @@ async function handleWidgetClick() {
     @click.stop.prevent="handleWidgetClick"
   >
     <template #icon>
-      <n-icon :component="BookmarksIcon" />
+      <n-icon :component="BookmarkIcon" />
     </template>
   </n-button>
 
@@ -119,7 +126,7 @@ async function handleWidgetClick() {
     v-model:show="showModal"
     width="wide"
     :title="$t('browse.bookmarks.bookmarks')"
-    :icon="BookmarksIcon"
+    :icon="BookmarkIcon"
   >
     <n-input
       v-model:value="filterString"
@@ -142,7 +149,7 @@ async function handleWidgetClick() {
       @click="handleCreateBookmarkClick"
     >
       <template #icon>
-        <n-icon :component="AddIcon" size="large" />
+        <n-icon :component="AddBookmarkIcon" size="large" />
       </template>
       {{
         !maxCountReached ? $t('browse.bookmarks.lblCreate') : $t('browse.bookmarks.maxCountReached')

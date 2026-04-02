@@ -10,14 +10,7 @@ import EditLocationModal, {
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
 import { $t } from '@/i18n';
-import {
-  AddIcon,
-  DeleteIcon,
-  DownloadIcon,
-  EditIcon,
-  ExpandArrowRightIcon,
-  UploadIcon,
-} from '@/icons';
+import { DeleteIcon, DownloadIcon, EditIcon, PlusIcon, UploadIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { renderIcon } from '@/utils';
 import {
@@ -337,16 +330,6 @@ async function handleUploadClick() {
   });
 }
 
-function renderSwitcherIcon() {
-  return h(
-    NIcon,
-    { size: 'var(--font-size-medium)', style: 'align-self: center' },
-    {
-      default: () => h(ExpandArrowRightIcon),
-    }
-  );
-}
-
 function renderLabel({ option }: { option: TreeOption }) {
   const levelLabel = state.textLevelLabels[option.level as number];
   return h('div', { class: 'entry-label mr-lg' }, [
@@ -398,7 +381,7 @@ function renderSuffix(info: { option: TreeOption; checked: boolean; selected: bo
     info.option.isLeaf
       ? null
       : renderSuffixButton(
-          AddIcon,
+          PlusIcon,
           () => handleAddClick(info.option as LocationTreeOption),
           $t('texts.locations.editOrAdd.headingAdd'),
           loadingAdd
@@ -448,7 +431,7 @@ onMounted(() => {
               @click="handleAddClick(null)"
             >
               <template #icon>
-                <n-icon :component="AddIcon" />
+                <n-icon :component="PlusIcon" />
               </template>
               {{ $t('texts.locations.lblBtnAddLocationFirstLevel') }}
             </n-button>
@@ -502,7 +485,6 @@ onMounted(() => {
             :selectable="!loading"
             :data="treeData"
             :on-load="loadTreeData"
-            :render-switcher-icon="renderSwitcherIcon"
             :render-label="renderLabel"
             :allow-drop="isDropAllowed"
             :render-suffix="renderSuffix"

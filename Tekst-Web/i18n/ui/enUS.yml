@@ -232,9 +232,9 @@ browse:
     activateCategory: Show all resources in this category
     deactivateCategory: Hide all resources in this category
   contentCitation:
-    title: Content Citation
-    full: Full resource citation with content URL
-    urlOnly: URL for this content
+    full: Full resource citation with location URL
+    resOnly: Resource citation
+    urlOnly: URL of content/location
   archiveWidgetTitle: Content Archive
   uncategorized: Uncategorized
   locationResourceNoData: No data for this location
@@ -597,8 +597,8 @@ contents:
   tipBtnCompare: Select other resource to compare with
   tipBtnCopyOriginal: Copy from original resource
   tipBtnApplyChanges: Copy content for this location
-  tipBtnPrevChange: Go to previous content
-  tipBtnNextChange: Go to next content
+  tipBtnPrevChange: Skip to previous content
+  tipBtnNextChange: Skip to next content
   forComparison: '{title} (for comparison)'
   fromOriginalResourceHint: |
     This is a resource patch.

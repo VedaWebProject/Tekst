@@ -8,7 +8,7 @@ import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import { useMessages } from '@/composables/messages';
 import { useTasks } from '@/composables/tasks';
-import { DeleteIcon, EMailIcon, MaintenanceIcon, RefreshIcon, UpdateIcon } from '@/icons';
+import { DeleteIcon, MaintenanceIcon, MessageIcon, RefreshIcon, TaskIcon } from '@/icons';
 import { useStateStore, useThemeStore } from '@/stores';
 import { utcToLocalTime } from '@/utils';
 import {
@@ -180,7 +180,7 @@ onBeforeMount(() => {
             <template #start>
               <n-button type="primary" :disabled="indicesInfoLoading" @click="() => createIndex()">
                 <template #icon>
-                  <n-icon :component="UpdateIcon" />
+                  <n-icon :component="TaskIcon" />
                 </template>
                 {{ $t('admin.maintenance.indices.actionCreate') }}
               </n-button>
@@ -191,7 +191,7 @@ onBeforeMount(() => {
                 @click="() => createIndex(true)"
               >
                 <template #icon>
-                  <n-icon :component="UpdateIcon" />
+                  <n-icon :component="TaskIcon" />
                 </template>
                 {{ $t('admin.maintenance.indices.actionCreate') }}
                 ({{ $t('admin.maintenance.force') }})
@@ -286,7 +286,7 @@ onBeforeMount(() => {
                 @click="() => triggerPrecomputation()"
               >
                 <template #icon>
-                  <n-icon :component="UpdateIcon" />
+                  <n-icon :component="TaskIcon" />
                 </template>
                 {{ $t('common.run') }}
               </n-button>
@@ -298,7 +298,7 @@ onBeforeMount(() => {
                 @click="() => triggerPrecomputation(true)"
               >
                 <template #icon>
-                  <n-icon :component="UpdateIcon" />
+                  <n-icon :component="TaskIcon" />
                 </template>
                 {{ $t('common.run') }}
                 ({{ $t('admin.maintenance.force') }})
@@ -323,7 +323,7 @@ onBeforeMount(() => {
             @click="triggerInternalCleanup"
           >
             <template #icon>
-              <n-icon :component="UpdateIcon" />
+              <n-icon :component="TaskIcon" />
             </template>
             {{ $t('common.run') }}
           </n-button>
@@ -457,7 +457,7 @@ onBeforeMount(() => {
             @click="sendTestEMail"
           >
             <template #icon>
-              <n-icon :component="EMailIcon" />
+              <n-icon :component="MessageIcon" />
             </template>
             {{ $t('admin.maintenance.email.btn') }}
           </n-button>

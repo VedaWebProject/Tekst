@@ -52,7 +52,6 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
   },
   Empty: {
     textColor: 'var(--text-color-translucent)',
-    iconColor: 'var(--text-color-translucent)',
   },
 };
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DownloadIcon, ErrorIcon, LinkIcon, PauseIcon, PlayIcon } from '@/icons';
+import { DownloadIcon, ErrorIcon, ExternalLinkIcon, PauseIcon, PlayIcon } from '@/icons';
 import { useMediaControls } from '@vueuse/core';
 import { NButton, NFlex, NIcon, NSlider } from 'naive-ui';
 import { computed, onMounted, ref, watch, type CSSProperties } from 'vue';
@@ -104,7 +104,7 @@ onMounted(() => {
           style="color: var(--text-color)"
         >
           <template #icon>
-            <n-icon :component="LinkIcon" />
+            <n-icon :component="ExternalLinkIcon" />
           </template>
         </n-button>
         <n-button

@@ -8,7 +8,7 @@ import { useMessages } from '@/composables/messages';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import ResourceSettingsPropertiesFormItems from '@/forms/resources/config/ResourceSettingsPropertiesFormItems.vue';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, ResourceIcon, WarningIcon } from '@/icons';
+import { ArrowLeftIcon, ResourceIcon, WarningIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import {
@@ -129,7 +129,7 @@ async function handleSaveClick() {
   >
     <n-button text :focusable="false" @click="navigate">
       <template #icon>
-        <n-icon :component="ArrowBackIcon" />
+        <n-icon :component="ArrowLeftIcon" />
       </template>
       {{ $t('common.backToOverview') }}
     </n-button>

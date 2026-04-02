@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  CheckListIcon,
+  CheckAllIcon,
   ClearIcon,
   RefreshIcon,
   SearchIcon,
@@ -176,7 +176,7 @@ onMounted(() => {
             @click="() => switchBrowseHitResourcesActive(!search.browseHitResourcesActive)"
           >
             <template #icon>
-              <n-icon :component="CheckListIcon" />
+              <n-icon :component="CheckAllIcon" />
             </template>
           </n-button>
         </n-badge>

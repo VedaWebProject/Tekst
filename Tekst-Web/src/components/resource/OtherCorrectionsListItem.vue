@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowBackIcon, ArrowForwardIcon, WarningIcon } from '@/icons';
+import { ArrowLeftIcon, ArrowRightIcon, WarningIcon } from '@/icons';
 import { NButton, NFlex, NIcon, NListItem, NThing } from 'naive-ui';
 
 defineProps<{
@@ -37,7 +37,7 @@ const emit = defineEmits(['prevClick', 'nextClick']);
             @click="emit('prevClick')"
           >
             <template #icon>
-              <n-icon :component="ArrowBackIcon" />
+              <n-icon :component="ArrowLeftIcon" />
             </template>
           </n-button>
           <n-button
@@ -49,7 +49,7 @@ const emit = defineEmits(['prevClick', 'nextClick']);
             @click="emit('nextClick')"
           >
             <template #icon>
-              <n-icon :component="ArrowForwardIcon" />
+              <n-icon :component="ArrowRightIcon" />
             </template>
           </n-button>
         </n-flex>

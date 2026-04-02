@@ -6,7 +6,7 @@ import UserAvatar from '@/components/user/UserAvatar.vue';
 import UserThingHeader from '@/components/user/UserThingHeader.vue';
 import { usePublicUserSearch } from '@/composables/user';
 import { $t } from '@/i18n';
-import { CommunityIcon, ErrorIcon, NoContentIcon, SearchIcon } from '@/icons';
+import { ErrorIcon, NoContentIcon, SearchIcon, UsersIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { createReusableTemplate } from '@vueuse/core';
 import { NEmpty, NFlex, NIcon, NInput, NList, NListItem, NPagination, NSpin } from 'naive-ui';
@@ -35,7 +35,7 @@ function resetPagination() {
 </script>
 
 <template>
-  <icon-heading level="1" :icon="CommunityIcon">
+  <icon-heading level="1" :icon="UsersIcon">
     {{ $t('common.community') }}
     <help-button-widget help-key="communityView" />
   </icon-heading>

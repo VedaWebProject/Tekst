@@ -7,7 +7,7 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t } from '@/i18n';
-import { TranslateIcon } from '@/icons';
+import { LanguagesIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NDynamicInput, NFlex, NFormItem, NIcon, NInput, NSelect } from 'naive-ui';
@@ -21,7 +21,7 @@ const metadataKeysOptions = computed(() =>
   state.pf?.state.resMetaTranslations.map((rmt) => ({
     label: () =>
       h('div', { style: 'display: flex; align-items: center; gap: 4px; padding: 4px' }, [
-        h(NIcon, { component: TranslateIcon }),
+        h(NIcon, { component: LanguagesIcon }),
         pickTranslation(rmt.translations, state.locale),
       ]),
     value: rmt.key,

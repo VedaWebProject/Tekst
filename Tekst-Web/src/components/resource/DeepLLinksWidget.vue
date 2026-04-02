@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { deeplTargetLanguages, type AnyResourceRead } from '@/api';
 import ContentContainerHeaderWidget from '@/components/browse/ContentContainerHeaderWidget.vue';
-import { SearchIcon, TranslateIcon } from '@/icons';
+import { LanguagesIcon, SearchIcon } from '@/icons';
 import { NIcon, NInput, NPopselect } from 'naive-ui';
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface';
 import { computed, nextTick, ref } from 'vue';
@@ -96,7 +96,7 @@ async function handleUpdateShow(show: boolean) {
     <content-container-header-widget
       :full="full"
       :title="$t('browse.contents.widgets.deeplTranslate.title')"
-      :icon-component="TranslateIcon"
+      :icon-component="LanguagesIcon"
     />
   </n-popselect>
 </template>
