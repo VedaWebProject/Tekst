@@ -75,7 +75,7 @@ async function handleSelect(key: string) {
 
 .driver-popover .driver-popover-description {
   color: var(--text-color);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size);
   font-weight: normal;
   font-family: var(--font-family-ui);
 }
@@ -84,6 +84,12 @@ async function handleSelect(key: string) {
   margin-top: var(--gap-md);
   padding-top: var(--gap-md);
   border-top: 1px solid var(--main-bg-color);
+  font-family: var(--font-family-ui);
+}
+
+.driver-popover .driver-popover-progress-text {
+  opacity: 0.9;
+  font-size: var(--font-size-small);
   font-family: var(--font-family-ui);
 }
 
@@ -99,13 +105,11 @@ async function handleSelect(key: string) {
   font-family: var(--font-family-ui);
 }
 
-.driver-popover .driver-popover-progress-text {
-  opacity: 0.9;
-  font-size: var(--font-size-small);
-  font-family: var(--font-family-ui);
-}
-
 .driver-popover .driver-popover-navigation-btns > button:hover {
   filter: brightness(1.15);
+}
+
+.driver-popover .driver-popover-next-btn {
+  margin-left: var(--gap-md);
 }
 </style>
