@@ -67,7 +67,7 @@ const _getForm = (
   defaultContent: VNodeChild
 ) =>
   h(NFlex, { vertical: true, size: 'large' }, () => [
-    ...(cfg.msg ? [h('div', { class: 'text-small' }, cfg.msg)] : []),
+    ...(cfg.msg ? [h('div', { class: 'text-medium' }, cfg.msg)] : []),
     h(
       NForm,
       {

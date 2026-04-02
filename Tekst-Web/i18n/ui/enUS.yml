@@ -254,9 +254,9 @@ browse:
           You cannot create a correction note because the target content is ambiguous.
           Navigate to the structure level of this resource to create correction notes on its contents.
         info: |
-          Do you have a short comment or correction to this content?
-          You can write a correction note here. The person
-          responsible for this resource will be notified!
+          You have a short comment or correction regarding this content?
+          Write a correction note here – the person
+          responsible for this resource will be notified.
         lblNote: Correction note
         msgSuccess: Sent correction note
       deeplTranslate:

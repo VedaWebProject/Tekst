@@ -258,8 +258,8 @@ browse:
           Navigieren Sie zur Strukturebene dieser Ressource, um Korrekturnotizen zu den Inhalten erstellen zu können.
         info: |
           Sie haben eine kurze Anmerkung oder Korrektur zu diesem Inhalt?
-          Hier können Sie eine Korrekturnotiz verfassen. Die Person,
-          die für diese Ressource verantwortlich ist, wird darüber benachrichtigt!
+          Verfassen Sie hier eine Korrekturnotiz  – die Person,
+          die für diese Ressource verantwortlich ist, wird benachrichtigt.
         lblNote: Korrekturnotiz
         msgSuccess: Korrekturnotiz gesendet
       deeplTranslate:
