@@ -8,7 +8,7 @@ import TextLevelsForm from '@/forms/texts/TextLevelsForm.vue';
 import TextLocationsForm from '@/forms/texts/TextLocationsForm.vue';
 import TextSettingsForm from '@/forms/texts/TextSettingsForm.vue';
 import { $t } from '@/i18n';
-import { AddIcon, DeleteIcon, TextsIcon } from '@/icons';
+import { DeleteIcon, PlusIcon, TextsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { NButton, NFlex, NIcon, NTabPane, NTabs, useDialog, type TabsInst } from 'naive-ui';
 import { computed, ref, watch } from 'vue';
@@ -89,7 +89,7 @@ watch(
       </n-button>
       <n-button type="primary" @click="router.push({ name: 'newText' })">
         <template #icon>
-          <n-icon :component="AddIcon" />
+          <n-icon :component="PlusIcon" />
         </template>
         {{ $t('admin.newText.heading') }}
       </n-button>

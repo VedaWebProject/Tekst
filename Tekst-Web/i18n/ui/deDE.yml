@@ -236,9 +236,9 @@ browse:
     activateCategory: Zeige alle Ressourcen dieser Kategorie
     deactivateCategory: Verstecke alle Ressourcen dieser Kategorie
   contentCitation:
-    title: Inhalt zitieren
-    full: Volle Ressourcen-Zitation mit Inhalts-URL
-    urlOnly: URL zu diesem Inhalt
+    full: Volle Ressourcen-Zitation mit Belegstellen-URL
+    resOnly: Ressourcen-Zitation
+    urlOnly: URL zu Inhalt/Belegstelle
   uncategorized: Unkategorisiert
   locationResourceNoData: Keine Daten für diese Belegstelle
   textNoLocations: Die Einrichtung dieses Textes scheint unvollständig. Es wurden keine Belegstellen definiert.

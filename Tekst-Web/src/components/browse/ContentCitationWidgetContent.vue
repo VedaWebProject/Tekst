@@ -23,41 +23,55 @@ const browseUrl = computed(() => {
     queryPart
   );
 });
-const citation = computed(() => {
-  const citation = replaceResUrlPh(
+const citationRes = computed(() =>
+  replaceResUrlPh(
     replaceCurrDatePh(props.resource.citation, state.locale),
     state.text?.slug,
     props.resource.id
-  );
-  return `${citation} – ${$t('common.location')}: ${browseUrl.value}`;
-});
+  )
+);
+const citationFull = computed(
+  () => `${citationRes.value} – ${$t('common.location')}: ${browseUrl.value}`
+);
 </script>
 
 <template>
   <div>
     <n-thing v-if="props.resource.citation">
       <template #header>
-        <b>{{ $t('browse.contentCitation.full') }}</b>
+        <b class="text-small">{{ $t('browse.contentCitation.full') }}</b>
       </template>
       <template #header-extra>
-        <copy-to-clipboard-button secondary size="small" :text="citation" show-msg />
+        <copy-to-clipboard-button secondary size="small" :text="citationFull" show-msg />
       </template>
       <template #description>
-        <p class="text-tiny">{{ citation }}</p>
+        <p class="text-small">{{ citationFull }}</p>
+      </template>
+    </n-thing>
+    <n-divider v-if="props.resource.citation" />
+    <n-thing v-if="props.resource.citation">
+      <template #header>
+        <b class="text-small">{{ $t('browse.contentCitation.resOnly') }}</b>
+      </template>
+      <template #header-extra>
+        <copy-to-clipboard-button secondary size="small" :text="citationRes" show-msg />
+      </template>
+      <template #description>
+        <p class="text-small">{{ citationRes }}</p>
       </template>
     </n-thing>
     <n-divider v-if="props.resource.citation" />
     <n-thing>
       <template #header>
-        <b>{{ $t('browse.contentCitation.urlOnly') }}</b>
+        <b class="text-small">{{ $t('browse.contentCitation.urlOnly') }}</b>
       </template>
       <template #header-extra>
         <copy-to-clipboard-button secondary size="small" :text="browseUrl" show-msg />
       </template>
       <template #description>
-        <a :href="browseUrl" target="_blank" rel="noreferrer" class="text-tiny"
-          ><p>{{ browseUrl }}</p></a
-        >
+        <a :href="browseUrl" target="_blank" rel="noreferrer" class="text-small">
+          <p>{{ browseUrl }}</p>
+        </a>
       </template>
     </n-thing>
   </div>

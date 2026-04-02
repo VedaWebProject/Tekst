@@ -10,7 +10,7 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import ResourceSettingsFormItems from '@/forms/resources/config/ResourceSettingsFormItems.vue';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, ResourceIcon, SettingsIcon } from '@/icons';
+import { ArrowLeftIcon, ResourceIcon, SettingsIcon } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { cloneDeep } from 'lodash-es';
@@ -106,7 +106,7 @@ async function handleSaveClick() {
   >
     <n-button text :focusable="false" @click="navigate">
       <template #icon>
-        <n-icon :component="ArrowBackIcon" />
+        <n-icon :component="ArrowLeftIcon" />
       </template>
       {{ $t('common.backToOverview') }}
     </n-button>

@@ -2,7 +2,7 @@ import { GET } from '@/api';
 import { useMessages } from '@/composables/messages';
 import env from '@/env';
 import { $t } from '@/i18n';
-import { InfoIcon, PrivacyIcon, SiteNoticeIcon } from '@/icons';
+import { InfoIcon, LegalIcon, PrivacyIcon } from '@/icons';
 import { useAuthStore, useStateStore } from '@/stores';
 import { delay } from '@/utils';
 import {
@@ -162,7 +162,7 @@ const router = createRouter({
       component: InfoPageView,
       props: {
         pageKey: 'systemSiteNotice',
-        icon: SiteNoticeIcon,
+        icon: LegalIcon,
       },
     },
     {

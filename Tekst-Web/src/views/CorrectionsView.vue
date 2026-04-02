@@ -2,7 +2,7 @@
 import IconHeading from '@/components/generic/IconHeading.vue';
 import CorrectionListItem from '@/components/resource/CorrectionListItem.vue';
 import { $t } from '@/i18n';
-import { ArrowBackIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
+import { ArrowLeftIcon, CorrectionNoteIcon, NoContentIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NButton, NEmpty, NIcon, NList } from 'naive-ui';
@@ -42,7 +42,7 @@ onBeforeMount(async () => {
   <router-link :to="{ name: 'resources', params: { textSlug: props.textSlug } }">
     <n-button text :focusable="false">
       <template #icon>
-        <n-icon :component="ArrowBackIcon" />
+        <n-icon :component="ArrowLeftIcon" />
       </template>
       {{ $t('common.backToOverview') }}
     </n-button>

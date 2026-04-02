@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NButton, NIcon } from 'naive-ui';
 
-import { AddIcon } from '@/icons';
+import { PlusIcon } from '@/icons';
 
 defineProps<{
   title?: string;
@@ -23,7 +23,7 @@ defineEmits(['click']);
       @click="$emit('click')"
     >
       <template #icon>
-        <n-icon :component="AddIcon" />
+        <n-icon :component="PlusIcon" />
       </template>
     </n-button>
     <div class="add-level-separator"></div>

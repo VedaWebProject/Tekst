@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ExternalReferencesResourceRead } from '@/api';
-import { LinkIcon } from '@/icons';
+import { ExternalLinkIcon } from '@/icons';
 import { NFlex, NIcon } from 'naive-ui';
 import { type CSSProperties } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
@@ -50,8 +50,8 @@ const fontStyle: CSSProperties = {
               rel="noreferrer"
             >
               <n-flex align="center" size="small">
-                <n-icon :component="LinkIcon" :size="focusView ? 24 : undefined" />
                 <span v-if="!focusView">{{ link.title }}</span>
+                <n-icon :component="ExternalLinkIcon" :size="focusView ? 20 : 14" />
               </n-flex>
             </a>
             <div

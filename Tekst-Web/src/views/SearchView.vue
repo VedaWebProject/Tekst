@@ -17,7 +17,7 @@ import SearchOccurrenceSelector from '@/forms/resources/search/SearchOccurrenceS
 import { resourceTypeSearchForms } from '@/forms/resources/search/mappings';
 import GeneralSearchSettingsForm from '@/forms/search/GeneralSearchSettingsForm.vue';
 import { $t } from '@/i18n';
-import { AddIcon, ClearIcon, LevelsIcon, NoContentIcon, ResourceIcon, SearchIcon } from '@/icons';
+import { ClearIcon, LevelsIcon, NoContentIcon, PlusIcon, ResourceIcon, SearchIcon } from '@/icons';
 import { useResourcesStore, useSearchStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
@@ -331,7 +331,7 @@ whenever(ctrlEnter, () => {
           @click="addSearchItem(queryIndex)"
         >
           <template #icon>
-            <n-icon :component="AddIcon" />
+            <n-icon :component="PlusIcon" />
           </template>
           {{ $t('search.advancedSearch.addQuery') }}
         </n-button>

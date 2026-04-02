@@ -2,7 +2,7 @@
 import { type LocationRead } from '@/api';
 import LocationSelectForm from '@/forms/LocationSelectForm.vue';
 import { $t } from '@/i18n';
-import { ArrowForwardIcon, ErrorIcon } from '@/icons';
+import { ArrowRightIcon, ErrorIcon } from '@/icons';
 import { NCollapse, NCollapseItem, NEmpty, NFlex, NIcon, NTag } from 'naive-ui';
 import { computed, ref, watchEffect } from 'vue';
 
@@ -42,7 +42,7 @@ function handleExpandedChange(names: string[]) {
             {{ $t('search.advancedSearch.range.title') }}:&nbsp;
             <n-flex v-if="enabled && !!rangeExpandedNames.length" align="center" size="small">
               <n-tag size="small">{{ fromLocationFullLabel }}</n-tag>
-              <n-icon :component="ArrowForwardIcon" />
+              <n-icon :component="ArrowRightIcon" />
               <n-tag size="small">{{ toLocationFullLabel }}</n-tag>
             </n-flex>
             <template v-else>

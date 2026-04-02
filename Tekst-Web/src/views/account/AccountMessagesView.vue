@@ -4,7 +4,7 @@ import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import MessageThreadListItem from '@/components/userMessages/MessageThreadListItem.vue';
 import { $t } from '@/i18n';
-import { MessageIcon, NoContentIcon } from '@/icons';
+import { MessagesIcon, NoContentIcon } from '@/icons';
 import { useUserMessagesStore } from '@/stores';
 import { NEmpty, NIcon, NList, NSpin } from 'naive-ui';
 import { onMounted } from 'vue';
@@ -22,7 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <icon-heading level="1" :icon="MessageIcon">
+  <icon-heading level="1" :icon="MessagesIcon">
     {{ $t('account.messages.heading') }}
     <help-button-widget help-key="accountMessagesView" />
   </icon-heading>

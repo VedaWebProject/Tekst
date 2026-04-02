@@ -22,7 +22,7 @@ function handleClick() {
   dialog.create({
     ...commonDialogOptions,
     icon: renderIcon(QuoteIcon, undefined, 'large'),
-    title: $t('browse.contentCitation.title'),
+    title: $t('models.resource.citation'),
     contentClass: 'my-lg',
     content: () => h(ContentCitationWidgetContent, { resource: props.resource }),
     style: 'width: 600px',
@@ -36,7 +36,7 @@ function handleClick() {
   <content-container-header-widget
     v-bind="$attrs"
     :full="full"
-    :title="$t('browse.contentCitation.title')"
+    :title="$t('models.resource.citation')"
     :icon-component="QuoteIcon"
     @click="handleClick"
   />

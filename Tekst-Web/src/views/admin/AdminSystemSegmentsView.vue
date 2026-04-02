@@ -10,7 +10,7 @@ import { useModelChanges } from '@/composables/modelChanges';
 import { usePlatformData } from '@/composables/platformData';
 import { infoSegmentFormRules, systemSegmentFormRules } from '@/forms/formRules';
 import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
-import { AddIcon, FileOpenIcon, InfoIcon, SegmentsIcon } from '@/icons';
+import { FileOpenIcon, InfoIcon, PlusIcon, SegmentsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useUrlSearchParams } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
@@ -323,7 +323,7 @@ onMounted(() => {
       @click="() => handleChangeSegment()"
     >
       <template #icon>
-        <n-icon :component="AddIcon" />
+        <n-icon :component="PlusIcon" />
       </template>
     </n-button>
   </n-flex>

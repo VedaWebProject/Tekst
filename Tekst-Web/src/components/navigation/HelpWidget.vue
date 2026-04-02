@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useGuidedTour } from '@/composables/tour';
 import { $t } from '@/i18n';
-import { HelpOverviewIcon, QuestionMarkIcon, TourIcon } from '@/icons';
+import { FileQuestionMarkIcon, TourIcon } from '@/icons';
 import { renderIcon } from '@/utils';
-import { NButton, NDropdown, NIcon } from 'naive-ui';
+import { NButton, NDropdown } from 'naive-ui';
 import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['done']);
@@ -19,7 +19,7 @@ const options = [
   {
     label: () => $t('help.heading'),
     key: 'help',
-    icon: renderIcon(HelpOverviewIcon),
+    icon: renderIcon(FileQuestionMarkIcon),
   },
 ];
 
@@ -36,9 +36,7 @@ async function handleSelect(key: string) {
 <template>
   <n-dropdown trigger="hover" :options="options" @select="handleSelect">
     <n-button secondary circle size="large" :focusable="false">
-      <template #icon>
-        <n-icon :component="QuestionMarkIcon" />
-      </template>
+      <b>?</b>
     </n-button>
   </n-dropdown>
 </template>

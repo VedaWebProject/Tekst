@@ -14,12 +14,11 @@ import { RouterLink, type RouteLocationRaw } from 'vue-router';
 
 import {
   BookIcon,
-  CommunityIcon,
   InfoIcon,
   LogoutIcon,
   MaintenanceIcon,
   ManageAccountIcon,
-  MessageIcon,
+  MessagesIcon,
   ResourceIcon,
   SearchIcon,
   SegmentsIcon,
@@ -144,7 +143,7 @@ export function useMainMenuOptions(showIcons: boolean = true) {
               name: 'community',
             }),
             key: 'community',
-            icon: (showIcons && renderIcon(CommunityIcon)) || undefined,
+            icon: (showIcons && renderIcon(UsersIcon)) || undefined,
           },
           {
             label: renderLink(() => $t('stats.heading'), {
@@ -226,7 +225,7 @@ export function useAccountMenuOptions(showIcons: boolean = true) {
         }
       ),
       key: 'accountMessages',
-      icon: (showIcons && renderIcon(MessageIcon)) || undefined,
+      icon: (showIcons && renderIcon(MessagesIcon)) || undefined,
     },
     ...(state.vw < 900
       ? [

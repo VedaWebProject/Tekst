@@ -13,12 +13,12 @@ import {
   DeleteIcon,
   DownloadIcon,
   EditIcon,
+  IntegratePatchIcon,
   MoreIcon,
   PatchIcon,
   ProposedIcon,
   PublicIcon,
   PublicOffIcon,
-  ReviewIcon,
   SettingsIcon,
   UnproposedIcon,
   UploadIcon,
@@ -224,7 +224,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
                   {
                     label: $t('resources.reqPatchIntegration.action'),
                     key: 'reqPatchtegration',
-                    icon: renderIcon(ReviewIcon),
+                    icon: renderIcon(IntegratePatchIcon),
                     disabled:
                       resources.all
                         .find((r) => r.id === props.resource.patchFor)
