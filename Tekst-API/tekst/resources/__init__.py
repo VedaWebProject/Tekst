@@ -3,46 +3,33 @@ import inspect
 import json
 import pkgutil
 
-from abc import ABC, abstractmethod
 from collections.abc import Callable
 from functools import lru_cache
 from os.path import realpath
 from pathlib import Path
-from typing import Annotated, Any, Literal, Union
+from typing import Any
 
 import jsonref
 
 from beanie.operators import In
-from fastapi import Body
 from humps import camelize
-from pydantic import Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
-    ReadBase,
 )
 from tekst.models.content import (
     ContentBase,
     ContentBaseDocument,
-    ContentBaseUpdate,
-    MissingContent,
 )
-from tekst.models.correction import CorrectionDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
-    ResourceBaseUpdate,
     ResourceExportFormat,
-    ResourceReadExtras,
 )
+from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
-from tekst.models.user import UserDocument, UserReadPublic
-from tekst.types import (
-    SchemaOptionalNullable,
-    SingleLineString,
-)
 
 
 # resource base model fields to exclude from export/import
@@ -96,52 +83,7 @@ async def call_resource_precompute_hooks(
     return {"took": round(log_op_end(op_id), 2)}
 
 
-class CommonResourceSearchQueryData(ModelBase):
-    occurrence: Annotated[
-        Literal["should", "must", "not"],
-        Field(
-            alias="occ",
-            description="The occurrence type of the search query",
-        ),
-        SchemaOptionalNullable,
-    ] = "must"
-    resource_id: Annotated[
-        PydanticObjectId,
-        Field(
-            alias="res",
-            description="ID of the resource to search in",
-        ),
-    ]
-    comment: Annotated[
-        str,
-        StringConstraints(max_length=512),
-        SingleLineString,
-        Field(
-            alias="cmt",
-            description="Content comment search query",
-        ),
-        SchemaOptionalNullable,
-    ] = ""
-
-
-class ResourceSearchQuery(ModelBase):
-    common: Annotated[
-        CommonResourceSearchQueryData,
-        Field(
-            alias="cmn",
-            description="Common resource search query data",
-        ),
-    ]
-    resource_type_specific: Annotated[
-        "AnyResourceSearchQuery",
-        Field(
-            alias="rts",
-            description="Resource type-specific search query data",
-        ),
-    ]
-
-
-class ResourceTypeABC(ABC):
+class ResourceTypeBase:
     """Abstract base class for defining a resource type"""
 
     # fields to exclude from content export data
@@ -209,7 +151,7 @@ class ResourceTypeABC(ABC):
     def es_queries(
         cls,
         *,
-        query: "ResourceSearchQuery",
+        query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
@@ -323,7 +265,8 @@ class ResourceTypeABC(ABC):
         aims to be as comprehensive as possible.
         """
         # prepare (root) resource object
-        text: TextDocument = await TextDocument.get(resource.text_id)
+        text: TextDocument | None = await TextDocument.get(resource.text_id)
+        assert text
         res = camelize(
             resource.model_dump(
                 mode="json",
@@ -387,25 +330,24 @@ class ResourceTypeABC(ABC):
             )
 
     @classmethod
-    @abstractmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource model for this type of resource"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
-    @abstractmethod
     def content_model(cls) -> type[ContentBase]:
         """Returns the content model for contents of this type of resource"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
-    @abstractmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         """
         Returns the search query model for search
         queries targeting this type of resource
         """
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
-    @abstractmethod
     def _rtype_index_mappings(
         cls,
         lenient_analyzer: str,
@@ -416,9 +358,9 @@ class ResourceTypeABC(ABC):
         documents unique for this type of resource content, respecting any resource
         configuration relevant to the resource's index mappings
         """
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
-    @abstractmethod
     def _rtype_index_doc(
         cls,
         content: ContentBase,
@@ -427,9 +369,9 @@ class ResourceTypeABC(ABC):
         Returns the content for the ES index document
         for this type of resource content that is unique to this resource type
         """
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
-    @abstractmethod
     def rtype_es_queries(
         cls,
         *,
@@ -441,6 +383,7 @@ class ResourceTypeABC(ABC):
         in the given resource search query instance.
         Common content fields are not included in the returned queries.
         """
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     @classmethod
     def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
@@ -453,7 +396,6 @@ class ResourceTypeABC(ABC):
         return None
 
     @classmethod
-    @abstractmethod
     async def export(
         cls,
         *,
@@ -466,27 +408,33 @@ class ResourceTypeABC(ABC):
         Writes export data to the given path.
         Raises ValueError if the export format is not supported by this resource type.
         """
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
 
 class ResourceTypesManager:
-    __resource_types: dict[str, ResourceTypeABC] = dict()
+    __resource_types: dict[str, ResourceTypeBase] = dict()
 
     def register(
         self,
-        resource_type_class: type[ResourceTypeABC],
+        resource_type_class: type[ResourceTypeBase],
     ):
+        # init resource/content type CRUD models
+        resource_type_class.resource_model().create_model()
+        resource_type_class.resource_model().read_model()
+        resource_type_class.resource_model().update_model()
+        resource_type_class.content_model().create_model()
+        resource_type_class.content_model().read_model()
+        resource_type_class.content_model().update_model()
         # create resource/content document models
-        resource_type_class.resource_model().document_model(ResourceBaseDocument)
-        resource_type_class.resource_model().update_model(ResourceBaseUpdate)
-        resource_type_class.content_model().document_model(ContentBaseDocument)
-        resource_type_class.content_model().update_model(ContentBaseUpdate)
+        resource_type_class.resource_model().document_model()
+        resource_type_class.content_model().document_model()
         # register instance
         self.__resource_types[resource_type_class.get_key()] = resource_type_class()
 
-    def get(self, resource_type_name: str) -> ResourceTypeABC:
-        return self.__resource_types.get(resource_type_name)
+    def get(self, resource_type_name: str) -> ResourceTypeBase:
+        return self.__resource_types[resource_type_name]
 
-    def get_all(self) -> dict[str, ResourceTypeABC]:
+    def get_all(self) -> dict[str, ResourceTypeBase]:
         return self.__resource_types
 
     def list_names(self) -> list[str]:
@@ -510,228 +458,15 @@ def init_resource_types_mgr() -> None:
     for lt_module in lt_modules:
         module = importlib.import_module(f"{__name__}.{lt_module}")
         res_types_from_module = inspect.getmembers(
-            module, lambda o: inspect.isclass(o) and issubclass(o, ResourceTypeABC)
+            module, lambda o: inspect.isclass(o) and issubclass(o, ResourceTypeBase)
         )
         for res_type_impl in res_types_from_module:
-            # exclude ResourceTypeABC class (which is weirdly picked up here)
-            if res_type_impl[1] is not ResourceTypeABC:
+            # exclude ResourceTypeBase class (which is weirdly picked up here)
+            if res_type_impl[1] is not ResourceTypeBase:
                 res_type_class = res_type_impl[1]
-                # init resource/content type CRUD models
-                # (don't init document models here!)
-                res_type_class.resource_model().create_model()
-                res_type_class.resource_model().read_model(
-                    (ResourceReadExtras, ReadBase)
-                )
-                res_type_class.resource_model().update_model()
-                res_type_class.content_model().create_model()
-                res_type_class.content_model().read_model()
-                res_type_class.content_model().update_model()
                 # register resource type instance with resource type manager
                 log.debug(f"Registering resource type: {res_type_class.get_name()}")
                 resource_types_mgr.register(res_type_class)
 
 
 init_resource_types_mgr()
-
-
-# ### create union type aliases for models of any resource type model
-
-AnyResourceCreate = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.resource_model().create_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyResourceRead = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.resource_model().read_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyResourceUpdate = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.resource_model().update_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-
-# ### CREATE UNION TYPE ALIASES FOR MODELS OF ANY CONTENT TYPE MODEL
-
-AnyContentCreate = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.content_model().create_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyContentRead = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.content_model().read_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyContentReadOrMissing = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.content_model().read_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-            + [MissingContent]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyContentUpdate = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.content_model().update_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-AnyContentDocument = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.content_model().document_model()
-                for rt in resource_types_mgr.get_all().values()
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-
-# ### CREATE UNION TYPE ALIASES FOR MODELS OF RESOURCE TYPE-SPECIFIC SEARCH QUERIES
-
-AnyResourceSearchQuery = Annotated[
-    Union[  # noqa: UP007
-        tuple(
-            [
-                rt.search_query_model()
-                for rt in resource_types_mgr.get_all().values()
-                if rt.search_query_model() is not None
-            ]
-        )  # ty:ignore[invalid-type-form]
-    ],
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-
-async def prepare_resource_read(
-    resource_doc: ResourceBaseDocument,
-    for_user: UserDocument | None = None,
-) -> AnyResourceRead:
-    """
-    A helper function that returns a fully prepared resource read instance for clients
-    """
-    # convert resource document to resource type's read model instance
-    resource = (
-        resource_types_mgr.get(resource_doc.resource_type)
-        .resource_model()
-        .read_model()(
-            **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
-        )
-    )
-
-    # include writable flag
-    resource.writable = bool(
-        for_user
-        and (
-            for_user.is_superuser
-            or (
-                (
-                    for_user.id in resource.owner_ids
-                    or for_user.id in resource_doc.shared_write
-                )
-                and not resource.proposed
-            )
-        )
-    )
-
-    # include owner(s) user data in each resource model (if owner IDs are set)
-    if resource.owner_ids:
-        resource.owners = [
-            UserReadPublic.model_from(owner)
-            for owner in [
-                await UserDocument.get(owner_id) for owner_id in resource.owner_ids
-            ]
-            if owner
-        ]
-
-    # include corrections count if user is owner of the resource
-    # or, if resource has no owner(s), user is superuser
-    if for_user and (
-        for_user.is_superuser
-        or for_user.id in resource.owner_ids
-        or for_user.id in resource.shared_write
-    ):
-        resource.corrections = await CorrectionDocument.find(
-            CorrectionDocument.resource_id == resource.id
-        ).count()
-
-    # include shared-with user data in each resource model (if any)
-    if for_user and (for_user.is_superuser or for_user.id in resource.owner_ids):
-        if resource.shared_read:
-            resource.shared_read_users = [
-                UserReadPublic.model_from(u)
-                for u in await UserDocument.find(
-                    In(UserDocument.id, resource.shared_read)
-                ).to_list()
-            ]
-        if resource.shared_write:
-            resource.shared_write_users = [
-                UserReadPublic.model_from(u)
-                for u in await UserDocument.find(
-                    In(UserDocument.id, resource.shared_write)
-                ).to_list()
-            ]
-    else:
-        resource.shared_read = []
-        resource.shared_write = []
-
-    return resource

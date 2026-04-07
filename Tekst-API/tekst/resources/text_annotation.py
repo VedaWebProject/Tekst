@@ -12,28 +12,29 @@ from beanie.operators import Eq
 from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import ModelBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import (
     ItemIntegrationConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     MultiLineString,
     SchemaOptionalNullable,
     SingleLineString,
 )
 
 
-class TextAnnotation(ResourceTypeABC):
+class TextAnnotation(ResourceTypeBase):
     """An annotation resource type for tokenized text"""
 
     @classmethod
@@ -45,7 +46,7 @@ class TextAnnotation(ResourceTypeABC):
         return TextAnnotationContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return TextAnnotationSearchQuery
 
     @classmethod
@@ -127,6 +128,8 @@ class TextAnnotation(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, TextAnnotationSearchQuery)
+
         es_queries = []
         strict_suffix = ".strict" if strict else ""
         res_id = str(query.common.resource_id)
@@ -274,11 +277,12 @@ class TextAnnotation(ResourceTypeABC):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "TextAnnotationResource",
+        resource: "TextAnnotationResourceDocument",
         contents: list["TextAnnotationContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -337,7 +341,7 @@ class AnnotationsConfig(ModelBase):
         str | None,
         StringConstraints(min_length=1, max_length=4096),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(
             description=(
                 "Template string used for displaying the annotations in the web "
@@ -371,6 +375,45 @@ class TextAnnotationResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["quick_search_content"]
 
+    @classmethod
+    def create_model(cls):
+        return TextAnnotationResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return TextAnnotationResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return TextAnnotationResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return TextAnnotationResourceDocument
+
+
+class TextAnnotationResourceCreate(
+    TextAnnotationResource,
+    CreateBase,
+):
+    pass
+
+
+class TextAnnotationResourceRead(
+    TextAnnotationResource,
+    ResourceReadExtras,
+    ReadBase,
+):
+    pass
+
+
+TextAnnotationResourceUpdate = make_update_model(TextAnnotationResource)
+
+
+class TextAnnotationResourceDocument(
+    TextAnnotationResource,
+    ResourceBaseDocument,
+):
     async def _update_aggregations(
         self,
         *,
@@ -518,6 +561,7 @@ class TextAnnotationResource(ResourceBase):
                 if not token.id:
                     if not text_slug:
                         text_doc = await TextDocument.get(self.text_id)
+                        assert text_doc
                         text_slug = text_doc.slug
                     pre = f"{text_slug}_{self.id}_"
                     suff = "".join(random.choices(alphabet, k=8))
@@ -583,7 +627,7 @@ class TextAnnotationToken(ModelBase):
         str | None,
         StringConstraints(min_length=1, max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Unique ID of the token (will be generated if unset)"),
     ] = None
     annotations: Annotated[
@@ -606,6 +650,46 @@ class TextAnnotationContent(ContentBase):
             max_length=1024,
         ),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return TextAnnotationContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return TextAnnotationContentRead
+
+    @classmethod
+    def update_model(cls):
+        return TextAnnotationContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return TextAnnotationContentDocument
+
+
+class TextAnnotationContentCreate(
+    TextAnnotationContent,
+    CreateBase,
+):
+    pass
+
+
+class TextAnnotationContentRead(
+    TextAnnotationContent,
+    ReadBase,
+):
+    pass
+
+
+TextAnnotationContentUpdate = make_update_model(TextAnnotationContent)
+
+
+class TextAnnotationContentDocument(
+    TextAnnotationContent,
+    ContentBaseDocument,
+):
+    pass
 
 
 type AnnoValueQuery = Annotated[

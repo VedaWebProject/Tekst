@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from beanie import PydanticObjectId
 from beanie.operators import Eq, In
+from elastic_transport import ObjectApiResponse
 from elasticsearch import AsyncElasticsearch
 
 from tekst import tasks
@@ -21,14 +22,12 @@ from tekst.models.search import (
     IndexInfo,
     QuickSearchRequestBody,
     QuickSearchSettings,
+    ResourceSearchQuery,
     SearchResults,
 )
 from tekst.models.text import TextDocument
-from tekst.models.user import UserDocument, UserRead
-from tekst.resources import (
-    AnyResourceSearchQuery,
-    resource_types_mgr,
-)
+from tekst.models.user import UserRead
+from tekst.resources import resource_types_mgr
 from tekst.search.templates import (
     IDX_ALIAS,
     IDX_NAME_PATTERN,
@@ -53,7 +52,7 @@ _cfg: TekstConfig = get_config()
 _es: AsyncElasticsearch | None = None
 
 
-async def _wait_for_es() -> bool:
+async def _wait_for_es() -> bool | None:
     global _es
     if _es is not None:
         for i in range(_cfg.es.timeout_init_s):
@@ -89,7 +88,7 @@ async def _get_es_client() -> AsyncElasticsearch:
     return await init_es_client()
 
 
-async def get_es_status() -> dict[str, Any] | None:
+async def get_es_status() -> ObjectApiResponse[Any] | None:
     global _es
     return await _es.info() if _es else None
 
@@ -244,8 +243,8 @@ async def _populate_index(
     es: AsyncElasticsearch = await _get_es_client()
 
     async def _bulk_index(
-        reqest_body: dict[str, Any],
-        req_no: int = None,
+        reqest_body: list[dict[str, Any]],
+        req_no: int | None = None,
     ) -> None:
         resp = await es.bulk(
             body=reqest_body,
@@ -265,7 +264,7 @@ async def _populate_index(
     target_resource_ids = [
         res.id
         for res in await _get_resources(
-            text_ids=[text.id],
+            text_ids=[text.id] if text.id else None,
             check_read_access=False,
         )
         if (res.config.general.searchable_quick or res.config.general.searchable_adv)
@@ -403,7 +402,8 @@ async def get_indices_info() -> list[IndexInfo]:
     try:
         for idx_name in idx_names:
             text_id = idx_name.split("_")[-2]
-            text = await TextDocument.get(text_id)
+            text: TextDocument | None = await TextDocument.get(text_id)
+            assert text
             idx_stats = await _get_index_stats(idx_name)
             data.append(
                 {
@@ -523,7 +523,7 @@ async def _search_quick(
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),
             track_scores=True,
-            sort=SORTING_PRESETS.get(settings_general.sorting_preset),
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset or "relevance"),
             source={"includes": QUERY_SOURCE_INCLUDES},
             timeout=_cfg.es.timeout_search_s,
         ),
@@ -532,7 +532,7 @@ async def _search_quick(
 
 async def _search_advanced(
     user: UserRead | None,
-    queries: list[AnyResourceSearchQuery],
+    queries: list[ResourceSearchQuery],
     settings_general: GeneralSearchSettings = GeneralSearchSettings(),
     settings_advanced: AdvancedSearchSettings = AdvancedSearchSettings(),
 ) -> SearchResults:
@@ -553,7 +553,7 @@ async def _search_advanced(
         res_doc = accessible_resources_by_id.get(res_id)
         if not res_doc or res_doc.config.general.searchable_adv is False:
             continue  # pragma: no cover
-        res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)
+        res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)  # ty:ignore[unresolved-attribute]
         txt_id = str(res_doc.text_id)
 
         # construct resource type-specific query
@@ -640,7 +640,7 @@ async def _search_advanced(
             from_=settings_general.pagination.es_from(),
             size=settings_general.pagination.es_size(),
             track_scores=True,
-            sort=SORTING_PRESETS.get(settings_general.sorting_preset),
+            sort=SORTING_PRESETS.get(settings_general.sorting_preset or "relevance"),
             source={"includes": QUERY_SOURCE_INCLUDES},
             timeout=_cfg.es.timeout_search_s,
         ),
@@ -649,17 +649,17 @@ async def _search_advanced(
 
 
 async def search(
-    user: UserDocument | None,
+    user: UserRead | None,
     body: QuickSearchRequestBody | AdvancedSearchRequestBody,
 ) -> SearchResults:
-    if body.search_type == "quick":
+    if isinstance(body, QuickSearchRequestBody):
         return await _search_quick(
             user=user,
             user_query=body.query,
             settings_general=body.settings_general,
             settings_quick=body.settings_quick,
         )
-    elif body.search_type == "advanced":
+    elif isinstance(body, AdvancedSearchRequestBody):
         return await _search_advanced(
             user=user,
             queries=body.queries,
@@ -675,6 +675,7 @@ async def search_nearest_content_location(
     direction: Literal["before", "after"],
 ) -> LocationDocument | None:
     text_doc = await TextDocument.get(resource.text_id)
+    assert text_doc
     query = {
         "bool": {
             "must": [
@@ -714,6 +715,7 @@ async def set_index_ood(
 ):
     """Set the index_utd flag for this text, considering the given parameters"""
     if by_public_resource or (await get_state()).index_unpublished_resources:
-        text = await TextDocument.get(text_id)
+        text: TextDocument | None = await TextDocument.get(text_id)
+        assert text
         text.index_utd = False
         await text.replace()

@@ -3,16 +3,17 @@ from typing import Annotated
 from pydantic import AwareDatetime, Field, StringConstraints
 
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
     PydanticObjectId,
+    ReadBase,
 )
 from tekst.types import MultiLineString
 
 
-class Correction(ModelBase, ModelFactoryMixin):
+class Correction(ModelBase):
     resource_id: Annotated[
         PydanticObjectId,
         Field(description="ID of the resource this correction refers to"),
@@ -60,5 +61,9 @@ class CorrectionDocument(Correction, DocumentBase):
         ]
 
 
-CorrectionCreate = Correction.create_model()
-CorrectionRead = Correction.read_model()
+class CorrectionCreate(Correction, CreateBase):
+    pass
+
+
+class CorrectionRead(Correction, ReadBase):
+    pass

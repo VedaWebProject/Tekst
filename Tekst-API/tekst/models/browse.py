@@ -5,7 +5,7 @@ from pydantic import Field
 
 from tekst.models.common import ModelBase
 from tekst.models.location import LocationRead
-from tekst.resources import AnyContentReadOrMissing
+from tekst.models.resource_unions import AnyContentReadOrMissing
 
 
 class LocationData(ModelBase):

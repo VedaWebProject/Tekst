@@ -13,7 +13,7 @@ from starlette_csrf import CSRFMiddleware
 from tekst import db, search
 from tekst.config import TekstConfig, get_config
 from tekst.db import migrations
-from tekst.errors import TekstHTTPException
+from tekst.errors import TekstErrorModel, TekstHTTPException
 from tekst.logs import log
 from tekst.middlewares import CookieTypeChoiceMiddleware
 from tekst.models.platform import PlatformState
@@ -117,14 +117,22 @@ if _cfg.cors.enable:
 async def custom_http_exception_handler(request: Request, exc: Exception):
     # force garbage collection due to issues with custom exception handler
     # (see https://github.com/fastapi/fastapi/discussions/9145#discussioncomment-7254388)
+
+    # TODO To anyone touching this in the future:
+    # The ignored concerns of ty might be justified or not.
+    # I wasn't able to figure it out.
+    # As it works fine, I'm leaving it as is for now. I am sorry.
+
     gc.collect()
     return await http_exception_handler(
         request,
         HTTPException(
             status_code=exc.status_code,
-            detail=exc.detail.model_dump().get("detail", None),
-            headers=exc.headers,
+            detail=exc.detail.model_dump().get("detail", None)
+            if isinstance(exc.detail, TekstErrorModel)
+            else None,
+            headers=exc.headers,  # ty:ignore[invalid-argument-type]
         )
         if isinstance(exc, TekstHTTPException)
-        else exc,
+        else exc,  # ty:ignore[invalid-argument-type]
     )

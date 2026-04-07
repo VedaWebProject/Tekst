@@ -176,12 +176,12 @@ async def test_user_deletes_self(
         ResourceBaseDocument.id == target_res_id,
         with_children=True,
     ).set({ResourceBaseDocument.public: False})
-    assert (
-        await ResourceBaseDocument.get(
-            target_res_id,
-            with_children=True,
-        )
-    ).public is False
+    target_resource: ResourceBaseDocument | None = await ResourceBaseDocument.get(
+        target_res_id,
+        with_children=True,
+    )
+    assert target_resource
+    assert target_resource.public is False
 
     # check that patch for target resource exists and is owned by superuser su
     target_resource_patch = await ResourceBaseDocument.find_one(
@@ -196,10 +196,11 @@ async def test_user_deletes_self(
         ResourceBaseDocument.id == target_res_id,
         with_children=True,
     ).set({ResourceBaseDocument.owner_ids: [PydanticObjectId(u["id"])]})
-    target_resource: ResourceBaseDocument = await ResourceBaseDocument.get(
+    target_resource: ResourceBaseDocument | None = await ResourceBaseDocument.get(
         target_res_id,
         with_children=True,
     )
+    assert target_resource
     assert len(target_resource.owner_ids) == 1
     assert target_resource.owner_ids[0] == PydanticObjectId(u["id"])
 
@@ -307,4 +308,4 @@ async def test_create_duplicate_user(
     with pytest.raises(HTTPException) as e:
         await login()
         await login()
-        assert "REGISTER_USERNAME_ALREADY_EXISTS" in e.getrepr()
+        assert "REGISTER_USERNAME_ALREADY_EXISTS" in str(e.getrepr())

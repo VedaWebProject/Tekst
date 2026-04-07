@@ -5,18 +5,19 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     HttpUrl,
     MultiLineString,
     SchemaOptionalNullable,
@@ -24,7 +25,7 @@ from tekst.types import (
 )
 
 
-class Images(ResourceTypeABC):
+class Images(ResourceTypeBase):
     """A resource type for image files"""
 
     @classmethod
@@ -36,7 +37,7 @@ class Images(ResourceTypeABC):
         return ImagesContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return ImagesSearchQuery
 
     @classmethod
@@ -78,6 +79,7 @@ class Images(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, ImagesSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -121,6 +123,7 @@ class Images(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -167,6 +170,37 @@ class ImagesResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["caption"]
 
+    @classmethod
+    def create_model(cls):
+        return ImagesResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return ImagesResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return ImagesResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ImagesResourceDocument
+
+
+class ImagesResourceCreate(ImagesResource, CreateBase):
+    pass
+
+
+class ImagesResourceRead(ImagesResource, ResourceReadExtras, ReadBase):
+    pass
+
+
+ImagesResourceUpdate = make_update_model(ImagesResource)
+
+
+class ImagesResourceDocument(ImagesResource, ResourceBaseDocument):
+    pass
+
 
 class ImageFile(ModelBase):
     url: Annotated[
@@ -175,19 +209,19 @@ class ImageFile(ModelBase):
     ]
     thumb_url: Annotated[
         HttpUrl | None,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="URL of the image file thumbnail"),
     ] = None
     source_url: Annotated[
         HttpUrl | None,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="URL of the source website of the image"),
     ] = None
     caption: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=8192),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Caption of the image"),
     ] = None
 
@@ -204,6 +238,37 @@ class ImagesContent(ContentBase):
             max_length=100,
         ),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return ImagesContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return ImagesContentRead
+
+    @classmethod
+    def update_model(cls):
+        return ImagesContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ImagesContentDocument
+
+
+class ImagesContentCreate(ImagesContent, CreateBase):
+    pass
+
+
+class ImagesContentRead(ImagesContent, ReadBase):
+    pass
+
+
+ImagesContentUpdate = make_update_model(ImagesContent)
+
+
+class ImagesContentDocument(ImagesContent, ContentBaseDocument):
+    pass
 
 
 class ImagesSearchQuery(ModelBase):

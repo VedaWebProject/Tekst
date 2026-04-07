@@ -3,6 +3,7 @@ import re
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.odm.operators.find import BaseFindOperator
 from beanie.operators import NE, Eq, Or, RegEx
 from fastapi import APIRouter, Depends, Path, Query, Request, status
 from pydantic import StringConstraints
@@ -24,7 +25,7 @@ from tekst.models.user import (
 from tekst.types import SingleLineString
 
 
-def _get_user_text_query(query_str: str) -> dict:
+def _get_user_text_query(query_str: str) -> BaseFindOperator | dict:
     q = re.sub(r"\W", "", query_str or "").strip()
     if not q or len(q) < 1:
         return {}
@@ -66,7 +67,9 @@ async def delete_me(
             exc=errors.E_403_FORBIDDEN,
             values={"errors": "Cannot delete the only superuser!"},
         )
-    await user_mgr.delete(user, request)
+    user_doc = await UserDocument.get(user.id)
+    assert user_doc
+    await user_mgr.delete(user_doc, request)
     return None
 
 
@@ -188,8 +191,8 @@ async def find_users(
             .sort(
                 +UserDocument.is_active,
                 +UserDocument.is_verified,
-                -UserDocument.created_at,
-                +UserDocument.name,
+                -UserDocument.created_at,  # ty:ignore[unsupported-operator]
+                +UserDocument.name,  # ty:ignore[unsupported-operator]
             )
             .skip(pgn.mongo_skip())
             .limit(pgn.mongo_limit())
@@ -214,7 +217,7 @@ async def get_public_user(
     username_or_id: Annotated[
         PydanticObjectId | str, Path(alias="user", description="Username or ID")
     ],
-) -> dict:
+) -> UserReadPublic:
     """Returns public information on the user with the specified username or ID"""
     if type(username_or_id) is PydanticObjectId:
         user = await UserDocument.get(username_or_id)
@@ -294,7 +297,10 @@ async def find_public_users(
             [
                 UserReadPublic.model_from(u)
                 for u in await UserDocument.find(*db_query)
-                .sort(+UserDocument.name, +UserDocument.username)
+                .sort(
+                    +UserDocument.name,  # ty:ignore[unsupported-operator]
+                    +UserDocument.username,  # ty:ignore[unsupported-operator]
+                )
                 .skip(pgn.mongo_skip())
                 .limit(pgn.mongo_limit())
                 .to_list()

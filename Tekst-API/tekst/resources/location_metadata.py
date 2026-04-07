@@ -8,13 +8,14 @@ from beanie.operators import Eq
 from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import ModelBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
@@ -22,7 +23,7 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
@@ -30,7 +31,7 @@ from tekst.types import (
 )
 
 
-class LocationMetadata(ResourceTypeABC):
+class LocationMetadata(ResourceTypeBase):
     """A resource type for key-value location metadata"""
 
     @classmethod
@@ -42,7 +43,7 @@ class LocationMetadata(ResourceTypeABC):
         return LocationMetadataContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery]:
+    def search_query_model(cls) -> type[ModelBase]:
         return LocationMetadataSearchQuery
 
     @classmethod
@@ -107,6 +108,7 @@ class LocationMetadata(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, LocationMetadataSearchQuery)
         es_queries = []
         strict_suffix = ".strict" if strict else ""
         res_id = str(query.common.resource_id)
@@ -167,12 +169,12 @@ class LocationMetadata(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["LocationMetadataContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -182,11 +184,12 @@ class LocationMetadata(ResourceTypeABC):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "LocationMetadataResource",
+        resource: "LocationMetadataResourceDocument",
         contents: list["LocationMetadataContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -291,6 +294,42 @@ class LocationMetadataResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["quick_search_content"]
 
+    @classmethod
+    def create_model(cls):
+        return LocationMetadataResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return LocationMetadataResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return LocationMetadataResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return LocationMetadataResourceDocument
+
+
+class LocationMetadataResourceCreate(LocationMetadataResource, CreateBase):
+    pass
+
+
+class LocationMetadataResourceRead(
+    LocationMetadataResource,
+    ResourceReadExtras,
+    ReadBase,
+):
+    pass
+
+
+LocationMetadataResourceUpdate = make_update_model(LocationMetadataResource)
+
+
+class LocationMetadataResourceDocument(
+    LocationMetadataResource,
+    ResourceBaseDocument,
+):
     async def _update_aggregations(self, *, force: bool = False) -> None:
         max_values_per_key = 250
         # get precomputed resource aggregations data, if present
@@ -305,6 +344,10 @@ class LocationMetadataResource(ResourceBase):
                 )
                 return
         else:
+            if not self.id:  # pragma: no cover
+                raise RuntimeError(
+                    "Resource must be saved before aggregations can be created"
+                )
             # create new aggregations document
             precomp_doc = PrecomputedDataDocument(
                 ref_id=self.id,
@@ -447,6 +490,37 @@ class LocationMetadataContent(ContentBase):
             description="List of metadata entries for a certain location",
         ),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return LocationMetadataContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return LocationMetadataContentRead
+
+    @classmethod
+    def update_model(cls):
+        return LocationMetadataContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return LocationMetadataContentDocument
+
+
+class LocationMetadataContentCreate(LocationMetadataContent, CreateBase):
+    pass
+
+
+class LocationMetadataContentRead(LocationMetadataContent, ReadBase):
+    pass
+
+
+LocationMetadataContentUpdate = make_update_model(LocationMetadataContent)
+
+
+class LocationMetadataContentDocument(LocationMetadataContent, ContentBaseDocument):
+    pass
 
 
 class LocationMetadataQueryEntry(ModelBase):

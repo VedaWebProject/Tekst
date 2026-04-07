@@ -31,7 +31,7 @@ SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
 
 SingleLineString = AfterValidator(cleanup_spaces_oneline)
 MultiLineString = AfterValidator(cleanup_spaces_multiline)
-EmptyStrToNone = BeforeValidator(lambda v: v or None if isinstance(v, str) else v)
+FalsyToNone = BeforeValidator(lambda v: v or None)
 
 # serializers
 

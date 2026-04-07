@@ -7,7 +7,7 @@ from tekst.models.common import ModelBase
 from tekst.models.platform import OskKey
 from tekst.types import (
     CollapsibleContentsConfigValue,
-    EmptyStrToNone,
+    FalsyToNone,
     FontFamilyValue,
     SchemaOptionalNonNullable,
     SingleLineString,
@@ -18,7 +18,7 @@ class GeneralResourceConfig(ModelBase):
     category: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=16),
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Resource category key"),
     ] = None
 

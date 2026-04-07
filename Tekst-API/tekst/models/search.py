@@ -1,13 +1,13 @@
 from collections.abc import Callable
 from typing import Annotated, Any, Literal
 
+from elastic_transport import ObjectApiResponse
 from pydantic import Field, StringConstraints, field_validator
 
 from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
 )
-from tekst.resources import ResourceSearchQuery
 from tekst.types import (
     SchemaOptionalNonNullable,
     SchemaOptionalNullable,
@@ -37,8 +37,8 @@ class SearchResults(ModelBase):
     def __transform_highlights(
         cls,
         hit: dict[str, Any],
-        highlights_generators: dict[str, Callable[[dict[str, Any]], list[str]]],
-    ) -> dict[str, set[str]]:
+        highlights_generators: dict[str, Callable[[dict[str, Any]], list[str]]] | None,
+    ) -> dict[str, list[str]]:
         if not hit.get("highlight"):
             return {}
         highlights = {}
@@ -55,9 +55,8 @@ class SearchResults(ModelBase):
     @classmethod
     def from_es_results(
         cls,
-        results: dict[str, Any],
-        highlights_generators: dict[str, Callable[[dict[str, Any]], list[str]]]
-        | None = None,
+        results: ObjectApiResponse[Any],
+        highlights_generators: dict[str, Any] | None = None,
     ) -> "SearchResults":
         return cls(
             hits=[
@@ -69,9 +68,7 @@ class SearchResults(ModelBase):
                     level=hit["_source"]["level"],
                     position=hit["_source"]["position"],
                     score=hit["_score"],
-                    highlight=cls.__transform_highlights(
-                        hit, highlights_generators or {}
-                    ),
+                    highlight=cls.__transform_highlights(hit, highlights_generators),
                 )
                 for hit in results["hits"]["hits"]
             ],
@@ -271,7 +268,7 @@ class AdvancedSearchRequestBody(ModelBase):
         ),
     ] = "advanced"
     queries: Annotated[
-        list[ResourceSearchQuery],
+        list["ResourceSearchQuery"],
         Field(
             alias="q",
             min_length=1,
@@ -305,3 +302,48 @@ class IndexInfo(ModelBase):
     searches: int
     fields: int
     up_to_date: bool
+
+
+class CommonResourceSearchQueryData(ModelBase):
+    occurrence: Annotated[
+        Literal["should", "must", "not"],
+        Field(
+            alias="occ",
+            description="The occurrence type of the search query",
+        ),
+        SchemaOptionalNullable,
+    ] = "must"
+    resource_id: Annotated[
+        PydanticObjectId,
+        Field(
+            alias="res",
+            description="ID of the resource to search in",
+        ),
+    ]
+    comment: Annotated[
+        str,
+        StringConstraints(max_length=512),
+        SingleLineString,
+        Field(
+            alias="cmt",
+            description="Content comment search query",
+        ),
+        SchemaOptionalNullable,
+    ] = ""
+
+
+class ResourceSearchQuery(ModelBase):
+    common: Annotated[
+        CommonResourceSearchQueryData,
+        Field(
+            alias="cmn",
+            description="Common resource search query data",
+        ),
+    ]
+    resource_type_specific: Annotated[
+        dict,
+        Field(
+            alias="rts",
+            description="Resource type-specific search query data",
+        ),
+    ]

@@ -1,7 +1,8 @@
 import asyncio
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable
 from pathlib import Path
+from types import AsyncGeneratorType
 from typing import Any
 
 import httpx
@@ -11,8 +12,7 @@ from asgi_lifespan import LifespanManager
 from beanie import PydanticObjectId
 from bson import ObjectId, json_util
 from elasticsearch import Elasticsearch
-from fastapi import Response
-from httpx import ASGITransport, AsyncClient
+from httpx import ASGITransport, AsyncClient, Response
 from humps import camelize
 from tekst import db, tasks
 from tekst.app import app
@@ -80,7 +80,7 @@ def get_test_data(get_test_data_path) -> Callable[[str], Any]:
 
 
 @pytest.fixture(scope="session")
-async def db_client(config) -> db.DatabaseClient:
+async def db_client(config) -> AsyncGeneratorType[db.DatabaseClient]:
     """Dependency override for the database client dependency"""
     db_client = db.DatabaseClient(config.db.uri)
     yield db_client
@@ -92,7 +92,7 @@ async def db_client(config) -> db.DatabaseClient:
 async def database(
     config,
     db_client,
-) -> db.Database:
+) -> AsyncGeneratorType[db.Database]:
     """DB driver for test session"""
     db = db_client[config.db.name]
     for collection in await db.list_collection_names():
@@ -123,7 +123,7 @@ async def test_app(
 async def test_client(
     test_app,
     config,
-) -> AsyncClient:
+) -> AsyncGeneratorType[AsyncClient]:
     """Returns an asynchronous test client for API testing"""
     async with AsyncClient(
         transport=ASGITransport(app=test_app),
@@ -152,7 +152,7 @@ async def insert_test_data(
     async def _insert_test_data(*collections: str) -> dict[str, list[str]]:
         # insert test collections
         ids = dict()
-        collections = collections or [
+        for collection in collections or [
             "contents",
             "locations",
             "resources",
@@ -160,8 +160,7 @@ async def insert_test_data(
             "texts",
             "users",
             "segments",
-        ]
-        for collection in collections:
+        ]:
             test_data = get_test_data(f"collections/{collection}.json")
             if not test_data:
                 raise Exception(
@@ -180,7 +179,7 @@ async def insert_test_data(
 async def use_indices(
     config,
     insert_test_data,
-) -> Iterator[None]:
+) -> AsyncGeneratorType[None, None]:
     await insert_test_data()
     await create_indices_task(force=True)
     yield
@@ -322,6 +321,7 @@ def wait_for_task_success():
         tries: int = 10,
         interval_s: int = 1,
     ) -> bool:
+        task = None
         for _ in range(tries):
             task = await tasks.TaskDocument.get(PydanticObjectId(task_id))
             if task:

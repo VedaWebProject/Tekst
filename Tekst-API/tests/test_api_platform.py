@@ -226,8 +226,8 @@ async def test_platform_cleanup_user_messages(
 
     # create stale user message
     await UserMessageDocument(
-        sender="69c510aef0e54419806c7a24",
-        recipient="69c510b8f0e54419806c7a25",
+        sender=PydanticObjectId("69c510aef0e54419806c7a24"),
+        recipient=PydanticObjectId("69c510b8f0e54419806c7a25"),
         content="FOO BAR",
         created_at=(
             datetime.now(UTC)
@@ -318,7 +318,7 @@ async def test_platform_cleanup_archive_duplicates(
                     Eq(ContentBaseDocument.archived, True),
                     with_children=True,
                 )
-                .sort(-ContentBaseDocument.created_at)
+                .sort(-ContentBaseDocument.created_at)  # ty:ignore[unsupported-operator]
                 .to_list()
             ]
         )
@@ -343,7 +343,7 @@ async def test_platform_cleanup_archive_duplicates(
                     Eq(ContentBaseDocument.archived, True),
                     with_children=True,
                 )
-                .sort(-ContentBaseDocument.created_at)
+                .sort(-ContentBaseDocument.created_at)  # ty:ignore[unsupported-operator]
                 .to_list()
             ]
         )

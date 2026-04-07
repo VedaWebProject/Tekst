@@ -51,7 +51,7 @@ async def get_db_status() -> dict[str, Any] | None:
 
 
 def get_db(
-    db_client: Database = get_db_client(), cfg: TekstConfig = get_config()
+    db_client: DatabaseClient = get_db_client(), cfg: TekstConfig = get_config()
 ) -> Database:
     return db_client.get_database(
         cfg.db.name,
@@ -79,8 +79,12 @@ async def init_odm(db: Database = get_db()) -> None:
     ]
     # add all resource types' resource and content document models
     for lt_class in resource_types_mgr.get_all().values():
-        models.append(lt_class.resource_model().document_model())
-        models.append(lt_class.content_model().document_model())
+        res_doc_model = lt_class.resource_model().document_model()
+        cnt_doc_model = lt_class.content_model().document_model()
+        assert isinstance(res_doc_model, ResourceBaseDocument)
+        assert isinstance(cnt_doc_model, ContentBaseDocument)
+        models.append(res_doc_model)
+        models.append(cnt_doc_model)
     # init beanie ODM
     await init_beanie(
         database=db,

@@ -17,8 +17,8 @@ from tekst.models.location import LocationDocument, LocationRead
 from tekst.models.resource import (
     ResourceBaseDocument,
 )
+from tekst.models.resource_unions import AnyContentReadOrMissing
 from tekst.models.text import TextDocument
-from tekst.resources import AnyContentReadOrMissing
 from tekst.search import search_nearest_content_location
 
 
@@ -76,6 +76,7 @@ async def _get_content_context(
         original_content_docs_by_loc = {}
 
     # combine contents lists, sort by reference location position, return
+    assert resource.id  # for type checker
     return [
         content_docs_by_loc.get(
             loc_id,
@@ -196,7 +197,8 @@ async def get_location_data(
     location_path = [location_doc]
     parent_id = location_doc.parent_id
     while parent_id:
-        parent_doc = await LocationDocument.get(parent_id)
+        parent_doc: LocationDocument | None = await LocationDocument.get(parent_id)
+        assert parent_doc
         location_path.insert(0, parent_doc)
         parent_id = parent_doc.parent_id
     location_ids = (
@@ -245,7 +247,7 @@ async def get_location_data(
                     ),
                     with_children=True,
                 )
-                .sort(-ContentBaseDocument.created_at)
+                .sort(-ContentBaseDocument.created_at)  # ty:ignore[unsupported-operator]
                 .first_or_none()
             )
             if content:
@@ -433,7 +435,7 @@ async def get_user_bookmarks(user: UserDep) -> list[BookmarkDocument]:
     return (
         await BookmarkDocument.find(BookmarkDocument.user_id == user.id)
         .sort(
-            +BookmarkDocument.text_id,
+            +BookmarkDocument.text_id,  # ty:ignore[unsupported-operator]
             +BookmarkDocument.level,
             +BookmarkDocument.position,
         )
@@ -480,7 +482,10 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
     location_labels = [location_doc.label]
     parent_location_id = location_doc.parent_id
     while parent_location_id:
-        parent_location = await LocationDocument.get(parent_location_id)
+        parent_location: LocationDocument | None = await LocationDocument.get(
+            parent_location_id
+        )
+        assert parent_location
         location_labels.insert(0, parent_location.label)
         parent_location_id = parent_location.parent_id
 
@@ -490,7 +495,6 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
         location_id=location_doc.id,
         level=location_doc.level,
         position=location_doc.position,
-        label=location_doc.label,
         location_labels=location_labels,
         comment=bookmark.comment,
     ).create()

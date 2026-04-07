@@ -105,7 +105,7 @@ async def migrate() -> None:
     for mig_ver in pending:
         log.info(f"Migrating DB from {curr_db_version} to {str(mig_ver)}...")
         try:
-            await pending[mig_ver](db)
+            await pending[mig_ver](db)  # ty:ignore[invalid-await] # TODO: look into what ty wants here!
         except Exception as e:  # pragma: no cover
             log.error(
                 f"Failed migrating DB from {curr_db_version} to {str(mig_ver)}: {e}"

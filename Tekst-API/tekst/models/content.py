@@ -4,7 +4,6 @@ from typing import Annotated, Literal, NotRequired, TypedDict
 from beanie import PydanticObjectId
 from pydantic import (
     AwareDatetime,
-    BeforeValidator,
     Field,
     StringConstraints,
     field_validator,
@@ -14,10 +13,10 @@ from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
+    make_update_model,
 )
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     MultiLineString,
     ResourceTypeName,
     SchemaOptionalNonNullable,
@@ -33,7 +32,7 @@ class ContentComment(TypedDict):
             str | None,
             StringConstraints(min_length=1, max_length=128),
             SingleLineString,
-            EmptyStrToNone,
+            FalsyToNone,
         ]
     ]
 
@@ -44,7 +43,7 @@ class ContentComment(TypedDict):
     ]
 
 
-class ContentBase(ModelBase, ModelFactoryMixin):
+class ContentBase(ModelBase):
     """A base model for types of contents belonging to a certain resource"""
 
     resource_id: Annotated[
@@ -71,7 +70,7 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             min_length=1,
             max_length=64,
         ),
-        BeforeValidator(lambda v: v or None),
+        FalsyToNone,
         SchemaOptionalNonNullable,
     ] = None
 
@@ -79,13 +78,13 @@ class ContentBase(ModelBase, ModelFactoryMixin):
         AwareDatetime,
         Field(
             description="Timestamp of the content creation",
-            default_factory=lambda: datetime.now(UTC),
         ),
         ExcludeFromModelVariants(
             create=True,
             update=True,
         ),
-    ]
+        SchemaOptionalNonNullable,
+    ] = datetime.now(UTC)  # preliminary default, will be overridden by validator
 
     archived: Annotated[
         bool,
@@ -95,6 +94,11 @@ class ContentBase(ModelBase, ModelFactoryMixin):
             update=True,
         ),
     ] = False
+
+    @field_validator("created_at", mode="before", check_fields=False)
+    @classmethod
+    def set_created_at(cls, _):
+        return datetime.now(UTC)
 
     @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
@@ -108,6 +112,26 @@ class ContentBase(ModelBase, ModelFactoryMixin):
                 f"resource type name (one of {resource_type_names})."
             )
         return v
+
+    @classmethod
+    def create_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the CREATE model variant of this content type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def read_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the READ model variant of this content type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def update_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the UPDATE model variant of this content type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def document_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the Beanie Document model variant of this content type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     async def comments_for_csv(self) -> str:
         if not self.comments:
@@ -153,7 +177,7 @@ class ContentBaseDocument(ContentBase, DocumentBase):
         return copy
 
 
-ContentBaseUpdate = ContentBase.update_model()
+ContentBaseUpdate = make_update_model(ContentBase)
 
 
 class MissingContent(ModelBase):

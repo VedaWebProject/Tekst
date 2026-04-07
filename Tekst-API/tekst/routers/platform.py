@@ -38,7 +38,7 @@ from tekst.models.user import UserDocument
 from tekst.notifications import send_test_email
 from tekst.routers.texts import get_all_texts
 from tekst.state import get_state, update_state
-from tekst.types import EmptyStrToNone
+from tekst.types import FalsyToNone
 
 
 router = APIRouter(
@@ -241,7 +241,7 @@ async def get_user_tasks(
     user: OptionalUserDep,
     pickup_keys: Annotated[
         str | None,
-        EmptyStrToNone,
+        FalsyToNone,
         Header(
             description=(
                 "Comma-separated pickup keys for accessing the tasks in case they "

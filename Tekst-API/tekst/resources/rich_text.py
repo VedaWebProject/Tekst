@@ -5,15 +5,15 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints, field_validator
 
-from tekst.models.common import ModelBase
-from tekst.models.content import ContentBase
-from tekst.models.resource import ResourceBase, ResourceExportFormat
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
+from tekst.models.content import ContentBase, ContentBaseDocument
+from tekst.models.resource import ResourceBase, ResourceExportFormat, ResourceReadExtras
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
     CollapsibleContentsConfigValue,
     ContentCssProperties,
@@ -26,7 +26,7 @@ from tekst.types import (
 from tekst.utils.html import get_html_text, sanitize_html
 
 
-class RichText(ResourceTypeABC):
+class RichText(ResourceTypeBase):
     """A simple rich text resource type"""
 
     @classmethod
@@ -38,7 +38,7 @@ class RichText(ResourceTypeABC):
         return RichTextContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return RichTextSearchQuery
 
     @classmethod
@@ -77,6 +77,7 @@ class RichText(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, RichTextSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -103,12 +104,12 @@ class RichText(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["RichTextContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -123,6 +124,7 @@ class RichText(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -188,6 +190,37 @@ class RichTextResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["html"]
 
+    @classmethod
+    def create_model(cls):
+        return RichTextResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return RichTextResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return RichTextResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return RichTextResourceDocument
+
+
+class RichTextResourceCreate(RichTextResource, CreateBase):
+    pass
+
+
+class RichTextResourceRead(RichTextResource, ResourceReadExtras, ReadBase):
+    pass
+
+
+RichTextResourceUpdate = make_update_model(RichTextResource)
+
+
+class RichTextResourceDocument(RichTextResource, ResourceBaseDocument):
+    pass
+
 
 class RichTextContent(ContentBase):
     """A content of a rich text resource"""
@@ -206,7 +239,38 @@ class RichTextContent(ContentBase):
     @field_validator("html", mode="after")
     @classmethod
     def validate_html(cls, value) -> str:
-        return sanitize_html(value)
+        return sanitize_html(value) or ""
+
+    @classmethod
+    def create_model(cls):
+        return RichTextContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return RichTextContentRead
+
+    @classmethod
+    def update_model(cls):
+        return RichTextContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return RichTextContentDocument
+
+
+class RichTextContentCreate(RichTextContent, CreateBase):
+    pass
+
+
+class RichTextContentRead(RichTextContent, ReadBase):
+    pass
+
+
+RichTextContentUpdate = make_update_model(RichTextContent)
+
+
+class RichTextContentDocument(RichTextContent, ContentBaseDocument):
+    pass
 
 
 class RichTextSearchQuery(ModelBase):

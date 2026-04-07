@@ -573,6 +573,7 @@ async def test_set_shares_for_public_resource(
 
     # set resource public
     res = await ResourceBaseDocument.get(resource_id, with_children=True)
+    assert res
     await res.set({ResourceBaseDocument.public: True})
 
     # update shares
@@ -936,12 +937,12 @@ async def test_delete_resource(
     )
 
     # check if former target resource patch is a full resource now
-    assert (
-        await ResourceBaseDocument.get(
-            target_resource_patch.id,
-            with_children=True,
-        )
-    ).patch_for is None
+    target_resource_patch = await ResourceBaseDocument.get(
+        target_resource_patch.id,
+        with_children=True,
+    )
+    assert target_resource_patch
+    assert target_resource_patch.patch_for is None
 
 
 @pytest.mark.anyio
@@ -1290,7 +1291,7 @@ async def test_import_resource(
 
     # upload incomplete content data (one content without location ID)
     invalid_import_sample = import_sample.copy()
-    del invalid_import_sample["contents"][0]["locationId"]
+    del invalid_import_sample["contents"][0]["locationId"]  # ty:ignore[not-subscriptable]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
@@ -1303,7 +1304,7 @@ async def test_import_resource(
 
     # upload invalid content data (text is list[int])
     invalid_import_sample = import_sample.copy()
-    invalid_import_sample["contents"][0]["text"] = [1, 2, 3]
+    invalid_import_sample["contents"][0]["text"] = [1, 2, 3]  # ty:ignore[invalid-assignment]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={

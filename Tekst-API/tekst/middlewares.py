@@ -29,7 +29,10 @@ class CookieTypeChoiceMiddleware(BaseHTTPMiddleware):
         if request.url.path.endswith(self.login_path_suffix):
             # request was to ...<login_path_suffix>
             form_data = await request.form()
-            if form_data.get(self.form_field_name, "").lower() not in self._TRUTHY_VALS:
+            if (
+                str(form_data.get(self.form_field_name, "")).lower()
+                not in self._TRUTHY_VALS
+            ):
                 # the request is missing `form_field_name` or the value is falsy,
                 # so we have to force any "set-cookie" headers of the response to
                 # trigger the creation of session cookies instead of persistent cookies

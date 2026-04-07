@@ -5,21 +5,22 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     HttpUrl,
     MultiLineString,
     SchemaOptionalNullable,
@@ -27,7 +28,7 @@ from tekst.types import (
 )
 
 
-class ExternalReferences(ResourceTypeABC):
+class ExternalReferences(ResourceTypeBase):
     """A resource type for external references"""
 
     @classmethod
@@ -39,7 +40,7 @@ class ExternalReferences(ResourceTypeABC):
         return ExternalReferencesContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return ExternalReferencesSearchQuery
 
     @classmethod
@@ -87,6 +88,7 @@ class ExternalReferences(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, ExternalReferencesSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -130,6 +132,7 @@ class ExternalReferences(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -182,6 +185,44 @@ class ExternalReferencesResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["text"]
 
+    @classmethod
+    def create_model(cls):
+        return ExternalReferencesResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return ExternalReferencesResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return ExternalReferencesResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ExternalReferencesResourceDocument
+
+
+class ExternalReferencesResourceCreate(ExternalReferencesResource, CreateBase):
+    pass
+
+
+class ExternalReferencesResourceRead(
+    ExternalReferencesResource,
+    ResourceReadExtras,
+    ReadBase,
+):
+    pass
+
+
+ExternalReferencesResourceUpdate = make_update_model(ExternalReferencesResource)
+
+
+class ExternalReferencesResourceDocument(
+    ExternalReferencesResource,
+    ResourceBaseDocument,
+):
+    pass
+
 
 class ExternalReferencesLink(ModelBase):
     url: Annotated[
@@ -198,14 +239,14 @@ class ExternalReferencesLink(ModelBase):
         str | None,
         StringConstraints(min_length=1, max_length=4096),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Description of the link"),
     ] = None
     alt_ref: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=512),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Additional, alternate reference data"),
     ] = None
 
@@ -222,6 +263,37 @@ class ExternalReferencesContent(ContentBase):
             max_length=100,
         ),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return ExternalReferencesContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return ExternalReferencesContentRead
+
+    @classmethod
+    def update_model(cls):
+        return ExternalReferencesContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ExternalReferencesContentDocument
+
+
+class ExternalReferencesContentCreate(ExternalReferencesContent, CreateBase):
+    pass
+
+
+class ExternalReferencesContentRead(ExternalReferencesContent, ReadBase):
+    pass
+
+
+ExternalReferencesContentUpdate = make_update_model(ExternalReferencesContent)
+
+
+class ExternalReferencesContentDocument(ExternalReferencesContent, ContentBaseDocument):
+    pass
 
 
 class ExternalReferencesSearchQuery(ModelBase):

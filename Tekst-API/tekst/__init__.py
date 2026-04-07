@@ -1,7 +1,7 @@
 from importlib import metadata
 
 
-_package_metadata = metadata.metadata(__package__)
+_package_metadata = metadata.metadata(__package__ or __name__)
 
 # whyyyyy
 _project_urls = {

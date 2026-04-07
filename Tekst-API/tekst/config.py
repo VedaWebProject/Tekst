@@ -13,6 +13,7 @@ from fastapi import Depends
 from humps import camelize
 from pydantic import (
     BaseModel,
+    BeforeValidator,
     ConfigDict,
     DirectoryPath,
     EmailStr,
@@ -24,7 +25,7 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tekst import package_metadata
-from tekst.types import EmptyStrToNone, HttpUrl, MultiLineString, SingleLineString
+from tekst.types import FalsyToNone, HttpUrl, MultiLineString, SingleLineString
 
 
 _DEV_MODE: bool = bool(os.environ.get("TEKST_DEV_MODE", False))
@@ -93,13 +94,13 @@ class MongoDBConfig(ConfigSubSection):
         str | None,
         StringConstraints(max_length=64),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     password: Annotated[
         str | None,
         StringConstraints(max_length=64),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     name: str = "tekst"
     unicode_nf: Literal["NFC", "NFKC", "NFD", "NFKD"] | None = "NFC"
@@ -181,7 +182,7 @@ class SecurityConfig(ConfigSubSection):
         str | None,
         StringConstraints(max_length=64),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     auth_cookie_lifetime: Annotated[
         int,
@@ -211,13 +212,13 @@ class SecurityConfig(ConfigSubSection):
         str | None,
         StringConstraints(max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     init_admin_password: Annotated[
         str | None,
         StringConstraints(max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
 
 
@@ -229,18 +230,18 @@ class EMailConfig(ConfigSubSection):
         StringConstraints(max_length=256),
         SingleLineString,
     ] = "127.0.0.1"
-    smtp_port: int | None = 25
+    smtp_port: int = 25
     smtp_user: Annotated[
         str | None,
         StringConstraints(max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     smtp_password: Annotated[
         str | None,
         StringConstraints(max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     smtp_starttls: bool = True
     from_address: str = "noreply@example-tekst-instance.org"
@@ -262,39 +263,39 @@ class ApiDocConfig(ConfigSubSection):
         str | None,
         StringConstraints(max_length=256),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     description: Annotated[
         str | None,
         StringConstraints(max_length=4096),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
-    terms_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    terms_url: Annotated[HttpUrl | None, FalsyToNone] = None
     contact_name: Annotated[
         str | None,
         StringConstraints(max_length=64),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     contact_email: Annotated[
         EmailStr | None,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
-    contact_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    contact_url: Annotated[HttpUrl | None, FalsyToNone] = None
     license_name: Annotated[
         str | None,
         StringConstraints(max_length=32),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
     license_id: Annotated[
         str | None,
         StringConstraints(max_length=32),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
     ] = None
-    license_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    license_url: Annotated[HttpUrl | None, FalsyToNone] = None
 
 
 class CORSConfig(ConfigSubSection):
@@ -352,7 +353,10 @@ class TekstConfig(BaseSettings):
     auto_migrate: bool = False
     xsrf: bool = True
 
-    temp_files_dir: DirectoryPath = Path("/tmp/tekst_tmp")
+    temp_files_dir: Annotated[
+        DirectoryPath,
+        BeforeValidator(lambda v: Path(v) if isinstance(v, str) else v),
+    ] = Path("/tmp/tekst_tmp")
 
     # config sub sections
     db: MongoDBConfig = MongoDBConfig()  # MongoDB-related config

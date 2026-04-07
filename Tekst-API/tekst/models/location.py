@@ -7,15 +7,17 @@ from pydantic import (
 )
 
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
+    ReadBase,
+    make_update_model,
 )
 from tekst.types import LocationAlias, LocationLabel, LocationLevel, LocationPosition
 
 
-class Location(ModelBase, ModelFactoryMixin):
+class Location(ModelBase):
     """A location in a text structure (e.g. chapter, paragraph, ...)"""
 
     text_id: Annotated[
@@ -76,9 +78,15 @@ class LocationDocument(Location, DocumentBase):
         ]
 
 
-LocationCreate = Location.create_model()
-LocationRead = Location.read_model()
-LocationUpdate = Location.update_model()
+class LocationCreate(Location, CreateBase):
+    pass
+
+
+class LocationRead(Location, ReadBase):
+    pass
+
+
+LocationUpdate = make_update_model(Location)
 
 
 class DeleteLocationResult(ModelBase):

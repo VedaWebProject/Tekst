@@ -1,13 +1,10 @@
 from collections.abc import Iterable
 from datetime import UTC, datetime
-from types import UnionType
 from typing import (
+    Annotated,
     Any,
     Literal,
     Self,
-    Union,
-    get_args,
-    get_origin,
 )
 from unicodedata import normalize
 
@@ -17,18 +14,16 @@ from humps import camelize, decamelize
 from pydantic import (
     BaseModel,
     ConfigDict,
+    Field,
     TypeAdapter,
     ValidationError,
     create_model,
 )
 from pydantic.aliases import PydanticUndefined
-from pydantic.fields import FieldInfo
 
 from tekst.config import get_config
 from tekst.types import (
     ExcludeFromModelVariants,
-    SchemaOptionalNonNullable,
-    SchemaOptionalNullable,
 )
 
 
@@ -57,6 +52,19 @@ class ModelBase(BaseModel):
     @classmethod
     def model_from(cls, obj: BaseModel) -> Self:
         return cls.model_validate(obj, from_attributes=True)
+
+    @classmethod
+    def validate_against_field(
+        cls,
+        field_name: str,
+        value: Any,
+    ) -> bool:
+        field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
+        try:
+            field_adapter.validate_python(value)
+            return True
+        except ValidationError:
+            return False
 
 
 class NoAliasEncoder(Encoder):
@@ -122,9 +130,9 @@ class DocumentBase(Document):
                 continue
             # make sure we ignore None values that sneaked in because
             # the update models allow them but the original model does not
-            if getattr(
-                updates_model, field
-            ) is None and not self._validate_against_field(field, None):
+            if getattr(updates_model, field) is None and not type(
+                self
+            ).validate_against_field(field, None):
                 continue
             # set attribute
             setattr(self, field, getattr(updates_model, field))
@@ -136,19 +144,6 @@ class DocumentBase(Document):
             return await self.save()  # same as self.insert()
         else:
             return await self.replace()  # raises exception if document does not exist
-
-    @classmethod
-    def _validate_against_field(
-        cls,
-        field_name: str,
-        value: Any,
-    ) -> bool:
-        field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
-        try:
-            field_adapter.validate_python(value)
-            return True  # pragma: no cover
-        except ValidationError:
-            return False
 
 
 def _field_excluded_from_model_variant(
@@ -185,6 +180,55 @@ def _apply_field_exclusions(
     model_type.model_rebuild(force=True)
 
 
+def make_update_model[ModelTypeT: type[ModelBase]](
+    model_cls: ModelTypeT,
+    *,
+    extra_bases: tuple[type] | None = None,
+) -> ModelTypeT:
+    field_overrides = {}
+
+    for f_name, f_info in model_cls.model_fields.items():
+        # skip fields that end with _type, e.g. `resource_type`
+        if f_name.endswith("_type"):
+            continue
+
+        # use the FieldInfo data as dict because mutating FieldInfo instances
+        # is unsupported by pydantic and can lead to unexpected behavior
+        f_dict: dict[str, Any] = f_info.asdict()
+
+        # remove `default_factory` entries from field infos
+        if "attributes" in f_dict and "default_factory" in f_dict["attributes"]:
+            del f_dict["attributes"]["default_factory"]
+
+        # set SchemaOptionalNullable or SchemaOptionalNonNullable as metadata
+        if not f_dict["attributes"].get("json_schema_extra"):
+            f_dict["attributes"]["json_schema_extra"] = {}
+        if (
+            f_dict["attributes"]["json_schema_extra"].get("optionalNullable")
+            is not False
+        ):
+            f_dict["attributes"]["json_schema_extra"]["optionalNullable"] = (
+                model_cls.validate_against_field(f_name, None)
+            )
+
+        field_overrides[f_name] = (
+            Annotated[
+                f_dict["annotation"] | None,  # noqa: F821 (what's going on, here?!)
+                *f_dict["metadata"],
+                # *nullable_anno,
+                Field(**f_dict["attributes"]),
+            ],
+            None,
+        )
+
+    return create_model(
+        f"{model_cls.__name__}Update",
+        __base__=(model_cls, UpdateBase, *(extra_bases or [])),
+        __module__=model_cls.__module__,
+        **field_overrides,
+    )  # ty:ignore[no-matching-overload] # no idea what ty is complaining about here
+
+
 class CreateBase(BaseModel):
     @classmethod
     def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
@@ -193,7 +237,7 @@ class CreateBase(BaseModel):
 
 
 class ReadBase(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="allow")  # TODO: do we need this?
     id: PydanticObjectId
 
 
@@ -202,113 +246,3 @@ class UpdateBase(BaseModel):
     def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
         super().__pydantic_init_subclass__(**kwargs)
         _apply_field_exclusions(cls, "update")
-
-
-# MODEL FACTORY MIXIN
-
-
-class ModelFactoryMixin:
-    _document_model: type[DocumentBase] | None = None
-    _create_model: type[ModelBase] | None = None
-    _read_model: type[ReadBase] | None = None
-    _update_model: type[ModelBase] | None = None
-
-    @classmethod
-    def _is_origin_cls(cls, attr: str) -> bool:
-        for clazz in cls.mro():
-            if attr in vars(clazz):
-                return clazz == cls
-        raise AttributeError(
-            f"Attribute '{attr}' not found in class '{cls.__name__}'"
-        )  # pragma: no cover
-
-    @classmethod
-    def _to_bases_tuple(cls, bases: type | tuple[type]):
-        return (bases,) if type(bases) is not tuple else bases
-
-    @classmethod
-    def document_model(cls, bases: type | tuple[type] = DocumentBase) -> type[Document]:
-        if not cls._document_model or not cls._is_origin_cls("_document_model"):
-            cls._document_model = create_model(
-                f"{cls.__name__}Document",
-                __base__=(cls, *cls._to_bases_tuple(bases)),
-                __module__=cls.__module__,
-            )
-        return cls._document_model
-
-    @classmethod
-    def create_model(cls, bases: type | tuple[type] = CreateBase) -> type[ModelBase]:
-        if not cls._create_model or not cls._is_origin_cls("_create_model"):
-            cls._create_model = create_model(
-                f"{cls.__name__}Create",
-                __base__=(cls, *cls._to_bases_tuple(bases)),
-                __module__=cls.__module__,
-            )
-        return cls._create_model
-
-    @classmethod
-    def read_model(cls, bases: type | tuple[type] = ReadBase) -> type[ModelBase]:
-        if not cls._read_model or not cls._is_origin_cls("_read_model"):
-            cls._read_model = create_model(
-                f"{cls.__name__}Read",
-                __base__=(cls, *cls._to_bases_tuple(bases)),
-                __module__=cls.__module__,
-            )
-        return cls._read_model
-
-    @classmethod
-    def update_model(cls, bases: type | tuple[type] = UpdateBase) -> type[ModelBase]:
-        if not cls._update_model or not cls._is_origin_cls("_update_model"):
-            field_overrides = {}
-            for name, field in cls.model_fields.items():
-                if name.endswith("_type"):
-                    continue  # don't make fields optional that end on "_type"
-                if _field_excluded_from_model_variant(cls, name, "update"):
-                    # don't manipulate fields that will be
-                    # excluded from the target model anyway
-                    continue
-                type_annos = (
-                    (field.annotation,)
-                    if get_origin(field.annotation) not in (Union, UnionType)
-                    else get_args(field.annotation)
-                )
-                extra_field_infos = []
-                if not cls._validate_against_field(name, None):
-                    # None isn't a valid value for this field yet, so we add it to types
-                    type_annos += (type(None),)
-                    # mark that this prop wasn't originally nullable
-                    extra_field_infos.append(SchemaOptionalNonNullable)
-                else:
-                    # mark that this prop was originally nullable
-                    extra_field_infos.append(SchemaOptionalNullable)
-                # merge with original field info
-                fi = FieldInfo.merge_field_infos(
-                    field,
-                    *extra_field_infos,
-                    # set the type annotation to a union of the composed types
-                    annotation=Union[type_annos],  # noqa: UP007
-                    # we always default to None on these update model fields
-                    default=None,
-                )
-                # add to field overrides
-                field_overrides[name] = (fi.annotation, fi)
-            cls._update_model = create_model(
-                f"{cls.__name__}Update",
-                __base__=(cls, *cls._to_bases_tuple(bases)),
-                __module__=cls.__module__,
-                **field_overrides,
-            )
-        return cls._update_model
-
-    @classmethod
-    def _validate_against_field(
-        cls,
-        field_name: str,
-        value: Any,
-    ) -> bool:
-        field_adapter = TypeAdapter(cls.model_fields[field_name].annotation)
-        try:
-            field_adapter.validate_python(value)
-            return True
-        except ValidationError:
-            return False

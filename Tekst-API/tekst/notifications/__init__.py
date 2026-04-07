@@ -32,19 +32,20 @@ _TEMPLATES_DIR = Path(realpath(__file__)).parent / "templates"
 
 @lru_cache(maxsize=128)
 def _get_notification_templates(
-    template_id: Notification, locale: str = "enUS"
+    template_id: Notification,
+    locale: str = "enUS",
 ) -> dict[str, str]:
-    template_id = decamelize(template_id.value)
+    tid = decamelize(str(template_id.value))
     templates = dict()
     for template_type in ("subject", "html", "txt"):
-        path = _TEMPLATES_DIR / locale / f"{template_id}.{template_type}"
+        path = _TEMPLATES_DIR / locale / f"{tid}.{template_type}"
         if not exists(path) and locale != "enUS":  # pragma: no cover
             log.warning(
                 "Missing email translation "
-                f"'{template_id}.{template_type}' for locale '{locale}'. "
+                f"'{tid}.{template_type}' for locale '{locale}'. "
                 "Falling back to 'enUS'."
             )
-            path = _TEMPLATES_DIR / "enUS" / f"{template_id}.{template_type}"
+            path = _TEMPLATES_DIR / "enUS" / f"{tid}.{template_type}"
         if not exists(path):  # pragma: no cover
             raise FileNotFoundError(f"{path} does not exist.")
         templates[template_type] = path.read_text(encoding="utf-8")

@@ -5,19 +5,20 @@ from typing import Annotated, Any, Literal
 
 from pydantic import AfterValidator, Field, StringConstraints
 
-from tekst.models.common import ModelBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
     ContentCssProperties,
-    EmptyStrToNone,
+    FalsyToNone,
     MultiLineString,
     SchemaOptionalNullable,
     SearchReplacements,
@@ -25,7 +26,7 @@ from tekst.types import (
 )
 
 
-class PlainText(ResourceTypeABC):
+class PlainText(ResourceTypeBase):
     """A simple plain text resource type"""
 
     @classmethod
@@ -37,7 +38,7 @@ class PlainText(ResourceTypeABC):
         return PlainTextContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return PlainTextSearchQuery
 
     @classmethod
@@ -74,6 +75,7 @@ class PlainText(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, PlainTextSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -195,7 +197,7 @@ class DeepLLinksConfig(ModelBase):
         str | None,
         StringConstraints(min_length=1, max_length=16),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="DeepL source language code"),
         AfterValidator(lambda x: x.lower() if x else None),
     ] = None
@@ -226,6 +228,37 @@ class PlainTextResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["text"]
 
+    @classmethod
+    def create_model(cls):
+        return PlainTextResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return PlainTextResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return PlainTextResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return PlainTextResourceDocument
+
+
+class PlainTextResourceCreate(PlainTextResource, CreateBase):
+    pass
+
+
+class PlainTextResourceRead(PlainTextResource, ResourceReadExtras, ReadBase):
+    pass
+
+
+PlainTextResourceUpdate = make_update_model(PlainTextResource)
+
+
+class PlainTextResourceDocument(PlainTextResource, ResourceBaseDocument):
+    pass
+
 
 class PlainTextContent(ContentBase):
     """A content of a plain text resource"""
@@ -237,6 +270,37 @@ class PlainTextContent(ContentBase):
         MultiLineString,
         Field(description="Text content of the plain text content object"),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return PlainTextContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return PlainTextContentRead
+
+    @classmethod
+    def update_model(cls):
+        return PlainTextContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return PlainTextContentDocument
+
+
+class PlainTextContentCreate(PlainTextContent, CreateBase):
+    pass
+
+
+class PlainTextContentRead(PlainTextContent, ReadBase):
+    pass
+
+
+PlainTextContentUpdate = make_update_model(PlainTextContent)
+
+
+class PlainTextContentDocument(PlainTextContent, ContentBaseDocument):
+    pass
 
 
 class PlainTextSearchQuery(ModelBase):

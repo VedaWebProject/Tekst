@@ -123,7 +123,7 @@ async def _export(
                     export_format=fmt,
                 )
             except TekstHTTPException as e:
-                if e.detail.detail.key == "unsupportedExportFormat":
+                if "unsupportedExportFormat" in str(e.detail):
                     click.echo(
                         f"Resource {res_id_str} does not support export format {fmt}",
                         err=True,

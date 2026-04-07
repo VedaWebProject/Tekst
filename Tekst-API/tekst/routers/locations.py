@@ -1,7 +1,7 @@
 from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import And, In, NotIn
+from beanie.operators import And, Eq, In, NotIn
 from fastapi import APIRouter, Path, Query, status
 from pydantic import Field, StringConstraints
 
@@ -23,7 +23,7 @@ from tekst.models.text import (
 )
 from tekst.search import set_index_ood
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     LocationLevel,
     LocationPosition,
     SingleLineString,
@@ -177,7 +177,7 @@ async def find_locations(
         str | None,
         StringConstraints(min_length=1, max_length=32),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Query(description="Alias of location(s) to find"),
     ] = None,
     add_full_labels: Annotated[
@@ -195,42 +195,42 @@ async def find_locations(
             le=100,
         ),
     ] = 100,
-) -> list[LocationDocument]:
+) -> list[LocationRead]:
     """
     Finds locations by various combinations of location properties.
     A full combined label including all parent location's labels is added to each
     returned location object if add_full_labels is set to true.
     """
-    print(alias)
     text_doc = None
-    locations = []
 
     # if loc ID is given, this will be very simple...
     if location_id:
-        loc_doc = await LocationDocument.get(location_id)
+        loc_doc: LocationDocument | None = await LocationDocument.get(location_id)
         if not loc_doc:
             return []
-        text_doc = await TextDocument.get(loc_doc.text_id)
-        locations = [loc_doc]
+        text_doc: TextDocument | None = await TextDocument.get(loc_doc.text_id)
+        locations: list[LocationDocument] = [loc_doc]
 
     # ...same for a given parent ID...
     elif parent_id:
-        locations = (
-            await LocationDocument.find(LocationDocument.parent_id == parent_id)
+        locations: list[LocationDocument] = (
+            await LocationDocument.find(Eq(LocationDocument.parent_id, parent_id))
             .limit(limit)
             .to_list()
         )
         if not locations:
-            return []
-        text_doc = await TextDocument.get(locations[0].text_id)
+            return locations
+        text_doc: TextDocument | None = await TextDocument.get(locations[0].text_id)
 
     # ...in any other case, we'll have to puzzle a bit...
     else:
         # try to resolve text first
         if text_id:
-            text_doc = await TextDocument.get(text_id)
+            text_doc: TextDocument | None = await TextDocument.get(text_id)
         if not text_doc and text_slug:
-            text_doc = await TextDocument.find_one(TextDocument.slug == text_slug)
+            text_doc: TextDocument | None = await TextDocument.find_one(
+                TextDocument.slug == text_slug
+            )
         if not text_doc:
             return []
 
@@ -244,22 +244,32 @@ async def find_locations(
             query["aliases"] = alias
 
         # finally, apply query and limit
-        locations = await LocationDocument.find(query).limit(limit).to_list()
+        locations: list[LocationDocument] = (
+            await LocationDocument.find(query).limit(limit).to_list()
+        )
 
     # add the full combined label to each location
     if add_full_labels:
         # transform location documents into LocationRead instances
         # so we can add the additional full_label fields
-        locations = [LocationRead.model_from(loc) for loc in locations]
+        locations: list[LocationRead] = [
+            LocationRead.model_from(loc) for loc in locations
+        ]
         for location in locations:
             full_label = location.label
             parent = await LocationDocument.get(location.parent_id)
             while parent:
-                full_label = f"{parent.label}{text_doc.loc_delim}{full_label}"
+                full_label = (
+                    f"{parent.label}{text_doc.loc_delim if text_doc else ''}"
+                    f"{full_label}"
+                )
                 parent = await LocationDocument.get(parent.parent_id)
-            location.full = full_label
+            location.full = full_label  # ty:ignore[unresolved-attribute]
 
-    return locations
+    return [
+        LocationRead.model_from(loc) if not isinstance(loc, LocationRead) else loc
+        for loc in locations
+    ]
 
 
 @router.get(
@@ -583,20 +593,22 @@ async def delete_location(
     ),
 )
 async def move_location(
-    su: SuperuserDep,
+    _: SuperuserDep,
     location_id: Annotated[
         PydanticObjectId,
         Path(alias="id"),
     ],
     target: MoveLocationRequestBody,
-) -> LocationRead:
+) -> LocationDocument:
     """Moves the specified location to a new position on its level."""
     # get location document
-    location: LocationDocument = await LocationDocument.get(location_id)
+    location: LocationDocument | None = await LocationDocument.get(location_id)
     if not location:
         raise errors.E_404_LOCATION_NOT_FOUND
     # define initial working vars
-    text_levels = len((await TextDocument.get(location.text_id)).levels)
+    text: TextDocument | None = await TextDocument.get(location.text_id)
+    assert text
+    text_levels = len(text.levels)
     forward = target.position > location.position
     direction_mod = 1 if forward else -1
     position = target.position + (1 if target.after else 0) - (1 if forward else 0)
@@ -649,4 +661,4 @@ async def move_location(
             distance = await LocationDocument.find(
                 In(LocationDocument.parent_id, [n.id for n in to_shift]),
             ).count()
-    return await LocationDocument.get(location_id)
+    return location

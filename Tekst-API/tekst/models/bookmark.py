@@ -3,16 +3,17 @@ from typing import Annotated
 from pydantic import Field, StringConstraints
 
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
     PydanticObjectId,
+    ReadBase,
 )
-from tekst.types import EmptyStrToNone, MultiLineString
+from tekst.types import FalsyToNone, MultiLineString
 
 
-class Bookmark(ModelBase, ModelFactoryMixin):
+class Bookmark(ModelBase):
     user_id: Annotated[
         PydanticObjectId,
         Field(description="ID of user who created this bookmark"),
@@ -68,7 +69,7 @@ class Bookmark(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=1000),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Comment associated with this bookmark"),
         ExcludeFromModelVariants(update=True),
     ] = None
@@ -80,5 +81,9 @@ class BookmarkDocument(Bookmark, DocumentBase):
         indexes = ["user_id"]
 
 
-BookmarkRead = Bookmark.read_model()
-BookmarkCreate = Bookmark.create_model()
+class BookmarkRead(Bookmark, ReadBase):
+    pass
+
+
+class BookmarkCreate(Bookmark, CreateBase):
+    pass
