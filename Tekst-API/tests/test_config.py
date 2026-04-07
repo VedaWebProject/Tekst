@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from pydantic import ValidationError
@@ -20,7 +22,7 @@ def test_cors_validator():
 def test_db_validators():
     config = TekstConfig()
     # DB name is not a string (will be forced)
-    config.db.name = 12345
+    config.db.name = 12345  # ty:ignore[invalid-assignment]
     assert config.db.name == "12345"
     # DB name contains invalid chars (expect error)
     with pytest.raises(ValueError):
@@ -61,4 +63,5 @@ def test_temp_files_dir_validator():
     config = TekstConfig()
     # test if temp_files_dir is an existing, writable directory
     with pytest.raises(ValueError):
-        config.temp_files_dir = "/foo/bar"
+        config.temp_files_dir = Path("/foo/bar")
+        config.temp_files_dir = "/foo/bar"  # ty:ignore[invalid-assignment]

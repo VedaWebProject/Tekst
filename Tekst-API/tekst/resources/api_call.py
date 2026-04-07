@@ -5,29 +5,35 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints, model_validator
 
-from tekst.models.common import ModelBase
+from tekst.models.common import (
+    CreateBase,
+    ModelBase,
+    ReadBase,
+    make_update_model,
+)
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import (
     GeneralResourceConfig,
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
-    EmptyStrToNone,
     ExcludeFromModelVariants,
+    FalsyToNone,
     HttpUrl,
     SchemaOptionalNonNullable,
     SingleLineString,
 )
 
 
-class ApiCall(ResourceTypeABC):
+class ApiCall(ResourceTypeBase):
     """A resource type for calls to an API"""
 
     @classmethod
@@ -39,7 +45,7 @@ class ApiCall(ResourceTypeABC):
         return ApiCallContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery] | None:
+    def search_query_model(cls) -> type[ModelBase] | None:
         return None  # pragma: no cover
 
     @classmethod
@@ -186,7 +192,7 @@ class ContentTransformConfig(ModelBase):
     js: Annotated[
         str | None,
         StringConstraints(max_length=102400),
-        EmptyStrToNone,
+        FalsyToNone,
         SchemaOptionalNonNullable,
     ] = None
 
@@ -214,6 +220,37 @@ class ApiCallResource(ResourceBase):
     @classmethod
     def quick_search_fields(cls) -> list[str]:
         return []  # pragma: no cover
+
+    @classmethod
+    def create_model(cls):
+        return ApiCallResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return ApiCallResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return ApiCallResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ApiCallResourceDocument
+
+
+class ApiCallResourceCreate(ApiCallResource, CreateBase):
+    pass
+
+
+class ApiCallResourceRead(ApiCallResource, ResourceReadExtras, ReadBase):
+    pass
+
+
+ApiCallResourceUpdate = make_update_model(ApiCallResource)
+
+
+class ApiCallResourceDocument(ApiCallResource, ResourceBaseDocument):
+    pass
 
 
 class ApiCallContentItem(ModelBase):
@@ -257,7 +294,7 @@ class ApiCallContent(ContentBase):
     transform_context: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=81920),
-        EmptyStrToNone,
+        FalsyToNone,
         Field(
             description=(
                 "Extra data that will be available to the transformation script. "
@@ -266,3 +303,34 @@ class ApiCallContent(ContentBase):
         ),
         SchemaOptionalNonNullable,
     ] = None
+
+    @classmethod
+    def create_model(cls):
+        return ApiCallContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return ApiCallContentRead
+
+    @classmethod
+    def update_model(cls):
+        return ApiCallContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return ApiCallContentDocument
+
+
+class ApiCallContentCreate(ApiCallContent, CreateBase):
+    pass
+
+
+class ApiCallContentRead(ApiCallContent, ReadBase):
+    pass
+
+
+ApiCallContentUpdate = make_update_model(ApiCallContent)
+
+
+class ApiCallContentDocument(ApiCallContent, ContentBaseDocument):
+    pass

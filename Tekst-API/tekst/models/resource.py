@@ -21,7 +21,7 @@ from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
+    make_update_model,
 )
 from tekst.models.location import LocationDocument
 from tekst.models.precomputed import PrecomputedDataDocument
@@ -29,7 +29,7 @@ from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     MultiLineString,
     ResourceTypeName,
     SingleLineString,
@@ -80,7 +80,7 @@ class ResourceDescriptionTranslation(TranslationBase):
     ]
 
 
-class ResourceBase(ModelBase, ModelFactoryMixin):
+class ResourceBase(ModelBase):
     """A resource describing a set of data on a text"""
 
     title: Annotated[
@@ -179,7 +179,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=10240),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Citation details for this resource"),
     ] = None
 
@@ -196,7 +196,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=512),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="License used for contents of this resource"),
     ] = None
 
@@ -204,7 +204,7 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=1024),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Link to license used for contents of this resource"),
     ] = None
 
@@ -280,6 +280,26 @@ class ResourceBase(ModelBase, ModelFactoryMixin):
                 force_html(translation["translation"])
             )
         return v
+
+    @classmethod
+    def create_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the CREATE model variant of this resource type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def read_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the READ model variant of this resource type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def update_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the UPDATE model variant of this resource type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
+
+    @classmethod
+    def document_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
+        """Returns the Beanie Document model variant of this content type"""
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
         restrict_shares_info = user is None or (
@@ -525,7 +545,8 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             .to_list()
         )
 
-        text_doc: TextDocument = await TextDocument.get(self.text_id)  # ty:ignore[invalid-assignment]
+        text_doc: TextDocument | None = await TextDocument.get(self.text_id)
+        assert text_doc
         # get all resource level location labels
         location_labels = await text_doc.full_location_labels(self.level)
         # get all parent level location labels
@@ -628,9 +649,13 @@ class ResourceReadExtras(ModelBase):
         list[UserReadPublic] | None,
         Field(description="Public user data for users allowed to write this resource"),
     ] = None
+    corrections: Annotated[
+        int | None,
+        Field(description="Number of correction notes available for this resource"),
+    ]
 
 
-ResourceBaseUpdate = ResourceBase.update_model()
+ResourceBaseUpdate = make_update_model(ResourceBase)
 
 
 class LocationCoverage(ModelBase):
@@ -640,7 +665,7 @@ class LocationCoverage(ModelBase):
 
 
 class ParentCoverage(ModelBase):
-    label: Annotated[str | None, EmptyStrToNone]
+    label: Annotated[str | None, FalsyToNone]
     locations: list[LocationCoverage]
 
 

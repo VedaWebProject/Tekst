@@ -3,17 +3,18 @@ from typing import Annotated
 from pydantic import AwareDatetime, Field, StringConstraints
 
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
     PydanticObjectId,
+    ReadBase,
 )
 from tekst.models.user import UserReadPublic
 from tekst.types import MultiLineString
 
 
-class UserMessage(ModelBase, ModelFactoryMixin):
+class UserMessage(ModelBase):
     sender: Annotated[
         PydanticObjectId | None,
         Field(description="ID of the sender or None if this is a system message"),
@@ -58,8 +59,12 @@ class UserMessageDocument(UserMessage, DocumentBase):
         ]
 
 
-UserMessageRead = UserMessage.read_model()
-UserMessageCreate = UserMessage.create_model()
+class UserMessageRead(UserMessage, ReadBase):
+    pass
+
+
+class UserMessageCreate(UserMessage, CreateBase):
+    pass
 
 
 class UserMessageThread(ModelBase):

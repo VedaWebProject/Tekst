@@ -20,6 +20,7 @@ from tekst.models.search import (
     SearchResults,
 )
 from tekst.models.text import TextDocument
+from tekst.models.user import UserRead
 from tekst.state import get_state
 from tekst.utils import client_hash
 
@@ -94,7 +95,7 @@ async def get_search_index_info(su: SuperuserDep) -> list[IndexInfo]:
 
 
 async def _export_search_results_task(
-    user: OptionalUserDep,
+    user: UserRead | None,
     cfg: TekstConfig,
     req_body: QuickSearchRequestBody | AdvancedSearchRequestBody,
 ) -> dict[str, Any]:
@@ -103,9 +104,11 @@ async def _export_search_results_task(
     req_body.settings_general.pagination.page_size = 50
 
     # prepare data needed for export data transformation
-    locale = user.locale if user else None
-    texts_by_ids = {str(txt.id): txt for txt in await TextDocument.find_all().to_list()}
-    resources_by_ids = {
+    locale = user.locale or "enUS" if user else "enUS"
+    texts_by_ids: dict[str, TextDocument] = {
+        str(txt.id): txt for txt in await TextDocument.find_all().to_list()
+    }
+    resources_by_ids: dict[str, ResourceBaseDocument] = {
         str(res.id): res
         for res in await ResourceBaseDocument.find_all(with_children=True).to_list()
     }
@@ -116,6 +119,8 @@ async def _export_search_results_task(
         # transform hits into actual search results export data
         for hit in results.hits:
             text = texts_by_ids.get(str(hit.text_id))
+            if not text:
+                continue
             hits.append(
                 {
                     "location": hit.full_label,
@@ -126,7 +131,8 @@ async def _export_search_results_task(
                     "score": hit.score,
                     "highlights": {
                         pick_translation(
-                            resources_by_ids.get(hl_res_id).title, locale
+                            resources_by_ids.get(hl_res_id).title,  # ty:ignore[unresolved-attribute]
+                            locale,
                         ): hl
                         for hl_res_id, hl in hit.highlight.items()
                         if hl

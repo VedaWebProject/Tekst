@@ -144,9 +144,10 @@ async def download_structure_template(
         for n in range(len(text.levels)):
             location = deepcopy(dummy_location)
             location.label = location.label.format(text.levels[n][0]["translation"])
-            location.aliases[0] = location.aliases[0].format(
-                text.levels[n][0]["translation"]
-            )
+            if location.aliases and len(location.aliases):
+                location.aliases[0] = location.aliases[0].format(
+                    text.levels[n][0]["translation"]
+                )
             if curr_location_def is None:
                 structure_def.locations.append(location)
             else:
@@ -213,7 +214,7 @@ async def import_text_structure(
     Uploads the structure definition for a text to apply as a structure of locations
     """
     # test upload file MIME type
-    if file.content_type.lower() != "application/json":
+    if file.content_type and file.content_type.lower() != "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
 
     # find text
@@ -288,12 +289,13 @@ async def _update_text_structure_task(
                 exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
                 values={"errors": f"Location ID {loc['id']} is not a valid ID"},
             )
-        loc_doc = await LocationDocument.get(doc_id)
-        if not loc_doc:
+        loc_doc: LocationDocument | None = await LocationDocument.get(doc_id)
+        if loc_doc is None:
             raise errors.update_values(
                 exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
                 values={"errors": f"Location with ID {loc['id']} does not exist"},
             )
+        assert isinstance(loc_doc, LocationDocument)  # for type checker
 
         # check if this location belongs to the same text as the last one
         all_locs_same_text = all_locs_same_text and (
@@ -324,6 +326,7 @@ async def _update_text_structure_task(
     # save modified documents
     await LocationDocument.replace_many(updated_docs)
     # mark the text's index as out-of-date
+    assert isinstance(last_text_id, PydanticObjectId)  # for type checker
     await set_index_ood(last_text_id)
 
 
@@ -355,7 +358,7 @@ async def update_text_structure(
     Only existing locations (with a correct ID) will be updated.
     """
     # test upload file MIME type
-    if file.content_type.lower() != "application/json":
+    if file.content_type and file.content_type.lower() != "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
 
     # find text
@@ -416,7 +419,8 @@ async def insert_level(
         ),
     ],
 ) -> TextRead:
-    text_doc: TextDocument = await TextDocument.get(text_id)
+    text_doc: TextDocument | None = await TextDocument.get(text_id)
+    assert text_doc
 
     if not text_doc:
         raise errors.E_404_TEXT_NOT_FOUND
@@ -528,7 +532,8 @@ async def delete_level(
         ),
     ],
 ) -> TextRead:
-    text_doc: TextDocument = await TextDocument.get(text_id)
+    text_doc: TextDocument | None = await TextDocument.get(text_id)
+    assert text_doc
 
     if not text_doc:
         raise errors.E_404_TEXT_NOT_FOUND
@@ -607,6 +612,7 @@ async def delete_level(
     await text_doc.save()
 
     # mark the text's index as out-of-date
+    assert text_doc.id
     await set_index_ood(text_doc.id)
 
     return text_doc

@@ -12,12 +12,12 @@ from tekst.openapi.tags_metadata import get_tags_metadata
 
 
 def customize_openapi(app: FastAPI, state: PlatformState):
-    def _custom_openapi():
+    def _custom_openapi() -> dict[str, Any]:
         if not app.openapi_schema:
             app.openapi_schema = generate_schema(app, state)
         return app.openapi_schema
 
-    app.openapi = _custom_openapi
+    app.openapi = _custom_openapi  # ty:ignore[invalid-assignment]
 
 
 def generate_schema(app: FastAPI, state: PlatformState):
@@ -26,7 +26,7 @@ def generate_schema(app: FastAPI, state: PlatformState):
     schema = get_openapi(
         title=state.platform_name,
         version=cfg.tekst["version"],
-        summary=cfg.api_doc.summary or pick_translation(state.platform_subtitle),
+        summary=cfg.api_doc.summary or pick_translation(state.platform_subtitle),  # ty:ignore[invalid-argument-type]
         description=cfg.api_doc.description,
         routes=app.routes,
         servers=[{"url": api_url}],
@@ -72,7 +72,7 @@ async def generate_openapi_json(
 
     async with LifespanManager(app):  # noqa: SIM117
         schema = app.openapi()
-        json_dump_kwargs = {
+        json_dump_kwargs: dict[str, Any] = {
             "skipkeys": True,
             "indent": indent or None,
             "sort_keys": sort_keys,

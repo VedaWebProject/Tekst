@@ -11,11 +11,11 @@ from tekst.config import TekstConfig, get_config
 from tekst.i18n import LocaleKey
 from tekst.models.common import (
     ModelBase,
-    ModelFactoryMixin,
+    make_update_model,
 )
 from tekst.models.notifications import Notification
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     HttpUrl,
     MultiLineString,
     SingleLineString,
@@ -35,11 +35,11 @@ type PrivateUserProps = Annotated[
 
 
 type UserNotificationTrigger = Literal[
-    Notification.EMAIL_MESSAGE_RECEIVED.value,
-    Notification.EMAIL_NEW_CORRECTION.value,
-    Notification.EMAIL_ADDED_AS_OWNER.value,
-    Notification.USRMSG_RESOURCE_PROPOSED.value,
-    Notification.USRMSG_RESOURCE_PUBLISHED.value,
+    Notification.EMAIL_MESSAGE_RECEIVED,
+    Notification.EMAIL_NEW_CORRECTION,
+    Notification.EMAIL_ADDED_AS_OWNER,
+    Notification.USRMSG_RESOURCE_PROPOSED,
+    Notification.USRMSG_RESOURCE_PUBLISHED,
 ]
 UserNotificationTriggers = Annotated[
     list[UserNotificationTrigger],
@@ -50,8 +50,8 @@ UserNotificationTriggers = Annotated[
 ]
 
 type AdminNotificationTrigger = Literal[
-    Notification.EMAIL_USER_AWAITS_ACTIVATION.value,
-    Notification.EMAIL_NEW_CORRECTION.value,
+    Notification.EMAIL_USER_AWAITS_ACTIVATION,
+    Notification.EMAIL_NEW_CORRECTION,
 ]
 AdminNotificationTriggers = Annotated[
     list[AdminNotificationTrigger],
@@ -67,7 +67,7 @@ class UserReadPublic(ModelBase):
     username: str
     name: str | None = None
     affiliation: str | None = None
-    avatar_url: Annotated[HttpUrl | None, EmptyStrToNone] = None
+    avatar_url: Annotated[HttpUrl | None, FalsyToNone] = None
     bio: str | None = None
     is_active: bool
     is_superuser: bool
@@ -81,7 +81,7 @@ class UserReadPublic(ModelBase):
         return self
 
 
-class User(ModelBase, ModelFactoryMixin):
+class User(ModelBase):
     """This base model defines the custom fields added to FastAPI-User's user model"""
 
     username: Annotated[
@@ -111,26 +111,26 @@ class User(ModelBase, ModelFactoryMixin):
     ] = None
     avatar_url: Annotated[
         HttpUrl | None,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="URL of this user's avatar picture"),
     ] = None
     bio: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=2000),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Biography of this user"),
     ] = None
     public_fields: PrivateUserProps = []
     user_notification_triggers: UserNotificationTriggers = [
-        Notification.EMAIL_MESSAGE_RECEIVED.value,
-        Notification.EMAIL_NEW_CORRECTION.value,
-        Notification.EMAIL_ADDED_AS_OWNER.value,
-        Notification.USRMSG_RESOURCE_PROPOSED.value,
-        Notification.USRMSG_RESOURCE_PUBLISHED.value,
+        Notification.EMAIL_MESSAGE_RECEIVED,
+        Notification.EMAIL_NEW_CORRECTION,
+        Notification.EMAIL_ADDED_AS_OWNER,
+        Notification.USRMSG_RESOURCE_PROPOSED,
+        Notification.USRMSG_RESOURCE_PUBLISHED,
     ]
     admin_notification_triggers: AdminNotificationTriggers = [
-        Notification.EMAIL_USER_AWAITS_ACTIVATION.value,
+        Notification.EMAIL_USER_AWAITS_ACTIVATION,
     ]
     last_login: AwareDatetime | None = None
     seen: bool | None = None
@@ -167,7 +167,10 @@ class UserCreate(User, schemas.BaseUserCreate):
     is_active: bool = _cfg.security.users_active_by_default
 
 
-UserUpdate = User.update_model(schemas.BaseUserUpdate)
+UserUpdate = make_update_model(
+    User,
+    extra_bases=(schemas.BaseUserUpdate,),
+)
 
 
 class UsersSearchResult(ModelBase):

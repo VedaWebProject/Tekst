@@ -6,12 +6,9 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
-import fastapi_users.models as fapi_users_models
-
 from beanie import Document, PydanticObjectId
 from beanie.operators import Eq, Or, Pull, Set, Size
 from fastapi import (
-    APIRouter,
     Depends,
     FastAPI,
     HTTPException,
@@ -23,6 +20,7 @@ from fastapi_users import (
     BaseUserManager,
     FastAPIUsers,
     InvalidPasswordException,
+    models,
 )
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -76,7 +74,7 @@ _cookie_transport = CookieTransport(
     cookie_path=_cfg.api_path or "/",
     cookie_secure=not _cfg.dev_mode,
     cookie_httponly=True,
-    cookie_samesite="Lax",
+    cookie_samesite="lax",
 )
 
 _bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
@@ -117,7 +115,7 @@ def _get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
         secret=_cfg.security.secret,
         lifetime_seconds=_cfg.security.auth_jwt_lifetime,
-        token_audience="tekst:jwt",
+        token_audience=["tekst:jwt"],
     )
 
 
@@ -359,7 +357,12 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
                 reason="Password should not contain e-mail address"
             )
 
-    async def create(self, user_create, **kwargs) -> fapi_users_models.UP:
+    async def create(
+        self,
+        user_create: UserCreate,
+        safe: bool = False,
+        request: Request | None = None,
+    ) -> models.UP:
         """
         Overrides FastAPI-User's BaseUserManager's create method to check if the
         username already exists and respond with a meaningful HTTP exception.
@@ -374,7 +377,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="REGISTER_USERNAME_ALREADY_EXISTS",
             )
-        return await super().create(user_create, **kwargs)
+        return await super().create(user_create, safe, request)  # ty:ignore[invalid-return-type]
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
@@ -390,7 +393,7 @@ _fastapi_users = FastAPIUsers[UserDocument, PydanticObjectId](
 )
 
 
-def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
+def setup_auth_routes(app: FastAPI) -> None:
     # cookie auth
     if _cfg.security.enable_cookie_auth:
         app.include_router(
@@ -437,7 +440,7 @@ def setup_auth_routes(app: FastAPI) -> list[APIRouter]:
     app.include_router(
         _fastapi_users.get_users_router(
             UserRead,
-            UserUpdate,
+            UserUpdate,  # ty:ignore[invalid-argument-type] # this is correct
             requires_verification=not _cfg.security.closed_mode,
         ),
         prefix="/users",

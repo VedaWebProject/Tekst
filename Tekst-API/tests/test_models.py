@@ -1,25 +1,35 @@
+from typing import Any
+
 import pytest
 
+from beanie import PydanticObjectId
 from pydantic import ValidationError
+from pydantic_extra_types.color import Color
 from tekst.models.content import ContentBase
 from tekst.models.resource import ResourceBase
 from tekst.models.resource_configs import ItemGroup, ItemIntegrationConfig, ItemProps
-from tekst.models.text import Text, TextCreate, TextDocument, TextRead, TextUpdate
+from tekst.models.text import (
+    Text,
+    TextCreate,
+    TextDocument,
+    TextLevelTranslation,
+    TextRead,
+    TextUpdate,
+)
 from tekst.models.user import UserReadPublic
 
 
 def test_basic_validation():
     with pytest.raises(ValidationError) as error:
-        TextRead()
+        TextRead()  # ty:ignore[missing-argument]
         assert "missing" in str(error)
 
 
 def test_serialization(get_test_data):
     test_data = get_test_data("collections/texts.json")
     text = TextCreate(**test_data[0])
-    text.loc_delim = None
     assert text.model_dump().get("title")
-    dummy_id = "6331b6e05c474b9f8f19330f"
+    dummy_id = PydanticObjectId("6331b6e05c474b9f8f19330f")
     text = TextRead(
         id=dummy_id,
         loc_delim="---",
@@ -27,31 +37,24 @@ def test_serialization(get_test_data):
     )
     assert "id" in text.model_dump()
     assert "loc_delim" in text.model_dump()
-    text = TextRead(
-        **{
-            "id": dummy_id,
-            **test_data[0],
-        }
+    text = TextRead(id=dummy_id, **test_data[0])
+    assert text.id == dummy_id
+
+
+def test_instantiation_with_alias():
+    t = TextCreate(
+        title="Foo",
+        slug="foo",
+        locDelim="+",  # ty:ignore[unknown-argument]
+        levels=[[TextLevelTranslation(locale="enUS", translation="foo")]],
     )
-    assert str(text.id) == dummy_id
-
-
-def test_deserialization():
-    data = {
-        "title": "Foo",
-        "slug": "foo",
-        "locDelim": "+",
-        "levels": [[{"locale": "enUS", "translation": "foo"}]],
-    }
-    t = TextCreate(**data)
     assert t.loc_delim == "+"
-    data = {
-        "title": "Foo",
-        "slug": "foo",
-        "loc_delim": "+",
-        "levels": [[{"locale": "enUS", "translation": "foo"}]],
-    }
-    t = TextCreate(**data)
+    t = TextCreate(
+        title="Foo",
+        slug="foo",
+        loc_delim="+",
+        levels=[[TextLevelTranslation(locale="enUS", translation="foo")]],
+    )
     assert t.loc_delim == "+"
 
 
@@ -77,8 +80,8 @@ def test_resource_subtitle_validator():
                 "translation": "foo",
             }
         ],
-        text_id="5eb7cfb05e32e07750a1756a",
-        owner_ids=["5eb7cfb05e32e07750a1756a"],  # nonsense
+        text_id=PydanticObjectId("5eb7cfb05e32e07750a1756a"),
+        owner_ids=[PydanticObjectId("5eb7cfb05e32e07750a1756a")],  # nonsense
         level=0,
         resource_type="plainText",
         subtitle=[
@@ -92,7 +95,7 @@ def test_resource_subtitle_validator():
     # desc = None
     resource = PlainTextResource(
         title=[{"locale": "*", "translation": "foo"}],
-        text_id="5eb7cfb05e32e07750a1756a",
+        text_id=PydanticObjectId("5eb7cfb05e32e07750a1756a"),
         level=0,
         resource_type="plainText",
     )
@@ -102,7 +105,7 @@ def test_resource_subtitle_validator():
 
 def test_user_read_public():
     urp = UserReadPublic(
-        id="5eb7cfb05e32e07750a1756a",
+        id=PydanticObjectId("5eb7cfb05e32e07750a1756a"),
         username="fooBar",
         name="Foo Bar",
         affiliation="Baz",
@@ -118,7 +121,8 @@ def test_user_read_public():
 @pytest.mark.anyio
 async def test_text_get_full_loc_labels_invalid_level(insert_test_data):
     text_id = (await insert_test_data())["texts"][0]
-    text_doc: TextDocument = await TextDocument.get(text_id)
+    text_doc: TextDocument | None = await TextDocument.get(text_id)
+    assert text_doc
     with pytest.raises(ValueError):
         await text_doc.full_location_labels(42)
 
@@ -146,8 +150,8 @@ def test_resource_type_validator(wrong_id):
     with pytest.raises(ValidationError):
         ResourceBase(
             resource_type="foo_bar",
-            title="Foo Bar",
-        )
+            title="Foo Bar",  # ty:ignore[invalid-argument-type]
+        )  # ty:ignore[missing-argument]
     with pytest.raises(ValidationError):
         ContentBase(
             resource_id=wrong_id,
@@ -164,18 +168,18 @@ async def test_apply_updates(test_app):
         slug="foo",
         levels=[[{"locale": "enUS", "translation": "foo"}]],
         loc_delim=" > ",
-        color="#FF0000",
+        color=Color("#FF0000"),
     )
     assert text.labeled_location
     text_doc = TextDocument.model_from(text)
     await text_doc.create()
     assert text_doc.color.as_rgb() == "rgb(255, 0, 0)"
     assert text_doc.id
-    text_updates = TextUpdate(slug="bar", loc_delim=None)
+    text_updates = TextUpdate(slug="bar", loc_delim=None)  # ty:ignore[invalid-argument-type, missing-argument]
     text_doc = await text_doc.apply_updates(text_updates)
     assert text_doc.slug == "bar"
     assert text_doc.loc_delim == " > "  # apply_updates should ignore None
-    text_read = TextRead.model_from(text_doc)
+    text_read: Any = TextRead.model_from(text_doc)
     assert text_read.slug == "bar"
     assert text_read.id
 

@@ -1,12 +1,12 @@
 import hashlib
 
-from collections.abc import Iterator
 from tempfile import TemporaryDirectory
+from types import AsyncGeneratorType
 
 from fastapi import Request
 
 
-async def get_temp_dir() -> Iterator[str]:
+async def get_temp_dir() -> AsyncGeneratorType[str]:
     dir = TemporaryDirectory()
     try:
         yield dir.name
@@ -29,6 +29,8 @@ def client_hash(
         str(request.headers.get("X-Forwarded-For", "")).split(",")[-1]
         if behind_reverse_proxy
         else request.client.host
+        if request.client
+        else None
     )
     if ident:
         return hashlib.sha256(ident.encode("utf-8")).hexdigest()

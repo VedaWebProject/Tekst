@@ -1,12 +1,12 @@
 from typing import Any
 
-from tekst.models.resource import ResourceBase
+from tekst.models.resource import ResourceBaseDocument
 from tekst.resources import resource_types_mgr
 
 
 def add_analysis_settings(
     *,
-    for_resource: ResourceBase,
+    for_resource: ResourceBaseDocument,
     to_analysis: dict[str, Any],
 ) -> None:
     res_id_str = str(for_resource.id)
@@ -18,7 +18,7 @@ def add_analysis_settings(
     # extended/modified to create a normalizer instead of an analyzer!)
 
     try:
-        has_search_replacements = bool(for_resource.config.special.search_replacements)
+        has_search_replacements = bool(for_resource.config.special.search_replacements)  # ty:ignore[unresolved-attribute]
     except AttributeError:
         has_search_replacements = False
 
@@ -28,7 +28,7 @@ def add_analysis_settings(
         if "analyzer" not in to_analysis:
             to_analysis["analyzer"] = {}
         for index, search_replacement in enumerate(
-            for_resource.config.special.search_replacements
+            for_resource.config.special.search_replacements  # ty:ignore[unresolved-attribute]
         ):
             filter_name = f"{res_id_str}_search_replacements_{index}"
             to_analysis["char_filter"][filter_name] = {
@@ -58,12 +58,12 @@ def add_analysis_settings(
 
 def add_mappings(
     *,
-    for_resource: ResourceBase,
+    for_resource: ResourceBaseDocument,
     to_mappings: dict[str, Any],
 ) -> None:
     # determine analyzer names
     try:
-        use_special_analyzers = bool(for_resource.config.special.search_replacements)
+        use_special_analyzers = bool(for_resource.config.special.search_replacements)  # ty:ignore[unresolved-attribute]
     except AttributeError:
         use_special_analyzers = False
     lenient_analyzer = (
@@ -82,7 +82,7 @@ def add_mappings(
 
 
 def quick_qstr_query(
-    user_query: str,
+    user_query: str | None,
     fields: list[tuple[str, str]],
     *,
     default_op: str = "OR",

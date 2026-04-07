@@ -154,6 +154,7 @@ async def test_get_nearest_content_position(
         "67c043c0906e79b9062e22f4",
         with_children=True,
     )
+    assert resource
     location = (
         await LocationDocument.find(
             LocationDocument.level == resource.level,

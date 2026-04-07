@@ -168,6 +168,8 @@ async def test_delete_text(
         delete_failed = resp.status_code == 400
         if delete_failed:
             break
+    else:
+        delete_failed = False
     assert delete_failed
 
 

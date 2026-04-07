@@ -8,16 +8,21 @@ from fastapi import APIRouter, BackgroundTasks, Path, Query, status
 from tekst import errors
 from tekst.auth import OptionalUserDep, UserDep
 from tekst.config import TekstConfig, get_config
-from tekst.models.content import ContentArchiveSignature, ContentBaseDocument
+from tekst.models.common import DocumentBase
+from tekst.models.content import (
+    ContentArchiveSignature,
+    ContentBase,
+    ContentBaseDocument,
+)
 from tekst.models.location import LocationDocument
 from tekst.models.resource import ResourceBaseDocument
-from tekst.resources import (
+from tekst.models.resource_unions import (
     AnyContentCreate,
     AnyContentDocument,
     AnyContentRead,
     AnyContentUpdate,
-    resource_types_mgr,
 )
+from tekst.resources import resource_types_mgr
 from tekst.search import set_index_ood
 
 
@@ -74,13 +79,14 @@ async def create_content(
     await set_index_ood(resource.text_id, by_public_resource=resource.public)
 
     # create the content document and return it
-    return (
-        await resource_types_mgr.get(content.resource_type)
+    content_doc: ContentBase = (
+        resource_types_mgr.get(content.resource_type)
         .content_model()
         .document_model()
         .model_from(content)
-        .create()
     )
+    assert isinstance(content_doc, DocumentBase)  # for type checker
+    return await content_doc.create()
 
 
 @router.get(
@@ -119,7 +125,7 @@ async def get_archived_contents(
             ContentBaseDocument.location_id == location_id,
             with_children=True,
         )
-        .sort(-ContentBaseDocument.created_at)
+        .sort(-ContentBaseDocument.created_at)  # ty:ignore[unsupported-operator]
         .project(ContentArchiveSignature)
         .to_list(limit)
     )
@@ -169,7 +175,7 @@ async def update_content(
     updates: AnyContentUpdate,
     user: UserDep,
 ) -> AnyContentDocument:
-    content_doc: ContentBaseDocument = await ContentBaseDocument.get(
+    content_doc: ContentBaseDocument | None = await ContentBaseDocument.get(
         content_id, with_children=True
     )
     if not content_doc:
@@ -319,10 +325,12 @@ async def restore_archived_content(
     Restores the archived content with the given ID, archives any content currently
     present for the same resource/location.
     """
-    archived_content_doc: ContentBaseDocument = await ContentBaseDocument.get(
+    archived_content_doc: ContentBaseDocument | None = await ContentBaseDocument.get(
         content_id,
         with_children=True,
     )
+    if not archived_content_doc:
+        raise errors.E_404_CONTENT_NOT_FOUND
     # check if the resource this content belongs to is writable by user
     resource_read_allowed = archived_content_doc and (
         await ResourceBaseDocument.find_one(
@@ -397,7 +405,7 @@ async def find_contents(
 
     # preprocess resource_ids to add IDs of original resources in case we have patches
     if resource_ids:
-        resource_ids.append(
+        resource_ids.extend(
             [
                 res.patch_for
                 for res in await ResourceBaseDocument.find(

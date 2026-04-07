@@ -2,7 +2,7 @@ import json
 
 from pathlib import Path as PathObj
 from tempfile import NamedTemporaryFile
-from typing import Annotated, Any
+from typing import Annotated, Any, get_args
 from uuid import uuid4
 
 from beanie import PydanticObjectId
@@ -25,33 +25,113 @@ from tekst.auth import OptionalUserDep, SuperuserDep, UserDep
 from tekst.config import ConfigDep, TekstConfig
 from tekst.i18n import pick_translation
 from tekst.logs import log
+from tekst.models.common import DocumentBase
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.notifications import Notification
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
+    ResourceBase,
     ResourceBaseDocument,
     ResourceCoverage,
     ResourceExportFormat,
     res_exp_fmt_info,
 )
-from tekst.models.text import TextDocument
-from tekst.models.user import UserDocument, UserRead
-from tekst.notifications import send_notification
-from tekst.resources import (
-    RES_EXCLUDE_EXP_IMP,
+from tekst.models.resource_unions import (
     AnyResourceCreate,
     AnyResourceRead,
     AnyResourceUpdate,
+)
+from tekst.models.text import TextDocument
+from tekst.models.user import UserDocument, UserRead, UserReadPublic
+from tekst.notifications import send_notification
+from tekst.resources import (
+    RES_EXCLUDE_EXP_IMP,
     call_resource_precompute_hooks,
-    prepare_resource_read,
     resource_types_mgr,
 )
 from tekst.search import set_index_ood
 from tekst.state import StateDep
 from tekst.types import ResourceTypeName
 from tekst.utils import client_hash
+
+
+async def prepare_resource_read(
+    resource_doc: ResourceBaseDocument,
+    for_user: UserRead | None = None,
+) -> AnyResourceRead:
+    """
+    A helper function that returns a fully prepared resource read instance for clients
+    """
+    # convert resource document to resource type's read model instance
+    resource: ResourceBase = (
+        resource_types_mgr.get(resource_doc.resource_type)
+        .resource_model()
+        .read_model()(
+            **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
+        )
+    )
+
+    assert isinstance(resource, get_args(AnyResourceRead)[0])
+
+    # include writable flag
+    resource.writable = bool(
+        for_user
+        and (
+            for_user.is_superuser
+            or (
+                (
+                    for_user.id in resource.owner_ids
+                    or for_user.id in resource_doc.shared_write
+                )
+                and not resource.proposed
+            )
+        )
+    )
+
+    # include owner(s) user data in each resource model (if owner IDs are set)
+    if resource.owner_ids:
+        resource.owners = [
+            UserReadPublic.model_from(owner)
+            for owner in [
+                await UserDocument.get(owner_id) for owner_id in resource.owner_ids
+            ]
+            if owner
+        ]
+
+    # include corrections count if user is owner of the resource
+    # or, if resource has no owner(s), user is superuser
+    if for_user and (
+        for_user.is_superuser
+        or for_user.id in resource.owner_ids
+        or for_user.id in resource.shared_write
+    ):
+        resource.corrections = await CorrectionDocument.find(
+            CorrectionDocument.resource_id == resource.id
+        ).count()
+
+    # include shared-with user data in each resource model (if any)
+    if for_user and (for_user.is_superuser or for_user.id in resource.owner_ids):
+        if resource.shared_read:
+            resource.shared_read_users = [
+                UserReadPublic.model_from(u)
+                for u in await UserDocument.find(
+                    In(UserDocument.id, resource.shared_read)
+                ).to_list()
+            ]
+        if resource.shared_write:
+            resource.shared_write_users = [
+                UserReadPublic.model_from(u)
+                for u in await UserDocument.find(
+                    In(UserDocument.id, resource.shared_write)
+                ).to_list()
+            ]
+    else:
+        resource.shared_read = []
+        resource.shared_write = []
+
+    return resource
 
 
 router = APIRouter(
@@ -122,12 +202,13 @@ async def create_resource(
         raise errors.E_400_RESOURCE_INVALID_LEVEL
 
     # find document model for this resource type, instantiate, create
-    resource_doc = (
+    resource_doc: ResourceBase = (
         resource_types_mgr.get(resource.resource_type)
         .resource_model()
         .document_model()
         .model_from(resource)
     )
+    assert isinstance(resource_doc, ResourceBaseDocument)  # for type checker
     resource_doc.owner_ids = [user.id]  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
@@ -446,8 +527,9 @@ async def update_resource_owners(
     owner_ids: Annotated[list[PydanticObjectId], Body(min_length=1)],
 ) -> AnyResourceRead:
     # check if resource exists
-    resource_doc: ResourceBaseDocument = await ResourceBaseDocument.get(
-        resource_id, with_children=True
+    resource_doc: ResourceBaseDocument | None = await ResourceBaseDocument.get(
+        resource_id,
+        with_children=True,
     )
     if not resource_doc:
         raise errors.E_404_RESOURCE_NOT_FOUND
@@ -486,7 +568,10 @@ async def update_resource_owners(
                 u,
                 Notification.EMAIL_ADDED_AS_OWNER,
                 username=user.username,
-                resource_title=pick_translation(resource_doc.title, u.locale),
+                resource_title=pick_translation(
+                    resource_doc.title,
+                    u.locale or "enUS",
+                ),
             )
 
     return await prepare_resource_read(resource_doc, user)
@@ -695,7 +780,8 @@ async def download_resource_template(
         with_children=True,
     ).exists():
         raise errors.E_403_FORBIDDEN
-    text_doc = await TextDocument.get(resource_doc.text_id)
+    text_doc: TextDocument | None = await TextDocument.get(resource_doc.text_id)
+    assert text_doc
 
     # import content type for the requested resource
     template = resource_types_mgr.get(
@@ -703,7 +789,10 @@ async def download_resource_template(
     ).prepare_import_template()
     # apply data from resource instance
     template["resourceId"] = str(resource_doc.id)
-    template["_resourceTitle"] = pick_translation(resource_doc.title, user.locale)
+    template["_resourceTitle"] = pick_translation(
+        resource_doc.title,
+        user.locale or "enUS",
+    )
 
     # construct labels of all locations on the resource's level
     full_loc_labels = await text_doc.full_location_labels(resource_doc.level)
@@ -797,14 +886,15 @@ async def _import_resource_task(
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
-    content_doc_model: type[ContentBaseDocument] = content_model.document_model()
+    content_doc_model: type[ContentBase] = content_model.document_model()
+    assert isinstance(content_doc_model, DocumentBase)  # for type checker
     content_create_model: type[ContentBase] = content_model.create_model()
     content_update_model: type[ContentBase] = content_model.update_model()
 
     # prepare lists to collect contents to update and insert separately,
     # as they are handled differently
     updates: list[tuple] = []  # (existing_content_doc, import_content: dict)
-    inserts: list[content_doc_model] = []
+    inserts: list[ContentBaseDocument] = []
 
     try:
         # check import data
@@ -965,7 +1055,7 @@ async def import_resource(
     ],
 ) -> tasks.TaskDocument:
     # test upload file MIME type
-    if file.content_type.lower() != "application/json":
+    if file.content_type and file.content_type.lower() != "application/json":
         raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
 
     file_bytes = await file.read()
@@ -1001,10 +1091,10 @@ async def export_resource_contents_task(
         raise errors.E_404_RESOURCE_NOT_FOUND
 
     # check if location range is valid
-    loc_from: LocationDocument = (
+    loc_from: LocationDocument | None = (
         await LocationDocument.get(location_from_id) if location_from_id else None
     )
-    loc_to: LocationDocument = (
+    loc_to: LocationDocument | None = (
         await LocationDocument.get(location_to_id) if location_to_id else None
     )
     if (
@@ -1016,11 +1106,12 @@ async def export_resource_contents_task(
     ):
         raise errors.E_400_LOCATION_RANGE_INVALID
 
-    text = await TextDocument.get(resource.text_id)
+    text: TextDocument | None = await TextDocument.get(resource.text_id)
+    assert text
     target_res_type = resource_types_mgr.get(resource.resource_type)
 
     # get target location IDs from range
-    target_loc_id_pos_map = {
+    target_loc_id_pos_map: dict[PydanticObjectId, LocationDocument] = {
         loc.id: loc.position
         for loc in await LocationDocument.find(
             LocationDocument.text_id == resource.text_id,
@@ -1031,7 +1122,10 @@ async def export_resource_contents_task(
     }
 
     # get target contents
-    content_doc_model = target_res_type.content_model().document_model()
+    content_doc_model: type[ContentBase] = (
+        target_res_type.content_model().document_model()
+    )
+    assert isinstance(content_doc_model, DocumentBase)  # for type checker
     contents = await content_doc_model.find(
         Eq(content_doc_model.resource_id, resource.id),
         In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
@@ -1040,7 +1134,7 @@ async def export_resource_contents_task(
 
     # sort target contents
     contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
-    target_loc_id_pos_map = None
+    target_loc_id_pos_map = {}
 
     # construct temp file name and path
     tempfile_name = str(uuid4())

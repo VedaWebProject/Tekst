@@ -17,7 +17,7 @@ from tekst import errors
 from tekst.config import TekstConfig, get_config
 from tekst.errors import TekstHTTPException
 from tekst.logs import log, log_op_end, log_op_start
-from tekst.models.common import DocumentBase, ModelBase, ModelFactoryMixin
+from tekst.models.common import DocumentBase, ModelBase, ReadBase
 from tekst.models.user import UserRead
 
 
@@ -58,7 +58,7 @@ class TaskType(Enum):
         return self._artifact_
 
 
-class Task(ModelBase, ModelFactoryMixin):
+class Task(ModelBase):
     task_type: Annotated[
         TaskType,
         Field(
@@ -118,7 +118,10 @@ class Task(ModelBase, ModelFactoryMixin):
     ] = None
 
 
-TaskRead = Task.read_model()
+class TaskRead(Task, ReadBase):
+    pass
+
+
 P = ParamSpec("P")
 R = TypeVar("R")
 AsyncFunc = Callable[P, Awaitable[R]]

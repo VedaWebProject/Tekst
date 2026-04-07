@@ -18,7 +18,7 @@ from tekst.models.message import (
     UserMessageThread,
 )
 from tekst.models.notifications import Notification
-from tekst.models.user import UserDocument, UserRead, UserReadPublic
+from tekst.models.user import UserDocument, UserReadPublic
 from tekst.notifications import send_notification
 from tekst.state import get_state
 
@@ -69,12 +69,14 @@ async def send_message(
 
     # send notification email to recipient
     if Notification.EMAIL_MESSAGE_RECEIVED.value in user.user_notification_triggers:
-        await send_notification(
-            to_user=UserRead.model_from(await UserDocument.get(message.recipient)),
-            template_id=Notification.EMAIL_MESSAGE_RECEIVED,
-            username=user.name if "name" in user.public_fields else user.username,
-            message_content=message.content,
-        )
+        recipient_doc = await UserDocument.get(message.recipient)
+        if recipient_doc:
+            await send_notification(
+                to_user=recipient_doc,
+                template_id=Notification.EMAIL_MESSAGE_RECEIVED,
+                username=user.name if "name" in user.public_fields else user.username,
+                message_content=message.content,
+            )
 
     # increment total user messages counter
     background_tasks.add_task(counter_incr, "messages_user")
@@ -121,7 +123,7 @@ async def get_thread_messages(
             ),
             UserMessageDocument.deleted != user.id,
         )
-        .sort(+UserMessageDocument.created_at)
+        .sort(+UserMessageDocument.created_at)  # ty:ignore[unsupported-operator]
         .to_list()
     )
 
@@ -194,7 +196,7 @@ async def get_threads(
                 1 if msg.recipient == user.id and not msg.read else 0
             )
 
-    return threads.values()
+    return list(threads.values())
 
 
 @router.delete(
@@ -215,7 +217,7 @@ async def delete_thread(
     Marks all received messages from the given user as deleted or actually deletes them,
     depending on the current deletion status
     """
-    thread_id = (
+    thread_id: PydanticObjectId | None = (
         thread_id if thread_id != "system" else None
     )  # system threads don't have a thread (sender) ID
 

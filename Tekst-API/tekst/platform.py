@@ -16,7 +16,11 @@ from tekst.models.common import PydanticObjectId
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
 from tekst.models.platform import PlatformStateDocument
-from tekst.models.segment import ClientSegmentDocument, ClientSegmentSignature
+from tekst.models.segment import (
+    ClientSegmentDocument,
+    ClientSegmentRead,
+    ClientSegmentSignature,
+)
 from tekst.models.user import UserRead
 from tekst.resources import call_resource_precompute_hooks
 from tekst.state import get_state, update_state
@@ -236,12 +240,13 @@ async def get_segments(
     *,
     system: bool | None = None,
     user: UserRead | None = None,
-) -> list[ClientSegmentDocument]:
-    return (
-        await ClientSegmentDocument.find(
+) -> list[ClientSegmentRead]:
+    return [
+        ClientSegmentRead.model_from(segment)
+        for segment in await ClientSegmentDocument.find(
             *_get_segments_query(system),
             *(await _get_segment_restriction_queries(user)),
         )
         .sort(+ClientSegmentDocument.sort_order)
         .to_list()
-    )
+    ]

@@ -5,18 +5,19 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
-from tekst.models.common import ModelBase
-from tekst.models.content import ContentBase
+from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
+from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
     ResourceBase,
     ResourceBaseDocument,
     ResourceExportFormat,
+    ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeABC
+from tekst.resources import ResourceSearchQuery, ResourceTypeBase
 from tekst.types import (
-    EmptyStrToNone,
+    FalsyToNone,
     HttpUrl,
     MultiLineString,
     SchemaOptionalNullable,
@@ -24,7 +25,7 @@ from tekst.types import (
 )
 
 
-class Audio(ResourceTypeABC):
+class Audio(ResourceTypeBase):
     """A resource type for audio files"""
 
     @classmethod
@@ -36,7 +37,7 @@ class Audio(ResourceTypeABC):
         return AudioContent
 
     @classmethod
-    def search_query_model(cls) -> type[ResourceSearchQuery]:
+    def search_query_model(cls) -> type[ModelBase]:
         return AudioSearchQuery
 
     @classmethod
@@ -78,6 +79,7 @@ class Audio(ResourceTypeABC):
         query: ResourceSearchQuery,
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
+        assert isinstance(query.resource_type_specific, AudioSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -101,12 +103,12 @@ class Audio(ResourceTypeABC):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list["AudioContent"],
+        contents: list[ContentBaseDocument],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)
+            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -121,6 +123,7 @@ class Audio(ResourceTypeABC):
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
+        assert text
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -165,6 +168,37 @@ class AudioResource(ResourceBase):
     def quick_search_fields(cls) -> list[str]:
         return ["caption"]
 
+    @classmethod
+    def create_model(cls):
+        return AudioResourceCreate
+
+    @classmethod
+    def read_model(cls):
+        return AudioResourceRead
+
+    @classmethod
+    def update_model(cls):
+        return AudioResourceUpdate
+
+    @classmethod
+    def document_model(cls):
+        return AudioResourceDocument
+
+
+class AudioResourceCreate(AudioResource, CreateBase):
+    pass
+
+
+class AudioResourceRead(AudioResource, ResourceReadExtras, ReadBase):
+    pass
+
+
+AudioResourceUpdate = make_update_model(AudioResource)
+
+
+class AudioResourceDocument(AudioResource, ResourceBaseDocument):
+    pass
+
 
 class AudioFile(ModelBase):
     url: Annotated[
@@ -173,14 +207,14 @@ class AudioFile(ModelBase):
     ]
     source_url: Annotated[
         HttpUrl | None,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="URL of the source website of the image"),
     ] = None
     caption: Annotated[
         str | None,
         StringConstraints(min_length=1, max_length=8192),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Caption of the audio file"),
     ] = None
 
@@ -197,6 +231,37 @@ class AudioContent(ContentBase):
             max_length=100,
         ),
     ]
+
+    @classmethod
+    def create_model(cls):
+        return AudioContentCreate
+
+    @classmethod
+    def read_model(cls):
+        return AudioContentRead
+
+    @classmethod
+    def update_model(cls):
+        return AudioContentUpdate
+
+    @classmethod
+    def document_model(cls):
+        return AudioContentDocument
+
+
+class AudioContentCreate(AudioContent, CreateBase):
+    pass
+
+
+class AudioContentRead(AudioContent, ReadBase):
+    pass
+
+
+AudioContentUpdate = make_update_model(AudioContent)
+
+
+class AudioContentDocument(AudioContent, ContentBaseDocument):
+    pass
 
 
 class AudioSearchQuery(ModelBase):

@@ -10,14 +10,15 @@ from tekst.models.common import (
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
+    ReadBase,
+    make_update_model,
 )
 from tekst.models.segment import ClientSegmentRead, ClientSegmentSignature
 from tekst.models.text import TextRead
 from tekst.models.user import UserRead
 from tekst.types import (
     ColorSerializer,
-    EmptyStrToNone,
+    FalsyToNone,
     FontFamilyValue,
     MultiLineString,
     SingleLineString,
@@ -66,7 +67,7 @@ class OskMode(ModelBase):
     font: FontFamilyValue | None = None
 
 
-class PlatformState(ModelBase, ModelFactoryMixin):
+class PlatformState(ModelBase):
     """Platform state model holding platform settings and state data"""
 
     platform_name: Annotated[
@@ -203,7 +204,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=10240),
         MultiLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Global suffix for all resource citation hints"),
     ] = None
 
@@ -230,7 +231,7 @@ class PlatformState(ModelBase, ModelFactoryMixin):
         str | None,
         StringConstraints(min_length=1, max_length=64),
         SingleLineString,
-        EmptyStrToNone,
+        FalsyToNone,
         Field(description="Version string of DB data"),
         ExcludeFromModelVariants(update=True, create=True),
     ] = None
@@ -256,8 +257,11 @@ class PlatformStateDocument(PlatformState, DocumentBase):
         bson_encoders = {Color: lambda c: c.as_hex()}
 
 
-PlatformStateRead = PlatformState.read_model()
-PlatformStateUpdate = PlatformState.update_model()
+class PlatformStateRead(PlatformState, ReadBase):
+    pass
+
+
+PlatformStateUpdate = make_update_model(PlatformState)
 
 
 class PlatformSecurityInfo(ModelBase):

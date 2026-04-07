@@ -9,14 +9,16 @@ from pydantic import (
 
 from tekst.i18n import TranslationLocaleKey
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ModelBase,
-    ModelFactoryMixin,
+    ReadBase,
+    make_update_model,
 )
 from tekst.types import SingleLineString
 
 
-class ClientSegment(ModelBase, ModelFactoryMixin):
+class ClientSegment(ModelBase):
     key: Annotated[
         str,
         StringConstraints(
@@ -87,9 +89,15 @@ class ClientSegmentDocument(ClientSegment, DocumentBase):
         ]
 
 
-ClientSegmentCreate = ClientSegment.create_model()
-ClientSegmentRead = ClientSegment.read_model()
-ClientSegmentUpdate = ClientSegment.update_model()
+class ClientSegmentCreate(ClientSegment, CreateBase):
+    pass
+
+
+class ClientSegmentRead(ClientSegment, ReadBase):
+    pass
+
+
+ClientSegmentUpdate = make_update_model(ClientSegment)
 
 
 class ClientSegmentSignature(BaseModel):

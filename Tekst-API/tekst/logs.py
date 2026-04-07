@@ -2,7 +2,7 @@ import logging
 
 from logging import config
 from time import perf_counter, process_time
-from typing import Literal
+from typing import Any, Literal
 from uuid import uuid4
 
 from tekst.config import TekstConfig, get_config
@@ -95,15 +95,12 @@ _LOGGING_CONFIG = {
     },
 }
 
-_LOG_LEVELS = {
-    "DEBUG": logging.getLevelName("DEBUG"),
-    "INFO": logging.getLevelName("INFO"),
-    "WARNING": logging.getLevelName("WARNING"),
-    "ERROR": logging.getLevelName("ERROR"),
-    "CRITICAL": logging.getLevelName("CRITICAL"),
-}
 
-LogLevelString = Literal[tuple(_LOG_LEVELS.keys())]
+def _get_lvl_name(level: str, fallback_level: str) -> Any:
+    return logging.getLevelName(level) or logging.getLevelName(fallback_level)
+
+
+LogLevelString = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 config.dictConfig(_LOGGING_CONFIG)
 log = logging.getLogger("tekst")
@@ -120,7 +117,7 @@ def log_op_start(
     use_process_time: bool = False,
 ) -> str:
     global _running_ops
-    level_code = _LOG_LEVELS.get(level, _LOG_LEVELS["DEBUG"])
+    level_code = _get_lvl_name(level, "DEBUG")
     op_id = str(uuid4())
     start_t = process_time() if use_process_time else perf_counter()
     _running_ops[op_id] = (label, start_t, level_code, use_process_time)
@@ -145,7 +142,7 @@ def log_op_end(
     if not failed:
         log.log(level_code, f"Finished: {label} [{dur:.2f}s]")
     else:
-        level_code = _LOG_LEVELS.get(failed_level, _LOG_LEVELS["ERROR"])
+        level_code = _get_lvl_name(failed_level, "ERROR")
         failed_msg = f" – {failed_msg}" if failed_msg else ""
         log.log(level_code, f"Failed: {label} [{dur:.2f}s]{failed_msg}")
     return dur

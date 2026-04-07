@@ -10,10 +10,12 @@ from typing_extensions import TypedDict
 
 from tekst.i18n import TranslationBase, Translations
 from tekst.models.common import (
+    CreateBase,
     DocumentBase,
     ExcludeFromModelVariants,
     ModelBase,
-    ModelFactoryMixin,
+    ReadBase,
+    make_update_model,
 )
 from tekst.models.location import LocationDocument
 from tekst.types import (
@@ -80,7 +82,7 @@ TextSlug = Annotated[
 ]
 
 
-class Text(ModelBase, ModelFactoryMixin):
+class Text(ModelBase):
     """A text represented in Tekst"""
 
     title: TextTitle
@@ -264,9 +266,15 @@ class TextDocument(Text, DocumentBase):
         return location_labels
 
 
-TextCreate: type[ModelBase] = Text.create_model()
-TextRead: type[ModelBase] = Text.read_model()
-TextUpdate: type[ModelBase] = Text.update_model()
+class TextCreate(Text, CreateBase):
+    pass
+
+
+class TextRead(Text, ReadBase):
+    pass
+
+
+TextUpdate = make_update_model(Text)
 
 
 class InsertLevelRequest(ModelBase):

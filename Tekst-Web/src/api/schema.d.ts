@@ -1483,6 +1483,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -1515,7 +1516,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Calls
        * @description List of API calls to make for this content
@@ -1525,7 +1526,7 @@ export interface components {
        * Transformcontext
        * @description Extra data that will be available to the transformation script. This has to be a valid, string-encoded JSON object.
        */
-      transformContext?: string | null;
+      transformContext?: string;
     };
     /** ApiCallModGeneralConfig */
     ApiCallModGeneralConfig: {
@@ -1933,6 +1934,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -1960,7 +1962,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of audio file objects
@@ -2724,6 +2726,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -2751,7 +2754,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Links
        * @description List of external reference link objects
@@ -3232,6 +3235,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -3259,7 +3263,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Files
        * @description List of image file objects
@@ -3753,6 +3757,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -3780,7 +3785,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Entries
        * @description List of metadata entries for a certain location
@@ -4412,6 +4417,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -4439,7 +4445,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Text
        * @description Text content of the plain text content object
@@ -5345,6 +5351,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -5379,7 +5386,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Html
        * @description HTML content of the rich text content object
@@ -5992,6 +5999,7 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
+       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -6019,7 +6027,7 @@ export interface components {
        * Comments
        * @description Potentially multiline comments on the content
        */
-      comments?: components['schemas']['ContentComment'][] | null;
+      comments?: components['schemas']['ContentComment'][];
       /**
        * Tokens
        * @description List of annotated tokens in this content object
