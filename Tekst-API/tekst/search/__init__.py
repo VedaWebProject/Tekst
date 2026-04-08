@@ -706,16 +706,3 @@ async def search_nearest_content_location(
         if results["hits"]["hits"]
         else None
     )
-
-
-async def set_index_ood(
-    text_id: PydanticObjectId,
-    *,
-    by_public_resource: bool = True,
-):
-    """Set the index_utd flag for this text, considering the given parameters"""
-    if by_public_resource or (await get_state()).index_unpublished_resources:
-        text: TextDocument | None = await TextDocument.get(text_id)
-        assert text
-        text.index_utd = False
-        await text.replace()

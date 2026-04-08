@@ -51,7 +51,6 @@ from tekst.resources import (
     call_resource_precompute_hooks,
     resource_types_mgr,
 )
-from tekst.search import set_index_ood
 from tekst.state import StateDep
 from tekst.types import ResourceTypeName
 from tekst.utils import client_hash
@@ -349,10 +348,7 @@ async def update_resource(
     # mark respective text's index as out-of-date if any indexing-relevant config
     # will be changed by this update
     if resource_doc.cfg_updates_invalidate_index(updates):
-        await set_index_ood(
-            text_id=resource_doc.text_id,
-            by_public_resource=resource_doc.public,
-        )
+        await resource_doc.set_index_ood()
 
     # update document
     await resource_doc.apply_updates(updates)
@@ -495,10 +491,7 @@ async def delete_resource(
     ).delete()
 
     # mark the text's index as out-of-date
-    await set_index_ood(
-        resource_doc.text_id,
-        by_public_resource=resource_doc.public,
-    )
+    await resource_doc.set_index_ood()
 
     # delete resource itself
     await ResourceBaseDocument.find_one(
@@ -697,10 +690,7 @@ async def publish_resource(
     )
 
     # mark the text's index as out-of-date
-    await set_index_ood(
-        resource_doc.text_id,
-        by_public_resource=True,
-    )
+    await resource_doc.set_index_ood()
 
     # notify users about the new publication
     await notifications.broadcast_user_notification(
@@ -743,10 +733,7 @@ async def unpublish_resource(
     )
 
     # mark the text's index as out-of-date
-    await set_index_ood(
-        resource_doc.text_id,
-        by_public_resource=True,  # act as if resource public, to force ood status
-    )
+    await resource_doc.set_index_ood()
 
     return await prepare_resource_read(resource_doc, user)
 
@@ -1018,10 +1005,7 @@ async def _import_resource_task(
         # call the resource's hook for changed contents
         await resource_doc.contents_changed_hook()
         # mark the text's index as out-of-date
-        await set_index_ood(
-            resource_doc.text_id,
-            by_public_resource=resource_doc.public,
-        )
+        await resource_doc.set_index_ood()
 
     return {
         "created": inserted_count,

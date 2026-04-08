@@ -1,7 +1,7 @@
 import csv
 
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -14,7 +14,6 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
-from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
@@ -26,20 +25,20 @@ from tekst.types import (
 )
 
 
-class Audio(ResourceTypeBase):
-    """A resource type for audio files"""
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
+
+
+class Images(ResourceTypeBase):
+    """A resource type for image files"""
 
     @classmethod
-    def resource_model(cls) -> type["AudioResource"]:
-        return AudioResource
+    def resource_model(cls) -> type["ImagesResource"]:
+        return ImagesResource
 
     @classmethod
-    def content_model(cls) -> type["AudioContent"]:
-        return AudioContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase]:
-        return AudioSearchQuery
+    def content_model(cls) -> type["ImagesContent"]:
+        return ImagesContent
 
     @classmethod
     def _rtype_index_mappings(
@@ -77,10 +76,10 @@ class Audio(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
-        assert isinstance(query.resource_type_specific, AudioSearchQuery)
+        assert isinstance(query.resource_type_specific, ImagesSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
@@ -119,8 +118,8 @@ class Audio(ResourceTypeBase):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "AudioResource",
-        contents: list["AudioContent"],
+        resource: "ImagesResource",
+        contents: list["ImagesContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -139,31 +138,33 @@ class Audio(ResourceTypeBase):
                     "LOCATION",
                     "SORT",
                     "URL",
+                    "THUMB_URL",
                     "CAPTION",
                     "COMMENTS",
                 ]
             )
             for content in contents:
-                for audio_file in content.files:
+                for image_file in content.files:
                     csv_writer.writerow(
                         [
                             full_loc_labels.get(str(content.location_id), ""),
                             sort_num,
-                            audio_file.url,
-                            audio_file.caption,
+                            image_file.url,
+                            image_file.thumb_url,
+                            image_file.caption,
                             await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1
 
 
-class AudioResourceConfig(ResourceConfigBase):
+class ImagesResourceConfig(ResourceConfigBase):
     pass
 
 
-class AudioResource(ResourceBase):
-    resource_type: Literal["audio"]  # camelCased resource type classname
-    config: AudioResourceConfig = AudioResourceConfig()
+class ImagesResource(ResourceBase):
+    resource_type: Literal["images"]  # camelCased resource type classname
+    config: ImagesResourceConfig = ImagesResourceConfig()
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
@@ -171,41 +172,46 @@ class AudioResource(ResourceBase):
 
     @classmethod
     def create_model(cls):
-        return AudioResourceCreate
+        return ImagesResourceCreate
 
     @classmethod
     def read_model(cls):
-        return AudioResourceRead
+        return ImagesResourceRead
 
     @classmethod
     def update_model(cls):
-        return AudioResourceUpdate
+        return ImagesResourceUpdate
 
     @classmethod
     def document_model(cls):
-        return AudioResourceDocument
+        return ImagesResourceDocument
 
 
-class AudioResourceCreate(AudioResource, CreateBase):
+class ImagesResourceCreate(ImagesResource, CreateBase):
     pass
 
 
-class AudioResourceRead(AudioResource, ResourceReadExtras, ReadBase):
+class ImagesResourceRead(ImagesResource, ResourceReadExtras, ReadBase):
     pass
 
 
-AudioResourceUpdate = make_update_model(AudioResource)
+ImagesResourceUpdate = make_update_model(ImagesResource)
 
 
-class AudioResourceDocument(AudioResource, ResourceBaseDocument):
+class ImagesResourceDocument(ImagesResource, ResourceBaseDocument):
     pass
 
 
-class AudioFile(ModelBase):
+class ImageFile(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(description="URL of the audio file"),
+        Field(description="URL of the image file"),
     ]
+    thumb_url: Annotated[
+        HttpUrl | None,
+        FalsyToNone,
+        Field(description="URL of the image file thumbnail"),
+    ] = None
     source_url: Annotated[
         HttpUrl | None,
         FalsyToNone,
@@ -216,18 +222,18 @@ class AudioFile(ModelBase):
         StringConstraints(min_length=1, max_length=8192),
         MultiLineString,
         FalsyToNone,
-        Field(description="Caption of the audio file"),
+        Field(description="Caption of the image"),
     ] = None
 
 
-class AudioContent(ContentBase):
-    """A content of an audio resource"""
+class ImagesContent(ContentBase):
+    """A content of an images resource"""
 
-    resource_type: Literal["audio"]  # camelCased resource type classname
+    resource_type: Literal["images"]  # camelCased resource type classname
     files: Annotated[
-        list[AudioFile],
+        list[ImageFile],
         Field(
-            description="List of audio file objects",
+            description="List of image file objects",
             min_length=1,
             max_length=100,
         ),
@@ -235,39 +241,39 @@ class AudioContent(ContentBase):
 
     @classmethod
     def create_model(cls):
-        return AudioContentCreate
+        return ImagesContentCreate
 
     @classmethod
     def read_model(cls):
-        return AudioContentRead
+        return ImagesContentRead
 
     @classmethod
     def update_model(cls):
-        return AudioContentUpdate
+        return ImagesContentUpdate
 
     @classmethod
     def document_model(cls):
-        return AudioContentDocument
+        return ImagesContentDocument
 
 
-class AudioContentCreate(AudioContent, CreateBase):
+class ImagesContentCreate(ImagesContent, CreateBase):
     pass
 
 
-class AudioContentRead(AudioContent, ReadBase):
+class ImagesContentRead(ImagesContent, ReadBase):
     pass
 
 
-AudioContentUpdate = make_update_model(AudioContent)
+ImagesContentUpdate = make_update_model(ImagesContent)
 
 
-class AudioContentDocument(AudioContent, ContentBaseDocument):
+class ImagesContentDocument(ImagesContent, ContentBaseDocument):
     pass
 
 
-class AudioSearchQuery(ModelBase):
+class ImagesSearchQuery(ModelBase):
     resource_type: Annotated[
-        Literal["audio"],
+        Literal["images"],
         Field(
             alias="type",
             description="Type of the resource to search in",
@@ -277,5 +283,6 @@ class AudioSearchQuery(ModelBase):
         str,
         StringConstraints(max_length=512),
         SingleLineString,
+        Field(description="Caption content search query"),
         SchemaOptionalNullable,
     ] = ""

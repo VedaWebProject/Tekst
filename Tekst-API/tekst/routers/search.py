@@ -119,7 +119,7 @@ async def _export_search_results_task(
         # transform hits into actual search results export data
         for hit in results.hits:
             text = texts_by_ids.get(str(hit.text_id))
-            if not text:
+            if not text:  # pragma: no cover # should not happen
                 continue
             hits.append(
                 {

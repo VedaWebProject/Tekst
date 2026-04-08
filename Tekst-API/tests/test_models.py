@@ -72,7 +72,7 @@ def test_model_field_casing():
 
 def test_resource_subtitle_validator():
     # desc with arbitrary whitespaces
-    from tekst.resources.plain_text import PlainTextResource
+    from tekst.resource_types.plain_text import PlainTextResource
 
     resource = PlainTextResource(
         title=[

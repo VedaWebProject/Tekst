@@ -23,7 +23,6 @@ from tekst.models.resource_unions import (
     AnyContentUpdate,
 )
 from tekst.resources import resource_types_mgr
-from tekst.search import set_index_ood
 
 
 _cfg: TekstConfig = get_config()  # get (possibly cached) config data
@@ -76,7 +75,7 @@ async def create_content(
     # call the resource's hook for changed contents
     await resource.contents_changed_hook()
     # mark the text's index as out-of-date
-    await set_index_ood(resource.text_id, by_public_resource=resource.public)
+    await resource.set_index_ood()
 
     # create the content document and return it
     content_doc: ContentBase = (
@@ -192,7 +191,7 @@ async def update_content(
     # call the resource's hook for changed contents
     await resource.contents_changed_hook()
     # mark the text's index as out-of-date
-    await set_index_ood(resource.text_id, by_public_resource=resource.public)
+    await resource.set_index_ood()
 
     # handle content archival if this belongs to a public, non-patch resource
     if resource.public and not resource.patch_for:
@@ -236,11 +235,7 @@ async def delete_content(
         # call the resource's hook for changed contents
         background_tasks.add_task(resource.contents_changed_hook)
         # mark the text's index as out-of-date
-        background_tasks.add_task(
-            set_index_ood,
-            text_id=resource.text_id,
-            by_public_resource=resource.public,
-        )
+        background_tasks.add_task(resource.set_index_ood)
 
     # delete archived contents
     if delete_archive:
@@ -295,7 +290,7 @@ async def archive_content(
     # call the resource's hook for changed contents
     await resource.contents_changed_hook()
     # mark the text's index as out-of-date
-    await set_index_ood(resource.text_id, by_public_resource=resource.public)
+    await resource.set_index_ood()
     # all fine, archive the content
     await content_doc.archive()
     return content_doc

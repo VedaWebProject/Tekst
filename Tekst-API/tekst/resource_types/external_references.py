@@ -1,7 +1,7 @@
 import csv
 
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -13,8 +13,10 @@ from tekst.models.resource import (
     ResourceExportFormat,
     ResourceReadExtras,
 )
-from tekst.models.resource_configs import ResourceConfigBase
-from tekst.models.search import ResourceSearchQuery
+from tekst.models.resource_configs import (
+    GeneralResourceConfig,
+    ResourceConfigBase,
+)
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
@@ -26,20 +28,20 @@ from tekst.types import (
 )
 
 
-class Images(ResourceTypeBase):
-    """A resource type for image files"""
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
+
+
+class ExternalReferences(ResourceTypeBase):
+    """A resource type for external references"""
 
     @classmethod
-    def resource_model(cls) -> type["ImagesResource"]:
-        return ImagesResource
+    def resource_model(cls) -> type["ExternalReferencesResource"]:
+        return ExternalReferencesResource
 
     @classmethod
-    def content_model(cls) -> type["ImagesContent"]:
-        return ImagesContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        return ImagesSearchQuery
+    def content_model(cls) -> type["ExternalReferencesContent"]:
+        return ExternalReferencesContent
 
     @classmethod
     def _rtype_index_mappings(
@@ -48,7 +50,7 @@ class Images(ResourceTypeBase):
         strict_analyzer: str,
     ) -> dict[str, Any] | None:
         return {
-            "caption": {
+            "text": {
                 "type": "text",
                 "analyzer": lenient_analyzer,
                 "fields": {
@@ -67,9 +69,15 @@ class Images(ResourceTypeBase):
         content: ContentBase,
     ) -> dict[str, Any] | None:
         return {
-            "caption": [
-                f.get("caption", "")
-                for f in content.model_dump(include={"files"}).get("files", [])
+            "text": [
+                "".join(
+                    [
+                        f"{f.get('title', '')}",
+                        f" ({f.get('alt_ref')})" if f.get("alt_ref") else "",
+                        f" – {f.get('description')}" if f.get("description") else "",
+                    ]
+                ).strip()
+                for f in content.model_dump(include={"links"}).get("links", [])
             ]
         }
 
@@ -77,22 +85,22 @@ class Images(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
-        assert isinstance(query.resource_type_specific, ImagesSearchQuery)
+        assert isinstance(query.resource_type_specific, ExternalReferencesSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
-        if query.resource_type_specific.caption.strip("* "):
+        if query.resource_type_specific.text.strip("* "):
             strict_suffix = ".strict" if strict else ""
             es_queries.append(
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{str(query.common.resource_id)}.caption{strict_suffix}"
+                            f"resources.{str(query.common.resource_id)}.text{strict_suffix}"
                         ],
-                        "query": query.resource_type_specific.caption,
+                        "query": query.resource_type_specific.text,
                         "analyze_wildcard": True,
                     }
                 }
@@ -119,8 +127,8 @@ class Images(ResourceTypeBase):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "ImagesResource",
-        contents: list["ImagesContent"],
+        resource: "ExternalReferencesResource",
+        contents: list["ExternalReferencesContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -139,102 +147,118 @@ class Images(ResourceTypeBase):
                     "LOCATION",
                     "SORT",
                     "URL",
-                    "THUMB_URL",
-                    "CAPTION",
+                    "TITLE",
+                    "DESCRIPTION",
+                    "ALT_REF",
                     "COMMENTS",
                 ]
             )
             for content in contents:
-                for image_file in content.files:
+                for link in content.links:
                     csv_writer.writerow(
                         [
                             full_loc_labels.get(str(content.location_id), ""),
                             sort_num,
-                            image_file.url,
-                            image_file.thumb_url,
-                            image_file.caption,
+                            link.url,
+                            link.title,
+                            link.description,
+                            link.alt_ref,
                             await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1
 
 
-class ImagesResourceConfig(ResourceConfigBase):
-    pass
+class ExternalReferencesResourceConfig(ResourceConfigBase):
+    # override general resource config defaults to disable searchability by default
+    general: GeneralResourceConfig = GeneralResourceConfig(
+        searchable_quick=False,
+        searchable_adv=False,
+    )
 
 
-class ImagesResource(ResourceBase):
-    resource_type: Literal["images"]  # camelCased resource type classname
-    config: ImagesResourceConfig = ImagesResourceConfig()
+class ExternalReferencesResource(ResourceBase):
+    resource_type: Literal["externalReferences"]  # camelCased resource type classname
+    config: ExternalReferencesResourceConfig = ExternalReferencesResourceConfig()
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["caption"]
+        return ["text"]
 
     @classmethod
     def create_model(cls):
-        return ImagesResourceCreate
+        return ExternalReferencesResourceCreate
 
     @classmethod
     def read_model(cls):
-        return ImagesResourceRead
+        return ExternalReferencesResourceRead
 
     @classmethod
     def update_model(cls):
-        return ImagesResourceUpdate
+        return ExternalReferencesResourceUpdate
 
     @classmethod
     def document_model(cls):
-        return ImagesResourceDocument
+        return ExternalReferencesResourceDocument
 
 
-class ImagesResourceCreate(ImagesResource, CreateBase):
+class ExternalReferencesResourceCreate(ExternalReferencesResource, CreateBase):
     pass
 
 
-class ImagesResourceRead(ImagesResource, ResourceReadExtras, ReadBase):
+class ExternalReferencesResourceRead(
+    ExternalReferencesResource,
+    ResourceReadExtras,
+    ReadBase,
+):
     pass
 
 
-ImagesResourceUpdate = make_update_model(ImagesResource)
+ExternalReferencesResourceUpdate = make_update_model(ExternalReferencesResource)
 
 
-class ImagesResourceDocument(ImagesResource, ResourceBaseDocument):
+class ExternalReferencesResourceDocument(
+    ExternalReferencesResource,
+    ResourceBaseDocument,
+):
     pass
 
 
-class ImageFile(ModelBase):
+class ExternalReferencesLink(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(description="URL of the image file"),
+        Field(description="URL of the link"),
     ]
-    thumb_url: Annotated[
-        HttpUrl | None,
-        FalsyToNone,
-        Field(description="URL of the image file thumbnail"),
-    ] = None
-    source_url: Annotated[
-        HttpUrl | None,
-        FalsyToNone,
-        Field(description="URL of the source website of the image"),
-    ] = None
-    caption: Annotated[
+    title: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=128),
+        SingleLineString,
+        Field(description="Title/text of the link"),
+    ]
+    description: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=8192),
+        StringConstraints(min_length=1, max_length=4096),
         MultiLineString,
         FalsyToNone,
-        Field(description="Caption of the image"),
+        Field(description="Description of the link"),
+    ] = None
+    alt_ref: Annotated[
+        str | None,
+        StringConstraints(min_length=1, max_length=512),
+        SingleLineString,
+        FalsyToNone,
+        Field(description="Additional, alternate reference data"),
     ] = None
 
 
-class ImagesContent(ContentBase):
-    """A content of an images resource"""
+class ExternalReferencesContent(ContentBase):
+    """A content of an external reference resource"""
 
-    resource_type: Literal["images"]  # camelCased resource type classname
-    files: Annotated[
-        list[ImageFile],
+    resource_type: Literal["externalReferences"]  # camelCased resource type classname
+    links: Annotated[
+        list[ExternalReferencesLink],
         Field(
-            description="List of image file objects",
+            description="List of external reference link objects",
             min_length=1,
             max_length=100,
         ),
@@ -242,48 +266,48 @@ class ImagesContent(ContentBase):
 
     @classmethod
     def create_model(cls):
-        return ImagesContentCreate
+        return ExternalReferencesContentCreate
 
     @classmethod
     def read_model(cls):
-        return ImagesContentRead
+        return ExternalReferencesContentRead
 
     @classmethod
     def update_model(cls):
-        return ImagesContentUpdate
+        return ExternalReferencesContentUpdate
 
     @classmethod
     def document_model(cls):
-        return ImagesContentDocument
+        return ExternalReferencesContentDocument
 
 
-class ImagesContentCreate(ImagesContent, CreateBase):
+class ExternalReferencesContentCreate(ExternalReferencesContent, CreateBase):
     pass
 
 
-class ImagesContentRead(ImagesContent, ReadBase):
+class ExternalReferencesContentRead(ExternalReferencesContent, ReadBase):
     pass
 
 
-ImagesContentUpdate = make_update_model(ImagesContent)
+ExternalReferencesContentUpdate = make_update_model(ExternalReferencesContent)
 
 
-class ImagesContentDocument(ImagesContent, ContentBaseDocument):
+class ExternalReferencesContentDocument(ExternalReferencesContent, ContentBaseDocument):
     pass
 
 
-class ImagesSearchQuery(ModelBase):
+class ExternalReferencesSearchQuery(ModelBase):
     resource_type: Annotated[
-        Literal["images"],
+        Literal["externalReferences"],
         Field(
             alias="type",
             description="Type of the resource to search in",
         ),
     ]
-    caption: Annotated[
+    text: Annotated[
         str,
         StringConstraints(max_length=512),
         SingleLineString,
-        Field(description="Caption content search query"),
+        Field(description="Text to search for"),
         SchemaOptionalNullable,
     ] = ""

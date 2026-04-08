@@ -1,7 +1,7 @@
 import csv
 
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import AfterValidator, Field, StringConstraints
 
@@ -14,7 +14,6 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
-from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
@@ -27,6 +26,10 @@ from tekst.types import (
 )
 
 
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
+
+
 class PlainText(ResourceTypeBase):
     """A simple plain text resource type"""
 
@@ -37,10 +40,6 @@ class PlainText(ResourceTypeBase):
     @classmethod
     def content_model(cls) -> type["PlainTextContent"]:
         return PlainTextContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        return PlainTextSearchQuery
 
     @classmethod
     def _rtype_index_mappings(
@@ -73,7 +72,7 @@ class PlainText(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         assert isinstance(query.resource_type_specific, PlainTextSearchQuery)

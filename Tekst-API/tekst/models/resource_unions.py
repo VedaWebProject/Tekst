@@ -6,7 +6,7 @@ from pydantic import Field
 from tekst.models.content import (
     MissingContent,
 )
-from tekst.resources.api_call import (
+from tekst.resource_types.api_call import (
     ApiCallContentCreate,
     ApiCallContentDocument,
     ApiCallContentRead,
@@ -15,7 +15,7 @@ from tekst.resources.api_call import (
     ApiCallResourceRead,
     ApiCallResourceUpdate,
 )
-from tekst.resources.audio import (
+from tekst.resource_types.audio import (
     AudioContentCreate,
     AudioContentDocument,
     AudioContentRead,
@@ -24,7 +24,7 @@ from tekst.resources.audio import (
     AudioResourceRead,
     AudioResourceUpdate,
 )
-from tekst.resources.external_references import (
+from tekst.resource_types.external_references import (
     ExternalReferencesContentCreate,
     ExternalReferencesContentDocument,
     ExternalReferencesContentRead,
@@ -33,7 +33,7 @@ from tekst.resources.external_references import (
     ExternalReferencesResourceRead,
     ExternalReferencesResourceUpdate,
 )
-from tekst.resources.images import (
+from tekst.resource_types.images import (
     ImagesContentCreate,
     ImagesContentDocument,
     ImagesContentRead,
@@ -42,7 +42,7 @@ from tekst.resources.images import (
     ImagesResourceRead,
     ImagesResourceUpdate,
 )
-from tekst.resources.location_metadata import (
+from tekst.resource_types.location_metadata import (
     LocationMetadataContentCreate,
     LocationMetadataContentDocument,
     LocationMetadataContentRead,
@@ -51,7 +51,7 @@ from tekst.resources.location_metadata import (
     LocationMetadataResourceRead,
     LocationMetadataResourceUpdate,
 )
-from tekst.resources.plain_text import (
+from tekst.resource_types.plain_text import (
     PlainTextContentCreate,
     PlainTextContentDocument,
     PlainTextContentRead,
@@ -60,7 +60,7 @@ from tekst.resources.plain_text import (
     PlainTextResourceRead,
     PlainTextResourceUpdate,
 )
-from tekst.resources.rich_text import (
+from tekst.resource_types.rich_text import (
     RichTextContentCreate,
     RichTextContentDocument,
     RichTextContentRead,
@@ -69,7 +69,7 @@ from tekst.resources.rich_text import (
     RichTextResourceRead,
     RichTextResourceUpdate,
 )
-from tekst.resources.text_annotation import (
+from tekst.resource_types.text_annotation import (
     TextAnnotationContentCreate,
     TextAnnotationContentDocument,
     TextAnnotationContentRead,

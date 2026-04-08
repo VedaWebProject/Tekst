@@ -1,5 +1,6 @@
 import pytest
 
+from beanie import PydanticObjectId
 from beanie.operators import Eq
 from httpx import AsyncClient
 from tekst.models.content import ContentBaseDocument
@@ -323,6 +324,27 @@ async def test_archive_restore_delete_content(
         f"/contents/{content_id}/archive",
     )
     assert_status(403, resp)
+
+    # fail to archive without read access
+    content = await ContentBaseDocument.get(
+        PydanticObjectId(content_id),
+        with_children=True,
+    )
+    assert content
+    resource = await ResourceBaseDocument.get(
+        content.resource_id,
+        with_children=True,
+    )
+    assert resource
+    resource.public = False  # set resource to non-public
+    await resource.replace()
+    await login(user=user)
+    resp = await test_client.post(
+        f"/contents/{content_id}/archive",
+    )
+    assert_status(404, resp)
+    resource.public = True
+    await resource.replace()  # set resource to public again
 
     # archive content
     await login(user=superuser)

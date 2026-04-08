@@ -21,7 +21,6 @@ from tekst.models.text import (
     TextDocument,
     TextSlug,
 )
-from tekst.search import set_index_ood
 from tekst.types import (
     FalsyToNone,
     LocationLevel,
@@ -575,7 +574,7 @@ async def delete_location(
         with_children=True,
     ).to_list():
         await res.contents_changed_hook()
-        await set_index_ood(res.text_id, by_public_resource=res.public)
+        await res.set_index_ood()
 
     return DeleteLocationResult(contents=contents_deleted, locations=locations_deleted)
 
@@ -661,4 +660,6 @@ async def move_location(
             distance = await LocationDocument.find(
                 In(LocationDocument.parent_id, [n.id for n in to_shift]),
             ).count()
+    location: LocationDocument | None = await LocationDocument.get(location_id)
+    assert location  # for type checker
     return location
