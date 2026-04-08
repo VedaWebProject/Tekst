@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 
 from beanie import PydanticObjectId
 from beanie.odm.operators.find import BaseFindOperator
-from beanie.operators import And, Eq, In, Or
+from beanie.operators import And, Eq, In, Or, Set
 from pydantic import (
     AwareDatetime,
     Field,
@@ -24,10 +24,12 @@ from tekst.models.common import (
     make_update_model,
 )
 from tekst.models.location import LocationDocument
+from tekst.models.platform import PlatformStateDocument
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.models.user import UserRead, UserReadPublic
+from tekst.state import get_state
 from tekst.types import (
     FalsyToNone,
     MultiLineString,
@@ -284,22 +286,30 @@ class ResourceBase(ModelBase):
     @classmethod
     def create_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the CREATE model variant of this resource type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def read_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the READ model variant of this resource type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def update_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the UPDATE model variant of this resource type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def document_model[ModelTypeT: type[ResourceBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the Beanie Document model variant of this content type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     def restricted_fields(self, user: UserRead | None = None) -> set[str] | None:
         restrict_shares_info = user is None or (
@@ -469,6 +479,14 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             log_op_end(op_id, failed=True)
             raise e
         log_op_end(op_id)
+
+    async def set_index_ood(self):
+        """Set the index_utd flag for this text, considering the given parameters"""
+        state: PlatformStateDocument = await get_state()
+        if self.public or state.index_unpublished_resources:
+            await TextDocument.find_one(Eq(TextDocument.id, self.text_id)).update(
+                Set({TextDocument.index_utd: False})
+            )
 
     async def __precompute_coverage_data(
         self,
@@ -652,7 +670,7 @@ class ResourceReadExtras(ModelBase):
     corrections: Annotated[
         int | None,
         Field(description="Number of correction notes available for this resource"),
-    ]
+    ] = None
 
 
 ResourceBaseUpdate = make_update_model(ResourceBase)

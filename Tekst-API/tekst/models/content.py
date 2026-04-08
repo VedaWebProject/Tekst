@@ -78,6 +78,7 @@ class ContentBase(ModelBase):
         AwareDatetime,
         Field(
             description="Timestamp of the content creation",
+            default_factory=lambda: datetime.now(UTC),
         ),
         ExcludeFromModelVariants(
             create=True,
@@ -94,10 +95,10 @@ class ContentBase(ModelBase):
         ),
     ] = False
 
-    @field_validator("created_at", mode="before", check_fields=False)
-    @classmethod
-    def set_created_at(cls, _):
-        return datetime.now(UTC)
+    # @field_validator("created_at", mode="before", check_fields=False)
+    # @classmethod
+    # def set_created_at(cls, _):
+    #     return datetime.now(UTC)
 
     @field_validator("resource_type", mode="after", check_fields=False)
     @classmethod
@@ -115,22 +116,30 @@ class ContentBase(ModelBase):
     @classmethod
     def create_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the CREATE model variant of this content type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def read_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the READ model variant of this content type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def update_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the UPDATE model variant of this content type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def document_model[ModelTypeT: type[ContentBase]](cls: ModelTypeT) -> ModelTypeT:
         """Returns the Beanie Document model variant of this content type"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     async def comments_for_csv(self) -> str:
         if not self.comments:

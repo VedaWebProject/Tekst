@@ -5,7 +5,7 @@ import string
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import uuid4
 
 from beanie.operators import Eq
@@ -17,6 +17,7 @@ from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
     ResourceBase,
+    ResourceBaseDocument,
     ResourceExportFormat,
     ResourceReadExtras,
 )
@@ -25,13 +26,17 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceBaseDocument, ResourceSearchQuery, ResourceTypeBase
+from tekst.resources import ResourceTypeBase
 from tekst.types import (
     FalsyToNone,
     MultiLineString,
     SchemaOptionalNullable,
     SingleLineString,
 )
+
+
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
 
 
 class TextAnnotation(ResourceTypeBase):
@@ -44,10 +49,6 @@ class TextAnnotation(ResourceTypeBase):
     @classmethod
     def content_model(cls) -> type["TextAnnotationContent"]:
         return TextAnnotationContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        return TextAnnotationSearchQuery
 
     @classmethod
     def _rtype_index_mappings(
@@ -125,7 +126,7 @@ class TextAnnotation(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         assert isinstance(query.resource_type_specific, TextAnnotationSearchQuery)

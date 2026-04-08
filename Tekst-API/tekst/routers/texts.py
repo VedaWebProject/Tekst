@@ -5,7 +5,7 @@ from tempfile import NamedTemporaryFile
 from typing import Annotated
 
 from beanie import PydanticObjectId
-from beanie.operators import In, Or, Unset
+from beanie.operators import Eq, In, Or, Set, Unset
 from fastapi import (
     APIRouter,
     Body,
@@ -35,7 +35,6 @@ from tekst.models.text import (
     TextStructureImportData,
     TextUpdate,
 )
-from tekst.search import set_index_ood
 from tekst.state import get_state
 from tekst.utils import get_temp_dir
 
@@ -326,8 +325,9 @@ async def _update_text_structure_task(
     # save modified documents
     await LocationDocument.replace_many(updated_docs)
     # mark the text's index as out-of-date
-    assert isinstance(last_text_id, PydanticObjectId)  # for type checker
-    await set_index_ood(last_text_id)
+    await TextDocument.find_one(Eq(TextDocument.id, last_text_id)).update(
+        Set({TextDocument.index_utd: False})
+    )
 
 
 @router.patch(
@@ -605,13 +605,11 @@ async def delete_level(
             if dl + 1 in levels_range
             else 0
         )
-    await text_doc.save()
+    await text_doc.replace()
 
     # mark the text's index as out-of-date
-    assert text_doc.id
-    await set_index_ood(text_doc.id)
-
-    return text_doc
+    text_doc.index_utd = False
+    return await text_doc.replace()
 
 
 @router.delete(
@@ -633,7 +631,7 @@ async def delete_text(
         Path(alias="id"),
     ],
 ) -> None:
-    text = await TextDocument.get(text_id)
+    text: TextDocument | None = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND
     if await TextDocument.find_all().count() <= 1:

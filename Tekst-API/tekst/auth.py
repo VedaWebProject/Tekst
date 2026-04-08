@@ -56,7 +56,6 @@ from tekst.notifications import (
     broadcast_admin_notification,
     send_notification,
 )
-from tekst.search import set_index_ood
 
 
 _cfg: TekstConfig = get_config()
@@ -271,10 +270,7 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[UserDocument, PydanticObjectI
             ).delete()
 
             # mark the text's index as out-of-date
-            await set_index_ood(
-                res.text_id,
-                by_public_resource=res.public,
-            )
+            await res.set_index_ood()
 
             # delete resource itself
             await ResourceBaseDocument.find_one(

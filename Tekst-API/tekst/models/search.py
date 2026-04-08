@@ -9,13 +9,13 @@ from tekst.models.common import (
     ModelBase,
     PydanticObjectId,
 )
-from tekst.resources.audio import AudioSearchQuery
-from tekst.resources.external_references import ExternalReferencesSearchQuery
-from tekst.resources.images import ImagesSearchQuery
-from tekst.resources.location_metadata import LocationMetadataSearchQuery
-from tekst.resources.plain_text import PlainTextSearchQuery
-from tekst.resources.rich_text import RichTextSearchQuery
-from tekst.resources.text_annotation import TextAnnotationSearchQuery
+from tekst.resource_types.audio import AudioSearchQuery
+from tekst.resource_types.external_references import ExternalReferencesSearchQuery
+from tekst.resource_types.images import ImagesSearchQuery
+from tekst.resource_types.location_metadata import LocationMetadataSearchQuery
+from tekst.resource_types.plain_text import PlainTextSearchQuery
+from tekst.resource_types.rich_text import RichTextSearchQuery
+from tekst.resource_types.text_annotation import TextAnnotationSearchQuery
 from tekst.types import (
     SchemaOptionalNonNullable,
     SchemaOptionalNullable,

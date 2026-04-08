@@ -13,7 +13,7 @@ async def migration(db: Database) -> None:
                 "position": corr["position"],
             }
         )
-        if loc is None:
+        if loc is None:  # pragma: no cover
             raise ValueError(f"Location not found for correction {corr['_id']}")
         await db.corrections.update_one(
             {"_id": corr["_id"]}, {"$set": {"location_id": loc["_id"]}}

@@ -1,7 +1,7 @@
 import csv
 
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -13,11 +13,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
     ResourceReadExtras,
 )
-from tekst.models.resource_configs import (
-    GeneralResourceConfig,
-    ResourceConfigBase,
-)
-from tekst.models.search import ResourceSearchQuery
+from tekst.models.resource_configs import ResourceConfigBase
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
@@ -29,20 +25,20 @@ from tekst.types import (
 )
 
 
-class ExternalReferences(ResourceTypeBase):
-    """A resource type for external references"""
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
+
+
+class Audio(ResourceTypeBase):
+    """A resource type for audio files"""
 
     @classmethod
-    def resource_model(cls) -> type["ExternalReferencesResource"]:
-        return ExternalReferencesResource
+    def resource_model(cls) -> type["AudioResource"]:
+        return AudioResource
 
     @classmethod
-    def content_model(cls) -> type["ExternalReferencesContent"]:
-        return ExternalReferencesContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        return ExternalReferencesSearchQuery
+    def content_model(cls) -> type["AudioContent"]:
+        return AudioContent
 
     @classmethod
     def _rtype_index_mappings(
@@ -51,7 +47,7 @@ class ExternalReferences(ResourceTypeBase):
         strict_analyzer: str,
     ) -> dict[str, Any] | None:
         return {
-            "text": {
+            "caption": {
                 "type": "text",
                 "analyzer": lenient_analyzer,
                 "fields": {
@@ -70,15 +66,9 @@ class ExternalReferences(ResourceTypeBase):
         content: ContentBase,
     ) -> dict[str, Any] | None:
         return {
-            "text": [
-                "".join(
-                    [
-                        f"{f.get('title', '')}",
-                        f" ({f.get('alt_ref')})" if f.get("alt_ref") else "",
-                        f" – {f.get('description')}" if f.get("description") else "",
-                    ]
-                ).strip()
-                for f in content.model_dump(include={"links"}).get("links", [])
+            "caption": [
+                f.get("caption", "")
+                for f in content.model_dump(include={"files"}).get("files", [])
             ]
         }
 
@@ -86,22 +76,22 @@ class ExternalReferences(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
-        assert isinstance(query.resource_type_specific, ExternalReferencesSearchQuery)
+        assert isinstance(query.resource_type_specific, AudioSearchQuery)
         es_queries = []
 
         # add query only if not "empty"
-        if query.resource_type_specific.text.strip("* "):
+        if query.resource_type_specific.caption.strip("* "):
             strict_suffix = ".strict" if strict else ""
             es_queries.append(
                 {
                     "simple_query_string": {
                         "fields": [
-                            f"resources.{str(query.common.resource_id)}.text{strict_suffix}"
+                            f"resources.{str(query.common.resource_id)}.caption{strict_suffix}"
                         ],
-                        "query": query.resource_type_specific.text,
+                        "query": query.resource_type_specific.caption,
                         "analyze_wildcard": True,
                     }
                 }
@@ -128,8 +118,8 @@ class ExternalReferences(ResourceTypeBase):
     @classmethod
     async def _export_csv(
         cls,
-        resource: "ExternalReferencesResource",
-        contents: list["ExternalReferencesContent"],
+        resource: "AudioResource",
+        contents: list["AudioContent"],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -148,118 +138,95 @@ class ExternalReferences(ResourceTypeBase):
                     "LOCATION",
                     "SORT",
                     "URL",
-                    "TITLE",
-                    "DESCRIPTION",
-                    "ALT_REF",
+                    "CAPTION",
                     "COMMENTS",
                 ]
             )
             for content in contents:
-                for link in content.links:
+                for audio_file in content.files:
                     csv_writer.writerow(
                         [
                             full_loc_labels.get(str(content.location_id), ""),
                             sort_num,
-                            link.url,
-                            link.title,
-                            link.description,
-                            link.alt_ref,
+                            audio_file.url,
+                            audio_file.caption,
                             await content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1
 
 
-class ExternalReferencesResourceConfig(ResourceConfigBase):
-    # override general resource config defaults to disable searchability by default
-    general: GeneralResourceConfig = GeneralResourceConfig(
-        searchable_quick=False,
-        searchable_adv=False,
-    )
+class AudioResourceConfig(ResourceConfigBase):
+    pass
 
 
-class ExternalReferencesResource(ResourceBase):
-    resource_type: Literal["externalReferences"]  # camelCased resource type classname
-    config: ExternalReferencesResourceConfig = ExternalReferencesResourceConfig()
+class AudioResource(ResourceBase):
+    resource_type: Literal["audio"]  # camelCased resource type classname
+    config: AudioResourceConfig = AudioResourceConfig()
 
     @classmethod
     def quick_search_fields(cls) -> list[str]:
-        return ["text"]
+        return ["caption"]
 
     @classmethod
     def create_model(cls):
-        return ExternalReferencesResourceCreate
+        return AudioResourceCreate
 
     @classmethod
     def read_model(cls):
-        return ExternalReferencesResourceRead
+        return AudioResourceRead
 
     @classmethod
     def update_model(cls):
-        return ExternalReferencesResourceUpdate
+        return AudioResourceUpdate
 
     @classmethod
     def document_model(cls):
-        return ExternalReferencesResourceDocument
+        return AudioResourceDocument
 
 
-class ExternalReferencesResourceCreate(ExternalReferencesResource, CreateBase):
+class AudioResourceCreate(AudioResource, CreateBase):
     pass
 
 
-class ExternalReferencesResourceRead(
-    ExternalReferencesResource,
-    ResourceReadExtras,
-    ReadBase,
-):
+class AudioResourceRead(AudioResource, ResourceReadExtras, ReadBase):
     pass
 
 
-ExternalReferencesResourceUpdate = make_update_model(ExternalReferencesResource)
+AudioResourceUpdate = make_update_model(AudioResource)
 
 
-class ExternalReferencesResourceDocument(
-    ExternalReferencesResource,
-    ResourceBaseDocument,
-):
+class AudioResourceDocument(AudioResource, ResourceBaseDocument):
     pass
 
 
-class ExternalReferencesLink(ModelBase):
+class AudioFile(ModelBase):
     url: Annotated[
         HttpUrl,
-        Field(description="URL of the link"),
+        Field(description="URL of the audio file"),
     ]
-    title: Annotated[
-        str,
-        StringConstraints(min_length=1, max_length=128),
-        SingleLineString,
-        Field(description="Title/text of the link"),
-    ]
-    description: Annotated[
+    source_url: Annotated[
+        HttpUrl | None,
+        FalsyToNone,
+        Field(description="URL of the source website of the image"),
+    ] = None
+    caption: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=4096),
+        StringConstraints(min_length=1, max_length=8192),
         MultiLineString,
         FalsyToNone,
-        Field(description="Description of the link"),
-    ] = None
-    alt_ref: Annotated[
-        str | None,
-        StringConstraints(min_length=1, max_length=512),
-        SingleLineString,
-        FalsyToNone,
-        Field(description="Additional, alternate reference data"),
+        Field(description="Caption of the audio file"),
     ] = None
 
 
-class ExternalReferencesContent(ContentBase):
-    """A content of an external reference resource"""
+class AudioContent(ContentBase):
+    """A content of an audio resource"""
 
-    resource_type: Literal["externalReferences"]  # camelCased resource type classname
-    links: Annotated[
-        list[ExternalReferencesLink],
+    resource_type: Literal["audio"]  # camelCased resource type classname
+    files: Annotated[
+        list[AudioFile],
         Field(
-            description="List of external reference link objects",
+            description="List of audio file objects",
             min_length=1,
             max_length=100,
         ),
@@ -267,48 +234,47 @@ class ExternalReferencesContent(ContentBase):
 
     @classmethod
     def create_model(cls):
-        return ExternalReferencesContentCreate
+        return AudioContentCreate
 
     @classmethod
     def read_model(cls):
-        return ExternalReferencesContentRead
+        return AudioContentRead
 
     @classmethod
     def update_model(cls):
-        return ExternalReferencesContentUpdate
+        return AudioContentUpdate
 
     @classmethod
     def document_model(cls):
-        return ExternalReferencesContentDocument
+        return AudioContentDocument
 
 
-class ExternalReferencesContentCreate(ExternalReferencesContent, CreateBase):
+class AudioContentCreate(AudioContent, CreateBase):
     pass
 
 
-class ExternalReferencesContentRead(ExternalReferencesContent, ReadBase):
+class AudioContentRead(AudioContent, ReadBase):
     pass
 
 
-ExternalReferencesContentUpdate = make_update_model(ExternalReferencesContent)
+AudioContentUpdate = make_update_model(AudioContent)
 
 
-class ExternalReferencesContentDocument(ExternalReferencesContent, ContentBaseDocument):
+class AudioContentDocument(AudioContent, ContentBaseDocument):
     pass
 
 
-class ExternalReferencesSearchQuery(ModelBase):
+class AudioSearchQuery(ModelBase):
     resource_type: Annotated[
-        Literal["externalReferences"],
+        Literal["audio"],
         Field(
             alias="type",
             description="Type of the resource to search in",
         ),
     ]
-    text: Annotated[
+    caption: Annotated[
         str,
         StringConstraints(max_length=512),
         SingleLineString,
-        Field(description="Text to search for"),
         SchemaOptionalNullable,
     ] = ""

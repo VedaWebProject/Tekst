@@ -2,7 +2,7 @@ import csv
 
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from beanie.operators import Eq
 from pydantic import BeforeValidator, Field, StringConstraints
@@ -22,7 +22,6 @@ from tekst.models.resource_configs import (
     ItemIntegrationConfig,
     ResourceConfigBase,
 )
-from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
@@ -30,6 +29,10 @@ from tekst.types import (
     SchemaOptionalNonNullable,
     SingleLineString,
 )
+
+
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
 
 
 class LocationMetadata(ResourceTypeBase):
@@ -42,10 +45,6 @@ class LocationMetadata(ResourceTypeBase):
     @classmethod
     def content_model(cls) -> type["LocationMetadataContent"]:
         return LocationMetadataContent
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase]:
-        return LocationMetadataSearchQuery
 
     @classmethod
     def _rtype_index_mappings(
@@ -106,7 +105,7 @@ class LocationMetadata(ResourceTypeBase):
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         assert isinstance(query.resource_type_specific, LocationMetadataSearchQuery)

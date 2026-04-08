@@ -7691,6 +7691,17 @@
         "type": "object",
         "title": "AdvancedSearchSettings"
       },
+      "AnnoValueQuery": {
+        "anyOf": [
+          {
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
       "AnnotationsConfig": {
         "properties": {
           "displayTemplate": {
@@ -7931,7 +7942,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "calls"
         ],
         "title": "ApiCallContentRead"
@@ -8553,7 +8563,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -8877,7 +8886,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "files"
         ],
         "title": "AudioContentRead"
@@ -9395,7 +9403,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -9587,6 +9594,28 @@
           "resourceType"
         ],
         "title": "AudioResourceUpdate"
+      },
+      "AudioSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "audio",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "caption": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Caption",
+            "default": "",
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "AudioSearchQuery"
       },
       "Body_auth_cookie_login_auth_cookie_login_post": {
         "properties": {
@@ -10618,7 +10647,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "links"
         ],
         "title": "ExternalReferencesContentRead"
@@ -11144,7 +11172,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -11336,6 +11363,29 @@
           "resourceType"
         ],
         "title": "ExternalReferencesResourceUpdate"
+      },
+      "ExternalReferencesSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "externalReferences",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Text",
+            "description": "Text to search for",
+            "default": "",
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "ExternalReferencesSearchQuery"
       },
       "FocusViewConfig": {
         "properties": {
@@ -11692,7 +11742,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "files"
         ],
         "title": "ImagesContentRead"
@@ -12166,7 +12215,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -12358,6 +12406,29 @@
           "resourceType"
         ],
         "title": "ImagesResourceUpdate"
+      },
+      "ImagesSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "images",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "caption": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Caption",
+            "description": "Caption content search query",
+            "default": "",
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "ImagesSearchQuery"
       },
       "IndexInfo": {
         "properties": {
@@ -12849,7 +12920,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "entries"
         ],
         "title": "LocationMetadataContentRead"
@@ -13050,6 +13120,44 @@
         },
         "type": "object",
         "title": "LocationMetadataModGeneralConfig"
+      },
+      "LocationMetadataQueryEntry": {
+        "properties": {
+          "k": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "K",
+            "description": "Metadata entry key query"
+          },
+          "v": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "V",
+            "description": "Metadata entry value query"
+          },
+          "wc": {
+            "type": "boolean",
+            "title": "Wc",
+            "description": "Whether to interpret wildcards in the metadata value query",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "LocationMetadataQueryEntry"
       },
       "LocationMetadataResourceConfig": {
         "properties": {
@@ -13494,7 +13602,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -13686,6 +13793,32 @@
           "resourceType"
         ],
         "title": "LocationMetadataResourceUpdate"
+      },
+      "LocationMetadataSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "locationMetadata",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LocationMetadataQueryEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Entries",
+            "description": "List of metadata queries",
+            "default": [],
+            "optionalNullable": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "LocationMetadataSearchQuery"
       },
       "LocationMetadataSpecialConfig": {
         "properties": {
@@ -14213,7 +14346,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "text"
         ],
         "title": "PlainTextContentRead"
@@ -14732,7 +14864,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -14924,6 +15055,29 @@
           "resourceType"
         ],
         "title": "PlainTextResourceUpdate"
+      },
+      "PlainTextSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "plainText",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Text",
+            "description": "Text content search query",
+            "default": "",
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "PlainTextSearchQuery"
       },
       "PlainTextSpecialConfig": {
         "properties": {
@@ -15919,10 +16073,43 @@
             "description": "Common resource search query data"
           },
           "rts": {
-            "additionalProperties": true,
-            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AudioSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/ExternalReferencesSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/ImagesSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/LocationMetadataSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/PlainTextSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/RichTextSearchQuery"
+              },
+              {
+                "$ref": "#/components/schemas/TextAnnotationSearchQuery"
+              }
+            ],
             "title": "Rts",
-            "description": "Resource type-specific search query data"
+            "description": "Resource type-specific search query data",
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "audio": "#/components/schemas/AudioSearchQuery",
+                "externalReferences": "#/components/schemas/ExternalReferencesSearchQuery",
+                "images": "#/components/schemas/ImagesSearchQuery",
+                "locationMetadata": "#/components/schemas/LocationMetadataSearchQuery",
+                "plainText": "#/components/schemas/PlainTextSearchQuery",
+                "richText": "#/components/schemas/RichTextSearchQuery",
+                "textAnnotation": "#/components/schemas/TextAnnotationSearchQuery"
+              }
+            }
           }
         },
         "type": "object",
@@ -16105,7 +16292,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "html"
         ],
         "title": "RichTextContentRead"
@@ -16725,7 +16911,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -16917,6 +17102,30 @@
           "resourceType"
         ],
         "title": "RichTextResourceUpdate"
+      },
+      "RichTextSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "richText",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Html",
+            "description": "HTML text content search query",
+            "default": "",
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "RichTextSearchQuery"
       },
       "RichTextSpecialConfig": {
         "properties": {
@@ -17484,7 +17693,6 @@
           "resourceId",
           "resourceType",
           "locationId",
-          "createdAt",
           "tokens"
         ],
         "title": "TextAnnotationContentRead"
@@ -17564,6 +17772,62 @@
           "value"
         ],
         "title": "TextAnnotationEntry"
+      },
+      "TextAnnotationQueryEntry": {
+        "properties": {
+          "k": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "K",
+            "description": "Key of the annotation to search for"
+          },
+          "v": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnnoValueQuery"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnnoValueQuery"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "V",
+            "description": "Value(s) of the annotation to search for"
+          },
+          "wc": {
+            "type": "boolean",
+            "title": "Wc",
+            "description": "Whether to interpret wildcards in the annotation value query",
+            "default": false
+          },
+          "spc": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "exists",
+                  "missing"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spc",
+            "description": "Special annotation query type"
+          }
+        },
+        "type": "object",
+        "title": "TextAnnotationQueryEntry"
       },
       "TextAnnotationResourceConfig": {
         "properties": {
@@ -18014,7 +18278,6 @@
         "type": "object",
         "required": [
           "id",
-          "corrections",
           "title",
           "textId",
           "level",
@@ -18206,6 +18469,32 @@
           "resourceType"
         ],
         "title": "TextAnnotationResourceUpdate"
+      },
+      "TextAnnotationSearchQuery": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "textAnnotation",
+            "title": "Type",
+            "description": "Type of the resource to search in"
+          },
+          "anno": {
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationQueryEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Anno",
+            "description": "List of annotations to match",
+            "default": [],
+            "optionalNullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "TextAnnotationSearchQuery"
       },
       "TextAnnotationSpecialConfig": {
         "properties": {

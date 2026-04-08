@@ -5,18 +5,17 @@ import pkgutil
 
 from collections.abc import Callable
 from functools import lru_cache
-from os.path import realpath
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import jsonref
 
 from beanie.operators import In
 from humps import camelize
 
+from tekst import resource_types
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
-    ModelBase,
     PydanticObjectId,
 )
 from tekst.models.content import (
@@ -28,8 +27,11 @@ from tekst.models.resource import (
     ResourceBaseDocument,
     ResourceExportFormat,
 )
-from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
+
+
+if TYPE_CHECKING:
+    from tekst.models.search import ResourceSearchQuery
 
 
 # resource base model fields to exclude from export/import
@@ -47,13 +49,24 @@ RES_EXCLUDE_EXP_IMP = {
 }
 
 
+IMPORT_README_TXT = """
+Properties prefixed with an underscore are purely for informational purposes
+and can be omitted in the actual import file. The array 'contents' holds the
+data you want to import. Each content represents data for one location.
+The '_contentSchema' object gives you a schema and description each content
+has to follow to be valid. Every content you provide MUST keep the exact 'locationId'
+property from this template! For locations the resource already has contents for,
+the content's other properties (see '_contentSchema') are optional.
+Already existing contents will be archived. The imported content will become
+the current version. Contents targeting locations the resource has no contents
+for yet MUST follow '_contentSchema'! To skip data import for a specific location,
+just remove the respective content object from 'contents'.
+"""
+
+
 @lru_cache
 def get_resource_template_readme() -> dict[str, str]:
-    _template_readme_lines = (
-        (Path(realpath(__file__)).parent / "import_template_readme.txt")
-        .read_text(encoding="utf-8")
-        .splitlines()
-    )
+    _template_readme_lines = IMPORT_README_TXT.splitlines()
     return {
         str(i + 1): _template_readme_lines[i]
         for i in range(len(_template_readme_lines))
@@ -151,7 +164,7 @@ class ResourceTypeBase:
     def es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]]:
         es_queries = []
@@ -332,20 +345,16 @@ class ResourceTypeBase:
     @classmethod
     def resource_model(cls) -> type[ResourceBase]:
         """Returns the resource model for this type of resource"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def content_model(cls) -> type[ContentBase]:
         """Returns the content model for contents of this type of resource"""
-        raise NotImplementedError("This method must be implemented by subclasses.")
-
-    @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        """
-        Returns the search query model for search
-        queries targeting this type of resource
-        """
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def _rtype_index_mappings(
@@ -358,7 +367,9 @@ class ResourceTypeBase:
         documents unique for this type of resource content, respecting any resource
         configuration relevant to the resource's index mappings
         """
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def _rtype_index_doc(
@@ -369,13 +380,15 @@ class ResourceTypeBase:
         Returns the content for the ES index document
         for this type of resource content that is unique to this resource type
         """
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def rtype_es_queries(
         cls,
         *,
-        query: ResourceSearchQuery,
+        query: "ResourceSearchQuery",
         strict: bool = False,
     ) -> list[dict[str, Any]] | None:
         """
@@ -383,7 +396,9 @@ class ResourceTypeBase:
         in the given resource search query instance.
         Common content fields are not included in the returned queries.
         """
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
     @classmethod
     def highlights_generator(cls) -> Callable[[dict[str, Any]], list[str]] | None:
@@ -408,7 +423,9 @@ class ResourceTypeBase:
         Writes export data to the given path.
         Raises ValueError if the export format is not supported by this resource type.
         """
-        raise NotImplementedError("This method must be implemented by subclasses.")
+        raise NotImplementedError(
+            "This method must be implemented by subclasses."
+        )  # pragma: no cover
 
 
 class ResourceTypesManager:
@@ -454,9 +471,9 @@ def init_resource_types_mgr() -> None:
         return
     log.info("Registering resource types...")
     # get internal resource type module names
-    lt_modules = [mod.name for mod in pkgutil.iter_modules(__path__)]
+    lt_modules = [mod.name for mod in pkgutil.iter_modules(resource_types.__path__)]
     for lt_module in lt_modules:
-        module = importlib.import_module(f"{__name__}.{lt_module}")
+        module = importlib.import_module(f"{resource_types.__name__}.{lt_module}")
         res_types_from_module = inspect.getmembers(
             module, lambda o: inspect.isclass(o) and issubclass(o, ResourceTypeBase)
         )

@@ -46,10 +46,6 @@ class ApiCall(ResourceTypeBase):
         return ApiCallContent
 
     @classmethod
-    def search_query_model(cls) -> type[ModelBase] | None:
-        return None  # pragma: no cover
-
-    @classmethod
     def _rtype_index_mappings(
         cls,
         lenient_analyzer: str,
