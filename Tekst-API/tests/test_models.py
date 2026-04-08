@@ -1,3 +1,4 @@
+from datetime import UTC, datetime
 from typing import Any
 
 import pytest
@@ -33,7 +34,7 @@ def test_serialization(get_test_data):
     text = TextRead(
         id=dummy_id,
         loc_delim="---",
-        **text.model_dump(exclude_none=True),
+        **text.model_dump(exclude_none=True, exclude={"loc_delim", "id"}),
     )
     assert "id" in text.model_dump()
     assert "loc_delim" in text.model_dump()
@@ -157,6 +158,7 @@ def test_resource_type_validator(wrong_id):
             resource_id=wrong_id,
             resource_type="foo_bar",
             location_id=wrong_id,
+            created_at=datetime.now(UTC),
         )
 
 

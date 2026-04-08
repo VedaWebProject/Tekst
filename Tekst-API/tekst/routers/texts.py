@@ -420,8 +420,6 @@ async def insert_level(
     ],
 ) -> TextRead:
     text_doc: TextDocument | None = await TextDocument.get(text_id)
-    assert text_doc
-
     if not text_doc:
         raise errors.E_404_TEXT_NOT_FOUND
 
@@ -533,8 +531,6 @@ async def delete_level(
     ],
 ) -> TextRead:
     text_doc: TextDocument | None = await TextDocument.get(text_id)
-    assert text_doc
-
     if not text_doc:
         raise errors.E_404_TEXT_NOT_FOUND
 

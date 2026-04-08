@@ -553,7 +553,7 @@ async def _search_advanced(
         res_doc = accessible_resources_by_id.get(res_id)
         if not res_doc or res_doc.config.general.searchable_adv is False:
             continue  # pragma: no cover
-        res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)  # ty:ignore[unresolved-attribute]
+        res_type = resource_types_mgr.get(query.resource_type_specific.resource_type)
         txt_id = str(res_doc.text_id)
 
         # construct resource type-specific query

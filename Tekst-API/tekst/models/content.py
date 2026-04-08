@@ -83,8 +83,7 @@ class ContentBase(ModelBase):
             create=True,
             update=True,
         ),
-        SchemaOptionalNonNullable,
-    ] = datetime.now(UTC)  # preliminary default, will be overridden by validator
+    ]
 
     archived: Annotated[
         bool,
