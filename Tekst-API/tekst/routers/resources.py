@@ -887,7 +887,7 @@ async def _import_resource_task(
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     content_doc_model: type[ContentBase] = content_model.document_model()
-    assert isinstance(content_doc_model, DocumentBase)  # for type checker
+    assert issubclass(content_doc_model, DocumentBase)  # for type checker
     content_create_model: type[ContentBase] = content_model.create_model()
     content_update_model: type[ContentBase] = content_model.update_model()
 
@@ -1125,7 +1125,7 @@ async def export_resource_contents_task(
     content_doc_model: type[ContentBase] = (
         target_res_type.content_model().document_model()
     )
-    assert isinstance(content_doc_model, DocumentBase)  # for type checker
+    assert issubclass(content_doc_model, DocumentBase)  # for type checker
     contents = await content_doc_model.find(
         Eq(content_doc_model.resource_id, resource.id),
         In(content_doc_model.location_id, target_loc_id_pos_map.keys()),

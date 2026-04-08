@@ -202,7 +202,7 @@ class TextAnnotation(ResourceTypeBase):
                     }
                     if anno_q.wildcards
                     else {"term": {(f"{annos_field_path}.value{strict_suffix}"): v}}
-                    for v in [v.strip() for v in anno_q.value]
+                    for v in [(v or "").strip() for v in anno_q.value]
                 ]
                 annos_es_q.append(
                     {

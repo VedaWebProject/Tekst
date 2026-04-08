@@ -23,7 +23,6 @@ from tekst.resources.audio import (
     AudioResourceCreate,
     AudioResourceRead,
     AudioResourceUpdate,
-    AudioSearchQuery,
 )
 from tekst.resources.external_references import (
     ExternalReferencesContentCreate,
@@ -33,7 +32,6 @@ from tekst.resources.external_references import (
     ExternalReferencesResourceCreate,
     ExternalReferencesResourceRead,
     ExternalReferencesResourceUpdate,
-    ExternalReferencesSearchQuery,
 )
 from tekst.resources.images import (
     ImagesContentCreate,
@@ -43,7 +41,6 @@ from tekst.resources.images import (
     ImagesResourceCreate,
     ImagesResourceRead,
     ImagesResourceUpdate,
-    ImagesSearchQuery,
 )
 from tekst.resources.location_metadata import (
     LocationMetadataContentCreate,
@@ -53,7 +50,6 @@ from tekst.resources.location_metadata import (
     LocationMetadataResourceCreate,
     LocationMetadataResourceRead,
     LocationMetadataResourceUpdate,
-    LocationMetadataSearchQuery,
 )
 from tekst.resources.plain_text import (
     PlainTextContentCreate,
@@ -63,7 +59,6 @@ from tekst.resources.plain_text import (
     PlainTextResourceCreate,
     PlainTextResourceRead,
     PlainTextResourceUpdate,
-    PlainTextSearchQuery,
 )
 from tekst.resources.rich_text import (
     RichTextContentCreate,
@@ -73,7 +68,6 @@ from tekst.resources.rich_text import (
     RichTextResourceCreate,
     RichTextResourceRead,
     RichTextResourceUpdate,
-    RichTextSearchQuery,
 )
 from tekst.resources.text_annotation import (
     TextAnnotationContentCreate,
@@ -83,7 +77,6 @@ from tekst.resources.text_annotation import (
     TextAnnotationResourceCreate,
     TextAnnotationResourceRead,
     TextAnnotationResourceUpdate,
-    TextAnnotationSearchQuery,
 )
 
 
@@ -193,21 +186,6 @@ AnyContentDocument = Annotated[
     | PlainTextContentDocument
     | RichTextContentDocument
     | TextAnnotationContentDocument,
-    Body(discriminator="resource_type"),
-    Field(discriminator="resource_type"),
-]
-
-
-# ### CREATE UNION TYPE ALIASES FOR MODELS OF RESOURCE TYPE-SPECIFIC SEARCH QUERIES
-
-AnyResourceSearchQuery = Annotated[
-    AudioSearchQuery
-    | ExternalReferencesSearchQuery
-    | ImagesSearchQuery
-    | LocationMetadataSearchQuery
-    | PlainTextSearchQuery
-    | RichTextSearchQuery
-    | TextAnnotationSearchQuery,
     Body(discriminator="resource_type"),
     Field(discriminator="resource_type"),
 ]

@@ -1,7 +1,7 @@
 from datetime import UTC
 from typing import Any
 
-from beanie import init_beanie
+from beanie import Document, init_beanie
 from bson.codec_options import CodecOptions
 from pymongo.asynchronous.database import AsyncDatabase as Database
 from pymongo.asynchronous.mongo_client import AsyncMongoClient as DatabaseClient
@@ -62,7 +62,7 @@ def get_db(
 async def init_odm(db: Database = get_db()) -> None:
     log.debug("Initializing ODM...")
     # collect basic document models
-    models = [
+    models: list[type[Document]] = [
         TextDocument,
         LocationDocument,
         ResourceBaseDocument,
@@ -81,8 +81,8 @@ async def init_odm(db: Database = get_db()) -> None:
     for lt_class in resource_types_mgr.get_all().values():
         res_doc_model = lt_class.resource_model().document_model()
         cnt_doc_model = lt_class.content_model().document_model()
-        assert isinstance(res_doc_model, ResourceBaseDocument)
-        assert isinstance(cnt_doc_model, ContentBaseDocument)
+        assert issubclass(res_doc_model, ResourceBaseDocument)
+        assert issubclass(cnt_doc_model, ContentBaseDocument)
         models.append(res_doc_model)
         models.append(cnt_doc_model)
     # init beanie ODM

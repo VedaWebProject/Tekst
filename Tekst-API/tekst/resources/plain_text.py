@@ -14,8 +14,9 @@ from tekst.models.resource import (
     ResourceReadExtras,
 )
 from tekst.models.resource_configs import ResourceConfigBase
+from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeBase
+from tekst.resources import ResourceTypeBase
 from tekst.types import (
     ContentCssProperties,
     FalsyToNone,

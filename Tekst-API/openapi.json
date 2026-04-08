@@ -7890,9 +7890,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -7933,6 +7931,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "calls"
         ],
         "title": "ApiCallContentRead"
@@ -8852,9 +8851,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -8880,6 +8877,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "files"
         ],
         "title": "AudioContentRead"
@@ -10594,9 +10592,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -10622,6 +10618,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "links"
         ],
         "title": "ExternalReferencesContentRead"
@@ -11669,9 +11666,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -11697,6 +11692,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "files"
         ],
         "title": "ImagesContentRead"
@@ -12827,9 +12823,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -12855,6 +12849,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "entries"
         ],
         "title": "LocationMetadataContentRead"
@@ -14195,9 +14190,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -14220,6 +14213,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "text"
         ],
         "title": "PlainTextContentRead"
@@ -16078,9 +16072,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -16113,6 +16105,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "html"
         ],
         "title": "RichTextContentRead"
@@ -17466,9 +17459,7 @@
             "type": "string",
             "format": "date-time",
             "title": "Createdat",
-            "description": "Timestamp of the content creation",
-            "default": "2026-04-07T18:15:57.997271Z",
-            "optionalNullable": false
+            "description": "Timestamp of the content creation"
           },
           "archived": {
             "type": "boolean",
@@ -17493,6 +17484,7 @@
           "resourceId",
           "resourceType",
           "locationId",
+          "createdAt",
           "tokens"
         ],
         "title": "TextAnnotationContentRead"

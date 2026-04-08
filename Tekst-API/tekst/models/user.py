@@ -13,7 +13,11 @@ from tekst.models.common import (
     ModelBase,
     make_update_model,
 )
-from tekst.models.notifications import Notification
+from tekst.models.notifications import (
+    AdminNotificationTriggers,
+    Notification,
+    UserNotificationTriggers,
+)
 from tekst.types import (
     FalsyToNone,
     HttpUrl,
@@ -30,34 +34,6 @@ type PrivateUserProps = Annotated[
     Field(
         description="Properties set to be private by this user",
         max_length=len(get_args(PrivateUserProp.__value__)),
-    ),
-]
-
-
-type UserNotificationTrigger = Literal[
-    Notification.EMAIL_MESSAGE_RECEIVED,
-    Notification.EMAIL_NEW_CORRECTION,
-    Notification.EMAIL_ADDED_AS_OWNER,
-    Notification.USRMSG_RESOURCE_PROPOSED,
-    Notification.USRMSG_RESOURCE_PUBLISHED,
-]
-UserNotificationTriggers = Annotated[
-    list[UserNotificationTrigger],
-    Field(
-        description="Events that trigger notifications for this user",
-        max_length=len(get_args(UserNotificationTrigger.__value__)),
-    ),
-]
-
-type AdminNotificationTrigger = Literal[
-    Notification.EMAIL_USER_AWAITS_ACTIVATION,
-    Notification.EMAIL_NEW_CORRECTION,
-]
-AdminNotificationTriggers = Annotated[
-    list[AdminNotificationTrigger],
-    Field(
-        description="Events that trigger admin notifications for this user",
-        max_length=len(get_args(AdminNotificationTrigger.__value__)),
     ),
 ]
 

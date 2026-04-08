@@ -22,8 +22,9 @@ from tekst.models.resource_configs import (
     ItemIntegrationConfig,
     ResourceConfigBase,
 )
+from tekst.models.search import ResourceSearchQuery
 from tekst.models.text import TextDocument
-from tekst.resources import ResourceSearchQuery, ResourceTypeBase
+from tekst.resources import ResourceTypeBase
 from tekst.types import (
     ExcludeFromModelVariants,
     SchemaOptionalNonNullable,
