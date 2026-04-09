@@ -14,13 +14,14 @@ install:
 
 # format code base, fix linting errors
 fix:
-  uv run ruff format .
-  uv run ruff check . --fix
+  uvx ruff format .
+  uvx ruff check . --fix
 
 # check code formatting and style
 check:
-  uv run ruff format . --check
-  uv run ruff check . --extend-select N
+  uvx ruff format . --check
+  uvx ruff check . --extend-select N
+  uvx ty check
 
 # run static type checker
 # (this is a separate task for now because the
@@ -72,7 +73,7 @@ services-down SCOPE="test":
 
 # clean up generated files
 cleanup:
-  uv run ruff clean
+  uvx ruff clean
   rm -rf \
     */**/__pycache__ \
     */**/.pytest_cache \

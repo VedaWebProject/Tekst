@@ -65,7 +65,6 @@ dev = [
     "pytest-dotenv<1.0.0,>=0.5.2",
     "httpx<1.0.0,>=0.28.0",
     "asgi-lifespan<3.0.0,>=2.1.0",
-    "ruff<1.0.0,>=0.8.0",
     "pytest-env<2.0.0,>=1.1.1",
     "uvicorn[standard]>=0.34.2",
     "fastapi-cli>=0.0.7",
