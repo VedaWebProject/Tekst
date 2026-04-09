@@ -320,23 +320,24 @@ async def restore_archived_content(
     Restores the archived content with the given ID, archives any content currently
     present for the same resource/location.
     """
+
+    # check if the content exists and the resource
+    # this content belongs to is writable by user
     archived_content_doc: ContentBaseDocument | None = await ContentBaseDocument.get(
         content_id,
         with_children=True,
     )
-    if not archived_content_doc:
-        raise errors.E_404_CONTENT_NOT_FOUND
-    # check if the resource this content belongs to is writable by user
-    resource_read_allowed = archived_content_doc and (
-        await ResourceBaseDocument.find_one(
+    if (
+        not archived_content_doc
+        or not await ResourceBaseDocument.find_one(
             ResourceBaseDocument.id == archived_content_doc.resource_id,
-            await ResourceBaseDocument.query_criteria_read(user),
+            await ResourceBaseDocument.query_criteria_write(user),
             with_children=True,
         ).exists()
-    )
-    if not resource_read_allowed:
+    ):
         raise errors.E_404_CONTENT_NOT_FOUND
-    # check if content is archived
+
+    # check if content is archived at all
     if not archived_content_doc.archived:
         raise errors.update_values(
             errors.E_400_INVALID_REQUEST_DATA,
@@ -345,6 +346,7 @@ async def restore_archived_content(
                 "so it cannot be restored from archive."
             },
         )
+
     # archive any current content for the same resource/location
     await ContentBaseDocument.find(
         Eq(ContentBaseDocument.resource_id, archived_content_doc.resource_id),

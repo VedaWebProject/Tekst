@@ -15,6 +15,7 @@ from pydantic import (
 )
 from typing_extensions import TypedDict
 
+from tekst.html import force_html, sanitize_html
 from tekst.i18n import TranslationBase, Translations
 from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import (
@@ -36,7 +37,7 @@ from tekst.types import (
     ResourceTypeName,
     SingleLineString,
 )
-from tekst.utils.html import force_html, sanitize_html
+from tekst.utils import ensure
 
 
 # class for one arbitrary metadate
@@ -563,14 +564,11 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             .to_list()
         )
 
-        text_doc: TextDocument | None = await TextDocument.get(self.text_id)
-        assert text_doc
+        text = ensure(await TextDocument.get(self.text_id))
         # get all resource level location labels
-        location_labels = await text_doc.full_location_labels(self.level)
+        location_labels = await text.full_location_labels(self.level)
         # get all parent level location labels
-        parent_location_labels = await text_doc.full_location_labels(
-            max(self.level - 1, 0)
-        )
+        parent_location_labels = await text.full_location_labels(max(self.level - 1, 0))
 
         # generate coverage details data
         coverage_per_parent = {}
@@ -668,9 +666,9 @@ class ResourceReadExtras(ModelBase):
         Field(description="Public user data for users allowed to write this resource"),
     ] = None
     corrections: Annotated[
-        int | None,
+        int,
         Field(description="Number of correction notes available for this resource"),
-    ] = None
+    ] = 0
 
 
 ResourceBaseUpdate = make_update_model(ResourceBase)

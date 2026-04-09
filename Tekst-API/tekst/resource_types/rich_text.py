@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import Field, StringConstraints, field_validator
 
+from tekst.html import get_html_text, sanitize_html
 from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
 from tekst.models.content import ContentBase, ContentBaseDocument
 from tekst.models.resource import (
@@ -28,7 +29,7 @@ from tekst.types import (
     SearchReplacements,
     SingleLineString,
 )
-from tekst.utils.html import get_html_text, sanitize_html
+from tekst.utils import ensure
 
 
 if TYPE_CHECKING:
@@ -128,8 +129,7 @@ class RichText(ResourceTypeBase):
         contents: list["RichTextContent"],
         file_path: Path,
     ) -> None:
-        text = await TextDocument.get(resource.text_id)
-        assert text
+        text = ensure(await TextDocument.get(resource.text_id))
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0

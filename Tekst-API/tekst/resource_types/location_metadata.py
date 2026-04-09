@@ -29,6 +29,7 @@ from tekst.types import (
     SchemaOptionalNonNullable,
     SingleLineString,
 )
+from tekst.utils import ensure
 
 
 if TYPE_CHECKING:
@@ -188,8 +189,7 @@ class LocationMetadata(ResourceTypeBase):
         contents: list["LocationMetadataContent"],
         file_path: Path,
     ) -> None:
-        text = await TextDocument.get(resource.text_id)
-        assert text
+        text = ensure(await TextDocument.get(resource.text_id))
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0

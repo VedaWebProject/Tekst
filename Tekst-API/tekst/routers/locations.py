@@ -27,6 +27,7 @@ from tekst.types import (
     LocationPosition,
     SingleLineString,
 )
+from tekst.utils import ensure
 
 
 router = APIRouter(
@@ -605,8 +606,7 @@ async def move_location(
     if not location:
         raise errors.E_404_LOCATION_NOT_FOUND
     # define initial working vars
-    text: TextDocument | None = await TextDocument.get(location.text_id)
-    assert text
+    text = ensure(await TextDocument.get(location.text_id))
     text_levels = len(text.levels)
     forward = target.position > location.position
     direction_mod = 1 if forward else -1
@@ -660,6 +660,4 @@ async def move_location(
             distance = await LocationDocument.find(
                 In(LocationDocument.parent_id, [n.id for n in to_shift]),
             ).count()
-    location: LocationDocument | None = await LocationDocument.get(location_id)
-    assert location  # for type checker
-    return location
+    return ensure(await LocationDocument.get(location_id))  # for type checker

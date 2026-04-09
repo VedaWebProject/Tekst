@@ -28,6 +28,7 @@ from tekst.models.resource import (
     ResourceExportFormat,
 )
 from tekst.models.text import TextDocument
+from tekst.utils import ensure
 
 
 if TYPE_CHECKING:
@@ -278,8 +279,7 @@ class ResourceTypeBase:
         aims to be as comprehensive as possible.
         """
         # prepare (root) resource object
-        text: TextDocument | None = await TextDocument.get(resource.text_id)
-        assert text
+        text = ensure(await TextDocument.get(resource.text_id))
         res = camelize(
             resource.model_dump(
                 mode="json",
@@ -343,7 +343,7 @@ class ResourceTypeBase:
             )
 
     @classmethod
-    def resource_model(cls) -> type[ResourceBase]:
+    def resource_model[T: ResourceBase](cls) -> T:
         """Returns the resource model for this type of resource"""
         raise NotImplementedError(
             "This method must be implemented by subclasses."
