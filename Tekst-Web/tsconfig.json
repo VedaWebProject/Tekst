@@ -9,9 +9,8 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".", // this must be specified if "paths" is specified.
     "paths": {
-      "@": ["./src"] // this mapping is relative to "baseUrl",
+      "@": ["./src"]
     },
     "noErrorTruncation": true
   }
