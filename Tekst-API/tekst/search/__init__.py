@@ -46,6 +46,7 @@ from tekst.search.utils import (
     quick_regexp_query,
 )
 from tekst.state import get_state, update_state
+from tekst.utils import ensure
 
 
 _cfg: TekstConfig = get_config()
@@ -402,8 +403,7 @@ async def get_indices_info() -> list[IndexInfo]:
     try:
         for idx_name in idx_names:
             text_id = idx_name.split("_")[-2]
-            text: TextDocument | None = await TextDocument.get(text_id)
-            assert text
+            text = ensure(await TextDocument.get(text_id))
             idx_stats = await _get_index_stats(idx_name)
             data.append(
                 {
@@ -674,8 +674,7 @@ async def search_nearest_content_location(
     location: LocationDocument,
     direction: Literal["before", "after"],
 ) -> LocationDocument | None:
-    text_doc = await TextDocument.get(resource.text_id)
-    assert text_doc
+    text = ensure(await TextDocument.get(resource.text_id))
     query = {
         "bool": {
             "must": [
@@ -694,7 +693,7 @@ async def search_nearest_content_location(
     sort = {"position": {"order": "desc" if direction == "before" else "asc"}}
     es: AsyncElasticsearch = await _get_es_client()
     results = await es.search(
-        index=f"{IDX_NAME_PREFIX}{text_doc.slug}_*",
+        index=f"{IDX_NAME_PREFIX}{text.slug}_*",
         query=query,
         track_scores=False,
         sort=sort,

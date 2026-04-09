@@ -53,7 +53,7 @@ from tekst.resources import (
 )
 from tekst.state import StateDep
 from tekst.types import ResourceTypeName
-from tekst.utils import client_hash
+from tekst.utils import client_hash, ensure
 
 
 async def prepare_resource_read(
@@ -64,15 +64,14 @@ async def prepare_resource_read(
     A helper function that returns a fully prepared resource read instance for clients
     """
     # convert resource document to resource type's read model instance
-    resource: ResourceBase = (
+    resource = (
         resource_types_mgr.get(resource_doc.resource_type)
         .resource_model()
         .read_model()(
             **resource_doc.model_dump(exclude=resource_doc.restricted_fields(for_user))
         )
     )
-
-    assert isinstance(resource, get_args(AnyResourceRead)[0])
+    assert isinstance(resource, get_args(AnyResourceRead)[0])  # for type checker
 
     # include writable flag
     resource.writable = bool(
@@ -207,7 +206,6 @@ async def create_resource(
         .document_model()
         .model_from(resource)
     )
-    assert isinstance(resource_doc, ResourceBaseDocument)  # for type checker
     resource_doc.owner_ids = [user.id]  # force correct owner ID
     await resource_doc.create()  # create resource in DB
 
@@ -767,8 +765,7 @@ async def download_resource_template(
         with_children=True,
     ).exists():
         raise errors.E_403_FORBIDDEN
-    text_doc: TextDocument | None = await TextDocument.get(resource_doc.text_id)
-    assert text_doc
+    text = ensure(await TextDocument.get(resource_doc.text_id))
 
     # import content type for the requested resource
     template = resource_types_mgr.get(
@@ -782,7 +779,7 @@ async def download_resource_template(
     )
 
     # construct labels of all locations on the resource's level
-    full_loc_labels = await text_doc.full_location_labels(resource_doc.level)
+    full_loc_labels = await text.full_location_labels(resource_doc.level)
 
     # fill in content templates with IDs and some informational fields
     template["contents"] = [
@@ -810,7 +807,7 @@ async def download_resource_template(
     # with a quoted filename :(
     headers = {
         "Content-Disposition": (
-            f"attachment; filename={text_doc.slug}_{resource_doc.id}_template.json"
+            f"attachment; filename={text.slug}_{resource_doc.id}_template.json"
         )
     }
 
@@ -1090,8 +1087,7 @@ async def export_resource_contents_task(
     ):
         raise errors.E_400_LOCATION_RANGE_INVALID
 
-    text: TextDocument | None = await TextDocument.get(resource.text_id)
-    assert text
+    text = ensure(await TextDocument.get(resource.text_id))
     target_res_type = resource_types_mgr.get(resource.resource_type)
 
     # get target location IDs from range

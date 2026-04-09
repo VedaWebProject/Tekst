@@ -294,7 +294,6 @@ async def _update_text_structure_task(
                 exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
                 values={"errors": f"Location with ID {loc['id']} does not exist"},
             )
-        assert isinstance(loc_doc, LocationDocument)  # for type checker
 
         # check if this location belongs to the same text as the last one
         all_locs_same_text = all_locs_same_text and (

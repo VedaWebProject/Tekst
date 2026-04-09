@@ -1483,7 +1483,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -1711,6 +1710,12 @@ export interface components {
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
       /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
+      /**
        * Title
        * @description Title of this resource
        */
@@ -1934,7 +1939,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -2094,6 +2098,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -2726,7 +2736,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -2891,6 +2900,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -3235,7 +3250,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -3377,6 +3391,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -3757,7 +3777,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -4005,6 +4024,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -4417,7 +4442,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -4592,6 +4616,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -5351,7 +5381,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -5579,6 +5608,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource
@@ -5999,7 +6034,6 @@ export interface components {
        * Createdat
        * Format: date-time
        * @description Timestamp of the content creation
-       * @default 2026-04-07T13:49:59.530845Z
        */
       createdAt?: string;
       /**
@@ -6199,6 +6233,12 @@ export interface components {
        * @description Public user data for users allowed to write this resource
        */
       sharedWriteUsers?: components['schemas']['UserReadPublic'][] | null;
+      /**
+       * Corrections
+       * @description Number of correction notes available for this resource
+       * @default 0
+       */
+      corrections: number;
       /**
        * Title
        * @description Title of this resource

@@ -15,6 +15,7 @@ from tekst.models.resource import ResourceBaseDocument
 from tekst.models.text import TextDocument
 from tekst.models.user import UserDocument
 from tekst.notifications import send_notification
+from tekst.utils import ensure
 
 
 router = APIRouter(
@@ -65,10 +66,7 @@ async def create_correction(
     location_labels = [location_doc.label]
     parent_location_id = location_doc.parent_id
     while parent_location_id:
-        parent_location: LocationDocument | None = await LocationDocument.get(
-            parent_location_id
-        )
-        assert parent_location
+        parent_location = ensure(await LocationDocument.get(parent_location_id))
         location_labels.insert(0, parent_location.label)
         parent_location_id = parent_location.parent_id
 
@@ -93,8 +91,7 @@ async def create_correction(
                 and Notification.EMAIL_NEW_CORRECTION.value
                 in to_user.user_notification_triggers
             ):
-                text: TextDocument | None = await TextDocument.get(resource_doc.text_id)
-                assert text
+                text = ensure(await TextDocument.get(resource_doc.text_id))
                 await send_notification(
                     to_user,
                     Notification.EMAIL_NEW_CORRECTION,

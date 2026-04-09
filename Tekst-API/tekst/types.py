@@ -1,3 +1,5 @@
+import re
+
 from typing import Annotated
 
 from annotated_types import BaseMetadata
@@ -10,8 +12,6 @@ from pydantic import (
 from pydantic.dataclasses import dataclass as pydantic_dataclass
 from pydantic.functional_validators import AfterValidator
 from typing_extensions import TypedDict
-
-from tekst.utils.strings import cleanup_spaces_multiline, cleanup_spaces_oneline
 
 
 ### ANNOTATIONS
@@ -29,8 +29,29 @@ SchemaOptionalNonNullable = Field(json_schema_extra={"optionalNullable": False})
 
 # some extra string-manipulating validators
 
-SingleLineString = AfterValidator(cleanup_spaces_oneline)
-MultiLineString = AfterValidator(cleanup_spaces_multiline)
+
+def _cleanup_spaces_multiline(string: str | None) -> str | None:
+    """Reduces excessive newline chars and whitespaces and strips whitespaces"""
+    if string is None:  # pragma: no cover
+        return None
+    string = str(string)
+    string = re.sub(r"(\r\n|\r|\n)", "\n", string)  # normalize line breaks
+    string = re.sub(r"[\t ]*\n[\t ]*", "\n", string)  # remove spaces around line breaks
+    string = re.sub(r"\n{3,}", "\n\n", string)  # max. 2 consecutive line breaks
+    string = re.sub(r"[\t ]+", " ", string)  # replace excessive whitespaces
+    return string.strip()
+
+
+def _cleanup_spaces_oneline(string: str | None) -> str | None:
+    """Replaces any number of newlines with one whitespace and strips whitespaces"""
+    if string is None:  # pragma: no cover
+        return None
+    # replace any sequence of spaces with one whitespace, return the result
+    return re.sub(r"\s+", " ", str(string)).strip()
+
+
+SingleLineString = AfterValidator(_cleanup_spaces_oneline)
+MultiLineString = AfterValidator(_cleanup_spaces_multiline)
 FalsyToNone = BeforeValidator(lambda v: v or None)
 
 # serializers

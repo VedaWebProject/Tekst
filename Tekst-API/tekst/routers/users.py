@@ -23,6 +23,7 @@ from tekst.models.user import (
     UsersSearchResult,
 )
 from tekst.types import SingleLineString
+from tekst.utils import ensure
 
 
 def _get_user_text_query(query_str: str) -> BaseFindOperator | dict:
@@ -68,8 +69,7 @@ async def delete_me(
             values={"errors": "Cannot delete the only superuser!"},
         )
     user_doc = await UserDocument.get(user.id)
-    assert user_doc
-    await user_mgr.delete(user_doc, request)
+    await user_mgr.delete(ensure(user_doc), request)
     return None
 
 

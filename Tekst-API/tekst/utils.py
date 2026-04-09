@@ -1,7 +1,9 @@
 import hashlib
+import inspect
 
 from tempfile import TemporaryDirectory
 from types import AsyncGeneratorType
+from typing import Any, cast
 
 from fastapi import Request
 
@@ -36,3 +38,25 @@ def client_hash(
         return hashlib.sha256(ident.encode("utf-8")).hexdigest()
     else:  # pragma: no cover
         return None
+
+
+def ensure[T](
+    v: T | None | Any,
+    *,
+    strict: bool = False,
+) -> T:
+    """
+    Raises a ValueError if `v` is None (default) or falsy (set via `strict`).
+    Uses typing.cast to make extra sure type checkers understand that the returned
+    value is of the desired type.
+    """
+    if v is None or (strict and not v):
+        frame_info = inspect.stack()[1]
+        module = inspect.getmodule(frame_info.frame)
+        module_repr = module.__file__ if module else frame_info.filename
+        v_str = "<empty_str>" if isinstance(v, str) else str(v)
+        raise ValueError(
+            f"Unexpected {v_str} value at: "
+            f"{module_repr}, {frame_info.function}, line {frame_info.lineno}"
+        )
+    return cast(T, v)

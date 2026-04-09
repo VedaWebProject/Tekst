@@ -58,10 +58,14 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
 const _LIGHT_OVERRIDES: GlobalThemeOverrides = {
   common: {
     bodyColor: '#FFFFFF',
+    inputColorDisabled: 'rgba(0,0,0,0.02)',
   },
   Badge: {
     fontSize: 'var(--font-size-mini)',
     color: '#df221c',
+  },
+  Tag: {
+    colorBordered: 'rgba(0,0,0,0.015)',
   },
 };
 

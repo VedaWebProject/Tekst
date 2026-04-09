@@ -8354,16 +8354,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -9199,16 +9193,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -10968,16 +10956,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -12011,16 +11993,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -13391,16 +13367,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -14645,16 +14615,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -16702,16 +16666,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {
@@ -18065,16 +18023,10 @@
             "description": "Public user data for users allowed to write this resource"
           },
           "corrections": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Corrections",
-            "description": "Number of correction notes available for this resource"
+            "description": "Number of correction notes available for this resource",
+            "default": 0
           },
           "title": {
             "items": {

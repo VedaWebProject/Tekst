@@ -33,6 +33,7 @@ from tekst.types import (
     SchemaOptionalNullable,
     SingleLineString,
 )
+from tekst.utils import ensure
 
 
 if TYPE_CHECKING:
@@ -282,8 +283,7 @@ class TextAnnotation(ResourceTypeBase):
         contents: list["TextAnnotationContent"],
         file_path: Path,
     ) -> None:
-        text = await TextDocument.get(resource.text_id)
-        assert text
+        text = ensure(await TextDocument.get(resource.text_id))
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0
@@ -561,9 +561,8 @@ class TextAnnotationResourceDocument(
             for token in content.tokens:
                 if not token.id:
                     if not text_slug:
-                        text_doc = await TextDocument.get(self.text_id)
-                        assert text_doc
-                        text_slug = text_doc.slug
+                        text = ensure(await TextDocument.get(self.text_id))
+                        text_slug = text.slug
                     pre = f"{text_slug}_{self.id}_"
                     suff = "".join(random.choices(alphabet, k=8))
                     token.id = pre + suff

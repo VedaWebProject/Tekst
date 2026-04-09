@@ -23,6 +23,7 @@ from tekst.types import (
     SchemaOptionalNullable,
     SingleLineString,
 )
+from tekst.utils import ensure
 
 
 if TYPE_CHECKING:
@@ -122,8 +123,7 @@ class Audio(ResourceTypeBase):
         contents: list["AudioContent"],
         file_path: Path,
     ) -> None:
-        text = await TextDocument.get(resource.text_id)
-        assert text
+        text = ensure(await TextDocument.get(resource.text_id))
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
         sort_num = 0

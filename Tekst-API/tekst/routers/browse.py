@@ -20,6 +20,7 @@ from tekst.models.resource import (
 from tekst.models.resource_unions import AnyContentReadOrMissing
 from tekst.models.text import TextDocument
 from tekst.search import search_nearest_content_location
+from tekst.utils import ensure
 
 
 router = APIRouter(
@@ -197,10 +198,9 @@ async def get_location_data(
     location_path = [location_doc]
     parent_id = location_doc.parent_id
     while parent_id:
-        parent_doc: LocationDocument | None = await LocationDocument.get(parent_id)
-        assert parent_doc
-        location_path.insert(0, parent_doc)
-        parent_id = parent_doc.parent_id
+        parent = ensure(await LocationDocument.get(parent_id))
+        location_path.insert(0, parent)
+        parent_id = parent.parent_id
     location_ids = (
         [location.id for location in location_path]
         if not only_head_contents
@@ -482,10 +482,7 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
     location_labels = [location_doc.label]
     parent_location_id = location_doc.parent_id
     while parent_location_id:
-        parent_location: LocationDocument | None = await LocationDocument.get(
-            parent_location_id
-        )
-        assert parent_location
+        parent_location = ensure(await LocationDocument.get(parent_location_id))
         location_labels.insert(0, parent_location.label)
         parent_location_id = parent_location.parent_id
 
