@@ -37,10 +37,10 @@ jobs:
         uses: andymckay/cancel-action@0.5
       - name: Lint code base
         if: always()
-        run: uvx ruff check . --extend-select N
+        run: uv run ruff check . --extend-select N
       - name: Check code formatting
         if: always()
-        run: uvx ruff format . --check
+        run: uv run ruff format . --check
       - name: Check code typing
         if: always()
-        run: uvx ty check
+        run: uv run ty check

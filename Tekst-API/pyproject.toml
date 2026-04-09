@@ -69,6 +69,8 @@ dev = [
     "uvicorn[standard]>=0.34.2",
     "fastapi-cli>=0.0.7",
     "pytest-cov>=6.1.1",
+    "ruff>=0.15.10",
+    "ty>=0.0.29",
 ]
 
 # ruff

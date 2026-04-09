@@ -14,20 +14,20 @@ install:
 
 # format code base, fix linting errors
 fix:
-  uvx ruff format .
-  uvx ruff check . --fix
+  uv run ruff format .
+  uv run ruff check . --fix
 
 # check code formatting and style
 check:
-  uvx ruff format . --check
-  uvx ruff check . --extend-select N
-  uvx ty check
+  uv run ruff format . --check
+  uv run ruff check . --extend-select N
+  uv run ty check
 
 # run static type checker
 # (this is a separate task for now because the
 # project's initial adaption to ty isn't finished, yet)
 typecheck:
-  uvx ty check
+  uv run ty check
 
 # run tests
 tests ARGS="": install (services-up "test") && (services-down "test")
@@ -73,7 +73,7 @@ services-down SCOPE="test":
 
 # clean up generated files
 cleanup:
-  uvx ruff clean
+  uv run ruff clean
   rm -rf \
     */**/__pycache__ \
     */**/.pytest_cache \
