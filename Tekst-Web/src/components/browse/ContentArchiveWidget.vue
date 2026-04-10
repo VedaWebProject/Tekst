@@ -183,7 +183,7 @@ function cleanup() {
     <template v-else-if="!selectedContent">
       <n-flex vertical size="large">
         <template v-for="item in archiveItems" :key="item.id">
-          <n-button v-if="!item.archived" dashed disabled>
+          <n-button v-if="!item.archived" type="primary" disabled>
             {{ item.createdAtStr }}
             ({{ $t('common.latest') }})
           </n-button>

@@ -3,9 +3,11 @@ import type { AnyResourceRead } from '@/api';
 import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import env from '@/env';
 import { $t } from '@/i18n';
+import { ArchiveIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { replaceCurrDatePh, replaceResUrlPh } from '@/utils';
-import { NDivider, NThing } from 'naive-ui';
+import { useUrlSearchParams } from '@vueuse/core';
+import { NAlert, NDivider, NIcon, NThing } from 'naive-ui';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -13,9 +15,11 @@ const props = defineProps<{
 }>();
 
 const state = useStateStore();
+const params = useUrlSearchParams('history');
 
 const baseUrl = `${origin}${env.WEB_PATH_STRIPPED}`.replace(/\/+$/, '');
-const queryPart = `?ts=${new Date().getTime()}&res=${props.resource.id}`;
+const ts = params.ts ?? new Date().getTime();
+const queryPart = `?ts=${ts}&res=${props.resource.id}`;
 const browseUrl = computed(() => {
   return (
     `${baseUrl}/texts/${state.text?.slug ?? 'unknown'}` +
@@ -37,6 +41,19 @@ const citationFull = computed(
 
 <template>
   <div>
+    <!-- archived content warning -->
+    <n-alert
+      v-if="!!params.ts"
+      type="warning"
+      :title="$t('common.warning') + ': ' + $t('contents.archive.widgetTitle')"
+      class="my-lg"
+    >
+      <template #icon>
+        <n-icon :component="ArchiveIcon" />
+      </template>
+    </n-alert>
+
+    <!-- citation variants -->
     <n-thing v-if="props.resource.citation">
       <template #header>
         <b class="text-small">{{ $t('browse.contentCitation.full') }}</b>
@@ -48,7 +65,9 @@ const citationFull = computed(
         <p class="text-small">{{ citationFull }}</p>
       </template>
     </n-thing>
+
     <n-divider v-if="props.resource.citation" />
+
     <n-thing v-if="props.resource.citation">
       <template #header>
         <b class="text-small">{{ $t('browse.contentCitation.resOnly') }}</b>
@@ -60,7 +79,9 @@ const citationFull = computed(
         <p class="text-small">{{ citationRes }}</p>
       </template>
     </n-thing>
+
     <n-divider v-if="props.resource.citation" />
+
     <n-thing>
       <template #header>
         <b class="text-small">{{ $t('browse.contentCitation.urlOnly') }}</b>
