@@ -65,6 +65,7 @@ function getTimeDistanceString(ms: number) {
 
 function handleWidgetClick() {
   loading.value = true;
+  title.value = $t('contents.archive.widgetTitle');
   showModal.value = true;
 }
 
