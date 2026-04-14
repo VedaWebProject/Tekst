@@ -2,7 +2,7 @@
 
 The following table lists all the configuration values that can be set as environment variables (e.g. via a `.env` file).
 
-!!! warning "Important"
+!!! note
     - Any changes to the configuration values listed below require an application restart to take effect.
     - Some variable names contain _double_ underscores (`__`) to reflect the nested internal configuration – be careful not to miss those in case you're into typing things by hand!
 
@@ -17,7 +17,7 @@ Full public URL of the server running the application (without sub path, port on
 ### `TEKST_API_PATH`
 Public sub path of the API. This **must** be set independently from `TEKST_WEB_PATH`, so if `TEKST_WEB_PATH` is `/foo`, `TEKST_API_PATH` must include the web path, like `/foo/api`. (String – default: `/api`)
 
-!!! warning "Important"
+!!! info
     The official docker image **assumes an API path ending with `/api`**, so either **do not** set `TEKST_API_PATH` at all (if you deploy Tekst under `/`) to let it default to `/api`, or set an API path that is a combination of `TEKST_WEB_PATH` and the path suffix `/api`, e.g. `/foo/api`!
 
 ### `TEKST_WEB_PATH`

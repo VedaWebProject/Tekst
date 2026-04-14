@@ -3,7 +3,7 @@
 
 ## Additional custom fonts
 
-!!! info
+!!! info "Requirements"
     You **have to** set up [custom client assets](#custom-client-assets) as a preliminary step if you haven't done so already!
 
 You can provide yourself and other users with the option to use alternative fonts for specific resources or on-screen keyboard modes. This can be useful when the content of a resource or an [OSK](#on-screen-keyboard) mode uses a specific character set or diacritics that cannot be displayed by the default font Tekst uses for contents.
@@ -19,13 +19,13 @@ To add additional fonts, you need access to the server on which the platform app
 !!! tip
     Pay attention to the licensing of the fonts you use and, where applicable, include the corresponding license files with the font files.
 
-!!! note "A note for advanced users"
-    If you want to change the overall UI font or default resource font the client application uses, you might add your fonts following the steps above and then change the internal `@font-face` definitions in `Tekst-Web/public/fonts.css` (don't change the `font-family` names!). Use the public paths described above. Please note that for this change to take effect, you'll have to **re-build the client application**!
+!!! note "Changing the default UI- and content fonts"
+    If you want to change the overall UI font or default resource font the client application uses, you might add your fonts following the steps above and then change the "Interface Font" and "Content Font" settings in the platform's administration settings under "Appearance".
 
 
 ## On-screen keyboard
 
-!!! info
+!!! info "Requirements"
     You **have to** set up [custom client assets](#custom-client-assets) as a preliminary step if you haven't done so already!
 
 Tekst has an on-screen keyboard feature for easy input of special character sets in places where this might come in handy. Take the following steps to set up you custom on-screen keyboard character sets:
