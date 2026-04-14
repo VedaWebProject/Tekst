@@ -58,7 +58,7 @@ function getTimeDistanceString(ms: number) {
   const result = [];
   if (years > 0) result.push(years + ' ' + $t('common.years'));
   if (months > 0) result.push(months + ' ' + $t('common.months'));
-  if (remainingDays > 0) result.push(remainingDays + ' ' + $t('common.days'));
+  if (remainingDays > 0 || !result.length) result.push(remainingDays + ' ' + $t('common.days'));
 
   return result.join(', ');
 }
