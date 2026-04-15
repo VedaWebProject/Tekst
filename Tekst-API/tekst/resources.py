@@ -343,7 +343,7 @@ class ResourceTypeBase:
             )
 
     @classmethod
-    def resource_model[T: ResourceBase](cls) -> T:
+    def resource_model[T: ResourceBase](cls) -> type[T]:
         """Returns the resource model for this type of resource"""
         raise NotImplementedError(
             "This method must be implemented by subclasses."

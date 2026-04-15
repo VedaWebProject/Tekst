@@ -471,7 +471,7 @@ async def create_bookmark(user: UserDep, bookmark: BookmarkCreate) -> BookmarkDo
         raise errors.E_409_BOOKMARKS_LIMIT_REACHED  # pragma: no cover
 
     location_doc = await LocationDocument.get(bookmark.location_id)
-    if not location_doc:
+    if not location_doc or not location_doc.id:  # second check is for the type checker
         raise errors.E_404_LOCATION_NOT_FOUND
 
     text_doc = await TextDocument.get(location_doc.text_id)

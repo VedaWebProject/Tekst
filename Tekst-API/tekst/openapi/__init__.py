@@ -26,7 +26,7 @@ def generate_schema(app: FastAPI, state: PlatformState):
     schema = get_openapi(
         title=state.platform_name,
         version=cfg.tekst["version"],
-        summary=cfg.api_doc.summary or pick_translation(state.platform_subtitle),  # ty:ignore[invalid-argument-type]
+        summary=cfg.api_doc.summary or pick_translation(state.platform_subtitle),
         description=cfg.api_doc.description,
         routes=app.routes,
         servers=[{"url": api_url}],
