@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Annotated, Literal, TypeVar, get_args
 
 from annotated_types import MaxLen
@@ -23,7 +24,7 @@ Translations = Annotated[
 
 
 def pick_translation(
-    translations: list[TranslationBase],
+    translations: Sequence[TranslationBase],
     locale_key: LocaleKey = "enUS",
 ) -> str:
     prio = [locale_key, "*", "enUS"]
