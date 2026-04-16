@@ -11,7 +11,11 @@ const props = defineProps<{
   oskKey?: string;
 }>();
 
-defineExpose({ focus: focusTargetInput, select: selectTargetInput, blur: blurTargetInput });
+defineExpose({
+  focus: focusTargetInput,
+  select: selectTargetInput,
+  blur: blurTargetInput,
+});
 
 const model = defineModel<string | null>();
 

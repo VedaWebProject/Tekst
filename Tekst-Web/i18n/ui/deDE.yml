@@ -12,6 +12,7 @@ common:
   subtitle: Untertitel
   description: Beschreibung
   comment: Kommentar | Kommentare
+  annotation: Annotation | Annotationen
   settings: Einstellungen
   switchThemeLight: Zu hellem Farbschema wechseln
   switchThemeDark: Zu dunklem Farbschema wechseln
@@ -150,6 +151,7 @@ osk:
   label: Bildschirmtastatur
   inputPlaceholder: Tippen Sie auf der Bildschirmtastatur und drücken Sie Enter, um Ihre Eingabe einzufügen...
   msgErrorLoading: 'Fehler beim Laden des Layouts für die Bildschirmtastatur: {layout}'
+  hint: Klicken Sie auf das Tastatur-Icon, um Zeichen mit Hilfe der Bildschirmtastatur einzufügen.
 
 tasks:
   title: Hintergrundprozesse
@@ -387,7 +389,7 @@ models:
     fonts: Eigene Schritarten
     uiFont: UI-Schriftart
     contentFont: Standard-Schriftart für Inhalte
-    oskModes: Bildschirmtastaturen
+    oskModes: Bildschirmtastatur-Layouts
     oskModeFont: Tastatur-Schriftart
     resMetaTranslations: Übersetzungen für Schlüssel von Ressourcen-Metadaten
   segment:
@@ -552,9 +554,9 @@ resources:
       contentFields:
         token: Token
         lb: Dieses Token schließt eine Zeile ab
-        annotations: Annotationen
-        annotationKey: Annotation
-        commaSepHint: comma-separated values
+        freeFormInputTip: Geben Sie mehrere Komma-getrennte Werte ein oder verwenden Sie die Bildschirmtastatur
+        commaSepHint: Durch Kommata getrennte Werte werden aufgeteilt und als mehrere separate Annotations-Werte behandelt!
+        valueEnterHint: Um Werte hinzuzufügen, die hier nicht aufgelistet sind, geben Sie diese ein und drücken Sie ENTER!
       copyTokenAction: Token kopieren
       copyTokenFullAction: Token und Annotationen kopieren
       copyHintTip: Rechtsklick order halten zum Kopieren
@@ -980,7 +982,7 @@ search:
       should: optional
       must: erforderlich
       not: ausgeschlossen
-    wc: Interpretiere Platzhalter (* und ?) für dieses Feld
+    wc: Interpretiere Platzhalter (* und ?) für diesen Wert
     range:
       title: Belegstellen-Bereich
       unconstrained: Uneingeschränkt

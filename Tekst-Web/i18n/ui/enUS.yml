@@ -12,6 +12,7 @@ common:
   subtitle: Subtitle
   description: Description
   comment: Comment | Comments
+  annotation: Annotation | Annotations
   settings: Settings
   switchThemeLight: Switch to light mode
   switchThemeDark: Switch to dark mode
@@ -148,6 +149,7 @@ osk:
   label: On-screen keyboard
   inputPlaceholder: Type on the on-screen keyboard and press Enter to insert your input...
   msgErrorLoading: 'Error loading on-screen keyboard layout: {layout}'
+  hint: Click the keyboard icon to insert characters using the on-screen keyboard.
 
 tasks:
   title: Background Tasks
@@ -384,7 +386,7 @@ models:
     fonts: Custom Fonts
     uiFont: User Interface Font
     contentFont: Default Content Font
-    oskModes: On-screen Keyboards
+    oskModes: On-screen Keyboard Layouts
     oskModeFont: Keyboard font
     resMetaTranslations: Translations for Resource Metadata Keys
   segment:
@@ -542,9 +544,9 @@ resources:
       contentFields:
         token: Token
         lb: This token concludes a line
-        annotations: Annotations
-        annotationKey: Annotation
-        commaSepHint: comma-separated values
+        freeFormInputTip: Enter multiple comma-separated values or use the on-screen keyboard
+        commaSepHint: Comma-separated values will be split and treated as multiple distinct annotation values!
+        valueEnterHint: To add values that are not listed here, type them and hit ENTER!
       copyTokenAction: Copy token
       copyTokenFullAction: Copy token and annotations
       copyHintTip: Right click or long press to copy
@@ -955,7 +957,7 @@ search:
       should: optional
       must: required
       not: excluded
-    wc: Interpret wildcards (* and ?) for this field
+    wc: Interpret wildcards (* and ?) for this value
     range:
       title: Location range
       unconstrained: Unconstrained
