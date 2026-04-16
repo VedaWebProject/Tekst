@@ -175,7 +175,7 @@ onBeforeMount(() => {
     >
       <!-- SEARCH INDICES -->
       <n-tab-pane :tab="$t('admin.maintenance.indices.heading')" name="indices">
-        <form-section :title="$t('admin.maintenance.indices.heading')" :show-box="false">
+        <form-section :title="$t('admin.maintenance.indices.heading')">
           <button-shelf class="mb-lg">
             <template #start>
               <n-button type="primary" :disabled="indicesInfoLoading" @click="() => createIndex()">
@@ -272,11 +272,7 @@ onBeforeMount(() => {
 
       <!-- PRECOMPUTED DATA ON RESOURCES -->
       <n-tab-pane :tab="$t('admin.maintenance.precomputed.heading')" name="precomputed">
-        <form-section
-          :title="$t('admin.maintenance.precomputed.heading')"
-          :show-box="false"
-          class="mb-lg"
-        >
+        <form-section :title="$t('admin.maintenance.precomputed.heading')" class="mb-lg">
           <button-shelf>
             <template #start>
               <n-button
@@ -305,17 +301,15 @@ onBeforeMount(() => {
               </n-button>
             </template>
           </button-shelf>
+          <n-alert type="info" class="mt-lg">{{
+            $t('admin.maintenance.precomputed.description')
+          }}</n-alert>
         </form-section>
-        <n-alert type="info">{{ $t('admin.maintenance.precomputed.description') }}</n-alert>
       </n-tab-pane>
 
       <!-- INTERNAL CLEANUP -->
       <n-tab-pane :tab="$t('admin.maintenance.cleanup.heading')" name="cleanup">
-        <form-section
-          :title="$t('admin.maintenance.cleanup.heading')"
-          :show-box="false"
-          class="mb-lg"
-        >
+        <form-section :title="$t('admin.maintenance.cleanup.heading')" class="mb-lg">
           <n-button
             type="primary"
             :disabled="cleanupLoading"
@@ -327,13 +321,15 @@ onBeforeMount(() => {
             </template>
             {{ $t('common.run') }}
           </n-button>
+          <n-alert type="info" class="mt-lg">{{
+            $t('admin.maintenance.cleanup.description')
+          }}</n-alert>
         </form-section>
-        <n-alert type="info">{{ $t('admin.maintenance.cleanup.description') }}</n-alert>
       </n-tab-pane>
 
       <!-- SYSTEM BACKGROUND TASKS -->
       <n-tab-pane :tab="$t('tasks.title')" name="tasks">
-        <form-section :title="$t('tasks.title')" :show-box="false">
+        <form-section :title="$t('tasks.title')">
           <button-shelf class="mb-lg">
             <n-button
               secondary
@@ -445,11 +441,7 @@ onBeforeMount(() => {
 
       <!-- TEST EMAIL SETUP -->
       <n-tab-pane :tab="$t('admin.maintenance.email.heading')" name="email">
-        <form-section
-          :title="$t('admin.maintenance.email.heading')"
-          :show-box="false"
-          class="mb-lg"
-        >
+        <form-section :title="$t('admin.maintenance.email.heading')" class="mb-lg">
           <n-button
             type="primary"
             :disabled="emailLoading"
@@ -461,8 +453,8 @@ onBeforeMount(() => {
             </template>
             {{ $t('admin.maintenance.email.btn') }}
           </n-button>
+          <n-alert type="info" class="mt-lg">{{ $t('admin.maintenance.email.desc') }}</n-alert>
         </form-section>
-        <n-alert type="info">{{ $t('admin.maintenance.email.desc') }}</n-alert>
       </n-tab-pane>
     </n-tabs>
   </div>
