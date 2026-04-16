@@ -35,6 +35,12 @@ interface SingleLineInputPrompt extends PromptConfigBase {
   type: 'singleLineInput';
 }
 
+interface SingleLineInputOSKPrompt extends PromptConfigBase {
+  type: 'singleLineInputOSK';
+  font?: string;
+  oskKey?: string;
+}
+
 interface MultiLineInputPrompt extends PromptConfigBase {
   type: 'multiLineInput';
   maxLength?: number;
@@ -56,6 +62,7 @@ interface SelectPrompt extends PromptConfigBase {
 
 type PromptConfig =
   | SingleLineInputPrompt
+  | SingleLineInputOSKPrompt
   | MultiLineInputPrompt
   | MultiLineInputOSKPrompt
   | SelectPrompt;
@@ -67,7 +74,13 @@ const _getForm = (
   defaultContent: VNodeChild
 ) =>
   h(NFlex, { vertical: true, size: 'large' }, () => [
+    // add extra prompt message
     ...(cfg.msg ? [h('div', { class: 'text-medium' }, cfg.msg)] : []),
+    // add OSK hint if relevant
+    ...(cfg.type.toUpperCase().includes('OSK')
+      ? [h('p', { class: 'text-medium' }, $t('osk.hint'))]
+      : []),
+    // add form
     h(
       NForm,
       {
@@ -111,6 +124,33 @@ const _getPromptType = (userCfg: PromptConfig) => {
               placeholder: cfg.placeholder,
               onUpdateValue: (val) => {
                 formModel.value = { input: val };
+              },
+            })
+          ),
+      };
+    },
+    singleLineInputOSK: (cfg: SingleLineInputOSKPrompt) => {
+      const returnType = undefined as string | undefined;
+      const formModel = ref<{ input?: typeof returnType }>({
+        input: cfg.defaultValue as typeof returnType,
+      });
+      const formRef = ref<FormInst>();
+      return {
+        returnType,
+        formRef,
+        formModel,
+        content: () =>
+          _getForm(
+            cfg,
+            formRef,
+            formModel.value,
+            h(OskInput, {
+              modelValue: formModel.value.input,
+              placeholder: cfg.placeholder,
+              font: cfg.font,
+              oskMode: cfg.oskKey,
+              'onUpdate:modelValue': (v: string | null | undefined) => {
+                formModel.value = { input: v ?? undefined };
               },
             })
           ),
@@ -207,6 +247,8 @@ const _getPromptType = (userCfg: PromptConfig) => {
   switch (userCfg.type) {
     case 'singleLineInput':
       return promptTypes['singleLineInput'](userCfg);
+    case 'singleLineInputOSK':
+      return promptTypes['singleLineInputOSK'](userCfg);
     case 'multiLineInput':
       return promptTypes['multiLineInput'](userCfg);
     case 'multiLineInputOSK':

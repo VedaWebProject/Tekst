@@ -710,7 +710,11 @@ class TextAnnotationQueryEntry(ModelBase):
         ),
     ] = None
     value: Annotated[
-        AnnoValueQuery | list[AnnoValueQuery],
+        AnnoValueQuery
+        | Annotated[
+            list[AnnoValueQuery],
+            Field(max_length=64),
+        ],
         Field(
             alias="v",
             description="Value(s) of the annotation to search for",

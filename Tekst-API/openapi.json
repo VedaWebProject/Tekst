@@ -17755,7 +17755,8 @@
                 "items": {
                   "$ref": "#/components/schemas/AnnoValueQuery"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 64
               }
             ],
             "title": "V",

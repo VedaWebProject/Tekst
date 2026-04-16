@@ -354,10 +354,7 @@ export const contentFormRules: Record<string, Record<string, FormItemRule[]>> = 
       minMaxCharsRule(1, 4096, 'blur'),
     ],
     annotationKey: [
-      requiredStringRule(
-        () => $t('resources.types.textAnnotation.contentFields.annotationKey'),
-        'blur'
-      ),
+      requiredStringRule(() => $t('common.annotation'), 'blur'),
       minMaxCharsRule(1, 32, 'blur'),
     ],
     annotationValue: [
@@ -472,7 +469,28 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
   },
   textAnnotation: {
     token: [minMaxCharsRule(0, 512, 'blur')],
-    annotationValue: [minMaxCharsRule(0, 256, 'blur')],
+    annotationValue: [
+      {
+        validator: (_: FormItemRule, value: string[]) => !!value && Array.isArray(value),
+        message: () =>
+          $t('forms.rulesFeedback.isRequired', {
+            x: $t('common.value'),
+          }),
+        trigger: 'change',
+      },
+      {
+        validator: (_: FormItemRule, value: string[]) =>
+          !!value && value.length >= 1 && value.length <= 64,
+        message: () => $t('forms.rulesFeedback.minMaxItems', { min: 1, max: 64 }),
+        trigger: 'change',
+      },
+      {
+        validator: (_: FormItemRule, value: string[]) =>
+          !!value && value.every((item) => item.length >= 1 && item.length <= 256),
+        message: () => $t('forms.rulesFeedback.minMaxChars', { min: 1, max: 256 }),
+        trigger: 'change',
+      },
+    ],
   },
   locationMetadata: {
     key: [requiredStringRule(() => $t('common.key'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
