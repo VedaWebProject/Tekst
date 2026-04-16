@@ -5,6 +5,7 @@ import UserDisplay from '@/components/user/UserDisplay.vue';
 import { usePublicUserSearch } from '@/composables/user';
 import { $t } from '@/i18n';
 import { useAuthStore } from '@/stores';
+import { uniq } from 'lodash-es';
 import { NAlert, NFormItem, NSelect, NTag, type SelectOption } from 'naive-ui';
 import { computed, h, ref, type VNodeChild } from 'vue';
 
@@ -41,7 +42,7 @@ function postprocessUserOptions(
   disabledIds: string[] = [],
   searchResultsIds: string[] = []
 ) {
-  const options = [...new Set([...sharedIds, ...disabledIds, ...searchResultsIds])]
+  const options = uniq([...sharedIds, ...disabledIds, ...searchResultsIds])
     .map((id) => ({
       value: id,
       user:

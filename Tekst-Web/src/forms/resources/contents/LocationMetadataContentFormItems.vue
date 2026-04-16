@@ -8,7 +8,7 @@ import { dynInputCreateBtnProps } from '@/common';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { useResourcesStore } from '@/stores';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, uniq } from 'lodash-es';
 import { NDynamicInput, NFlex, NFormItem, NSelect, type SelectOption } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { defaultContentModels } from './defaultContentModels';
@@ -29,12 +29,10 @@ const aggregations = ref<KeyValueAggregations>([]);
 const entriesOptions = computed(() => {
   // all possible keys, containing unique keys collected in
   // aggregations and from the current model state
-  const keys = [
-    ...new Set([
-      ...aggregations.value.map((agg) => agg.key),
-      ...model.value.entries.map((entry) => entry.key).flat(),
-    ]),
-  ];
+  const keys = uniq([
+    ...aggregations.value.map((agg) => agg.key),
+    ...model.value.entries.map((entry) => entry.key).flat(),
+  ]);
   return (
     model.value.entries.map((entry) => ({
       keysOptions: keys

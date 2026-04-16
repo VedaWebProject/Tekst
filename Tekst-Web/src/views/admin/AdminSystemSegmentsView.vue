@@ -13,7 +13,7 @@ import { $t, getLocaleProfile, renderLanguageOptionLabel } from '@/i18n';
 import { FileOpenIcon, InfoIcon, PlusIcon, SegmentsIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { useUrlSearchParams } from '@vueuse/core';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, uniq } from 'lodash-es';
 import {
   NButton,
   NEmpty,
@@ -56,7 +56,7 @@ const {
 
 const segmentOptions = computed(() =>
   props.segmentType == 'info'
-    ? [...new Set(state.pf?.infoSegments.map((p) => p.key))].map((key) => {
+    ? uniq(state.pf?.infoSegments.map((p) => p.key)).map((key) => {
         const groupSegments = state.pf?.infoSegments.filter((s) => s.key === key) || [];
         const currLocaleSegment =
           groupSegments.find((s) => s.locale === state.locale) ||
@@ -72,7 +72,7 @@ const segmentOptions = computed(() =>
           })),
         };
       })
-    : [...new Set(state.pf?.systemSegments.map((s) => s.key))].map((key) => {
+    : uniq(state.pf?.systemSegments.map((s) => s.key)).map((key) => {
         const groupSegments = state.pf?.systemSegments.filter((s) => s.key === key) || [];
         return {
           type: 'group',

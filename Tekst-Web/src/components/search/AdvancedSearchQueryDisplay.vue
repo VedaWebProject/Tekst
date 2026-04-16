@@ -4,6 +4,7 @@ import { $t } from '@/i18n';
 import { ResourceIcon, SettingsIcon } from '@/icons';
 import { useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { pickTranslation } from '@/utils';
+import { uniq } from 'lodash-es';
 import { NFlex, NIcon, NTag } from 'naive-ui';
 import { computed } from 'vue';
 
@@ -25,7 +26,7 @@ const theme = useThemeStore();
 const resources = useResourcesStore();
 
 const searchedResources = computed(() => {
-  const qRes = [...new Set(props.req.q?.map((q) => q.cmn.res))];
+  const qRes = uniq(props.req.q?.map((q) => q.cmn.res));
   return resources.all
     .filter((r) => qRes.includes(r.id))
     .map((r) => {

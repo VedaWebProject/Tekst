@@ -102,6 +102,8 @@ common:
   ctrlEnter: Strg+Enter
   copiedMsg: 'In Zwischenablage kopiert: {text}'
   sortOrder: Sortierreihenfolge
+  generateFromKnownDataLabel: Automatisch
+  generateFromKnownDataTip: Automatisch aus bekannten Daten generieren (kann manuell angepasst werden)
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen
@@ -530,7 +532,6 @@ resources:
         annotationGroup: Annotations-Gruppe | Annotations-Gruppen
       itemIntegration:
         itemProps: Übersetzung, -Reihenfolge und -Gruppierung
-        generateProps: Aus bekannten Daten generieren
       transformation:
         heading: Antwort-Transformation zu HTML
         deps: Abhängigkeiten der Transformationsfunktion (URLs)

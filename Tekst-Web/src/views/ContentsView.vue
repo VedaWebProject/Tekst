@@ -47,7 +47,7 @@ import {
 import { useAuthStore, useResourcesStore, useStateStore, useThemeStore } from '@/stores';
 import { isInputFocused, isOverlayOpen, pickTranslation, renderIcon } from '@/utils';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, uniq } from 'lodash-es';
 import {
   type FormInst,
   NAlert,
@@ -192,13 +192,11 @@ async function loadLocationData() {
   const { data: locationData, error } = await GET('/browse', {
     params: {
       query: {
-        res: [
-          ...new Set([
-            resource.value.id,
-            ...(compareResource.value?.id ? [compareResource.value.id] : []),
-            ...(resource.value.patchFor ? [resource.value.patchFor] : []),
-          ]),
-        ],
+        res: uniq([
+          resource.value.id,
+          ...(compareResource.value?.id ? [compareResource.value.id] : []),
+          ...(resource.value.patchFor ? [resource.value.patchFor] : []),
+        ]),
         head: true,
         ...locQuery,
       },

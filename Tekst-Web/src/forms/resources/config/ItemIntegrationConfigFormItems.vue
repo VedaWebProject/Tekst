@@ -2,6 +2,7 @@
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
+import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -46,6 +47,7 @@ const props = withDefaults(
 
 const model = defineModel<components['schemas']['ItemIntegrationConfig']>({ required: true });
 const state = useStateStore();
+const { message } = useMessages();
 
 const itemNameOptions = computed(() =>
   props.existingItemKeys?.map((n) => ({ label: n, value: n }))
@@ -58,11 +60,17 @@ const itemGroupOptions = computed(() =>
 );
 
 function generateItemProps() {
-  if (!props.existingItemKeys?.length || !!model.value.itemProps.length) return;
-  model.value.itemProps = props.existingItemKeys.map((k) => ({
-    key: k,
-    translations: [{ locale: '*', translation: k }],
-  }));
+  if (!props.existingItemKeys?.length) {
+    message.error($t('search.nothingFound'));
+    return;
+  }
+  model.value.itemProps = props.existingItemKeys.map(
+    (k) =>
+      ({
+        key: k,
+        translations: [{ locale: '*', translation: k }],
+      }) as components['schemas']['ItemIntegrationConfig']['itemProps'][number]
+  );
 }
 </script>
 
@@ -128,19 +136,23 @@ function generateItemProps() {
 
   <!-- ITEM PROPS -->
   <form-section :show-label="itemPropsHeading !== null" :title="itemPropsHeading || undefined">
-    <!-- generate from existing item names -->
-    <n-button
-      v-if="!!existingItemKeys?.length && !model.itemProps.length"
-      secondary
-      block
-      class="mb-sm"
-      @click="generateItemProps"
-    >
-      <template #icon>
-        <n-icon :component="WandIcon" />
-      </template>
-      {{ $t('resources.settings.config.itemIntegration.generateProps') }}
-    </n-button>
+    <template #extra>
+      <!-- generate from existing item names -->
+      <n-button
+        secondary
+        type="info"
+        class="mb-sm"
+        :title="$t('common.generateFromKnownDataTip')"
+        :disabled="!!model.itemProps.length"
+        @click="generateItemProps"
+      >
+        <template #icon>
+          <n-icon :component="WandIcon" />
+        </template>
+        {{ $t('common.generateFromKnownDataLabel') }}
+      </n-button>
+    </template>
+
     <n-form-item :show-label="false" :show-feedback="!!minItemProps">
       <n-dynamic-input
         v-model:value="model.itemProps"

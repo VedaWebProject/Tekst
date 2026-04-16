@@ -12,9 +12,10 @@ import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { textFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
 import { $t } from '@/i18n';
+import { WandIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, uniqBy } from 'lodash-es';
 import {
   NAlert,
   NButton,
@@ -23,6 +24,7 @@ import {
   NFlex,
   NForm,
   NFormItem,
+  NIcon,
   NInput,
   NInputNumber,
   NSelect,
@@ -91,6 +93,16 @@ function handleSave() {
       message.error($t('errors.followFormRules'));
       loading.value = false;
     });
+}
+
+function generateResourceCategories() {
+  if (!model.value) return;
+  const existingCategories = state.pf?.texts.map((t) => t.resourceCategories).flat() ?? [];
+  if (!existingCategories.length) {
+    message.error($t('search.nothingFound'));
+    return;
+  }
+  model.value.resourceCategories = uniqBy(existingCategories, 'key');
 }
 
 watch(
@@ -229,6 +241,22 @@ onBeforeRouteUpdate((to, from) => {
 
       <!-- RESOURCE CATEGORIES -->
       <form-section :title="$t('models.text.resourceCategories')">
+        <template #extra>
+          <n-button
+            secondary
+            type="info"
+            class="mb-sm"
+            :title="$t('common.generateFromKnownDataTip')"
+            :disabled="!!model.resourceCategories.length"
+            @click="generateResourceCategories"
+          >
+            <template #icon>
+              <n-icon :component="WandIcon" />
+            </template>
+            {{ $t('common.generateFromKnownDataLabel') }}
+          </n-button>
+        </template>
+
         <n-form-item v-if="model.resourceCategories" :show-label="false">
           <n-dynamic-input
             v-model:value="model.resourceCategories"

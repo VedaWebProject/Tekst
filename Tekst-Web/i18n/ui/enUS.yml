@@ -100,6 +100,8 @@ common:
   ctrlEnter: Ctrl+Enter
   copiedMsg: 'Copied to clipboard: {text}'
   sortOrder: Sort order
+  generateFromKnownDataLabel: Automatic
+  generateFromKnownDataTip: Automatically generate from known data (can be manually adjusted)
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -520,7 +522,6 @@ resources:
         annotationGroup: Annotation group | Annotation groups
       itemIntegration:
         itemProps: Translation, Order and Grouping
-        generateProps: Generate from known data
       transformation:
         heading: Response Transformation to HTML
         deps: Transformation function dependencies (URLs)
