@@ -1086,7 +1086,7 @@ tour:
     text: |
       Here you can search the contents of each resource with much more fine-grained control.
       You can read about how to use the Advanced Search using the familiar
-      little help button next the heading. Take your time to do so later,
+      little help button next to the heading. Take your time to do so later,
       as we won't cover the details here in this tour.
   resourcesNavBtn:
     title: Resources Overview
