@@ -51,7 +51,8 @@ const _COMMON_OVERRIDES: GlobalThemeOverrides = {
     thFontWeight: 'bold',
   },
   Empty: {
-    textColor: 'var(--text-color-translucent)',
+    textColor: '#888',
+    iconColor: '#888', // do not use a transparent color, Lucide icons don't like it!
   },
 };
 
