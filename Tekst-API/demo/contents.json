@@ -236,6 +236,8 @@
     "resource_id": { "$oid": "6641ce24affa6cb96bc85a55" },
     "resource_type": "images",
     "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "created_at": { "$date": "2023-03-09T13:30:48.446Z" },
+    "archived": true,
     "files": [
       {
         "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
@@ -251,13 +253,10 @@
       },
       {
         "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
-        "thumb_url": "",
         "source_url": "https://www.metmuseum.org/art/collection/search/888603",
         "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
       }
-    ],
-    "archived": false,
-    "created_at": { "$date": "2023-03-09T13:30:48.446Z" }
+    ]
   },
   {
     "_id": { "$oid": "6641d3dbaffa6cb96bc85a5a" },
@@ -571,6 +570,7 @@
     "location_id": { "$oid": "654b825533ee5737b297f8e5" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_pQJ7vju6",
         "annotations": [
           { "key": "form", "value": ["Fuchs"] },
           { "key": "ne", "value": ["Fox"] },
@@ -579,6 +579,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Rt3BgOE5",
         "annotations": [
           { "key": "form", "value": ["du"] },
           { "key": "ne", "value": ["Fox"] },
@@ -588,18 +589,21 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_9D7rTPVR",
         "annotations": [
           { "key": "form", "value": ["hast"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_s2VZR0dY",
         "annotations": [
           { "key": "form", "value": ["die"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_jW9ELdst",
         "annotations": [
           { "key": "form", "value": ["Gans"] },
           { "key": "ne", "value": ["Goose"] },
@@ -608,6 +612,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_XQxDoG5l",
         "annotations": [
           { "key": "form", "value": ["gestohlen"] },
           { "key": "len", "value": ["9"] }
@@ -625,12 +630,14 @@
     "location_id": { "$oid": "654b825533ee5737b297f8e6" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_V70ecmoA",
         "annotations": [
           { "key": "form", "value": ["gib"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_mJmuMLDG",
         "annotations": [
           { "key": "form", "value": ["sie"] },
           { "key": "ne", "value": ["Goose"] },
@@ -639,12 +646,14 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_VKRlqtMb",
         "annotations": [
           { "key": "form", "value": ["wieder"] },
           { "key": "len", "value": ["6"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_3nusLDps",
         "annotations": [
           { "key": "form", "value": ["her"] },
           { "key": "len", "value": ["3"] }
@@ -662,18 +671,21 @@
     "location_id": { "$oid": "654b825533ee5737b297f8e7" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_k32DtyVK",
         "annotations": [
           { "key": "form", "value": ["sonst"] },
           { "key": "len", "value": ["5"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_hXtfypJP",
         "annotations": [
           { "key": "form", "value": ["wird"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_vElUFWfj",
         "annotations": [
           { "key": "form", "value": ["dich"] },
           { "key": "ne", "value": ["Fox"] },
@@ -682,12 +694,14 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_dDYbw28T",
         "annotations": [
           { "key": "form", "value": ["der"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_IosO1LlB",
         "annotations": [
           { "key": "form", "value": ["Jäger"] },
           { "key": "ne", "value": ["Hunter"] },
@@ -696,6 +710,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_ns5tNb2p",
         "annotations": [
           { "key": "form", "value": ["holen"] },
           { "key": "len", "value": ["5"] }
@@ -713,18 +728,21 @@
     "location_id": { "$oid": "654b825533ee5737b297f8e8" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_oHAdZT4i",
         "annotations": [
           { "key": "form", "value": ["mit"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Drq7fRVc",
         "annotations": [
           { "key": "form", "value": ["dem"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_6jVUmi3I",
         "annotations": [
           { "key": "form", "value": ["Schießgewehr"] },
           { "key": "len", "value": ["12"] }
@@ -742,6 +760,7 @@
     "location_id": { "$oid": "654b825533ee5737b297f8ea" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Pi6PEHLV",
         "annotations": [
           { "key": "form", "value": ["Seine"] },
           { "key": "ne", "value": ["Hunter"] },
@@ -750,18 +769,21 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_NjaUSXWx",
         "annotations": [
           { "key": "form", "value": ["große"] },
           { "key": "len", "value": ["5"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_sjMqTLpR",
         "annotations": [
           { "key": "form", "value": ["lange"] },
           { "key": "len", "value": ["5"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_PBXeP1ao",
         "annotations": [
           { "key": "form", "value": ["Flinte"] },
           { "key": "len", "value": ["6"] }
@@ -779,18 +801,21 @@
     "location_id": { "$oid": "654b825533ee5737b297f8eb" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_QklugmxP",
         "annotations": [
           { "key": "form", "value": ["schießt"] },
           { "key": "len", "value": ["7"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_n1ZxRLU6",
         "annotations": [
           { "key": "form", "value": ["auf"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Qwds5kzO",
         "annotations": [
           { "key": "form", "value": ["dich"] },
           { "key": "ne", "value": ["Fox"] },
@@ -799,12 +824,14 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_ecCLxiUL",
         "annotations": [
           { "key": "form", "value": ["den"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_1fjNACpy",
         "annotations": [
           { "key": "form", "value": ["Schrot"] },
           { "key": "len", "value": ["6"] }
@@ -822,12 +849,14 @@
     "location_id": { "$oid": "654b825533ee5737b297f8ec" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_uOggK2j8",
         "annotations": [
           { "key": "form", "value": ["dass"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_tjADsgYX",
         "annotations": [
           { "key": "form", "value": ["dich"] },
           { "key": "ne", "value": ["Fox"] },
@@ -836,24 +865,28 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_atEzjqXK",
         "annotations": [
           { "key": "form", "value": ["färbt"] },
           { "key": "len", "value": ["5"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_3YJN1vPJ",
         "annotations": [
           { "key": "form", "value": ["die"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Ltx0tA3b",
         "annotations": [
           { "key": "form", "value": ["rote"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_xsOghT6K",
         "annotations": [
           { "key": "form", "value": ["Tinte"] },
           { "key": "len", "value": ["5"] }
@@ -871,24 +904,28 @@
     "location_id": { "$oid": "654b825533ee5737b297f8ed" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_om4PyNMz",
         "annotations": [
           { "key": "form", "value": ["und"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_yFsmSwzP",
         "annotations": [
           { "key": "form", "value": ["dann"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_wLGUuyFU",
         "annotations": [
           { "key": "form", "value": ["bist"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_J7PYz8ra",
         "annotations": [
           { "key": "form", "value": ["du"] },
           { "key": "ne", "value": ["Fox"] },
@@ -897,6 +934,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_KrB6ehDW",
         "annotations": [
           { "key": "form", "value": ["tot"] },
           { "key": "len", "value": ["3"] }
@@ -914,12 +952,14 @@
     "location_id": { "$oid": "654b825533ee5737b297f8ef" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_3kyNYD5i",
         "annotations": [
           { "key": "form", "value": ["Liebes"] },
           { "key": "len", "value": ["6"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_8RukZcoH",
         "annotations": [
           { "key": "form", "value": ["Füchslein"] },
           { "key": "ne", "value": ["Fox"] },
@@ -928,12 +968,14 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_EODAWUTl",
         "annotations": [
           { "key": "form", "value": ["lass"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_2X9ISYC5",
         "annotations": [
           { "key": "form", "value": ["dir"] },
           { "key": "ne", "value": ["Fox"] },
@@ -942,6 +984,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_jEhKlr8S",
         "annotations": [
           { "key": "form", "value": ["raten"] },
           { "key": "len", "value": ["5"] }
@@ -959,30 +1002,35 @@
     "location_id": { "$oid": "654b825533ee5737b297f8f0" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_c4JeeDYQ",
         "annotations": [
           { "key": "form", "value": ["sei"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_TTOLmWz5",
         "annotations": [
           { "key": "form", "value": ["doch"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_cux1iH0c",
         "annotations": [
           { "key": "form", "value": ["nur"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_dCFd78QE",
         "annotations": [
           { "key": "form", "value": ["kein"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_qQMkl3ak",
         "annotations": [
           { "key": "form", "value": ["Dieb"] },
           { "key": "len", "value": ["4"] }
@@ -1000,12 +1048,14 @@
     "location_id": { "$oid": "654b825533ee5737b297f8f1" },
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_SQEXV3oQ",
         "annotations": [
           { "key": "form", "value": ["nimm"] },
           { "key": "len", "value": ["4"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_XMnOihEB",
         "annotations": [
           { "key": "form", "value": ["du"] },
           { "key": "ne", "value": ["Fox"] },
@@ -1014,18 +1064,21 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_YidajK9J",
         "annotations": [
           { "key": "form", "value": ["brauchst"] },
           { "key": "len", "value": ["8"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_yL856eyn",
         "annotations": [
           { "key": "form", "value": ["nicht"] },
           { "key": "len", "value": ["5"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_PJdicmdl",
         "annotations": [
           { "key": "form", "value": ["Gänsebraten"] },
           { "key": "len", "value": ["11"] }
@@ -1049,18 +1102,21 @@
     ],
     "tokens": [
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_mYvEkqh1",
         "annotations": [
           { "key": "form", "value": ["mit"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_Cm4BH3rE",
         "annotations": [
           { "key": "form", "value": ["der"] },
           { "key": "len", "value": ["3"] }
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_rYrqwikJ",
         "annotations": [
           { "key": "form", "value": ["Maus"] },
           { "key": "ne", "value": ["Mouse"] },
@@ -1069,6 +1125,7 @@
         ]
       },
       {
+        "id": "fdhdgg_6656cc7b81a66322c1bffb24_UQZEcdeh",
         "annotations": [
           { "key": "form", "value": ["vorlieb"] },
           { "key": "len", "value": ["7"] }
@@ -1376,5 +1433,33 @@
     "resource_id": { "$oid": "66471b68ba9e65342c8e495b" },
     "resource_type": "plainText",
     "text": "Fuchs, du hast die Gans gestohlen,"
+  },
+  {
+    "_id": { "$oid": "69e7711dce546e4be4d9c047" },
+    "_class_id": "ContentBaseDocument.ImagesContentDocument",
+    "archived": false,
+    "created_at": { "$date": "2026-04-21T12:44:13.615Z" },
+    "files": [
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
+        "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg/330px-Fuchs%2C_du_hast_die_Gans_gestohlen_%281824%29.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Fuchs,_du_hast_die_Gans_gestohlen_(1824).jpg",
+        "caption": "Ernst Anschütz: Musikalisches Schulgesangbuch, Heft 1, Leipzig 1824, S. 38"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "thumb_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg/250px-DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:DBP_1958_286_Fuchs_du_hast_die_Gans_gestohlen.jpg",
+        "caption": "Jugendmarke mit Zuschlag, 1958, Kinderlieder, Fuchs du hast die Gans gestohlen"
+      },
+      {
+        "url": "https://images.metmuseum.org/CRDImages/dp/original/DP-24655-001.jpg",
+        "source_url": "https://www.metmuseum.org/art/collection/search/888603",
+        "caption": "Drawing by Erwin Schütz, Astria, ~1900 – The Metropolitan Museum of Art"
+      }
+    ],
+    "location_id": { "$oid": "664321104aa6341acd83fb05" },
+    "resource_id": { "$oid": "6641ce24affa6cb96bc85a55" },
+    "resource_type": "images"
   }
 ]

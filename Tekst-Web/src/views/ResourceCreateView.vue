@@ -34,7 +34,7 @@ const state = useStateStore();
 const auth = useAuthStore();
 const resources = useResourcesStore();
 
-const availableResourceTypes = resourceTypes.filter(
+const availableResourceTypes = Object.values(resourceTypes).filter(
   (rt) =>
     auth.user?.isSuperuser || (state.pf && !state.pf.state.denyResourceTypes.includes(rt.name))
 );

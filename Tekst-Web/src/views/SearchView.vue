@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   GET,
+  resourceTypes,
   type AnyResourceRead,
   type LocationRead,
   type ResourceSearchQuery,
@@ -274,9 +275,9 @@ whenever(ctrlEnter, () => {
           class="content-block"
           :style="{ borderLeft: `6px solid ${resourceColors[query.cmn.res].colors.base}` }"
         >
-          <n-flex align="center" :wrap="false" class="mb-lg">
-            <n-flex align="flex-start" style="flex: 2">
-              <n-form-item :show-label="false" :show-feedback="false" style="flex: 6 400px">
+          <n-flex justify="end" align="center" class="mb-lg" size="large" style="flex-wrap: wrap-reverse">
+            <n-flex align="center" style="flex: 2 550px">
+              <n-form-item :show-label="false" :show-feedback="false" style="flex: 2 300px">
                 <n-select
                   class="search-resource-select b"
                   :value="query.cmn.res"
@@ -293,20 +294,28 @@ whenever(ctrlEnter, () => {
               <search-occurrence-selector
                 v-model:occurrence="query.cmn.occ"
                 :query-index="queryIndex"
-                style="flex: 1 180px"
+                style="flex: 1 200px"
               />
             </n-flex>
-            <n-button
-              v-if="formModel.queries.length > 1"
-              quaternary
-              circle
-              :title="$t('common.remove')"
-              :focusable="false"
-              class="action-button-remove"
-              @click="removeSearchItem(queryIndex)"
-            >
-              <n-icon :component="ClearIcon" />
-            </n-button>
+            <n-flex justify="end" align="center" size="large" :wrap="false">
+              <!-- help -->
+              <help-button-widget
+                :help-key="`search${resourceTypes[query.rts.type].advSearchHelpKeySuffix ?? ''}`"
+              />
+
+              <!-- remove search block -->
+              <n-button
+                v-if="formModel.queries.length > 1"
+                secondary
+                circle
+                size="tiny"
+                :title="$t('common.remove')"
+                :focusable="false"
+                @click="removeSearchItem(queryIndex)"
+              >
+                <n-icon :component="ClearIcon" />
+              </n-button>
+            </n-flex>
           </n-flex>
           <div>
             <component

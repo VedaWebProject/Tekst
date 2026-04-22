@@ -1,21 +1,21 @@
 # Search
 
-The search feature allows you to specifically search within the data of selected resources. Since multiple search queries can be combined and configured very precisely, highly efficient and, if necessary, very complex search queries can be realized.
+The Advanced Search (as oppsed to the Quick Search in the page header) lets you search within the data of selected resources in a more targeted way. Because multiple sub-queries can be combined, very efficient — and, if needed, complex — searches can be constructed.
 
-## Search Queries
+Each sub-query refers to a specific resource, which is selected using the first dropdown of that query. Each query can be marked as "required", "optional", or "excluded". This lets you build simple logical expressions from the individual queries.
 
-A search consists of 1 to n search queries. Each search query targets a specific resource, which is selected using the first selection field of the respective query. It can also be specified whether the query should be required, optional, or excluded. The search is conducted for locations that meet all defined search queries.
+Results are generally locations that the target resources hold matching contents for. When combining several "required" sub-queries, ensure they can be sensibly combined and are not targeting resources from different texts.
 
-**Caution:** There can also be combinations of search queries that _cannot_ yield any results — such as two "required" queries for content from resources that pertain to different texts.
+## Resource types and their search features
 
-Each resource type offers a different search form adapted to the structure of its data. Therefore, the search form of a search query changes depending on the selected target resource.
+Each resource type provides a different search form adapted to the structure of its data. The search form for a query therefore changes with the chosen target resource. In the visual blocks of the sub-queries you’ll find a dedicated help button that shows information about the search features of the corresponding resource type.
 
 ## Settings
 
-### Respect Diacritics
+### Respect diacritics
 
-If this feature is activated, entered or missing (!) diacritics are taken into account during the search, and only content with the same use of diacritics will be found.
+If this option is enabled, entered or missing (!) diacritics are considered in the search, and only content with the same use of diacritics will be found.
 
-### Location Range
+### Citation range
 
-If all selected resources are associated with the same structural level of the same text, the range of locations to be searched can be restricted here.
+If all selected resources are associated with the same structural level of the same text, you can restrict the range of locations to be searched here.

@@ -1,14 +1,14 @@
 # Suche
 
-Die Suche ermöglicht es, gezielt in den Daten ausgewählter Ressourcen zu suchen. Da mehrere Suchanfragen kombiniert und sehr genau konfiguriert werden können, lassen sich sehr effiziente und bei Bedarf sehr komplexe Suchanfragen realisieren.
+Die Erweiterte Suche (im Gegenzug zur Schnellsuche im Kopf der Seite) ermöglicht es, gezielt in den Daten ausgewählter Ressourcen zu suchen. Da mehrere Teil-Suchanfragen kombiniert werden können, lassen sich sehr effiziente – und bei Bedarf komplexe – Suchanfragen realisieren.
 
-## Suchanfragen
+Jede Teil-Suchanfrage bezieht sich auf eine bestimmte Ressource, die mit dem ersten Auswahlfeld der jeweiligen Anfrage festgelegt wird. Jede Anfrage kann als "erforderlich", "optional" oder "ausgeschlossen" markiert werden. So können aus den einzelnen Anfragen einfache logische Ausdrücke konstruiert werden.
 
-Eine Suche besteht aus 1 bis n Suchanfragen. Jede Suchanfrage bezieht sich auf eine bestimmte Ressource, die mit dem ersten Auswahlfeld der jeweiligen Anfrage ausgewählt wird. Es kann außerdem festgelegt werden, ob die Anfrage erforderlich, optional oder ausgeschlossen sein soll. Gesucht wird nach Belegstellen, auf die alle definierten Suchanfragen zutreffen.
+Gesucht wird generell nach Belegstellen, auf die alle definierten Teil-Suchanfragen zutreffen. Achten Sie deshalb vor allem bei der Kombination mehrerer "erforderlicher" Teil-Anfragen darauf, dass diese auch sinnvoll kombiniert werden können und nicht etwa auf Ressourcen unterschiedlicher Texte abzielen.
 
-**Achtung:** Es kann auch Kombinationen von Suchanfragen geben, die keine Treffer erzeugen _können_ – etwa zwei "erforderliche" Anfragen nach Inhalten von Ressourcen, die sich auf verschiedene Texte beziehen.
+## Ressourcentypen und ihre Suchfunktionen
 
-Jeder Ressourcentyp bietet ein anderes, der Struktur seiner Daten angepasstes Suchformular. Das Suchformular einer Suchanfrage ändert sich deshalb mit der jeweils eingestellten Zielressource.
+Jeder Ressourcentyp bietet ein anderes, der Struktur seiner Daten angepasstes Suchformular. Das Suchformular einer Suchanfrage ändert sich deshalb mit der jeweils eingestellten Zielressource. In den visuellen Blöcken der Teil-Anfragen finden Sie jeweils einen eigenen Hilfe-Button, der Informationen zu den Suchfunktionen des entsprechenden Ressourcentyps anzeigt.
 
 ## Einstellungen
 

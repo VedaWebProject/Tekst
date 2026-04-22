@@ -61,17 +61,13 @@ const renderToolbar = ({ nodes }: ImageRenderToolbarProps) => {
                 <n-flex align="stretch" :wrap="state.vw < 900" :size="[18, 0]">
                   <n-image
                     lazy
-                    :src="image.thumbUrl || image.url"
+                    :src="image.thumbUrl ?? image.url"
                     :preview-src="image.url"
-                    :alt="image.caption || undefined"
+                    :alt="image.caption ?? undefined"
                     :title="image.caption"
                     :width="focusView ? undefined : imageSize"
                     :height="focusView ? imageSize : undefined"
-                  >
-                    <template #placeholder>
-                      {{ $t('common.loading') }}
-                    </template>
-                  </n-image>
+                  />
                   <figcaption v-if="!focusView" class="caption" :style="fontStyle">
                     <span class="text-small">{{ image.caption }}</span>
                     <a

@@ -245,6 +245,7 @@ function clearForm() {
   segmentModel.value = undefined;
   resetModelChanges();
   formRef.value?.restoreValidation();
+  delete hashParams.page;
 }
 
 async function handleDeleteClick() {

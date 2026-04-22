@@ -8,9 +8,10 @@ import { dynInputCreateBtnProps } from '@/common';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
+import { AsteriskIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
-import { NDynamicInput, NFlex, NFormItem, NSelect, NSwitch } from 'naive-ui';
+import { NButton, NDynamicInput, NFlex, NFormItem, NIcon, NSelect } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -131,16 +132,18 @@ onMounted(async () => {
             </n-form-item>
 
             <!-- VALUE QUERY WILDCARDS -->
-            <n-form-item :show-label="false" ignore-path-change style="flex-basis: 48px">
-              <n-switch
-                v-model:value="value.wc"
-                :round="false"
-                class="b text-small"
+            <n-form-item ignore-path-change :show-label="false">
+              <n-button
+                secondary
+                :type="value.wc ? 'success' : undefined"
+                :disabled="!value.k"
                 :title="$t('search.advancedSearch.wc')"
+                @click="value.wc = !value.wc"
               >
-                <template #checked>*</template>
-                <template #unchecked>*</template>
-              </n-switch>
+                <template #icon>
+                  <n-icon :component="AsteriskIcon" />
+                </template>
+              </n-button>
             </n-form-item>
           </n-flex>
         </n-flex>

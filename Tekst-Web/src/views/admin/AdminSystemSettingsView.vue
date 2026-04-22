@@ -68,7 +68,7 @@ const oskFontOptions = computed(() => state.fonts.map((f) => ({ label: f, value:
 
 const resourceTypeOptions = computed(
   () =>
-    resourceTypes.map((rt) => ({
+    Object.values(resourceTypes).map((rt) => ({
       label: $t(`resources.types.${rt.name}.label`),
       value: rt.name,
     })) || []

@@ -101,56 +101,65 @@ export function downloadData(blob: Blob, filename: string) {
 
 export const colorPresets = ['#a2313c', '#563175', '#2F7561', '#c06709', '#134f86'];
 
-export const resourceTypes = [
-  {
-    name: 'plainText',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: true,
-  },
-  {
-    name: 'richText',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: false,
-  },
-  {
-    name: 'textAnnotation',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: true,
-  },
-  {
-    name: 'locationMetadata',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: false,
-  },
-  {
-    name: 'audio',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: true,
-  },
-  {
-    name: 'images',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: true,
-  },
-  {
-    name: 'externalReferences',
-    searchableQuick: true,
-    searchableAdv: true,
-    contentContext: true,
-  },
-  {
-    name: 'apiCall',
-    searchableQuick: false,
-    searchableAdv: false,
-    contentContext: false,
-  },
-];
+export const resourceTypes = Object.fromEntries(
+  [
+    {
+      name: 'plainText',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: true,
+      advSearchHelpKeySuffix: 'FullText',
+    },
+    {
+      name: 'richText',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: false,
+      advSearchHelpKeySuffix: 'FullText',
+    },
+    {
+      name: 'textAnnotation',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: true,
+      advSearchHelpKeySuffix: 'KeyValue',
+    },
+    {
+      name: 'locationMetadata',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: false,
+      advSearchHelpKeySuffix: 'KeyValue',
+    },
+    {
+      name: 'audio',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: true,
+      advSearchHelpKeySuffix: 'FullText',
+    },
+    {
+      name: 'images',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: true,
+      advSearchHelpKeySuffix: 'FullText',
+    },
+    {
+      name: 'externalReferences',
+      searchableQuick: true,
+      searchableAdv: true,
+      contentContext: true,
+      advSearchHelpKeySuffix: 'FullText',
+    },
+    {
+      name: 'apiCall',
+      searchableQuick: false,
+      searchableAdv: false,
+      contentContext: false,
+    },
+  ].map((resourceType) => [resourceType.name, resourceType])
+);
 
 export const deeplSourceLanguages = [
   'ace',
