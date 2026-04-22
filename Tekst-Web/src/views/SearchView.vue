@@ -275,7 +275,13 @@ whenever(ctrlEnter, () => {
           class="content-block"
           :style="{ borderLeft: `6px solid ${resourceColors[query.cmn.res].colors.base}` }"
         >
-          <n-flex justify="end" align="center" class="mb-lg" size="large" style="flex-wrap: wrap-reverse">
+          <n-flex
+            justify="end"
+            align="center"
+            class="mb-lg"
+            size="large"
+            style="flex-wrap: wrap-reverse"
+          >
             <n-flex align="center" style="flex: 2 550px">
               <n-form-item :show-label="false" :show-feedback="false" style="flex: 2 300px">
                 <n-select

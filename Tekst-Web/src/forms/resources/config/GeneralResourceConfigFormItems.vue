@@ -27,7 +27,7 @@ const categoryOptions = computed(
 );
 
 const preventContentContext = computed(() =>
-  resourceTypes
+  Object.values(resourceTypes)
     .filter((rt) => !rt.contentContext)
     .map((rt) => rt.name)
     .includes(props.resource.resourceType)
@@ -35,7 +35,7 @@ const preventContentContext = computed(() =>
 
 const preventQuickSearchable = computed(
   () =>
-    resourceTypes
+    Object.values(resourceTypes)
       .filter((rt) => !rt.searchableQuick)
       .map((rt) => rt.name)
       .includes(props.resource.resourceType) || !!props.resource.patchFor
@@ -43,7 +43,7 @@ const preventQuickSearchable = computed(
 
 const preventAdvSearchable = computed(
   () =>
-    resourceTypes
+    Object.values(resourceTypes)
       .filter((rt) => !rt.searchableAdv)
       .map((rt) => rt.name)
       .includes(props.resource.resourceType) || !!props.resource.patchFor
