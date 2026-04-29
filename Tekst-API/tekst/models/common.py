@@ -133,7 +133,7 @@ class DocumentBase(Document):
             if getattr(updates_model, field) is None and not type(
                 self
             ).validate_against_field(field, None):
-                continue
+                continue  # pragma: no cover
             # set attribute
             setattr(self, field, getattr(updates_model, field))
 
@@ -213,7 +213,7 @@ def make_update_model[ModelTypeT: type[ModelBase]](
 
         field_overrides[f_name] = (
             Annotated[
-                f_dict["annotation"] | None,  # noqa: F821 (what's going on, here?!)
+                f_info.annotation,
                 *f_dict["metadata"],
                 # *nullable_anno,
                 Field(**f_dict["attributes"]),

@@ -32,7 +32,6 @@ from tekst.models.location import LocationDocument
 from tekst.models.notifications import Notification
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import (
-    ResourceBase,
     ResourceBaseDocument,
     ResourceCoverage,
     ResourceExportFormat,
@@ -200,7 +199,7 @@ async def create_resource(
         raise errors.E_400_RESOURCE_INVALID_LEVEL
 
     # find document model for this resource type, instantiate, create
-    resource_doc: ResourceBase = (
+    resource_doc: ResourceBaseDocument = (
         resource_types_mgr.get(resource.resource_type)
         .resource_model()
         .document_model()
@@ -261,14 +260,14 @@ async def create_resource_patch(
     # create modified copy of resource doc
     patch_doc: ResourceBaseDocument = await resource_doc.model_copy(
         update={
-            ResourceBaseDocument.id: None,
-            ResourceBaseDocument.title: patch_title,
-            ResourceBaseDocument.patch_for: resource_doc.id,
-            ResourceBaseDocument.owner_ids: [user.id],
-            ResourceBaseDocument.proposed: False,
-            ResourceBaseDocument.public: False,
-            ResourceBaseDocument.shared_read: [],
-            ResourceBaseDocument.shared_write: [],
+            "id": None,
+            "title": patch_title,
+            "patch_for": resource_doc.id,
+            "owner_ids": [user.id],
+            "proposed": False,
+            "public": False,
+            "shared_read": [],
+            "shared_write": [],
         }
     ).create()
 

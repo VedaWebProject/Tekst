@@ -55,9 +55,9 @@ schema:
 # run full pre-commit toolchain
 all:
   just fix
-  just tests
   just check
   just schema
+  just tests
 
 # build updated container images in services stack
 services-build:

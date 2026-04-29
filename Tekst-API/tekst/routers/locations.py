@@ -1,4 +1,4 @@
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
 from beanie.operators import And, Eq, In, NotIn
@@ -219,7 +219,7 @@ async def find_locations(
             .to_list()
         )
         if not locations:
-            return locations
+            return []
         text_doc: TextDocument | None = await TextDocument.get(locations[0].text_id)
 
     # ...in any other case, we'll have to puzzle a bit...
@@ -235,7 +235,7 @@ async def find_locations(
             return []
 
         # build a query that contains all the other given props
-        query = {"text_id": text_doc.id}
+        query: dict[str, Any] = {"text_id": text_doc.id}
         if level is not None:
             query["level"] = level
         if position is not None:

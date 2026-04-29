@@ -177,7 +177,7 @@ async def test_apply_updates(test_app):
     await text_doc.create()
     assert text_doc.color.as_rgb() == "rgb(255, 0, 0)"
     assert text_doc.id
-    text_updates = TextUpdate(slug="bar", loc_delim=None)  # ty:ignore[invalid-argument-type, missing-argument]
+    text_updates = TextUpdate(slug="bar")  # ty:ignore[missing-argument]
     text_doc = await text_doc.apply_updates(text_updates)
     assert text_doc.slug == "bar"
     assert text_doc.loc_delim == " > "  # apply_updates should ignore None

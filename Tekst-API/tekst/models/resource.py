@@ -529,7 +529,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             {"$project": {"_id": 1}},
         ]
 
-        data: list[dict] | None = (
+        data: list[dict] = (
             await LocationDocument.find(
                 LocationDocument.text_id == self.text_id,
                 LocationDocument.level == self.level,
@@ -618,7 +618,7 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
             ranges.append(curr_range)
         # save locations count, deref data
         loc_count = len(data)
-        data = None
+        del data
         # evaluate ranges data
         covered_count = len([r for r in ranges if r.get("covered")])
         missing_count = len(ranges) - covered_count

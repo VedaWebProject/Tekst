@@ -7972,19 +7972,12 @@
             "optionalNullable": false
           },
           "calls": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ApiCallContentItem"
-                },
-                "type": "array",
-                "maxItems": 16,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ApiCallContentItem"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
             "title": "Calls",
             "description": "List of API calls to make for this content",
             "optionalNullable": false
@@ -8567,36 +8560,22 @@
       "ApiCallResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -8619,35 +8598,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -8668,18 +8633,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -8715,31 +8673,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ApiCallResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/ApiCallResourceConfig",
             "optionalNullable": false
           }
         },
@@ -8910,19 +8854,12 @@
             "optionalNullable": false
           },
           "files": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AudioFile"
-                },
-                "type": "array",
-                "maxItems": 100,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/AudioFile"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
             "title": "Files",
             "description": "List of audio file objects",
             "optionalNullable": false
@@ -9401,36 +9338,22 @@
       "AudioResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -9453,35 +9376,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -9502,18 +9411,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -9549,31 +9451,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/AudioResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/AudioResourceConfig",
             "optionalNullable": false
           }
         },
@@ -10056,108 +9944,59 @@
       "ClientSegmentUpdate": {
         "properties": {
           "key": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1,
-                "pattern": "[a-zA-Z0-9\\-_]+"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Key",
             "description": "Key of this segment. System segment keys must start with `system`.",
             "optionalNullable": false
           },
           "editorMode": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "wysiwyg",
-                  "html"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
             ],
             "title": "Editormode",
             "description": "Last used editor mode",
             "optionalNullable": false
           },
           "locale": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TranslationLocaleKey"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/TranslationLocaleKey",
             "description": "Locale indicating the translation language of this segment",
             "optionalNullable": false
           },
           "restriction": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "none",
-                  "user",
-                  "superuser"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "type": "string",
+            "enum": [
+              "none",
+              "user",
+              "superuser"
             ],
             "title": "Restriction",
             "description": "Whether access is unrestricted or restricted to superusers or users",
             "optionalNullable": false
           },
           "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
             "title": "Title",
             "description": "Title of this segment",
             "optionalNullable": false
           },
           "sortOrder": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 1000.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
             "title": "Sortorder",
             "description": "Sort order for displaying this segment among others (only relevant for non-system segments aka. info pages!)",
             "optionalNullable": false
           },
           "html": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1048576
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 1048576,
             "title": "Html",
             "description": "HTML content of this segment",
             "optionalNullable": false
@@ -10665,19 +10504,12 @@
             "optionalNullable": false
           },
           "links": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ExternalReferencesLink"
-                },
-                "type": "array",
-                "maxItems": 100,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ExternalReferencesLink"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
             "title": "Links",
             "description": "List of external reference link objects",
             "optionalNullable": false
@@ -11164,36 +10996,22 @@
       "ExternalReferencesResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -11216,35 +11034,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -11265,18 +11069,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -11312,31 +11109,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ExternalReferencesResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "optionalNullable": false
           }
         },
@@ -11754,19 +11537,12 @@
             "optionalNullable": false
           },
           "files": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ImageFile"
-                },
-                "type": "array",
-                "maxItems": 100,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ImageFile"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
             "title": "Files",
             "description": "List of image file objects",
             "optionalNullable": false
@@ -12201,36 +11977,22 @@
       "ImagesResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -12253,35 +12015,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -12302,18 +12050,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -12349,31 +12090,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ImagesResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/ImagesResourceConfig",
             "optionalNullable": false
           }
         },
@@ -12926,19 +12653,12 @@
             "optionalNullable": false
           },
           "entries": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/LocationMetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 128,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LocationMetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 128,
+            "minItems": 1,
             "title": "Entries",
             "description": "List of metadata entries for a certain location",
             "optionalNullable": false
@@ -13582,36 +13302,22 @@
       "LocationMetadataResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -13634,35 +13340,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -13683,18 +13375,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -13730,31 +13415,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/LocationMetadataResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/LocationMetadataResourceConfig",
             "optionalNullable": false
           }
         },
@@ -13922,45 +13593,24 @@
             "optionalNullable": true
           },
           "level": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "exclusiveMaximum": 32.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
+            "exclusiveMaximum": 32.0,
+            "minimum": 0.0,
             "title": "Level",
             "description": "Index of structure level this location is on",
             "optionalNullable": false
           },
           "position": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
+            "minimum": 0.0,
             "title": "Position",
             "description": "Position among all text locations on this level",
             "optionalNullable": false
           },
           "label": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 256,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
             "title": "Label",
             "description": "Label for identifying this text location in level context",
             "optionalNullable": false
@@ -14346,16 +13996,9 @@
             "optionalNullable": false
           },
           "text": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
             "title": "Text",
             "description": "Text content of the plain text content object",
             "optionalNullable": false
@@ -14838,36 +14481,22 @@
       "PlainTextResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -14890,35 +14519,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -14939,18 +14554,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -14986,31 +14594,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PlainTextResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/PlainTextResourceConfig",
             "optionalNullable": false
           }
         },
@@ -15401,71 +14995,43 @@
       "PlatformStateUpdate": {
         "properties": {
           "platformName": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
             "title": "Platformname",
             "description": "Name of the platform",
             "optionalNullable": false
           },
           "platformSubtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PlatformSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PlatformSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Platformsubtitle",
             "description": "Short descriptive subtitle of the platform, in multiple languages",
             "optionalNullable": false
           },
           "availableLocales": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/LocaleKey"
-                },
-                "type": "array",
-                "maxItems": 2,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/LocaleKey"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
             "title": "Availablelocales",
             "description": "Locales available for use in platform client",
             "optionalNullable": false
           },
           "fonts": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "maxLength": 32,
-                  "minLength": 1,
-                  "description": "Name of a font family"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1,
+              "description": "Name of a font family"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Fonts",
             "description": "CSS font family names for custom fonts",
             "optionalNullable": false
@@ -15515,148 +15081,71 @@
             "optionalNullable": true
           },
           "indexUnpublishedResources": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Indexunpublishedresources",
             "description": "Index unpublished resources",
             "optionalNullable": false
           },
           "directJumpOnUniqueAliasSearch": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Directjumponuniquealiassearch",
             "description": "Directly jump to respective location when searching for unique location alias",
             "optionalNullable": false
           },
           "navTranslations": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/NavTranslations"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/NavTranslations",
             "description": "Custom labels for main navigation entries",
             "optionalNullable": false
           },
           "showResourceCategoryHeadings": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Showresourcecategoryheadings",
             "description": "Show resource category headings in browse view",
             "optionalNullable": false
           },
           "prioritizeBrowseLevelResources": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Prioritizebrowselevelresources",
             "description": "Display resources of current browse level before others in browse view",
             "optionalNullable": false
           },
           "showLocationAliases": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Showlocationaliases",
             "description": "Show location aliases in browse view",
             "optionalNullable": false
           },
           "uiColor": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "color"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "color",
             "title": "Uicolor",
             "description": "Primary color used in for client UI",
             "optionalNullable": false
           },
           "showLogoOnLoadingScreen": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Showlogoonloadingscreen",
             "description": "Show logo on loading screen",
             "optionalNullable": false
           },
           "showLogoInHeader": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Showlogoinheader",
             "description": "Show logo in page header",
             "optionalNullable": false
           },
           "showTekstFooterHint": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Showtekstfooterhint",
             "description": "Show a small hint to the Tekst software in the footer",
             "optionalNullable": false
           },
           "denyResourceTypes": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Denyresourcetypes",
             "description": "Resource types regular users are not allowed to create",
             "optionalNullable": false
@@ -15677,34 +15166,20 @@
             "optionalNullable": true
           },
           "oskModes": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/OskMode"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/OskMode"
+            },
+            "type": "array",
             "title": "Oskmodes",
             "description": "OSK modes available for use in platform client",
             "optionalNullable": false
           },
           "resMetaTranslations": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceMetadataKey"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceMetadataKey"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Resmetatranslations",
             "description": "Custom labels for main navigation entries",
             "optionalNullable": false
@@ -16286,32 +15761,18 @@
             "optionalNullable": false
           },
           "html": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 102400,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
             "title": "Html",
             "description": "HTML content of the rich text content object",
             "optionalNullable": false
           },
           "editorMode": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "wysiwyg",
-                  "html"
-                ]
-              },
-              {
-                "type": "null"
-              }
+            "type": "string",
+            "enum": [
+              "wysiwyg",
+              "html"
             ],
             "title": "Editormode",
             "description": "Last used editor mode for this content",
@@ -16879,36 +16340,22 @@
       "RichTextResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -16931,35 +16378,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -16980,18 +16413,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -17027,31 +16453,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RichTextResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/RichTextResourceConfig",
             "optionalNullable": false
           }
         },
@@ -17681,18 +17093,11 @@
             "optionalNullable": false
           },
           "tokens": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/TextAnnotationToken"
-                },
-                "type": "array",
-                "maxItems": 1024
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/TextAnnotationToken"
+            },
+            "type": "array",
+            "maxItems": 1024,
             "title": "Tokens",
             "description": "List of annotated tokens in this content object",
             "optionalNullable": false
@@ -18241,36 +17646,22 @@
       "TextAnnotationResourceUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceTitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceTitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
             "title": "Title",
             "description": "Title of this resource",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Short, concise subtitle of this resource",
             "optionalNullable": false
@@ -18293,35 +17684,21 @@
             "optionalNullable": true
           },
           "sharedRead": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedread",
             "description": "Users with shared read access to this resource",
             "optionalNullable": false
           },
           "sharedWrite": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/PydanticObjectId"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Sharedwrite",
             "description": "Users with shared write access to this resource",
             "optionalNullable": false
@@ -18342,18 +17719,11 @@
             "optionalNullable": true
           },
           "description": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceDescriptionTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceDescriptionTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Description",
             "description": "Plain text, potentially multiline description on this resource",
             "optionalNullable": false
@@ -18389,31 +17759,17 @@
             "optionalNullable": true
           },
           "meta": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/MetadataEntry"
-                },
-                "type": "array",
-                "maxItems": 64
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/MetadataEntry"
+            },
+            "type": "array",
+            "maxItems": 64,
             "title": "Meta",
             "description": "Arbitrary metadata",
             "optionalNullable": false
           },
           "config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextAnnotationResourceConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/TextAnnotationResourceConfig",
             "optionalNullable": false
           }
         },
@@ -18785,199 +18141,108 @@
       "TextUpdate": {
         "properties": {
           "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
             "title": "Title",
             "description": "Title of this text",
             "optionalNullable": false
           },
           "slug": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 1,
-                "pattern": "^[a-z0-9]+$"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+$",
             "title": "Slug",
             "description": "A short identifier for use in URLs and internal operations",
             "optionalNullable": false
           },
           "subtitle": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/TextSubtitleTranslation"
-                },
-                "type": "array",
-                "maxItems": 3
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/TextSubtitleTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
             "title": "Subtitle",
             "description": "Subtitle translations of this text (if set, it must contain at least one element)",
             "optionalNullable": false
           },
           "levels": {
-            "anyOf": [
-              {
-                "items": {
-                  "items": {
-                    "$ref": "#/components/schemas/TextLevelTranslation"
-                  },
-                  "type": "array",
-                  "maxItems": 3
-                },
-                "type": "array",
-                "maxItems": 32,
-                "minItems": 1
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/TextLevelTranslation"
               },
-              {
-                "type": "null"
-              }
-            ],
+              "type": "array",
+              "maxItems": 3
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 1,
             "title": "Levels",
             "description": "Structure levels of this text and their label translations",
             "optionalNullable": false
           },
           "defaultLevel": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 32.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 0.0,
             "title": "Defaultlevel",
             "description": "Structure level of a location",
             "optionalNullable": false
           },
           "locDelim": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 3,
-                "pattern": "[^\\n\\r]+"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 3,
+            "pattern": "[^\\n\\r]+",
             "title": "Locdelim",
             "description": "Delimiter for displaying text locations",
             "optionalNullable": false
           },
           "labeledLocation": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Labeledlocation",
             "description": "Whether the UI should label the parts of the browse location with each levels' names",
             "optionalNullable": false
           },
           "color": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "color"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "color",
             "title": "Color",
             "description": "Accent color used for this text in the client UI",
             "optionalNullable": false
           },
           "sortOrder": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 1000.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
             "title": "Sortorder",
             "description": "Sort order for displaying this resource among others",
             "optionalNullable": false
           },
           "isActive": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Isactive",
             "description": "Whether the text should be listed for non-admin users in the web client",
             "optionalNullable": false
           },
           "resourceCategories": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ResourceCategory"
-                },
-                "type": "array",
-                "maxItems": 32
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ResourceCategory"
+            },
+            "type": "array",
+            "maxItems": 32,
             "title": "Resourcecategories",
             "description": "Resource categories to categorize resources in",
             "optionalNullable": false
           },
           "fullLocLabelAsHitHeading": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Fullloclabelashitheading",
             "description": "Whether to use the full location label as the hit heading in the search results",
             "optionalNullable": false
           },
           "slugInLocLabels": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Sluginloclabels",
             "description": "Whether to prefix full location labels with this text's slug",
             "optionalNullable": false
@@ -19661,47 +18926,26 @@
             "title": "Isverified"
           },
           "username": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 16,
-                "minLength": 4,
-                "pattern": "[a-zA-Z0-9\\-_]+"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 4,
+            "pattern": "[a-zA-Z0-9\\-_]+",
             "title": "Username",
             "description": "Public username of this user",
             "optionalNullable": false
           },
           "name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 64,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
             "title": "Name",
             "description": "Full name of this user",
             "optionalNullable": false
           },
           "affiliation": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 180,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 180,
+            "minLength": 1,
             "title": "Affiliation",
             "description": "Affiliation info of this user",
             "optionalNullable": false
@@ -19749,46 +18993,25 @@
             "optionalNullable": true
           },
           "publicFields": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PrivateUserProps"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/PrivateUserProps",
             "optionalNullable": false
           },
           "userNotificationTriggers": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/UserNotificationTrigger"
-                },
-                "type": "array",
-                "maxItems": 5
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/UserNotificationTrigger"
+            },
+            "type": "array",
+            "maxItems": 5,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "optionalNullable": false
           },
           "adminNotificationTriggers": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/AdminNotificationTrigger"
-                },
-                "type": "array",
-                "maxItems": 2
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/AdminNotificationTrigger"
+            },
+            "type": "array",
+            "maxItems": 2,
             "title": "Adminnotificationtriggers",
             "description": "Events that trigger admin notifications for this user",
             "optionalNullable": false
